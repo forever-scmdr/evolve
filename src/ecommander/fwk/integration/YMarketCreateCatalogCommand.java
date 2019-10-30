@@ -39,6 +39,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	@Override
 	protected void integrate() throws Exception {
 		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
+		boolean justPrice = Boolean.parseBoolean(StringUtils.lowerCase(getVarSingleValueDefault("just_price", "false")));
 		if (!integrationDir.exists()) {
 			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
@@ -59,14 +60,15 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		String notIgnoreVar = getVarSingleValue("not_ignore");
 		HashSet<String> ignore = new HashSet<>();
 		HashSet<String> notIgnore = new HashSet<>();
-		notIgnore.addAll(Arrays.asList(StringUtils.split(notIgnoreVar, ',')));
+		if (StringUtils.isNotBlank(notIgnoreVar))
+			notIgnore.addAll(Arrays.asList(StringUtils.split(notIgnoreVar, ',')));
 		for (String code : StringUtils.split(ignoreVar, ',')) {
-			if(!notIgnore.contains(code))ignore.add(code);
+			if (!notIgnore.contains(code)) ignore.add(code);
 		}
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator(), ignore);
+		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator(), ignore, justPrice);
 		info.setProcessed(0);
 		for (File xml : xmls) {
 			// Удалить DOCTYPE
@@ -83,11 +85,13 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
-		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator(), ignore, notIgnore);
+		YMarketProductCreationHandler prodHandler =
+				new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator(), ignore, notIgnore, justPrice);
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
-		postProcessBookinistic("16546");
+		if (!justPrice)
+			postProcessBookinistic("16546");
 		//executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.setOperation("Создание кеша удаляемых товаров");
@@ -101,7 +105,8 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
 
-		LuceneIndexMapper.getSingleton().reindexAll();
+		if (!justPrice)
+			LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
 		info.pushLog("Интеграция успешно завершена");

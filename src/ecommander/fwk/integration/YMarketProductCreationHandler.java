@@ -1,5 +1,6 @@
 package ecommander.fwk.integration;
 
+import com.mysql.fabric.Server;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
@@ -102,10 +103,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private final HashSet<String> ignoreCodes;
 	private final HashSet<String> notIgnoreCodes;
 	private String currentQuery;
+	private boolean justPrice;
 
 
 	
-	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes) {
+	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes, boolean justPrice) {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
@@ -114,6 +116,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
 		this.ignoreCodes = ignoreCodes;
 		this.notIgnoreCodes = notIgnoreCodes;
+		this.justPrice = justPrice;
 		try {
 			Item course = new ItemQuery("course").loadFirstItem();
 			level_1 = course.getDecimalValue("level_1");
@@ -138,6 +141,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (ignoreCodes.contains(secCode)) {
 					return;
 				}
+				ServerLogger.error("INIT");
 				//Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				ItemQuery loadProductQuery =  new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 						.addParameterEqualsCriteria(OFFER_ID_PARAM, code);
@@ -145,12 +149,15 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				Item product = loadProductQuery.loadFirstItem();
 				endCheckSlowQuery();
 				if(product == null && section == null){
-					info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+					if (!justPrice)
+						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 					return;
 				}
 				if(isNotRussian()) return;
 				boolean isProductNew = false;
 				if (product == null) {
+					if (justPrice)
+						return;
 					//if (section != null) {
 						product = Item.newChildItem(productType, section);
 						product.setValue("parent_id", secCode);
@@ -212,7 +219,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 //				}
 //				secCode = (StringUtils.isNoneBlank(productParentCode))? productParentCode : secCode;
 
-				info.setCurrentJob("раздел " + section.getStringValue(NAME_PARAM) + " * товар " + product.getStringValue(NAME_PARAM));
+				String secName = section == null ? secCode : section.getStringValue(NAME_PARAM);
+				info.setCurrentJob("раздел " + secName + " * товар " + product.getStringValue(NAME_PARAM));
 
 				//if (getPrice)
 				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
@@ -223,7 +231,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				BigDecimal oldPrice = product.getDecimalValue(PRICE_OLD_PARAM);
 				//else
 				//	product.setValueUI(PRICE_PARAM, "0");
-				isBookinistic = isBookinistic || secCode.equals("16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
+				isBookinistic = isBookinistic || StringUtils.equals(secCode, "16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
 				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
 				if(oldPrice != null){
 					if (price.compareTo(level_1) < 0) {
@@ -273,7 +281,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				DelayedTransaction.executeSingle(initiator, save);
 				checkSlowCommand(save);
 
-				if (!isProductNew) {
+				if (!isProductNew && !justPrice) {
 					// Сделать товар видимым
 					ItemStatusDBUnit show = ItemStatusDBUnit.restore(product);
 					DelayedTransaction.executeSingle(initiator, show);
@@ -320,7 +328,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			parameterReady = false;
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			info.addError(e.getMessage() + " " + e.getStackTrace()[0].toString(), locator.getLineNumber(), locator.getColumnNumber());
 		}
 	}
 
