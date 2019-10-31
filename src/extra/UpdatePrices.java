@@ -20,14 +20,15 @@ import java.math.BigDecimal;
  * Разбор файла с ценой
  * Created by E on 1/3/2018.
  */
-public class UpdatePrices extends IntegrateBase implements CatalogConst{
+public class UpdatePrices extends IntegrateBase implements CatalogConst {
 	private static final String QTY_HEADER = "кол-во";
 	private static final String PRICE_HEADER = "с НДС";
+	private static final String UNIT_HEADER = "ед";
 
 	private ExcelPriceList price;
 
 	@Override
-	protected boolean makePreparations() throws Exception{
+	protected boolean makePreparations() throws Exception {
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 		if (catalog == null)
 			return false;
@@ -45,6 +46,7 @@ public class UpdatePrices extends IntegrateBase implements CatalogConst{
 								qty = 0d;
 							prod.set_qty(new BigDecimal(qty));
 							prod.set_price(getCurrencyValue(PRICE_HEADER));
+							prod.set_unit(getValue(UNIT_HEADER));
 							DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 							info.increaseProcessed();
 						} else {
