@@ -201,9 +201,9 @@
 													(<xsl:value-of select="qty"/>)<xsl:text> </xsl:text>
 												</xsl:if>
 											</a>
-											<div class="art-number">
-												№ для заказа: <xsl:value-of select="$pres/code"/>
-											</div>
+<!--											<div class="art-number">-->
+<!--												№ для заказа: <xsl:value-of select="$pres/code"/>-->
+<!--											</div>-->
 											<p><xsl:value-of select="$pres/short" disable-output-escaping="yes"/></p>
 										</div>
 									</div>
@@ -461,9 +461,9 @@
 					<xsl:value-of select="type"/><xsl:text> </xsl:text>
 					<!-- (<xsl:value-of select="code"/>) -->
 				</a>
-				<div class="art-number">
-					№ для заказа: <xsl:value-of select="code"/>
-				</div>
+<!--				<div class="art-number">-->
+<!--					№ для заказа: <xsl:value-of select="code"/>-->
+<!--				</div>-->
 				<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 				<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
 				<div class="item-icons">

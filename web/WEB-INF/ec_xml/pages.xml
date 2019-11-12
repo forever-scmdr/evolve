@@ -37,6 +37,7 @@
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax" />
 		<link name="cart_link" target="cart"/>
+		<link name="brands_link" target="brands"/>
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
@@ -64,6 +65,11 @@
 			<list item="section" id="sec_pics" tag="cat_pic" assoc="product_category">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec_pics" style="key"/>
+				</link>
+			</list>
+			<list item="brand" assoc="common_assoc" id="main_brands">
+				<link name="show_brand" target="brand">
+					<var name="brand" ref="main_brands" parameter="name"/>
 				</link>
 			</list>
 			<list item="main_promo_bottom"/>
@@ -307,6 +313,17 @@
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 		</list>
+	</page>
+
+
+
+	<page name="brands" template="brands">
+		<list item="brand" id="brand">
+			<link name="show_brand" target="brand">
+				<var name="brand" ref="brand" parameter="name"/>
+			</link>
+		</list>
+		<include name="COMMON"/>
 	</page>
 
 

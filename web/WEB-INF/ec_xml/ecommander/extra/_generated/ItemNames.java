@@ -173,18 +173,18 @@ public interface ItemNames {
 
     }
 
-    public interface dealers_page {
-
-        String _ITEM_NAME = "dealers_page";
-
-    }
-
     public interface dealer_coords {
 
         String _ITEM_NAME = "dealer_coords";
         String NAME = "name";
         String ADDRESS = "address";
         String INFO = "info";
+
+    }
+
+    public interface dealers_page {
+
+        String _ITEM_NAME = "dealers_page";
 
     }
 

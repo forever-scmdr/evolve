@@ -166,66 +166,25 @@
 								</div>
 							</xsl:for-each>
 						</div>
-						<a href="/catalog" class="kvld-link_big">Смотреть всю продукцию</a>
+						<a href="{page/catalog_link}" class="kvld-link_big">Смотреть всю продукцию</a>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- <div class="container kvld-brands">
-			<div class="wrap">
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
+		<xsl:if test="page/main_page/brand">
+			<div class="container kvld-brands">
+				<div class="wrap">
+					<xsl:for-each select="page/main_page/brand">
+						<div class="kvld-brands__item">
+							<a href="{show_brand}" class="kvld-brands__image">
+								<img src="{@path}{pic}" alt=""/>
+							</a>
+						</div>
+					</xsl:for-each>
 				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
-				<div class="kvld-brands__item">
-					<a href="/brand" class="kvld-brands__image">
-						<img src="img/brand-logo.png" alt=""/>
-					</a>
-				</div>
+				<a href="{page/brands_link}" class="kvld-link_big">Все бренды</a>
 			</div>
-			<a href="/brand" class="kvld-link_big">Все бренды</a>
-		</div> -->
+		</xsl:if>
 		<!-- <div class="container">
 			<div class="row">
 				<div class="col-md-12">

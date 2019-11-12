@@ -26,9 +26,9 @@
 							</a>
 							<a href="{show_product}" class="title">
 								<xsl:value-of select="name"/>
-								<span>
-									№ для заказа: <xsl:value-of select="code"/>
-								</span>
+<!--								<span>-->
+<!--									№ для заказа: <xsl:value-of select="code"/>-->
+<!--								</span>-->
 							</a>
 							<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
 						</div>
@@ -52,9 +52,9 @@
 							<a href="{show_product}" class="title">
 								<xsl:value-of select="name"/>
 								<br />
-								<span>
-									№ для заказа: <xsl:value-of select="code"/>
-								</span>
+<!--								<span>-->
+<!--									№ для заказа: <xsl:value-of select="code"/>-->
+<!--								</span>-->
 								<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
 							</a>
 						</div>

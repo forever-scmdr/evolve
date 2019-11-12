@@ -149,9 +149,9 @@
 						<!--<xsl:otherwise><div class="quantity">Нет на складе</div></xsl:otherwise>-->
 					<!--</xsl:choose>-->
 				</div>
-				<div class="art-number">
-					№ для заказа: <xsl:value-of select="$p/code" />
-				</div>
+<!--				<div class="art-number">-->
+<!--					№ для заказа: <xsl:value-of select="$p/code" />-->
+<!--				</div>-->
 				<div class="extra-links">
 					<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price">Моя цена</a>
 					<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
