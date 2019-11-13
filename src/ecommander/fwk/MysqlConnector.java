@@ -383,14 +383,14 @@ public class MysqlConnector
 	 */
 	public static synchronized Connection getConnection() throws NamingException, SQLException {
 		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new ConnectionCount(_DS.getConnection(), null);
-		//return _DS.getConnection();
+		//return new ConnectionCount(_DS.getConnection(), null);
+		return _DS.getConnection();
 	}
 
 	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
 		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new ConnectionCount(_DS.getConnection(), request);
-		//return _DS.getConnection();
+		//return new ConnectionCount(_DS.getConnection(), request);
+		return _DS.getConnection();
 	}
 	/**
 	 * Marks the connection from pool as unused or closes it if it is not from pool
