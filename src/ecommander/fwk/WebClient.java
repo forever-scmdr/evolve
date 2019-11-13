@@ -111,7 +111,7 @@ public class WebClient {
 		}
 	}
 
-	public static void _saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+	private static void _saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 		SSLConnectionSocketFactory scsf = new SSLConnectionSocketFactory(
 				SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build(),
 				NoopHostnameVerifier.INSTANCE);
