@@ -226,6 +226,7 @@
 		<parameter name="warranty" caption="Гарантицный листок" type="picture"/>
 		<parameter name="change_status" caption="Изменить статус товаров" domain="change_status" type="string"/>
 		<parameter name="text" caption="Описание" type="text"/>
+		<parameter name="importer" caption="Импортер" type="text"/>
 		<parameter name="text_pic" caption="Картинка" type="picture" description="для прикрепления к тексту" multiple="true"/>
 		<on-update class="extra.HideBrandProductsHandler"/>
 	</item>
