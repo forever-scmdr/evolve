@@ -156,4 +156,13 @@
    font-weight: normal;
 }
 
+/*
+ * metropolis
+================================================================================ */
+@font-face {
+   font-family: "Franklin Gothic";
+   src: url("../fonts/fradm.woff") format("woff");
+   font-style: normal;
+   font-weight: normal;
+}
 /*# sourceMappingURL=fonts.css.map */

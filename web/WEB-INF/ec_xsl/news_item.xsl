@@ -84,6 +84,11 @@
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
 					</div>
+
+					<xsl:call-template name="BANNER_FOLLOW"/>
+					<div style="margin-bottom: 1.5rem;"></div>
+					<xsl:call-template name="BANNER_DONATE"/>
+
 					<xsl:if test="$ni/tag">
 						<p class="s-content__tags">
 							<span>Теги</span>
@@ -100,6 +105,7 @@
 					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
 
 					<xsl:call-template name="ALSO"/>
+
 					<xsl:call-template name="PREV-NEXT" />
 				</div>
 			</article>

@@ -116,6 +116,11 @@
 						<div class="content-text">
 						   <xsl:apply-templates select="$ni" mode="content"/>
 						</div>
+
+						<xsl:call-template name="BANNER_FOLLOW"/>
+						<div style="margin-bottom: 1.5rem;"></div>
+						<xsl:call-template name="BANNER_DONATE"/>
+
 						<xsl:if test="$ni/tag">
 							<p class="s-content__tags">
 								<span>Теги</span>
