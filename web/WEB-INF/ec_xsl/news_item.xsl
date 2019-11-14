@@ -45,6 +45,11 @@
 								</a>
 							</li>
 						</xsl:if>
+						<xsl:if test="$ni/author != ''">
+							<li class="cat">
+								Автор: <xsl:value-of select="$ni/author"/>
+							</li>
+						</xsl:if>
 						<li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/></li>
 						<li class="cat">
 							Категория:	<a href="{$parent/show_page}" >

@@ -123,13 +123,13 @@
 						</xsl:for-each>
 					</ul>
 				</li>
-				<xsl:for-each select="page/menu_custom[name != 'Использование Cookie' and name != 'О проекте']">
-					<xsl:variable name="k" select="@key"/>
+				<xsl:for-each select="page/menu_custom">
+					<!-- <xsl:variable name="k" select="@key"/>
 					<li class="{'current'[$active_menu_item = $k]}">
 						<a href="{show_page}">
 							<xsl:value-of select="name"/>
 						</a>
-					</li>
+					</li> -->
 				</xsl:for-each>
 					<!--<xsl:if test="count(page/news) = 1">-->
 						<!--<xsl:variable name="k" select="page/news/@key"/>-->
@@ -228,6 +228,7 @@
 				</div>
 			</div>
 		</footer>
+		<div id="wikitip"></div>
 	</xsl:template>
 
 
@@ -555,6 +556,27 @@
 			</div>
 			<div style="margin-bottom: 20px;"></div>
 		</xsl:if>
+	</xsl:template>
+
+
+	<xsl:template name="BANNER_FOLLOW">
+		<div class="content-text banner-follow">
+			<p class="follow-text">Подписывайтесь на наши соцсети:&#160;
+				<a href="https://twitter.com/TemptingPro"><img src="images/titter.png" alt="twitter"/></a>
+				<a href="https://www.instagram.com/temptingpro/"><img src="images/Instagram_icon-icons.com_66804.png" alt="instagram"/></a>
+				<a href="https://vk.com/tempting_pro"><img src="images/11-512.png" alt="vk.com"/></a>
+				<a href="https://facebook.com/Tempting.Pro/"><img src="images/124010.png.png" alt="facebook"/></a>
+			</p>
+			<p>Чтобы быть в курсе последних мировых событий и не пропускать свежие обозревательные материалы
+				<img src="images/live.png"/>
+				<img src="images/icons8-news-96.png"/>
+			</p>			
+		</div>
+	</xsl:template>
+	<xsl:template name="BANNER_DONATE">
+		<a class="donate-link" href="" target="_blank">
+			<img src="images/charity.png" alt="donate"/>
+		</a>
 	</xsl:template>
 
 </xsl:stylesheet>
