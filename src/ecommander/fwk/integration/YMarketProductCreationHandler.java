@@ -46,6 +46,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private static final String BOOKINISTIC = "Букинистическое издание";
 	private static final String BOOKINISTIC_1 = "Букинистика";
 	private static final String OLD_PRICE_ELEMENT = "oldprice";
+	private static final String BINDING_ELEMENT = "binding";
+	private static final String BINDING_PARAM_NAME = "Формат издания";
 
 	static {
 		COMMON_PARAMS.add(URL_ELEMENT);
@@ -75,6 +77,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		COMMON_PARAMS.add(ISBN);
 		COMMON_PARAMS.add(BARCODE);
 		COMMON_PARAMS.add(TITLE);
+		COMMON_PARAMS.add(BINDING_PARAM_NAME);
 	}
 
 
@@ -313,7 +316,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			}
 
 			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
-				commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
+				if (StringUtils.equalsIgnoreCase(paramName, BINDING_ELEMENT)) {
+					specialParams.put(BINDING_PARAM_NAME, StringUtils.trim(paramValue.toString()));
+				} else {
+					commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
+				}
 			}
 
 			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {

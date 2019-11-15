@@ -33,6 +33,7 @@
 	<xsl:variable name="meta_description" select="if($is_video) then $video_description else if($is_book) then $book_description else $music_description"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
+	<xsl:variable name="ignore_params" select="('Ширина упаковки', 'Высота упаковки', 'Глубина упаковки', 'crossborder', 'ebsmstock')"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -272,7 +273,7 @@
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
-								<xsl:for-each select="$params/xml/parameter">
+								<xsl:for-each select="$params/xml/parameter[not(normalize-space(name) = $ignore_params)]">
 									<tr>
 										<td>
 											<p><strong><xsl:value-of select="name"/></strong></p>
