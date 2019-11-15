@@ -31,7 +31,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 	private Locator locator;
 	private boolean categoryReady = false;
 	private StringBuilder chars = new StringBuilder();
-	private HashMap<String, Item> categories = new HashMap<>();
+	private HashMap<String, Pair<Item, Boolean>> categories = new HashMap<>(); // код раздела => раздел, является финальным
 	private HashMap<String, Pair<String, String>> newSectionParent = new HashMap<>(); // код раздела => название раздела, код родителя
 	private Item catalog;
 	private IntegrateBase.Info info;
@@ -72,19 +72,21 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					return;
 				}
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
-				currentSection = categories.get(code);
+				currentSection = categories.get(code).getLeft();
 				if (currentSection == null) {
 					currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
 					if (currentSection != null)
-						categories.put(code, currentSection);
+						categories.put(code, new Pair<>(currentSection, true));
 				}
 				Item parentSection = catalog;
 				if (StringUtils.isNotBlank(parentCode)) {
-					parentSection = categories.get(parentCode);
+					parentSection = categories.get(parentCode).getLeft();
 					if (parentSection == null) {
 						parentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, parentCode);
 						if (parentSection != null)
-							categories.put(parentCode, parentSection);
+							categories.put(parentCode, new Pair<>(parentSection, false));
+					} else {
+						categories.get(parentCode).setRight(false);
 					}
 				}
 
@@ -98,7 +100,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						currentSection = Item.newChildItem(sectionDesc, parentSection);
 						currentSection.setValue(PARENT_ID_PARAM, parentCode);
 						currentSection.setValue(CATEGORY_ID_PARAM, code);
-						categories.put(code, currentSection);
+						categories.put(code, new Pair<>(currentSection, true));
 					}
 				}
 
@@ -178,13 +180,14 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				for (String newCode : newCodes) {
 					Pair<String, String> sec = newSectionParent.get(newCode);
 					if (categories.containsKey(sec.getRight())) {
-						Item section = Item.newChildItem(sectionDesc, categories.get(sec.getRight()));
+						categories.get(sec.getRight()).setRight(false);
+						Item section = Item.newChildItem(sectionDesc, categories.get(sec.getRight()).getLeft());
 						section.setValue(PARENT_ID_PARAM, sec.getRight());
 						section.setValue(CATEGORY_ID_PARAM, newCode);
 						section.setValue(NAME_PARAM, sec.getLeft());
 						try {
 							DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
-							categories.put(newCode, section);
+							categories.put(newCode, new Pair<>(section, true));
 							newSectionParent.remove(newCode);
 							newParentsListModified = true;
 						} catch (Exception e) {
@@ -228,7 +231,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		this.locator = locator;
 	}
 
-	public HashMap<String, Item> getSections() {
+	public HashMap<String, Pair<Item, Boolean>> getSections() {
 		return categories;
 	}
 }

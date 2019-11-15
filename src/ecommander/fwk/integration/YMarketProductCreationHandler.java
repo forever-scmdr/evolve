@@ -1,10 +1,8 @@
 package ecommander.fwk.integration;
 
 import com.mysql.fabric.Server;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
@@ -87,7 +85,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
 
-	private HashMap<String, Item> sections = null;
+	private HashMap<String, Pair<Item, Boolean>> sections = null; // код раздела => раздел, является финальным
 
 	private IntegrateBase.Info info; // информация для пользователя
 	private HashMap<String, String> commonParams;
@@ -107,7 +105,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 
 	
-	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes, boolean justPrice) {
+	public YMarketProductCreationHandler(HashMap<String, Pair<Item, Boolean>> sections, IntegrateBase.Info info, User initiator,
+										 HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes, boolean justPrice) {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
@@ -136,9 +135,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
-				Item section = sections.get(secCode);
+				Item section = sections.get(secCode).getLeft();
 				// пропустить некоторые разделы
-				if (ignoreCodes.contains(secCode)) {
+				if (ignoreCodes.contains(secCode) || !sections.get(secCode).getRight()) {
 					return;
 				}
 				ServerLogger.error("INIT");
