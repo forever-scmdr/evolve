@@ -72,21 +72,41 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 					return;
 				}
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
-				currentSection = categories.get(code).getLeft();
+				Pair<Item, Boolean> sectionPair = categories.get(code);
+				if (sectionPair != null) currentSection = sectionPair.getLeft();
 				if (currentSection == null) {
 					currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
-					if (currentSection != null)
-						categories.put(code, new Pair<>(currentSection, true));
+					if (currentSection != null) {
+						if (sectionPair == null) {
+							sectionPair = new Pair<>(currentSection, true);
+							categories.put(code, sectionPair);
+						} else {
+							sectionPair.setLeft(currentSection);
+						}
+					}
 				}
 				Item parentSection = catalog;
 				if (StringUtils.isNotBlank(parentCode)) {
-					parentSection = categories.get(parentCode).getLeft();
+					parentSection = null;
+					Pair<Item, Boolean> parentPair = categories.get(parentCode);
+					if (parentPair != null) parentSection = parentPair.getLeft();
 					if (parentSection == null) {
 						parentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, parentCode);
-						if (parentSection != null)
-							categories.put(parentCode, new Pair<>(parentSection, false));
+						if (parentSection != null) {
+							if (parentPair == null) {
+								parentPair = new Pair<>(parentSection, false);
+								categories.put(parentCode, parentPair);
+							} else {
+								parentPair.setRight(false);
+							}
+						}
 					} else {
-						categories.get(parentCode).setRight(false);
+						if (parentPair == null) {
+							parentPair = new Pair<>(parentSection, false);
+							categories.put(parentCode, parentPair);
+						} else {
+							parentPair.setRight(false);
+						}
 					}
 				}
 
@@ -179,7 +199,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				HashSet<String> newCodes = new HashSet<>(newSectionParent.keySet());
 				for (String newCode : newCodes) {
 					Pair<String, String> sec = newSectionParent.get(newCode);
-					if (categories.containsKey(sec.getRight())) {
+					if (sec != null && categories.containsKey(sec.getRight())) {
 						categories.get(sec.getRight()).setRight(false);
 						Item section = Item.newChildItem(sectionDesc, categories.get(sec.getRight()).getLeft());
 						section.setValue(PARENT_ID_PARAM, sec.getRight());
@@ -200,6 +220,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		} else if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName)) {
 			try {
 				if (currentSection != null) {
+					currentSection.getTypeName();
 					currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
 					DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection).noTriggerExtra());
 					currentSection = null;

@@ -138,7 +138,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = commonParams.get(ID_ATTR);
 				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
-				Item section = sections.get(secCode).getLeft();
+				Pair<Item, Boolean> secPair = sections.get(secCode);
+				Item section = null;
+				if (secPair != null) section = secPair.getLeft();
 				// пропустить некоторые разделы
 				if (ignoreCodes.contains(secCode) || !sections.get(secCode).getRight()) {
 					return;
