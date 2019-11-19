@@ -87,7 +87,8 @@
 							<a href="/about">О компании</a>
 							<a href="{page/docs_link}">Документация</a>
 							 -->
-							 <a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
+							<a href="{page/brands_link}" class="{'active'[$active_menu_item = 'brands']}">Бренды</a>
+							<a href="{page/contacts_link}" class="{'active'[$active_menu_item = 'contacts']}">Контакты</a>
 						</div>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 						 	<div class="sections">

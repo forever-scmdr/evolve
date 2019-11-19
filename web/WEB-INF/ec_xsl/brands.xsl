@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Список брендов'"/>
+    <xsl:variable name="active_menu_item" select="'brands'"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
