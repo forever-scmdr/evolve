@@ -151,7 +151,6 @@
 										</div>
 										<div class="actions pale" id="buffer-actions">
 											<span>С буфером:</span>
-											<a href="admin_paste_selected.action{$base-vars}&amp;preserve_buffer_content=yes" class="copy paste-preserve set-action total-replace" rel="multi-item-action-form" title="вставить выделенное, НЕ очищать буфер"></a>
 											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
 											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
 											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
@@ -180,28 +179,22 @@
 											Импорт каталога из Excel
 										</a>
 									</li>
-									<li class="visible" style="background: #0c609d;">
+									<li class="visible" style="background: #fb9f00;">
 										<a href="update_prices_from_excel/?action=start" style="color: #fff;">
 											Обновить цены из Excel
 										</a>
 									</li>
-
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция Yandex Market</a>
-									</li>
-									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков" target="_blank">
-										<a href="create_yml_file">
-											Сгенерировать файл Яндекс-маркет
-										</a>
-									</li>
-									<li class="visible" title="Скачать картинки">
-										<a href="download_pics/?action=start">Скачать картинки</a>
 									</li>
 									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
 										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
 									<!--</li>-->
-									<li class="visible" title="Создать пользователей">
-										<a href="create_users/?action=start">Создать пользователей</a>
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
+									</li>
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
 									</li>
 									<li class="visible" title="Создать фильтры по параметрам товаров">
 										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
@@ -215,11 +208,11 @@
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="admin_reindex.action">Переиндексация</a>
 									</li>
-									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
-										<!--<a href="admin_domains_initialize.domain">-->
-											<!--Управление доменами-->
-										<!--</a>-->
-									<!--</li>-->
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков" target="_blank">
+										<a href="create_yml_file">
+											Сгенерировать файл Яндекс-маркет
+										</a>
+									</li>
 									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
 										<!--<a href="admin_users_initialize.user">-->
 											<!--Управление пользователями-->

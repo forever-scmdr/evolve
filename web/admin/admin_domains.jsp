@@ -2,14 +2,14 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@page import="ecommander.users.User"%>
-<%@page import="ecommander.controllers.SessionContext"%>
 <%@page import="ecommander.common.Strings"%>
+<%@page import="ecommander.controllers.SessionContext"%>
+<%@page import="ecommander.controllers.admin.DomainAdminServlet"%>
 <%@include file="login_import.jsp"%>
 
-<%@page import="ecommander.controllers.admin.DomainAdminServlet"%>
-<%@page import="ecommander.view.domain.DomainRegistry"%>
-<%@page import="ecommander.view.domain.Domain"%><html>
+<%@page import="ecommander.users.User"%>
+<%@page import="ecommander.view.domain.Domain"%>
+<%@page import="ecommander.view.domain.DomainRegistry"%><html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Pragma" content="no-cache"/>

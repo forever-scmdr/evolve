@@ -134,6 +134,7 @@ a, button, *[type="submit"], label.file, input[type="file"] {
     color: #363636;
     font-weight: bold;
     font-size: 12px;
+    overflow-x: hidden; /* чтобы скрыть длинные строки в урлах для парсинга */ 
 }
 
 .list ul .drop-zone {
@@ -290,8 +291,6 @@ a, button, *[type="submit"], label.file, input[type="file"] {
     text-indent: 10000px;
     overflow: hidden;
     top: 0;
-    font-size: 0;
-    color: transparent;
 }
 
 .selection-actions.edit .actions .select-all{
@@ -335,11 +334,6 @@ a, button, *[type="submit"], label.file, input[type="file"] {
 .edit a.copy.paste {
     background-image: url(../img/paste.png);
     background-size: 20px auto;
-}
-.edit a.copy.paste-preserve{
-    hight: 20px; overflow: hidden;
-    opacity: .5;
-    background-color: green;
 }
 
 .edit a.copy.move {
