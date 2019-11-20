@@ -1,14 +1,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
-	<xsl:variable name="jur" select="page/user_jur[1]"/>
-	<xsl:variable name="phys" select="page/user_phys[1]"/>
+	<xsl:variable name="jur" select="page/user_jur"/>
+	<xsl:variable name="phys" select="page/user_phys"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -19,12 +19,6 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title">Анкета заказчика</h1>
-
-		<xsl:if test="$debt">
-			<div class="alert alert-danger" role="alert">
-				Внимание! У вас задолженность <xsl:value-of select="$debt" /> руб. <xsl:value-of select="page/common/debt_text" disable-output-escaping="yes"/>
-			</div>
-		</xsl:if>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">

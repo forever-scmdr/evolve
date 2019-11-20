@@ -1,6 +1,6 @@
+<%@page import="ecommander.controllers.BasicServlet"%>
 <%@page import="ecommander.pages.ValidationResults.LineMessage"%>
 <%@page import="ecommander.pages.ValidationResults.StructureMessage"%>
-<%@page import="ecommander.controllers.BasicServlet"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
@@ -57,7 +57,7 @@
 		Запрашиваемой страницы не существует. Возможно, вы ошиблись, набирая адрес страницы или перешли по ссылке, которая устарела.
 	</p>
 	<p class="text">
-		Попробуйте перейти на <a href="index.htm">главную страницу</a> сайта или зайти сюда позже.
+		Попробуйте перейти на <a href="/">главную страницу</a> сайта или зайти сюда позже.
 	</p>
 
 
