@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 /**
  * Класс для закачки файлов по урлу
@@ -33,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class WebClient {
 	private static final String UTF_8 = "UTF-8";
+	private static final Pattern URL_ENCODED_PATTERN = Pattern.compile("%[0-9a-d]{2}");
 
 	private static String getString(String url, StringBuilder encName, String...proxy) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 		SSLConnectionSocketFactory scsf = new SSLConnectionSocketFactory(
@@ -93,8 +95,23 @@ public class WebClient {
 	}
 
 	public static void saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+		String originalUrl = url;
 		String badPart = StringUtils.substringAfterLast(url,"/");
-		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8").replace("+", "%20"));
+		boolean urlChanged = false;
+		if (StringUtils.isNotBlank(badPart) && !URL_ENCODED_PATTERN.matcher(badPart).find()) {
+			url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8"));
+			urlChanged = true;
+		}
+		try {
+			_saveFile(url, dirName, saveAs, proxy);
+		} catch (Exception e) {
+			if (urlChanged)
+				_saveFile(originalUrl, dirName, saveAs, proxy);
+			else throw e;
+		}
+	}
+
+	private static void _saveFile(String url, String dirName, String saveAs, String...proxy) throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 		SSLConnectionSocketFactory scsf = new SSLConnectionSocketFactory(
 				SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build(),
 				NoopHostnameVerifier.INSTANCE);
