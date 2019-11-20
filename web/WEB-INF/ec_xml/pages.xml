@@ -52,7 +52,11 @@
 			<list item="url_seo"/>
 		</single>
 		<single item="brands" cacheable="true">
-			<list item="brand"/>
+			<list item="brand" id="all_brand">
+				<link name="show_brand" target="brand">
+					<var name="brand" ref="all_brand" parameter="mask"/>
+				</link>
+			</list>
 		</single>
 	</include-definition>
 
@@ -318,11 +322,6 @@
 
 
 	<page name="brands" template="brands">
-		<list item="brand" id="brand">
-			<link name="show_brand" target="brand">
-				<var name="brand" ref="brand" parameter="name"/>
-			</link>
-		</list>
 		<include name="COMMON"/>
 	</page>
 

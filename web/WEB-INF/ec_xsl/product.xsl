@@ -265,7 +265,9 @@
                                 <p>
                                 	Производитель: <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
                                 </p>
-                                <p>Импрортёр: importer_name</p>
+                                <xsl:if test="$brand/importer and not($brand/importer = '')">
+									<p>Импрортёр: <xsl:value-of select="$brand/importer" /></p>
+								</xsl:if>
                             </div>
                         </xsl:if>
 						<!--

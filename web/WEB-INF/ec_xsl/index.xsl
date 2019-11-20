@@ -173,6 +173,7 @@
 		</div>
 		<xsl:if test="page/main_page/brand">
 			<div class="container kvld-brands">
+				<h4>Популярные бренды</h4>
 				<div class="wrap">
 					<xsl:for-each select="page/main_page/brand">
 						<div class="kvld-brands__item">

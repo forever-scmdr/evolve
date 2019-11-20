@@ -93,7 +93,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		}
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		Document tree = infoProvider.getTree();
-		processSubsections(tree.getElementsByTag("data").first(), catalog);
+		processSubsections(tree.getElementsByTag("data").first().getElementsByTag("section").first(), catalog);
 	}
 
 	private void processSubsections(Element root, Item parent) throws Exception {
