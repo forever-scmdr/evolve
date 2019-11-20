@@ -273,4 +273,14 @@
 	<parameter name="artikul_proizvoditelya" caption="Артикул производителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="228794826" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p403713-->
+
+<!--START_p403800-->
+<item name="p403800" caption="БЛОК ЦИЛИНДРОВ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1819" ag-hash="-2144183279">
+	<parameter name="artikul_proizvoditelya" caption="Артикул производителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="228794826" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p403800-->
+
+<!--START_p403880-->
+<item name="p403880" caption="ВКЛАДЫШИ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1820" ag-hash="-2144183031"></item>
+<!--END_p403880-->
 <!--EXP--></model>

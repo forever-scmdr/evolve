@@ -269,8 +269,18 @@
 <!--END_p403586-->
 
 <!--START_p403713-->
-<item name="p403713" caption="ЯМЗ" key="" ag-id="0" ag-hash="-2144184206" virtual="false" user-def="true" description="" super="params *">
+<item name="p403713" caption="ЯМЗ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1818" ag-hash="-2144184206">
 	<parameter name="artikul_proizvoditelya" caption="Артикул производителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="228794826" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p403713-->
+
+<!--START_p403800-->
+<item name="p403800" caption="БЛОК ЦИЛИНДРОВ" key="" ag-id="0" ag-hash="-2144183279" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="artikul_proizvoditelya" caption="Артикул производителя" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="228794826" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p403800-->
+
+<!--START_p403880-->
+<item name="p403880" caption="ВКЛАДЫШИ" key="" ag-id="0" ag-hash="-2144183031" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p403880-->
 <!--EXP--></model>
