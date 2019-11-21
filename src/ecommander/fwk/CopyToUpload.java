@@ -35,7 +35,7 @@ public class CopyToUpload implements ItemEventCommandFactory {
 		}
 
 		public void execute() throws Exception {
-			Parameter param = this.item.getParameterByName("big_integration");
+			Parameter param = this.item.getParameterByName(PARAM_NAME);
 			if(param != null) {
 				if(param.hasChanged() && !param.isEmpty()) {
 					File srcFile = new File(this.createItemDirectoryName() + "/" + this.item.getValue(param.getParamId()));
