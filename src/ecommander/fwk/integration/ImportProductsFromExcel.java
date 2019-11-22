@@ -10,6 +10,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,7 +38,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	private static final String WITH_EXISTING_SECS = "with_existing_sections"; // what to do with existing sections (UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE)
 	private static final String WITH_EXISTING_PRODUCTS = "with_existing_products"; // what to do with existing products (UPDATE)
 	private static final String IF_BLANK = "if_blank"; // what to do if the cell is blank; (IGNORE, CLEAR)
-	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
+	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD, IGNORE)
 	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 
 	//default page var values
@@ -778,8 +779,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
-		//info.setOperation("Индексация названий товаров");
-		//LuceneIndexMapper.getSingleton().reindexAll();
+		info.setOperation("Индексация названий товаров");
+		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}

@@ -70,8 +70,17 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
 			if (test.getRight() != null) {
-				paramUnits.put(paramName, test.getRight());
+				String paramUnit = paramUnits.get(paramName);
+				if(StringUtils.isBlank(paramUnits.get(paramName))) {
+					paramUnits.put(paramName, test.getRight());
+				}else if(!paramUnits.get(paramName).equals(test.getRight())){
+					paramTypes.put(paramName, DataType.Type.STRING);
+				}
 			}
+		}
+
+		public DataType.Type getDataType(String paramName){
+			return paramTypes.get(paramName);
 		}
 
 		protected void addNotInFilter(String name) {
@@ -191,7 +200,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					if (params.notInFilter.contains(paramName))
 						continue;
 					String caption = params.paramCaptions.get(paramName).getLeft();
-					String unit = params.paramUnits.get(paramName);
+					String unit = params.paramTypes.get(paramName) == DataType.Type.STRING? "" : params.paramUnits.get(paramName);
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
@@ -206,7 +215,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramUnits.get(paramName);
+					String unit = params.paramTypes.get(paramName) == DataType.Type.STRING? "" : params.paramUnits.get(paramName);
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
@@ -258,9 +267,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									Elements values = paramEl.getElementsByTag("value");
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
-										Pair<DataType.Type, String> valuePair = testValueHasUnit(value);
-										if (StringUtils.isNotBlank(valuePair.getRight())) {
-											value = StringUtils.substringBefore(value, valuePair.getRight()).trim();
+										DataType.Type type = paramDesc.getParameter(name).getType();
+										if(type != DataType.Type.STRING) {
+											Pair<DataType.Type, String> valuePair = testValueHasUnit(value);
+											if (StringUtils.isNotBlank(valuePair.getRight())) {
+												value = StringUtils.substringBefore(value, valuePair.getRight()).trim();
+											}
 										}
 										params.setValueUI(name, value);
 									}
