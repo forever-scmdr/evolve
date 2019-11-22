@@ -457,7 +457,13 @@
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+										<div class="level-4{' active'[$l4_active]}"><a href="{if(section) then show_sub else show_products}"><xsl:value-of select="name"/></a></div>
+											<xsl:if test=".//@id = $sel_sec_id">
+												<xsl:for-each select="section">
+													<xsl:variable name="l5_active" select="@id = $sel_sec_id"/>
+													<div class="level-5{' active'[$l5_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
+												</xsl:for-each>
+											</xsl:if>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
@@ -784,7 +790,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=2"/>
+				<link rel="stylesheet" href="css/app.css?version=3.1"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>    
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -275,7 +275,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.1" type="prefix" compare="SOME">
+				<fulltext limit="200" threshold="0.02" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -334,7 +334,7 @@
 			</filter>
 		-->
 			<filter>
-				<fulltext limit="200" threshold="0.1" type="prefix" compare="SOME">
+				<fulltext limit="200" threshold="0.02" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -387,7 +387,7 @@
 		<list item="plain_section" id="ps"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext name="name" limit="200" threshold="0.1" type="prefix" compare="SOME">
+				<fulltext name="name" limit="200" threshold="0.02" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="ps" sing="IN"/>
@@ -1342,7 +1342,6 @@
 	<page name="parse_excel" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
-			<var name="with_pics" value="ignore"/>
 			<!--<var name="with_existing_sections" value="copy"/>-->
 		</request>
 		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
@@ -1482,6 +1481,16 @@
 		</command>
 	</page>
 
+
+	<page name="test_catalog">
+		<list item="section">
+			<list item="product">
+				<filter>
+					<limit><var value="0"/></limit>
+				</filter>
+			</list>
+		</list>
+	</page>
 
 
 </site>

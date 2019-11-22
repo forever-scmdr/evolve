@@ -179,7 +179,7 @@
 		<xsl:variable name="name" select="@id"/>
 		<div class="active checkgroup">
 			<strong>
-				<xsl:value-of select="@caption"/>
+				<xsl:value-of select="@caption"/><xsl:value-of select="if (@description and not(@description = '')) then concat(', ', @description) else ''"/>
 			</strong>
 			<div class="values">
 				<xsl:for-each select="domain/value">
