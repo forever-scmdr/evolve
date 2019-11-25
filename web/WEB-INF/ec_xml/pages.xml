@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>    
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -275,7 +275,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="prefix" compare="SOME">
+				<fulltext limit="200" threshold="0.1" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -334,7 +334,7 @@
 			</filter>
 		-->
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="prefix" compare="SOME">
+				<fulltext limit="200" threshold="0.1" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -1009,6 +1009,15 @@
 	</page>
 
 
+	<page name="register_email" template="register_email">
+		<request>
+			<var name="user"/>
+			<var name="base"/>
+		</request>
+		<single item="user" var="user" tag="user"/>
+	</page>
+
+
 	<page name="login_form_ajax" template="login_form_ajax">
 		<request>
 			<var name="message"/>
@@ -1026,6 +1035,9 @@
 			<var name="action" value="login"/>
 			<var name="src" value="login_form"/>
 		</link>
+		<personal>
+			<single item="user" id="user" tag="personal"/>
+		</personal>
 		<include name="COMMON"/>
 	</page>
 
@@ -1481,16 +1493,6 @@
 		</command>
 	</page>
 
-
-	<page name="test_catalog">
-		<list item="section">
-			<list item="product">
-				<filter>
-					<limit><var value="0"/></limit>
-				</filter>
-			</list>
-		</list>
-	</page>
 
 
 </site>

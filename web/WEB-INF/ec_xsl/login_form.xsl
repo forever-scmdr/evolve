@@ -20,7 +20,7 @@
 		</div>
 		<xsl:if test="$registered">
 			<h1>Вход выполнен.</h1>
-			<p>Добро пожаловать!</p>
+			<p>Добро пожаловать, <xsl:value-of select="page/personal/contact_name"/>!</p>
 		</xsl:if>
 		<xsl:if test="not($registered)">
 			<h1>Вход</h1>

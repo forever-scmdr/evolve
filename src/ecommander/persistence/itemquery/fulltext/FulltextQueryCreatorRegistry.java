@@ -13,6 +13,7 @@ public class FulltextQueryCreatorRegistry {
 	public static final String TERM = "term"; // простой поиск с учетом стемминга (полное совпадение)
 	public static final String DEFAULT = "default"; // то же что и TERM, этот вариант по умолчанию
 	public static final String NEAR = "near"; // полное совпадение слов + взаимное расположение рядом
+	public static final String STRAIGHT = "straight"; // полное совпадение слов + взаимное расположение рядом + в том же порядке что и в запросе
 	public static final String FIRST = "first"; // полное совпадение слов + взаимное расположение рядом + все слова находятся в начале документа
 	public static final String EQUAL = "equal"; // полное совпадение слов (возможна полько перестановка местами)
 	public static final String WILDCARD = "wildcard"; // полное включение запроса в часть слова разультата
@@ -35,6 +36,7 @@ public class FulltextQueryCreatorRegistry {
 		creators.put(TERM, termQuery);
 		creators.put(DEFAULT, termQuery);
 		creators.put(NEAR, new NearFulltextQuery());
+		creators.put(STRAIGHT, new NearStraightFulltextQuery());
 		creators.put(FIRST, new FirstFulltextQuery());
 		creators.put(EQUAL, new EqualsFulltextQuery());
 		creators.put(WILDCARD, new WildcardFulltextQuery());

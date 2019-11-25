@@ -1,14 +1,19 @@
 package ecommander.fwk;
 
+import ecommander.controllers.PageController;
+import ecommander.controllers.SessionContext;
 import ecommander.model.*;
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.commandunits.UpdateUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 
 /**
@@ -55,6 +60,8 @@ public abstract class BasicRegisterCommand extends Command {
 		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(form).ignoreUser());
+
+		sendEmail(form, newUser, getUrlBase());
 
 		//Add cart contacts!
 		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
@@ -131,6 +138,37 @@ public abstract class BasicRegisterCommand extends Command {
 		Item.updateParamValues(form, userItem);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
 		return getResult("success_personal");
+	}
+
+	/**
+	 * Отправить email о регистрации пользователю
+	 * @param userItem
+	 */
+	public static void sendEmail(Item userItem, User newUser, String siteUrl) {
+		// Отправка письма
+		try {
+			Multipart regularMP = new MimeMultipart();
+			MimeBodyPart regularTextPart = new MimeBodyPart();
+			regularMP.addBodyPart(regularTextPart);
+			LinkPE regularLink = LinkPE.newDirectLink("link", "register_email", false);
+
+			regularLink.addStaticVariable("user", userItem.getId() + "");
+			regularLink.addStaticVariable("base", siteUrl);
+			ExecutablePagePE regularTemplate =
+					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(newUser));
+			final String customerEmail = userItem.getStringValue("email");
+
+			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(regularTemplate, regularBos);
+			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+
+			if (StringUtils.isNotBlank(customerEmail))
+				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте " + siteUrl, regularMP);
+
+		} catch (Exception e) {
+			ServerLogger.error("error while sending email about registration", e);
+		}
 	}
 
 	protected abstract boolean validate() throws Exception;

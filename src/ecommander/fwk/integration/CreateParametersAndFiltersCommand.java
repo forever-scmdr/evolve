@@ -64,23 +64,20 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Pair<DataType.Type, String> test = testValueHasUnit(value);
-			if (currentType.equals(DataType.Type.INTEGER) && test.getLeft() != DataType.Type.INTEGER) {
+			if (currentType == DataType.Type.INTEGER && test.getLeft() != DataType.Type.INTEGER) {
 				paramTypes.put(paramName, test.getLeft());
-			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
+			} else if (currentType == DataType.Type.DOUBLE && test.getLeft() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (test.getRight() != null) {
+			if (currentType != DataType.Type.STRING && test.getRight() != null) {
 				String paramUnit = paramUnits.get(paramName);
-				if(StringUtils.isBlank(paramUnits.get(paramName))) {
+				if (StringUtils.isBlank(paramUnit)) {
 					paramUnits.put(paramName, test.getRight());
-				}else if(!paramUnits.get(paramName).equals(test.getRight())){
+				} else if (!StringUtils.equalsIgnoreCase(paramUnits.get(paramName), test.getRight())){
 					paramTypes.put(paramName, DataType.Type.STRING);
+					paramTypes.remove(paramName);
 				}
 			}
-		}
-
-		public DataType.Type getDataType(String paramName){
-			return paramTypes.get(paramName);
 		}
 
 		protected void addNotInFilter(String name) {
@@ -200,7 +197,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					if (params.notInFilter.contains(paramName))
 						continue;
 					String caption = params.paramCaptions.get(paramName).getLeft();
-					String unit = params.paramTypes.get(paramName) == DataType.Type.STRING? "" : params.paramUnits.get(paramName);
+					String unit = params.paramUnits.get(paramName);
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
@@ -215,7 +212,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramTypes.get(paramName) == DataType.Type.STRING? "" : params.paramUnits.get(paramName);
+					String unit = params.paramUnits.get(paramName);
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
@@ -268,7 +265,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
 										DataType.Type type = paramDesc.getParameter(name).getType();
-										if(type != DataType.Type.STRING) {
+										if (type != DataType.Type.STRING) {
 											Pair<DataType.Type, String> valuePair = testValueHasUnit(value);
 											if (StringUtils.isNotBlank(valuePair.getRight())) {
 												value = StringUtils.substringBefore(value, valuePair.getRight()).trim();
