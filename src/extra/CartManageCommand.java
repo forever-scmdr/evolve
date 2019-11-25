@@ -4,12 +4,10 @@ import com.lowagie.text.pdf.BaseFont;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.fwk.BasicCartManageCommand;
-import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.MultipleHttpPostForm;
@@ -100,11 +98,11 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
-		if (discounts == null) {
-			Item common = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.COMMON, User.getDefaultUser());
-			discounts = Discounts.get(ItemUtils.ensureSingleItem(ItemNames.DISCOUNTS,
-					User.getDefaultUser(), common.getId(), common.getOwnerGroupId(), common.getOwnerUserId()));
-		}
+//		if (discounts == null) {
+//			Item common = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.COMMON, User.getDefaultUser());
+//			discounts = Discounts.get(ItemUtils.ensureSingleItem(ItemNames.DISCOUNTS,
+//					User.getDefaultUser(), common.getId(), common.getOwnerGroupId(), common.getOwnerUserId()));
+//		}
 		double discount = 0.0d;
 		User_jur user = null;
 		if (!getInitiator().isAnonimous())
@@ -114,9 +112,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		boolean success = super.recalculateCart(user != null ? ItemNames.product_.PRICE_OPT : PRICE_PARAM);
 		BigDecimal originalSum = cart.getDecimalValue(SUM_PARAM, new BigDecimal(0));
-		if (originalSum.compareTo(discounts.get_sum_more()) >= 0) {
-			discount += discounts.get_sum_discount();
-		}
+//		if (originalSum.compareTo(discounts.get_sum_more()) >= 0) {
+//			discount += discounts.get_sum_discount();
+//		}
 		MultipleHttpPostForm userForm = getSessionForm("customer_jur");
 		if (userForm == null)
 			userForm = getSessionForm("customer_phys");
@@ -125,14 +123,14 @@ public class CartManageCommand extends BasicCartManageCommand {
 			if (uf != null) {
 				String shipType = uf.getStringValue("ship_type");
 				if (StringUtils.containsIgnoreCase(shipType, "самовывоз")) {
-					discount += discounts.get_self_delivery();
+//					discount += discounts.get_self_delivery();
 				} else if (StringUtils.containsIgnoreCase(shipType, "автолайт")) {
-					discount -= discounts.get_autolight();
+//					discount -= discounts.get_autolight();
 				} else if (StringUtils.containsIgnoreCase(shipType, "доставка")) {
-					discount -= discounts.get_delivery();
+//					discount -= discounts.get_delivery();
 				}
 				if (StringUtils.containsIgnoreCase(uf.getStringValue("pay_type"), "предоплата")) {
-					discount += discounts.get_pay_first();
+//					discount += discounts.get_pay_first();
 				}
 			}
 		}
