@@ -2,6 +2,7 @@ package ecommander.fwk;
 
 import java.io.Closeable;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
 /**
@@ -23,6 +24,7 @@ public interface TableDataSource extends Closeable {
 	void iterate(TableDataRowProcessor processor) throws Exception;
 
 	TreeSet<String> getHeaders();
+	LinkedHashSet<String> getHeadersUnchanged();
 
 	int getRowNum();
 }

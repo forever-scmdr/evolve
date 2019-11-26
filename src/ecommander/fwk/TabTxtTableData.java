@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
 /**
@@ -167,6 +168,11 @@ public class TabTxtTableData implements TableDataSource {
 		TreeSet<String> a = new TreeSet<>();
 		a.addAll(header.keySet());
 		return a;
+	}
+
+	@Override
+	public LinkedHashSet<String> getHeadersUnchanged() {
+		return null;
 	}
 
 	@Override

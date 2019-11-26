@@ -195,7 +195,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					if (currentSubsection == null) currentSubsection = currentSection;
 					boolean isProduct = true;//"+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
-					TreeSet<String> headers = getHeaders();
+					LinkedHashSet<String> headers = getHeadersUnchanged();
 					Path picsFolder = contextPath.resolve("product_pics");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
@@ -534,7 +534,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
 						}
 						Item aux = null;
-						HashMap<String, String> auxParams = new HashMap<>();
+						LinkedHashMap<String, String> auxParams = new LinkedHashMap<>();
 						if (auxType != null) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
