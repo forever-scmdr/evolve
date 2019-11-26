@@ -168,6 +168,8 @@ public abstract class BasicCartManageCommand extends Command {
 		String regularTopic
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
+		String regularShopToic = "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date()) + "с сайта rcbr.by";
+
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
@@ -222,7 +224,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, shopMultipart);
+			EmailUtils.sendGmailDefault(shopEmail, regularShopToic, shopMultipart);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);

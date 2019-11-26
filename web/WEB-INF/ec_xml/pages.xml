@@ -869,7 +869,31 @@
 		<single item="common"/>
 	</page>
 
-
+	<page name="shop_email" template="shop_email">
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought"/>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<list item="product" tag="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME" sign="=">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<single item="common"/>
+	</page>
 
 	<page name="fav_ajax" template="fav_ajax">
 		<request>
