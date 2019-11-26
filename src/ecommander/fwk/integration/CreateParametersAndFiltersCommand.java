@@ -57,6 +57,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 
 		public void addParameter(String name, String value, boolean isMultiple) {
+			if(StringUtils.isBlank(value))return;
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
@@ -75,7 +76,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					paramUnits.put(paramName, test.getRight());
 				} else if (!StringUtils.equalsIgnoreCase(paramUnits.get(paramName), test.getRight())){
 					paramTypes.put(paramName, DataType.Type.STRING);
-					paramTypes.remove(paramName);
+					//paramTypes.remove(paramName);
 				}
 			}
 		}
@@ -197,7 +198,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					if (params.notInFilter.contains(paramName))
 						continue;
 					String caption = params.paramCaptions.get(paramName).getLeft();
-					String unit = params.paramUnits.get(paramName);
+					String unit = (DataType.Type.STRING == params.paramTypes.get(paramName))? "" : params.paramUnits.get(paramName);
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
@@ -212,7 +213,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramUnits.get(paramName);
+					String unit = (DataType.Type.STRING == params.paramTypes.get(paramName))? "" : params.paramUnits.get(paramName);
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
