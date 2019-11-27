@@ -110,6 +110,7 @@ var mceSettings = {
 			 {title: '-', value: ''}
 			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
+			,{title: 'Подсказка', value: 'tip'}
   		]
 	}
 	,"mce_small" : {
@@ -132,6 +133,7 @@ var mceSettings = {
 			 {title: 'Нет', value: ''}
 			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
+			,{title: 'Подсказка', value: 'tip'}
   		]
 	}
 };

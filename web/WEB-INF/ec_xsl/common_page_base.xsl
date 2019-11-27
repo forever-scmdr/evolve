@@ -210,7 +210,10 @@
 						</ul>
 					</div>
 					<div class="col-five md-full end s-footer__subscribe">
-						<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>                        
+						<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
+						<div class="footer-code-container">
+							<xsl:value-of select="page/common/bottom_plain_text" disable-output-escaping="yes"/>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -476,7 +479,10 @@
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_page}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></a>
+						<a href="{show_page}" data-utc="{date/@millis}">
+							<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
+							<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
+						</a>
 					</div>
 					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
 				</div>

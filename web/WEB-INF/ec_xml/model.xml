@@ -94,6 +94,7 @@
 	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="author" type="string" caption="Автор"/>
@@ -168,6 +169,7 @@
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Текст внизу"/>
+		<parameter name="bottom_plain_text" type="plain-text" caption="Произвольный код внизу"/>
 		<child item="soc_link"/>
 	</item>
 
@@ -191,6 +193,7 @@
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="audio" type="file" caption="аудио"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="source" type="string" caption="Источник"/>
