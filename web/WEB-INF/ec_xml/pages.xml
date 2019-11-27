@@ -652,6 +652,25 @@
 				<var name="sni" style="translit" ref="next"/>
 			</link>
 		</list>
+		<list item="small_news_item" transit="true" cacheable="false" id="also" tag="also">
+			<filter>
+				<parameter name="tag" sign="=" compare="SOME">
+					<var ref="ni" parameter="tag"/>
+				</parameter>
+				<parameter name="name" sign="!=" compare="SOME">
+					<var ref="ni" parameter="name"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="6"/>
+				</limit>
+			</filter>
+			<link target="news_item" name="show_page" type="exclusive">
+				<var name="ni" style="translit" ref="also"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 

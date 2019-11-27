@@ -76,43 +76,6 @@
 							</xsl:if>
 						</div>
 					</xsl:if>
-
-					<!--<div class="tags">-->
-					<!--<span class="entry__category red">-->
-					<!--<a href="{$parent/show_page}" rel="next">-->
-					<!--<span>Еще</span>-->
-					<!--<xsl:value-of select="$parent/name"/>-->
-					<!--</a>-->
-					<!--</span>-->
-					<!--<span class="entry__category yellow">-->
-					<!--<a>Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>-->
-					<!--</span>-->
-					<!--<span class="entry__category blue">-->
-					<!--<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>-->
-					<!--</span>-->
-					<!--</div>-->
-					<!--<xsl:if test="$ni/tag">-->
-					<!--<div class="tags">-->
-					<!--<xsl:for-each select="$ni/tag">-->
-					<!--<xsl:variable name="class">-->
-					<!--<xsl:choose>-->
-					<!--<xsl:when test=". = 'Бизнес'">dark-blue</xsl:when>-->
-					<!--<xsl:when test=". = 'Политика'">red</xsl:when>-->
-					<!--<xsl:when test=". = 'Технологии'">yellow</xsl:when>-->
-					<!--<xsl:when test=". = 'Инфографика'">orange</xsl:when>-->
-					<!--<xsl:when test=". = 'Менеджмент'">blue</xsl:when>-->
-					<!--<xsl:otherwise>gray</xsl:otherwise>-->
-					<!--</xsl:choose>-->
-					<!--</xsl:variable>-->
-
-					<!--<span class="entry__category {$class}">-->
-					<!--<a href="{concat('all_news/?tag=', .)}">-->
-					<!--<xsl:value-of select="." />-->
-					<!--</a>-->
-					<!--</span>-->
-					<!--</xsl:for-each>-->
-					<!--</div>-->
-					<!--</xsl:if>-->
 				</div>
 				<div class="col-full s-content__main">
 					<div id="nil">
@@ -138,28 +101,10 @@
 						</xsl:if>
 						<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
 					</div>
-					<xsl:if test="page/prev[@id != $ni/@id]|page/next[@id != $ni/@id]">
-						<div class="s-content__pagenav">
-							<div class="s-content__nav">
-								<xsl:if test="page/prev[@id != $ni/@id]">
-									<div class="s-content__prev">
-										<a href="{page/prev/show_page}" rel="prev">
-											<span>Предыдущая новость</span>
-											<xsl:value-of select="page/prev/name"/>
-										</a>
-									</div>
-								</xsl:if>
-								<xsl:if test="page/next[@id != $ni/@id]">
-									<div class="s-content__next">
-										<a href="{page/next/show_page}" rel="next">
-											<span>Следующая новость</span>
-											<xsl:value-of select="page/next/name"/>
-										</a>
-									</div>
-								</xsl:if>
-							</div>
-						</div>
-					</xsl:if>
+
+					<xsl:call-template name="ALSO"/>
+					<xsl:call-template name="PREV-NEXT" />
+
 				</div>
 			</article>
 
@@ -167,6 +112,49 @@
 
 		</section>
 	</xsl:template>
+
+	<xsl:template name="PREV-NEXT">
+		<xsl:if test="page/prev[@id != $ni/@id]|page/next[@id != $ni/@id]">
+			<div class="s-content__pagenav">
+				<div class="s-content__nav">
+					<xsl:if test="page/prev[@id != $ni/@id]">
+						<div class="s-content__prev">
+							<a href="{page/prev/show_page}" rel="prev">
+								<span>Предыдущая новость</span>
+								<xsl:value-of select="page/prev/name"/>
+							</a>
+						</div>
+					</xsl:if>
+					<xsl:if test="page/next[@id != $ni/@id]">
+						<div class="s-content__next">
+							<a href="{page/next/show_page}" rel="next">
+								<span>Следующая новость</span>
+								<xsl:value-of select="page/next/name"/>
+							</a>
+						</div>
+					</xsl:if>
+				</div>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="ALSO">
+		<xsl:if test="page/also">
+			<div class="also">
+				<div class="also-header">
+					Читайте также:
+				</div>
+				<xsl:for-each-group select="page/also" group-by="@id">
+					<xsl:if test="position() &lt; 4">
+						<a href="{current-group()[1]/show_page}">
+							<xsl:value-of select="current-group()[1]/name"/>
+						</a>
+					</xsl:if>
+				</xsl:for-each-group>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
 
 	<xsl:template name="COMMENTS">
 		<div style="height: 3rem;"></div>
