@@ -92,7 +92,7 @@
 								<span>Теги</span>
 								<span class="s-content__tag-list">
 									<xsl:for-each select="$ni/tag">
-										<a href="{concat('news/?tag=', .)}">
+										<a href="{concat('tag/?tag=', .)}">
 											<xsl:value-of select="."/>
 										</a>
 									</xsl:for-each>

@@ -5,16 +5,19 @@
 
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="qot">"</xsl:variable>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="title" select="concat('Поиск по запросу ', page/variables/q)" />
+	<xsl:variable name="title" select="if(page/@name = 'search') then concat('Поиск по запросу ', page/variables/q) else concat('Новости и статьи по тегу ', page/variables/tag)" />
 
 	<xsl:variable name="news_items" select="/page/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 
 	<xsl:variable name="small_news" select="page/small_news_item"/>
+	<xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" />
+	<xsl:variable name="h1_2" select="if(page/@name = 'search') then concat('Статьи по запросу: ',$qot,page/variables/q,$qot) else  concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)" />
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">
@@ -22,7 +25,7 @@
 				<div class="row narrow">
 					<div class="col-full s-content__header" data-aos="fade-up">
 						<h1>
-							Новости по запросу "<xsl:value-of select="page/variables/q"/>"
+							<xsl:value-of select="$h1_1"/>
 						</h1>
 					</div>
 				</div>
@@ -37,7 +40,7 @@
 				<div class="row narrow">
 					<div class="col-full s-content__header" data-aos="fade-up">
 						<h1>
-							Статьи по запросу "<xsl:value-of select="page/variables/q"/>"
+							<xsl:value-of select="$h1_2"/>
 						</h1>
 					</div>
 				</div>

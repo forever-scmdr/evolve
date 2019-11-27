@@ -304,6 +304,52 @@
 		</single>
 	</page>
 
+	<page name="tag" template="search">
+		<request>
+			<var name="tag"/>
+			<var name="limit" value="24"/>
+		</request>
+		<list item="small_news_item" id="sni">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var var="tag"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var var="limit"/>
+				</limit>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="sni" style="translit"/>
+			</link>
+		</list>
+		<list item="news_item" id="ni" >
+			<filter>
+				<parameter name="tag" sign="=">
+					<var var="tag"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var var="limit"/>
+				</limit>
+			</filter>
+			<single item="top_gal"/>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="ni" style="translit"/>
+			</link>
+			<ancestor item="news" transit="false" id="cat">
+				<link name="show_page" target="news_section" type="exclusive">
+					<var name="sel" ref="cat" style="translit"/>
+				</link>
+			</ancestor>
+		</list>
+		<include name="COMMON"/>
+	</page>
+
 	<page name="all_news" template="all_news">
 		<request>
 			<var name="page" value="1"/>
@@ -428,7 +474,7 @@
 					<var name="big_id" ref="comment"/>
 				</link>
 			</single>
-			<list item="page_part"></list>
+			<list item="page_part"/>
 			<ancestor item="news" transit="false"/>
 			<ancestor item="news_wrap" id="parent" transit="true" tag="news">
 				<list item="news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni" transit="true">
