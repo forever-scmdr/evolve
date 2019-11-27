@@ -286,9 +286,9 @@
 				<!--- mobile specific meta -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 				<!-- CSS -->
-				<link rel="stylesheet" href="css/base.css"/>
-				<link rel="stylesheet" href="css/vendor.css"/>
-				<link rel="stylesheet" href="css/main.css"/>
+				<link rel="stylesheet" href="css/base.css?version=1"/>
+				<link rel="stylesheet" href="css/vendor.css?version=1"/>
+				<link rel="stylesheet" href="css/main.css?version=1"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -556,6 +556,29 @@
 			</div>
 			<div style="margin-bottom: 20px;"></div>
 		</xsl:if>
+	</xsl:template>
+
+
+	<xsl:template name="BANNER_FOLLOW">
+		<div class="content-text banner banner-follow">
+			<p class="follow-text">Подписывайтесь на наши соцсети:
+				<a href="https://twitter.com/TemptingPro"><img src="images/twitter.png" alt="twitter"/></a>
+				<a href="https://www.instagram.com/temptingpro/"><img src="images/Instagram_icon-icons.com_66804.png" alt="instagram"/></a>
+				<a href="https://vk.com/tempting_pro"><img src="images/11-512.png" alt="vk.com"/></a>
+				<a href="https://facebook.com/Tempting.Pro/"><img src="images/124010.png" alt="facebook"/></a>
+			</p>
+			<p class="small-text desctop-only">Чтобы быть в курсе последних мировых событий и не пропускать свежие образовательные материалы
+				<img style="height: 3.5rem; display: inline-block; vertical-align: middle;  margin-left: .5px; margin-top: -1rem;" src="images/live.png"/>
+				<img style="height: 3.5rem; display: inline-block; vertical-align: middle; margin-left: .5px; margin-top: -1rem;" src="images/icons8-news-96.png"/>
+			</p>			
+		</div>
+	</xsl:template>
+	<xsl:template name="BANNER_DONATE">
+		<div class="content-text banner banner-donate">
+			<a class="donate-link" href="https://tempting.pro/project_assistance/" target="_blank">
+				<img src="images/charity.png?version=1" alt="donate"/>
+			</a>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>

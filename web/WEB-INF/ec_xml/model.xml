@@ -96,6 +96,7 @@
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
+		<parameter name="author" type="string" caption="Автор"/>
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
@@ -194,6 +195,7 @@
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
+		<parameter name="author" type="string" caption="Автор"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>

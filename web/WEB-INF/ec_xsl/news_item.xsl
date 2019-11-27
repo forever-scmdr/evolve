@@ -45,6 +45,11 @@
 								</a>
 							</li>
 						</xsl:if>
+						<xsl:if test="$ni/author != ''">
+							<li class="cat">
+								Автор: <xsl:value-of select="$ni/author"/>
+							</li>
+						</xsl:if>
 						<li class="date" data-utc="{$ni/date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/></li>
 						<li class="cat">
 							Категория:	<a href="{$parent/show_page}" >
@@ -79,6 +84,11 @@
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
 					</div>
+
+					<xsl:call-template name="BANNER_FOLLOW"/>
+					<div style="margin-bottom: 1.5rem;"></div>
+					<xsl:call-template name="BANNER_DONATE"/>
+
 					<xsl:if test="$ni/tag">
 						<p class="s-content__tags">
 							<span>Теги</span>
@@ -95,6 +105,7 @@
 					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
 
 					<xsl:call-template name="ALSO"/>
+
 					<xsl:call-template name="PREV-NEXT" />
 				</div>
 			</article>
