@@ -275,7 +275,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.1" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -334,7 +334,7 @@
 			</filter>
 		-->
 			<filter>
-				<fulltext limit="200" threshold="0.1" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>

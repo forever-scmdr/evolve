@@ -6,6 +6,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.persistence.common.TemplateQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -34,10 +35,14 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -372,9 +377,6 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			return new LinkedHashMap<>(0);
 		Timer.getTimer().start(Timer.LOAD_LUCENE_ITEMS);
 		LinkedHashMap<Long, String> result = new LinkedHashMap<>();
-		float globalMaxScore = -1f;
-		float minScore = -1f;
-		boolean isFinished = false;
 		// Ограничение выдачи по релевантности:
 		// документы, которые набрали менее 33% очков лучшего результата отбрасываются
 		if (threshold < 0f) 
@@ -396,15 +398,11 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						query = boolQuery.build();
 					}
 					foundDocs = search.search(query, maxResults);
-					float scoreQuotient = 1f;
+					if (foundDocs.scoreDocs.length <= 0)
+						continue;
 
 					// Инициализация максиального количества очков и коэффициента пересчета
-					if (foundDocs.scoreDocs.length > 0) {
-						if (globalMaxScore <= 0)
-							globalMaxScore = foundDocs.scoreDocs[0].score;
-						if (minScore > 0)
-							scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
-					}
+					float globalMaxScore = foundDocs.scoreDocs[0].score;
 
 					// Подготовка подсветки найденных результатов
 					SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
@@ -417,9 +415,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
 
 						// нормализованный счет (score)
-						float normalScore = scoreDoc.score * scoreQuotient;
-						if (globalMaxScore * threshold > normalScore) {
-							isFinished = true;
+						if (globalMaxScore * threshold > scoreDoc.score) {
 							break;
 						}
 						Document doc = search.doc(scoreDoc.doc);
@@ -442,15 +438,25 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 							}
 						}
 						Long itemId = Long.parseLong(doc.get(I_ID));
+
+						// Проверка, не скрыт ли айтем
+						TemplateQuery sql = new TemplateQuery("check").SELECT(I_ID).FROM(ITEM_TBL)
+								.WHERE().col(I_ID).long_(itemId).AND().col(I_STATUS).byte_((byte)0);
+						try (Connection conn = MysqlConnector.getConnection();
+							PreparedStatement pstmt = sql.prepareQuery(conn)) {
+							if (!pstmt.executeQuery().first())
+								continue;
+						} catch (Exception e) {
+							ServerLogger.error("Error lucene visibility check", e);
+							continue;
+						}
+
 						result.put(itemId, highlighted.toString());
 						totalDocs++;
 						ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
 					}
 
-					if (foundDocs.scoreDocs.length > 0)
-						minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
-
-					if (isFinished || totalDocs >= maxResults) break;
+					if (totalDocs >= maxResults) break;
 				}
 				// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
 				if (totalDocs > 0)
