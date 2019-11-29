@@ -139,7 +139,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	@Override
 	protected void integrate() throws Exception {
 		sections = sections == null? new ItemQuery(SECTION_ITEM).loadItems() : sections;
-		doCreate(sections);
+		try {
+			doCreate(sections);
+		} catch (Exception e) {
+			ServerLogger.error("unable to create filter", e);
+		}
 	}
 
 	protected void doCreate(List<Item> sections) throws Exception {

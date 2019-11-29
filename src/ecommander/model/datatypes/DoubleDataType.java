@@ -49,7 +49,7 @@ public class DoubleDataType extends FormatDataType {
 			if (pp.getIndex() != value.length()) {
 				num = dotDelimFormat.parse(value);
 			}
-			if (num == null)
+			if (num == null || Double.isInfinite(num.doubleValue()))
 				return null;
 			return num.doubleValue();
 		}

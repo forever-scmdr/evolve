@@ -120,6 +120,22 @@ public class Brand
         return containsValue("text", value);
     }
 
+    public void set_importer(String value) {
+        setValue("importer", value);
+    }
+
+    public String get_importer() {
+        return getStringValue("importer");
+    }
+
+    public String getDefault_importer(String defaultVal) {
+        return getStringValue("importer", defaultVal);
+    }
+
+    public boolean contains_importer(String value) {
+        return containsValue("importer", value);
+    }
+
     public void add_text_pic(File value) {
         setValue("text_pic", value);
     }

@@ -82,6 +82,7 @@ public interface ItemNames {
         String WARRANTY = "warranty";
         String CHANGE_STATUS = "change_status";
         String TEXT = "text";
+        String IMPORTER = "importer";
         String TEXT_PIC = "text_pic";
 
     }
