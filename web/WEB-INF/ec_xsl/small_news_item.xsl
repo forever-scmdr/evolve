@@ -20,7 +20,7 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:locale" content="ru_RU" />
 		<meta property="og:title" content="{$h1}" />
-		<!-- <meta property="og:description" content="{$ni/short}" /> -->
+		<meta property="og:description" content="{$ni/twitter_description}" />
 		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_image)}" />
 	   <meta property="og:app_id" content="552626568232392" />
 	</xsl:template>
@@ -65,19 +65,22 @@
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/read_time != ''">
-								<span class="entry__category blue">
+								<span class="entry__category blue desctop-only">
 									<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
+								</span>
+								<span class="entry__category blue mobile-only">
+									<a>Время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/size != ''">
 								<span class="entry__category red">
-									<a>Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
+									<a>Размер новости: <b><xsl:value-of select="$ni/size" /></b></a>
 								</span>
 							</xsl:if>
 						</div>
 					</xsl:if>
 				</div>
-				<div class="col-full s-content__main">
+				<div class="col-full s-content__main" style="margin-top: 2.5rem;">
 					<div id="nil">
 						<div class="content-text">
 						   <xsl:apply-templates select="$ni" mode="content"/>

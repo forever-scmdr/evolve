@@ -110,6 +110,9 @@
 						<li class="{'active'[$current_tag = 'Экономика']}">
 							<a href="{page/news_link_econ}">Экономика</a>
 						</li>
+						<li class="{'active'[$current_tag = 'Биржа']}">
+							<a href="{page/news_link_stock}">Биржа</a>
+						</li>
 					</ul>
 				</li>
 				<li class="has-children">

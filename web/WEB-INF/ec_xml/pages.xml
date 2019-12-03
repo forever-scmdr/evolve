@@ -33,6 +33,9 @@
 		<link name="news_link_econ" target="news">
 			<var name="tag" value="Экономика"/>
 		</link>
+		<link name="news_link_stock" target="news">
+			<var name="tag" value="Биржа"/>
+		</link>
 
 		<single item="common" cacheable="true">
 			<list item="soc_link"/>
@@ -304,49 +307,69 @@
 		</single>
 	</page>
 
-	<page name="tag" template="search">
+	<page name="tag" template="">
 		<request>
 			<var name="tag"/>
-			<var name="limit" value="24"/>
+			<var name="limit" value="18"/>
+			<var name="page" value="1"/>
+			<var name="s_page" value="1"/>
 		</request>
-		<list item="small_news_item" id="sni">
-			<filter>
-				<parameter name="tag" sign="=">
-					<var var="tag"/>
-				</parameter>
-				<sorting direction="DESC">
-					<var value="date"/>
-				</sorting>
-				<limit>
-					<var var="limit"/>
-				</limit>
-			</filter>
-			<link name="show_page" target="news_item" type="exclusive">
-				<var name="sel" ref="sni" style="translit"/>
-			</link>
-		</list>
-		<list item="news_item" id="ni" >
-			<filter>
-				<parameter name="tag" sign="=">
-					<var var="tag"/>
-				</parameter>
-				<sorting direction="DESC">
-					<var value="date"/>
-				</sorting>
-				<limit>
-					<var var="limit"/>
-				</limit>
-			</filter>
-			<single item="top_gal"/>
-			<link name="show_page" target="news_item" type="exclusive">
-				<var name="sel" ref="ni" style="translit"/>
-			</link>
-			<ancestor item="news" transit="false" id="cat">
-				<link name="show_page" target="news_section" type="exclusive">
-					<var name="sel" ref="cat" style="translit"/>
+		<single item="small_news">
+			<list item="small_news_item" id="sni">
+				<filter>
+					<parameter name="tag" sign="=">
+						<var var="tag"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="s_page"/>
+					</pages>
+				</filter>
+				<link name="show_small_news_item" target="small_news_item" type="exclusive">
+					<var name="sel" ref="sni" style="translit"/>
 				</link>
-			</ancestor>
-		</list>
+			</list>
+		</single>
+		<single item="news_wrap">
+			<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="tag" sign="=">
+						<var var="tag"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+				<ancestor item="news" transit="false" id="cat">
+					<link name="show__page" target="news_section" type="exclusive">
+						<var name="sel" ref="cat" style="translit"/>
+					</link>
+				</ancestor>
+			</list>
+		</single>
+		<link name="page_link" target="all_news_ajax">
+			<var name="limit" var="limit"/>
+			<var name="tag"/>
+		</link>
+		<link name="small_page_link" target="small_news_ajax">
+			<var name="limit" var="limit"/>
+			<var name="tag"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 

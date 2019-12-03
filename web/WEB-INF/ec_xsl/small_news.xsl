@@ -41,6 +41,9 @@
 							</a>&#160;&#160;
 							<a href="{page/news_link_econ}">
 								Экономика
+							</a>&#160;&#160;
+							<a href="{page/news_link_stock}">
+								Биржа
 							</a>
 						</p>
 <!--					</xsl:if>-->
@@ -64,24 +67,9 @@
 									<xsl:value-of select="name"/>
 								</a>
 							</p>
-							<!-- <xsl:if test="tag">
-							<p class="tags botmar">
-								Теги: <xsl:for-each select="tag">
-									<xsl:if test="position() &gt; 1">
-										<xsl:text>, </xsl:text>
-									</xsl:if>
-									<a href="{concat('news/?tag=', .)}">
-										<xsl:value-of select="."/>
-									</a>
-								</xsl:for-each>
-							</p>
-							</xsl:if> -->
 						</div>
 
 						<xsl:variable name="pos" select="position()"/>
-						<!-- <xsl:if test="$pos mod 2 = 0">
-							<div class="two-col-border"></div>
-						</xsl:if> -->
 						<xsl:if test="$pos mod 3 = 0">
 							<div class="three-col-border"></div>
 						</xsl:if>
@@ -94,28 +82,7 @@
 				<script>
 					window.pagination = <xsl:value-of select="concat('[',string-join($pagination/page[position() &gt; 1]/concat($quot, //page_link,'&amp;page=', number, $quot), ','),']')" />;
 				</script>
-<!--				<div class="row">-->
-<!--					<div class="col-full">-->
-<!--						<nav class="pgn">-->
-<!--							<ul>-->
-<!--								<xsl:if test="$prev">-->
-<!--									<li><a class="pgn__prev" href="{$prev/link}">Prev</a></li>-->
-<!--								</xsl:if>-->
-<!--								<xsl:for-each select="$pagination/page">-->
-<!--									<xsl:if test="not(@current = 'current')">-->
-<!--										<li><a class="pgn__num" href="{link}"><xsl:value-of select="number"/></a></li>-->
-<!--									</xsl:if>-->
-<!--									<xsl:if test="@current = 'current'">-->
-<!--										<li><span class="pgn__num current"><xsl:value-of select="number"/></span></li>-->
-<!--									</xsl:if>-->
-<!--								</xsl:for-each>-->
-<!--								<xsl:if test="$next">-->
-<!--								<li><a class="pgn__next" href="{$next/link}">Next</a></li>-->
-<!--								</xsl:if>-->
-<!--							</ul>-->
-<!--						</nav>-->
-<!--					</div>-->
-<!--				</div>-->
+
 			</xsl:if>
 		</section>
 	</xsl:template>

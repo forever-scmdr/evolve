@@ -31,7 +31,10 @@
 				</div>
 				<div class="row masonry-wrap">
 					<div class="masonry">
-						<xsl:apply-templates select="$small_news" mode="masonry"/>
+						<xsl:for-each select="$small_news">
+							<xsl:sort select="number(date/@millis)" order="descending"/>
+							<xsl:apply-templates select="." mode="masonry"/>
+						</xsl:for-each>
 					</div>
 				</div>
 				<div style="margin-bottom: 2.5rem;"></div>
@@ -47,7 +50,10 @@
 				<div class="row masonry-wrap">
 					<div class="masonry" id="add-content">
 						<div class="grid-sizer"></div>
-						<xsl:apply-templates select="$news_items | $news_parts" mode="masonry"/>
+						<xsl:for-each select="$news_items | $news_parts">
+							<xsl:sort select="number((if(date) then date else /../date)/@millis)" order="descending"/>
+							<xsl:apply-templates select="." mode="masonry"/>
+						</xsl:for-each>
 					</div>
 				</div>
 			</xsl:if>
