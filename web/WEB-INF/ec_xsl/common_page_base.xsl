@@ -525,7 +525,8 @@
 	<xsl:template match="accessory | set | probe | product | assoc">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
-		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>
+<!--		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>-->
+		<xsl:variable name="product_link" select="show_product"/>
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -610,7 +611,8 @@
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
-		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>
+<!--		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>-->
+		<xsl:variable name="product_link" select="show_product"/>
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
