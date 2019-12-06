@@ -43,7 +43,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
 
-	private IntegrateBase.Info info; // информация для пользователя
+	private IntegrateBase.Info info;  // информация для пользователя
 	private ItemType userType;
 	private User initiator;
 	private boolean isInsideUser = false;
