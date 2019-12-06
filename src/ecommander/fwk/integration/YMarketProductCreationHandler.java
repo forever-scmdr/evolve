@@ -244,8 +244,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
 				if(picUrls.size() > 1) {
+					int i=0;
 					for (String picUrl : picUrls) {
 						if (picUrl.intern() == EMPTY_PICTURE) continue;
+						if(i == 0) {i++; continue;}
 						try {
 							String fileName = Strings.getFileName(picUrl);
 							mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
@@ -275,7 +277,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (picUrls.size() > 0) {
 					boolean save = false;
 					String url = picUrls.iterator().next();
-					if ((picUrls.size() > 0 && noMainPic) || true) {
+					if ((picUrls.size() > 0 && noMainPic)) {
 						product.setValue(MAIN_PIC_PARAM, new URL(url));
 						product.clearValue(SMALL_PIC_PARAM);
 						save = true;
