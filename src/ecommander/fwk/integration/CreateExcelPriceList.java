@@ -2,6 +2,7 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -143,6 +144,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		setOperation("Запись файла");
 		String optionsSuffix = (writeHierarchy)? "" : "min-";
 		String fileName = "pricelist-"+ optionsSuffix + fileSuffix + ".xls";
+		fileName = Strings.createFileName(fileName);
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
