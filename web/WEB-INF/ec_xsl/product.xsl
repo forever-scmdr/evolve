@@ -96,7 +96,7 @@
 			</div>
 			-->
 			<div class="gallery">
-				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
+				<div class="fotorama" data-width="100%" data-maxwidth="100%" data-maxheight="400" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="true">
 					<xsl:if test="$extra_xml/spin">
 						<div data-thumb="img/360grad.png" style="height: 100%">
 							<iframe width="100%" height="100%" data-autoplay="0" src="{tokenize($extra_xml/spin/@link, ' ')[1]}"
@@ -263,10 +263,10 @@
                                 	<a href="{$p/show_brand}"><img src="{$brand/@path}{$brand/pic}" style="width: 100%;" /></a>
                                 </div>
                                 <p>
-                                	Производитель: <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
+                                	Бренд: <a href="{$p/show_brand}"><xsl:value-of select="$brand/name" /></a>
                                 </p>
                                 <xsl:if test="$brand/importer and not($brand/importer = '')">
-									<p>Импрортёр: <xsl:value-of select="$brand/importer" disable-output-escaping="yes"/></p>
+									<xsl:value-of select="$brand/importer" disable-output-escaping="yes"/>
 								</xsl:if>
                             </div>
                         </xsl:if>

@@ -73,7 +73,7 @@
 			</list>
 			<list item="brand" assoc="common_assoc" id="main_brands">
 				<link name="show_brand" target="brand">
-					<var name="brand" ref="main_brands" parameter="name"/>
+					<var name="brand" ref="main_brands" parameter="mask"/>
 				</link>
 			</list>
 			<list item="main_promo_bottom"/>
@@ -264,8 +264,7 @@
 			<var name="sec"/>
 			<var name="p" value="1"/>
 		</request>
-		<include name="COMMON"/>
-		<list item="section" id="brand_sec" tag="brand_section">
+		<list item="section" id="brand_sec" tag="brand_section" cacheable="true" cache-vars="brand sec p">
 			<filter>
 				<child item="product" transit="false">
 					<parameter name="vendor" compare="SOME"><var var="brand" /></parameter>
@@ -317,6 +316,8 @@
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 		</list>
+		<include name="PRODUCT_EXTRA"/>
+		<include name="COMMON"/>
 	</page>
 
 

@@ -118,6 +118,8 @@ public class DelayedTransaction {
 		} catch (Exception e) {
 			ServerLogger.error("Transaction command rollback error", e);
 		}
+		finished = true;
+		refresh();
 	}
 
 	/**

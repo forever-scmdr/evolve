@@ -106,7 +106,12 @@ public class CreateWaterMarks extends IntegrateBase {
 						}
 					}
 					transaction.addCommandUnit(SaveItemDBUnit.get(item));
-					transaction.execute();
+					try {
+						transaction.execute();
+					} catch (Exception e) {
+						ServerLogger.error("unable to apply watermark", e);
+						info.addError("Ошибка сохранения товара ",	item.getStringValue("name"));
+					}
 					info.increaseProcessed();
 				}
 				startFrom = item.getId();
