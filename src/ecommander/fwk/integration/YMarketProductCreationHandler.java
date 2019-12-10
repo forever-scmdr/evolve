@@ -8,14 +8,20 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -72,8 +78,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
 	private Assoc catalogLinkAssoc;
+	private int smallPicWidth = 0;
+	private int smallPicHeight = 0;
+	private Path picFolder;
 
-	
+
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
@@ -81,6 +90,20 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
+		String smallPicFormat = ItemTypeRegistry.getItemType(ItemNames.described_product_._ITEM_NAME).getParameter(ItemNames.described_product_.SMALL_PIC).getFormat();
+		if (StringUtils.isNotBlank(smallPicFormat)) {
+			try {
+				for (String opt : StringUtils.split(smallPicFormat, ';')) {
+					String[] vals = StringUtils.split(opt.trim(), ':');
+					if (vals[0].trim().equals("width"))
+						smallPicWidth = Integer.parseInt(vals[1].trim());
+					else if (vals[0].trim().equals("height"))
+						smallPicHeight = Integer.parseInt(vals[1].trim());
+				}
+			} catch (Exception e) {
+			}
+			picFolder = Paths.get(AppContext.getContextPath(), "device_pics");
+		}
 		host = info.getHost();
 	}
 
@@ -183,7 +206,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValueUI(PRICE_PARAM, "0");
 
 				// Качать картинки только для новых товаров
-				boolean wasNew = product.isNew();
+				//boolean wasNew = product.isNew();
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 
@@ -229,106 +252,121 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 
 
-				boolean needSave = false;
-				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-				String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
-				for (File galleryPic : galleryPics) {
-					String gpn = galleryPic.getName();
-					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
-						product.removeEqualValue(GALLERY_PARAM, gpn);
-						needSave = true;
-					}
-					if(gpn.equals(mainPicName)){
-						product.clearValue(MAIN_PIC_PARAM);
-					}
-				}
-				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				if(picUrls.size() > 1) {
-					int i=0;
-					for (String picUrl : picUrls) {
-						if (picUrl.intern() == EMPTY_PICTURE) continue;
-						if(i == 0) {i++; continue;}
-						try {
-							String fileName = Strings.getFileName(picUrl);
-							mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
-							boolean skipGal = fileName.equals(mainPicName);
-							skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
+				product.clearValue("pic_ref");
 
-							if (skipGal) continue;
-							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-								product.setValue(GALLERY_PARAM, new URL(picUrl));
-								needSave = true;
-							}
-						} catch (Exception e) {
-							info.setLineNumber(locator.getLineNumber());
-							info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
+				File picInFolder = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "").replace('*', '-') + ".jpg").toFile();
+
+				if (picInFolder.isFile()) {
+					product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) + ".jpg");
+					String small = "small_" + product.getStringValue(CODE_PARAM) + ".jpg";
+					if (resize(picInFolder, small)) {
+						product.setValue("pic_ref", "device_pics/small_" + product.getStringValue(CODE_PARAM) + ".jpg");
+					}
+					for (int i = 1; i < 6; i++) {
+						File f = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "") +"_"+ i +".jpg").toFile();
+						if(f.isFile()){
+							product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) +"_"+ i +".jpg");
 						}
 					}
-				}
-				// Генерация маленького изображения
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM) ;
-				if (!noMainPic) {
-					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.isFile()) {
-						product.clearValue(MAIN_PIC_PARAM);
-						noMainPic = true;
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+				} else {
+					boolean needSave = false;
+					ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+					String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
+					for (File galleryPic : galleryPics) {
+						String gpn = galleryPic.getName();
+						if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
+							product.removeEqualValue(GALLERY_PARAM, gpn);
+							needSave = true;
+						}
+						if (gpn.equals(mainPicName)) {
+							product.clearValue(MAIN_PIC_PARAM);
+						}
 					}
-				}
-				if (picUrls.size() > 0) {
-					boolean save = false;
-					String url = picUrls.iterator().next();
-					if ((picUrls.size() > 0 && noMainPic)) {
-						product.setValue(MAIN_PIC_PARAM, new URL(url));
-						product.clearValue(SMALL_PIC_PARAM);
-						save = true;
-					}else if(!noMainPic && StringUtils.startsWith(url, host)){
-						File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
-						if(pic.isFile()){
-							if(pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()){
-								product.setValue(MAIN_PIC_PARAM, pic);
-								product.clearValue(SMALL_PIC_PARAM);
-								save = true;
-								info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
+					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+					if (picUrls.size() > 1) {
+						int i = 0;
+						for (String picUrl : picUrls) {
+							if (picUrl.intern() == EMPTY_PICTURE) continue;
+							if (i == 0) {
+								i++;
+								continue;
+							}
+							try {
+								String fileName = Strings.getFileName(picUrl);
+								mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
+								boolean skipGal = fileName.equals(mainPicName);
+								skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
+
+								if (skipGal) continue;
+								if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+									product.setValue(GALLERY_PARAM, new URL(picUrl));
+									needSave = true;
+								}
+							} catch (Exception e) {
+								info.setLineNumber(locator.getLineNumber());
+								info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
 							}
 						}
 					}
-					if(save) {
+					// Генерация маленького изображения
+					boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+					if (!noMainPic) {
+						File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+						if (!mainPic.isFile()) {
+							product.clearValue(MAIN_PIC_PARAM);
+							noMainPic = true;
+						}
+					}
+					if (picUrls.size() > 0) {
+						boolean save = false;
+						String url = picUrls.iterator().next();
+						if ((picUrls.size() > 0 && noMainPic)) {
+							product.setValue(MAIN_PIC_PARAM, new URL(url));
+							product.clearValue(SMALL_PIC_PARAM);
+							save = true;
+						} else if (!noMainPic && StringUtils.startsWith(url, host)) {
+							File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
+							if (pic.isFile()) {
+								if (pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()) {
+									product.setValue(MAIN_PIC_PARAM, pic);
+									product.clearValue(SMALL_PIC_PARAM);
+									save = true;
+									info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
+								}
+							}
+						}
+						if (save) {
+							try {
+								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+								DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+								needSave = false;
+							} catch (Exception e) {
+								//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+								info.setLineNumber(locator.getLineNumber());
+								info.addError(e);
+							}
+						}
+						//needSave = false;
+					}
+					if (needSave) {
 						try {
 							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-							needSave = false;
 						} catch (Exception e) {
 							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 							info.setLineNumber(locator.getLineNumber());
 							info.addError(e);
 						}
 					}
-					//needSave = false;
 				}
-				if (needSave) {
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-					} catch (Exception e) {
-						//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-						info.setLineNumber(locator.getLineNumber());
-						info.addError(e);
-					}
-				}
-
 				info.increaseProcessed();
 				isInsideOffer = false;
-			}
-
-			else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
@@ -343,9 +381,22 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		}
 	}
 
+	private boolean resize(File picInFolder, String small) throws IOException {
+		if (smallPicWidth == 0 && smallPicHeight == 0) return false;
+		try {
+			Files.deleteIfExists(Paths.get(picFolder.toString(), small));
+			BufferedImage srcImg = ImageIO.read(picInFolder);
+			BufferedImage result = ResizeImagesFactory.ResizeImages.getScaledInstance(srcImg, smallPicWidth, smallPicHeight, 1.5);
+			ImageIO.write(result, "jpg", Paths.get(picFolder.toString(), small).toFile());
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(parameterReady)
+		if (parameterReady)
 			paramValue.append(ch, start, length);
 	}
 

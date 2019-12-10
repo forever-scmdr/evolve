@@ -403,6 +403,9 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar">
+
+		<xsl:variable name="pic_ref" select="pic_ref"/>
+
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>
 		<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num(price_opt) div 100 * (100 - $discount)) else price"/>
 		<xsl:variable name="price_old" select="if ($is_reg_jur) then price_opt_old else price_old"/>
@@ -415,12 +418,25 @@
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
-			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
-					<i class="fas fa-search-plus"></i>
-				</a>
+			<xsl:if test="not($pic_ref)">
+				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+						<i class="fas fa-search-plus"></i>
+					</a>
+				</xsl:if>
+				<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			</xsl:if>
-			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
+			<xsl:if test="$pic_ref != ''">
+				<xsl:if test="$pic_ref[starts-with(.,'device_pics/small_')]">
+					<a href="/{$pic_ref[1]}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+						<i class="fas fa-search-plus"></i>
+					</a>
+					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[2],');')}"></a>
+				</xsl:if>
+				<xsl:if test="not($pic_ref[starts-with(.,'device_pics/small_')])">
+					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[1],');')}"></a>
+				</xsl:if>
+			</xsl:if>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="device__article-number">
 				Артикул: <xsl:value-of select="vendor_code"/>
@@ -497,12 +513,31 @@
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+
+			<xsl:variable name="pic_ref" select="pic_ref"/>
+
+			<xsl:if test="not($pic_ref)">
+
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
 			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+			</xsl:if>
+
+			<xsl:if test="$pic_ref != ''">
+				<xsl:if test="$pic_ref[starts-with(.,'device_pics/small_')]">
+					<a href="/{$pic_ref[1]}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+						<i class="fas fa-search-plus"></i>
+					</a>
+					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[2],');')}"></a>
+				</xsl:if>
+				<xsl:if test="not($pic_ref[starts-with(.,'device_pics/small_')])">
+					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[1],');')}"></a>
+				</xsl:if>
+			</xsl:if>
+
 			<div class="device__info">
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">

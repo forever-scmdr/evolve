@@ -208,6 +208,7 @@
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
+		<parameter name="pic_ref" type="string" caption="Ссылка на картинку" multiple="true"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />

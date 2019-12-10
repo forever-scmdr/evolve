@@ -67,10 +67,18 @@
 		<div class="catalog-item-container">
 			<div class="gallery">
 				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
-					<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{$p/name}"/>
-					</xsl:for-each>
+					<xsl:if test="not($p/pic_ref)">
+						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+						<xsl:for-each select="$p/gallery">
+							<img src="{$p/@path}{.}" alt="{$p/name}"/>
+						</xsl:for-each>
+					</xsl:if>
+					<xsl:if test="$p/pic_ref != ''">
+						<img src="{$p/pic_ref[1]}" alt="{$p/name}"/>
+						<xsl:for-each select="$p/pic_ref[position() &gt; 1 and not(starts-with(., 'device_pics/small_'))]">
+							<img src="{.}" alt="{$p/name}"/>
+						</xsl:for-each>
+					</xsl:if>
 				</div>
 			</div>
 			<div class="product-info">

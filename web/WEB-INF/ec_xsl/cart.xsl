@@ -40,13 +40,14 @@
 							<div class="item">
 								<xsl:if test="not($p/product)">
 									<a href="{$p/show_product}" class="image-container">
-										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+										<img src="{if($p/pic_ref != '') then $p/pic_ref[1] else concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+
 								</xsl:if>
 								<xsl:if test="$p/product">
 									<a href="{$p/product/show_product}" class="image-container">
-										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
+										<img src="{if($p/product/pic_ref != '') then $p/product/pic_ref else concat($p/product/@path, $p/product/main_pic)}" alt="{$p/name}"/>
 									</a>
 									<a href="{$p/product/show_product}" class="title">
 										<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)

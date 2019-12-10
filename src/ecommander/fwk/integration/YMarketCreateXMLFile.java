@@ -138,16 +138,23 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 				// Галерея
 				boolean hasGallery = false;
-				for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
-					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
-							Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
-					hasGallery = true;
+				ArrayList<String> picRefs = product.getStringValues("pic_ref");
+				if(picRefs.size() == 0) {
+					for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
+						xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+								Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
+						hasGallery = true;
+					}
+					if (!hasGallery && baseProduct.isValueNotEmpty(MAIN_PIC_PARAM)) {
+						xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+								Item.createItemFilesPath(baseProduct.getId()) + baseProduct.outputValue(MAIN_PIC_PARAM)).endElement();
+					}
+				}else{
+					for(String ref : picRefs) {
+						if(StringUtils.startsWith(ref, "device_pics/small_")) continue;
+						xml.startElement("picture").addText(getUrlBase() + "/" +ref).endElement();
+					}
 				}
-				if (!hasGallery && baseProduct.isValueNotEmpty(MAIN_PIC_PARAM)) {
-					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
-							Item.createItemFilesPath(baseProduct.getId()) + baseProduct.outputValue(MAIN_PIC_PARAM)).endElement();
-				}
-
 				Item subParams = null;
 				if (hasLines)
 					subParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
