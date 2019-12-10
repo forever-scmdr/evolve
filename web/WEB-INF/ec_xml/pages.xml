@@ -307,7 +307,7 @@
 		</single>
 	</page>
 
-	<page name="tag" template="">
+	<page name="tag" template="search">
 		<request>
 			<var name="tag"/>
 			<var name="limit" value="18"/>
@@ -368,7 +368,11 @@
 		</link>
 		<link name="small_page_link" target="small_news_ajax">
 			<var name="limit" var="limit"/>
-			<var name="tag"/>
+			<var name="tag" var="tag"/>
+		</link>
+		<link name="page_link" target="news_ajax">
+			<var name="limit" var="limit"/>
+			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

@@ -3,16 +3,16 @@
  *
  * ------------------------------------------------------------------- */
 var hideTipTimeout;
-(function($) {
+(function ($) {
 
     "use strict";
-    
-    var cfg = {
-        scrollDuration : 800, // smoothscroll duration
-        mailChimpURL   : 'https://facebook.us8.list-manage.com/subscribe/post?u=cdb7b577e41181934ed6a6a44&amp;id=e6957d85dc'   // mailchimp url
-    },
 
-    $WIN = $(window);
+    var cfg = {
+            scrollDuration: 800, // smoothscroll duration
+            mailChimpURL: 'https://facebook.us8.list-manage.com/subscribe/post?u=cdb7b577e41181934ed6a6a44&amp;id=e6957d85dc'   // mailchimp url
+        },
+
+        $WIN = $(window);
 
     // Add the User Agent to the <html>
     // will be used for IE10 detection (Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0))
@@ -25,34 +25,34 @@ var hideTipTimeout;
     }
 
 
-   /* Preloader
-    * ----------------------------------------------------- */
-    var clPreloader = function() {
-        
+    /* Preloader
+     * ----------------------------------------------------- */
+    var clPreloader = function () {
+
         $("html").addClass('cl-preload');
 
-        $WIN.on('load', function() {
+        $WIN.on('load', function () {
 
             //force page scroll position to top at page refresh
             // $('html, body').animate({ scrollTop: 0 }, 'normal');
 
             // will first fade out the loading animation 
-            $("#loader").fadeOut("slow", function() {
+            $("#loader").fadeOut("slow", function () {
                 // will fade out the whole DIV that covers the website.
                 $("#preloader").delay(300).fadeOut("slow");
-            }); 
-            
+            });
+
             // for hero content animations 
             $("html").removeClass('cl-preload');
             $("html").addClass('cl-loaded');
-        
+
         });
     };
 
 
-   /* mediaelement
-    * ------------------------------------------------------ */
-    var clMediaElement = function() {
+    /* mediaelement
+     * ------------------------------------------------------ */
+    var clMediaElement = function () {
 
         $('audio').mediaelementplayer({
             pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
@@ -62,29 +62,27 @@ var hideTipTimeout;
     };
 
 
-   /* FitVids
-    ------------------------------------------------------ */ 
-    var clFitVids = function() {
+    /* FitVids
+     ------------------------------------------------------ */
+    var clFitVids = function () {
         $(".video-container").fitVids();
     };
 
 
-
-   /* pretty print
-    * -------------------------------------------------- */ 
-    var clPrettyPrint = function() {
+    /* pretty print
+     * -------------------------------------------------- */
+    var clPrettyPrint = function () {
         $('pre').addClass('prettyprint');
-        $( document ).ready(function() {
+        $(document).ready(function () {
             prettyPrint();
         });
     };
 
 
+    /* search
+     * ------------------------------------------------------ */
+    var clSearch = function () {
 
-   /* search
-    * ------------------------------------------------------ */
-    var clSearch = function() {
-        
         var searchWrap = $('.header__search'),
             searchField = searchWrap.find('.search-field'),
             closeSearch = searchWrap.find('.header__overlay-close'),
@@ -92,59 +90,59 @@ var hideTipTimeout;
             siteBody = $('body');
 
 
-        searchTrigger.on('click', function(e) {
-            
+        searchTrigger.on('click', function (e) {
+
             e.preventDefault();
             e.stopPropagation();
-        
+
             var $this = $(this);
-        
+
             siteBody.addClass('search-is-visible');
-            setTimeout(function(){
+            setTimeout(function () {
                 searchWrap.find('.search-field').focus();
             }, 100);
-        
+
         });
 
-        closeSearch.on('click', function(e) {
+        closeSearch.on('click', function (e) {
 
             var $this = $(this);
-        
-            e.stopPropagation(); 
-        
-            if(siteBody.hasClass('search-is-visible')){
+
+            e.stopPropagation();
+
+            if (siteBody.hasClass('search-is-visible')) {
                 siteBody.removeClass('search-is-visible');
-                setTimeout(function(){
+                setTimeout(function () {
                     searchWrap.find('.search-field').blur();
                 }, 100);
             }
         });
 
-        searchWrap.on('click',  function(e) {
-            if( !$(e.target).is('.search-field') ) {
+        searchWrap.on('click', function (e) {
+            if (!$(e.target).is('.search-field')) {
                 closeSearch.trigger('click');
             }
         });
-            
-        searchField.on('click', function(e){
+
+        searchField.on('click', function (e) {
             e.stopPropagation();
         });
-            
+
         searchField.attr({placeholder: 'Введите запрос', autocomplete: 'off'});
-    
+
     };
 
 
-   /* Mobile Menu
-    * ---------------------------------------------------- */ 
-    var clMobileMenu = function() {
+    /* Mobile Menu
+     * ---------------------------------------------------- */
+    var clMobileMenu = function () {
 
         var navWrap = $('.header__nav-wrap'),
             closeNavWrap = navWrap.find('.header__overlay-close'),
             menuToggle = $('.header__toggle-menu'),
             siteBody = $('body');
-        
-        menuToggle.on('click', function(e) {
+
+        menuToggle.on('click', function (e) {
             var $this = $(this);
 
             e.preventDefault();
@@ -152,14 +150,14 @@ var hideTipTimeout;
             siteBody.addClass('nav-wrap-is-visible');
         });
 
-        closeNavWrap.on('click', function(e) {
-            
+        closeNavWrap.on('click', function (e) {
+
             var $this = $(this);
-            
+
             e.preventDefault();
             e.stopPropagation();
-        
-            if(siteBody.hasClass('nav-wrap-is-visible')) {
+
+            if (siteBody.hasClass('nav-wrap-is-visible')) {
                 siteBody.removeClass('nav-wrap-is-visible');
             }
         });
@@ -188,10 +186,10 @@ var hideTipTimeout;
     };
 
 
-   /* Masonry
-    * ---------------------------------------------------- */ 
+    /* Masonry
+     * ---------------------------------------------------- */
     var clMasonryFolio = function () {
-        
+
         var containerBricks = $('.masonry');
 
         containerBricks.imagesLoaded(function () {
@@ -205,13 +203,13 @@ var hideTipTimeout;
 
     };
 
-    var clMasonryImagesLoaded = function(){
+    var clMasonryImagesLoaded = function () {
 
     }
 
-   /* slick slider
-    * ------------------------------------------------------ */
-    var clSlickSlider = function() {
+    /* slick slider
+     * ------------------------------------------------------ */
+    var clSlickSlider = function () {
 
         var $gallery = $('.slider__slides').slick({
             arrows: false,
@@ -224,24 +222,24 @@ var hideTipTimeout;
             fade: true,
             cssEase: 'linear'
         });
-        
-        $('.slider__slide').on('click', function() {
-            $gallery.slick('slickGoTo', parseInt($gallery.slick('slickCurrentSlide'))+1);
+
+        $('.slider__slide').on('click', function () {
+            $gallery.slick('slickGoTo', parseInt($gallery.slick('slickCurrentSlide')) + 1);
         });
-    
+
     };
 
 
-   /* Smooth Scrolling
-    * ------------------------------------------------------ */
-    var clSmoothScroll = function() {
-        
+    /* Smooth Scrolling
+     * ------------------------------------------------------ */
+    var clSmoothScroll = function () {
+
         $('.smoothscroll').on('click', function (e) {
             var target = this.hash,
-            $target    = $(target);
-            
-                e.preventDefault();
-                e.stopPropagation();
+                $target = $(target);
+
+            e.preventDefault();
+            e.stopPropagation();
 
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top
@@ -259,29 +257,29 @@ var hideTipTimeout;
     };
 
 
-   /* Placeholder Plugin Settings
-    * ------------------------------------------------------ */
-    var clPlaceholder = function() {
-        $('input, textarea, select').placeholder();  
+    /* Placeholder Plugin Settings
+     * ------------------------------------------------------ */
+    var clPlaceholder = function () {
+        $('input, textarea, select').placeholder();
     };
 
 
-   /* Alert Boxes
-    * ------------------------------------------------------ */
-    var clAlertBoxes = function() {
+    /* Alert Boxes
+     * ------------------------------------------------------ */
+    var clAlertBoxes = function () {
 
-        $('.alert-box').on('click', '.alert-box__close', function() {
+        $('.alert-box').on('click', '.alert-box__close', function () {
             $(this).parent().fadeOut(500);
-        }); 
+        });
 
     };
 
 
-   /* Animate On Scroll
-    * ------------------------------------------------------ */
-    var clAOS = function() {
-        
-        AOS.init( {
+    /* Animate On Scroll
+     * ------------------------------------------------------ */
+    var clAOS = function () {
+
+        AOS.init({
             offset: -400,
             duration: 600,
             easing: 'ease-in-sine',
@@ -293,10 +291,10 @@ var hideTipTimeout;
     };
 
 
-   /* AjaxChimp
-    * ------------------------------------------------------ */
-    var clAjaxChimp = function() {
-        
+    /* AjaxChimp
+     * ------------------------------------------------------ */
+    var clAjaxChimp = function () {
+
         $('#mc-form').ajaxChimp({
             language: 'es',
             url: cfg.mailChimpURL
@@ -321,24 +319,24 @@ var hideTipTimeout;
             3: '<i class="fa fa-warning"></i> E-mail address is not valid.',
             4: '<i class="fa fa-warning"></i> E-mail address is not valid.',
             5: '<i class="fa fa-warning"></i> E-mail address is not valid.'
-        } 
+        }
 
     };
 
 
-   /* Back to Top
-    * ------------------------------------------------------ */
-    var clBackToTop = function() {
-        
-        var pxShow      = 500,
+    /* Back to Top
+     * ------------------------------------------------------ */
+    var clBackToTop = function () {
+
+        var pxShow = 500,
             goTopButton = $(".go-top")
 
         // Show or hide the button
         if ($(window).scrollTop() >= pxShow) goTopButton.addClass('link-is-visible');
 
-        $(window).on('scroll', function() {
+        $(window).on('scroll', function () {
             if ($(window).scrollTop() >= pxShow) {
-                if(!goTopButton.hasClass('link-is-visible')) goTopButton.addClass('link-is-visible')
+                if (!goTopButton.hasClass('link-is-visible')) goTopButton.addClass('link-is-visible')
             } else {
                 goTopButton.removeClass('link-is-visible')
             }
@@ -346,30 +344,30 @@ var hideTipTimeout;
     };
 
 
-   /* Map
-    * ------------------------------------------------------ */
+    /* Map
+     * ------------------------------------------------------ */
 
     // add custom buttons for the zoom-in/zoom-out on the map
-    var clCustomZoomControl = function(controlDiv, map) {
-            
+    var clCustomZoomControl = function (controlDiv, map) {
+
         // grap the zoom elements from the DOM and insert them in the map 
-        var controlUIzoomIn= document.getElementById('map-zoom-in'),
-                controlUIzoomOut= document.getElementById('map-zoom-out');
+        var controlUIzoomIn = document.getElementById('map-zoom-in'),
+            controlUIzoomOut = document.getElementById('map-zoom-out');
 
         controlDiv.appendChild(controlUIzoomIn);
         controlDiv.appendChild(controlUIzoomOut);
 
         // Setup the click event listeners and zoom-in or out according to the clicked element
-        google.maps.event.addDomListener(controlUIzoomIn, 'click', function() {
-            map.setZoom(map.getZoom()+1)
+        google.maps.event.addDomListener(controlUIzoomIn, 'click', function () {
+            map.setZoom(map.getZoom() + 1)
         });
-        google.maps.event.addDomListener(controlUIzoomOut, 'click', function() {
-            map.setZoom(map.getZoom()-1)
+        google.maps.event.addDomListener(controlUIzoomOut, 'click', function () {
+            map.setZoom(map.getZoom() - 1)
         });
-            
+
     };
 
-	var clGoogleMap = function() { 
+    var clGoogleMap = function () {
 
         if (typeof google === 'object' && typeof google.maps === 'object') {
 
@@ -388,20 +386,20 @@ var hideTipTimeout;
             $("#map-zoom-in, #map-zoom-out").show();
 
             // marker url
-            if ( winWidth > 480 ) {
+            if (winWidth > 480) {
                 marker_url = 'images/icon-location@2x.png';
             } else {
                 marker_url = 'images/icon-location.png';
             }
 
             // map style
-            var style = [ 
+            var style = [
                 {// set saturation for the labels on the map
                     elementType: "labels",
                     stylers: [
-                        { saturation: saturation_value }
+                        {saturation: saturation_value}
                     ]
-                },  
+                },
                 {	// poi stands for point of interest - don't show these lables on the map 
                     featureType: "poi",
                     elementType: "labels",
@@ -414,156 +412,156 @@ var hideTipTimeout;
                     featureType: 'road.highway',
                     elementType: 'labels',
                     stylers: [
-                        { visibility: "off" }
+                        {visibility: "off"}
                     ]
-                }, 
-                { 	
+                },
+                {
                     // don't show local road lables on the map
                     featureType: "road.local",
                     elementType: "labels.icon",
                     stylers: [
-                        { visibility: "off" } 
-                    ] 
+                        {visibility: "off"}
+                    ]
                 },
-                { 
+                {
                     // don't show arterial road lables on the map
                     featureType: "road.arterial",
                     elementType: "labels.icon",
                     stylers: [
-                        { visibility: "off" }
-                    ] 
+                        {visibility: "off"}
+                    ]
                 },
                 {
                     // don't show road lables on the map
                     featureType: "road",
                     elementType: "geometry.stroke",
                     stylers: [
-                        { visibility: "off" }
+                        {visibility: "off"}
                     ]
-                }, 
+                },
                 // style different elements on the map
-                { 
-                    featureType: "transit", 
-                    elementType: "geometry.fill", 
+                {
+                    featureType: "transit",
+                    elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
-                }, 
+                },
                 {
                     featureType: "poi",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "poi.government",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "poi.sport_complex",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "poi.attraction",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "poi.business",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "transit",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "transit.station",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "landscape",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
-                    
+
                 },
                 {
                     featureType: "road",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 },
                 {
                     featureType: "road.highway",
                     elementType: "geometry.fill",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
-                }, 
+                },
                 {
                     featureType: "water",
                     elementType: "geometry",
                     stylers: [
-                        { hue: main_color },
-                        { visibility: "on" }, 
-                        { lightness: brightness_value }, 
-                        { saturation: saturation_value }
+                        {hue: main_color},
+                        {visibility: "on"},
+                        {lightness: brightness_value},
+                        {saturation: saturation_value}
                     ]
                 }
             ];
-                
+
             // map options
             var map_options = {
 
@@ -577,7 +575,7 @@ var hideTipTimeout;
                 scrollwheel: false,
                 styles: style
 
-                };
+            };
 
             // inizialize the map
             var map = new google.maps.Map(document.getElementById('map-container'), map_options);
@@ -585,63 +583,114 @@ var hideTipTimeout;
             // add a custom marker to the map				
             var marker = new google.maps.Marker({
 
-                    position: new google.maps.LatLng(latitude, longitude),
-                    map: map,
-                    visible: true,
-                    icon: marker_url
-                    
-                });
-            
+                position: new google.maps.LatLng(latitude, longitude),
+                map: map,
+                visible: true,
+                icon: marker_url
+
+            });
+
             var zoomControlDiv = document.createElement('div');
             var zoomControl = new clCustomZoomControl(zoomControlDiv, map);
 
             // insert the zoom div on the top right of the map
             map.controls[google.maps.ControlPosition.TOP_RIGHT].push(zoomControlDiv);
 
-        } 
+        }
 
     };
 
     /* loadMoreNews
      * ------------------------------------------------------ */
-    var  loadMoreNews = function () {
+    var loadMoreNews = function () {
         clMasonryFolio();
-       $(document).on("click", "#load-more-link", function (e) {
-          e.preventDefault();
-          var href = $(this).attr("href");
-          $.ajax({
-               url: href
-              ,dataType: "html"
-              ,cache: false
-              ,error: function(arg1, errorType, arg3) {
-                   alert("ajax error");
-              }
-              ,success: function(data, status, arg3) {
-                  if (data.indexOf('<') == 0) {
-                      var parsedData = $("<div>" + data + "</div>");
-                      //var articles = $("#add-content").find("article");
-                      var articles = parsedData.find("article");
-                      var button = $(data).find("#load_more");
-                      if(button.length == 0){
-                          $("#load_more").remove();
-                      }else{
-                          $("#load_more").html(button.html());
-                      }
-                      //reloading masonry
-                      var gridContainer = $("#add-content");
-                      
-                          gridContainer.append(articles).masonry('appended', articles);
-                          gridContainer.masonry('reloadItems');
-                       
-                          //layout Masonry after each image loads
-                          $(".masonry").imagesLoaded().progress( function() {
-                              $(".masonry").masonry("layout");
-                          });
-                  }
-              }
-          });
-       });
+        $(document).on("click", "#load-more-link", function (e) {
+            e.preventDefault();
+            var href = $(this).attr("href");
+            $.ajax({
+                url: href
+                , dataType: "html"
+                , cache: false
+                , error: function (arg1, errorType, arg3) {
+                    alert("ajax error");
+                }
+                , success: function (data, status, arg3) {
+                    if (data.indexOf('<') == 0) {
+                        var parsedData = $("<div>" + data + "</div>");
+                        //var articles = $("#add-content").find("article");
+                        var articles = parsedData.find("article");
+                        var button = $(data).find("#load_more");
+                        if (button.length == 0) {
+                            $("#load_more").remove();
+                        } else {
+                            $("#load_more").html(button.html());
+                        }
+                        //reloading masonry
+                        var gridContainer = $("#add-content");
+
+                        gridContainer.append(articles).masonry('appended', articles);
+                        gridContainer.masonry('reloadItems');
+
+                        //layout Masonry after each image loads
+                        $(".masonry").imagesLoaded().progress(function () {
+                            $(".masonry").masonry("layout");
+                        });
+                    }
+                }
+            });
+        });
     };
+
+    /*
+    * load more on tags page
+    * */
+    var loadMoreSmall = function () {
+        $(document).on("click", ".load-more-small-link", function (e) {
+            e.preventDefault();
+            var $target = $(e.target);
+            var href = $target.attr("href");
+            var pgn = $target.attr("data-page");
+            $.ajax({
+                url: href
+                , dataType: "html"
+                , cache: false
+                , error: function (arg1, errorType, arg3) {
+                    alert("ajax error");
+                }
+                , success: function (data, status, arg3) {
+                    if (data.indexOf('<') == 0) {
+                        var parsedData = $("<div>" + data + "</div>");
+                        //var articles = $("#add-content").find("article");
+                        var articles = parsedData.find("article, .small-news-item, .three-col-border");
+                        var gridContainer = $($target.attr('rel'));
+
+                        if (gridContainer.is(".masonry")) {
+                            gridContainer.append(articles).masonry('appended', articles);
+                            gridContainer.masonry('reloadItems');
+
+                            //layout Masonry after each image loads
+                            $(".masonry").imagesLoaded().progress(function () {
+                                $(".masonry").masonry("layout");
+                            });
+
+                        }else {
+                            gridContainer.append(articles);
+                        }
+                        var arr = pgn.split('/');
+                        var currentPage = arr[0]*1;
+                        var lastPage = arr[1]*1;
+                        if(currentPage == lastPage){
+                            $target.remove();
+                        }else{
+                            href = href.replace("page="+currentPage, "page="+(++currentPage));
+                            $target.attr("href", href);
+                            $target.attr("data-page", currentPage+'/'+lastPage);
+                        }
+                    }
+                }
+            });
+        });
+    }
 
     var infiniteScroll = function () {
         clMasonryFolio();
@@ -649,40 +698,40 @@ var hideTipTimeout;
         var pagination = window.pagination;
         var flag = true;
         if (typeof pagination == "undefined") return;
-        window.addEventListener("scroll", function(){
+        window.addEventListener("scroll", function () {
 
             var block = document.getElementById('add-content');
 
 
             var contentHeight = block.offsetHeight;      // 1) высота блока контента вместе с границами
-            var yOffset       = window.pageYOffset;      // 2) текущее положение скролбара
+            var yOffset = window.pageYOffset;      // 2) текущее положение скролбара
             var window_height = window.innerHeight;      // 3) высота внутренней области окна документа
-            var y             = yOffset + window_height;
+            var y = yOffset + window_height;
 
             // если пользователь достиг конца
-            if(y >= contentHeight-100 && flag)
-            {
+            if (y >= contentHeight - 100 && flag) {
                 addContent();
             }
+
             function addContent() {
-                console.log(counter);
+                // console.log(counter);
                 flag = false;
-                if(counter != pagination.length) {
+                if (counter != pagination.length) {
                     var href = pagination[counter];
                     $.ajax({
                         url: href
-                        ,dataType: "html"
-                        ,cache: false
-                        ,error: function(arg1, errorType, arg3) {
+                        , dataType: "html"
+                        , cache: false
+                        , error: function (arg1, errorType, arg3) {
                             alert("ajax error");
                         }
-                        ,success: function(data, status, arg3) {
+                        , success: function (data, status, arg3) {
                             if (data.indexOf('<') == 0) {
                                 var parsedData = $("<div>" + data + "</div>");
                                 //var articles = $("#add-content").find("article");
                                 var articles = parsedData.find("article, .small-news-item, .three-col-border");
                                 var gridContainer = $("#add-content");
-                                if(gridContainer.is(".masonry")) {
+                                if (gridContainer.is(".masonry")) {
                                     gridContainer.append(articles).masonry('appended', articles);
                                     gridContainer.masonry('reloadItems');
 
@@ -691,7 +740,7 @@ var hideTipTimeout;
                                         $(".masonry").masonry("layout");
                                     });
 
-                                }else{
+                                } else {
                                     gridContainer.append(articles);
                                 }
                                 flag = true;
@@ -709,45 +758,47 @@ var hideTipTimeout;
      * ------------------------------------------------------ */
     var reply = function () {
         $(document).on("click", ".reply", function (e) {
-           e.preventDefault();
+            e.preventDefault();
             var href = $(this).attr("href");
             $("#reply-to").val(href);
-            var nm = $("#nm-"+href).html();
+            var nm = $("#nm-" + href).html();
             $("#reply-name").html("Ответ для: " + nm);
         });
     };
 
-    var fromUTC = function(){
+    var fromUTC = function () {
         //var TZO = new Date().getTimezoneOffset() * 60 * 1000;
         var TZO = 0;
-        $("[data-utc]").each(function(){
-            var utc = $(this).attr("data-utc")*1;
-            if(typeof utc == "number"){
+        $("[data-utc]").each(function () {
+            var utc = $(this).attr("data-utc") * 1;
+            if (typeof utc == "number") {
                 var date = new Date(utc);
                 var year = date.getFullYear();
-                var month = date.getMonth()+1;
+                var month = date.getMonth() + 1;
                 var day = date.getDate();
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
 
-                month = (month < 10)? "0"+month:month;
-                day = (day < 10)? "0"+day:day;
-                hours = (hours < 10)? "0"+hours:hours;
-                minutes = (minutes < 10)? "0"+minutes:minutes;
-            
-                $(this).text(day+'.'+month+'.'+year+' '+hours+':'+minutes);
+                month = (month < 10) ? "0" + month : month;
+                day = (day < 10) ? "0" + day : day;
+                hours = (hours < 10) ? "0" + hours : hours;
+                minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+                $(this).text(day + '.' + month + '.' + year + ' ' + hours + ':' + minutes);
             }
 
         });
     };
 
-    var wikiTip = function(){
+    var wikiTip = function () {
         var $wikiLinks = $("a[rel=tip]");
         $wikiLinks.on('mouseenter', function (e) {
-            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+            if (typeof hideTipTimeout != "undefined") {
+                clearTimeout(hideTipTimeout);
+            }
             e.preventDefault();
             var $tip = $('#wikitip').html();
-            $('#wikitip').css({left:"", top: ""});
+            $('#wikitip').css({left: "", top: ""});
             var $t = $(this);
             var href = $t.attr("href");
             var position = $t.position();
@@ -760,12 +811,12 @@ var hideTipTimeout;
                 url: href,
                 dataType: "html",
                 cache: true,
-                error: function(arg1, errorType, arg3) {
-                    positionTip(top,left,width, height);
+                error: function (arg1, errorType, arg3) {
+                    positionTip(top, left, width, height);
                     $tip.html('ajax error.');
                 }
-                ,success: function(data, status, arg3) {
-                    positionTip(top,left,width, height);
+                , success: function (data, status, arg3) {
+                    positionTip(top, left, width, height);
                     $('#wikitip').html(data);
                 }
             });
@@ -775,7 +826,7 @@ var hideTipTimeout;
         $wikiLinks.on("click", function (e) {
             e.preventDefault();
             var $tip = $('#wikitip').html();
-            $('#wikitip').css({left:"", top: ""});
+            $('#wikitip').css({left: "", top: ""});
             var $t = $(this);
             var href = $t.attr("href");
             var position = $t.position();
@@ -788,18 +839,20 @@ var hideTipTimeout;
                 url: href,
                 dataType: "html",
                 cache: true,
-                error: function(arg1, errorType, arg3) {
-                    positionTip(top,left,width, height);
+                error: function (arg1, errorType, arg3) {
+                    positionTip(top, left, width, height);
                     $tip.html('ajax error.');
                 }
-                ,success: function(data, status, arg3) {
-                    positionTip(top,left,width, height);
+                , success: function (data, status, arg3) {
+                    positionTip(top, left, width, height);
                     $('#wikitip').html(data);
                 }
             });
         });
         $wikiLinks.on("mouseleave", function () {
-            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+            if (typeof hideTipTimeout != "undefined") {
+                clearTimeout(hideTipTimeout);
+            }
             hideTipTimeout = setTimeout(function () {
                 $('#wikitip').hide();
                 $("#wikitip").html("");
@@ -807,18 +860,22 @@ var hideTipTimeout;
             }, 1000);
         });
         $("#wikitip").on("mouseenter", function () {
-            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
+            if (typeof hideTipTimeout != "undefined") {
+                clearTimeout(hideTipTimeout);
+            }
         });
         $("#wikitip").on("mouseleave", function () {
-            if(typeof hideTipTimeout != "undefined"){ clearTimeout(hideTipTimeout);}
-           hideTipTimeout = setTimeout(function () {
+            if (typeof hideTipTimeout != "undefined") {
+                clearTimeout(hideTipTimeout);
+            }
+            hideTipTimeout = setTimeout(function () {
                 $('#wikitip').hide();
                 $("#wikitip").html("");
                 $("#wikitip").css({top: "", left: ""});
             }, 1000);
         });
-        $(document).on('click', function(e){
-            if($(e.target).is("a[rel=tip], #wikitip") || $(e.target).closest("a[rel=tip], #wikitip").length == 1) return;
+        $(document).on('click', function (e) {
+            if ($(e.target).is("a[rel=tip], #wikitip") || $(e.target).closest("a[rel=tip], #wikitip").length == 1) return;
             $('#wikitip').hide();
             $("#wikitip").html("");
             $("#wikitip").css({top: "", left: ""});
@@ -826,10 +883,10 @@ var hideTipTimeout;
         var positionTip = function (top, left, width, height) {
             console.log(top);
             $('#wikitip').show();
-            var w = $("#wikitip").outerWidth()/2;
-            var l = left - w + width/2 > 0? left - w + width/2 : 0;
+            var w = $("#wikitip").outerWidth() / 2;
+            var l = left - w + width / 2 > 0 ? left - w + width / 2 : 0;
             var t = top + height + 12;
-            $("#wikitip").css({"left" : l, "top" : t});
+            $("#wikitip").css({"left": l, "top": t});
         }
     };
 
@@ -838,8 +895,8 @@ var hideTipTimeout;
     //     $("#news-text-length").text("Количество символов: "+nil);
     // };
 
-   /* Initialize
-    * ------------------------------------------------------ */
+    /* Initialize
+     * ------------------------------------------------------ */
     (function ssInit() {
         clMasonryFolio();
         clPreloader();
@@ -854,14 +911,15 @@ var hideTipTimeout;
         clAOS();
         //clAjaxChimp();
         clBackToTop();
-       // clGoogleMap();
+        // clGoogleMap();
         loadMoreNews();
         infiniteScroll();
         reply();
         wikiTip();
-      // fromUTC();
-      //  newsItemLength();
+        loadMoreSmall();
+        // fromUTC();
+        //  newsItemLength();
     })();
-        
+
 })(jQuery);
 

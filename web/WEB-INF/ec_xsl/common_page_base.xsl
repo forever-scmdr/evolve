@@ -233,6 +233,9 @@
 					</div>
 				</div>
 			</div>
+			<a href="//orphus.ru" id="orphus" target="_blank">
+				<img alt="Система Orphus" src="/orphus/orphus.gif" border="0" width="88" height="31"/>
+			</a>
 		</footer>
 		<div id="wikitip"></div>
 	</xsl:template>
@@ -259,9 +262,10 @@
 	<xsl:template name="COMMON_SCRIPTS">
 		<script src="js/plugins.js"></script>
 		<!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
-		<script src="js/main.js"></script>
+		<script src="js/main.js?version=1"></script>
 
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
+		<script type="text/javascript" src="/orphus/orphus.js"></script>
 	</xsl:template>
 
 

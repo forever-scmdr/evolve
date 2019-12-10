@@ -12,10 +12,10 @@
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 	<xsl:variable name="title" select="if(page/@name = 'search') then concat('Поиск по запросу ', page/variables/q) else concat('Новости и статьи по тегу ', page/variables/tag)" />
 
-	<xsl:variable name="news_items" select="/page/news_item"/>
+	<xsl:variable name="news_items" select="/page/news_item | page/news_wrap/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 
-	<xsl:variable name="small_news" select="page/small_news_item"/>
+	<xsl:variable name="small_news" select="page/small_news_item | page/small_news/small_news_item"/>
 	<xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" />
 	<xsl:variable name="h1_2" select="if(page/@name = 'search') then concat('Статьи по запросу: ',$qot,page/variables/q,$qot) else  concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)" />
 
@@ -30,12 +30,45 @@
 					</div>
 				</div>
 				<div class="row masonry-wrap">
-					<div class="masonry">
+					<div class="" id="small-news">
 						<xsl:for-each select="$small_news">
 							<xsl:sort select="number(date/@millis)" order="descending"/>
-							<xsl:apply-templates select="." mode="masonry"/>
+							<div class="col-four tab-full small-news-item" data-aos="fade-up">
+								<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
+								<p class="date" data-utc="{date/@millis}">
+									<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
+									<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
+								</p>
+								<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
+									<a href="{show_page}">
+										<xsl:value-of select="name"/>
+									</a>
+								</p>
+							</div>
+
+							<xsl:variable name="pos" select="position()"/>
+							<xsl:if test="$pos mod 3 = 0">
+								<div class="three-col-border"></div>
+							</xsl:if>
 						</xsl:for-each>
 					</div>
+					<xsl:if test="page/small_news/small_news_item_pages">
+						<xsl:variable name="last" select="count(page/small_news/small_news_item_pages/page)"/>
+						<xsl:variable select="number(page/small_news/small_news_item_pages/page[@current = 'current']/number)" name="z"/>
+						<div class="row">
+							<div class="col-full">
+								<nav class="pgn">
+									<ul>
+										<li id="load_more">
+											<a href="{page/small_page_link}&amp;page={$z+1}" rel="#small-news" data-page="{$z}/{$last}" class="pgn__num load-more-small-link">
+												Загрузить еще
+											</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</xsl:if>
 				</div>
 				<div style="margin-bottom: 2.5rem;"></div>
 			</xsl:if>
@@ -55,6 +88,23 @@
 							<xsl:apply-templates select="." mode="masonry"/>
 						</xsl:for-each>
 					</div>
+					<xsl:if test="page/news_wrap/news_item_pages">
+						<xsl:variable name="last" select="count(page/news_wrap/news_item_pages/page)"/>
+						<xsl:variable select="number(page/news_wrap/news_item_pages/page[@current = 'current']/number)" name="z"/>
+						<div class="row">
+							<div class="col-full">
+								<nav class="pgn">
+									<ul>
+										<li id="load_more">
+											<a href="{page/page_link}&amp;page={$z+1}" rel="#add-content" data-page="{$z}/{$last}" class="pgn__num load-more-small-link">
+												Загрузить еще
+											</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</xsl:if>
 				</div>
 			</xsl:if>
 		</section>
