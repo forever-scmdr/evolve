@@ -39,6 +39,7 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
@@ -316,6 +317,26 @@
 			<var name="minqty" value=""/>
 		</link>
 		<include name="COMMON"/>
+	</page>
+
+
+	<page name="search_ajax" template="search_ajax">
+		<request>
+			<var name="q"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="5" compare="EVERY">
+					<var var="q"/>
+				</fulltext>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+		</link>
 	</page>
 
 

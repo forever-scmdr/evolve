@@ -44,8 +44,9 @@
 						</div>
 						<div class="search">
 							<form action="{page/search_link[1]}" method="post">
-								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" autocomplete="off" id="q-ipt"/>
 								<input type="submit" value="Найти"/>
+								<div id="search-result"></div>
 							</form>
 							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
 							<!-- <form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
@@ -188,6 +189,7 @@
 				<div class="search-container">
 					<form action="{page/search_link[1]}" method="post">
 						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+						<div id="search-result"></div>
 					</form>
 				</div>
 			</div>
@@ -827,42 +829,79 @@
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
-					$(document).ready(function(){
-					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-						type: 'image',
-						closeOnContentClick: true,
-						mainClass: 'mfp-img-mobile',
-						image: {
-							verticalFit: true
-						}
-					});
-					$(".footer-placeholder").height($(".footer").outerHeight()+40);
-					$('.slick-slider').slick({
-					infinite: true,
-					slidesToShow: 6,
-					slidesToScroll: 6,
-					dots: true,
-					arrows: false,
-					responsive: [
-					{
-					breakpoint: 767,
-					settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-					infinite: true,
-					dots: true
-					}
-					}
-					]
+					$(document).ready(function() {
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+							type: 'image',
+							closeOnContentClick: true,
+							mainClass: 'mfp-img-mobile',
+							image: {
+								verticalFit: true
+							}
+						});
+						$(".footer-placeholder").height($(".footer").outerHeight()+40);
+						$('.slick-slider').slick({
+							infinite: true,
+							slidesToShow: 6,
+							slidesToScroll: 6,
+							dots: true,
+							arrows: false,
+							responsive: [
+								{
+									breakpoint: 767,
+									settings: {
+										slidesToShow: 2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									}
+								}
+							]
+						});
+
+						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+
+						$("#q-ipt").keyup(function() {
+							searchAjax(this);
+						});
+
+						$(document).on('click', 'body', function(e){
+							var $trg = $(e.target);
+							if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+							$('#search-result').hide();
+							$('#search-result').html('');
+						});
 					});
 
-					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-					});
 
 					$(window).resize(function(){
-					$(".footer-placeholder").height($(".footer").outerHeight()+40);
+						$(".footer-placeholder").height($(".footer").outerHeight()+40);
 					});
+
+					function searchAjax(el) {
+						var $el = $(el);
+						<!-- console.log($el); -->
+						var val = $el.val();
+						<xsl:text disable-output-escaping="yes">
+						if (val.length &gt; 2){
+							var $form = $("&lt;form&gt;",
+						</xsl:text>
+								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
+							);
+							<xsl:text disable-output-escaping="yes">
+								var $ipt2 = $("&lt;input&gt;",
+							</xsl:text>
+							 {'type' : 'text', 'value': val, 'name' : 'q'});
+
+							 $ipt2.val(val);
+
+							$form.append($ipt2);
+							$('body').append($form);
+							postForm('tmp-form', 'search-result');
+							$('#tmp-form').remove();
+							$('#search-result').show();
+						}
+					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:call-template name="USER_SCRIPTS"/>
