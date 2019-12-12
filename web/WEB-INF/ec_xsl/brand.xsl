@@ -82,4 +82,8 @@
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
 
+	<xsl:template name="EXTRA_SCRIPTS">
+		<xsl:call-template name="CART_SCRIPT"/>
+	</xsl:template>
+
 </xsl:stylesheet>
