@@ -5,8 +5,7 @@ var mceSettings = {
 	//	theme : "modern",
 		skin : "lightgray"
 		,content_css : [
-				"css/text-style.css",
-				"font-awesome-4.6.3/css/font-awesome.min.css" ]
+				"css/text-style.css?v=2"]
 		,plugins : [
 				'advlist autolink lists link image charmap print preview anchor textcolor',
 				'searchreplace visualblocks code fullscreen',
@@ -18,6 +17,7 @@ var mceSettings = {
 		style_formats_merge : true,
 		style_formats : [
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+			{title : 'Желтый фон', selector : 'p', classes : 'yellow-bg', wrapper: false, merge_siblings : true},
 			{
 			title : 'Теги HTML-5',
 			items : [ {
@@ -75,6 +75,7 @@ var mceSettings = {
 		style_formats_merge : true,
 		style_formats : [
 		{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+		{title : 'Желтый фон', selector : 'div', classes : 'yellow-bg', wrapper : true},
 		{
 			title : 'Теги HTML-5',
 			items : [ {

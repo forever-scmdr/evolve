@@ -1,0 +1,11 @@
+a[rel=tip] {
+    text-decoration-style: dashed;
+}
+
+.yellow-bg {
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    border: 1px solid #d09959;
+    background: rgba(255, 255, 0, 0.2);
+    margin: 1rem 0;
+}
