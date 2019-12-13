@@ -865,9 +865,11 @@
 							searchAjax(this);
 						});
 
-						$(document).on('click', 'body', function(e){
+						$(document).on('click', 'body', function(e) {
 							var $trg = $(e.target);
-							if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+							<xsl:text disable-output-escaping="yes">
+							if($trg.closest('#search-result').length &gt; 0 || $trg.is('#search-result') || $trg.is('input')) return;
+							</xsl:text>
 							$('#search-result').hide();
 							$('#search-result').html('');
 						});
