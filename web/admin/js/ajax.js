@@ -109,13 +109,16 @@ function postForm(form, lockElementIds, additionalHandling) {
 			unlock(lockElementIds);
 		},
 		success: function(data, status, arg3) {
+			//console.log(data);
 			processResult(data, additionalHandling, lockElementIds, status, arg3);
 		}
 	});
 	// Блокировка частей
 	lock(lockElementIds);
 }
-function postFormView(form, lockElementIds, additionalHandling) {
+function postFormView(form, lockElementIds) {
+    //console.log('postFormView called');
+   // console.log('lockElementIds: '+lockElementIds);
 	if (typeof form == 'string')
 		form = $('#' + form);
 	form.ajaxSubmit({
@@ -126,6 +129,8 @@ function postFormView(form, lockElementIds, additionalHandling) {
 		},
 		success: function(data, status, arg3) {
 			$("#subitems").html(data);
+			//console.log(data);
+            unlock(lockElementIds);
 		}
 	});
 	// Блокировка частей
@@ -163,8 +168,11 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	// Разблокировка частей
 	unlock(lockElementIds);
 	// Вызов дополнительной обработки и передача дополнительных данных
-	if (typeof additionalHandling == 'function')
+	if (typeof additionalHandling == 'function') {
+		// alert("WTF?");
 		additionalHandling(argData);
+	}
+
 }
 /**
  * Добавить переменную к указанному урлу

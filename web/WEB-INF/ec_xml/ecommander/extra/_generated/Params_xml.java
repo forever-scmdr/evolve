@@ -8,7 +8,8 @@ public class Params_xml
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "params_xml";
+    public final static String _NAME = "params_xml";
+    public final static String XML = "xml";
 
     private Params_xml(Item item) {
         super(item);
@@ -18,7 +19,7 @@ public class Params_xml
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'params_xml' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +27,7 @@ public class Params_xml
     }
 
     public static Params_xml newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_xml(String value) {

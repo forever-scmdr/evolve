@@ -4,15 +4,6 @@
 		<value>да</value>
 		<value>нет</value>
 	</domain>
-	<domain name="news_tags" view-type="combobox">
-		<value>Новости клуба</value>
-		<value>Беларусь</value>
-		<value>Международные</value>
-	</domain>
-	<domain name="event_tags" view-type="combobox">
-		<value>Игры</value>
-		<value>Видео</value>
-	</domain>
 	<domain name="0-1" view-type="combobox">
 		<value>0</value>
 		<value>1</value>
@@ -21,9 +12,10 @@
 		<value>tags</value>
 		<value>pics</value>
 	</domain>
-	<domain name="change_status" view-type="combobox">
-		<value>скрыть</value>
-		<value>удалить</value>
-		<value>раскрыть</value>
+	<domain name="module_place" view-type="combobox">
+		<value>head_start</value>
+		<value>head_end</value>
+		<value>body_start</value>
+		<value>body_end</value>
 	</domain>
 </domains>

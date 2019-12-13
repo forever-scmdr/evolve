@@ -1,39 +1,44 @@
 <common_count>1</common_count>
 <common type="common" id="57984" path="files/579/84f/" key="na_vseh_stranitsah" keypath="na_vseh_stranitsah">
-<show_window>400</show_window>
-<discount_last>600</discount_last>
-<discount>0,03</discount>
-<discount_text>&lt;h4 id=&quot;p247553_5&quot; class=&quot;sfst&quot; style=&quot;text-align: center;&quot; title=&quot;Кликните мышкой для выделения&quot;&gt;&amp;nbsp;&lt;/h4&gt;
-&lt;h4 class=&quot;sfst&quot; style=&quot;text-align: center;&quot; title=&quot;Кликните мышкой для выделения&quot;&gt;&lt;strong&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Вам предоставляется дополнительная скидка 3% на все товары!&lt;/span&gt;&lt;/strong&gt;&lt;/h4&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;Если вы сделаете заказ через корзину в течение &lt;span id=&quot;dsc-timer-1&quot; style=&quot;color: #ff0000;&quot;&gt;время до окрочания&lt;/span&gt;, то получите скидку.&lt;/p&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;Цены на сайте будут пересчитаны с учетом Скидки.&lt;/p&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;*скидка предоставляется только при оплате наличными&lt;/p&gt;</discount_text>
-<top>&lt;p&gt;+375 29 566 61 16&lt;/p&gt;
-&lt;p&gt;+375 29 655&amp;nbsp; 53 68&lt;/p&gt;</top>
-<left>&lt;div class=&quot;contacts&quot;&gt;&amp;nbsp;&lt;/div&gt;
-&lt;div class=&quot;contacts&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;Заказ и консультация&lt;/span&gt;&lt;/strong&gt;
-&lt;p&gt;&amp;nbsp;+375 29 566 61 16&lt;/p&gt;
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;Email:metabobelarus@gmail.com&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;contacts/&quot; rel=&quot;nofollow&quot;&gt;Схема проезда к офису&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;</left>
-<link_text>АКЦИЯ! АККУМУЛЯТОРНЫЙ ИНСТРУМЕНТ ПО ЦЕНЕ СЕТЕВОГО!</link_text>
-<link_link>http://www.metabo-promo.by/</link_link>
-<bottom>&lt;p&gt;ИП Щербич Петр Игоревич&lt;br /&gt;223050 Минский р-н.,аг.Колодищи, ул. Узлесная, д.140, кв 2&lt;br /&gt;Свидетельство № 691797960 от 22.09.2015&lt;br /&gt;Дата включения в торговый реестр: 07.07.2018&lt;br /&gt;Регистрационный номер:420497&lt;/p&gt;</bottom>
-<bottom_address>&lt;div class=&quot;block address&quot;&gt;
-&lt;p&gt;ИП Щербич Петр Игоревич&lt;br /&gt;223050 Минский р-н.,аг.Колодищи, ул. Узлесная, д.140, кв 2&lt;br /&gt;Свидетельство № 691797960 от 22.09.2015&lt;br /&gt;Дата включения в торговый реестр: 07.07.2018&lt;br /&gt;Регистрационный номер:420497&lt;/p&gt;
-&lt;p&gt;Режим работы:&lt;br /&gt; Пн-Пт 09.00-20.00&lt;br /&gt;e-mail:&amp;nbsp;Email:metabobelarus@gmail.com&amp;nbsp;&lt;/p&gt;
-&lt;/div&gt;</bottom_address>
-<bottom_social>&lt;p&gt;&lt;a href=&quot;https://www.facebook.com/metabobel/&quot; target=&quot;_blank&quot;&gt;&lt;img style=&quot;height: 24px;&quot; src=&quot;img/fblogo.png&quot; /&gt;&lt;/a&gt;&amp;nbsp; &lt;a href=&quot;https://www.instagram.com/metabobelarus/&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;files/708/03f/inst.png&quot; alt=&quot;instagram&quot; width=&quot;24&quot; height=&quot;24&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</bottom_social>
-	<delivery_count>1</delivery_count>
-	<delivery type="delivery" id="106895" path="files/106/895f/" key="dostavka" keypath="dostavka">
-<option>самовывоз</option>
-<option>Курьером</option>
-	</delivery>
+<top>&lt;div class=&quot;top-stripe__phone&quot;&gt;&lt;img src=&quot;img/velcom_logo.svg&quot; /&gt;(+375 17)&amp;nbsp;264-51-34;&lt;/div&gt;
+&lt;div class=&quot;top-stripe__phone&quot;&gt;&lt;img src=&quot;img/velcom_logo.svg&quot; /&gt;(+375 17)&amp;nbsp;264-56-49;&lt;/div&gt;
+&lt;div class=&quot;top-stripe__phone&quot;&gt;&lt;img src=&quot;img/velcom_logo.svg&quot; /&gt;(+375 29)&amp;nbsp;569-71-48;&lt;/div&gt;
+&lt;div class=&quot;top-stripe__phone&quot;&gt;&lt;img src=&quot;img/velcom_logo.svg&quot; /&gt;(+375 29)&amp;nbsp;332-94-15;&lt;/div&gt;
+&lt;div class=&quot;top-stripe__phone&quot;&gt;&lt;img src=&quot;img/velcom_logo.svg&quot; /&gt;(+375 29)&amp;nbsp;765-20-21;&lt;/div&gt;
+&lt;div class=&quot;top-stripe__address&quot;&gt;&lt;strong&gt;E-mail:&lt;/strong&gt;&amp;nbsp;forintek@forintek-bel.by&lt;/div&gt;</top>
+<left>&lt;p&gt;&lt;a title=&quot;Общий каталог в формате PDF&quot; href=&quot;katalog/forintek-katalog2019.pdf&quot; target=&quot;_blank&quot;&gt;Общий каталог в формате PDF&lt;/a&gt;&lt;/p&gt;</left>
+<link_link>/catalog/</link_link>
+	<block_array_count>1</block_array_count>
+	<footer type="footer" id="375562" path="files/375/562f/" key="futer_niz" keypath="futer_niz">
+		<block_count>4</block_count>
+		<block type="block" id="375563" path="files/375/563f/" key="1" keypath="1">
+<header>© forintek-bel.by, 2019</header>
+<text>&lt;div class=&quot;forever&quot;&gt;&lt;a href=&quot;http://forever.by&quot; target=&quot;_blank&quot;&gt;Разработка сайта студия веб-дизайна Forever&lt;/a&gt;&lt;/div&gt;
+&lt;div class=&quot;rating&quot;&gt;
+&lt;div class=&quot;stars&quot;&gt;&lt;img src=&quot;img/star.svg&quot; alt=&quot;&quot; /&gt; &lt;img src=&quot;img/star.svg&quot; alt=&quot;&quot; /&gt; &lt;img src=&quot;img/star.svg&quot; alt=&quot;&quot; /&gt; &lt;img src=&quot;img/star.svg&quot; alt=&quot;&quot; /&gt; &lt;img src=&quot;img/star-no.svg&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;
+&lt;p&gt;Наш рейтинг: 4,2 (188 голосов) &lt;br /&gt; на основе &lt;a style=&quot;display: inline;&quot; href=&quot;https://www.google.com&quot;&gt;отзывов&lt;/a&gt; Google&lt;/p&gt;
+&lt;/div&gt;</text>
+		</block>
+		<block type="block" id="375564" path="files/375/564f/" key="zakaz_i_konstultatsiya" keypath="zakaz_i_konstultatsiya">
+<header>Заказ и констультация</header>
+<text>&lt;p&gt;(+375 17) 264-51-34;&lt;br /&gt; (+375 17) 264-56-49;&lt;br /&gt; (+375 29) 569-71-48;&lt;br /&gt; (+375 29) 332-94-15;&lt;br /&gt; (+375 29) 765-20-21;&lt;/p&gt;
+&lt;p&gt;email: &lt;a href=&quot;mailto:forintek@forintek-bel.by&quot;&gt;forintek@forintek-bel.by&lt;/a&gt;&lt;/p&gt;</text>
+		</block>
+		<block type="block" id="375565" path="files/375/565f/" key="kontakty" keypath="kontakty">
+<header>Адрес</header>
+<text>&lt;p&gt;Республика Беларусь, &amp;nbsp;г. Минск, ул. Руссиянова, д. 9, офис 3&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Время&amp;nbsp;работы&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Пн - Чт с 9.00 до 17.30&lt;br /&gt; Пт с 9.00 до 16:00&lt;/p&gt;</text>
+		</block>
+		<block type="block" id="375566" path="files/375/566f/" key="zakaz_i_konstultatsiya" keypath="zakaz_i_konstultatsiya">
+<header>Сотрудничество</header>
+<text>&lt;p&gt;Работаем только с юридическими лицами и индивидуальными предпринимателями по безналичному расчёту&lt;/p&gt;</text>
+		</block>
+	</footer>
+	<catalog_texts_count>1</catalog_texts_count>
+	<catalog_texts type="catalog_texts" id="339944" path="files/339/944f/" key="obschie_teksty_v_kataloge" keypath="obschie_teksty_v_kataloge">
+<payment>&lt;p&gt;1&lt;/p&gt;</payment>
+	</catalog_texts>
 	<payment_count>1</payment_count>
-	<payment type="payment" id="106896" path="files/106/896f/" key="oplata" keypath="oplata">
-<option>Наличными</option>
-<option>Через ЕРИП</option>
-<option>По карте &quot;Халва&quot; (стоимость без скидки)</option>
-	</payment>
+	<delivery_count>1</delivery_count>
 </common>

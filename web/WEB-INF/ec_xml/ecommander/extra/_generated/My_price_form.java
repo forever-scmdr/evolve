@@ -8,7 +8,14 @@ public class My_price_form
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "my_price_form";
+    public final static String _NAME = "my_price_form";
+    public final static String NAME = "name";
+    public final static String PHONE = "phone";
+    public final static String EMAIL = "email";
+    public final static String PRODUCT_CODE = "product_code";
+    public final static String PRODUCT_NAME = "product_name";
+    public final static String PRICE = "price";
+    public final static String MESSAGE = "message";
 
     private My_price_form(Item item) {
         super(item);
@@ -18,7 +25,7 @@ public class My_price_form
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'my_price_form' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +33,7 @@ public class My_price_form
     }
 
     public static My_price_form newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

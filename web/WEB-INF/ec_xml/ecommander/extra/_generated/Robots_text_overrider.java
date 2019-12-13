@@ -8,7 +8,8 @@ public class Robots_text_overrider
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "robots_text_overrider";
+    public final static String _NAME = "robots_text_overrider";
+    public final static String FILE_CONTENT = "file_content";
 
     private Robots_text_overrider(Item item) {
         super(item);
@@ -18,7 +19,7 @@ public class Robots_text_overrider
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'robots_text_overrider' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +27,7 @@ public class Robots_text_overrider
     }
 
     public static Robots_text_overrider newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_file_content(String value) {

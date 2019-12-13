@@ -10,7 +10,16 @@ public class Section
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "section";
+    public final static String _NAME = "section";
+    public final static String NAME = "name";
+    public final static String ICON = "icon";
+    public final static String SHOW_SUBS = "show_subs";
+    public final static String SUB_VIEW = "sub_view";
+    public final static String SHOW_DEVICES = "show_devices";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String PARENT_ID = "parent_id";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
         super(item);
@@ -20,7 +29,7 @@ public class Section
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'section' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +37,7 @@ public class Section
     }
 
     public static Section newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {
@@ -45,6 +54,78 @@ public class Section
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_icon(File value) {
+        setValue("icon", value);
+    }
+
+    public File get_icon() {
+        return getFileValue("icon", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_icon(File value) {
+        return containsValue("icon", value);
+    }
+
+    public void set_show_subs(Byte value) {
+        setValue("show_subs", value);
+    }
+
+    public void setUI_show_subs(String value)
+        throws Exception
+    {
+        setValueUI("show_subs", value);
+    }
+
+    public Byte get_show_subs() {
+        return getByteValue("show_subs");
+    }
+
+    public Byte getDefault_show_subs(Byte defaultVal) {
+        return getByteValue("show_subs", defaultVal);
+    }
+
+    public boolean contains_show_subs(Byte value) {
+        return containsValue("show_subs", value);
+    }
+
+    public void set_sub_view(String value) {
+        setValue("sub_view", value);
+    }
+
+    public String get_sub_view() {
+        return getStringValue("sub_view");
+    }
+
+    public String getDefault_sub_view(String defaultVal) {
+        return getStringValue("sub_view", defaultVal);
+    }
+
+    public boolean contains_sub_view(String value) {
+        return containsValue("sub_view", value);
+    }
+
+    public void set_show_devices(Byte value) {
+        setValue("show_devices", value);
+    }
+
+    public void setUI_show_devices(String value)
+        throws Exception
+    {
+        setValueUI("show_devices", value);
+    }
+
+    public Byte get_show_devices() {
+        return getByteValue("show_devices");
+    }
+
+    public Byte getDefault_show_devices(Byte defaultVal) {
+        return getByteValue("show_devices", defaultVal);
+    }
+
+    public boolean contains_show_devices(Byte value) {
+        return containsValue("show_devices", value);
     }
 
     public void set_category_id(String value) {
@@ -89,22 +170,6 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
-    }
-
-    public void set_assoc_codes(String value) {
-        setValue("assoc_codes", value);
-    }
-
-    public String get_assoc_codes() {
-        return getStringValue("assoc_codes");
-    }
-
-    public String getDefault_assoc_codes(String defaultVal) {
-        return getStringValue("assoc_codes", defaultVal);
-    }
-
-    public boolean contains_assoc_codes(String value) {
-        return containsValue("assoc_codes", value);
     }
 
 }

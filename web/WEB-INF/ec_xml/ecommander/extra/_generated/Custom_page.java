@@ -11,7 +11,13 @@ public class Custom_page
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "custom_page";
+    public final static String _NAME = "custom_page";
+    public final static String HEADER = "header";
+    public final static String MAIN_PIC = "main_pic";
+    public final static String SHORT = "short";
+    public final static String TEXT = "text";
+    public final static String TEXT_PIC = "text_pic";
+    public final static String IN_MAIN_MENU = "in_main_menu";
 
     private Custom_page(Item item) {
         super(item);
@@ -21,7 +27,7 @@ public class Custom_page
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'custom_page' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +35,7 @@ public class Custom_page
     }
 
     public static Custom_page newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_header(String value) {
@@ -48,20 +54,32 @@ public class Custom_page
         return containsValue("header", value);
     }
 
-    public void set_in_main_menu(String value) {
-        setValue("in_main_menu", value);
+    public void set_main_pic(File value) {
+        setValue("main_pic", value);
     }
 
-    public String get_in_main_menu() {
-        return getStringValue("in_main_menu");
+    public File get_main_pic() {
+        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
     }
 
-    public String getDefault_in_main_menu(String defaultVal) {
-        return getStringValue("in_main_menu", defaultVal);
+    public boolean contains_main_pic(File value) {
+        return containsValue("main_pic", value);
     }
 
-    public boolean contains_in_main_menu(String value) {
-        return containsValue("in_main_menu", value);
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_text(String value) {
@@ -94,6 +112,22 @@ public class Custom_page
 
     public boolean contains_text_pic(File value) {
         return containsValue("text_pic", value);
+    }
+
+    public void set_in_main_menu(String value) {
+        setValue("in_main_menu", value);
+    }
+
+    public String get_in_main_menu() {
+        return getStringValue("in_main_menu");
+    }
+
+    public String getDefault_in_main_menu(String defaultVal) {
+        return getStringValue("in_main_menu", defaultVal);
+    }
+
+    public boolean contains_in_main_menu(String value) {
+        return containsValue("in_main_menu", value);
     }
 
 }

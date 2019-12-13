@@ -8,7 +8,7 @@ public class Modules
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "modules";
+    public final static String _NAME = "modules";
 
     private Modules(Item item) {
         super(item);
@@ -18,7 +18,7 @@ public class Modules
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'modules' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +26,7 @@ public class Modules
     }
 
     public static Modules newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
 }

@@ -11,7 +11,8 @@ public class Gallery
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "gallery";
+    public final static String _NAME = "gallery";
+    public final static String GALLERY = "gallery";
 
     private Gallery(Item item) {
         super(item);
@@ -21,7 +22,7 @@ public class Gallery
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'gallery' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +30,7 @@ public class Gallery
     }
 
     public static Gallery newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void add_gallery(File value) {

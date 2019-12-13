@@ -1,0 +1,26 @@
+#############################################
+# 				testo.ru
+#############################################
+
+#
+# Initial urls
+#
+
+#https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam=
+
+#https://www.tme.eu/ru/
+#https:\/\/www\.tme\.eu\/ru\/katalog\/.+    -   https://www.tme.eu/ru/katalog/poluprovodniki_112140/
+
+
+#
+# Pages to parse
+#
+
+#https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?   section.xsl
+#https://www\.metabo\.com/ru/index\.php\?cl=search(&amp;)?&?&order=?(&amp;)?&?&pgNr=1   section.xsl
+
+#.*metabo\.com/ru/ru/(prinadlezhnosti|instrumenty).*\.html.*     product.xsl     https://www.metabo.com/ru/ru/instrumenty/akkumuljatornye-instrumenty/akkumuljatornye-dreli/be-18-ltx-6-600261890-akkumuljatornaja-drel.html?listtype=search
+
+#https:\/\/www\.tme\.eu\/ru\/details\/(?!print\/).+    product.xsl     https://www.tme.eu/ru/details/a10-lime-n8gb/odnoplatnye-kompiutery/olimex/a10-olinuxino-lime-n8gb/
+
+https?:\/\/(www\.)?shop\.dadget\.ru\/catalog.*     dadget.xsl    https://shop.dadget.ru/catalog/parents/3d_start/

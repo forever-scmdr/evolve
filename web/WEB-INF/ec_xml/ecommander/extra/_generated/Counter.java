@@ -8,7 +8,8 @@ public class Counter
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "counter";
+    public final static String _NAME = "counter";
+    public final static String COUNT = "count";
 
     private Counter(Item item) {
         super(item);
@@ -18,7 +19,7 @@ public class Counter
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'counter' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +27,7 @@ public class Counter
     }
 
     public static Counter newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_count(Integer value) {

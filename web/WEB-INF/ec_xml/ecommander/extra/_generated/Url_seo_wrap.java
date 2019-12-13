@@ -8,7 +8,8 @@ public class Url_seo_wrap
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "url_seo_wrap";
+    public final static String _NAME = "url_seo_wrap";
+    public final static String MAIN_HOST = "main_host";
 
     private Url_seo_wrap(Item item) {
         super(item);
@@ -18,7 +19,7 @@ public class Url_seo_wrap
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'url_seo_wrap' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +27,7 @@ public class Url_seo_wrap
     }
 
     public static Url_seo_wrap newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_main_host(String value) {

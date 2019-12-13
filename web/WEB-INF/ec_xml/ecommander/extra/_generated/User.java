@@ -8,7 +8,12 @@ public class User
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "user";
+    public final static String _NAME = "user";
+    public final static String EMAIL = "email";
+    public final static String PHONE = "phone";
+    public final static String PASSWORD = "password";
+    public final static String REGISTERED = "registered";
+    public final static String PAYMENT = "payment";
 
     private User(Item item) {
         super(item);
@@ -18,7 +23,7 @@ public class User
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'user' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +31,7 @@ public class User
     }
 
     public static User newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_email(String value) {
@@ -45,6 +50,22 @@ public class User
         return containsValue("email", value);
     }
 
+    public void set_phone(String value) {
+        setValue("phone", value);
+    }
+
+    public String get_phone() {
+        return getStringValue("phone");
+    }
+
+    public String getDefault_phone(String defaultVal) {
+        return getStringValue("phone", defaultVal);
+    }
+
+    public boolean contains_phone(String value) {
+        return containsValue("phone", value);
+    }
+
     public void set_password(String value) {
         setValue("password", value);
     }
@@ -59,6 +80,44 @@ public class User
 
     public boolean contains_password(String value) {
         return containsValue("password", value);
+    }
+
+    public void set_registered(Byte value) {
+        setValue("registered", value);
+    }
+
+    public void setUI_registered(String value)
+        throws Exception
+    {
+        setValueUI("registered", value);
+    }
+
+    public Byte get_registered() {
+        return getByteValue("registered");
+    }
+
+    public Byte getDefault_registered(Byte defaultVal) {
+        return getByteValue("registered", defaultVal);
+    }
+
+    public boolean contains_registered(Byte value) {
+        return containsValue("registered", value);
+    }
+
+    public void set_payment(String value) {
+        setValue("payment", value);
+    }
+
+    public String get_payment() {
+        return getStringValue("payment");
+    }
+
+    public String getDefault_payment(String defaultVal) {
+        return getStringValue("payment", defaultVal);
+    }
+
+    public boolean contains_payment(String value) {
+        return containsValue("payment", value);
     }
 
 }

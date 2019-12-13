@@ -9,7 +9,13 @@ public class Bought
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "bought";
+    public final static String _NAME = "bought";
+    public final static String NAME = "name";
+    public final static String CODE = "code";
+    public final static String QTY = "qty";
+    public final static String PRICE = "price";
+    public final static String NOT_AVAILABLE = "not_available";
+    public final static String SUM = "sum";
 
     private Bought(Item item) {
         super(item);
@@ -19,7 +25,7 @@ public class Bought
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'bought' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +33,7 @@ public class Bought
     }
 
     public static Bought newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {
@@ -104,6 +110,28 @@ public class Bought
 
     public boolean contains_price(BigDecimal value) {
         return containsValue("price", value);
+    }
+
+    public void set_not_available(Byte value) {
+        setValue("not_available", value);
+    }
+
+    public void setUI_not_available(String value)
+        throws Exception
+    {
+        setValueUI("not_available", value);
+    }
+
+    public Byte get_not_available() {
+        return getByteValue("not_available");
+    }
+
+    public Byte getDefault_not_available(Byte defaultVal) {
+        return getByteValue("not_available", defaultVal);
+    }
+
+    public boolean contains_not_available(Byte value) {
+        return containsValue("not_available", value);
     }
 
     public void set_sum(BigDecimal value) {

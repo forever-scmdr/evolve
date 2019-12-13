@@ -11,7 +11,10 @@ public class Product_extra
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "product_extra";
+    public final static String _NAME = "product_extra";
+    public final static String NAME = "name";
+    public final static String TEXT = "text";
+    public final static String TEXT_PICS = "text_pics";
 
     private Product_extra(Item item) {
         super(item);
@@ -21,7 +24,7 @@ public class Product_extra
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'product_extra' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -29,7 +32,7 @@ public class Product_extra
     }
 
     public static Product_extra newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

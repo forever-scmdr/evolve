@@ -1,0 +1,6 @@
+<news_count>0</news_count>
+<news type="news" id="71028" path="files/710/28f/" key="novosti" keypath="novosti">
+<name>Новости</name>
+<on_main>да</on_main>
+	<show_page>/novosti/</show_page>
+</news>

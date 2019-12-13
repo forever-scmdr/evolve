@@ -44,11 +44,11 @@
 				</tr>
 				<tr>
 					<td>Создано разделов (классов):</td>
-					<td class="error"><xsl:value-of select="/page/sections-created"/></td>
+					<td class="error"><xsl:value-of select="/page/to_process"/></td>
 				</tr>
 				<tr>
 					<td>Обработано товаров:</td>
-					<td class="error"><xsl:value-of select="/page/products-created"/></td>
+					<td class="error"><xsl:value-of select="/page/processed"/></td>
 				</tr>
 				<tr>
 					<td>Проиндексировано товаров:</td>

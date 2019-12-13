@@ -1,0 +1,47 @@
+<banner_section_count>0</banner_section_count>
+<banner_section type="banner_section" id="148138" path="files/148/138f/" key="dva_bannera" keypath="dva_bannera">
+<name>Баннеры</name>
+	<banner_count>10</banner_count>
+	<banner type="banner" id="148139" path="files/148/139f/" key="zagolovog_bannera" keypath="zagolovog_bannera">
+<header>Каплеструйные принтеры (Weber)</header>
+<image_pic size="65477" created="13.09.2019 12:33" extenstion="jpg" width="360" height="360">main_weber_printer.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="375507" path="files/375/507f/" key="tovary_dlya_detei" keypath="tovary_dlya_detei">
+<header>Термотрансферные принтеры (Allen)</header>
+<image_pic size="53091" created="13.09.2019 12:33" extenstion="jpg" width="360" height="360">main_allen_printer.jpg</image_pic>
+<link>http://alimarket.must.by/zdorovaya_gizn/</link>
+	</banner>
+	<banner type="banner" id="375508" path="files/375/508f/" key="tovary_dlya_detei" keypath="tovary_dlya_detei">
+<header>Аппликаторы этикеток  (Novexx Solutions)</header>
+<image_pic width="360" size="71858" created="13.09.2019 12:36" extenstion="jpg" height="360">main_novexx_applicator.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="375509" path="files/375/509f/" key="tovary_dlya_detei" keypath="tovary_dlya_detei">
+<header>Полноцветные принтеры (Epson)</header>
+<image_pic width="360" size="36810" created="13.09.2019 12:36" extenstion="jpg" height="360">main_epson_printer.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="375510" path="files/375/510f/" key="tovary_dlya_detei" keypath="tovary_dlya_detei">
+<header>Принтеры-аппликаторы (Novexx Solutions)</header>
+<image_pic width="360" size="65553" created="13.09.2019 12:36" extenstion="jpg" height="360">main_novexx_apply.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="375511" path="files/375/511f/" key="tovary_dlya_detei" keypath="tovary_dlya_detei">
+<header>Термотранферные принтеры (Savema)</header>
+<image_pic width="360" size="68696" created="13.09.2019 12:36" extenstion="jpg" height="360">main_savema_printer.jpg</image_pic>
+<link>http://alimarket.must.by/audio_video/</link>
+	</banner>
+	<banner type="banner" id="403567" path="files/403/567f/" key="blisternye_mashiny__tommy_nielsen" keypath="blisternye_mashiny__tommy_nielsen">
+<header>Блистерные машины  (Tommy Nielsen)</header>
+<image_pic width="360" size="59408" created="13.09.2019 15:26" extenstion="jpg" height="360">main_tommy_system.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="403568" path="files/403/568f/" key="termotranfernye_printery_eidos" keypath="termotranfernye_printery_eidos">
+<header>Термотранферные принтеры (Eidos)</header>
+<image_pic width="360" size="61220" created="13.09.2019 15:26" extenstion="jpg" height="360">main_coditherm_printer.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="403569" path="files/403/569f/" key="lazernye_markiratory_hitachi" keypath="lazernye_markiratory_hitachi">
+<header>Лазерные маркираторы (Hitachi)</header>
+<image_pic width="360" size="49066" created="13.09.2019 15:26" extenstion="jpg" height="360">main_hitachi_laser.jpg</image_pic>
+	</banner>
+	<banner type="banner" id="403570" path="files/403/570f/" key="kaplestruinye_markiratory_hitachi" keypath="kaplestruinye_markiratory_hitachi">
+<header>Каплеструйные маркираторы (Hitachi)</header>
+<image_pic width="360" size="42059" created="13.09.2019 15:27" extenstion="jpg" height="360">main_hitachi_printer.jpg</image_pic>
+	</banner>
+</banner_section>

@@ -26,34 +26,41 @@
             </style>
             <script>
                 function endsWith(str, suffix) {
-                return str.indexOf(suffix, str.length - suffix.length) !== -1;
+                    return str.indexOf(suffix, str.length - suffix.length) !== -1;
                 }
 
                 refreshTimeout = setTimeout(
-                function () {
-                h = document.location.href;
-                h = h.replace("_start", "");
-                h = h.replace("?action=start", "");
-                document.location.replace(h);
-                },
-                5000
+                        function () {
+                            h = document.location.href;
+                            h = h.replace("_start", "");
+                            h = h.replace("?action=start", "");
+                            document.location.replace(h);
+                        },
+                        5000
                 );
                 function toggleRefresh() {
-                refresher = document.getElementById('refresher');
-                if (refresher.classList.contains("clicked")) {
-                h = document.location.href;
-                h = h.replace("_start", "");
-                h = h.replace("?action=start", "");
-                document.location.replace(h);
-                } else {
-                clearTimeout(refreshTimeout);
-                refresher.classList.add("clicked");
-                }
+                    refresher = document.getElementById('refresher');
+                    if (refresher.classList.contains("clicked")) {
+                        h = document.location.href;
+                        h = h.replace("_start", "");
+                        h = h.replace("?action=start", "");
+                        document.location.replace(h);
+                    } else {
+                        clearTimeout(refreshTimeout);
+                        refresher.classList.add("clicked");
+                    }
                 }
             </script>
             <body>
                 <h1><xsl:value-of select="/page/operation"/></h1>
                 <h2>Процесс выполнения</h2>
+                <table>
+                <tr>
+                    <td>
+                        <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
+                    </td>
+                </tr>
+                </table>
                 <xsl:if test="/page/error">
                     <h2>ошибки выполнения интеграции</h2>
                     <table>
@@ -69,11 +76,6 @@
                     </table>
                 </xsl:if>
                 <table>
-                    <tr>
-                        <td colspan="2">
-                            <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-                        </td>
-                    </tr>
                     <tr>
                         <td>Строка файла:</td>
                         <td class="error">
@@ -103,11 +105,11 @@
                     </xsl:for-each>
                     <xsl:if test="page/message = 'Интеграция в данный момент не выполняется. Результаты предыдущей интеграции ниже'">
                         <xsl:variable name="file_name" select="page/log[starts-with(., 'pricelist-')]"/>
-                        Скачать файл: <a href="https://метабо.бел/files/{$file_name}"><xsl:value-of select="$file_name" /></a>
+                        Скачать файл: <a href="{page/base}/files/{$file_name}"><xsl:value-of select="$file_name" /></a>
                     </xsl:if>
                     <tr>
                         <td colspan="2">
-                            Журнал опреации:
+                           Журнал опреации:
                         </td>
                     </tr>
                     <xsl:for-each select="/page/log">

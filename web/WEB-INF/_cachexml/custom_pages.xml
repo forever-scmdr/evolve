@@ -1,0 +1,153 @@
+<custom_pages_count>1</custom_pages_count>
+<custom_pages type="custom_pages" id="66133" path="files/661/33f/" key="odinochnye_stranitsy" keypath="odinochnye_stranitsy">
+	<menu_item_count>3</menu_item_count>
+	<custom_page type="custom_page" id="403716" path="files/403/716f/" key="podbor_printera" keypath="podbor_printera">
+<header>&lt;Подбор принтера&gt;</header>
+<in_main_menu>да</in_main_menu>
+		<show_page>/podbor_printera/</show_page>
+		<custom_page type="custom_page" id="403717" path="files/403/717f/" key="po_obektu_markirovki" keypath="podbor_printera/po_obektu_markirovki">
+<header>По объекту маркировки</header>
+<text>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка бутылок, алюминиевых банок, кег&quot;&gt;Маркировка бутылок, алюминиевых банок, кег&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка гибкой упаковки&quot;&gt;Маркировка гибкой упаковки&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка консерв, tetra-pak др.&quot;&gt;Маркировка консерв, tetra-pak др.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка медицинских изделий&quot;&gt;Маркировка медицинских изделий&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка картонных коробок&quot;&gt;Маркировка картонных коробок&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка электромеханических и электронных деталей&quot;&gt;Маркировка электромеханических и электронных деталей&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка металла, дерева&quot;&gt;Маркировка металла, дерева&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка паллет&quot;&gt;Маркировка паллет&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка пластиковых контейнеров, стаканчиков&quot;&gt;Маркировка пластиковых контейнеров, стаканчиков&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Маркировка труб, кабельной продукции&quot;&gt;Маркировка труб, кабельной продукции&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</text>
+			<show_page>/po_obektu_markirovki/</show_page>
+		</custom_page>
+		<custom_page type="custom_page" id="403718" path="files/403/718f/" key="po_otrasli_promyshlennosti" keypath="podbor_printera/po_otrasli_promyshlennosti">
+<header>По отрасли промышленности</header>
+<text>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Пищевая отрасль&quot;&gt;Пищевая отрасль&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Молочная отрасль&quot;&gt;Молочная отрасль&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Косметика и бытовая химия&quot;&gt;Косметика и бытовая химия&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Фармацевтика&quot;&gt;Фармацевтика&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Кабель и экструзия&quot;&gt;Кабель и экструзия&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Строительные материалы&quot;&gt;Строительные материалы&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Химическая отрасль&quot;&gt;Химическая отрасль&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;tag_section?tag=Швейная отрасль&quot;&gt;Швейная отрасль&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</text>
+			<show_page>/po_otrasli_promyshlennosti/</show_page>
+		</custom_page>
+	</custom_page>
+	<custom_page type="custom_page" id="403571" path="files/403/571f/" key="servis" keypath="servis">
+<header>Сервис</header>
+<text>&lt;p&gt;Здесь Вы можете перейти в раздел технической поддержки, скачать инструкции по эксплуатации, скачать программы, скачать наш католог, загрузить нужные драйверы, и обновить прошивки для интересующего Вас оборудования на нашем едином портале холдинг &amp;laquo;ФОРИНТЕК&amp;raquo;.&lt;/p&gt;
+&lt;h2&gt;Техническая поддержка&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.forintek-holding.ru/techsupport.htm&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/techsupport-forintek.jpg&quot; alt=&quot;техподдержка&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Инструкции по эксплуатации&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.forintek-holding.ru/manuals.htm&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/manuals.jpg&quot; alt=&quot;инструкции&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Загрузка драйверов&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.forintek-holding.ru/drivers.htm&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/downloads.jpg&quot; alt=&quot;драйвера&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Обновление прошивок&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.forintek-holding.ru/firmware.htm&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/firmware.jpg&quot; alt=&quot;микропрограммы&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Программное обеспечение&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.forintek-holding.ru/programs.htm&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/programs.jpg&quot; alt=&quot;программы&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Скачать каталог&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;katalog/forintek-katalog2019.pdf&quot;&gt;&lt;img src=&quot;http://www.forintek-bel.by/forintek/katalog.jpg&quot; alt=&quot;каталог&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</text>
+<in_main_menu>да</in_main_menu>
+		<show_page>/servis/</show_page>
+	</custom_page>
+	<custom_page type="custom_page" id="403574" path="files/403/574f/" key="o_kompanii" keypath="o_kompanii">
+<header>О компании</header>
+<in_main_menu>да</in_main_menu>
+		<show_page>/o_kompanii/</show_page>
+		<custom_page type="custom_page" id="403575" path="files/403/575f/" key="uchastniki_holdinga" keypath="o_kompanii/uchastniki_holdinga">
+<header>Участники холдинга</header>
+<text>&lt;p&gt;В состав международного холдинга &amp;laquo;ФОРИНТЕК&amp;raquo; входят компании:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-Бел&amp;raquo; (Минск)&lt;/li&gt;
+&lt;li&gt;ЗАО &amp;laquo;НТЦ АТ &amp;laquo;Форинтек&amp;raquo; (Москва)&lt;/li&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-СП&amp;raquo; (Санкт-Петербург)&lt;/li&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-Юг&amp;raquo; (Краснодар)&lt;/li&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-Волга&amp;raquo; (Самара)&lt;/li&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-Урал&amp;raquo; (Екатеринбург)&lt;/li&gt;
+&lt;li&gt;OOO &amp;laquo;Форинтек-Сибирь&amp;raquo; (Новосибирск)&lt;/li&gt;
+&lt;li&gt;ООО &amp;laquo;Форинтек-Украина&amp;raquo; (Киев)&lt;/li&gt;
+&lt;li&gt;SIA &amp;laquo;Forintek-Baltija&amp;raquo; (Рига).&amp;nbsp;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 class=&quot;header&quot;&gt;Минск&lt;/h2&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Бел&amp;raquo; &lt;br /&gt; 220141, Беларусь, г. Минск&lt;br /&gt; ул. Руссиянова, д. 9, офис 3&lt;br /&gt; Тел./факс: +375-17-265-97-82&lt;br /&gt; Тел.: +375-17-264-51-34&lt;br /&gt; Тел.: +375-17-264-56-49&lt;br /&gt; Моб.: +375-29-569-71-48&lt;br /&gt; Моб.: +375-29-332-94-15&lt;br /&gt; Моб.: +375-29-765-20-21&lt;br /&gt; Сервис: +375-29-127-48-67&lt;br /&gt; Сервис: +375-29-717-48-67&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek@forintek-bel.by&quot;&gt;forintek@forintek-bel.by&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-bel.by&quot;&gt;forintek-bel.by&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-bel.com&quot; target=&quot;_blank&quot;&gt;forintek-bel.com&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Москва&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ЗАО &amp;laquo;НТЦ АТ &amp;laquo;Форинтек&amp;raquo;&lt;br /&gt; 123592, Россия, г. Москва&lt;br /&gt; ул. Кулакова, д. 20 &lt;br /&gt; Технопарк &quot;Орбита&quot;, 8 этаж &lt;br /&gt; Тел.: +7 (495) 781-61-46 (многоканальный)&lt;br /&gt; Тел.: +7 (495) 757-65-25&lt;br /&gt; Факс: +7 (499) 740-22-47&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek@forintek.ru&quot;&gt;forintek@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Санкт-Петербург&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-СП&amp;raquo;&lt;br /&gt; 197227, Россия, г. Санкт-Петербург &lt;br /&gt; Комендантский проспект, д. 4&lt;br /&gt; литер А, офис 402 (4 этаж)&lt;br /&gt; Тел.: +7 (812) 449-10-40 (многоканальный)&lt;br /&gt; Тел.: +7 (812) 319-00-39&lt;br /&gt; Факс: +7 (812) 449-10-40&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek-sp@forintek.ru&quot;&gt;forintek-sp@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-sp.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-sp.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Краснодар&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Юг&amp;raquo;&lt;br /&gt; 350010, Россия, г. Краснодар &lt;br /&gt; Майский проезд, д. 7&lt;br /&gt; Тел./факс: +7 (861) 228-18-25&lt;br /&gt; Тел./факс: +7 (861) 228-19-21&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek-ug@forintek.ru&quot;&gt;forintek-ug@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-ug.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-ug.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Самара&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Волга&amp;raquo;&lt;br /&gt; 443063, Россия, г. Самара&lt;br /&gt; Балхашский проезд, дом 34, офис 112&lt;br /&gt; Тел.: +7 (846) 263-51-33&lt;br /&gt; Тел.: +7 (846) 263-51-32&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek-volga@forintek.ru&quot;&gt;forintek-volga@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-volga.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-volga.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Екатеринбург&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Урал&amp;raquo;&lt;br /&gt; 620062, Россия, г. Екатеринбург&lt;br /&gt; ул. Генеральская, д. 3, офис 113&lt;br /&gt; Тел./факс: +7 (343) 229-00-93&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek-ural@forintek.ru&quot;&gt;forintek-ural@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-ural.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-ural.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Новосибирск&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Сибирь&amp;raquo;&lt;br /&gt; 630087, Россия, г. Новосибирск&lt;br /&gt; ул. Немировича-Данченко, д. 138, офис 6&lt;br /&gt; Тел.: +7 (383) 304-03-40&lt;br /&gt; Тел.: +7 (383) 304-03-44&lt;br /&gt; Тел.: +7 (383) 304-04-11&lt;br /&gt; Факс: +7 (383) 304-04-84&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:forintek-sib@forintek.ru&quot;&gt;forintek-sib@forintek.ru&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-sib.ru&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-sib.ru&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Киев&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;ООО &amp;laquo;Форинтек-Украина&amp;raquo; &lt;br /&gt; 04080, Украина, г. Киев&lt;br /&gt; ул. Викентия Хвойки, д. 21, офис 308&lt;br /&gt; Тел.: + 38 (044) 230 87 40&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:info@forintek.com.ua&quot;&gt;info@forintek.com.ua&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek.com.ua&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek.com.ua&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;float: right; padding-right: 20px; padding-bottom: 40px;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h2 class=&quot;header&quot;&gt;Рига&lt;/h2&gt;
+&lt;p class=&quot;link&quot;&gt;SIA &amp;laquo;Forintek-Baltija&amp;raquo; &lt;br /&gt; LV-1003, Latvija, Riga&lt;br /&gt; Rusina iela 1&lt;br /&gt; Vat Nr. LV40003610519&lt;br /&gt; Тел.: +371 67275634 &lt;br /&gt; Факс: +371 67275635 &lt;br /&gt; Моб.: +371 29499573&lt;br /&gt; E-mail: &lt;a href=&quot;mailto:info@forintek-baltija.lv&quot;&gt;info@forintek-baltija.lv&lt;/a&gt;&lt;br /&gt; Сайт: &lt;a href=&quot;http://www.forintek-baltija.lv&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;forintek-baltija.lv&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;clr&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div class=&quot;clr&quot; style=&quot;height: 60px;&quot;&gt;&amp;nbsp;&lt;/div&gt;</text>
+			<show_page>/uchastniki_holdinga/</show_page>
+		</custom_page>
+		<custom_page type="custom_page" id="403576" path="files/403/576f/" key="nashi_partnery" keypath="o_kompanii/nashi_partnery">
+<header>Наши партнеры</header>
+<text>&lt;p&gt;Нашими партнерами являются крупнейшие компании как Hitachi Industrial Equipment Systems Co., Ltd. (Япония), Novexx Solutions GmbH (Германия), Avery Dennison Corporation (США-Германия), Allen Coding GmbH (Великобритания), Weber Marking Systems GmbH (Германия), SAVEMA (Турция), EIDOS (Италия), Epson (Япония), Promark (Польша), Tommy Nielsen (Дания).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;katalog/brands/hitachi.png&quot; alt=&quot;hitachi лого&quot; /&gt;&lt;img src=&quot;katalog/brands/novexx.png&quot; alt=&quot;novexx лого&quot; /&gt;&lt;img src=&quot;katalog/brands/avery.png&quot; alt=&quot;avery лого&quot; /&gt;&lt;img src=&quot;katalog/brands/weber.png&quot; alt=&quot;weber лого&quot; /&gt;&lt;img src=&quot;katalog/brands/allen.png&quot; alt=&quot;allen лого&quot; /&gt;&lt;img src=&quot;katalog/brands/eidos.png&quot; alt=&quot;eidos лого&quot; /&gt;&lt;img src=&quot;katalog/brands/epson.png&quot; alt=&quot;epson лого&quot; /&gt; &lt;img src=&quot;katalog/brands/savema.png&quot; alt=&quot;savema лого&quot; /&gt; &lt;img src=&quot;katalog/brands/tommy.png&quot; alt=&quot;tommy nielsen лого&quot; /&gt; &lt;img src=&quot;katalog/brands/promark.png&quot; alt=&quot;eidos лого&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Компания ООО &amp;laquo;Форинтек-Бел&amp;raquo; специализируется на поставках и сервисном обслуживании высокотехнологичного оборудования. Это современные каплеструйные маркираторы, термотрансферные принтеры, лазерные маркираторы, аппликаторы этикеток, ручные принтеры-сканеры этикеток, текстильные принтеры, этикетировочные машины, принтеры горячего тиснения, полноцветные принтеры, блистерное оборудование, собственные аппаратно программные решения, а также расходные материалы.&lt;/p&gt;</text>
+			<show_page>/nashi_partnery/</show_page>
+		</custom_page>
+		<custom_page type="custom_page" id="403578" path="files/403/578f/" key="rekvizity" keypath="o_kompanii/rekvizity">
+<header>Реквизиты</header>
+<text>&lt;p&gt;УНП: 190720155&lt;br /&gt;ОКПО: 37692151&lt;/p&gt;
+&lt;p&gt;р/с BY34MMBN30120203300109330000 в ОАО &amp;ldquo;Банк Дабрабыт&amp;rdquo;,&lt;br /&gt;220002, г. Минск, ул. Коммунистическая, 49, пом. 1, BIC - MMBNBY22&lt;/p&gt;
+&lt;p&gt;Фактический адрес:&lt;/p&gt;
+&lt;p&gt;220141, г. Минск, ул. Руссиянова 9, офис 3&lt;/p&gt;
+&lt;p&gt;Тел:&lt;/p&gt;
+&lt;p&gt;+375-17-264-51-34&lt;/p&gt;
+&lt;p&gt;+375-17-264-56-49&lt;/p&gt;
+&lt;p&gt;+375-17-265-97-82&lt;/p&gt;
+&lt;p&gt;Моб:&lt;/p&gt;
+&lt;p&gt;+375-29-569-71-48&lt;/p&gt;
+&lt;p&gt;+375-29-332-94-15&lt;/p&gt;
+&lt;p&gt;+375-29-765-20-21&lt;/p&gt;
+&lt;p&gt;Факс:&lt;/p&gt;
+&lt;p&gt;+375-17-265-97-82&lt;/p&gt;
+&lt;p&gt;Сервис и техническая поддержка:&lt;/p&gt;
+&lt;p&gt;+375 29 717 48 67 (MTC)&lt;/p&gt;
+&lt;p&gt;+375 29 127 48 67 (Vel)&lt;/p&gt;
+&lt;p&gt;E-mail:&lt;/p&gt;
+&lt;p class=&quot;link&quot;&gt;&lt;a href=&quot;mailto:forintek@forintek-bel.by&quot;&gt;forintek@forintek-bel.by&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Реквизиты:&lt;/p&gt;
+&lt;p class=&quot;link&quot;&gt;&lt;a href=&quot;downloads/rekvizit_forintek-bel.rtf&quot; target=&quot;_blank&quot;&gt;Скачать реквизиты &amp;rsaquo;&amp;rsaquo;&lt;/a&gt;&lt;/p&gt;</text>
+			<show_page>/rekvizity/</show_page>
+		</custom_page>
+		<custom_page type="custom_page" id="403579" path="files/403/579f/" key="nashi_foto" keypath="o_kompanii/nashi_foto">
+<header>Наши фото</header>
+<text>&lt;p&gt;Трудовые будни в компании ООО &amp;laquo;Форинтек-Бел&amp;raquo; всегда напряженные и интересные. Встречи с партнерами, переговоры, выставки, презентации, сервисные выезды, пуско-наладочные работы. Небольшой фотоотчет позволит Вам лучше представить работу нашей профессиональной команды.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;images/engineer-by-hitachiux.jpg&quot; alt=&quot;инженер возле принтера хитачи UX&quot; width=&quot;440&quot; height=&quot;299&quot; /&gt; &lt;img src=&quot;images/forintek-bel-group-inoffice.jpg&quot; alt=&quot;Форинтек-Бел группа в офисе&quot; width=&quot;440&quot; height=&quot;299&quot; /&gt; &lt;img src=&quot;images/forintek-bel-group-newyear.jpg&quot; alt=&quot;Форинтек-Бел группа на корпоративе&quot; width=&quot;440&quot; height=&quot;299&quot; /&gt; &lt;img src=&quot;images/forintek-bel-group-by-hitachi.jpg&quot; alt=&quot;Форинтек-Бел группа возле стенда хитачи&quot; width=&quot;440&quot; height=&quot;299&quot; /&gt;&lt;/p&gt;</text>
+			<show_page>/nashi_foto/</show_page>
+		</custom_page>
+	</custom_page>
+</custom_pages>

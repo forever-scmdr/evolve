@@ -8,7 +8,10 @@ public class Dealer_coords
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "dealer_coords";
+    public final static String _NAME = "dealer_coords";
+    public final static String NAME = "name";
+    public final static String ADDRESS = "address";
+    public final static String INFO = "info";
 
     private Dealer_coords(Item item) {
         super(item);
@@ -18,7 +21,7 @@ public class Dealer_coords
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'dealer_coords' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +29,7 @@ public class Dealer_coords
     }
 
     public static Dealer_coords newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

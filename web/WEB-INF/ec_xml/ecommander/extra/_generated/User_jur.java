@@ -8,7 +8,29 @@ public class User_jur
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "user_jur";
+    public final static String _NAME = "user_jur";
+    public final static String EMAIL = "email";
+    public final static String PHONE = "phone";
+    public final static String PASSWORD = "password";
+    public final static String REGISTERED = "registered";
+    public final static String PAYMENT = "payment";
+    public final static String ORGANIZATION = "organization";
+    public final static String CONTACT_NAME = "contact_name";
+    public final static String CONTACT_PHONE = "contact_phone";
+    public final static String ADDRESS = "address";
+    public final static String SHIP_TYPE = "ship_type";
+    public final static String PAY_TYPE = "pay_type";
+    public final static String NO_ACCOUNT = "no_account";
+    public final static String ACCOUNT = "account";
+    public final static String BANK = "bank";
+    public final static String BANK_ADDRESS = "bank_address";
+    public final static String BANK_CODE = "bank_code";
+    public final static String UNP = "unp";
+    public final static String DIRECTOR = "director";
+    public final static String BASE = "base";
+    public final static String BASE_NUMBER = "base_number";
+    public final static String BASE_DATE = "base_date";
+    public final static String COMMENT = "comment";
 
     private User_jur(Item item) {
         super(item);
@@ -18,7 +40,7 @@ public class User_jur
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'user_jur' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +48,7 @@ public class User_jur
     }
 
     public static User_jur newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_email(String value) {
@@ -45,6 +67,22 @@ public class User_jur
         return containsValue("email", value);
     }
 
+    public void set_phone(String value) {
+        setValue("phone", value);
+    }
+
+    public String get_phone() {
+        return getStringValue("phone");
+    }
+
+    public String getDefault_phone(String defaultVal) {
+        return getStringValue("phone", defaultVal);
+    }
+
+    public boolean contains_phone(String value) {
+        return containsValue("phone", value);
+    }
+
     public void set_password(String value) {
         setValue("password", value);
     }
@@ -61,6 +99,44 @@ public class User_jur
         return containsValue("password", value);
     }
 
+    public void set_registered(Byte value) {
+        setValue("registered", value);
+    }
+
+    public void setUI_registered(String value)
+        throws Exception
+    {
+        setValueUI("registered", value);
+    }
+
+    public Byte get_registered() {
+        return getByteValue("registered");
+    }
+
+    public Byte getDefault_registered(Byte defaultVal) {
+        return getByteValue("registered", defaultVal);
+    }
+
+    public boolean contains_registered(Byte value) {
+        return containsValue("registered", value);
+    }
+
+    public void set_payment(String value) {
+        setValue("payment", value);
+    }
+
+    public String get_payment() {
+        return getStringValue("payment");
+    }
+
+    public String getDefault_payment(String defaultVal) {
+        return getStringValue("payment", defaultVal);
+    }
+
+    public boolean contains_payment(String value) {
+        return containsValue("payment", value);
+    }
+
     public void set_organization(String value) {
         setValue("organization", value);
     }
@@ -75,22 +151,6 @@ public class User_jur
 
     public boolean contains_organization(String value) {
         return containsValue("organization", value);
-    }
-
-    public void set_phone(String value) {
-        setValue("phone", value);
-    }
-
-    public String get_phone() {
-        return getStringValue("phone");
-    }
-
-    public String getDefault_phone(String defaultVal) {
-        return getStringValue("phone", defaultVal);
-    }
-
-    public boolean contains_phone(String value) {
-        return containsValue("phone", value);
     }
 
     public void set_contact_name(String value) {

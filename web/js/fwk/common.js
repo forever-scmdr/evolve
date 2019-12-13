@@ -97,22 +97,28 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 }
 
-$(document).on("click", ".scroll-to", function(e){
+$(document).on('click', '.show-sub',function(e){
 	e.preventDefault();
-	$el = $($(this).attr("href"));
-	$([document.documentElement, document.body]).animate({scrollTop: $el.offset().top - 150}, 1000);
+	var href = $(this).attr("href"); 
+	var trg = $(href);
+	// $(".popup-text-menu").not(trg).hide();
+	// var l = $(this).position().left - 50;
+	// trg.css({"left": l});
+	trg.toggle();
 });
 
-function bindScroll(){
-	var $s = $("#sticky");
-	$s.css({"display": "none"});
-	var $d = $(".info-blocks");
-	$(document).on("scroll", function(){
-		var h = $(document).scrollTop();
-		if(h > $d.offset().top){
-			$s.fadeIn();
-		}else{
-			$s.fadeOut();
-		}
-	}); 
-}
+$(document).on("click", "body", function(e){
+	var trg = $(e.target);
+	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")){
+		$(".popup-text-menu").hide();
+	}
+});
+
+$(document).ready(function function_name() {
+	$("table").each(function(){
+		var $t = $(this);
+		var $div = $('<div>', {"class" : "responsive"});
+		$t.parent().append($div);
+		$div.append($t);
+	});
+});

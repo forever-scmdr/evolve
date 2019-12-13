@@ -8,7 +8,7 @@ public class Main_page
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "main_page";
+    public final static String _NAME = "main_page";
 
     private Main_page(Item item) {
         super(item);
@@ -18,7 +18,7 @@ public class Main_page
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'main_page' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +26,7 @@ public class Main_page
     }
 
     public static Main_page newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
 }

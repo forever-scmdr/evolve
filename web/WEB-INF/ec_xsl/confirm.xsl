@@ -1,30 +1,30 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Заказ оформлен'" />
+	<xsl:variable name="title" select="'Заявка оформлена'" />
 
-	<xsl:variable name="is_jur" select="page/user_jur"/>
+	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if (page/user_jur) then page/user_jur else page/user_phys"/>
+	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Спасибо за заказ!</h1>
+		<h1 class="page-title">Спасибо за заявку!</h1>
 
 
-		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
+		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span>
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -101,51 +101,63 @@
 				</xsl:if>
 			</div>
 
-			<table>
-				<tr>
-					<th>
-						Код
-					</th>
-					<th>
-						Наименование
-					</th>
-					<th>
-						Кол
-					</th>
-					<th>
-						Цена
-					</th>
-					<th>
-						Стоимость
-					</th>
-					<th>
-						Наличие
-					</th>
-				</tr>
-				<xsl:for-each select="$cart/bought">
-					<xsl:sort select="type"/>
+			<div class="table-responsive">
+				<table>
 					<tr>
-						<td>
-							<xsl:value-of select="product/code"/>
-						</td>
-						<td valign="top">
-							<strong><xsl:value-of select="product/name"/></strong>
-						</td>
-						<td valign="top">
-							<xsl:value-of select="qty"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/price"/>
-						</td>
-						<td>
-							<xsl:value-of select="sum"/>
-						</td>
-						<td>
-							<xsl:value-of select="product/qty"/>
-						</td>
+						<th>
+							Код
+						</th>
+						<th>
+							Наименование
+						</th>
+						<th>
+							Кол
+						</th>
+						<th>
+							Цена
+						</th>
+						<th>
+							Стоимость
+						</th>
+						<!-- 	<th>
+                                Наличие
+                            </th> -->
 					</tr>
-				</xsl:for-each>
-			</table>
+					<xsl:for-each select="$cart/bought">
+						<xsl:sort select="type"/>
+						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
+						<tr>
+							<td>
+								<xsl:value-of select="$product/code"/>
+							</td>
+							<td valign="top">
+								<strong><xsl:value-of select="$product/name"/></strong>
+							</td>
+							<td valign="top">
+								<xsl:value-of select="qty"/>
+							</td>
+							<td>
+								<xsl:value-of select="$product/price"/>
+								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
+							</td>
+							<td>
+								<xsl:value-of select="sum"/>
+							</td>
+							<!-- <td>
+								<xsl:value-of select="$product/qty"/>
+							</td> -->
+						</tr>
+					</xsl:for-each>
+				</table>
+			</div>
+			<!-- сопутствующие товары (не работает) -->
+			<xsl:if test="page/assoc">
+				<h3>Вас также может заинтересовать</h3>
+				<div class="catalog-items">
+					<xsl:apply-templates select="page/assoc" />
+				</div>
+			</xsl:if>
+
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

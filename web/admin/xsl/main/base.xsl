@@ -78,9 +78,10 @@
 				prepareForm(formId, "main_view", "hidden_mes", "message_main", additionalHandling);
 			}
 			$(document).ready(function() {
-				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems");
+				insertAjaxView("<xsl:value-of select="admin-page/link[@name='subitems']" />", "subitems", false, null, null, function(){highlightSelected("#primary-item-list", "#multi-item-action-form-ids");});
 				insertAjaxView("<xsl:value-of select="admin-page/link[@name='parameters']" />", "main_view");
 				$("#message_main").effect("highlight", 1000);
+				//highlightSelected();
 			});
 		</script>
 	</xsl:template>
@@ -128,16 +129,38 @@
 					</div>
 					<div class="mid">
 						<div class="left-col">
-							<!-- Поиск -->
-							<div class="list position-relative">
-								<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
-									<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
-									<input type="hidden" name="itemId" value="0"/>
-									<input type="hidden" name="itemType" value="0"/>
-									<input type="hidden" name="vt" value="subitems"/>
-									<a onclick="postFormView('search-form')" >искать</a>
-								</form>
-								<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
+							<div class="list mass-select">
+								<h4 id="mass-selection-trigger" class="mass-selection-trigger">Выбрать несколько айтемов</h4>
+								<div class="selection-actions edit">
+									<div id="actions-items" class="actions-items call-function">
+
+										<xsl:variable name="base-vars" select="concat('?parentId=', admin-page/base-id, '&amp;itemType=', admin-page/base-type)"/>
+
+										<div class="actions sel-actions">
+											<span>Выбор:</span>
+											<a class="select-all" title="выбрать все" id="select_all" onclick="selectAll();"></a>
+											<a class="select-none" title="снять выделние со всех" id="deselect_all" onclick="selectNone();"></a>
+											<a class="invert-selection" title="инвертировать выделение" id="invert_selection" onclick="invertSelection();"></a>
+										</div>
+										<div class="actions pale" id="item-actions">
+											<span>С айтемами:</span>
+											<a href="admin_copy_all.action" id="copy-all-link" class="copy set-action" rel="multi-item-action-form" title="Копировать выделенное в буфер обмена"></a>
+											<a href="admin_hide_all.action{$base-vars}" class="hide_item set-action" rel="multi-item-action-form" title="Скрыть выделенное"></a>
+											<a href="admin_show_all.action{$base-vars}" class="show_item set-action" rel="multi-item-action-form" title="Показать выделенное"></a>
+											<a href="admin_delete_all.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="Удалить выделенное"></a>
+										</div>
+										<div class="actions pale" id="buffer-actions">
+											<span>С буфером:</span>
+											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
+											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
+											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
+										</div>
+										<form id="multi-item-action-form" method="POST">
+											<input type="text" name="ids" id="multi-item-action-form-ids"/>
+											<input type="text" name="ids_b" id="multi-item-action-form-ids-buffer"/>
+										</form>
+									</div>
+								</div>
 							</div>
 							<div id="subitems">
 								<div style="min-height: 100px; margin-bottom: 10px;"/>
@@ -145,26 +168,36 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" >
-										<a href="add_associated/?action=start">Добавить ссылки на товары</a>
+									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
+										<a href="section_list" style="color: #fff;">Список разделов</a>
+									</li>
+									<li class="visible" style="background: #0c609d;">
+										<a href="create_excel_pricelist_min/?action=start" style="color: #fff;">Минимальный прайс-лист</a>
+									</li>
+									<li class="visible" style="background: #0c609d;">
+										<a href="parse_excel/?action=start" style="color: #fff;">
+											Импорт каталога из Excel
+										</a>
+									</li>
+									<li class="visible" style="background: #fb9f00;">
+										<a href="update_prices_from_excel/?action=start" style="color: #fff;">
+											Обновить цены из Excel
+										</a>
 									</li>
 									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
+										<a href="integrate/?action=start">Интеграция Yandex Market</a>
 									</li>
-									<li class="visible" title="Парсинг ссылок часть 1">
-										<a href="get_site?action=start">Скачать товары по ссылкам</a>
+									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
+										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
+									<!--</li>-->
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
 									</li>
-									<li class="visible" title="Парсинг ссылок часть 2">
-										<a href="deploy_parsed?action=start">Разместить товары по ссылкам</a>
+									<li class="visible" title="Загрузить товары с других сайтов">
+										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
 									</li>
-									<li class="visible" title="Автосоздание фильтров">
-										<a href="create_filters?action=start">Автосоздание фильтров</a>
-									</li>
-									<li class="visible" title="Добавить водяные знаки">
-										<a href="watermarks?action=start">Добавить водяные знаки</a>
-									</li>
-									<li class="visible" title="Создать прайс прайс-лист (Но#, цена без скидки, цена со скидкой, наличие, подарок)">
-										<a href="create_metabo_price?action=start">Создать прайс-лист</a>
+									<li class="visible" title="Создать фильтры по параметрам товаров">
+										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
 									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
@@ -175,11 +208,11 @@
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="admin_reindex.action">Переиндексация</a>
 									</li>
-									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
-										<!--<a href="admin_domains_initialize.domain">-->
-											<!--Управление доменами-->
-										<!--</a>-->
-									<!--</li>-->
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков" target="_blank">
+										<a href="create_yml_file">
+											Сгенерировать файл Яндекс-маркет
+										</a>
+									</li>
 									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
 										<!--<a href="admin_users_initialize.user">-->
 											<!--Управление пользователями-->
@@ -190,27 +223,11 @@
 											Управление классами объектов
 										</a>
 									</li>
-									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
-										<a href="update_prices?action=start" target="_blank">
-											Запустить обновление цен
-										</a>
-									</li>
-									<li class="visible" title="Создать YML-файл">
-										<a href="create_yml_file" target="_blank" download="yml_catalog.xml">
-											Создать YML-файл
-										</a>
-									</li>
-									<!--
-									<li class="visible" title="Функция в разработке">
-										<a href="#" onclick="alert('Функция в разработке'); return false;">
-											Управление миром
-										</a>
-									</li>
-									-->
 								</ul>
 							</div>
 						</div>
 						<div class="right-col">
+							<xsl:call-template name="SEARCH"/>
 							<div class="inner">
 								<h1 class="title">
 									<xsl:if test="admin-page/item">
@@ -288,6 +305,23 @@
 			</body>
 		</html>
 	</xsl:template>
+
+	<!-- SEARCH -->
+	<xsl:template name="SEARCH">
+		<div class="list position-relative search-container">
+			<form id="search-form" class="ajax-form" action="get_view.action" method="POST">
+				<input type="text" id="key_search" name="key_search" placeholder="поиск по названию" />
+				<input type="hidden" name="itemId" value="0"/>
+				<input type="hidden" name="itemType" value="0"/>
+				<input type="hidden" name="vt" value="subitems"/>
+				<a onclick="postFormView('search-form')" >искать</a>
+			</form>
+			<a onclick="insertAjaxView('{admin-page/link[@name='subitems']}', 'subitems'); $('#key_search').val('');" style="text-decoration: underline;">Очистить поиск</a>
+		</div>
+	</xsl:template>
+
+
+	<!-- TODO  Context Menu -->
 
 	<xsl:template name="CONTEXT_MENU">
 

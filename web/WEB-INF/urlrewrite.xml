@@ -8,9 +8,8 @@
     http://www.tuckey.org/urlrewrite/
 
 -->
-<urlrewrite>
-    
-  
+<urlrewrite use-query-string="true">
+       
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
@@ -22,10 +21,15 @@
         <from>/restrict_files/**.*</from>
         <to type="forward" last="true">/protected/$1.$2</to>
     </rule>
-    <!--Обычные файлы и обработчики для администратора (.action)-->
-    <rule match-type="wildcard" enabled="true">
-        <from>/**.*</from>
-        <to type="forward" last="true">/$1.$2</to>
+    <!--Обработчики для администратора (.action)-->
+    <rule>
+        <from>.*\.action.*</from>
+        <to type="forward" last="true">/$0</to>
+    </rule>
+    <!--Обычные файлы-->
+    <rule>
+        <from>^(?!\?).*\..{1,5}$</from>
+        <to type="forward" last="true">$0</to>
     </rule>
     <!--Страницы сайта (основная работа CMS)-->
     <rule match-type="wildcard" enabled="true">

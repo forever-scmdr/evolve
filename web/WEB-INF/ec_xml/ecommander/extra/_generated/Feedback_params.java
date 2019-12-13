@@ -8,7 +8,10 @@ public class Feedback_params
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "feedback_params";
+    public final static String _NAME = "feedback_params";
+    public final static String SERVER_FROM = "server_from";
+    public final static String EMAIL_FROM = "email_from";
+    public final static String EMAIL_FROM_PASSWORD = "email_from_password";
 
     private Feedback_params(Item item) {
         super(item);
@@ -18,7 +21,7 @@ public class Feedback_params
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'feedback_params' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +29,7 @@ public class Feedback_params
     }
 
     public static Feedback_params newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_server_from(String value) {
@@ -75,22 +78,6 @@ public class Feedback_params
 
     public boolean contains_email_from_password(String value) {
         return containsValue("email_from_password", value);
-    }
-
-    public void set_encoding(String value) {
-        setValue("encoding", value);
-    }
-
-    public String get_encoding() {
-        return getStringValue("encoding");
-    }
-
-    public String getDefault_encoding(String defaultVal) {
-        return getStringValue("encoding", defaultVal);
-    }
-
-    public boolean contains_encoding(String value) {
-        return containsValue("encoding", value);
     }
 
 }

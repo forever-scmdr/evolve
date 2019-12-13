@@ -82,6 +82,64 @@ function confirmAjaxView(link, viewId, postProcess, el) {
 }
 
 /**
+ * Вывести диалоговое окно с произвольной функцией.
+ * @param el - элемент по которому позиционируется диалоговое окно
+ * @param function - функция, которая вызывается при клике на кнопку "да"
+ * */
+function confirmAjaxViewCustom(el, title, onConfirm) {
+    destroyDialog();
+    buildDialog(title);
+    positionDialog(el);
+    $("#dialog-yes-button").click(function (e) {
+        e.preventDefault();
+        destroyDialog();
+        onConfirm.call();
+    });
+
+    $("#dialog-no-button").click(function (e) {
+        e.preventDefault();
+        $("#dialog-yes-button, #dialog-no-button").unbind("click");
+        destroyDialog();
+    });
+}
+
+/**
+ * Отправить форму с заданным экшеном.
+ * @param action - атрибут "action"
+ * @param el - форма
+ * @param lockElementIds - jQuery селектор для блокируемых элементов
+ * */
+function postFormViewWithAction(el, action, lockElementIds, totalRefresh){
+	$("#"+el).attr({"action" : action});
+	console.log(lockElementIds);
+
+    postForm(el, lockElementIds, function () {
+        if (!totalRefresh == true) {
+            highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");
+            highlightSelected("#primary-item-list", "#multi-item-action-form-ids");
+        } else {
+            //TODO make normal ajax block replacement
+            document.location.reload();
+		}
+    });
+
+}
+
+
+$(document).on('click', '.set-action', function (e) {
+	e.preventDefault();
+	var $t = $(this);
+	var formId = $t.attr("rel");
+	var action = $t.attr("href");
+	var id = $t.attr("id");
+	var title = $t.attr("title")+"?";
+    confirmAjaxViewCustom(this, title, callback);
+    function callback() {
+        postFormViewWithAction(formId, action, id, $t.is(".total-replace"));
+    }
+});
+
+/**
  * Отправка AJAX запроса для обновления указанной части страницы
  */
 function simpleAjaxView(link, viewId, postProcess) {
@@ -249,3 +307,83 @@ $(document).on("click", ".toggle-hidden", function (e) {
 	t = $(this);
 	$(t.attr("href")).toggle();
 });
+$(document).on("click", "#mass-selection-trigger", function (e) {
+	e.preventDefault();
+	$(".selection-actions, .selection-overlay").toggle();
+});
+$(document).on("click", ".selection-overlay", function (e) {
+	var $t = $(this);
+	$t.toggleClass("selected");
+	var $ipt = ($t.is(".buffer"))?  $("#multi-item-action-form-ids-buffer") : $("#multi-item-action-form-ids");
+    var v = $ipt.val();
+    var id = $t.attr("data-id");
+	if($t.is(".selected")){
+		select();
+	}else if(typeof v != "undefined"){
+		deselect();
+	}
+	if($("#multi-item-action-form-ids-buffer").val() != ''){
+   		$("#buffer-actions").removeClass("pale");
+	}else{
+        $("#buffer-actions").addClass("pale");
+	}
+    if($("#multi-item-action-form-ids").val() != ''){
+        $("#item-actions").removeClass("pale");
+    }else{
+        $("#item-actions").addClass("pale");
+    }
+
+	function select() {
+        if(typeof v == "undefined" || v == ""){
+            $ipt.val(id);
+        }else{
+            $ipt.val(v+","+id);
+        }
+    }
+    function deselect() {
+        var re = new RegExp(id+",?");
+        v = v.replace(re, "").replace(/,$/, "");
+        $ipt.val(v);
+    }
+
+});
+
+function selectAll() {
+	$("#primary-item-list").find(".selection-overlay").not(".selected").trigger("click");
+    $("#item-actions").removeClass("pale");
+}
+function selectNone() {
+    $("#primary-item-list").find(".selection-overlay.selected").trigger("click");
+    $("#item-actions").addClass("pale");
+}
+function invertSelection() {
+    $("#primary-item-list").find(".selection-overlay").trigger("click");
+}
+
+//Highlights selected. Removes not found by id from inputs
+function highlightSelected(container, ipt) {
+	var $ipt = $(ipt);
+	var hId = ($ipt.attr("id") == "multi-item-action-form-ids")? "#item-actions" : "#buffer-actions";
+	if($ipt.val() != '') {
+        $(hId).removeClass("pale");
+    }
+	if (typeof $ipt.val() != "undefined") {
+		var arr1 = $ipt.val().split(",");
+		var clearedVal = $ipt.val();
+		if (arr1.length > 0 && arr1[0] != "") {
+			$(".selection-actions, .selection-overlay").show();
+		}
+		for (i = 0; i < arr1.length; i++) {
+            if (arr1[i] == "") continue;
+			var $el = $(container).find(".selection-overlay[data-id="+arr1[i]+"]");
+			if ($el.length == 0) {
+				var regex = new RegExp(arr1[i] + ',?');
+				clearedVal = clearedVal.replace(regex, '');
+			}
+			else {
+				$el.addClass("selected");
+			}
+		}
+		$ipt.val(clearedVal);
+	}
+}

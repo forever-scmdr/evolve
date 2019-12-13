@@ -8,7 +8,17 @@ public class User_phys
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "user_phys";
+    public final static String _NAME = "user_phys";
+    public final static String EMAIL = "email";
+    public final static String PHONE = "phone";
+    public final static String PASSWORD = "password";
+    public final static String REGISTERED = "registered";
+    public final static String PAYMENT = "payment";
+    public final static String NAME = "name";
+    public final static String ADDRESS = "address";
+    public final static String SHIP_TYPE = "ship_type";
+    public final static String PAY_TYPE = "pay_type";
+    public final static String COMMENT = "comment";
 
     private User_phys(Item item) {
         super(item);
@@ -18,7 +28,7 @@ public class User_phys
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'user_phys' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +36,7 @@ public class User_phys
     }
 
     public static User_phys newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_email(String value) {
@@ -45,6 +55,22 @@ public class User_phys
         return containsValue("email", value);
     }
 
+    public void set_phone(String value) {
+        setValue("phone", value);
+    }
+
+    public String get_phone() {
+        return getStringValue("phone");
+    }
+
+    public String getDefault_phone(String defaultVal) {
+        return getStringValue("phone", defaultVal);
+    }
+
+    public boolean contains_phone(String value) {
+        return containsValue("phone", value);
+    }
+
     public void set_password(String value) {
         setValue("password", value);
     }
@@ -61,6 +87,44 @@ public class User_phys
         return containsValue("password", value);
     }
 
+    public void set_registered(Byte value) {
+        setValue("registered", value);
+    }
+
+    public void setUI_registered(String value)
+        throws Exception
+    {
+        setValueUI("registered", value);
+    }
+
+    public Byte get_registered() {
+        return getByteValue("registered");
+    }
+
+    public Byte getDefault_registered(Byte defaultVal) {
+        return getByteValue("registered", defaultVal);
+    }
+
+    public boolean contains_registered(Byte value) {
+        return containsValue("registered", value);
+    }
+
+    public void set_payment(String value) {
+        setValue("payment", value);
+    }
+
+    public String get_payment() {
+        return getStringValue("payment");
+    }
+
+    public String getDefault_payment(String defaultVal) {
+        return getStringValue("payment", defaultVal);
+    }
+
+    public boolean contains_payment(String value) {
+        return containsValue("payment", value);
+    }
+
     public void set_name(String value) {
         setValue("name", value);
     }
@@ -75,22 +139,6 @@ public class User_phys
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_phone(String value) {
-        setValue("phone", value);
-    }
-
-    public String get_phone() {
-        return getStringValue("phone");
-    }
-
-    public String getDefault_phone(String defaultVal) {
-        return getStringValue("phone", defaultVal);
-    }
-
-    public boolean contains_phone(String value) {
-        return containsValue("phone", value);
     }
 
     public void set_address(String value) {

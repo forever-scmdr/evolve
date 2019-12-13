@@ -10,7 +10,11 @@ public class Main_promo_bottom
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "main_promo_bottom";
+    public final static String _NAME = "main_promo_bottom";
+    public final static String TEXT_BIG = "text_big";
+    public final static String TEXT_SMALL = "text_small";
+    public final static String PIC = "pic";
+    public final static String LINK = "link";
 
     private Main_promo_bottom(Item item) {
         super(item);
@@ -20,7 +24,7 @@ public class Main_promo_bottom
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'main_promo_bottom' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +32,7 @@ public class Main_promo_bottom
     }
 
     public static Main_promo_bottom newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_text_big(String value) {

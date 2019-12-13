@@ -22,35 +22,11 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-			<xsl:if test="not(starts-with(/page/operation, 'Интеграция завершена'))">
-				<script>
-					function endsWith(str, suffix) {
-					return str.indexOf(suffix, str.length - suffix.length) !== -1;
-					}
-
-					refreshTimeout = setTimeout(
-					function () {
-					h = document.location.href;
-					h = h.replace("_start", "");
-					h = h.replace("?action=start", "");
-					document.location.replace(h);
-					},
-					5000
-					);
-					function toggleRefresh() {
-					refresher = document.getElementById('refresher');
-					if (refresher.classList.contains("clicked")) {
-					h = document.location.href;
-					h = h.replace("_start", "");
-					h = h.replace("?action=start", "");
-					document.location.replace(h);
-					} else {
-					clearTimeout(refreshTimeout);
-					refresher.classList.add("clicked");
-					}
-					}
-				</script>
-			</xsl:if>
+		<script>
+			setTimeout(function(){
+				document.location.replace("/crawl");
+			}, 5000);
+		</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
@@ -59,18 +35,6 @@
 				<tr>
 					<td>Всего элементов для обработки:</td>
 					<td class="error"><xsl:value-of select="/page/to_process"/></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<xsl:if test="not(starts-with(/page/operation, 'Интеграция завершена'))">
-							<input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-						</xsl:if>
-						<xsl:if test="starts-with(/page/operation, 'Интеграция завершена')">
-							<a href="https://metabo-belarus.by/integrate_parsed/?action=start">
-								Распределить товары по разделам
-							</a>
-						</xsl:if>
-					</td>
 				</tr>
 				<tr>
 					<td>Элементов обработано:</td>

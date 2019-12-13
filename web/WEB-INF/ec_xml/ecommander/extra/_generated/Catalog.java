@@ -10,7 +10,10 @@ public class Catalog
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "catalog";
+    public final static String _NAME = "catalog";
+    public final static String INTEGRATION = "integration";
+    public final static String DATE = "date";
+    public final static String INTEGRATION_PENDING = "integration_pending";
 
     private Catalog(Item item) {
         super(item);
@@ -20,7 +23,7 @@ public class Catalog
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'catalog' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -28,7 +31,7 @@ public class Catalog
     }
 
     public static Catalog newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_integration(File value) {
@@ -63,6 +66,28 @@ public class Catalog
 
     public boolean contains_date(Long value) {
         return containsValue("date", value);
+    }
+
+    public void set_integration_pending(Byte value) {
+        setValue("integration_pending", value);
+    }
+
+    public void setUI_integration_pending(String value)
+        throws Exception
+    {
+        setValueUI("integration_pending", value);
+    }
+
+    public Byte get_integration_pending() {
+        return getByteValue("integration_pending");
+    }
+
+    public Byte getDefault_integration_pending(Byte defaultVal) {
+        return getByteValue("integration_pending", defaultVal);
+    }
+
+    public boolean contains_integration_pending(Byte value) {
+        return containsValue("integration_pending", value);
     }
 
 }

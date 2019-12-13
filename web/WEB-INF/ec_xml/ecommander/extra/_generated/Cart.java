@@ -9,7 +9,11 @@ public class Cart
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "cart";
+    public final static String _NAME = "cart";
+    public final static String ORDER_NUM = "order_num";
+    public final static String QTY = "qty";
+    public final static String SUM = "sum";
+    public final static String PROCESSED = "processed";
 
     private Cart(Item item) {
         super(item);
@@ -19,7 +23,7 @@ public class Cart
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'cart' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -27,7 +31,7 @@ public class Cart
     }
 
     public static Cart newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_order_num(String value) {
@@ -88,28 +92,6 @@ public class Cart
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
-    }
-
-    public void set_simple_sum(BigDecimal value) {
-        setValue("simple_sum", value);
-    }
-
-    public void setUI_simple_sum(String value)
-        throws Exception
-    {
-        setValueUI("simple_sum", value);
-    }
-
-    public BigDecimal get_simple_sum() {
-        return getDecimalValue("simple_sum");
-    }
-
-    public BigDecimal getDefault_simple_sum(BigDecimal defaultVal) {
-        return getDecimalValue("simple_sum", defaultVal);
-    }
-
-    public boolean contains_simple_sum(BigDecimal value) {
-        return containsValue("simple_sum", value);
     }
 
     public void set_processed(Byte value) {

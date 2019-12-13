@@ -8,7 +8,11 @@ public class Feedback_form
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "feedback_form";
+    public final static String _NAME = "feedback_form";
+    public final static String NAME = "name";
+    public final static String PHONE = "phone";
+    public final static String EMAIL = "email";
+    public final static String MESSAGE = "message";
 
     private Feedback_form(Item item) {
         super(item);
@@ -18,7 +22,7 @@ public class Feedback_form
         if (item == null) {
             return null;
         }
-        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
+        boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
             throw new ClassCastException(("Wrapper 'feedback_form' can not be created around '"+(item.getTypeName()+"' object")));
         }
@@ -26,7 +30,7 @@ public class Feedback_form
     }
 
     public static Feedback_form newChild(Item parent) {
-        return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
+        return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
     public void set_name(String value) {

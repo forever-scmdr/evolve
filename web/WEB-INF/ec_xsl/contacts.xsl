@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Контакты'" />
@@ -12,11 +12,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> &gt;
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$h1"/></h1>
+		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
