@@ -64,7 +64,7 @@
 					</form>
 				</xsl:when>
 				<xsl:otherwise>
-					<h3>Корзина пуста</h3>
+					<h3>Заявок нет</h3>
 				</xsl:otherwise>
 			</xsl:choose>
 		</div>

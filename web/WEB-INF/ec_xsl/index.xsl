@@ -176,9 +176,9 @@
 
 		<section class="special-items ptb" style="background-color: #f2f2f2;">
 			<div class="container">
-				<div class="block-title">Новинки и акции</div>
+				<div class="block-title">Лидеры продаж</div>
 				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+					<xsl:apply-templates select="page/main_page/product"/>
 				</div>
 			</div>
 		</section>

@@ -110,7 +110,7 @@
 					<input type="submit" class="button header__button" value="Поиск" />
 				</form>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+					<a href=""><i class="fas fa-shopping-cart"></i>Заявка</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
 					<div>Cумма: <strong>1250 руб.</strong></div> -->
 				</div>
@@ -657,7 +657,7 @@
 			<div class="device__info">
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
-					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
+					<xsl:value-of select="description" disable-output-escaping="yes"/>
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
@@ -718,7 +718,7 @@
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
+					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div>
 				</xsl:if>
 			</div>
 			<!-- <xsl:for-each select="tag">

@@ -247,8 +247,8 @@
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							onchange="window.location.href = $(this).find(':selected').attr('link')">
 						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+						<!-- <option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option> -->
+						<!-- <option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option> -->
 						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
 						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 					</select>

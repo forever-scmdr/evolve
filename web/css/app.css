@@ -7195,7 +7195,7 @@ svg {
 .popup-text-menu {
 	background-color:#fff;
 	left:0;
-	top:62px;
+	top:53px;
 	box-shadow:#00000087 0 0 5rem;
 	z-index:2;
 	padding:unset !important;
@@ -7204,7 +7204,7 @@ svg {
 }
 .popup-text-menu:before {
 	content:'';
-	display:block;
+	display:none;
 	position:absolute;
 	top:-1rem;
 	left:3rem;
