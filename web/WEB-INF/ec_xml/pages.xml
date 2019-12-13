@@ -1255,6 +1255,7 @@
 	<page name="integrate" template="integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="take_price" value="yes"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
