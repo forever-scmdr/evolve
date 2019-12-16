@@ -85,16 +85,16 @@ class FulltextCriteria {
 							queryGroup.add(query);
 					}
 				}
-			if (!queries.isEmpty()) {
+				if (!queries.isEmpty()) {
 					LinkedHashMap<Long, String> loaded = LuceneIndexMapper.getSingleton().getItems(queries, filter, paramNames, maxResultCount, threshold);
 					for (Long loadedId : loaded.keySet()) {
 						ArrayList<Pair<String, String>> queryAndHighlight = loadedIdsAndQueryAndHighlight.get(loadedId);
 						if (queryAndHighlight == null) {
 							queryAndHighlight = new ArrayList<>();
 							loadedIdsAndQueryAndHighlight.put(loadedId, queryAndHighlight);
-			}
+						}
 						queryAndHighlight.add(new Pair<>(queryVal, loaded.get(loadedId)));
-		}
+					}
 				}
 			}
 

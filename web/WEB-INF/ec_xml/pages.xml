@@ -256,7 +256,7 @@
 		</request>
 		<single item="news" var="sel" tag="selected_news">
 			<single item="seo"/>
-			<list item="news_item" id="ni">
+			<list item="news_item" id="ni" assoc="primary news">
 				<filter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -285,7 +285,7 @@
 			<var name="p" value="2"/>
 		</request>
 		<single item="news" var="sel" tag="selected_news">
-			<list item="news_item" id="ni">
+			<list item="news_item" id="ni" assoc="primary news">
 				<filter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -330,7 +330,7 @@
 						<var var="s_page"/>
 					</pages>
 				</filter>
-				<link name="show_small_news_item" target="small_news_item" type="exclusive">
+				<link name="show_page" target="small_news_item" type="exclusive">
 					<var name="sel" ref="sni" style="translit"/>
 				</link>
 			</list>

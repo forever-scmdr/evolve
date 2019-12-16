@@ -106,7 +106,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 				for (File file : files) {
 					if(file.exists() && file.isFile()) {
 						item.setValue(paramDesc.getName(), file);
-					}else{
+					} else {
 						item.setValue(paramDesc.getName(), file.getName());
 					}
 				}

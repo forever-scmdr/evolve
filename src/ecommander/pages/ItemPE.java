@@ -177,9 +177,9 @@ public class ItemPE extends PageElementContainer {
 		}
 		for (String an : assocName) {
 			if (ItemTypeRegistry.getAssoc(an) == null) {
-			results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' association in site model");
-			return false;
-		}
+				results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' association in site model");
+				return false;
+			}
 		}
 		// Установить данные для последующей валидации (ItemDescription страничного айтема)
 		results.pushBufferData(itemDesc);

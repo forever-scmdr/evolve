@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Выполняет различные операции с Item и БД
@@ -55,7 +56,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		if (mode == Mode.INSERT) {
 			query = new TemplateQuery("Item index insert new");
 			for (Parameter param : item.getAllParameters()) {
-				if (!param.isEmpty()) {
+				if (!param.isEmpty() && param.needsDBIndex()) {
 					if (param.isMultiple()) {
 						for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
 							createSingleValueInsert(query, item, singleParam, false);
@@ -71,7 +72,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 			query = new TemplateQuery("Item index update");
 			for (Parameter param : item.getAllParameters()) {
 				// Пропустить все неизмененные параметры
-				if (!param.hasChanged() && mode == Mode.UPDATE)
+				if ((!param.hasChanged() && mode == Mode.UPDATE) || !param.needsDBIndex())
 					continue;
 				// Удалить старое значение
 				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))
@@ -145,6 +146,33 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	}
 
 	/**
+	 * Загрузить айтемы по статусу
+	 * @param status
+	 * @param limit
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static List<ItemBasics> loadStatusItemBasics(byte status, int limit, Connection conn) throws SQLException {
+		TemplateQuery query = new TemplateQuery("Select item basics by status");
+		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
+				.FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(status);
+		if (limit > 0)
+			query.LIMIT(limit);
+		ArrayList<ItemBasics> result = new ArrayList<>();
+		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add(new DefaultItemBasics(
+						rs.getLong(1), rs.getInt(2), rs.getString(3),
+						rs.getByte(4), rs.getInt(5), rs.getByte(6),
+						rs.getBoolean(7)));
+			}
+			return result;
+		}
+	}
+
+	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
 	 * @param contextParentId
@@ -160,7 +188,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		Timestamp timeUpdated = rs.getTimestamp(I_UPDATED);
 		byte status = rs.getByte(I_STATUS);
 		byte groupId = rs.getByte(I_GROUP);
-		int userId = rs.getByte(I_USER);
+		int userId = rs.getInt(I_USER);
 		boolean filesProtected = rs.getBoolean(I_PROTECTED);
 		String params = rs.getString(I_PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
@@ -186,18 +214,18 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemId
 	 * @param limit
 	 * @param moreThanId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId, Connection conn) throws Exception {
+	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
 		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
 		select.SELECT("*").FROM(ITEM_TBL).WHERE().col_IN(I_TYPE_ID).intIN(extenders).AND()
 				.col(I_ID, ">").long_(moreThanId).ORDER_BY(I_ID).LIMIT(limit);
-		try (PreparedStatement pstmt = select.prepareQuery(conn)) {
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			// Создание айтемов
 			while (rs.next()) {
@@ -214,12 +242,11 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemName
 	 * @param limit
 	 * @param startFromId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
-		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
+	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId) throws Exception {
+		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId);
 	}
 
 	/**

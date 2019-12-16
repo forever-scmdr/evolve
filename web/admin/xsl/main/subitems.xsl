@@ -13,7 +13,9 @@
 		<xsl:param name="ass" />
 		<li class="visible {$ass}" style="position: relative; padding-right: 27px;">
 			<select id="is_{@id}">
-				<xsl:apply-templates select="item" mode="select"/>
+				<xsl:apply-templates select="item" mode="select">
+					<xsl:sort select="@caption"/>
+				</xsl:apply-templates>
 			</select>
 			<xsl:variable name="link">
 				<xsl:choose>

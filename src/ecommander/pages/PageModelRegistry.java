@@ -133,6 +133,8 @@ public class PageModelRegistry {
 		// Проверка, разрешен ли пользователю доступ к этой странице
 		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
+		if (context != null)
+			context.resetIdGenerator();
 		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
 

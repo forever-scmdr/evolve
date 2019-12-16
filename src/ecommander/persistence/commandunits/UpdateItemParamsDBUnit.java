@@ -30,14 +30,15 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 	UpdateItemParamsDBUnit(Item item) {
 		this.item = item;
 	}
-	
+
 	UpdateItemParamsDBUnit(Item item, boolean forceUpdate) {
 		this.item = item;
 		if (forceUpdate) {
 			this.mode = ItemMapper.Mode.FORCE_UPDATE;
+			this.item.forceInitialInconsistent();
 		}
 	}
-	
+
 	public void execute() throws Exception {
 		// Проверка прав пользователя
 		testPrivileges(item);
@@ -58,8 +59,10 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		if (item.getItemType().isKeyUnique() && !StringUtils.equals(item.getKeyUnique(), item.getOldKeyUnique())) {
 			long itemId = 0;
 			// Запрос на получение значения
-			String selectSql = "SELECT " + UK_ID + " FROM " + UNIQUE_KEY_TBL + " WHERE " + UK_KEY + "=?";
-			try (PreparedStatement pstmt = conn.prepareStatement(selectSql)) {
+			TemplateQuery keySelect = new TemplateQuery("key select");
+			keySelect.SELECT(I_ID).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
+					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
 				pstmt.setString(1, item.getKeyUnique());
 				ResultSet rs = pstmt.executeQuery();
 				if (rs.next())

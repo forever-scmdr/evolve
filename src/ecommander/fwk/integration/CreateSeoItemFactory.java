@@ -6,7 +6,10 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 
@@ -47,7 +50,6 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 				newSeoId = seos.get(0).getId();
 			}
 			executeCommand(ItemStatusDBUnit.delete(seo));
-			executeCommand(new CleanAllDeletedItemsDBUnit(10, null).noFulltextIndex());
 			seo.setId(newSeoId); // это надо для того, чтобы в админке был переход на страницу вновь созданного айтема seo
 		}
 	}

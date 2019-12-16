@@ -110,6 +110,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		 * @return
 		 */
 		public Item getCurrentItem() {
+			if (itemPE.getQueryType() == Type.SINGLE)
+				return itemPE.getSingleFoundItem();
 			return currentItem;
 		}
 
@@ -126,7 +128,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				Item currentParentItem = itemPE.getParentItemPE().getParentRelatedFoundItemIterator().getCurrentItem();
 				return itemPE.getFoundItemsByParentQuantity(currentParentItem.getId());
 			}
-			return itemPE.getFoundItemsByParentQuantity(currentParentId);
+			return itemPE.getFoundItemsByParentQuantity(NO_PARENT_ID); // currentParentId
 		}
 	}
 
@@ -529,14 +531,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
 				if (getReference().isUrlKeyUnique()) {
-					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique(), getSessionContext().getDBConnection());
+					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
 					List<String> values = getReference().getValuesArray();
 					if (getReference().isVarParamReference())
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values, getSessionContext()
-								.getDBConnection());
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values);
 					else
-						return ItemQuery.loadByIdsString(values, getItemName(), getSessionContext().getDBConnection());
+						return ItemQuery.loadByIdsString(values, getItemName());
 				}
 			}
 			// Создание запроса
@@ -567,12 +568,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				query.setUser(getSessionContext().getUser());
 			// Если есть фильтр и ограничение - загрузка общего числа айтемов
 			if (query.hasLimit() && getFilter().hasPage()) {
-				quantities.putAll(query.loadTotalQuantities(getSessionContext().getDBConnection()));
+				quantities.putAll(query.loadTotalQuantities());
 			}
 			// Выполнение запроса (если это нужно)
 			List<Item> items;
 			if (needLoading)
-				items = query.loadItems(getSessionContext().getDBConnection());
+				items = query.loadItems();
 			else
 				items = new ArrayList<>(0);
 			// Загрузка фильтра (домены полей ввода пользовательского фильтра)

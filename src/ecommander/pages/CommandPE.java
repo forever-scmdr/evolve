@@ -139,7 +139,7 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 //		}
 		return true;
 	}
-	
+
 	/**
 	 * Получить результат выполнения команды
 	 * @return

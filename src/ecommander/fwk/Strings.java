@@ -58,6 +58,12 @@ public class Strings
 		"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
 		"u","f","h","ts","ch","sh","sch","e","yu","ya","_","_","","ask","_","_","_","_","_","","","","_"
 	};
+	private static final String[] ENGLISH_REPLACEMENT_LETTERS_FILES = {
+			"1","2","3","4","5","6","7","8","9","0","_",
+			"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+			"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
+			"u","f","h","ts","ch","sh","sch","e","yu","ya",".","_","","ask","_","_","_","_","_","","","","_"
+	};
 	private static final String PASSWORD_LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	private static Charset ASCII_CHARSET = Charset.forName("ISO-8859-1");
 	
@@ -67,15 +73,26 @@ public class Strings
 	 * @return
 	 */
     public static String translit(String russian) {
-        StringBuilder english = new StringBuilder("");
-        char[] russianChars = russian.toLowerCase().toCharArray();
-        for(int i = 0; i < russianChars.length; i++) {
-            int alphabetIndex = RUSSIAN_MATCH_LETTERS.indexOf(russianChars[i]);
-            if(alphabetIndex != -1)
-            	english.append(ENGLISH_REPLACEMENT_LETTERS[alphabetIndex]);
-        }
-        return english.toString();
+		return translit(russian, false);
     }
+
+
+	public static String createFileName(String russian) {
+		return translit(StringUtils.lowerCase(russian), true);
+	}
+
+	private static String translit(String russian, boolean isFile) {
+		StringBuilder english = new StringBuilder("");
+		char[] russianChars = russian.toLowerCase().toCharArray();
+		String[] alphabet = isFile ? ENGLISH_REPLACEMENT_LETTERS_FILES : ENGLISH_REPLACEMENT_LETTERS;
+		for(int i = 0; i < russianChars.length; i++) {
+			int alphabetIndex = RUSSIAN_MATCH_LETTERS.indexOf(russianChars[i]);
+			if(alphabetIndex != -1)
+				english.append(alphabet[alphabetIndex]);
+		}
+		return english.toString();
+	}
+
     /**
      * Создать строку, которая не содержит русских символов, спецсимволов и может являться именем XML элемента
      * @param invalid
@@ -89,6 +106,7 @@ public class Strings
     		return StringUtils.substring("_" + halfValid, 0, 254);
     	return StringUtils.substring(halfValid, 0, 254);
     }
+
     /**
      * Проверяет, является ли строка 
      * @param string
@@ -202,14 +220,10 @@ public class Strings
 	 * @return
 	 */
 	public static String getFileName(String fileName) {
-		return StringUtils.lowerCase(translit(StringUtils.substring(fileName, StringUtils.lastIndexOf(fileName, '/') + 1)));
-	}
-
-	public static String createFileName(String string) {
-		return translit(StringUtils.lowerCase(string));
+		return createFileName(StringUtils.substring(fileName, StringUtils.lastIndexOf(fileName, '/') + 1));
 	}
 
     public static void main(String[] args) {
-	   System.out.println(translit("подъёмник?"));
+    	System.out.println(translit("подъёмник?"));
     }
 }

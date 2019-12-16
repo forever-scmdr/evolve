@@ -2,7 +2,7 @@ package ecommander.persistence.itemquery;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.MysqlConnector.ConnectionCount;
+import ecommander.fwk.MysqlConnector.LoggedConnection;
 import ecommander.fwk.Pair;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
@@ -54,6 +54,7 @@ import java.util.*;
 public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UniqueItemKeys, DBConstants.ItemIndexes {
 
 	public static final int MAX_PAGE = 20;
+	public static final int ITEM_STATUS_COUNT = 3;
 
 	public interface Const {
 		String DISTINCT = "<<DISTINCT>>";
@@ -89,33 +90,29 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private static final String COMMON_QUERY
 			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> <<ORDER_PART>> <<LIMIT_PART>>";
 
 	private static final String PARENT_QUERY
 			= "SELECT <<DISTINCT>> I.*, <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) <<WHERE_PART>>";
+			+ "WHERE  1=1 <<STATUS_PART>> <<WHERE_PART>>";
 
 
 	private static final String GROUP_COMMON_QUERY
 			= "SELECT <<PARENT_ID_PART>> AS PID, <<GROUP_PARAMS_PART>> "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> GROUP BY <<GROUP_PART>> <<ORDER_PART>>";
 
 	private static final String COMMON_QUANTITY_QUERY
 			= "SELECT COUNT(<<DISTINCT>> I." + I_ID + "), <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> GROUP BY PID";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> GROUP BY PID";
 
 	private static final String SINGLE_QUANTITY_QUERY
 			= "SELECT COUNT(*), <<DEF_PARENT_ID_PART>> AS DPID FROM ( "
 			+ "SELECT <<DISTINCT>> I." + I_ID + ", <<PARENT_ID_PART>> AS PID "
 			+ "FROM " + ITEM_TBL + " AS I <<JOIN_PART>> "
-			+ "WHERE I." + I_STATUS + " IN(<<STATUS_PART>>) "
-			+ "<<WHERE_PART>> <<DEF_LIMIT_PART>>) AS <<COUNT_TABLE>>";
+			+ "WHERE 1=1 <<STATUS_PART>> <<WHERE_PART>> <<DEF_LIMIT_PART>>) AS <<COUNT_TABLE>>";
 
 
 	private boolean hasParent = false; // Есть ли критерий предка у искомого айтема (нужно ли искать потомков определенных предков)
@@ -130,17 +127,22 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private boolean isParent = false; // искомый айтем ялвяется не потомком, а предком загруженных ранее айтемов
 	private User user = null; // критерий пользователя-владельца айтема (для персональных айтемов)
 	private String userGroupName = null; // критерий группы, которой принадлежит айтем
-	private Byte[] status = null; // статус айтема (нормальный, скрытый, удаленный)
+	private HashSet<Byte> status = new HashSet<>(); // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 	private boolean isVeryLargeResult = false; // ожидается ли очень длинный результат (после загрузки количества)
-
+	private boolean isIdSequential = false; // последовательная пакетная загрузка в порядке возрастания ID айтема
+	private long idSequentialStart = -1; // начальный ID айтема для последовательной загрузки (не включен в результат)
+	private String sqlForLog = null; // SQL последнего выполненного запроса
 	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
-		if (status.length > 0)
-			this.status = status;
+		if (status.length > 0) {
+			for (Byte st : status) {
+				this.status.add(st);
+			}
+		}
 		else
-			this.status = new Byte[] {Item.STATUS_NORMAL};
+			this.status.add(Item.STATUS_NORMAL);
 	}
 
 	public ItemQuery(String itemName, Byte... status) {
@@ -217,6 +219,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return setAggregation(getItemDesc().getParameter(paramName), function, sorting);
 	}
 
+	/**
+	 * Когда нужно производить перебор всех вариантов пакетно.
+	 * Много выполнений одного запроса.
+	 * @param startingId
+	 */
+	public ItemQuery setIdSequential(long startingId) {
+		this.isIdSequential = true;
+		this.idSequentialStart = startingId;
+		return this;
+	}
 	/**
 	 * Должен ли результат загрузки быть деревом
 	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
@@ -421,6 +433,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		filter.startAssociatedGroup(item, assocId, type);
 		return this;
 	}
+
 
 	/**
 	 * Завершить формирование текущей группы критериев
@@ -677,7 +690,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				if (parentIds.length == 1) {
 					query.getSubquery(Const.PARENT_ID).long_(parentIds[0]);
 				} else {
-				query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
+					query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_CHILD_ID);
 				}
 			} else {
 				query.getSubquery(Const.JOIN).INNER_JOIN(ITEM_PARENT_TBL + " AS P", P_DOT + IP_CHILD_ID, I_DOT + I_ID);
@@ -695,14 +708,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 					if (parentIds.length == 1) {
 						query.getSubquery(Const.PARENT_ID).long_(parentIds[0]);
 					} else {
-					query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+						query.getSubquery(Const.PARENT_ID).sql(P_DOT + IP_PARENT_ID);
+					}
 				}
-			}
 			}
 			if (isTransitive) {
 				query.getSubquery(Const.WHERE).AND().col_IN(P_DOT + IP_PARENT_DIRECT).byteIN((byte) 1, (byte) 0);
 			} else {
-				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte)1);
+				query.getSubquery(Const.WHERE).AND().col(P_DOT + IP_PARENT_DIRECT).byte_((byte) 1);
 			}
 			// Добавить DISTINCT если загрузка сразу по нескольким ассоциациям
 			// DISTINCT добавляется только если результат не ожидается очень большим (для оптимизации)
@@ -775,7 +788,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				query = TemplateQuery.createFromString(COMMON_QUERY, "Common query");
 		}
 		// Установить критерий статуса айтема
-		query.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -785,6 +799,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Теперь можно загружать группировку (если она есть), предварительно добавив критерий типа айтема и предка
 		if (hasAggregation()) {
 			createParentTypeUserCriteria(query, ancestorIds);
+			sqlForLog = query.getSimpleSql();
 			return loadGroupedItems(query, conn);
 		}
 		// Если в фильтре нет своей сортировки, можно установить сортировку по умолчанию
@@ -800,12 +815,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 					if (isTree) {
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
-						orderBy.sql(P_DOT + IP_WEIGHT);
-						// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
-						// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
-						if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
-							query.getSubquery(Const.WHERE).AND()
-									.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+						if (isIdSequential) {
+							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
+							if (isParent)
+								orderBy.sql(P_DOT + IP_PARENT_ID);
+							else
+								orderBy.sql(P_DOT + IP_CHILD_ID);
+						} else {
+							orderBy.sql(P_DOT + IP_WEIGHT);
+							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
+							// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+							if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
+								query.getSubquery(Const.WHERE).AND()
+										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+							}
 						}
 					}
 				} else {
@@ -839,6 +862,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
+		sqlForLog = query.getSimpleSql();
 		return loadByQuery(query, PID, null, fulltext, conn);
 	}
 	/**
@@ -851,6 +875,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (all.size() == 0)
 			return null;
 		return all.get(0);
+	}
+
+	/**
+	 * Получить SQL запроса, который сгенерировался этим конструктором
+	 * @return
+	 */
+	public String getSqlForLog() {
+		return sqlForLog;
 	}
 	/**
 	 * Загрузить один айтем по его ID
@@ -906,6 +938,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.WHERE().col(I_GROUP).byte_(userGroupId)
 				.AND().col(I_USER).int_(userId)
 				.AND().col_IN(I_SUPERTYPE).intIN(ItemTypeRegistry.getItemExtendersIds(type.getTypeId()))
+				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
 				.AND().col(IP_CHILD_ID).sql(IP_PARENT_ID);
 		ArrayList<Item> result = loadByQuery(query, "PID", null, null, conn);
 		if (result.size() > 0)
@@ -934,7 +967,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
-				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]));
+				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
+				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
@@ -988,15 +1022,15 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		idsSelect.SELECT(UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys.toArray(new String[0]));
 		boolean isOwnConnection = false;
 		Connection connection = null;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
 		ArrayList<Long> ids = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
 			pstmt = idsSelect.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
@@ -1122,16 +1156,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private static ArrayList<Item> loadByQuery(TemplateQuery query, String parentIdCol, Long[] order,
 	                                           FulltextCriteria fulltext, Connection... conn) throws Exception {
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
+		Connection connection = null;
 		ArrayList<Item> result = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
 			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			if (order == null) {
@@ -1188,7 +1222,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выбрать нужный запрос
 		TemplateQuery query = TemplateQuery.createFromString(COMMON_QUANTITY_QUERY, "Common qty query");
 		// Установить критерий статуса айтема
-		query.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			query.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -1200,14 +1235,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = query.prepareQuery(connection)){
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.put(rs.getLong(2), rs.getInt(1));
@@ -1215,6 +1252,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
 		}
 		return result;
@@ -1236,7 +1274,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выбрать нужный запрос
 		TemplateQuery baseQuery = TemplateQuery.createFromString(SINGLE_QUANTITY_QUERY, "Single qty query");
 		// Установить критерий статуса айтема
-		baseQuery.getSubquery(Const.STATUS).byteArray(status);
+		if (status.size() < ITEM_STATUS_COUNT)
+			baseQuery.getSubquery(Const.STATUS).AND().col_IN("I." + I_STATUS).byteIN(status.toArray(new Byte[0]));
 		// Если был полнотекстовый поиск, выполнить его и добавить критерий найденных ID
 		if (hasFulltext())
 			baseQuery.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(fulltext.getLoadedIds());
@@ -1269,14 +1308,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		HashMap<Long, Integer> result = new HashMap<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = unionQuery.prepareQuery(connection)){
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = unionQuery.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int qty = rs.getInt(1);
@@ -1287,6 +1328,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
 		}
 		return result;
@@ -1301,18 +1343,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		// Выполнение запроса к БД
 		ArrayList<Item> result = new ArrayList<>();
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		final int PARENT_COL = 1;
 		final int MAIN_COL = 2;
 		final int ADDITIONAL_COL = 3;
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Item item = Item.existingItem(getItemDesc(), -1, ItemTypeRegistry.getPrimaryAssoc(),
@@ -1331,6 +1374,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			rs.close();
 			queryFinished(connection);
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}
@@ -1338,8 +1382,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 	
 	public static void queryFinished(Connection conn) {
-		if (conn instanceof ConnectionCount)
-			((ConnectionCount) conn).queryFinished();
+		if (conn instanceof LoggedConnection)
+			((LoggedConnection) conn).queryFinished();
 	}
 
 	/**
@@ -1358,17 +1402,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
 		boolean isOwnConnection = false;
-		Connection connection;
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			return rs.next();
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}
@@ -1391,16 +1438,18 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				.sql(" GROUP BY " + II_VALUE)
 				.ORDER_BY(II_VALUE);
 		boolean isOwnConnection = false;
-		Connection connection;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		ArrayList<String> result = new ArrayList<>();
-		if (conn == null || conn.length == 0) {
-			isOwnConnection = true;
-			connection = MysqlConnector.getConnection();
-		} else {
-			connection = conn[0];
-		}
 		DataType paramType = DataTypeRegistry.getType(param.getType());
-		try (PreparedStatement pstmt = query.prepareQuery(connection)) {
+		try {
+			if (conn == null || conn.length == 0) {
+				isOwnConnection = true;
+				connection = MysqlConnector.getConnection();
+			} else {
+				connection = conn[0];
+			}
+			pstmt = query.prepareQuery(connection);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Object value = DataTypeMapper.createValue(param.getType(), rs);
@@ -1408,6 +1457,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			}
 			return result;
 		} finally {
+			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection)
 				MysqlConnector.closeConnection(connection);
 		}

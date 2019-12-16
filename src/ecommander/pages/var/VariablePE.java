@@ -103,7 +103,7 @@ public abstract class VariablePE implements PageElement {
 	public final boolean isStylePath() {
 		return style == Style.path;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

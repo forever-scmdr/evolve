@@ -46,7 +46,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 
 	private static class UserInput {
 		// ID типа айтема
-		private int itemTypeId = -1;
+		private int itemTypeId= -1;
 		// Является ли действие пользователя действием в режиме визуального редактирования
 		private boolean isVisual = false;
 		// Является ли создаваемый айтем персональным (или общим для группы)
@@ -206,8 +206,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 		// Если запрос multipart/formdata, то обрабатывать его как file upload
 		input.mount = new HashMap<>();
 //		if (!ServletFileUpload.isMultipartContent(req)) {
-		// Простые параметры
-		input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
+			// Простые параметры
+			input.movingItem = req.getParameter(MainAdminPageCreator.MOVING_ITEM_INPUT);
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT))) {
 			String ids[] = req.getParameter(MainAdminPageCreator.ITEM_IDS_INPUT).split(",");
 			for (String s : ids) {
@@ -264,7 +264,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * Начало работы с CMS, выбран корневой айтем
 	 *
 	 * Параметры
-	 * - не требуются
+	 *  - не требуются
 	 *
 	 * @return
 	 * @throws Exception
@@ -307,22 +307,18 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage dropAllCaches(MainAdminPageCreator pageCreator) throws Exception {
 		PageController.clearCache();
-		Connection conn = null;
-		Statement stmt = null;
 		int count = 0;
-		try {
-			conn = MysqlConnector.getConnection();
-			stmt = conn.createStatement();
+		try (Connection conn = MysqlConnector.getConnection();
+			Statement stmt  = conn.createStatement()) {
 			ResultSet rs = stmt.executeQuery("SELECT " + DBConstants.ItemTbl.I_ID + " FROM " + DBConstants.ItemTbl.ITEM_TBL
 					+ " WHERE " + DBConstants.ItemTbl.I_TYPE_ID + " > 0");
 			DelayedTransaction tr = new DelayedTransaction(getCurrentAdmin());
-			LuceneIndexMapper.getSingleton().startUpdate();
 			while (rs.next()) {
 				Item item = AdminLoader.loadItem(rs.getLong(1), getCurrentAdmin());
 				if (item == null)
 					continue;
 				tr.addCommandUnit(SaveItemDBUnit.forceUpdate(item).ignoreUser().ignoreFileErrors());
-					tr.execute();
+				tr.execute();
 				count++;
 				if (count % 500 == 0)
 					ServerLogger.warn("Updated " + count + " items");
@@ -331,10 +327,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			LuceneIndexMapper.getSingleton().commit();
 		} catch (Exception e) {
 			ServerLogger.error(e);
-		} finally {
-			MysqlConnector.closeStatement(stmt); // TODO !!!!!!!!!!!!!!
-			MysqlConnector.closeConnection(conn);
-			LuceneIndexMapper.getSingleton().finishUpdate();
 		}
 		//AdminPage page = pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 		//page.addMessage("Все кеши очищены успешно", false);
@@ -490,7 +482,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		int type = item.getTypeId();
 		if (toParent) {
 			id = AdminLoader.loadItemDirectParentId(id, ItemTypeRegistry.getPrimaryAssocId());
-			if (id == -1) {
+			if(id == -1) {
 				return pageCreator.createPageBase(MainAdminPageCreator.PARAMS_VIEW_TYPE, 0, 0);
 			}
 			type = AdminLoader.loadItem(id, getCurrentAdmin()).getTypeId();
@@ -526,12 +518,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		}
 		transaction.execute();
 		// Очистить корзину
-		LuceneIndexMapper.getSingleton().startUpdate();
-		transaction.addCommandUnit(new CleanAllDeletedItemsDBUnit(20, null));
-		transaction.execute();
 		AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
-		// Удалить айтем из индекса Lucene
-		LuceneIndexMapper.getSingleton().finishUpdate();
 		// Очистить кеш страниц
 		PageController.clearCache();
 		page.addMessage("Элемент успешно удален", false);
@@ -657,9 +644,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 			List<FileItem> values = upload.parseRequest(req);
 			for (FileItem fileItem : values) {
 				if (fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.PARAM_ID_INPUT))
-					multipleParamId = Integer.parseInt(fileItem.getString(encoding));
+		    		multipleParamId = Integer.parseInt(fileItem.getString(encoding));
 				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.MULTIPLE_PARAM_VALUE_INPUT))
-					multipleParamValue = fileItem.getString(encoding);
+		    		multipleParamValue = fileItem.getString(encoding);
 				else if (fileItem.isFormField() && fileItem.getFieldName().equalsIgnoreCase(MainAdminPageCreator.ITEM_ID_INPUT))
 					itemId = Long.parseLong(fileItem.getString());
 				else if (!fileItem.isFormField())
@@ -923,7 +910,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 		try {
 			if(in.itemId > 0)
 				transaction.addCommandUnit(new MoveItemDBUnit(in.itemId, in.parentId));
-			for(long id : in.bufferedItemIds){
+			for (long id : in.bufferedItemIds) {
 				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
 			}
 			transaction.execute();
@@ -931,7 +918,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (buffer != null && in.clearPasteBuffer) {
 				buffer.remove(in.itemId);
-				for(long id : in.bufferedItemIds){
+				for (long id : in.bufferedItemIds) {
 					buffer.remove(id);
 				}
 				in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
@@ -1000,7 +987,6 @@ public class MainAdminServlet extends BasicAdminServlet {
 			for (ItemAccessor item : items) {
 				buffer.put(item.getId(), item);
 			}
-
 		}
 		in.session.setAttribute(MainAdminPageCreator.PASTE_LIST, buffer);
 		return pageCreator.createPastePage(in.session, in.parentId, in.itemTypeId);
@@ -1025,7 +1011,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 			@SuppressWarnings("unchecked")
 			LinkedHashMap<Long, ItemAccessor> buffer = (LinkedHashMap<Long, ItemAccessor>) in.session.getAttribute(MainAdminPageCreator.PASTE_LIST);
 			if (in.itemId > 0) {
-				transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
+			transaction.addCommandUnit(new CopyItemDBUnit(in.itemId, in.parentId));
 			}
 			for (long id : in.bufferedItemIds) {
 				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
@@ -1108,7 +1094,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				transaction.addCommandUnit(new CopyItemDBUnit(id, in.parentId));
 			}
 			transaction.execute();
-			if(in.clearPasteBuffer) in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.clearPasteBuffer)
+				in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to copy items", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);
@@ -1144,7 +1131,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 				transaction.addCommandUnit(new MoveItemDBUnit(id, in.parentId));
 			}
 			transaction.execute();
-			if(in.clearPasteBuffer) in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
+			if (in.clearPasteBuffer)
+				in.session.removeAttribute(MainAdminPageCreator.PASTE_LIST);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to move items", e);
 			AdminPage page = pageCreator.createSubitemsPage(in.parentId, in.itemTypeId, in.page, in.searchQuery);

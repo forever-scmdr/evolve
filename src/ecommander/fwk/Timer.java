@@ -1,10 +1,12 @@
 package ecommander.fwk;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Queue;
 
 /**
  * Таймер для отслеживания времени выполнения различных действий
@@ -30,12 +32,12 @@ public class Timer {
 	}
 	private static final DecimalFormat FORMATTER = new DecimalFormat("#,##0.###", SYMBOLS);
 	
-    private static interface TimerMessage {
+    private interface TimerMessage {
     	void output();
     	long getExecTime();
     }
     
-	private static class TimeLogMessage implements TimerMessage{
+	public static class TimeLogMessage implements TimerMessage{
 		private String taskName;
 		private String comment;
 		private long execTime;
@@ -76,15 +78,10 @@ public class Timer {
 		}
 	}
 	
-	private HashMap<String, TimeLogMessage> runningTasks = new HashMap<String, TimeLogMessage>();
-	private ArrayList<TimerMessage> log = new ArrayList<TimerMessage>();
+	private HashMap<String, TimeLogMessage> runningTasks = new HashMap<>();
+	private Queue<TimerMessage> log = new CircularFifoQueue<>(20);
 	
-	private static ThreadLocal<Timer> threadLocalInstance = new ThreadLocal<Timer>() {
-		@Override
-		protected Timer initialValue() {
-			return new Timer();
-		}
-	};
+	private static ThreadLocal<Timer> threadLocalInstance = ThreadLocal.withInitial(() -> new Timer());
 	/**
 	 * Получить экземпляр таймера
 	 * @return
@@ -120,16 +117,41 @@ public class Timer {
 	 * Подсчитать время выполнения
 	 * @param name
 	 */
-	public void stop(String name) {
+	public TimeLogMessage stop(String name) {
 		TimeLogMessage stamp = runningTasks.get(name);
 		if (stamp == null) {
-			ServerLogger.warn("Timer for task '" + name + "' not started");
-			return;
+			//ServerLogger.warn("Timer for task '" + name + "' not started");
+			return null;
 		}
 		stamp.execTime = System.nanoTime() - stamp.execTime;
 		log.add(stamp);
 		runningTasks.remove(name);
+		return stamp;
 	}
+
+	/**
+	 * Получить время работы таймера
+	 * @param name
+	 * @return
+	 */
+	public long getNanos(String name) {
+		TimeLogMessage stamp = runningTasks.get(name);
+		if (stamp == null) {
+			ServerLogger.warn("Timer for task '" + name + "' not started");
+			return -1;
+		}
+		return System.nanoTime() - stamp.execTime;
+	}
+
+	/**
+	 * Получить времы работы таймера в секундах
+	 * @param name
+	 * @return
+	 */
+	public double getSeconds(String name) {
+		return getNanos(name) / (double) 1000000000;
+	}
+
 	/**
 	 * Записать все значения таймеров в журнал
 	 */
@@ -152,6 +174,7 @@ public class Timer {
 			}
 			Timer.getTimer().stop("Subproc 10 times");
 		}
+		ServerLogger.warn("TOTAL SECONDS: " + Timer.getTimer().getSeconds("All procedure"));
 		Timer.getTimer().stop("All procedure");
 		Timer.getTimer().flush();
 	}

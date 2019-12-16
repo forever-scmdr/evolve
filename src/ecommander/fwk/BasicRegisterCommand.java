@@ -1,14 +1,19 @@
 package ecommander.fwk;
 
+import ecommander.controllers.PageController;
+import ecommander.controllers.SessionContext;
 import ecommander.model.*;
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.commandunits.UpdateUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 
 /**
@@ -25,6 +30,7 @@ public abstract class BasicRegisterCommand extends Command {
 
 	public static final String REGISTERED_GROUP = "registered";
 	public static final String USER_ITEM = "user";
+	protected static final String CART_ITEM = "cart";
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -35,7 +41,7 @@ public abstract class BasicRegisterCommand extends Command {
 		if (!validate()) {
 			return getResult("not_set");
 		}
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		if (form.isValueEmpty(PASSWORD_PARAM)) {
 			return getResult("not_set");
 		}
@@ -47,18 +53,26 @@ public abstract class BasicRegisterCommand extends Command {
 		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
 		newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.SIMPLE);
 		try {
-			executeAndCommitCommandUnits(new SaveNewUserDBUnit(newUser).ignoreUser());
+			executeCommandUnit(new SaveNewUserDBUnit(newUser).ignoreUser());
 		} catch (UserExistsExcepion e) {
 			return getResult("user_exists");
 		}
+		Item userItem = ItemQuery.loadSingleItemByParamValue(USER_ITEM, EMAIL_PARAM, userName);
+		if (userItem != null) {
+			Item.updateParamValues(userItem, form);
+		} else {
+			userItem = form;
+			userItem.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
+		}
+		userItem.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
+		executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
 		startUserSession(newUser);
-		form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
-		form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(form).ignoreUser());
+		commitCommandUnits();
+
+		sendEmail(userItem, newUser, getUrlBase());
 
 		//Add cart contacts!
 		Item oldUserItem = getSessionMapper().getSingleRootItemByName(USER_ITEM);
-		Item userItem = new ItemQuery(USER_ITEM).setUser(newUser).loadFirstItem();
 		if (oldUserItem != null){
 			getSessionMapper().removeItems(oldUserItem.getId());
 		}
@@ -88,7 +102,11 @@ public abstract class BasicRegisterCommand extends Command {
 						getSessionMapper().removeItems(oldUserItem.getId());
 					userItem.setContextPrimaryParentId(Item.DEFAULT_ID);
 					getSessionMapper().saveTemporaryItem(userItem);
+					// Удалить корзину
+					getSessionMapper().removeItems(CART_ITEM);
 				}
+				setCookieVariable("minqty_opt", "");
+				setCookieVariable("minqty", "");
 				return getResult("login");
 			} else {
 				return getResult("login_error");
@@ -104,7 +122,7 @@ public abstract class BasicRegisterCommand extends Command {
 		if (!validate()) {
 			return getResult("not_set_personal");
 		}
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		boolean changeUser = false;
 		User user = getInitiator();
 		String pass1 = form.getStringExtra("new-password-1");
@@ -122,15 +140,47 @@ public abstract class BasicRegisterCommand extends Command {
 		}
 		if (changeUser) {
 			try {
-				executeAndCommitCommandUnits(new UpdateUserDBUnit(user, false));
+				executeAndCommitCommandUnits(new UpdateUserDBUnit(user, false).noTriggerExtra());
 			} catch (UserExistsExcepion e) {
 				return getResult("user_exists_personal");
 			}
 		}
 		Item userItem = ItemQuery.loadById(form.getId());
 		Item.updateParamValues(form, userItem);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
+		userItem.setValue(PASSWORD_PARAM, user.getPassword());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem).noTriggerExtra());
 		return getResult("success_personal");
+	}
+
+	/**
+	 * Отправить email о регистрации пользователю
+	 * @param userItem
+	 */
+	public static void sendEmail(Item userItem, User newUser, String siteUrl) {
+		// Отправка письма
+		try {
+			Multipart regularMP = new MimeMultipart();
+			MimeBodyPart regularTextPart = new MimeBodyPart();
+			regularMP.addBodyPart(regularTextPart);
+			LinkPE regularLink = LinkPE.newDirectLink("link", "register_email", false);
+
+			regularLink.addStaticVariable("user", userItem.getId() + "");
+			regularLink.addStaticVariable("base", siteUrl);
+			ExecutablePagePE regularTemplate =
+					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(newUser));
+			final String customerEmail = userItem.getStringValue("email");
+
+			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(regularTemplate, regularBos);
+			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+
+			if (StringUtils.isNotBlank(customerEmail))
+				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте " + siteUrl, regularMP);
+
+		} catch (Exception e) {
+			ServerLogger.error("error while sinding email about registration", e);
+		}
 	}
 
 	protected abstract boolean validate() throws Exception;

@@ -89,10 +89,12 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 		// Проверить права пользователя
+		startQuery("CREATE ASSOC: load parent");
 		if (parent == null)
 			parent = ItemMapper.loadItemBasics(parentId, getTransactionContext().getConnection());
 		testPrivileges(item);
 		testPrivileges(parent);
+		endQuery();
 
 		Assoc assoc = ItemTypeRegistry.getAssoc(assocId);
 
@@ -110,6 +112,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.UNION_ALL()
 						.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
 						.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId);
+				startQuery(checkQuery.getSimpleSql());
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					HashSet<Long> nodesParents = new HashSet<>();
 					ResultSet rs = pstmt.executeQuery();
@@ -117,8 +120,8 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						long parentId = rs.getLong(1);
 						if (nodesParents.contains(parentId)) {
 							if (isStrict) {
-							throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
-									"Association parent and child nodes must be in different branches");
+								throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+										"Association parent and child nodes must be in different branches");
 							} else {
 								return;
 							}
@@ -126,6 +129,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						nodesParents.add(parentId);
 					}
 				}
+				endQuery();
 			} else {
 				// Предок не должен содержать потомка по этой ассоциации
 				TemplateQuery checkQuery = new TemplateQuery("check assoc validity non transitive");
@@ -133,6 +137,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.col(IP_PARENT_ID).long_(parent.getId()).AND()
 						.col(IP_CHILD_ID).long_(item.getId()).AND()
 						.col(IP_ASSOC_ID).byte_(assocId);
+				startQuery(checkQuery.getSimpleSql());
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					ResultSet rs = pstmt.executeQuery();
 					if (rs.next()) {
@@ -144,6 +149,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						}
 					}
 				}
+				endQuery();
 			}
 		}
 
@@ -158,8 +164,14 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		insert.INSERT_INTO(ITEM_PARENT_TBL, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
+		Integer[] childrenBaseIds = ItemTypeRegistry.getDirectChildrenBasicTypeIds(parent.getTypeId());
 		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
-				.FROM(ITEM_PARENT_TBL).WHERE().col(IP_PARENT_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId).sql(" \r\n");
+				.FROM(ITEM_PARENT_TBL).WHERE()
+				.col(IP_PARENT_ID).long_(parent.getId()).AND()
+				.col(IP_ASSOC_ID).byte_(assocId).AND()
+				.col_IN(IP_CHILD_SUPERTYPE).intIN(childrenBaseIds).AND()
+				.col(IP_PARENT_DIRECT).byte_((byte) 1)
+				.sql(" \r\n");
 
 		// Остальные шаги только для транзитивных ассоциаций
 		if (assoc.isTransitive()) {
@@ -215,9 +227,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			// duplicate key. Просто установить parent_direct = 0
 			insert.ON_DUPLICATE_KEY_UPDATE(IP_PARENT_DIRECT).byte_((byte) 0);
 		}
+		startQuery(insert.getSimpleSql());
 		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
+		endQuery();
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		//         Включить в список обновления предшественников айтема (и его сабайтемов)      //

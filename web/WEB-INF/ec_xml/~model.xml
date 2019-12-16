@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+	<assoc name="news" caption="Дополнительные статьи" transitive="false" ag-id="2" ag-hash="3377875" />
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -124,6 +126,7 @@
 		<parameter name="name" type="string" caption="Название"/>
 		<!--<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>-->
 		<child item="seo" single="true"/>
+		<child item="news_item" assoc="news"/>
 		<child item="news_item"/>
 	</item>
 

@@ -103,15 +103,15 @@ public class ItemVariable extends Variable {
 			}
 			return result;
 		} else {
-		Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
-		if (StringUtils.isNotBlank(paramName)) {
-			return item.outputValues(paramName);
-		} else {
-			ArrayList<String> result = new ArrayList<>(1);
+			Item item = parentPage.getItemPEById(itemPageId).getParentRelatedFoundItemIterator().getCurrentItem();
+			if (StringUtils.isNotBlank(paramName)) {
+				return item.outputValues(paramName);
+			} else {
+				ArrayList<String> result = new ArrayList<>(1);
 				result.add(isKey ? item.getKeyUnique() : item.getId() + "");
-			return result;
+				return result;
+			}
 		}
-	}
 	}
 
 	@Override
