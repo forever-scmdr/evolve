@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 public interface CatalogConst {
 
 	String CATALOG_ITEM = "catalog";
+	String SEARCH_CATALOG_ITEM = "search_catalog";
 	String SECTION_ITEM = "section";
 	String PRODUCT_ITEM = "product";
 	String LINE_PRODUCT_ITEM = "line_product";

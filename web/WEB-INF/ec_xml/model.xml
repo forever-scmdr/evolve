@@ -289,6 +289,12 @@
 		<parameter name="xml" type="xml" caption="Параметры" />
 	</item>
 
+
+	<item name="search_catalog" caption="Каталог только для поиска">
+		<child item="product"/>
+	</item>
+
+
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -449,6 +455,7 @@
 
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="34" ag-hash="-251149995">
+		<parameter name="promo" type="string" caption="Промо" multiple="true"/>
 		<child item="product" assoc="general"/>
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
@@ -672,6 +679,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
 		<child item="course" single="true"/>
+		<child item="search_catalog" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

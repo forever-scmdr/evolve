@@ -68,6 +68,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		ItemUtils.ensureSingleRootItem(SEARCH_CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator(), ignore, justPrice);
 		info.setProcessed(0);
 		for (File xml : xmls) {

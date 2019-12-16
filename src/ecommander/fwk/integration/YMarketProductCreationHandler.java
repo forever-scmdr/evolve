@@ -4,10 +4,7 @@ import com.mysql.fabric.Server;
 import ecommander.fwk.*;
 import ecommander.fwk.Timer;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -105,11 +102,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private final HashSet<String> notIgnoreCodes;
 	private String currentQuery;
 	private boolean justPrice;
+	private Item searchCatalog;
 
 
 	
 	public YMarketProductCreationHandler(HashMap<String, Pair<Item, Boolean>> sections, IntegrateBase.Info info, User initiator,
-										 HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes, boolean justPrice) {
+										 HashSet<String> ignoreCodes, HashSet<String> notIgnoreCodes, boolean justPrice) throws Exception {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType("book");
@@ -119,6 +117,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.ignoreCodes = ignoreCodes;
 		this.notIgnoreCodes = notIgnoreCodes;
 		this.justPrice = justPrice;
+		this.searchCatalog = ItemQuery.loadSingleItemByName(SEARCH_CATALOG_ITEM);
 		try {
 			Item course = new ItemQuery("course").loadFirstItem();
 			level_1 = course.getDecimalValue("level_1");
@@ -155,7 +154,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if(product == null && section == null){
 					if (!justPrice)
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
-					return;
+					section = searchCatalog;
 				}
 				if(isNotRussian()) return;
 				boolean isProductNew = false;
@@ -223,7 +222,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 //				}
 //				secCode = (StringUtils.isNoneBlank(productParentCode))? productParentCode : secCode;
 
-				String secName = section == null ? secCode : section.getStringValue(NAME_PARAM);
+				String secName = section == null || section == searchCatalog ? secCode : section.getStringValue(NAME_PARAM);
 				info.setCurrentJob("раздел " + secName + " * товар " + product.getStringValue(NAME_PARAM));
 
 				//if (getPrice)
@@ -237,7 +236,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				//	product.setValueUI(PRICE_PARAM, "0");
 				isBookinistic = isBookinistic || StringUtils.equals(secCode, "16546") || BOOKINISTIC.equalsIgnoreCase(specialParams.get(STATUS)) || BOOKINISTIC.equalsIgnoreCase(specialParams.get(PUBLISH_TYPE));
 				product.setValue(PRICE_PARAM, getCorrectPrice(price).setScale(1, RoundingMode.CEILING));
-				if(oldPrice != null){
+				if(oldPrice != null) {
 					if (price.compareTo(level_1) < 0) {
 						oldPrice =   oldPrice.multiply(quotient_1);
 					}
@@ -257,7 +256,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValue("tag", BOOKINISTIC_1);
 				}
 
-				else{
+				else {
 					//info.pushLog("NOT BUK: "+ commonParams.get(NAME_ELEMENT));
 					product.removeEqualValue("tag", BOOKINISTIC);
 					product.removeEqualValue("tag", BOOKINISTIC_1);
@@ -285,31 +284,38 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				DelayedTransaction.executeSingle(initiator, save);
 				checkSlowCommand(save);
 
-				if (!isProductNew && !justPrice) {
-					// Сделать товар видимым
-					ItemStatusDBUnit show = ItemStatusDBUnit.restore(product);
-					DelayedTransaction.executeSingle(initiator, show);
-					checkSlowCommand(show);
-					// Загрузить разделы, содержащие товар
-					ItemQuery query = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
-							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName());
-					startCheckSlowQuery(query.getSqlForLog());
-					List<Item> secs = query.loadItems();
-					endCheckSlowQuery();
-					// Создать ассоциацию товара с разделом, если ее еще не существует
-					boolean needLink = true;
-					for (Item sec : secs) {
-						if (sec.getId() == section.getId()) {
-							needLink = false;
-							break;
-						}
-					}
-					if (needLink) {
-						CreateAssocDBUnit createAssoc = CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId());
-						DelayedTransaction.executeSingle(initiator, createAssoc);
-						checkSlowCommand(createAssoc);
-					}
-
+				if (!isProductNew && !justPrice && (section != searchCatalog)) {
+					// Если товар был в каталоге для поиска - переместить его
+                    ItemQuery isJustSearch = new ItemQuery(SEARCH_CATALOG_ITEM)
+                            .addSuccessors(ItemTypeRegistry.getPrimaryAssoc().getName(), "IN", Collections.singletonList(product.getId()), Compare.SOME);
+				    Item found = isJustSearch.loadFirstItem();
+				    if (found != null) {
+				        DelayedTransaction.executeSingle(initiator, new MoveItemDBUnit(product, section));
+                    } else {
+                        // Сделать товар видимым
+                        ItemStatusDBUnit show = ItemStatusDBUnit.restore(product);
+                        DelayedTransaction.executeSingle(initiator, show);
+                        checkSlowCommand(show);
+                        // Загрузить разделы, содержащие товар
+                        ItemQuery query = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
+                                ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName());
+                        startCheckSlowQuery(query.getSqlForLog());
+                        List<Item> secs = query.loadItems();
+                        endCheckSlowQuery();
+                        // Создать ассоциацию товара с разделом, если ее еще не существует
+                        boolean needLink = true;
+                        for (Item sec : secs) {
+                            if (sec.getId() == section.getId()) {
+                                needLink = false;
+                                break;
+                            }
+                        }
+                        if (needLink) {
+                            CreateAssocDBUnit createAssoc = CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId());
+                            DelayedTransaction.executeSingle(initiator, createAssoc);
+                            checkSlowCommand(createAssoc);
+                        }
+                    }
 				}
 
 				info.increaseProcessed();
