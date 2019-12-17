@@ -170,6 +170,11 @@
 		</section>
 
 		<xsl:apply-templates select="page/main_page/custom_block[1]"></xsl:apply-templates>
+		<section style="padding-bottom: 64px;">
+			<div class="container" style="text-align: center;">
+				<a class="button button_big" data-toggle="modal" data-target="#modal-selectBy">Подбор принтера</a>
+			</div>
+		</section>
 		<xsl:apply-templates select="page/main_page/custom_block[2]"></xsl:apply-templates>
 		<xsl:apply-templates select="page/main_page/custom_block[3]"></xsl:apply-templates>
 		<xsl:apply-templates select="page/main_page/custom_block[4]" mode="big-product"></xsl:apply-templates>

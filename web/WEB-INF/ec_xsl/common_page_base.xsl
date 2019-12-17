@@ -253,12 +253,55 @@
 		<!-- FOOTER END -->
 
 		<!-- MODALS BEGIN -->
+		<!-- modal select by -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-selectBy">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<div class="modal-title h4">Подбор принтера</div>
+					</div>
+					<div class="modal-body">
+						<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); grid-column-gap: 24px;">
+							<div>
+								<h4>По объекту маркировки</h4>
+								<ul>
+									<li><a href="tag_section?tag=Маркировка бутылок, алюминиевых банок, кег">Маркировка бутылок, алюминиевых банок, кег</a></li>
+									<li><a href="tag_section?tag=Маркировка гибкой упаковки">Маркировка гибкой упаковки</a></li>
+									<li><a href="tag_section?tag=Маркировка консерв, tetra-pak др.">Маркировка консерв, tetra-pak др.</a></li>
+									<li><a href="tag_section?tag=Маркировка медицинских изделий">Маркировка медицинских изделий</a></li>
+									<li><a href="tag_section?tag=Маркировка картонных коробок">Маркировка картонных коробок</a></li>
+									<li><a href="tag_section?tag=Маркировка электромеханических и электронных деталей">Маркировка электромеханических и электронных деталей</a></li>
+									<li><a href="tag_section?tag=Маркировка металла, дерева">Маркировка металла, дерева</a></li>
+									<li><a href="tag_section?tag=Маркировка паллет">Маркировка паллет</a></li>
+									<li><a href="tag_section?tag=Маркировка пластиковых контейнеров, стаканчиков">Маркировка пластиковых контейнеров, стаканчиков</a></li>
+									<li><a href="tag_section?tag=>Маркировка труб, кабельной продукции">Маркировка труб, кабельной продукции</a></li>
+								</ul>
+							</div>
+							<div>
+								<h4>По отрасли промышленности</h4>
+								<ul>
+									<li><a href="tag_section?tag=Пищевая отрасль">Пищевая отрасль</a></li>
+									<li><a href="tag_section?tag=Молочная отрасль">Молочная отрасль</a></li>
+									<li><a href="tag_section?tag=Косметика и бытовая химия">Косметика и бытовая химия</a></li>
+									<li><a href="tag_section?tag=Фармацевтика">Фармацевтика</a></li>
+									<li><a href="tag_section?tag=Кабель и экструзия">Кабель и экструзия</a></li>
+									<li><a href="tag_section?tag=Строительные материалы">Строительные материалы</a></li>
+									<li><a href="tag_section?tag=Химическая отрасль">Химическая отрасль</a></li>
+									<li><a href="tag_section?tag=Швейная отрасль">Швейная отрасль</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- modal login -->
 		<div class="modal fade" tabindex="-1" role="dialog" id="modal-login">
 			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 						<div class="modal-title h4">Вход</div>
 					</div>
 					<div class="modal-body">
@@ -825,7 +868,7 @@
 				<xsl:call-template name="SEO"/>
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=1.0"/>
+				<link rel="stylesheet" href="css/app.css?version=1.1"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
