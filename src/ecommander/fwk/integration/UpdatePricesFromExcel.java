@@ -8,7 +8,6 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -38,7 +37,8 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
-				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
+				String itemName = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE))? PRODUCT_ITEM : LINE_PRODUCT_ITEM;
+				Item product = ItemQuery.loadSingleItemByParamValue(itemName, CODE_PARAM, code);
 				if(product != null){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
