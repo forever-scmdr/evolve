@@ -491,7 +491,11 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
 					}
 					for (Item item : items) {
-						updateItem(item);
+						try {
+							updateItem(item);
+						} catch (Exception e) {
+							ServerLogger.error("Indexing error", e);
+						}
 					}
 					if (items.size() > 0)
 						startFrom = items.get(items.size() - 1).getId() + 1;

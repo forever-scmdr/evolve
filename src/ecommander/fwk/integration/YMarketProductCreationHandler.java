@@ -141,7 +141,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				Item section = null;
 				if (secPair != null) section = secPair.getLeft();
 				// пропустить некоторые разделы
-				if (ignoreCodes.contains(secCode) || !sections.get(secCode).getRight()) {
+				if (ignoreCodes.contains(secCode)/* || !sections.get(secCode).getRight()*/) {
 					return;
 				}
 				ServerLogger.error("INIT");
