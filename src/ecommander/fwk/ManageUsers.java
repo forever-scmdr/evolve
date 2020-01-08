@@ -118,6 +118,9 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		try {
 			executeCommand(new SaveNewUserDBUnit(newUser).ignoreUser());
 		} catch (UserExistsExcepion e) {
+			User owner = UserMapper.getUser(userItem.getOwnerUserId());
+			if (StringUtils.equalsIgnoreCase(newUser.getName(), owner.getName()))
+				return;
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "User name already exists");
 		}
 		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)));
