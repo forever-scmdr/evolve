@@ -691,7 +691,7 @@
 			<xsl:call-template name="SEO"/>
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&amp;subset=cyrillic" rel="stylesheet" />
-			<link rel="stylesheet" href="css/app.css"/>
+			<link rel="stylesheet" href="css/app.css?version=1.5"/>
 			<xsl:if test="page/@name = 'index'">
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

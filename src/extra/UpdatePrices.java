@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class UpdatePrices extends IntegrateBase implements ItemNames {
 	protected static final String CODE_HEADER = "Но#";
+	protected static final String NAME_HEADER = "Название";
 	protected static final String PRICE_OLD_HEADER = "Цена без скидки";
 	protected static final String PRICE_NEW_HEADER = "Цена со скидкой";
 	protected static final String AVAILABLE_HEADER = "Наличие";

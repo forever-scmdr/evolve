@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>       
 <site>
 
 <!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -138,6 +138,7 @@
 			<var name="limit" value="12" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
+			<var name="brand"/>
 			<var name="fil"/>
 
 			<!-- discount cookies -->
@@ -150,6 +151,7 @@
 			<list item="product" id="prod" transit="true" assoc="catalog_link *">
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="vendor" compare="ANY"><var var="brand" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>
@@ -207,6 +209,12 @@
 				</filter>
 				<aggregation parameter="price" function="MAX"/>
 			</list>
+			<list item="product" tag="prod_brand" transit="true" id="prod_brand">
+				<aggregation parameter="vendor"/>
+				<link name="set_vendor" target="section" copy-page-vars="yes" type="exclusive">
+					<var name="brand" ref="prod_brand" parameter="vendor"/>
+				</link>
+			</list>
 		</single>
 		<include name="PRODUCT_EXTRA"/>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
@@ -254,6 +262,9 @@
 		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="sort" value=""/>
 		</link>
+		<link name="unset_vendor" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="brand" value=""/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -262,6 +273,10 @@
 		<request>
 			<var name="brand"/>
 			<var name="sec"/>
+			<var name="minqty" scope="cookie"/>
+			<var name="sort" scope="cookie"/>
+			<var name="direction" value="ASC" scope="cookie"/>
+			<var name="limit" value="12" scope="cookie"/>
 			<var name="p" value="1"/>
 		</request>
 		<list item="section" id="brand_sec" tag="brand_section" cacheable="true" cache-vars="brand sec p">
@@ -280,7 +295,9 @@
 			<filter>
 				<parameter name="vendor" compare="SOME"><var var="brand" /></parameter>
 				<predecessor ref="sel_sec" compare="ANY"/>
-				<limit><var value="20"/></limit>
+				<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
+				<sorting direction-var="direction"><var var="sort"/></sorting>
+				<limit><var var="limit"/></limit>
 				<pages><var var="p" /></pages>
 			</filter>
 			<single item="params_xml"/>
@@ -318,6 +335,50 @@
 		</list>
 		<include name="PRODUCT_EXTRA"/>
 		<include name="COMMON"/>
+		<link name="set_view_table" target="brand" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="brand" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="set_limit_12" target="brand" copy-page-vars="yes">
+			<var name="limit" value="12"/>
+		</link>
+		<link name="set_limit_24" target="brand" copy-page-vars="yes">
+			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_all" target="brand" copy-page-vars="yes">
+			<var name="limit" value="300"/>
+		</link>
+		<link name="show_only_available" target="brand">
+			<var name="brand" var="brand"/>
+			<var name="sec" var="sec"/>
+			<var name="minqty" value="1"/>
+		</link>
+		<link name="show_all" target="brand">
+			<var name="brand" var="brand"/>
+			<var name="sec" var="sec"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="set_sort_name_asc" target="brand" copy-page-vars="yes">
+			<var name="sort" value="name"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_name_desc" target="brand" copy-page-vars="yes">
+			<var name="sort" value="name"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_price_asc" target="brand" copy-page-vars="yes">
+			<var name="sort" value="price"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_price_desc" target="brand" copy-page-vars="yes">
+			<var name="sort" value="price"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_default" target="brand" copy-page-vars="yes">
+			<var name="sort" value=""/>
+		</link>
 	</page>
 
 
@@ -355,7 +416,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="30" compare="EVERY"><var var="q"/></fulltext>
+				<fulltext limit="30" compare="EVERY" threshold="0.01"><var var="q"/></fulltext>
 				<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">

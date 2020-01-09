@@ -16,6 +16,8 @@
 
 	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
 
+	<xsl:variable name="brands" select="page/brands/brand"/>
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -196,6 +198,19 @@
 								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
 								<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
 								<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+							</select>
+						</span>
+						<span>
+							<select class="form-control" value="{page/variables/brand}"
+									onchange="window.location.href = $(this).find(':selected').attr('link')">
+								<option value="" link="{page/unset_vendor}">Все бренды</option>
+								<xsl:for-each select="page/current_section/prod_brand">
+									<xsl:variable name="vendor" select="vendor"/>
+									<xsl:variable name="brand" select="$brands[mask = $vendor]/name"/>
+									<xsl:if test="$brand">
+										<option value="{$vendor}" link="{set_vendor}"><xsl:value-of select="$brand"/></option>
+									</xsl:if>
+								</xsl:for-each>
 							</select>
 						</span>
 					</div>
