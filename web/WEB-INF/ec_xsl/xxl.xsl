@@ -35,7 +35,7 @@
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
-			<xsl:value-of select="page/custom_pages/xxl_text" disable-output-escaping="yes"/>
+			<xsl:value-of select="page/custom_pages[1]/xxl_text" disable-output-escaping="yes"/>
 			<p style="text-align: center;">
 				<a class="button" data-toggle="modal" data-target="#warranty" style="font-size: 21px; height: auto; border-radius: 4px; padding: 3px 12px;">Оформить XXL-гарантию</a>
 			</p>

@@ -555,8 +555,11 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
+
+								<xsl:variable name="no" select="(not(qty) or number(qty) &lt;= 0) and not($has_lines)"/>
+
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" style="{if($no) then 'color: #fff; background-color: #707070;' else '' }" class="button" value="{if($no) then 'Заказать' else 'Купить'}"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -663,8 +666,11 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
+								
+								<xsl:variable name="no" select="(not(qty) or number(qty) &lt;= 0) and not($has_lines)"/>
+
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="Заказать"/>
+								<input type="submit" class="button" style="{if($no) then 'color: #fff; background-color: #707070;' else '' }" value="{if($no) then 'Заказать' else 'Купить'}"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
@@ -836,7 +842,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" href="css/app.css?version=1.0"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -945,7 +951,7 @@
 							}
 							},
 							{
-							breakpoint: 375,
+							breakpoint: 426,
 							settings: {
 							slidesToShow: 1,
 							slidesToScroll: 1,
@@ -1056,7 +1062,9 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<!--<link rel="canonical" href="{concat($main_host, $canonical)}" />-->
+		<xsl:if test="$canonical != '' and $canonical != '/'">
+			<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		</xsl:if>
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -1070,7 +1078,7 @@
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>

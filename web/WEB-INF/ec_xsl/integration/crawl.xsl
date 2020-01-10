@@ -66,7 +66,7 @@
 							<input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
 						</xsl:if>
 						<xsl:if test="starts-with(/page/operation, 'Интеграция завершена')">
-							<a href="http://localhost:8080/integrate_parsed/?action=start">
+							<a href="https://metabo-belarus.by/integrate_parsed/?action=start">
 								Распределить товары по разделам
 							</a>
 						</xsl:if>

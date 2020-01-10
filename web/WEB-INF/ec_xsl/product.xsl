@@ -3,9 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="string-join(($p/type, 'Метабо', $p/name, 'купить в Минске недорого: цена - интернет магазин METABO BELARUS'), ' ')"/>
+	<xsl:variable name="title" select="string-join(($p/type, 'Метабо', $p/name, 'купить в Минске: хорошая цена, доставка'), ' ')"/>
 
-	<xsl:variable name="meta_description" select="string-join(($p/type, 'Метабо по выгодной цене.', 'Доставка по Беларуси +375(29)266-44-66','Доступная цена, гарантия, 20 лет на рынке!'),' ')"/>
+	<xsl:variable name="meta_description" select="string-join(($p/type, $p/name, 'Метабо по выгодной цене.', 'Доставка по Беларуси +375(29)266-44-66','Доступная цена, гарантия, 20 лет на рынке!'),' ')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else string-join(($p/type, $p/name, 'Metabo'), ' ')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -24,6 +24,8 @@
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 	<xsl:variable name="price" select="if($discount_time) then format-number(f:num($p/price)*$discount, '#0.00') else $p/price"/>
 	<xsl:variable name="price_old" select="if($discount_time) then $p/price else $p/price_old"/>
+
+	<xsl:variable name="custom_canonical" select="concat('/',string-join(page/catalog//section[.//@id = $sel_sec_id]/@key, '/'), '/', $p/@key)"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -61,7 +63,8 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a><!-- <i class="fas fa-angle-right"></i>  -->
+				<!-- <a href="{page/catalog_link}">Каталог</a> -->
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
@@ -114,7 +117,7 @@
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Заказать" />
+									<input type="submit" style="{if($p/qty and $p/qty != '0') then '' else 'background-color: #707070;'}" class="button" value="{if($p/qty and $p/qty != '0') then 'Купить' else 'Заказать'}" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
@@ -289,23 +292,23 @@
 								</li>
 							</xsl:if> -->
 
-							<xsl:if test="$p/description != ''">
+							<xsl:if test="$p/text != ''">
 								<li role="presentation" class="active">
 									<a href="#tab0" role="tab" data-toggle="tab">Описание</a>
 								</li>
 							</xsl:if>
 							<xsl:for-each select="$p/product_extra">
 								<xsl:variable name="pos" select="position()"/>
-								<li role="presentation" class="{if(not($p/description != '') and $pos = 1) then 'active' else ''}">
+								<li role="presentation" class="{if(not($p/text != '') and $pos = 1) then 'active' else ''}">
 									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="f:tab_name(name)"/></a>
 								</li>
 							</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/description != ''">
+					<xsl:if test="$p/text != ''">
 					<div role="tabpanel" class="tab-pane active" id="tab0">
 						<div>
-							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 						</div>
 					</div>
 					</xsl:if>
@@ -331,7 +334,7 @@
 					</xsl:if> -->
 					<xsl:for-each select="$p/product_extra">
 						<xsl:variable name="pos" select="position()"/>
-						<div role="tabpanel" class="tab-pane {if(not($p/description != '') and $pos = 1) then 'active' else ''}" id="tab{@id}">
+						<div role="tabpanel" class="tab-pane {if(not($p/text != '') and $pos = 1) then 'active' else ''}" id="tab{@id}">
 							<!-- <h4><xsl:value-of select="name"/></h4> -->
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
@@ -339,36 +342,21 @@
 				</div>
 			</div>
 			<div class="someInfo">
+				<xsl:for-each select="$common/catalog_texts/product_text">
 				<div>
-					<p><div class="someIcon"><i class="fas fa-shopping-cart"></i></div><strong>Оформление заказа</strong></p>
-					<ul>
-						<li>Через корзину на сайте</li>
-						<li>По телефонам:<br></br> +375 (29) 266-44-66, <br></br>+375 (29) 692-50-50, <br></br>+375 29 692-50-50, <br></br>Пн-Пт: 09.00–18.00</li>
-					</ul>
+					<p><div class="someIcon"><i class="fas {icon}"></i></div>
+						<strong>
+							<xsl:if test="link != ''">
+								<a href="link"><xsl:value-of select="name"/></a>
+							</xsl:if>
+							<xsl:if test="not(link != '')">
+								<xsl:value-of select="name"/>
+							</xsl:if>
+						</strong>
+					</p>
+					<xsl:value-of select="text" disable-output-escaping="yes"/>
 				</div>
-				<div>
-					<p><div class="someIcon"><i class="fas fa-money-bill-wave"></i></div><strong>Оплата</strong></p>
-					<ul>
-						<li>Наличными курьеру при получении товара</li>
-						<li>Банковской картой (временно недоступно)</li>
-						<li>Через ЕРИП (временно недоступно)</li>
-					</ul>
-				</div>
-				<div>
-					<p><div class="someIcon"><i class="fas fa-truck"></i></div><strong>Доставка</strong></p>
-					<ul>
-						<li>Самовывоз - у нас доступно 32 пункта самовывоза в 26 городах Беларуси</li>
-						<li>Курьером по Минску - стоимость 6 руб</li>
-						<li>Курьером по Беларуси - стоимость зависит от местоположения точки доставки</li>
-					</ul>
-				</div>
-				<div>
-					<p><div class="someIcon"><i class="fas fa-shield-alt"></i></div><strong>Гарантия</strong></p>
-					<ul>
-						<li>12 месяцев со дня покупки товара конечным потребителем - только на неисправности, возникшие из-за дефектов производства.</li>
-						<li>Дополнительно можно получить гарантию на 18 и 36 месяцем (см. раздел Гарантия XXL)</li>
-					</ul>
-				</div>
+				</xsl:for-each>
 			</div>
 		</div>
 		<xsl:if test="page/assoc">

@@ -206,6 +206,11 @@
 				</div>
 			</div>
 		</section>
+		<section class="s-info pt-4">
+			<div class="container">
+				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+			</div>
+		</section>
 		<section class="special-items">
 			<div class="container" style="overflow: hidden;">
 				<div class="block-title">Акции</div>
@@ -223,8 +228,22 @@
 			</div>
 		</section>
 		<section class="s-info pt-4">
-			<div class="container">
+			<div class="container" style="overflow: auto;">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</section>
+		<section>
+			<div class="container">
+				<div class="marquee">
+					<span>
+						<xsl:for-each select="page/catalog/section">
+							<xsl:value-of select="name" />:
+							<xsl:for-each select=".//section[not(section)]">
+								<a href="{show_products}"><xsl:value-of select="name" /></a>&#160;
+							</xsl:for-each>
+						</xsl:for-each>
+					</span>
+				</div>
 			</div>
 		</section>
 

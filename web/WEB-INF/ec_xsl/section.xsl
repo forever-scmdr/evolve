@@ -21,7 +21,7 @@
 
 	<xsl:variable name="product_from_to" select="string-join(('товары с', $from, 'по', $to ), ' ')"/>
 
-	<xsl:variable name="title_postfix" select="string-join(('в',$cities[$x],'недорого: цена - интернет магазин METABO BELARUS'),' ')"/>
+	<xsl:variable name="title_postfix" select="string-join(('в',$cities[$x],'недорого: цена - интернет магазин'),' ')"/>
 
 	<xsl:variable name="title" select="string-join(( $sel_sec/name, 'Метабо купить', $title_postfix), ' ')"/>
 
@@ -83,6 +83,8 @@
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 	<xsl:variable name="sec_name" select="if($sel_sec/display_name != '') then $sel_sec/display_name else $sel_sec/name"/>
+
+	<xsl:variable name="custom_canonical" select="concat('/',string-join(page/catalog//section[.//@id = $sel_sec_id]/@key, '/'))"/>
 
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($sec_name, ' Metabo')"/>
 
