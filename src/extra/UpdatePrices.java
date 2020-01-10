@@ -48,13 +48,13 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_OLD_HEADER, PRICE_NEW_HEADER, AVAILABLE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
-				String code = StringUtils.replace(getValue(0), " ", "");
+				String code = StringUtils.replace(getValue(CODE_HEADER), " ", "");
 				if (StringUtils.isNotBlank(code)) {
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(PRODUCT, product.CODE, code));
 					if (prod != null) {
-						String priceOld = getValue(1);
-						String priceNew = getValue(2);
-						boolean available = StringUtils.contains(getValue(3), "+");
+						String priceOld = getValue(PRICE_OLD_HEADER);
+						String priceNew = getValue(PRICE_NEW_HEADER);
+						boolean available = StringUtils.contains(getValue(AVAILABLE_HEADER), "+");
 						if (StringUtils.isNotBlank(priceNew)) {
 							prod.setValueUI(product.PRICE, priceNew.replaceAll("\\s", ""));
 							prod.setValueUI("price_old", priceOld.replaceAll("\\s", ""));
