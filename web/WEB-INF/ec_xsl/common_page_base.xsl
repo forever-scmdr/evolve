@@ -148,7 +148,7 @@
 									<a href="#ts-{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
 										<span><xsl:value-of select="header"/></span>
 									</a>
-									<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
+									<div id="ts-{@id}" class="popup-text-menu" style="position: absolute; z-index: 3; display: none;">
 										<div class="sections">
 											<xsl:for-each select="menu_custom">
 												<a href="{show_page}">
@@ -433,6 +433,9 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<div class="side-menu">
+			<div style="background: #0f5392; color: #fff; padding: 1rem 2rem; font-weight: bold; margin-bottom: 2.5rem;">
+				Обновлено: <xsl:value-of select="f:utc_millis_to_bel_date(page/catalog[1]/date/@millis)"/>
+			</div>
 			<xsl:for-each select="page/catalog/section">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="level-1{' active'[$l1_active]}">
@@ -806,7 +809,7 @@
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-				<link rel="stylesheet" href="fotorama/fotorama.css"/>
+				<link rel="stylesheet" href="fotorama/fotorama.css?v=29112019"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
@@ -1002,16 +1005,14 @@
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
 		<xsl:if test="not($seo) or $seo = ''">
-			<title>
-				<xsl:value-of select="$title"/>
-			</title>
+			<title><xsl:value-of select="$title"/></title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
 		<xsl:if test="$common/google_verification">
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
@@ -1021,9 +1022,10 @@
 
 
 	<xsl:template match="seo | url_seo">
-		<title>
-			<xsl:value-of select="title"/>
-		</title>
+		<xsl:choose>
+			<xsl:when test="title and not(title = '')"><title><xsl:value-of select="title"/></title></xsl:when>
+			<xsl:otherwise><title><xsl:value-of select="$title"/></title></xsl:otherwise>
+		</xsl:choose>
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
