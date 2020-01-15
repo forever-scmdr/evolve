@@ -1728,6 +1728,16 @@
 		</command>
 	</page>
 
+
+	<page name="update_prices_xml" template="integration/integrate" schedule="0 0 * ? * * *">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdatePricesXML" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 	<!--<page name="refresh_keys" template="integrate">-->
 	<!--<request>-->
 	<!--<var name="action"/>-->

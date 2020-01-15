@@ -133,8 +133,9 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private Byte[] status = null; // статус айтема (нормальный, скрытый, удаленный)
 	private boolean isTree = false; // результат загрузки должен быть деревом (true) или списком (false)
 	private boolean isVeryLargeResult = false; // ожидается ли очень длинный результат (после загрузки количества)
+	private boolean isIdSequential = false; // последовательная пакетная загрузка в порядке возрастания ID айтема
+	private long idSequentialStart = -1; // начальный ID айтема для последовательной загрузки (не включен в результат)
 
-	
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
 		if (status.length > 0)
@@ -217,6 +218,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return setAggregation(getItemDesc().getParameter(paramName), function, sorting);
 	}
 
+	/**
+	 * Когда нужно производить перебор всех вариантов пакетно.
+	 * Много выполнений одного запроса.
+	 * @param startingId
+	 */
+	public ItemQuery setIdSequential(long startingId) {
+		this.isIdSequential = true;
+		this.idSequentialStart = startingId;
+		return this;
+	}
 	/**
 	 * Должен ли результат загрузки быть деревом
 	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
@@ -801,12 +812,20 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 					if (isTree) {
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
-						orderBy.sql(P_DOT + IP_WEIGHT);
-						// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
-						// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
-						if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
-							query.getSubquery(Const.WHERE).AND()
-									.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+						if (isIdSequential) {
+							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
+							if (isParent)
+								orderBy.sql(P_DOT + IP_PARENT_ID);
+							else
+								orderBy.sql(P_DOT + IP_CHILD_ID);
+						} else {
+							orderBy.sql(P_DOT + IP_WEIGHT);
+							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
+							// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+							if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
+								query.getSubquery(Const.WHERE).AND()
+										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+							}
 						}
 					}
 				} else {
@@ -889,7 +908,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 
 	/**
-	 * Загрузить корневой айтем (в  таблице родителей родитель равен потомку)
+	 * Загрузить корневой айтем (в таблице родителей родитель равен потомку)
 	 * @param itemName
 	 * @param userId
 	 * @param userGroupId
