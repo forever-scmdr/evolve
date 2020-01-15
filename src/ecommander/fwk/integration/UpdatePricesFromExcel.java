@@ -8,9 +8,11 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * Created by anton on 06.12.2018.
@@ -39,8 +41,11 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
 				String itemName = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE))? PRODUCT_ITEM : LINE_PRODUCT_ITEM;
 				Item product = ItemQuery.loadSingleItemByParamValue(itemName, CODE_PARAM, code);
+
 				if(product != null){
-					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
+					if(price != null) {
+						product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]", ""));
+					}
 					if(qty != null) {
 					product.setValueUI(QTY_PARAM, qty);
 					}
@@ -73,7 +78,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 	@Override
 	protected void integrate() throws Exception {
 		//catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)1);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
+		//executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 		info.setOperation("Обновлние цен");
 		info.setProcessed(0);
 		info.setLineNumber(0);
@@ -82,6 +87,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		info.setOperation("Интеграция завершена");
 		priceWB.close();
 	//	catalog.setValue(INTEGRATION_PENDING_PARAM, (byte)0);
+		catalog.setValue(ItemNames.catalog_.DATE, new Date().getTime());
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex());
 	}
 
