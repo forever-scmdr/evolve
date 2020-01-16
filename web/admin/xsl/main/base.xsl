@@ -172,13 +172,27 @@
 									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
 										<a href="section_list" style="color: #fff;">Список разделов</a>
 									</li>
-
+									<li class="visible" title="Создать минимальный прайс-лист. Цены всех товаров на одном листе." style="background: #0c609d;">
+										<a href="create_excel_pricelist_min/?action=start" style="color: #fff;">Минимальный прайс-лист</a>
+									</li>
+									<li class="visible" title="Пренести на сайт цены из прайс-листа" style="background: #0c609d;">
+										<a href="update_prices_from_excel/?action=start" style="color: #fff;">Разобрать прайс-лист</a>
+									</li>
+									<li class="visible" title="Параметры сущевтующих товаров будут взяты из файла Excel. Если товаров, имеющихся в файле нет на сайте, они будут созданы." style="background: #0c609d;">
+										<a href="parse_excel/?action=start" style="color: #fff;">Интеграция Excel-файла</a>
+									</li>
 									<li class="visible" title="Загрзить товары из Yandex Market">
 										<a href="integrate/?action=start">Интеграция Yandex Market</a>
 									</li>
-									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
-										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
-									<!--</li>-->
+									<li class="visible" title="Обновить цены XML">
+										<a href="update_prices_xml/?action=start">Обновить цены XML</a>
+									</li>
+									<li class="visible" title="Файл отчета обновления цен">
+										<a href="integrate_xml/report/report.txt">Файл отчета обновления цен</a>
+									</li>
+									<!-- <li class="visible" title="Загрузить товары из файла во временный раздел">
+										<a href="add_products/?action=start">Добваление товаров</a>
+									</li> -->
 									<li class="visible" title="Скачать отдельные УРЛы">
 										<a href="get_site/?action=start" target="_blank">Скачать отдельные УРЛы</a>
 									</li>
@@ -202,6 +216,9 @@
 									</li>
 									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
 										<a href="admin_reindex.action">Переиндексация</a>
+									</li>
+									<li class="visible" style="background: yellow" title="Будет создан файл для Yandex Market">
+										<a href="create_yml_file">Создать YML-файл</a>
 									</li>
 									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
 										<!--<a href="admin_domains_initialize.domain">-->

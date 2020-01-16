@@ -23,13 +23,14 @@ import java.util.HashSet;
 import java.util.List;
 
 public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
-    private static final String INTEGRATE_DIR = "integrate/";
+    private static final String INTEGRATE_DIR = "integrate_xml/";
     private static final String REPORT_DIR = "report/";
-    private static final String REPORT_PREFIX = "report_";
+//    private static final String REPORT_PREFIX = "report_";
     private static final String XML_FILE_NAME = INTEGRATE_DIR + "metabo_import.xml";
-    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
+//    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
     public static final BigDecimal ZERO = new BigDecimal(0);
 
+	private File reportDir;
 	private XmlDataSource priceFile;
 	private File priceXmlFile;
 	private File reportFile;
@@ -41,11 +42,11 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 		if (!priceXmlFile.exists())
 			return false;
 		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), StandardCharsets.UTF_8);
-		File reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
+		reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
 		reportDir.mkdirs();
 		long date = System.currentTimeMillis();
-		reportFile = new File (AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + DateDataType.outputDate(date, DATE_FORMATTER) + ".txt"));
-		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + DateDataType.outputDate(date, DATE_FORMATTER) + ".xml"));
+		reportFile = new File (AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "report.txt"));
+		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "metabo_import.xml"));
 		return true;
 	}
 
@@ -55,7 +56,9 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 	    info.setProcessed(0);
         HashSet<String> updatedCodes = new HashSet<>();
         StringBuilder report = new StringBuilder("Products not found:\r\n");
-		while (priceFile.findNextNode("Value") != null) {
+		priceFile.findNextNode("Property", "name", "Data");
+		priceFile.findNextNode("Value");
+        while (priceFile.findNextNode("Value") != null) {
 			String code = null;
 			try {
 				XmlDataSource.Node entry = priceFile.scanCurrentNode();
@@ -81,6 +84,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 				info.addError(e.getLocalizedMessage(), code);
 			}
 		}
+		FileUtils.cleanDirectory(reportDir);
         FileUtils.write(reportFile, report, StandardCharsets.UTF_8);
 		priceFile.finishDocument();
 		info.addLog("Завершено обновление цен");
@@ -95,6 +99,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
             query.setIdSequential(lastId);
             products = query.loadItems();
             for (Item product : products) {
+            	lastId = product.getId();
                 if (!updatedCodes.contains(product.getStringValue(CODE_PARAM, ""))) {
                     product.setValueUI(QTY_PARAM, "0");
                     product.setValueUI(AVAILABLE_PARAM, "0");
