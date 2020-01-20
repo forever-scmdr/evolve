@@ -4,6 +4,7 @@
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
+	<xsl:import href="utils/date_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
