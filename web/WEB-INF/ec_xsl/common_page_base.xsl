@@ -224,7 +224,7 @@
 				<div class="row">
 					<div class="col-full">
 						<div class="s-footer__copyright">
-							<span>© Tempting.Pro 2019</span>
+							<span>© Tempting.Pro 2020</span>
 						</div>
 
 						<div class="go-top">
@@ -233,9 +233,9 @@
 					</div>
 				</div>
 			</div>
-			<a href="//orphus.ru" id="orphus" target="_blank">
+			<!-- <a href="//orphus.ru" id="orphus" target="_blank">
 				<img alt="Система Orphus" src="/orphus/orphus.gif" border="0" width="88" height="31"/>
-			</a>
+			</a> -->
 		</footer>
 		<div id="wikitip"></div>
 	</xsl:template>
@@ -265,7 +265,7 @@
 		<script src="js/main.js?version=1"></script>
 
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"></script>
-		<script type="text/javascript" src="/orphus/orphus.js"></script>
+		<!-- <script type="text/javascript" src="/orphus/orphus.js"></script> -->
 	</xsl:template>
 
 
@@ -298,7 +298,7 @@
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1"/>
+				<link rel="stylesheet" href="css/main.css?version=2"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>

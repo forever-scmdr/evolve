@@ -60,7 +60,7 @@
 								<nav class="pgn">
 									<ul>
 										<li id="load_more">
-											<a href="{page/small_page_link}&amp;page={$z+1}" rel="#small-news" data-page="{$z}/{$last}" class="pgn__num load-more-small-link">
+											<a href="{page/small_page_link}&amp;page={$z+1}" rel="#small-news" data-page="{$z+1}/{$last}" class="pgn__num load-more-small-link">
 												Загрузить еще
 											</a>
 										</li>
@@ -96,7 +96,7 @@
 								<nav class="pgn">
 									<ul>
 										<li id="load_more">
-											<a href="{page/page_link}&amp;page={$z+1}" rel="#add-content" data-page="{$z}/{$last}" class="pgn__num load-more-small-link">
+											<a href="{page/page_link}&amp;page={$z+1}" rel="#add-content" data-page="{$z+1}/{$last}" class="pgn__num load-more-small-link">
 												Загрузить еще
 											</a>
 										</li>

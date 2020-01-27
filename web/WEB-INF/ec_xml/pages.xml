@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-	<!-- ******************************* Включение для разделов каталога ****************************** -->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                            ОБЩИЕ ЧАСТИ                               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 	<include-definition name="COMMON">
 		<link name="feedback_link" target="feedback_ajax"/>
 		<link name="news_link" target="news"/>
@@ -82,9 +88,9 @@
 		</link>
 	</page>
 
-	<page name="index" template="index" cacheable="false">
+	<page name="index" template="index" cacheable="true">
 		<request>
-			<var name="limit" value="8"/>
+			<var name="limit" value="9"/>
 			<var name="page" value="1"/>
 		</request>
 		<single item="main_page" id="main">
@@ -114,9 +120,9 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -138,9 +144,9 @@
 				<limit>
 					<var value="14"/>
 				</limit>
-				<parameter name="date" sign="&lt;=" compare="SOME">
-					<var var="$now"/>
-				</parameter>
+<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--					<var var="$now"/>-->
+<!--				</parameter>-->
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
 				</parameter>
@@ -164,9 +170,9 @@
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
-				<parameter name="date" sign="&lt;=" compare="SOME">
-					<var var="$now"/>
-				</parameter>
+<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--					<var var="$now"/>-->
+<!--				</parameter>-->
 			</filter>
 			<link name="show_page" target="small_news_item">
 				<var name="sni" ref="sni" style="translit"/>
@@ -179,12 +185,12 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_ajax" template="news_ajax">
+	<page name="news_ajax" template="news_ajax" cacheable="true">
 		<request>
 			<var name="limit" value="9"/>
-			<var name="page" value="1"/>
+			<var name="page" value="2"/>
 		</request>
-		<single item="news_wrap">
+		<single item="news_wrap" cacheable="true" cache-vars="page limit">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<sorting direction="DESC">
@@ -196,9 +202,9 @@
 					<pages>
 						<var name="page" var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -249,7 +255,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_section" template="news" cacheable="false">
+	<page name="news_section" template="news" cacheable="true">
 		<request>
 			<var name="sel" style="translit"/>
 			<var name="p" value="1"/>
@@ -267,9 +273,9 @@
 					<pages>
 						<var name="p" var="p"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<link name="show_page" target="news_item" type="exclusive">
 					<var name="ni" ref="ni" style="translit"/>
@@ -279,12 +285,12 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_page_ajax" template="news_page_ajax">
+	<page name="news_page_ajax" template="news_page_ajax" cacheable="true">
 		<request>
 			<var name="sel" style="translit"/>
 			<var name="p" value="2"/>
 		</request>
-		<single item="news" var="sel" tag="selected_news">
+		<single item="news" var="sel" tag="selected_news" cacheable="true" cache-vars="sel p">
 			<list item="news_item" id="ni" assoc="primary news">
 				<filter>
 					<sorting direction="DESC">
@@ -296,9 +302,9 @@
 					<pages>
 						<var name="p" var="p"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<link name="show_page" target="news_item" type="exclusive">
 					<var name="ni" ref="ni" style="translit"/>
@@ -335,7 +341,7 @@
 				</link>
 			</list>
 		</single>
-		<single item="news_wrap">
+		<single item="news_wrap"  cache-vars="tag limit" cacheable="true">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<parameter name="tag" sign="=">
@@ -382,8 +388,8 @@
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+			<!-- <var name="min_date"/>
+			<var name="max_date"/> -->
 		</request>
 		<single item="news_wrap">
 			<list item="news_item" id="ni" transit="true">
@@ -391,12 +397,12 @@
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
 					</parameter>
-					<parameter name="date" sign="&gt;=">
-						<var var="min_date"/>
-					</parameter>
-					<parameter name="date" sign="&lt;=">
-						<var var="max_date"/>
-					</parameter>
+<!--					<parameter name="date" sign="&gt;=">-->
+<!--						<var var="min_date"/>-->
+<!--					</parameter>-->
+<!--					<parameter name="date" sign="&lt;=">-->
+<!--						<var var="max_date"/>-->
+<!--					</parameter>-->
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -406,9 +412,9 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -441,26 +447,26 @@
 		</link>
 	</page>
 
-	<page name="all_news_ajax" template="news_page_ajax">
+	<page name="all_news_ajax" template="news_page_ajax" cacheable="true">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+			<!-- <var name="min_date"/>
+			<var name="max_date"/> -->
 		</request>
-		<single item="news_wrap">
-			<list item="news_item" id="ni" transit="true">
+		<single item="news_wrap" cacheable="true" cache-vars="page tag">
+			<list item="news_item" id="ni" transit="true" >
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
 					</parameter>
-					<parameter name="date" sign="&gt;=">
+					<!-- <parameter name="date" sign="&gt;=">
 						<var var="min_date"/>
 					</parameter>
 					<parameter name="date" sign="&lt;=">
 						<var var="max_date"/>
-					</parameter>
+					</parameter> -->
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -470,9 +476,9 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -487,11 +493,11 @@
 		</single>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="false">
+	<page name="news_item" template="news_item" >
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
-		<single item="news_item" var="ni" cacheable="false" cache-vars="ni" id="ni">
+		<single item="news_item" var="ni" id="ni" >
 			<single item="seo"/>
 			<single item="top_gal"/>
 			<single item="comments" id="comment">
@@ -528,9 +534,9 @@
 						<parameter name="date" sign="&gt;" compare="SOME">
 							<var ref="ni" parameter="date"/>
 						</parameter>
-						<parameter name="date" sign="&lt;=" compare="SOME">
-							<var var="$now"/>
-						</parameter>
+<!--						<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--							<var var="$now"/>-->
+<!--						</parameter>-->
 						<sorting direction="ASC">
 							<var value="date"/>
 						</sorting>
@@ -569,9 +575,9 @@
 				<limit>
 					<var value="14"/>
 				</limit>
-				<parameter name="date" sign="&lt;=" compare="SOME">
-					<var var="$now"/>
-				</parameter>
+<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--					<var var="$now"/>-->
+<!--				</parameter>-->
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
 				</parameter>
@@ -590,26 +596,26 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news" template="small_news">
+	<page name="news" template="small_news" cacheable="true">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+<!-- 			<var name="min_date"/>
+			<var name="max_date"/> -->
 		</request>
-		<single item="small_news">
+		<single item="small_news" cacheable="true" cache-vars="limit tag">
 			<list item="small_news_item" id="ni">
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
 					</parameter>
-					<parameter name="date" sign="&gt;=">
+<!-- 					<parameter name="date" sign="&gt;=">
 						<var var="min_date"/>
 					</parameter>
 					<parameter name="date" sign="&lt;=">
 						<var var="max_date"/>
-					</parameter>
+					</parameter> -->
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -619,50 +625,50 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
-						<var var="$now"/>
-					</parameter>
+<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--						<var var="$now"/>-->
+<!--					</parameter>-->
 				</filter>
 				<link name="show_page" target="small_news_item" type="exclusive">
 					<var name="sni" ref="ni" style="translit"/>
 				</link>
 			</list>
 		</single>
-		<list item="small_news_item" id="tag" tag="tag">
+		<!-- <list item="small_news_item" id="tag" tag="tag">
 			<aggregation parameter="tag"/>
 			<link name="show_tag" target="news">
 				<var name="tag" ref="tag" parameter="tag"/>
 			</link>
-		</list>
+		</list> -->
 		<link name="page_link" target="small_news_ajax">
 			<var name="limit" var="limit"/>
 			<var name="tag" var="tag"/>
-			<var name="min_date" var="min_date"/>
-			<var name="max_date" var="max_date"/>
+<!-- 			<var name="min_date" var="min_date"/>
+			<var name="max_date" var="max_date"/> -->
 		</link>
 		<include name="COMMON"/>
 	</page>
 
-	<page name="small_news_ajax" template="small_news_ajax">
+	<page name="small_news_ajax" template="small_news_ajax" cacheable="true">
 		<request>
 			<var name="page" value="2"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+<!-- 			<var name="min_date"/>
+			<var name="max_date"/> -->
 		</request>
-		<single item="small_news">
+		<single item="small_news" cacheable="true" cache-vars="page tag">
 			<list item="small_news_item" id="ni">
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
 					</parameter>
-					<parameter name="date" sign="&gt;=">
+<!-- 					<parameter name="date" sign="&gt;=">
 						<var var="min_date"/>
 					</parameter>
 					<parameter name="date" sign="&lt;=">
 						<var var="max_date"/>
-					</parameter>
+					</parameter> -->
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -672,9 +678,9 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<parameter name="date" sign="&lt;=" compare="SOME">
+					<!--<parameter name="date" sign="&lt;=" compare="SOME">
 						<var var="$now"/>
-					</parameter>
+					</parameter> -->
 				</filter>
 				<link name="show_page" target="small_news_item" type="exclusive">
 					<var name="sni" ref="ni" style="translit"/>
@@ -683,14 +689,14 @@
 		</single>
 	</page>
 
-	<page name="small_news_item" template="small_news_item">
+	<page name="small_news_item" template="small_news_item" cacheable="true">
 		<request>
 			<var name="sni" style="translit"/>
 		</request>
-		<single item="small_news_item" var="sni" id="ni" cacheable="false" cache-vars="ni">
+		<single item="small_news_item" var="sni" id="ni" >
 			<single item="seo"/>
 		</single>
-		<list item="small_news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni">
+		<list item="small_news_item" tag="prev" id="prev" >
 			<filter>
 				<limit>
 					<var value="1"/>
@@ -706,7 +712,7 @@
 				<var name="sni" style="translit" ref="prev"/>
 			</link>
 		</list>
-		<list item="small_news_item" tag="next" id="next" cacheable="false" cache-vars="ni">
+		<list item="small_news_item" tag="next" id="next">
 			<filter>
 				<limit>
 					<var value="1"/>
@@ -714,9 +720,9 @@
 				<parameter name="date" sign="&gt;" compare="SOME">
 					<var ref="ni" parameter="date"/>
 				</parameter>
-				<parameter name="date" sign="&lt;=" compare="SOME">
-					<var var="$now"/>
-				</parameter>
+<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
+<!--					<var var="$now"/>-->
+<!--				</parameter>-->
 				<sorting direction="ASC">
 					<var value="date"/>
 				</sorting>
@@ -725,7 +731,7 @@
 				<var name="sni" style="translit" ref="next"/>
 			</link>
 		</list>
-		<list item="small_news_item" transit="true" cacheable="false" id="also" tag="also">
+		<list item="small_news_item" transit="true" id="also" tag="also">
 			<filter>
 				<parameter name="tag" sign="=" compare="SOME">
 					<var ref="ni" parameter="tag"/>
@@ -747,7 +753,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="page" template="page">
+	<page name="page" template="page" cacheable="true">
 		<request>
 			<var name="p" style="translit"/>
 		</request>
@@ -758,7 +764,7 @@
 	</page>
 
 
-	<page name="contacts" template="contacts" cacheable="false">
+	<page name="contacts" template="contacts" cacheable="true">
 		<single item="contacts" cacheable="false">
 			<single item="seo"/>
 		</single>
