@@ -1,5 +1,9 @@
 a[rel=tip] {
-    text-decoration-style: dashed;
+   text-decoration: none;
+border: 1px solid
+#fe6f61;
+padding: .2rem .45rem;
+border-radius: .4rem;
 }
 
 .yellow-bg {
