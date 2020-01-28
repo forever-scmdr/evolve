@@ -93,6 +93,11 @@
 					</div>
 					</div>
 				</xsl:if>
+				<xsl:if test="not($ni/main_pic != '')">
+					<div class="s-content__media col-full">
+						<div style="margin-bottom: 2rem; background: lime;"></div>
+					</div>
+				</xsl:if>
 
 				<div class="col-full s-content__main" style="margin-top: 2.5rem;">
 					<div id="nil">

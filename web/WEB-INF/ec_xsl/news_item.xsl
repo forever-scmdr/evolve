@@ -322,6 +322,12 @@
 				</div>
 			</div>
 		</xsl:if>
+
+		<xsl:if test="not($has_big_img) and not($has_audio) and $format = 'standard'">
+			<div class="s-content__media col-full">
+				<div style="margin-bottom: 2rem; background: lime;"></div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
