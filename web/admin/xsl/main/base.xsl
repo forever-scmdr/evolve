@@ -178,6 +178,9 @@
 									<li class="visible" title="Разобрать прайс-лист compel.ru">
 										<a href="get_compel/?action=start">Интеграция compel.ru</a>
 									</li>
+									<li class="visible" title="Разобрать прайс-лист platan.ru">
+										<a href="get_platan/?action=start">Интеграция platan.ru</a>
+									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>

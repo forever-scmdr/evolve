@@ -19,7 +19,7 @@
 			</xsl:if>
 			<xsl:if test="page/product">
 				<ul>
-					<xsl:for-each select="page/product">
+					<xsl:for-each select="page/product[position() &lt; 20]">
 						<li>
 							<a href="{show_product}">
 								<xsl:value-of select="name"/>

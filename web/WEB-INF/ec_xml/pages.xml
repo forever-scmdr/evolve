@@ -326,7 +326,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY">
+				<fulltext limit="100" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 			</filter>
@@ -1453,6 +1453,17 @@
 	</page>
 
 
+	<page name="get_platan" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlatanRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="reindex_all" template="integration/reindex">
 		<request>
 			<var name="action"/>
@@ -1496,7 +1507,18 @@
 	</page>
 
 
-	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 0 ? * * *">
+	<page name="get_platan_auto_start" template="integration" schedule="0 0 0 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlatanRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 1 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>

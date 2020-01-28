@@ -32,10 +32,21 @@ public class TabTxtTableData implements TableDataSource {
 	private File file;
 	private ArrayList<String> missingColumns = null;
 	private Charset fileCharset;
+	private boolean isCsv = false;
+	private char SEPARATOR_CHAR = '\t';
 
 	public TabTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
 		this.file = new File(fileName);
 		this.fileCharset = charset;
+		init(mandatoryCols);
+	}
+
+	public TabTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
+		this.file = new File(fileName);
+		this.fileCharset = charset;
+		this.isCsv = isCsv;
+		if (isCsv)
+			SEPARATOR_CHAR = ';';
 		init(mandatoryCols);
 	}
 
@@ -68,7 +79,10 @@ public class TabTxtTableData implements TableDataSource {
 					line = line.substring(1);
 				while (line != null && headerRow < 1000 && !rowChecked) {
 					headerRow++;
-					cols = StringUtils.splitPreserveAllTokens(line, '\t');
+					cols = StringUtils.splitPreserveAllTokens(line, SEPARATOR_CHAR);
+					for (int i = 0; i < cols.length; i++) {
+						cols[i] = prepareValue(cols[i]);
+					}
 					missingColumnsTest = new ArrayList<>();
 					rowChecked = true;
 					for (String checkCol : mandatoryCols) {
@@ -89,7 +103,7 @@ public class TabTxtTableData implements TableDataSource {
 			if (rowChecked) {
 				for (int i = 0; i < cols.length; i++) {
 					if (StringUtils.isNotBlank(cols[i])) {
-						header.put(StringUtils.trim(StringUtils.lowerCase(cols[i])), i);
+						header.put(StringUtils.lowerCase(cols[i]), i);
 					}
 				}
 				isValid = true;
@@ -97,6 +111,19 @@ public class TabTxtTableData implements TableDataSource {
 		} else {
 			isValid = true;
 		}
+	}
+
+	private String prepareValue(String unrepared) {
+		String result = StringUtils.trim(unrepared);
+		if (isCsv) {
+			StringBuilder sb = new StringBuilder(result);
+			if (sb.length() > 0 && sb.charAt(0) == '"')
+				sb.deleteCharAt(0);
+			if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '"')
+				sb.deleteCharAt(sb.length() - 1);
+			result = StringUtils.replace(sb.toString(), "\"\"", "\"");
+		}
+		return result;
 	}
 
 	public final String getValue(int colIndex) {
@@ -153,7 +180,9 @@ public class TabTxtTableData implements TableDataSource {
 			currentRowNum = headerRow;
 			String line;
 			while ((line = br.readLine()) != null) {
-				currentRow = StringUtils.splitPreserveAllTokens(line, '\t');
+				currentRow = StringUtils.splitPreserveAllTokens(line, SEPARATOR_CHAR);
+				for (int i = 0; i < currentRow.length; i++)
+					currentRow[i] = prepareValue(currentRow[i]);
 				processor.processRow(this);
 				currentRowNum++;
 			}
