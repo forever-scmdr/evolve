@@ -16,6 +16,7 @@
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
+
         <xsl:param name="str" as="xs:string?"/>
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
     </xsl:function>
@@ -71,28 +72,6 @@
         </div>
     </xsl:template>
 
-
-    <xsl:function name="f:substring-before-last" as="xs:string">
-        <xsl:param name="arg" as="xs:string?"/>
-        <xsl:param name="delim" as="xs:string"/>
-        <xsl:sequence select="
-           if (matches($arg, f:escape-for-regex($delim)))
-           then replace($arg,
-                    concat('^(.*)', f:escape-for-regex($delim),'.*'),
-                    '$1')
-           else ''
-        "/>
-    </xsl:function>
-
-    <xsl:function name="f:escape-for-regex" as="xs:string">
-        <xsl:param name="arg" as="xs:string?"/>
-        <xsl:sequence select="
-            replace($arg,
-           '(\.|\[|\]|\\|\||\-|\^|\$|\?|\*|\+|\{|\}|\(|\))','\\$1')
-        "/>
-   </xsl:function>
-
-
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
@@ -125,49 +104,5 @@
         </html>
 
     </xsl:template>
-
-    <xsl:function name="f:day-of-week" as="xs:integer?">
-        <xsl:param name="date" as="xs:dateTime?"/>
-        <xsl:sequence select="
-          if (empty($date))
-          then ()
-          else xs:integer((xs:date($date) - xs:date('1901-01-06'))
-                  div xs:dayTimeDuration('P1D')) mod 7
-         "/>
-    </xsl:function>
-
-    <xsl:function name="f:delivery-date">
-        <xsl:param name="date" as="xs:dateTime?"/>
-        <xsl:variable name="day" select="f:day-of-week($date)"/>
-        <xsl:variable name="duration" select="24*60*60*1000"/>
-        <xsl:variable name="delta" select="if($day = 0 or $day = 6) then 10 else if ($day &lt; 5) then (5-$day + 4) else if(hours-from-dateTime($date) &lt; 18) then (5-$day + 4) else 10"/>
-        <xsl:variable name="millis" select="f:date_to_millis(xs:date($date)) + $duration * $delta"/>
-        <xsl:sequence select="f:format_date(f:millis_to_date($millis))"/>
-    </xsl:function>
-
-    <!-- Перевод XSL даты в миллисекунды -->
-    <xsl:function name="f:date_to_millis">
-        <xsl:param name="date" as="xs:date"/>
-        <xsl:sequence select="($date - xs:date('1970-01-01')) div xs:dayTimeDuration('PT0.001S')"/>
-    </xsl:function>
-
-    <!-- Перевод миллисекунд в XSL дату -->
-    <xsl:function name="f:millis_to_date" as="xs:date">
-        <xsl:param name="millis"/>
-        <xsl:sequence select="if ($millis) then xs:date('1970-01-01') + $millis * xs:dayTimeDuration('PT0.001S') else xs:date('1970-01-01')"/>
-    </xsl:function>
-
-    <!-- Перевод даты из XSL вида в CMS вид (23.11.2017) -->
-    <xsl:function name="f:format_date">
-        <xsl:param name="date" as="xs:date"/>
-        <xsl:sequence select="format-date($date, '[D01].[M01].[Y0001]')"/>
-    </xsl:function>
-
-    <!-- Перевод даты из CMS вида (23.11.2017) в XSL вид -->
-    <xsl:function name="f:xsl_date" as="xs:date">
-        <xsl:param name="str_date"/>
-        <xsl:variable name="parts" select="tokenize(tokenize($str_date, '\s+')[1], '\.')"/>
-        <xsl:sequence select="if ($parts[3]) then xs:date(concat($parts[3], '-', $parts[2], '-', $parts[1])) else xs:date('1970-01-01')"/>
-    </xsl:function>
 
 </xsl:stylesheet>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-	<assoc name="news" caption="Дополнительные статьи" transitive="false" ag-id="2" ag-hash="3377875" />
+	<assoc name="news" caption="Дополнительные статьи" transitive="false" ag-id="1" ag-hash="3377875" />
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
