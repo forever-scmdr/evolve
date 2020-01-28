@@ -195,6 +195,10 @@
 
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
 		<child item="seo" single="true"/>
+		<parameter name="main_pic" caption="заглавная картинка" type="picture"/>
+		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 1000; src: main_pic;"/>
+		<parameter name="small_pic" caption="малая картинка" type="picture" format="width: 500; src: main_pic;"/>
+
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="audio" type="file" caption="аудио"/>
@@ -208,6 +212,9 @@
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
+
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
 	<!--<item name="custom_pages" caption="Информационные разделы" ag-id="22" ag-hash="727106934">-->

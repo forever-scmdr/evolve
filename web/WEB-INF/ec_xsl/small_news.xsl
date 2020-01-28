@@ -56,8 +56,17 @@
 			<div class="row masonry-wrap">
 				<div id="add-content">
 					<xsl:for-each select="page/small_news/small_news_item">
+
+
 						<div class="col-four tab-full small-news-item" data-aos="fade-up">
-						<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
+							<xsl:if test="small_pic != ''">
+								<div class="entry__thumb">
+									<a href="{show_page}" class="entry__thumb-link">
+										<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+									</a>
+								</div>
+							</xsl:if>
+							<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
 							<p class="date" data-utc="{date/@millis}">
 								<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 								<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>

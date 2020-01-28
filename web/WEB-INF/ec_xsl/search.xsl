@@ -34,13 +34,20 @@
 						<xsl:for-each select="$small_news">
 							<xsl:sort select="number(date/@millis)" order="descending"/>
 							<div class="col-four tab-full small-news-item" data-aos="fade-up">
+								<xsl:if test="small_pic != ''">
+									<div class="entry__thumb">
+										<a href="{show_small_news_item}" class="entry__thumb-link">
+											<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
+										</a>
+									</div>
+								</xsl:if>
 								<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
 								<p class="date" data-utc="{date/@millis}">
 									<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 									<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
 								</p>
 								<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
-									<a href="{show_page}">
+									<a href="{show_small_news_item}">
 										<xsl:value-of select="name"/>
 									</a>
 								</p>

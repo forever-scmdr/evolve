@@ -6,6 +6,7 @@
 	<xsl:variable name="title" select="$ni/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
+	<xsl:variable name="soc_image" select="if($ni/soc_image != '') then $ni/soc_image else $ni/medium_pic"/>
 
 
 	<xsl:variable name="ni" select="page/small_news_item"/>
@@ -21,13 +22,13 @@
 		<meta property="og:locale" content="ru_RU" />
 		<meta property="og:title" content="{$h1}" />
 		<meta property="og:description" content="{$ni/twitter_description}" />
-		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_image)}" />
+		<meta property="og:image" content="{concat($main_host, '/',$ni/@path, $soc_image)}" />
 	   <meta property="og:app_id" content="552626568232392" />
 	</xsl:template>
 
 	<xsl:template name="TWITTER_MARKUP">
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:image" content="{concat($main_host, '/',$ni/@path, $ni/soc_image)}"/>
+		<meta name="twitter:image" content="{concat($main_host, '/',$ni/@path, $soc_image)}"/>
 		<meta name="twitter:image:alt" content="{$h1}" />
 	</xsl:template>
 
@@ -80,6 +81,19 @@
 						</div>
 					</xsl:if>
 				</div>
+
+				<xsl:if test="$ni/main_pic != ''">
+					<div class="s-content__media col-full">
+					<div class="s-content__post-thumb">
+					<img src="{concat($ni/@path, $ni/main_pic)}"
+						 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
+									 {concat($ni/@path, $ni/medium_pic)} 1000w,
+									 {concat($ni/@path, $ni/small_pic)} 500w"
+						 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
+					</div>
+					</div>
+				</xsl:if>
+
 				<div class="col-full s-content__main" style="margin-top: 2.5rem;">
 					<div id="nil">
 						<div class="content-text">
