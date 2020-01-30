@@ -2,18 +2,14 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDataSource;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
-import ecommander.model.datatypes.DateDataType;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
@@ -66,7 +62,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 				code = StringUtils.trim(doc.select("Property[name=Articul] Value").first().ownText());
                 Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
                 if (product == null) {
-                    report.append(code).append("\r\n");
+                    report.append(code).append('\t').append(doc.select("Property[name=TName] Value").first().ownText()).append("\r\n");
                     info.increaseProcessed();
                     continue;
                 }
