@@ -200,6 +200,7 @@
 		<parameter name="small_pic" caption="малая картинка" type="picture" format="width: 500; src: main_pic;"/>
 
 		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="is_future" type="byte" caption="это статья из будущего?" description="0 - нет. 1 - да"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="audio" type="file" caption="аудио"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
@@ -215,6 +216,9 @@
 
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+
+		<on-create class="ecommander.fwk.ArticleFromFuture"/>
+		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<!--<item name="custom_pages" caption="Информационные разделы" ag-id="22" ag-hash="727106934">-->
