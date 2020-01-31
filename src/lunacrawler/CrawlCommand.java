@@ -43,10 +43,6 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 		XSLTransformCrawler.startCrawling(info, mode, values, noDepth, this);
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-		XSLTransformCrawler.terminate();
-	}
 
 	public ResultPE test() throws Exception {
 		String url = getVarSingleValue("url");

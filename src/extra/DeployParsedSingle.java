@@ -224,10 +224,6 @@ public class DeployParsedSingle extends MetaboIntegrateParsedCommand {
 		}
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 
 	private String RF_to_RB(String rf) {
 		//return StringUtils.replace(rf, " РФ", " РБ");

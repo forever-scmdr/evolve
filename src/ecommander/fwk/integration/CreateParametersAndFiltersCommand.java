@@ -274,11 +274,6 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
-
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
 	}

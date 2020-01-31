@@ -289,8 +289,4 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		return product;
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

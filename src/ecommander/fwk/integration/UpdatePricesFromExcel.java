@@ -86,10 +86,4 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 	}
 
 
-
-	@Override
-	protected void terminate() throws Exception {
-
-	}
-
 }

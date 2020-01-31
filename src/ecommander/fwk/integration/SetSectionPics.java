@@ -52,9 +52,4 @@ public class SetSectionPics extends IntegrateBase implements CatalogConst {
 			processSections(subs);
 		}
 	}
-
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

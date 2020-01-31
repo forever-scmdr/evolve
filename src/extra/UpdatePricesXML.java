@@ -55,6 +55,8 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 		priceFile.findNextNode("Property", "name", "Data");
 		priceFile.findNextNode("Value");
         while (priceFile.findNextNode("Value") != null) {
+        	if (needTermination)
+        		return;
 			String code = null;
 			try {
 				XmlDataSource.Node entry = priceFile.scanCurrentNode();
@@ -92,6 +94,8 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
         List<Item> products;
         long lastId = 0;
         do {
+	        if (needTermination)
+		        return;
             query.setIdSequential(lastId);
             products = query.loadItems();
             for (Item product : products) {
@@ -110,8 +114,4 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
         info.setOperation("Интеграция завершена");
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

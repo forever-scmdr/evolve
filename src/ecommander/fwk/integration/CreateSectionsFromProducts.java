@@ -132,8 +132,4 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		commitCommandUnits();
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

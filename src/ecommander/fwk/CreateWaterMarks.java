@@ -120,8 +120,4 @@ public class CreateWaterMarks extends IntegrateBase {
 		return Thumbnails.of(original).scale(1f).watermark(Positions.CENTER, newWater, 1.0f).asBufferedImage();
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

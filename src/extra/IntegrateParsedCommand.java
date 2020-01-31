@@ -233,8 +233,4 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 		}
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

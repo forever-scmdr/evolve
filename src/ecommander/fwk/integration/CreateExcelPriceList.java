@@ -568,10 +568,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		sectionStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 
 	@Override
 	protected boolean makePreparations() throws Exception {

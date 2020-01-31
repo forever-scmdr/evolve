@@ -73,8 +73,4 @@ public class UpdatePrices extends IntegrateBase implements CatalogConst{
 		price.close();
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }

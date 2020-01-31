@@ -766,8 +766,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		setOperation("Интеграция завершена");
 	}
 
-	@Override
-	protected void terminate() throws Exception {}
 
 	private String firstUpperCase(String s) {
 		return s.substring(0, 1).toUpperCase() + s.substring(1);

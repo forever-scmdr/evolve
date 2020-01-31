@@ -44,8 +44,4 @@ public class SingleCrawlerCommand extends IntegrateBase {
 		info.setOperation("Парсинг окончен");
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-		controller.terminate();
-	}
 }

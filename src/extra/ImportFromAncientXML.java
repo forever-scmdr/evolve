@@ -102,10 +102,6 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 
 	private void processSectionElement(Element sectionElement, Item parentSection) throws Exception{
 

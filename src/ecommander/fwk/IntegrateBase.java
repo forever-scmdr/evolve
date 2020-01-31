@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -26,20 +28,28 @@ import java.util.Date;
  */
 public abstract class IntegrateBase extends Command {
 
-	/*********************************************************************************************************
-	 *********************************************************************************************************
-	 * 
-	 * ВЫВОД ИНФОРМАЦИИ О ПРОЦЕССЕ РАЗБОРА
-	 * 
-	 *********************************************************************************************************
-	 *********************************************************************************************************/
+	/*******************************************
+	 *
+	 *          СТАТИЧЕСКИЕ ПОЛЯ
+	 *
+	 *******************************************/
 
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
-	private static final Object MUTEX = new Object();
-	private static boolean isInProgress = false;
-	protected static Info info = null;
-	protected volatile boolean needTermination = false;
+	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
+	private static final Object MUTEX;
+	static {
+		runningTasks = new ConcurrentHashMap<>();
+		MUTEX = new Object();
+	}
+
+
+	/*********************************************************************************************************
+	 *
+	 *          ВЫВОД ИНФОРМАЦИИ О ПРОЦЕССЕ РАЗБОРА
+	 * 
+	 *********************************************************************************************************/
+
 
 	private static final class LogMessage {
 		private Date date;
@@ -193,6 +203,18 @@ public abstract class IntegrateBase extends Command {
 		}
 	}
 
+
+	/*********************************************************************************************************
+	 *
+	 *          ПОЛЯ И МЕТОДЫ ЭКЗЕМПЛЯРА
+	 *
+	 *********************************************************************************************************/
+
+
+	protected Info info = null;
+	protected volatile boolean needTermination = false;
+
+
 	public IntegrateBase() {
 
 	}
@@ -201,13 +223,13 @@ public abstract class IntegrateBase extends Command {
 		super(outer);
 	}
 
-	private static Info getInfo() {
+	private Info getInfo() {
 		if (info != null)
 			return info;
 		return newInfo();
 	}
 	
-	private static Info newInfo() {
+	private Info newInfo() {
 		info = new Info();
 		return info;
 	}
@@ -215,35 +237,35 @@ public abstract class IntegrateBase extends Command {
 	 * Установить текущую операцию
 	 * @param opName
 	 */
-	protected static void setOperation(String opName) {
+	protected void setOperation(String opName) {
 		getInfo().setOperation(opName);
 	}
 	/**
 	 * Установить текущий номер строки
 	 * @param lineNumber
 	 */
-	protected static void setLineNumber(int lineNumber) {
+	protected void setLineNumber(int lineNumber) {
 		getInfo().setLineNumber(lineNumber);
 	}
 	/**
 	 * Установить количество обработанных информационных единиц (например, товаров)
 	 * @param processed
 	 */
-	protected static void setProcessed(int processed) {
+	protected void setProcessed(int processed) {
 		getInfo().setProcessed(processed);
 	}
 	/**
 	 * Добавить запись в конец лога
 	 * @param message
 	 */
-	protected static void addLog(String message) {
+	protected void addLog(String message) {
 		getInfo().addLog(message);
 	}
 	/**
 	 * Добавить запись в начало лога
 	 * @param message
 	 */
-	protected static void pushLog(String message) {
+	protected void pushLog(String message) {
 		getInfo().pushLog(message);
 	}	
 	/**
@@ -252,7 +274,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param lineNumber
 	 * @param position
 	 */
-	protected static void addError(String message, int lineNumber, int position) {
+	protected void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
 	/**
@@ -260,7 +282,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param message
 	 * @param originator
 	 */
-	protected static void addError(String message, String originator) {
+	protected void addError(String message, String originator) {
 		getInfo().addError(message, originator);
 	}	
 	
@@ -277,43 +299,50 @@ public abstract class IntegrateBase extends Command {
 		String operation = getVarSingleValue("action");
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
+		final String CLASS_NAME = getClass().getName();
+		IntegrateBase runningTask = runningTasks.get(CLASS_NAME);
+		boolean isInProgress = runningTask != null;
 		if (isInProgress && "terminate".equals(operation)) {
-			needTermination = true;
-			terminate();
-			return buildResult();
+			runningTask.needTermination = true;
+			return runningTask.buildResult();
 		} else if (isInProgress || !"start".equals(operation)) {
-			return buildResult();
-		} else {
-			synchronized (MUTEX) {
-				isInProgress = true;
-				newInfo().setInProgress(true);
-				setOperation("Инициализация");
-				// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-				if (!makePreparations()) {
-					setOperation("Интеграция завершена с ошибками");
-					return buildResult();
-				}
-				setOperation("Выполнение интеграции");
-				// Поток выполнения интеграции
-				Thread thread = new Thread(() -> {
-					try {
-						integrate();
-						setOperation("Интеграция завершена успешно");
-					} catch (Exception se) {
-						setOperation("Интеграция завершена с ошибками");
-						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
-					} finally {
-						isInProgress = false;
-						getInfo().setInProgress(false);
-					}
-				});
-				thread.setDaemon(true);
-				if (async)
-					thread.start();
-				else
-					thread.run();
+			if (runningTask == null) {
+				newInfo();
+				return buildResult();
+			} else {
+				return runningTask.buildResult();
 			}
+		} else {
+			runningTasks.put(CLASS_NAME, this);
+			newInfo().setInProgress(true);
+			setOperation("Инициализация");
+			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
+			if (!makePreparations()) {
+				setOperation("Интеграция завершена с ошибками");
+				runningTasks.remove(CLASS_NAME);
+				return buildResult();
+			}
+			setOperation("Выполнение интеграции");
+			// Поток выполнения интеграции
+			Thread thread = new Thread(() -> {
+				try {
+					integrate();
+					setOperation("Интеграция завершена успешно");
+				} catch (Exception se) {
+					setOperation("Интеграция завершена с ошибками");
+					ServerLogger.error("Integration error", se);
+					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+				} finally {
+					getInfo().setInProgress(false);
+					runningTasks.remove(CLASS_NAME);
+				}
+			});
+			thread.setDaemon(true);
+			if (async)
+				thread.start();
+			else
+				thread.run();
+
 		}
 		return buildResult();
 	}
@@ -325,11 +354,6 @@ public abstract class IntegrateBase extends Command {
 	 * Сам процесс интеграции
 	 */
 	protected abstract void integrate() throws Exception;
-	/**
-	 * Прервать процесс интеграции
-	 * @throws Exception
-	 */
-	protected abstract void terminate() throws Exception;
 	/**
 	 * Создать результат выполнения команды (xml документ)
 	 * 

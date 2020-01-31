@@ -37,8 +37,4 @@ public class SaveAllProductsCommand extends IntegrateBase implements CatalogCons
 		}
 	}
 
-	@Override
-	protected void terminate() throws Exception {
-
-	}
 }
