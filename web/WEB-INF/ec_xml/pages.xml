@@ -46,7 +46,7 @@
 		<single item="common" cacheable="true">
 			<list item="soc_link"/>
 		</single>
-		<link name="contacts_link" target="contacts"/>
+		<!-- <link name="contacts_link" target="contacts"/> -->
 		<link name="search_link" target="search"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<single item="modules">
@@ -336,7 +336,7 @@
 						<var var="s_page"/>
 					</pages>
 				</filter>
-				<link name="show_page" target="small_news_item" type="exclusive">
+				<link name="show_small_news_item" target="small_news_item" type="exclusive">
 					<var name="sel" ref="sni" style="translit"/>
 				</link>
 			</list>
@@ -493,7 +493,7 @@
 		</single>
 	</page>
 
-	<page name="news_item" template="news_item" >
+	<page name="news_item" template="news_item" cacheable="true">
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
@@ -764,12 +764,12 @@
 	</page>
 
 
-	<page name="contacts" template="contacts" cacheable="true">
+	<!-- <page name="contacts" template="contacts" cacheable="true">
 		<single item="contacts" cacheable="false">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
-	</page>
+	</page> -->
 
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
@@ -885,7 +885,7 @@
 			</link>
 		</list>
 
-		<link name="contacts_link" target="contacts"/>
+		<!-- <link name="contacts_link" target="contacts"/> -->
 
 		<list item="news_item" id="ni">
 			<filter>

@@ -225,6 +225,8 @@
 					<div class="col-full">
 						<div class="s-footer__copyright">
 							<span>© Tempting.Pro 2020</span>
+							<span>Нашли ошибку? Выделите текст и нажмите Ctrl+Enter.</span>
+							<span><a href="mailto:info@tempting.pro">info@tempting.pro</a></span>
 						</div>
 
 						<div class="go-top">
