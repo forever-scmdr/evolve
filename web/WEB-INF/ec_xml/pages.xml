@@ -906,6 +906,9 @@
 		</command>
 	</page>
 
+	<page name="check_future">
+		<command class="ecommander.fwk.ArticleFromFuture" method="checkFuture"/>
+	</page>
 
 	<page name="delete_seo">
 		<link name="success" target="delete_seo_complete">
