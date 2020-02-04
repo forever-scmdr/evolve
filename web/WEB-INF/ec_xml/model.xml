@@ -120,9 +120,6 @@
 		<child item="comments" single="true"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
-
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">

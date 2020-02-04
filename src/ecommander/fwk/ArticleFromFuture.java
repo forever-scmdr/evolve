@@ -1,5 +1,6 @@
 package ecommander.fwk;
 
+import ecommander.controllers.PageController;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -44,7 +45,10 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
                 needReindex = true;
             }
         }
-        if(needReindex) LuceneIndexMapper.getSingleton().reindexAll();
+        if(needReindex){
+            LuceneIndexMapper.getSingleton().reindexAll();
+            PageController.clearCache();
+        }
         return null;
     }
 
