@@ -10,6 +10,7 @@ import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Warranty_form;
@@ -144,6 +145,8 @@ public class CreateCertificate extends Command implements ItemNames.warranty_for
 			}
 			ServerLogger.error("\t\t\t\tWARRANTY EMAIL 2");
 
+			counter.setValue(ItemNames.counter_.WARRANTY_COUNT, count);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(counter).noTriggerExtra().ignoreUser().noFulltextIndex());
 			return getResult("success").addVariable("serial", form.get_serial());
 		} catch (Exception e) {
 			ServerLogger.error("Unable to manipulate pic file", e);
