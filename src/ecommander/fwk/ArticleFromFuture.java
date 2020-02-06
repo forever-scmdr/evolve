@@ -34,8 +34,8 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
         long now = new Date().getTime();
         ItemQuery q = new ItemQuery("small_news_item", Item.STATUS_HIDDEN);
         articles.addAll(q.loadItems());
-        q = new ItemQuery("news_item", Item.STATUS_HIDDEN);
-        articles.addAll(q.loadItems());
+//        q = new ItemQuery("news_item", Item.STATUS_HIDDEN);
+//        articles.addAll(q.loadItems());
 
         boolean needReindex = false;
         for(Item a : articles){
