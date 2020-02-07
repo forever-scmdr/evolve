@@ -32,6 +32,7 @@
 	<!-- -->
 
 	<xsl:variable name="active_menu_item"/>
+	<xsl:variable name="common" select="page/common"/>
 
 
 
@@ -715,12 +716,21 @@
 			<xsl:call-template name="ONE_CLICK_FORM"/>
 			<xsl:call-template name="DEFER_FORM"/>
 
+			<xsl:if test="$common/discount != ''">
+				<div id="dsc-data" data-discount="$common/discount" data-start="{concat($common/show_window, '000')}" data-last="{concat($common/discount_last, '000')}"></div>
+			</xsl:if>
+
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 			<script type="text/javascript" src="js/fwk/common.js"/>
 			<script type="text/javascript" src="js/search-tip.js"></script>
+
+			<!-- UPDATE 06.02.2020 Single Device Discount -->
+			<script type="text/javascript" src="js/metabo_discount.js"></script>
+			<!-- END_UPDATE 06.02.2020 -->
+
 			<xsl:if test="/page/@name = 'index'">
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">

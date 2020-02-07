@@ -1,83 +1,120 @@
 /**
  * Created by user on 13.03.2019.
  */
-discount();
-Number.prototype.pad = function(size) {
+$(document).ready(function () {
+    discount();
+});
+
+Number.prototype.pad = function (size) {
     var s = String(this);
-    while (s.length < (size || 2)) {s = "0" + s;}
+    while (s.length < (size || 2)) {
+        s = "0" + s;
+    }
     return s;
 }
+
 function discount() {
-    var $data = $("#dsc-data");
-    var now = $data.attr("data-now")*1;
-    var start = $data.attr("data-start")*1;
-    var expires = $data.attr("data-expires")*1;
-    var showTime = $data.attr("data-show")*1;
-    var discountUsed = getCookie("discount_used") != null;
+    const COOKIE_LIFETIME = 30 * 60 * 60 * 1000;
+    const VISITED_COOKIE_NAME = "visited";
+    const DURATION_COOKIE_NAME = "duration_";
+    const START_COOKIE_NAME = "start_";
+    const WINDOW_CLOSED_COOKIE_NAME = "window_closed";
+
+    var $dsc = $("#dsc-data");
+    var $dscDevice = $("#dsc-device");
+    var now = new Date().getTime();
+    var pagesVisitedCookie = getCookie("visited");
+    var windowClosedCookie = getCookie("window_closed");
+    var keys = [];
+    var discount = {};
+    var start = {};
+    var duration = {};
+    var lastStop = now + 10000;
+    var discountUsed = {};
     var time = now;
 
-    var windowClosed = getCookie("window_closed") == "yes";
+    initVisited();
+
 
     step();
-   // $(".price-highlight, .price").css({"line-height" : lineHeight});
 
     function step() {
-        if(discountUsed)return;
-        if(time < expires) {
-            if(typeof timeout != "undefined"){clearTimeout(timeout);}
-            var timeout = setTimeout(step, 1000);
-        }else{
-            clearTimeout(timeout);
+        console.log("SNAFU_" + ((time - now) / 1000));
+        if (typeof discountTimeout != "undefined") {
+            clearTimeout(discountTimeout);
+        }
+        if (time < lastStop) {
+            discountTimeout = setTimeout(step, 1000);
+        } else {
             deleteCookie("window_closed");
             deleteCookie("discount_active");
-            setTimeout(function(){document.location.reload();},1000);
-        }
-        var delta = expires - time;
-        if(!windowClosed && time > showTime){
-            activateDiscount();
-            showWindow();
-        }else if(windowClosed && time > showTime){
-            $("#discount-popup-2").show();
-            $("#discount-popup").remove();
+            //setTimeout(function(){document.location.reload();},1000);
         }
         time += 1000;
-        setCookie("current_time", time+"", 24*60*60*1000);
-       // bounceFont();
-        var secondsFromNow = Math.round((delta)/1000);
-        var min = Math.floor(secondsFromNow/60);
-        var seconds = secondsFromNow % 60;
-        //console.log(secondsFromNow);
-        var t = ((min > 0)? pad(min)+"мин. " : "")+pad(seconds)+"сек.";
-        $("#dsc-timer-1").text(t);
-        $("#dsc-timer-2").text(t);
     }
-    function activateDiscount() {
-        setCookie("discount_active", "yes",expires-now);
-    }
-    function showWindow() {
-        console.log(windowClosed);
-        if(windowClosed){
-            $("#discount-popup").remove(); return;
+
+    function initVisited() {
+        var vis;
+        //ensure main cookie
+        if (pagesVisitedCookie == null || typeof pagesVisitedCookie == "undefined" || pagesVisitedCookie == "") {
+            var visitedPage = new Array();
+            if ($dsc.length > 0) {
+                visitedPage.push("page");
+            }
+            if ($dscDevice.length > 0) {
+                visitedPage.push($dscDevice.attr("data-code"));
+            }
+            vis = visitedPage;
+            setCookie(VISITED_COOKIE_NAME, visitedPage.join(','), COOKIE_LIFETIME);
+        } else {
+            //update main cookie
+            var currentValue = getCookie(VISITED_COOKIE_NAME).split(',');
+            if ($dsc.length > 0) {
+                currentValue.push("page");
+            }
+            if ($dscDevice.length > 0) {
+                currentValue.push($dscDevice.attr("data-code"));
+            }
+            currentValue = [...new Set(currentValue)];
+            vis = currentValue;
+            setCookie(VISITED_COOKIE_NAME, currentValue.join(','), COOKIE_LIFETIME);
         }
-        windowClosed = getCookie("window_closed") == "yes";
-        if(!windowClosed){
-            $("#discount-popup").show();
-            $("#discount-popup-2").hide();
+        //set individual cookies
+        if ($dsc.length > 0) {
+            currentValue.push("page");
+            //last
+            setCookie(DURATION_COOKIE_NAME+"page", $dsc.attr("data-last") ,COOKIE_LIFETIME);
+            //start
+            setCookie(START_COOKIE_NAME+"page", $dsc.attr("data-start") ,COOKIE_LIFETIME);
         }
+        if ($dscDevice.length > 0) {
+            var code = $dscDevice.attr("data-code");
+            //last
+            setCookie(DURATION_COOKIE_NAME  + code, $dsc.attr("data-last") ,COOKIE_LIFETIME);
+            //start
+            setCookie(START_COOKIE_NAME + code, $dsc.attr("data-start") ,COOKIE_LIFETIME);
+        }
+        //
+
     }
-   }
+}
+
 function closeDiscountWindow() {
-    setCookie("window_closed","yes", 60*60*1000);
+    setCookie("window_closed", "yes", 60 * 60 * 1000);
     document.location.reload();
 }
 
 function setCookie(c_name, value, exMs) {
     var ms = new Date().getTime() + exMs;
     var exdate = new Date(ms);
-    var c_value = escape(value)	+ ((exMs == null) ? "" : "; expires=" + exdate.toUTCString());
+    var c_value = escape(value) + ((exMs == null) ? "" : "; expires=" + exdate.toUTCString());
     document.cookie = c_name + "=" + c_value + "; path=/;";
 }
-function deleteCookie(c_name){setCookie(c_name, '', -1*24*60*60*1000);}
+
+function deleteCookie(c_name) {
+    setCookie(c_name, '', -1 * 24 * 60 * 60 * 1000);
+}
+
 function getCookie(c_name) {
     var c_value = " " + document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
@@ -96,8 +133,9 @@ function getCookie(c_name) {
     }
     return c_value;
 }
+
 function pad(num) {
-    var s = num+"";
+    var s = num + "";
     while (s.length < 2) s = "0" + s;
     return s;
 }
