@@ -16,17 +16,21 @@ Number.prototype.pad = function (size) {
 function discount() {
     const COOKIE_LIFETIME = 30 * 60 * 60 * 1000;
     const VISITED_COOKIE_NAME = "visited";
+    const DISCOUNT_COOKIE_NAME = "discount_";
     const DURATION_COOKIE_NAME = "duration_";
     const START_COOKIE_NAME = "start_";
+    const VISIT_TIME_COOKIE_NAME = "visit_";
+    const USED_COOKIE_NAME = "used_";
     const WINDOW_CLOSED_COOKIE_NAME = "window_closed";
 
     var $dsc = $("#dsc-data");
     var $dscDevice = $("#dsc-device");
     var now = new Date().getTime();
-    var pagesVisitedCookie = getCookie("visited");
-    var windowClosedCookie = getCookie("window_closed");
+    var pagesVisitedCookie = getCookie(VISITED_COOKIE_NAME);
+    var windowClosedCookie = getCookie(WINDOW_CLOSED_COOKIE_NAME);
     var keys = [];
     var discount = {};
+    var visit = {};
     var start = {};
     var duration = {};
     var lastStop = now + 10000;
@@ -34,9 +38,7 @@ function discount() {
     var time = now;
 
     initVisited();
-
-
-    step();
+   // step();
 
     function step() {
         console.log("SNAFU_" + ((time - now) / 1000));
@@ -54,7 +56,6 @@ function discount() {
     }
 
     function initVisited() {
-        var vis;
         //ensure main cookie
         if (pagesVisitedCookie == null || typeof pagesVisitedCookie == "undefined" || pagesVisitedCookie == "") {
             var visitedPage = new Array();
@@ -64,7 +65,9 @@ function discount() {
             if ($dscDevice.length > 0) {
                 visitedPage.push($dscDevice.attr("data-code"));
             }
-            vis = visitedPage;
+            visitedPage =  [...new Set(visitedPage)];
+            console.log(visitedPage);
+            keys = visitedPage;
             setCookie(VISITED_COOKIE_NAME, visitedPage.join(','), COOKIE_LIFETIME);
         } else {
             //update main cookie
@@ -76,26 +79,54 @@ function discount() {
                 currentValue.push($dscDevice.attr("data-code"));
             }
             currentValue = [...new Set(currentValue)];
-            vis = currentValue;
+            //console.log(currentValue);
+            keys = currentValue;
             setCookie(VISITED_COOKIE_NAME, currentValue.join(','), COOKIE_LIFETIME);
         }
         //set individual cookies
         if ($dsc.length > 0) {
-            currentValue.push("page");
+            // currentValue.push("page");
             //last
-            setCookie(DURATION_COOKIE_NAME+"page", $dsc.attr("data-last") ,COOKIE_LIFETIME);
+            setCookie(DURATION_COOKIE_NAME + "page", $dsc.attr("data-last"), COOKIE_LIFETIME);
             //start
-            setCookie(START_COOKIE_NAME+"page", $dsc.attr("data-start") ,COOKIE_LIFETIME);
+            setCookie(START_COOKIE_NAME + "page", $dsc.attr("data-start"), COOKIE_LIFETIME);
+            //discount
+            setCookie(DISCOUNT_COOKIE_NAME + "page", $dsc.attr("data-discount"), COOKIE_LIFETIME);
+            //visit timeStamp
+            if(getCookie(VISIT_TIME_COOKIE_NAME + code) != null && getCookie(VISIT_TIME_COOKIE_NAME + code).isEmpty()){
+                alert();
+                setCookie(VISIT_TIME_COOKIE_NAME + "page", new Date().getTime(), COOKIE_LIFETIME);
+            }
         }
         if ($dscDevice.length > 0) {
             var code = $dscDevice.attr("data-code");
             //last
-            setCookie(DURATION_COOKIE_NAME  + code, $dsc.attr("data-last") ,COOKIE_LIFETIME);
+            setCookie(DURATION_COOKIE_NAME + code, $dsc.attr("data-last"), COOKIE_LIFETIME);
             //start
-            setCookie(START_COOKIE_NAME + code, $dsc.attr("data-start") ,COOKIE_LIFETIME);
+            setCookie(START_COOKIE_NAME + code, $dsc.attr("data-start"), COOKIE_LIFETIME);
+            //visit timeStamp
+            if(getCookie(VISIT_TIME_COOKIE_NAME + code) != null && getCookie(VISIT_TIME_COOKIE_NAME + code).isEmpty()){
+                alert();
+                setCookie(VISIT_TIME_COOKIE_NAME + code, new Date().getTime(), COOKIE_LIFETIME);
+            }
         }
-        //
-
+        //initialize start times and durations
+        for (i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var discountValue = getCookie(DISCOUNT_COOKIE_NAME + key);
+            var startValue = getCookie(START_COOKIE_NAME + key);
+            var durationValue = getCookie(DURATION_COOKIE_NAME + key);
+            var visitValue = getCookie(VISIT_TIME_COOKIE_NAME + key);
+            discount[key] = discountValue*1;
+            start[key] = startValue*1;
+            visit[key] = visitValue*1;
+            duration[key] = durationValue*1;
+            discountUsed[key] = typeof getCookie(USED_COOKIE_NAME + key) == 'string' && getCookie(USED_COOKIE_NAME + key) != "";
+        }
+        console.log(visit);
+        // console.log(discount);
+        // console.log(duration);
+        // console.log(discountUsed);
     }
 }
 
@@ -133,6 +164,10 @@ function getCookie(c_name) {
     }
     return c_value;
 }
+
+String.prototype.isEmpty = function () {
+    return this.length == 0;
+};
 
 function pad(num) {
     var s = num + "";

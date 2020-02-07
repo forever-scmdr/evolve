@@ -717,7 +717,7 @@
 			<xsl:call-template name="DEFER_FORM"/>
 
 			<xsl:if test="$common/discount != ''">
-				<div id="dsc-data" data-discount="$common/discount" data-start="{concat($common/show_window, '000')}" data-last="{concat($common/discount_last, '000')}"></div>
+				<div id="dsc-data" data-discount="{$common/discount}" data-start="{concat($common/show_window, '000')}" data-last="{concat($common/discount_last, '000')}"></div>
 			</xsl:if>
 
 			<script type="text/javascript" src="js/bootstrap.js"/>

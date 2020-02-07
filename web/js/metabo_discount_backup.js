@@ -1,7 +1,7 @@
 /**
  * Created by user on 13.03.2019.
  */
-discount();
+//discount();
 Number.prototype.pad = function(size) {
     var s = String(this);
     while (s.length < (size || 2)) {s = "0" + s;}
