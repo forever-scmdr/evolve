@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -252,6 +253,7 @@ public abstract class IntegrateBase extends Command {
 
 	protected Info info = null;
 	protected volatile boolean needTermination = false;
+	protected volatile boolean isFinished = false;
 
 
 	public IntegrateBase() {
@@ -340,26 +342,27 @@ public abstract class IntegrateBase extends Command {
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
 		final String CLASS_NAME = getClass().getName();
 		IntegrateBase runningTask = runningTasks.get(CLASS_NAME);
-		boolean isInProgress = runningTask != null;
+		boolean isInProgress = runningTask != null && !runningTask.isFinished;
 		if (isInProgress && "terminate".equals(operation)) {
 			runningTask.needTermination = true;
 			runningTask.terminate();
 			return runningTask.buildResult();
-		} else if (isInProgress || !"start".equals(operation)) {
+		} else if (isInProgress || !StringUtils.equalsIgnoreCase("start", operation)) {
 			if (runningTask == null) {
 				newInfo();
 				return buildResult();
 			} else {
 				return runningTask.buildResult();
 			}
-		} else {
+		} else if (StringUtils.equalsIgnoreCase("start", operation)) {
+			runningTask = this;
 			runningTasks.put(CLASS_NAME, this);
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 			if (!makePreparations()) {
 				setOperation("Интеграция завершена с ошибками");
-				runningTasks.remove(CLASS_NAME);
+				//runningTasks.remove(CLASS_NAME);
 				return buildResult();
 			}
 			setOperation("Выполнение интеграции");
@@ -373,8 +376,9 @@ public abstract class IntegrateBase extends Command {
 					ServerLogger.error("Integration error", se);
 					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
 				} finally {
+					isFinished = true;
 					getInfo().setInProgress(false);
-					runningTasks.remove(CLASS_NAME);
+					//runningTasks.remove(CLASS_NAME);
 				}
 			});
 			thread.setDaemon(true);
@@ -384,6 +388,8 @@ public abstract class IntegrateBase extends Command {
 				thread.run();
 
 		}
+		if (runningTask != null)
+			return runningTask.buildResult();
 		return buildResult();
 	}
 	/**
