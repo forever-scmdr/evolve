@@ -63,6 +63,7 @@ function discount() {
     const VISIT_TIME_COOKIE_NAME = "visit_";
     const USED_COOKIE_NAME = "used_";
     const WINDOW_CLOSED_COOKIE_NAME = "window_closed";
+    const DISCOUNT_ACTIVE_COOKIE_NAME = "discount_active";
 
     var $dsc = $("#dsc-data");
     var $dscDevice = $("#dsc-device");
@@ -92,21 +93,53 @@ function discount() {
                 var s = start[keys[i]];
                 var d = duration[keys[i]];
                 var passed = time - v;
-                //console.log(keys[i]+". passed: "+passed/1000+ "; start: "+ s/1000);
                 if(passed > s && passed < d){
-                    console.log(keys[i]+" active");
-                }else if(passed >= d){
-                    console.log(keys[i]+" expired");
-                }else{
-                    console.log(keys[i]+" left: "+(s-passed));
+                   activateDiscount(keys[i]);
+                }
+                else if(passed >= d){
+                   deactivateDiscount(keys[i]);
                 }
             }
         } else {
-            deleteCookie("window_closed");
-            deleteCookie("discount_active");
-            setTimeout(function(){document.location.reload();},1000);
+            deleteCookie(WINDOW_CLOSED_COOKIE_NAME);
+            deleteCookie(DISCOUNT_ACTIVE_COOKIE_NAME);
+            //setTimeout(function(){document.location.reload();},1000);
         }
         time += 1000;
+    }
+
+    function activateDiscount(key) {
+        var cookie = getCookie(DISCOUNT_ACTIVE_COOKIE_NAME);
+        if(cookie == null || typeof cookie == "undefined" || cookie == ""){
+            setCookie(DISCOUNT_ACTIVE_COOKIE_NAME, key, COOKIE_LIFETIME);
+        }else {
+           var arr = new Array();
+           arr = cookie.split(",");
+           arr.push(key);
+           arr = [...new Set(arr)];
+           setCookie(DISCOUNT_ACTIVE_COOKIE_NAME, arr.join(","), COOKIE_LIFETIME);
+           console.log("activated: "+key);
+        }
+    }
+
+    function deactivateDiscount(key) {
+        var cookie = getCookie(DISCOUNT_ACTIVE_COOKIE_NAME);
+        if(cookie == null || typeof cookie == "undefined" || cookie == "") return;
+        var arr = new Array();
+        arr = cookie.split(",");
+        var newCookie = "";
+        var z = 0;
+        for(i =0; i< arr.length; i++){
+            if(arr[i] == key) continue;
+            if(z>0) newCookie += ",";
+            newCookie += arr[i];
+            z++;
+        }
+        if(newCookie.length == 0){
+            deleteCookie(DISCOUNT_ACTIVE_COOKIE_NAME);
+        }else {
+            setCookie(DISCOUNT_ACTIVE_COOKIE_NAME, newCookie, COOKIE_LIFETIME);
+        }
     }
 
     function initVisited() {
@@ -186,6 +219,11 @@ function discount() {
         // console.log(discountUsed);
         // console.log(lastStop);
     }
+}
+
+function closeDiscountWindow() {
+    setCookie("window_closed","yes", 60*60*1000);
+    document.location.reload();
 }
 
 function closeDiscountWindow() {
