@@ -35,8 +35,10 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 	@Override
 	protected boolean makePreparations() throws Exception {
 		priceXmlFile = new File(AppContext.getRealPath(XML_FILE_NAME));
-		if (!priceXmlFile.exists())
+		if (!priceXmlFile.exists()) {
+			info.addError("Не найден файл интеграции", priceXmlFile.getAbsolutePath());
 			return false;
+		}
 		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), StandardCharsets.UTF_8);
 		reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
 		reportDir.mkdirs();

@@ -320,7 +320,8 @@ public abstract class IntegrateBase extends Command {
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 			if (!makePreparations()) {
-				setOperation("Интеграция завершена с ошибками");
+				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
+				runningTask.isFinished = true;
 				//runningTasks.remove(CLASS_NAME);
 				return buildResult();
 			}
@@ -380,4 +381,5 @@ public abstract class IntegrateBase extends Command {
 		result.setValue(doc.toString());
 		return result;
 	}
+
 }
