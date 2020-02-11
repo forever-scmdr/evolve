@@ -387,7 +387,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
-		buyNow();
+//		buyNow();
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);

@@ -609,12 +609,12 @@
 
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
-			<var name="cart_cookie" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
-			<var name="discount_expires" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="window_closed" scope="cookie"/>
+<!--			<var name="cart_cookie" scope="cookie"/>-->
+<!--			<var name="site_visit" scope="cookie"/>-->
+<!--			<var name="show_window" scope="cookie"/>-->
+<!--			<var name="discount_expires" scope="cookie"/>-->
+<!--			<var name="discount_used" scope="cookie"/>-->
+<!--			<var name="window_closed" scope="cookie"/>-->
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -644,10 +644,10 @@
 <!--			<var name="email" value="metabobelarus@gmail.com"/>-->
 			<var name="email" value="bio@forever-ds.com" />
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<var name="current_time" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
+<!--			<var name="site_visit" scope="cookie"/>-->
+<!--			<var name="current_time" scope="cookie"/>-->
+<!--			<var name="discount_used" scope="cookie"/>-->
+<!--			<var name="show_window" scope="cookie"/>-->
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -675,13 +675,13 @@
 
 	<page name="cart" template="cart">
 		<request>
-			<var name="cart_cookie" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<var name="current_time" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
-			<var name="discount_expires" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="window_closed" scope="cookie"/>
+<!--			<var name="cart_cookie" scope="cookie"/>-->
+<!--			<var name="site_visit" scope="cookie"/>-->
+<!--			<var name="current_time" scope="cookie"/>-->
+<!--			<var name="show_window" scope="cookie"/>-->
+<!--			<var name="discount_expires" scope="cookie"/>-->
+<!--			<var name="discount_used" scope="cookie"/>-->
+<!--			<var name="window_closed" scope="cookie"/>-->
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
