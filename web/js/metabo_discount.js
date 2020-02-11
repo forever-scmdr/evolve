@@ -78,6 +78,7 @@ function discount() {
     var lastStop = now + 10000;
     var discountUsed = {};
     var time = now;
+    var windowClosed;
 
     initVisited();
     step();
@@ -95,6 +96,7 @@ function discount() {
                 var passed = time - v;
                 if(passed > s && passed < d){
                    activateDiscount(keys[i]);
+                   showWindow();
                 }
                 else if(passed >= d){
                    deactivateDiscount(keys[i]);
@@ -103,6 +105,8 @@ function discount() {
         } else {
             deleteCookie(WINDOW_CLOSED_COOKIE_NAME);
             deleteCookie(DISCOUNT_ACTIVE_COOKIE_NAME);
+            $("#discount-popup").hide();
+            $("#discount-popup-2").hide();
             //setTimeout(function(){document.location.reload();},1000);
         }
         time += 1000;
@@ -219,6 +223,17 @@ function discount() {
         // console.log(discountUsed);
         // console.log(lastStop);
     }
+    function showWindow() {
+        console.log(windowClosed);
+        if(windowClosed){
+            $("#discount-popup").remove(); return;
+        }
+        windowClosed = getCookie(WINDOW_CLOSED_COOKIE_NAME) == "yes";
+        if(!windowClosed){
+            $("#discount-popup").show();
+            $("#discount-popup-2").hide();
+        }
+    }
 }
 
 function closeDiscountWindow() {
@@ -226,8 +241,4 @@ function closeDiscountWindow() {
     document.location.reload();
 }
 
-function closeDiscountWindow() {
-    setCookie("window_closed", "yes", 60 * 60 * 1000);
-    document.location.reload();
-}
 
