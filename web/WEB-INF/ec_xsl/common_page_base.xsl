@@ -694,8 +694,27 @@
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
 		<body>
-			<div id="discount-popup-2" class="message" style="display: none;"></div>
-			<div id="discount-popup" class="discount-alert" style="display: none;"></div>
+			<div id="discount-popup-2" class="message" style="display: none;">
+				<ul id="active_discounts_list-2">
+					<xsl:if test="page/common/discount != ''">
+						<li class="li-page">
+							До окончания действия скидки <xsl:value-of select="100 * f:num(page/common/discount)"/>% осталось <strong class="dsc-timer-page"></strong>
+						</li>
+					</xsl:if>
+				</ul>
+			</div>
+			<div id="discount-popup" class="discount-alert" style="display: none;">
+				<div>
+					<xsl:value-of select="page/common/discount_text" disable-output-escaping="yes"/>
+					<h2>Скидки на заказ</h2>
+					<ol id="active_discounts_list">
+						<xsl:if test="page/common/discount != ''">
+							<li class="li-page">Если вы сделаете заказ в течение <span class="dsc-timer-page"></span>, то получите скидку <xsl:value-of select="100 * f:num(page/common/discount)"/>%.</li>
+						</xsl:if>
+					</ol>
+					<span onclick="closeDiscountWindow(); return false;" class="button">Понятно</span>
+				</div>
+			</div>
 			<!-- ALL CONTENT BEGIN -->
 			<div class="content-container">
 				<xsl:call-template name="INC_DESKTOP_HEADER"/>

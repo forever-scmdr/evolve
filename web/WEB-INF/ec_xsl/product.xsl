@@ -49,7 +49,9 @@
 
 	<xsl:template name="CONTENT">
 		<xsl:if test="$p/discount != ''">
-			<div id="dsc-device" data-code="{$p/code}" data-discount="{$p/discount}" data-start="{concat($p/show_window,'000')}" data-last="{concat($p/discount_last,'000')}" >zzz</div>
+			<div style="display:none;" id="dsc-device" data-code="{$p/code}" data-discount="{$p/discount}" data-start="{concat($p/show_window,'000')}" data-last="{concat($p/discount_last,'000')}">
+				<xsl:value-of select="$p/name"/>
+			</div>
 		</xsl:if>
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
