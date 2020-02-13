@@ -481,7 +481,7 @@
 					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
 						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 					<p><xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
-						<e class="price-highlight{' red'[$discount_time]}"><xsl:value-of select="$price"/> р.</e>
+						<e class="price-highlight{' red'[$discount_time]}" id="price-{$p/code}" data-price="f:num($price)"><xsl:value-of select="$price"/> р.</e>
 					</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
