@@ -149,6 +149,7 @@ function discount() {
 			$dscContainer2.append($li2);
 		}
 		showTime(key);
+		highlightPrices(key);
 	}
 
 	function showTime(key) {
@@ -181,6 +182,7 @@ function discount() {
 			setCookie(DISCOUNT_ACTIVE_COOKIE_NAME, newCookie, COOKIE_LIFETIME);
 		}
 		$(".li-" + key).remove();
+		$unhightPrices(key);
 	}
 
 	function initVisited() {
