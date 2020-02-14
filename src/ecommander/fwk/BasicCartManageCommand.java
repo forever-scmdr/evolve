@@ -43,6 +43,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
+	private static Item common;
 
 
 
@@ -387,7 +388,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
-//		buyNow();
+
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -404,31 +405,6 @@ public abstract class BasicCartManageCommand extends Command {
 		return null;
 	}
 
-	/**
-	 * Записывает в куки дату входа на сайт, дату показа окна, дату истечения скидки.
-	 * @throws Exception
-	 */
-	public void buyNow() throws Exception {
-		if(discountUsed()){recalculateCart(); return;}
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
-		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
-		String start = getVarSingleValue("site_visit");
-
-		long now = new Date().getTime();
-		long hour = 60*60*1000;
-		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
-
-		if(StringUtils.isBlank(start) || now - startTime > hour){
-			setCookieVariable("site_visit", String.valueOf(now));
-			startTime = now;
-		}
-
-		int duration = common.getIntValue("discount_last", 60) * 1000;
-		long discountExpires = startTime + fiveMinutes + duration;
-		setCookieVariable("discount_expires", String.valueOf(discountExpires));
-		setCookieVariable("current_time", String.valueOf(now));
-		setCookieVariable("show_window", String.valueOf(startTime + fiveMinutes));
-	}
 
 
 	/**
@@ -453,7 +429,9 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				//BigDecimal price = applyDiscount(bought);
+				//product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal price = applyDiscount(bought);
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
@@ -468,7 +446,6 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
-		sum = applyDiscount(sum);
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(QTY_PARAM, regularQuantity);
 		// Сохранить корзину
@@ -477,39 +454,17 @@ public abstract class BasicCartManageCommand extends Command {
 		return result && regularQuantity > 0;
 	}
 
-	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
-		if(discountUsed()){
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-			return sum;
+	private BigDecimal  applyDiscount(Item bought) throws Exception{
+		common = common == null? ItemQuery.loadSingleItemByName(ItemNames.COMMON) : common;
+		double dsc = 1 - common.getDoubleValue(ItemNames.common.DISCOUNT, 0);
+		String useDiscount = bought.getStringValue("discount","");
+		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+		BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+		if(StringUtils.isBlank(useDiscount)) return price;
+		if(product.getStringValue(CODE_PARAM,"").equals(useDiscount)){
+			dsc = 1 - product.getDoubleValue("discount",0);
 		}
-
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
-		final long hour = 60*60*1000;
-		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
-		String start = getVarSingleValue("site_visit");
-		long now = new Date().getTime();
-		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
-
-		int duration = common.getIntValue("discount_last", 60) * 1000;
-		long discountExpires = startTime + fiveMinutes + duration;
-		if(StringUtils.isBlank(start) || now - startTime > hour){
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-			return sum;
-		}
-		long d = now - startTime;
-
-		if(d > fiveMinutes && now < discountExpires){
-			double discount = 1d - common.getDoubleValue("discount",0d);
-			cart.setValue("simple_sum", sum);
-			sum = sum.multiply(new BigDecimal(discount));
-
-		}else{
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-		}
-		return sum;
+		return price.multiply(new BigDecimal(dsc));
 	}
 
 	@Override
