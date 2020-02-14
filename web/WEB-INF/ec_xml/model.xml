@@ -275,7 +275,7 @@
 	</group>
 	-->
 	<item name="params_xml" caption="Параметры в виде XML" ag-id="819" ag-hash="471057886">
-		<parameter name="xml" type="xml" caption="Параметры" />
+		<parameter name="xml" type="xml" caption="Параметры" text-index="fulltext" text-index-item="product"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->

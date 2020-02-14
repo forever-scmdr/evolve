@@ -1,10 +1,8 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -230,39 +228,42 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void insertItem(Item item) throws IOException, SAXException, TikaException {
+	private void insertItem(Item item) throws Exception {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		Document itemDoc = new Document();
-		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
-		// который поддерживает только строковые значения
-		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
-		// Заполняются все типы айтема (иерархия типов айтема)
-		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
-		for (String pred : itemPreds) {
-			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
-		}
-		//		// Заполняются все предшественники (в которые айтем вложен)
-		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-		//		for (String contId : containerIds) {
-		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-		//		}
+
+		HashMap<Long, Document> docs = new HashMap<>();
+		Document itemDoc = createItemDoc(item);
+		docs.put(item.getId(), itemDoc);
+		ArrayList<Document> itemDocs = new ArrayList<>();
+		itemDocs.add(itemDoc);
+
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
-
 		for (String ftParam : item.getItemType().getFulltextParams()) {
 			boolean needIncrement = false;
 			for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
-				if (param.isMultiple()) {
-					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-						createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
+				if (param.isFulltextOwnByPredecessor()) {
+					ArrayList<Item> preds = ItemMapper.loadItemPredecessors(item.getId(), param.getFulltextItem());
+					itemDocs.clear();
+					for (Item pred : preds) {
+						Document doc = createItemDoc(pred);
+						itemDocs.add(doc);
+						docs.put(pred.getId(), doc);
+					}
+				}
+				for (Document doc : itemDocs) {
+					if (param.isMultiple()) {
+						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+							createParameterField(param, sp.outputValue(), doc, ftParam, needIncrement);
+							needIncrement = true;
+						}
+					} else {
+						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
+								doc, ftParam, needIncrement);
 						needIncrement = true;
 					}
-				} else {
-					createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
-							itemDoc, ftParam, needIncrement);
-					needIncrement = true;
 				}
 			}
 		}
@@ -282,9 +283,36 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		// Добавление айтема в индекс
 		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
 		//		ServerLogger.debug(item.getId());
-		writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
+
+		for (Long itemId : docs.keySet()) {
+			writer.updateDocument(new Term(I_ID, itemId + ""), docs.get(itemId));
+		}
 		//		writer.addDocument(itemDoc);
 	}
+
+	/**
+	 * Создать Lucene документ для айтема и заполнить базовые параметры документа (тип и ID айтема)
+	 * @param item
+	 * @return
+	 */
+	private Document createItemDoc(Item item) {
+		Document itemDoc = new Document();
+		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
+		// который поддерживает только строковые значения
+		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
+		// Заполняются все типы айтема (иерархия типов айтема)
+		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
+		for (String pred : itemPreds) {
+			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
+		}
+		//		// Заполняются все предшественники (в которые айтем вложен)
+		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
+		//		for (String contId : containerIds) {
+		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
+		//		}
+		return itemDoc;
+	}
+
 	/**
 	 * Добавить параметр в виде поля для документа Lucene.
 	 * @param param
@@ -296,8 +324,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName
-			, boolean needIncrement) throws IOException, SAXException, TikaException {
+	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName,
+	                                  boolean needIncrement) throws IOException, SAXException, TikaException {
 		if (StringUtils.isBlank(value))
 			return;
 		if (needIncrement)
@@ -326,7 +354,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public void updateItem(Item item) throws IOException, SAXException, TikaException {
+	public void updateItem(Item item) throws Exception {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
 		if (!item.getItemType().isFulltextSearchable())
 			return;
