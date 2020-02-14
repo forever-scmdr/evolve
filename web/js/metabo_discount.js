@@ -110,9 +110,9 @@ function discount() {
 					showWindow();
 				} else if (passed >= d) {
 					deactivateDiscount(keys[i]);
-					console.log("expired: " + (passed - d));
+				//	console.log("expired: " + (passed - d));
 				} else {
-					console.log("left:" + (s - passed));
+				//	console.log("left:" + (s - passed));
 				}
 			}
 		} else {
@@ -333,7 +333,7 @@ function discount() {
 	}
 
 	function showWindow() {
-		console.log(windowClosed);
+		// console.log(windowClosed);
 		if (windowClosed) {
 			$("#discount-popup").remove();
 			$("#discount-popup-2").show();
