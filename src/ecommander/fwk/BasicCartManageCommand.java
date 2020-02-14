@@ -62,11 +62,12 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE addToCart() throws Exception {
 		String code = getVarSingleValue(CODE_PARAM);
+		String discount = getVarSingleValue("discount");
 		double quantity = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
-		addProduct(code, quantity);
+		addProduct(code, quantity, discount);
 		recalculateCart();
 		return getResult("ajax");
 	}
@@ -285,8 +286,10 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 
-
-	private void addProduct(String code, double qty) throws Exception {
+    private void addProduct(String code, double qty) throws Exception {
+	    addProduct(code,qty,"");
+    }
+	private void addProduct(String code, double qty, String discount) throws Exception {
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
@@ -308,6 +311,7 @@ public abstract class BasicCartManageCommand extends Command {
 			getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
 		} else {
 			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
+			bought.setValue("discount", discount);
 			if (qty <= 0) {
 				getSessionMapper().removeItems(bought.getId());
 				return;
