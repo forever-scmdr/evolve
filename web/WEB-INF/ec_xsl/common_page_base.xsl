@@ -710,7 +710,7 @@
 					<h2>Скидки на заказ</h2>
 					<ol id="active_discounts_list">
 						<xsl:if test="page/common/discount != ''">
-							<li class="li-page">Если вы сделаете заказ в течение <span class="dsc-timer-page"></span>, то получите скидку <xsl:value-of select="100 * f:num(page/common/discount)"/>%.</li>
+							<li class="li-page">Если вы сделаете заказ в течение <strong class="dsc-timer-page"></strong>, то получите скидку <xsl:value-of select="100 * f:num(page/common/discount)"/>%.</li>
 						</xsl:if>
 					</ol>
 					<span onclick="closeDiscountWindow(); return false;" class="button">Понятно</span>

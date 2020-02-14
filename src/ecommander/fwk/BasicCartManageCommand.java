@@ -304,6 +304,7 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			bought.setValue("discount", discount);
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс

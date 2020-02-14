@@ -248,6 +248,7 @@
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="discount" type="string" caption="Скидка по таймеру"/>
 		<child item="product" single="true"/>
 	</item>
 
