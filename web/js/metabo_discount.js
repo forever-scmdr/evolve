@@ -140,7 +140,7 @@ function discount() {
 		if ($dscContainer.find(".li-" + key).length == 0) {
 			var $li = $("<li>", {
 				"class": "li-" + key,
-				"text": "До окончания действия скидки" + discount[key] * 100 + "% на  " + deviceName[key] + " осталось "
+				"text": "До окончания действия скидки " + discount[key] * 100 + "% на  " + deviceName[key] + " осталось "
 			});
 			var $span = $("<strong>", {"class": "dsc-timer-" + key});
 			$li.append($span);
@@ -211,7 +211,7 @@ function discount() {
 			price *= dsc;
 			price = Math.round(price*100)/100;
 			$target.text(format(price)+" р.");
-			$("#disp"-key).val(key);
+			$("#disp-"+key).val(key);
 		}
 	}
 
