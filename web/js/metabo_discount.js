@@ -42,6 +42,13 @@ function pad(num) {
 	return s;
 }
 
+function format(num){
+	var s = num+"";
+	s = s.replace(/(\d)(?=(\d{3})+($|\.\d+))/g, '$1 ');
+	s = s.replace(/(\.\d{1})$/, '$1'+0);
+	return s;
+}
+
 $(document).ready(function () {
 	discount();
 });
@@ -79,7 +86,7 @@ function discount() {
 	var duration = {};
 	var lastStop = now + 10000;
 	var discountUsed = {};
-	var time = now;
+	var time = Math.round(now/1000)*1000;
 	var windowClosed;
 
 	initVisited();
@@ -96,8 +103,9 @@ function discount() {
 				var s = start[keys[i]];
 				var d = duration[keys[i]];
 				var passed = time - v;
+				passed = Math.round(passed/1000)*1000;
 				if (passed > s && passed < d) {
-					console.log("active: " + ((s + d) - passed));
+					//console.log("active: " + ((s + d) - passed));
 					activateDiscount(keys[i]);
 					showWindow();
 				} else if (passed >= d) {
@@ -152,6 +160,61 @@ function discount() {
 		highlightPrices(key);
 	}
 
+	function unhighlightPrices(key) {
+		if(key == "page"){
+			var $not = $("");
+			for(var i = 0; i < keys.length; i++){
+				$not.add("#price-"+keys[i]);
+			}
+			$(".price-highlight").not($not).each(function (i) {
+				var $t = $(this);
+				$t.removeClass("red");
+				var price = $t.attr("data-price")*1;
+				$t.text(format(price)+" р.");
+			});
+			$(".disp").each(function (i) {
+				var $t = $(this);
+				if($t.val() == "all"){
+					$t.val("");
+				}
+			});
+		}else{
+			var $target = $("#price-"+key);
+			$target.removeClass("red");
+			var price = $target.attr("data-price")*1;
+			$target.text(format(price)+" р.");
+			$("#disp"-key).val("");
+		}
+	}
+	function highlightPrices(key) {
+		var dsc = 1 - discount[key];
+		if(key == "page"){
+
+			$(".disp").each(function (i) {
+				var $t = $(this);
+				if($t.val() == ""){
+					$t.val("all");
+				}
+			});
+			$(".price-highlight").not(".red").each(function (i) {
+				var $t = $(this);
+				$t.addClass("red");
+				var price = $t.attr("data-price");
+				price *= dsc;
+				price = Math.round(price*100)/100;
+				$t.text(format(price)+" р.");
+			});
+		}else{
+			var $target = $("#price-"+key);
+			$target.addClass("red");
+			var price = $target.attr("data-price");
+			price *= dsc;
+			price = Math.round(price*100)/100;
+			$target.text(format(price)+" р.");
+			$("#disp"-key).val(key);
+		}
+	}
+
 	function showTime(key) {
 		var v = visit[key];
 		var f = start[key] + duration[key];
@@ -182,7 +245,7 @@ function discount() {
 			setCookie(DISCOUNT_ACTIVE_COOKIE_NAME, newCookie, COOKIE_LIFETIME);
 		}
 		$(".li-" + key).remove();
-		$unhightPrices(key);
+		unhighlightPrices(key);
 	}
 
 	function initVisited() {

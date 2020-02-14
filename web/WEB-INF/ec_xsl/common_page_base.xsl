@@ -481,7 +481,7 @@
 					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
 						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 					<p><xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
-						<e class="price-highlight{' red'[$discount_time]}" id="price-{$p/code}" data-price="f:num($price)"><xsl:value-of select="$price"/> р.</e>
+						<e class="price-highlight" id="price-{code}" data-price="{f:num($price)}"><xsl:value-of select="$price"/> р.</e>
 					</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
@@ -495,6 +495,7 @@
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$available">
+							<input type="hidden" name="discount" value="" id="disp-{code}" class="disp"/>
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="Купить"/>
 						</xsl:if>
