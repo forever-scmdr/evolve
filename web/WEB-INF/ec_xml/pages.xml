@@ -641,8 +641,8 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-<!--			<var name="email" value="metabobelarus@gmail.com"/>-->
-			<var name="email" value="bio@forever-ds.com" />
+			<var name="email" value="metabobelarus@gmail.com"/>
+<!--			<var name="email" value="bio@forever-ds.com" />-->
 			<var name="cart_cookie" scope="cookie"/>
 <!--			<var name="site_visit" scope="cookie"/>-->
 <!--			<var name="current_time" scope="cookie"/>-->
