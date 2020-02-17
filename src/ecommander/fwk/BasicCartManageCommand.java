@@ -43,6 +43,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
+	private static Item common;
 
 
 
@@ -61,11 +62,12 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE addToCart() throws Exception {
 		String code = getVarSingleValue(CODE_PARAM);
+		String discount = getVarSingleValue("discount");
 		double quantity = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
-		addProduct(code, quantity);
+		addProduct(code, quantity, discount);
 		recalculateCart();
 		return getResult("ajax");
 	}
@@ -284,8 +286,10 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 
-
-	private void addProduct(String code, double qty) throws Exception {
+    private void addProduct(String code, double qty) throws Exception {
+	    addProduct(code,qty,"");
+    }
+	private void addProduct(String code, double qty, String discount) throws Exception {
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
@@ -300,6 +304,7 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			bought.setValue("discount", discount);
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -307,6 +312,7 @@ public abstract class BasicCartManageCommand extends Command {
 			getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
 		} else {
 			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
+			bought.setValue("discount", discount);
 			if (qty <= 0) {
 				getSessionMapper().removeItems(bought.getId());
 				return;
@@ -387,7 +393,6 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
-		buyNow();
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -404,31 +409,6 @@ public abstract class BasicCartManageCommand extends Command {
 		return null;
 	}
 
-	/**
-	 * Записывает в куки дату входа на сайт, дату показа окна, дату истечения скидки.
-	 * @throws Exception
-	 */
-	public void buyNow() throws Exception {
-		if(discountUsed()){recalculateCart(); return;}
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
-		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
-		String start = getVarSingleValue("site_visit");
-
-		long now = new Date().getTime();
-		long hour = 60*60*1000;
-		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
-
-		if(StringUtils.isBlank(start) || now - startTime > hour){
-			setCookieVariable("site_visit", String.valueOf(now));
-			startTime = now;
-		}
-
-		int duration = common.getIntValue("discount_last", 60) * 1000;
-		long discountExpires = startTime + fiveMinutes + duration;
-		setCookieVariable("discount_expires", String.valueOf(discountExpires));
-		setCookieVariable("current_time", String.valueOf(now));
-		setCookieVariable("show_window", String.valueOf(startTime + fiveMinutes));
-	}
 
 
 	/**
@@ -468,7 +448,6 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
-		sum = applyDiscount(sum);
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(QTY_PARAM, regularQuantity);
 		// Сохранить корзину
@@ -477,39 +456,17 @@ public abstract class BasicCartManageCommand extends Command {
 		return result && regularQuantity > 0;
 	}
 
-	private BigDecimal applyDiscount(BigDecimal sum) throws Exception{
-		if(discountUsed()){
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-			return sum;
+	private BigDecimal  applyDiscount(Item bought) throws Exception{
+		common = common == null? ItemQuery.loadSingleItemByName(ItemNames.COMMON) : common;
+		double dsc = 1 - common.getDoubleValue(ItemNames.common.DISCOUNT, 0);
+		String useDiscount = bought.getStringValue("discount","");
+		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+		BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+		if(StringUtils.isBlank(useDiscount)) return price;
+		if(product.getStringValue(CODE_PARAM,"").equals(useDiscount)){
+			dsc = 1 - product.getDoubleValue("discount",0);
 		}
-
-		Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
-		final long hour = 60*60*1000;
-		final long fiveMinutes = common.getIntValue("show_window", 300)*1000;
-		String start = getVarSingleValue("site_visit");
-		long now = new Date().getTime();
-		long startTime = (StringUtils.isBlank(start))? -1 : Long.parseLong(start);
-
-		int duration = common.getIntValue("discount_last", 60) * 1000;
-		long discountExpires = startTime + fiveMinutes + duration;
-		if(StringUtils.isBlank(start) || now - startTime > hour){
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-			return sum;
-		}
-		long d = now - startTime;
-
-		if(d > fiveMinutes && now < discountExpires){
-			double discount = 1d - common.getDoubleValue("discount",0d);
-			cart.setValue("simple_sum", sum);
-			sum = sum.multiply(new BigDecimal(discount));
-
-		}else{
-			cart.clearValue("simple_sum");
-			getSessionMapper().saveTemporaryItem(cart);
-		}
-		return sum;
+		return price.multiply(new BigDecimal(dsc));
 	}
 
 	@Override

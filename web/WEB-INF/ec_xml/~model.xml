@@ -137,12 +137,19 @@
 	<item name="product" key="name vendor_code code" caption="Продукт" super="* gallery" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<child item="seo" single="true"/>
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" text-index-parameter="name" />
+		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext" text-index-parameter="name"/>
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
+
+		<!-- UPDATE 06.02.2020 Single Device Discount -->
+		<parameter name="discount" type="double" caption="Скидка" description="0.1 - скидка 10%"/>
+		<parameter name="show_window" type="integer" caption="Начало скидки, сек. после захода на сайт"/>
+		<parameter name="discount_last" type="integer" caption="Срок действия скидки, сек."/>
+		<!-- END_UPDATE 06.02.2020 -->
+
 		<parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" />
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
@@ -268,6 +275,7 @@
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="discount" type="string" caption="Скидка по таймеру"/>
 		<child item="product" single="true"/>
 	</item>
 

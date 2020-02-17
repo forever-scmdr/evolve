@@ -416,7 +416,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="30" compare="EVERY" threshold="0.01"><var var="q"/></fulltext>
+				<fulltext limit="200" compare="EVERY" threshold="0.01"><var var="q"/></fulltext>
 				<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">

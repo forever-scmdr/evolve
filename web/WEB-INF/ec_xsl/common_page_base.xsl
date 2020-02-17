@@ -32,6 +32,7 @@
 	<!-- -->
 
 	<xsl:variable name="active_menu_item"/>
+	<xsl:variable name="common" select="page/common"/>
 
 
 
@@ -481,7 +482,7 @@
 					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
 						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 					<p><xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
-						<e class="price-highlight{' red'[$discount_time]}"><xsl:value-of select="$price"/> р.</e>
+						<e class="price-highlight" id="price-{code}" data-price="{f:num($price)}"><xsl:value-of select="$price"/> р.</e>
 					</p>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
@@ -495,6 +496,7 @@
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
 						<xsl:if test="$available">
+							<input type="hidden" name="discount" value="" id="disp-{code}" class="disp"/>
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="Купить"/>
 						</xsl:if>
@@ -702,8 +704,27 @@
 			<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 		</head>
 		<body>
-			<div id="discount-popup-2" class="message" style="display: none;"></div>
-			<div id="discount-popup" class="discount-alert" style="display: none;"></div>
+			<div id="discount-popup-2" class="message" style="display: none;">
+				<ul id="active_discounts_list-2">
+					<xsl:if test="page/common/discount != ''">
+						<li class="li-page">
+							До окончания действия скидки <xsl:value-of select="100 * f:num(page/common/discount)"/>% осталось <strong class="dsc-timer-page"></strong>
+						</li>
+					</xsl:if>
+				</ul>
+			</div>
+			<div id="discount-popup" class="discount-alert" style="display: none;">
+				<div>
+					<xsl:value-of select="page/common/discount_text" disable-output-escaping="yes"/>
+					<h2>Скидки на заказ</h2>
+					<ol id="active_discounts_list">
+						<xsl:if test="page/common/discount != ''">
+							<li class="li-page">Если вы сделаете заказ в течение <strong class="dsc-timer-page"></strong>, то получите скидку <xsl:value-of select="100 * f:num(page/common/discount)"/>%.</li>
+						</xsl:if>
+					</ol>
+					<span onclick="closeDiscountWindow(); return false;" class="button">Понятно</span>
+				</div>
+			</div>
 			<!-- ALL CONTENT BEGIN -->
 			<div class="content-container">
 				<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -724,13 +745,22 @@
 			<xsl:call-template name="ONE_CLICK_FORM"/>
 			<xsl:call-template name="DEFER_FORM"/>
 
+			<xsl:if test="$common/discount != ''">
+				<div id="dsc-data" data-discount="{$common/discount}" data-start="{concat($common/show_window, '000')}" data-last="{concat($common/discount_last, '000')}"></div>
+			</xsl:if>
+
 			<script type="text/javascript" src="js/bootstrap.js"/>
 			<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 			<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 			<script type="text/javascript" src="js/fwk/common.js"/>
 			<script type="text/javascript" src="js/search-tip.js"></script>
-			<xsl:if test="page/@name = 'index'">
+
+			<!-- UPDATE 06.02.2020 Single Device Discount -->
+			<script type="text/javascript" src="js/metabo_discount.js"></script>
+			<!-- END_UPDATE 06.02.2020 -->
+
+			<xsl:if test="/page/@name = 'index'">
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 			</xsl:if>	
 				<script type="text/javascript">

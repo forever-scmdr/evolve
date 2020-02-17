@@ -50,6 +50,11 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
+		<xsl:if test="$p/discount != ''">
+			<div style="display:none;" id="dsc-device" data-code="{$p/code}" data-discount="{$p/discount}" data-start="{concat($p/show_window,'000')}" data-last="{concat($p/discount_last,'000')}">
+				<xsl:value-of select="$p/name"/>
+			</div>
+		</xsl:if>
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -123,7 +128,7 @@
 							<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
 						<p>
 							<xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
-							<e class="price-highlight{' red'[$discount_time]}"><xsl:value-of select="if ($price) then $price else '0'"/> р.</e>
+							<e class="price-highlight" id="price-{$p/code}" data-price="{f:num($price)}" ><xsl:value-of select="if ($price) then $price else '0'"/> р.</e>
 						</p>
 					</div>
 				</xsl:if>
@@ -131,6 +136,7 @@
 					<xsl:variable name="available" select="$p/available = '1'"/>
 					<div id="cart_list_{$p/code}" class="product_purchase_container">
 						<form action="{$p/to_cart}" method="post">
+							<input type="hidden" name="discount" value="" id="disp-{$p/code}" class="disp"/>
 							<xsl:if test="$available">
 								<input type="number" name="qty" value="1" min="0"/>
 								<input type="submit" value="В корзину"/>
