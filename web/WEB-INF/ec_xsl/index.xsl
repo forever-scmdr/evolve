@@ -154,7 +154,7 @@
 						<h4>Продукция</h4>
 						<div class="catalog-items main-page">
 							<xsl:for-each select="page/main_page/cat_pic">
-								
+								<xsl:sort select="number(@id)" order="ascending"/>
 								<xsl:variable name="main_pic" select="concat(@path, main_pic)"/>
 
 								<div class="catalog-item">

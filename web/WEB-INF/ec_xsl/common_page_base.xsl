@@ -686,7 +686,7 @@
 			<xsl:call-template name="SEO"/>
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=cyrillic" rel="stylesheet" />
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&amp;subset=cyrillic" rel="stylesheet" />
-			<link rel="stylesheet" href="css/app.css"/>
+			<link rel="stylesheet" href="css/app.css?version=1.0"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 			<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 			<link rel="stylesheet" href="fotorama/fotorama.css"/>
@@ -753,9 +753,11 @@
 
 			<xsl:if test="/page/@name = 'index'">
 				<script type="text/javascript" src="slick/slick.min.js"></script>
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".footer-placeholder").height($(".footer").outerHeight()+40);
+			</xsl:if>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$(".footer-placeholder").height($(".footer").outerHeight()+40);
+					<xsl:if test="/page/@name = 'index'">
 						$('.slick-slider').slick({
 							infinite: true,
 							slidesToShow: 6,
@@ -774,12 +776,11 @@
 								}
 							]
 						});
-
-						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-					});
-				</script>
-			</xsl:if>
+					</xsl:if>
+					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+				});
+			</script>
 			<xsl:call-template name="EXTRA_SCRIPTS"/>
 			<xsl:call-template name="USER_SCRIPTS"/>
 		</body>

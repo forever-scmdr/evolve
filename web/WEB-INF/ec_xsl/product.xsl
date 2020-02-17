@@ -4,7 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="concat(if($p/type != '') then concat($p/type, ' ') else '', 'Метабо ', $p/name, ' купить в Минске: цена, рассрочка')"/>
-	<xsl:variable name="meta_description" select="concat(if($p/type != '') then $p/type else $p/name, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
+	<xsl:variable name="meta_description" select="concat($p/code, ' ', if($p/type != '') then $p/type else $p/name, ' Метабо от официального дилера №1 ✅ Доставка по Беларуси ☎☎☎ +375 29 566 61 16 Хорошая цена, рассрочка, гарантия 3 года!')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($p/type,' Metabo ' ,$p/name)"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -125,7 +125,7 @@
 						</form>
 					</div>
 
-					 <a href="#" class="online-button product-button">Онлайн-рассрочка</a>
+					<a href="{$p/defer_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer" class="online-button product-button">Онлайн-рассрочка</a>
 					
 <!--					<xsl:choose>-->
 <!--						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
@@ -211,6 +211,21 @@
 						<p>При сумме заказа до 100 рублей, доставка — 5 рублей.</p>
 					</div>
 					-->
+					<!-- Item icons -->
+					<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
+					<div class="item-icons">
+						<xsl:for-each select="$extra/pic">
+							<span>
+								<img src="{@link}" alt="{.}"  data-toggle="tooltip" data-placement="left" title="{.}"/>
+							</span>
+						</xsl:for-each>
+						<script>
+							$(function () {
+								$('[data-toggle="tooltip"]').tooltip()
+							})
+						</script>
+					</div>
+					<!-- END_Item icons -->
 				</div>
 			</div>
 			<div class="description">

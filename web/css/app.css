@@ -7009,12 +7009,22 @@ input.submit {
   font-weight: normal !important;
 }
 .item-icons {
-  display: none;
+  margin-top: 8px;
+}
+
+.item-icons span {
+  width: 60px;
+  display: inline-block;
+}
+.item-icons img {
+  max-width: 100%;
 }
 .lines .item-icons {
   display: block;
 }
-.lines .item-icons span {
+
+.lines .item-icons span,
+.catalog-item .item-icons span {
   width: 3rem;
   display: inline-block;
 }

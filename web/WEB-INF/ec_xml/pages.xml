@@ -6,11 +6,6 @@
 	<include-definition name="COMMON">
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec">
-<!--				<list item="product" transit="true">-->
-<!--					<filter>-->
-<!--						<limit><var value="1" /></limit>-->
-<!--					</filter>-->
-<!--				</list>-->
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
@@ -608,17 +603,8 @@
 
 
 	<page name="cart_ajax" template="cart_ajax">
-		<request>
-<!--			<var name="cart_cookie" scope="cookie"/>-->
-<!--			<var name="site_visit" scope="cookie"/>-->
-<!--			<var name="show_window" scope="cookie"/>-->
-<!--			<var name="discount_expires" scope="cookie"/>-->
-<!--			<var name="discount_used" scope="cookie"/>-->
-<!--			<var name="window_closed" scope="cookie"/>-->
-		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
-		<!--<command class="extra.CartManageCommand" method="buyNow"/>-->
 		<session>
 			<single item="cart">
 				<list item="bought">
@@ -644,10 +630,6 @@
 			<var name="email" value="metabobelarus@gmail.com"/>
 <!--			<var name="email" value="bio@forever-ds.com" />-->
 			<var name="cart_cookie" scope="cookie"/>
-<!--			<var name="site_visit" scope="cookie"/>-->
-<!--			<var name="current_time" scope="cookie"/>-->
-<!--			<var name="discount_used" scope="cookie"/>-->
-<!--			<var name="show_window" scope="cookie"/>-->
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -674,15 +656,6 @@
 
 
 	<page name="cart" template="cart">
-		<request>
-<!--			<var name="cart_cookie" scope="cookie"/>-->
-<!--			<var name="site_visit" scope="cookie"/>-->
-<!--			<var name="current_time" scope="cookie"/>-->
-<!--			<var name="show_window" scope="cookie"/>-->
-<!--			<var name="discount_expires" scope="cookie"/>-->
-<!--			<var name="discount_used" scope="cookie"/>-->
-<!--			<var name="window_closed" scope="cookie"/>-->
-		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
 			<single item="cart" id="cart">
@@ -873,7 +846,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var var="compare"/></parameter>
 			</filter>
-			<single item="params"/>
+			<list item="params"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>

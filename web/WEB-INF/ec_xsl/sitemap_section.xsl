@@ -10,8 +10,8 @@
                   select="'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'"/>
 
     <xsl:template match="/">
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-		>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        >
 <xsl:text disable-output-escaping="yes">
    &lt;!--**********************************************************************************--&gt;
 </xsl:text>

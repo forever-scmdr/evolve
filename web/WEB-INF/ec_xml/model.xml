@@ -416,6 +416,14 @@
         <parameter name="yandex_verification" type="string" caption="yandex verification code"/>
         <child item="delivery" single="true"/>
         <child item="payment" single="true"/>
+        <child item="product_text"/>
+    </item>
+
+    <item name="product_text" caption="Текст на странице товара" key="name" ag-id="2450" ag-hash="1014558333">
+    	<parameter name="name" type="string" caption="Название"/>
+    	<parameter name="icon" type="string" caption="Значок"/>
+    	<parameter name="link" type="string" caption="Ссылка"/>
+    	<parameter name="text" type="text" caption="текст"/>
     </item>
 
 	<item name="delivery" caption="Доставка" ag-id="1667" ag-hash="823466996">
