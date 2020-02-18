@@ -83,8 +83,8 @@ public class PageController {
 			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)) {
 				contentType = headers.get(header);
 			} else {
-			resp.setHeader(header, headers.get(header));
-		}
+				resp.setHeader(header, headers.get(header));
+			}
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
@@ -173,9 +173,9 @@ public class PageController {
 				Timer.getTimer().start(Timer.GENERATE_CACHE);
 				try {
 					FileOutputStream fos = new FileOutputStream(cachedFile, false);
-				out.writeTo(fos);
-				fos.flush();
-				fos.close();
+					out.writeTo(fos);
+					fos.flush();
+					fos.close();
 				} catch (FileNotFoundException fnf) {
 					ServerLogger.error("File " + cachedFile + " can not be created", fnf);
 				}
@@ -207,13 +207,16 @@ public class PageController {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		// Загрузка страницы и выполнение команд страницы
 		Timer.getTimer().start(Timer.LOAD_DB_ITEMS);
+		// Сброс сеансового генератора ID (чтобы для каждого выпонения страницы ID начинались с одного и того же начального)
+		if (page.getSessionContext() != null)
+			page.getSessionContext().resetIdGenerator();
 		ResultPE result = page.execute();
 		Timer.getTimer().stop(Timer.LOAD_DB_ITEMS);
 		// Если команда требует очисти кеша, очистить его
 		if (page.isCacheClearNeeded())
 			clearCache();
 		// Работа с результатом выполнения страницы
-		if (result != null && result.getType() != ResultType.none) {
+		if (result != null) {
 			// Результат выполнения - XML документ
 			if (result.getType() == ResultType.xml/* && !StringUtils.isBlank(result.getValue())*/) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());

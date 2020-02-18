@@ -816,7 +816,6 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
 						if (isIdSequential) {
-							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
 							if (isParent)
 								orderBy.sql(P_DOT + IP_PARENT_ID);
 							else
@@ -862,6 +861,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
+		if (hasLimit() && isIdSequential)
+			query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
 		sqlForLog = query.getSimpleSql();
 		return loadByQuery(query, PID, null, fulltext, conn);
 	}

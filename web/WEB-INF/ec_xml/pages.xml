@@ -933,4 +933,6 @@
 		</request>
 		<single item="wiki_tip" var="word" cache-vars="word" cacheable="true"/>
 	</page>
+
+	<page name="rss"></page>
 </site>
