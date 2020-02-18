@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
@@ -85,7 +86,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 			}
 		}
 		FileUtils.cleanDirectory(reportDir);
-        FileUtils.write(reportFile, report, StandardCharsets.UTF_8);
+        FileUtils.write(reportFile, report, Charset.forName("Cp1251"));
 		priceFile.finishDocument();
 		info.addLog("Завершено обновление цен");
 		info.addLog("Обновление отсутсвующих товаров");
