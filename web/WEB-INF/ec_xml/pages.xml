@@ -652,6 +652,7 @@
 
 	<page name="cart_action">
 		<request>
+			<var name="strategy" value="deny_overbuy"/>
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
@@ -701,6 +702,7 @@
 						<var name="action" value="delete"/>
 						<var name="bought" ref="bought"/>
 					</link>
+					<parameter-input ref="bought" name="qty"/>
 				</list>
 			</single>
 		</session>

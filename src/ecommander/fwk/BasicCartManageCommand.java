@@ -334,9 +334,9 @@ public abstract class BasicCartManageCommand extends Command {
 			if (product == null)
 			    return;
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+            bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
+            bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
 			setBoughtQtys(product, bought, qty);
-			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
-			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
 			bought.setValue("path", path);
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);

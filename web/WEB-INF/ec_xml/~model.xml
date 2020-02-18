@@ -297,8 +297,12 @@
 		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="path" type="string" caption="Путь к товару"/>
 		<parameter name="code" type="string" caption="Код товара"/>
-		<parameter name="qty" type="double" caption="Количество"/>
+		<parameter name="qty" type="double" format="#.###" caption="Количество (deprecated)" description="для обратной совместимости"/>
+		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
+				   description="та часть общего количества, которое есть на складе"/>
+		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<child item="product" single="true"/>
 	</item>
