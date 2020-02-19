@@ -28,7 +28,12 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
         return commandUnit;
     }
 
-    public ResultPE checkFuture() throws Exception {
+//    public ResultPE checkFuture() throws Exception {
+
+//    }
+
+    @Override
+    public ResultPE execute() throws Exception {
         LinkedList<Item> articles = new LinkedList<Item>();
 //        long before = new Date().getTime() - (86400*1000);
         long now = new Date().getTime();
@@ -49,11 +54,6 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
             LuceneIndexMapper.getSingleton().reindexAll();
             PageController.clearCache();
         }
-        return null;
-    }
-
-    @Override
-    public ResultPE execute() throws Exception {
         return null;
     }
 }

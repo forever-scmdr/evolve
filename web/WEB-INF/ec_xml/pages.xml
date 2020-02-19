@@ -906,8 +906,8 @@
 		</command>
 	</page>
 
-	<page name="check_future">
-		<command class="ecommander.fwk.ArticleFromFuture" method="checkFuture"/>
+	<page name="check_future" schedule="0 0/1 0 ? * * *">
+		<command class="ecommander.fwk.ArticleFromFuture"/>
 	</page>
 
 	<page name="delete_seo">
