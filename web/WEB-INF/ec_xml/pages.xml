@@ -906,7 +906,7 @@
 		</command>
 	</page>
 
-	<page name="check_future" schedule="0 0/1 0 ? * * *">
+	<page name="check_future" schedule="0 0/30 * ? * * *">
 		<command class="ecommander.fwk.ArticleFromFuture"/>
 	</page>
 
