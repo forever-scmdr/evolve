@@ -134,5 +134,18 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:function name="f:substring-after-last" as="xs:string">
+		<xsl:param name="value" as="xs:string?"/>
+		<xsl:param name="separator" as="xs:string"/>
+		<xsl:choose>
+			<xsl:when test="contains($value, $separator)">
+				<xsl:value-of select="f:substring-after-last(substring-after($value, $separator), $separator)" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$value" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+
 
 </xsl:stylesheet>

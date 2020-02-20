@@ -262,7 +262,7 @@
 		<child item="wiki_tip"/>
 	</item>
 
-	<item name="rss" caption="RSS">
+	<item name="rss" caption="RSS" ag-id="35" ag-hash="113234">
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="link" type="string" caption="link"/>

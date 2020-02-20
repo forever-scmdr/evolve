@@ -940,6 +940,7 @@
 			<var name="tag"/>
 			<var name="yesterday"/>
 		</request>
+		<single item="rss"/>
 		<command class="extra.TodayNews" method="today"/>
 		<list item="small_news_item" id="sni">
 			<filter>
@@ -966,6 +967,7 @@
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sni" ref="ni" style="translit"/>
 			</link>
+			<single item="top_gal"/>
 			<list item="page_part"/>
 		</list>
 	</page>

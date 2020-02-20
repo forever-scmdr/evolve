@@ -6,7 +6,7 @@ import ecommander.pages.ResultPE;
 import java.util.Date;
 
 public class TodayNews extends Command {
-    private static final long DAY = 1000 * 60 * 60 * 72;
+    private static final long DAY = 1000 * 60 * 60 * 172;
 
     @Override
     public ResultPE execute() throws Exception {

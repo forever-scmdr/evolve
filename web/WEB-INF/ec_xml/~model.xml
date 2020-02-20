@@ -120,9 +120,6 @@
 		<child item="comments" single="true"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
-
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -265,6 +262,12 @@
 		<child item="wiki_tip"/>
 	</item>
 
+	<item name="rss" caption="RSS">
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="link" type="string" caption="link"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="main_page" single="true"/>
@@ -276,6 +279,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="dictionary" single="true"/>
+		<child item="rss" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
