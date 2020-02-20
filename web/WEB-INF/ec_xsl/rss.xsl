@@ -16,7 +16,7 @@
 	<xsl:variable name="news" select="page/news_item | page/small_news_item"/>
 	<xsl:variable name="src">src="files</xsl:variable>
 	<xsl:variable name="replacement">src="<xsl:value-of select="$base"/>/files</xsl:variable>
-	<xsl:variable name="latest_date_ms" select="if($news) then format-number(max($news/date/number(@millis)),'###')else page/variables/yesterday"/>
+	<xsl:variable name="latest_date_ms" select="if($news) then max($news/date/number(@millis)) else page/variables/yesterday"/>
 <!--	<xsl:variable name="latest_date_time" select="f:millis_to_date_time($latest_date_ms)"/>-->
 
 	<xsl:template match="/">
