@@ -935,7 +935,7 @@
 	</page>
 
 	<page name="rss" template="rss">
-		<headers content-type="xml"/>
+		<headers Content-Type="text/xml;charset=UTF-8"/>
 		<request>
 			<var name="tag"/>
 			<var name="yesterday"/>

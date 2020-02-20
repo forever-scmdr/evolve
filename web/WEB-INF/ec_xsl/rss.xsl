@@ -18,7 +18,9 @@
 <!--	<xsl:variable name="latest_date_time" select="f:millis_to_date_time($latest_date_ms)"/>-->
 
 	<xsl:template match="/">
-		<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+		<xsl:text disable-output-escaping="yes">
+		&lt;rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/"&gt;
+		</xsl:text>
 			<channel>
 				<lastBuildDate><xsl:value-of select="f:millis_to_rss($latest_date_ms)"/></lastBuildDate>
 				<title><xsl:value-of select="$rss/title"/></title>
@@ -26,8 +28,9 @@
 				<link><xsl:value-of select="$rss/link"/></link>
 				<xsl:apply-templates select="$news" />
 			</channel>
-		</rss>
+		<xsl:text disable-output-escaping="yes">&lt;/rss&gt;</xsl:text>
 	</xsl:template>
+
 
 	<xsl:template match="small_news_item">
 		<item>
@@ -38,15 +41,18 @@
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-<!--					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>-->
-					<xsl:value-of select="text" disable-output-escaping="yes"/>
+					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+<!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 					<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 <!--				</xsl:copy>-->
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
 			<author><xsl:value-of select="author"/></author>
-			<xsl:if test="main_pic">
-				<media:content url="{concat($base, @path, main_pic)}" type="image/{f:substring-after-last(main_pic,'.')}" expression="full" width="{@width}" height="{@height}"/>
+
+			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>
+
+			<xsl:if test="$main_pic != ''">
+				<media:content url="{concat($base,'/', @path, $main_pic)}" type="image/{$main_pic/@extenstion}" expression="full" width="{$main_pic/@width}" height="{$main_pic/@height}"/>
 			</xsl:if>
 		</item>
 	</xsl:template>
@@ -60,29 +66,31 @@
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-<!--					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>-->
-					<xsl:value-of select="text" disable-output-escaping="yes"/>
+					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+<!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 					<xsl:apply-templates select="text_part | gal_part" mode="cdata"/>
 					<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 <!--				</xsl:copy>-->
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
 			<author><xsl:value-of select="author"/></author>
-			<xsl:if test="main_pic">
-				<media:content url="{concat($base, @path, main_pic)}" type="image/{f:substring-after-last(main_pic,'.')}" expression="full" width="{@width}" height="{@height}"/>
+
+			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>
+			<xsl:if test="$main_pic != ''">
+				<media:content url="{concat($base,'/', @path, $main_pic)}" type="image/{$main_pic/@extenstion}" expression="full" width="{$main_pic/@width}" height="{$main_pic/@height}"/>
 			</xsl:if>
 			<xsl:if test="video_url != ''">
 				<iframe width="560" height="315" src="{video_url}" frameborder="0"></iframe>
 			</xsl:if>
 			<xsl:if test="main_audio != ''">
-				<media:content url="{concat($base,@path,main_audio)}" medium="audio"/>
+				<media:content url="{concat($base,'/',@path,main_audio)}" medium="audio"/>
 			</xsl:if>
 		</item>
 	</xsl:template>
 
 	<xsl:template match="text_part" mode="cdata" >
-<!--		<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>-->
-		<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+<!--		<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 	</xsl:template>
 
 
