@@ -934,5 +934,39 @@
 		<single item="wiki_tip" var="word" cache-vars="word" cacheable="true"/>
 	</page>
 
-	<page name="rss"></page>
+	<page name="rss" template="rss">
+		<headers content-type="xml"/>
+		<request>
+			<var name="tag"/>
+			<var name="yesterday"/>
+		</request>
+		<command class="extra.TodayNews" method="today"/>
+		<list item="small_news_item" id="sni">
+			<filter>
+				<parameter name="tag" sign="=" compare="ANY">
+					<var var="tag"/>
+				</parameter>
+				<parameter name="date" sign="&gt;" compare="SOME">
+					<var var="yesterday"/>
+				</parameter>
+			</filter>
+			<link name="show_page" target="small_news_item" type="exclusive">
+				<var name="sni" ref="sni" style="translit"/>
+			</link>
+		</list>
+		<list item="news_item" id="ni">
+			<filter>
+				<parameter name="tag" sign="=" compare="ANY">
+					<var var="tag"/>
+				</parameter>
+				<parameter name="update" sign="&gt;" compare="SOME">
+					<var var="yesterday"/>
+				</parameter>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sni" ref="ni" style="translit"/>
+			</link>
+			<list item="page_part"/>
+		</list>
+	</page>
 </site>

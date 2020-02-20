@@ -10,7 +10,28 @@
 	<!-- Перевод миллисекунд в XSL дату -->
 	<xsl:function name="f:millis_to_date_time" as="xs:dateTime">
 		<xsl:param name="millis"/>
-		<xsl:sequence select="if ($millis) then xs:dateTime('1970-01-01T00:00:00Z') + $millis * xs:dayTimeDuration('PT0.001S') else xs:dateTime('1970-01-01T00:00:00Z')"/>
+		<xsl:sequence select="if ($millis) then xs:dateTime('1970-01-01T00:00:00Z') + number($millis) * xs:dayTimeDuration('PT0.001S') else xs:dateTime('1970-01-01T00:00:00Z')"/>
+	</xsl:function>
+
+	<!-- Миллисекунды в дату вида: "Fri, 23 Jan 2015 23:26:19 +0000" -->
+	<xsl:function name="f:millis_to_rss" as="xs:string">
+		<xsl:param name="millis"/>
+
+		<xsl:if test="$millis">
+			<xsl:variable name="datetime" select="f:millis_to_date_time($millis)"/>
+			<xsl:variable name="d" select="substring(format-dateTime($datetime, '[F]'), 1,3)"/>
+			<xsl:variable name="m" select="substring(format-dateTime($datetime, '[MNn]'), 1,3)"/>
+			<xsl:variable name="format" select="concat($d, ', [D] ', $m,' [Y0001] [H01]:[m01]:[s01] +0000')"/>
+			<xsl:sequence select="format-dateTime($datetime, $format)" />
+		</xsl:if>
+		<xsl:if test="not($millis)">
+			<xsl:sequence select="''"/>
+		</xsl:if>
+	</xsl:function>
+
+	<xsl:function name="f:date_time_to_millis">
+		<xsl:param name="date" as="xs:dateTime"/>
+		<xsl:sequence select="($date - xs:dateTime('1970-01-01T00:00:00Z')) div xs:dayTimeDuration('PT0.001S')"/>
 	</xsl:function>
 
 	<!-- Перевод даты из XSL вида в CMS вид (23.11.2017) -->
