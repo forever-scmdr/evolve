@@ -45,11 +45,6 @@
 								</a>
 							</li>
 						</xsl:if>
-						<xsl:if test="$ni/author != ''">
-							<li class="cat">
-								Автор: <xsl:value-of select="$ni/author"/>
-							</li>
-						</xsl:if>
 						<li class="date" data-utc="{$ni/date/@millis}">
 							<xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/>
 							<xsl:if test="$ni/update != ''">&#160;(обновлено: <xsl:value-of select="$ni/update"/>)</xsl:if>
@@ -63,48 +58,51 @@
 					<xsl:if test="$ni/complexity != '' or $ni/read_time != '' or $ni/size != ''">
 						<div class="tags">
 							<xsl:if test="$ni/complexity != ''">
-								<span style="display: inline-block;
-margin-right: .25rem;
-border: 1px solid
-#404040;
-height: 2.2rem;
+								<span class="entry__category yellow" style="padding-left: .5rem;">
+								<span style="
+display: inline-block;
+margin-top:-1px;
+height: 2rem;
 vertical-align: middle;
-line-height: 2.2rem;
-border-radius: 2.2rem;
-width: 2.4rem;
-background:
-#ebebeb;
-font-family: Arial;
-cursor: pointer;" class="tip desctop-only" title="A1 - текст будет понятен для широкого круга читателей&#13;B2 - текст будет понятен тем, кто в какой-то степени уже знаком с данной тематикой и обладает какой-то информацией и знаниями&#13;C3 - сложный текст, в основном для людей, которые наверняка разбираются в данной сфере">?</span>
-								<span class="entry__category yellow" >
-									<a >Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
-								</span>
-							</xsl:if>
-							
-							<xsl:if test="$ni/size != ''">
-								<span style="display: inline-block;
-margin-right: .25rem;
-margin-left: .75rem;
-border: 1px solid
-#404040;
-height: 2.2rem;
-vertical-align: middle;
-line-height: 2.2rem;
-border-radius: 2.2rem;
-width: 2.4rem;
-background:
-#ebebeb;
-font-family: Arial;
-cursor: pointer;" class="tip desctop-only" title="Маленький - до 400 слов&#13;Средний - до 800 слов&#13;Большой - свыше 800 слов">?</span>
-								<span class="entry__category red">
-									<a >Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
+line-height: 2rem;
+border-radius: 2rem;
+width: 2rem;
+background: #fff;
+text-transform: lowercase;
+font-size: 1.5rem;
+font-family: georgia;
+ cursor: pointer;
+font-style: italic;
+" class="tip desctop-only" title="A1 - текст будет понятен для широкого круга читателей&#13;B2 - текст будет понятен тем, кто в какой-то степени уже знаком с данной тематикой и обладает какой-то информацией и знаниями&#13;C3 - сложный текст, в основном для людей, которые наверняка разбираются в данной сфере">i</span>
+								
+									<a style="padding-left: .5rem;">Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/read_time != ''">
 								<span class="entry__category blue">
-									<a>Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
+									<a style="padding-left: .5rem;">Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
 								</span>
 							</xsl:if>
+							<xsl:if test="$ni/size != ''">
+								<span class="entry__category red" style="padding-left: .5rem;">
+								<span style="display: inline-block;
+margin-top:-1px;
+height: 2rem;
+vertical-align: middle;
+line-height: 2rem;
+border-radius: 2rem;
+width: 2rem;
+background: #fff;
+text-transform: lowercase;
+font-size: 1.5rem;
+font-family: georgia;
+ cursor: pointer;
+font-style: italic;" class="tip desctop-only" title="Маленький - до 400 слов&#13;Средний - до 800 слов&#13;Большой - свыше 800 слов">i</span>
+								
+									<a >Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
+								</span>
+							</xsl:if>
+							
 						</div>
 					</xsl:if>
 				</div>
@@ -114,6 +112,11 @@ cursor: pointer;" class="tip desctop-only" title="Маленький - до 400 
 				<div class="col-full s-content__main">
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
+						<xsl:if test="$ni/author != ''">
+							<p>
+								<em>Автор: <xsl:value-of select="$ni/author"/></em>
+							</p>
+						</xsl:if>
 					</div>
 
 					<xsl:call-template name="BANNER_FOLLOW"/>

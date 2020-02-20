@@ -198,6 +198,7 @@
 		<parameter name="main_pic" caption="заглавная картинка" type="picture"/>
 		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" caption="малая картинка" type="picture" format="width: 500; src: main_pic;"/>
+
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="audio" type="file" caption="аудио"/>
@@ -262,7 +263,7 @@
 		<child item="wiki_tip"/>
 	</item>
 
-	<item name="rss" caption="RSS" ag-id="35" ag-hash="113234">
+	<item name="rss" caption="RSS" ag-id="35" ag-hash="113234" >
 		<parameter name="title" type="string" caption="title"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="link" type="string" caption="link"/>

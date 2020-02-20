@@ -49,7 +49,8 @@
 <!--				</xsl:copy>-->
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
-			<author><xsl:value-of select="author"/></author>
+				<author><xsl:value-of select="author"/></author>
+			 <!-- <author>bio@forever-ds.com (test rss)</author> -->
 
 			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>
 
@@ -76,6 +77,7 @@
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
 			<author><xsl:value-of select="author"/></author>
+			 <!-- <author>bio@forever-ds.com (test rss)</author> -->
 
 			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>
 			<xsl:if test="$main_pic != ''">

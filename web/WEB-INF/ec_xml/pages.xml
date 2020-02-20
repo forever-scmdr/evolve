@@ -906,9 +906,6 @@
 		</command>
 	</page>
 
-	<page name="check_future" schedule="0 0/30 * ? * * *">
-		<command class="ecommander.fwk.ArticleFromFuture"/>
-	</page>
 
 	<page name="delete_seo">
 		<link name="success" target="delete_seo_complete">
@@ -925,6 +922,10 @@
 		<request>
 			<var name="message"/>
 		</request>
+	</page>
+
+	<page name="check_future" schedule="0 0/30 * ? * * *">
+		<command class="ecommander.fwk.ArticleFromFuture" />
 	</page>
 
 	<page name="word" template="word" cacheable="true">
