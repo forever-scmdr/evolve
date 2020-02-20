@@ -18,9 +18,11 @@
         <xsl:param name="price_byn" select="$price"/>
         <xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
         <xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
-        <xsl:for-each select="$price_intervals">
+		<xsl:variable name="quot" select="f:num($price_catalogs[name = $section_name]/quotient)"/>
+		<xsl:variable name="base_quotient" select="if ($quot  &gt; 0) then $quot else $Q"/>
+		<xsl:for-each select="$price_intervals">
             <xsl:variable name="quotient" select="f:num(quotient)"/>
-            <xsl:variable name="unit_price" select="$price * $Q * $quotient"/>
+            <xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
             <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
                 <xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
                 <xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>

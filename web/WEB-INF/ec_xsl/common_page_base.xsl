@@ -580,9 +580,11 @@
 			<xsl:if test="qty and number(qty) &gt; 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
+			<!--
 			<xsl:if test="not(qty) or number(qty) &lt;= 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i> под заказ</div>
 			</xsl:if>
+			-->
 			<div class="device__actions">
 				<div id="compare_list_{@id}">
 					<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
@@ -689,9 +691,11 @@
 				<xsl:if test="qty and number(qty) &gt; 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>
+				<!--
 				<xsl:if test="not(qty) or number(qty) &lt;= 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
 				</xsl:if>
+				-->
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>

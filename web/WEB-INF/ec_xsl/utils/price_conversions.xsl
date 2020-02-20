@@ -9,7 +9,7 @@
 
     <xsl:decimal-format name="r" decimal-separator="." grouping-separator=" "/>
     <xsl:variable name="currency" select="page/variables/cur"/>
-    <xsl:variable name="currency_out" select="if ($currency = 'BYN') then 'руб.' else $currency"/>
+    <xsl:variable name="currency_out" select="if ($currency = 'BYN') then 'бел.руб.' else $currency"/>
 
     <xsl:function name="f:num" as="xs:double">
         <xsl:param name="str" as="xs:string?"/>
@@ -49,7 +49,7 @@
         <xsl:param name="param_name"/>
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:variable name="sum" select="if ($is_byn) then $item/*[name() = $param_name] else $item/*[name() = concat($param_name, '_', $currency)]"/>
-        <xsl:value-of select="if ($is_byn) then concat($sum, ' р.') else concat($sum, ' ', $currency)"/>
+        <xsl:value-of select="if ($is_byn) then concat($sum, ' бел.руб.') else concat($sum, ' ', $currency)"/>
     </xsl:function>
 
 

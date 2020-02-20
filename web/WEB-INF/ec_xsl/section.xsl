@@ -244,6 +244,7 @@
 						<a href="{page/set_view_list}">Строками</a>
 					</span>
 				</div>
+				<!--
 				<div class="checkbox">
 					<label>
 						<xsl:if test="not($only_available)">
@@ -257,6 +258,7 @@
 						в наличии на складе
 					</label>
 				</div>
+				-->
 				<span>
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							onchange="window.location.href = $(this).find(':selected').attr('link')">
