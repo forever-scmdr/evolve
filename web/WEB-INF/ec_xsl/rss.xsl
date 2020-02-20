@@ -4,7 +4,9 @@
 		xmlns:content="http://purl.org/rss/1.0/modules/content/"
 		xmlns:media="http://search.yahoo.com/mrss/"
 		xmlns:f="f:f"
-		version="2.0">
+		version="2.0"
+		exclude-result-prefixes="content media f xsl"
+>
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="no"/>
 	<xsl:import href="utils/date_conversions.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
