@@ -105,4 +105,16 @@
 
     </xsl:template>
 
+    <xsl:function name="f:replace-href">
+        <xsl:param name="value" as="xs:string?"/>
+        <xsl:param name="host" as="xs:string?"/>
+        <xsl:variable name="regex_href">href="(?!http(s)?://)</xsl:variable>
+        <xsl:variable name="regex_src">src="(?!http(s)?://)</xsl:variable>
+        <xsl:variable name="replacement_href">href="<xsl:value-of select="$host"/>/</xsl:variable>
+        <xsl:variable name="replacement_src">src="<xsl:value-of select="$host"/>/</xsl:variable>
+        <xsl:variable name="href_fixed" select="replace($value, $regex_href, $replacement_href, ';j')"/>
+        <xsl:variable name="src_fixed" select="replace($href_fixed, $regex_src, $replacement_src, ';j')"/>
+        <xsl:sequence select="replace($src_fixed, 'mailto: ', 'mailto:' )"/>
+    </xsl:function>
+
 </xsl:stylesheet>

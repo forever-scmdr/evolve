@@ -43,7 +43,7 @@
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+					<xsl:value-of select="f:replace-href(text, $base)" disable-output-escaping="yes"/>
 <!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 					<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 <!--				</xsl:copy>-->
@@ -69,7 +69,7 @@
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-					<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+					<xsl:value-of select="f:replace-href(text, $base)" disable-output-escaping="yes"/>
 <!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 					<xsl:apply-templates select="text_part | gal_part" mode="cdata"/>
 					<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
@@ -93,9 +93,11 @@
 	</xsl:template>
 
 	<xsl:template match="text_part" mode="cdata" >
-		<xsl:value-of select="replace(text, $src, $replacement)" disable-output-escaping="yes"/>
+
+		<xsl:value-of select="f:replace-href(text, $base)" disable-output-escaping="yes"/>
 <!--		<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 	</xsl:template>
+
 
 
 
