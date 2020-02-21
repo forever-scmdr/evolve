@@ -21,6 +21,22 @@
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">
+			<xsl:if test="count($small_news) = 0 and count($news_items|$news_parts) = 0">
+				<div class="row narrow">
+					<div class="col-full s-content__header" data-aos="fade-up">
+						<h1>
+							По Вашему запросу ничего не найдено.
+						</h1>
+					</div>
+				</div>
+				<div class="row">
+					<xsl:if test="page/common/not_found !=''">
+						<div class="col-full" style="text-align: center;">
+							<img src="{concat(page/common/@path, page/common/not_found)}"/>
+						</div>
+					</xsl:if>
+				</div>
+			</xsl:if>
 			<xsl:if test="count($small_news) &gt; 0">
 				<div class="row narrow">
 					<div class="col-full s-content__header" data-aos="fade-up">

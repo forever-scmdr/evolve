@@ -891,6 +891,28 @@ var hideTipTimeout;
 		}
 	};
 
+	var readTimeFixInitiated = false;
+	var readTimeFix = function(){
+		var w = $(window).width();
+		var $time = $("#read-time");
+		if($time.length == 0) return;
+		var text = $time.text();
+		var arr = text.split(" ");
+		if(w < 600){
+			if (arr.length == 2) return;
+			var sec = arr[0]*60 + arr[2]*1;
+			$time.text(sec+" сек.");
+		}else {
+			if(arr.length == 4) return;
+			if(arr.length == 2 && arr[1] == "мин.") return;
+			var sec = arr[0]*1;
+			if(sec < 60) return;
+			var min = Math.floor(sec/60);
+			var sec = sec % 60;
+			$time.text(min+" мин. "+sec+" сек.");
+		}
+	};
+
 	// var newsItemLength = function () {
 	//     var nil = $("#nil").text().length;
 	//     $("#news-text-length").text("Количество символов: "+nil);
@@ -918,8 +940,15 @@ var hideTipTimeout;
 		reply();
 		wikiTip();
 		loadMoreSmall();
+		readTimeFix();
 		// fromUTC();
 		//  newsItemLength();
+		if(!readTimeFixInitiated) {
+			$(window).resize(function (e) {
+				readTimeFix();
+			});
+			readTimeFixInitiated = true;
+		}
 	})();
 
 })(jQuery);

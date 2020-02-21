@@ -343,6 +343,12 @@
 		<xsl:apply-templates select="text_part | gallery_part | code_part" mode="content"/>
 	</xsl:template>
 
+	<xsl:template match="audio">
+		<div class="audio-wrap">
+			<audio id="player{../@id}" src="{concat(../@path, .)}" width="100%" height="42" controls="controls"/>
+		</div>
+	</xsl:template>
+
 	<xsl:template match="text_part" mode="content">
 		<h3>
 			<xsl:value-of select="name"/>

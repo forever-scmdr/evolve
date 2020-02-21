@@ -80,7 +80,7 @@ font-style: italic;
 							</xsl:if>
 							<xsl:if test="$ni/read_time != ''">
 								<span class="entry__category blue">
-									<a style="padding-left: .5rem;">Среднее время прочтения: <b><xsl:value-of select="$ni/read_time" /></b></a>
+									<a style="padding-left: .5rem;">Среднее время прочтения: <b id="read-time"><xsl:value-of select="$ni/read_time" /></b></a>
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/size != ''">
