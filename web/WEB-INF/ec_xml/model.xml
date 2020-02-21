@@ -103,6 +103,7 @@
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="figcaption" type="string" caption="Подпись к главонй картинке"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_audio" type="file" caption="Аудио" description="в начале статьи"/>

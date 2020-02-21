@@ -296,16 +296,21 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 			<xsl:if test="$format = 'standard'">
 				<div class="s-content__media col-full">
 					<div class="s-content__post-thumb">
+						<figure>
 						<img src="{concat($ni/@path, $ni/main_pic)}"
 							 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
 									 {concat($ni/@path, $ni/medium_pic)} 1000w,
 									 {concat($ni/@path, $ni/small_pic)} 500w"
 							 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
-						<xsl:if test="$has_audio">
-							<div class="audio-wrap">
-								<audio id="player{$ni/@id}" src="{concat($ni/@path, $ni/main_audio)}" width="100%" height="42" controls="controls"/>
-							</div>
-						</xsl:if>
+							<xsl:if test="$has_audio">
+								<div class="audio-wrap" >
+									<audio id="player{$ni/@id}" src="{concat($ni/@path, $ni/main_audio)}" width="100%" height="42" controls="controls"/>
+								</div>
+							</xsl:if>
+							<figcaption>
+								<xsl:value-of select="$ni/figcaption"/>
+							</figcaption>
+						</figure>
 					</div>
 				</div>
 			</xsl:if>
