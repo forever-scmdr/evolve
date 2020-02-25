@@ -1512,6 +1512,16 @@
         </command>
 	</page>
 
+	<page name="save_all_products" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<!--<var name="with_existing_sections" value="copy"/>-->
+		</request>
+		<command class="extra.SaveAllProducts" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="watermarks" template="integration/watermarks" authority-groups="common">
 		<request>
