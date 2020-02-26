@@ -25,7 +25,7 @@
             <xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
             <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
                 <xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
-                <xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
+                <xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>--
                 <xsl:variable name="sum" select="$unit_price * $number"/>
                 <div>
                     <xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>

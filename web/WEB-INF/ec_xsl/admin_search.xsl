@@ -225,7 +225,7 @@
             <xsl:if test="not($has_price)">
                 <td colspan="2"><p>запрос цены</p></td>
             </xsl:if>
-			<td><xsl:value-of select="price"/></td>
+			<td><xsl:value-of select="f:exchange(current(), 'price')"/></td>
 			<td><xsl:value-of select="plain_section/name"/></td>
 			<td><xsl:value-of select="plain_section/date"/></td>
 			<td id="cart_search_{@id}">
