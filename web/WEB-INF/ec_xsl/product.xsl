@@ -3,8 +3,9 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="header" select="$p/name"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $header"/>
+	<xsl:variable name="title" select="concat('Купить ', $h1, ' в Минске - ООО &quot;МИЗИДА Сервис&quot; продажа промышленного швейного оборудования')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -15,8 +16,6 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
-	<xsl:variable name="p_big" select="if (index-of($p/description, 'img src') &gt; -1 or string-length($p/description) &gt; 500) then $p/description else ''"/>
-	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -54,76 +53,92 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
-					<i class="fas fa-angle-right"></i>
+					<xsl:text disable-output-escaping="yes"> &gt; </xsl:text>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
-		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
+		<p>
+			<xsl:if test="$p/mizida_code != ''">
+				арт. <xsl:value-of select="$p/mizida_code"/>
+			</xsl:if>
+		</p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
-					<xsl:if test="not($p/pic_ref)">
-						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-						<xsl:for-each select="$p/gallery">
-							<img src="{$p/@path}{.}" alt="{$p/name}"/>
-						</xsl:for-each>
-					</xsl:if>
-					<xsl:if test="$p/pic_ref != ''">
-						<img src="{$p/pic_ref[1]}" alt="{$p/name}"/>
-						<xsl:for-each select="$p/pic_ref[position() &gt; 1 and not(starts-with(., 'device_pics/small_'))]">
-							<img src="{.}" alt="{$p/name}"/>
-						</xsl:for-each>
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="native" data-width="100%">
+					<xsl:for-each select="$p/gallery">
+						<img src="{$p/@path}{.}" alt="{$p/name}"/>
+					</xsl:for-each>
+					<xsl:if test="not($p/gallery)">
+						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
+
+				<div class="extra-contacts">
+					<xsl:value-of select="$common/product_side/text" disable-output-escaping="yes"/>
+				</div>
+
+				<script>
+				$('.fotorama')
+					.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
+					if (e.type === 'fotorama:fullscreenenter') {
+						// Options for the fullscreen
+						fotorama.setOptions({
+							fit: 'scaledown'
+						});
+					} else {
+						// Back to normal settings
+						fotorama.setOptions({
+							fit: 'contain'
+						});
+					}
+					})
+					.fotorama();
+				</script>
 			</div>
 			<div class="product-info">
-				<xsl:variable name="has_price" select="if ($is_reg_jur) then ($p/price_opt and $p/price_opt != '0') else ($p/price and $p/price != '0')"/>
-				<xsl:variable name="price" select="if ($is_reg_jur and $has_price) then f:number_decimal(f:num($p/price_opt) div 100 * (100 - $discount)) else $p/price"/>
-				<xsl:variable name="price_old" select="if ($is_reg_jur) then $p/price_opt_old else $p/price_old"/>
-				<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/><xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-                <xsl:variable name="qty" select="if ($is_reg_jur) then $p/qty_opt else $p/qty"/>
-                <xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
-				<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
 				<!-- new html -->
 				<xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
-				<!-- UPDATE 10.06/2019 discount label -->
-				<xsl:if test="$discount_percent != ''">
-					<div class="device__tag device__tag_device-page device__tag_discount">Скидка: <xsl:value-of select="$discount_percent" />%</div>
-				</xsl:if>
-				<!-- END_UPDATE 10.06/2019 discount label -->
 
-
+				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$price_old"><div class="price_old"><span><xsl:value-of select="$price_old"/> руб.</span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="if ($price) then $price else '0'"/> руб.</div>
-
-
+								<xsl:if test="$p/price_old">
+									<div class="price_old">
+										<span>
+											<xsl:value-of select="$p/price_old"/> руб.
+											<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
+										</span>
+									</div>
+								</xsl:if>
+								<div class="price_normal">
+									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.
+									<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
+								</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
+									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" class="button" value="Заказать" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
-									<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
+									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" class="button" value="Запросить цену" />
 								</xsl:if>
 							</form>
 						</div>
-						<!-- <div class="device__actions device__actions_device-page">
+						<div class="device__actions device__actions_device-page">
 							<div id="compare_list_{$p/@id}">
 								<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 									<i class="fas fa-balance-scale"></i>сравнить
@@ -134,73 +149,52 @@
 									<i class="fas fa-star"></i>отложить
 								</a>
 							</div>
-						</div> -->
+						</div>
 						<xsl:choose>
-							<xsl:when test="$available_qty &gt; 10">
-								<div class="device__in-stock"><i class="fas fa-signal"></i> есть на складе</div>
-							</xsl:when>
-							<xsl:when test="$available_qty &gt; 0">
-								<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
-							</xsl:when>
-							<xsl:otherwise>
-								<div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i> Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
-							</xsl:otherwise>
+							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <span style="color:#8c8297; padding-left: .55rem;">Обновлено: <xsl:value-of select="f:utc_millis_to_bel_date(page/catalog[1]/date/@millis)"/></span></div></xsl:when>
+							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 					</div>
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
-					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
-					<xsl:variable name="col_qty" select="count($param_names) + 4"/>
-
-					<div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
-						<div style="padding-left: 0;">Название</div>
-						<div>Артикул</div>
-						<xsl:for-each select="$param_captions">
-							<div><xsl:value-of select="." /></div>
-						</xsl:for-each>
+					<div class="multi-device">
+						<div style="padding-left: 0;">Размер</div>
 						<div>Цена</div>
+						<div>Наличие</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
-							<xsl:variable name="lp" select="."/>
-
-							<xsl:variable name="has_price" select="if($is_reg_jur) then f:num(price_opt) != 0 else f:num(price) != 0"/>
-							<xsl:variable name="price" select="if($is_reg_jur) then price_opt else price"/>
-							<xsl:variable name="price_old" select="if($is_reg_jur) then price_opt_old else price_old"/>
-							<xsl:variable name="discount_percent" select="f:discount($price, $price_old)"/>
-                            <xsl:variable name="qty" select="if ($is_reg_jur) then $p/qty_opt else $p/qty"/>
-                            <xsl:variable name="available_qty" select="if ($qty and f:num($qty) &gt; 0) then f:num($qty) else 0"/>
-							<xsl:variable name="max" select="if ($available_qty &gt; 0) then $available_qty else 1000000"/>
-
+							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
-							<div class="multi-device__name"><xsl:value-of select="vendor_code" /></div>
-							<xsl:for-each select="$param_names">
-								<div><xsl:value-of select="$lp/params/param[@name = current()]" /></div>
-							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="$price_old"><div class="multi-device__price_old"><xsl:value-of select="$price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if ($price) then $price else '0'"/></div>
-<!-- UPDATE 10.06/2019 discount label -->
-									<xsl:if test="$discount_percent != ''">
-										<span class="discount" style="color: red; font-weight: bold;">Скидка: <xsl:value-of select="$discount_percent" />%</span>
+									<xsl:if test="price_old">
+										<div class="multi-device__price_old">
+											<xsl:value-of select="price_old"/> руб.
+											<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+										</div>
 									</xsl:if>
-<!-- END_UPDATE 10.06/2019 discount label -->
+									<div class="multi-device__price_new">
+										<xsl:value-of select="if (price) then price else '0'"/> руб.
+										<xsl:if test="unit != ''">/<xsl:value-of select="unit"/></xsl:if>
+									</div>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>
 								</xsl:if>
 							</div>
+							<div class="multi-device__price">
+								<xsl:value-of select="if (f:num($p/qty) &gt; 0) then 'на складе' else 'под заказ'"/>
+							</div>
 							<div class="multi-device__actions" id="cart_list_{@id}">
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
 										<input type="submit" class="button" value="Заказать" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty" value="1" min="0" max="{$max}"/>
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
 										<input type="submit" class="button" value="Запросить цену" />
 									</xsl:if>
 								</form>
@@ -221,45 +215,71 @@
 						</div>
 					</div>
 				</xsl:if>
-				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+
+				<div class="device-benefits">
+					<div class="device-benefits__item">
+						<i class="fas fa-shield-alt device-benefits__icon"></i>
+						<div class="device-benefits__label">Официальная гарантия и сервис</div>
+					</div>
+					<div class="device-benefits__item">
+						<i class="fas fa-trophy device-benefits__icon"></i>
+						<div class="device-benefits__label">Оптовые поставки</div>
+					</div>
+					<div class="device-benefits__item">
+						<i class="far fa-thumbs-up device-benefits__icon"></i>
+						<div class="device-benefits__label">Обучение и сопровождение</div>
+					</div>
+				</div>
+				
+				<div class="extra-contacts">
+					<div class="extra-contacts__title">Телефоны для связи</div>
+					<div class="extra-contacts__items">
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 17) 233-65-94</div>
+							<div class="extra-contacts__text">офис г. Минск</div>
+						</div>
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 162) 54-54-40</div>
+							<div class="extra-contacts__text">филиал г. Брест</div>
+						</div>
+						<div class="extra-contacts__item">
+							<div class="extra-contacts__number">(+375 152) 77-29-52</div>
+							<div class="extra-contacts__text">филиал г. Гродно</div>
+						</div>
+					</div>
+				</div>
 				<div class="extra-info">
-					<xsl:if test="not($is_big)">
-						<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-					</xsl:if>
+					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div>
 			</div>
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<xsl:if test="$p/params">
-						<li role="presentation" class="active">
-							<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
-						</li>
-						</xsl:if>
-						<xsl:if test="$is_big">
-							<li role="presentation" class="{'active'[not($p/params)]}">
-								<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
-							</li>
-						</xsl:if>
-						<xsl:for-each select="$p/product_extra">
-							<li role="presentation">
-								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
-							</li>
-						</xsl:for-each>
+							<xsl:for-each select="$p/product_extra[. != '']">
+								<xsl:variable name="first" select="position()=1" />
+								<li role="presentation" class="{'active'[$first]}">
+									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a> 
+								</li>
+							</xsl:for-each>
+							<xsl:if test="$p/params != ''">
+								<li role="presentation" class="{'active'[not($p/product_extra)]}">
+									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
+								</li>
+							</xsl:if>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params">
-						<div role="tabpanel" class="tab-pane active" id="tab1">
+					<xsl:if test="$p/params != ''">
+						<div role="tabpanel" class="tab-pane {'active'[not($p/product_extra)]}" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-							<table class="parameters">
+							<table>
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
 								<xsl:for-each select="$p/params/param">
 									<tr>
 										<td>
-											<p><xsl:value-of select="@caption"/></p>
+											<p><strong><xsl:value-of select="@caption"/></strong></p>
 										</td>
 										<td>
 											<p><xsl:value-of select="."/><xsl:text> </xsl:text><xsl:value-of select="@description"/></p>
@@ -270,40 +290,22 @@
 
 						</div>
 					</xsl:if>
-					<xsl:if test="$is_big">
-						<div role="tabpanel" class="tab-pane {'active'[not($p/params)]}" id="tab2">
-							<xsl:value-of select="$p_big" disable-output-escaping="yes"/>
-						</div>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<div role="tabpanel" class="tab-pane" id="tab{@id}">
-							<h4><xsl:value-of select="name"/></h4>
-							<div class="catalog-items">
-								<xsl:value-of select="text" disable-output-escaping="yes"/>
-							</div>
+					<xsl:for-each select="$p/product_extra[. != '']">
+						<xsl:variable name="first" select="position()=1" />
+						<div role="tabpanel" class="tab-pane {'active'[$first]}" id="tab{@id}">
+							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
 		</div>
-		<xsl:if test="page/analog">
-			<h3>Аналоги</h3>
+		<xsl:if test="page/assoc">
+			<h3>Вас также может заинтересовать</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/analog"/>
+				<xsl:apply-templates select="page/assoc" mode="lines"/>
 			</div>
 		</xsl:if>
-		<xsl:if test="page/similar">
-			<h3>Похожие товары</h3>
-			<div class="catalog-items">
-				<xsl:apply-templates select="page/similar"/>
-			</div>
-		</xsl:if>
-		<xsl:if test="page/support">
-			<h3>Сопутствующие товары</h3>
-			<div class="catalog-items">
-				<xsl:apply-templates select="page/support"/>
-			</div>
-		</xsl:if>
+
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

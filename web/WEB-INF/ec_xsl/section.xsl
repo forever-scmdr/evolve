@@ -3,8 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -13,6 +11,25 @@
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
 	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
+
+
+	<xsl:variable name="active_menu_item" select="'catalog'"/>
+
+	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="tag" select="page/variables/tag"/>
+	<xsl:variable name="tag1" select="page/variables/tag1"/>
+	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
+	<xsl:variable name="header" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $header"/>
+	<xsl:variable name="title" select="concat('Купить ', $h1, ' в Минске - ООО &quot;МИЗИДА Сервис&quot; продажа промышленного швейного оборудования')"/><!-- -->
+	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
+	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
+	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="canonical"
+				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+
+	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
+
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -49,32 +66,19 @@
 		</script>
 	</xsl:template>
 
-	<xsl:variable name="active_menu_item" select="'catalog'"/>
-
-	<xsl:variable name="view" select="page/variables/view"/>
-	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="tag1" select="page/variables/tag1"/>
-	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
-	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
-	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="(not($is_reg_jur) and page/variables/minqty = '0') or $is_reg_jur and page/variables/minqty_opt = '0'"/>
-	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
-
-	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
+					<i class="fas fa-angle-right"></i>
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
@@ -95,7 +99,7 @@
 			<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 
 			<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-				<div class="title_2" style="margin-top: 32px;">Товары</div>
+				<div class="h3">Товары</div>
 			</xsl:if>
 			<xsl:call-template name="DISPLAY_CONTROL"/>
 
@@ -107,7 +111,7 @@
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$sel_sec/product" mode="lines"/>
 					</xsl:if>
-					<xsl:if test="not($sel_sec/product)">
+					<xsl:if test="$not_found">
 						<h4>По заданным критериям товары не найдены</h4>
 					</xsl:if>
 				</div>
@@ -173,8 +177,8 @@
 	</xsl:template>
 
 	<xsl:template name="FILTER">
-		<xsl:variable name="inputs" select="$sel_sec/params_filter/filter/input[not(@caption = $sel_sec/hide_params)]"/>
-		<xsl:variable name="valid_inputs" select="$inputs[count(domain/value) &gt; 1]"/>
+		<xsl:variable name="unwanted" select="$sel_sec/hide_params"/>
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1 and not(@caption = $unwanted)]"/>
 
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">
@@ -215,19 +219,31 @@
 	</xsl:template>
 
 	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="$show_devices">
+		<xsl:if test="$show_devices and not($not_found) and $sel_sec/product">
 			<div class="view-container desktop">
-				<div class="view"><span>Вид:&#160;&#160;</span>
+				<div class="view">
 					<span class="{'active'[not($view = 'list')]}">
-						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
+						<i class="fas fa-th-large"></i>
+						<a href="{page/set_view_table}">Плиткой</a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
-						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
+						<i class="fas fa-th-list"></i>
+						<a href="{page/set_view_list}">Строками</a>
 					</span>
 				</div>
-
-
-
+				<div class="checkbox">
+					<label>
+						<xsl:if test="not($only_available)">
+							<input type="checkbox"
+								   onclick="window.location.href = '{page/show_only_available}'"/>
+						</xsl:if>
+						<xsl:if test="$only_available">
+							<input type="checkbox" checked="checked"
+								   onclick="window.location.href = '{page/show_all}'"/>
+						</xsl:if>
+						в наличии на складе
+					</label>
+				</div>
 				<span>
 					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
 							onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -236,20 +252,10 @@
 						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
 						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
 						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-					</select></span>
-				<div class="checkbox">
-					<label>
-						<xsl:if test="not($only_available)">
-							<input type="checkbox" onclick="window.location.href = '{if($is_reg_jur) then page/show_only_available_opt else page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии на складе
-					</label>
-				</div>
+					</select>
+				</span>
 				<div class="quantity">
-					<span>Кол-во на странице:&#160;&#160;</span>
+					<span>Кол-во на странице:</span>
 					<span>
 						<select class="form-control" value="{page/variables/limit}"
 								onchange="window.location.href = $(this).find(':selected').attr('link')">
@@ -273,7 +279,7 @@
 
 	<xsl:template match="section" mode="pic">
 		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product[1]/main_pic != '') then concat(product[1]/@path, product[1]/main_pic) else ''"/>
+		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>

@@ -1266,6 +1266,8 @@
 	<page name="import_from_ancient" template="integration" authority-groups="common">
 		<request>
 			<var name="action"/>
+			<var name="base_url" value="http://www.interpartner.by"/>
+			<var name="start_url" value="xml_sections"/>
 		</request>
 		<command class="extra.ImportFromAncientXML" clear-cache="yes">
 			<result name="complete" type="xml"/>

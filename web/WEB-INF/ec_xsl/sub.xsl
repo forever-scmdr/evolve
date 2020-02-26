@@ -24,7 +24,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 		<xsl:if test="$seo[1]/text">
 			<div class="page-content m-t">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -83,7 +83,7 @@
 <!-- 				<xsl:for-each select="page/current_section/section">
 					<xsl:variable name="main_pic" select="product[1]/gallery[1]"/>
 					<div class="catalog-item">
-						<xsl:variable name="pic_path" select="if ($main_pic) then concat('product[1]/@path, $main_pic) else 'img/no_image.png'"/>
+						<xsl:variable name="pic_path" select="if ($main_pic) then concat(product[1]/@path, $main_pic) else 'img/no_image.png'"/>
 						<a href="{show_products}" class="image-container"><img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/></a>
 						<div>
 							<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>

@@ -7,19 +7,18 @@
 
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
+	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
-	<xsl:variable name="is_jur"
-	              select="not($is_login) and ((page/user_jur//@validation-error or page/user_jur/organization != '') or page/registration/@type = 'user_jur')"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="/">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Вход/Регистрация</h1>
+		<h1>Вход/Регистрация</h1>
 
 		<div class="page-content m-t">
 			<xsl:if test="$message and not($success)">
@@ -41,7 +40,7 @@
 			<div class="tab-content">
 
 				<div role="tabpanel" class="tab-pane{' active'[$is_login]}" id="tab_login">
-					<p>Введите адрес электронной почты и пароль.</p>
+					<p>Введите адрес электрнной почты и пароль.</p>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form-group">
 							<label>Электронная почта:</label>

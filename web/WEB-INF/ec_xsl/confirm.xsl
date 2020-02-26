@@ -14,17 +14,22 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> &gt;
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Спасибо за заявку!</h1>
+		<h1>Спасибо за заявку!</h1>
 
+		<p>
+			 Уважаемый покупатель, теперь Вашу заявку будет обрабатывать менеджер. В связи с загруженностью работы менеджеров,оставляем за собой право обрабатывать заявку в срок до 3-х рабочих дней. Менеджер свяжется с Вами по телефону (при возникновении вопросов), либо выставит счёт на указанный е-мейл.<br/>
+			Счёт необходимо оплатить в течении 3-х рабочих дней.<br/>
+			Забрать товар можно только после его полной оплаты.
+		</p>
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="f:currency_decimal($cart/sum)"/></span> руб.
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
@@ -125,36 +130,27 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
-						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
-						<xsl:variable name="price">
-							<xsl:choose>
-								<xsl:when test="$is_reg_jur">
-									<xsl:value-of select="if (f:num($product/price_opt) != 0) then concat(f:currency_decimal($product/price_opt), '') else 'по запросу'"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="if (f:num($product/price) != 0) then concat(f:currency_decimal($product/price), '') else 'по запросу'"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
 						<tr>
 							<td>
-								<xsl:value-of select="$product/code"/>
+								<xsl:value-of select="product/code"/>
 							</td>
 							<td valign="top">
-								<strong><xsl:value-of select="$product/name"/></strong>
+								<strong><xsl:value-of select="product/name"/></strong>
 							</td>
 							<td valign="top">
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="$price"/>
-								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
+								<xsl:value-of select="product/price"/> <xsl:if test="product/price != ''">р.</xsl:if>
+								<xsl:if test="product/unit">
+									/<xsl:value-of select="product/unit"/>
+								</xsl:if>
 							</td>
 							<td>
-								<xsl:value-of select="f:currency_decimal(sum)"/>
+								<xsl:value-of select="sum"/>
 							</td>
 							<!-- <td>
-								<xsl:value-of select="$product/qty"/>
+								<xsl:value-of select="product/qty"/>
 							</td> -->
 						</tr>
 					</xsl:for-each>

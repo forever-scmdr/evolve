@@ -16,22 +16,22 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> >
 				<xsl:for-each select="$p/parent">
-					<a href="{show_page}"><xsl:value-of select="header"/></a> <i class="fas fa-angle-right"></i>
+					<a href="{show_page}"><xsl:value-of select="header"/></a> >
 				</xsl:for-each>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
+		<h1><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
 			<div class="catalog-items info">
 				<xsl:for-each select="$p/custom_page">
 					<div class="catalog-item">
-						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://aquacom.must.by/{@path}{main_pic}" alt=""/> --></a>
+						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
 						<div class="text">
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]"/></div>
+							<div class="date"><xsl:value-of select="date"/></div>
 							<a href="{show_page}"><xsl:value-of select="header"/></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>

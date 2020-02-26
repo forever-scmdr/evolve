@@ -16,11 +16,11 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1 class="page-title">Избранное</h1>
+		<h1>Избранное</h1>
 
 		<div class="page-content m-t">
 

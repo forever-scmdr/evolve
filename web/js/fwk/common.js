@@ -6,20 +6,36 @@
  * Показать меню первого уровня каталога продукции
  * @param menuTriggerSelector
  * @param menuSelector
- * @param eventName
  */
-function initCatalogPopupMenu(menuTriggerSelector, menuSelector, eventName) {
-	if (typeof eventName === 'undefined' || eventName == null || eventName == '') {
-		eventName = 'click';
-	}
-	// $(menuTriggerSelector).on(eventName, function (event) {
+
+var _hoverHideMenuTimeout = 0;
+
+function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
+	// $(menuTriggerSelector).click(function (event) {
 	// 	event.preventDefault();
 	// 	$(menuSelector).toggle('fade', 150);
 	// });
-	$(document).on(eventName, menuTriggerSelector, function (event) {
-		event.preventDefault();
-		$(menuSelector).toggle('fade', 150);
+
+	$(menuTriggerSelector).mouseenter(function(event){
+		clearTimeout(_hoverHideMenuTimeout);
+		$(menuSelector).show('fade',150);
 	});
+	$(menuTriggerSelector).mouseleave(function(){
+			_hoverHideMenuTimeout = setTimeout(function(){
+			$(menuSelector).hide('fade',150);
+		},500);
+	});
+
+	$(menuSelector).mouseenter(function(){
+		clearTimeout(_hoverHideMenuTimeout);
+		
+	});
+	$(menuSelector).mouseleave(function(){
+		_hoverHideMenuTimeout = setTimeout(function(){
+			$(menuSelector).hide('fade',150);
+		},500);
+	});
+
 	$(document).click(function (event) {
 		var target = $(event.target);
 		if (target.closest(menuSelector).length == 0 && target.closest(menuTriggerSelector).length == 0) {
@@ -29,8 +45,9 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector, eventName) {
 }
 
 
-var _catalogPopupMenuShowInterval = 0;
-var _catalogPopupMenuHideInterval = 0;
+
+var _catalogPopupMenuShowTimeout = 0;
+var _catalogPopupMenuHideTimeout = 0;
 var _catalogPopupMenuCurrentItem = 0;
 /**
  * Показывает второй уровень меню для главного меню
@@ -44,14 +61,15 @@ var _catalogPopupMenuCurrentItem = 0;
 function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2MenuContainerSelector) {
 	$(l1MenuItemSelector).hover(
 		function() {
-			clearInterval(_catalogPopupMenuHideInterval);
+			clearTimeout(_hoverHideMenuTimeout);
+			clearTimeout(_catalogPopupMenuHideTimeout);
 			if (_menuMouseMovedVertically) {
 				$(l2MenuContainerSelector).hide();
 				var submenuSelector = $(this).attr('rel');
 				$(submenuSelector).show();
 			} else {
 				_catalogPopupMenuCurrentItem = $(this);
-				_catalogPopupMenuShowInterval = setInterval(function() {
+				_catalogPopupMenuShowTimeout = setTimeout(function() {
 					$(l2MenuContainerSelector).hide();
 					var submenuSelector = _catalogPopupMenuCurrentItem.attr('rel');
 					$(submenuSelector).show();
@@ -59,11 +77,12 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 			}
 		},
 		function() {
-			clearInterval(_catalogPopupMenuShowInterval);
+			clearTimeout(_hoverHideMenuTimeout);
+			clearTimeout(_catalogPopupMenuShowTimeout);
 			if (_menuMouseMovedVertically) {
 				$(l2MenuContainerSelector).hide();
 			} else {
-				_catalogPopupMenuHideInterval = setInterval(function() {
+				_catalogPopupMenuHideTimeout = setTimeout(function() {
 					$(l2MenuContainerSelector).hide();
 				}, 500);
 			}
@@ -71,10 +90,14 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 	$(l2MenuContainerSelector).hover(
 		function() {
-			clearInterval(_catalogPopupMenuHideInterval);
+			clearTimeout(_hoverHideMenuTimeout);
+			console.log("l2MenuContainerSelector ENTER");			
+			clearTimeout(_catalogPopupMenuHideTimeout);
 		},
 		function() {
-			_catalogPopupMenuHideInterval = setInterval(function() {
+			console.log("l2MenuContainerSelector LEAVE");
+			clearTimeout(_hoverHideMenuTimeout);
+			_catalogPopupMenuHideTimeout = setTimeout(function() {
 				$(l2MenuContainerSelector).hide();
 			}, 500);
 		}
@@ -94,7 +117,7 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 			_menuMovesCount++;
 			if (_menuMovesCount >= MENU_MAX_MOVES_COUNT) {
 				_menuMouseMovedVertically = (Y_QUOTIENT * _menuDeltaY - _menuDeltaX) > 0;
-				console.log(_menuMouseMovedVertically + " Y:" + (Y_QUOTIENT * _menuDeltaY) + " X:" + _menuDeltaX);
+				//console.log(_menuMouseMovedVertically + " Y:" + (Y_QUOTIENT * _menuDeltaY) + " X:" + _menuDeltaX);
 				_menuMovesCount = 0;
 				_menuDeltaX = 0;
 				_menuDeltaY = 0;
@@ -121,38 +144,3 @@ $(document).on("click", "body", function(e){
 		$(".popup-text-menu").hide();
 	}
 });
-
-// -- Cookie functions
-function setCookie(c_name, value, exdays) {
-	var exdate = new Date();
-	exdate.setDate(exdate.getDate() + exdays);
-	var c_value = encodeURIComponent(value);
-	if (c_value == null)
-		c_value = "";
-	if (typeof exdays != 'undefined' && exdays != null)
-		c_value += "; expires=" + exdate.toUTCString();
-	document.cookie = c_name + "=" + c_value + "; path=/;";
-}
-
-function getCookie(c_name) {
-	var c_value = " " + document.cookie;
-	var c_start = c_value.indexOf(" " + c_name + "=");
-	if (c_start == -1) {
-		c_start = c_value.indexOf(c_name + "=");
-	}
-	if (c_start == -1) {
-		c_value = null;
-	} else {
-		c_start = c_value.indexOf("=", c_start) + 1;
-		var c_end = c_value.indexOf(";", c_start);
-		if (c_end == -1) {
-			c_end = c_value.length;
-		}
-		c_value = decodeURIComponent(c_value.substring(c_start, c_end));
-	}
-	return c_value;
-}
-
-function deleteCookie(c_name){
-	setCookie(c_name, undefined, -1);
-}

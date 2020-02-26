@@ -1,105 +1,109 @@
 package extra;
 
-import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.CleanDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Created by Anton on 08.11.2018.
  */
 public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
-	private File exportFile;
 	//	private String base = "http://mizida.by";
-	private static final Pattern SRC = Pattern.compile("src=\"(?<src>sitefiles/(\\d+/)+(?<filename>[^\"]+))\"");
-	private static final String OLD_SECTION_NAME = "каталог со старого сайта";
+	private Item catalog;
+	private Item seoContainer;
+	private HashSet<String> sectionURLs = new HashSet<>();
+	private String baseURL;
+	private String start_url;
+	private HashMap<String, Item> sectionsMap = new HashMap<>();
+	private LinkedList<String> urls = new LinkedList<>();
+
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		String contextPath = AppContext.getContextPath();
-		exportFile = Paths.get(contextPath, "upload", "export.xml").toFile();
-		if(exportFile.exists())
-		ServerLogger.debug("Export file found. Size: " + Files.size(exportFile.toPath()));
-		return exportFile.exists();
+		baseURL = getVarSingleValue("base_url");
+		start_url = getVarSingleValue("start_url");
+		return true;
 	}
 
 	@Override
 	protected void integrate() throws Exception{
-		info.setOperation("Разбор старого каталога");
+		setOperation("Импорт каталога со старого сатйа");
+		catalog = ItemUtils.ensureSingleRootAnonymousItem(CATALOG_ITEM, getInitiator());
+		seoContainer = ItemUtils.ensureSingleRootAnonymousItem("seo_container", getInitiator());
+		sectionsMap.put("catalog", catalog);
 
+		info.setCurrentJob("Подключене к списку разделов на старом сайте");
+		Document doc = Jsoup.parse(new URL(baseURL+'/'+start_url), 5000);
+		Elements sections = doc.getElementsByTag("section");
 
-		Document oldCatalog = Jsoup.parse(new FileInputStream(exportFile), "UTF-8", "", Parser.xmlParser());
+		CleanDeletedItemsDBUnit delete = new CleanDeletedItemsDBUnit(1000);
+		executeAndCommitCommandUnits(delete);
 
-		int sectionCount = oldCatalog.select("section").size();
-		int productsCount = oldCatalog.select("device").size();
-		info.setToProcess(sectionCount + productsCount);
-		ServerLogger.debug("Jsoup parsing complete. <section> ="+sectionCount+". <device>="+ productsCount);
+		setOperation("Создание списка разделов");
+		sections.forEach((section)->{
+			String name = section.select(NAME).first().text();
+			info.setCurrentJob("Созднание раздела: \""+name+"\"");
+			String code = section.attr("id");
+			String oldURL = section.select("show_section").first().text();
+			Element textNode = section.select("text").first();
+			String text = textNode == null? "" : textNode.html();
+			String productsURL = section.select("show_xml").first().text();
+			urls.add(productsURL);
+			Element parentTag = section.parent();
+			Item parentItem = catalog;
+			if(!parentTag.is("catalog")){
+				parentItem = sectionsMap.get(parentTag.attr("id"));
+			}
+			Item sectionItem = ItemUtils.newChildItem(SECTION_ITEM, parentItem);
 
-		info.pushLog("Обнаружено разделов: "+sectionCount);
-		info.pushLog("Обнаружено товаров: "+productsCount);
+			sectionsMap.put(code, sectionItem);
+			try {
+				sectionItem.setValueUI(CATEGORY_ID_PARAM, code);
+				sectionItem.setValueUI("old_url", oldURL);
+				sectionItem.setValueUI(NAME_PARAM, name);
+				sectionItem.setKeyUnique(Strings.translit(name));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(sectionItem).ignoreUser(true).noFulltextIndex());
+				if(StringUtils.isNotBlank(text)) {
+					Item seo = ItemUtils.newChildItem(ItemNames.SEO, seoContainer);
+					seo.setValueUI(ItemNames.seo_.KEY_UNIQUE, sectionItem.getKeyUnique());
+					seo.setValueUI(ItemNames.seo_.TEXT, processSectionText(text));
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(seo).ignoreUser(true).noTriggerExtra().noFulltextIndex());
+					executeAndCommitCommandUnits(CreateAssocDBUnit.childExistsSoft(seo, sectionItem, ItemTypeRegistry.getAssocId("seo")));
+				}
+				info.increaseProcessed();
+			} catch (Exception e) {
+				info.addError(e);
+				ServerLogger.error(e);
+			}
 
-		Item existingCatalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
-		ServerLogger.debug("Catalog loaded.");
+		});
+		pushLog("Созднание разделов завершено");
+	}
 
-		ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_HIDDEN);
-		q.addParameterCriteria(NAME_PARAM, OLD_SECTION_NAME, "=", null, Compare.SOME);
-		Item oldBigSection = q.loadFirstItem();
-
-		ServerLogger.debug((oldBigSection == null)? "old section not exists" : "old section exists");
-
-		if(oldBigSection != null){
-			ServerLogger.debug("Adding delete commands.");
-			executeCommandUnit(ItemStatusDBUnit.delete(oldBigSection.getId()).noFulltextIndex());
-			ServerLogger.debug("delete commands added");
-			commitCommandUnits();
-			ServerLogger.debug("delete commands executed");
-		}
-
-		ServerLogger.debug("creating ancient catalog");
-		Item bigSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), existingCatalog);
-
-		bigSection.setValue(NAME_PARAM, OLD_SECTION_NAME);
-		String id = oldCatalog.getElementsByTag("catalog").first().getElementsByTag("id").first().ownText();
-		bigSection.setValueUI(CATEGORY_ID_PARAM,id);
-
-		ServerLogger.debug("executing save ancient catalog commands...");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(bigSection).noFulltextIndex());
-		ServerLogger.debug("ancient catalog created");
-		executeAndCommitCommandUnits(ItemStatusDBUnit.hide(bigSection).noFulltextIndex());
-		ServerLogger.debug("ancient catalog hidden");
-
-		Elements sections = oldCatalog.select("catalog > section");
-		ServerLogger.debug("processing sections. Section level 1 count: "+sections.size());
-		for (Element sectionElement : sections){
-			processSectionElement(sectionElement, bigSection);
-		}
-
+	private String processSectionText(String text){
+		if(StringUtils.isBlank(text)) return "";
+		text = text.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+		text = StringUtils.substringBeforeLast(text, "<div class=\"image\" style=\"text-align: justify;\"> <table style=\"height: 25px; width: 630px;\">");
+		text = StringUtils.substringAfter(text, "<div class=\"content_fb\" style=\"display: block;\">");
+		return text;
 	}
 
 	@Override
@@ -109,101 +113,13 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 	private void processSectionElement(Element sectionElement, Item parentSection) throws Exception{
 
-		String sectionName = sectionElement.select("name").eq(0).first().ownText();
-		String sectionCode = sectionElement.select("id").eq(0).first().ownText();
-		String sectionText = sectionElement.select("text").eq(0).first().ownText();
-
-		ServerLogger.debug("processing section. name="+sectionName);
-
-		Item section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), parentSection);
-		ServerLogger.debug("section created");
-
-		section.setValue(NAME_PARAM, sectionName);
-		section.setValue(CATEGORY_ID_PARAM, sectionCode);
-		section.setValue(PARENT_ID_PARAM, parentSection.getValue(CATEGORY_ID_PARAM));
-		ServerLogger.debug("parameters set");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
-		ServerLogger.debug("section saved");
-
-		Item seo = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SEO), section);
-		ServerLogger.debug("SEO-item created");
-		seo.setValue(ItemNames.seo_.TITLE, sectionName);
-		seo.setValue(ItemNames.seo_.TEXT, sectionText);
-		ServerLogger.debug("SEO-item parameters added");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(seo).noFulltextIndex().ignoreFileErrors(true));
-		ServerLogger.debug("SEO-item parameters saved");
-
-		Elements children = sectionElement.children();
-		ServerLogger.debug(children.size()+" child elements found.");
-
-		for(Element child : children){
-			String nodeName = child.tagName();
-			if(nodeName.equals("section")) {
-				processSectionElement(child, section);
-			}else if(nodeName.equals("device")){
-				processProductElement(child, section);
-			}
-		}
-		info.increaseProcessed();
 	}
 
 	private void processTextPics(Item item, String picParamName, String textParamName, String text) throws Exception {
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(item).noFulltextIndex().ignoreFileErrors(true));
-		String folder = item.getRelativeFilesPath();
-		Matcher matcher = SRC.matcher(text);
-		HashMap<String, String> replacementMap = new HashMap<>();
-		while (matcher.find()){
-			String src = matcher.group("src");
-			String fileName = matcher.group("filename");
-			String fileNameDecoded = URLDecoder.decode(fileName, "UTF-8");
-			src = src.replace("\\Q"+fileName+"\\E", fileNameDecoded);
-			//URL url = new URL(base+"/"+src);\"
-			File old = new File((AppContext.getContextPath()+src.replace("\\Q"+"\\sitefiles"+"\\E", "sitefiles")).replace(" ", "").trim());
-			String newSrc = "files/"+ folder + Strings.translit(fileNameDecoded);
-			replacementMap.put(src, newSrc);
-			if(!new File(newSrc).exists()) {
-				item.setValue(picParamName, old);
-			}
-		}
-		for(Map.Entry<String,String> e : replacementMap.entrySet()){
-			text = text.replaceAll("\\Q"+e.getKey()+"\\E", e.getValue());
-		}
-		item.setValue(textParamName, text);
+
 	}
 
 	private void processProductElement(Element productElement, Item section) throws Exception {
-		String name = productElement.select("name").eq(0).first().ownText();
-		String code = productElement.select("code").eq(0).first().ownText();
-		code = (StringUtils.isAllBlank(code))?  productElement.select("id").eq(0).first().ownText() : code;
-		String price = productElement.select("price").eq(0).first().ownText();
-		String unit =  productElement.select("measure").eq(0).first().ownText();
-		String shortText =  productElement.select("short").eq(0).first().ownText();
-		String oldURL =  productElement.select("show_device").eq(0).first().ownText();
-		String text = productElement.select("text").eq(0).first().ownText();
-		String bigPic = productElement.select("big").eq(0).first().ownText();
-		//String smallPic = productElement.select("small").eq(0).first().ownText();
-		ServerLogger.debug("device element loaded from Jsoup. Device name = \"name\"");
 
-		Item product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
-		ServerLogger.debug("Product item created.");
-		product.setValue(NAME_PARAM, name);
-		product.setValue(CODE_PARAM, code);
-		product.setValueUI(PRICE_PARAM, price.replaceAll("\\s", ""));
-		product.setValue("unit", unit);
-		product.setValue(DESCRIPTION_PARAM, shortText);
-		product.setValue(URL_PARAM, oldURL);
-		//product.setValue(MAIN_PIC_PARAM, new URL(base+"/"+bigPic));
-		//product.setValue(SMALL_PIC_PARAM,new URL(base+"/"+smallPic));
-		Path ofp = Paths.get(AppContext.getContextPath(), "sitefiles", bigPic);
-		product.setValue("old_file", ofp.toString());
-		ServerLogger.debug("old main img path: " + ofp.toString());
-		product.setValue(MAIN_PIC_PARAM, ofp.toFile());
-		//product.setValue(SMALL_PIC_PARAM, Paths.get(AppContext.getContextPath(), "sitefiles", smallPic).toFile());
-		//processTextPics(product, TEXT_PICS_PARAM, TEXT_PARAM, text);
-		product.setValue(TEXT_PARAM, text);
-		ServerLogger.debug("Trying to save product...");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors(true));
-		ServerLogger.debug("product saved. new file path: " + product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())));
-		info.increaseProcessed();
 	}
 }

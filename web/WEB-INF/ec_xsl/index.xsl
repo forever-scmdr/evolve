@@ -3,6 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="title" select="'Продажа промышленного швейного оборудования, САПР одежды, комплектующие и запчасти, обслуживание и сервис, обучение - ООО &quot;МИЗИДА Сервис&quot;'"/>
+
 	<xsl:template name="MARKUP">
 		<script type="application/ld+json">
 			{
@@ -37,25 +39,95 @@
 		</script>
 	</xsl:template>
 
-
+	<xsl:template name="LEFT_COLOUMN">
+		<div class="side-menu">
+			<xsl:for-each select="page/catalog/section">
+				<div class="level-1">
+					<div class="capsule">
+						<a href="{show_section}"><xsl:value-of select="name"/></a>
+					</div>
+					<xsl:if test="section">
+						<div class="popup-menu" style="display:none">
+							<div class="popup-coloumn">
+								<xsl:for-each select="section[position() &lt;= 8]">
+									<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+								</xsl:for-each>
+							</div>
+							<xsl:if test="count(section) &gt; 8">
+								<div class="popup-coloumn">
+									<xsl:for-each select="section[position() &gt; 8]">
+										<div><a href="{show_section}"><xsl:value-of select="name"/></a></div>
+									</xsl:for-each>
+								</div>
+							</xsl:if>
+						</div>
+					</xsl:if>
+				</div>
+			</xsl:for-each>
+		</div>
+		<xsl:if test="page/main_page/link_text and not(page/main_page/link_text = '')">
+			<div class="actions">
+				<h3>Акции</h3>
+				<div class="actions-container">
+					<a href="{page/common/link_link}"><xsl:value-of select="page/common/link_text"/></a>
+				</div>
+			</div>
+		</xsl:if>
+		<script>
+			var _menuShowInterval = 0;
+			var _menuHideInterval = 0;
+			var _menuCurrentItem = 0;
+			$(document).ready(function() {
+				$('.level-1').hover(
+					function(){
+						clearInterval(_menuHideInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+							$(this).find('.popup-menu').show();
+						} else {
+							_menuCurrentItem = $(this);
+							_menuShowInterval = setInterval(function() {
+								$('.popup-menu').hide();
+								_menuCurrentItem.find('.popup-menu').show();
+							}, 500);
+						}
+					},
+					function() {
+						clearInterval(_menuShowInterval);
+						if (_menuMouseMovedVertically) {
+							$('.popup-menu').hide();
+						} else {
+							_menuHideInterval = setInterval(function() {
+								$('.popup-menu').hide();
+							}, 500);
+						}
+					}
+				);
+			<xsl:text disable-output-escaping="yes">
+				var _menuPrevX = 1000;
+				var _menuPrevY = -1000;
+				var _menuMouseMovedVertically = true;
+				$('.side-menu').mousemove(
+					function(event) {
+						_menuMouseMovedVertically = (Math.abs(event.pageY - _menuPrevY) - Math.abs(event.pageX - _menuPrevX)) &gt; 0;
+						_menuPrevX = event.pageX;
+						_menuPrevY = event.pageY;
+						console.log(_menuMouseMovedVertically);
+					}
+				);
+			</xsl:text>
+			});
+		</script>
+		<!-- <div class="contacts">
+			<h3>Заказ и консультация</h3>
+			<p><a href="tel:+375 29 537-11-00">+375 29 537-11-00</a> - тел./Viber</p>
+			<p>Email <a href="">info@beltesto.by</a></p>
+			<p><a href="">Схема проезда к офису</a></p>
+		</div> -->
+	</xsl:template>
 
 
 	<xsl:template name="CONTENT"></xsl:template>
-
-
-	<xsl:template match="section">
-		<div class="catalog-index__cell">
-			<div class="block-title"><xsl:value-of select="name" /></div>
-			<div class="catalog-index__group">
-				<xsl:for-each select="section">
-					<div class="catalog-index__item">
-						<a href="{show_products}"><img src="{@path}{if(icon != '') then icon else main_pic}" alt=""/></a>
-						<a href="{show_products}"><xsl:value-of select="name" /></a>
-					</div>
-				</xsl:for-each>
-			</div>
-		</div>
-	</xsl:template>
 
 	<xsl:template name="MAIN_CONTENT">
 		<!-- MAIN COLOUMNS BEGIN -->
@@ -79,7 +151,7 @@
 
 	<xsl:template match="banner">
 		<div class="banner {extra_style}">
-			<div class="banner__background" style="{background}"></div>
+			<div class="banner__background" style="{background}{if (background_pic) then concat('; background-image: url(', @path, background_pic, ');') else ''}"></div>
 			<div class="banner__title"><xsl:value-of select="header" /></div>
 			<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 			<div class="banner__image">
@@ -94,55 +166,75 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template name="HERO">
-		<section class="hero">
-			<div class="fotorama" data-width="100%" data-height="80px" data-fit="cover" data-autoplay="true" data-nav="false" data-transition="crossfade">
-				<xsl:for-each select="page/main_page/main_slider_frame">
-					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-						<a href="{link}" style="display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0"></a>
-						<!-- <div class="slider-item__block fotorama__select">
-							<div class="slider-item__wrapper">
-								<div class="slider-item__title"><xsl:value-of select="name" /></div>
-								<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
-							</div>
-						</div> -->
-					</div>
-				</xsl:for-each>
-			</div>
-		</section>
-	</xsl:template>
 
 	<xsl:template name="BANNERS">
-		<section class="catalog-index pt pb">
+		<section class="hero">
 			<div class="container">
-				<xsl:apply-templates select="page/catalog/section[1]"/>
-				<xsl:apply-templates select="page/catalog/section[2]"/>
-				<xsl:apply-templates select="page/catalog/section[3]"/>
-				<div class="catalog-index__cell">
-					<!-- <div class="block-title">1</div> -->
-					<div class="banner rexant">
-						<div class="banner__title">Электротехника</div>
-						<div class="banner__text">
-							<xsl:for-each select="page/catalog/section[4]/section">
-								<a href="{show_products}"><xsl:value-of select="name" /><xsl:if test="position() != last()">; </xsl:if></a>
-							</xsl:for-each>
-						</div>
-						<div class="banner__image"><img src="/files/353/225f/rexant_logo.png" alt=""/></div>
-						<a class="banner__link" href="{page/catalog/section[4]/show_products}">Купить здесь</a>
-					</div>
+				<div class="fotorama" data-width="100%">
+					<xsl:for-each select="page/main_page/main_slider_frame">
+						<xsl:if test="not(link != '')">
+							<img src="{@path}{pic}" alt="{name}"/>
+						</xsl:if>
+						<xsl:if test="link != ''">
+							<div data-img="{concat(@path,pic)}">
+								<a href="{link}"></a>
+							</div>
+						</xsl:if>
+					</xsl:for-each>
+				</div>
+				<div class="hero__banners">
+					<xsl:apply-templates select="page/banner_section[1]/banner"/>
 				</div>
 			</div>
 		</section>
-
+		<section class="events">
+			<div class="container">
+				<div>
+					<div class="events__banners">
+						<xsl:apply-templates select="page/banner_section[2]/banner"/>
+					</div>
+					<div class="block-title events__title">Новости</div>
+					<div class="events__news">
+						<xsl:for-each select="page//news_item">
+							<div class="news-item events__news-item">
+								<div class="small-text"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
+								<a href="{show_news_item}"><xsl:value-of select="header" /></a>
+							</div>
+						</xsl:for-each>
+					</div>
+				</div>
+				<xsl:apply-templates select="page/banner_section[3]/banner"/>
+			</div>
+		</section>
 		<section class="special-items">
 			<div class="container">
 				<div class="block-title">Новинки</div>
-				<div class="special-items__devices slick-slider zu">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']" mode="special"/>
+				<div class="special-items__devices slick-slider">
+					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
 				</div>
 			</div>
 		</section>
-
+		<section class="special-items">
+			<div class="container">
+				<div class="block-title">Акции</div>
+				<div class="special-items__devices slick-slider zu">
+					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
+				</div>
+			</div>
+		</section>
+		<section class="benefits">
+			<div class="container">
+				<div class="block-title">Почему нас выбирают клиенты</div>
+				<div class="benefits__banners">
+					<xsl:apply-templates select="page/banner_section[4]/banner"/>
+				</div>
+			</div>
+		</section>
+		<section class="s-info pt-4">
+			<div class="container">
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</section>
 
 	</xsl:template>
 
