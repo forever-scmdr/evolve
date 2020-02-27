@@ -1,4 +1,4 @@
- <?xml version="1.0" encoding="UTF-8"?>        
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 
@@ -441,7 +441,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY">
+				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>

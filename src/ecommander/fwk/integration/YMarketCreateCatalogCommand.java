@@ -150,7 +150,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	}
 
 
-	private static boolean removeDoctype(File file) {
+	private boolean removeDoctype(File file) {
 		File tempFile = new File("__temp__.xml");
 		final String DOCTYPE = "!DOCTYPE";
 		boolean containsDoctype = false;

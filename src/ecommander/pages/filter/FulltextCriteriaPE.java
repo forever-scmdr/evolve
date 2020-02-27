@@ -74,6 +74,10 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		if (query != null)
 			query.validate(elementPath, results);
 		ItemType desc = (ItemType)results.getBufferData();
+		/*
+		Закомментировано для того, чтобы можно было использовать параметры вложенных айтемов для
+		полнотекстового поиска (парамтеры сабайтемов)
+
 		if (paramNames.length > 0) {
 			for (String paramName : paramNames) {
 				if (desc.getFulltextParameterList(paramName) == null)
@@ -81,6 +85,7 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 							+ "' item does not contain fulltext '" + paramName + "'");
 			}
 		}
+		*/
 		for (String[] group : types) {
 			for (String type : group) {
 				try {
