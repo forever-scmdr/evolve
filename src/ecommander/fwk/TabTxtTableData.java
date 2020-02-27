@@ -90,8 +90,10 @@ public class TabTxtTableData implements TableDataSource {
 							rowChecked = false;
 						}
 					}
-					if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
-						missingColumns = missingColumnsTest;
+					if (!rowChecked) {
+						line = StringUtils.trim(br.readLine());
+						if (missingColumns == null || missingColumnsTest.size() < missingColumns.size())
+							missingColumns = missingColumnsTest;
 					}
 				}
 			} catch (FileNotFoundException e) {
