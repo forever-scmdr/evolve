@@ -40,6 +40,7 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 	protected boolean makePreparations() throws Exception {
 		baseURL = getVarSingleValue("base_url");
 		start_url = getVarSingleValue("start_url");
+		setProcessed(0);
 		return true;
 	}
 
@@ -96,6 +97,21 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 		});
 		pushLog("Созднание разделов завершено");
+		setOperation("Наронение разделов товарами");
+		processProducts();
+		pushLog("наполнение картлога завершено");
+		setOperation("Переиндексация");
+
+	}
+
+	private void processProducts() throws Exception{
+		String url;
+		while ((url = urls.poll()) != null){
+			Item parentSection = sectionsMap.get(StringUtils.substringAfterLast(url,"="));
+			Document doc = Jsoup.parse(new URL(baseURL+'/'+url), 5000);
+			Elements products = doc.getElementsByTag(PRODUCT_ITEM);
+
+		}
 	}
 
 	private String processSectionText(String text){
@@ -111,15 +127,4 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 	}
 
-	private void processSectionElement(Element sectionElement, Item parentSection) throws Exception{
-
-	}
-
-	private void processTextPics(Item item, String picParamName, String textParamName, String text) throws Exception {
-
-	}
-
-	private void processProductElement(Element productElement, Item section) throws Exception {
-
-	}
 }
