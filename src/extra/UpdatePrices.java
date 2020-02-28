@@ -32,7 +32,7 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 		if (cat == null)
 			return false;
 		File priceFile = cat.getFileValue(catalog_.INTEGRATION, AppContext.getFilesDirPath(false));
-		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_HEADER, QTY_HEADER, AVAILABLE_HEADER) {
+		price = new ExcelPriceList(priceFile, CODE_HEADER, PRICE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
 				String code =getValue(CODE_HEADER).trim();
@@ -40,12 +40,12 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, code));
 					if (prod != null) {
 						String price = getValue(PRICE_HEADER).trim();
-						String qty = getValue(QTY_HEADER).trim();
-						String avlb = getValue(AVAILABLE_HEADER).trim();
+						String qty = StringUtils.trim(getValue(QTY_HEADER));
+						String avlb = StringUtils.trim(getValue(AVAILABLE_HEADER));
 
-						prod.setValueUI("qty", qty);
-						prod.setValueUI("price", price);
-						prod.setValueUI("available", avlb);
+						if(StringUtils.isNotBlank(qty))prod.setValueUI("qty", qty);
+						if(StringUtils.isNotBlank(price))prod.setValueUI("price", price);
+						if(StringUtils.isNotBlank(avlb))prod.setValueUI("available", avlb);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
 					} else {
