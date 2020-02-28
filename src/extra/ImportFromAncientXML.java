@@ -110,7 +110,55 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 			Item parentSection = sectionsMap.get(StringUtils.substringAfterLast(url,"="));
 			Document doc = Jsoup.parse(new URL(baseURL+'/'+url), 5000);
 			Elements products = doc.getElementsByTag(PRODUCT_ITEM);
+			for (Element productElement : products) {
+				String code = productElement.attr("id");
+				String name = productElement.select(NAME).first().text();
+				Element descriptionEl = productElement.select("short").first();
+				String description = descriptionEl != null ? descriptionEl.html() : "";
+				Element textEl = productElement.select("text").first();
+				String text = textEl != null ? textEl.html() : "";
+				Element pictureEl = productElement.select("big_picture").first();
+				Element seoEl = productElement.select("seo").first();
 
+				if (pictureEl == null) {
+					pictureEl = productElement.select("medium_picture").first();
+				}
+				if (pictureEl == null) {
+					pictureEl = productElement.select("small_picture").first();
+				}
+				String src = pictureEl != null ? pictureEl.text() : "";
+				Item product = ItemUtils.newChildItem(PRODUCT_ITEM, parentSection);
+				product.setKeyUnique(Strings.translit(name));
+				product.setValueUI(NAME_PARAM, name);
+				product.setValueUI(CODE_PARAM, code);
+				product.setValueUI(TEXT_PARAM, text.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
+				product.setValueUI(DESCRIPTION_PARAM, description.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
+				if(StringUtils.isNotBlank(src)){
+					try {
+						product.setValue(ItemNames.product_.MAIN_PIC, new URL(src));
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Картинка не может быть загружена: " + src, product.getStringValue(ItemNames.product_.NAME));
+						continue;
+					}
+				}
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).noFulltextIndex().ignoreFileErrors());
+				if(seoEl != null){
+					Element titleEl = seoEl.select("title").first();
+					Element descEl = seoEl.select("description").first();
+					Element keywordsEl = seoEl.select("keywords").first();
+					String title = titleEl != null? titleEl.text():"";
+					String seoDescription = descEl != null? descEl.text() : "";
+					String seoKeywords = keywordsEl != null? keywordsEl.text() : "";
+					Item seo = ItemUtils.newChildItem(ItemNames.SEO, product);
+					seo.setValue(ItemNames.seo_.TITLE, title);
+					seo.setValue(ItemNames.seo_.DESCRIPTION, seoDescription);
+					seo.setValue(ItemNames.seo_.KEYWORDS, seoKeywords);
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(seo).ignoreUser(true).noTriggerExtra().noFulltextIndex());
+					executeAndCommitCommandUnits(CreateAssocDBUnit.childExistsSoft(seo, product, ItemTypeRegistry.getAssocId("seo")));
+				}
+				info.increaseProcessed();
+			}
 		}
 	}
 
