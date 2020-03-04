@@ -1274,6 +1274,14 @@
 		</command>
 	</page>
 
+	<page name="import_news_from_ancient" template="integration" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportNewsAndArticlesFromAncientXML" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
     <page name="crawl" template="crawl">
         <request>
