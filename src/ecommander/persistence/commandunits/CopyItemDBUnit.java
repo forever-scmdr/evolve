@@ -60,9 +60,9 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 	public void execute() throws Exception {
 		// Загрузка айтемов
 		if (baseItem == null)
-			baseItem = ItemQuery.loadById(baseItemId);
+			baseItem = ItemQuery.loadById(baseItemId, getTransactionContext().getConnection());
 		if (newParent == null)
-			newParent = ItemQuery.loadById(newParentId);
+			newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
 
 		////// Проверка прав пользователя на айтем //////
 		//
@@ -114,7 +114,7 @@ public class CopyItemDBUnit extends DBPersistenceCommandUnit implements DBConsta
 		}
 
 		// Шаг 3. - Сохранить новый айтем
-		executeCommand(new SaveNewItemDBUnit(item, newParent).ignoreFileErrors(ignoreFileErrors));
+		executeCommand(new SaveNewItemDBUnit(item, newParent).ignoreFileErrors(ignoreFileErrors).noTriggerExtra());
 
 		// Шаг 4. - Обновить пути к файлам во всех текстовых параметрах айтема
 		boolean corrections = false;

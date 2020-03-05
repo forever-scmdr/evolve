@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DateDataType;
@@ -16,7 +15,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -50,9 +48,7 @@ public class CreateSitemapCommand extends IntegrateBase implements CatalogConst 
         int urlsInFileCount = 0;
         info.setProcessed(0);
         do {
-            try (Connection conn = MysqlConnector.getConnection()) {
-                prods = ItemMapper.loadByName(PRODUCT_ITEM, 50, startFrom, conn);
-            }
+            prods = ItemMapper.loadByName(PRODUCT_ITEM, 50, startFrom);
             if (urlsInFileCount == 0 || urlsInFileCount >= 49999 || (urlsInFileCount > 0 && prods.size() == 0)) {
                 newMapFile();
                 urlsInFileCount = 0;

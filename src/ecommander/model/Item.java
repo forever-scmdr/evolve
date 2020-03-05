@@ -613,6 +613,7 @@ public class Item implements ItemBasics {
 			if (key.length() > 99) key = key.substring(0, 98);
 			if (StringUtils.isBlank(keyUnique)) {
 				keyUnique = Strings.translit(key);
+				keyUnique = StringUtils.isBlank(keyUnique)? Strings.translit(getItemType().getCaption() + '_' + id) : keyUnique;
 				if (keyUnique.length() > 99) keyUnique = keyUnique.substring(0, 98);
 			}
 			// Если айтем новый - также сохранить oldKeyUnique
@@ -638,6 +639,15 @@ public class Item implements ItemBasics {
 	 */
 	public final String getOldKeyUnique() {
 		return oldKeyUnique;
+	}
+	/**
+	 * Принудительно разобрать содержимое строки параметров и установить флаг о том,
+	 * что айтем был обновлен (хотя он не был)
+	 * @return
+	 */
+	public final void forceInitialInconsistent() {
+		populateMap();
+		state = State.modified_NO_xml;
 	}
 	/**
 	 * Получить XML со всеми параметрами айтема
@@ -1236,7 +1246,16 @@ public class Item implements ItemBasics {
 	 * @return
 	 */
 	public final File getFileValue(String paramName, String filesRepositoryPath) {
-		String fileName = ((SingleParameter)getParameterByName(paramName)).outputValue();
+		SingleParameter param;
+		if (getParameterByName(paramName).isMultiple()) {
+			Collection<SingleParameter> sp = ((MultipleParameter) getParameterByName(paramName)).getValues();
+			if (sp.size() == 0)
+				return null;
+			param = sp.iterator().next();
+		} else {
+			param = (SingleParameter) getParameterByName(paramName);
+		}
+		String fileName = param.outputValue();
 		return new File(getParamFileName(filesRepositoryPath, id, fileName));
 	}
 	/**

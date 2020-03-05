@@ -95,7 +95,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		getSessionMapper().saveTemporaryItem(form, "user");
 
 		if (!validate()) {
@@ -153,7 +153,7 @@ public abstract class BasicCartManageCommand extends Command {
 		ExecutablePagePE customerTemplate = getExecutablePage(customerLink.serialize());
 
 
-		final String customerEmail = getItemForm().getTransientSingleItem().getStringValue("email");
+		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 
 		ByteArrayOutputStream customerBos = new ByteArrayOutputStream();

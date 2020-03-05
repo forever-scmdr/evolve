@@ -19,7 +19,7 @@ import java.util.List;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -188,7 +188,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		Timestamp timeUpdated = rs.getTimestamp(I_UPDATED);
 		byte status = rs.getByte(I_STATUS);
 		byte groupId = rs.getByte(I_GROUP);
-		int userId = rs.getByte(I_USER);
+		int userId = rs.getInt(I_USER);
 		boolean filesProtected = rs.getBoolean(I_PROTECTED);
 		String params = rs.getString(I_PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
@@ -214,18 +214,43 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemId
 	 * @param limit
 	 * @param moreThanId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId, Connection conn) throws Exception {
+	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
 		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
-		select.SELECT("*").FROM(ITEM_TBL).WHERE().col_IN(I_TYPE_ID).intIN(extenders).AND()
-				.col(I_ID, ">").long_(moreThanId).ORDER_BY(I_ID).LIMIT(limit);
-		try (PreparedStatement pstmt = select.prepareQuery(conn)) {
+		select.SELECT("*").FROM(ITEM_TBL)
+				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
+				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.AND().col(I_ID, ">").long_(moreThanId)
+				.ORDER_BY(I_ID).LIMIT(limit);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			// Создание айтемов
+			while (rs.next()) {
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
+			}
+		}
+		return result;
+	}
+
+	public static ArrayList<Item> loadItemPredecessors(long itemId, String predItemName) throws Exception {
+		ArrayList<Item> result = new ArrayList<>();
+		// Полиморфная загрузка
+		TemplateQuery select = new TemplateQuery("Select item predecessors");
+		int predItemId = ItemTypeRegistry.getItemTypeId(predItemName);
+		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(predItemId);
+		select.SELECT("*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
+				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
+				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.AND().col(IP_CHILD_ID).long_(itemId)
+				.AND().col(IP_ASSOC_ID).long_(ItemTypeRegistry.getPrimaryAssocId());
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			// Создание айтемов
 			while (rs.next()) {
@@ -242,12 +267,11 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 	 * @param itemName
 	 * @param limit
 	 * @param startFromId
-	 * @param conn
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Connection conn) throws Exception {
-		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, conn);
+	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId) throws Exception {
+		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId);
 	}
 
 	/**
@@ -265,7 +289,7 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		}
 		TemplateQuery select= new TemplateQuery("Select ids by string unique keys");
 		select.SELECT(UK_KEY, UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys);
-		try (Connection conn = MysqlConnector.getConnection();
+		try(Connection conn = MysqlConnector.getConnection();
 			PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {

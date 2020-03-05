@@ -55,7 +55,7 @@ public class MysqlConnector
 {
 	private static final int MAX_CONNECTIONS = 24;
 	private static final int LOG_OPEN_COUNT = 7;
-	
+
 	private static AtomicInteger _open_count = new AtomicInteger(0);
 	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
 	//private static final HashSet<Integer> openConnections = new HashSet<>();

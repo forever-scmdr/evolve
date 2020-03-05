@@ -63,25 +63,21 @@ public class DelayedTransaction {
 		Exception exception = null;
 		for (int i = 0; i < NUMBER_OF_TRIES; i++) {
 			try (Connection conn = MysqlConnector.getConnection();
-			     //MysqlConnector.AutoRollback committer = new MysqlConnector.AutoRollback(conn)
+			     MysqlConnector.AutoRollback committer = new MysqlConnector.AutoRollback(conn)
 			) {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
 				conn.setAutoCommit(false);
 				context = new TransactionContext(conn, initiator);
-				try {
-					executeCommands();
-					conn.commit();
-					ServerLogger.debug("Transaction successfull at try #" + (i + 1));
-					finished = true;
-					// return not no make the exception
-					return commands.size();
-				} catch (Exception e) {
-					conn.rollback();
-					exception = e;
-					ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
-					rollback();
-				}
-				//committer.commit();
+				executeCommands();
+				committer.commit();
+				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
+				finished = true;
+				// return not no make the exception
+				return commands.size();
+			} catch (Exception e) {
+				exception = e;
+				ServerLogger.error("Some error occured. Rolling back the transaction.\nHere's the error:", e);
+				rollback();
 			}
 		}
 		if (exception != null) throw exception;

@@ -46,7 +46,7 @@ public class DecimalDataType extends FormatDataType {
 		if (formatter != null) {
 			ParsePosition pp = new ParsePosition(0);
 			BigDecimal num = null;
-			String toParse = stringValue.replaceAll(" ", "");
+			String toParse = stringValue.replaceAll("\\s", "");
 			num = (BigDecimal) ((DecimalFormat)formatter).parse(toParse, pp);
 			if (pp.getIndex() == stringValue.length()) {
 				return num.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
@@ -58,6 +58,7 @@ public class DecimalDataType extends FormatDataType {
 	public static BigDecimal parse(String value, int scale) {
 		if (value == null)
 			return null;
+		value = value.replaceAll("\\s", "");
 		ParsePosition pp = new ParsePosition(0);
 		BigDecimal num = null;
 		try	{

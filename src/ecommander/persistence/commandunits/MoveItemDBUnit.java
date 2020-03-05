@@ -35,9 +35,9 @@ public class MoveItemDBUnit extends DBPersistenceCommandUnit {
 	public void execute() throws Exception {
 		// Загрузка айтемов
 		if (item == null)
-			item = ItemQuery.loadById(itemToMoveId);
+			item = ItemQuery.loadById(itemToMoveId, getTransactionContext().getConnection());
 		if (newParent == null)
-			newParent = ItemQuery.loadById(newParentId);
+			newParent = ItemQuery.loadById(newParentId, getTransactionContext().getConnection());
 
 		// Копирование
 		executeCommand(new CopyItemDBUnit(item, newParent).ignoreFileErrors(ignoreFileErrors));

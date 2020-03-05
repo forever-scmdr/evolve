@@ -17,7 +17,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -64,9 +63,7 @@ public class CreateWaterMarks extends IntegrateBase {
 		info.setProcessed(0);
 		do {
 			DelayedTransaction transaction = new DelayedTransaction(getInitiator());
-			try (Connection conn = MysqlConnector.getConnection()) {
-				items = ItemMapper.loadByName(GALLERY, 10, startFrom, conn);
-			}
+			items = ItemMapper.loadByName(GALLERY, 10, startFrom);
 			for (Item item : items) {
 				Item backup = new ItemQuery(ORIGINAL_GALLERY).setParentId(item.getId(), false).loadFirstItem();
 				boolean watermarkNeeded = forceWatermark || backup == null;

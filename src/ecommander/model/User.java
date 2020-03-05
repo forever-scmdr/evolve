@@ -44,7 +44,7 @@ public class User {
 	 * @return
 	 */
 	public static User getDefaultUser() {
-		Byte defaultGroup = UserGroupRegistry.getDefaultGroup();
+		byte defaultGroup = UserGroupRegistry.getDefaultGroup();
 		User user = new User("", "", "", ANONYMOUS_ID);
 		user.addGroup(USER_DEFAULT_GROUP, defaultGroup, SIMPLE);
 		return user;

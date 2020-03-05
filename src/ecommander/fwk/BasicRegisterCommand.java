@@ -35,7 +35,7 @@ public abstract class BasicRegisterCommand extends Command {
 		if (!validate()) {
 			return getResult("not_set");
 		}
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		if (form.isValueEmpty(PASSWORD_PARAM)) {
 			return getResult("not_set");
 		}
@@ -104,7 +104,7 @@ public abstract class BasicRegisterCommand extends Command {
 		if (!validate()) {
 			return getResult("not_set_personal");
 		}
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		boolean changeUser = false;
 		User user = getInitiator();
 		String pass1 = form.getStringExtra("new-password-1");

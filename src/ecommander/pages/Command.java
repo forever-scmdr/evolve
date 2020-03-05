@@ -14,7 +14,6 @@ import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.mappers.SessionItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 /**
@@ -132,6 +131,15 @@ public abstract class Command implements AutoCloseable {
 	protected final void removeSessionForm(String formName) {
 		if (page.getItemFrom() != null)
 			page.getSessionContext().removeForm(formName);
+	}
+
+	/**
+	 * Получить сохраненную в сеансе форму
+	 * @param formName
+	 * @return
+	 */
+	protected final MultipleHttpPostForm getSessionForm(String formName) {
+		return page.getSessionContext().getForm(formName);
 	}
 	/**
 	 * Получить другую страницу

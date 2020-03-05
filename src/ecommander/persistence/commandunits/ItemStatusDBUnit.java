@@ -130,7 +130,7 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			if (type.hasExtraHandlers(ItemType.Event.delete)) {
 				for (ItemEventCommandFactory fac : type.getExtraHandlers(ItemType.Event.delete)) {
 					if (itemFull == null) {
-						itemFull = ItemQuery.loadById(item.getId());
+						itemFull = ItemQuery.loadById(item.getId(), getTransactionContext().getConnection());
 					}
 					PersistenceCommandUnit command = fac.createCommand(itemFull);
 					executeCommandInherited(command);

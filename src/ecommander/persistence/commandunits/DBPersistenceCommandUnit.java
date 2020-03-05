@@ -32,7 +32,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	private LinkedHashMap<String, Long> queryTimes = null;
 	private String currentQuery = null;
-	
+
 	public TransactionContext getTransactionContext() {
 		return context;
 	}
@@ -67,8 +67,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * 
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreUser() {
-		this.ignoreUser = true;
+	public DBPersistenceCommandUnit ignoreUser(boolean... ignore) {
+		this.ignoreUser = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 	/**
@@ -77,7 +77,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * @return
 	 */
 	public DBPersistenceCommandUnit ignoreFileErrors(boolean... ignore) {
-		this.ignoreFileErrors = (ignore.length > 0)? ignore[0]: true;
+		this.ignoreFileErrors = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 

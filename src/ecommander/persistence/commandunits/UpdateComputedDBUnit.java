@@ -26,7 +26,7 @@ public class UpdateComputedDBUnit extends DBPersistenceCommandUnit implements DB
 
 	@Override
 	public void execute() throws Exception {
-		Item item = ItemQuery.loadById(itemId);
+		Item item = ItemQuery.loadById(itemId, getTransactionContext().getConnection());
 		if (item.getStatus() == Item.STATUS_NORMAL) {
 			for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
 				if (paramDesc.isComputed()) {
