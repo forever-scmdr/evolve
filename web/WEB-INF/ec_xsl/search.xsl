@@ -194,6 +194,7 @@
 				<xsl:if test="not(vendor_code)">
 					<xsl:if test="available and not(available = '0')"><xsl:value-of select="f:num(available) * 7"/> дней</xsl:if>
 					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+					<xsl:if test="available and f:num(available) &lt; 0">по запросу</xsl:if>
 				</xsl:if>
 			</td>
 			<td><xsl:value-of select="$unit"/></td>

@@ -43,7 +43,7 @@ public class ImportEbvCom extends IntegrateBase implements ItemNames {
 	private static final String MIN_QTY_HEADER = "mpq";
 	private static final String PRICE_HEADER = "price";
 	private static final String VENDOR_HEADER = "manuf";
-	//private static final String NAME_EXTRA_HEADER = "Описание";
+	private static final String EXPORTCODE_HEADER = "Exportcode";
 	//private static final String UNIT_HEADER = "единица измерения";
 
 	private static final String EBV_CODE_SUFFIX = "ebv";
@@ -121,7 +121,8 @@ public class ImportEbvCom extends IntegrateBase implements ItemNames {
 				try {
 					code = src.getValue(CODE_HEADER);
 					if (StringUtils.isNotBlank(code)) {
-						if (codes.size() > 0 && !codes.contains(code))
+						String exportCode = src.getValue(EXPORTCODE_HEADER);
+						if (StringUtils.isNotBlank(exportCode) && codes.size() > 0 && !codes.contains(exportCode))
 							return;
 						code += EBV_CODE_SUFFIX;
 						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
@@ -131,16 +132,16 @@ public class ImportEbvCom extends IntegrateBase implements ItemNames {
 						}
 						prod.set_name(removeQuotes(src.getValue(NAME_HEADER)));
 						prod.set_description(removeQuotes(src.getValue(DESCRIPTION_HEADER)));
-						prod.set_available(defaultDelay);
 						prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
+						prod.set_available(prod.get_qty().compareTo(new BigDecimal(0.1)) < 0 ? -1 : defaultDelay);
 						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));
 
 						BigDecimal price = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
 						BigDecimal minQty = src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1));
 						BigDecimal quotient = getQtyQuotient(price);
 						price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
-						minQty = minQty.multiply(quotient);
-						String unit = minQty.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + minQty + ")" : "шт.";
+						minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
+						String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
 						prod.set_min_qty(minQty);
 						prod.set_unit(unit);
 						currencyRates.setAllPrices(prod, price, "USD");
