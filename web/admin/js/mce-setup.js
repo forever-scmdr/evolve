@@ -7,7 +7,7 @@ var mceSettings = {
 		,content_css : [
 			"css/text-style.css?v=2"]
 		,plugins : [
-			'advlist autolink lists link image charmap print preview anchor textcolor',
+			'advlist autolink lists link image imagetools charmap print preview anchor textcolor',
 			'searchreplace visualblocks code fullscreen',
 			'insertdatetime media table contextmenu paste code'
 			// ,"fontawesome noneditable"
@@ -15,6 +15,8 @@ var mceSettings = {
 		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
+		extended_valid_elements: "figure,figcaption",
+		image_caption: true,
 		style_formats : [
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
 			{title : 'Желтый фон', selector : 'p', classes : 'yellow-bg', wrapper: false, merge_siblings : true},
@@ -38,14 +40,8 @@ var mceSettings = {
 					title : 'aside',
 					block : 'aside',
 					wrapper : true
-				}, {
-					title : 'figure',
-					block : 'figure',
-					wrapper : true
 				}
-
 				]
-
 			}
 
 		],
@@ -73,6 +69,8 @@ var mceSettings = {
 		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
+		extended_valid_elements: "figure,figcaption",
+		image_caption: true,
 		style_formats : [
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
 			{title : 'Желтый фон', selector : 'div', classes : 'yellow-bg', wrapper : true},
@@ -123,7 +121,7 @@ var mceSettings = {
 			"font-awesome-4.6.3/css/font-awesome.min.css" ]
 		,plugins : [
 			'advlist autolink lists link charmap print preview anchor textcolor',
-			'searchreplace visualblocks code fullscreen',
+			'searchreplace code fullscreen',
 			'insertdatetime media table contextmenu paste code'
 			// ,"fontawesome noneditable"
 			, "visualchars"],
