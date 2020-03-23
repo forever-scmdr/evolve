@@ -3,8 +3,11 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="prefix" select="if (page/catalog/section[.//section/@id = $sel_sec_id]/name = 'Запчасти') then 'Запчасти на ' else ''"/>
+	<xsl:variable name="title_base" select="concat($prefix, $sel_sec/name, ' купить в Минске в розницу и оптом – Фрезерпром')"/>
+	<xsl:variable name="title" select="if($tag != '') then concat($title_base, ' - ', $tag) else $title_base"/>
+	<xsl:variable name="meta_description" select="concat($prefix, $sel_sec/name, ' от Фрезерпром ✅ В розницу и оптом,  доступные цены ✅ Скидки, доставка в регионы. Закажите по ☎☎☎ +375 (29) 577-72-64; +375 (29) 677-74-92')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else concat($prefix, $sel_sec/name)"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -53,7 +56,6 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>

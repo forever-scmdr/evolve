@@ -3,8 +3,10 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске в розницу и оптом – Фрезерпром')"/>
+	<xsl:variable name="meta_description" select="concat($p/name, ' от Фрезерпром ✅ Огромный выбор, доступные цены. Скидки, доставка ✅ Заказ и консультация по ☎☎☎ +375 (29) 577-72-64; +375 (29) 677-74-92')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
+	<xsl:variable name="canonical" select="$p/canonical"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
@@ -143,7 +145,8 @@
 								<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 							</xsl:when>
 							<xsl:otherwise>
-								<div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i> Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
+								<!-- <div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i> Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div> -->
+								<div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 							</xsl:otherwise>
 						</xsl:choose>
 					</div>

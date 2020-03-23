@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -234,14 +235,15 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение нового значения счетчика, если все отправлено удачно
 		counter.setValue(COUNT_PARAM, count);
 		//counter.setValue(DATE_PARAM, newDate);
-		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(counter).ignoreUser());
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
 
 		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
-		Item userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+		User intitiator = getInitiator();
+		Item userItem = intitiator.inGroup("registered")? new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem() : null;
 
 		// 2. Потом надо попробовать загружить пользователя по введенному email
 		if (userItem == null) {
@@ -272,17 +274,27 @@ public abstract class BasicCartManageCommand extends Command {
 			purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
 			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
-			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+			Collection<ParameterDescription> boughtParams = ItemTypeRegistry.getItemType(ItemNames.BOUGHT).getParameterList();
 			for (Item bought : boughts) {
-				long bufParentId = bought.getContextParentId();
-				byte bufOwnerGroup = bought.getOwnerGroupId();
-				int bufOwnerUser = bought.getOwnerUserId();
-				bought.setContextPrimaryParentId(purchase.getId());
-				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
-				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
-				bought.setContextPrimaryParentId(bufParentId);
-				bought.setOwner(bufOwnerGroup, bufOwnerUser);
+// 	new cool save  to history method by Egor
+//				long bufParentId = bought.getContextParentId();
+//				byte bufOwnerGroup = bought.getOwnerGroupId();
+//				int bufOwnerUser = bought.getOwnerUserId();
+//				bought.setContextPrimaryParentId(purchase.getId());
+//				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+//				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
+//				bought.setContextPrimaryParentId(bufParentId);
+//				bought.setOwner(bufOwnerGroup, bufOwnerUser);
+
+// fallback to old-school method by Anton 23.03.2020
+				Item record = ItemUtils.newChildItem(ItemNames.BOUGHT, purchase);
+				for (ParameterDescription param : boughtParams){
+					int id = param.getId();
+					record.setValue(id, bought.getValue(id));
+				}
+				executeCommandUnit(SaveItemDBUnit.get(record).ignoreUser());
 			}
 		}
 		//

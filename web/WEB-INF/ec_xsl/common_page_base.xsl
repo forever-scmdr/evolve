@@ -153,7 +153,7 @@
 			<div class="container">
 				<xsl:variable name="footer" select="page/common/footer"/>
 				<div class="footer__column">
-					<div class="title_3">© ООО «Фрезерпром», 2018.</div>
+					<div class="title_3">ЧТУП «Фрезерпром», 2020</div>
 					<div class="forever">
 						<img src="img/forever.png" alt="" />
 						<a href="forever.by" target="_blank">Разработка сайта <br/>студия веб-дизайна Forever</a>
@@ -485,7 +485,8 @@
 					<div class="device__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 				</xsl:when>
 				<xsl:otherwise>
-					<div class="device__in-stock device__in-stock_no" ><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
+					<!-- <div class="device__in-stock device__in-stock_no" ><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div> -->
+					<div class="device__in-stock device__in-stock_no" ><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 				</xsl:otherwise>
 			</xsl:choose>
 
@@ -588,7 +589,8 @@
 						<div class="device__in-stock device_row__in-stock device__in-stock_maybe"><i class="fas fa-signal"></i><xsl:text>на складе: </xsl:text><xsl:value-of select="$qty"/> шт.</div>
 					</xsl:when>
 					<xsl:otherwise>
-						<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div>
+						<!-- <div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Поставка: <xsl:value-of select="substring(//catalog/ship_date, 1,10)"/></div> -->
+						<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
