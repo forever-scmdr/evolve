@@ -278,7 +278,7 @@ public abstract class BasicCartManageCommand extends Command {
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			Collection<ParameterDescription> boughtParams = ItemTypeRegistry.getItemType(ItemNames.BOUGHT).getParameterList();
 			for (Item bought : boughts) {
-// 	new cool save  to history method by Egor
+// 	new cool save to history method by Egor
 //				long bufParentId = bought.getContextParentId();
 //				byte bufOwnerGroup = bought.getOwnerGroupId();
 //				int bufOwnerUser = bought.getOwnerUserId();
