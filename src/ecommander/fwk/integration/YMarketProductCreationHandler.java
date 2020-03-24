@@ -81,7 +81,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private int smallPicWidth = 0;
 	private int smallPicHeight = 0;
 	private Path picFolder;
-	private  boolean writeToServerLogger = false;
 
 
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -111,7 +110,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		info.setLineNumber(locator.getLineNumber());
-		writeToServerLogger = locator.getLineNumber() == 89947;
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
@@ -261,56 +259,23 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				File picInFolder = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "").replace('*', '-') + ".jpg").toFile();
 
-				if(writeToServerLogger){
-					ServerLogger.error(picInFolder.toString());
-					info.pushLog(picInFolder.toString());
-				}
-
 				if (picInFolder.isFile()) {
-
-					if(writeToServerLogger){
-						ServerLogger.error("Pic in folder is file");
-						info.pushLog("Pic in folder is file");
-					}
 
 					product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) + ".jpg");
 					String small = "small_" + product.getStringValue(CODE_PARAM) + ".jpg";
 
-					if(writeToServerLogger){
-						ServerLogger.error("trying to make small: "+ small);
-						info.pushLog("trying to make small: "+ small);
-					}
-
 					if (resize(picInFolder, small)) {
-						if(writeToServerLogger){
-							ServerLogger.error("resize OK");
-							info.pushLog("resize OK");
-						}
 						product.setValue("pic_ref", "device_pics/small_" + product.getStringValue(CODE_PARAM) + ".jpg");
 					}
 					for (int i = 1; i < 6; i++) {
 						File f = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "") +"_"+ i +".jpg").toFile();
 						if(f.isFile()){
 							product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) +"_"+ i +".jpg");
-							if(writeToServerLogger){
-								ServerLogger.error("gal "+i+" added");
-								info.pushLog("gal "+i+" added");
-							}
 						}
 					}
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 
-					if(writeToServerLogger){
-						ServerLogger.error("Device pics found. device saved");
-						info.pushLog("Device pics found. device saved");
-					}
-
 				} else {
-
-					if(writeToServerLogger){
-						ServerLogger.error("Device pics not found");
-						info.pushLog("Device pics not found");
-					}
 
 					boolean needSave = false;
 					ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
@@ -325,15 +290,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							product.clearValue(MAIN_PIC_PARAM);
 						}
 					}
-					if(writeToServerLogger){
-						ServerLogger.error("main pic removed");
-						info.pushLog("main pic removed");
-					}
 					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-					if(writeToServerLogger){
-						ServerLogger.error("picUrls = "+ picUrls);
-						info.pushLog("picUrls = "+ picUrls);
-					}
 					if (picUrls.size() > 1) {
 						int i = 0;
 						for (String picUrl : picUrls) {
@@ -358,10 +315,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 								info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
 							}
 						}
-						if(writeToServerLogger){
-							ServerLogger.error("picUrls set");
-							info.pushLog("picUrls set");
-						}
 					}
 					// Генерация маленького изображения
 					boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
@@ -370,10 +323,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						if (!mainPic.isFile()) {
 							product.clearValue(MAIN_PIC_PARAM);
 							noMainPic = true;
-						}
-						if(writeToServerLogger){
-							ServerLogger.error("picUrls set");
-							info.pushLog("picUrls set");
 						}
 					}
 					if (picUrls.size() > 0) {
@@ -390,19 +339,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 									info.pushLog("файл для товара [" + product.getValue(CODE_PARAM) + "] не найден. Файл: " + url);
 								}
 
-								if(writeToServerLogger){
-									ServerLogger.error("file found in /photos folder");
-									info.pushLog("file found in /photos folder");
-								}
-
 							}else{
 								product.setValue(MAIN_PIC_PARAM, new URL(url));
 								product.clearValue(SMALL_PIC_PARAM);
 								save = true;
-								if(writeToServerLogger){
-									ServerLogger.error("file is URL");
-									info.pushLog("file is URL");
-								}
 							}
 						} else if (!noMainPic && StringUtils.startsWith(url, host)) {
 							File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
@@ -416,28 +356,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							} else {
 								info.pushLog("файл для товара ["+product.getValue(CODE_PARAM)+"] не найден. Файл: "+url);
 							}
-							if(writeToServerLogger){
-								ServerLogger.error("main pic overriden");
-								info.pushLog("main pic overriden");
-							}
 						}
 						if (save) {
 							try {
 								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-								if(writeToServerLogger){
-									ServerLogger.error("save 1 success");
-									info.pushLog("save 1 success");
-								}
 								DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-								if(writeToServerLogger){
-									ServerLogger.error("resize success");
-									info.pushLog("resize success");
-								}
 								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-								if(writeToServerLogger){
-									ServerLogger.error("save 2 success");
-									info.pushLog("save 2 success");
-								}
 								needSave = false;
 							} catch (Exception e) {
 								//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
@@ -450,10 +374,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					if (needSave) {
 						try {
 							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-							if(writeToServerLogger){
-								ServerLogger.error("save 3 success");
-								info.pushLog("save 3 success");
-							}
 						} catch (Exception e) {
 							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 							info.setLineNumber(locator.getLineNumber());
@@ -483,19 +403,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	}
 
 	private boolean resize(File picInFolder, String small) throws IOException {
-		if(writeToServerLogger) info.pushLog("resizing...");
 		if (smallPicWidth == 0 && smallPicHeight == 0) return false;
 		try {
 			Files.deleteIfExists(Paths.get(picFolder.toString(), small));
-			if(writeToServerLogger) info.pushLog("old file deleted");
 			BufferedImage srcImg = ImageIO.read(picInFolder);
-			if(writeToServerLogger) info.pushLog("buffered image created");
-			BufferedImage result = ResizeImagesFactory.ResizeImages.getScaledInstance(srcImg, smallPicWidth, smallPicHeight, 1.5, writeToServerLogger);
-			if(writeToServerLogger) info.pushLog("buffered image resized");
+			BufferedImage result = ResizeImagesFactory.ResizeImages.getScaledInstance(srcImg, smallPicWidth, smallPicHeight, 1.5);
 			ImageIO.write(result, "jpg", Paths.get(picFolder.toString(), small).toFile());
-			if(writeToServerLogger) info.pushLog("resized image saved");
 		} catch (Exception e) {
-			if(writeToServerLogger) info.pushLog("Exception caught: "+e);
 			return false;
 		}
 		return true;
