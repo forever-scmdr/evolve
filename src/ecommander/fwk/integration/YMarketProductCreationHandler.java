@@ -109,6 +109,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
+		info.setLineNumber(locator.getLineNumber());
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
@@ -407,6 +408,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		info.setLineNumber(locator.getLineNumber());
 		parameterReady = false;
 		paramValue = new StringBuilder();
 		// Продукт
