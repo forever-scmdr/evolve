@@ -272,6 +272,7 @@ public abstract class IntegrateBase extends Command {
 	
 	private Info newInfo() {
 		info = new Info();
+		info.host = getUrlBase();
 		return info;
 	}
 	/**

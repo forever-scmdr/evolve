@@ -256,7 +256,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		}
 
 
-		public static BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, Object hint, double stepQuotient) {
+		public static BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, Object hint, double stepQuotient, boolean... writeLog) {
+			boolean log = writeLog.length > 0 && writeLog[0];
 			if (targetHeight > 0 && targetWidth <= 0) {
 				double quotient = ((double) img.getHeight()) / ((double) targetHeight);
 				targetWidth = (int) (img.getWidth() / quotient);
@@ -295,8 +296,16 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				w = targetWidth;
 				h = targetHeight;
 			}
+			if(w <= targetWidth || h <= targetHeight) return  ret;
 
+			int emergencyStopper = 20;
+			int em = 0;
 			do {
+				em++;
+
+				if(log){
+					ServerLogger.error("resize, attempt: " + em);
+				}
 				if (stepQuotient > 1) {
 					if (w > targetWidth) {
 						w /= stepQuotient;
@@ -313,6 +322,11 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					}
 				}
 
+				if(log){
+					ServerLogger.error("width: " + w+"/"+targetWidth);
+					ServerLogger.error("height: " + h+"/"+targetHeight);
+				}
+
 				BufferedImage tmp = new BufferedImage(w, h, type);
 				Graphics2D g2 = tmp.createGraphics();
 				g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
@@ -320,14 +334,14 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				g2.dispose();
 
 				ret = tmp;
-			} while (w != targetWidth || h != targetHeight);
+			} while ((w != targetWidth || h != targetHeight) && (em < emergencyStopper));
 
 			return ret;
 		}
 
 
-		public static BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, double stepQuotient) {
-			return getScaledInstance(img, targetWidth, targetHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR ,stepQuotient);
+		public static BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, double stepQuotient, boolean... write) {
+			return getScaledInstance(img, targetWidth, targetHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR ,stepQuotient, write);
 		}
 
 
