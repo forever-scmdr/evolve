@@ -34,7 +34,7 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
 
     @Override
     public ResultPE execute() throws Exception {
-        ServerLogger.error("CHECK FUTURE COMMAND LAUNCED");
+        ServerLogger.error("CHECK FUTURE COMMAND LAUNCHED");
         LinkedList<Item> articles = new LinkedList<Item>();
 //        long before = new Date().getTime() - (86400*1000);
         long now = new Date().getTime();

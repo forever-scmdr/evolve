@@ -94,6 +94,7 @@
 	</item>
 
 	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
+		<parameter name="hash" type="integer" caption="name_hash"/>
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
@@ -121,6 +122,9 @@
 		<child item="comments" single="true"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+
+		<on-create class="ecommander.fwk.NameHash"/>
+		<on-update class="ecommander.fwk.NameHash"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -150,12 +154,16 @@
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
 		<parameter name="name" type="string" caption="Заголовок"/>
+		<parameter name="hash" type="integer" caption="name_hash"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 		<parameter name="cat_link" type="string" caption="Ссылка на категорию"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="tag" type="string" caption="тег" domain="tags"/>
 		<parameter name="style" type="string" caption="доп. CSS" description="атрибут style"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
+
+		<on-create class="ecommander.fwk.NameHash"/>
+		<on-update class="ecommander.fwk.NameHash"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="18" ag-hash="-567451565">
@@ -196,6 +204,7 @@
 	</item>
 
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
+		<parameter name="hash" type="integer" caption="name_hash"/>
 		<child item="seo" single="true"/>
 		<parameter name="main_pic" caption="заглавная картинка" type="picture"/>
 		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 1000; src: main_pic;"/>
@@ -220,6 +229,9 @@
 
 		<on-create class="ecommander.fwk.ArticleFromFuture"/>
 		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+
+		<on-create class="ecommander.fwk.NameHash"/>
+		<on-update class="ecommander.fwk.NameHash"/>
 	</item>
 
 	<!--<item name="custom_pages" caption="Информационные разделы" ag-id="22" ag-hash="727106934">-->

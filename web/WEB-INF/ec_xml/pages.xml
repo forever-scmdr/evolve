@@ -95,7 +95,7 @@
 		</request>
 		<single item="main_page" id="main">
 			<single item="seo"/>
-			<list item="featured">
+			<list item="featured" id="featured">
 				<filter>
 					<limit>
 						<var value="3"/>
@@ -111,6 +111,9 @@
 		<single item="news_wrap">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
+					<parameter name="hash" sign="!=" compare="SOME">
+						<var ref="featured" parameter="hash"/>
+					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -120,9 +123,6 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
-<!--						<var var="$now"/>-->
-<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -138,15 +138,15 @@
 
 		<list item="news_item" id="pni" tag="popular">
 			<filter>
+				<parameter name="hash" sign="!=" compare="SOME">
+					<var ref="featured" parameter="hash"/>
+				</parameter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
 				<limit>
 					<var value="14"/>
 				</limit>
-<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
-<!--					<var var="$now"/>-->
-<!--				</parameter>-->
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
 				</parameter>
@@ -164,15 +164,15 @@
 
 		<list item="small_news_item" id="sni">
 			<filter>
+				<parameter name="hash" sign="!=" compare="SOME">
+					<var ref="featured" parameter="hash"/>
+				</parameter>
 				<limit>
 					<var value="3"/>
 				</limit>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
-<!--				<parameter name="date" sign="&lt;=" compare="SOME">-->
-<!--					<var var="$now"/>-->
-<!--				</parameter>-->
 			</filter>
 			<link name="show_page" target="small_news_item">
 				<var name="sni" ref="sni" style="translit"/>
@@ -190,9 +190,19 @@
 			<var name="limit" value="9"/>
 			<var name="page" value="2"/>
 		</request>
+		<list item="featured" id="featured">
+			<filter>
+				<limit>
+					<var value="3"/>
+				</limit>
+			</filter>
+		</list>
 		<single item="news_wrap" cacheable="true" cache-vars="page limit">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
+					<parameter name="hash" sign="!=" compare="SOME">
+						<var ref="featured" parameter="hash"/>
+					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
@@ -202,9 +212,6 @@
 					<pages>
 						<var name="page" var="page"/>
 					</pages>
-<!--					<parameter name="date" sign="&lt;=" compare="SOME">-->
-<!--						<var var="$now"/>-->
-<!--					</parameter>-->
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
@@ -933,6 +940,15 @@
 			<var name="word" style="translit"/>
 		</request>
 		<single item="wiki_tip" var="word" cache-vars="word" cacheable="true"/>
+	</page>
+
+	<page name="add_hashes" template="integrate">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.AddNameHashes" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
 	</page>
 
 	<page name="rss" template="rss">
