@@ -33,7 +33,7 @@ public class AddRandomAlso extends IntegrateBase implements CatalogConst {
 	private void processSection(Item currentSection) throws Exception {
 		List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(currentSection.getId(), false).loadItems();
 		if(products.size() == 0) return;
-		else if(products.size() < 7){
+		else if(products.size() < 6){
 			for(Item p : products){
 				p.clearValue(SIMILAR_CODE_PARAM);
 				for(Item ass : products){
@@ -52,7 +52,7 @@ public class AddRandomAlso extends IntegrateBase implements CatalogConst {
 				p.clearValue(SIMILAR_CODE_PARAM);
 				Collections.shuffle(idx);
 				int s = 0;
-				for(int j = 0; j < 7 && s < 6; j++){
+				for(int j = 0; j < 6 && s < 5; j++){
 					Item ass = products.get(idx.get(j));
 					if(p == ass) continue;
 					p.setValue(SIMILAR_CODE_PARAM, ass.getValue(CODE_PARAM));
