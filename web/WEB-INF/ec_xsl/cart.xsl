@@ -40,7 +40,7 @@
 
 						<div class="total">
 							<p>Итого:
-								<xsl:if test="page/cart/simple_sum">
+								<xsl:if test="f:num(page/cart/simple_sum) &gt; f:num(page/cart/sum)">
 								<span style="text-decoration: line-through; padding-right: 10px; color: #ccc;"><xsl:value-of select="page/cart/simple_sum"/> р.</span>
 								</xsl:if>
 								<xsl:value-of select="page/cart/sum"/> р.</p>
