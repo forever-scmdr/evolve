@@ -49,9 +49,9 @@
 							<input type="submit" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 						</div>
-						<xsl:if test="page/cart/simple_sum">
-							<div class="total">
-								<p>Сэкономьте: <xsl:value-of select="f:num(page/cart/simple_sum) - f:num(page/cart/sum)"/> р.</p>
+						<xsl:if test="f:num(page/cart/simple_sum) &gt; f:num(page/cart/sum)">
+							<div class="total" style="margin-top:0;">
+								<p>Сэкономьте: <xsl:value-of select="f:currency_decimal(string(f:num(page/cart/simple_sum) - f:num(page/cart/sum)))"/> р.</p>
 							</div>
 						</xsl:if>
 					</form>

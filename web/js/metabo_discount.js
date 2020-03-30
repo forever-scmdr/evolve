@@ -112,7 +112,7 @@ function discount() {
 					deactivateDiscount(keys[i]);
 				//	console.log("expired: " + (passed - d));
 				} else {
-				//	console.log("left:" + (s - passed));
+					console.log("left:" + (s - passed));
 				}
 			}
 		} else {
