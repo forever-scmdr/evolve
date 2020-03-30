@@ -478,9 +478,14 @@
 			</div>
 			<div class="price">
 				<xsl:if test="$has_price">
-					<xsl:if test="price_old and not($price_old = '')"><p><span>Цена</span><b>
-						<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
-					<p><xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
+					<!-- <xsl:if test="price_old and not($price_old = '')"> -->
+						<p class="price-old-{code} price-old-page" style="{if($price_old != '') then '' else 'display: none;'}">
+							<span>Цена</span>
+							<b id="price-old-{code}" class="op"><xsl:value-of select="if ($price_old != '') then concat($price_old, ' р.') else ''"/></b>
+						</p>
+					<!-- </xsl:if> -->
+					<p>
+						<span class="price-old-{code} price-old-page" style="{if(price_old and not($price_old = '')) then '' else 'display: none;'}">Цена со скидкой</span>
 						<e class="price-highlight" id="price-{code}" data-price="{f:num($price)}"><xsl:value-of select="$price"/> р.</e>
 					</p>
 				</xsl:if>
@@ -697,21 +702,24 @@
 		<body>
 			<div id="discount-popup-2" class="message" style="display: none;">
 				<ul id="active_discounts_list-2">
-					<xsl:if test="page/common/discount != ''">
+					<!-- <xsl:if test="page/common/discount != ''">
 						<li class="li-page">
 							До окончания действия скидки <xsl:value-of select="100 * f:num(page/common/discount)"/>% осталось <strong class="dsc-timer-page"></strong>
 						</li>
-					</xsl:if>
+					</xsl:if> -->
 				</ul>
 			</div>
 			<div id="discount-popup" class="discount-alert" style="display: none;">
 				<div>
+					<div class="txt-page" style="display: none;">
 					<xsl:value-of select="page/common/discount_text" disable-output-escaping="yes"/>
-					<h2>Скидки на заказ</h2>
+					</div>
+						<h2>Действующие скидки</h2>
+
 					<ol id="active_discounts_list">
-						<xsl:if test="page/common/discount != ''">
+						<!-- <xsl:if test="page/common/discount != ''">
 							<li class="li-page">Если вы сделаете заказ в течение <strong class="dsc-timer-page"></strong>, то получите скидку <xsl:value-of select="100 * f:num(page/common/discount)"/>%.</li>
-						</xsl:if>
+						</xsl:if> -->
 					</ol>
 					<span onclick="closeDiscountWindow(); return false;" class="button">Понятно</span>
 				</div>
