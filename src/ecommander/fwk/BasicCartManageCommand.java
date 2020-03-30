@@ -420,6 +420,7 @@ public abstract class BasicCartManageCommand extends Command {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
+		BigDecimal simpleSum = new BigDecimal(0);
 		double zeroQuantity = 0;
 		double regularQuantity = 0;
 		boolean result = true;
@@ -436,8 +437,10 @@ public abstract class BasicCartManageCommand extends Command {
 				// Первоначальная сумма
 				//BigDecimal price = applyDiscount(bought);
 				//product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal q = new BigDecimal(quantity);
 				BigDecimal price = applyDiscount(bought);
-				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
+				BigDecimal productSum = price.multiply(q);
+
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
 					zeroQuantity += quantity;
@@ -447,11 +450,16 @@ public abstract class BasicCartManageCommand extends Command {
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
+				if(productSum.compareTo(new BigDecimal(0)) == 1){
+					BigDecimal oldPrice = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+					simpleSum = simpleSum.add(oldPrice.multiply(q));
+				}
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
 		cart.setValue(SUM_PARAM, sum);
+		cart.setValue(ItemNames.cart.SIMPLE_SUM, simpleSum);
 		cart.setValue(QTY_PARAM, regularQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);

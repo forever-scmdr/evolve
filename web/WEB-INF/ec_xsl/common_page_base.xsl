@@ -494,8 +494,8 @@
 				<xsl:variable name="available" select="available = '1'"/>
 				<div id="cart_list_{code}" class="product_purchase_container">
 					<form action="{to_cart}" method="post">
+						<input type="hidden" name="discount" value="" id="disp-{code}" class="disp"/>
 						<xsl:if test="$available">
-							<input type="hidden" name="discount" value="" id="disp-{code}" class="disp"/>
 							<input type="number" name="qty" value="1" min="0"/>
 							<input type="submit" value="Купить"/>
 						</xsl:if>
