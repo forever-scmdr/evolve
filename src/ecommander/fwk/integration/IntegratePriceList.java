@@ -13,7 +13,6 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +58,7 @@ public class IntegratePriceList extends IntegrateBase {
 			@Override
 			protected void processRow() throws Exception {
 				String code = getValue(CODE);
+				if(StringUtils.isBlank(code)) return;
 				UniqueArrayList<String> AdditionalHeaders = null;
 				switch (code) {
 					case "Раздел:":
