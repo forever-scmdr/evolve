@@ -134,33 +134,37 @@
 						</a>
 					</li> -->
 				</xsl:for-each>
-					<!--<xsl:if test="count(page/news) = 1">-->
-						<!--<xsl:variable name="k" select="page/news/@key"/>-->
-						<!--<li class="{'current'[$active_menu_item = $k]}">-->
-							<!--<a href="{page/news/show_page}"><xsl:value-of select="page/news/name"/></a>-->
-						<!--</li>-->
-					<!--</xsl:if>-->
-					<!--<xsl:if test="count(page/news) &gt; 1">-->
-						<!--<xsl:variable name="k" select="@key"/>-->
-						<!--<li class="has-children{' current'[$active_menu_item = $k]}">-->
-							<!--<a>-->
-							  <!--Новости-->
-							<!--</a>-->
-							<!--<ul class="sub-menu">-->
-								<!--<xsl:for-each select="page/news" >-->
-									<!--<xsl:variable name="k" select="$k"/>-->
-									<!--<li class="{'current'[$active_menu_item = $k]}">-->
-										<!--<a href="{show_page}"><xsl:value-of select="name"/></a>-->
-									<!--</li>-->
-								<!--</xsl:for-each>-->
-							<!--</ul>-->
-						<!--</li>-->
-					<!--</xsl:if>-->
-
-			   <!--  <li class="{'current'[$active_menu_item = 'contacts']}">
+				<!--  <li class="{'current'[$active_menu_item = 'contacts']}">
 					<a href="{page/contacts_link}">Контакты</a>
 				</li> -->
 			</ul>
+
+			<xsl:if test="page/hot_tags/tag != ''">
+				<xsl:variable name="t" select="page/hot_tags/tag"/>
+				<ul class="header__nav header_tags orange">
+					<xsl:for-each select="$t">
+						<xsl:if test="position() &lt; 6">
+
+							<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
+								<a href="{hot_link}"><xsl:value-of select="name"/></a>
+							</li>
+						</xsl:if>
+					</xsl:for-each>
+				</ul>
+				<xsl:if test="count($t) &gt; 5">
+					<ul class="header__nav header_tags yellow">
+						<xsl:for-each select="$t">
+							<xsl:if test="position() &gt; 5">
+								<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
+									<a href="{hot_link}"><xsl:value-of select="name"/></a>
+								</li>
+							</xsl:if>
+						</xsl:for-each>
+					</ul>
+				</xsl:if>
+				<div class="margin-bottom-stub"></div>
+			</xsl:if>
+
 			<a href="#0" title="Скрыть меню" class="header__overlay-close close-mobile-menu">Закрыть</a>
 		</nav>
 	</xsl:template>

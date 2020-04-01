@@ -94,13 +94,13 @@
 	</item>
 
 	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
-		<parameter name="hash" type="integer" caption="name_hash"/>
+		
 		<child item="seo" single="true"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
-		<parameter name="author" type="string" caption="Автор"/>
+		<parameter name="author" type="string" caption="Автор" domain="author"/>
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
@@ -117,6 +117,7 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 <!--		<parameter name="text_audio" type="file" caption="Аудио для вставки в текст" multiple="true"/>-->
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
+		<parameter name="hash" type="integer" caption="name_hash"/>
 		<child item="page_part"/>
 		<child item="top_gal" single="true"/>
 		<child item="comments" single="true"/>
@@ -127,7 +128,7 @@
 		<on-update class="ecommander.fwk.NameHash"/>
 	</item>
 
-	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
+	<item name="news" caption="Новостной раздел" children-sorting="DESC" children-per-page="30" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
 		<!--<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>-->
 		<child item="seo" single="true"/>
@@ -154,13 +155,13 @@
 
 	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
 		<parameter name="name" type="string" caption="Заголовок"/>
-		<parameter name="hash" type="integer" caption="name_hash"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 		<parameter name="cat_link" type="string" caption="Ссылка на категорию"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="tag" type="string" caption="тег" domain="tags"/>
 		<parameter name="style" type="string" caption="доп. CSS" description="атрибут style"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
+		<parameter name="hash" type="integer" caption="name_hash"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>
@@ -198,31 +199,30 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="small_news" caption="Новости" children-sorting="DESC" description="без рисунков" ag-id="27" ag-hash="1229830923">
+	<item name="small_news" caption="Новости" children-sorting="DESC" children-per-page="30" description="без рисунков" ag-id="27" ag-hash="1229830923">
 		<child item="seo" single="true"/>
 		<child item="small_news_item"/>
 	</item>
 
-	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
-		<parameter name="hash" type="integer" caption="name_hash"/>
+	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809" >
 		<child item="seo" single="true"/>
 		<parameter name="main_pic" caption="заглавная картинка" type="picture"/>
 		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" caption="малая картинка" type="picture" format="width: 500; src: main_pic;"/>
-
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
 		<parameter name="audio" type="file" caption="аудио"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
-		<parameter name="author" type="string" caption="Автор"/>
+		<parameter name="author" type="string" caption="Автор" domain="author"/>
 		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
+		<parameter name="hash" type="integer" caption="name_hash"/>
 
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
@@ -283,6 +283,16 @@
 		<parameter name="link" type="string" caption="link"/>
 	</item>
 
+
+	<item name="hot_tags" caption="Горячие теги" >
+		<child item="tag"/>
+	</item>
+
+	<item name="tag" caption="tag" key="name">
+		<parameter name="name" type="string" caption="Тэг"/>
+		<parameter name="color" type="string" caption="Цвет"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="main_page" single="true"/>
@@ -295,6 +305,7 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="dictionary" single="true"/>
 		<child item="rss" single="true"/>
+		<child item="hot_tags" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
