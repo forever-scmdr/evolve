@@ -694,6 +694,30 @@
 				<var name="ni" style="translit" ref="also"/>
 			</link>
 		</list>
+
+		<list item="news_item" id="pni" tag="popular">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="14"/>
+				</limit>
+				<parameter name="popular" sign="=" compare="SOME">
+					<var value="1"/>
+				</parameter>
+			</filter>
+			<single item="top_gal"/>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="pni" style="translit"/>
+			</link>
+			<ancestor item="news" transit="false" id="pcat">
+				<link name="show_page" target="news_section" type="exclusive">
+					<var name="sel" ref="pcat" style="translit"/>
+				</link>
+			</ancestor>
+		</list>
+
 		<include name="COMMON"/>
 	</page>
 

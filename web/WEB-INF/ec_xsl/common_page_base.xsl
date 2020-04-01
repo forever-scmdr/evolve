@@ -144,7 +144,6 @@
 				<ul class="header__nav header_tags orange">
 					<xsl:for-each select="$t">
 						<xsl:if test="position() &lt; 6">
-
 							<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
 								<a href="{hot_link}"><xsl:value-of select="name"/></a>
 							</li>

@@ -80,7 +80,7 @@ font-style: italic;
 							</xsl:if>
 							<xsl:if test="$ni/read_time != ''">
 								<span class="entry__category blue">
-									<a style="padding-left: .5rem;">Среднее время прочтения: <b id="read-time"><xsl:value-of select="$ni/read_time" /></b></a>
+									<a style="padding-left: .5rem;">Время прочтения: <b id="read-time-"><xsl:value-of select="$ni/read_time" /></b></a>
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/size != ''">
@@ -112,6 +112,8 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 				<div class="col-full s-content__main">
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
+						<!-- Telegram -->
+						<p class="_article_paragraph article_paragraph"><strong>Подписывайтесь на наш <a href="https://t.me/temptingpro" target="_blank">Telegram-канал</a> и получайте актуальную информацию из мира новостей еще быстрее.</strong></p>
 						<xsl:if test="$ni/author != ''">
 							<p>
 								<em>Автор: <xsl:value-of select="$ni/author"/></em>

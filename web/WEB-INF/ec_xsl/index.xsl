@@ -40,7 +40,8 @@
 							</div>
 						</article>
 					</xsl:if>
-					<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>
+					<xsl:variable name="fl" select="//featured/link"/>
+					<xsl:apply-templates select="/page/news_wrap/news_item[@key != 'byvshii_ingener_microsoft_ukral_u_kompanii_bolee_10_millionov_dollarov_i_potratil_ih_na_pokupku_dom']" mode="masonry"/>
 					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
 					<!--<xsl:apply-templates select="/page/news_wrap/news_item" mode="masonry"/>-->
 				</div>

@@ -78,7 +78,7 @@ font-style: italic;
 							</xsl:if>
 							<xsl:if test="$ni/read_time != ''">
 								<span class="entry__category blue">
-									<a style="padding-left: .5rem;">Среднее время прочтения: <b id="read-time"><xsl:value-of select="$ni/read_time" /></b></a>
+									<a style="padding-left: .5rem;">Время прочтения: <b id="read-time-"><xsl:value-of select="$ni/read_time" /></b></a>
 								</span>
 							</xsl:if>
 							<xsl:if test="$ni/size != ''">
@@ -113,6 +113,8 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 						<div class="content-text">
 						   <xsl:apply-templates select="$ni/audio"/>
 						   <xsl:apply-templates select="$ni" mode="content"/>
+							<!-- Telegram -->
+							<p class="_article_paragraph article_paragraph"><strong>Подписывайтесь на наш <a href="https://t.me/temptingpro" target="_blank">Telegram-канал</a> и получайте актуальную информацию из мира новостей еще быстрее.</strong></p>
 						   <xsl:if test="$ni/author != ''">
 								<p>
 									<em>Автор: <xsl:value-of select="$ni/author"/></em>
@@ -148,6 +150,34 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 			<xsl:call-template name="COMMENTS"/>
 
 		</section>
+
+		<!-- popular_posts -->
+		<section class="s-extra">
+			<div class="row top">
+				<div class="col-full md-six tab-full popular">
+					<h3>Популярные статьи</h3>
+					<div class="block-1-3 block-m-full popular__posts">
+						<xsl:for-each select="page/popular">
+							<article class="col-block popular__post">
+								<a href="{show_page}" class="popular__thumb">
+									<img src="{concat(@path,small_pic)}" alt="{name}"/>
+								</a>
+								<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
+								<section class="popular__meta">
+									<xsl:if test="source != ''">
+										<!--<span class="popular__author">-->
+										<!--<span>Источник</span> <a href="{source_link}"><xsl:value-of select="source"/></a>-->
+										<!--</span>-->
+									</xsl:if>
+									<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
+								</section>
+							</article>
+						</xsl:for-each>
+					</div>
+				</div>
+			</div>
+		</section>
+
 	</xsl:template>
 
 	<xsl:template name="PREV-NEXT">
