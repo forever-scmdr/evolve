@@ -1376,7 +1376,7 @@
 		<request>
 			<var name="action"/>
 			<!--<var name="with_existing_sections" value="copy"/>-->
-			<var name="with_pics" value="ignore"/>
+			<var name="with_pics" value="download"/>
 		</request>
 		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
