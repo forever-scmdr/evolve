@@ -106,7 +106,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						File newFile = new File( fileDirectoryName + Strings.createFileName(fileName));
+						File newFile = new File(fileDirectoryName + Strings.createFileName(fileName));
 						ServerLogger.error(newFile);
 						// Удаление файла, если он уже есть
 						while (newFile.exists()) {
