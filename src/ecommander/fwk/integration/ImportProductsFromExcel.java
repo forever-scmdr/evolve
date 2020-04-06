@@ -70,7 +70,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-//		base = getUrlBase();
+		base = getUrlBase();
 //		pushLog(base);
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		initSettings();
@@ -377,16 +377,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
-
-								if (Strings.getFileName(mainPic.toString()).equals(cellValue) && product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile())
+								if (Strings.getFileName(mainPic.toString()).equals(cellValue) && product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()) {
 									continue;
+								}
 
 								if(!product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()){
 //									pushLog("file not exists");
 									product.clearValue(MAIN_PIC_PARAM);
 									mainPic = "";
 								}
-
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
 									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 									if (mainPicFile.exists()) {
@@ -420,7 +419,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 														cellValue = cellValue.replace(base,"");
 														Path p = Paths.get(AppContext.getContextPath(), cellValue);
 														product.setValue(MAIN_PIC_PARAM, p.toFile());
-														pushLog("copying from same site. ["+p+"]");
 													}
 													else {
 														URL url = new URL(cellValue);
@@ -493,7 +491,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							}
 
 						}
+
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
+
 						//MANUALS
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
