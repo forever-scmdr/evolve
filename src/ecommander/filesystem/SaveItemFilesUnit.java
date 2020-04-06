@@ -106,7 +106,8 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						File dir = new File(fileDirectoryName);
 						dir.mkdirs();
 						files.add(dir);
-						File newFile = new File( fileDirectoryName + fileName);
+						File newFile = new File( fileDirectoryName + Strings.createFileName(fileName));
+						ServerLogger.error(newFile);
 						// Удаление файла, если он уже есть
 						while (newFile.exists()) {
 							/*
@@ -120,8 +121,9 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 						try {
 							if (isUploaded)
 								((FileItem) value).write(newFile);
-							else if (isDirect)
+							else if (isDirect) {
 								Files.copy(((File) value).toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+							}
 							else if (isUrl)
 								WebClient.saveFile(value.toString(), fileDirectoryName, fileName);
 							else if (isBuffer)

@@ -32,6 +32,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	private boolean newItemTypes = false;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 	private HashSet<String> duplicateCodes = new HashSet<>();
+	private String base;
 	//page vars
 	//private static final String SEC_VAR = "sec";
 	private static final String WITH_EXISTING_SECS = "with_existing_sections"; // what to do with existing sections (UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE)
@@ -69,6 +70,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	@Override
 	protected boolean makePreparations() throws Exception {
+//		base = getUrlBase();
+//		pushLog(base);
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		initSettings();
 		Path contextPath = Paths.get(AppContext.getContextPath(), "upload");
@@ -199,6 +202,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
 					if (product == null) {
+						pushLog("New product: "+ code);
 						Item parent = (isProduct) ? currentSubsection : currentProduct;
 						ItemType itemType = (isProduct) ? ItemTypeRegistry.getItemType(PRODUCT_ITEM) : ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM);
 						product = Item.newChildItem(itemType, parent);
@@ -217,6 +221,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								if (withPictures == varValues.IGNORE) continue;
+								if(!product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()){
+									product.clearValue(MAIN_PIC_PARAM);
+								}
 								switch (withPictures) {
 									case SEARCH_BY_CODE:
 										Path mainPicPath = picsFolder.resolve(code + ".jpg");
@@ -246,8 +253,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									case DOWNLOAD: {
 										if (StringUtils.isNotBlank(cellValue)) {
 											try {
-												URL url = new URL(cellValue);
-												product.setValue(paramName, url);
+												if(StringUtils.startsWith(cellValue, base)){
+													cellValue = cellValue.replace(base,"");
+													Path p = Paths.get(AppContext.getContextPath(), cellValue);
+													product.setValue(MAIN_PIC_PARAM, p.toFile());
+//													pushLog("copying from same site. ["+p+"]");
+												}
+												else {
+													URL url = new URL(cellValue);
+													product.setValue(paramName, url);
+												}
 											} catch (Exception e) {
 											}
 
@@ -272,8 +287,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										case DOWNLOAD:
 											if (StringUtils.isBlank(s)) continue;
 											try {
-												URL url = new URL(s);
-												product.setValue(paramName, url);
+												if(StringUtils.startsWith(cellValue, base)){
+													s = s.replace(base,"");
+													p = Paths.get(AppContext.getContextPath(), s).toFile();
+													if (p.exists() && p.isFile()) product.setValue(paramName, p);
+												}
+												else {
+													URL url = new URL(s);
+													product.setValue(paramName, url);
+												}
 											} catch (Exception e) {}
 											break;
 										default:
@@ -360,6 +382,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									continue;
 
 								if(!product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).isFile()){
+//									pushLog("file not exists");
 									product.clearValue(MAIN_PIC_PARAM);
 									mainPic = "";
 								}
@@ -393,8 +416,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										case DOWNLOAD: {
 											if (StringUtils.isNotBlank(cellValue)) {
 												try {
-													URL url = new URL(cellValue);
-													product.setValue(MAIN_PIC_PARAM, url);
+													if(StringUtils.startsWith(cellValue, base)){
+														cellValue = cellValue.replace(base,"");
+														Path p = Paths.get(AppContext.getContextPath(), cellValue);
+														product.setValue(MAIN_PIC_PARAM, p.toFile());
+														pushLog("copying from same site. ["+p+"]");
+													}
+													else {
+														URL url = new URL(cellValue);
+														product.setValue(MAIN_PIC_PARAM, url);
+													}
 												} catch (Exception e) {}
 											}
 										} break;
@@ -591,8 +622,18 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					s = s.replace(";", "").trim();
 					if (StringUtils.isBlank(s)) continue;
 					if (StringUtils.startsWith(s, "https://") || StringUtils.startsWith(s, "http://")) {
-						URL url = new URL(s);
-						existingFiles.add(url);
+						if(StringUtils.startsWith(s, base)){
+//							pushLog("copy from same site ["+s+"]");
+							s = s.replace("base", "");
+							File sf = Paths.get(AppContext.getContextPath(), s).toFile();
+							if(sf.isFile()){
+								existingFiles.add(sf);
+							}
+						}
+						else {
+							URL url = new URL(s);
+							existingFiles.add(url);
+						}
 					}
 					else{File f = folder.resolve(s).toFile();
 						if (f.exists()) {
@@ -640,8 +681,19 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 		for (String header : headers) {
 			String paramName = HEADER_PARAM.get(header);
-			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+			try {
+				if (StringUtils.isBlank(paramName) || ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+					continue;
+			}catch(Exception e){
+				pushLog("--");
+				pushLog(paramName);
+				pushLog(PRODUCT_ITEM_TYPE.toString());
+				pushLog(ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterNames().contains(paramName)+"");
+				CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header);
+				CreateExcelPriceList.MANUAL.equalsIgnoreCase(header);
+				pushLog("--");
 				continue;
+			}
 			return true;
 		}
 		return false;
@@ -775,7 +827,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		priceWB.iterate();
 		priceWB.close();
 		//creating filters and item types
-		createFiltersAndItemTypes();
+//		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
 		//info.setOperation("Индексация названий товаров");
