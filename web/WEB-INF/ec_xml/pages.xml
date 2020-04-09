@@ -35,7 +35,7 @@
 			<list item="block_array">
 				<list item="block"/>
 			</list>
-			<!--<single item="product_side"/>-->
+			<single item="product_side"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
@@ -441,7 +441,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="info@mizida.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -501,7 +501,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever@forever-ds.com"/>
+			<var name="email" value="zakaz@mizida.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -595,7 +595,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="product" tag="product"/>
+					<list item="abstract_product" id="product" tag="product"/>
 				</list>
 			</single>
 		</session>
@@ -610,7 +610,7 @@
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
-					<single item="product" tag="product" id="prod">
+					<list item="abstract_product" id="prod" tag="product">
 						<filter>
 							<parameter name="code" compare="SOME" sign="=">
 								<var ref="bought" parameter="code"/>
@@ -1168,4 +1168,5 @@
 	</page>
 
 	<page name="ok"></page>
+
 </site>
