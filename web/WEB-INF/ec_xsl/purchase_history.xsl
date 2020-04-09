@@ -14,7 +14,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Заказы</h1>
+		<h1 class="page-title">Заказы</h1>
 		<div class="page-content m-t">
 			<div class="orders-list">
 				<xsl:for-each select="page/purchase">

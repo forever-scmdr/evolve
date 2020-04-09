@@ -24,7 +24,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1><xsl:value-of select="$h1"/></h1>
+		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 		<xsl:if test="$seo[1]/text">
 			<div class="page-content m-t">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>

@@ -31,11 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.HashSet;
-import java.util.Locale;
 
 /**
  * Корзина
@@ -140,15 +136,15 @@ public class CartManageCommand extends BasicCartManageCommand {
 		discountedSum = discountedSum.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
 		// Сумма прописью
-		BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);
-		BigDecimal kop = discountedSum.subtract(rub).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_CEILING);
-		String sumText = Strings.numberToRusWords(rub.doubleValue()) + " "
-				+ Strings.numberEnding(rub.doubleValue(), "белорусский рубль", "белорусских рубля", "белорусских рублей")
-				+ " " + kop + " "
-				+ Strings.numberEnding(kop.doubleValue(), "копейка", "копейки", "копеек");
-		String dateStr = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("ru")).format(LocalDate.now());
-		cart.setValueUI(ItemNames.cart_.EXTRA_SUM_STR, sumText);
-		cart.setValueUI(ItemNames.cart_.EXTRA_DATE_STR, dateStr);
+//		BigDecimal rub = discountedSum.setScale(0, BigDecimal.ROUND_FLOOR);
+//		BigDecimal kop = discountedSum.subtract(rub).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_CEILING);
+//		String sumText = Strings.numberToRusWords(rub.doubleValue()) + " "
+//				+ Strings.numberEnding(rub.doubleValue(), "белорусский рубль", "белорусских рубля", "белорусских рублей")
+//				+ " " + kop + " "
+//				+ Strings.numberEnding(kop.doubleValue(), "копейка", "копейки", "копеек");
+//		String dateStr = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("ru")).format(LocalDate.now());
+//		cart.setValueUI(ItemNames.cart_.EXTRA_SUM_STR, sumText);
+//		cart.setValueUI(ItemNames.cart_.EXTRA_DATE_STR, dateStr);
 		getSessionMapper().saveTemporaryItem(cart);
 		return success;
 	}

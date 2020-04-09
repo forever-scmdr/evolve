@@ -190,7 +190,7 @@ public abstract class BasicCartManageCommand extends Command {
 		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
 		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
-		addExtraEmailBodyPart(false, shopMultipart);
+		//addExtraEmailBodyPart(false, shopMultipart);
 
 		// Письмо для покупателя
 		Multipart customerMultipart = new MimeMultipart();
@@ -203,11 +203,11 @@ public abstract class BasicCartManageCommand extends Command {
 			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
 			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(true, customerMultipart);
+			//addExtraEmailBodyPart(true, customerMultipart);
 		} catch (Exception e) {
 			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(false, customerMultipart);
+			//addExtraEmailBodyPart(false, customerMultipart);
 		}
 
 		// Отправка на ящик заказчика

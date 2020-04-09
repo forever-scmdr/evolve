@@ -22,43 +22,16 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-			<script>
-				function endsWith(str, suffix) {
-					return str.indexOf(suffix, str.length - suffix.length) !== -1;
-				}
-
-				refreshTimeout = setTimeout(
-						function () {
-							h = document.location.href;
-							h = h.replace("_start", "");
-							h = h.replace("?action=start", "");
-							document.location.replace(h);
-						},
-						5000
-				);
-				function toggleRefresh() {
-					refresher = document.getElementById('refresher');
-					if (refresher.classList.contains("clicked")) {
-						h = document.location.href;
-						h = h.replace("_start", "");
-						h = h.replace("?action=start", "");
-						document.location.replace(h);
-					} else {
-						clearTimeout(refreshTimeout);
-						refresher.classList.add("clicked");
-					}
-				}
-			</script>
+		<script>
+			setTimeout(function(){
+				document.location.replace("/integrate");
+			}, 5000);
+		</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
 			<h2>Процесс выполнения</h2>
 			<table>
-				<tr>
-					<td colspan="2">
-						<input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-					</td>
-				</tr>
 				<tr>
 					<td>Строка файла:</td>
 					<td class="error">
@@ -102,9 +75,9 @@
 					</xsl:for-each>
 				</table>
 			</xsl:if>
-			
+
 		</body>
-		
+
 		</html>
 	</xsl:template>
 

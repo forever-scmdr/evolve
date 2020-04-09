@@ -20,11 +20,6 @@
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
     </xsl:function>
 
-    <xsl:function name="f:number_decimal">
-        <xsl:param name="num"/>
-        <xsl:value-of select="format-number($num, '#0.00')"/>
-    </xsl:function>
-
     <xsl:function name="f:rub_kop" as="xs:string">
         <xsl:param name="price" as="xs:string"/>
         <xsl:param name="rub" as="xs:string"/>
@@ -76,16 +71,6 @@
         </div>
     </xsl:template>
 
-    <xsl:function name="f:discount">
-    	<xsl:param name="price" as="xs:string?" />
-    	<xsl:param name="old_price" as="xs:string?" />
-
-    	<xsl:variable name="p1" select="f:num($price)"/>
-    	<xsl:variable name="p2" select="f:num($old_price)"/>
-
-    	<xsl:value-of select="if($p1 != 0 and $p2 != 0) then 100 - round($p1 div $p2 * 100) else ''"/>
-    </xsl:function>
-
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;
 	</xsl:text>
@@ -112,10 +97,6 @@
 
                 <p><b>f:currency_decimal </b>
                     <xsl:value-of select="f:currency_decimal('10 000,1')"/>
-                </p>
-
-                <p><b>f:discount</b>
-                    <xsl:value-of select="f:discount('75.5', '')"/>
                 </p>
 
             </body>

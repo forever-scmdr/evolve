@@ -6,7 +6,8 @@
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<!-- <xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/> -->
+	<xsl:variable name="show_devices" select="not($sel_sec/show_devices = '0')"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
