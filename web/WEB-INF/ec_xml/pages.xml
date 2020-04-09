@@ -546,7 +546,7 @@
 			</ancestor>
 		</single>
 
-		<list item="news_item" id="pni" tag="popular">
+		<list item="news_item" id="pni" tag="popular" cacheable="true">
 			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
@@ -558,15 +558,29 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-			<single item="top_gal"/>
+<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-			<ancestor item="news" transit="false" id="pcat">
-				<link name="show_page" target="news_section" type="exclusive">
-					<var name="sel" ref="pcat" style="translit"/>
-				</link>
-			</ancestor>
+<!--			<ancestor item="news" transit="false" id="pcat">-->
+<!--				<link name="show_page" target="news_section" type="exclusive">-->
+<!--					<var name="sel" ref="pcat" style="translit"/>-->
+<!--				</link>-->
+<!--			</ancestor>-->
+		</list>
+
+		<list item="news_item" id="latest" tag="latest" cacheable="true">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="4"/>
+				</limit>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="latest" style="translit"/>
+			</link>
 		</list>
 
 		<include name="COMMON"/>
@@ -695,7 +709,7 @@
 			</link>
 		</list>
 
-		<list item="news_item" id="pni" tag="popular">
+		<list item="news_item" id="pni" tag="popular" cacheable="true">
 			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
@@ -707,15 +721,29 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-			<single item="top_gal"/>
+<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-			<ancestor item="news" transit="false" id="pcat">
-				<link name="show_page" target="news_section" type="exclusive">
-					<var name="sel" ref="pcat" style="translit"/>
-				</link>
-			</ancestor>
+<!--			<ancestor item="news" transit="false" id="pcat">-->
+<!--				<link name="show_page" target="news_section" type="exclusive">-->
+<!--					<var name="sel" ref="pcat" style="translit"/>-->
+<!--				</link>-->
+<!--			</ancestor>-->
+		</list>
+
+		<list item="small_news_item" id="latest" tag="latest_sni" cacheable="true">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="4"/>
+				</limit>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="latest" style="translit"/>
+			</link>
 		</list>
 
 		<include name="COMMON"/>

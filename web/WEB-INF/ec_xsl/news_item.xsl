@@ -45,6 +45,7 @@
 								</a>
 							</li>
 						</xsl:if>
+
 						<li class="date" data-utc="{$ni/date/@millis}">
 							<xsl:value-of select="f:utc_millis_to_bel_date($ni/date/@millis)"/>
 							<xsl:if test="$ni/update != ''">&#160;(обновлено: <xsl:value-of select="$ni/update"/>)</xsl:if>
@@ -55,6 +56,9 @@
 							</a>
 						</li>
 					</ul>
+					<xsl:text disable-output-escaping="yes">
+						&lt;!--noindex--&gt;&lt;!--googleoff: index--&gt;
+					</xsl:text>
 					<xsl:if test="$ni/complexity != '' or $ni/read_time != '' or $ni/size != ''">
 						<div class="tags">
 							<xsl:if test="$ni/complexity != ''">
@@ -102,14 +106,16 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 									<a >Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
 								</span>
 							</xsl:if>
-							
+							<xsl:text disable-output-escaping="yes">
+								&lt;!--googleon: index--&gt;&lt;!--/noindex--&gt;
+							</xsl:text>
 						</div>
 					</xsl:if>
 				</div>
 
 				<xsl:call-template name="NEWS_TOPPER"/>
 
-				<div class="col-full s-content__main">
+				<div class="col-nine md-eight tab-full s-content__main">
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
 						<!-- Telegram -->
@@ -120,7 +126,22 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 							</p>
 						</xsl:if>
 					</div>
-
+				</div>
+				<div class="col-three md-four tab-full desctop-only latest">
+					<h3 style="margin-top:0;">Последние статьи</h3>
+					<xsl:for-each select="page/latest">
+						<article class="col-block">
+							<a href="{show_page}" class="popular__thumb">
+								<img src="{concat(@path,small_pic)}" alt="{name}"/>
+							</a>
+							<section class="popular__meta">
+								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
+							</section>
+							<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
+						</article>
+					</xsl:for-each>
+				</div>
+				<div class="col-full s-content__main">
 					<xsl:call-template name="BANNER_FOLLOW"/>
 					<div style="margin-bottom: 1.5rem;"></div>
 					<xsl:call-template name="BANNER_DONATE"/>
@@ -152,6 +173,23 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 
 		<!-- popular_posts -->
 		<section class="s-extra">
+			<div class="row top">
+				<div class="col-full md-six tab-full popular mobile-only">
+					<h3>Последние статьи</h3>
+					<xsl:for-each select="page/latest">
+						<article class="col-block popular__post">
+							<a href="{show_page}" class="popular__thumb">
+								<img src="{concat(@path,small_pic)}" alt="{name}"/>
+							</a>
+							<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
+							<section class="popular__meta">
+								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
+							</section>
+						</article>
+					</xsl:for-each>
+				</div>
+			</div>
+
 			<div class="row top">
 				<div class="col-full md-six tab-full popular">
 				<h3>Популярные статьи</h3>

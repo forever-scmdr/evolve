@@ -145,7 +145,7 @@
 					<xsl:for-each select="$t">
 						<xsl:if test="position() &lt; 6">
 							<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
-								<a href="{hot_link}"><xsl:value-of select="name"/></a>
+								<a href="{hot_link}" style="{if(text_color != '') then concat('color: ', text_color, ';') else ''}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:if>
 					</xsl:for-each>
@@ -155,7 +155,7 @@
 						<xsl:for-each select="$t">
 							<xsl:if test="position() &gt; 5">
 								<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
-									<a href="{hot_link}"><xsl:value-of select="name"/></a>
+									<a href="{hot_link}"  style="{if(text_color != '') then concat('color: ', text_color, ';') else ''}"><xsl:value-of select="name"/></a>
 								</li>
 							</xsl:if>
 						</xsl:for-each>
@@ -303,7 +303,7 @@
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=2"/>
+				<link rel="stylesheet" href="css/main.css?version=4"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
