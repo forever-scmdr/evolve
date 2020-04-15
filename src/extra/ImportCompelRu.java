@@ -118,6 +118,7 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 			while ((row = reader.nextRow()) != null) {
 				String code = row.getString(CODE_HEADER);
 				if (StringUtils.isNotBlank(code)) {
+					code += "co";
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 					if (prod == null) {
 						prod = Product.get(Item.newChildItem(productType, section));
