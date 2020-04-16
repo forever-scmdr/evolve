@@ -3,10 +3,10 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
-import ecommander.model.Item;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.model.*;
+import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
+import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -14,8 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.*;
+import java.io.File;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "yes"), "yes", "true");
+		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "no"), "yes", "true");
 		return true;
 	}
 
@@ -59,39 +60,38 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
 		for (File xml : xmls) {
-			// Удалить DOCTYPE
-			if (removeDoctype(xml)) {
 				parser.parse(xml, secHandler);
 				info.increaseProcessed();
-			} else {
-				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
-			}
 		}
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
-//		info.pushLog("Удаление параметров товаров");
-//		int processed = 0;
-//		info.setProcessed(processed);
-//		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
-//		paramsQuery.setLimit(10);
-//		List<Item> itemsToDelete = paramsQuery.loadItems();
-//		while (itemsToDelete.size() > 0) {
-//			for (Item item : itemsToDelete) {
-//				executeCommandUnit(ItemStatusDBUnit.delete(item));
-//			}
-//			commitCommandUnits();
-//			processed += itemsToDelete.size();
-//			info.setProcessed(processed);
-//			itemsToDelete = paramsQuery.loadItems();
-//		}
-//
-//		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
-//		typesToDelete.remove(PARAMS_ITEM);
-//		for (String typeToDelete : typesToDelete) {
-//			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-//		}
-//
-//		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+		info.pushLog("Удаление параметров товаров");
+		int processed = 0;
+		info.setProcessed(processed);
+		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
+		paramsQuery.setLimit(10);
+		List<Item> itemsToDelete = paramsQuery.loadItems();
+		while (itemsToDelete.size() > 0) {
+			for (Item item : itemsToDelete) {
+				executeCommandUnit(ItemStatusDBUnit.delete(item));
+			}
+			commitCommandUnits();
+			processed += itemsToDelete.size();
+			info.setProcessed(processed);
+			itemsToDelete = paramsQuery.loadItems();
+		}
+		info.pushLog("Очистка корзины");
+		info.setProcessed(0);
+		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(10,
+				deletedCount -> info.increaseProcessed(deletedCount)).noFulltextIndex());
+
+		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
+		typesToDelete.remove(PARAMS_ITEM);
+		for (String typeToDelete : typesToDelete) {
+			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
+		}
+
+		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
@@ -103,96 +103,21 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
+		executeAndCommitCommandUnits(new CleanAllDeletedItemsDBUnit(20, null).noFulltextIndex());
 
 		info.pushLog("Создание товаров завершено");
-		info.pushLog("Прикрепление картинок к разделам");
-		info.setOperation("Прикрепление картинок к разделам");
-
-		attachImages();
-
-		info.pushLog("Прикрепление картинок к разделам завершено");
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
 
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
-		info.setOperation("Создание фильтров");
-		info.pushLog("Создание фильтров");
-
-		new CreateParametersAndFiltersCommand(this).integrate();
-
-		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 
-	private void attachImages() throws Exception {
-		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
-		for(Item section : sections){
-			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
-			if(!mainPic.isFile()){
-				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
-				q.setLimit(50);
-				q.setParentId(section.getId(), true);
-				//q.addParameterCriteria(MAIN_PIC_PARAM, "-", "!=", null, Compare.SOME);
-				List<Item> products = q.loadItems();
-				for(Item prod : products){
-					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
-					if(mainPic.isFile()){
-						section.setValue(MAIN_PIC_PARAM, mainPic);
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-						break;
-					}
-				}
-			}
-		}
-	}
-
-
-	private static boolean removeDoctype(File file) {
-		File tempFile = new File("__temp__.xml");
-		final String DOCTYPE = "!DOCTYPE";
-		boolean containsDoctype = false;
-
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			int i = 0;
-			String currentLine;
-			while ((currentLine = reader.readLine()) != null && i < 5) {
-				i++;
-				if (StringUtils.contains(currentLine, DOCTYPE)) {
-					containsDoctype = true;
-					break;
-				}
-			}
-		} catch (IOException e) {
-			info.addError("Невозможно прочитать файл " + file.getName(), file.getName());
-		}
-		if (!containsDoctype)
-			return true;
-
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-		     BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			String currentLine;
-			boolean doctypeNotRemoved = true;
-			while((currentLine = reader.readLine()) != null) {
-				if (doctypeNotRemoved && StringUtils.contains(currentLine, DOCTYPE)) {
-					doctypeNotRemoved = false;
-					continue;
-				}
-				writer.write(currentLine);
-				writer.newLine();
-			}
-		} catch (IOException e) {
-			info.addError("Невозможно удалить DOCTYPE " + file.getName(), file.getName());
-		}
-		boolean success = file.delete();
-		success &= tempFile.renameTo(file);
-		return success;
-	}
-
 	@Override
-	protected void terminate() {
+	protected void terminate() throws Exception {
 
 	}
 }

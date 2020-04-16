@@ -1,63 +1,39 @@
 package ecommander.fwk.integration;
 
-import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
-import ecommander.model.*;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
-	private static final String EMPTY_PICTURE = "http://titantools.must.by/photo/";
-	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
-	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
-	private static String host;
-
+	private static final HashSet<String> COMMON_PARAMS = new HashSet<>();
 	static {
-		SINGLE_PARAMS.add(URL_ELEMENT);
-		SINGLE_PARAMS.add(PRICE_ELEMENT);
-		SINGLE_PARAMS.add(CURRENCY_ID_ELEMENT);
-		//SINGLE_PARAMS.add(CATEGORY_ID_ELEMENT);
-		SINGLE_PARAMS.add(NAME_ELEMENT);
-		SINGLE_PARAMS.add(VENDOR_CODE_ELEMENT);
-		SINGLE_PARAMS.add(DESCRIPTION_ELEMENT);
-		SINGLE_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
-		SINGLE_PARAMS.add(MODEL_ELEMENT);
-		SINGLE_PARAMS.add(QUANTITY_ELEMENT);
-		SINGLE_PARAMS.add(QUANTITY_OPT_ELEMENT);
-		SINGLE_PARAMS.add(VENDOR_ELEMENT);
-		SINGLE_PARAMS.add(OLDPRICE_ELEMENT);
-		SINGLE_PARAMS.add(OPTPRICE_ELEMENT);
-		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
-		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
-		SINGLE_PARAMS.add(MIN_QTY_PARAM);
-		SINGLE_PARAMS.add(STATUS_ELEMENT);
-		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
-
-		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
-		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
-		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
-		MULTIPLE_PARAMS.add(SIMILAR_ITEMS_ELEMENT);
-		MULTIPLE_PARAMS.add(SUPPORT_ITEMS_ELEMENT);
+		COMMON_PARAMS.add(URL_ELEMENT);
+		COMMON_PARAMS.add(PRICE_ELEMENT);
+		COMMON_PARAMS.add(CURRENCY_ID_ELEMENT);
+		COMMON_PARAMS.add(CATEGORY_ID_ELEMENT);
+		COMMON_PARAMS.add(NAME_ELEMENT);
+		COMMON_PARAMS.add(VENDOR_CODE_ELEMENT);
+		COMMON_PARAMS.add(DESCRIPTION_ELEMENT);
+		COMMON_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
+		COMMON_PARAMS.add(MODEL_ELEMENT);
 	}
 
 
@@ -69,18 +45,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private HashMap<String, Item> sections = null;
 
 	private IntegrateBase.Info info; // информация для пользователя
-	private HashMap<String, String> singleParams;
-	private HashMap<String, LinkedHashSet<String>> multipleParams;
+	private HashMap<String, String> commonParams;
 	private LinkedHashMap<String, String> specialParams;
 	private ItemType productType;
 	private ItemType paramsXmlType;
+	private ArrayList<String> picUrls;
 	private User initiator;
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
-	private Assoc catalogLinkAssoc;
-	private int smallPicWidth = 0;
-	private int smallPicHeight = 0;
-	private Path picFolder;
 
 
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -89,44 +61,21 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
-		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
-		String smallPicFormat = ItemTypeRegistry.getItemType(ItemNames.described_product_._ITEM_NAME).getParameter(ItemNames.described_product_.SMALL_PIC).getFormat();
-		if (StringUtils.isNotBlank(smallPicFormat)) {
-			try {
-				for (String opt : StringUtils.split(smallPicFormat, ';')) {
-					String[] vals = StringUtils.split(opt.trim(), ':');
-					if (vals[0].trim().equals("width"))
-						smallPicWidth = Integer.parseInt(vals[1].trim());
-					else if (vals[0].trim().equals("height"))
-						smallPicHeight = Integer.parseInt(vals[1].trim());
-				}
-			} catch (Exception e) {
-			}
-			picFolder = Paths.get(AppContext.getContextPath(), "device_pics");
-		}
-		host = info.getHost();
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
-				HashSet<String> productContainers = new HashSet<>();
-				String code = singleParams.get(ID_ATTR);
-				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
+				String code = commonParams.get(ID_ATTR);
+				String secCode = commonParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				boolean isProductNotNew = true;
-				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
-					String secCode = "-000-";
-					if (categoryIds.size() > 0) {
-						secCode = categoryIds.iterator().next();
-					}
-					Item section = sections.get(secCode);
 					isProductNotNew = false;
+					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
-						productContainers.add(secCode);
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
@@ -135,80 +84,46 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				product.setValue(CODE_PARAM, code);
 				product.setValue(OFFER_ID_PARAM, code);
-				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
-				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
-				product.setValueUI(QTY_OPT_PARAM, singleParams.get(QUANTITY_OPT_ELEMENT));
-				product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
-				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
-				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
-					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
-				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
-					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
-				product.setValueUI(NAME_PARAM, singleParams.get(NAME_ELEMENT));
+				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(commonParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
+				product.setValue(GROUP_ID_PARAM, commonParams.get(GROUP_ID_ATTR));
+				product.setValue(URL_PARAM, commonParams.get(URL_ELEMENT));
+				product.setValue(CURRENCY_ID_PARAM, commonParams.get(CURRENCY_ID_ELEMENT));
+				product.setValue(CATEGORY_ID_PARAM, commonParams.get(CATEGORY_ID_ELEMENT));
+				product.setValue(NAME_PARAM, commonParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
-					product.setValueUI(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
-				if (product.getItemType().hasParameter(VENDOR_CODE_PARAM))
-					product.setValueUI(VENDOR_CODE_PARAM, singleParams.get(VENDOR_CODE_ELEMENT));
-				if (product.getItemType().hasParameter(VENDOR_PARAM))
-					product.setValueUI(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
-				if (product.getItemType().hasParameter(DESCRIPTION_PARAM))
-					product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
-				if (product.getItemType().hasParameter(COUNTRY_PARAM))
-					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
-				if (product.getItemType().hasParameter(PRICE_OPT_PARAM))
-					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(OPTPRICE_ELEMENT));
-				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
-					product.setValueUI(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
-				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
-					product.setValueUI(PRICE_OPT_OLD_PARAM, singleParams.get(OLDOPTPRICE_ELEMENT));
-				if (product.getItemType().hasParameter(MIN_QTY_PARAM)) {
-					String minQty = singleParams.get(MIN_QUANTITY_ELEMENT);
-					if (StringUtils.isBlank(minQty))
-						minQty = singleParams.get(MIN_QTY_PARAM);
-					product.setValueUI(MIN_QTY_PARAM, minQty);
-				}
-				if (product.getItemType().hasParameter(TAG_PARAM)) {
-					product.clearValue(TAG_PARAM);
-					product.setValueUI(TAG_PARAM, singleParams.get(STATUS_ELEMENT));
-				}
-				if (product.getItemType().hasParameter(NEXT_DELIVERY_PARAM))
-					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
-
-				if (product.getItemType().hasParameter(ANALOG_CODE_PARAM) && multipleParams.containsKey(ANALOG_ELEMENT)) {
-					for (String val : multipleParams.get(ANALOG_ELEMENT)) {
-						String[] parts = StringUtils.split(val, ',');
-						for (String part : parts) {
-							product.setValueUI(ANALOG_CODE_PARAM, StringUtils.trim(part));
-						}
-					}
-				}
-				if (product.getItemType().hasParameter(SIMILAR_CODE_PARAM) && multipleParams.containsKey(SIMILAR_ITEMS_ELEMENT)) {
-					for (String val : multipleParams.get(SIMILAR_ITEMS_ELEMENT)) {
-						String[] parts = StringUtils.split(val, ',');
-						for (String part : parts) {
-							product.setValueUI(SIMILAR_CODE_PARAM, StringUtils.trim(part));
-						}
-					}
-				}
-				if (product.getItemType().hasParameter(SUPPORT_CODE_PARAM) && multipleParams.containsKey(SUPPORT_ITEMS_ELEMENT)) {
-					for (String val : multipleParams.get(SUPPORT_ITEMS_ELEMENT)) {
-						String[] parts = StringUtils.split(val, ',');
-						for (String part : parts) {
-							product.setValueUI(SUPPORT_CODE_PARAM, StringUtils.trim(part));
-						}
-					}
-				}
-
+					product.setValue(NAME_PARAM, commonParams.get(MODEL_ELEMENT));
+				product.setValue(VENDOR_CODE_PARAM, commonParams.get(VENDOR_CODE_ELEMENT));
+				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
+				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
 				if (getPrice)
-					product.setValueUI(PRICE_PARAM, singleParams.get(PRICE_ELEMENT));
+					product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
 				else
 					product.setValueUI(PRICE_PARAM, "0");
 
 				// Качать картинки только для новых товаров
-				//boolean wasNew = product.isNew();
+				if (product.isNew()) {
+					for (String picUrl : picUrls) {
+						product.setValue(GALLERY_PARAM, new URL(picUrl));
+					}
+				}
 
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+
+				// Генерация маленького изображения
+				if (noMainPic) {
+					if (picUrls.size() > 0) {
+						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.get(0)));
+					}
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					try {
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+					}
+				}
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
 				if (isProductNotNew) {
@@ -233,165 +148,27 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
-				if (isProductNotNew) {
-					// Загрузить разделы, содержащие товар
-					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
-							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
-					for (Item sec : secs) {
-						productContainers.add(sec.getStringValue(CATEGORY_ID_PARAM));
-					}
-				}
-
-				// Создать ассоциацию товара с разделом, если ее еще не существует
-				categoryIds.removeAll(productContainers);
-				for (String categoryId : categoryIds) {
-					Item section = sections.get(categoryId);
-					if (section != null)
-						DelayedTransaction.executeSingle(initiator,
-								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
-				}
-
-
-				product.clearValue("pic_ref");
-
-				File picInFolder = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "").replace('*', '-') + ".jpg").toFile();
-
-				if (picInFolder.isFile()) {
-					product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) + ".jpg");
-					String small = "small_" + product.getStringValue(CODE_PARAM) + ".jpg";
-					if (resize(picInFolder, small)) {
-						product.setValue("pic_ref", "device_pics/small_" + product.getStringValue(CODE_PARAM) + ".jpg");
-					}
-					for (int i = 1; i < 6; i++) {
-						File f = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "") +"_"+ i +".jpg").toFile();
-						if(f.isFile()){
-							product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) +"_"+ i +".jpg");
-						}
-					}
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-				} else {
-					boolean needSave = false;
-					ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
-					for (File galleryPic : galleryPics) {
-						String gpn = galleryPic.getName();
-						if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
-							product.removeEqualValue(GALLERY_PARAM, gpn);
-							needSave = true;
-						}
-						if (gpn.equals(mainPicName)) {
-							product.clearValue(MAIN_PIC_PARAM);
-						}
-					}
-					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-					if (picUrls.size() > 1) {
-						int i = 0;
-						for (String picUrl : picUrls) {
-							if (picUrl.intern() == EMPTY_PICTURE) continue;
-							if (i == 0) {
-								i++;
-								continue;
-							}
-							try {
-								String fileName = Strings.getFileName(picUrl);
-								mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
-								boolean skipGal = fileName.equals(mainPicName);
-								skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
-
-								if (skipGal) continue;
-								if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-									product.setValue(GALLERY_PARAM, new URL(picUrl));
-									needSave = true;
-								}
-							} catch (Exception e) {
-								info.setLineNumber(locator.getLineNumber());
-								info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
-							}
-						}
-					}
-					// Генерация маленького изображения
-					boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
-					if (!noMainPic) {
-						File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-						if (!mainPic.isFile()) {
-							product.clearValue(MAIN_PIC_PARAM);
-							noMainPic = true;
-						}
-					}
-					if (picUrls.size() > 0) {
-						boolean save = false;
-						String url = picUrls.iterator().next();
-						if ((picUrls.size() > 0 && noMainPic)) {
-							product.setValue(MAIN_PIC_PARAM, new URL(url));
-							product.clearValue(SMALL_PIC_PARAM);
-							save = true;
-						} else if (!noMainPic && StringUtils.startsWith(url, host)) {
-							File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
-							if (pic.isFile()) {
-								if (pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()) {
-									product.setValue(MAIN_PIC_PARAM, pic);
-									product.clearValue(SMALL_PIC_PARAM);
-									save = true;
-									info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
-								}
-							}
-						}
-						if (save) {
-							try {
-								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-								DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-								DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-								needSave = false;
-							} catch (Exception e) {
-								//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-								info.setLineNumber(locator.getLineNumber());
-								info.addError(e);
-							}
-						}
-						//needSave = false;
-					}
-					if (needSave) {
-						try {
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						} catch (Exception e) {
-							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-							info.setLineNumber(locator.getLineNumber());
-							info.addError(e);
-						}
-					}
-				}
 				info.increaseProcessed();
 				isInsideOffer = false;
-			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
-				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			}
+
+			else if (isInsideOffer && COMMON_PARAMS.contains(qName) && parameterReady) {
+				commonParams.put(paramName, StringUtils.trim(paramValue.toString()));
+			}
+
+			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			} else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
-				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
-				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
-					vals.add(paramValue.toString());
+			}
+
+			else if (isInsideOffer && StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT)) {
+				picUrls.add(paramValue.toString());
 			}
 
 			parameterReady = false;
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.setLineNumber(locator.getLineNumber());
-			info.setLinePosition(locator.getColumnNumber());
-			info.addError(e);
-		}
+			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 	}
-
-	private boolean resize(File picInFolder, String small) throws IOException {
-		if (smallPicWidth == 0 && smallPicHeight == 0) return false;
-		try {
-			Files.deleteIfExists(Paths.get(picFolder.toString(), small));
-			BufferedImage srcImg = ImageIO.read(picInFolder);
-			BufferedImage result = ResizeImagesFactory.ResizeImages.getScaledInstance(srcImg, smallPicWidth, smallPicHeight, 1.5);
-			ImageIO.write(result, "jpg", Paths.get(picFolder.toString(), small).toFile());
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -411,16 +188,16 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		paramValue = new StringBuilder();
 		// Продукт
 		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
-			singleParams = new HashMap<>();
+			commonParams = new HashMap<>();
 			specialParams = new LinkedHashMap<>();
-			multipleParams = new LinkedHashMap<>();
-			singleParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
-			singleParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
-			singleParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
+			picUrls = new ArrayList<>();
+			commonParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
+			commonParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
+			commonParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (SINGLE_PARAMS.contains(qName) || MULTIPLE_PARAMS.contains(qName))) {
+		else if (isInsideOffer && (COMMON_PARAMS.contains(qName) || StringUtils.equalsIgnoreCase(qName, PICTURE_ELEMENT))) {
 			paramName = qName;
 			parameterReady = true;
 		}
