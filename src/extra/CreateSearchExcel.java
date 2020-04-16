@@ -53,10 +53,10 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 	protected static final String NAME = "Название";
 	protected static final String NAME_EXTRA = "Описание";
 	protected static final String VENDOR = "Производитель";
-	protected static final String QTY = "Количество";
+	protected static final String QTY = "Кол.";
 	protected static final String AVAILABLE = "Срок поставки";
-	protected static final String UNIT = "Единица измерения";
-	protected static final String MIN_QTY = "Мин. заказ";
+	protected static final String UNIT = "Ед.изм.";
+	protected static final String MIN_QTY = "Мин.заказ";
 	protected static final String PRICE = "Цена";
 	protected static final String SUM = "Сумма";
 	protected static final String REQUEST = "Заказ";
@@ -121,7 +121,8 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 			for (Cell cell : row) {
 				cell.setCellStyle(isHeaderStyle ? headerStyle : normalStyle);
 			}
-			row.getCell(0).setCellStyle(queryStyle);
+			if (!isHeaderStyle)
+				row.getCell(0).setCellStyle(queryStyle);
 			currentQuery = query;
 		}
 		String fileName = "query_" + System.currentTimeMillis() + ".xls";
@@ -143,27 +144,27 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 		//built-in params
 		Row row = sh.createRow(++rowIdx);
 		row.createCell(++colIdx).setCellValue(QUERY);
-		sh.setColumnWidth(colIdx, 50 * 256);
+		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(NAME);
-		sh.setColumnWidth(colIdx, 50 * 256);
+		sh.setColumnWidth(colIdx, 30 * 256);
 		row.createCell(++colIdx).setCellValue(NAME_EXTRA);
-		sh.setColumnWidth(colIdx, 75 * 256);
+		sh.setColumnWidth(colIdx, 30 * 256);
 		row.createCell(++colIdx).setCellValue(VENDOR);
-		sh.setColumnWidth(colIdx, 30 * 256);
+		sh.setColumnWidth(colIdx, 20 * 256);
 		row.createCell(++colIdx).setCellValue(QTY);
-		sh.setColumnWidth(colIdx, 20 * 256);
+		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(AVAILABLE);
-		sh.setColumnWidth(colIdx, 20 * 256);
+		sh.setColumnWidth(colIdx, 12 * 256);
 		row.createCell(++colIdx).setCellValue(UNIT);
-		sh.setColumnWidth(colIdx, 20 * 256);
+		sh.setColumnWidth(colIdx, 10 * 256);
 		row.createCell(++colIdx).setCellValue(MIN_QTY);
-		sh.setColumnWidth(colIdx, 20 * 256);
+		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE);
-		sh.setColumnWidth(colIdx, 20 * 256);
+		sh.setColumnWidth(colIdx, 12 * 256);
 		row.createCell(++colIdx).setCellValue(SUM);
-		sh.setColumnWidth(colIdx, 30 * 256);
-		row.createCell(++colIdx).setCellValue(REQUEST);
 		sh.setColumnWidth(colIdx, 20 * 256);
+		row.createCell(++colIdx).setCellValue(REQUEST);
+		sh.setColumnWidth(colIdx, 8 * 256);
 
 		for (Cell cell : row) {
 			cell.setCellStyle(sectionStyle);

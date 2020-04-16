@@ -50,7 +50,8 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <a style="position: absolute; right: 0px" href="{page/save_excel_file}">Сохранить результаты</a>
+				<a href="/">Главная страница</a>
+				<a style="position: absolute; right: 0px" href="{page/save_excel_file}"><img src="img/excel2.png"/> Сохранить результаты как Excel</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>

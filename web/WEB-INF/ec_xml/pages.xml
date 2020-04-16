@@ -269,6 +269,7 @@
 	</page>
 
 
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -280,6 +281,65 @@
 				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<single item="manual"/>
+			<ancestor item="plain_section"/>
+		</list>
+		<link name="set_view_table" target="search" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="search" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="show_only_available" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<page name="search_bom" template="search">
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<list item="plain_section" id="plain_section"/>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+					<var var="q"/>
+				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -433,7 +493,7 @@
 
 
 	<page name="excel_search">
-		<link name="success" target="search"/><!-- search --><!-- search_for_xls -->
+		<link name="success" target="search_bom"/><!-- search --><!-- search_for_xls -->
 		<link name="error" target="search">
 			<var name="message" value="Ошибка формата файла запроса"/>
 		</link>
