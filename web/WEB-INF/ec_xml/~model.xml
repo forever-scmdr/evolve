@@ -378,9 +378,9 @@
 	</item>
 
 
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
+	<item name="main_page" caption="Главная страница" super="seo_container" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
 		<child item="product" assoc="general"/>
-		<child item="seo" single="true"/>
+		<!-- <child item="seo" single="true"/> -->
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 		<child item="banner_section"/>
@@ -437,17 +437,17 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="payment" caption="Оплата" >
+	<item name="payment" caption="Оплата" ag-id="1969" ag-hash="-786681338" >
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="discounts" caption="Скидки" ag-id="2183" ag-hash="-121228462">
-		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="1" description="в процентах"/>
+	<item name="discounts" caption="Скидки" ag-id="1970" ag-hash="-121228462">
+		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="0.0" description="в процентах"/>
 		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.0" description="в процентах" />
 		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="0.0" description="в процентах" />
 		<parameter name="delivery" type="double" caption="Надбавка за доставку" default="0.0" description="в процентах" />
-		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="2" description="в процентах" />
-		<parameter name="sum_more" type="currency" caption="Сумма заказа для предоставления скидки" default="2000" description="в рублях" />
+		<parameter name="sum_discount" type="double" caption="Скидка большую сумму заказа" default="0.0" description="в процентах" />
+		<parameter name="sum_more" type="currency" caption="Сумма заказа для предоставления скидки" default="0" description="в рублях" />
 	</item>
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
