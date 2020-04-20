@@ -231,7 +231,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
-		for(int i = 0; i < colIdx+1; i++){
+		for (int i = 0; i < colIdx+1; i++) {
 			row.getCell(i).setCellStyle(headerStyle);
 		}
 
@@ -565,7 +565,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		writeLineProducts = ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null && writeLineProducts;
 
 		//write prices only
-		if(YES.equalsIgnoreCase(priceOnlyVar)){
+		if (YES.equalsIgnoreCase(priceOnlyVar)) {
 			writeAllProductParams = false;
 			writeAuxParams = false;
 			writeHierarchy = false;

@@ -1,13 +1,12 @@
 package ecommander.fwk;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ecommander.controllers.LoginServlet;
+import ecommander.model.User;
+import ecommander.model.UserMapper;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.pages.ResultPE.ResultType;
-import ecommander.model.User;
-import ecommander.model.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.util.HashSet;

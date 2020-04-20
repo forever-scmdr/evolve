@@ -816,7 +816,6 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 						orderBy.sql(TP_DOT + IP_WEIGHT);
 					} else {
 						if (isIdSequential) {
-							query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
 							if (isParent)
 								orderBy.sql(P_DOT + IP_PARENT_ID);
 							else
@@ -862,6 +861,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			if (hasLimit())
 				limit.appendQuery(query);
 		}
+		if (hasLimit() && isIdSequential)
+			query.getSubquery(Const.WHERE).AND().col(I_DOT + I_ID, ">").long_(idSequentialStart);
 		sqlForLog = query.getSimpleSql();
 		return loadByQuery(query, PID, null, fulltext, conn);
 	}
@@ -1066,20 +1067,23 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
+	 * @param status
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, Collection<String> paramValue, Connection... conn)
+	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, Collection<String> paramValue, Byte... status)
 			throws Exception {
 		ItemType item = ItemTypeRegistry.getItemType(itemName);
 		Integer[] extenders = ItemTypeRegistry.getItemExtendersIds(item.getTypeId());
 		ParameterDescription param = item.getParameter(paramName);
+		if (status == null || status.length == 0) {
+			status = new Byte[] {Item.STATUS_NORMAL};
+		}
 		TemplateQuery query = new TemplateQuery("unique parameter value query");
 		query
 				.SELECT(ITEM_TBL + ".*, 0 AS PID").FROM(ITEM_TBL)
 				.INNER_JOIN(DataTypeMapper.getTableName(param.getType()), I_ID, II_ITEM_ID)
-				.WHERE().col(II_PARAM).int_(param.getId()).AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.WHERE().col(II_PARAM).int_(param.getId()).AND().col_IN(I_STATUS).byteIN(status)
 				.AND().col(II_VALUE, " IN(");
 		DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, paramValue);
 		query.sql(")");
@@ -1090,31 +1094,31 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		if (param.getOwnerItemId() != item.getTypeId()) {
 			query.AND().col_IN(II_ITEM_TYPE).intIN(extenders);
 		}
-		return loadByQuery(query, "PID", null, null, conn);
+		return loadByQuery(query, "PID", null, null);
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
+	 * @param status
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, String paramValue, Connection... conn) throws Exception {
-		return loadByParamValue(itemName, paramName, Collections.singletonList(paramValue), conn);
+	public static ArrayList<Item> loadByParamValue(String itemName, String paramName, String paramValue, Byte... status) throws Exception {
+		return loadByParamValue(itemName, paramName, Collections.singletonList(paramValue), status);
 	}
 	/**
 	 * Загрзуить один айтем по значению параметра, подразумевается, что значение этого параметра является уникальным
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
-	 * @param conn
+	 * @param status
 	 * @return
 	 * @throws Exception
 	 */
-	public static Item loadSingleItemByParamValue(String itemName, String paramName, String paramValue, Connection... conn) throws Exception {
-		ArrayList<Item> items = loadByParamValue(itemName, paramName, paramValue, conn);
+	public static Item loadSingleItemByParamValue(String itemName, String paramName, String paramValue, Byte... status) throws Exception {
+		ArrayList<Item> items = loadByParamValue(itemName, paramName, paramValue, status);
 		if (items.size() == 0)
 			return null;
 		return items.get(0);

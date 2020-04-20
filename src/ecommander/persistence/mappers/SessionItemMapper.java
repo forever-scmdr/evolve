@@ -8,8 +8,10 @@ package ecommander.persistence.mappers;
 
 import ecommander.controllers.SessionContext;
 import ecommander.fwk.Strings;
-import ecommander.model.*;
-import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.UserGroupRegistry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,12 +26,24 @@ public class SessionItemMapper {
 	private static final byte TAG_NAME = -2; // Чаще всего - имя типа айтема, либо имя типа предшественника айтема по иерархии наследования (
 	private static final byte PARENT_ID = -3;
 
-	public abstract static class SessionItemMemento {
-		long id;
-		long parentId;
-		String typeName;
-		String tagName;
-		String key;
+
+	/**
+	 * Класс, который должен сохранять временный объект, который существует только в сеансе (т. е. создается в сеансе и заканчивает свое
+	 * существование при прекращении сеанса)
+	 */
+	private static class SessionItemMemento {
+		private long id;
+		private long parentId;
+		private String typeName;
+		private String tagName;
+		private String key;
+		private int userId;
+		private byte groupId;
+
+		private Item item;
+
+		private HashMap<Integer, Object> parameters = null; // Массив объектов SessionParameter (название и значение параметра)
+		private String[] extras = null; // дополнительные значения айтема
 
 		private SessionItemMemento(long id, long parentId, String typeName, String tagName, String key) {
 			this.id = id;
@@ -38,13 +52,6 @@ public class SessionItemMapper {
 			this.tagName = tagName;
 			this.key = key;
 		}
-
-		/**
-		 * Восстанавливает нормальный айтем (объект Item) из объекта SessionItemMemento (this)
-		 * @return
-		 * @throws Exception
-		 */
-		public abstract Item restoreItem() throws Exception;
 
 		public long getId() {
 			return id;
@@ -65,30 +72,19 @@ public class SessionItemMapper {
 		public String getKey() {
 			return key;
 		}
-	}
 
-	/**
-	 * Класс, который должен сохранять временный объект, который существует только в сеансе (т. е. создается в сеансе и заканчивает свое
-	 * существование при прекращении сеанса)
-	 * @author EEEE
-	 */
-	private static class TransientMemento extends SessionItemMemento {
-
-		private int userId;
-		private byte groupId;
-
-		private HashMap<Integer, Object> parameters = null; // Массив объектов SessionParameter (название и значение параметра)
-		private String[] extras = null; // дополнительные значения айтема
 		/**
 		 * Создает SessionItem из обычного Item Это нужно для нормального сохранения айтема в сеансе. По идее этот метод должен использоваться
 		 * только для сохранения айтемов, которые вновь созданы в сеансе (не хранятся в БД)
 		 * @param item
 		 * @param tagName
 		 */
-		private TransientMemento(Item item, String tagName) {
-			super(item.getId(), item.getContextParentId(), item.getTypeName(), tagName, item.getKeyUnique());
+		private SessionItemMemento(Item item, String tagName) {
+			this(item.getId(), item.getContextParentId(), item.getTypeName(), tagName, item.getKeyUnique());
 			this.userId = item.getOwnerUserId();
 			this.groupId = item.getOwnerGroupId();
+			this.item = item;
+			/*
 			parameters = new HashMap<>();
 			Collection<Parameter> parameters = item.getAllParameters();
 			for (Parameter parameter : parameters) {
@@ -110,6 +106,8 @@ public class SessionItemMapper {
 					extras[i++] = (String) item.getExtra(key);
 				}
 			}
+
+			 */
 		}
 		/**
 		 * Восстанавливает нормальный айтем (объект Item) из объекта SessionItem (this)
@@ -118,6 +116,7 @@ public class SessionItemMapper {
 		 * @throws Exception
 		 */
 		public Item restoreItem() throws Exception {
+			/*
 			Item item = Item.existingItem(ItemTypeRegistry.getItemType(typeName), id, ItemTypeRegistry.getPrimaryAssoc(),
 					parentId, userId, groupId, Item.STATUS_NORMAL, Strings.EMPTY, null, key, 0, false);
 			if (parameters != null) {
@@ -137,9 +136,13 @@ public class SessionItemMapper {
 				for (int i = 0; i < extras.length; i += 2)
 					item.setExtra(extras[i], extras[i + 1]);
 			}
+
+			 */
 			return item;
 		}
 	}
+
+
 	/**
 	 * Хранилище айтемов (класс SessionItem) Параметры, по которым осуществляется доступ: - ID айтема (Long) - ID родителя айтема (Long) -
 	 * название типа айтема (String)
@@ -156,10 +159,14 @@ public class SessionItemMapper {
 			case TAG_NAME:
 				return ((SessionItemMemento) object).getTagName();
 			default:
-				return ((TransientMemento) object).parameters.get(parameterId);
+				if (((SessionItemMemento) object).item.getItemType().hasParameter(parameterId))
+					return ((SessionItemMemento) object).item.getValue(parameterId);
+				return null;
+				//return ((SessionItemMemento) object).parameters.get(parameterId);
 			}
 		}
 	}
+
 
 	private SessionContext sess = null;
 	private long rootItemId;
@@ -194,10 +201,6 @@ public class SessionItemMapper {
 	 * @param item
 	 */
 	public void saveTemporaryItem(Item item) {
-//		SessionItemMemento sessionItem = new TransientMemento(item);
-//		// Удалить старый айтем, если такой уже есть
-//		storage.delete(PARAM_ID, item.getId());
-//		storage.addObject(sessionItem);
 		saveTemporaryItem(item, item.getTypeName());
 	}
 	/**
@@ -226,7 +229,7 @@ public class SessionItemMapper {
 			if (mementoArray.size() == 0)
 				item.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), rootItemId);
 		}
-		SessionItemMemento sessionItem = new TransientMemento(item, itemTag);
+		SessionItemMemento sessionItem = new SessionItemMemento(item, itemTag);
 		// Удалить старый айтем, если такой уже есть (с таким же родителем)
 		int[] paramIds = { ID, TAG_NAME, PARENT_ID };
 		Object[] paramValues = { item.getId(), itemTag, item.getContextParentId() };
@@ -395,7 +398,8 @@ public class SessionItemMapper {
 		ArrayList<Object> sessionItems = getStorage().select(parameters, paramValues);
 		if (sessionItems.size() == 0)
 			return null;
-		return ((SessionItemMemento) sessionItems.get(0)).restoreItem();
+		Item item = ((SessionItemMemento) sessionItems.get(0)).restoreItem();
+		return item;
 	}
 	/**
 	 * Возвращает одиночный сабайтем корневого айтема с определенным именем
@@ -472,16 +476,8 @@ public class SessionItemMapper {
 		for (Object mementoObj : mementoArray) {
 			SessionItemMemento memento = (SessionItemMemento) mementoObj;
 			// Если memento - временный объект, то просто восстановить из сеанса
-			if (memento instanceof TransientMemento) {
-				result.add(memento.restoreItem());
-			}
-			// Если memento - постоянный объект, запомнить ID и потом загрузить пакетно
-			else {
-				itemIds.add(memento.id);
-			}
+			result.add(memento.restoreItem());
 		}
-		// Загрузка айтемов из БД
-		result.addAll(ItemQuery.loadByIdsLong(itemIds));
 		return result;
 	}
 

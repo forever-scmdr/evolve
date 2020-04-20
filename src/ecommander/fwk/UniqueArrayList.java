@@ -1,8 +1,5 @@
 package ecommander.fwk;
 
-import ecommander.model.Item;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -45,12 +42,12 @@ public class UniqueArrayList<T> implements Collection<T> {
 	}
 
 	@Override
-	public boolean containsAll(@NotNull Collection<?> c) {
+	public boolean containsAll(Collection<?> c) {
 		return set.containsAll(c);
 	}
 
 	@Override
-	public boolean addAll(@NotNull Collection<? extends T> c) {
+	public boolean addAll(Collection<? extends T> c) {
 		if (c.size() == 0)
 			return false;
 		boolean result = false;
@@ -61,14 +58,14 @@ public class UniqueArrayList<T> implements Collection<T> {
 	}
 
 	@Override
-	public boolean removeAll(@NotNull Collection<?> c) {
+	public boolean removeAll(Collection<?> c) {
 		boolean result = set.removeAll(c);
 		array.removeAll(c);
 		return result;
 	}
 
 	@Override
-	public boolean retainAll(@NotNull Collection<?> c) {
+	public boolean retainAll(Collection<?> c) {
 		boolean result = set.retainAll(c);
 		array.retainAll(c);
 		return result;
@@ -91,21 +88,18 @@ public class UniqueArrayList<T> implements Collection<T> {
 		return set.contains(o);
 	}
 
-	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		return array.iterator();
 	}
 
-	@NotNull
 	@Override
 	public Object[] toArray() {
 		return array.toArray();
 	}
 
-	@NotNull
 	@Override
-	public <T1> T1[] toArray(@NotNull T1[] a) {
+	public <T1> T1[] toArray(T1[] a) {
 		return array.toArray(a);
 	}
 

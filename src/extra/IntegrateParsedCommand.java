@@ -1,9 +1,11 @@
 package extra;
 
-import ecommander.fwk.*;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -14,7 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.print.Doc;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;

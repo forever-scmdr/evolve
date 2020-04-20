@@ -1,10 +1,8 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -126,21 +124,32 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private static Analyzer currentAnalyzer = null;
 	
 	public static final String HTML = "html";
-	
+
 	private static LuceneIndexMapper singleton;
-	
+
 	private FSDirectory directory;
 	private volatile IndexWriter writer = null;
-	private IndexReader reader = null;
+	private SearcherManager searcherManager = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
-	private volatile int concurrentWritersCount = 0;
 	private volatile int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
 		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
 		tikaParsers.put(HTML, new HtmlParser());
+		try {
+			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
+					.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND)
+					.setRAMBufferSizeMB(10)
+					.setMaxBufferedDocs(2000)
+					.setRAMPerThreadHardLimitMB(5);
+			writer = new IndexWriter(directory, config);
+		} catch (Exception e) {
+			ServerLogger.error("LUCENE WRITER INIT", e);
+			throw e;
+		}
+		searcherManager = new SearcherManager(writer, null);
 	}
-	
+
 	public static LuceneIndexMapper getSingleton() throws IOException {
 		if (singleton == null)
 			singleton = new LuceneIndexMapper();
@@ -148,34 +157,14 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	}
 
 	/**
-	 * Должен вызываться перед процессом добавления айтемов в индекс (или удаления)
-	 * @throws IOException
-	 */
-	public synchronized void startUpdate() throws IOException {
-		if (concurrentWritersCount == 0) {
-			try {
-				closeWriter();
-				IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())
-						.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND)
-						.setRAMBufferSizeMB(5)
-						.setMaxBufferedDocs(200)
-						.setRAMPerThreadHardLimitMB(2);
-				writer = new IndexWriter(directory, config);
-			} catch (Exception e) {
-				ServerLogger.error("LUCENE WRITER INIT", e);
-				throw e;
-			}
-		}
-		concurrentWritersCount++;
-	}
-
-	/**
 	 * Подтвердить изменения. Изменения из буфера записываются в файлы индекса
 	 * @throws IOException
 	 */
 	public synchronized void commit() throws IOException {
-		if (concurrentWritersCount > 0 && writer != null)
+		if (writer != null) {
 			writer.commit();
+			searcherManager.maybeRefresh();
+		}
 		else
 			throw new IllegalStateException("can not commit unopened index writer");
 	}
@@ -185,43 +174,16 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws IOException
 	 */
 	public synchronized void rollback() throws IOException {
-		if (concurrentWritersCount > 0 && writer != null)
+		if (writer != null) {
 			writer.rollback();
+			searcherManager.maybeRefresh();
+		}
 		else
 			throw new IllegalStateException("can not rollback unopened index writer");
 	}
 
-	/**
-	 * Завершить обновление индекса.
-	 * IndexWriter закрывается в случае если нет параллельно идущих незавершенных записей
-	 */
-	public synchronized void finishUpdate() throws IOException {
-		if (concurrentWritersCount <= 0 || writer == null) {
-			throw new IllegalStateException("can not finish updating unopened writer");
-		}
-		concurrentWritersCount--;
-		if (concurrentWritersCount < 0)
-			concurrentWritersCount = 0;
-		if (concurrentWritersCount == 0) {
-			writer.commit();
-			closeWriter();
-		}
-		refreshReader();
-	}
-
-	/**
-	 * Принудительно закрывает writer. Это аварийный метод, должен использоваться только
-	 * в нештатных ситуациях.
-	 * @throws IOException
-	 */
-	public synchronized void forceCloseWriter() throws IOException {
-		concurrentWritersCount = 0;
-		closeWriter();
-		refreshReader();
-	}
-
 	private void closeWriter() throws IOException {
-		closeReader();
+		searcherManager.close();
 		if (writer != null)
 			writer.close();
 		writer = null;
@@ -246,48 +208,17 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * Создать или обновить reader после завершения записи в индекс
 	 * @throws IOException
 	 */
-	private void refreshReader() throws IOException {
-		if (!DirectoryReader.indexExists(directory)) {
-			reader = null;
-			return;
-		}
-		if (reader == null) {
-			reader = DirectoryReader.open(directory);
-		} else {
-			DirectoryReader newReader = DirectoryReader.openIfChanged((DirectoryReader) reader);
-			if (newReader != null)
-				reader = newReader;
-		}
+	private void refreshSearcher() throws IOException {
+		searcherManager.maybeRefresh();
 	}
 
-	/**
-	 * Получить reader
-	 * @return
-	 * @throws IOException
-	 */
-	private IndexReader getReader() throws IOException {
-		if (reader == null)
-			refreshReader();
-		return reader;
-	}
-
-	private void closeReader() throws IOException {
-		if (reader != null) {
-			reader.close();
-			reader = null;
-		}
-	}
-	
 	private synchronized void createNewIndex() throws IOException {
 		try {
-			startUpdate();
 			writer.deleteAll();
+			searcherManager.maybeRefreshBlocking();
 		} catch (Exception e) {
 			ServerLogger.error("Unable to create new Lucene index", e);
-		} finally {
-			finishUpdate();
 		}
-		closeReader();
 	}
 
 	/**
@@ -297,39 +228,42 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private synchronized void insertItem(Item item) throws IOException, SAXException, TikaException {
+	private void insertItem(Item item) throws Exception {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		Document itemDoc = new Document();
-		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
-		// который поддерживает только строковые значения
-		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
-		// Заполняются все типы айтема (иерархия типов айтема)
-		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
-		for (String pred : itemPreds) {
-			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
-		}
-		//		// Заполняются все предшественники (в которые айтем вложен)
-		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-		//		for (String contId : containerIds) {
-		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-		//		}
+
+		HashMap<Long, Document> docs = new HashMap<>();
+		Document itemDoc = createItemDoc(item);
+		docs.put(item.getId(), itemDoc);
+		ArrayList<Document> itemDocs = new ArrayList<>();
+		itemDocs.add(itemDoc);
+
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
-
 		for (String ftParam : item.getItemType().getFulltextParams()) {
 			boolean needIncrement = false;
 			for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
-				if (param.isMultiple()) {
-					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
-						createParameterField(param, sp.outputValue(), itemDoc, ftParam, needIncrement);
+				if (param.isFulltextOwnByPredecessor()) {
+					ArrayList<Item> preds = ItemMapper.loadItemPredecessors(item.getId(), param.getFulltextItem());
+					itemDocs.clear();
+					for (Item pred : preds) {
+						Document doc = createItemDoc(pred);
+						itemDocs.add(doc);
+						docs.put(pred.getId(), doc);
+					}
+				}
+				for (Document doc : itemDocs) {
+					if (param.isMultiple()) {
+						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+							createParameterField(param, sp.outputValue(), doc, ftParam, needIncrement);
+							needIncrement = true;
+						}
+					} else {
+						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
+								doc, ftParam, needIncrement);
 						needIncrement = true;
 					}
-				} else {
-					createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
-							itemDoc, ftParam, needIncrement);
-					needIncrement = true;
 				}
 			}
 		}
@@ -349,9 +283,36 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		// Добавление айтема в индекс
 		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
 		//		ServerLogger.debug(item.getId());
-		writer.updateDocument(new Term(I_ID, item.getId() + ""), itemDoc);
+
+		for (Long itemId : docs.keySet()) {
+			writer.updateDocument(new Term(I_ID, itemId + ""), docs.get(itemId));
+		}
 		//		writer.addDocument(itemDoc);
 	}
+
+	/**
+	 * Создать Lucene документ для айтема и заполнить базовые параметры документа (тип и ID айтема)
+	 * @param item
+	 * @return
+	 */
+	private Document createItemDoc(Item item) {
+		Document itemDoc = new Document();
+		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
+		// который поддерживает только строковые значения
+		itemDoc.add(new StringField(I_ID, item.getId() + "", Store.YES));
+		// Заполняются все типы айтема (иерархия типов айтема)
+		Set<String> itemPreds = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName());
+		for (String pred : itemPreds) {
+			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
+		}
+		//		// Заполняются все предшественники (в которые айтем вложен)
+		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
+		//		for (String contId : containerIds) {
+		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
+		//		}
+		return itemDoc;
+	}
+
 	/**
 	 * Добавить параметр в виде поля для документа Lucene.
 	 * @param param
@@ -363,8 +324,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName
-			, boolean needIncrement) throws IOException, SAXException, TikaException {
+	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName,
+	                                  boolean needIncrement) throws IOException, SAXException, TikaException {
 		if (StringUtils.isBlank(value))
 			return;
 		if (needIncrement)
@@ -393,17 +354,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public synchronized void updateItem(Item item) throws IOException, SAXException, TikaException {
+	public void updateItem(Item item) throws Exception {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
 		if (!item.getItemType().isFulltextSearchable())
 			return;
-		try {
-			startUpdate();
-			writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
-			insertItem(item);
-		} finally {
-			finishUpdate();
-		}
+		writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
+		insertItem(item);
 	}
 
 	/**
@@ -412,17 +368,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @param itemIds
 	 * @throws IOException
 	 */
-	public synchronized void deleteItem(Long... itemIds) throws IOException {
-		try {
-			startUpdate();
-			Term[] deleteTerms = new Term[itemIds.length];
-			for (int i = 0; i < itemIds.length; i++) {
-				deleteTerms[i] = new Term(I_ID, itemIds[i] + "");
-			}
-			writer.deleteDocuments(deleteTerms);
-		} finally {
-			finishUpdate();
+	public void deleteItem(Long... itemIds) throws IOException {
+		Term[] deleteTerms = new Term[itemIds.length];
+		for (int i = 0; i < itemIds.length; i++) {
+			deleteTerms[i] = new Term(I_ID, itemIds[i] + "");
 		}
+		writer.deleteDocuments(deleteTerms);
 	}
 
 	/**
@@ -442,13 +393,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws IOException
 	 */
-	public synchronized LinkedHashMap<Long, String> getItems(ArrayList<ArrayList<Query>> queries, Query filter, String[] paramNames,
+	public LinkedHashMap<Long, String> getItems(ArrayList<ArrayList<Query>> queries, Query filter, String[] paramNames,
 	                                                         int maxResults, float threshold)
 			throws IOException {
-		if (getReader() == null)
+		if (searcherManager == null)
 			return new LinkedHashMap<>(0);
 		Timer.getTimer().start(Timer.LOAD_LUCENE_ITEMS);
-		IndexSearcher search = new IndexSearcher(getReader());
 		LinkedHashMap<Long, String> result = new LinkedHashMap<>();
 		float globalMaxScore = -1f;
 		float minScore = -1f;
@@ -461,75 +411,81 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		// Все группы запросов в порядке появления в массиве
 		// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
 		int totalDocs = 0;
-		for (List<Query> group : queries) {
-			for (Query query : group) {
-				TopDocs foundDocs;
-				if (filter != null) {
-					BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
-					boolQuery.add(query, BooleanClause.Occur.MUST);
-					boolQuery.add(filter, BooleanClause.Occur.FILTER);
-					query = boolQuery.build();
-				}
-				foundDocs = search.search(query, maxResults);
-				float scoreQuotient = 1f;
 
-				// Инициализация максиального количества очков и коэффициента пересчета
-				if (foundDocs.scoreDocs.length > 0) {
-					if (globalMaxScore <= 0)
-						globalMaxScore = foundDocs.scoreDocs[0].score;
-					if (minScore > 0)
-						scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
-				}
-
-				// Подготовка подсветки найденных результатов
-				SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
-				QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
-				Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
-				Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 40); //It breaks text up into same-size texts but does not split up spans
-				highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
-
-				// Итерация по результатам поиска
-				for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
-
-					// нормализованный счет (score)
-					float normalScore = scoreDoc.score * scoreQuotient;
-					if (globalMaxScore * threshold > normalScore) {
-						isFinished = true;
-						break;
+		IndexSearcher search = searcherManager.acquire();
+		try {
+			for (List<Query> group : queries) {
+				for (Query query : group) {
+					TopDocs foundDocs;
+					if (filter != null) {
+						BooleanQuery.Builder boolQuery = new BooleanQuery.Builder();
+						boolQuery.add(query, BooleanClause.Occur.MUST);
+						boolQuery.add(filter, BooleanClause.Occur.FILTER);
+						query = boolQuery.build();
 					}
-					Document doc = search.doc(scoreDoc.doc);
+					foundDocs = search.search(query, maxResults);
+					float scoreQuotient = 1f;
 
-					// Подсветка найденных фрагментов
-					//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
-					XmlDocumentBuilder highlighted = XmlDocumentBuilder.newDocPart();
-					for (String paramName : paramNames) {
-						//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
-						String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
-						String[] bestFragments = new String[0];
-						try {
-							//bestFragments = highlighter.getBestFragments(stream, text, 3);
-							bestFragments = highlighter.getBestFragments(getAnalyzer(), paramName, text, 3);
-						} catch (Exception e) {
-							ServerLogger.warn("Lucene highlighter error", e);
-						}
-						for (String bestFragment : bestFragments) {
-							highlighted.startElement("p", "name", paramName).addText(bestFragment).endElement();
-						}
+					// Инициализация максиального количества очков и коэффициента пересчета
+					if (foundDocs.scoreDocs.length > 0) {
+						if (globalMaxScore <= 0)
+							globalMaxScore = foundDocs.scoreDocs[0].score;
+						if (minScore > 0)
+							scoreQuotient = minScore / foundDocs.scoreDocs[0].score;
 					}
-					Long itemId = Long.parseLong(doc.get(I_ID));
-					result.put(itemId, highlighted.toString());
-					totalDocs++;
-					ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
+
+					// Подготовка подсветки найденных результатов
+					SimpleHTMLFormatter formatter = new SimpleHTMLFormatter(); //Uses HTML &lt;B&gt;&lt;/B&gt; tag to highlight the searched terms
+					QueryScorer scorer = new QueryScorer(query); //It scores text fragments by the number of unique query terms found
+					Highlighter highlighter = new Highlighter(formatter, scorer); //used to markup highlighted terms found in the best sections of a text
+					Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, 40); //It breaks text up into same-size texts but does not split up spans
+					highlighter.setTextFragmenter(fragmenter); //set fragmenter to highlighter
+
+					// Итерация по результатам поиска
+					for (ScoreDoc scoreDoc : foundDocs.scoreDocs) {
+
+						// нормализованный счет (score)
+						float normalScore = scoreDoc.score * scoreQuotient;
+						if (globalMaxScore * threshold > normalScore) {
+							isFinished = true;
+							break;
+						}
+						Document doc = search.doc(scoreDoc.doc);
+
+						// Подсветка найденных фрагментов
+						//Fields docFields = getReader().getTermVectors(scoreDoc.doc);
+						XmlDocumentBuilder highlighted = XmlDocumentBuilder.newDocPart();
+						for (String paramName : paramNames) {
+							//TokenStream stream = TokenSources.getTermVectorTokenStreamOrNull(paramName, docFields, -1);
+							String text = StringUtils.join(doc.getValues(paramName), TEN_SPACES_STRING);
+							String[] bestFragments = new String[0];
+							try {
+								//bestFragments = highlighter.getBestFragments(stream, text, 3);
+								bestFragments = highlighter.getBestFragments(getAnalyzer(), paramName, text, 3);
+							} catch (Exception e) {
+								ServerLogger.warn("Lucene highlighter error", e);
+							}
+							for (String bestFragment : bestFragments) {
+								highlighted.startElement("p", "name", paramName).addText(bestFragment).endElement();
+							}
+						}
+						Long itemId = Long.parseLong(doc.get(I_ID));
+						result.put(itemId, highlighted.toString());
+						totalDocs++;
+						ServerLogger.debug("\t\t---------\n" + search.explain(query, scoreDoc.doc));
+					}
+
+					if (foundDocs.scoreDocs.length > 0)
+						minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
+
+					if (isFinished || totalDocs >= maxResults) break;
 				}
-
-				if (foundDocs.scoreDocs.length > 0)
-					minScore = foundDocs.scoreDocs[foundDocs.scoreDocs.length - 1].score * scoreQuotient;
-
-				if (isFinished || totalDocs >= maxResults) break;
+				// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
+				if (totalDocs > 0)
+					break;
 			}
-			// Переход к следующей группе происходит только в случае, если предыдущая группа не дала результатов
-			if (totalDocs > 0)
-				break;
+		} finally {
+			searcherManager.release(search);
 		}
 		Timer.getTimer().stop(Timer.LOAD_LUCENE_ITEMS);
 		return result;
@@ -540,34 +496,29 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws Exception
 	 */
-	public synchronized boolean reindexAll() throws Exception {
+	public boolean reindexAll() throws Exception {
 		final int LIMIT = 500;
 		createNewIndex();
-		try {
-			startUpdate();
-			countProcessed = 0;
-			for (String itemName : ItemTypeRegistry.getItemNames()) {
-				ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
-				if (itemDesc.isFulltextSearchable()) {
-					ArrayList<Item> items;
-					long startFrom = 0;
-					do {
-						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
-						for (Item item : items) {
-							updateItem(item);
-						}
-						if (items.size() > 0)
-							startFrom = items.get(items.size() - 1).getId() + 1;
-						countProcessed += items.size();
-						ServerLogger.debug("Indexed: " + countProcessed + " items");
-						commit();
-					} while (items.size() == LIMIT);
-				}
+		countProcessed = 0;
+		for (String itemName : ItemTypeRegistry.getItemNames()) {
+			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
+			if (itemDesc.isFulltextSearchable()) {
+				ArrayList<Item> items;
+				long startFrom = 0;
+				do {
+					items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
+					for (Item item : items) {
+						updateItem(item);
+					}
+					if (items.size() > 0)
+						startFrom = items.get(items.size() - 1).getId() + 1;
+					countProcessed += items.size();
+					ServerLogger.debug("Indexed: " + countProcessed + " items");
+					commit();
+				} while (items.size() == LIMIT);
 			}
-			commit();
-		} finally {
-			finishUpdate();
 		}
+		commit();
 		return true;
 	}
 	/**

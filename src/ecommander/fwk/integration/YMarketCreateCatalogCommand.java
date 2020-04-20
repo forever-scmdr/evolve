@@ -3,10 +3,10 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
-import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.model.Item;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +16,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -70,29 +69,29 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
-		info.pushLog("Удаление параметров товаров");
-		int processed = 0;
-		info.setProcessed(processed);
-		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
-		paramsQuery.setLimit(10);
-		List<Item> itemsToDelete = paramsQuery.loadItems();
-		while (itemsToDelete.size() > 0) {
-			for (Item item : itemsToDelete) {
-				executeCommandUnit(ItemStatusDBUnit.delete(item));
-			}
-			commitCommandUnits();
-			processed += itemsToDelete.size();
-			info.setProcessed(processed);
-			itemsToDelete = paramsQuery.loadItems();
-		}
-
-		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
-		typesToDelete.remove(PARAMS_ITEM);
-		for (String typeToDelete : typesToDelete) {
-			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-		}
-
-		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+//		info.pushLog("Удаление параметров товаров");
+//		int processed = 0;
+//		info.setProcessed(processed);
+//		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
+//		paramsQuery.setLimit(10);
+//		List<Item> itemsToDelete = paramsQuery.loadItems();
+//		while (itemsToDelete.size() > 0) {
+//			for (Item item : itemsToDelete) {
+//				executeCommandUnit(ItemStatusDBUnit.delete(item));
+//			}
+//			commitCommandUnits();
+//			processed += itemsToDelete.size();
+//			info.setProcessed(processed);
+//			itemsToDelete = paramsQuery.loadItems();
+//		}
+//
+//		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
+//		typesToDelete.remove(PARAMS_ITEM);
+//		for (String typeToDelete : typesToDelete) {
+//			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
+//		}
+//
+//		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
@@ -106,18 +105,52 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 
 		info.pushLog("Создание товаров завершено");
+		info.pushLog("Прикрепление картинок к разделам");
+		info.setOperation("Прикрепление картинок к разделам");
+
+		attachImages();
+
+		info.pushLog("Прикрепление картинок к разделам завершено");
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
 
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
+		info.setOperation("Создание фильтров");
+		info.pushLog("Создание фильтров");
+
+		new CreateParametersAndFiltersCommand(this).integrate();
+
+		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 
+	private void attachImages() throws Exception {
+		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
+		for(Item section : sections){
+			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
+			if(!mainPic.isFile()){
+				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+				q.setLimit(50);
+				q.setParentId(section.getId(), true);
+				//q.addParameterCriteria(MAIN_PIC_PARAM, "-", "!=", null, Compare.SOME);
+				List<Item> products = q.loadItems();
+				for(Item prod : products){
+					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
+					if(mainPic.isFile()){
+						section.setValue(MAIN_PIC_PARAM, mainPic);
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+						break;
+					}
+				}
+			}
+		}
+	}
 
-	private static boolean removeDoctype(File file) throws FileNotFoundException {
+
+	private boolean removeDoctype(File file) {
 		File tempFile = new File("__temp__.xml");
 		final String DOCTYPE = "!DOCTYPE";
 		boolean containsDoctype = false;
@@ -159,7 +192,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	}
 
 	@Override
-	protected void terminate() throws Exception {
+	protected void terminate() {
 
 	}
 }

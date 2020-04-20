@@ -43,7 +43,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
 
-	private IntegrateBase.Info info; // информация для пользователя
+	private IntegrateBase.Info info;  // информация для пользователя
 	private ItemType userType;
 	private User initiator;
 	private boolean isInsideUser = false;
@@ -54,7 +54,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 		this.info = info;
 		this.userType = ItemTypeRegistry.getItemType(User_jur._NAME);
 		this.initiator = initiator;
-		userCatalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.REGISTERED_CATALOG, initiator);
+		userCatalog = ItemQuery.loadSingleItemByName(ItemNames.REGISTERED_CATALOG);
 	}
 
 	@Override

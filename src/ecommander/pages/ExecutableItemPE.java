@@ -128,7 +128,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 				Item currentParentItem = itemPE.getParentItemPE().getParentRelatedFoundItemIterator().getCurrentItem();
 				return itemPE.getFoundItemsByParentQuantity(currentParentItem.getId());
 			}
-			return itemPE.getFoundItemsByParentQuantity(currentParentId);
+			return itemPE.getFoundItemsByParentQuantity(NO_PARENT_ID); // currentParentId
 		}
 	}
 

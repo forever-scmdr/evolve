@@ -9,6 +9,7 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
+import ecommander.pages.Command;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
@@ -30,6 +31,7 @@ import java.util.*;
 public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
 
 	private static final String DIGITS = "0123456789.,";
+
 	/**
 	 * Типы и названия параметров
 	 * Тип параметра может быть одним из трех
@@ -118,6 +120,14 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				}
 			}
 		}
+	}
+
+
+	public CreateParametersAndFiltersCommand(Command outer) {
+		super(outer);
+	}
+
+	public CreateParametersAndFiltersCommand() {
 	}
 
 	@Override

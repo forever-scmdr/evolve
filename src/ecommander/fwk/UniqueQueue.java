@@ -1,7 +1,5 @@
 package ecommander.fwk;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 
 /**
@@ -37,21 +35,18 @@ public class UniqueQueue<T> implements Queue<T> {
 		return set.contains(o);
 	}
 
-	@NotNull
 	@Override
 	public Iterator<T> iterator() {
 		throw new IllegalStateException("Impossible to create iterator");
 	}
 
-	@NotNull
 	@Override
 	public Object[] toArray() {
 		return list.toArray();
 	}
 
-	@NotNull
 	@Override
-	public <T1> T1[] toArray(@NotNull T1[] a) {
+	public <T1> T1[] toArray(T1[] a) {
 		return list.toArray(a);
 	}
 
@@ -76,12 +71,12 @@ public class UniqueQueue<T> implements Queue<T> {
 	}
 
 	@Override
-	public boolean containsAll(@NotNull Collection<?> c) {
+	public boolean containsAll(Collection<?> c) {
 		return set.containsAll(c);
 	}
 
 	@Override
-	public boolean addAll(@NotNull Collection<? extends T> c) {
+	public boolean addAll(Collection<? extends T> c) {
 		boolean added = false;
 		for (T t : c) {
 			added |= add(t);
@@ -90,7 +85,7 @@ public class UniqueQueue<T> implements Queue<T> {
 	}
 
 	@Override
-	public boolean removeAll(@NotNull Collection<?> c) {
+	public boolean removeAll(Collection<?> c) {
 		boolean removed = false;
 		for (Object o : c) {
 			removed |= remove(o);
@@ -99,7 +94,7 @@ public class UniqueQueue<T> implements Queue<T> {
 	}
 
 	@Override
-	public boolean retainAll(@NotNull Collection<?> c) {
+	public boolean retainAll(Collection<?> c) {
 		HashSet<T> newSet = new HashSet<T>();
 		LinkedList<T> newList = new LinkedList<T>();
 		boolean removed = false;
