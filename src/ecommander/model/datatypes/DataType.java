@@ -148,14 +148,6 @@ public abstract class DataType {
 		return BIG_TEXT_TYPES.contains(type);
 	}
 
-	/**
-	 * Значение этого типа может быть использовано в фильтре и проиндексировано в индексной таблице
-	 * @return
-	 */
-	public boolean isIndesable() {
-		return !isBigText() && !isFile();
-	}
-
 	@Override
 	public String toString() {
 		return type.toString();

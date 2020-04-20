@@ -116,6 +116,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE proceed() throws Exception {
+		checkStrategy();
 		updateQtys();
 		recalculateCart();
 		return getResult("proceed");
@@ -276,9 +277,14 @@ public abstract class BasicCartManageCommand extends Command {
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
+				long bufParentId = bought.getContextParentId();
+				byte bufOwnerGroup = bought.getOwnerGroupId();
+				int bufOwnerUser = bought.getOwnerUserId();
 				bought.setContextPrimaryParentId(purchase.getId());
 				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
 				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
+				bought.setContextPrimaryParentId(bufParentId);
+				bought.setOwner(bufOwnerGroup, bufOwnerUser);
 			}
 		}
 		//

@@ -19,7 +19,7 @@ import java.util.List;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -222,8 +222,33 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
 		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
-		select.SELECT("*").FROM(ITEM_TBL).WHERE().col_IN(I_TYPE_ID).intIN(extenders).AND()
-				.col(I_ID, ">").long_(moreThanId).ORDER_BY(I_ID).LIMIT(limit);
+		select.SELECT("*").FROM(ITEM_TBL)
+				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
+				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.AND().col(I_ID, ">").long_(moreThanId)
+				.ORDER_BY(I_ID).LIMIT(limit);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			// Создание айтемов
+			while (rs.next()) {
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
+			}
+		}
+		return result;
+	}
+
+	public static ArrayList<Item> loadItemPredecessors(long itemId, String predItemName) throws Exception {
+		ArrayList<Item> result = new ArrayList<>();
+		// Полиморфная загрузка
+		TemplateQuery select = new TemplateQuery("Select item predecessors");
+		int predItemId = ItemTypeRegistry.getItemTypeId(predItemName);
+		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(predItemId);
+		select.SELECT("*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
+				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
+				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.AND().col(IP_CHILD_ID).long_(itemId)
+				.AND().col(IP_ASSOC_ID).long_(ItemTypeRegistry.getPrimaryAssocId());
 		try (Connection conn = MysqlConnector.getConnection();
 		     PreparedStatement pstmt = select.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();

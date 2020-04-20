@@ -91,7 +91,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
-				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
+				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
