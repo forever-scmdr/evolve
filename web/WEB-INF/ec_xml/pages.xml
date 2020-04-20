@@ -10,7 +10,13 @@
 
 	<include-definition name="COMMON">
 		<personal>
-			<single item="user" tag="registration"/>
+			<list item="user" tag="registration">
+				<filter>
+					<parameter name="registered">
+						<var value="1"/>
+					</parameter>
+				</filter>
+			</list>
 		</personal>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
@@ -23,6 +29,9 @@
 						<limit>
 							<var value="1"/>
 						</limit>
+						<sorting direction="DESC">
+							<var value="main_pic"/>
+						</sorting>
 					</filter>
 				</list>
 			</tree>
@@ -55,6 +64,7 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
@@ -63,6 +73,7 @@
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
+		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
@@ -77,8 +88,8 @@
 	</include-definition>
 
 
-<!-- 	<page name="test">
-		<single item="catalog" id="catalog_main">
+	<page name="test">
+		<single item="catalog"  id="catalog_main">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
@@ -92,7 +103,7 @@
 				</list>
 			</tree>
 		</single>
-	</page> -->
+	</page>
 
 
 
@@ -176,7 +187,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit $username" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -185,6 +196,7 @@
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
@@ -397,6 +409,30 @@
 
 
 
+	<page name="search_ajax" template="search_ajax">
+		<request>
+			<var name="q"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="5" compare="EVERY">
+					<var var="q"/>
+				</fulltext>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<!-- <var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/> -->
+		</link>
+	</page>
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -405,7 +441,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY">
+				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -745,6 +781,9 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
+		<link name="recalculate_link" target="cart_action" type="itemform">
+			<var name="action" value="update"/>
+		</link>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>
@@ -1008,7 +1047,7 @@
 		<link name="user_exists_personal" target="personal">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<command class="extra.RegisterCommand" method-var="action">
+		<command class="extra.JustEmailRegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>
 			<result name="user_exists" type="redirect"/>
 			<result name="success" type="redirect"/>
@@ -1017,6 +1056,15 @@
 			<result name="not_set_personal" type="redirect"/>
 			<result name="user_exists_personal" type="redirect"/>
 		</command>
+	</page>
+
+
+	<page name="register_email" template="register_email">
+		<request>
+			<var name="user"/>
+			<var name="base"/>
+		</request>
+		<single item="user" var="user" tag="user"/>
 	</page>
 
 
@@ -1178,7 +1226,7 @@
 	</page>
 
 
-    <page name="crawl" template="integration/crawl">
+    <page name="crawl" template="crawl">
         <request>
             <var name="action"/>
             <var name="job"/>

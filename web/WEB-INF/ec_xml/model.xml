@@ -149,9 +149,12 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
+		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
+		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -179,6 +182,7 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
+        <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 	</item>
 
@@ -186,6 +190,8 @@
 	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="865" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
+		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
+		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -195,7 +201,12 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
+		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
@@ -261,7 +272,7 @@
 	</group>
 	-->
 	<item name="params_xml" caption="Параметры в виде XML" ag-id="819" ag-hash="471057886">
-		<parameter name="xml" type="xml" caption="Параметры" />
+		<parameter name="xml" type="xml" caption="Параметры" text-index="fulltext" text-index-item="product"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
@@ -290,7 +301,10 @@
 	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
 		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
-		<parameter name="qty" type="double" caption="Количество"/>
+		<parameter name="qty" type="double" format="#.###" caption="Количество (deprecated)" description="для обратной совместимости"/>
+		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
+				   description="та часть общего количества, которое есть на складе"/>
+		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
@@ -301,6 +315,7 @@
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -326,7 +341,10 @@
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
 		<parameter name="date" caption="Дата" type="date"/>
-		<parameter name="qty" type="double" caption="Количество товаров"/>
+		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
+		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
+				   description="та часть общего количества, которое есть на складе"/>
+		<parameter name="qty_total" type="double" caption="Общее количество"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<child item="bought"/>
 	</item>
@@ -346,9 +364,9 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
-		<parameter name="email" type="string" caption="E-mail" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
@@ -375,7 +393,8 @@
 	</item>
 
 
-	<item name="registered_catalog" caption="Каталог пользователей" ag-id="822" ag-hash="-755203236">
+	<item name="registered_catalog" caption="Каталог пользователей" children-sorting="DESC" children-per-page="50" ag-id="822" ag-hash="-755203236">
+		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
 
