@@ -112,8 +112,8 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 
 
 
-
-				<div class="col-nine md-eight tab-full" style="margin-top: 2.5rem;">
+<!--				<div class="col-full s-content__main" style="margin-top: 2.5rem;">-->
+				 <div class="col-nine md-eight tab-full" style="margin-top: 2.5rem;">
 					<div id="nil">
 						<div class="content-text">
 						   <xsl:apply-templates select="$ni/audio"/>
@@ -129,16 +129,16 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 					</div>
 				</div>
 
-				<div class="col-three md-four tab-full desctop-only latest">
-					<h3>Последние новости</h3>
-					<xsl:for-each select="page/latest_sni">
+				<div class="col-three md-four tab-full desctop-only latest" style="margin-top: 3.3rem;">
+					<h3 style="margin-top:0;">Последние новости</h3>
+					<xsl:for-each select="page/latest">
 						<article class="col-block">
 							<a href="{show_page}" class="popular__thumb">
-								<img src="{concat(@path,small_pic)}" alt="{name}"/>
+								<img src="{concat('https://tempting.pro/',@path,small_pic)}" alt="{name}"/>
 							</a>
-							<section class="popular__meta">
-								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
-							</section>
+							<!--							<section class="popular__meta">-->
+							<!--								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>-->
+							<!--							</section>-->
 							<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
 						</article>
 					</xsl:for-each>
@@ -177,10 +177,10 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 		<!-- popular_posts -->
 		<section class="s-extra">
 
-			<div class="row top">
+			<!-- <div class="row top">
 				<div class="col-full md-six tab-full popular mobile-only">
 					<h3>Последние новости</h3>
-					<xsl:for-each select="page/latest_sni">
+					<xsl:for-each select="page/latest">
 						<article class="col-block popular__post">
 							<a href="{show_page}" class="popular__thumb">
 								<img src="{concat(@path,small_pic)}" alt="{name}"/>
@@ -192,7 +192,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 						</article>
 					</xsl:for-each>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row top">
 				<div class="col-full md-six tab-full popular">

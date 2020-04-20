@@ -546,7 +546,7 @@
 			</ancestor>
 		</single>
 
-		<list item="news_item" id="pni" tag="popular" cacheable="true">
+		<list item="news_item" id="pni" tag="popular">
 			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
@@ -575,7 +575,7 @@
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="4"/>
+					<var value="6"/>
 				</limit>
 			</filter>
 			<link name="show_page" target="news_item" type="exclusive">
@@ -732,16 +732,16 @@
 <!--			</ancestor>-->
 		</list>
 
-		<list item="small_news_item" id="latest" tag="latest_sni" cacheable="true">
+		<list item="small_news_item" id="latest" tag="latest">
 			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="4"/>
+					<var value="6"/>
 				</limit>
 			</filter>
-			<link name="show_page" target="news_item" type="exclusive">
+			<link name="show_page" target="small_news_item" type="exclusive">
 				<var name="sel" ref="latest" style="translit"/>
 			</link>
 		</list>

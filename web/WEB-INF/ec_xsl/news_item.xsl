@@ -115,7 +115,8 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 
 				<xsl:call-template name="NEWS_TOPPER"/>
 
-				<div class="col-nine md-eight tab-full s-content__main">
+<!--				<div class="col-full s-content__main">-->
+				 <div class="col-nine md-eight tab-full s-content__main">
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
 						<!-- Telegram -->
@@ -132,11 +133,11 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 					<xsl:for-each select="page/latest">
 						<article class="col-block">
 							<a href="{show_page}" class="popular__thumb">
-								<img src="{concat(@path,small_pic)}" alt="{name}"/>
+								<img src="{concat('https://tempting.pro/',@path,small_pic)}" alt="{name}"/>
 							</a>
-							<section class="popular__meta">
-								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>
-							</section>
+<!--							<section class="popular__meta">-->
+<!--								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>-->
+<!--							</section>-->
 							<h5><a href="{show_page}"><xsl:value-of select="name"/></a></h5>
 						</article>
 					</xsl:for-each>
@@ -337,10 +338,10 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 				<div class="s-content__media col-full">
 					<div class="s-content__post-thumb">
 						<figure>
-						<img src="{concat($ni/@path, $ni/main_pic)}"
-							 srcset="{concat($ni/@path, $ni/main_pic)} 2000w,
-									 {concat($ni/@path, $ni/medium_pic)} 1000w,
-									 {concat($ni/@path, $ni/small_pic)} 500w"
+						<img src="{concat('https://tempting.pro/', $ni/@path, $ni/main_pic)}"
+							 srcset="{concat('https://tempting.pro/',$ni/@path, $ni/main_pic)} 2000w,
+									 {concat('https://tempting.pro/',$ni/@path, $ni/medium_pic)} 1000w,
+									 {concat('https://tempting.pro/',$ni/@path, $ni/small_pic)} 500w"
 							 sizes="(max-width: 2000px) 100vw, 2000px" alt="" />
 							<xsl:if test="$has_audio">
 								<div class="audio-wrap" >
