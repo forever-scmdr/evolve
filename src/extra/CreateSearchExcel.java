@@ -79,9 +79,14 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 		rowIndex = initializeHeader(sh, rowIndex);
 		Elements prods = doc.getElementsByTag("product");
 		String currentQuery = "";
+		int resultsPerQuery = 0;
 		for (Element prod : prods) {
 			int colIdx = -1;
 			String query = JsoupUtils.nodeText(prod, "query");
+			boolean isNewQuery = !StringUtils.equalsIgnoreCase(query, currentQuery);
+			resultsPerQuery = isNewQuery ? 0 : resultsPerQuery + 1;
+			if (resultsPerQuery >= 10)
+				continue;
 			row = sh.createRow(++rowIndex);
 			row.createCell(++colIdx).setCellValue(query);
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "name"));
@@ -117,11 +122,10 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 			row.createCell(++colIdx).setCellValue(sum.toString());
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "request_qty"));
 
-			boolean isHeaderStyle = !StringUtils.equalsIgnoreCase(query, currentQuery);
 			for (Cell cell : row) {
-				cell.setCellStyle(isHeaderStyle ? headerStyle : normalStyle);
+				cell.setCellStyle(isNewQuery ? headerStyle : normalStyle);
 			}
-			if (!isHeaderStyle)
+			if (!isNewQuery)
 				row.getCell(0).setCellStyle(queryStyle);
 			currentQuery = query;
 		}
