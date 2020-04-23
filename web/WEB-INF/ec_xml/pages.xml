@@ -88,26 +88,6 @@
 	</include-definition>
 
 
-	<page name="test">
-		<single item="catalog"  id="catalog_main">
-			<tree item="section" id="sec" assoc="* catalog_link">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="key"/>
-				</link>
-				<list item="product"  transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-					</filter>
-				</list>
-			</tree>
-		</single>
-	</page>
-
-
-
-
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -116,8 +96,10 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-
 	<page name="index" template="index" cacheable="true">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -194,6 +176,7 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
@@ -280,6 +263,14 @@
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
 		</link>
+
+		<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="currency" value="byn"/>
+		</link>
+		<link name="set_currency_rur" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="currency" value="rur"/>
+		</link>
+
 		<link name="show_only_available" target="section" type="exclusive">
 			<var name="sec" var="sec" style="key"/>
 			<var name="minqty" value="0"/>
@@ -322,6 +313,7 @@
 	<page name="tag_section" template="tag_section">
 		<request>
 			<var name="tag"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<request>
 			<var name="page" value="1"/>
@@ -414,6 +406,7 @@
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -438,6 +431,7 @@
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -489,6 +483,7 @@
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
@@ -682,6 +677,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -733,6 +729,7 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -769,6 +766,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -1216,16 +1214,6 @@
 	</page>
 
 
-	<page name="import_from_ancient" template="integration" authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.ImportFromAncientXML" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-
     <page name="crawl" template="crawl">
         <request>
             <var name="action"/>
@@ -1489,6 +1477,29 @@
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+	<!-- ICTRADE ONLY -->
+	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
+		<link name="success" target="currency_ratio_success"/>
+		<link name="error" target="currency_ratio_success">
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.LoadCurrencyFromNBRB">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+	<page name="currency_ratio_success" ></page>
+
+	<page name="import_from_ancient" template="integration/import_from_ancient" authority-groups="common">
+		<request>
+			<var name="action"/>
+			<var name="start_url" value="https://ictrade.by/catalog_xml"/>
+		</request>
+		<command class="extra.ImportFromAncientXML" clear-cache="yes">
+			<result name="complete" type="xml"/>
 		</command>
 	</page>
 

@@ -107,7 +107,7 @@
 		</section> -->
 		<section class="header desktop">
 			<div class="container">
-				<a href="{$main_host}" class="logo"><img src="img/logo.svg" alt="" /></a>
+				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
 					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 					<input type="submit" class="button header__button" value="Поиск" />
@@ -118,7 +118,7 @@
 					<div>Cумма: <strong>1250 руб.</strong></div> -->
 				</div>
 				<div class="user-links header__column">
-					<xsl:call-template name="PERSONAL_DESKTOP"/>
+<!--					<xsl:call-template name="PERSONAL_DESKTOP"/>-->
 					<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 						<a href=""><i class="fas fa-star"/>Избранное</a>
 					</div>
@@ -180,7 +180,7 @@
 		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$main_host}" class="logo">
-					<img src="img/logo.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+					<img src="img/logo.png" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -529,8 +529,12 @@
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old">
+						<div class="price_old">
+							<span><xsl:value-of select="f:price_catalog(price_old ,'')"/>.</span>
+						</div>
+					</xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit)"/>.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -646,8 +650,8 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog(price_old, '')"/></span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit)"/></div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">

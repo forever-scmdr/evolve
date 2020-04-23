@@ -1,32 +1,28 @@
 package extra;
 
-import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.model.Compare;
+import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.CleanDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,72 +30,223 @@ import java.util.regex.Pattern;
 /**
  * Created by Anton on 08.11.2018.
  */
-public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
-	private File exportFile;
-	//	private String base = "http://mizida.by";
-	private static final Pattern SRC = Pattern.compile("src=\"(?<src>sitefiles/(\\d+/)+(?<filename>[^\"]+))\"");
-	private static final String OLD_SECTION_NAME = "каталог со старого сайта";
+public class ImportFromAncientXML extends CreateParametersAndFiltersCommand implements CatalogConst {
+	private Item catalog;
+	private Item seoWrap;
+	private Item currentSection;
+	private String base;
+	private String startUrl;
+	private static final String PRODUCT_CARD = "product_card";
+	private static final String LINK = "page link";
+	private static final String PAGE_NUMBER = "variables page";
+	private static final String KEY = "key";
+	private static final String SELF_PRICE = "self_price";
+	private static final String SECTION_NAME = "section name";
+	private static final String PRODUCT_COUNT = "product_count";
+	private static final String PAGES = "product_pages";
+	private static final String DOC_REF = "doc_ref";
+	private static final String PATH = "path";
+	private static final String PARAM_EL = "param";
+	private static final String OTHER_SEC = "Прочее";
+	private static final String CAPTION_ATTR = "caption";
+	private boolean isOtherSec = false;
+	private static final Pattern HOST = Pattern.compile("https?://([\\w]+\\.[\\w]+)+/");
+	private LinkedList<String> urlsQueue = new LinkedList<>();
+	private LinkedList<Item> newSections = new LinkedList<>();
+	private int imgDownloadStopper = 0;
+
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		String contextPath = AppContext.getContextPath();
-		exportFile = Paths.get(contextPath, "upload", "export.xml").toFile();
-		if(exportFile.exists())
-		ServerLogger.debug("Export file found. Size: " + Files.size(exportFile.toPath()));
-		return exportFile.exists();
+		//init URLs
+		startUrl = getVarSingleValue("start_url");
+		Matcher m = HOST.matcher(startUrl);
+		if (!m.find()) return false;
+		base = m.group(0);
+
+		//Init items
+		catalog = ItemUtils.ensureSingleRootAnonymousItem(CATALOG_ITEM, getInitiator());
+		seoWrap = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.SEO_CATALOG, getInitiator());
+		return true;
 	}
 
 	@Override
-	protected void integrate() throws Exception{
-		info.setOperation("Разбор старого каталога");
+	protected void integrate() throws Exception {
+		clearGraveyard();
+		importSections();
+		importProducts();
+		createFiltersAndItemTypes();
+		info.setOperation("Индексация названий товаров");
+		LuceneIndexMapper.getSingleton().reindexAll();
+		setOperation("Интеграция завершена");
+	}
 
+	private void importProducts() throws Exception {
+		setOperation("Наполнение разделов");
+		String url;
+		setProcessed(0);
+		info.setToProcess(0);
+		while ((url = urlsQueue.poll()) != null) {
+			Document doc = fetchPage(url);
+			int t = Integer.parseInt(getText(doc, PRODUCT_COUNT,"0"));
+			if (t == 0) continue;
 
-		Document oldCatalog = Jsoup.parse(new FileInputStream(exportFile), "UTF-8", "", Parser.xmlParser());
+			int page = Integer.parseInt(getText(doc, PAGE_NUMBER,"1"));
+			String name = doc.select(SECTION_NAME).first().text();
+			String key = doc.select(SECTION_ITEM).first().attr(KEY);
+			currentSection = ItemQuery.loadByUniqueKey(doc.select(SECTION_ITEM).first().attr(KEY)).get(key);
+			info.setCurrentJob(name + ". Страница: " + page);
+			isOtherSec = name.intern() == OTHER_SEC;
+			if (page == 1) {
+				info.setToProcess(t + info.getToProcess());
+				if (!isOtherSec) {
+					newSections.add(currentSection);
+				}
+				addPageUrls(doc.select(PAGES));
+			}
+			LinkedHashMap<String, Element[]> productInfo = new LinkedHashMap<>();
+			for (Element product : doc.select(PRODUCT_ITEM)) {
+				String code = getText(product, CODE_PARAM);
+				if(StringUtils.isNotBlank(code)) {
+					Element[] elArr = new Element[2];
+					elArr[0] = product;
+					productInfo.put(code, elArr);
+				}
+			}
+			for (Element card : doc.select(PRODUCT_CARD)) {
+				String code = getText(card, CODE_PARAM);;
+				if(StringUtils.isNotBlank(code)) {
+					productInfo.get(code)[1] = card;
+				}
+			}
 
-		int sectionCount = oldCatalog.select("section").size();
-		int productsCount = oldCatalog.select("device").size();
-		info.setToProcess(sectionCount + productsCount);
-		ServerLogger.debug("Jsoup parsing complete. <section> ="+sectionCount+". <device>="+ productsCount);
+			for (Map.Entry<String, Element[]> entry : productInfo.entrySet()) {
+				String k = entry.getKey();
+				Element[] v = entry.getValue();
+				addProduct(v[0], v[1], currentSection);
+			}
 
-		info.pushLog("Обнаружено разделов: "+sectionCount);
-		info.pushLog("Обнаружено товаров: "+productsCount);
+		}
+	}
 
-		Item existingCatalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
-		ServerLogger.debug("Catalog loaded.");
+	private void addPageUrls(Elements pages) {
+		if(pages == null) return;
+		for (Element link : pages.select(LINK)) {
+			urlsQueue.offer(base + link.text());
+		}
+	}
 
-		ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_HIDDEN);
-		q.addParameterCriteria(NAME_PARAM, OLD_SECTION_NAME, "=", null, Compare.SOME);
-		Item oldBigSection = q.loadFirstItem();
+	private void addProduct(Element productEl, Element cardEl, Item currentSection) throws Exception {
+		Item product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), currentSection);
+		product.setValue(HAS_LINE_PRODUCTS, (byte) 0);
+		String code = getText(productEl, CODE_PARAM);
+		String keyUnique = getAttr(productEl, KEY);
+		String name = getText(productEl, NAME_PARAM);
+		String price = getText(productEl, PRICE_PARAM).replaceAll("\\s", "");
+		String margin = getText(productEl, MARGIN_PARAM).replaceAll("\\s", "");
 
-		ServerLogger.debug((oldBigSection == null)? "old section not exists" : "old section exists");
+		String search = getText(productEl, SEARCH_PARAM);
+		String unit = getText(productEl, UNIT_PARAM);
+		String qty = getText(productEl, QTY_PARAM).replaceAll("\\s", "");
 
-		if(oldBigSection != null){
-			ServerLogger.debug("Adding delete commands.");
-			executeCommandUnit(ItemStatusDBUnit.delete(oldBigSection.getId()).noFulltextIndex());
-			ServerLogger.debug("delete commands added");
-			commitCommandUnits();
-			ServerLogger.debug("delete commands executed");
+		String minQty = getText(productEl, MIN_QTY_PARAM).replaceAll("\\s", "");
+
+		String selfPrice = getText(productEl, SELF_PRICE).replaceAll("\\s", "");
+		if (cardEl != null) {
+			String dscr = getHtml(cardEl, SHORT_PARAM);
+			String pdf = getText(cardEl, DOC_REF);
+			String path = cardEl.attr(PATH);
+			String large =  getText(cardEl,"large_pic");
+			processPics(product, path, large);
+			product.setValueUI(DESCRIPTION_PARAM, dscr);
+			product.setValueUI("pdf", pdf);
 		}
 
-		ServerLogger.debug("creating ancient catalog");
-		Item bigSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), existingCatalog);
+		product.setKeyUnique(keyUnique);
+		product.setValue(CODE_PARAM, code);
+		product.setValue(NAME_PARAM, name);
+		product.setValueUI(PRICE_PARAM, price);
+		product.setValueUI(MARGIN_PARAM, margin);
+		product.setValueUI(SEARCH_PARAM, search);
+		product.setValueUI(UNIT_PARAM, unit);
+		product.setValueUI(QTY_PARAM, qty);
+		product.setValueUI(MIN_QTY_PARAM, minQty);
+		byte avlb = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).compareTo(BigDecimal.ZERO) == 1 && (product.getDoubleValue(QTY_PARAM, 0d) > product.getDoubleValue(MIN_QTY_PARAM, 1d)) ? (byte) 1 : (byte) 0;
+		product.setValue(AVAILABLE_PARAM, avlb);
+		product.setValueUI(PRICE_OPT_PARAM, selfPrice);
 
-		bigSection.setValue(NAME_PARAM, OLD_SECTION_NAME);
-		String id = oldCatalog.getElementsByTag("catalog").first().getElementsByTag("id").first().ownText();
-		bigSection.setValueUI(CATEGORY_ID_PARAM,id);
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().noFulltextIndex());
 
-		ServerLogger.debug("executing save ancient catalog commands...");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(bigSection).noFulltextIndex());
-		ServerLogger.debug("ancient catalog created");
-		executeAndCommitCommandUnits(ItemStatusDBUnit.hide(bigSection).noFulltextIndex());
-		ServerLogger.debug("ancient catalog hidden");
-
-		Elements sections = oldCatalog.select("catalog > section");
-		ServerLogger.debug("processing sections. Section level 1 count: "+sections.size());
-		for (Element sectionElement : sections){
-			processSectionElement(sectionElement, bigSection);
+		if (!isOtherSec) {
+			addAuxParams(product, productEl);
 		}
 
+		info.increaseProcessed();
+	}
+
+	private void addAuxParams(Item product, Element productEl) throws Exception {
+		Elements params = productEl.select(PARAM_EL);
+		if(params.isEmpty()) return;
+		Item paramsXML = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PARAMS_XML), product);
+		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+		for(Element param : params){
+			String name = param.attr(CAPTION_ATTR);
+			String value = param.text();
+			xml.startElement("parameter")
+					.startElement("name")
+					.addText(firstUpperCase(name))
+					.endElement()
+					.startElement("value")
+					.addText(value)
+					.endElement()
+					.endElement();
+		}
+		paramsXML.setValue(XML_PARAM, xml.toString());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().noTriggerExtra());
+	}
+
+	private void processPics(Item product, String path, String large) throws MalformedURLException {
+		if(imgDownloadStopper++ > 20) return;
+
+		if (StringUtils.isNotBlank(large)) {
+			product.setValue(ItemNames.product_.MAIN_PIC, new URL(base + path + large));
+		}
+	}
+
+	private void createFiltersAndItemTypes() throws Exception {
+		if (newSections.size() == 0) return;
+		setOperation("Создание классов и фильтров");
+		doCreate(newSections);
+	}
+
+	private Document fetchPage(String url) throws IOException {
+		info.setCurrentJob("Подключене к: " + url);
+		return Jsoup.parse(new URL(url), 5000);
+	}
+
+	private void clearGraveyard() throws Exception {
+		setOperation("Удаление старых записей. Подождите!");
+		for(int i = 0; i< 10; i++) {
+			CleanDeletedItemsDBUnit delete = new CleanDeletedItemsDBUnit(15000);
+			executeAndCommitCommandUnits(delete);
+		}
+	}
+
+	private void importSections() throws Exception {
+		setOperation("Составление списка разделов");
+		Document doc = fetchPage(startUrl);
+		info.setProcessed(0);
+
+		Element catalogElement = doc.select(CATALOG_ITEM).first();
+		info.setToProcess(catalogElement.select(SECTION_ITEM).size());
+		Elements children = catalogElement.children();
+
+		for (Element el : children) {
+			currentSection = catalog;
+			if (el.is(SECTION_ITEM)) {
+				processSectionElement(el, currentSection);
+			}
+		}
 	}
 
 	@Override
@@ -107,103 +254,77 @@ public class ImportFromAncientXML extends IntegrateBase implements CatalogConst{
 
 	}
 
-	private void processSectionElement(Element sectionElement, Item parentSection) throws Exception{
-
-		String sectionName = sectionElement.select("name").eq(0).first().ownText();
-		String sectionCode = sectionElement.select("id").eq(0).first().ownText();
-		String sectionText = sectionElement.select("text").eq(0).first().ownText();
-
-		ServerLogger.debug("processing section. name="+sectionName);
-
-		Item section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), parentSection);
-		ServerLogger.debug("section created");
-
-		section.setValue(NAME_PARAM, sectionName);
-		section.setValue(CATEGORY_ID_PARAM, sectionCode);
-		section.setValue(PARENT_ID_PARAM, parentSection.getValue(CATEGORY_ID_PARAM));
-		ServerLogger.debug("parameters set");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
-		ServerLogger.debug("section saved");
-
-		Item seo = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.SEO), section);
-		ServerLogger.debug("SEO-item created");
-		seo.setValue(ItemNames.seo_.TITLE, sectionName);
-		seo.setValue(ItemNames.seo_.TEXT, sectionText);
-		ServerLogger.debug("SEO-item parameters added");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(seo).noFulltextIndex().ignoreFileErrors(true));
-		ServerLogger.debug("SEO-item parameters saved");
-
+	private void processSectionElement(Element sectionElement, Item parentSection) throws Exception {
+		info.setCurrentJob(sectionElement.select(NAME_PARAM).first().text());
+		Item section = ItemUtils.newChildItem(SECTION_ITEM, parentSection);
+		section.setKeyUnique(sectionElement.attr(KEY));
 		Elements children = sectionElement.children();
-		ServerLogger.debug(children.size()+" child elements found.");
-
-		for(Element child : children){
-			String nodeName = child.tagName();
-			if(nodeName.equals("section")) {
-				processSectionElement(child, section);
-			}else if(nodeName.equals("device")){
-				processProductElement(child, section);
+		boolean needsSave = true;
+		for (Element el : children) {
+			currentSection = section;
+			if (el.is(NAME_PARAM)) {
+				currentSection.setValue(NAME_PARAM, el.text());
+			} else if (el.is(CODE_PARAM)) {
+				section.setValue(CODE_PARAM, el.text());
+			} else if (el.is("show_section")) {
+				urlsQueue.add(base + el.text());
+			} else if (el.is(SECTION_ITEM)) {
+				if (currentSection.getId() == 0) {
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noFulltextIndex().noTriggerExtra());
+					needsSave = false;
+				}
+				processSectionElement(el, currentSection);
 			}
+		}
+		if (needsSave) {
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noFulltextIndex().noTriggerExtra().ignoreFileErrors());
 		}
 		info.increaseProcessed();
 	}
 
-	private void processTextPics(Item item, String picParamName, String textParamName, String text) throws Exception {
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(item).noFulltextIndex().ignoreFileErrors(true));
-		String folder = item.getRelativeFilesPath();
-		Matcher matcher = SRC.matcher(text);
-		HashMap<String, String> replacementMap = new HashMap<>();
-		while (matcher.find()){
-			String src = matcher.group("src");
-			String fileName = matcher.group("filename");
-			String fileNameDecoded = URLDecoder.decode(fileName, "UTF-8");
-			src = src.replace("\\Q"+fileName+"\\E", fileNameDecoded);
-			//URL url = new URL(base+"/"+src);\"
-			File old = new File((AppContext.getContextPath()+src.replace("\\Q"+"\\sitefiles"+"\\E", "sitefiles")).replace(" ", "").trim());
-			String newSrc = "files/"+ folder + Strings.translit(fileNameDecoded);
-			replacementMap.put(src, newSrc);
-			if(!new File(newSrc).exists()) {
-				item.setValue(picParamName, old);
-			}
-		}
-		for(Map.Entry<String,String> e : replacementMap.entrySet()){
-			text = text.replaceAll("\\Q"+e.getKey()+"\\E", e.getValue());
-		}
-		item.setValue(textParamName, text);
+	public static void main(String[] args) {
+		String url = "https://www.litmir.me/br/?b=47785&p=1";
+		Matcher m = HOST.matcher(url);
+		m.find();
+		System.out.println(m.group(0));
 	}
 
-	private void processProductElement(Element productElement, Item section) throws Exception {
-		String name = productElement.select("name").eq(0).first().ownText();
-		String code = productElement.select("code").eq(0).first().ownText();
-		code = (StringUtils.isAllBlank(code))?  productElement.select("id").eq(0).first().ownText() : code;
-		String price = productElement.select("price").eq(0).first().ownText();
-		String unit =  productElement.select("measure").eq(0).first().ownText();
-		String shortText =  productElement.select("short").eq(0).first().ownText();
-		String oldURL =  productElement.select("show_device").eq(0).first().ownText();
-		String text = productElement.select("text").eq(0).first().ownText();
-		String bigPic = productElement.select("big").eq(0).first().ownText();
-		//String smallPic = productElement.select("small").eq(0).first().ownText();
-		ServerLogger.debug("device element loaded from Jsoup. Device name = \"name\"");
+	private String getText(Element parent, String selector){
+		Elements res = parent.select(selector);
+		if(res == null || res.isEmpty()) return "";
+		return res.first().text();
+	}
 
-		Item product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
-		ServerLogger.debug("Product item created.");
-		product.setValue(NAME_PARAM, name);
-		product.setValue(CODE_PARAM, code);
-		product.setValueUI(PRICE_PARAM, price.replaceAll("\\s", ""));
-		product.setValue("unit", unit);
-		product.setValue(DESCRIPTION_PARAM, shortText);
-		product.setValue(URL_PARAM, oldURL);
-		//product.setValue(MAIN_PIC_PARAM, new URL(base+"/"+bigPic));
-		//product.setValue(SMALL_PIC_PARAM,new URL(base+"/"+smallPic));
-		Path ofp = Paths.get(AppContext.getContextPath(), "sitefiles", bigPic);
-		product.setValue("old_file", ofp.toString());
-		ServerLogger.debug("old main img path: " + ofp.toString());
-		product.setValue(MAIN_PIC_PARAM, ofp.toFile());
-		//product.setValue(SMALL_PIC_PARAM, Paths.get(AppContext.getContextPath(), "sitefiles", smallPic).toFile());
-		//processTextPics(product, TEXT_PICS_PARAM, TEXT_PARAM, text);
-		product.setValue(TEXT_PARAM, text);
-		ServerLogger.debug("Trying to save product...");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors(true));
-		ServerLogger.debug("product saved. new file path: " + product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())));
-		info.increaseProcessed();
+	private String getHtml(Element parent, String selector){
+		Elements res = parent.select(selector);
+		if(res == null || res.isEmpty()) return "";
+		return res.first().html();
+	}
+
+	private String getAttr(Element parent, String selector){
+		if(parent == null) return "";
+		return parent.attr(selector);
+	}
+
+	private String getAttr(Elements parent, String selector){
+		Elements res = parent.select(selector);
+		if(res == null || res.isEmpty()) return "";
+		return res.attr(selector);
+	}
+
+	private String getText(Document parent, String selector){
+		Elements res = parent.select(selector);
+		if(res == null || res.isEmpty()) return "";
+		return res.first().text();
+	}
+
+	private String getText(Document parent, String selector, String defaultValue){
+		Elements res = parent.select(selector);
+		if(res == null || res.isEmpty()) return defaultValue;
+		return res.first().text();
+	}
+
+	private String firstUpperCase(String s) {
+		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
 }
