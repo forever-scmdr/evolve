@@ -275,14 +275,15 @@ public abstract class BasicCartManageCommand extends Command {
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
-				long bufParentId = bought.getContextParentId();
-				byte bufOwnerGroup = bought.getOwnerGroupId();
-				int bufOwnerUser = bought.getOwnerUserId();
-				bought.setContextPrimaryParentId(purchase.getId());
-				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
-				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
-				bought.setContextPrimaryParentId(bufParentId);
-				bought.setOwner(bufOwnerGroup, bufOwnerUser);
+				//long bufParentId = bought.getContextParentId();
+				//byte bufOwnerGroup = bought.getOwnerGroupId();
+				//int bufOwnerUser = bought.getOwnerUserId();
+				Item boughtToSave = new Item(bought);
+				boughtToSave.setContextPrimaryParentId(purchase.getId());
+				boughtToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+				executeCommandUnit(SaveItemDBUnit.get(boughtToSave).ignoreUser());
+				//bought.setContextPrimaryParentId(bufParentId);
+				//bought.setOwner(bufOwnerGroup, bufOwnerUser);
 			}
 		}
 		//
