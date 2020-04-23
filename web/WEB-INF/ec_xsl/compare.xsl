@@ -2,7 +2,6 @@
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:xs="http://www.w3.org/2001/XMLSchema"
 		xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="f:f"
 		version="2.0">
@@ -58,24 +57,9 @@
 							</td>
 						</xsl:for-each>
 					</tr>
-					
-					<xsl:variable name="product_params" select="page/product/params"/>
-					<xsl:for-each-group select="page/product/params/param" group-by="@caption">
-						<xsl:variable name="cgc" select="current-grouping-key()" />
-						<tr>	
-							<xsl:for-each select="$product_params">
-								<xsl:variable name="params" select="current()"/>
-								<xsl:variable name="p" select="$params/param[@caption = $cgc]"/>
-								<td>
-									<span class="param-name"><xsl:value-of select="$cgc"/></span>
-									<span class="param-value" style="{'opacity: .35'[not($p != '')]}">
-									<xsl:value-of select="if($p != '') then $p else 'нет данных'"/>
-									</span>
-								</td>
-							</xsl:for-each>
-							<!-- <xsl:apply-templates select="page/product/params" /> -->
-						</tr>	
-					</xsl:for-each-group>
+					<tr>
+						<xsl:apply-templates select="page/product/params" />
+					</tr>
 				</table>
 			</div>
 		</div>
