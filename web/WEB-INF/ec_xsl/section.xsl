@@ -227,32 +227,37 @@
 					</span>
 				</div>
 
-
-				<!-- <div class="checkbox">
-					<label>
+<!--				<div class="quantity">-->
+					<label title="Показать только товары в наличии">
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
 								   onclick="window.location.href = '{page/show_only_available}'"/>
 						</xsl:if>
 						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
+							<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
 						</xsl:if>
-						в наличии на складе
+						в наличии
 					</label>
-				</div> -->
-				
-				Сортировка: 
-				<span>
-					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-							onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-					</select>
-				</span>
+<!--				</div>-->
+				<div class="quantity">
+					Сортировка:
+					<span>
+						<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+								onchange="window.location.href = $(this).find(':selected').attr('link')">
+							<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+							<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+							<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+							<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+						</select>
+					</span>
+				</div>
+				<div class="quantity currency">
+					Валюта:
+					<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
+					<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
+				</div>
+
 				<div class="quantity">
 					<span>Кол-во на странице:</span>
 					<span>
