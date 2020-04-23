@@ -98,14 +98,14 @@
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 
-				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
+				<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog($p/price_old, '')"/></span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="f:price_catalog($p/price, $p/unit)" /></div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">

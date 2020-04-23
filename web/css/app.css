@@ -6258,7 +6258,7 @@ img {
 .view-container > div:last-child {
 	margin-left: auto;
 }
-.view-container .view,.view-container .quantity {
+.view-container .view,.view-container .quantity, .view-container .currency, .view-container .checkbox {
 	display:flex;
 	flex-wrap:nowrap;
 	align-items: baseline;
@@ -8872,4 +8872,13 @@ td .catalog-item {
 }
 .other-suzuki:hover .banner__background {
 	background-color: #D8232A;
+}
+.view-container.desktop{
+	font-size: 13px;
+}
+.view-container.desktop .view{
+	font-size: 16px;
+}
+.view-container .view > *{
+	padding-right: 0.5rem;
 }
