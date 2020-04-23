@@ -61,6 +61,9 @@ public interface CatalogConst {
 	String SYMBOLS_PARAM = "symbols";
 	String SPIN_PARAM = "spin";
 	String PIC_PARAM = "pic";
+	String MARGIN_PARAM = "margin";
+	String SEARCH_PARAM = "search";
+	String UNIT_PARAM = "unit";
 	String LINK_PARAM = "link";
 	String ASSOC_PARAM = "assoc";
 	String ASSOC_CODE_PARAM = "assoc_code";

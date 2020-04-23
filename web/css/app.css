@@ -5607,7 +5607,7 @@ button.close {
 	position:fixed;
 }
 @-ms-viewport {
-	width:device-width;
+	width: device-width;
 }
 .visible-xs {
 	display:none !important;
@@ -6033,6 +6033,8 @@ img {
 	flex-wrap:wrap;
 }
 .mobile.header .logo {
+	/*max-width: 65%;*/
+	margin-right: 20px;
 	margin-top:unset;
 	display:block;
 	flex:1;
@@ -6976,12 +6978,12 @@ body {
 	margin:2rem 0 .5rem;
 }
 .mobile .search-container input[type="text"] {
-	border: 0;
+	border: 1px solid #ccc;
 	border-radius:.2rem;
 	padding:.5rem 1rem;
 }
 .mobile .icons-container a {
-	color: #D8232A;
+	color:#387eba;
 }
 .actions h3 {
 	background-color:#0F5392;
@@ -6991,7 +6993,7 @@ body {
 	background-color:#0F5392;
 }
 .footer,.footer-container {
-	background-color: #003145;
+	background-color: #ebebeb;
 }
 .footer-container {
 	border-top:0.4rem solid #0F5392;
@@ -7791,9 +7793,9 @@ td .catalog-item {
 	border:0;
 }
 .header {
-	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	/*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
 	margin-bottom:32px;
-	background-color: #003145;
+	/*background-color: #003145;*/
 }
 .index .header {
 	margin-bottom:unset;
@@ -7803,13 +7805,14 @@ td .catalog-item {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	/* padding-top: 24px; */
-	color: #fff;
+	/*color: #fff;*/
+	color: #000;
 }
 .logo {
 	display: flex;
 }
 .logo img {
-	height: 100px;
+	/*height: 100px;*/
 	margin: auto 0;
 }
 .header__content {
@@ -7822,10 +7825,10 @@ td .catalog-item {
 }
 
 .header__column a {
-    color: #fff;
+    /*color: #fff;*/
 }
 .header__column svg {
-	color: #D8232A;
+	color:#387eba;
 	margin-right:4px;
 }
 .header__search {
@@ -7846,13 +7849,16 @@ td .catalog-item {
 	padding-right:16px;
 	margin-left:8px;
 	font-size: 20px;
-	background-color: #D8232A;
-	font-family: suzukipro;
+	background: linear-gradient(#C5C5C5, #ACACAC);
+	border-radius: 4px;
+	color: #000;
 }
 .main-menu {
 	flex-basis:100%;
 	display:flex;
-	background-color: #00a599;
+	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
+	margin-top: 20px;
+	border-radius: 4px;
 }
 .main-menu__item {
 	flex:auto;
@@ -7860,9 +7866,10 @@ td .catalog-item {
 	justify-content:center;
 	align-content:center;
 	align-items:center;
-	height:52px;
-	font-size: 20px;
-	font-family: suzukipro;
+	height:32px;
+	font-size: 1.75rem;
+	font-family: Arial;
+	/*font-family: suzukipro;*/
 }
 .main-menu__item a {
 	color: #fff;
@@ -7872,7 +7879,8 @@ td .catalog-item {
 	pointer-events:none;
 }
 .main-menu__special {
-	background-color: #00a599;
+	background-color: #3988cb;
+	border-radius: 4px 0 0 4px;
 }
 .main-menu__special a {
 	color: #fff;

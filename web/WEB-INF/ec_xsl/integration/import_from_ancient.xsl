@@ -55,13 +55,6 @@
                 <h1><xsl:value-of select="/page/operation"/></h1>
                 <h2><xsl:value-of select="page/current_job" /></h2>
                 <h2>Процесс выполнения</h2>
-                <table>
-                <tr>
-                    <td>
-                        <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-                    </td>
-                </tr>
-                </table>
                 <xsl:if test="/page/error">
                     <h2>ошибки выполнения интеграции</h2>
                     <table>
@@ -78,6 +71,11 @@
                 </xsl:if>
                 <table>
                     <tr>
+                        <td colspan="2">
+                            <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Строка файла:</td>
                         <td class="error">
                             <span id="prcnt"></span>
@@ -86,11 +84,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Создано разделов (классов):</td>
+                        <td>Элементов для обработки:</td>
                         <td class="error"><xsl:value-of select="/page/to_process"/></td>
                     </tr>
                     <tr>
-                        <td>Обработано товаров:</td>
+                        <td>Обработано:</td>
                         <td class="error"><xsl:value-of select="/page/processed"/></td>
                     </tr>
                     <tr>
@@ -104,10 +102,6 @@
                             <td class="error"><xsl:value-of select="."/></td>
                         </tr>
                     </xsl:for-each>
-                    <xsl:if test="page/message = 'Интеграция в данный момент не выполняется. Результаты предыдущей интеграции ниже'">
-                        <xsl:variable name="file_name" select="page/log[starts-with(., 'pricelist-')]"/>
-                        Скачать файл: <a href="{page/base}/files/{$file_name}"><xsl:value-of select="$file_name" /></a>
-                    </xsl:if>
                     <tr>
                         <td colspan="2">
                            Журнал опреации:
