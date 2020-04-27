@@ -217,7 +217,7 @@
 		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
-		<parameter name="search" type="string" caption="Статус"/>
+		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
