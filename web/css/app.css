@@ -8894,3 +8894,10 @@ td .catalog-item {
 .view-container .view > *{
 	padding-right: 0.5rem;
 }
+.price_special{
+	font-size: 13px;
+	background: #f26521;
+	color: #fff;
+	margin-top: 4px;
+	padding: 3px 5px;
+}

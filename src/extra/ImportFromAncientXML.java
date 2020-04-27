@@ -167,7 +167,7 @@ public class ImportFromAncientXML extends CreateParametersAndFiltersCommand impl
 		product.setValue(NAME_PARAM, name);
 		product.setValueUI(PRICE_PARAM, price);
 		product.setValueUI(MARGIN_PARAM, margin);
-		product.setValueUI(SEARCH_PARAM, search);
+		product.setValueUI(SEARCH_PARAM, (search + " " + currentSection.getStringValue(NAME_PARAM).replace("Прочее","")).trim());
 		product.setValueUI(UNIT_PARAM, unit);
 		product.setValueUI(QTY_PARAM, qty);
 		product.setValueUI(MIN_QTY_PARAM, minQty);
@@ -206,7 +206,7 @@ public class ImportFromAncientXML extends CreateParametersAndFiltersCommand impl
 	}
 
 	private void processPics(Item product, String path, String large) throws MalformedURLException {
-		if(imgDownloadStopper++ > 20) return;
+		//if(imgDownloadStopper++ > 20) return;
 
 		if (StringUtils.isNotBlank(large)) {
 			product.setValue(ItemNames.product_.MAIN_PIC, new URL(base + path + large));
