@@ -32,6 +32,12 @@
         <xsl:param name="price" as="xs:string?" />
         <xsl:sequence select="concat((if($curr = 'byn') then f:rur_to_byn($price) else f:rur_to_rur($price)), ' ', upper-case($curr))"/>
     </xsl:function>
+
+    <xsl:function name="f:cart_price_platan">
+        <xsl:param name="price" as="xs:string?" />
+        <xsl:sequence select="if($curr = 'byn') then f:currency_decimal($price) else f:number_decimal((f:num($price)*100) div $ratio_rur)"/>
+    </xsl:function>
+
     <!-- Digikey -->
     <xsl:function name="f:price_digikey">
         <xsl:param name="price" as="xs:string?" />

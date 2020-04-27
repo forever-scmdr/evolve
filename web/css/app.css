@@ -7045,6 +7045,18 @@ body {
 	padding-bottom:.5rem;
 	margin-left:1rem;
 }
+.button.inverted{
+	color:#009ADA;
+	background-color: #fff;
+	border: 2px solid #009ADA;
+}
+
+.button.inverted:hover{
+	color: #2060A5;
+	background-color: #fff;
+	border: 2px solid #2060A5;
+}
+
 .orders-list .short-info span {
 	font-size:.85em;
 	color:gray;
