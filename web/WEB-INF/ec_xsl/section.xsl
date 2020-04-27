@@ -100,7 +100,7 @@
 			<xsl:call-template name="DISPLAY_CONTROL"/>
 
 			<xsl:if test="$show_devices">
-				<div class="catalog-items{' lines'[$view = 'list']}">
+				<div class="catalog-items">
 					<xsl:if test="$view = 'table'">
 						<xsl:apply-templates select="$sel_sec/product"/>
 					</xsl:if>

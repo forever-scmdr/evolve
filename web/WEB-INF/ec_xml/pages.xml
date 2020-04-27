@@ -699,6 +699,7 @@
 
 	<page name="cart_action">
 		<request>
+			<var name="strategy" value="extra_line_overbuy"/>
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
@@ -1481,6 +1482,19 @@
 	</page>
 
 	<!-- ICTRADE ONLY -->
+
+	<page name="platan_search" template="platan_search_ajax">
+		<request>
+			<var name="platan_feed_url" value="https://shop.platan.ru/export/price.xml"/>
+			<var name="query"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<command class="extra.PlatanSearchCommand">
+			<result name="result" type="xml" />
+		</command>
+	</page>
+
 	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
 		<link name="success" target="currency_ratio_success"/>
 		<link name="error" target="currency_ratio_success">
