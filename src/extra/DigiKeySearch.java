@@ -123,10 +123,12 @@ public class DigiKeySearch extends Command {
 				.startElement("rur_ratio").addText(rurRatio).endElement()
 				.startElement("q1").addText(q1).endElement()
 				.startElement("q2").addText(q2).endElement()
+				.startElement("view").addText(getCookieVarValues("view").get(0)).endElement()
 				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
 				.startElement("request_time").addText(searchRequestTime).endElement()
 				.startElement("results").addText(json.get("Results")).endElement()
 				.startElement("exact").addText(json.get("ExactMatches")).endElement()
+
 				.endElement();
 
 
