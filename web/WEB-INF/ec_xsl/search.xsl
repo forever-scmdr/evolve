@@ -70,8 +70,7 @@
 			<div id="extra_search_1">
 				Идет поиск по дополнительному каталогу...
 			</div>
-
-
+			<div id="extra_search_2">zzz</div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -82,6 +81,7 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
+			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q)"/>');
 		</script>
 	</xsl:template>
 
