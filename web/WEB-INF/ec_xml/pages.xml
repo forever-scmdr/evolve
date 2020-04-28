@@ -408,6 +408,7 @@
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
+<!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY">
@@ -429,10 +430,12 @@
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
+			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
+<!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">

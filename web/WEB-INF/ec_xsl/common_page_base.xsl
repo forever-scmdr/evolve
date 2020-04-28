@@ -108,10 +108,12 @@
 		<section class="header desktop">
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
-				<form action="{page/search_link}" method="post" class="header__search header__column">
-					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
-					<input type="submit" class="button header__button" value="Поиск" />
-				</form>
+
+					<form action="{page/search_link}" method="post" class="header__search header__column">
+						<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
+						<input type="submit" class="button header__button" value="Поиск" />
+					</form>
+
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
@@ -546,13 +548,13 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
+							<xsl:if test="f:num(qty) != 0">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="В корзину"/>
+								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="f:num(qty) = 0">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button not_available" value="Запросить цену"/>
+								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -561,11 +563,11 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 			</div>
-			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+			<xsl:if test="f:num(qty) != 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
 			</xsl:if>
-			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div>
+			<xsl:if test="f:num(qty) = 0">
+				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
 			</xsl:if>
 			<div class="device__actions">
 				<xsl:if test="not($is_compare)">
@@ -629,6 +631,7 @@
 					<div id="compare_list_{@id}">
 						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 							<i class="fas fa-balance-scale"></i>сравнить
+
 						</a>
 					</div>
 				</xsl:if>
@@ -663,13 +666,13 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
+							<xsl:if test="f:num(qty) != 0">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button" value="В корзину"/>
+								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="f:num(qty) = 0">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
-								<input type="submit" class="button not_available" value="Запросить цену"/>
+								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -677,11 +680,11 @@
 				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> под заказ</div>
+				<xsl:if test="f:num(qty) = 0">
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>
 				</xsl:if>
 			</div>
 			<xsl:for-each select="tag">

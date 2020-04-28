@@ -81,7 +81,7 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
-			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q)"/>');
+			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q, '&amp;qty=', page/variables/minqty)"/>');
 		</script>
 	</xsl:template>
 

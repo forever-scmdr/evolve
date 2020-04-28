@@ -7195,6 +7195,7 @@ body {
 }
 .tags {
 	height:auto;
+	margin-bottom: 1.5rem;
 }
 .catalog-items .catalog-item .order>div:first-child {
 	flex-basis:100%;
@@ -7285,7 +7286,7 @@ svg {
 	font-weight:bold;
 	margin-top:0;
 	margin-bottom:24px;
-	font-family: suzukipro;
+	font-family: 'Roboto';
 }
 .subtitle {
 	margin-top: -16px;
@@ -7437,17 +7438,18 @@ td .catalog-item {
 }
 .button {
 	border:none;
-	background-color: #009ADA;
+	background: linear-gradient(#6eade2, #387eba 49%, #1d68a9 51%, #174973);
 	color:#ffffff;
 	height:28px;
 	cursor:pointer;
-	border-radius:2px;
+	border-radius:4px;
 	padding:2px 8px;
 	display:inline-block;
 }
 .button:hover {
 	color:#fff;
 	text-decoration:none;
+	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
 }
 @media (max-width: 424px) {
 	.device .button {
@@ -7881,7 +7883,7 @@ td .catalog-item {
 	height:32px;
 	font-size: 1.75rem;
 	font-family: Arial;
-	/*font-family: suzukipro;*/
+	/*font-family: 'Roboto';*/
 }
 .main-menu__item a {
 	color: #fff;
@@ -7988,7 +7990,7 @@ td .catalog-item {
 .banner__title {
 	font-size: 20px;
 	font-weight:bold;
-	font-family: suzukipro;
+	font-family: 'Roboto';
 	text-align: center;
 }
 .banner__text {
@@ -8156,7 +8158,7 @@ td .catalog-item {
 	position:relative;
 	padding-bottom:8px;
 	margin-bottom: 24px;
-	font-family: suzukipro;
+	font-family: 'Roboto';
 }
 .block-title_normal {
 	text-transform: none;
@@ -8371,7 +8373,7 @@ td .catalog-item {
 .title_3 {
 	font-weight:bold;
 	margin-bottom:8px;
-	font-family: suzukipro;
+	font-family: 'Roboto';
 	font-size: 18px;
 }
 @media (max-width:767px) {
