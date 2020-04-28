@@ -63,7 +63,7 @@ public class DigiKeySearch extends Command {
 		String inStock = ("0".equals(getVarSingleValue("qty"))) ? ",\"InStock\"" : "";
 
 		RequestBody body = RequestBody.create(mediaType, "{\"SearchOptions\":[\"CollapsePackingTypes\"" + inStock + "],\"Keywords\":\""
-				+ getVarSingleValue("old_query")
+				+ getVarSingleValue("query")
 				+ "\",\"RecordCount\":\"50\",\"RecordStartPosition\":\"0\",\"Sort\":{\"Option\":\"SortByUnitPrice\",\"Direction\":\"Ascending\",\"SortParameterId\":\"50\"}}");
 
 		// RequestBody body = RequestBody.create(mediaType, jsonRequestBody);
