@@ -154,17 +154,6 @@
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
-
-		<!-- RUB -->
-		<parameter name="currency_ratio" caption="Курс российского рубля" type="double" description="Курс НБРБ. за 100 рос. руб дают ... бел. руб."/>
-		<parameter name="q1" caption="Прибавка к курсу российского рубля"  type="double" description="0.03 = +3%" />
-		<parameter name="q2" caption="Прибавка к цене товараов с Платана"  type="double" description="0.03 = +3%" />
-
-		<!-- USD -->
-		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
-		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
-
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 
@@ -212,8 +201,7 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="price_opt" type="currency" caption="Себестоимость"/>
-		<parameter name="margin" type="double" caption="Наценка"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
@@ -230,7 +218,6 @@
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
-		<parameter name="pdf" type="string" caption="Ссылка на документ"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
