@@ -109,7 +109,7 @@
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 
-					<form action="{page/search_link}" method="post" class="header__search header__column">
+					<form action="{page/search_link}" method="get" class="header__search header__column">
 						<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 						<input type="submit" class="button header__button" value="Поиск" />
 					</form>
@@ -411,7 +411,7 @@
 
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
-		<div class="block-title block-title_normal">Каталог</div>
+<!--		<div class="block-title block-title_normal">Каталог</div>-->
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>

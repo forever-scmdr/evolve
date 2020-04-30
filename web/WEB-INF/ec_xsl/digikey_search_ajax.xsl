@@ -8,7 +8,7 @@
 	<xsl:variable name="ratio_usd" select="f:num(page/variables/ratio)"/>
 	<xsl:variable name="q1_usd" select="f:num(page/variables/q1)"/>
 	<xsl:variable name="q2_usd" select="f:num(page/variables/q2)"/>
-	<xsl:variable name="view" select="items/view"/>
+	<xsl:variable name="view" select="page/variables/view"/>
 
 	<xsl:template match="/">
 		<div>
@@ -45,7 +45,7 @@
 
 		<xsl:variable name="price" select="f:price_digikey(price)"/>
 		<xsl:variable name="price_pack" select="f:price_digikey(string(f:num(price)*f:num(min_qty)))"/>
-		<xsl:variable name="delivery" select="POSTAV"/>
+
 		<div class="device items-catalog__device">
 			<xsl:if test="main_pic != ''">
 				<a href="{main_pic}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
@@ -97,7 +97,7 @@
 				</div>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i>поставка <xsl:value-of select="concat(f:num(qty), ' ', шт, '.')" /> в течение 7-10 дней</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-10 дней</div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
@@ -106,46 +106,69 @@
 
 	</xsl:template>
 	<xsl:template match="product" mode="lines">
-		<xsl:variable name="price" select="f:price_platan(CENA_ROZ)"/>
-		<xsl:variable name="price_pack" select="f:price_platan(CENA_PACK)"/>
-		<xsl:variable name="delivery" select="POSTAV"/>
+		<xsl:variable name="price" select="f:price_digikey(price)"/>
+		<xsl:variable name="price_pack" select="f:price_digikey(string(f:num(price)*f:num(min_qty)))"/>
 
 		<div class="device device_row">
 			<a class="device__image device_row__image"
-			   style="background-image: url(img/no_image.png);">&nbsp;
+			   style="background-image: url({if(main_pic != '') then main_pic else 'img/no_image.png'});">&nbsp;
 			</a>
 			<div class="device__info">
 				<a class="device__title">
-					<xsl:value-of select="NAME"/>
+					<xsl:value-of select="name"/>
 				</a>
-				<div class="device__description"></div>
+				<div class="device__description">
+
+					<p class="basics">
+						<span><b>Код:</b>&#160;<xsl:value-of select="code"/></span><br/>
+						<span><b>Ариткул производителя:</b>&#160;<xsl:value-of select="producer_code"/></span><br/>
+						<span><b>Производитель:</b>&#160;<xsl:value-of select="producer" /></span>
+						<xsl:if test="description != ''">
+							<br/><span><b>Описание:</b>&#160;<xsl:value-of select="description" /></span>
+						</xsl:if>
+						<xsl:if test="f:num(min_qty) &gt; 1">
+							<br/><span><b>Минимальный заказ:</b>&#160;<xsl:value-of select="min_qty"/></span>
+						<br/><span><b>Цена за мин. заказ:</b>&#160;<xsl:value-of select="$price_pack"/></span>
+						</xsl:if>
+					</p>
+
+					<a style="display: block; padding: 4px 0; background: #f0f0f0; color: #707070;" class="javascript" onclick="$('#tech-{@id}').toggle();">Показать технические характеристики</a>
+					<table class="features table-bordered" id="tech-{@id}" style="display:none;">
+					<xsl:for-each select="parameter">
+						<tr>
+							<td style="color: #616161; "><xsl:value-of select="@name"/></td>
+							<td><xsl:value-of select="."/></td>
+						</tr>
+					</xsl:for-each>
+					</table>
+				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="NOM_N"/></div>
+			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<div class="device__actions device_row__actions">
 
 			</div>
 			<div class="device__price device_row__price">
 				<div class="price_normal">
-					<xsl:value-of select="concat($price, '/', EI_NAME)"/>
+					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
-				<xsl:if test="f:num(CENA_PACK) != 0">
-					<div class="price_special">
-						Спец цена:
-						<br/>
-						<span>
-							<xsl:value-of select="$price_pack"/>
-						</span>
-						от
-						<span>
-							<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>
-						</span>
-					</div>
-				</xsl:if>
+<!--				<xsl:if test="f:num(CENA_PACK) != 0">-->
+<!--					<div class="price_special">-->
+<!--						Спец цена:-->
+<!--						<br/>-->
+<!--						<span>-->
+<!--							<xsl:value-of select="$price_pack"/>-->
+<!--						</span>-->
+<!--						от-->
+<!--						<span>-->
+<!--							<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>-->
+<!--						</span>-->
+<!--					</div>-->
+<!--				</xsl:if>-->
 			</div>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{NOM_N}">
-					<form action="cart_action/?action=addPltToCart&amp;code={NOM_N}" method="post" ajax="true" ajax-loader-id="cart_list_{NOM_N}">
-						<xsl:if test="f:num(QUANTY) != 0">
+				<div id="cart_list_{code}">
+					<form action="cart_action/?action=addPltToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="platan" name="aux"/>
 							<input type="hidden" value="{NAME}" name="name"/>
@@ -154,10 +177,10 @@
 							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
 							<input type="hidden" value="{QUANTY}" name="max"/>
-							<input type="number" class="text-input" name="qty" value="1" min="0"/>
-							<input type="submit" class="button" value="В корзину"/>
+							<input type="number" class="text-input" name="qty" value="{f:num(min_qty)}" min="{f:num(min_qty)}"/>
+							<input type="submit" class="button" value="Заказать"/>
 						</xsl:if>
-						<xsl:if test="f:num(QUANTY) = 0">
+						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="platan" name="aux"/>
 							<input type="hidden" value="{NAME}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
@@ -165,19 +188,19 @@
 							<input type="hidden" value="{UPACK}" name="upack"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
-							<input type="number" class="text-input" name="qty" value="1" min="0"/>
+							<input type="number" class="text-input" name="qty" value="1" min="{f:num(min_qty)}"/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
 				</div>
-				<xsl:if test="f:num(QUANTY) != 0">
+				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-						<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение 7-10 дней
+						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-10 дней
 					</div>
 				</xsl:if>
-				<xsl:if test="f:num(QUANTY) = 0">
+				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock device__in-stock_no">
-						<i class="far fa-clock"/>под заказ
+						<i class="far fa-clock"/>нет в наличии
 					</div>
 				</xsl:if>
 			</div>

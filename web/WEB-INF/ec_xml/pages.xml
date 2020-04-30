@@ -403,7 +403,7 @@
 
 	<page name="search_ajax" template="search_ajax">
 		<request>
-			<var name="q"/>
+			<var name="q" style="query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
@@ -1498,6 +1498,7 @@
 			<var name="query"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
+			<var name="qty" />
 		</request>
 		<command class="extra.PlatanSearchCommand">
 			<result name="result" type="xml" />
@@ -1557,7 +1558,7 @@
 	<page name="digikey_search" template="digikey_search_ajax">
 		<request>
 			<var name="old_query"/>
-			<var name="qty"/>
+			<var name="qty" />
 			<var name="currency" scope="cookie" value="byn"/>
 		</request>
 		<link name="bad_request" target="digikey_result" >

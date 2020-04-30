@@ -30,6 +30,7 @@ public class PlatanSearchCommand extends Command {
 		root.prepend("<q2>"+catalog.getDoubleValue("q2", 0d)+"</q2>");
 		root.prepend("<currency>"+getVarSingleValue("currency").trim()+"</currency>");
 		root.prepend("<view>"+getVarSingleValue("view").trim()+"</view>");
+		root.prepend("<minq>"+getVarSingleValue("qty").trim()+"</minq>");
 		root.prependElement("base").text(getUrlBase());
 
 		doc.outputSettings().outline(true);

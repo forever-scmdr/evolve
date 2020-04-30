@@ -6108,7 +6108,7 @@ img {
 }
 .side-menu>.active a {
 	font-weight:bold;
-	color:black;
+	color:#ff5722;
 	text-decoration:none;
 }
 .side-menu>div {
@@ -6117,7 +6117,9 @@ img {
 }
 .side-menu .level-1 {
 	padding: 8px 16px;
-	font-size: 16px;
+	padding-left:0;
+	font-size: 14px;
+	border-bottom: 1px solid #e5e5e5;;
 }
 .side-menu .level-2 {
 	padding-left:2rem;
@@ -6133,7 +6135,7 @@ img {
 	padding-left:2rem;
 	margin-left:5.5rem;
 }
-.side-menu .level-1:before,.side-menu .level-2:before,.side-menu .level-3:before,.side-menu .level-4:before {
+.side-menu .level-2:before,.side-menu .level-3:before,.side-menu .level-4:before {
 	content:'';
 	position:absolute;
 	left:0;
@@ -6143,13 +6145,18 @@ img {
 	background-color:#000;
 }
 .side-menu .level-1:before {
-	width: 6px;
-	height: 6px;
-	background-color: #D8232A;
-	left: 0;
-	top: 14px;
-	border-radius: 3px;
+	/*width: 6px;*/
+	/*height: 6px;*/
+	/*background-color: #D8232A;*/
+	/*left: 0;*/
+	/*top: 14px;*/
+	/*border-radius: 3px;*/
 }
+
+.side-menu a{
+	color: #363636;
+}
+
 .path-container {
 	display:flex;
 	justify-content:space-between;
@@ -6706,6 +6713,9 @@ table td {
 	padding:.7rem 1rem;
 	font-size:.9em;
 }
+table.features td{
+	padding:.2rem 0.3rem;
+}
 table td p:last-child {
 	margin-bottom:0;
 }
@@ -6950,11 +6960,13 @@ body {
 	background-color: #fff;
 }
 .fotorama__active .fotorama__dot {
-	border-color:#D8232A !important;
+	border-color:#c7c7c7 !important;
+	width: 8px;
+	height: 8px;
 }
 .fotorama__dot {
 	top:4px !important;
-	border-width:.5rem !important;
+	/*border-width:.5rem !important;*/
 	border-color:#c7c7c7;
 }
 .other-container svg,.path+span svg {
@@ -7988,17 +8000,19 @@ td .catalog-item {
 	line-height:1.3;
 }
 .banner__title {
-	font-size: 20px;
+	/*font-size: 20px;*/
+	font-size: 16px;
 	font-weight:bold;
 	font-family: 'Roboto';
 	text-align: center;
 }
 .banner__text {
-	font-size:14px;
+	font-size:13px;
+	text-align: center;
 }
 @media (max-width:1439px) {
 	.banner__text {
-		font-size:16px;
+		font-size:13px;
 	}
 }
 .banner__link {
@@ -8902,4 +8916,36 @@ td .catalog-item {
 	color: #fff;
 	margin-top: 4px;
 	padding: 3px 5px;
+}
+
+.index-fotorama-slide .img, .index-fotorama-slide .text{
+	height: 100%;
+	display: inline-block;
+
+}
+.index-fotorama-slide .img{
+	width: 40%;
+	background-size: 80%;
+	background-position: center 26px;
+	background-repeat: no-repeat;
+	position: absolute;
+	top:0;
+	bottom:0;
+	left:0;
+}
+.index-fotorama-slide .text{
+	width: 60%;
+	position: absolute;
+	top:0;
+	bottom:0;
+	right:0;
+}
+.index-fotorama-slide .text .wrap{
+	padding: 10px;
+}
+.index-slider{
+	box-shadow: 0px 0px 15px #bdbdbd;
+}
+.bannerz.pt .container{
+	width:auto; padding:0;
 }
