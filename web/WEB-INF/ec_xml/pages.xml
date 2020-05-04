@@ -438,7 +438,7 @@
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
+				<fulltext limit="48" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -648,7 +648,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="bio@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -973,6 +973,12 @@
 				<var name="action" value="remove"/>
 				<var name="src_page" value="compare"/>
 			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
@@ -980,7 +986,7 @@
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
 			</link>
-			<single item="params"/>
+			<list item="params"/>
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -1574,4 +1580,18 @@
 		</command>
 	</page>
 
+	<page name="ajax_special_order" template="special_order_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="special_order_form" id="form">
+			<parameter-input ref="form" form="special_order_form"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="topic" value="Спецзаказ"/>
+			<var name="form_name" value="special_order_form"/>
+			<var name="source_page" value="ajax_special_order"/>
+		</link>
+	</page>
 </site>

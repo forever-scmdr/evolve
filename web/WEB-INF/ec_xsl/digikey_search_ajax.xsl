@@ -132,7 +132,7 @@
 						</xsl:if>
 					</p>
 
-					<a style="display: block; padding: 4px 0; background: #f0f0f0; color: #707070;" class="javascript" onclick="$('#tech-{@id}').toggle();">Показать технические характеристики</a>
+					<a style="color: #707070; text-decoration: underline;" class="javascript" onclick="$('#tech-{@id}').toggle();">Показать технические характеристики</a>
 					<table class="features table-bordered" id="tech-{@id}" style="display:none;">
 					<xsl:for-each select="parameter">
 						<tr>
@@ -151,19 +151,7 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
-<!--				<xsl:if test="f:num(CENA_PACK) != 0">-->
-<!--					<div class="price_special">-->
-<!--						Спец цена:-->
-<!--						<br/>-->
-<!--						<span>-->
-<!--							<xsl:value-of select="$price_pack"/>-->
-<!--						</span>-->
-<!--						от-->
-<!--						<span>-->
-<!--							<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>-->
-<!--						</span>-->
-<!--					</div>-->
-<!--				</xsl:if>-->
+
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{code}">

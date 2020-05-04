@@ -67,9 +67,9 @@
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<!-- <div id="extra_search_1">
+			<div id="extra_search_1">
 				Идет поиск по дополнительным каталогам...
-			</div> -->
+			</div>
 			<div id="extra_search_2">подождите.</div>
 		</div>
 
@@ -80,7 +80,7 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
-			 insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q,  '&amp;qty=', page/variables/minqty)"/>');
+			insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
 			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q, '&amp;qty=', page/variables/minqty)"/>');
 		</script>
 	</xsl:template>

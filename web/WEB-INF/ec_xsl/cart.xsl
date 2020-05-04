@@ -20,7 +20,7 @@
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
 						<xsl:apply-templates select="page/cart/bought" mode="avlb"/>
-						<xsl:if test="f:num(product/price) = 0 or f:num(qty_total) &gt; f:num(qty_avail)">
+						<xsl:if test="page/cart/bought[f:num(product/price) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
 							<h2>Товры под заказ</h2>
 							<xsl:apply-templates select="page/cart/bought" mode="preorder"/>
 						</xsl:if>

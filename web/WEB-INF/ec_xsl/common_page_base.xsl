@@ -96,15 +96,12 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<!-- <section class="top-stripe desktop">
+		<section class="top-stripe desktop">
 			<div class="container">
 				<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
-				<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
-				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
-				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
+				
 			</div>
-		</section> -->
+		</section>
 		<section class="header desktop">
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
@@ -227,11 +224,16 @@
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				<div class="footer__column">
-					<p>Мы в социальных сетях</p>
-					<div class="social">
-						<a href="https://www.instagram.com/taktsminsk/"><i class="fab fa-instagram" style="color: #ffffff;" /></a>
-						<a href="https://www.facebook.com/stihlminsk/"><i class="fab fa-facebook" style="color: #ffffff;" /></a>
-					</div>
+					<p><a href="http://ictrade.by">Электронные компоненты Чип Электроникс</a></p>
+                  <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A
+                     								<br />Ст. метро «Пролетарская»
+                  </p>
+                  <div class="rating" style="font-weight: normal" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
+                     <p><span itemprop="itemreviewed">Наш рейтинг</span> 4,9
+                     <br />
+                       голосов: <span itemprop="votes">115</span><span itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
+                       <meta itemprop="value" content="4.9" />
+                       <meta itemprop="best" content="5" /></span></p><i class="fas fa-star" rel="1"></i><i class="fas fa-star" rel="2"></i><i class="fas fa-star" rel="3"></i><i class="fas fa-star" rel="4"></i><i class="far fa-star" rel="5"></i></div>
 				</div>
 			</div>
 		</footer>
@@ -256,7 +258,7 @@
 								<label for="">Пароль:</label>
 								<input type="password" class="form-control" />
 							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
+							<input type="submit"  value="Войти"/>
 						</form>
 					</div>
 				</div>
@@ -264,6 +266,7 @@
 		</div>
 
 		<!-- modal feedback -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-special" ajax-href="ajax_special_order" show-loader="yes"></div>
 		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
