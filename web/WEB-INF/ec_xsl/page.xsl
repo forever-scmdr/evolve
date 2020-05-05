@@ -39,6 +39,9 @@
 				</xsl:for-each>
 			</div>
 			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+			<xsl:for-each select="$p/code_part">
+				<xsl:value-of select="." disable-output-escaping="yes"/>
+			</xsl:for-each>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

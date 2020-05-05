@@ -3,10 +3,12 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске – магазин радиодеталей Чип Электроникс')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
+	<xsl:variable name="meta_description" select="concat($p/name, ' в Минске от Чип Электроникс. Звоните ☎☎☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси.')"/>
+	<xsl:variable name="meta_keywords" select="$p/name"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>

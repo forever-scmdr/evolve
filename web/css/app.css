@@ -7059,13 +7059,13 @@ body {
 }
 .button.inverted{
 	color:#009ADA;
-	background-color: #fff;
+	background: #fff;
 	border: 2px solid #009ADA;
 }
 
 .button.inverted:hover{
 	color: #2060A5;
-	background-color: #fff;
+	background: #fff;
 	border: 2px solid #2060A5;
 }
 
@@ -7882,7 +7882,8 @@ td .catalog-item {
 .main-menu {
 	flex-basis:100%;
 	display:flex;
-	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
+	/*background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);*/
+	background: linear-gradient(rgb(110, 173, 226), rgb(56, 126, 186) 49%, rgb(29, 104, 169) 51%, rgb(23, 73, 115));
 	margin-top: 20px;
 	border-radius: 4px;
 }
@@ -7893,10 +7894,16 @@ td .catalog-item {
 	align-content:center;
 	align-items:center;
 	height:32px;
-	font-size: 1.75rem;
+	/*font-size: 1.75rem;*/
+	font-size: 1.5rem;
 	font-family: Arial;
 	/*font-family: 'Roboto';*/
 }
+
+.main-menu__item.active{
+	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
+}
+
 .main-menu__item a {
 	color: #fff;
 }
@@ -8168,7 +8175,7 @@ td .catalog-item {
 /* block title */
 .block-title {
 	font-size:30px;
-	font-weight:bold;
+	font-weight:normal;
 	position:relative;
 	padding-bottom:8px;
 	margin-bottom: 24px;
@@ -8176,10 +8183,11 @@ td .catalog-item {
 }
 .block-title_normal {
 	text-transform: none;
-	font-size: 30px;
+	font-size: 2.5rem;
 	line-height: 1;
-	margin-bottom: 16px;
+	margin-bottom: 10px;
 	padding-bottom: 0;
+
 }
 /* block title end*/
 /* special items */
@@ -8335,7 +8343,7 @@ td .catalog-item {
 	padding:32px 0;
 }
 .footer .container {
-	color: #fff;
+	/*color: #fff;*/
 }
 
 
@@ -8948,4 +8956,26 @@ td .catalog-item {
 }
 .bannerz.pt .container{
 	width:auto; padding:0;
+}
+.shipments{
+	width: 100%;
+	font-size: 12px;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+.shipments td{
+	padding: 5px;
+	vertical-align: top;
+	text-align: center;
+	border-left: 1px solid #ccc;
+
+}
+.shipments td:first-of-type{
+	border-left: 0;
+}
+.shipments .imgs td{
+	vertical-align: middle;
+}
+.shipments .imgs td img{
+	max-width: 130px;
 }

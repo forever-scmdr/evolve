@@ -18,6 +18,7 @@
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
+	<xsl:variable name="meta_keywords" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
@@ -266,7 +267,7 @@
 		</div>
 
 		<!-- modal feedback -->
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-special" ajax-href="ajax_special_order" show-loader="yes"></div>
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-special-wrap" ajax-href="ajax_special_order" show-loader="yes"></div>
 		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
@@ -424,14 +425,17 @@
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
+					<div style="margin-bottom:14px; padding:0;"></div>
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
+							
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
+									
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
@@ -995,6 +999,7 @@
 				<xsl:value-of select="$title"/>
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+			<meta name="keywords" content="{replace($meta_keywords, $quote, '')}"/>
 		</xsl:if>
 		<xsl:if test="$common/google_verification">
 			<meta name="google-site-verification" content="{$common/google_verification}"/>

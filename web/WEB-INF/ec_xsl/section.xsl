@@ -3,8 +3,22 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="cities" as="element()*">
+		<item>Минске</item>
+		<item>Витебске</item>
+		<item>Могилеве</item>
+		<item>Гомеле</item>
+		<item>Бресте</item>
+		<item>Гродно</item>
+	</xsl:variable>
+	<xsl:variable name="x" select="f:num(page/variables/page) mod count($cities)" />
+
+
+	<xsl:variable name="title" select="string-join((replace($sel_sec/name, 'Прочее', 'Радиокомпоненты, радиодетали и электронные компоненты'), 'купить в', $cities[$x],'в розницу и оптом – Чип Электроникс'), ' ')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sel_sec/name"/>
+
+	<xsl:variable name="meta_description" select="concat(replace($sel_sec/name, 'Прочее', 'Радиокомпоненты'),' в ', $cities[$x],' от Чип Электроникс. Звоните ☎☎☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси. Оптом и в розницу)')"/>
+	<xsl:variable name="meta_keywords" select="$sel_sec/name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -53,7 +67,7 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
