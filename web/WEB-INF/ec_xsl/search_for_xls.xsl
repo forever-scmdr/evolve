@@ -140,7 +140,12 @@
 			<xsl:if test="not($has_price)">
 				<total_price>запрос цены</total_price>
 			</xsl:if>
+			<price_original><xsl:value-of select="f:exchange(current(), 'price')"/></price_original>
 			<request_qty><xsl:value-of select="$num" /></request_qty>
+			<plain_section>
+				<name><xsl:value-of select="plain_section/name"/></name>
+				<date><xsl:value-of select="plain_section/date"/></date>
+			</plain_section>
 		</product>
 	</xsl:template>
 

@@ -545,11 +545,13 @@
 			<var name="q"/>
 			<var name="n"/>
 		</request>
+		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
 			</filter>
 			<ancestor item="plain_section"/>
 		</list>

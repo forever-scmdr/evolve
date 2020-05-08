@@ -6,10 +6,7 @@ import ecommander.controllers.PageController;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
+import ecommander.model.*;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
@@ -46,6 +43,7 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 	private CellStyle noCodeStyle;
 	private CellStyle sectionStyle;
 	private CellStyle auxHeaderStyle;
+	private boolean isAdmin = false;
 	//file Constants
 
 
@@ -59,11 +57,16 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 	protected static final String MIN_QTY = "Мин.заказ";
 	protected static final String PRICE = "Цена";
 	protected static final String SUM = "Сумма";
+	protected static final String INITIAL_PRICE = "Нач.цена";
+	protected static final String STORE = "Склад";
+	protected static final String UPDATED = "Обновлено";
 	protected static final String REQUEST = "Заказ";
 
 
 	@Override
 	public ResultPE execute() throws Exception {
+		isAdmin = getInitiator().getRole(User.USER_DEFAULT_GROUP) == User.ADMIN;
+
 		LinkPE link = getLink("xml_link");
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ExecutablePagePE page = getExecutablePage(link.serialize());
@@ -120,6 +123,13 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 
 			row.createCell(++colIdx).setCellValue(price.toString());
 			row.createCell(++colIdx).setCellValue(sum.toString());
+
+			if (isAdmin) {
+				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "price_original"));
+				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod.getElementsByTag("plain_section").first(), "name"));
+				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod.getElementsByTag("plain_section").first(), "date"));
+			}
+
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "request_qty"));
 
 			for (Cell cell : row) {
@@ -167,6 +177,14 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 		sh.setColumnWidth(colIdx, 12 * 256);
 		row.createCell(++colIdx).setCellValue(SUM);
 		sh.setColumnWidth(colIdx, 20 * 256);
+		if (isAdmin) {
+			row.createCell(++colIdx).setCellValue(INITIAL_PRICE);
+			sh.setColumnWidth(colIdx, 12 * 256);
+			row.createCell(++colIdx).setCellValue(STORE);
+			sh.setColumnWidth(colIdx, 20 * 256);
+			row.createCell(++colIdx).setCellValue(UPDATED);
+			sh.setColumnWidth(colIdx, 20 * 256);
+		}
 		row.createCell(++colIdx).setCellValue(REQUEST);
 		sh.setColumnWidth(colIdx, 8 * 256);
 
