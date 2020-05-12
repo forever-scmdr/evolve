@@ -149,7 +149,7 @@
 
 	<xsl:template match="banner">
 		<div class="banner {extra_style}">
-			<div class="banner__background" style="{background}"></div>
+			<div class="banner__background" style="{background}{if (background_pic) then concat('; background-image: url(', @path, background_pic, ');') else ''}"></div>
 			<div class="banner__image">
 				<xsl:choose>
 					<xsl:when test="image_code and not(image_code = '')"><xsl:value-of select="image_code" disable-output-escaping="yes" /></xsl:when>
