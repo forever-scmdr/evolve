@@ -436,6 +436,7 @@
 
 	<item name="banner" caption="Баннер" key="header" ag-id="31" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
+		<parameter name="background_pic" type="picture" caption="background-image" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
 		<parameter name="image_pic" type="picture" caption="Картинка-файл" description="banner__image"/>
