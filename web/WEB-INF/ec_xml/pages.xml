@@ -619,7 +619,7 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</single>
+					</list>
 				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
