@@ -8,7 +8,7 @@
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="not($sel_sec/show_devices = '0') or not($subs)"/>
+	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
@@ -69,7 +69,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
@@ -227,37 +227,32 @@
 					</span>
 				</div>
 
-<!--				<div class="quantity">-->
-					<label title="Показать только товары в наличии">
+
+				<!-- <div class="checkbox">
+					<label>
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
 								   onclick="window.location.href = '{page/show_only_available}'"/>
 						</xsl:if>
 						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+							<input type="checkbox" checked="checked"
+								   onclick="window.location.href = '{page/show_all}'"/>
 						</xsl:if>
-						в наличии
+						в наличии на складе
 					</label>
-<!--				</div>-->
-				<div class="quantity">
-					Сортировка:
-					<span>
-						<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-								onchange="window.location.href = $(this).find(':selected').attr('link')">
-							<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-							<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-							<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-							<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-						</select>
-					</span>
-				</div>
-				<div class="quantity currency">
-					Валюта:
-					<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
-					<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
-				</div>
-
+				</div> -->
+				
+				Сортировка: 
+				<span>
+					<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
+							onchange="window.location.href = $(this).find(':selected').attr('link')">
+						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+					</select>
+				</span>
 				<div class="quantity">
 					<span>Кол-во на странице:</span>
 					<span>

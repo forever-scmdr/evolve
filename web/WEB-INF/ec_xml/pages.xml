@@ -126,6 +126,9 @@
 				</link>
 				<single item="params"/>
 			</list>
+			<list item="custom_block">
+				<list item="custom_element"></list>
+			</list>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
 			<list item="banner"/>
@@ -601,7 +604,6 @@
 		<include name="COMMON"/>
 	</page>
 
-
 	<page name="update_prices" template="update_prices">
 		<command class="extra.UpdatePrices" clear-cache="yes">
 			<result name="complete" type="xml"/>
@@ -615,6 +617,7 @@
 		</request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
+			<list item="page_extra"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>
@@ -1224,7 +1227,17 @@
 	</page>
 
 
-    <page name="crawl" template="crawl">
+	<page name="import_from_ancient" template="integration" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportFromAncientXML" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+    <page name="crawl" template="integration/crawl">
         <request>
             <var name="action"/>
             <var name="job"/>
@@ -1487,89 +1500,6 @@
 		<command class="ecommander.fwk.integration.YMarketCreateXMLFile">
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
-		</command>
-	</page>
-
-	<!-- ICTRADE ONLY -->
-
-	<page name="platan_search" template="platan_search_ajax">
-		<request>
-			<var name="platan_feed_url" value="https://shop.platan.ru/export/price.xml"/>
-			<var name="query"/>
-			<var name="currency" scope="cookie" value="byn"/>
-			<var name="view" value="table" scope="cookie"/>
-		</request>
-		<command class="extra.PlatanSearchCommand">
-			<result name="result" type="xml" />
-		</command>
-	</page>
-
-	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
-		<link name="success" target="currency_ratio_success"/>
-		<link name="error" target="currency_ratio_success">
-			<var name="result" value="error"/>
-		</link>
-		<command class="extra.LoadCurrencyFromNBRB">
-			<result name="success" type="redirect"/>
-			<result name="error" type="redirect"/>
-		</command>
-	</page>
-	<page name="currency_ratio_success" ></page>
-
-	<page name="import_from_ancient" template="integration/import_from_ancient" authority-groups="common">
-		<request>
-			<var name="action"/>
-			<var name="start_url" value="https://ictrade.by/catalog_xml"/>
-		</request>
-		<command class="extra.ImportFromAncientXML" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-	<page name="digikey_manual_authorise">
-		<request>
-			<var name="code" />
-		</request>
-		<link name="success" target="digikey_result">
-			<var name="result" value="Код доступа успешно сохранен. Вход выполнен"/>
-		</link>
-		<link name="error" target="digikey_result">
-			<var name="result" value="Не удалось войти по коду доступа."/>
-			<var name="code" var="code" />
-		</link>
-		<command class="extra.DigiKeySearch" method="getAccessCodeAndAuthorise">
-			<result name="success" type="redirect"/>
-			<result name="error" type="redirect"/>
-		</command>
-	</page>
-
-	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
-		<command class="extra.DigiKeySearch" method="refreshAccessToken"/>
-	</page>
-
-	<page name="digikey_result">
-		<request>
-			<var name="result" />
-			<var name="code"/>
-		</request>
-	</page>
-
-	<page name="digikey_search" template="digikey_search_ajax">
-		<request>
-			<var name="old_query"/>
-			<var name="qty"/>
-			<var name="currency" scope="cookie" value="byn"/>
-		</request>
-		<link name="bad_request" target="digikey_result" >
-			<var name="result" value="bad_request"/>
-		</link>
-		<link name="generel_error" target="digikey_result">
-			<var name="result" value="error"/>
-		</link>
-		<command class="extra.DigiKeySearch" >
-			<result name="complete" type="xml"/>
-			<result name="bad_request" type="redirect"/>
-			<result name="generel_error" type="redirect"/>
 		</command>
 	</page>
 

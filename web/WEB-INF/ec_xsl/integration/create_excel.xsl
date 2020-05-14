@@ -53,7 +53,6 @@
             </script>
             <body>
                 <h1><xsl:value-of select="/page/operation"/></h1>
-                <h2><xsl:value-of select="page/current_job" /></h2>
                 <h2>Процесс выполнения</h2>
                 <table>
                 <tr>
