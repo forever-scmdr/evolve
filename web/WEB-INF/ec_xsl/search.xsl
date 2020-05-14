@@ -18,7 +18,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -38,21 +38,6 @@
 							<a href="{page/set_view_list}">Строками</a>
 						</span>
 					</div>
-					<label title="Показать только товары в наличии">
-						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии
-					</label>
-					<div class="quantity currency">
-						Валюта:
-						<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
-						<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
-					</div>
 				</div>
 			</xsl:if>
 
@@ -63,14 +48,11 @@
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$products" mode="lines"/>
 					</xsl:if>
-			</div>
+				</div>
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<div id="extra_search_1">
-				Идет поиск по дополнительному каталогу...
-			</div>
-			<div id="extra_search_2">zzz</div>
+
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -79,10 +61,6 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
-		<script type="text/javascript">
-			insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
-			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q, '&amp;qty=', page/variables/minqty)"/>');
-		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

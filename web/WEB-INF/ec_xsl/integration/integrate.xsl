@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/reindex_all");
+				document.location.replace("/integrate");
 			}, 5000);
 		</script>
 		</head>
@@ -35,7 +35,7 @@
 				<tr>
 					<td>Строка файла:</td>
 					<td class="error">
-						<span id="prcnt"> </span>
+						<span id="prcnt"></span>
 						<span id="progressBar"></span>
 						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
 					</td>
