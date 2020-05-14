@@ -214,6 +214,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
 					String unit = params.paramUnits.get(paramName);
+					String format = type.equalsIgnoreCase("double")? "###,##0.########" : "";
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
