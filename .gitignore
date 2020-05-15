@@ -1,3 +1,4 @@
 # Project exclude paths
 /out/
 /web/WEB-INF/settings.properties
+evolve.iml
