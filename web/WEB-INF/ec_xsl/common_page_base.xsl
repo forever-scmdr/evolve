@@ -207,14 +207,14 @@
 	</xsl:template>
 
 	<xsl:template name="INC_MOBILE_HEADER">
-		<!-- <div class="header mobile">
+		<div class="header mobile">
 			<div class="header-container">
 				<a href="{$main_host}" class="logo">
 					<img src="img/logo-internal.png" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
-					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>
+<!--					<a href="{page/cart_link}"><i class="fas fa-shopping-cart"></i></a>-->
 					<a href="javascript:showMobileMainMenu()"><i class="fas fa-bars"></i></a>
 				</div>
 				<div class="search-container">
@@ -229,7 +229,7 @@
 			$('.content-container').toggleClass('visible-no');
 			$('.menu-container').toggleClass('visible-yes');
 			}
-		</script> -->
+		</script>
 	</xsl:template>
 
 	<xsl:template match="block" mode="footer">
