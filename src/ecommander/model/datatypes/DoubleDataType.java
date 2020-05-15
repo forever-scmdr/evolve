@@ -11,7 +11,12 @@ public class DoubleDataType extends FormatDataType {
 
 	private static final NumberFormat dotDelimFormat = NumberFormat.getInstance(new Locale("en"));
 	private static final NumberFormat commaDelimformat = NumberFormat.getInstance(new Locale("ru"));
-	
+
+	static {
+		dotDelimFormat.setMaximumFractionDigits(8);
+		commaDelimformat.setMaximumFractionDigits(8);
+	}
+
 	public DoubleDataType(Type type) {
 		super(type);
 	}
