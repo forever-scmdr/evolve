@@ -2367,6 +2367,8 @@ input[type="search"] {
 	position:absolute;
 	margin-left:-20px;
 	margin-top:4px \9;
+	top: 2px;
+	left:2px;
 }
 .radio+.radio,.checkbox+.checkbox {
 	margin-top:-5px;
@@ -6747,7 +6749,7 @@ table td p:last-child {
 .cart-container .item .image-container img {
 	max-width:100%;
 }
-.cart-container .item .price span,.cart-container .item .quantity span {
+.cart-container .item .price span,.cart-container .item .quantity span, .cart-container .item .available span {
 	display:block;
 	font-size:1rem;
 }
@@ -6755,14 +6757,18 @@ table td p:last-child {
 	width:6rem;
 	text-align:center;
 }
+.cart-container .item .available {
+	font-size: 13px;
+}
 .cart-container .item .delete {
 	color:#ccc;
 	width:1rem;
 	margin-top: 11px;
 	/*padding-left:1rem;*/
 }
-.cart-container .item .price_all {
+.cart-container .item .price.all {
 	width:7rem;
+	font-weight: bold;
 }
 .cart-container .item .price.one {
 	width:8rem;
@@ -7564,7 +7570,7 @@ td .catalog-item {
 	display:block;
 	margin-bottom:10px;
 	overflow:hidden;
-	height:42px;
+	height:57px;
 	line-height:1;
 	font-size: 14px;
 }
@@ -7578,7 +7584,7 @@ td .catalog-item {
 	justify-content:center;
 	margin-bottom:10px;
 	color: #424242;
-	font-size:16px;
+	font-size:14px;
 	min-height:20px;
 }
 .device__image {
@@ -7605,6 +7611,7 @@ td .catalog-item {
 	width:50px;
 	margin-right:8px;
 	text-align:center;
+	font-size: 13px;
 }
 .device__in-stock {
 	font-size:12px;
@@ -8920,8 +8927,8 @@ td .catalog-item {
 }
 .price_special{
 	font-size: 13px;
-	background: #f26521;
-	color: #fff;
+	/*background: #f26521;*/
+	color: #f26521;
 	margin-top: 4px;
 	padding: 3px 5px;
 }
@@ -8978,4 +8985,34 @@ td .catalog-item {
 }
 .shipments .imgs td img{
 	max-width: 130px;
+}
+
+
+
+@media (max-width: 768px) {
+	.hero {display: none;}
+}
+label {
+	display: flex;
+	align-items: center;
+	line-height: 1;
+	margin: 0;
+}
+label input {
+	 margin: 0 !important;
+	 margin-right: 4px !important;
+}
+.view-container {
+	display: flex;
+	align-items: center;
+}
+.view-container > * {
+	margin-right: 16px;
+}
+.view-container > *:last-child {
+	margin-right: 0 !important
+}
+.quantity.currency a {
+	margin-left: 8px;
+	padding: 0 !important
 }

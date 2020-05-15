@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>           
+<?xml version="1.0" encoding="UTF-8"?>                
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -620,6 +620,7 @@
 					<var ref="child" style="key" name="p"/>
 				</link>
 			</list>
+			<list item="page_part"/>
 			<ancestor item="custom_page" id="parents" tag="parent" transit="true">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="parents" style="key" name="sp"/>
@@ -648,7 +649,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="bio@forever-ds.com"/>
+			<var name="email" value="bio@forever-ds.com, sales@ictrade.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -712,7 +713,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="design@forever-ds.com, sales@ictrade.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -834,7 +835,13 @@
 	<page name="order_email" template="order_email">
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
 			</single>
 			<list item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
@@ -844,16 +851,14 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<list item="product" tag="product" id="prod">
+<!-- 		<list item="product" tag="product" id="prod">
 			<filter>
 				<parameter name="code" compare="SOME" sign="=">
 					<var ref="bought" parameter="code"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
+			
+		</list> -->
 		<single item="common"/>
 	</page>
 

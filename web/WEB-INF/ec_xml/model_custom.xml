@@ -85,7 +85,7 @@
 
 <!--START_p561959-->
 <item name="p561959" caption="SMD дроссели общего назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1918" ag-hash="-2110071459">
-	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tochnost__" caption="Точность, %" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vhodnoi_tok_maks___ma" caption="Входной ток (макс.). мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321730230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>

@@ -42,7 +42,7 @@
 				<xsl:value-of select="NOM_N"/>
 			</div>
 			<xsl:if test="f:num(CENA_ROZ) != 0">
-				<div class="device__price">
+				<div class="device__price" style="flex-direction: column">
 					<div class="price_normal">
 						<xsl:value-of select="concat($price, '/', EI_NAME)"/>
 					</div>

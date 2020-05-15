@@ -107,7 +107,11 @@
 				<div class="quantity">
 					<span>Кол-во</span>
 					<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
-					<br/>доступно: <xsl:value-of select="f:num($p/qty)" />
+					<br/>
+				</div>
+				<div class="available">
+					<span>Наличие</span>
+					доступно: <xsl:value-of select="f:num($p/qty)" />
 					<xsl:if test="f:num(qty_total) &gt; f:num(qty_avail)">
 						<br/>
 						<xsl:value-of select="concat(' под заказ: ', f:num(qty_total) - f:num(qty_avail))"/>

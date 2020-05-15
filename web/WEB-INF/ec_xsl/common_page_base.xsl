@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
@@ -537,7 +537,7 @@
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
-				<div class="device__price">
+				<div class="device__price" style="flex-direction: column">
 					<xsl:if test="price_old">
 						<div class="price_old">
 							<span><xsl:value-of select="f:price_catalog(price_old ,'')"/>.</span>

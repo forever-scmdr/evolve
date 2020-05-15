@@ -595,7 +595,7 @@
 		<parameter name="message" type="string" caption="Сообщение" />
 	</item>
 
-	<item name="special_order_form" caption="Форма индивидуального заказа" virtual="true" ag-id="1862" ag-hash="113063515" >
+	<item name="special_order_form" caption="Форма индивидуального заказа" virtual="true" ag-id="1862" ag-hash="113063515">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -635,7 +635,7 @@
 		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container " default-page="page" ag-id="27" ag-hash="-1777660259">
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container" default-page="page" ag-id="27" ag-hash="-1777660259">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>
@@ -644,7 +644,7 @@
 		<child item="page_part" />
 	</item>
 
-	<item name="page_part" virtual="true" key="name" ag-id="1858" ag-hash="883751843" >
+	<item name="page_part" virtual="true" key="name" ag-id="1858" ag-hash="883751843"  >
 		<parameter name="name" type="string" caption="Название" />
 	</item>
 
