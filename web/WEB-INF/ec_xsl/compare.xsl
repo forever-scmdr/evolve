@@ -42,7 +42,7 @@
 		<div class="path-container">
 			<div class="path-container">
 				<div class="path">
-					<a href="{page/index_link}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+					<a href="{page/index_link}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				</div>
 				<xsl:call-template name="PRINT"/>
 			</div>

@@ -16,7 +16,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 				<xsl:for-each select="$p/parent">
 					<a href="{show_page}"><xsl:value-of select="header"/></a> <i class="fas fa-angle-right"></i>
 				</xsl:for-each>
@@ -25,21 +25,21 @@
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
-		<div class="catalog-items info">
-			<xsl:for-each select="$p/custom_page">
-				<div class="catalog-item page-item">
-					 <a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');">
-<!--						 <img src="{@path}{main_pic}" alt=""/>-->
-						 <xsl:value-of select="header"/>
-					 </a>
-<!--					<div class="text">-->
-<!--						<a href="{show_page}"><xsl:value-of select="header"/></a>-->
-<!--					</div>-->
-				</div>
-			</xsl:for-each>
+		<div class="page-content m-t">
+			<div class="catalog-items info">
+				<xsl:for-each select="$p/custom_page">
+					<div class="catalog-item">
+						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://shop4.must.by/{@path}{main_pic}" alt=""/> --></a>
+						<div class="text">
+							<div class="date"><xsl:value-of select="date"/></div>
+							<a href="{show_page}"><xsl:value-of select="header"/></a>
+							<xsl:value-of select="short" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</xsl:for-each>
+			</div>
+			<xsl:apply-templates select="$p" mode="content"/>
 		</div>
-		<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="$p" mode="content"/>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
