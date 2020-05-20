@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Contacts'" />
+	<xsl:variable name="title" select="'Контакты'" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="active_menu_item" select="'contacts'"/>
@@ -12,7 +12,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -20,15 +20,14 @@
 
 		<div class="page-content m-t">
 			<xsl:value-of select="page/contacts/text" disable-output-escaping="yes"/>
-			<!-- <h3>Расположение нашего офиса на карте</h3> -->
+			<h3>Расположение нашего офиса на карте</h3>
 			<div class="map-container">
 				<xsl:value-of select="page/contacts/map" disable-output-escaping="yes"/>
 			</div>
 			<xsl:value-of select="page/contacts/bottom_text" disable-output-escaping="yes"/>
 		</div>
 
-		<xsl:call-template name="ACTIONS_MOBILE"/></xsl:template>
-
-		<xsl:template name="INC_SIDE_MENU_INTERNAL"></xsl:template> 
+		<xsl:call-template name="ACTIONS_MOBILE"/>
+	</xsl:template>
 
 </xsl:stylesheet>

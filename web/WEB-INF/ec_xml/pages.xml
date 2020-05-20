@@ -617,7 +617,9 @@
 		</request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
-			<list item="page_extra"/>
+			<list item="page_extra">
+				<list item="picture"/>
+			</list>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>

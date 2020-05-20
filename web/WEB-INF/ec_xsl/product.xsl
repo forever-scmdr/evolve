@@ -54,7 +54,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
