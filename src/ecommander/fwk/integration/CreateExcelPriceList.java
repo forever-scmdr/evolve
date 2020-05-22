@@ -32,7 +32,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	//file Constants
 	protected static final String CODE_FILE = "Код";
 	protected static final String IS_DEVICE_FILE = "Отдельный товар";
-	protected static final String NAME_FILE = "Название";
+	protected static final String NAME_FILE = "Наименование";
 	protected static final String PRICE_FILE = "Цена";
 	protected static final String PRICE_OLD_FILE = "Старая цена";
 	protected static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";

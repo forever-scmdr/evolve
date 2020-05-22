@@ -296,7 +296,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							}
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
-
+						if(isProduct) currentProduct = product;
 						//MANUALS
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
@@ -327,7 +327,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
-								if(isProduct) currentProduct = product;
 							}
 						}
 
