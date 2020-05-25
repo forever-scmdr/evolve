@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -23,17 +24,24 @@ public class POIExcelWrapper implements Closeable {
 			try {
 				npoifs = new POIFSFileSystem(file);
 				xlsWorkbook = WorkbookFactory.create(npoifs);
-			} catch (IOException e) {
-				ServerLogger.error("Unable to parse Excel file", e);
-				xlsWorkbook = null;
+			} catch (OfficeXmlFileException e) {
+				ServerLogger.error("Trying to create from OPCPackage");
+				pkg = OPCPackage.open(file);
+				XSSFWorkbook wb = new XSSFWorkbook(pkg);
+			//	ServerLogger.error("Unable to parse Excel file", e);
+			//	xlsWorkbook = null;
 			}
-		} catch (OfficeXmlFileException ofe) {
+		} catch (Exception ofe) {
 			try {
 				//pkg = OPCPackage.open(file);
+				npoifs = new POIFSFileSystem(file);
+				ServerLogger.error("Trying to create from Directly");
 				xlsWorkbook = new XSSFWorkbook(file);
 			} catch (Exception e) {
 				try {
-					xlsWorkbook = new HSSFWorkbook(POIFSFileSystem.create(file));
+					npoifs = new POIFSFileSystem(file);
+					ServerLogger.error("Trying to create HSSFWorkbook");
+					xlsWorkbook = new HSSFWorkbook(new FileInputStream(file));
 				}catch (Exception e1) {
 					ServerLogger.error("Unable to parse Excel file", e);
 					xlsWorkbook = null;

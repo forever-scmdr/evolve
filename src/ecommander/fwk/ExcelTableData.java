@@ -149,6 +149,7 @@ public class ExcelTableData implements TableDataSource {
 			}
 		}
 
+		ServerLogger.error("Valid sheets: "+ validSheets.size());
 
 		if (validSheets.size() > 0){
 			currentSheet = validSheets.get(0).sheet;
