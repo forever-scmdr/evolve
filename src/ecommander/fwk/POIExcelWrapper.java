@@ -1,6 +1,5 @@
 package ecommander.fwk;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -40,8 +39,8 @@ public class POIExcelWrapper implements Closeable {
 			} catch (Exception e) {
 				try {
 					npoifs = new POIFSFileSystem(file);
-					ServerLogger.error("Trying to create HSSFWorkbook");
-					xlsWorkbook = new HSSFWorkbook(new FileInputStream(file));
+					ServerLogger.error("Trying to create XSSFWorkbook");
+					xlsWorkbook = new XSSFWorkbook(new FileInputStream(file));
 				}catch (Exception e1) {
 					ServerLogger.error("Unable to parse Excel file", e);
 					xlsWorkbook = null;
