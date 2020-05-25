@@ -26,7 +26,7 @@ public class POIExcelWrapper implements Closeable {
 			} catch (OfficeXmlFileException e) {
 				ServerLogger.error("Trying to create from OPCPackage");
 				pkg = OPCPackage.open(file);
-				XSSFWorkbook wb = new XSSFWorkbook(pkg);
+				xlsWorkbook = new XSSFWorkbook(pkg);
 			//	ServerLogger.error("Unable to parse Excel file", e);
 			//	xlsWorkbook = null;
 			}
