@@ -35,7 +35,7 @@ public class POIExcelWrapper implements Closeable {
 			try {
 				//pkg = OPCPackage.open(file);
 				npoifs = new POIFSFileSystem(file);
-				ServerLogger.error("Trying to create from Directly");
+				ServerLogger.error("Trying to create Directly");
 				xlsWorkbook = new XSSFWorkbook(file);
 			} catch (Exception e) {
 				try {
