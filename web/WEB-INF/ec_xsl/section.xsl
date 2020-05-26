@@ -253,6 +253,17 @@
 						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 					</select>
 				</span>
+				<xsl:if test="$sel_sec/mark">
+					&#160;
+					<span>
+						<select class="form-control" value="{page/variables/mark}" onchange="window.location.href = $(this).find(':selected').attr('link')">
+							<option value="" link="{page/set_mark_default}">Все товары</option>
+							<xsl:for-each select="$sel_sec/mark">
+								<option value="{mark}" link="{set_mark}"><xsl:value-of select="mark"/></option>
+							</xsl:for-each>
+						</select>
+					</span>
+				</xsl:if>
 				<div class="quantity">
 					<span>Кол-во на странице:</span>
 					<span>

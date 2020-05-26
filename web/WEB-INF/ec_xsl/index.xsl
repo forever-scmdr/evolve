@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
+	<xsl:import href="templates.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -164,15 +165,14 @@
 		</div>
 	</xsl:template>
 
-
-	<xsl:template name="BANNERS">
+	<xsl:template name="INDEX_BLOCKS">
 		<section class="hero pb">
 			<div class="container">
 				<div class="fotorama" data-width="100%">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
+						<img src="{@path}{pic}" alt="{name}"/>
 						<div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div>
-						<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
 							<div class="slider-item__block fotorama__select">
 								<div class="slider-item__wrapper">
 									<div class="slider-item__title"><xsl:value-of select="name" /></div>
@@ -182,167 +182,62 @@
 									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
-						</div> -->
-					</xsl:for-each>
-				</div>
-			</div>
-		</section>
-		<!-- <section>
-			<div class="container">
-				<div class="block-title">Каталог продукции</div>
-				<div class="catalog-items">
-					<xsl:for-each select="/page/catalog/section">
-						<div class="catalog-item">
-							<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-							<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
-							<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-							<a href="{show_products}" class="image-container" style="background-image: url({$pic})"><img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/></a>
-							<div>
-								<a href="{show_products}" style="height: unset;"><xsl:value-of select="name"/></a>
-								<xsl:value-of select="short" disable-output-escaping="yes"/>
-							</div>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</section> -->
-		<section class="bannerz pb">
-			<div class="container">
-				<div class="block-title">Лодочные моторы Suzuki</div>
-			</div>
-			<div class="container">
-				<xsl:apply-templates select="page/banner_section[1]/banner"/>
-			</div>
 		</section>
 
-		<!-- <section class="special-items ptb" style="background-color: #f2f2f2;">
+
+
+
+		<!-- banners -->
+		<xsl:apply-templates select="page/main_page/custom_block[1]"></xsl:apply-templates>
+
+		<section class="special-items ptb" style="background-color: #f2f2f2;">
 			<div class="container">
 				<div class="block-title">Новинки и акции</div>
 				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Новинка']"/>
+					<xsl:apply-templates select="page/main_page/product[tag = ('Новинка', 'новинка', 'НОВИНКА')]"/>
 				</div>
-			</div>
-		</section> -->
-
-		<section class="bannerz pt">
-			<div class="container">
-				<div class="block-title">Обслуживание мотора</div>
-			</div>
-			<div class="container">
-				<xsl:apply-templates select="page/banner_section[2]/banner"/>
 			</div>
 		</section>
 
-		<section class="news pt">
+		<xsl:apply-templates select="page/main_page/custom_block[2]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[3]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[4]"></xsl:apply-templates>
+
+		<!-- <section class="news pt">
 			<div class="container">
-				<div class="block-title">
-					Новости
+				<div class="block__title block__title_left">
+					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
 				</div>
-				<div class="wrap">
+				<div class="grid">
 					<xsl:for-each select="page//news_item">
 						<div class="news__item">
 							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
 							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
 							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
+							<xsl:value-of select="short" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</section>
-
-		<section class="bannerz pt">
-			<div class="container">
-				<div class="block-title">Другие сайты Suzuki</div>
-			</div>
-			<div class="container">
-				<xsl:apply-templates select="page/banner_section[3]/banner"/>
-			</div>
-		</section>
-		<!-- <section class="ptb mtb" style="background-color: #f2f2f2;">
-			<div class="container">
-				<div class="banners-big-icons">
-					<xsl:apply-templates select="page/banner_section[2]/banner"/>
-				</div>
-			</div>
 		</section> -->
 
-		<!-- <section class="brands ptb">
-			<div class="container">
-				<div class="block-title">Производители</div>
-				<div class="slick-slider" style="margin: 0 -12px;">
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (1).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (2).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (3).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (4).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (5).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (6).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (7).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (1).jpg" />
-						</div>
-					</div>
-					<div>
-						<div class="brand-item">
-							<img src="img/brand (2).jpg" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</section> -->
-		<section class="s-info">
+
+		<xsl:apply-templates select="page/main_page/custom_block[7]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[8]"></xsl:apply-templates>
+
+		<!-- <section class="s-info">
 			<div class="container">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
-			</div>
-		</section>
-		<!-- <section class="ptb">
-			<div class="container">
-				<div class="page-map" id="contacts">
-					<div class="page-map__map"><script type="text/javascript" charset="utf-8" async="async" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2f9a2f790522d006537ede412d3d2eeb312795427a599cbbdfdab5140aa849b4&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=true"></script></div>
-					<div class="page-map__text">
-						<div class="block-title">
-							Схема проезда и контакты
-						</div>
-						<p>Республика Беларусь, Витебская обл., 211394, г. Орша, ул. 1 Мая, 81Б-2.</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 17) 123-45-67 - тел./факс;</p>
-						<p>(+375 29) 123-45-67 - Велком;</p>
-						<p>(+375 33) 123-45-67 - МТС;</p>
-						<p><a href="mailto:skobtrade@mail.ru">skobtrade@mail.ru</a></p>
-					</div>
-				</div>
 			</div>
 		</section> -->
 
 	</xsl:template>
+
+
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>

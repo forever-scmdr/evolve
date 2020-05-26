@@ -47,6 +47,7 @@ public class Product
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
+    public final static String MARK = "mark";
     public final static String GALLERY = "gallery";
     public final static String HAS_LINES = "has_lines";
 
@@ -663,6 +664,22 @@ public class Product
 
     public boolean contains_tag(String value) {
         return containsValue("tag", value);
+    }
+
+    public void add_mark(String value) {
+        setValue("mark", value);
+    }
+
+    public List<String> getAll_mark() {
+        return getStringValues("mark");
+    }
+
+    public void remove_mark(String value) {
+        removeEqualValue("mark", value);
+    }
+
+    public boolean contains_mark(String value) {
+        return containsValue("mark", value);
     }
 
     public void add_gallery(File value) {

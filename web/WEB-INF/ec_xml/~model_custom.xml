@@ -1,472 +1,340 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-<!--START_p561949-->
-<item name="p561949" caption="Варисторы выводные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1910" ag-hash="-2110071490">
-	<parameter name="napryagenie_varistorav" caption="Напряжение варистора,В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-520472501" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimoe_napryagenie_pri_postoyannom_toke_v" caption="Максимально допустимое напряжение при постоянном токе, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1336006271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimoe_napryagenie_pri_peremennom_toke_v" caption="Максимально допустимое напряжение при переменном токе, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1306016132" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pogloschaemaya_energiya_dg" caption="Поглощаемая энергия, Дж" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-893971760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diametrmm" caption="Диаметр,мм" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1360604594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561949-->
-
-<!--START_p561950-->
-<item name="p561950" caption="SMD варисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1911" ag-hash="-2110071468">
-	<parameter name="napryagenie_varistorav" caption="Напряжение варистора,В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-520472501" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimoe_napryagenie_pri_postoyannom_toke_v" caption="Максимально допустимое напряжение при постоянном токе, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1336006271" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimoe_napryagenie_pri_peremennom_toke_v" caption="Максимально допустимое напряжение при переменном токе, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1306016132" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pogloschaemaya_energiya_dg" caption="Поглощаемая энергия, Дж" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-893971760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561950-->
-
-<!--START_p561952-->
-<item name="p561952" caption="Защитные диоды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1912" ag-hash="-2110071466">
-	<parameter name="polyarnost" caption="Полярность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1449211297" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_ogranicheniya_nominalnoe_v" caption="Напряжение ограничения (номинальное), В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-502265875" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_obratnoe_napryagenie_stabilizatsii_v" caption="Максимальное обратное напряжение стабилизации, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="520998122" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="minimalnoe_probivnoe_napryagenie_b" caption="Минимальное пробивное напряжение B" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1340806649" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_impulsnoe_napryagenie_v" caption="Максимальное импульсное напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1840920395" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnyi_impulsnyi_tok_a" caption="Максимальный импульсный ток, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1906078165" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_vt" caption="Мощность, Вт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1684143035" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561952-->
-
-<!--START_p561953-->
-<item name="p561953" caption="Диоды выпрямительные(Шоттки) " key="" virtual="false" user-def="true" description="" super="params *" ag-id="1913" ag-hash="-2110071465">
-	<parameter name="maksimalnoe_obratnoe_napryagenie_dioda_vrrm_v" caption="Максимальное обратное напряжение диода Vrrm, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1447457981" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pryamoi_tok_dioda_if_a" caption="Прямой ток диода If, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1080317192" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_pryamoe_napryagenie_vf_v" caption="Максимальное прямое напряжение Vf, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-426909885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimyi_pryamoi_impulsnyi_tok_ifsm_a" caption="Максимально допустимый прямой импульсный ток Ifsm, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="515949666" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561953-->
-
-<!--START_p561954-->
-<item name="p561954" caption="Диоды импульсные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1914" ag-hash="-2110071464">
-	<parameter name="maksimalnoe_obratnoe_napryagenie_dioda_vrrm_v" caption="Максимальное обратное напряжение диода Vrrm, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1447457981" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pryamoi_tok_dioda_if_a" caption="Прямой ток диода If, А" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1080317192" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_pryamoe_napryagenie_vf_v" caption="Максимальное прямое напряжение Vf, В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-426909885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimyi_pryamoi_impulsnyi_tok_ifsm_a" caption="Максимально допустимый прямой импульсный ток Ifsm, А" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="515949666" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_vremya_obratnogo_vosstanovleniya_trr_ns" caption="Максимальное время обратного восстановления trr, ns" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="392663765" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561954-->
-
-<!--START_p561955-->
-<item name="p561955" caption="Стабилитроны (Диод Зенера)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1915" ag-hash="-2110071463">
-	<parameter name="nominalnoe_napryagenie_stabilizatsii_vzv" caption="Номинальное напряжение стабилизации Vz,В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-145240298" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="minimalnoe_napryagenie_stabilizatsii_vzv" caption="Минимальное напряжение стабилизации Vz,В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-683182351" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_napryagenie_stabilizatsii_vzv" caption="Максимальное напряжение стабилизации Vz,В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="447838599" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rasseivaemaya_moschnost_pd_vt" caption="Рассеиваемая Мощность Pd, Вт" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-175654298" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="AA" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561955-->
-
-<!--START_p561956-->
-<item name="p561956" caption="Диодные мосты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1916" ag-hash="-2110071462">
-	<parameter name="maksimalnoe_obratnoe_napryagenie_dioda_vrrm_v" caption="Максимальное обратное напряжение диода Vrrm, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1447457981" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pryamoi_tok_dioda_if_a" caption="Прямой ток диода If, А" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1080317192" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnoe_pryamoe_napryagenie_vf_v" caption="Максимальное прямое напряжение Vf, В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-426909885" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalno_dopustimyi_pryamoi_impulsnyi_tok_ifsm_a" caption="Максимально допустимый прямой импульсный ток Ifsm, А" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="515949666" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561956-->
-
-<!--START_p561957-->
-<item name="p561957" caption="Варикапы, Варакторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1917" ag-hash="-2110071461">
-	<parameter name="maksimalnoe_znachenie_napryageniya_vrrm_b" caption="Максимальное Значение Напряжения Vrrm, B" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-168221555" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="pryamoi_tok_dioda_if_a" caption="Прямой ток диода If, А" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1080317192" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnaya_emkost_varikapa_c_pf" caption="Максимальная Емкость Варикапа C, pF" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1477729937" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561957-->
-
-<!--START_p561959-->
-<item name="p561959" caption="SMD дроссели общего назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1918" ag-hash="-2110071459">
-	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tochnost__" caption="Точность, %" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_tok_maks___ma" caption="Входной ток (макс.). мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321730230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_dc_om" caption="Сопротивление DC, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="321699744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota_min__mgts" caption="Резонансная частота (мин.) МГц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-119298193" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dobrotnost_q_min_" caption="Добротность Q (мин.)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="759146776" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561959-->
-
-<!--START_p561960-->
-<item name="p561960" caption="Высокочастотные SMD дроссели общего назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1919" ag-hash="-2110071437">
-	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tochnost__" caption="Точность, %" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_tok_maks___ma" caption="Входной ток (макс.). мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321730230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_dc_om" caption="Сопротивление DC, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="321699744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota_min__mgts" caption="Резонансная частота (мин.) МГц" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-119298193" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dobrotnost_q_min_" caption="Добротность Q (мин.)" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="759146776" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561960-->
-
-<!--START_p561961-->
-<item name="p561961" caption="Силовые SMD дроссели общего назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1920" ag-hash="-2110071436">
-	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tochnost__" caption="Точность, %" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_tok_maks___ma" caption="Входной ток (макс.). мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321730230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_dc_om" caption="Сопротивление DC, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="321699744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota_min__mgts" caption="Резонансная частота (мин.) МГц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-119298193" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dobrotnost_q_min_" caption="Добротность Q (мин.)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="759146776" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561961-->
-
-<!--START_p561962-->
-<item name="p561962" caption="Дроссели (для монтажа в отверстие) общего назначения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1921" ag-hash="-2110071435">
-	<parameter name="induktivnost_mkgn" caption="Индуктивность, мкГн" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="2116876534" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tochnost__" caption="Точность, %" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_tok_maks___ma" caption="Входной ток (макс.). мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321730230" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_dc_om" caption="Сопротивление DC, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="321699744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota_min__mgts" caption="Резонансная частота (мин.) МГц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-119298193" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dobrotnost_q_min_" caption="Добротность Q (мин.)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="759146776" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561962-->
-
-<!--START_p561964-->
-<item name="p561964" caption="Кварцевые резонаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1922" ag-hash="-2110071433">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota" caption="Резонансная частота" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="590459491" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="edinitsa_izmereniya" caption="Единица измерения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="802374465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382664-->
+<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1772" ag-hash="2129511511">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561964-->
+<!--END_p382664-->
 
-<!--START_p561965-->
-<item name="p561965" caption="Кварцевые генераторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1923" ag-hash="-2110071432">
-	<parameter name="korpus" caption="Корпус" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="-SMD, No Lead" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rezonansnaya_chastota" caption="Резонансная частота" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="590459491" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="edinitsa_izmereniya" caption="Единица измерения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="802374465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382721-->
+<item name="p382721" caption="Снятые с производства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1773" ag-hash="2129512345">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561965-->
+<!--END_p382721-->
 
-<!--START_p561966-->
-<item name="p561966" caption="Кнопки, переключатели" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1924" ag-hash="-2110071431">
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="funktsiya_pereklyuchatelya" caption="Функция переключателя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="433951621" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnyi_tok__a" caption="Номинальный ток: А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1448392082" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_peremennogo_toka_vac_v" caption="Номинальное напряжение переменного тока VAC, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1084029936" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_postoyannogo_toka_vdc_v" caption="Номинальное напряжение постоянного тока VDC, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2143221046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_montaga" caption="Тип монтажа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1576407407" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_shhdhv_mm" caption="Размер, ШхДхВ мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1424480112" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561966-->
-
-<!--START_p561967-->
-<item name="p561967" caption="Конденсаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1925" ag-hash="-2110071430">
-	<parameter name="nominalnaya_emkost" caption="Номинальная емкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1360216533" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="edinitsa_izmereniya" caption="Единица измерения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="802374465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_napryagenie_v" caption="Рабочее напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1383245512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="montag" caption="Монтаж" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1068487410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561967-->
-
-<!--START_p561968-->
-<item name="p561968" caption="Микросхемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1926" ag-hash="-2110071429"></item>
-<!--END_p561968-->
-
-<!--START_p561970-->
-<item name="p561970" caption="IDC разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1927" ag-hash="-2110071406">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="A" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sposob_montaga" caption="Способ монтажа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1928916376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="forma_kontaktov" caption="Форма контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-719221915" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shag_kontaktov" caption="Шаг контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1595312899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_i_a" caption="Сила тока I, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное Напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561970-->
-
-<!--START_p561972-->
-<item name="p561972" caption="Разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1928" ag-hash="-2110071404">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="forma_kontaktov" caption="Форма контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-719221915" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sposob_montoga" caption="Способ монтожа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1928902922" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_i_a" caption="Сила тока I, А" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561972-->
-
-<!--START_p561973-->
-<item name="p561973" caption="Корпуса" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1929" ag-hash="-2110071403">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="material_korpusa" caption="Материал корпуса" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1850028919" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561973-->
-
-<!--START_p561975-->
-<item name="p561975" caption="Разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1930" ag-hash="-2110071401">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="impedans_om" caption="Импеданс, Ом" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1150471170" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnaya_chastota_ggts" caption="Максимальная Частота, ГГц" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2126901222" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="montag_razema" caption="Монтаж разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-227802881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kontsevaya_zadelka_kontaktov" caption="Концевая заделка контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1633365394" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561975-->
-
-<!--START_p561976-->
-<item name="p561976" caption="Переходники, разветвители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1931" ag-hash="-2110071400">
-	<parameter name="vyvod_1__seriya" caption="Вывод 1: серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1659589749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vyvod_2__seriya" caption="Вывод 2: серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="827923084" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vyvod_3__seriya" caption="Вывод 3: серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-979531379" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561976-->
-
-<!--START_p561978-->
-<item name="p561978" caption="Разьемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1932" ag-hash="-2110071398">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="A" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sposob_montaga" caption="Способ монтажа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1928916376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="forma_kontaktov" caption="Форма контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-719221915" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shag_kontaktov" caption="Шаг контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1595312899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_i_a" caption="Сила тока I, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное Напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561978-->
-
-<!--START_p561979-->
-<item name="p561979" caption="Контакты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1933" ag-hash="-2110071397">
-	<parameter name="dlya_razemov_serii" caption="Для разъемов серии" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-114431028" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sechenie_provoda_mm2" caption="Сечение провода, мм2" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-419970061" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561979-->
-
-<!--START_p561980-->
-<item name="p561980" caption="Клеммники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1934" ag-hash="-2110071375">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shag_kontaktov" caption="Шаг контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1595312899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sposob_montaga" caption="Способ монтажа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1928916376" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="forma_kontaktov" caption="Форма контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-719221915" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sechenie_provoda_mm2" caption="Сечение провода, мм2" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-419970061" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_i_a" caption="Сила тока I, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_napryagenie_v" caption="Рабочее напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1383245512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561980-->
-
-<!--START_p561981-->
-<item name="p561981" caption="Панельки под микросхемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1935" ag-hash="-2110071374">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shag_kontaktov" caption="Шаг контактов" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1595312899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561981-->
-
-<!--START_p561982-->
-<item name="p561982" caption="Разъемы телефонные и сетевые (LAN)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1936" ag-hash="-2110071373">
-	<parameter name="seriya" caption="Серия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-905838383" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_razema" caption="Тип разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1566885074" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_portov" caption="Количество портов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-883915602" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561982-->
-
-<!--START_p561983-->
-<item name="p561983" caption="USB разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1937" ag-hash="-2110071372">
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="montag_razema" caption="Монтаж разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-227802881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="versiya_usb" caption="Версия USB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="963717702" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_razema_usb" caption="Тип Разъема USB" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-518061929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561983-->
-
-<!--START_p561984-->
-<item name="p561984" caption="Разъемы питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1938" ag-hash="-2110071371">
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="montag_razema" caption="Монтаж разъема" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-227802881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kontsevaya_zadelka_kontaktov" caption="Концевая заделка контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1633365394" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diametr_shtyrya_mm" caption="Диаметр штыря, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1278707436" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vneshnii_diametr_otverstiya_mm" caption="Внешний диаметр отверстия, мм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-854890291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_i_a" caption="Сила тока I, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное Напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561984-->
-
-<!--START_p561985-->
-<item name="p561985" caption="Разъемы для элементов питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1939" ag-hash="-2110071370"></item>
-<!--END_p561985-->
-
-<!--START_p561986-->
-<item name="p561986" caption="Прочие разъемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1940" ag-hash="-2110071369">
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kolichestvo_kontaktov" caption="Количество контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="893940929" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shag_kontaktov" caption="Шаг контактов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1595312899" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sila_toka_a" caption="Сила тока, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1807546663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561986-->
-
-<!--START_p561988-->
-<item name="p561988" caption="Резисторы постоянные выводные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1941" ag-hash="-2110071367">
-	<parameter name="nominalnoe_soprotivlenie" caption="Номинальное сопротивление" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1239363626" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ed__izmereniya" caption="Ед. измерения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="540469374" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_vt" caption="Мощность, Вт" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-1684143035" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dopusk_soprotivleniya" caption="Допуск сопротивления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1815774755" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p561988-->
-
-<!--START_p561989-->
-<item name="p561989" caption="Резисторы переменные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1942" ag-hash="-2110071366"></item>
-<!--END_p561989-->
-
-<!--START_p561990-->
-<item name="p561990" caption="Резисторная сборка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1943" ag-hash="-2110071344"></item>
-<!--END_p561990-->
-
-<!--START_p561991-->
-<item name="p561991" caption="Резисторы SMD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1944" ag-hash="-2110071343">
-	<parameter name="tip_montaga" caption="Тип монтажа" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1576407407" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_soprotivlenie" caption="Номинальное сопротивление" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1239363626" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ed__izmereniya" caption="Ед. измерения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="540469374" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnaya_moschnost_vt" caption="Номинальная мощность, Вт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1782772563" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dopusk_soprotivleniya" caption="Допуск сопротивления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1815774755" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382750-->
+<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1774" ag-hash="2129512437">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tks_ppm_c" caption="ТКС, PPM/C" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="101180910" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maks__rabochee_napryagenie_v" caption="Макс. рабочее напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-944874332" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochaya_temperatura" caption="Рабочая температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1200827161" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561991-->
+<!--END_p382750-->
 
-<!--START_p561992-->
-<item name="p561992" caption="Светодиоды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1945" ag-hash="-2110071342">
-	<parameter name="tsvet_svecheniya" caption="Цвет свечения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1013546214" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochee_napryagenie_v" caption="Рабочее напряжение, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1383245512" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="dlina_volnynm" caption="Длина волны,нм" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1403579698" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="maksimalnaya_sila_sveta_iv_maks_mkd" caption="Максимальная сила света Iv макс.,мКд" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-875141814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tok_pryamoi_ipr_ma" caption="Ток прямой Iпр, мА" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="74381625" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ugol_izlucheniyagrad" caption="Угол излучения,град" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1322213273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382773-->
+<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1775" ag-hash="2129512502">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561992-->
+<!--END_p382773-->
 
-<!--START_p561993-->
-<item name="p561993" caption="Реле" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1946" ag-hash="-2110071341">
-	<parameter name="tip_kontaktov" caption="Тип контактов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1875854749" description="A" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnoe_napryagenie_katushki_v" caption="Номинальное напряжение катушки, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="945157352" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost_katushki_maks__mvt" caption="Мощность катушки (макс.), мВт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1931589023" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_toka_katushki" caption="Тип тока катушки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1337898988" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="nominalnyi_tok_kommutatsii_a" caption="Номинальный ток коммутации, А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2061782893" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kommutiruemoe_napryagenie_dc_maks__v" caption="Коммутируемое напряжение DC (макс.), В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-993948894" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kommutiruemoe_napryagenie_ac_pik__v" caption="Коммутируемое напряжение AC (пик.), В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="495852985" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rabochaya_temperatura_s" caption="Рабочая температура, °С" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351297843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sposob_montaga_na_platu" caption="Способ монтажа на плату" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-293646959" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382830-->
+<item name="p382830" caption="2-тактные моторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1776" ag-hash="2129513336">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561993-->
+<!--END_p382830-->
 
-<!--START_p561994-->
-<item name="p561994" caption="Термоусадочная трубка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1947" ag-hash="-2110071340">
-	<parameter name="diametr_do_usadki_mm" caption="Диаметр до усадки, мм" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-666700455" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tsvet" caption="Цвет" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="110671046" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="koefitsient_usadki" caption="Коэфициент усадки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-997345799" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p382852-->
+<item name="p382852" caption="Редуктор, трансмиссия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="2129513400"></item>
+<!--END_p382852-->
+
+<!--START_p383226-->
+<item name="p383226" caption="Пробки двигателя и редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1778" ag-hash="2129537336"></item>
+<!--END_p383226-->
+
+<!--START_p383238-->
+<item name="p383238" caption="Подшипники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1779" ag-hash="2129537369"></item>
+<!--END_p383238-->
+
+<!--START_p383355-->
+<item name="p383355" caption="Установочные к-ты винтов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1780" ag-hash="2129538389"></item>
+<!--END_p383355-->
+
+<!--START_p383364-->
+<item name="p383364" caption="Комплекты для запуска и зарядки АКБ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1781" ag-hash="2129538419"></item>
+<!--END_p383364-->
+
+<!--START_p383372-->
+<item name="p383372" caption="Ремкомплекты блока" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="2129538448"></item>
+<!--END_p383372-->
+
+<!--START_p383396-->
+<item name="p383396" caption="Крепежные элементы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="2129538514"></item>
+<!--END_p383396-->
+
+<!--START_p383543-->
+<item name="p383543" caption="Комплекты подключения д/у" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1784" ag-hash="2129540278"></item>
+<!--END_p383543-->
+
+<!--START_p383569-->
+<item name="p383569" caption="Топливная система" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1785" ag-hash="2129540346"></item>
+<!--END_p383569-->
+
+<!--START_p383713-->
+<item name="p383713" caption="Электрооборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1786" ag-hash="2129542107">
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561994-->
+<!--END_p383713-->
 
-<!--START_p561996-->
-<item name="p561996" caption="MOSFET транзисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1948" ag-hash="-2110071338">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_stok_istok_maks__vds_v" caption="Напряжение сток-исток (макс.) Vds, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1122601653" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_zatvor_istok_maks__vgs_v" caption="Напряжение затвор-исток (макс.) Vgs, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1015413343" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tok_stoka_maks__id_ma" caption="Ток стока (макс.) Id, мА" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-115549966" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_pereklyucheniya_maks__vgs_th_v" caption="Напряжение переключения (макс.) Vgs (th), В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-31106699" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_stok_istok_maks__rds_om" caption="Сопротивление сток-исток (макс.) Rds, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1287990517" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rasseivaemaya_moschnost_pd_mvt" caption="Рассеиваемая мощность Pd, мВт" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-1150324413" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p383838-->
+<item name="p383838" caption="Ремкомплекты редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1787" ag-hash="2129543135"></item>
+<!--END_p383838-->
+
+<!--START_p383890-->
+<item name="p383890" caption="Прокладки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="2129543313"></item>
+<!--END_p383890-->
+
+<!--START_p384102-->
+<item name="p384102" caption="Сальники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1789" ag-hash="2129566100"></item>
+<!--END_p384102-->
+
+<!--START_p384206-->
+<item name="p384206" caption="Приборы контроля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1790" ag-hash="2129567065">
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561996-->
+<!--END_p384206-->
 
-<!--START_p561997-->
-<item name="p561997" caption="Мощные MOSFET транзисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1949" ag-hash="-2110071337">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_stok_istok_maks__vds_v" caption="Напряжение сток-исток (макс.) Vds, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1122601653" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_zatvor_istok_maks__vgs_v" caption="Напряжение затвор-исток (макс.) Vgs, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1015413343" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tok_stoka_maks__id_a" caption="Ток стока (макс.) Id, А" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="411914563" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_pereklyucheniya_maks__vgs_th_v" caption="Напряжение переключения (макс.) Vgs (th), В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-31106699" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_stok_istok_maks__rds_mom" caption="Сопротивление сток-исток (макс.) Rds, мОм" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1272998612" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rasseivaemaya_moschnost_pd_vt" caption="Рассеиваемая мощность Pd, Вт" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-175654298" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p384270-->
+<item name="p384270" caption="Блок двигателя" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1791" ag-hash="2129567276"></item>
+<!--END_p384270-->
+
+<!--START_p384602-->
+<item name="p384602" caption="Гребные винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1792" ag-hash="2129570905">
+	<parameter name="chetyrehtaktnye_motory" caption="Четырехтактные моторы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-591936785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="k_vo_lopastei" caption="К-во лопастей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1512698773" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_vinta" caption="Диаметр винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1991023141" description="&quot;" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shag_vinta" caption="Шаг винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1183539140" description="&quot;" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie" caption="Вращение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1860900568" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="posadka_na_val" caption="Посадка на вал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1066570247" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dvuhtaktnye_motory" caption="Двухтактные моторы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1620886916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="modifikatsiya_vinta" caption="Модификация винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1298502629" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="osobennosti" caption="Особенности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-86809817" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561997-->
+<!--END_p384602-->
 
-<!--START_p561998-->
-<item name="p561998" caption="IGBT транзисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1950" ag-hash="-2110071336">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_kollektor_emitter_maks__vce_v" caption="Напряжение коллектор-эмиттер (макс.) Vce, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2021128576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_kollektor_zatvor_maks__vcg_v" caption="Напряжение коллектор-затвор (макс.) Vcg, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-404828764" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tok_kollektora_maks__ic_a" caption="Ток коллектора (макс.) Ic, А" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1479405484" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_pereklyucheniya_emitter_zatvor_maks__veg_v" caption="Напряжение переключения эмиттер-затвор (макс.) Veg, В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="1214432738" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="padenie_napryageniya_v_otkrytom_sostoyanii_maks__vce_on_v" caption="Падение напряжения в открытом состоянии (макс.) Vce (on), В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-407993363" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rasseivaemaya_moschnost_pd_vt" caption="Рассеиваемая мощность Pd, Вт" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-175654298" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p384915-->
+<item name="p384915" caption="Дейдвуд, подвеска" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1793" ag-hash="2129573822"></item>
+<!--END_p384915-->
+
+<!--START_p385058-->
+<item name="p385058" caption="Управление (пульты д/у)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1794" ag-hash="2129595091">
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561998-->
+<!--END_p385058-->
 
-<!--START_p561999-->
-<item name="p561999" caption="Биполярные транзисторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1951" ag-hash="-2110071335">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_kollektor_emitter_maks__vce_v" caption="Напряжение коллектор-эмиттер (макс.) Vce, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2021128576" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_kollektor_baza_maks__vcb_v" caption="Напряжение коллектор-база (макс.) Vcb, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-646253447" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tok_kollektora_maks__ic_ma" caption="Ток коллектора (макс.) Ic, мА" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1383070721" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="napryagenie_pereklyucheniya_emitter_baza_maks__veb_v" caption="Напряжение переключения эмиттер-база (макс.) Veb, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1987890359" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="padenie_napryageniya_v_otkrytom_sostoyanii_maks__vce_on_v" caption="Падение напряжения в открытом состоянии (макс.) Vce (on), В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-407993363" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rasseivaemaya_moschnost_pd_mvt" caption="Рассеиваемая мощность Pd, мВт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1150324413" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p385151-->
+<item name="p385151" caption="Система охлаждения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1795" ag-hash="2129596045"></item>
+<!--END_p385151-->
+
+<!--START_p385186-->
+<item name="p385186" caption="Наборы ТО" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1796" ag-hash="2129596143">
+	<parameter name="dlya_motorov" caption="Для моторов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1293692269" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактные" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p561999-->
+<!--END_p385186-->
 
-<!--START_p562001-->
-<item name="p562001" caption="Симисторы(TRIAC)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1952" ag-hash="-2110050480">
-	<parameter name="nominalnoe_periodicheskoe_napryagenie_v_zakrytom_sostoyanii___vdrm_v" caption="Номинальное периодическое напряжение в закрытом состоянии - VDRM, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097293042" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="deistvuyuschee_znachenie_toka_vo_vklyuchennom_sostoyanii___itrms_a" caption="Действующее значение тока во включенном состоянии - It(RMS), А" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1567261619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschii_tok_upravleniya___igt_ma" caption="Отпирающий ток управления - Igt, mA" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="448667155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschee_napryagenie_upravleniya___vgt_v" caption="Отпирающее напряжение управления - Vgt, В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-1398701021" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p385234-->
+<item name="p385234" caption="Фильтры топливные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1797" ag-hash="2129596947">
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p562001-->
+<!--END_p385234-->
 
-<!--START_p562002-->
-<item name="p562002" caption="Симметричный динистор (SIDACtor)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1953" ag-hash="-2110050479">
-	<parameter name="nominalnoe_periodicheskoe_napryagenie_v_zakrytom_sostoyanii___vdrm_v" caption="Номинальное периодическое напряжение в закрытом состоянии - VDRM, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097293042" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="deistvuyuschee_znachenie_toka_vo_vklyuchennom_sostoyanii___itrms_a" caption="Действующее значение тока во включенном состоянии - It(RMS), А" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1567261619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschii_tok_upravleniya___igt_ma" caption="Отпирающий ток управления - Igt, mA" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="448667155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschee_napryagenie_upravleniya___vgt_v" caption="Отпирающее напряжение управления - Vgt, В" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1398701021" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p385309-->
+<item name="p385309" caption="Фильтры масляные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1798" ag-hash="2129597820"></item>
+<!--END_p385309-->
+
+<!--START_p385321-->
+<item name="p385321" caption="Смазки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1799" ag-hash="2129597874"></item>
+<!--END_p385321-->
+
+<!--START_p385326-->
+<item name="p385326" caption="Для 4-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1800" ag-hash="2129597879">
+	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obyom_tary" caption="Объём тары" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p562002-->
+<!--END_p385326-->
 
-<!--START_p562003-->
-<item name="p562003" caption="Тиристор" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1954" ag-hash="-2110050478">
-	<parameter name="nominalnoe_periodicheskoe_napryagenie_v_zakrytom_sostoyanii___vdrm_v" caption="Номинальное периодическое напряжение в закрытом состоянии - VDRM, В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1097293042" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="deistvuyuschee_znachenie_toka_vo_vklyuchennom_sostoyanii___itrms_a" caption="Действующее значение тока во включенном состоянии - It(RMS), А" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1567261619" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschii_tok_upravleniya___igt_ma" caption="Отпирающий ток управления - Igt, mA" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="448667155" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="otpirayuschee_napryagenie_upravleniya___vgt_v" caption="Отпирающее напряжение управления - Vgt, В" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="-1398701021" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p385333-->
+<item name="p385333" caption="Для 2-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2129597907">
+	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obyom_tary" caption="Объём тары" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p562003-->
+<!--END_p385333-->
 
-<!--START_p562004-->
-<item name="p562004" caption="Фильтры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1955" ag-hash="-2110050477">
-	<parameter name="korpus" caption="Корпус" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1125629760" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_impedans_om" caption="Входной импеданс, Ом" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1025360420" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tochnost__" caption="Точность, %" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1721178978" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vhodnoi_tok_maks__ma" caption="Входной ток (макс.), мА" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1204289949" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="soprotivlenie_dc_om" caption="Сопротивление DC, Ом" type="double" multiple="false" domain="" format="###,##0.########" ag-id="0" ag-hash="321699744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="temperaturnyi_diapazon_s" caption="Температурный диапазон, °С" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-122743694" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+<!--START_p385341-->
+<item name="p385341" caption="Трансмиссионные масла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="2129597936">
+	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obyom_tary" caption="Объём тары" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
-<!--END_p562004-->
+<!--END_p385341-->
 
-<!--START_p562005-->
-<item name="p562005" caption="Программаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1956" ag-hash="-2110050476"></item>
-<!--END_p562005-->
+<!--START_p385348-->
+<item name="p385348" caption="Крыльчатки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1803" ag-hash="2129597943"></item>
+<!--END_p385348-->
+
+<!--START_p385372-->
+<item name="p385372" caption="Свечи зажигания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1804" ag-hash="2129598030"></item>
+<!--END_p385372-->
+
+<!--START_p385417-->
+<item name="p385417" caption="Анодная защита" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1805" ag-hash="2129598810"></item>
+<!--END_p385417-->
 <!--EXP--></model>

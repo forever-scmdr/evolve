@@ -37,11 +37,11 @@ public class ChangeItemOwnerDBUnit extends DBPersistenceCommandUnit implements D
 		User admin = getTransactionContext().getInitiator();
 		User user = null;
 		// Проверить, является ли текущий пользователь админом обоих групп, новой и старой для айтема
-		if (!admin.isAdmin(item.getOwnerGroupId())) {
+		if (!admin.isAdmin(item.getOwnerGroupId()) && !ignoreUser) {
 			throw new UserNotAllowedException("User '" + admin.getName() + "' is not admin of '"
 					+ UserGroupRegistry.getGroup(item.getOwnerGroupId()) + "' group");
 		}
-		if (!admin.isAdmin(newGroup)) {
+		if (!admin.isAdmin(newGroup) && !ignoreUser) {
 			throw new UserNotAllowedException("User '" + admin.getName() + "' is not admin of '"
 					+ UserGroupRegistry.getGroup(newGroup) + "' group");
 		}
