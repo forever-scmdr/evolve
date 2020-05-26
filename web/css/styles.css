@@ -1,0 +1,56 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 24px;
+}
+.grid_cols_3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+.grid_cols_8 {
+	grid-template-columns: repeat(8, 1fr);
+}
+@media (max-width: 425px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+	.grid_cols_8 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+
+
+
+/*device card*/
+.card {
+	box-shadow: -1px 0 0 0 #e6e6e6 inset, 0 -1px 0 0 #e6e6e6 inset, -1px -1px 0 0 #e6e6e6, -1px 0 0 0 #e6e6e6, 0 -1px 0 0 #e6e6e6;
+	padding: 8px;
+}
+.card > * {
+	margin: 0 !important;
+}
+.imgg__container {
+	position: relative;
+	display: block;
+}
+.imgg__container:before {
+	display: block;
+	width: 100%;
+	padding-top: 100%;
+	content: '';
+}
+.device__imgg {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.view-container + .catalog-items {
+	grid-gap: 0;
+	grid-template-columns: repeat(4, 1fr);
+}
