@@ -2,6 +2,30 @@
 <model>
 
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             	0ДМИН                                  ////////////-->
+
+
+	<item name="module" caption="Модуль" virtual="true" key="name" ag-id="1806" ag-hash="-1068784020">
+		<parameter name="name" type="string" caption="Название" description="для вывода в CMS"/>
+	</item>
+
+	<item name="one_click" caption="Купить в 1 клик" super="module" ag-id="1807" ag-hash="1929704047">
+		<parameter name="status" type="byte" caption="Статус" domain="0-1" description="0 - выключен 1 - включен"/>
+	</item>
+
+	<item name="optional_modules" caption="Подключаемые модули" ag-id="1808" ag-hash="-1926121048">
+		<child item="module"/>
+	</item>
+
+
+	<!--/////////////                            	END 0ДМИН                              ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -217,7 +241,8 @@
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
-		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
+		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
+		<parameter name="mark" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
@@ -715,8 +740,13 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="optional_modules" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
+
+    <user-group name="0dmin">
+        <child item="optional_modules" single="true"/>
+    </user-group>
 
 
 <!--EXP-->

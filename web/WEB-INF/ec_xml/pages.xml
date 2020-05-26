@@ -19,6 +19,12 @@
 			</list>
 		</personal>
 
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -89,6 +95,32 @@
 
 
 
+	<include-definition name="PRODUCT_PARAMS_LINKS">
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="code" ref="prod" parameter="code"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="update_cookie_value" ref="prod" parameter="code"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="update_cookie_value" ref="prod" parameter="code"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="pname" ref="prod" parameter="name"/>
+			<var name="pcode" ref="prod" parameter="code"/>
+		</link>
+		<single item="params"/>
+	</include-definition>
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                                ИНДЕКС                                ////////////-->
@@ -108,23 +140,7 @@
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
 				</link>
-				<link name="to_cart" target="cart_action">
-					<var name="action" value="addToCart"/>
-					<var name="code" ref="prod" parameter="code"/>
-				</link>
-				<link name="to_fav" target="cookie_list_action">
-					<var name="update_cookie_name" value="favourites"/>
-					<var name="update_cookie_value" ref="prod" parameter="code"/>
-					<var name="action" value="add"/>
-					<var name="src_page" value="fav_ajax"/>
-				</link>
-				<link name="to_compare" target="cookie_list_action">
-					<var name="update_cookie_name" value="compare"/>
-					<var name="update_cookie_value" ref="prod" parameter="code"/>
-					<var name="action" value="add"/>
-					<var name="src_page" value="compare_ajax"/>
-				</link>
-				<single item="params"/>
+				<include name="PRODUCT_PARAMS_LINKS"/>
 			</list>
 			<list item="custom_block">
 				<list item="custom_element"></list>
@@ -185,6 +201,7 @@
 			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
+			<var name="mark"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
@@ -211,34 +228,28 @@
 					<parameter name="tag" sign="=" compare="ANY">
 						<var var="tag"/>
 					</parameter>
+					<parameter name="mark" sign="=" compare="ANY">
+						<var var="mark"/>
+					</parameter>
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" var="sec" style="keypath"/>
 					<var name="prod" ref="prod" style="keypath"/>
 				</link>
-				<link name="to_cart" target="cart_action">
-					<var name="action" value="addToCart"/>
-					<var name="code" ref="prod" parameter="code"/>
-				</link>
-				<link name="to_fav" target="cookie_list_action">
-					<var name="update_cookie_name" value="favourites"/>
-					<var name="update_cookie_value" ref="prod" parameter="code"/>
-					<var name="action" value="add"/>
-					<var name="src_page" value="fav_ajax"/>
-				</link>
-				<link name="to_compare" target="cookie_list_action">
-					<var name="update_cookie_name" value="compare"/>
-					<var name="update_cookie_value" ref="prod" parameter="code"/>
-					<var name="action" value="add"/>
-					<var name="src_page" value="compare_ajax"/>
-				</link>
-				<single item="params"/>
+				<include name="PRODUCT_PARAMS_LINKS"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
 				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
 					<var name="sec" style="key" var="sec"/>
 					<var name="tag" parameter="tag" ref="tag"/>
+				</link>
+			</list>
+			<list item="product" tag="mark" id="mark" assoc="* catalog_link">
+				<aggregation parameter="mark"/>
+				<link name="set_mark" type="exclusive" target="section" copy-page-vars="no">
+					<var name="sec" style="key" var="sec"/>
+					<var name="mark" parameter="mark" ref="mark"/>
 				</link>
 			</list>
 			<list item="product" tag="min" assoc="* catalog_link">
@@ -301,6 +312,9 @@
 		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="sort" value=""/>
 		</link>
+		<link name="set_mark_default" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="mark" value=""/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -347,23 +361,7 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<single item="params"/>
+			<include name="PRODUCT_PARAMS_LINKS"/>
 		</list>
 		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -449,23 +447,7 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<single item="params"/>
+			<include name="PRODUCT_PARAMS_LINKS"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -502,35 +484,22 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<single item="params"/>
 			<single item="product_extra"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="cur_sec" style="key"/>
 				</link>
 			</ancestor>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-
+			<include name="PRODUCT_PARAMS_LINKS"/>
 			<list item="line_product" id="lprod">
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
 					<var name="code" ref="lprod" parameter="code"/>
+				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="lprod" parameter="name"/>
+					<var name="pcode" ref="lprod" parameter="code"/>
 				</link>
 			</list>
 
@@ -635,6 +604,27 @@
 	</page>
 
 
+
+	<page name="one_click_ajax" template="one_click_ajax">
+		<request>
+			<var name="pname"/>
+			<var name="pcode"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="one_click_form" id="form" tag="form">
+			<parameter-input ref="form" form="one_click"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="one_click"/>
+			<var name="source_page" value="one_click_ajax"/>
+			<var name="required" value="phone"/>
+			<var name="topic" value="Заказ в один клик"/>
+		</link>
+	</page>
+
+
+
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
 			<var name="result"/>
@@ -653,7 +643,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="egor@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -951,6 +941,10 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -984,6 +978,10 @@
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
 			<single item="params"/>
 		</list>
@@ -1143,22 +1141,7 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
-			</link>
-			<link name="to_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="fav_ajax"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
+			<include name="PRODUCT_PARAMS_LINKS"/>
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -1503,6 +1486,11 @@
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
 		</command>
+	</page>
+
+
+	<page name="set_optional">
+		<command class="extra.SetOptional"/>
 	</page>
 
 </site>

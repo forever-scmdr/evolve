@@ -4,6 +4,9 @@ package ecommander.extra._generated;
 
 public interface ItemNames {
 
+    String MODULE = "module";
+    String ONE_CLICK = "one_click";
+    String OPTIONAL_MODULES = "optional_modules";
     String PARSE_SECTION = "parse_section";
     String PARSE_ITEM = "parse_item";
     String BASE_SEO = "base_seo";
@@ -333,6 +336,7 @@ public interface ItemNames {
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String MARK = "mark";
         String GALLERY = "gallery";
 
     }
@@ -424,6 +428,7 @@ public interface ItemNames {
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String MARK = "mark";
         String GALLERY = "gallery";
 
     }
@@ -459,6 +464,13 @@ public interface ItemNames {
 
         String _ITEM_NAME = "menu_item";
         String IN_MAIN_MENU = "in_main_menu";
+
+    }
+
+    public interface module_ {
+
+        String _ITEM_NAME = "module";
+        String NAME = "name";
 
     }
 
@@ -517,6 +529,14 @@ public interface ItemNames {
 
     }
 
+    public interface one_click_ {
+
+        String _ITEM_NAME = "one_click";
+        String NAME = "name";
+        String STATUS = "status";
+
+    }
+
     public interface one_click_form_ {
 
         String _ITEM_NAME = "one_click_form";
@@ -524,6 +544,12 @@ public interface ItemNames {
         String NAME = "name";
         String PRODUCT_CODE = "product_code";
         String PRODUCT_NAME = "product_name";
+
+    }
+
+    public interface optional_modules_ {
+
+        String _ITEM_NAME = "optional_modules";
 
     }
 
@@ -649,6 +675,7 @@ public interface ItemNames {
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
+        String MARK = "mark";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

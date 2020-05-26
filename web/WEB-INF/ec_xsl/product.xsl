@@ -6,6 +6,7 @@
 	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = '1'"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -136,6 +137,13 @@
 							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
+					</div>
+				</xsl:if>
+
+				<xsl:if test="$is_one_click">
+					<div class="extra-buttons">
+						<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+						<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
 					</div>
 				</xsl:if>
 
