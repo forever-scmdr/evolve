@@ -4,9 +4,6 @@ package ecommander.extra._generated;
 
 public interface ItemNames {
 
-    String MODULE = "module";
-    String ONE_CLICK = "one_click";
-    String OPTIONAL_MODULES = "optional_modules";
     String PARSE_SECTION = "parse_section";
     String PARSE_ITEM = "parse_item";
     String BASE_SEO = "base_seo";
@@ -74,6 +71,10 @@ public interface ItemNames {
     String MODULES = "modules";
     String NAMED_CODE = "named_code";
     String ROBOTS_TEXT_OVERRIDER = "robots_text_overrider";
+    String MODULE = "module";
+    String OPTIONAL_MODULES = "optional_modules";
+    String ONE_CLICK = "one_click";
+    String ADMIN_EXTRA = "admin_extra";
 
     public interface abstract_product_ {
 
@@ -84,6 +85,28 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_OPT = "qty_opt";
         String UNIT = "unit";
+
+    }
+
+    public interface admin_extra_ {
+
+        String _ITEM_NAME = "admin_extra";
+        String NAME = "name";
+        String SECTION_LIST = "section_list";
+        String MIN_PRICE_LIST = "min_price_list";
+        String EXCEL_IMPORT = "excel_import";
+        String EXCEL_UPDATE_PRICES = "excel_update_prices";
+        String YM_INTEGRATE = "ym_integrate";
+        String YM_GENERATE = "ym_generate";
+        String GET_PICS = "get_pics";
+        String CREATE_USERS = "create_users";
+        String CREATE_FILTERS = "create_filters";
+        String UPDATE_SITEMAP = "update_sitemap";
+        String CLEAR_CACHES = "clear_caches";
+        String REINDEX = "reindex";
+        String MANAGE_TYPES = "manage_types";
+        String CRAWL = "crawl";
+        String PUBLISH_CRAWL = "publish_crawl";
 
     }
 

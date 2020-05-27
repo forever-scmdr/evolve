@@ -6,7 +6,7 @@
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
 	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
-	
+
 
 	<xsl:template name="DOCTYPE">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -83,6 +83,7 @@
 				$("#message_main").effect("highlight", 1000);
 				//highlightSelected();
 			});
+
 		</script>
 	</xsl:template>
 	
@@ -151,6 +152,7 @@
 										</div>
 										<div class="actions pale" id="buffer-actions">
 											<span>С буфером:</span>
+											<a href="admin_paste_selected.action{$base-vars}&amp;preserve_buffer_content=yes" class="copy paste-preserve set-action total-replace" rel="multi-item-action-form" title="вставить выделенное, НЕ очищать буфер"></a>
 											<a href="admin_paste_selected.action{$base-vars}" class="copy paste set-action total-replace" rel="multi-item-action-form" title="вставить выделенное"></a>
 											<a href="admin_move_selected.action{$base-vars}" class="copy move set-action total-replace" rel="multi-item-action-form" title="переместить выделенное"></a>
 											<a href="admin_delete_selected_from_buffer.action{$base-vars}" class="delete set-action" rel="multi-item-action-form" title="удалить из буфера"></a>
@@ -168,75 +170,15 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Список разделов для формирования прайс-листов" style="background: #0c609d;">
-										<a href="section_list" style="color: #fff;">Список разделов</a>
-									</li>
-									<li class="visible" style="background: #0c609d;">
-										<a href="create_excel_pricelist_min/?action=start" style="color: #fff;">Минимальный прайс-лист</a>
-									</li>
-									<li class="visible" style="background: #0c609d;">
-										<a href="parse_excel/?action=start" style="color: #fff;">
-											Импорт каталога из Excel
-										</a>
-									</li>
-									<li class="visible" style="background: #fb9f00;">
-										<a href="update_prices_from_excel/?action=start" style="color: #fff;">
-											Обновить цены из Excel
-										</a>
-									</li>
-									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция Yandex Market</a>
-									</li>
-									<!--<li class="visible" title="Загрузить товары из файла во временный раздел">-->
-										<!--<a href="add_products/?action=start">Добваление товаров</a>-->
-									<!--</li>-->
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="get_site/?action=start" target="_blank">Скачать с сайтов</a>
-									</li>
-									<li class="visible" title="Загрузить товары с других сайтов">
-										<a href="deploy_parsed/?action=start" target="_blank">Разместить скачанное</a>
-									</li>
-									<li class="visible" title="Создать фильтры по параметрам товаров">
-										<a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
-									</li>
-									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
-										<a href="generate_sitemap">Обновить карту сайта</a>
-									</li>
-									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
-										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
-									</li>
-									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
-										<a href="admin_reindex.action">Переиндексация</a>
-									</li>
-									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков" target="_blank">
-										<a href="create_yml_file">
-											Сгенерировать файл Яндекс-маркет
-										</a>
-									</li>
-									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
-										<!--<a href="admin_users_initialize.user">-->
-											<!--Управление пользователями-->
-										<!--</a>-->
-									<!--</li>-->
-									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
-										<a href="admin_types_init.type">
-											Управление классами объектов
-										</a>
-									</li>
-									<li class="visible" title="Запустить парсинг suzuki.ru">
-										<a href="crawl?action=start&amp;job=all">
-											Запустить парсинг suzuki.ru
-										</a>
-									</li>
-									<li class="visible" title="Разместить результаты парсинга">
-										<a href="integrate_parsed?action=start">
-											Разместить результаты парсинга
+									<li class="visible" title="Открыть index">
+										<a href="#" onclick="insertAjaxView('admin_extra', 'right_col'); window.scrollTo(0, 0); return false;">
+											Открыть дополнительные функции
 										</a>
 									</li>
 								</ul>
 							</div>
 						</div>
-						<div class="right-col">
+						<div class="right-col" id="right_col">
 							<xsl:call-template name="SEARCH"/>
 							<div class="inner">
 								<h1 class="title">
