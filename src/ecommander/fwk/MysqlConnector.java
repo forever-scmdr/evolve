@@ -6,41 +6,17 @@
 */
 package ecommander.fwk;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-
-import org.apache.commons.lang3.StringUtils;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -446,14 +422,32 @@ public class MysqlConnector
 	 */
 	public static synchronized Connection getConnection() throws NamingException, SQLException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new LoggedConnection(_DS.getConnection(), null);
-		//return _DS.getConnection();
+		//return new LoggedConnection(_DS.getConnection(), null);
+		if (_DS == null) {
+			try {
+				_DS = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/ECommanderDB");
+				if (_DS == null)
+					throw new FatalError("Datasource is NULL");
+			} catch (Exception e) {
+				ServerLogger.error("Unable to find JNDI source 'java:comp/env/jdbc/ECommanderDB'", e);
+			}
+		}
+		return _DS.getConnection();
 	}
 
 	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
 		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new LoggedConnection(_DS.getConnection(), request);
-		//return _DS.getConnection();
+		//return new LoggedConnection(_DS.getConnection(), request);
+		if (_DS == null) {
+			try {
+				_DS = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/ECommanderDB");
+				if (_DS == null)
+					throw new FatalError("Datasource is NULL");
+			} catch (Exception e) {
+				ServerLogger.error("Unable to find JNDI source 'java:comp/env/jdbc/ECommanderDB'", e);
+			}
+		}
+		return _DS.getConnection();
 	}
 	/**
 	 * Marks the connection from pool as unused or closes it if it is not from pool

@@ -1,17 +1,10 @@
 package extra;
 
-import com.lowagie.text.pdf.BaseFont;
-import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.LinkPE;
 import ecommander.pages.MultipleHttpPostForm;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -19,17 +12,7 @@ import extra._generated.Discounts;
 import extra._generated.ItemNames;
 import extra._generated.User_jur;
 import org.apache.commons.lang3.StringUtils;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
@@ -163,39 +146,39 @@ public class CartManageCommand extends BasicCartManageCommand {
 		return getResult("proceed");
 	}
 
-	@Override
-	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) {
-		try {
-			LinkPE pdfLink = LinkPE.newDirectLink("link", "order_pdf", false);
-			ExecutablePagePE pdfTemplate = getExecutablePage(pdfLink.serialize());
-			ByteArrayOutputStream pdfHtmlBytes = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(pdfTemplate, pdfHtmlBytes);
-
-			File dir = new File(AppContext.getFilesDirPath(false) + "pdf");
-			dir.mkdir();
-			File output = new File(AppContext.getFilesDirPath(false) + "pdf/" + String.valueOf(cart.getStringValue(ItemNames.cart_.ORDER_NUM)) + ".pdf");
-			if (!output.exists()) {
-				String content = new String(pdfHtmlBytes.toByteArray(), Strings.SYSTEM_ENCODING);
-
-				ITextRenderer renderer = new ITextRenderer();
-				String fontPath = AppContext.getContextPath() + "ARIALUNI.TTF";
-				renderer.getFontResolver().addFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-				renderer.setDocumentFromString(content);
-				renderer.layout();
-				FileOutputStream fos = new FileOutputStream(output);
-				renderer.createPDF(fos);
-				fos.close();
-			}
-			FileInputStream fis = new FileInputStream(output);
-			DataSource dataSource = new ByteArrayDataSource(fis, "application/pdf");
-			MimeBodyPart filePart = new MimeBodyPart();
-			filePart.setDataHandler(new DataHandler(dataSource));
-			filePart.setFileName(output.getName());
-			mp.addBodyPart(filePart);
-			return true;
-		} catch (Exception e) {
-			ServerLogger.error("Email PDF generation error", e);
-			return false;
-		}
-	}
+//	@Override
+//	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) {
+//		try {
+//			LinkPE pdfLink = LinkPE.newDirectLink("link", "order_pdf", false);
+//			ExecutablePagePE pdfTemplate = getExecutablePage(pdfLink.serialize());
+//			ByteArrayOutputStream pdfHtmlBytes = new ByteArrayOutputStream();
+//			PageController.newSimple().executePage(pdfTemplate, pdfHtmlBytes);
+//
+//			File dir = new File(AppContext.getFilesDirPath(false) + "pdf");
+//			dir.mkdir();
+//			File output = new File(AppContext.getFilesDirPath(false) + "pdf/" + String.valueOf(cart.getStringValue(ItemNames.cart_.ORDER_NUM)) + ".pdf");
+//			if (!output.exists()) {
+//				String content = new String(pdfHtmlBytes.toByteArray(), Strings.SYSTEM_ENCODING);
+//
+//				ITextRenderer renderer = new ITextRenderer();
+//				String fontPath = AppContext.getContextPath() + "ARIALUNI.TTF";
+//				renderer.getFontResolver().addFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//				renderer.setDocumentFromString(content);
+//				renderer.layout();
+//				FileOutputStream fos = new FileOutputStream(output);
+//				renderer.createPDF(fos);
+//				fos.close();
+//			}
+//			FileInputStream fis = new FileInputStream(output);
+//			DataSource dataSource = new ByteArrayDataSource(fis, "application/pdf");
+//			MimeBodyPart filePart = new MimeBodyPart();
+//			filePart.setDataHandler(new DataHandler(dataSource));
+//			filePart.setFileName(output.getName());
+//			mp.addBodyPart(filePart);
+//			return true;
+//		} catch (Exception e) {
+//			ServerLogger.error("Email PDF generation error", e);
+//			return false;
+//		}
+//	}
 }
