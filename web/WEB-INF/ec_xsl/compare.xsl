@@ -2,7 +2,6 @@
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:xs="http://www.w3.org/2001/XMLSchema"
 		xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="f:f"
 		version="2.0">
@@ -42,7 +41,7 @@
 		<div class="path-container">
 			<div class="path-container">
 				<div class="path">
-					<a href="{page/index_link}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+					<a href="{page/index_link}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				</div>
 				<xsl:call-template name="PRINT"/>
 			</div>

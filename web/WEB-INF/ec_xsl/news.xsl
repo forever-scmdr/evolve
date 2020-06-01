@@ -14,28 +14,33 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
 		<div class="page-content m-t">
-			<div class="catalog-items info">
-				<xsl:for-each select="page/selected_news/news_item">
-					<div class="catalog-item">
-						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="http://shop4.must.by/{@path}{main_pic}" alt=""/> --></a>
-						<div class="text">
-							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
-							<div class="date"><xsl:value-of select="date"/></div>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
-						</div>
+			<xsl:for-each select="page/selected_news/news_item">
+				<div class="news_item">
+					<h3>
+						<xsl:if test="not(text != '')">
+							<xsl:value-of select="header"/>
+						</xsl:if>
+						<xsl:if test="text != ''">
+							<a href="{show_news_item}">
+								<xsl:value-of select="header"/>
+							</a>
+						</xsl:if>
+					</h3>
+					<div>
+						<xsl:value-of select="short" disable-output-escaping="yes" />
 					</div>
-				</xsl:for-each>
-			</div>
+				</div>
+			</xsl:for-each>
 		</div>
 
-		<xsl:if test="page//news_item_pages">
+		<!-- <xsl:if test="page//news_item_pages">
 			<div class="pagination">
 				<span>Странциы:</span>
 				<div class="pagination-container">
@@ -44,10 +49,9 @@
 					</xsl:for-each>
 				</div>
 			</div>
-		</xsl:if>
+		</xsl:if> -->
 
-		<xsl:call-template name="ACTIONS_MOBILE"/></xsl:template>
-
-		<xsl:template name="INC_SIDE_MENU_INTERNAL"></xsl:template>
+		<xsl:call-template name="ACTIONS_MOBILE"/>
+	</xsl:template>
 
 </xsl:stylesheet>

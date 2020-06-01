@@ -2367,6 +2367,8 @@ input[type="search"] {
 	position:absolute;
 	margin-left:-20px;
 	margin-top:4px \9;
+	top: 2px;
+	left:2px;
 }
 .radio+.radio,.checkbox+.checkbox {
 	margin-top:-5px;
@@ -6747,7 +6749,7 @@ table td p:last-child {
 .cart-container .item .image-container img {
 	max-width:100%;
 }
-.cart-container .item .price span,.cart-container .item .quantity span {
+.cart-container .item .price span,.cart-container .item .quantity span, .cart-container .item .available span {
 	display:block;
 	font-size:1rem;
 }
@@ -6755,14 +6757,18 @@ table td p:last-child {
 	width:6rem;
 	text-align:center;
 }
+.cart-container .item .available {
+	font-size: 13px;
+}
 .cart-container .item .delete {
 	color:#ccc;
 	width:1rem;
 	margin-top: 11px;
 	/*padding-left:1rem;*/
 }
-.cart-container .item .price_all {
+.cart-container .item .price.all {
 	width:7rem;
+	font-weight: bold;
 }
 .cart-container .item .price.one {
 	width:8rem;
@@ -7059,13 +7065,13 @@ body {
 }
 .button.inverted{
 	color:#009ADA;
-	background-color: #fff;
+	background: #fff;
 	border: 2px solid #009ADA;
 }
 
 .button.inverted:hover{
 	color: #2060A5;
-	background-color: #fff;
+	background: #fff;
 	border: 2px solid #2060A5;
 }
 
@@ -7564,7 +7570,7 @@ td .catalog-item {
 	display:block;
 	margin-bottom:10px;
 	overflow:hidden;
-	height:42px;
+	height:57px;
 	line-height:1;
 	font-size: 14px;
 }
@@ -7578,7 +7584,7 @@ td .catalog-item {
 	justify-content:center;
 	margin-bottom:10px;
 	color: #424242;
-	font-size:16px;
+	font-size:14px;
 	min-height:20px;
 }
 .device__image {
@@ -7605,6 +7611,7 @@ td .catalog-item {
 	width:50px;
 	margin-right:8px;
 	text-align:center;
+	font-size: 13px;
 }
 .device__in-stock {
 	font-size:12px;
@@ -7882,7 +7889,8 @@ td .catalog-item {
 .main-menu {
 	flex-basis:100%;
 	display:flex;
-	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
+	/*background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);*/
+	background: linear-gradient(rgb(110, 173, 226), rgb(56, 126, 186) 49%, rgb(29, 104, 169) 51%, rgb(23, 73, 115));
 	margin-top: 20px;
 	border-radius: 4px;
 }
@@ -7893,10 +7901,16 @@ td .catalog-item {
 	align-content:center;
 	align-items:center;
 	height:32px;
-	font-size: 1.75rem;
+	/*font-size: 1.75rem;*/
+	font-size: 1.5rem;
 	font-family: Arial;
 	/*font-family: 'Roboto';*/
 }
+
+.main-menu__item.active{
+	background: linear-gradient(#bcdbf5, #6baee8 49%, #3182c7 51%, #28557b);
+}
+
 .main-menu__item a {
 	color: #fff;
 }
@@ -8168,7 +8182,7 @@ td .catalog-item {
 /* block title */
 .block-title {
 	font-size:30px;
-	font-weight:bold;
+	font-weight:normal;
 	position:relative;
 	padding-bottom:8px;
 	margin-bottom: 24px;
@@ -8176,10 +8190,11 @@ td .catalog-item {
 }
 .block-title_normal {
 	text-transform: none;
-	font-size: 30px;
+	font-size: 2.5rem;
 	line-height: 1;
-	margin-bottom: 16px;
+	margin-bottom: 10px;
 	padding-bottom: 0;
+
 }
 /* block title end*/
 /* special items */
@@ -8335,7 +8350,7 @@ td .catalog-item {
 	padding:32px 0;
 }
 .footer .container {
-	color: #fff;
+	/*color: #fff;*/
 }
 
 
@@ -8912,8 +8927,8 @@ td .catalog-item {
 }
 .price_special{
 	font-size: 13px;
-	background: #f26521;
-	color: #fff;
+	/*background: #f26521;*/
+	color: #f26521;
 	margin-top: 4px;
 	padding: 3px 5px;
 }
@@ -8948,4 +8963,61 @@ td .catalog-item {
 }
 .bannerz.pt .container{
 	width:auto; padding:0;
+}
+.shipments{
+	width: 100%;
+	font-size: 12px;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+.shipments td{
+	padding: 5px;
+	vertical-align: top;
+	text-align: center;
+	border-left: 1px solid #ccc;
+
+}
+.shipments td:first-of-type{
+	border-left: 0;
+}
+.shipments .imgs td{
+	vertical-align: middle;
+}
+.shipments .imgs td img{
+	max-width: 130px;
+}
+
+
+
+@media (max-width: 768px) {
+	.hero {display: none;}
+}
+label {
+	display: flex;
+	align-items: center;
+	line-height: 1;
+	margin: 0;
+}
+label input {
+	 margin: 0 !important;
+	 margin-right: 4px !important;
+}
+.view-container {
+	display: flex;
+	align-items: center;
+}
+.view-container > * {
+	margin-right: 16px;
+}
+.view-container > *:last-child {
+	margin-right: 0 !important
+}
+.quantity.currency a {
+	margin-left: 8px;
+	padding: 0 !important
+}
+
+.quantity.currency a.active {
+    font-weight: bold;
+    color: black;
 }

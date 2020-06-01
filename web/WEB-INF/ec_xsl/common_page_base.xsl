@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
@@ -18,6 +18,7 @@
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
+	<xsl:variable name="meta_keywords" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
@@ -96,15 +97,12 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<!-- <section class="top-stripe desktop">
+		<section class="top-stripe desktop">
 			<div class="container">
 				<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
-				<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
-				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
-				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
+				
 			</div>
-		</section> -->
+		</section>
 		<section class="header desktop">
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
@@ -227,11 +225,16 @@
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				<div class="footer__column">
-					<p>Мы в социальных сетях</p>
-					<div class="social">
-						<a href="https://www.instagram.com/taktsminsk/"><i class="fab fa-instagram" style="color: #ffffff;" /></a>
-						<a href="https://www.facebook.com/stihlminsk/"><i class="fab fa-facebook" style="color: #ffffff;" /></a>
-					</div>
+					<p><a href="http://ictrade.by">Электронные компоненты Чип Электроникс</a></p>
+                  <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A
+                     								<br />Ст. метро «Пролетарская»
+                  </p>
+                  <div class="rating" style="font-weight: normal" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
+                     <p><span itemprop="itemreviewed">Наш рейтинг</span> 4,9
+                     <br />
+                       голосов: <span itemprop="votes">115</span><span itemprop="rating" itemscope="" itemtype="http://data-vocabulary.org/Rating">
+                       <meta itemprop="value" content="4.9" />
+                       <meta itemprop="best" content="5" /></span></p><i class="fas fa-star" rel="1"></i><i class="fas fa-star" rel="2"></i><i class="fas fa-star" rel="3"></i><i class="fas fa-star" rel="4"></i><i class="far fa-star" rel="5"></i></div>
 				</div>
 			</div>
 		</footer>
@@ -256,7 +259,7 @@
 								<label for="">Пароль:</label>
 								<input type="password" class="form-control" />
 							</div>
-							<input type="submit" name="" value="Отправить заказ"/>
+							<input type="submit"  value="Войти"/>
 						</form>
 					</div>
 				</div>
@@ -264,6 +267,7 @@
 		</div>
 
 		<!-- modal feedback -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-special-wrap" ajax-href="ajax_special_order" show-loader="yes"></div>
 		<xsl:call-template name="FEEDBACK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
@@ -421,14 +425,17 @@
 					</div>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
+					<div style="margin-bottom:14px; padding:0;"></div>
 					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="level-2{' active'[$l2_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 						<xsl:if test=".//@id = $sel_sec_id">
+							
 							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="level-3{' active'[$l3_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
 								<xsl:if test=".//@id = $sel_sec_id">
+									
 									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="level-4{' active'[$l4_active]}"><a href="{show_products}"><xsl:value-of select="name"/></a></div>
@@ -514,7 +521,7 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -530,7 +537,7 @@
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
-				<div class="device__price">
+				<div class="device__price" style="flex-direction: column">
 					<xsl:if test="price_old">
 						<div class="price_old">
 							<span><xsl:value-of select="f:price_catalog(price_old ,'')"/>.</span>
@@ -541,18 +548,18 @@
 			</xsl:if>
 			<xsl:if test="not($has_price)">
 				<div class="device__price">
-
+					Цена по запросу 
 				</div>
 			</xsl:if>
 			<div class="device__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="f:num(qty) != 0">
+							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="f:num(qty) = 0">
+							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -564,7 +571,7 @@
 				</xsl:if>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
@@ -602,7 +609,7 @@
 
 
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
@@ -659,18 +666,18 @@
 			</xsl:if>
 			<xsl:if test="not($has_price)">
 				<div class="device__price device_row__price">
-
+					Цена по запросу
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="f:num(qty) != 0">
+							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="f:num(qty) = 0">
+							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -681,7 +688,7 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 				<xsl:if test="f:num(qty) != 0">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>
@@ -992,6 +999,7 @@
 				<xsl:value-of select="$title"/>
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+			<meta name="keywords" content="{replace($meta_keywords, $quote, '')}"/>
 		</xsl:if>
 		<xsl:if test="$common/google_verification">
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
