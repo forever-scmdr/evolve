@@ -17,12 +17,16 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class DigiKeySearch extends Command {
-	private static final String CLIENT_ID = "36c0ed09-22b8-4ee2-8af9-7b04915ee7ac";
-	private static final String CLIENT_SECRET = "A5qE8iN0tH3fG6sN5xL7wI2mC3bK5cH6yJ1bB8oR6lB5rH5tE4";
-	private static final String REDIRECT_URI = "https://ictrade.by/digikey_manual_authorise";
-	private static final String AUTH_ENDPOINT = "https://sso.digikey.com/as/token.oauth2";
+public class DigiKeySearch extends Command implements DigiKeyJOSONConsts {
+	//manual authorise URL
+	//https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7&redirect_uri=http://localhost:8080/ictrade/digikey_manual_authorise
+	private static final String CLIENT_ID = "tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7";
+	private static final String CLIENT_SECRET = "omEIbWNfaLUrMQNb";
+	private static final String REDIRECT_URI = "http://localhost:8080/ictrade/digikey_manual_authorise";
+	private static final String SEARCH_URI = "https://sandbox-api.digikey.com/Search/v3/Products/Keyword";
+	private static final String TOKEN_ENDPOINT = "https://sandbox-api.digikey.com/v1/oauth2/token";
 	private static final String CUSTOMER_ID = "5201995";
+	private static final String DIGIKEY_BASE_URL = "https://www.digikey.com";
 
 	private String bearerToken, refreshToken;
 	private long expiresIn;
@@ -31,6 +35,31 @@ public class DigiKeySearch extends Command {
 	private long searchRequestTime;
 
 	OkHttpClient client;
+
+	private String createQuery() {
+		StringBuilder sb = new StringBuilder();
+		String query = getVarSingleValue("old_query");
+
+		sb
+				.append("{ \"Keywords\": \"")
+				.append(query)
+				.append('\"')
+				.append(",\"RecordCount\": 50,")
+				.append("\"Sort\": {"
+						+ "\"SortOption\": \"SortByUnitPrice\","
+						+ "\"Direction\": \"Ascending\""
+						+ "},")
+				.append("\"SearchOptions\": ["
+						+ "\"ManufacturerPartSearch\","
+				);
+
+		if("0".equals(getVarSingleValue("qty"))){
+			sb.append("\"InStock\",");
+		}
+		sb.append("\"CollapsePackagingTypes\"]}");
+		System.out.println(sb);
+		return sb.toString();
+	}
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -60,13 +89,9 @@ public class DigiKeySearch extends Command {
 
 		// Sending search request;
 		MediaType mediaType = MediaType.parse("application/json");
-		String inStock = ("0".equals(getVarSingleValue("qty"))) ? ",\"InStock\"" : "";
 
-		RequestBody body = RequestBody.create(mediaType, "{\"SearchOptions\":[\"CollapsePackingTypes\"" + inStock + "],\"Keywords\":\""
-				+ getVarSingleValue("query")
-				+ "\",\"RecordCount\":\"50\",\"RecordStartPosition\":\"0\",\"Sort\":{\"Option\":\"SortByUnitPrice\",\"Direction\":\"Ascending\",\"SortParameterId\":\"50\"}}");
-
-		// RequestBody body = RequestBody.create(mediaType, jsonRequestBody);
+		String query = createQuery();
+		RequestBody body = RequestBody.create(mediaType, query);
 
 		Request request = new Request.Builder().url("https://api.digikey.com/services/partsearch/v2/keywordsearch").post(body)
 				.addHeader("x-digikey-locale-language", "ru")
@@ -123,41 +148,18 @@ public class DigiKeySearch extends Command {
 				.startElement("rur_ratio").addText(rurRatio).endElement()
 				.startElement("q1").addText(q1).endElement()
 				.startElement("q2").addText(q2).endElement()
-				.startElement("view").addText(getCookieVarValues("view").get(0)).endElement()
 				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
 				.startElement("request_time").addText(searchRequestTime).endElement()
-				.startElement("results").addText(json.get("Results")).endElement()
-				.startElement("exact").addText(json.get("ExactMatches")).endElement()
-
+				.startElement("results").addText(json.get(JSON_PRODUCT_COUNT)).endElement()
+				.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
 				.endElement();
 
 
-		JSONArray parts = json.getJSONArray("Parts");
+		JSONArray parts = json.getJSONArray(JSON_RESULTS);
 
 		for (int i = 0; i < parts.length(); i++) {
-
 			JSONObject part = parts.getJSONObject(i);
-			JSONObject manuf = part.getJSONObject("ManufacturerName");
-			String producer = manuf.getString("Text");
-
-			doc.startElement("product", "id", part.get("PartId") + "-dgk")
-					.startElement("name").addText(part.get("ProductDescription")).endElement()
-					.startElement("code").addText(part.get("DigiKeyPartNumber")).endElement()
-					.startElement("producer_code").addText(part.get("ManufacturerPartNumber")).endElement()
-					.startElement("main_pic").addText(part.get("PrimaryPhoto")).endElement()
-					.startElement("price").addText(part.get("UnitPrice")).endElement()
-					.startElement("min_qty").addText(part.get("MinimumOrderQuantity")).endElement()
-					.startElement("qty").addText(part.get("QuantityOnHand")).endElement()
-					.startElement("description").addText(part.get("DetailedDescription")).endElement()
-					.startElement("url").addText(part.get("PartUrl")).endElement()
-					.startElement("producer").addText(producer).endElement();
-
-			JSONArray params = part.getJSONArray("Parameters");
-			for (int j = 0; j < params.length(); j++) {
-				JSONObject param = params.getJSONObject(j);
-				doc.startElement("parameter", "name", param.get("Parameter")).addText(param.get("Value")).endElement();
-			}
-			doc.endElement();
+			convertProductJsonToXml(doc, part);
 		}
 		doc.startElement("elapsed_time").addText(System.currentTimeMillis() - start).endElement();
 		doc.endElement();
@@ -166,29 +168,30 @@ public class DigiKeySearch extends Command {
 		return result;
 	}
 
-	public ResultPE refreshAccessToken() throws Exception {
-		client = (client == null) ? new OkHttpClient() : client;
-		if (props == null)
-			loadProps();
-		refreshToken = props.getProperty("ApiClient.RefreshToken");
-		RequestBody refreshTokenPostBody = new FormBody.Builder().add("refresh_token", refreshToken).add("client_id", CLIENT_ID)
-				.add("client_secret", CLIENT_SECRET).add("grant_type", "refresh_token").build();
-		Request refreshRequerst = new Request.Builder().url(AUTH_ENDPOINT).post(refreshTokenPostBody).addHeader("accept", "application/json")
-				.build();
-		Response responce = client.newCall(refreshRequerst).execute();
-		JSONObject responceJSON = new JSONObject(responce.body().string());
-		bearerToken = responceJSON.getString("access_token");
-		refreshToken = responceJSON.getString("refresh_token");
-		expiresIn = responceJSON.getLong("expires_in");
-
-		props.setProperty("ApiClient.AccessToken", bearerToken);
-		props.setProperty("ApiClient.RefreshToken", refreshToken);
-		props.setProperty("ApiClient.ExpirationDateTime", String.valueOf(System.currentTimeMillis() + (expiresIn * 1000)));
-		saveProps();
-		return null;
+	private void convertProductJsonToXml(XmlDocumentBuilder doc, JSONObject part){
+		JSONObject vendor = part.getJSONObject(JSON_VENDOR);
+		String vendorName = vendor.getString(JSON_VALUE);
+		doc.startElement(PRODUCT, "id", part.getString(JSON_CODE) +"-dgk");
+		doc.startElement(NAME).addText(part.getString(JSON_NAME)).endElement();
+		doc.startElement(CODE).addText(part.getString(JSON_CODE)).endElement();
+		doc.startElement(VENDOR_CODE).addText(part.getString(JSON_VENDOR_CODE)).endElement();
+		doc.startElement(VENDOR).addText(vendorName).endElement();
+		doc.startElement(MAIN_PIC).addText(part.get(JSON_PIC)).endElement();
+		doc.startElement(PRICE).addText(part.get(JSON_PRICE)).endElement();
+		doc.startElement(MIN_QTY).addText(part.get(JSON_MIN_QTY)).endElement();
+		doc.startElement(QTY).addText(part.get(JSON_QTY)).endElement();
+		doc.startElement(DESCRIPTION).addText(part.get(JSON_DESCRIPTION)).endElement();
+		doc.startElement(OLD_URL).addText(DIGIKEY_BASE_URL + part.get(JSON_URL)).endElement();
+		doc.startElement(MANUAL).addText(part.get(JSON_MANUAL)).endElement();
+		JSONArray params = part.getJSONArray(JSON_PARAMS);
+		for (int i = 0; i < params.length(); i++) {
+			JSONObject param = params.getJSONObject(i);
+			doc.startElement(PARAM, "name", param.get(JSON_PARAM)).addText(param.get(JSON_VALUE)).endElement();
+		}
+		doc.endElement();
 	}
 
-	public ResultPE getAccessCodeAndAuthorise() throws Exception {
+	public ResultPE getAccessTokenAndAuthorise() throws Exception {
 		client = (client == null) ? new OkHttpClient() : client;
 		String code = getVarSingleValue("code");
 		loadProps();
@@ -196,9 +199,17 @@ public class DigiKeySearch extends Command {
 
 		//Authorising by Access Code
 		RequestBody authcodeReqBody = new FormBody.Builder()
-				.add("grant_type", "authorization_code").add("code", code).add("client_id", CLIENT_ID).add("client_secret", CLIENT_SECRET)
-				.add("redirect_uri", REDIRECT_URI).build();
-		Request authCodePost = new Request.Builder().url(AUTH_ENDPOINT).post(authcodeReqBody).addHeader("accept", "application/json")
+				.add("code", code)
+				.add("client_id", CLIENT_ID)
+				.add("client_secret", CLIENT_SECRET)
+				.add("redirect_uri", REDIRECT_URI)
+				.add("grant_type", "authorization_code")
+				.build();
+
+		//Exchange code for token
+		Request authCodePost = new Request.Builder()
+				.url(TOKEN_ENDPOINT).post(authcodeReqBody)
+				.addHeader("accept", "application/json")
 				.build();
 		Response authResponce = client.newCall(authCodePost).execute();
 
@@ -214,9 +225,39 @@ public class DigiKeySearch extends Command {
 			saveProps();
 			return getResult("success");
 		}
+
 		ResultPE res = getResult("error");
 		res.setVariable("responce_body", authResponce.body().string());
-		return getResult("error");
+		return res;
+	}
+
+
+	public ResultPE refreshAccessToken() throws Exception {
+		client = (client == null) ? new OkHttpClient() : client;
+		if (props == null)
+			loadProps();
+		refreshToken = props.getProperty("ApiClient.RefreshToken");
+		RequestBody refreshTokenPostBody = new FormBody.Builder()
+				.add("refresh_token", refreshToken)
+				.add("client_id", CLIENT_ID)
+				.add("client_secret", CLIENT_SECRET)
+				.add("grant_type", "refresh_token")
+				.build();
+		Request refreshRequerst = new Request.Builder()
+				.url(TOKEN_ENDPOINT).post(refreshTokenPostBody)
+				.addHeader("accept", "application/json")
+				.build();
+		Response responce = client.newCall(refreshRequerst).execute();
+		JSONObject responceJSON = new JSONObject(responce.body().string());
+		bearerToken = responceJSON.getString("access_token");
+		refreshToken = responceJSON.getString("refresh_token");
+		expiresIn = responceJSON.getLong("expires_in");
+
+		props.setProperty("ApiClient.AccessToken", bearerToken);
+		props.setProperty("ApiClient.RefreshToken", refreshToken);
+		props.setProperty("ApiClient.ExpirationDateTime", String.valueOf(System.currentTimeMillis() + (expiresIn * 1000)));
+		saveProps();
+		return null;
 	}
 
 	private void saveProps() throws Exception {
