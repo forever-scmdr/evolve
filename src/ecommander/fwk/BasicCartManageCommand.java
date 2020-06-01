@@ -69,7 +69,7 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
 
-	protected static final Double MAX_QTY = 0d;
+	protected static final Double MAX_QTY = 1000000000000d;
 
 
 	protected Item cart;
@@ -93,59 +93,6 @@ public abstract class BasicCartManageCommand extends Command {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
 		addProduct(code, quantity);
-		recalculateCart();
-		return getResult("ajax");
-	}
-
-	/**
-	 * Добавить товар c платана или digiKey в корзину
-	 * @return
-	 * @throws Exception
-	 */
-	public ResultPE addPltToCart() throws Exception {
-		checkStrategy();
-		String code = getVarSingleValue(CODE_PARAM);
-		double quantity = 0;
-		try {
-			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
-		} catch (Exception e) {
-			return getResult("ajax");
-		}
-
-		ensureCart();
-		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
-		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
-		if(boughtProduct == null){
-			String name = getVarSingleValue(NAME_PARAM);
-			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			bought.setValue(NAME_PARAM, name);
-			bought.setValue(CODE_PARAM, code);
-			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
-			bought.setValue("aux", getVarSingleValue("aux"));
-			getSessionMapper().saveTemporaryItem(bought);
-			Item product = getSessionMapper().createSessionItem("product", bought.getId());
-			product.setValueUI(NAME_PARAM, name);
-			product.setValueUI(CODE_PARAM, code);
-			product.setValueUI("unit", getVarSingleValue("unit"));
-			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
-			product.setValue(QTY_PARAM, qty);
-			double specQ = StringUtils.isBlank(getVarSingleValue("upack"))? Double.MAX_VALUE : Double.parseDouble(getVarSingleValue("upack"));
-			product.setValue("spec_qty", specQ);
-
-			String price = getVarSingleValue("price");
-			String priceSpec =  getVarSingleValue("price_spec");
-
-			String priceStr = quantity >= specQ? priceSpec : price;
-			priceStr = StringUtils.isBlank(priceStr)? getVarSingleValue("price") : priceStr;
-			product.setValueUI(PRICE_PARAM, priceStr);
-			product.setValueUI(PRICE_OPT_PARAM, priceSpec);
-			product.setValueUI("price_old", price);
-			getSessionMapper().saveTemporaryItem(product);
-			setBoughtQtys(product, bought, quantity);
-		}else{
-			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
-			setBoughtQtys(boughtProduct, bought, quantity);
-		}
 		recalculateCart();
 		return getResult("ajax");
 	}
@@ -510,7 +457,6 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
-			if(StringUtils.isNotBlank(bought.getStringValue("aux"))) continue;
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
@@ -563,16 +509,6 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			String aux = bought.getStringValue("aux");
-			if(StringUtils.isNotBlank(aux)) {
-				product = getSessionMapper().getSingleItemByName(ItemNames.PRODUCT, bought.getId());
-				double specQ = product.getDoubleValue("spec_qty", Double.MAX_VALUE);
-				if(bought.getDoubleValue(QTY_AVAIL_PARAM, 0d) >= specQ){
-					product.setValue(PRICE_PARAM, product.getValue(PRICE_OPT_PARAM));
-				}else{
-					product.setValue(PRICE_PARAM, product.getValue("price_old"));
-				}
-			}
 			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			if (totalQty <= 0) {

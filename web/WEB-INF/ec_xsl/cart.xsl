@@ -9,7 +9,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -19,16 +19,45 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
 					<form method="post">
-						<xsl:apply-templates select="page/cart/bought" mode="avlb"/>
-						<xsl:if test="f:num(product/price) = 0 or f:num(qty_total) &gt; f:num(qty_avail)">
-							<h2>Товры под заказ</h2>
-							<xsl:apply-templates select="page/cart/bought" mode="preorder"/>
-						</xsl:if>
+						<xsl:for-each select="page/cart/bought">
+							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' p.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
+							<div class="item">
+								<xsl:if test="not($p/product)">
+									<a href="{$p/show_product}" class="image-container">
+										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+									</a>
+									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+								</xsl:if>
+								<xsl:if test="$p/product">
+									<a href="{$p/product/show_product}" class="image-container">
+										<img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}"/>
+									</a>
+									<a href="{$p/product/show_product}" class="title">
+										<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
+									</a>
+								</xsl:if>
+								<div class="price one">
+									<p>
+										<span>Цена</span>
+										<xsl:value-of select="$price"/>
+										<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
+									</p>
+								</div>
+								<div class="quantity">
+									<span>Кол-во</span>
+									<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
+								</div>
+								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
+								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
+							</div>
+						</xsl:for-each>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
-							 <input type="submit" class="button inverted" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+							<!-- <input type="submit" class="button" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/> -->
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
 						</div>
 
@@ -64,101 +93,6 @@
 				return parseInt(val) &gt; 0;
 			}
 		</script>
-	</xsl:template>
-
-
-	<xsl:template match="bought" mode="avlb">
-		<xsl:if test="f:num(qty_avail) != 0 and f:num(product/price) != 0">
-			<xsl:variable name="is_aux" select="aux != ''" />
-			<xsl:variable name="p" select="product" />
-			<xsl:variable name="price" select="if($is_aux) then f:cart_price_platan($p/price) else f:price_catalog($p/price, '')"/>
-			<xsl:variable name="sum" select="if($is_aux) then f:cart_price_platan(sum) else f:price_catalog(sum, '')"/>
-
-			<div class="item">
-				<xsl:if test="$is_aux">
-					<a class="image-container">
-						<img src="img/no_image.png" alt="{$p/name}"/>
-					</a>
-					<a class="title">
-						<xsl:value-of select="$p/name"/>
-						<xsl:if test="$is_aux">
-							<br/><span style="color: #000;">поставка в течение 7-10 дней</span>
-						</xsl:if>
-					</a>
-
-				</xsl:if>
-				<xsl:if test="not($is_aux)">
-					<a href="{$p/show_product}" class="image-container">
-						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-					</a>
-					<a href="{$p/show_product}" class="title">
-						<xsl:value-of select="$p/name"/>
-
-					</a>
-				</xsl:if>
-
-				<div class="price one">
-					<p>
-						<span>Цена</span>
-						<xsl:value-of select="$price"/>
-					</p>
-				</div>
-
-				<div class="quantity">
-					<span>Кол-во</span>
-					<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
-					<br/>доступно: <xsl:value-of select="f:num($p/qty)" />
-					<xsl:if test="f:num(qty_total) &gt; f:num(qty_avail)">
-						<br/>
-						<xsl:value-of select="concat(' под заказ: ', f:num(qty_total) - f:num(qty_avail))"/>
-					</xsl:if>
-				</div>
-
-				<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
-				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
-
-			</div>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="bought" mode="preorder">
-		<xsl:if test="f:num(product/price) = 0 or f:num(qty_avail) = 0">
-			<xsl:variable name="p" select="product" />
-			<xsl:variable name="is_aux" select="aux != ''" />
-
-			<div class="item">
-				<xsl:if test="$is_aux">
-					<a class="image-container">
-						<img src="img/no_image.png" alt="{$p/name}"/>
-					</a>
-					<a class="title">
-						<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
-					</a>
-				</xsl:if>
-				<xsl:if test="not($is_aux)">
-					<a href="{$p/show_product}" class="image-container">
-						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
-					</a>
-					<a href="{$p/show_product}" class="title">
-						<xsl:value-of select="$p/name"/>
-					</a>
-				</xsl:if>
-				<div class="price one">
-					<p>
-						<span>Цена</span>
-						-
-					</p>
-				</div>
-				<xsl:if test="f:num($p/qty) = 0">
-					<div class="quantity">
-						<span>Кол-во</span>
-						<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
-					</div>
-				</xsl:if>
-				<div class="price all"><p><span>Сумма позиц.</span> - </p></div>
-				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
-			</div>
-		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

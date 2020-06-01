@@ -14,7 +14,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -46,7 +46,8 @@
 			</div>
 		</xsl:if>
 
-		<xsl:call-template name="ACTIONS_MOBILE"/>
-	</xsl:template>
+		<xsl:call-template name="ACTIONS_MOBILE"/></xsl:template>
+
+		<xsl:template name="INC_SIDE_MENU_INTERNAL"></xsl:template>
 
 </xsl:stylesheet>
