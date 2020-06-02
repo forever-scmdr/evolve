@@ -167,19 +167,21 @@
 
 	<xsl:template name="INDEX_BLOCKS">
 		<section class="hero pb">
-			<div class="container">
-				<div class="fotorama" data-width="100%">
+			<div class="container container-fluid">
+				<div class="fotorama" data-width="100%" data-maxheight="400" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<img src="{@path}{pic}" alt="{name}"/>
-						<div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div>
+						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
+						<!-- <div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div> -->
 						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
-							<div class="slider-item__block fotorama__select">
-								<div class="slider-item__wrapper">
-									<div class="slider-item__title"><xsl:value-of select="name" /></div>
-									<div class="slider-item__text">
-										<xsl:value-of select="text" disable-output-escaping="yes"/>
+							<div class="container">
+								<div class="slider-item__block fotorama__select">
+									<div class="slider-item__wrapper">
+										<!-- <div class="slider-item__title"><xsl:value-of select="name" /></div> -->
+										<div class="slider-item__text">
+											<xsl:value-of select="text" disable-output-escaping="yes"/>
+										</div>
+										<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 									</div>
-									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
 						</div>
@@ -194,10 +196,10 @@
 		<!-- banners -->
 		<xsl:apply-templates select="page/main_page/custom_block[1]"></xsl:apply-templates>
 
-		<section class="special-items ptb" style="background-color: #f2f2f2;">
+		<section class="special-items ptb" style="background-color: #e9e5dd;">
 			<div class="container">
 				<div class="block-title">Новинки и акции</div>
-				<div class="special-items__devices slick-slider">
+				<div class="slick-slider">
 					<xsl:apply-templates select="page/main_page/product[tag = ('Новинка', 'новинка', 'НОВИНКА')]"/>
 				</div>
 			</div>

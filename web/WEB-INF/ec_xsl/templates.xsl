@@ -7,19 +7,19 @@
 
 	<!-- banners -->
 	<xsl:template match="custom_block[1]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>
-					<div class="block__subtitle"><xsl:value-of select="subheader" /></div>
+					<!-- <div class="block__subtitle"><xsl:value-of select="subheader" /></div> -->
 				</div>
 				<div class="grid grid_cols_3">
 					<xsl:for-each select="../../../page/main_page/custom_block[1]/custom_element">
-						<div class="banner banner_icon-left {../class}__item">
-							<div class="{../class}__image banner__image">
+						<div class="banner {../class}__item">
+							<!-- <div class="{../class}__image banner__image">
 								<img src="{@path}{image}"/>
-							</div>
-							<div class="{../class}__title banner__title"><xsl:value-of select="header" /></div>
+							</div> -->
+							<div class="{../class}__title banner__title banner__title_left"><xsl:value-of select="header" /></div>
 							<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 							<xsl:if test="link and not(link = '')">
 								<a href="{link}" class="banner__link">Learn more</a>
@@ -32,7 +32,7 @@
 	</xsl:template>
 
 	<xsl:template match="custom_block[2]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>
@@ -45,9 +45,9 @@
 								<img src="{@path}{image}"/>
 							</div>
 							<div class="{../class}__title banner__title"><xsl:value-of select="header" /></div>
-							<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
+							<!-- <div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div> -->
 							<xsl:if test="link and not(link = '')">
-								<a href="{link}" class="banner__link">Learn more</a>
+								<a href="{link}" class="banner__link"></a>
 							</xsl:if>
 						</div>
 					</xsl:for-each>
@@ -57,11 +57,11 @@
 	</xsl:template>
 
 	<xsl:template match="custom_block[3]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>
-					<div class="block__subtitle"><xsl:value-of select="subheader" /></div>
+					<!-- <div class="block__subtitle"><xsl:value-of select="subheader" /></div> -->
 				</div>
 				<div class="grid">
 					<xsl:for-each select="../../../page/main_page/custom_block[3]/custom_element">
@@ -69,10 +69,10 @@
 							<div class="{../class}__image banner__image">
 								<img src="{@path}{image}"/>
 							</div>
-							<div class="{../class}__title banner__title"><xsl:value-of select="header" /></div>
-							<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
+							<!-- <div class="{../class}__title banner__title"><xsl:value-of select="header" /></div> -->
+							<!-- <div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div> -->
 							<xsl:if test="link and not(link = '')">
-								<a href="{link}" class="banner__link">Learn more</a>
+								<a href="{link}" class="banner__link"></a>
 							</xsl:if>
 						</div>
 					</xsl:for-each>
@@ -82,7 +82,7 @@
 	</xsl:template>
 
 	<xsl:template match="custom_block[4]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>
@@ -94,8 +94,8 @@
 							<div class="{../class}__image banner__image">
 								<img src="{@path}{image}"/>
 							</div>
-							<div class="{../class}__title banner__title"><xsl:value-of select="header" /></div>
-							<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
+							<!-- <div class="{../class}__title banner__title"><xsl:value-of select="header" /></div> -->
+							<!-- <div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div> -->
 							<xsl:if test="link and not(link = '')">
 								<a href="{link}" class="banner__link">Learn more</a>
 							</xsl:if>
@@ -110,7 +110,7 @@
 
 	<!-- about -->
 	<xsl:template match="custom_block[5]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="wrap">
 					<div class="{class}__image">
@@ -130,7 +130,7 @@
 
 	<!-- banners -->
 	<xsl:template match="custom_block[6]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>
@@ -158,7 +158,7 @@
 	
 	<!-- gallery -->
 	<xsl:template match="custom_block[7]">
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header block__header_left">
 					<div class="block__title"><a href="/gallery" style="text-decoration: none; color: black"><xsl:value-of select="header" /></a></div>
@@ -175,7 +175,7 @@
 	<!-- banners -->
 	<xsl:template match="custom_block[8]">
 		<a name="clients"></a>
-		<section class="{class}">
+		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
 					<div class="block__title"><xsl:value-of select="header" /></div>

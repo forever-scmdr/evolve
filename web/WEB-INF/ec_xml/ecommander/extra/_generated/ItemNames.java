@@ -74,6 +74,7 @@ public interface ItemNames {
     String MODULE = "module";
     String OPTIONAL_MODULES = "optional_modules";
     String ONE_CLICK = "one_click";
+    String DISPLAY_SETTINGS = "display_settings";
     String ADMIN_EXTRA = "admin_extra";
 
     public interface abstract_product_ {
@@ -361,6 +362,14 @@ public interface ItemNames {
         String TAG = "tag";
         String MARK = "mark";
         String GALLERY = "gallery";
+
+    }
+
+    public interface display_settings_ {
+
+        String _ITEM_NAME = "display_settings";
+        String NAME = "name";
+        String SIDE_MENU_PAGES = "side_menu_pages";
 
     }
 

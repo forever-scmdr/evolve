@@ -24,14 +24,14 @@ public class Domain {
 	public Domain(String name, String viewType) {
 		this.name = name;
 		this.viewType = viewType;
-		this.values = new ArrayList<String>();
+		this.values = new ArrayList<>();
 	}
 	
 	public Domain(String name, String viewType, String format) {
 		this.name = name;
 		this.viewType = viewType;
 		this.format = format;
-		this.values = new ArrayList<String>();
+		this.values = new ArrayList<>();
 	}
 	
 	public Domain(String name, String viewType, String format, ArrayList<String> values) {
@@ -39,7 +39,7 @@ public class Domain {
 		this.viewType = viewType;
 		this.format = format;
 		if (values != null) this.values = values;
-		else this.values = new ArrayList<String>();
+		else this.values = new ArrayList<>();
 	}
 	
 	public void setValues(ArrayList<String> values) {

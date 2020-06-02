@@ -2,7 +2,7 @@
 <model>
 
 <!--START_p382664-->
-<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1772" ag-hash="2129511511">
+<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="2129511511">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -37,7 +37,7 @@
 <!--END_p382664-->
 
 <!--START_p382721-->
-<item name="p382721" caption="Снятые с производства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1773" ag-hash="2129512345">
+<item name="p382721" caption="Снятые с производства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1731" ag-hash="2129512345">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -72,7 +72,7 @@
 <!--END_p382721-->
 
 <!--START_p382750-->
-<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1774" ag-hash="2129512437">
+<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="2129512437">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -107,7 +107,7 @@
 <!--END_p382750-->
 
 <!--START_p382773-->
-<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1775" ag-hash="2129512502">
+<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="2129512502">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -141,7 +141,7 @@
 <!--END_p382773-->
 
 <!--START_p382830-->
-<item name="p382830" caption="2-тактные моторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1776" ag-hash="2129513336">
+<item name="p382830" caption="2-тактные моторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="2129513336">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -175,73 +175,73 @@
 <!--END_p382830-->
 
 <!--START_p382852-->
-<item name="p382852" caption="Редуктор, трансмиссия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="2129513400"></item>
+<item name="p382852" caption="Редуктор, трансмиссия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1735" ag-hash="2129513400"></item>
 <!--END_p382852-->
 
 <!--START_p383226-->
-<item name="p383226" caption="Пробки двигателя и редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1778" ag-hash="2129537336"></item>
+<item name="p383226" caption="Пробки двигателя и редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1736" ag-hash="2129537336"></item>
 <!--END_p383226-->
 
 <!--START_p383238-->
-<item name="p383238" caption="Подшипники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1779" ag-hash="2129537369"></item>
+<item name="p383238" caption="Подшипники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1737" ag-hash="2129537369"></item>
 <!--END_p383238-->
 
 <!--START_p383355-->
-<item name="p383355" caption="Установочные к-ты винтов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1780" ag-hash="2129538389"></item>
+<item name="p383355" caption="Установочные к-ты винтов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1738" ag-hash="2129538389"></item>
 <!--END_p383355-->
 
 <!--START_p383364-->
-<item name="p383364" caption="Комплекты для запуска и зарядки АКБ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1781" ag-hash="2129538419"></item>
+<item name="p383364" caption="Комплекты для запуска и зарядки АКБ" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1739" ag-hash="2129538419"></item>
 <!--END_p383364-->
 
 <!--START_p383372-->
-<item name="p383372" caption="Ремкомплекты блока" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1782" ag-hash="2129538448"></item>
+<item name="p383372" caption="Ремкомплекты блока" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1740" ag-hash="2129538448"></item>
 <!--END_p383372-->
 
 <!--START_p383396-->
-<item name="p383396" caption="Крепежные элементы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1783" ag-hash="2129538514"></item>
+<item name="p383396" caption="Крепежные элементы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1741" ag-hash="2129538514"></item>
 <!--END_p383396-->
 
 <!--START_p383543-->
-<item name="p383543" caption="Комплекты подключения д/у" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1784" ag-hash="2129540278"></item>
+<item name="p383543" caption="Комплекты подключения д/у" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1742" ag-hash="2129540278"></item>
 <!--END_p383543-->
 
 <!--START_p383569-->
-<item name="p383569" caption="Топливная система" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1785" ag-hash="2129540346"></item>
+<item name="p383569" caption="Топливная система" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1743" ag-hash="2129540346"></item>
 <!--END_p383569-->
 
 <!--START_p383713-->
-<item name="p383713" caption="Электрооборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1786" ag-hash="2129542107">
+<item name="p383713" caption="Электрооборудование" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1744" ag-hash="2129542107">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p383713-->
 
 <!--START_p383838-->
-<item name="p383838" caption="Ремкомплекты редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1787" ag-hash="2129543135"></item>
+<item name="p383838" caption="Ремкомплекты редуктора" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1745" ag-hash="2129543135"></item>
 <!--END_p383838-->
 
 <!--START_p383890-->
-<item name="p383890" caption="Прокладки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1788" ag-hash="2129543313"></item>
+<item name="p383890" caption="Прокладки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1746" ag-hash="2129543313"></item>
 <!--END_p383890-->
 
 <!--START_p384102-->
-<item name="p384102" caption="Сальники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1789" ag-hash="2129566100"></item>
+<item name="p384102" caption="Сальники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1747" ag-hash="2129566100"></item>
 <!--END_p384102-->
 
 <!--START_p384206-->
-<item name="p384206" caption="Приборы контроля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1790" ag-hash="2129567065">
+<item name="p384206" caption="Приборы контроля" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1748" ag-hash="2129567065">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p384206-->
 
 <!--START_p384270-->
-<item name="p384270" caption="Блок двигателя" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1791" ag-hash="2129567276"></item>
+<item name="p384270" caption="Блок двигателя" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1749" ag-hash="2129567276"></item>
 <!--END_p384270-->
 
 <!--START_p384602-->
-<item name="p384602" caption="Гребные винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1792" ag-hash="2129570905">
+<item name="p384602" caption="Гребные винты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1750" ag-hash="2129570905">
 	<parameter name="chetyrehtaktnye_motory" caption="Четырехтактные моторы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-591936785" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="k_vo_lopastei" caption="К-во лопастей" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1512698773" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_vinta" caption="Диаметр винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1991023141" description="&quot;" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -258,22 +258,22 @@
 <!--END_p384602-->
 
 <!--START_p384915-->
-<item name="p384915" caption="Дейдвуд, подвеска" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1793" ag-hash="2129573822"></item>
+<item name="p384915" caption="Дейдвуд, подвеска" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1751" ag-hash="2129573822"></item>
 <!--END_p384915-->
 
 <!--START_p385058-->
-<item name="p385058" caption="Управление (пульты д/у)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1794" ag-hash="2129595091">
+<item name="p385058" caption="Управление (пульты д/у)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1752" ag-hash="2129595091">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p385058-->
 
 <!--START_p385151-->
-<item name="p385151" caption="Система охлаждения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1795" ag-hash="2129596045"></item>
+<item name="p385151" caption="Система охлаждения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1753" ag-hash="2129596045"></item>
 <!--END_p385151-->
 
 <!--START_p385186-->
-<item name="p385186" caption="Наборы ТО" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1796" ag-hash="2129596143">
+<item name="p385186" caption="Наборы ТО" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1754" ag-hash="2129596143">
 	<parameter name="dlya_motorov" caption="Для моторов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1293692269" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактные" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -282,22 +282,22 @@
 <!--END_p385186-->
 
 <!--START_p385234-->
-<item name="p385234" caption="Фильтры топливные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1797" ag-hash="2129596947">
+<item name="p385234" caption="Фильтры топливные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1755" ag-hash="2129596947">
 	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="originalnyi_kod" caption="Оригинальный код" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="281232590" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p385234-->
 
 <!--START_p385309-->
-<item name="p385309" caption="Фильтры масляные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1798" ag-hash="2129597820"></item>
+<item name="p385309" caption="Фильтры масляные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1756" ag-hash="2129597820"></item>
 <!--END_p385309-->
 
 <!--START_p385321-->
-<item name="p385321" caption="Смазки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1799" ag-hash="2129597874"></item>
+<item name="p385321" caption="Смазки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1757" ag-hash="2129597874"></item>
 <!--END_p385321-->
 
 <!--START_p385326-->
-<item name="p385326" caption="Для 4-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1800" ag-hash="2129597879">
+<item name="p385326" caption="Для 4-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1758" ag-hash="2129597879">
 	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obyom_tary" caption="Объём тары" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -307,7 +307,7 @@
 <!--END_p385326-->
 
 <!--START_p385333-->
-<item name="p385333" caption="Для 2-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1801" ag-hash="2129597907">
+<item name="p385333" caption="Для 2-тактных моторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1759" ag-hash="2129597907">
 	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obyom_tary" caption="Объём тары" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -317,7 +317,7 @@
 <!--END_p385333-->
 
 <!--START_p385341-->
-<item name="p385341" caption="Трансмиссионные масла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1802" ag-hash="2129597936">
+<item name="p385341" caption="Трансмиссионные масла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1760" ag-hash="2129597936">
 	<parameter name="vyazkost" caption="Вязкость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1895019775" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obyom_tary" caption="Объём тары" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1992137583" description="л." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="standart_sootvetstviya" caption="Стандарт соответствия" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1842468014" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -327,14 +327,14 @@
 <!--END_p385341-->
 
 <!--START_p385348-->
-<item name="p385348" caption="Крыльчатки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1803" ag-hash="2129597943"></item>
+<item name="p385348" caption="Крыльчатки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1761" ag-hash="2129597943"></item>
 <!--END_p385348-->
 
 <!--START_p385372-->
-<item name="p385372" caption="Свечи зажигания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1804" ag-hash="2129598030"></item>
+<item name="p385372" caption="Свечи зажигания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1762" ag-hash="2129598030"></item>
 <!--END_p385372-->
 
 <!--START_p385417-->
-<item name="p385417" caption="Анодная защита" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1805" ag-hash="2129598810"></item>
+<item name="p385417" caption="Анодная защита" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1763" ag-hash="2129598810"></item>
 <!--END_p385417-->
 <!--EXP--></model>
