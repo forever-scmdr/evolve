@@ -333,6 +333,13 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 				// Сохранение
 				stack.push(new Root(locator.getLineNumber()));
 			}
+			else if (VALUE.equalsIgnoreCase(qName)) {
+				Element parent = stack.peek();
+				if (!(parent instanceof Parameter)) {
+					addError("Value element is in wrong place. 'value' must be a child of 'parameter'", locator.getLineNumber());
+					return;
+				}
+			}
 			else if (!MODEL.equalsIgnoreCase(qName) && ItemType.Event.get(qName) == null) {
 				addError("Invalid '" + qName + "' element", locator.getLineNumber());
 			}

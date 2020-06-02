@@ -548,12 +548,12 @@
 		<parameter name="name" type="string" caption="Название" description="для CMS"/>
 	</item>
 
-	<item name="picture" caption="Картинка" key="header" ag-id="1768" ag-hash="-577741570">
+	<item name="picture" caption="Картинка" key="header" ag-id="1767" ag-hash="-577741570">
 		<parameter name="header" type="string" caption="Текст на картинке"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
 
-	<item name="gallery_base" caption="База для галереи" virtual="true" ag-id="1769" ag-hash="2101087134">
+	<item name="gallery_base" caption="База для галереи" virtual="true" ag-id="1768" ag-hash="2101087134">
 		<parameter name="height" type="string" caption="Высота картинки" default="200" description="число пикселей, 'auto', 300 XS100 LA400 XL500"/>
 		<parameter name="width" type="string" caption="Ширина картинки" default="'auto'" description="число пикселей, 'auto', 300 XS100 LA400 XL500"/>
 		<parameter name="border" type="string" caption="Граница картинки" default="1" description="число пикселей"/>
@@ -561,7 +561,7 @@
 	</item>
 
 
-	<item name="simple_gallery" caption="Простая галерея" super="page_extra gallery_base *" ag-id="1767" ag-hash="-1008173627">
+	<item name="simple_gallery" caption="Простая галерея" super="page_extra gallery_base *" ag-id="1769" ag-hash="-1008173627">
 		<parameter name="pic" type="picture" caption="Картинка" multiple="true"/>
 	</item>
 
@@ -710,19 +710,28 @@
 	<!--/////////////                             	0ДМИН                                  ////////////-->
 
 
-	<item name="module" caption="Модуль" virtual="true" key="name" ag-id="1806" ag-hash="-1068784020">
+	<item name="module" caption="Модуль" virtual="true" key="name" ag-id="1772" ag-hash="-1068784020">
 		<parameter name="name" type="string" caption="Название" description="для вывода в CMS"/>
 	</item>
 
-	<item name="optional_modules" caption="Подключаемые модули" ag-id="1808" ag-hash="-1926121048">
+	<item name="optional_modules" caption="Подключаемые модули" ag-id="1774" ag-hash="-1926121048">
 		<child item="module"/>
 	</item>
 
-	<item name="one_click" caption="Купить в 1 клик" super="module" ag-id="1807" ag-hash="1929704047">
+	<item name="one_click" caption="Купить в 1 клик" super="module" ag-id="1773" ag-hash="1929704047">
 		<parameter name="status" type="byte" caption="Статус" domain="0-1" description="0 - выключен 1 - включен"/>
 	</item>
 
-	<item name="admin_extra" caption="Админ дополнительно" super="module">
+
+	<item name="display_settings" caption="Настройки отображения сайта" super="module" ag-id="1776" ag-hash="1126534912">
+		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" domain="side_menu">
+			<value>catalog</value>
+			<value>pages</value>
+		</parameter>
+	</item>
+
+
+	<item name="admin_extra" caption="Админ дополнительно" super="module" ag-id="1775" ag-hash="-156761312">
 		<parameter name="section_list" type="byte" caption="Список разделов" domain="0-1" default="0"
 				   description="для формирования прайс-листов 0 - выключен 1 - включен"/>
 		<parameter name="min_price_list" type="byte" caption="Минимальный прайс-лист" domain="0-1" default="0"
@@ -739,13 +748,13 @@
 				   description="0 - выключен 1 - включен"/>
 		<parameter name="create_users" type="byte" caption="Создать пользователей" domain="0-1" default="0"
 				   description="0 - выключен 1 - включен"/>
-		<parameter name="create_filters" type="byte" caption="Создать фильтры" domain="0-1" default="0"
+		<parameter name="create_filters" type="byte" caption="Создать фильтры" domain="0-1" default="1"
 				   description="Создать фильтры по параметрам товаров 0 - выключен 1 - включен"/>
 		<parameter name="update_sitemap" type="byte" caption="Обновить карту сайта" domain="0-1" default="0"
 				   description="Будет сгенерирован и презаписан sitemap.xml 0 - выключен 1 - включен"/>
 		<parameter name="clear_caches" type="byte" caption="Очистить все кеши" domain="0-1" default="0"
 				   description="Очищает все кеши. Длительная и ресурсоемкая операция. 0 - выключен 1 - включен"/>
-		<parameter name="reindex" type="byte" caption="Переиндексация" domain="0-1" default="0"
+		<parameter name="reindex" type="byte" caption="Переиндексация" domain="0-1" default="1"
 				   description="Обновить список товаров для полнотекстового поиска 0 - выключен 1 - включен"/>
 		<parameter name="manage_types" type="byte" caption="Управление классами объектов" domain="0-1" default="0"
 				   description="Содание новых типов объектов, управление ранее созданными 0 - выключен 1 - включен"/>

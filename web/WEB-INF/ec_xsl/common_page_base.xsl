@@ -10,7 +10,21 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
+	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
+
 	<xsl:variable name="common" select="page/common"/>
+	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="cur_sec" select="page//current_section"/>
+	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
+	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+
+
+	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
+
+
+	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
+
+	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
 
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -20,7 +34,6 @@
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
 	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
@@ -28,12 +41,7 @@
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
 
-	<xsl:variable name="cur_sec" select="page//current_section"/>
-	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
-	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 
-
-	<xsl:variable name="active_menu_item"/>
 
 
 	<!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
@@ -98,18 +106,14 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<!-- <section class="top-stripe desktop">
+		<section class="top-stripe desktop">
 			<div class="container">
 				<xsl:value-of select="$common/top" disable-output-escaping="yes"/>
-				<div class="top-stripe__phone"><img src="img/phone_logo.svg" />(+375 17) 123-45-67;</div>
-				<div class="top-stripe__phone"><img src="img/velcom_logo.svg" />(+375 17) 123-45-67 - отдел продаж;</div>
-				<div class="top-stripe__phone"><img src="img/mts_logo.svg" />(+375 17) 123-45-67 - отдел сервиса;</div>
-				<div class="top-stripe__address">г. Орша Ул. 1 Мая 81В-2; Время работы: пн. - пт. с 9 до 18;</div>
 			</div>
-		</section> -->
+		</section>
 		<section class="header desktop">
 			<div class="container">
-				<a href="{$main_host}" class="logo"><img src="img/logo.svg" alt="" /></a>
+				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
 					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 					<input type="submit" class="button header__button" value="Поиск" />
@@ -181,8 +185,8 @@
 	<xsl:template name="INC_MOBILE_HEADER">
 		<div class="header mobile">
 			<div class="header-container">
-				<a href="{$main_host}" class="logo">
-					<img src="img/logo.svg" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
+				<a href="{$main_host}" class="logo"> 
+					<img src="img/logo.png" alt="На главную страницу" style="height: 1.5em; max-width: 100%;"/>
 				</a>
 				<div class="icons-container">
 					<a href="{page/contacts_link}"><i class="fas fa-phone"></i></a>
@@ -226,13 +230,13 @@
 
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
-				<div class="footer__column">
+				<!-- <div class="footer__column">
 					<p>Мы в социальных сетях</p>
 					<div class="social">
 						<a href="https://www.instagram.com/taktsminsk/"><i class="fab fa-instagram" style="color: #ffffff;" /></a>
 						<a href="https://www.facebook.com/stihlminsk/"><i class="fab fa-facebook" style="color: #ffffff;" /></a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</footer>
 		<!-- FOOTER END -->
@@ -413,6 +417,12 @@
 
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
+		<xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/>
+	</xsl:template>
+
+
+
+	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="block-title block-title_normal">Каталог</div>
 		<div class="side-menu">
 			<xsl:for-each select="page/catalog/section">
@@ -443,7 +453,6 @@
 			</xsl:for-each>
 		</div>
 	</xsl:template>
-
 
 
 

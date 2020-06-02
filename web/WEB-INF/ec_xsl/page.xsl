@@ -46,6 +46,13 @@
 
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
+		<xsl:choose>
+			<xsl:when test="$page_menu = 'catalog'"><xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/></xsl:when>
+			<xsl:otherwise><xsl:call-template name="INC_SIDE_MENU_INTERNAL_PAGES"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="INC_SIDE_MENU_INTERNAL_PAGES">
 		<div class="side-menu">
 			<xsl:for-each select="page/custom_pages/custom_page[.//@id = $p/@id]"><!-- чтобы выводить все разделы надо удалить [custom_page/@id = $p/@id] -->
 				<xsl:variable name="l1_active" select="@id = $p/@id"/>

@@ -21,6 +21,7 @@ public interface DataModelXmlElementNames {
 	String ON_CREATE = "on-create";
 	String ON_UPDATE = "on-update";
 	String ON_DELETE = "on-delete";
+	String VALUE = "value";
 	/**
 	 * Атрибуты
 	 */

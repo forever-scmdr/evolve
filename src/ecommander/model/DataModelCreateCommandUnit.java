@@ -464,6 +464,22 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		} else {
 			paramsById.remove(paramIds.get(item.getName()).get(name).id);
 		}
+		// Если есть встроенный домен для параметра - создать домен и заполнить его
+		Elements domainValues = paramEl.getElementsByTag(VALUE);
+		if (!domainValues.isEmpty()) {
+			String newDomainName = item.getName() + "_" + name;
+			Domain domain = new Domain(newDomainName, "combobox");
+			for (Element domainValue : domainValues) {
+				String value = StringUtils.trim(domainValue.ownText());
+				if (StringUtils.isNotBlank(value))
+					domain.addValue(value);
+			}
+			if (!domain.getValues().isEmpty()) {
+				domainName = newDomainName;
+				DomainRegistry.addDomain(domain);
+			}
+		}
+
 		int paramId = paramIds.get(item.getName()).get(name).id;
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
 				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);

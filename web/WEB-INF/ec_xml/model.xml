@@ -722,6 +722,15 @@
 		<parameter name="status" type="byte" caption="Статус" domain="0-1" description="0 - выключен 1 - включен"/>
 	</item>
 
+
+	<item name="display_settings" caption="Настройки отображения сайта" super="module" ag-id="1776" ag-hash="1126534912">
+		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" domain="side_menu">
+			<value>catalog</value>
+			<value>pages</value>
+		</parameter>
+	</item>
+
+
 	<item name="admin_extra" caption="Админ дополнительно" super="module" ag-id="1775" ag-hash="-156761312">
 		<parameter name="section_list" type="byte" caption="Список разделов" domain="0-1" default="0"
 				   description="для формирования прайс-листов 0 - выключен 1 - включен"/>
