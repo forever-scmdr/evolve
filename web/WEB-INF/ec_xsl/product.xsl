@@ -100,8 +100,8 @@
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 
-				<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
-
+				<xsl:variable name="has_price" select="f:num($p/price) != 0 and f:num($p/qty) != 0"/>
+ 
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
@@ -118,7 +118,7 @@
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Запросить цену" />
+									<input type="submit" class="button  not_available" value="Под заказ" />
 								</xsl:if>
 							</form>
 						</div>
@@ -135,7 +135,7 @@
 							</div>
 						</div>
 						<xsl:choose>
-							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
+							<xsl:when test="$has_price"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/unit,'.')"/></div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 					</div>

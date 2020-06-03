@@ -15,6 +15,7 @@
 			<xsl:if test="page/product">
 				<div id="extra_search_2" class="result">
 					<h2>Результат поиска по дополнительному каталогу №2</h2>
+
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="page/product" mode="lines"/>
@@ -66,10 +67,16 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
+				<a onclick="$('#sp-{code}').toggle()">Цена зависит от количества</a>
+				<div id="sp-{code}">
+					<xsl:for-each select="spec_price_map">
+						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/>
+					</xsl:for-each>
+				</div>
 			</div>
 			<div class="device__order">
 				<div id="cart_list_{code}">
-					<form action="cart_action/?action=addPltToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
@@ -77,9 +84,9 @@
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="{qty}" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="number" class="text-input" name="qty" value="1" min="1"/>
+							<input type="text" name="dgk_spec" value="{spec_price}"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -151,25 +158,31 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
-
+				<a onclick="$('#sp-{code}').toggle()">Цена зависит от количества</a>
+				<div id="sp-{code}">
+					<xsl:for-each select="spec_price_map">
+						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/><br/>
+					</xsl:for-each>
+				</div>
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{code}">
-					<form action="cart_action/?action=addPltToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="0" name="not_available"/>
-							<input type="hidden" value="platan" name="aux"/>
+							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{NAME}" name="name"/>
 							<input type="hidden" value="{EI_NAME}" name="unit"/>
 							<input type="hidden" value="{UPACK}" name="upack"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
 							<input type="hidden" value="{QUANTY}" name="max"/>
+							<input type="text" name="dgk_spec" value="{spec_price}"/>
 							<input type="number" class="text-input" name="qty" value="{f:num(min_qty)}" min="{f:num(min_qty)}"/>
 							<input type="submit" class="button" value="Заказать"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
-							<input type="hidden" value="platan" name="aux"/>
+							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{NAME}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
 							<input type="hidden" value="{EI_NAME}" name="unit"/>

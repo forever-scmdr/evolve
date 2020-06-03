@@ -21,7 +21,7 @@
 					<form method="post">
 						<xsl:apply-templates select="page/cart/bought" mode="avlb"/>
 						<xsl:if test="page/cart/bought[f:num(product/price) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
-							<h2>Товры под заказ</h2>
+							<h2>Товары под заказ</h2>
 							<xsl:apply-templates select="page/cart/bought" mode="preorder"/>
 						</xsl:if>
 						<div class="total">
@@ -108,15 +108,17 @@
 					<span>Кол-во</span>
 					<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
 					<br/>
+					<span>Наличие</span>
+					доступно: <xsl:value-of select="f:num($p/qty)" />
 				</div>
-				<div class="available">
+				<!-- <div class="available">
 					<span>Наличие</span>
 					доступно: <xsl:value-of select="f:num($p/qty)" />
 					<xsl:if test="f:num(qty_total) &gt; f:num(qty_avail)">
 						<br/>
 						<xsl:value-of select="concat(' под заказ: ', f:num(qty_total) - f:num(qty_avail))"/>
 					</xsl:if>
-				</div>
+				</div> -->
 
 				<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
 				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>

@@ -521,7 +521,7 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device items-catalog__device">
@@ -548,18 +548,18 @@
 			</xsl:if>
 			<xsl:if test="not($has_price)">
 				<div class="device__price">
-
+					Цена по запросу 
 				</div>
 			</xsl:if>
 			<div class="device__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="f:num(qty) != 0">
+							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="f:num(qty) = 0">
+							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -571,7 +571,7 @@
 				</xsl:if>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
@@ -609,7 +609,7 @@
 
 
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="device device_row">
@@ -666,18 +666,18 @@
 			</xsl:if>
 			<xsl:if test="not($has_price)">
 				<div class="device__price device_row__price">
-
+					Цена по запросу
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="f:num(qty) != 0">
+							<xsl:if test="$has_price">
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="f:num(qty) = 0">
+							<xsl:if test="not($has_price)">
 								<input type="hidden" class="text-input" name="qty" value="1" min="0"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -688,7 +688,7 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 				<xsl:if test="f:num(qty) != 0">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>

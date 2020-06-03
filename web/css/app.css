@@ -9016,3 +9016,8 @@ label input {
 	margin-left: 8px;
 	padding: 0 !important
 }
+
+.quantity.currency a.active {
+    font-weight: bold;
+    color: black;
+}

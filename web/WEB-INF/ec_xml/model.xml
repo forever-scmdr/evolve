@@ -325,6 +325,11 @@
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
+
+		<!-- digikey price map -->
+		<parameter name="price_map" type="string"/>
+		<!-- -->
+
 		<child item="product" single="true"/>
 	</item>
 

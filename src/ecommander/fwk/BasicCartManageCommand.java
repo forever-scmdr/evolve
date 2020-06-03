@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TreeMap;
 
 /**
  * Управление корзиной
@@ -98,7 +99,50 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	/**
-	 * Добавить товар c платана или digiKey в корзину
+	 * Добавить товар c digiKey в корзину
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultPE addDgkToCart() throws Exception {
+		checkStrategy();
+		String code = getVarSingleValue(CODE_PARAM);
+		double quantity = 0;
+		try {
+			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
+		} catch (Exception e) {
+			return getResult("ajax");
+		}
+
+		ensureCart();
+
+		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
+		Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+		if(boughtProduct == null){
+			String name = getVarSingleValue(NAME_PARAM);
+			bought.setValue(NAME_PARAM, name);
+			bought.setValue(CODE_PARAM, code);
+			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
+			bought.setValue("aux", getVarSingleValue("aux"));
+			getSessionMapper().saveTemporaryItem(bought);
+			Item product = getSessionMapper().createSessionItem("product", bought.getId());
+			product.setValueUI(NAME_PARAM, name);
+			product.setValueUI(CODE_PARAM, code);
+			product.setValueUI("unit", getVarSingleValue("unit"));
+			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
+			product.setValue(QTY_PARAM, qty);
+			getSessionMapper().saveTemporaryItem(product);
+			setBoughtQtys(product, bought, quantity);
+		}
+
+		bought.setValueUI("price_map", getVarSingleValue("dgk_spec"));
+
+		ensureCart();
+
+		recalculateCart();
+		return getResult("ajax");
+	}
+	/**
+	 * Добавить товар c платана в корзину
 	 * @return
 	 * @throws Exception
 	 */
@@ -562,19 +606,34 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
+			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
+			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			String aux = bought.getStringValue("aux");
-			if(StringUtils.isNotBlank(aux)) {
-				product = getSessionMapper().getSingleItemByName(ItemNames.PRODUCT, bought.getId());
+			if(StringUtils.isNotBlank(aux) && "platan".equals(aux)) {
+				//product = getSessionMapper().getSingleItemByName(ItemNames.PRODUCT, bought.getId());
 				double specQ = product.getDoubleValue("spec_qty", Double.MAX_VALUE);
 				if(bought.getDoubleValue(QTY_AVAIL_PARAM, 0d) >= specQ){
 					product.setValue(PRICE_PARAM, product.getValue(PRICE_OPT_PARAM));
 				}else{
 					product.setValue(PRICE_PARAM, product.getValue("price_old"));
 				}
+			}else if("digikey".equals(aux)){
+				String specPrice = bought.getStringValue("price_map");
+				TreeMap<Double, String> priceMap = parsePriceMap(specPrice);
+
+				if(priceMap.size() > 0){
+					for(Double breakpoint : priceMap.keySet()){
+						if(breakpoint <= totalQty){
+							product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+						}
+						else{
+							break;
+						}
+					}
+				}
 			}
-			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
-			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
+
 			if (totalQty <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				result = false;
@@ -596,6 +655,25 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && totalQuantity > 0;
+	}
+
+	private TreeMap<Double, String> parsePriceMap(String specPrice) throws Exception {
+		if(specPrice.indexOf(':') == -1) return new TreeMap<>();
+		Item catalog = ItemQuery.loadSingleItemByName("catalog");
+		double ratio = catalog.getDoubleValue("currency_ratio_usd");
+		double q1 = 1 + catalog.getDoubleValue("q1_usd", 0.0);
+		double q2 = 1 + catalog.getDoubleValue("q2_usd", 0.0);
+
+		TreeMap<Double, String> result = new TreeMap<>();
+
+		String[] z = specPrice.split(";");
+		for(String pair : z){
+			String[] p = pair.split(":");
+			Double q = DoubleDataType.parse(p[0]);
+			Double pr = DoubleDataType.parse(p[1]) * q1 * q2 * ratio;
+			result.put(q, String.valueOf(pr));
+		}
+		return result;
 	}
 
 	@Override
