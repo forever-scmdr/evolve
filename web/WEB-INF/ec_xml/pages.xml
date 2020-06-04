@@ -585,7 +585,9 @@
 	<page name="confirm" template="confirm">
 		<request>
 			<var name="message"/>
+
 		</request>
+
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
 		</new>
@@ -595,14 +597,23 @@
 		<session>
 			<single item="cart">
 				<list item="bought">
-					<list item="abstract_product" id="product" tag="product"/>
+					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent">
+							<link name="show_product" target="product" type="exclusive">
+								<var name="prod" ref="parent" style="translit"/>
+							</link>
+						</single>
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" ref="prod" style="translit"/>
+						</link>
+					</list>
 				</list>
 			</single>
 		</session>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
-		<include name="COMMON"/>
+<!--		<include name="COMMON"/>-->
 	</page>
 
 
@@ -619,9 +630,10 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</single>
+					</list>
 				</list>
 			</single>
+
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
