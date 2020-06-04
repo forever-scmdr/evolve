@@ -410,6 +410,11 @@
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY">

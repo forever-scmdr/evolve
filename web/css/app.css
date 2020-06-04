@@ -8862,3 +8862,17 @@ td .catalog-item {
 .other-suzuki:hover .banner__background {
 	background-color: #ea0c00;
 }
+#search-result, #search-result-mobile {
+	position: absolute;
+	padding: 16px;
+	box-shadow: #4c4849 0px 4px 15px;
+	top: 80px;
+	background: white;
+	display: none;
+	/*width: 100%;*/
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	z-index: 3;
+}
+#search-result-mobile {
+	top: 53px;}
