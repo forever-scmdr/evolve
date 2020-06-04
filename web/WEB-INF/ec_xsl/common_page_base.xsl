@@ -115,8 +115,9 @@
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
 				<form action="{page/search_link}" method="post" class="header__search header__column">
-					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
+					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 					<input type="submit" class="button header__button" value="Поиск" />
+					<div id="search-result"></div>
 				</form>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
@@ -195,7 +196,8 @@
 				</div>
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
-						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
+						<input type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}"/>
+						<div id="search-result"></div>
 					</form>
 				</div>
 			</div>
@@ -742,15 +744,63 @@
 					]
 					});
 
-					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initDropDownHeader();
+						$("#q-ipt").keyup(function(){
+							searchAjax(this);
+						});
 					});
 
 					$(window).resize(function(){
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
-					$(".footer").css("margin-top", -1*oh);
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+40);
+						$(".footer").css("margin-top", -1*oh);
 					});
+
+
+					function initDropDownHeader() {
+						$('.dd_menu_item').click(function() {
+							var mi = $(this);
+							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
+							$('.dd_block').hide();
+							$('#' + mi.attr('dd-id')).show();
+						});
+					}
+
+
+					function searchAjax(el){
+						var $el = $(el);
+						<!-- console.log($el); -->
+						var val = $el.val();
+						if(val.length > 2){
+							<xsl:text disable-output-escaping="yes">
+								var $form = $("&lt;form&gt;",
+							</xsl:text>
+								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
+							);
+							<xsl:text disable-output-escaping="yes">
+								var $ipt2 = $("&lt;input&gt;",
+							</xsl:text>
+							 {'type' : 'text', 'value': val, 'name' : 'q'});
+
+							 $ipt2.val(val);
+
+							$form.append($ipt2);
+							$('body').append($form);
+							postForm('tmp-form', 'search-result');
+							$('#tmp-form').remove();
+							$('#search-result').show();
+						}
+					}
+
+					$(document).on('click', 'body', function(e){
+						var $trg = $(e.target);
+						if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+						$('#search-result').hide();
+						$('#search-result').html('');
+					});
+
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
