@@ -212,7 +212,12 @@
 					<input type="text" class="text-input header__field" placeholder="поиск по товарам" name="q" value="{page/variables/q}" />
 					<input type="submit" class="button header__button" value="Поиск" />
 				</form>
-				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
+				<xsl:if test="page/@name != 'confirm'">
+					<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
+				</xsl:if>
+				<xsl:if test="page/@name = 'confirm'">
+					<div class="cart-info header__column" ajax-show-loader="no">Нет заявок</div>
+				</xsl:if>
 				<div class="user-links header__column">
 					<xsl:call-template name="PERSONAL_DESKTOP"/>
 					<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">

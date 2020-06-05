@@ -90,7 +90,7 @@
 	<!--/////////////                             КАТАЛОГ                                  ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
-	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+	<item name="catalog" caption="Каталог продукции" children-per-page="80" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
@@ -101,7 +101,7 @@
 	</item>	
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<item name="section" default-page="section" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
+	<item name="section" default-page="section" children-per-page="50" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
 		<child item="section" />
 		<child item="product"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
@@ -130,7 +130,7 @@
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
-		<parameter name="mizida_code" type="string" caption="фирменный артикул MIZIDA" text-index="fulltext" />
+		<!-- <parameter name="mizida_code" type="string" caption="фирменный артикул MIZIDA" text-index="fulltext" /> -->
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -441,7 +441,7 @@
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
-	<item name="discounts" caption="Скидки" ag-id="1970" ag-hash="-121228462">
+	<item name="discounts" caption="Скидки" ag-id="1970" ag-hash="-121228462" >
 		<parameter name="self_delivery" type="double" caption="Скидка за самовывоз" default="0.0" description="в процентах"/>
 		<parameter name="pay_first" type="double" caption="Скидка за предоплату" default="0.0" description="в процентах" />
 		<parameter name="autolight" type="double" caption="Надбавка за автолайт" default="0.0" description="в процентах" />
@@ -570,7 +570,6 @@
 	</item>
 
 	<root>
-		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
 		<child item="main_page" single="true"/>
 		<child item="news_wrap" single="true"/>
@@ -581,10 +580,11 @@
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
 		<child item="registered_catalog" single="true"/>
-		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="feedback_params" single="true" />
+		<child item="counter" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
