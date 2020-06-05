@@ -130,12 +130,18 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
+						<xsl:variable name="p" select="product"/>
 						<tr>
 							<td>
 								<xsl:value-of select="product/code"/>
 							</td>
 							<td valign="top">
-								<strong><xsl:value-of select="product/name"/></strong>
+								<xsl:if test="not($p/product)">
+									<strong><xsl:value-of select="$p/name"/></strong>
+								</xsl:if>
+								<xsl:if test="$p/product">
+									<strong><xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)</strong>
+								</xsl:if>
 							</td>
 							<td valign="top">
 								<xsl:value-of select="qty"/>

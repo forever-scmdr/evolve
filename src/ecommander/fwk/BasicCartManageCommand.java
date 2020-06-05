@@ -264,7 +264,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 
 		// 4. Сохранить все покупки в истории, если пользователь нашелся или был создан
-		long purchaseId = 0;
+
 		if (userItem != null) {
 			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
 			purchase.setValue(NUM_PARAM, orderNumber + "");
@@ -274,7 +274,7 @@ public abstract class BasicCartManageCommand extends Command {
 			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
-			purchaseId = purchase.getId();
+
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
 				Item boughtToSave = new Item(bought);
@@ -476,8 +476,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE restoreFromCookie() throws Exception {
 	    checkStrategy();
 		loadCart();
-		if (cart != null)
-			return null;
+		if (cart != null) return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
 		if (StringUtils.isBlank(cookie))
 			return null;

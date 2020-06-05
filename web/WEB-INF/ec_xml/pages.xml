@@ -441,7 +441,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="info@mizida.by"/>
+			<var name="email" value="bio@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -501,7 +501,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="zakaz@mizida.by"/>
+			<var name="email" value="bio@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -585,7 +585,6 @@
 	<page name="confirm" template="confirm">
 		<request>
 			<var name="message"/>
-
 		</request>
 
 		<new item="user_phys" id="user_phys">
@@ -613,7 +612,7 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
-<!--		<include name="COMMON"/>-->
+		<include name="COMMON"/>
 	</page>
 
 
