@@ -175,6 +175,7 @@
 		<parameter name="code" type="string" caption="Код раздела"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
+		<parameter name="extra" type="plain-text" caption="Дополнительно" description="не используется" format="height: 50px"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
@@ -719,14 +720,26 @@
 	</item>
 
 	<item name="one_click" caption="Купить в 1 клик" super="module" ag-id="1773" ag-hash="1929704047">
-		<parameter name="status" type="byte" caption="Статус" domain="0-1" description="0 - выключен 1 - включен"/>
+		<parameter name="status" type="string" caption="Статус" description="off - выключен on - включен" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
 	</item>
 
 
 	<item name="display_settings" caption="Настройки отображения сайта" super="module" ag-id="1776" ag-hash="1126534912">
-		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" domain="side_menu">
+		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" default="pages">
 			<value>catalog</value>
 			<value>pages</value>
+		</parameter>
+		<parameter name="catalog_quick_search" type="string" caption="Быстрый поиск по каталогу" default="no">
+			<value>no</value>
+			<value>simple</value>
+			<value>advanced</value>
+		</parameter>
+		<parameter name="manual_filter_params" type="string" caption="Ручное задание параметров фильтра" default="off">
+			<value>off</value>
+			<value>on</value>
 		</parameter>
 	</item>
 

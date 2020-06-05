@@ -370,6 +370,8 @@ public interface ItemNames {
         String _ITEM_NAME = "display_settings";
         String NAME = "name";
         String SIDE_MENU_PAGES = "side_menu_pages";
+        String CATALOG_QUICK_SEARCH = "catalog_quick_search";
+        String MANUAL_FILTER_PARAMS = "manual_filter_params";
 
     }
 
@@ -760,6 +762,7 @@ public interface ItemNames {
         String CODE = "code";
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
+        String EXTRA = "extra";
         String PARAMS_FILTER = "params_filter";
 
     }

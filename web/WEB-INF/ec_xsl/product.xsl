@@ -6,7 +6,6 @@
 	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = '1'"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
