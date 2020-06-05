@@ -3,7 +3,7 @@
 
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
-	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = '1'"/>
+	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
 
 
 	<xsl:template match="accessory | set | probe | product | assoc">

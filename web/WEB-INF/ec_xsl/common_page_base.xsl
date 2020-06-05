@@ -25,6 +25,7 @@
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
+    <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
 
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -117,7 +118,7 @@
 				<form action="{page/search_link}" method="post" class="header__search header__column">
 					<input type="text" class="text-input header__field" placeholder="Поиск по каталогу" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 					<input type="submit" class="button header__button" value="Поиск" />
-					<div id="search-result"></div>
+					<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
 				</form>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
@@ -197,7 +198,7 @@
 				<div class="search-container">
 					<form action="{page/search_link}" method="post">
 						<input type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}"/>
-						<div id="search-result"></div>
+                        <xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
 					</form>
 				</div>
 			</div>
@@ -747,9 +748,11 @@
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
-						$("#q-ipt").keyup(function(){
+						<xsl:if test="$has_quick_search">
+                        $("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
+                        </xsl:if>
 					});
 
 					$(window).resize(function(){

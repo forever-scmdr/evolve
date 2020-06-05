@@ -20,6 +20,7 @@ public class Section
     public final static String CODE = "code";
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
+    public final static String EXTRA = "extra";
     public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
@@ -187,6 +188,22 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_extra(String value) {
+        setValue("extra", value);
+    }
+
+    public String get_extra() {
+        return getStringValue("extra");
+    }
+
+    public String getDefault_extra(String defaultVal) {
+        return getStringValue("extra", defaultVal);
+    }
+
+    public boolean contains_extra(String value) {
+        return containsValue("extra", value);
     }
 
 }

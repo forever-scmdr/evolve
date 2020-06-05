@@ -11,7 +11,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/result = 'success'"/>
 	<xsl:variable name="form" select="page/feedback_form"/>
-	<xsl:variable name="is_advanced" select="true()"/>
+	<xsl:variable name="is_advanced" select="page/optional_modules/display_settings/catalog_quick_search = 'advanced'"/>
 
 	<xsl:template match="/">
 		<div class="result" id="search-result">

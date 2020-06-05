@@ -1,179 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
-<!--START_p382664-->
-<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="2129511511">
-	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p382664-->
-
-<!--START_p382721-->
-<item name="p382721" caption="Снятые с производства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1731" ag-hash="2129512345">
-	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p382721-->
-
-<!--START_p382750-->
-<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="2129512437">
-	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p382750-->
-
-<!--START_p382773-->
-<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="2129512502">
-	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p382773-->
-
-<!--START_p382830-->
-<item name="p382830" caption="2-тактные моторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="2129513336">
-	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-</item>
-<!--END_p382830-->
-
 <!--START_p382852-->
 <item name="p382852" caption="Редуктор, трансмиссия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1735" ag-hash="2129513400"></item>
 <!--END_p382852-->
@@ -337,4 +164,181 @@
 <!--START_p385417-->
 <item name="p385417" caption="Анодная защита" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1763" ag-hash="2129598810"></item>
 <!--END_p385417-->
+
+<!--START_p382664-->
+<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" ag-id="0" ag-hash="2129511511" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p382664-->
+
+<!--START_p382721-->
+<item name="p382721" caption="Снятые с производства" key="" ag-id="0" ag-hash="2129512345" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p382721-->
+
+<!--START_p382750-->
+<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" ag-id="0" ag-hash="2129512437" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p382750-->
+
+<!--START_p382773-->
+<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" ag-id="0" ag-hash="2129512502" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="karter" caption="Картер" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1138555707" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p382773-->
+
+<!--START_p382830-->
+<item name="p382830" caption="2-тактные моторы" key="" ag-id="0" ag-hash="2129513336" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_dvigatelya" caption="Объем двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1653502678" description="см³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_topliva" caption="Тип топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-799384551" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_topliva" caption="Подача топлива" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1652185378" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sistema_smazki" caption="Система смазки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2129155730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_maks__oborotov" caption="Диапазон макс. оборотов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="2134028465" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="generator" caption="Генератор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="286956243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rekomenduemyi_akkumulyator" caption="Рекомендуемый аккумулятор" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="378721238" description="Ah" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="upravlenie" caption="Управление" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1602156091" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zapusk" caption="Запуск" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-709176636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podem" caption="Подъем" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="106840493" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tranets_plavsredstva" caption="Транец плавсредства" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594059553" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="svecha_zagiganiya_ngk" caption="Свеча зажигания (NGK)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-101941410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="toplivnyi_bak" caption="Топливный бак" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-576195929" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vraschenie_vinta" caption="Вращение винта" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1724986273" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktsiya" caption="Редукция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-971909173" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shtatnyi_vint" caption="Штатный винт" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-676308340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diapazon_vintov" caption="Диапазон винтов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1377350221" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zadnii_hod" caption="Задний ход" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1594739249" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="reduktor" caption="Редуктор" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-765256432" description="мл" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="garantiya" caption="Гарантия" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1043041986" description="года" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_sm" caption="Размер, см" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1481142986" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves_brutto" caption="Вес брутто" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="304704165" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem" caption="Объем" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="3404219" description="м³" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="proizvoditel" caption="Производитель" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="235196415" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="strana" caption="Страна" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-891993597" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p382830-->
+
+<!--START_p385851-->
+<item name="p385851" caption="Серия BTG" key="" ag-id="0" ag-hash="2129602772" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p385851-->
 <!--EXP--></model>
