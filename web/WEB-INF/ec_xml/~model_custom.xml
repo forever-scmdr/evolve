@@ -166,7 +166,7 @@
 <!--END_p385417-->
 
 <!--START_p382664-->
-<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" ag-id="0" ag-hash="2129511511" virtual="false" user-def="true" description="" super="params *">
+<item name="p382664" caption="Моторы Suzuki 2,5...30 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1730" ag-hash="2129511511">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -201,7 +201,7 @@
 <!--END_p382664-->
 
 <!--START_p382721-->
-<item name="p382721" caption="Снятые с производства" key="" ag-id="0" ag-hash="2129512345" virtual="false" user-def="true" description="" super="params *">
+<item name="p382721" caption="Снятые с производства" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1731" ag-hash="2129512345">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -236,7 +236,7 @@
 <!--END_p382721-->
 
 <!--START_p382750-->
-<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" ag-id="0" ag-hash="2129512437" virtual="false" user-def="true" description="" super="params *">
+<item name="p382750" caption="Моторы Suzuki 40...100 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1732" ag-hash="2129512437">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -271,7 +271,7 @@
 <!--END_p382750-->
 
 <!--START_p382773-->
-<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" ag-id="0" ag-hash="2129512502" virtual="false" user-def="true" description="" super="params *">
+<item name="p382773" caption="Моторы Suzuki 100...350 л.с." key="" virtual="false" user-def="true" description="" super="params *" ag-id="1733" ag-hash="2129512502">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -305,7 +305,7 @@
 <!--END_p382773-->
 
 <!--START_p382830-->
-<item name="p382830" caption="2-тактные моторы" key="" ag-id="0" ag-hash="2129513336" virtual="false" user-def="true" description="" super="params *">
+<item name="p382830" caption="2-тактные моторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1734" ag-hash="2129513336">
 	<parameter name="taktnost" caption="Тактность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-630085256" description="-тактный" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="moschnost" caption="Мощность" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="л.с." owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kol_vo_tsilindrov" caption="Кол-во цилиндров" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1202498357" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -339,6 +339,6 @@
 <!--END_p382830-->
 
 <!--START_p385851-->
-<item name="p385851" caption="Серия BTG" key="" ag-id="0" ag-hash="2129602772" virtual="false" user-def="true" description="" super="params *"></item>
+<item name="p385851" caption="Серия BTG" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1777" ag-hash="2129602772"></item>
 <!--END_p385851-->
 <!--EXP--></model>

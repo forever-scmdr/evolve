@@ -74,6 +74,7 @@ public interface ItemNames {
     String MODULE = "module";
     String OPTIONAL_MODULES = "optional_modules";
     String ONE_CLICK = "one_click";
+    String MY_PRICE = "my_price";
     String DISPLAY_SETTINGS = "display_settings";
     String ADMIN_EXTRA = "admin_extra";
 
@@ -511,6 +512,15 @@ public interface ItemNames {
     public interface modules_ {
 
         String _ITEM_NAME = "modules";
+
+    }
+
+    public interface my_price_ {
+
+        String _ITEM_NAME = "my_price";
+        String NAME = "name";
+        String STATUS = "status";
+        String LINK_NAME = "link_name";
 
     }
 
