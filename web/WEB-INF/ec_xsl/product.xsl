@@ -139,9 +139,14 @@
 					</div>
 				</xsl:if>
 
-				<xsl:if test="$is_one_click">
+				<xsl:if test="$is_one_click or $is_my_price">
 					<div class="extra-buttons">
-						<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+						<xsl:if test="$is_one_click">
+							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+						</xsl:if>
+						<xsl:if test="$is_my_price">
+							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
+						</xsl:if>
 						<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
 					</div>
 				</xsl:if>

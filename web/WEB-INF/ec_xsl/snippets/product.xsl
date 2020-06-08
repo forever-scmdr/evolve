@@ -4,6 +4,8 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
+	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
+	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
 
 
 	<xsl:template match="accessory | set | probe | product | assoc">
@@ -57,6 +59,12 @@
 			<xsl:if test="$is_one_click">
 				<div class="text_sm" style="margin-top: auto;">
 					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="$is_my_price">
+				<div class="text_sm" style="margin-top: auto;">
+					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 				</div>
 			</xsl:if>
 
@@ -410,6 +418,10 @@
 				<!-- one click -->
 				<xsl:if test="$is_one_click">
 					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+				</xsl:if>
+
+				<xsl:if test="$is_my_price">
+					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 				</xsl:if>
 
 				<!-- device actions -->

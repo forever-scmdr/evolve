@@ -712,7 +712,7 @@
 
 
 	<item name="module" caption="Модуль" virtual="true" key="name" ag-id="1772" ag-hash="-1068784020">
-		<parameter name="name" type="string" caption="Название" description="для вывода в CMS"/>
+		<parameter name="name" type="string" caption="Название (Заголовок)" description="для вывода в CMS"/>
 	</item>
 
 	<item name="optional_modules" caption="Подключаемые модули" ag-id="1774" ag-hash="-1926121048">
@@ -726,6 +726,13 @@
 		</parameter>
 	</item>
 
+	<item name="my_price" caption="Моя цена" super="module" ag-id="1778" ag-hash="-466734858">
+		<parameter name="status" type="string" caption="Статус" description="off - выключен on - включен" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="link_name" type="string" caption="Название ссылки" description="что написано в ссылке"/>
+	</item>
 
 	<item name="display_settings" caption="Настройки отображения сайта" super="module" ag-id="1776" ag-hash="1126534912">
 		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" default="pages">
