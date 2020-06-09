@@ -33,6 +33,15 @@
 								verticalFit: true
 							}
 						});
+						$(document).ready(function(){
+							//Инициализация всплывающей панели для
+							//элементов веб-страницы, имеющих атрибут
+							//data-toggle="popover"
+							$('[data-toggle="popover"]').popover({
+							//Установление направления отображения popover
+							placement : 'top'
+							});
+						});
 					</script>
 				</div>
 			</xsl:if>
@@ -67,12 +76,12 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
-				<a onclick="$('#sp-{code}').toggle()">Цена зависит от количества</a>
-				<div id="sp-{code}">
+				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
-						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/>
+						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
 					</xsl:for-each>
-				</div>
+				</xsl:variable>
+				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
 			</div>
 			<div class="device__order">
 				<div id="cart_list_{code}">
@@ -86,7 +95,7 @@
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="number" class="text-input" name="qty" value="1" min="1"/>
-							<input type="text" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -158,12 +167,17 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
-				<a onclick="$('#sp-{code}').toggle()">Цена зависит от количества</a>
-				<div id="sp-{code}">
+				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
-						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/><br/>
+						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
 					</xsl:for-each>
-				</div>
+				</xsl:variable>
+				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
+<!--				<div id="sp-{code}">-->
+<!--					<xsl:for-each select="spec_price_map">-->
+<!--						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/><br/>-->
+<!--					</xsl:for-each>-->
+<!--				</div>-->
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{code}">
@@ -177,7 +191,7 @@
 							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
 							<input type="hidden" value="{QUANTY}" name="max"/>
-							<input type="text" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="number" class="text-input" name="qty" value="{f:num(min_qty)}" min="{f:num(min_qty)}"/>
 							<input type="submit" class="button" value="Заказать"/>
 						</xsl:if>

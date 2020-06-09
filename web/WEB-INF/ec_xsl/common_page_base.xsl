@@ -841,14 +841,20 @@
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
+				<script type="text/javascript" src="js/popover.min.js"/>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
+				<script>
+
+				</script>
 				<script type="text/javascript">
 					$(document).ready(function(){
+
+
 					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 						type: 'image',
 						closeOnContentClick: true,
