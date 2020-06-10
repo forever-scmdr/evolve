@@ -15,7 +15,6 @@
 			<xsl:if test="page/product">
 				<div id="extra_search_2" class="result">
 					<h2>Результат поиска по дополнительному каталогу №2</h2>
-
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="page/product" mode="lines"/>
@@ -173,11 +172,6 @@
 					</xsl:for-each>
 				</xsl:variable>
 				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
-<!--				<div id="sp-{code}">-->
-<!--					<xsl:for-each select="spec_price_map">-->
-<!--						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)"/><br/>-->
-<!--					</xsl:for-each>-->
-<!--				</div>-->
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{code}">

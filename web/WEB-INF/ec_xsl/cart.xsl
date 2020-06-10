@@ -111,14 +111,6 @@
 					<span>Наличие</span>
 					доступно: <xsl:value-of select="f:num($p/qty)" />
 				</div>
-				<!-- <div class="available">
-					<span>Наличие</span>
-					доступно: <xsl:value-of select="f:num($p/qty)" />
-					<xsl:if test="f:num(qty_total) &gt; f:num(qty_avail)">
-						<br/>
-						<xsl:value-of select="concat(' под заказ: ', f:num(qty_total) - f:num(qty_avail))"/>
-					</xsl:if>
-				</div> -->
 
 				<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
 				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
@@ -143,7 +135,7 @@
 				</xsl:if>
 				<xsl:if test="not($is_aux)">
 					<a href="{$p/show_product}" class="image-container">
-						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
+						<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
 					</a>
 					<a href="{$p/show_product}" class="title">
 						<xsl:value-of select="$p/name"/>

@@ -325,11 +325,6 @@
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
-
-		<!-- digikey price map -->
-		<parameter name="price_map" type="string"/>
-		<!-- -->
-
 		<child item="product" single="true"/>
 	</item>
 
@@ -469,7 +464,7 @@
 	</item>
 
 
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
+	<item name="main_page" caption="Главная страница" super="seo_container" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
 		<child item="product" assoc="general"/>
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>

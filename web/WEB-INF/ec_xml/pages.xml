@@ -21,8 +21,8 @@
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="sec" ref="sec" style="key"/>
 				</link>
 				<list item="product"  transit="true">
 					<filter>
@@ -103,7 +103,7 @@
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" assoc="general">
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
@@ -171,7 +171,7 @@
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit $username" >
 		<request>
-			<var name="sec" style="keypath"/>
+			<var name="sec" style="key"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
@@ -184,7 +184,7 @@
 			<var name="tag"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
-			<link name="canonical_link" target="section" type="exclusive">
+			<link name="canonical_link" target="section">
 				<var name="sec" ref="cur_sec" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
@@ -202,16 +202,16 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<link name="filter_base_link" type="exclusive" target="section">
+					<link name="filter_base_link" target="section">
 						<var name="sec" var="sec" style="key"/>
 					</link>
 					<parameter name="tag" sign="=" compare="ANY">
 						<var var="tag"/>
 					</parameter>
 				</filter>
-				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" var="sec" style="keypath"/>
-					<var name="prod" ref="prod" style="keypath"/>
+				<link name="show_product" target="product">
+					<!-- <var name="prod" var="sec" style="key"/> -->
+					<var name="prod" ref="prod" style="key"/>
 				</link>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
@@ -229,11 +229,11 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
-				<single item="params"/>
+				<list item="params"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
+				<link name="canonical" target="section" copy-page-vars="no">
 					<var name="sec" style="key" var="sec"/>
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
@@ -245,57 +245,57 @@
 				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
-		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_table" target="section" copy-page-vars="yes">
 			<var name="view" value="table"/>
 		</link>
-		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_view_list" target="section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_48" target="section" copy-page-vars="yes">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_96" target="section" copy-page-vars="yes">
 			<var name="limit" value="96"/>
 		</link>
-		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_144" target="section" copy-page-vars="yes">
 			<var name="limit" value="144"/>
 		</link>
-		<link name="reset_filter_link" type="exclusive" target="section">
+		<link name="reset_filter_link" target="section">
 			<var name="sec" var="sec" style="key"/>
 		</link>
 
-		<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_currency_byn" target="section" copy-page-vars="yes">
 			<var name="currency" value="byn"/>
 		</link>
-		<link name="set_currency_rur" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_currency_rur" target="section" copy-page-vars="yes">
 			<var name="currency" value="rur"/>
 		</link>
 
-		<link name="show_only_available" target="section" type="exclusive">
+		<link name="show_only_available" target="section">
 			<var name="sec" var="sec" style="key"/>
 			<var name="minqty" value="0"/>
 		</link>
-		<link name="show_all" target="section" type="exclusive">
+		<link name="show_all" target="section">
 			<var name="sec" var="sec" style="key"/>
 			<var name="minqty" value=""/>
 		</link>
-		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_name_asc" target="section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
 			<var name="direction" value="ASC"/>
 		</link>
-		<link name="set_sort_name_desc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_name_desc" target="section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
 			<var name="direction" value="DESC"/>
 		</link>
-		<link name="set_sort_price_asc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_price_asc" target="section" copy-page-vars="yes">
 			<var name="sort" value="price"/>
 			<var name="direction" value="ASC"/>
 		</link>
-		<link name="set_sort_price_desc" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_price_desc" target="section" copy-page-vars="yes">
 			<var name="sort" value="price"/>
 			<var name="direction" value="DESC"/>
 		</link>
-		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
+		<link name="set_sort_default" target="section" copy-page-vars="yes">
 			<var name="sort" value=""/>
 		</link>
 		<include name="COMMON"/>
@@ -341,7 +341,7 @@
 					<var var="tag"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -416,7 +416,7 @@
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
@@ -443,7 +443,7 @@
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -491,18 +491,18 @@
 
 	<page name="product" template="product" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="prod" style="key"/>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
-			<link name="canonical_link" target="product" type="exclusive">
+			<link name="canonical_link" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
 			<single item="product_extra"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
-				<link name="show_products" target="section" type="exclusive">
+				<link name="show_products" target="section">
 					<var name="sec" ref="cur_sec" style="key"/>
 				</link>
 			</ancestor>
@@ -536,7 +536,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
 		</list>
@@ -713,7 +713,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com, sales@ictrade.by"/>
+			<var name="email" value="support@forever-ds.com, sales@ictrade.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -748,11 +748,11 @@
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
 						<single item="product" id="parent">
-							<link name="show_product" target="product" type="exclusive">
+							<link name="show_product" target="product">
 								<var name="prod" ref="parent" style="key"/>
 							</link>
 						</single>
-						<link name="show_product" target="product" type="exclusive">
+						<link name="show_product" target="product">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
 					</list>
@@ -821,7 +821,7 @@
 					<var ref="bought" parameter="code"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
@@ -837,7 +837,7 @@
 			<single item="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
-						<link name="show_product" target="product" type="exclusive">
+						<link name="show_product" target="product">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
 					</list>
@@ -984,7 +984,7 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="fav_ajax"/>
 			</link>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -1146,7 +1146,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
+			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -1293,10 +1293,10 @@
 		<single item="url_seo_wrap"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
-				<link name="show_products" target="section" type="exclusive">
+				<link name="show_products" target="section">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
-				<link name="map_products" target="sitemap_section" type="exclusive">
+				<link name="map_products" target="sitemap_section">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
 			</tree>
@@ -1335,13 +1335,13 @@
 		<single item="url_seo_wrap" />
 		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
 			<list item="product" id="prod">
-				<link name="show_product" target="product" type="exclusive">
+				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
 				</link>
 			</list>
 			<list item="product" tag="tag" id="tag">
 				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
+				<link name="canonical" target="section" copy-page-vars="no">
 					<var name="sec" style="key" var="sec"/>
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>

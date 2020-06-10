@@ -628,8 +628,10 @@
 					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
 					<xsl:for-each select="params/param">
 						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
-						<xsl:text>; </xsl:text>
+						<xsl:text disable-output-escaping="yes">;&lt;br/&gt;</xsl:text>
 					</xsl:for-each>
+					<br/>
+					<a href="{concat('pdf/', pdf)}" target="_blank">описание PDF</a>
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
@@ -848,13 +850,8 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
-				<script>
-
-				</script>
 				<script type="text/javascript">
 					$(document).ready(function(){
-
-
 					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
 						type: 'image',
 						closeOnContentClick: true,
