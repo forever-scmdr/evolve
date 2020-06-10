@@ -737,7 +737,7 @@
 	</page>
 
 
-	<page name="cart" template="cart">
+	<page name="cart" template="">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>

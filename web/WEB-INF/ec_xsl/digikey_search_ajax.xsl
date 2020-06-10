@@ -179,25 +179,24 @@
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
-							<input type="hidden" value="{NAME}" name="name"/>
-							<input type="hidden" value="{EI_NAME}" name="unit"/>
-							<input type="hidden" value="{UPACK}" name="upack"/>
-							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
-							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
-							<input type="hidden" value="{QUANTY}" name="max"/>
+							<input type="hidden" value="{name}" name="name"/>
+							<input type="hidden" value="шт" name="unit"/>
+							<input type="hidden" value="{qty}" name="upack"/>
+							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
+							<input type="hidden" value="{qty}" name="max"/>
+							<input type="number" class="text-input" name="qty" value="1" min="1"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
-							<input type="number" class="text-input" name="qty" value="{f:num(min_qty)}" min="{f:num(min_qty)}"/>
-							<input type="submit" class="button" value="Заказать"/>
+							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="digikey" name="aux"/>
-							<input type="hidden" value="{NAME}" name="name"/>
+							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
-							<input type="hidden" value="{EI_NAME}" name="unit"/>
-							<input type="hidden" value="{UPACK}" name="upack"/>
-							<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
-							<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
-							<input type="number" class="text-input" name="qty" value="1" min="{f:num(min_qty)}"/>
+							<input type="hidden" value="шт" name="unit"/>
+							<input type="hidden" value="0" name="upack"/>
+							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
+							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
+							<input type="number" class="text-input" name="qty" value="1" min="0"/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>

@@ -323,8 +323,8 @@
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
+		<parameter name="price_map" type="string" caption="Зависимость цены от количества"/>
 		<child item="product" single="true"/>
 	</item>
 
