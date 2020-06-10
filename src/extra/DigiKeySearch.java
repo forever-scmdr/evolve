@@ -19,14 +19,14 @@ import java.util.concurrent.TimeUnit;
 
 public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	//Sandbox Manual login URL "https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7&redirect_uri=http://localhost:8080/ictrade/digikey_manual_authorise";
-	//Manual login URL "https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7&redirect_uri=https://ictrade.by/digikey_manual_authorise";
+	//Manual login URL "https://api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=SzCfaUwBSDFOOR7Sk0x6iywEoQxiApeD&redirect_uri=https://ictrade.by/digikey_manual_authorise";
 //	private static final String CLIENT_ID = "tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7";
 //	private static final String CLIENT_SECRET = "omEIbWNfaLUrMQNb";
 //	private static final String REDIRECT_URI = "http://localhost:8080/ictrade/digikey_manual_authorise";
 //	private static final String SEARCH_URI = "https://sandbox-api.digikey.com/Search/v3/Products/Keyword";
 //	private static final String TOKEN_ENDPOINT = "https://sandbox-api.digikey.com/v1/oauth2/token";
 	private static final String CLIENT_ID = "SzCfaUwBSDFOOR7Sk0x6iywEoQxiApeD";
-	private static final String CLIENT_SECRET = "omEIbWNfaLUrMQNb";
+	private static final String CLIENT_SECRET = "tHv7wMeAi4SU7eP0";
 	private static final String REDIRECT_URI = "https://ictrade.by/digikey_manual_authorise";
 	private static final String SEARCH_URI = "https://api.digikey.com/Search/v3/Products/Keyword";
 	private static final String TOKEN_ENDPOINT = "https://api.digikey.com/v1/oauth2/token";
