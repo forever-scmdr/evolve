@@ -32,13 +32,6 @@ public interface ItemNames {
     String USER_JUR = "user_jur";
     String USER_PHYS = "user_phys";
     String REGISTERED_CATALOG = "registered_catalog";
-    String MAIN_PROMO_BOTTOM = "main_promo_bottom";
-    String MAIN_SLIDER_FRAME = "main_slider_frame";
-    String BANNER = "banner";
-    String BANNER_SECTION = "banner_section";
-    String CUSTOM_BLOCK = "custom_block";
-    String CUSTOM_ELEMENT = "custom_element";
-    String MAIN_PAGE = "main_page";
     String COMMON = "common";
     String BLOCK = "block";
     String BLOCK_ARRAY = "block_array";
@@ -48,11 +41,18 @@ public interface ItemNames {
     String FOOTER = "footer";
     String TOPPER = "topper";
     String PAGE_EXTRA = "page_extra";
+    String PAGE_EXTRA_PART = "page_extra_part";
     String PICTURE = "picture";
     String GALLERY_BASE = "gallery_base";
     String SIMPLE_GALLERY = "simple_gallery";
     String COMMON_GALLERY = "common_gallery";
     String PAGE_TEXT = "page_text";
+    String MAIN_PROMO_BOTTOM = "main_promo_bottom";
+    String MAIN_SLIDER_FRAME = "main_slider_frame";
+    String BANNER = "banner";
+    String BANNER_SECTION = "banner_section";
+    String CUSTOM_BLOCK = "custom_block";
+    String MAIN_PAGE = "main_page";
     String NEWS_WRAP = "news_wrap";
     String NEWS_ITEM = "news_item";
     String NEWS = "news";
@@ -77,6 +77,8 @@ public interface ItemNames {
     String MY_PRICE = "my_price";
     String DISPLAY_SETTINGS = "display_settings";
     String ADMIN_EXTRA = "admin_extra";
+    String EMAIL_QUEUE = "email_queue";
+    String EMAIL_QUEUE_ITEM = "email_queue_item";
 
     public interface abstract_product_ {
 
@@ -267,20 +269,7 @@ public interface ItemNames {
         String YOUTUBE = "youtube";
         String LINK = "link";
         String CLASS = "class";
-
-    }
-
-    public interface custom_element_ {
-
-        String _ITEM_NAME = "custom_element";
-        String NAME = "name";
-        String HEADER = "header";
-        String SUBHEADER = "subheader";
-        String TEXT = "text";
-        String IMAGE = "image";
-        String IMAGE_BGR = "image_bgr";
-        String YOUTUBE = "youtube";
-        String LINK = "link";
+        String TYPE = "type";
 
     }
 
@@ -381,6 +370,21 @@ public interface ItemNames {
         String _ITEM_NAME = "docs";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface email_queue_ {
+
+        String _ITEM_NAME = "email_queue";
+
+    }
+
+    public interface email_queue_item_ {
+
+        String _ITEM_NAME = "email_queue_item";
+        String DATE_ADDED = "date_added";
+        String ADDRESS_TO = "address_to";
+        String EMAIL_URL = "email_url";
 
     }
 
@@ -613,6 +617,13 @@ public interface ItemNames {
 
     }
 
+    public interface page_extra_part_ {
+
+        String _ITEM_NAME = "page_extra_part";
+        String NAME = "name";
+
+    }
+
     public interface page_link_ {
 
         String _ITEM_NAME = "page_link";
@@ -677,6 +688,7 @@ public interface ItemNames {
     public interface picture_ {
 
         String _ITEM_NAME = "picture";
+        String NAME = "name";
         String HEADER = "header";
         String PIC = "pic";
 
