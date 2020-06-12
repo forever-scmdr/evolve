@@ -417,89 +417,6 @@
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                          ГЛАВНАЯ СТРАНИЦА                            ////////////-->
-	<!--/////////////                                                                      ////////////-->
-
-	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
-
-	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
-		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
-		<parameter name="text_small" type="string" caption="Текст мелким шрифтом"/>
-		<parameter name="pic" type="picture" caption="Изображение"/>
-		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
-	</item>
-
-	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="807" ag-hash="-806170283">
-		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
-		<parameter name="text" type="tiny-text" caption="Текст" description="на слайде"/>
-		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
-		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
-		<parameter name="pic" type="picture" caption="Картинка"/>
-	</item>
-
-	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">
-		<parameter name="background" type="string" caption="background" description="baner__background"/>
-		<parameter name="background_pic" type="picture" caption="background-image" description="baner__background"/>
-		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
-		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
-		<parameter name="image_pic" type="picture" caption="Картинка-файл" description="banner__image"/>
-		<parameter name="image_code" type="plain-text" caption="Картинка-код (svg)" description="banner__image"/>
-		<parameter name="link" type="string" caption="Ссылка" description="внешняя ссылка должна начинаться с http://"/>
-		<parameter name="extra_style" type="string" caption="Дополнительные классы стилей баннера" description="кроме класса banner"/>
-	</item>
-
-
-	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="868" ag-hash="-2003257134">
-		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
-		<child item="banner" inline="true"/>
-	</item>
-
-	<item name="custom_block" caption="Блок" key="name" ag-id="1764" ag-hash="714512959">
-		<parameter name="name" type="string" caption="Название" description="Так блок будет назван в админке" />
-		<parameter name="header" type="string" caption="Заголовок" />
-		<parameter name="subheader" type="string" caption="Подзаголовок" />
-		<parameter name="text" type="tiny-text" caption="Текст" />
-		<parameter name="image" type="picture" caption="Изображение" />
-		<parameter name="image_bgr" type="picture" caption="Фоновое изображение" />
-		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба" />
-		<parameter name="link" type="string" caption="Ссылка" />
-		<parameter name="class" type="string" caption="Класс" />
-		<child item="custom_element" inline="true" />
-	</item>
-
-	<item name="custom_element" caption="Элемент блока" key="name" ag-id="1765" ag-hash="2105757742">
-		<parameter name="name" type="string" caption="Название" description="Так элемент будет назван в админке" />
-		<parameter name="header" type="string" caption="Заголовок" />
-		<parameter name="subheader" type="string" caption="Подзаголовок" />
-		<parameter name="text" type="tiny-text" caption="Текст" />
-		<parameter name="image" type="picture" caption="Изображение" />
-		<parameter name="image_bgr" type="picture" caption="Фоновое изображение" />
-		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба" />
-		<parameter name="link" type="string" caption="Ссылка" />
-	</item>
-
-
-	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
-		<child item="product" assoc="general"/>
-		<child item="seo" single="true"/>
-		<child item="main_promo_bottom" inline="true"/>
-		<child item="main_slider_frame" inline="true"/>
-		<child item="banner_section"/>
-		<child item="custom_block" />
-	</item>
-
-	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                        END ГЛАВНАЯ СТРАНИЦА                          ////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-
-
-
-
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                       ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                         ////////////-->
 	<!--/////////////                                                                      ////////////-->
 
@@ -549,7 +466,11 @@
 		<parameter name="name" type="string" caption="Название" description="для CMS"/>
 	</item>
 
-	<item name="picture" caption="Картинка" key="header" ag-id="1767" ag-hash="-577741570">
+	<item name="page_extra_part" caption="Часть дополнительного элемента страницы" key="name" virtual="true" ag-id="1779" ag-hash="1380296306">
+		<parameter name="name" type="string" caption="Название" description="для CMS"/>
+	</item>
+
+	<item name="picture" caption="Картинка" super="page_extra_part" ag-id="1767" ag-hash="-577741570">
 		<parameter name="header" type="string" caption="Текст на картинке"/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
 	</item>
@@ -579,6 +500,82 @@
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                          ГЛАВНАЯ СТРАНИЦА                            ////////////-->
+	<!--/////////////                                                                      ////////////-->
+
+	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
+
+	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
+		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
+		<parameter name="text_small" type="string" caption="Текст мелким шрифтом"/>
+		<parameter name="pic" type="picture" caption="Изображение"/>
+		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
+	</item>
+
+	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="807" ag-hash="-806170283">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<parameter name="text" type="tiny-text" caption="Текст" description="на слайде"/>
+		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
+		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
+		<parameter name="pic" type="picture" caption="Картинка"/>
+	</item>
+
+	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">
+		<parameter name="background" type="string" caption="background" description="baner__background"/>
+		<parameter name="background_pic" type="picture" caption="background-image" description="baner__background"/>
+		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
+		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
+		<parameter name="image_pic" type="picture" caption="Картинка-файл" description="banner__image"/>
+		<parameter name="image_code" type="plain-text" caption="Картинка-код (svg)" description="banner__image"/>
+		<parameter name="link" type="string" caption="Ссылка" description="внешняя ссылка должна начинаться с http://"/>
+		<parameter name="extra_style" type="string" caption="Дополнительные классы стилей баннера" description="кроме класса banner"/>
+	</item>
+
+
+	<item name="banner_section" caption="Секция баннеров" key="name" ag-id="868" ag-hash="-2003257134">
+		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<child item="banner" inline="true"/>
+	</item>
+
+
+   <item name="custom_block" caption="Блок" super="page_extra page_extra_part" ag-id="1764" ag-hash="714512959">
+		<parameter name="header" type="string" caption="Заголовок" />
+		<parameter name="subheader" type="string" caption="Подзаголовок" />
+		<parameter name="text" type="tiny-text" caption="Текст" />
+		<parameter name="image" type="picture" caption="Изображение" />
+		<parameter name="image_bgr" type="picture" caption="Фоновое изображение" />
+		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба" />
+		<parameter name="link" type="string" caption="Ссылка" />
+		<parameter name="class" type="string" caption="Класс CSS" />
+		<parameter name="type" type="string" caption="Тип блока" description="для каждого типа блока своя верстка"/>
+		<child item="custom_block" inline="true" />
+	</item>
+
+
+
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
+		<child item="product" assoc="general"/>
+		<child item="seo" single="true"/>
+		<child item="main_promo_bottom" inline="true"/>
+		<child item="main_slider_frame" inline="true"/>
+		<child item="banner_section"/>
+		<child item="custom_block" />
+	</item>
+
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                        END ГЛАВНАЯ СТРАНИЦА                          ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 
@@ -792,6 +789,32 @@
 
 
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             	РАССЫЛКА                               ////////////-->
+
+
+	<item name="email_queue" caption="Очередь отправки писем" ag-id="1780" ag-hash="-2072665426">
+		<child item="email_queue_item"/>
+	</item>
+
+
+	<!--
+	Хранится урл, который будет являться шаблоном письма. Шаблон письма перед отправкой будет разбираться JSoup для того, чтобы
+	найти вставленные картинки и отправить их отдельными частями многочастного запроса. Также разбор нужен, чтобы получить
+	тему письма, которая хранится в элементе topic, и удалить этот элемент.
+	 -->
+	<item name="email_queue_item" caption="Элемент очереди на отправку" key="email_url" ag-id="1781" ag-hash="-1676210684">
+		<parameter name="date_added" type="date" caption="Время добавления в очередь"/>
+		<parameter name="address_to" type="string" caption="Адрес отрпавки письма"/>
+		<parameter name="email_url" type="string" caption="Ссылка на страницу письма"
+				   description="ссылка на обычнцю страницу CMS, которая является шаблоном письма. В ссылке могут передаваться переменные"/>
+	</item>
+
+
+	<!--/////////////                            	END РАССЫЛКА                           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 	<root>
 		<child item="feedback_params" single="true" />
@@ -810,11 +833,13 @@
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
+		<child item="email_queue" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
     <user-group name="0dmin">
         <child item="optional_modules" single="true"/>
+		<child item="email_queue" single="true"/>
     </user-group>
 
 

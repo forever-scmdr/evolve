@@ -828,7 +828,7 @@
 
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="page_text | common_gallery | simple_gallery" mode="content"/>
+		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block" mode="content"/>
 	</xsl:template>
 
 	<xsl:template match="page_text" mode="content">

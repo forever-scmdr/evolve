@@ -20,6 +20,7 @@ public class Custom_block
     public final static String YOUTUBE = "youtube";
     public final static String LINK = "link";
     public final static String CLASS = "class";
+    public final static String TYPE = "type";
 
     private Custom_block(Item item) {
         super(item);
@@ -174,6 +175,22 @@ public class Custom_block
 
     public boolean contains_class(String value) {
         return containsValue("class", value);
+    }
+
+    public void set_type(String value) {
+        setValue("type", value);
+    }
+
+    public String get_type() {
+        return getStringValue("type");
+    }
+
+    public String getDefault_type(String defaultVal) {
+        return getStringValue("type", defaultVal);
+    }
+
+    public boolean contains_type(String value) {
+        return containsValue("type", value);
     }
 
 }

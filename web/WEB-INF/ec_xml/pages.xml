@@ -147,7 +147,7 @@
 				<include name="PRODUCT_PARAMS_LINKS"/>
 			</list>
 			<list item="custom_block">
-				<list item="custom_element"></list>
+				<list item="custom_block"/>
 			</list>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
@@ -612,7 +612,7 @@
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="page_extra">
-				<list item="picture"/>
+				<list item="page_extra_part"/>
 			</list>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
@@ -1543,6 +1543,13 @@
 				<list item="module"/>
 			</list>
 		</usergroup>
+	</page>
+
+
+	<page name="send_emails" template="send_emails" schedule="0 */10 * ? * *">
+		<command class="ecommander.fwk.integration.EmailQueueSender">
+			<result name="complete" type="xml"/>
+		</command>
 	</page>
 
 </site>

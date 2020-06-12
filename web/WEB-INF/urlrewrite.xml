@@ -19,14 +19,14 @@
         <from>/restrict_files/**.*</from>
         <to type="forward" last="true">/protected/$1.$2</to>
     </rule>
-    <!--Обычные файлы-->
-    <rule match-type="regex" enabled="true">
-        <from>^.*\..{2,4}$</from>
-        <to type="forward" last="true">$0</to>
-    </rule>
     <!--Обычные файлы и обработчики для администратора (.action)-->
     <rule match-type="regex" enabled="true">
         <from>^.+\.(action|login|afilter|type|domain|user|htm)$</from>
+        <to type="forward" last="true">$0</to>
+    </rule>
+    <!--Обычные файлы-->
+    <rule match-type="regex" enabled="true">
+        <from>^.*\..{2,4}$</from>
         <to type="forward" last="true">$0</to>
     </rule>
     <!--Страницы сайта (основная работа CMS)-->
