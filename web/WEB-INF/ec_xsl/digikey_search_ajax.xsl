@@ -93,7 +93,7 @@
 							<input type="hidden" value="{qty}" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
-							<input type="number" class="text-input" name="qty" value="1" min="1"/>
+							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
@@ -105,7 +105,7 @@
 							<input type="hidden" value="0" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
-							<input type="number" class="text-input" name="qty" value="1" min="0"/>
+							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
@@ -184,7 +184,7 @@
 							<input type="hidden" value="{qty}" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
-							<input type="number" class="text-input" name="qty" value="1" min="1"/>
+							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
@@ -196,7 +196,7 @@
 							<input type="hidden" value="0" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
-							<input type="number" class="text-input" name="qty" value="1" min="0"/>
+							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>

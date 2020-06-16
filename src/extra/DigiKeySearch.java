@@ -9,6 +9,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import okhttp3.*;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileReader;
@@ -112,7 +113,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 				.addHeader("content-type", "application/json")
 				.addHeader("accept", "application/json")
 				.addHeader("X-DIGIKEY-Locale-ShipToCountry", "PL")
-				.addHeader("X-DIGIKEY-Locale-Site", "BY")
+				.addHeader("X-DIGIKEY-Locale-Site", "RU")
 				.addHeader("X-DIGIKEY-Customer-Id", CUSTOMER_ID)
 				//.addHeader("X-IBM-Client-Id", CLIENT_ID)
 				.addHeader("X-DIGIKEY-Client-Id", CLIENT_ID)
@@ -145,6 +146,9 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	}
 
 	private ResultPE buildXML(String jsonString) throws Exception {
+//		File out = Paths.get(AppContext.getContextPath(), "search_result.json").toFile();
+//		FileUtils.deleteQuietly(out);
+//		FileUtils.writeStringToFile(out, jsonString, Charset.forName("UTF-8"));
 		long start = System.currentTimeMillis();
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
@@ -168,21 +172,29 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
 				.startElement("request_time").addText(searchRequestTime).endElement()
 				.startElement("results").addText(json.get(JSON_PRODUCT_COUNT)).endElement()
-				.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
+				//.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
 				.endElement();
 
-
-		JSONArray parts = json.getJSONArray(JSON_RESULTS);
-
-		for (int i = 0; i < parts.length(); i++) {
-			JSONObject part = parts.getJSONObject(i);
-			convertProductJsonToXml(doc, part);
-		}
+		addJSONArrayToResults(doc, json, JSON_EXACT);
+		addJSONArrayToResults(doc, json, JSON_MANUFACTURER_PRODUCT);
+		addJSONArrayToResults(doc, json, JSON_RESULTS);
 		doc.startElement("elapsed_time").addText(System.currentTimeMillis() - start).endElement();
 		doc.endElement();
 		ResultPE result = getResult("complete");
 		result.setValue(doc.toString());
 		return result;
+	}
+
+	private void addJSONArrayToResults(XmlDocumentBuilder doc, JSONObject searchResults, String arrayKey) {
+		try {
+			JSONArray parts = searchResults.getJSONArray(arrayKey);
+			if (parts != null) {
+				for (int i = 0; i < parts.length(); i++) {
+					JSONObject part = parts.getJSONObject(i);
+					convertProductJsonToXml(doc, part);
+				}
+			}
+		}catch (JSONException e){}
 	}
 
 	private void convertProductJsonToXml(XmlDocumentBuilder doc, JSONObject part){
@@ -198,7 +210,8 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 		doc.startElement(MIN_QTY).addText(part.get(JSON_MIN_QTY)).endElement();
 		doc.startElement(QTY).addText(part.get(JSON_QTY)).endElement();
 		doc.startElement(DESCRIPTION).addText(part.get(JSON_DESCRIPTION)).endElement();
-		doc.startElement(OLD_URL).addText(DIGIKEY_BASE_URL + part.get(JSON_URL)).endElement();
+		String url = part.get(JSON_URL).toString().replace(".by", ".com");
+		doc.startElement(OLD_URL).addText(url).endElement();
 		doc.startElement(MANUAL).addText(part.get(JSON_MANUAL)).endElement();
 		JSONArray priceMap = part.getJSONArray(JSON_PRICE_MAP);
 		StringBuilder tmp = new StringBuilder();
@@ -211,6 +224,10 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 			doc.startElement("spec_price_map", "qty", specPrice.get(JSON_SPEC_QTY), "price", specPrice.get(JSON_PRICE)).endElement();
 		}
 		doc.startElement("spec_price").addText(tmp.toString()).endElement();
+		//Lead status and RoHSStatus;
+		doc.startElement(PARAM, "name", "RoHSStatus").addText(part.get("RoHSStatus")).endElement();
+		doc.startElement(PARAM, "name", "LeadStatus").addText(part.get("LeadStatus")).endElement();
+
 		JSONArray params = part.getJSONArray(JSON_PARAMS);
 		for (int i = 0; i < params.length(); i++) {
 			JSONObject param = params.getJSONObject(i);

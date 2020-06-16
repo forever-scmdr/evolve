@@ -3,6 +3,7 @@ package extra;
 public interface DigiKeyJSONConst {
 	String JSON_PRODUCT_COUNT = "ProductsCount";
 	String JSON_EXACT = "ExactDigiKeyProduct";
+	String JSON_MANUFACTURER_PRODUCT = "ExactManufacturerProducts";
 	//Array
 	String JSON_RESULTS = "Products";
 	String JSON_VALUE = "Value";

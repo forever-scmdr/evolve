@@ -649,7 +649,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="bio@forever-ds.com, sales@ictrade.by"/>
+			<var name="email" value="sales@ictrade.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -713,7 +713,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="support@forever-ds.com, sales@ictrade.by"/>
+			<var name="email" value="sales@ictrade.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -737,7 +737,7 @@
 	</page>
 
 
-	<page name="cart" template="">
+	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
@@ -1509,7 +1509,7 @@
 			<var name="query"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
-			<var name="qty" />
+			<var name="qty" value="-1" scope="cookie"/>
 		</request>
 		<command class="extra.PlatanSearchCommand">
 			<result name="result" type="xml" />
