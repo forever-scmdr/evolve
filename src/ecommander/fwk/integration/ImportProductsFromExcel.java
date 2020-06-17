@@ -195,7 +195,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
-					Path picsFolder = contextPath.resolve("product_pics");
+					Path picsFolder = Paths.get(AppContext.getContextPath()).resolve("");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
 					if (product == null) {
@@ -378,7 +378,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											mainPicFile = picsFolder.resolve(cellValue).toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearValue("medium_pic");
+												//product.clearValue("medium_pic");
 												product.clearValue("small_pic");
 											}
 											break;
