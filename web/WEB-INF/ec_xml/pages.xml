@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>          
+<?xml version="1.0" encoding="UTF-8"?>            
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -38,6 +38,7 @@
 			<single item="product_side"/>
 		</single>
 		<link name="index_link" target="index"/>
+		<link name="articles_link" target="articles"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
@@ -68,7 +69,7 @@
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" assoc="general">
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="translit"/>
@@ -308,7 +309,7 @@
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
-			<single item="product_extra"/>
+			<list item="product_extra"/>
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
@@ -332,6 +333,7 @@
 					<var name="action" value="addToCart"/>
 					<var name="code" ref="lprod" parameter="code"/>
 				</link>
+				<list item="params"/>
 			</list>
 
 		</single>
@@ -346,6 +348,33 @@
 		<include name="COMMON"/>
 	</page>
 
+
+	<page name="articles" template="news" cacheable="false">
+		<request>
+			
+			<var name="p" value="1"/>
+		</request>
+		<single item="articles" tag="selected_news">
+			<single item="seo"/>
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var value="12"/>
+					</limit>
+					<pages>
+						<var var="p"/>
+					</pages>
+				</filter>
+				<link name="show_news_item" target="article" type="exclusive">
+					<var name="ni" ref="ni" style="translit"/>
+				</link>
+			</list>
+		</single>
+		<include name="COMMON"/>
+	</page>
 
 
 	<page name="news" template="news" cacheable="false">
@@ -382,6 +411,16 @@
 		<single item="news_item" var="ni" cacheable="false" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
+		</single>
+		<include name="COMMON"/>
+	</page>
+
+	<page name="article" template="news_item" cacheable="false">
+		<request>
+			<var name="ni" style="translit"/>
+		</request>
+		<single item="news_item" var="ni" cacheable="false" cache-vars="ni">
+			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
@@ -441,7 +480,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="bio@forever-ds.com"/>
+			<var name="email" value="interpartner3@rambler.ru, interpartner4@rambler.ru"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -501,7 +540,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="bio@forever-ds.com"/>
+			<var name="email" value="shop@interpartner.by, bio@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -586,7 +625,6 @@
 		<request>
 			<var name="message"/>
 		</request>
-
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
 		</new>
@@ -618,7 +656,7 @@
 
 	<page name="order_email" template="order_email">
 		<session>
-			<single item="cart">
+			<list item="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
 						<filter>
@@ -631,8 +669,7 @@
 						</link>
 					</list>
 				</list>
-			</single>
-
+			</list>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
@@ -1164,6 +1201,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+			<var name="with_pics" value="SEARCH_BY_CELL_VALUE" />
 			<!--<var name="if_blank" value="clear"/>-->
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
@@ -1172,14 +1210,14 @@
         </command>
 	</page>
 
-<!--	<page name="fix_keys">-->
-<!--		<link name="success" target="ok"/>-->
-<!--		<command class="extra.FixKeyUnique">-->
-<!--			<result name="success" type="redirect"/>-->
-<!--		</command>-->
-<!--	</page>-->
+	<!-- <page name="fix_keys">
+		<link name="success" target="ok"/>
+		<command class="extra.FixKeyUnique">
+			<result name="success" type="redirect"/>
+		</command>
+	</page> -->
 
-<!--	<page name="ok"></page>-->
+	<page name="ok"></page>
 
 	<page name="import_from_ancient" template="integration" authority-groups="common">
 		<request>

@@ -8749,3 +8749,14 @@ color: #333333;
 	padding-top: 40px;
 }
 /* header end */ 
+
+
+
+
+/* responsive general */
+@media (min-width: 1200px) and (max-width: 1439px) {
+	.main-menu__item {
+		font-size: 20px;
+	}
+}
+/* responsive general end*/

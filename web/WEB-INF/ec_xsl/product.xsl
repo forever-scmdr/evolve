@@ -5,8 +5,9 @@
 
 	<xsl:variable name="header" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $header"/>
-	<xsl:variable name="title" select="concat('Купить ', $h1, ' в Минске - ООО &quot;МИЗИДА Сервис&quot; продажа промышленного швейного оборудования')"/>
+	<xsl:variable name="title" select="$h1"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="default_keywords" select="string-join($p/tag, ', ')"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -102,9 +103,9 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag">
+				<!-- <xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each>
+				</xsl:for-each> -->
 
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
@@ -128,11 +129,11 @@
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-								<xsl:if test="$has_price">
+								<xsl:if test="$has_price and f:num($p/qty) &gt; 0">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Предзаказ" />
+									<input type="submit" class="button" value="Заказать" />
 								</xsl:if>
-								<xsl:if test="not($has_price)">
+								<xsl:if test="not($has_price and f:num($p/qty) &gt; 0)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" class="button" value="Предзаказ" />
 								</xsl:if>
@@ -158,15 +159,31 @@
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<div class="multi-device">
-						<div style="padding-left: 0;">Размер</div>
+					
+					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
+					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
+
+					<xsl:variable name="cols" select="count($param_names) + 4"/>
+
+					<div class="multi-device" style="grid-template-columns: repeat({$cols}, 1fr);">
+						<div style="padding-left: 0;">Вариант</div>
+						<xsl:for-each select="$param_captions">
+							<div style="color: #a2a2a2; font-size: 13px;"><xsl:value-of select="."/></div>
+						</xsl:for-each>
 						<div>Цена</div>
 						<div>Наличие</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
+							<xsl:variable name="lp" select="current()"/>
 							<xsl:variable name="has_price" select="price and price != '0'"/>
-							<div class="multi-device__name"><xsl:value-of select="name" /></div>
+							<div class="multi-device__name"><xsl:value-of select="$lp/name" /></div>
+							<xsl:for-each select="$param_names">
+								<div class="multi-device__name">
+									<xsl:value-of select="$lp/params/param[@name = current()]" />
+									
+								</div>
+							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
 									<xsl:if test="price_old">
@@ -195,7 +212,7 @@
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Запросить цену" />
+										<input type="submit" class="button" value="Предзаказ" />
 									</xsl:if>
 								</form>
 							</div>
@@ -255,18 +272,22 @@
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
-						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:for-each select="$p/product_extra[. != '']">
-								<xsl:variable name="first" select="position()=1" />
-								<li role="presentation" class="{'active'[$first]}">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a> 
-								</li>
-							</xsl:for-each>
-							<!-- <xsl:if test="$p/params != ''"> -->
+						<!-- <xsl:if test="$p/params != ''"> -->
 								<li role="presentation" class="{'active'[not($p/product_extra)]}">
 									<a href="#tab1" role="tab" data-toggle="tab">Описание</a>
 								</li>
 							<!-- </xsl:if> -->
+						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
+							<xsl:for-each select="$p/product_extra[. != '']">
+								
+								<xsl:variable name="first" select="position()=1" />
+								<li role="presentation" class="{'active'[$first]}">
+									<a href="#tab{@id}" role="tab" data-toggle="tab">
+										<xsl:value-of select="current()/name"/>
+									</a> 
+								</li>
+							</xsl:for-each>
+							
 					</ul>
 				<div class="tab-content">
 					<!-- <xsl:if test="$p/params != ''"> -->

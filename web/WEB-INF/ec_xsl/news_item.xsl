@@ -18,9 +18,14 @@
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> &gt;
 				<xsl:variable name="ns" select="page/news[@id = $ni/news/@id]"/>
-				<a href="{$ns/show_page}">
-					<xsl:value-of select="$ns/name"/>
-				</a>
+				<xsl:if test="$ns">
+					<a href="{$ns/show_page}">
+						<xsl:value-of select="$ns/name"/>
+					</a>
+				</xsl:if>
+				<xsl:if test="not($ns)">
+					<a href="{page/articles_link}">Статьи</a>
+				</xsl:if>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
