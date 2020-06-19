@@ -7,8 +7,6 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -16,10 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
 	Workbook priceWB;
@@ -30,14 +31,15 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private boolean newItemTypes = false;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 	private HashSet<String> duplicateCodes = new HashSet<>();
-	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
-	private static final ItemType PARAMS_XML_ITEM_TYPE = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
-	private FormulaEvaluator eval = priceWB.getCreationHelper().createFormulaEvaluator();
-	private HashMap<Integer, String> PARAM_INDEXES = new HashMap(){{PARAM_INDEXES.put(0, CODE_PARAM);}};
+	private FormulaEvaluator eval;
+	private HashMap<Integer, String> PARAM_INDEXES = new HashMap<>();
 	private HashMap<Integer, String> AUX_PARAMS =  new HashMap<>();
+	private static final String FILE_UPLOAD_FOLDER = "pdf";
 
 	//File constants
-	private final static HashMap<String, String> HEADER_PARAMS = new HashMap(){{
+	private final static HashMap<String, String> HEADER_PARAMS = new HashMap<>();
+	static{
+
 		HEADER_PARAMS.put("наименование", NAME_PARAM);
 		HEADER_PARAMS.put("наличие", QTY_PARAM);
 		HEADER_PARAMS.put("ед. изм", UNIT_PARAM);
@@ -48,13 +50,14 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		HEADER_PARAMS.put("описание", DESCRIPTION_PARAM);
 		HEADER_PARAMS.put("картинка", MAIN_PIC_PARAM);
 		HEADER_PARAMS.put("pdf", "pdf");
-	}};
+	};
 
 
 
 
 	@Override
 	protected boolean makePreparations() throws Exception {
+		PARAM_INDEXES.put(0, CODE_PARAM);
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		File excelFile = catalog.getFileValue("big_integration", AppContext.getFilesDirPath(false));
 		if(!excelFile.isFile()){
@@ -62,6 +65,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 			return false;
 		}
 		priceWB = POIUtils.openExcel(excelFile).getWorkbook();
+		eval = priceWB.getCreationHelper().createFormulaEvaluator();
 		return true;
 	}
 
@@ -75,6 +79,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		//parsing from Excel
 		info.setToProcess(getLinesCount(priceWB));
 		parse(priceWB);
+		info.setCurrentJob("");
 		priceWB.close();
 		//creating filters and item types
 		createFiltersAndItemTypes();
@@ -99,10 +104,15 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				Row row = rows.next();
 				int rowIdx = row.getRowNum();
 				info.setLineNumber(rowIdx + 1);
+//				int pns = row.getPhysicalNumberOfCells();
+//				int lcn = row.getLastCellNum();
 				//SECTION
-				if(row.getLastCellNum() == 1){
-					String sectionCode = getCellAsString(row.getCell(0));
-					String sectionName = getCellAsString(row.getCell(1));
+				String sectionCode = getCellAsString(row.getCell(0));
+				String sectionName = getCellAsString(row.getCell(1));
+
+				if(getFilledCellsCount(row) == 2 && StringUtils.isNotBlank(sectionCode) && StringUtils.isNotBlank(sectionName)){
+//					String sectionCode = getCellAsString(row.getCell(0));
+//					String sectionName = getCellAsString(row.getCell(1));
 
 					boolean isNew = false;
 
@@ -124,7 +134,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					currentSection.setValue(CODE_PARAM, sectionCode);
 					currentSection.setValue(NAME_PARAM, sectionName);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noFulltextIndex());
-					if(isNew) sectionsWithNewItemTypes.add(currentSection.getId());
+					//if(isNew) sectionsWithNewItemTypes.add(currentSection.getId());
+
 				}
 
 				//HEADERS
@@ -134,20 +145,26 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 				//PRODUCT
 				else{
-					Item product;
-					Item paramsXml;
+
+					HashMap<String,String> userDefined = new HashMap<>();
+					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+
 					Iterator<Cell> iterator = row.cellIterator();
 					while (iterator.hasNext()){
 						Cell cell = iterator.next();
 						int index = cell.getColumnIndex();
 						String paramName = PARAM_INDEXES.get(index);
-						XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+
 
 						String cellValue = getCellAsString(cell);
+
 
 						if(paramName == null){
 							paramName = AUX_PARAMS.get(index);
 							if(paramName == null) continue;
+
+							userDefined.put(paramName, cellValue);
+
 							xml.startElement("parameter")
 									.startElement("name")
 									.addText(firstUpperCase(paramName))
@@ -157,18 +174,116 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement()
 									.endElement();
 						}else if(CODE_PARAM.equals(paramName)){
-							product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
-							if(product == null){
-								product = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
-								product.setValue(CODE_PARAM, cellValue);
+							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
+							if(currentProduct == null){
+								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
+								currentProduct.setValue(CODE_PARAM, cellValue);
 							}
-						}else{
-
+						}else if (MAIN_PIC_PARAM.equals(paramName)){
+							String[] pics = StringUtils.split(cellValue, '|');
+							if (needNewFile(currentProduct, pics[0])){
+								File f = Paths.get(FILE_UPLOAD_FOLDER, pics[0].trim()).toFile();
+								currentProduct.setValue(MAIN_PIC_PARAM, f);
+							}
+							if(pics.length > 1){
+								boolean needClear = true;
+								for(int j = 1; j < pics.length; j++){
+									File f = Paths.get(FILE_UPLOAD_FOLDER, pics[i].trim()).toFile();
+									if(f.isFile()){
+										if(needClear){
+											currentProduct.clearValue(GALLERY_PARAM);
+											needClear = false;
+										}
+										currentProduct.setValue(GALLERY_PARAM, f);
+									}
+								}
+							}
+						}else if("pdf".equalsIgnoreCase(paramName)){
+							String[] split = StringUtils.split(cellValue, '|');
+							currentProduct.clearValue("pdf");
+							for(String s : split){
+								currentProduct.setValue("pdf", s.trim());
+							}
+						}
+						else{
+							currentProduct.setValueUI(paramName, cellValue);
 						}
 					}
+
+					String searchString = generateSearchParam(userDefined);
+					currentProduct.setValueUI("search", searchString);
+					String unit = currentProduct.getStringValue(UNIT_PARAM, "шт");
+					double min = currentProduct.getDoubleValue(MIN_QTY_PARAM, 1d);
+					currentProduct.setValue(UNIT_PARAM, unit);
+					currentProduct.setValue(STEP_PARAM, min);
+
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
+
+					if(StringUtils.isNotBlank(xml.toString())) {
+						Item paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
+						paramsXML.setValueUI(XML_PARAM, xml.toString());
+						if(!"Прочее".equals(currentSection.getStringValue(NAME_PARAM, ""))) sectionsWithNewItemTypes.add(currentSection.getId());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
+					}
+
 				}
+				info.increaseProcessed();
 			}
 		}
+	}
+
+	private int getFilledCellsCount(Row row){
+		int c = 0;
+		Iterator<Cell> iterator = row.cellIterator();
+		while (iterator.hasNext()){
+			Cell y = iterator.next();
+			if(StringUtils.isNotBlank(getCellAsString(y))) c++;
+		}
+		return c;
+	}
+
+	private String generateSearchParam(HashMap<String,String> userDefined) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(currentSection.getStringValue(NAME_PARAM, "")).append(' ');
+		sb.append(processString(currentProduct.getStringValue(NAME_PARAM,"")));
+
+		userDefined.forEach((k,v) ->{
+			sb.append(' ').append(k);
+			sb.append(' ').append(processString(v));
+		});
+		return  sb.toString();
+	}
+
+	public static String processString(String arg) {
+		if(StringUtils.isBlank(arg)) return "";
+		String regexp = "(?<number>\\d+([.,/]\\d+)*)";
+		Pattern p = Pattern.compile(regexp);
+		Matcher m = p.matcher(arg);
+		String x;
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			String n = m.group("number");
+			m.appendReplacement(sb, " " + n + " ");
+		}
+		m.appendTail(sb);
+		x = sb.toString();
+		x = x.replaceAll("[+-]", "");
+		x = x.replaceAll("\\(", "");
+		x = x.replaceAll("\\)", "");
+		x = x.replaceAll("\\s+", " ");
+		x = x.trim();
+		return x;
+	}
+
+	private boolean needNewFile(Item product, String path){
+		if(StringUtils.isBlank(path) || "no-image.png".equals(path)) return false;
+		File existingFile = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+		File newFile = Paths.get(FILE_UPLOAD_FOLDER, path).toFile();
+		if(!newFile.isFile()) return false;
+		if(existingFile.isFile() && !existingFile.getName().equals(newFile.getName())) return true;
+		int existingFileHash = existingFile.hashCode();
+		int newFileHash = newFile.hashCode();
+		return existingFileHash != newFileHash;
 	}
 
 	private void initHeaders(Row row) {
@@ -181,7 +296,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 			if(StringUtils.isBlank(paramName)){
 				AUX_PARAMS.put(cell.getColumnIndex(), cellValue);
 			}else{
-				PARAM_INDEXES.put(cell.getColumnIndex(), cellValue);
+				PARAM_INDEXES.put(cell.getColumnIndex(), paramName);
 			}
 		}
 	}

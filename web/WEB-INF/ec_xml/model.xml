@@ -232,7 +232,7 @@
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true"/>
-		<parameter name="pdf" type="string" caption="Ссылка на документ"/>
+		<parameter name="pdf" type="string" caption="Ссылка на документ" multiple="true"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>

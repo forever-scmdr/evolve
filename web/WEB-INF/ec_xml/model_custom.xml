@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
 
+<!--START_p562005-->
+<item name="p562005" caption="Программаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1956" ag-hash="-2110050476"></item>
+<!--END_p562005-->
+
+<!--START_p562006-->
+<item name="p562006" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1957" ag-hash="-2110050475"></item>
+<!--END_p562006-->
+
 <!--START_p561949-->
 <item name="p561949" caption="Варисторы выводные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1910" ag-hash="-2110071490">
 	<parameter name="napryagenie_varistorav" caption="Напряжение варистора,В" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-520472501" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -172,7 +180,9 @@
 <!--END_p561967-->
 
 <!--START_p561968-->
-<item name="p561968" caption="Микросхемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1926" ag-hash="-2110071429"></item>
+<item name="p561968" caption="Микросхемы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1926" ag-hash="-2110071429">
+	<parameter name="vintom" caption="Винтом" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-816365737" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
 <!--END_p561968-->
 
 <!--START_p561970-->
@@ -299,7 +309,15 @@
 <!--END_p561984-->
 
 <!--START_p561985-->
-<item name="p561985" caption="Разъемы для элементов питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1939" ag-hash="-2110071370"></item>
+<item name="p561985" caption="Разъемы для элементов питания" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1939" ag-hash="-2110071370">
+	<parameter name="tip" caption="Тип" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="montag_razema" caption="Монтаж разъема" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-227802881" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kontsevaya_zadelka_kontaktov" caption="Концевая заделка контактов" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1633365394" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_shtyrya_mm" caption="Диаметр штыря, мм" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1278707436" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vneshnii_diametr_otverstiya_mm" caption="Внешний диаметр отверстия, мм" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-854890291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="sila_toka_i_a" caption="Сила тока i, а" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1885566289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="nominalnoe_napryagenie_v" caption="Номинальное напряжение, в" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1008858513" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
 <!--END_p561985-->
 
 <!--START_p561986-->
@@ -321,11 +339,19 @@
 <!--END_p561988-->
 
 <!--START_p561989-->
-<item name="p561989" caption="Резисторы переменные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1942" ag-hash="-2110071366"></item>
+<item name="p561989" caption="Резисторы переменные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1942" ag-hash="-2110071366">
+	<parameter name="nominalnoe_soprotivlenie" caption="Номинальное сопротивление" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1239363626" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ed__izmereniya" caption="Ед. измерения" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="540469374" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_vt" caption="Мощность, вт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1684143035" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
 <!--END_p561989-->
 
 <!--START_p561990-->
-<item name="p561990" caption="Резисторная сборка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1943" ag-hash="-2110071344"></item>
+<item name="p561990" caption="Резисторная сборка" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1943" ag-hash="-2110071344">
+	<parameter name="nominalnoe_soprotivlenie" caption="Номинальное сопротивление" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1239363626" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ed__izmereniya" caption="Ед. измерения" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="540469374" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_vt" caption="Мощность, вт" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1684143035" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
 <!--END_p561990-->
 
 <!--START_p561991-->
@@ -465,12 +491,4 @@
 	<parameter name="temperaturnyi_diapazon_s" caption="Температурный диапазон, °С" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-122743694" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p562004-->
-
-<!--START_p562005-->
-<item name="p562005" caption="Программаторы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1956" ag-hash="-2110050476"></item>
-<!--END_p562005-->
-
-<!--START_p562006-->
-<item name="p562006" caption="Прочее" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1957" ag-hash="-2110050475"></item>
-<!--END_p562006-->
 <!--EXP--></model>

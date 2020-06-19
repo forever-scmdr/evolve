@@ -1474,6 +1474,15 @@
         </command>
 	</page>
 
+	<page name="parse_old_excel" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportFromOldVersionExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="watermarks" template="integration/watermarks" authority-groups="common">
 		<request>
