@@ -469,6 +469,16 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
+
+	private double round(double qty, double min_qty, double step) {
+		if (qty > 0 && qty < min_qty)
+			return min_qty;
+		double quotient = Math.ceil(qty / step);
+		double res = step * quotient;
+		res  = res < min_qty? min_qty : res;
+		return res;
+	}
+
     /**
      * Установить значения для всех параметров количества (в наличии, общего)
      * @param product
@@ -476,8 +486,12 @@ public abstract class BasicCartManageCommand extends Command {
      * @param qtyWanted
      */
 	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
+
+		qtyWanted = round(qtyWanted, product.getDoubleValue("min_qty", 1d), product.getDoubleValue("step", 1d));
+
 		byte b = getInitiator().getRole("registered");
-		String qp = b > -1? "qty_opt" : QTY_PARAM;
+		//String qp = b > -1? "qty_opt" : QTY_PARAM;
+		String qp = QTY_PARAM;
         double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
         double qtyAvail = 0;
         double qtyTotal = 0;

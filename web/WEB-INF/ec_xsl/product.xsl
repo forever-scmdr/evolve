@@ -56,7 +56,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Электронные компоненты</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
@@ -138,6 +138,11 @@
 							<xsl:when test="$has_price"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/unit,'.')"/></div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
+						<!-- <xsl:if test="$p/pdf != ''">
+							<p>
+								<a href="{concat('pdf/', $p/pdf)}" target="_blank">Документ PDF</a>
+							</p>
+						</xsl:if> -->
 					</div>
 				</xsl:if>
 
@@ -192,7 +197,7 @@
 				</div>
 				<div class="extra-info">
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-				</div>
+				</div> <p>Не нашли нужный компонент? <br></br><a href="http://ictrade.by/page/individualnyi_zakaz/" rel="nofollow" class="MSI_ext_nofollow">Сделайте индивидуальный заказ!</a></p>
 			</div>
 			<div class="description">
 
@@ -232,6 +237,18 @@
 										</td>
 									</tr>
 								</xsl:for-each>
+								<xsl:if test="$p/pdf != ''">
+									<tr>
+										<td>
+											<p>
+												<strong>Техническая документация</strong>
+											</p>
+										</td>
+										<td>
+											<a class="pdf" href="{concat('pdf/', $p/pdf)}" target="_blank">Документ PDF</a>
+										</td>
+									</tr>									
+								</xsl:if>
 							</table>
 
 						</div>
