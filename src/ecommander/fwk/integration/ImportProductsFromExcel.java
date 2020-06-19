@@ -4,10 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.MoveItemDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -266,8 +263,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									s = s.trim();
 									switch (withPictures) {
 										case SEARCH_BY_CELL_VALUE:
-											File p = picsFolder.resolve(s).toFile();
-											if (p.exists() && p.isFile()) product.setValue(paramName, p);
+											//ANTI-DOLBOEB fix
+											cellValue = (StringUtils.startsWith(cellValue, getUrlBase()))? cellValue.replace(getUrlBase(), "") : cellValue;
+											if(StringUtils.startsWith(cellValue,"http://") || StringUtils.startsWith(cellValue,"https://")){
+
+												URL url = new URL(cellValue);
+												product.setValue(paramName, url);
+											}else {
+												File p = picsFolder.resolve(s).toFile();
+												if (p.exists() && p.isFile()) product.setValue(paramName, p);
+											}
 											break;
 										case DOWNLOAD:
 											if (StringUtils.isBlank(s)) continue;
@@ -352,12 +357,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
+								File mainPicFile = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 
-								if (mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
+
+								if (mainPicFile.isFile() && mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
 									continue;
 
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
-									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
+									mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 									if (mainPicFile.exists()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
 										product.clearValue("medium_pic");
@@ -366,7 +373,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								} else if (StringUtils.isBlank(mainPic.toString())) {
 									switch (withPictures) {
 										case SEARCH_BY_CODE:
-											File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
+											mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
 												product.clearValue("medium_pic");
@@ -374,12 +381,20 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											}
 											break;
 										case SEARCH_BY_CELL_VALUE:
-											if (StringUtils.isBlank(cellValue)) break;
-											mainPicFile = picsFolder.resolve(cellValue).toFile();
-											if (mainPicFile.exists()) {
-												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												//product.clearValue("medium_pic");
-												product.clearValue("small_pic");
+											//ANTI-DOLBOEB fix
+											cellValue = (StringUtils.startsWith(cellValue, getUrlBase()))? cellValue.replace(getUrlBase(), "") : cellValue;
+											if(StringUtils.startsWith(cellValue,"http://") || StringUtils.startsWith(cellValue,"https://")){
+
+												URL url = new URL(cellValue);
+												product.setValue(paramName, url);
+											}else {
+												if (StringUtils.isBlank(cellValue)) break;
+												mainPicFile = picsFolder.resolve(cellValue).toFile();
+												if (mainPicFile.exists()) {
+													product.setValue(MAIN_PIC_PARAM, mainPicFile);
+													//product.clearValue("medium_pic");
+													product.clearValue("small_pic");
+												}
 											}
 											break;
 										case DOWNLOAD:
@@ -585,6 +600,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
 					s = s.replace(";", "").trim();
+					s = StringUtils.startsWith(s, getUrlBase())? s.replace(getUrlBase(), "") : s;
 					if (StringUtils.isBlank(s)) continue;
 					if (StringUtils.startsWith(s, "https://") || StringUtils.startsWith(s, "http://")) {
 						URL url = new URL(s);
@@ -762,6 +778,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	@Override
 	protected void integrate() throws Exception {
+
+		setOperation("Удаление старых записей. Подождите!");
+		CleanDeletedItemsDBUnit delete = new CleanDeletedItemsDBUnit(15000);
+		executeAndCommitCommandUnits(delete);
+
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Обновлние каталога");
