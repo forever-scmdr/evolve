@@ -20,7 +20,8 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="meta_keywords" select="''" />
 	<xsl:variable name="base" select="page/base" />
-	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+	<xsl:variable name="main_host_tmp" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+	<xsl:variable name="main_host" select="if(ends-with($main_host_tmp, '/')) then $main_host_tmp else concat($main_host_tmp, '/')" />
 
 	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
@@ -628,10 +629,8 @@
 					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
 					<xsl:for-each select="params/param">
 						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
-						<xsl:text disable-output-escaping="yes">;&lt;br/&gt;</xsl:text>
+						<xsl:text>;</xsl:text><br/>
 					</xsl:for-each>
-					<br/>
-					<a href="{concat('pdf/', pdf)}" target="_blank">описание PDF</a>
 				</div>
 			</div>
 			<div class="device__article-number"><xsl:value-of select="code"/></div>
@@ -737,9 +736,9 @@
 				<div class="mc-container">
 					<xsl:call-template name="INC_MOBILE_HEADER"/>
 					<xsl:call-template name="CONTENT"/>
-					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
-						<div class="page-content">
-							<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+					<xsl:if test="$seo/bottom_text != ''">
+						<div class="page-content m-t">
+							<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:if>
 				</div>
@@ -843,7 +842,6 @@
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
-				<script type="text/javascript" src="js/popover.min.js"/>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
@@ -1013,6 +1011,13 @@
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
 
+	<xsl:template name="TOP_SEO">
+		<xsl:if test="$seo/text != ''">
+			<div class="page-content m-t">
+				<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template name="MARKUP"/>
 

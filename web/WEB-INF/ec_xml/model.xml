@@ -146,7 +146,7 @@
 	</item>
 
 
-	<item name="catalog" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+	<item name="catalog" super="* seo_container" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
@@ -165,7 +165,7 @@
 		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
 		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
 
-		<on-update class="ecommander.fwk.CopyToUpload"/>
+<!--		<on-update class="ecommander.fwk.CopyToUpload"/>-->
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -195,6 +195,8 @@
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
         <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
+		<parameter name="min_qty" type="double" caption="Минимальное количество для заказа"/>
+		<parameter name="step" type="double" caption="Кратность"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 	</item>
 
@@ -322,6 +324,7 @@
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
+		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="price_map" type="string" caption="Зависимость цены от количества"/>
