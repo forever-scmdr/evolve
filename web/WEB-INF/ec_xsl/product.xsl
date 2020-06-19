@@ -113,11 +113,11 @@
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="text-input" name="qty" value="1" min="0" />
+									<input type="number" class="text-input" name="qty" value="{$p/min_qty}" min="{$p/min_qty}" />
 									<input type="submit" class="button" value="В корзину" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
-									<input type="number" class="text-input" name="qty" value="1" min="0" />
+									<input type="number" class="text-input" name="qty" value="{$p/min_qty}" min="{$p/min_qty}" />
 									<input type="submit" class="button  not_available" value="Под заказ" />
 								</xsl:if>
 							</form>
