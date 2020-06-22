@@ -557,11 +557,11 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="{min_qty}" min="{min_qty}"/>
+								<input type="number" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="{min_qty}" min="{min_qty}"/>
+								<input type="hidden" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
 						</form>
@@ -675,11 +675,11 @@
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
-								<input type="number" class="text-input" name="qty" value="{min_qty}" min="{min_qty}"/>
+								<input type="number" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="text-input" name="qty" value="{min_qty}" min="{min_qty}"/>
+								<input type="hidden" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
 						</form>
