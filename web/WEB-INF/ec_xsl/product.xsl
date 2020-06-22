@@ -16,6 +16,7 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="unit" select="if(f:num($p/min_qty) &lt; 2) then $p/unit else concat($p/min_qty, $p/unit)"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
@@ -107,7 +108,7 @@
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog($p/price_old, '')"/></span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="f:price_catalog($p/price, $p/unit)" /></div>
+								<div class="price_normal"><xsl:value-of select="f:price_catalog($p/price, $unit)" /></div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
