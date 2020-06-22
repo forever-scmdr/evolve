@@ -59,8 +59,10 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	protected boolean makePreparations() throws Exception {
 		PARAM_INDEXES.put(0, CODE_PARAM);
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
+		addLog(catalog.toString());
 		File excelFile = catalog.getFileValue("big_integration", AppContext.getFilesDirPath(false));
-		if(!excelFile.isFile()){
+		info.setCurrentJob("Opening: " + excelFile.getAbsolutePath());
+		if(excelFile == null || !excelFile.isFile()){
 			info.addError("Excel file does not exist.","");
 			return false;
 		}
@@ -181,21 +183,31 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							}
 						}else if (MAIN_PIC_PARAM.equals(paramName)){
 							String[] pics = StringUtils.split(cellValue, '|');
-							if (needNewFile(currentProduct, pics[0])){
-								File f = Paths.get(FILE_UPLOAD_FOLDER, pics[0].trim()).toFile();
-								currentProduct.setValue(MAIN_PIC_PARAM, f);
-							}
-							if(pics.length > 1){
-								boolean needClear = true;
-								for(int j = 1; j < pics.length; j++){
-									File f = Paths.get(FILE_UPLOAD_FOLDER, pics[i].trim()).toFile();
-									if(f.isFile()){
-										if(needClear){
-											currentProduct.clearValue(GALLERY_PARAM);
-											needClear = false;
-										}
-										currentProduct.setValue(GALLERY_PARAM, f);
+							if(pics.length > 0) {
+								if (needNewFile(currentProduct, pics[0])) {
+									if(!pics[0].equals("no-image.png")) {
+										File f = Paths.get(FILE_UPLOAD_FOLDER, pics[0].trim()).toFile();
+										currentProduct.setValue(MAIN_PIC_PARAM, f);
 									}
+
+								}
+								if (pics.length > 1) {
+									boolean needClear = true;
+									for (int j = 1; j < pics.length; j++) {
+										File f = Paths.get(FILE_UPLOAD_FOLDER, pics[j].trim()).toFile();
+										if (f.isFile()) {
+											if (needClear) {
+												currentProduct.clearValue(GALLERY_PARAM);
+												needClear = false;
+											}
+											currentProduct.setValue(GALLERY_PARAM, f);
+										}
+									}
+								}
+								String v = currentProduct.getStringValue(MAIN_PIC_PARAM,"");
+								if(v.equals("no-image.png")){
+									currentProduct.clearValue(MAIN_PIC_PARAM);
+									currentProduct.clearValue(SMALL_PIC_PARAM);
 								}
 							}
 						}else if("pdf".equalsIgnoreCase(paramName)){
