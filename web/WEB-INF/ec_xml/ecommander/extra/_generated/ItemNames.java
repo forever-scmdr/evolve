@@ -14,6 +14,7 @@ public interface ItemNames {
     String SEO_CONTAINER = "seo_container";
     String ORIGINAL_GALLERY = "original_gallery";
     String GALLERY = "gallery";
+    String CURRENCIES = "currencies";
     String CATALOG = "catalog";
     String SECTION = "section";
     String ABSTRACT_PRODUCT = "abstract_product";
@@ -257,6 +258,21 @@ public interface ItemNames {
 
     }
 
+    public interface currencies_ {
+
+        String _ITEM_NAME = "currencies";
+        String RUB_RATE = "RUB_rate";
+        String RUB_SCALE = "RUB_scale";
+        String RUB_UPDATE = "RUB_update";
+        String USD_RATE = "USD_rate";
+        String USD_SCALE = "USD_scale";
+        String USD_UPDATE = "USD_update";
+        String EUR_RATE = "EUR_rate";
+        String EUR_SCALE = "EUR_scale";
+        String EUR_UPDATE = "EUR_update";
+
+    }
+
     public interface custom_block_ {
 
         String _ITEM_NAME = "custom_block";
@@ -362,6 +378,7 @@ public interface ItemNames {
         String SIDE_MENU_PAGES = "side_menu_pages";
         String CATALOG_QUICK_SEARCH = "catalog_quick_search";
         String MANUAL_FILTER_PARAMS = "manual_filter_params";
+        String CURRENCY_RATES = "currency_rates";
 
     }
 

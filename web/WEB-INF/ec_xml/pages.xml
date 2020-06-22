@@ -8,7 +8,13 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+
+
 	<include-definition name="COMMON">
+		<request>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
+
 		<personal>
 			<list item="user" tag="registration">
 				<filter>
@@ -26,6 +32,7 @@
 		</usergroup>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
+			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
@@ -84,6 +91,9 @@
 			<var name="login" value="true"/>
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
+		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
+			<var name="cur" value=""/>
+		</link>
 
 		<single item="modules" cacheable="true">
 			<list item="named_code"/>
@@ -132,10 +142,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<page name="index" template="index" cacheable="true">
-		<request>
-			<var name="currency" value="byn" scope="cookie"/>
-		</request>
+	<page name="index" template="index" cacheable="true" cache-vars="cur">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -192,14 +199,13 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit $username" >
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
@@ -334,7 +340,6 @@
 	<page name="tag_section" template="tag_section">
 		<request>
 			<var name="tag"/>
-			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<request>
 			<var name="page" value="1"/>
@@ -411,7 +416,7 @@
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<usergroup name="0dmin">
@@ -443,7 +448,6 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
@@ -472,12 +476,6 @@
 			<var name="q" var="q"/>
 			<var name="minqty" value=""/>
 		</link>
-		<link name="set_currency_byn" target="search" copy-page-vars="yes">
-			<var name="currency" value="byn"/>
-		</link>
-		<link name="set_currency_rur" target="search" copy-page-vars="yes">
-			<var name="currency" value="rur"/>
-		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -486,7 +484,6 @@
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
-			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
@@ -725,7 +722,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -778,7 +775,6 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -815,7 +811,6 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
-			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -1550,6 +1545,14 @@
 		<command class="ecommander.fwk.integration.EmailQueueSender">
 			<result name="complete" type="xml"/>
 		</command>
+	</page>
+
+
+	<page name="get_rates" schedule="0 0 */2 ? * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
 	</page>
 
 </site>

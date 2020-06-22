@@ -146,9 +146,36 @@
 		<child item="original_gallery" single="true"/>
 	</item>
 
+	<!--
+		Можно добавлять новые валюты. Для добавления не надо менять ни классы ни XSL.
+		Класс обновления курсов берет названия параметров в качестве кодов валют,
+		поэтому нужно называть параметры так - Код валюты и суффикс (_rate, _scale, _update)
+	-->
+	<item name="currencies" caption="Курсы валют" ag-id="1782" ag-hash="-1089470353">
+		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
+		<parameter name="RUB_scale" type="currency-precise" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_update" type="byte" default="1" caption="Российский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
+		<parameter name="USD_scale" type="currency-precise" caption="Доллар США (Scale)"/>
+		<parameter name="USD_update" type="byte" default="1" caption="Доллар США - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
+		<parameter name="EUR_scale" type="currency-precise" caption="Евро (Scale)"/>
+		<parameter name="EUR_update" type="byte" default="1" caption="Евро - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+	</item>
+
 
 	<item name="catalog" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
+		<child item="currencies" single="true"/>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
@@ -742,6 +769,10 @@
 			<value>advanced</value>
 		</parameter>
 		<parameter name="manual_filter_params" type="string" caption="Ручное задание параметров фильтра" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="currency_rates" type="string" caption="Курсы валют" default="off">
 			<value>off</value>
 			<value>on</value>
 		</parameter>

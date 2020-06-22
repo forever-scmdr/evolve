@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="../utils/utils.xsl"/>
 
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
@@ -41,12 +42,12 @@
 					<div>
 						<strong>
 							<xsl:if test="$has_lines" >от </xsl:if>
-							<xsl:value-of select="price"/> руб.
+							<xsl:value-of select="f:exchange_cur(., 'price', 0)"/>
 						</strong>
 					</div>
 					<xsl:if test="price_old">
 						<div class="price_old">
-							<xsl:value-of select="price_old"/> руб.
+							<xsl:value-of select="f:exchange_cur(., 'price_old', 0)"/>
 						</div>
 					</xsl:if>
 				</div>
@@ -378,8 +379,8 @@
 			<div>
 				<xsl:if test="$has_price">
 					<div style="white-space: nowrap;">
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб.</div>
-						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., 'price', 0)"/></div>
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:exchange_cur(., 'price_old', 0)"/></span></div></xsl:if>
 					</div>
 				</xsl:if>
 				<xsl:if test="not($has_price)">

@@ -6,7 +6,7 @@
 	
 
 	<!-- banners -->
-	<xsl:template match="custom_block[1]">
+	<xsl:template match="custom_block[type='type_about']" mode="content">
 		<section class="{class} ptb">
 			<div class="container">
 				<div class="block__header">
@@ -14,7 +14,7 @@
 					<!-- <div class="block__subtitle"><xsl:value-of select="subheader" /></div> -->
 				</div>
 				<div class="grid grid_cols_3">
-					<xsl:for-each select="../../../page/main_page/custom_block[1]/custom_element">
+					<xsl:for-each select="custom_block">
 						<div class="banner {../class}__item">
 							<!-- <div class="{../class}__image banner__image">
 								<img src="{@path}{image}"/>
