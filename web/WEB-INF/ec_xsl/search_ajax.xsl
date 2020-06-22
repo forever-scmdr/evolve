@@ -33,7 +33,6 @@
 				<xsl:if test="$is_advanced">
 					<div class="cart-container">
 						<xsl:for-each select="page/product">
-							<xsl:variable name="price" select="if (price) then concat(price, ' p.') else 'под заказ'"/>
 							<div class="item">
 								<a href="{show_product}" class="image-container">
 									<img src="{@path}{main_pic}" alt=""/>
@@ -44,7 +43,7 @@
 										№ для заказа: <xsl:value-of select="code"/>
 									</span>
 								</a>
-								<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
+								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., 'price', 'под заказ')"/></div>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -60,7 +59,6 @@
 			<xsl:if test="page/product">
 				<div class="cart-container">
 					<xsl:for-each select="page/product">
-						<xsl:variable name="price" select="if (price) then concat(price, ' p.') else 'под заказ'"/>
 						<div class="item">
 							<a href="{show_product}" class="image-container">
 								<img src="{@path}{main_pic}" alt=""/>
@@ -71,7 +69,7 @@
 								<span>
 									№ для заказа: <xsl:value-of select="code"/>
 								</span>
-								<div class="price one"><span>Цена</span><xsl:value-of select="$price"/></div>
+								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., 'price', 'под заказ')"/></div>
 							</a>
 						</div>
 					</xsl:for-each>

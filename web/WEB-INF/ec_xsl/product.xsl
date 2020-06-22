@@ -104,8 +104,8 @@
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
+								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:exchange_cur($p, 'price_old', 0)"/></span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="f:exchange_cur($p, 'price', 0)"/></div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
@@ -162,8 +162,8 @@
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="f:exchange(current(), 'price_old', 0)"/></div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="f:exchange(current(), 'price', 0)"/></div>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>

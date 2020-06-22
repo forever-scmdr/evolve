@@ -194,7 +194,7 @@
 
 
 		<!-- banners -->
-		<xsl:apply-templates select="page/main_page/custom_block[1]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']" mode="content"></xsl:apply-templates>
 
 		<section class="special-items ptb" style="background-color: #e9e5dd;">
 			<div class="container">

@@ -3,7 +3,7 @@
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
-	<xsl:import href="utils/price_conversions.xsl"/>
+	<xsl:import href="utils/utils.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="snippets/product.xsl"/>
@@ -18,6 +18,7 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+	<xsl:variable name="currencies" select="page/catalog/currencies"/>
 
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
@@ -27,7 +28,7 @@
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
     <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
-
+	<xsl:variable name="has_currency_rates" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -121,6 +122,28 @@
 					<input type="submit" class="button header__button" value="Поиск" />
 					<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
 				</form>
+				<xsl:if test="$has_currency_rates and $currencies">
+					<div class="other-container">
+						<div class="catalog-currency">
+							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
+							<ul class="currency-options">
+								<xsl:variable name="currency_link" select="page/set_currency"/>
+								<li class="{'active'[$currency = 'BYN']}">
+									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
+									<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
+								</li>
+								<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+									<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+									<xsl:variable name="active" select="$currency = $cur"/>
+									<li class="{'active'[$active]}">
+										<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
+										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</div>
+					</div>
+				</xsl:if>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
