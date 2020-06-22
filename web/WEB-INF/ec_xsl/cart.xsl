@@ -106,7 +106,7 @@
 
 				<div class="quantity">
 					<span>Кол-во</span>
-					<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
+					<input type="number" value="{qty}" name="{input/qty/@input}" min="{product/min_qty}" step="{product/min_qty}" class="qty-input" data-old="{qty}" />
 					<br/>
 					<span>Наличие</span>
 					доступно: <xsl:value-of select="f:num($p/qty)" />
