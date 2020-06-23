@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,8 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	private Properties props;
 
 	private long searchRequestTime;
+
+	private HashSet<String> existingProductCodes = new HashSet<>();
 
 	OkHttpClient client;
 
@@ -174,8 +177,11 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 				.startElement("results").addText(json.get(JSON_PRODUCT_COUNT)).endElement()
 				//.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
 				.endElement();
-
-		addJSONArrayToResults(doc, json, JSON_EXACT);
+		try {
+			JSONObject exactProduct = json.getJSONObject(JSON_EXACT);
+			convertProductJsonToXml(doc, exactProduct);
+		}catch (Exception e){}
+		//addJSONArrayToResults(doc, json, JSON_EXACT);
 		addJSONArrayToResults(doc, json, JSON_MANUFACTURER_PRODUCT);
 		addJSONArrayToResults(doc, json, JSON_RESULTS);
 		doc.startElement("elapsed_time").addText(System.currentTimeMillis() - start).endElement();
@@ -198,11 +204,14 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	}
 
 	private void convertProductJsonToXml(XmlDocumentBuilder doc, JSONObject part){
+		String code = part.getString(JSON_CODE);
+		if(existingProductCodes.contains(code)) return;
+		existingProductCodes.add(code);
 		JSONObject vendor = part.getJSONObject(JSON_VENDOR);
 		String vendorName = vendor.getString(JSON_VALUE);
 		doc.startElement(PRODUCT, "id", part.getString(JSON_CODE) +"-dgk");
 		doc.startElement(NAME).addText(part.getString(JSON_NAME)).endElement();
-		doc.startElement(CODE).addText(part.getString(JSON_CODE)).endElement();
+		doc.startElement(CODE).addText(code).endElement();
 		doc.startElement(VENDOR_CODE).addText(part.getString(JSON_VENDOR_CODE)).endElement();
 		doc.startElement(VENDOR).addText(vendorName).endElement();
 		doc.startElement(MAIN_PIC).addText(part.get(JSON_PIC)).endElement();
