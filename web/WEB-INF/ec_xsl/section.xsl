@@ -74,7 +74,7 @@
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+				  select="if($tag != '') then concat('section/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('section/', $sel_sec/@key, '/')"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
@@ -83,7 +83,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Электронные компоненты</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
@@ -96,11 +96,7 @@
 		<h1 class="page-title">
 			<xsl:value-of select="$h1"/>
 		</h1>
-		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t">
-				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
-			</div>
-		</xsl:if>
+		<xsl:call-template name="TOP_SEO"/>
 		<div class="page-content m-t">
 			<!-- Теги, подразделы -->
 			<xsl:call-template name="TAGS"/>

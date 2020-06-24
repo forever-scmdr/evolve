@@ -1518,7 +1518,7 @@
 			<var name="query"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
-			<var name="qty" value="-1" scope="cookie"/>
+			<var name="minqty" value="-1" scope="cookie"/>
 		</request>
 		<command class="extra.PlatanSearchCommand">
 			<result name="result" type="xml" />

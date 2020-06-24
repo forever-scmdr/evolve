@@ -42,7 +42,7 @@
 
 	<xsl:template name="CONTENT">
 		<div class="page-content m-t">
-			<section class="hero pb">
+			<section class="hero pb" style="position: relative; min-height: 400px;">
 				<div class="fotorama index-slider" data-minwidth="100%" data-ratio="2/1">
 					<xsl:for-each select="page/main_page/main_slider_frame">
 						<div class="index-fotorama-slide">

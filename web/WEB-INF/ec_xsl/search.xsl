@@ -18,7 +18,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -26,7 +26,7 @@
 
 		<div class="page-content m-t">
 
-			<xsl:if test="$products">
+			<!-- <xsl:if test="$products"> -->
 				<div class="view-container desktop">
 					<div class="view">
 						<span class="{'active'[not($view = 'list')]}">
@@ -54,7 +54,7 @@
 						<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
 					</div>
 				</div>
-			</xsl:if>
+			<!-- </xsl:if> -->
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'table'">
@@ -70,7 +70,12 @@
 			<div id="extra_search_1">
 				Идет поиск по дополнительным каталогам...
 			</div>
-			<div id="extra_search_2">подождите.</div>
+			<div id="extra_search_2">подождите.
+				<form action="digikey_search" method="POST" id="dgk-form">
+					<input type="hidden" name="query" value="{page/variables/q}" />
+					<input type="hidden" name="qty" value="{page/variables/minqty}" />
+				</form>
+			</div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -80,8 +85,11 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
-			insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
-			insertAjax('<xsl:value-of select="concat('digikey_search', '?query=', page/variables/q, '&amp;qty=', page/variables/minqty)"/>');
+			$(document).ready(function(){
+				insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
+				postForm('dgk-form');
+			})
+
 		</script>
 	</xsl:template>
 

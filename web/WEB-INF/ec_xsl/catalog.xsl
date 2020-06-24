@@ -22,6 +22,7 @@
 			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
+		<xsl:call-template name="TOP_SEO"/>
 		<div class="page-content m-t">
 			<div class="catalog-items">
 				<xsl:for-each select="/page/catalog/section">
