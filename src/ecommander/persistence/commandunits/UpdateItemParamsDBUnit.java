@@ -57,22 +57,34 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 
 		// Сохранть новое уникальное ключевое значение, если это надо делать (если оно было изменено)
 		if (item.getItemType().isKeyUnique() && !StringUtils.equals(item.getKeyUnique(), item.getOldKeyUnique())) {
-			long itemId = 0;
+			long sameKeyItemId = -1;
+			byte sameKeyItemStatus = Item.STATUS_NORMAL;
 			// Запрос на получение значения
 			TemplateQuery keySelect = new TemplateQuery("key select");
-			keySelect.SELECT(I_ID).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
-					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			keySelect.SELECT(I_ID, I_STATUS).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
+					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED);
 			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
 				pstmt.setString(1, item.getKeyUnique());
 				ResultSet rs = pstmt.executeQuery();
-				if (rs.next())
-					itemId = rs.getLong(1);
+				if (rs.next()) {
+					sameKeyItemId = rs.getLong(1);
+					sameKeyItemStatus = rs.getByte(2);
+				}
 			}
 
 			TemplateQuery query = new TemplateQuery("Update key unique");
 			// Если новое значение ключа не уникально - нужно добавить ID айтема
-			if (itemId != 0)
-				item.setKeyUnique(item.getKeyUnique() + item.getId());
+			if (sameKeyItemId > 0) {
+				if (sameKeyItemStatus == Item.STATUS_DELETED) {
+					TemplateQuery delete = new TemplateQuery("delete key");
+					delete.DELETE_FROM_WHERE(UNIQUE_KEY_TBL).col(UK_ID).long_(sameKeyItemId);
+					try (PreparedStatement pstmt = delete.prepareQuery(conn)) {
+						pstmt.executeUpdate();
+					}
+				} else if (sameKeyItemId != item.getId()) {
+					item.setKeyUnique(item.getKeyUnique() + item.getId());
+				}
+			}
 
 			query.INSERT_INTO(UNIQUE_KEY_TBL)
 					.SET().col(UK_ID).long_(item.getId())._col(UK_KEY).string(item.getKeyUnique())
