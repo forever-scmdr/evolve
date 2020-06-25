@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>            
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -313,7 +313,7 @@
 			<ancestor item="section" transit="false" tag="product_section"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
+				<!-- <var name="code" ref="prod" parameter="code"/> -->
 			</link>
 			<link name="to_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
@@ -331,7 +331,7 @@
 			<list item="line_product" id="lprod">
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
-					<var name="code" ref="lprod" parameter="code"/>
+					<!-- <var name="code" ref="lprod" parameter="code"/> -->
 				</link>
 				<list item="params"/>
 			</list>
@@ -656,7 +656,7 @@
 
 	<page name="order_email" template="order_email">
 		<session>
-			<list item="cart">
+			<single item="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
 						<filter>
@@ -667,9 +667,9 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</list>
+					</single>
 				</list>
-			</list>
+			</single>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
 			</new>
@@ -1201,7 +1201,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-			<var name="with_pics" value="SEARCH_BY_CELL_VALUE" />
+            <var name="with_pics" value="SEARCH_BY_CELL_VALUE"/>
 			<!--<var name="if_blank" value="clear"/>-->
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>

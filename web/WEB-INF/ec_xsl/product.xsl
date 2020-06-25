@@ -129,6 +129,7 @@
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+								<input type="hidden" name="code" value="{$p/code}"/>
 								<xsl:if test="$has_price and f:num($p/qty) &gt; 0">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" class="button" value="Заказать" />
@@ -176,6 +177,7 @@
 
 						<xsl:for-each select="$p/line_product">
 							<xsl:variable name="lp" select="current()"/>
+							<xsl:variable name="code" select="$lp/code"/>
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="$lp/name" /></div>
 							<xsl:for-each select="$param_names">
@@ -206,6 +208,7 @@
 							</div>
 							<div class="multi-device__actions" id="cart_list_{@id}">
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+									<input type="hidden" name="code" value="{$code}"/>
 									<xsl:if test="$has_price">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
 										<input type="submit" class="button" value="Заказать" />

@@ -238,7 +238,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										break;
 									case SEARCH_BY_CELL_VALUE:
 										mainPicPath = picsFolder.resolve(cellValue);
-										product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+										if( mainPicPath.toFile().isFile()) {
+											product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+										}
 										break;
 									case DOWNLOAD: {
 										if (StringUtils.isNotBlank(cellValue)) {
@@ -271,7 +273,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												product.setValue(paramName, url);
 											}else {
 												File p = picsFolder.resolve(s).toFile();
-												if (p.exists() && p.isFile()) product.setValue(paramName, p);
+												if (p.isFile()) product.setValue(paramName, p);
 											}
 											break;
 										case DOWNLOAD:
@@ -358,7 +360,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
 								File mainPicFile = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-
+								if(!mainPicFile.isFile()) product.clearValue(MAIN_PIC_PARAM);
 
 								if (mainPicFile.isFile() && mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
 									continue;
