@@ -24,7 +24,9 @@
     <xsl:function name="f:price_catalog">
         <xsl:param name="price" as="xs:string?" />
         <xsl:param name="unit" as="xs:string?" />
-        <xsl:variable name="u" select="if($unit != '') then concat('/', $unit) else ''"/>
+        <xsl:param name="min_q" as="xs:string?"/>
+        <xsl:variable name="q" select="if(f:num($min_q) &gt; 1) then $min_q else ''"/>
+        <xsl:variable name="u" select="if($unit != '') then concat('/',$q, $unit) else ''"/>
         <xsl:sequence select="concat((if($curr = 'byn') then f:currency_decimal($price) else f:byn_to_rur($price)), ' ', upper-case($curr), $u)"/>
     </xsl:function>
 

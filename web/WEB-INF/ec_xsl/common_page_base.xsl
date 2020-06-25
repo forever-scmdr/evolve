@@ -525,7 +525,6 @@
 		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &lt; 2) then unit else concat(min_qty, unit)"/>
 
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -543,10 +542,10 @@
 				<div class="device__price" style="flex-direction: column">
 					<xsl:if test="price_old">
 						<div class="price_old">
-							<span><xsl:value-of select="f:price_catalog(price_old ,'')"/>.</span>
+							<span><xsl:value-of select="f:price_catalog(price_old ,'', min_qty)"/>.</span>
 						</div>
 					</xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, $unit)"/>.</div>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/>.</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -615,7 +614,7 @@
 		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &lt; 2) then unit else concat(min_qty, unit)"/>
+
 
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
@@ -665,8 +664,8 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog(price_old, '')"/></span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, $unit)"/></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog(price_old, '','')"/></span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/></div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">

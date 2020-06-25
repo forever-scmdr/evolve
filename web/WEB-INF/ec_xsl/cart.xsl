@@ -71,8 +71,8 @@
 		<xsl:if test="f:num(qty_avail) != 0 and f:num(product/price) != 0">
 			<xsl:variable name="is_aux" select="aux != ''" />
 			<xsl:variable name="p" select="product" />
-			<xsl:variable name="price" select="if(aux != '') then concat(f:cart_price_platan($p/price),' ', upper-case($curr)) else f:price_catalog($p/price, '')"/>
-			<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '')"/>
+			<xsl:variable name="price" select="if(aux != '') then concat(f:cart_price_platan($p/price),' ', upper-case($curr)) else f:price_catalog($p/price, $p/unit, $p/min_qty)"/>
+			<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '','')"/>
 
 			<div class="item">
 				<xsl:if test="$is_aux">
