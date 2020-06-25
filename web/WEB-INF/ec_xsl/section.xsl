@@ -6,7 +6,8 @@
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+	<!-- <xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/> -->
+	<xsl:variable name="show_devices" select="not($sel_sec/show_devices = '0')"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
@@ -21,7 +22,7 @@
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="header" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $header"/>
-	<xsl:variable name="title" select="concat('Купить ', $h1, ' в Минске - ООО &quot;МИЗИДА Сервис&quot; продажа промышленного швейного оборудования')"/><!-- -->
+	<xsl:variable name="title" select="$h1"/><!-- -->
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
@@ -72,14 +73,15 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> &gt; <a href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
+				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id and name != '']">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
-					<i class="fas fa-angle-right"></i>
+					<!-- <i class="fas fa-angle-right"></i> -->
 				</xsl:for-each>
+				<i class="fas fa-angle-right"></i>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -155,11 +157,11 @@
 	<xsl:template name="TAGS">
 	   <xsl:if test="$subs or $sel_sec/tag">
 				<xsl:if test="not($subs)">
-					<div class="tags">
+					<!-- <div class="tags">
 						<form method="GET" action="{page/source_link}">
 							<xsl:apply-templates select="$sel_sec/tag"/>
 						</form>
-					</div>
+					</div> -->
 				</xsl:if>
 				<xsl:if test="not($sel_sec/show_subs = '0')">
 					<xsl:if test="$subs and $sub_view = 'tags'">

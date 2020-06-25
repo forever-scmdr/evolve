@@ -1,35 +1,21 @@
 package ecommander.fwk;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
+import org.apache.poi.xwpf.usermodel.*;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 public class POIUtils {
 	public static class CellXY {
@@ -101,17 +87,17 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-			if (oldCell.getCellType() == CellType.BLANK) {
+			if (oldCell.getCellTypeEnum() == CellType.BLANK) {
 				newCell.setCellValue(oldCell.getStringCellValue());
-			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+			} else if (oldCell.getCellTypeEnum() == CellType.BOOLEAN) {
 				newCell.setCellValue(oldCell.getBooleanCellValue());
-			} else if (oldCell.getCellType() == CellType.ERROR) {
+			} else if (oldCell.getCellTypeEnum() == CellType.ERROR) {
 				newCell.setCellErrorValue(oldCell.getErrorCellValue());
-			} else if (oldCell.getCellType() == CellType.FORMULA) {
+			} else if (oldCell.getCellTypeEnum() == CellType.FORMULA) {
 				newCell.setCellFormula(oldCell.getCellFormula());
-			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+			} else if (oldCell.getCellTypeEnum() == CellType.NUMERIC) {
 				newCell.setCellValue(oldCell.getNumericCellValue());
-			} else if (oldCell.getCellType() == CellType.STRING) {
+			} else if (oldCell.getCellTypeEnum() == CellType.STRING) {
 				newCell.setCellValue(oldCell.getRichStringCellValue());
 			}
         }
@@ -205,17 +191,17 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-			if (oldCell.getCellType() == CellType.BLANK) {
+			if (oldCell.getCellTypeEnum() == CellType.BLANK) {
 				newCell.setCellValue(oldCell.getStringCellValue());
-			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+			} else if (oldCell.getCellTypeEnum() == CellType.BOOLEAN) {
 				newCell.setCellValue(oldCell.getBooleanCellValue());
-			} else if (oldCell.getCellType() == CellType.ERROR) {
+			} else if (oldCell.getCellTypeEnum() == CellType.ERROR) {
 				newCell.setCellErrorValue(oldCell.getErrorCellValue());
-			} else if (oldCell.getCellType() == CellType.FORMULA) {
+			} else if (oldCell.getCellTypeEnum() == CellType.FORMULA) {
 				newCell.setCellFormula(oldCell.getCellFormula());
-			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+			} else if (oldCell.getCellTypeEnum() == CellType.NUMERIC) {
 				newCell.setCellValue(oldCell.getNumericCellValue());
-			} else if (oldCell.getCellType() == CellType.STRING) {
+			} else if (oldCell.getCellTypeEnum() == CellType.STRING) {
 				newCell.setCellValue(oldCell.getRichStringCellValue());
 			}
         }

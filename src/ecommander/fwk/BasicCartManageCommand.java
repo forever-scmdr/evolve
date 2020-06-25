@@ -116,6 +116,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	public ResultPE proceed() throws Exception {
+		checkStrategy();
 		updateQtys();
 		recalculateCart();
 		return getResult("proceed");
@@ -190,7 +191,7 @@ public abstract class BasicCartManageCommand extends Command {
 		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
 		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
-		addExtraEmailBodyPart(false, shopMultipart);
+		//addExtraEmailBodyPart(false, shopMultipart);
 
 		// Письмо для покупателя
 		Multipart customerMultipart = new MimeMultipart();
@@ -203,11 +204,11 @@ public abstract class BasicCartManageCommand extends Command {
 			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
 			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(true, customerMultipart);
+			//addExtraEmailBodyPart(true, customerMultipart);
 		} catch (Exception e) {
 			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(false, customerMultipart);
+			//addExtraEmailBodyPart(false, customerMultipart);
 		}
 
 		// Отправка на ящик заказчика
@@ -263,6 +264,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 
 		// 4. Сохранить все покупки в истории, если пользователь нашелся или был создан
+
 		if (userItem != null) {
 			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
 			purchase.setValue(NUM_PARAM, orderNumber + "");
@@ -272,11 +274,13 @@ public abstract class BasicCartManageCommand extends Command {
 			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
+
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 			for (Item bought : boughts) {
-				bought.setContextPrimaryParentId(purchase.getId());
-				bought.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
-				executeCommandUnit(SaveItemDBUnit.get(bought).ignoreUser());
+				Item boughtToSave = new Item(bought);
+				boughtToSave.setContextPrimaryParentId(purchase.getId());
+				boughtToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+				executeCommandUnit(SaveItemDBUnit.get(boughtToSave).ignoreUser());
 			}
 		}
 		//
@@ -290,6 +294,8 @@ public abstract class BasicCartManageCommand extends Command {
 		cart.setExtra(IN_PROGRESS, null);
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
+		//ResultPE success = getResult("confirm");
+		//success.addVariable("purchase", String.valueOf(purchaseId));
 		return getResult("confirm");
 	}
 
@@ -470,8 +476,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE restoreFromCookie() throws Exception {
 	    checkStrategy();
 		loadCart();
-		if (cart != null)
-			return null;
+		if (cart != null) return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
 		if (StringUtils.isBlank(cookie))
 			return null;

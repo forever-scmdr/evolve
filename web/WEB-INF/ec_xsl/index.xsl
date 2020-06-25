@@ -3,8 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Продажа промышленного швейного оборудования, САПР одежды, комплектующие и запчасти, обслуживание и сервис, обучение - ООО &quot;МИЗИДА Сервис&quot;'"/>
-
+	<!-- <xsl:variable name="title" select="'Продажа промышленного швейного оборудования, САПР одежды, комплектующие и запчасти, обслуживание и сервис, обучение - ООО &quot;МИЗИДА Сервис&quot;'"/>
+ -->
 	<xsl:template name="MARKUP">
 		<script type="application/ld+json">
 			{

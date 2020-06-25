@@ -5,8 +5,9 @@
 
 	<xsl:variable name="header" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $header"/>
-	<xsl:variable name="title" select="concat('Купить ', $h1, ' в Минске - ООО &quot;МИЗИДА Сервис&quot; продажа промышленного швейного оборудования')"/>
+	<xsl:variable name="title" select="$h1"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="default_keywords" select="string-join($p/tag, ', ')"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -102,9 +103,9 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag">
+				<!-- <xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each>
+				</xsl:for-each> -->
 
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
@@ -112,6 +113,10 @@
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
+								<div class="price_normal">
+									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.
+									<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
+								</div>
 								<xsl:if test="$p/price_old">
 									<div class="price_old">
 										<span>
@@ -120,21 +125,17 @@
 										</span>
 									</div>
 								</xsl:if>
-								<div class="price_normal">
-									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.
-									<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
-								</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-								<xsl:if test="$has_price">
+								<xsl:if test="$has_price and f:num($p/qty) &gt; 0">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
 									<input type="submit" class="button" value="Заказать" />
 								</xsl:if>
-								<xsl:if test="not($has_price)">
+								<xsl:if test="not($has_price and f:num($p/qty) &gt; 0)">
 									<input type="number" class="text-input" name="qty" value="1" min="0" />
-									<input type="submit" class="button" value="Запросить цену" />
+									<input type="submit" class="button" value="Предзаказ" />
 								</xsl:if>
 							</form>
 						</div>
@@ -158,15 +159,31 @@
 				</xsl:if>
 
 				<xsl:if test="$has_lines">
-					<div class="multi-device">
-						<div style="padding-left: 0;">Размер</div>
+					
+					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
+					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
+
+					<xsl:variable name="cols" select="count($param_names) + 4"/>
+
+					<div class="multi-device" style="grid-template-columns: repeat({$cols}, 1fr);">
+						<div style="padding-left: 0;">Вариант</div>
+						<xsl:for-each select="$param_captions">
+							<div style="color: #a2a2a2; font-size: 13px;"><xsl:value-of select="."/></div>
+						</xsl:for-each>
 						<div>Цена</div>
 						<div>Наличие</div>
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
+							<xsl:variable name="lp" select="current()"/>
 							<xsl:variable name="has_price" select="price and price != '0'"/>
-							<div class="multi-device__name"><xsl:value-of select="name" /></div>
+							<div class="multi-device__name"><xsl:value-of select="$lp/name" /></div>
+							<xsl:for-each select="$param_names">
+								<div class="multi-device__name">
+									<xsl:value-of select="$lp/params/param[@name = current()]" />
+									
+								</div>
+							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
 									<xsl:if test="price_old">
@@ -195,7 +212,7 @@
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Запросить цену" />
+										<input type="submit" class="button" value="Предзаказ" />
 									</xsl:if>
 								</form>
 							</div>
@@ -219,15 +236,15 @@
 				<div class="device-benefits">
 					<div class="device-benefits__item">
 						<i class="fas fa-shield-alt device-benefits__icon"></i>
-						<div class="device-benefits__label">Официальная гарантия и сервис</div>
+						<div class="device-benefits__label">Надежность</div>
 					</div>
 					<div class="device-benefits__item">
 						<i class="fas fa-trophy device-benefits__icon"></i>
-						<div class="device-benefits__label">Оптовые поставки</div>
+						<div class="device-benefits__label">Гарантии</div>
 					</div>
 					<div class="device-benefits__item">
 						<i class="far fa-thumbs-up device-benefits__icon"></i>
-						<div class="device-benefits__label">Обучение и сопровождение</div>
+						<div class="device-benefits__label">Цены</div>
 					</div>
 				</div>
 				
@@ -235,16 +252,16 @@
 					<div class="extra-contacts__title">Телефоны для связи</div>
 					<div class="extra-contacts__items">
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 17) 233-65-94</div>
-							<div class="extra-contacts__text">офис г. Минск</div>
+							<div class="extra-contacts__number">(+375 17) 357-92-85</div>
+							<div class="extra-contacts__text">ул. Притыцкого, 42</div>
 						</div>
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 162) 54-54-40</div>
-							<div class="extra-contacts__text">филиал г. Брест</div>
+							<div class="extra-contacts__number">(+375 162) 337-93-90</div>
+							<div class="extra-contacts__text">ул. Я.Коласа, 30</div>
 						</div>
 						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 152) 77-29-52</div>
-							<div class="extra-contacts__text">филиал г. Гродно</div>
+							<div class="extra-contacts__number">(+375 17) 354-47-84</div>
+							<div class="extra-contacts__text">ул.Толбухина,12-А</div>
 						</div>
 					</div>
 				</div>
@@ -255,23 +272,27 @@
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
+						<!-- <xsl:if test="$p/params != ''"> -->
+								<li role="presentation" class="{'active'[not($p/product_extra)]}">
+									<a href="#tab1" role="tab" data-toggle="tab">Описание</a>
+								</li>
+							<!-- </xsl:if> -->
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
 							<xsl:for-each select="$p/product_extra[. != '']">
+								
 								<xsl:variable name="first" select="position()=1" />
 								<li role="presentation" class="{'active'[$first]}">
-									<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a> 
+									<a href="#tab{@id}" role="tab" data-toggle="tab">
+										<xsl:value-of select="current()/name"/>
+									</a> 
 								</li>
 							</xsl:for-each>
-							<xsl:if test="$p/params != ''">
-								<li role="presentation" class="{'active'[not($p/product_extra)]}">
-									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
-								</li>
-							</xsl:if>
+							
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params != ''">
+					<!-- <xsl:if test="$p/params != ''"> -->
 						<div role="tabpanel" class="tab-pane {'active'[not($p/product_extra)]}" id="tab1">
-							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
+							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>
@@ -289,7 +310,7 @@
 							</table>
 
 						</div>
-					</xsl:if>
+					<!-- </xsl:if> -->
 					<xsl:for-each select="$p/product_extra[. != '']">
 						<xsl:variable name="first" select="position()=1" />
 						<div role="tabpanel" class="tab-pane {'active'[$first]}" id="tab{@id}">
@@ -302,7 +323,7 @@
 		<xsl:if test="page/assoc">
 			<h3>Вас также может заинтересовать</h3>
 			<div class="catalog-items">
-				<xsl:apply-templates select="page/assoc" mode="lines"/>
+				<xsl:apply-templates select="page/assoc"/>
 			</div>
 		</xsl:if>
 

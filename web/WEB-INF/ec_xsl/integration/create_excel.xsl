@@ -103,7 +103,7 @@
                     </xsl:for-each>
                     <xsl:if test="page/message = 'Интеграция в данный момент не выполняется. Результаты предыдущей интеграции ниже'">
                         <xsl:variable name="file_name" select="page/log[starts-with(., 'pricelist-')]"/>
-                        Скачать файл: <a href="http://titantools.must.by/files/{$file_name}"><xsl:value-of select="$file_name" /></a>
+                        Скачать файл: <a href="{page/base}/files/{$file_name}"><xsl:value-of select="$file_name" /></a>
                     </xsl:if>
                     <tr>
                         <td colspan="2">

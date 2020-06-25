@@ -3,6 +3,31 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+
+	<xsl:template name="DELIVERY_AND_PAYMENT">
+		<xsl:param name="inp"/>
+		<div class="form-group">
+			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки и оплаты</a></label>
+			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
+				<option>Самовывоз г.Минск ул.Толбухина 12а</option>
+				<option>Самовывоз г.Минск ул.Я.Коласа 30</option>
+				<option>Самовывоз г.Минск ул.Притыцкого 42</option>
+				<option>Доставка курьером</option>
+				<option>Белпочта</option>
+				<option>Доставка AutoLight EXPRESS</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>Способ оплаты</label>
+			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}" error="{$inp/pay_type/@validation-error}">
+				<option>Наличные</option>
+				<option>Наложенным платежом</option>
+				<option>Оплата онлайн</option>
+			</select>
+		</div>
+	</xsl:template>
+
+
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<div class="form-group">
@@ -13,14 +38,7 @@
 			<label>Адрес:</label>
 			<input type="text" class="form-control" name="{$inp/address/@input}" value="{$inp/address}" error="{$inp/address/@validation-error}"/>
 		</div>
-		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
-			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой. <!-- Сумма заказа от 500р. --></option>
-			</select>
-		</div>
+		
 		<div class="form-group">
 			<label>Мобильный телефон *:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}" error="{$inp/phone/@validation-error}"/>
@@ -30,10 +48,6 @@
 			<input type="text" class="form-control" name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
 		</div>
 	</xsl:template>
-
-
-
-
 
 
 	<xsl:template name="USER_JUR_INPUTS">
@@ -46,14 +60,6 @@
 		<div class="form-group">
 			<label for="">Мобильный телефон:</label>
 			<input type="text" class="form-control" name="{$inp/phone/@input}" value="{$inp/phone}"/>
-		</div>
-		<div class="form-group">
-			<label>Способ доставки <a href="oplata_i_dostavka">Подробнее об условиях доставки</a></label>
-			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}">
-				<option>Самовывоз из офиса отдела продаж.<!--  Бесплатно. --></option>
-				<option>Доставка транспортом Поставщика.<!--  От 250р бесплатно. Менее - 5р. --></option>
-				<option>Доставка курьерской службой.<!--  Сумма заказа от 500р. --></option>
-			</select>
 		</div>
 		<div class="form-group">
 			<label>E-mail:</label>

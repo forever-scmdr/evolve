@@ -22,7 +22,7 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<div class="page-content m-t">
 
@@ -30,8 +30,12 @@
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+						<span class="{'active'[not($view = 'list')]}">
+							<i class="fas fa-th-large"></i><a href="{page/set_view_table}">Плиткой</a>
+						</span>
+						<span class="{'active'[$view = 'list']}">
+							<i class="fas fa-th-list"></i><a href="{page/set_view_list}">Строками</a>
+						</span>	
 						<!-- <div class="checkbox">
 							<label>
 								<xsl:if test="not($only_available)">
@@ -48,7 +52,12 @@
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
-				<xsl:apply-templates select="$products"/>
+				<xsl:if test="$view = 'table'">
+					<xsl:apply-templates select="$products"/>
+				</xsl:if>
+				<xsl:if test="$view = 'list'">
+					<xsl:apply-templates select="$products" mode="lines"/>
+				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>

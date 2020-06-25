@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Заявка оформлена'" />
+	<xsl:variable name="title" select="'Заказ оформлен'" />
 
 	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
@@ -18,15 +18,16 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Спасибо за заявку!</h1>
+		<h1 class="page-title">Спасибо за заказ!</h1>
 
 		<p>
-			 Уважаемый покупатель, теперь Вашу заявку будет обрабатывать менеджер. В связи с загруженностью работы менеджеров,оставляем за собой право обрабатывать заявку в срок до 3-х рабочих дней. Менеджер свяжется с Вами по телефону (при возникновении вопросов), либо выставит счёт на указанный е-мейл.<br/>
+			Уважаемый покупатель, теперь Ваш заказ будет обрабатывать менеджер и в ближайшее время перезвонит
+			<!--  Уважаемый покупатель, теперь Ваш заказ будет обрабатывать менеджер. В связи с загруженностью работы менеджеров,оставляем за собой право обрабатывать заказ в срок до 3-х рабочих дней. Менеджер свяжется с Вами по телефону (при возникновении вопросов), либо выставит счёт на указанный е-мейл.<br/>
 			Счёт необходимо оплатить в течении 3-х рабочих дней.<br/>
-			Забрать товар можно только после его полной оплаты.
+			Забрать товар можно только после его полной оплаты. -->
 		</p>
 
-		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
+		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
 			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
@@ -47,6 +48,12 @@
 						<span style="font-weight: bold;">Адрес:</span>&#160; <xsl:value-of select="$contacts/address"/>
 					</p>
 					<p>
+						<span style="font-weight: bold;">Доставка:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Оплата:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
+					</p>
+					<p>
 						<span style="font-weight: bold;">Дополнительно:</span>&#160; <xsl:value-of select="$contacts/comment"/>
 					</p>
 				</xsl:if>
@@ -65,6 +72,12 @@
 					</p>
 					<p>
 						<span style="font-weight: bold;">Телефон контактного лица:</span>&#160; <xsl:value-of select="$contacts/contact_phone"/>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Доставка:</span>&#160; <xsl:value-of select="$contacts/ship_type"/>
+					</p>
+					<p>
+						<span style="font-weight: bold;">Оплата:</span>&#160; <xsl:value-of select="$contacts/pay_type"/>
 					</p>
 					<p>
 						<span style="font-weight: bold;">Юр. адрес:</span>&#160; <xsl:value-of select="$contacts/address"/>
@@ -130,12 +143,18 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
+						<xsl:variable name="p" select="product"/>
 						<tr>
 							<td>
 								<xsl:value-of select="product/code"/>
 							</td>
 							<td valign="top">
-								<strong><xsl:value-of select="product/name"/></strong>
+								<xsl:if test="not($p/product)">
+									<strong><xsl:value-of select="$p/name"/></strong>
+								</xsl:if>
+								<xsl:if test="$p/product">
+									<strong><xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)</strong>
+								</xsl:if>
 							</td>
 							<td valign="top">
 								<xsl:value-of select="qty"/>

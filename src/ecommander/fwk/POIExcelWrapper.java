@@ -1,15 +1,17 @@
 package ecommander.fwk;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class POIExcelWrapper implements Closeable {
 	private Workbook xlsWorkbook = null;
@@ -21,17 +23,26 @@ public class POIExcelWrapper implements Closeable {
 			try {
 				npoifs = new POIFSFileSystem(file);
 				xlsWorkbook = WorkbookFactory.create(npoifs);
-			} catch (IOException e) {
-				ServerLogger.error("Unable to parse Excel file", e);
-				xlsWorkbook = null;
-			}
-		} catch (OfficeXmlFileException ofe) {
-			try {
+			} catch (OfficeXmlFileException e) {
+				ServerLogger.error("Trying to create from OPCPackage");
 				pkg = OPCPackage.open(file);
-				xlsWorkbook = WorkbookFactory.create(pkg);
+				xlsWorkbook = new XSSFWorkbook(pkg);
+			//	ServerLogger.error("Unable to parse Excel file", e);
+			//	xlsWorkbook = null;
+			}
+		} catch (Exception ofe) {
+			try {
+				//pkg = OPCPackage.open(file);
+				ServerLogger.error("Trying to create Directly");
+				xlsWorkbook = new XSSFWorkbook(file);
 			} catch (Exception e) {
-				ServerLogger.error("Unable to parse Excel file", e);
-				xlsWorkbook = null;
+				try {
+					ServerLogger.error("Trying to create XSSFWorkbook");
+					xlsWorkbook = new XSSFWorkbook(new FileInputStream(file));
+				}catch (Exception e1) {
+					ServerLogger.error("Unable to parse Excel file", e);
+					xlsWorkbook = null;
+				}
 			}
 		}		
 	}

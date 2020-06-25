@@ -94,6 +94,9 @@ public class ExcelTableData implements TableDataSource {
 		if (doc == null)
 			return;
 		Workbook wb = doc.getWorkbook();
+		if(wb == null) {
+			ServerLogger.error("Workbook not exists");
+		}
 		eval = wb.getCreationHelper().createFormulaEvaluator();
 
 		ArrayList<String> missingColumnsTest;
@@ -120,6 +123,7 @@ public class ExcelTableData implements TableDataSource {
 						}
 						if (!rowChecked && (missingColumns == null || missingColumnsTest.size() < missingColumns.size())) {
 							missingColumns = missingColumnsTest;
+							ServerLogger.error(missingColumns.toString());
 						}
 					}
 					if (rowChecked)
@@ -145,6 +149,7 @@ public class ExcelTableData implements TableDataSource {
 			}
 		}
 
+		ServerLogger.error("Valid sheets: "+ validSheets.size());
 
 		if (validSheets.size() > 0){
 			currentSheet = validSheets.get(0).sheet;
