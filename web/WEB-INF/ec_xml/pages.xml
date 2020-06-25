@@ -691,6 +691,7 @@
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<single item="catalog" id="catalog_main" cacheable="true"/>
 		<session>
 			<single item="cart">
 				<list item="bought">
@@ -833,6 +834,10 @@
 
 
 	<page name="order_email" template="order_email">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<single item="catalog"/>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">

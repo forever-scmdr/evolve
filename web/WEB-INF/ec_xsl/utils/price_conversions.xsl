@@ -27,6 +27,20 @@
         <xsl:variable name="u" select="if($unit != '') then concat('/', $unit) else ''"/>
         <xsl:sequence select="concat((if($curr = 'byn') then f:currency_decimal($price) else f:byn_to_rur($price)), ' ', upper-case($curr), $u)"/>
     </xsl:function>
+
+    <xsl:function name="f:sum_s" as="xs:double">
+        <xsl:param name="bought" />
+        <xsl:variable name="price" select="$bought/sum" />
+        <xsl:variable name="aux" select="$bought/aux" />
+        <xsl:variable name="q" select="if(not($aux != '')) then 1 + $q1_rur else 1"/>
+        <xsl:sequence select="(f:num($price) * 100) div $ratio_rur * $q" />
+    </xsl:function>
+
+    <xsl:function name="f:cart_sum">
+        <xsl:param name="cart"  />
+        <xsl:sequence select="if($curr = 'byn') then concat(f:currency_decimal($cart/sum), ' ', upper-case($curr))  else concat(f:number_decimal(sum($cart/bought/f:sum_s(.))),' ',upper-case($curr))"/>
+    </xsl:function>
+
     <!-- Platan -->
     <xsl:function name="f:price_platan">
         <xsl:param name="price" as="xs:string?" />
