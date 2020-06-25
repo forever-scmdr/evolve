@@ -163,7 +163,7 @@
     <page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 		</single>
 	</page>
 
