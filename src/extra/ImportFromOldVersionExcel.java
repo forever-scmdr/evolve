@@ -7,6 +7,8 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -232,7 +234,19 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 
 					if(StringUtils.isNotBlank(xml.toString())) {
-						Item paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
+						ItemQuery query = new ItemQuery(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM)).setParentId(currentProduct.getId(), false);
+						List<Item> items = query.loadItems();
+						Item paramsXML;
+						if(items == null || items.size() == 0) {
+							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
+						}else if(items.size() > 1){
+							for(Item item : items){
+								executeAndCommitCommandUnits(ItemStatusDBUnit.delete(item.getId()).ignoreFileErrors().ignoreUser());
+							}
+							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
+						}else{
+							paramsXML = items.get(0);
+						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						if(!"Прочее".equals(currentSection.getStringValue(NAME_PARAM, ""))) sectionsWithNewItemTypes.add(currentSection.getId());
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
@@ -240,8 +254,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 				}
 				info.increaseProcessed();
-			}
-		}
+			}		}
 	}
 
 	private int getFilledCellsCount(Row row){
