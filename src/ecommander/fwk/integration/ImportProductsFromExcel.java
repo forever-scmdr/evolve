@@ -392,7 +392,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											}else {
 												if (StringUtils.isBlank(cellValue)) break;
 												mainPicFile = picsFolder.resolve(cellValue).toFile();
-												if (mainPicFile.exists()) {
+												if (mainPicFile.isFile()) {
 													product.setValue(MAIN_PIC_PARAM, mainPicFile);
 													//product.clearValue("medium_pic");
 													product.clearValue("small_pic");
