@@ -60,7 +60,7 @@
 				<a href="{main_pic}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 					<i class="fas fa-search-plus"></i>
 				</a>
-				<a class="device__image" style="background-image: {concat('url(',main_pic,');')}"></a>
+				<a class="device__image" style="background-image: url('{main_pic}');"></a>
 			</xsl:if>
 			<xsl:if test="main_pic = ''">
 				<a class="device__image" style="background-image: url('img/no_image.png');"></a>
@@ -77,10 +77,19 @@
 				</div>
 				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
-						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
+						<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/> -->
+						<xsl:value-of select="concat(@qty, '+ ', '&lt;strong&gt;', f:price_digikey(@price), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
 				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
+				<!-- <a data-container="body">Цена зависит от количества</a> -->
+				<!-- <div>
+					<xsl:for-each select="spec_price_map">
+						<div>
+							<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)" />
+						</div>
+					</xsl:for-each>
+				</div> -->
 			</div>
 			<div class="device__order">
 				<div id="cart_list_{code}">
@@ -95,6 +104,7 @@
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -103,6 +113,7 @@
 							<input type="hidden" value="1" name="not_available"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="0" name="upack"/>
+							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
 							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
@@ -126,7 +137,7 @@
 
 		<div class="device device_row">
 			<a class="device__image device_row__image"
-			   style="background-image: url({if(main_pic != '') then main_pic else 'img/no_image.png'});">&nbsp;
+			   style="background-image: url('{if(main_pic != '') then main_pic else 'img/no_image.png'}');">&nbsp;
 			</a>
 			<div class="device__info">
 				<a class="device__title">
@@ -171,7 +182,17 @@
 						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
-				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
+				<!-- <a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a> -->
+				<!-- <a data-container="body" >Цена зависит от количества</a> -->
+				<div class="manyPrice">
+					<xsl:for-each select="spec_price_map">
+						<div class="manyPrice__item">
+							<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)" /> шт. -->
+							<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
+							<div class="manyPrice__price"><xsl:value-of select="f:price_digikey(@price)" /></div>
+						</div>
+					</xsl:for-each>
+				</div>
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{code}">
@@ -184,6 +205,7 @@
 							<input type="hidden" value="{qty}" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
+							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="submit" class="button" value="В корзину"/>
@@ -196,6 +218,7 @@
 							<input type="hidden" value="0" name="upack"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
+							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(product/min_qty != '') then product/min_qty else 1}" min="{if(product/min_qty != '') then product/min_qty else 1}"/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
