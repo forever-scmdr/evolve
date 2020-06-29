@@ -80,6 +80,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 		if (files.size() > 1) {
 			addError("Обнаружено более одного доакумента Microsoft Excel", "/upload");
+			return false;
 		}
 		File f = (File) files.toArray()[0];
 		priceWB = new ExcelPriceList(f, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE) {
