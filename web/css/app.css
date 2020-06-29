@@ -7687,6 +7687,7 @@ td .catalog-item {
 	flex-direction:column;
 	font-size:unset;
 	min-width:70px;
+	text-align: right;
 }
 .device_row__order {
 	align-items:flex-start;
@@ -9020,4 +9021,29 @@ label input {
 .quantity.currency a.active {
     font-weight: bold;
     color: black;
+}
+
+.pdf{
+	padding-left: 24px;
+	background: url('../images/pdficon.jpg') left no-repeat;
+	background-size: 20px 20px;
+}
+
+
+.manyPrice {
+	font-size: 11px;
+	margin-top: 8px;
+}
+.manyPrice__item {
+	display: flex;
+	margin-bottom: 4px;
+}
+.manyPrice__qty {
+	width: 60px;
+	text-align: right;
+}
+.manyPrice__price {
+	font-weight: 700;
+	text-align: right;
+	flex: 1 1 100%;
 }

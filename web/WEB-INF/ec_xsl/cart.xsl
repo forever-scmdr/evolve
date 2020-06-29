@@ -74,10 +74,15 @@
 			<xsl:variable name="price" select="if(aux != '') then concat(f:cart_price_platan($p/price),' ', upper-case($curr)) else f:price_catalog($p/price, $p/unit, $p/min_qty)"/>
 			<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '','')"/>
 
+
+
 			<div class="item">
 				<xsl:if test="$is_aux">
+
+					<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
+
 					<a class="image-container">
-						<img src="img/no_image.png" alt="{$p/name}"/>
+						<img src="{$img}" alt="{$p/name}"/>
 					</a>
 					<a class="title">
 						<xsl:value-of select="$p/name"/>
@@ -126,8 +131,11 @@
 
 			<div class="item">
 				<xsl:if test="$is_aux">
+
+					<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
+
 					<a class="image-container">
-						<img src="img/no_image.png" alt="{$p/name}"/>
+						<img src="i{$img}" alt="{$p/name}"/>
 					</a>
 					<a class="title">
 						<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)

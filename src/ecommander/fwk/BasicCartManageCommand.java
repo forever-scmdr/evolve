@@ -123,6 +123,7 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
 			bought.setValue("aux", getVarSingleValue("aux"));
+			bought.setExtra("img", getVarSingleValue("img"));
 			getSessionMapper().saveTemporaryItem(bought);
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
