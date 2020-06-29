@@ -233,11 +233,27 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		if (!item.getItemType().isFulltextSearchable())
 			return;
 
+		HashMap<Long, Document> docs = createAndPopulateItemDoc(item);
+		// Добавление айтема в индекс
+		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
+		//		ServerLogger.debug(item.getId());
+
+		for (Long itemId : docs.keySet()) {
+			writer.updateDocument(new Term(I_ID, itemId + ""), docs.get(itemId));
+		}
+		//		writer.addDocument(itemDoc);
+	}
+
+	/**
+	 * Создать и заполнить документ для одного айтема
+	 * @param item
+	 * @return
+	 * @throws Exception
+	 */
+	private HashMap<Long, Document> createAndPopulateItemDoc(Item item) throws Exception {
 		HashMap<Long, Document> docs = new HashMap<>();
 		Document itemDoc = createItemDoc(item);
 		docs.put(item.getId(), itemDoc);
-		ArrayList<Document> itemDocs = new ArrayList<>();
-		itemDocs.add(itemDoc);
 
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
@@ -246,14 +262,11 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			for (ParameterDescription param : item.getItemType().getFulltextParameterList(ftParam)) {
 				if (param.isFulltextOwnByPredecessor()) {
 					ArrayList<Item> preds = ItemMapper.loadItemPredecessors(item.getId(), param.getFulltextItem());
-					itemDocs.clear();
 					for (Item pred : preds) {
-						Document doc = createItemDoc(pred);
-						itemDocs.add(doc);
-						docs.put(pred.getId(), doc);
+						docs.putAll(createAndPopulateItemDoc(pred));
 					}
 				}
-				for (Document doc : itemDocs) {
+				for (Document doc : docs.values()) {
 					if (param.isMultiple()) {
 						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
 							createParameterField(param, sp.outputValue(), doc, ftParam, needIncrement);
@@ -280,15 +293,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 				}
 			}
 		}
-		// Добавление айтема в индекс
-		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
-		//		ServerLogger.debug(item.getId());
-
-		for (Long itemId : docs.keySet()) {
-			writer.updateDocument(new Term(I_ID, itemId + ""), docs.get(itemId));
-		}
-		//		writer.addDocument(itemDoc);
+		return docs;
 	}
+
 
 	/**
 	 * Создать Lucene документ для айтема и заполнить базовые параметры документа (тип и ID айтема)
