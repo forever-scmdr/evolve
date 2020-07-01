@@ -776,6 +776,10 @@
 			<value>off</value>
 			<value>on</value>
 		</parameter>
+		<parameter name="jur_price" type="string" caption="Отдельная оптовая цена для зарегистрированных оптовых клиентов" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
 	</item>
 
 

@@ -379,6 +379,7 @@ public interface ItemNames {
         String CATALOG_QUICK_SEARCH = "catalog_quick_search";
         String MANUAL_FILTER_PARAMS = "manual_filter_params";
         String CURRENCY_RATES = "currency_rates";
+        String JUR_PRICE = "jur_price";
 
     }
 

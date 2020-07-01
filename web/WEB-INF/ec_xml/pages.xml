@@ -424,6 +424,15 @@
 				<list item="module"/>
 			</list>
 		</usergroup>
+		<personal>
+			<list item="user" tag="registration">
+				<filter>
+					<parameter name="registered">
+						<var value="1"/>
+					</parameter>
+				</filter>
+			</list>
+		</personal>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY">
