@@ -7,6 +7,10 @@
 	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
 	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
 	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
+	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
+	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
+	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
+	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 
 	<xsl:template match="accessory | set | probe | product | assoc">
@@ -42,12 +46,12 @@
 					<div>
 						<strong>
 							<xsl:if test="$has_lines" >от </xsl:if>
-							<xsl:value-of select="f:exchange_cur(., 'price', 0)"/>
+							<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
 						</strong>
 					</div>
 					<xsl:if test="price_old">
 						<div class="price_old">
-							<xsl:value-of select="f:exchange_cur(., 'price_old', 0)"/>
+							<xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/>
 						</div>
 					</xsl:if>
 				</div>
@@ -379,8 +383,8 @@
 			<div>
 				<xsl:if test="$has_price">
 					<div style="white-space: nowrap;">
-						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., 'price', 0)"/></div>
-						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:exchange_cur(., 'price_old', 0)"/></span></div></xsl:if>
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></div>
+						<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span></div></xsl:if>
 					</div>
 				</xsl:if>
 				<xsl:if test="not($has_price)">

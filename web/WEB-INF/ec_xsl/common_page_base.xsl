@@ -651,6 +651,7 @@
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/app.css"/>
 				<link rel="stylesheet" href="css/styles.css"/>
+				<link rel="stylesheet" href="css/styles-2.css"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

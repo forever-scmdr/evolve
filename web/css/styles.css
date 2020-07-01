@@ -251,3 +251,42 @@ section.gallery {
 	color: #fff;
 	text-decoration: underline;
 }
+
+
+
+@media (max-width: 425px) {
+	.hero .container {
+		margin-left: unset;
+		margin-right: unset;
+	}
+	.fotorama {
+		margin-bottom: unset;
+	}
+	.pb {
+		padding-bottom: 16px;
+	}
+	.ptb {
+		padding-top: 16px;
+		padding-bottom: 16px;
+	}
+	.block__header {
+		margin-bottom: 24px;
+	}
+	.block__title {
+		font-size: 24px;
+		line-height: 1.2;
+	}
+	.block__subtitle {
+		font-size: 15px;
+		line-height: 1.2;
+		margin-top: 16px;
+	}
+	.block-title {
+		margin-bottom: 16px;
+		padding-bottom: unset;
+
+	}
+	.grid_cols_8 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}

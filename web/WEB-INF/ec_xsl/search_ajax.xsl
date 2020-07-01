@@ -12,6 +12,10 @@
 	<xsl:variable name="success" select="page/variables/result = 'success'"/>
 	<xsl:variable name="form" select="page/feedback_form"/>
 	<xsl:variable name="is_advanced" select="page/optional_modules/display_settings/catalog_quick_search = 'advanced'"/>
+	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
+	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
+	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
+	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 	<xsl:template match="/">
 		<div class="result" id="search-result">
@@ -43,7 +47,7 @@
 										№ для заказа: <xsl:value-of select="code"/>
 									</span>
 								</a>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., 'price', 'под заказ')"/></div>
+								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -69,7 +73,7 @@
 								<span>
 									№ для заказа: <xsl:value-of select="code"/>
 								</span>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., 'price', 'под заказ')"/></div>
+								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
 							</a>
 						</div>
 					</xsl:for-each>

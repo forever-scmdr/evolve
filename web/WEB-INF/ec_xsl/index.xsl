@@ -168,11 +168,9 @@
 	<xsl:template name="INDEX_BLOCKS">
 		<section class="hero pb">
 			<div class="container container-fluid">
-				<div class="fotorama" data-width="100%" data-maxheight="400" data-fit="cover">
+				<div class="fotorama" data-width="100%" data-height="400" data-fit="cover">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<!-- <img src="{@path}{pic}" alt="{name}"/> -->
-						<!-- <div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div> -->
-						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<div class="slider-item" style="background-image: url({@path}{pic});">
 							<div class="container">
 								<div class="slider-item__block fotorama__select">
 									<div class="slider-item__wrapper">

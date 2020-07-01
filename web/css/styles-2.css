@@ -1,0 +1,172 @@
+.fotorama {
+	height: 400px;
+}
+
+.header {
+	box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.gallery__item {
+	box-shadow: none;
+}
+
+.catalog-items .catalog-item {
+	margin: 0px !important;
+}
+
+.catalog-items .catalog-item div a {
+	height: auto;
+}
+
+.columns {
+	padding-bottom: 32px !important;
+}
+
+.small-nav .header {
+	box-shadow: none;
+}
+
+.price-info-wrapper {
+	display: flex;
+	flex: 1 1 auto;
+}
+
+.header__column.cart-info {
+	margin-bottom: 16px;
+}
+
+.catalog-items.info .catalog-item .text a {
+	padding: 0;
+	margin: 0;
+	line-height: 1.3;
+}
+.catalog-items.info .catalog-item .text p {
+	font-size: 13px;
+}
+.catalog-items.info .catalog-item .text .date {
+	margin-top: 8px;
+}
+
+.cart-container .item {
+	border: 1px solid #e6e6e6;
+	padding: 1rem;
+	border-radius: 0.4rem;
+	background-color: #fff;
+	box-shadow: none;
+}
+
+@media (min-width: 1367px) {
+	.container {
+		width: 1270px;
+	}
+}
+@media (min-width: 1281px) {
+	.hero .container {
+		width: 100%;
+	}
+
+	.fotorama .container {
+		width: 1270px;
+	}
+}
+@media (max-width: 1366px) {
+	.container {
+		width: 1270px;
+	}
+}
+@media (max-width: 1280px) {
+	.container {
+		width: 100%;
+		padding: 0 15px;
+	}
+}
+@media (max-width: 1024px) {
+	.header.mobile {
+		margin: 0 -15px;
+		margin-bottom: 16px;
+		background: #f2f2f2;
+	}
+
+	.fotorama {
+		margin: 0;
+	}
+}
+@media (max-width: 992px) {
+	.hero .container {
+		padding: 0;
+		margin: 0;
+	}
+}
+@media (max-width: 768px) {
+	.header {
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+	}
+}
+@media (max-width: 425px) {
+	.header {
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+	}
+
+	.fotorama {
+		margin: 0;
+	}
+
+	.hero .container {
+		padding: 0;
+	}
+
+	.slider-item__block {
+		margin: auto;
+	}
+	.slider-item__text {
+		font-size: 20px;
+		font-weight: 400;
+		margin-bottom: 24px;
+	}
+
+	.gallery .grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.utp__image {
+		padding: 0;
+		padding-bottom: 8px;
+	}
+	.utp__image img {
+		height: 48px;
+	}
+	.utp__title {
+		margin: 8px;
+		font-size: 14px;
+		line-height: 100%;
+	}
+	.utp .grid {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 16px;
+	}
+
+	.grid {
+		grid-gap: 16px;
+	}
+
+	.catalog-items.info {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 16px;
+	}
+
+	.button {
+		font-size: 14px;
+		padding: 2px 6px;
+	}
+
+	.price-info-wrapper {
+		flex-direction: column;
+	}
+	.price-info-wrapper .price p {
+		line-height: 1;
+	}
+
+	.cart-container .item .delete {
+		margin-top: 0;
+	}
+}
