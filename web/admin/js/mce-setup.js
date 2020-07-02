@@ -7,11 +7,12 @@ var mceSettings = {
 		,content_css : [
 			"css/text-style.css?v=2"]
 		,plugins : [
-			'advlist autolink lists link image imagetools charmap print preview anchor textcolor',
+			'advlist autolink lists link image charmap print preview anchor textcolor',
 			'searchreplace visualblocks code fullscreen',
 			'insertdatetime media table contextmenu paste code'
 			// ,"fontawesome noneditable"
-			, "visualchars", "spoiler" ],
+			, "visualchars", "spoiler", "imagetools"],
+
 		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
@@ -41,7 +42,8 @@ var mceSettings = {
 					block : 'aside',
 					wrapper : true
 				}
-				]
+			]
+
 			}
 
 		],
@@ -51,7 +53,9 @@ var mceSettings = {
 			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
 			,{title: 'Подсказка', value: 'tip'}
-		]
+		],
+		// visualblocks_default_state: true,
+		// end_container_on_empty_block: true
 	}
 	,"mce_medium" : {
 		selector : "textarea.mce_medium",
@@ -65,7 +69,7 @@ var mceSettings = {
 			'searchreplace visualblocks code fullscreen',
 			'insertdatetime media table contextmenu paste code'
 			// ,"fontawesome noneditable"
-			, "visualchars", "spoiler" ],
+			, "visualchars", "spoiler", "imagetools" ],
 		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
@@ -94,12 +98,7 @@ var mceSettings = {
 					title : 'aside',
 					block : 'aside',
 					wrapper : true
-				}, {
-					title : 'figure',
-					block : 'figure',
-					wrapper : true
 				}
-
 				]
 			}
 
@@ -121,7 +120,7 @@ var mceSettings = {
 			"font-awesome-4.6.3/css/font-awesome.min.css" ]
 		,plugins : [
 			'advlist autolink lists link charmap print preview anchor textcolor',
-			'searchreplace code fullscreen',
+			'searchreplace visualblocks code fullscreen',
 			'insertdatetime media table contextmenu paste code'
 			// ,"fontawesome noneditable"
 			, "visualchars"],
@@ -195,7 +194,19 @@ $(document).ready(function(){
 						callback(uploadPath + val);
 					});
 				}
+				,setup: function (editor) {
+					editor.on('init', function(args) {
+						editor = args.target;
+
+						editor.on('NodeChange', function(e) {
+							if (e && e.element.nodeName.toLowerCase() == 'img') {
+								tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+							}
+						});
+					});
+				}
 			});
+
 		}
 		//console.log(mceSettings[setting]);
 		tinymce.init(mceSettings[setting]);

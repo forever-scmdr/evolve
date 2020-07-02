@@ -18,6 +18,8 @@
 			</link>
 		</list>
 
+		<list item="link"/>
+
 		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news_section" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
@@ -45,6 +47,7 @@
 
 		<single item="common" cacheable="true">
 			<list item="soc_link"/>
+			<list item="banner"/>
 		</single>
 
 		<!-- <link name="contacts_link" target="contacts"/> -->
@@ -62,6 +65,9 @@
 		<list item="news_item" tag="max">
 			<aggregation parameter="date" function="max"/>
 		</list>
+		<single item="advertisement">
+			<list item="ad_banner"/>
+		</single>
 	</include-definition>
 
 
@@ -479,6 +485,7 @@
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
+		<single item="overused" id="overused"/>
 		<single item="news_item" var="ni" id="ni" >
 			<single item="seo"/>
 			<single item="top_gal"/>
@@ -526,6 +533,9 @@
 				</list>
 				<list item="news_item" transit="true" cacheable="false" id="also">
 					<filter>
+						<parameter name="tag" sign="!=" compare="SOME">
+							<var ref="overused" parameter="tag"/>
+						</parameter>
 						<parameter name="tag" sign="=" compare="SOME">
 							<var ref="ni" parameter="tag"/>
 						</parameter>
@@ -569,8 +579,11 @@
 <!--			</ancestor>-->
 		</list>
 
-		<list item="news_item" id="latest" tag="latest" cacheable="true">
+		<list item="news_item" id="latest" tag="latest">
 			<filter>
+				<parameter name="hash" sign="!=" compare="SOME">
+					<var ref="ni" parameter="hash"/>
+				</parameter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
@@ -734,6 +747,9 @@
 
 		<list item="small_news_item" id="latest" tag="latest">
 			<filter>
+				<parameter name="hash" sign="!=" compare="SOME">
+					<var ref="ni" parameter="hash"/>
+				</parameter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>

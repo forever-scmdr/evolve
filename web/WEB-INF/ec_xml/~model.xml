@@ -3,6 +3,30 @@
 
 	<assoc name="news" caption="Дополнительные статьи" transitive="false" ag-id="1" ag-hash="3377875" />
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             РЕКЛАМА                                 ////////////-->
+
+	<item name="advertisement" caption="Реклама" ag-id="42" ag-hash="-128069115">
+		<child item="top_728x90" single="true"/>
+		<child item="side_240x400" single="true"/>
+		<child item="bottom_900x600" single="true"/>
+	</item>
+
+	<item name="ad_banner" caption="Баннер" virtual="true" ag-id="43" ag-hash="270078664">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="link" type="string" caption="Рекламная ссылка"/>
+		<parameter name="pic" type="picture" caption="Фоновое изображение"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="code" type="plain-text" caption="Произвольный код"/>
+		<parameter name="style" type="plain-text" caption="CSS"/>
+	</item>
+
+	<item name="top_728x90" caption="TOP 780x90" super="ad_banner" ag-id="44" ag-hash="1872585180"/>
+	<item name="side_240x400" caption="SIDE 240x400" super="ad_banner" ag-id="45" ag-hash="-1352036862"/>
+	<item name="bottom_900x600" caption="BOTTOM 900x600" super="ad_banner" ag-id="46" ag-hash="451006927"/>
+
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -68,8 +92,7 @@
 		<!--<parameter name="encoding" type="string" caption="Кодировка" description="В большинстве случаев подходит UTF-8"/>-->
 	</item>
 
-	<item name="page_part" virtual="true" key="name" super="searchable" ag-id="9" ag-hash="883751843">
-	</item>
+	<item name="page_part" virtual="true" key="name" super="searchable" ag-id="9" ag-hash="883751843"></item>
 
 	<item name="text_part" caption="Текстовый блок" super="page_part *" ag-id="10" ag-hash="-1037694011">
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
@@ -185,6 +208,14 @@
 		<parameter name="bottom_plain_text" type="plain-text" caption="Произвольный код внизу"/>
 		<child item="soc_link"/>
 		<parameter name="not_found" type="picture" caption="Изображение 'ничего не найдено'" description="на странице поиска"/>
+		<child item="banner"/>
+	</item>
+
+	<item name="banner" key="name" caption="Баннер" description="на странице новотси" ag-id="41" ag-hash="-1396342996">
+		<parameter name="name" type="string" caption="название"/>
+		<parameter name="text" type="text" caption="текст"/>
+		<parameter name="link" type="string" caption="ссылка"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="soc_link" key="name" caption="соцсеть" ag-id="20" ag-hash="1213728690">
@@ -242,6 +273,7 @@
 		<child item="seo" single="true"/>
 		<!--<child item="custom_page"/>-->
 		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="in_menu" type="byte" domain="0-1" caption="Показать в главонм меню"/>
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_part"/>
@@ -294,6 +326,20 @@
 		<parameter name="text_color" type="string" caption="Цвет текста"/>
 	</item>
 
+	<item name="overused" caption="Лишние теги" ag-id="38" ag-hash="530095761">
+		<parameter name="tag" caption="тэг" multiple="true" type="string"/>
+	</item>
+
+	<item name="links" caption="Ссылки в главном меню" ag-id="39" ag-hash="102977465">
+		<child item="link"/>
+	</item>
+
+	<item name="link" caption="Ссылка" key="name" ag-id="40" ag-hash="3321850">
+		<parameter name="name" type="string" caption="Текст ссылки"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="style" type="string" caption="Стиль"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="main_page" single="true"/>
@@ -307,6 +353,9 @@
 		<child item="dictionary" single="true"/>
 		<child item="rss" single="true"/>
 		<child item="hot_tags" single="true"/>
+		<child item="overused" single="true"/>
+		<child item="links" single="true"/>
+		<child item="advertisement" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

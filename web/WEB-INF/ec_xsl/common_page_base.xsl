@@ -8,6 +8,10 @@
 		<xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text>
 	</xsl:template>
 
+	<!-- ****************************    UTM    ******************************** -->
+
+	<xsl:variable name="utm"/>
+
 	<!-- ****************************    SEO    ******************************** -->
 
 	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
@@ -45,11 +49,17 @@
 	<xsl:variable name="head-end-modules" select="$modules[place = 'head_end']"/>
 	<xsl:variable name="body-start-modules" select="$modules[place = 'body_start']"/>
 	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
+	<xsl:variable name="adv" select="page/advertisement"/>
+	<xsl:variable name="adv_top" select="$adv/top_728x90"/>
+	<xsl:variable name="adv_side" select="$adv/side_240x400"/>
+	<xsl:variable name="adv_bottom" select="$adv/bottom_900x600"/>
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 	<xsl:template name="HEADER">
 <!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
+		<xsl:call-template name="BANNER_TOP" />
+
 		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
 				<div class="header__content row">
@@ -126,13 +136,20 @@
 						</xsl:for-each>
 					</ul>
 				</li>
-				<xsl:for-each select="page/menu_custom">
-					<!-- <xsl:variable name="k" select="@key"/>
+				<xsl:for-each select="page/menu_custom[in_menu = '1']">
+					<xsl:variable name="k" select="@key"/>
 					<li class="{'current'[$active_menu_item = $k]}">
 						<a href="{show_page}">
 							<xsl:value-of select="name"/>
 						</a>
-					</li> -->
+					</li>
+				</xsl:for-each>
+				<xsl:for-each select="page/link">
+					<li >
+						<a target="_blank" href="{link}" rel="nofollow" >
+							<span class="link-span" style="{style}"><xsl:value-of select="name"/></span>
+						</a>
+					</li>
 				</xsl:for-each>
 				<!--  <li class="{'current'[$active_menu_item = 'contacts']}">
 					<a href="{page/contacts_link}">Контакты</a>
@@ -301,9 +318,9 @@
 				<!--- mobile specific meta -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 				<!-- CSS -->
-				<link rel="stylesheet" href="css/base.css?version=1"/>
+				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=4"/>
+				<link rel="stylesheet" href="css/main.css?version=1.48"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -584,7 +601,16 @@
 
 
 	<xsl:template name="BANNER_FOLLOW">
+
+		<xsl:variable name="sep" select="if(contains(page/common/banner[1]/link, '?')) then '&amp;' else '?'"/>
+
 		<div class="content-text banner banner-follow">
+			<div class="banner-wrap">
+				<xsl:value-of select="/page/common/banner[1]/text" disable-output-escaping="yes"/>
+				<a target="_blank" rel="nofollow" href="{concat(/page/common/banner[1]/link, $sep, $utm)}" class="utm-link"></a>
+			</div>
+		</div>
+		<!-- <div class="content-text banner banner-follow">
 			<p class="follow-text">Подписывайтесь на наши соцсети:
 				<a href="https://twitter.com/TemptingPro"><img src="images/twitter.png" alt="twitter"/></a>
 				<a href="https://www.instagram.com/temptingpro/"><img src="images/Instagram_icon-icons.com_66804.png" alt="instagram"/></a>
@@ -595,14 +621,50 @@
 				<img style="height: 3.5rem; display: inline-block; vertical-align: middle;  margin-left: .5px; margin-top: -1rem;" src="images/live.png"/>
 				<img style="height: 3.5rem; display: inline-block; vertical-align: middle; margin-left: .5px; margin-top: -1rem;" src="images/icons8-news-96.png"/>
 			</p>			
-		</div>
+		</div> -->
 	</xsl:template>
+
+
+	<!-- ADVERTISEMENT -->
+	<xsl:template name="BANNER_SIDE">
+		<xsl:if test="$adv_side">
+			<div class="border-top"></div>
+			<div class="adv_side" id="#adv_side">
+				<a href="{$adv_side/link}" target="_blank">
+					<img src="{concat($adv_side/@path, $adv_side/pic)}"/>
+				</a>
+				<xsl:value-of select="$adv_side/text" disable-output-escaping="yes"/>
+				<xsl:value-of select="$adv_side/code" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="BANNER_TOP">
+		<xsl:if test="$adv_top != ''">
+			<section style="{$adv_top/style}" id="banner-top-700">
+				<div class="row" style="padding-left:0; padding-right:0;">
+					<div class="col-full">
+						<div class="banner-top-700" style="line-height: 1; margin:0 auto;">
+							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>
+							<xsl:value-of select="$adv_top/code" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</div>
+			</section>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="BANNER_DONATE">
-		<div class="content-text banner banner-donate">
-			<a class="donate-link" href="https://tempting.pro/project_assistance/" target="_blank">
-				<img src="images/charity.png?version=1" alt="donate"/>
-			</a>
-		</div>
+		<xsl:if test="$adv_bottom">
+			<div style="margin-bottom: 1.5rem;"></div>
+			<div class="content-text banner banner-donate">
+				<a class="donate-link" href="{$adv_bottom/link}" target="_blank">
+					<img src="{concat($adv_bottom/@path, $adv_bottom/pic)}"/>
+				</a>
+				<xsl:value-of select="$adv_bottom/text" disable-output-escaping="yes"/>
+				<xsl:value-of select="$adv_bottom/code" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
