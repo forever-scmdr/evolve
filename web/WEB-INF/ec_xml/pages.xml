@@ -464,6 +464,10 @@
 			<var name="minqty" value=""/>
 		</link>
 		<link name="search_link" target="admin_search"/>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -1599,6 +1603,17 @@
 	</page>
 
 
+	<page name="get_eltech" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEltechSpbRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="reindex_all" template="integration/reindex">
 		<request>
 			<var name="action"/>
@@ -1619,17 +1634,14 @@
 	</page>
 
 
-
-	<page name="get_platan_auto_start" template="integration" schedule="0 0 0 ? * * *">
+	<page name="update_prices_from_excel_auto_start" template="integration/create_excel" schedule="0 0 22 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
-		<command class="extra.UpdateCurrencyRates"/>
-		<command class="extra.ImportPlatanRu">
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
 
 
 	<page name="get_ferrite_auto_start" template="integration" schedule="0 0 23 ? * * *">
@@ -1643,7 +1655,7 @@
 	</page>
 
 
-	<page name="get_compel_auto_start" template="integration" schedule="0 30 23 ? * * *">
+	<page name="get_compel_auto_start" template="integration" schedule="0 0 0 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1653,8 +1665,41 @@
 		</command>
 	</page>
 
+	<page name="get_platan_auto_start" template="integration" schedule="0 0 1 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlatanRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
-	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 1 ? * * *">
+
+	<page name="get_ebv_auto_start" template="integration" schedule="0 0 2 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEbvCom">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="get_eltech_auto_start" template="integration" schedule="0 0 3 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEltechSpbRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+
+	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 4 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1664,14 +1709,7 @@
 	</page>
 
 
-	<page name="update_prices_from_excel_auto_start" template="integration/create_excel" schedule="0 30 22 ? * * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+
 
 
 
