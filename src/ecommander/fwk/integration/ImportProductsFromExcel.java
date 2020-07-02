@@ -37,6 +37,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	private static final String WITH_PICS = "with_pics"; // where to look for product files (SEARCH_BY_CODE, SEARCH_BY_CELL_VALUE, DOWNLOAD)
 	private static final ItemType PRODUCT_ITEM_TYPE = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 
+
 	//default page var values
 	private enum varValues {
 		UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE, IGNORE, CLEAR, SEARCH_BY_CODE,
@@ -130,7 +131,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										Item parent = getDeclaredParent(sectionParentId);
 										info.setOperation("Копирую раздел: \"" + name + "\".Это долгий и трудный процесс.");
 										info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
-										executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, parent).ignoreFileErrors(true));
+										executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, parent).ignoreFileErrors(false));
 										info.pushLog("Уфф! Скопировал.");
 										setOperation("Обработка раздела: \"" + name + "\"");
 										Item recentlyCopiedSection = ItemQuery.loadByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code).get(1);
@@ -147,7 +148,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										if (declaredParent.getId() != currentParentId) {
 											info.setOperation("Копирую раздел: \"" + name + "\".Это долгий и трудный процесс.");
 											info.pushLog("Попробуйте создавать новые разделы и копировать в них продукты. Это будет быстрее.");
-											executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
+											executeAndCommitCommandUnits(new CopyItemDBUnit(existingSection, declaredParent).ignoreFileErrors(false));
 											info.pushLog("Уфф! Скопировал.");
 											setOperation("Обработка раздела: \"" + name + "\"");
 										}
@@ -170,7 +171,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										if (declaredParent.getId() != currentParentId) {
 											info.setOperation("Перемещаю раздел: \"" + name + "\".Это долгий и трудный процесс. Вы уверены, что оно Вам надо?");
 											info.pushLog("Попробуйте создавать новые разделы и перемещать в них продукты. Это будет быстрее.");
-											executeAndCommitCommandUnits(new MoveItemDBUnit(existingSection, declaredParent).ignoreFileErrors(true));
+											executeAndCommitCommandUnits(new MoveItemDBUnit(existingSection, declaredParent).ignoreFileErrors(false));
 											info.pushLog("Уфф! Переместил.");
 											setOperation("Обработка раздела: \"" + name + "\"");
 										}
@@ -238,9 +239,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										}
 										break;
 									case SEARCH_BY_CELL_VALUE:
+										cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 										mainPicPath = picsFolder.resolve(cellValue);
 										if( mainPicPath.toFile().isFile()) {
 											product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+										}else{
+											pushLog("No file: " + mainPicPath.toAbsolutePath());
 										}
 										break;
 									case DOWNLOAD: {
@@ -267,12 +271,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									switch (withPictures) {
 										case SEARCH_BY_CELL_VALUE:
 											//ANTI-DOLBOEB fix
-											cellValue = (StringUtils.startsWith(cellValue, getUrlBase()))? cellValue.replace(getUrlBase(), "") : cellValue;
-											if(StringUtils.startsWith(cellValue,"http://") || StringUtils.startsWith(cellValue,"https://")){
+											s = (StringUtils.startsWith(s, getUrlBase()))? s.replace(getUrlBase(), "") : s;
+											if(StringUtils.startsWith(s,"http://") || StringUtils.startsWith(s,"https://")){
 
-												URL url = new URL(cellValue);
+												URL url = new URL(s);
 												product.setValue(paramName, url);
 											}else {
+												s = StringUtils.replaceChars(s, '\\', System.getProperty("file.separator").charAt(0));
 												File p = picsFolder.resolve(s).toFile();
 												if (p.isFile()) product.setValue(paramName, p);
 											}
@@ -303,7 +308,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							}
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(false).noFulltextIndex());
 						if(isProduct) currentProduct = product;
 						//MANUALS
 						for (String header : headers) {
@@ -368,9 +373,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
 									mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
-									if (mainPicFile.exists()) {
+									if (mainPicFile.isFile()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
-										product.clearValue("medium_pic");
+//										product.clearValue("medium_pic");
 										product.clearValue("small_pic");
 									}
 								} else if (StringUtils.isBlank(mainPic.toString())) {
@@ -392,11 +397,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												product.setValue(paramName, url);
 											}else {
 												if (StringUtils.isBlank(cellValue)) break;
+												cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 												mainPicFile = picsFolder.resolve(cellValue).toFile();
 												if (mainPicFile.isFile()) {
 													product.setValue(MAIN_PIC_PARAM, mainPicFile);
 													//product.clearValue("medium_pic");
 													product.clearValue("small_pic");
+												}
+												else{
+													pushLog("No file: " + mainPicFile.getAbsolutePath());
 												}
 											}
 											break;
@@ -474,7 +483,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 							}
 
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(false).noFulltextIndex());
 						//MANUALS
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
@@ -610,9 +619,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						existingFiles.add(url);
 					}
 					else{
+						s = StringUtils.replaceChars(s, '\\', System.getProperty("file.separator").charAt(0));
 						File f = folder.resolve(s).toFile();
-						if (f.exists()) {
+						if (f.isFile()) {
 							existingFiles.add(f);
+						}else{
+							pushLog("No File: " + f.getAbsolutePath());
 						}
 					}
 				}
@@ -719,7 +731,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 		if (!section.getStringValue(NAME_PARAM, "").equals(name)) {
 			section.setValue(NAME_PARAM, name);
 			info.addLog("Обновлено название раздела " + section.getStringValue(CODE_PARAM) + ": \"" + section.getStringValue(NAME_PARAM, "") + "\"");
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().ignoreFileErrors(true).noTriggerExtra());
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().ignoreFileErrors(false).noTriggerExtra());
 		}
 	}
 
