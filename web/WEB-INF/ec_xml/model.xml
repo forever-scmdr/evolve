@@ -354,9 +354,6 @@
 		<child item="bought"/>
 	</item>
 
-	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
-		<parameter name="count" type="integer" caption="Счетчик"/>
-	</item>
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
@@ -826,8 +823,18 @@
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                             	РАССЫЛКА                               ////////////-->
+	<!--/////////////  СИСТЕМНЫЕ АЙТЕМЫ (работают автоматически без участия пользователя)  ////////////-->
 
+
+	<item name="system" caption="Системные данные">
+		<child item="counter" single="true"/>
+		<child item="email_queue" single="true"/>
+		<child item="observers" single="true"/>
+	</item>
+
+	<item name="counter" caption="Счетчик номера договора" ag-id="29" ag-hash="957830652">
+		<parameter name="count" type="integer" caption="Счетчик"/>
+	</item>
 
 	<item name="email_queue" caption="Очередь отправки писем" ag-id="1780" ag-hash="-2072665426">
 		<child item="email_queue_item"/>
@@ -847,7 +854,18 @@
 	</item>
 
 
-	<!--/////////////                            	END РАССЫЛКА                           ////////////-->
+	<item name="observer" caption="Подписчик" key="observer observable">
+		<parameter name="observer" caption="Подписчик" description="Наблюдатель" type="string" />
+		<parameter name="observable" caption="Объект" type="string" />
+	</item>
+
+
+	<item name="observers" caption="Подписки">
+		<child item="observer"/>
+	</item>
+
+
+	<!--/////////////                         	СИСТЕМНЫЕ АЙТЕМЫ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
@@ -863,12 +881,11 @@
 		<child item="common" single="true"/>
 		<child item="custom_pages" single="true"/>
 		<child item="registered_catalog" single="true"/>
-		<child item="counter" single="true" virtual="true"/>
+		<child item="system" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
-		<child item="email_queue" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

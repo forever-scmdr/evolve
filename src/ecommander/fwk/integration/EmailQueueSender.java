@@ -36,6 +36,7 @@ import java.util.List;
 public class EmailQueueSender extends IntegrateBase {
 
 	public static final String DEFAULT_EMAIL_PAGE = "agent_email";
+	public static final String SYSTEM = "system";
 	public static final String EMAIL_QUEUE = "email_queue";
 	public static final String EMAIL_QUEUE_ITEM = "email_queue_item";
 	public static final String ADDRESS_TO = "address_to";
@@ -57,11 +58,7 @@ public class EmailQueueSender extends IntegrateBase {
 			addError("Невозможно загрузить очередь отправки, описание ошибки в логе", "root");
 			return false;
 		}
-		if (queue == null) {
-			addError("Не найдена очередь почтовых сообщений", 0, 0);
-			return false;
-		}
-		return true;
+		return queue != null;
 	}
 
 	@Override
@@ -155,7 +152,8 @@ public class EmailQueueSender extends IntegrateBase {
 	}
 
 	private void addEmailToQueueInt(String addressTo, Strings emailUrl) throws Exception {
-		Item queue = ItemUtils.ensureSingleRootAnonymousItem(EMAIL_QUEUE, getInitiator());
+		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM, getInitiator());
+		Item queue = ItemUtils.ensureSingleAnonymousItem(EMAIL_QUEUE, getInitiator(), system.getId());
 		if (queue.getOwnerGroupId() != UserGroupRegistry.getGroup("0dmin")) {
 			executeAndCommitCommandUnits(ChangeItemOwnerDBUnit.newGroup(queue, UserGroupRegistry.getGroup("0dmin")).ignoreUser(true));
 		}
