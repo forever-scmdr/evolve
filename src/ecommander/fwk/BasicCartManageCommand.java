@@ -51,6 +51,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
 	protected static final String PROCESSED_PARAM = "processed";
+	protected static final String SYSTEM_ITEM = "system";
 	protected static final String COUNTER_ITEM = "counter";
 	protected static final String COUNT_PARAM = "count";
 	protected static final String NUM_PARAM = "num";
@@ -152,7 +153,8 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 		// Загрузка и модификация счетчика
-		Item counter = ItemUtils.ensureSingleRootItem(COUNTER_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
+		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
 		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
 		if (count > 99999)
 			count = 1;

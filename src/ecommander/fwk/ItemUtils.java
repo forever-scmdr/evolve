@@ -66,6 +66,17 @@ public class ItemUtils {
 	}
 
 	/**
+	 * Загрузить определенный одиночный айтем по его названию. Если айтем не найден, то создать его.
+	 * @param itemName
+	 * @param initiator
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item ensureSingleAnonymousItem(String itemName, User initiator, long parentId) throws Exception {
+		return ensureSingleItem(itemName, initiator, parentId, UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+	}
+
+	/**
 	 * Загрузить определенный одиночный корневой айтем по его названию. Если айтем не найден, то создать его.
 	 * @param itemName
 	 * @param initiator
