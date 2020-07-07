@@ -141,7 +141,8 @@ public class ImportEltechSpbRu extends IntegrateBase implements ItemNames {
 						}
 						prod.set_name(removeQuotes(src.getValue(NAME_HEADER)));
 						prod.set_description(removeQuotes(src.getValue(DESCRIPTION_HEADER)));
-						prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
+						String qtyStr = StringUtils.replaceChars(src.getValue(QTY_HEADER), ",.", "");
+						prod.set_qty(DecimalDataType.parse(qtyStr, 0));
 						prod.set_available(prod.get_qty().compareTo(new BigDecimal(0.1)) < 0 ? -1 : defaultDelay);
 						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));
 
