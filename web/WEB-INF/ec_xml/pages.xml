@@ -481,7 +481,7 @@
 		</single>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="true">
+	<page name="news_item" template="news_item" cacheable="false">
 		<request>
 			<var name="ni" style="translit"/>
 		</request>

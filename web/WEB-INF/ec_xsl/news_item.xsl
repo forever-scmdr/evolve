@@ -119,7 +119,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 				<xsl:call-template name="NEWS_TOPPER"/>
 
 <!--				<div class="col-full s-content__main">-->
-				 <div class="col-nine md-eight tab-full s-content__main">
+				<div class="col-nine md-eight tab-full s-content__main">
 					<div class="content-text">
 						<xsl:apply-templates select="$ni" mode="content"/>
 						<!-- Telegram -->
@@ -130,6 +130,50 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 							</p>
 						</xsl:if>
 					</div>
+					<div>
+						 <xsl:call-template name="BANNER_FOLLOW"/>
+						 <xsl:call-template name="BANNER_DONATE"/>
+						 <xsl:if test="$ni/tag">
+							 <p class="s-content__tags">
+								 <span>Теги</span>
+								 <span class="s-content__tag-list">
+									 <xsl:for-each select="$ni/tag">
+										 <a href="{concat('tag/?tag=', .)}">
+											 <xsl:value-of select="."/>
+										 </a>
+									 </xsl:for-each>
+								 </span>
+
+							 </p>
+						 </xsl:if>
+						 <div class="soc-container">
+							 <div class="share">
+								 Поделиться:
+								 <div class="ya-share2" style="margin-left: -4px;" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
+							 </div>
+							 <div class="follow mobile-only">
+								 Подписаться:
+								 <div class="links">
+									 <a href="https://twitter.com/TemptingPro">
+										 <img src="images/twitter.png" alt="twitter"/>
+									 </a>
+									 <a href="https://www.instagram.com/temptingpro/">
+										 <img src="images/instagram.png" alt="instagram"/>
+									 </a>
+									 <a href="https://vk.com/tempting_pro">
+										 <img src="images/vk.png" alt="vk.com"/>
+									 </a>
+									 <a href="https://facebook.com/Tempting.Pro/">
+										 <img src="images/facebook.png" alt="facebook"/>
+									 </a>
+								 </div>
+							 </div>
+						 </div>
+					</div>
+					 <xsl:call-template name="ALSO"/>
+
+					 <xsl:call-template name="PREV-NEXT" />
+
 				</div>
 				<div class="col-three md-four tab-full desctop-only latest">
 					<xsl:call-template name="BANNER_SIDE" />
@@ -162,52 +206,6 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 							<img src="images/facebook.png" alt="facebook"/>
 						</a>
 					</div>
-				</div>
-				<div class="col-full s-content__main">
-					<xsl:call-template name="BANNER_FOLLOW"/>
-
-					<xsl:call-template name="BANNER_DONATE"/>
-
-					<xsl:if test="$ni/tag">
-						<p class="s-content__tags">
-							<span>Теги</span>
-							<span class="s-content__tag-list">
-								<xsl:for-each select="$ni/tag">
-									<a href="{concat('tag/?tag=', .)}">
-										<xsl:value-of select="."/>
-									</a>
-								</xsl:for-each>
-							</span>
-
-						</p>
-					</xsl:if>
-					<div class="soc-container">
-						<div class="share">
-							Поделиться:
-							<div class="ya-share2" style="margin-left: -4px;" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
-						</div>
-						<div class="follow mobile-only">
-							Подписаться:
-							<div class="links">
-								<a href="https://twitter.com/TemptingPro">
-									<img src="images/twitter.png" alt="twitter"/>
-								</a>
-								<a href="https://www.instagram.com/temptingpro/">
-									<img src="images/instagram.png" alt="instagram"/>
-								</a>
-								<a href="https://vk.com/tempting_pro">
-									<img src="images/vk.png" alt="vk.com"/>
-								</a>
-								<a href="https://facebook.com/Tempting.Pro/">
-									<img src="images/facebook.png" alt="facebook"/>
-								</a>
-							</div>
-						</div>
-					</div>
-
-					<xsl:call-template name="ALSO"/>
-
-					<xsl:call-template name="PREV-NEXT" />
 				</div>
 			</article>
 
