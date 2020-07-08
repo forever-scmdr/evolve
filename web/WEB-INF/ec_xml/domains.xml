@@ -18,4 +18,8 @@
 		<value>body_start</value>
 		<value>body_end</value>
 	</domain>
+	<domain name="label" view-type="combobox">
+		<value>Акция</value>
+		<value>Новинка</value>
+	</domain>
 </domains>
