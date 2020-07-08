@@ -16,7 +16,7 @@
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form-group">
 			<label>Ваше имя *:</label>
-			<input type="text" class="form-control" name="{$inp/name/@input}" value="{f:not_empty($inp/name, $vals/name)}" error="{$inp/name/@validation-error}" placeholder="Имя Фамилия"/>
+			<input type="text" class="form-control" name="{$inp/name/@input}" value="{f:not_empty($inp/name, $vals/name)}" error="{$inp/name/@validation-error}" placeholder="Фамилия Имя Отчество"/>
 		</div>
 		<div class="form-group">
 			<label for="">Адрес:</label>

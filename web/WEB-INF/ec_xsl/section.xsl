@@ -141,7 +141,7 @@
 
 		<xsl:if test="$sel_sec/product_pages and $show_devices">
 			<div class="pagination">
-				<span>Странциы:</span>
+				<span>Страницы:</span>
 				<div class="pagination-container">
 					<xsl:for-each select="$sel_sec/product_pages/page">
 						<a href="{link}" class="{'active'[current()/@current]}">
@@ -299,7 +299,7 @@
 	<xsl:template match="section" mode="tag">
 		<a href="{show_products}" class="tag" title="перейти в подраздел">
 			<span>
-				<xsl:value-of select="name"/>
+				<xsl:value-of select="if(display_name != '') then display_name else name"/>
 			</span>
 		</a>
 	</xsl:template>
@@ -310,7 +310,7 @@
 		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 		<div class="device items-catalog__section">
 			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
-			<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
+			<a href="{show_products}" class="device__title"><xsl:value-of select="if(display_name != '') then display_name else name"/></a>
 		</div>
 	</xsl:template>
 

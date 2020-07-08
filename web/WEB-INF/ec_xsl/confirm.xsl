@@ -153,7 +153,7 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="$product/price"/>
+								<xsl:value-of select="if(f:num($product/price) = 0) then 'запрошена у продавца' else f:currency_decimal(string(f:num($product/price) * f:num($cart/discount)))"/>
 							</td>
 							<td>
 								<xsl:value-of select="sum"/>

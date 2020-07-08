@@ -1127,7 +1127,7 @@ h4 small,h4 .small,.h4 small,.h4 .small,h5 small,h5 .small,.h5 small,.h5 .small,
 	font-size:75%;
 }
 h1,.h1 {
-	font-size:36px;
+	font-size:26px;
 }
 h2,.h2 {
 	font-size:30px;
@@ -6050,6 +6050,7 @@ img {
 .mobile.header .search-container {
 	padding:1em 0;
 	flex-basis:100%;
+	position: relative;
 }
 .mobile.header .search-container form {
 	width:100%;
@@ -6876,9 +6877,13 @@ ul.icons li>*:first-child {
 		border:1px solid #ccc;
 		padding:1rem;
 		border-radius:.4rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
 	}
 	.cart-container .item .image-container {
-		flex-basis:20%;
+		/*flex-basis:20%;*/
+		grid-row-start: 1;
+		grid-row-end: 6;
 	}
 	/*.cart-container .item .title{flex-basis: 80%;}*/
 	.cart-container .total {
@@ -7827,6 +7832,7 @@ td .catalog-item {
 }
 .header__search {
 	flex:1;
+	position: relative;
 }
 .user-links>a {
 	display: block;
@@ -7847,16 +7853,27 @@ td .catalog-item {
 	margin-top:-30px !important;
 	bottom:10px;
 }
-.hero__banners {
+/* .hero__banners {
 	display:flex;
 	flex-wrap:wrap;
 	justify-content:space-between;
 	width:446px;
 	margin-left:21px;
 	flex-direction:column;
+} */
+.hero__banners {
+	display: grid;
+    grid-gap: 24px;
+    width: 446px;
+    margin-left: 21px;
 }
 .hero__banner {
 	flex-basis:47%;
+}
+
+.banner.hero__banner:first-child img {
+	height: 100%;
+	object-fit: cover;
 }
 @media (max-width:767px) {
 	.hero .container {
@@ -7966,11 +7983,11 @@ td .catalog-item {
 }
 .events__banner:first-child {
 	margin-right:21px;
-}
-.events__banner:nth-child(2) .banner__title,
+} 
+/* .events__banner:nth-child(2) .banner__title,
 .events__banner:nth-child(2) .banner__text {
 	color: #fff;
-}
+} */
 .banner_blue .banner__background {
 	background-image:linear-gradient(to right,#2766C5,#1B50A0);
 }
@@ -8597,34 +8614,115 @@ td .catalog-item {
 #search-result, #search-result-mobile {
 	position: absolute;
 	padding: 16px;
-	box-shadow: grey 0px 4px 10px;
-	top: 100px;
+	box-shadow: #4c4849 0px 4px 15px;
+	top: 45px;
 	z-index: 1;
 	background: white;
 	display: none;
-	/*width: 100%;*/
+	width: 100%;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	z-index: 3;
+}
+
+div#search-result-mobile {
+	top: 55px;
 }
 #search-result ul, #search-result-mobile ul{
 	padding-left: 0;
 }
 #search-result li, #search-result-mobile li{
 	list-style-type: none;
+	margin-bottom: 8px;
 }
 #search-result li a, #search-result-mobile li a{
 	color: #363636;
 	text-decoration: underline;
 
 }
-.show-all{
-	display: block;
-	width: 100%;
-	background: #a7323b;
-	color: #fff;
-	text-decoration: none;
-	text-align: center;
-	text-transform: uppercase;
-	padding: 0.5rem 0;
-}
+.show-all{color: #333 !important;text-decoration: underline;margin-top: 16px;display: inline-block;font-weight: 900;}
 .show-all:hover{
 	text-decoration: none;
+}
+.someInfo {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	grid-gap: 16px;
+	width: 100%;
+	border-top: 1px solid gray;
+	padding-top: 16px;
+	margin-bottom: 24px;
+}
+.someIcon {
+	display: inline-block;
+	background-color: #26473f;
+	padding: 6px 6px;
+	margin-right: 8px;
+	text-align: center;
+	width: 35px;
+	border-radius: 2px;
+}
+.someIcon svg {
+	margin: 0;
+	color: #fff;
+}
+.someInfo ul {
+	margin-bottom: 24px;
+	margin-top: 8px;
+	padding-left: 24px;
+}
+.someInfo li {
+	font-size: 13px;
+	line-height: 1.5;
+	margin-bottom: 16px;
+}
+.someInfo strong {
+	font-size: 18px;
+}
+
+@media only screen and (min-width: 801px) {
+	.desctop-only {
+		display: inherit;
+	}
+
+	.mobile-only {
+		display: none;
+	}
+}
+@media only screen and (max-width: 800px) {
+	.desctop-only {
+		display: none;
+	}
+
+	.mobile-only {
+		display: inherit;
+	}
+}
+
+
+
+.marquee {
+	/*width: 450px;*/
+	margin: 0 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	box-sizing: border-box;
+	/*border: 1px dotted #800000;*/
+	background-color: #f2f2f2;
+	padding: 4px 8px;
+}
+
+.marquee span {
+	display: inline-block;
+	padding-left: 100%;
+	animation: marquee 1500s linear infinite;
+}
+
+.marquee span:hover {
+	animation-play-state: paused;
+	}
+
+@keyframes marquee {
+	0%   { transform: translate(0, 0); }
+	100% { transform: translate(-100%, 0); }
 }

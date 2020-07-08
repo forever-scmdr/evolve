@@ -713,7 +713,8 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<<!-- var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/> -->
+			<var name="email" value="info@metabo-belarus.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -780,9 +781,9 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
-			<var name="email_phys" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
-			<var name="email_jur" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<var name="email" value="info@metabo-belarus.by"/>
+			<var name="email_phys" value="info@metabo-belarus.by"/>
+			<var name="email_jur" value="info@metabo-belarus.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="site_visit" scope="cookie"/>
 			<var name="current_time" scope="cookie"/>
@@ -1304,7 +1305,8 @@
 
 	<page name="warranty_action">
 		<request>
-			<var name="admin_email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<!-- <var name="admin_email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/> -->
+			<var name="admin_email" value="info@metabo-belarus.by"/>
 		</request>
 		<link name="error" target="warranty_form"/>
 		<link name="success" target="warranty_form">
@@ -1346,7 +1348,8 @@
 	<page name="cheaper_action">
 		<request>
 			<var name="topic" value="Нашли дешевле"/>
-			<var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/>
+			<!-- <var name="email" value="info@metabo-belarus.by, v_kuntsevich@belinstrument.by, sk@belinstrument.by"/> -->
+			<var name="email" value="info@metabo-belarus.by"/>
 			<var name="required" value="product, name, phone, url"/>
 			<var name="spam" value="url_check"/>
 			<var name="prod"/>
