@@ -6,6 +6,7 @@
 	<xsl:import href="utils/utils.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
+	<xsl:import href="subscribe_ajax.xsl"/>
 	<xsl:import href="snippets/product.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -296,8 +297,6 @@
 
 		<!-- modal feedback -->
 		<xsl:call-template name="FEEDBACK_FORM"/>
-		<!-- one click form -->
-		<xsl:call-template name="ONE_CLICK_FORM"/>
 		<!-- MODALS END -->
 	</xsl:template>
 
@@ -697,6 +696,7 @@
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 				<xsl:call-template name="MY_PRICE_FORM"/>
 				<xsl:call-template name="ONE_CLICK_FORM"/>
+				<xsl:call-template name="SUBSCRIBE_FORM"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
