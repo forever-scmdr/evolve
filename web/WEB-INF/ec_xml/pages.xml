@@ -126,6 +126,10 @@
 			<var name="pname" ref="prod" parameter="name"/>
 			<var name="pcode" ref="prod" parameter="code"/>
 		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="pname" ref="prod" parameter="name"/>
+			<var name="pcode" ref="prod" parameter="code"/>
+		</link>
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="pname" ref="prod" parameter="name"/>
 			<var name="pcode" ref="prod" parameter="code"/>
@@ -135,11 +139,17 @@
 
 
 
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                                ИНДЕКС                                ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 	<page name="index" template="index" cacheable="true" cache-vars="cur">
@@ -181,11 +191,14 @@
 
 
 
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                        КАТАЛОГ ПРОДУКЦИИ                             ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
 
 
 
@@ -516,6 +529,10 @@
 					<var name="pname" ref="lprod" parameter="name"/>
 					<var name="pcode" ref="lprod" parameter="code"/>
 				</link>
+				<link name="subscribe_link" target="subscribe_ajax">
+					<var name="pname" ref="lprod" parameter="name"/>
+					<var name="pcode" ref="lprod" parameter="code"/>
+				</link>
 				<link name="my_price_link" target="my_price_ajax">
 					<var name="pname" ref="lprod" parameter="name"/>
 					<var name="pcode" ref="lprod" parameter="code"/>
@@ -538,6 +555,10 @@
 				<var name="pname" ref="assoc" parameter="name"/>
 				<var name="pcode" ref="assoc" parameter="code"/>
 			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="pname" ref="assoc" parameter="name"/>
+				<var name="pcode" ref="assoc" parameter="code"/>
+			</link>
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="pname" ref="assoc" parameter="name"/>
 				<var name="pcode" ref="assoc" parameter="code"/>
@@ -548,11 +569,14 @@
 
 
 
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                           ПРОСТЫЕ СТРАНИЦЫ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
 
 
 
@@ -604,12 +628,6 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="update_prices" template="update_prices">
-		<command class="extra.UpdatePrices" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 
     <page name="page" cacheable="true" template="page" critical-item="sp">
 		<request>
@@ -633,6 +651,19 @@
 		</single>
 		<include name="COMMON"/>
 	</page>
+
+
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                    AJAX И ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ                      ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 	<page name="my_price_ajax" template="my_price_ajax">
@@ -670,6 +701,22 @@
 			<var name="source_page" value="one_click_ajax"/>
 			<var name="required" value="phone"/>
 			<var name="topic" value="Заказ в один клик"/>
+		</link>
+	</page>
+
+
+	<page name="subscribe_ajax" template="subscribe_ajax">
+		<request>
+			<var name="pname"/>
+			<var name="pcode"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="observer" id="form" tag="form">
+			<parameter-input ref="form" form="observer"/>
+		</new>
+		<link name="submit_link" target="subscribe_command" type="itemform">
+			<var name="pname" var="pname"/>
 		</link>
 	</page>
 
@@ -719,12 +766,53 @@
 	</page>
 
 
+	<page name="subscribe_command">
+		<request>
+			<var name="pname"/>
+		</request>
+		<link name="success" target="subscribe_ajax">
+			<var name="result" value="success"/>
+			<var name="message" value="Вы подписаны на обновление, спасибо"/>
+		</link>
+		<link name="error_not_set" target="subscribe_ajax">
+			<var name="result" value="error"/>
+			<var name="pname" var="pname"/>
+			<var name="message" value="Заполните, пожалуйста, электронную почту"/>
+		</link>
+		<link name="general_error" target="subscribe_ajax">
+			<var name="result" value="error"/>
+			<var name="message"
+				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+		</link>
+		<command class="ecommander.fwk.SubscribeCommand">
+			<result name="success" type="redirect"/>
+			<result name="error_not_set" type="redirect"/>
+			<result name="general_error" type="redirect"/>
+		</command>
+	</page>
+
+
+
+	<page name="subscribe_inform_email" template="subscribe_inform_email">
+		<request>
+			<var name="prod"/>
+		</request>
+		<single item="product" id="prod" var="prod" tag="product" parameter="code">
+			<include name="PRODUCT_PARAMS_LINKS"/>
+		</single>
+	</page>
+
+
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                  КОРЗИНА, СРАВНЕНИЕ, ИЗБРАННОЕ                       ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 
@@ -993,6 +1081,10 @@
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
 			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1038,11 +1130,17 @@
 
 
 
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                       РЕГИСТРАЦИЯ И КАБИНЕТ                          ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 
@@ -1194,11 +1292,18 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                       ИНТЕГРАЦИЯ И ПАРСИНГ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 
 
 	<!--//                                                                                                  -->
@@ -1318,6 +1423,13 @@
 
 	<page name="separate_products" template="integration">
 		<command class="ecommander.fwk.integration.CreateSectionsFromProducts" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="update_prices" template="update_prices">
+		<command class="extra.UpdatePrices" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

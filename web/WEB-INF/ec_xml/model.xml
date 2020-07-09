@@ -826,7 +826,7 @@
 	<!--/////////////  СИСТЕМНЫЕ АЙТЕМЫ (работают автоматически без участия пользователя)  ////////////-->
 
 
-	<item name="system" caption="Системные данные">
+	<item name="system" caption="Системные данные" ag-id="1789" ag-hash="-887328209">
 		<child item="counter" single="true"/>
 		<child item="email_queue" single="true"/>
 		<child item="observers" single="true"/>
@@ -854,13 +854,13 @@
 	</item>
 
 
-	<item name="observer" caption="Подписчик" key="observer observable">
+	<item name="observer" caption="Подписчик" key="observer observable" ag-id="1790" ag-hash="348607190">
 		<parameter name="observer" caption="Подписчик" description="Наблюдатель" type="string" />
 		<parameter name="observable" caption="Объект" type="string" />
 	</item>
 
 
-	<item name="observers" caption="Подписки">
+	<item name="observers" caption="Подписки" ag-id="1791" ag-hash="-2078078883">
 		<child item="observer"/>
 	</item>
 

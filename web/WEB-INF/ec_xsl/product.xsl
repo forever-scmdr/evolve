@@ -148,6 +148,7 @@
 							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 						</xsl:if>
 						<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
+						<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
 					</div>
 				</xsl:if>
 

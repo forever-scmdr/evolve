@@ -67,6 +67,11 @@
 				</div>
 			</xsl:if>
 
+			<!-- subscribe -->
+			<div class="text_sm" style="margin-top: auto;">
+				<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+			</div>
+
 			<xsl:if test="$is_my_price">
 				<div class="text_sm" style="margin-top: auto;">
 					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
@@ -424,6 +429,9 @@
 				<xsl:if test="$is_one_click">
 					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 				</xsl:if>
+
+				<!-- subscribe -->
+				<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
 
 				<xsl:if test="$is_my_price">
 					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>

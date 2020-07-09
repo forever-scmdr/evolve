@@ -27,7 +27,6 @@ public interface ItemNames {
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
     String CART = "cart";
-    String COUNTER = "counter";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -78,8 +77,12 @@ public interface ItemNames {
     String MY_PRICE = "my_price";
     String DISPLAY_SETTINGS = "display_settings";
     String ADMIN_EXTRA = "admin_extra";
+    String SYSTEM = "system";
+    String COUNTER = "counter";
     String EMAIL_QUEUE = "email_queue";
     String EMAIL_QUEUE_ITEM = "email_queue_item";
+    String OBSERVER = "observer";
+    String OBSERVERS = "observers";
 
     public interface abstract_product_ {
 
@@ -595,6 +598,20 @@ public interface ItemNames {
 
     }
 
+    public interface observer_ {
+
+        String _ITEM_NAME = "observer";
+        String OBSERVER = "observer";
+        String OBSERVABLE = "observable";
+
+    }
+
+    public interface observers_ {
+
+        String _ITEM_NAME = "observers";
+
+    }
+
     public interface one_click_ {
 
         String _ITEM_NAME = "one_click";
@@ -845,6 +862,12 @@ public interface ItemNames {
         String BORDER = "border";
         String GUTTER = "gutter";
         String PIC = "pic";
+
+    }
+
+    public interface system_ {
+
+        String _ITEM_NAME = "system";
 
     }
 
