@@ -133,7 +133,7 @@ public class ImportEltechSpbRu extends IntegrateBase implements ItemNames {
 				try {
 					code = src.getValue(CODE_HEADER);
 					if (StringUtils.isNotBlank(code)) {
-						code += ELT_CODE_SUFFIX;
+						code = (info.getProcessed() + 1) + "_" + code + ELT_CODE_SUFFIX;
 						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 						if (prod == null) {
 							prod = Product.get(Item.newChildItem(productType, section));
