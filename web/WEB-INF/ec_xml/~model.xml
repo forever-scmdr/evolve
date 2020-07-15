@@ -153,6 +153,8 @@
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
+		<child item="seo" single="true" assoc="seo" virtual="true"/>
+		<child item="seo" single="true"/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -182,6 +184,7 @@
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="date" type="date" caption="дата актуальности" />
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
@@ -229,9 +232,19 @@
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
 	      default-page="product" super="described_product * seo_container">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
+		<parameter name="label" type="string" caption="Ярлык" domain="label" multiple="true"/>
+		<parameter name="box_code" type="string" caption="Артукул BOX" description="список товаров BOXа" multiple="true"/>
 		<child item="line_product"/>
 	</item>
 
+	<item name="gifts" caption="Подарки" ag-id="2633" ag-hash="98352451">
+		<child item="gift_section" />
+	</item>
+
+	<item name="gift_section" caption="Разадел" key="sum" ag-id="2634" ag-hash="-1333043498">
+		<parameter name="sum" type="currency" caption="Минимальная сумма"/>
+		<child item="product" />
+	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
 		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
@@ -497,7 +510,9 @@
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
+
 	</item>
+
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="1341" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
@@ -518,7 +533,15 @@
 
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1731" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
+		<child item="product_text"/>
 	</item>
+
+	<item name="product_text" caption="Текст на странице товара" key="name" ag-id="2511" ag-hash="1014558333">
+    	<parameter name="name" type="string" caption="Название"/>
+    	<parameter name="icon" type="string" caption="Значок"/>
+    	<parameter name="link" type="string" caption="Ссылка"/>
+    	<parameter name="text" type="text" caption="текст"/>
+    </item>
 
 	<item name="footer" caption="Футер (низ)" super="block_array" ag-id="1343" ag-hash="-1268861541"/>
 
@@ -538,8 +561,8 @@
 	</item>
 
 
-	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="11" ag-hash="300774655">
-		<child item="seo" single="true"/>
+	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" super="seo_container" default-page="news_item" ag-id="11" ag-hash="300774655">
+		<!-- <child item="seo" single="true"/> -->
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
@@ -548,10 +571,10 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
+	<item name="news" caption="Новостной раздел" key="name" key-unique="true" super="seo_container" default-page="news" ag-id="12" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
-		<child item="seo" single="true"/>
+		<!-- <child item="seo" single="true"/> -->
 		<child item="news_item"/>
 	</item>
 
@@ -581,6 +604,8 @@
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
 		<parameter name="bottom_text" type="text" caption="Как добраться"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<child item="seo" single="true" assoc="seo" virtual="true"/>
+		<child item="seo" single="true"/>
 	</item>
 
 
@@ -608,9 +633,11 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
-	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
+	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934" >
 		<child item="menu_item"/>
 		<parameter name="xxl_text" type="text" caption="Текст о гарантии XXL"/>
+		<child item="seo" single="true" assoc="seo" virtual="true"/>
+		<child item="seo" single="true"/>
 	</item>
 
 	<item name="menu_item" caption="Элемент меню" virtual="true" ag-id="1627" ag-hash="-1527078413">
@@ -623,8 +650,8 @@
 		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item" default-page="page" ag-id="27" ag-hash="-1777660259">
-		<child item="seo" single="true"/>
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container" default-page="page" ag-id="27" ag-hash="-1777660259">
+		<!-- <child item="seo" single="true"/> -->
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>
@@ -666,6 +693,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="gifts" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
