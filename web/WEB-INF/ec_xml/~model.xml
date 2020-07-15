@@ -7,7 +7,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             РЕКЛАМА                                 ////////////-->
 
-	<item name="advertisement" caption="Реклама" ag-id="42" ag-hash="-128069115">
+	<item name="advertisement" caption="Реклама" ag-id="42" ag-hash="-128069115" >
 		<child item="top_728x90" single="true"/>
 		<child item="side_240x400" single="true"/>
 		<child item="bottom_900x600" single="true"/>
@@ -22,9 +22,9 @@
 		<parameter name="style" type="plain-text" caption="CSS"/>
 	</item>
 
-	<item name="top_728x90" caption="TOP 780x90" super="ad_banner" ag-id="44" ag-hash="1872585180"/>
-	<item name="side_240x400" caption="SIDE 240x400" super="ad_banner" ag-id="45" ag-hash="-1352036862"/>
-	<item name="bottom_900x600" caption="BOTTOM 900x600" super="ad_banner" ag-id="46" ag-hash="451006927"/>
+	<item name="top_728x90" caption="TOP 780x90" super="ad_banner" ag-id="44" ag-hash="1872585180" />
+	<item name="side_240x400" caption="SIDE 240x400" super="ad_banner" ag-id="45" ag-hash="-1352036862" />
+	<item name="bottom_900x600" caption="BOTTOM 900x600" super="ad_banner" ag-id="46" ag-hash="-1956021597"/>
 
 
 
@@ -149,6 +149,9 @@
 
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>
+
+		<on-create class="ecommander.fwk.ArticleFromFuture"/>
+		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" children-per-page="30" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -187,7 +190,9 @@
 		<parameter name="hash" type="integer" caption="name_hash"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
+		<on-create class="ecommander.fwk.ArticleFromFuture"/>
 		<on-update class="ecommander.fwk.NameHash"/>
+		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="18" ag-hash="-567451565">

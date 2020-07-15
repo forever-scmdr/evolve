@@ -28,26 +28,27 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
         return commandUnit;
     }
 
-//    public ResultPE checkFuture() throws Exception {
 
-//    }
 
     @Override
     public ResultPE execute() throws Exception {
         ServerLogger.error("CHECK FUTURE COMMAND LAUNCHED");
         LinkedList<Item> articles = new LinkedList<Item>();
-//        long before = new Date().getTime() - (86400*1000);
         long now = new Date().getTime();
         ItemQuery q = new ItemQuery("small_news_item", Item.STATUS_HIDDEN);
         articles.addAll(q.loadItems());
-//        q = new ItemQuery("news_item", Item.STATUS_HIDDEN);
-//        articles.addAll(q.loadItems());
+
+        q = new ItemQuery("news_item", Item.STATUS_HIDDEN);
+        articles.addAll(q.loadItems());
+
+        q = new ItemQuery("featured", Item.STATUS_HIDDEN);
+        articles.addAll(q.loadItems());
 
         boolean needReindex = false;
         for(Item a : articles){
             long v = a.getLongValue(ItemNames.news_item_.DATE, 0);
             if(v < now){
-                executeAndCommitCommandUnits(ItemStatusDBUnit.restore(a).ignoreUser(true));
+                executeAndCommitCommandUnits(ItemStatusDBUnit.restore(a).ignoreUser(true).noTriggerExtra());
                 needReindex = true;
             }
         }
