@@ -1,9 +1,11 @@
 package ecommander.model;
 
+import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
+import ecommander.model.datatypes.TupleDataType;
 import ecommander.pages.InputValues;
 import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
@@ -425,8 +427,12 @@ public class Item implements ItemBasics {
 							if (!StringUtils.isBlank(strValue) && paramId != _NO_PARAM_ID) {
 								try {
 									Parameter param = getParameterFromMap(paramId);
-									if (currentParamDesc.getType() == Type.XML)
+									if (currentParamDesc.getType() == Type.XML) {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
+									} else if (currentParamDesc.getType() == Type.TUPLE && metas.size() > 1) {
+										Pair<String, String> pair = new Pair<>(metas.get(0), metas.get(1));
+										strValue = currentParamDesc.getDataType().outputValue(pair, currentParamDesc.getFormatter());
+									}
 									SingleParameter sp = param.createAndSetValue(strValue, true);
 									if (metas.size() > 0 && sp != null) {
 										for (int i = 0; i < metas.size(); i += 2) {

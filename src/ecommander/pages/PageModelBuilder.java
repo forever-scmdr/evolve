@@ -259,6 +259,15 @@ import java.util.*;
 				<var...>
 			</parameter>
 
+			// Если параметр имеет тип tuple то можно задавать критерий значения ключа
+            // В таком случае надо указывать значение ключа как атрибуты tuple-key или tuple-key-var (аналогично названию параметра)
+			<parameter name-var="filter_parameter_value_3" sign="<=" tuple-key-var="filter_parameter_key_variable"> // tuple-key-var - переменная, хранящая ключ
+                <var...>
+			</parameter>
+		    <parameter name="filter_parameter_value_4" sign="<=" tuple-key="filter_parameter_key"> // tuple-key - ключ
+				<var...>
+		    </parameter>
+
 			// Полнотекстовый поиск
 			// limit - максимальное количество результатов
 			// threshold - часть от рейтинга первого места поиска, результаты с рейтингом ниже которого не считаются релевантными
@@ -625,6 +634,8 @@ public class PageModelBuilder {
 	public static final String PATTERN_ATTRIBUTE = "pattern";
 	public static final String NAME_VAR_ATTRIBUTE = "name-var";
 	public static final String ID_VAR_ATTRIBUTE = "id-var";
+	public static final String TUPLE_KEY_ATTRIBUTE = "tuple-key";
+	public static final String TUPLE_KEY_VAR_ATTRIBUTE = "tuple-key-var";
 	public static final String DIRECTION_VAR_ATTRIBUTE = "direction-var";
 	public static final String PARAMETER_VAR_ATTRIBUTE = "parameter-var";
 	public static final String CLEAR_CACHE_ATTRIBUTE = "clear-cache";
@@ -1142,6 +1153,8 @@ public class PageModelBuilder {
 		String paramName = criteriaNode.attr(NAME_ATTRIBUTE);
 		String paramNameVar = criteriaNode.attr(NAME_VAR_ATTRIBUTE);
 		String paramIdVar = criteriaNode.attr(ID_VAR_ATTRIBUTE);
+		String tupleKey = criteriaNode.attr(TUPLE_KEY_ATTRIBUTE);
+		String tupleKeyVar = criteriaNode.attr(TUPLE_KEY_VAR_ATTRIBUTE);
 		String paramSign = criteriaNode.attr(SIGN_ATTRIBUTE);
 		String paramPattern = criteriaNode.attr(PATTERN_ATTRIBUTE);
 		String compareTypeStr = criteriaNode.attr(COMPARE_ATTRIBUTE);
@@ -1156,7 +1169,7 @@ public class PageModelBuilder {
 			}
 		}
 		// Критерий фильтра
-		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, paramSign, paramPattern, compare, sort);
+		ParameterCriteriaPE crit = ParameterCriteriaPE.create(paramName, paramNameVar, paramIdVar, tupleKey, tupleKeyVar, paramSign, paramPattern, compare, sort);
 		// Значение параметра (переменная)
 		for (Element filterSubnode : detachedDirectChildren(criteriaNode)) {
 			if (StringUtils.equalsIgnoreCase(filterSubnode.tagName(), VAR_ELEMENT)) {

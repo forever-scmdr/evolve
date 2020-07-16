@@ -4,6 +4,7 @@ import java.text.Format;
 import java.text.MessageFormat;
 
 import ecommander.fwk.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 public class StringDataType extends FormatDataType {
 
@@ -27,4 +28,8 @@ public class StringDataType extends FormatDataType {
 		return new MessageFormat(format);
 	}
 
+	@Override
+	public boolean isEmpty(Object value) {
+		return value == null || StringUtils.isBlank((String) value);
+	}
 }

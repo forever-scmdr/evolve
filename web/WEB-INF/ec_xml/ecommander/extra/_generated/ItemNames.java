@@ -75,6 +75,7 @@ public interface ItemNames {
     String OPTIONAL_MODULES = "optional_modules";
     String ONE_CLICK = "one_click";
     String MY_PRICE = "my_price";
+    String PRODUCT_SUBSCRIBE = "product_subscribe";
     String DISPLAY_SETTINGS = "display_settings";
     String ADMIN_EXTRA = "admin_extra";
     String SYSTEM = "system";
@@ -370,6 +371,7 @@ public interface ItemNames {
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
+        String TUPLE_TEST = "tuple_test";
         String GALLERY = "gallery";
 
     }
@@ -383,6 +385,7 @@ public interface ItemNames {
         String MANUAL_FILTER_PARAMS = "manual_filter_params";
         String CURRENCY_RATES = "currency_rates";
         String JUR_PRICE = "jur_price";
+        String PRODUCT_UPDATE_SUBSCRIBE = "product_update_subscribe";
 
     }
 
@@ -489,6 +492,7 @@ public interface ItemNames {
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
+        String TUPLE_TEST = "tuple_test";
         String GALLERY = "gallery";
 
     }
@@ -767,6 +771,7 @@ public interface ItemNames {
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
+        String TUPLE_TEST = "tuple_test";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
@@ -778,6 +783,15 @@ public interface ItemNames {
         String NAME = "name";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
+
+    }
+
+    public interface product_subscribe_ {
+
+        String _ITEM_NAME = "product_subscribe";
+        String NAME = "name";
+        String STATUS = "status";
+        String LINK_NAME = "link_name";
 
     }
 

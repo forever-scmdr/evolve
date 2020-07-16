@@ -27,7 +27,8 @@ public abstract class DataType {
 		FILE("file"),
 		PICTURE("picture"),
 		FILTER("filter"),
-		XML("xml");
+		XML("xml"),
+		TUPLE("tuple");
 
 		private final String text;
 
@@ -146,6 +147,15 @@ public abstract class DataType {
 	 */
 	public boolean isBigText() {
 		return BIG_TEXT_TYPES.contains(type);
+	}
+
+	/**
+	 * Является ли переданное значение пустым с точки зрения типа данных
+	 * @param value
+	 * @return
+	 */
+	public boolean isEmpty(Object value) {
+		return value == null;
 	}
 
 	@Override

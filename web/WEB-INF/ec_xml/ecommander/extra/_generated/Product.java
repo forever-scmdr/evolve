@@ -48,6 +48,7 @@ public class Product
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
     public final static String MARK = "mark";
+    public final static String TUPLE_TEST = "tuple_test";
     public final static String GALLERY = "gallery";
     public final static String HAS_LINES = "has_lines";
 
