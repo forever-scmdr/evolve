@@ -248,6 +248,7 @@
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
 		<parameter name="mark" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
+		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
@@ -713,7 +714,6 @@
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="url" type="string" caption="адрес страницы содержит"/>
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
-		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 		<parameter name="place" type="string" caption="место вставки" domain="module_place"/>
 	</item>
 
@@ -755,6 +755,16 @@
 		<parameter name="link_name" type="string" caption="Название ссылки" description="что написано в ссылке"/>
 	</item>
 
+
+	<item name="product_subscribe" caption="Подписка на обновление товара" super="module" ag-id="1792" ag-hash="657622522">
+		<parameter name="status" type="string" caption="Статус" description="off - выключен on - включен" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="link_name" type="string" caption="Название ссылки" description="что написано в ссылке"/>
+	</item>
+
+
 	<item name="display_settings" caption="Настройки отображения сайта" super="module" ag-id="1776" ag-hash="1126534912">
 		<parameter name="side_menu_pages" type="string" caption="Боковая меню на информационных страницах" default="pages">
 			<value>catalog</value>
@@ -774,6 +784,14 @@
 			<value>on</value>
 		</parameter>
 		<parameter name="jur_price" type="string" caption="Отдельная оптовая цена для зарегистрированных оптовых клиентов" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="jur_price" type="string" caption="Отдельная оптовая цена для зарегистрированных оптовых клиентов" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="product_update_subscribe" type="string" caption="Подписка на появление товара в каталоге" default="off">
 			<value>off</value>
 			<value>on</value>
 		</parameter>
@@ -826,7 +844,7 @@
 	<!--/////////////  СИСТЕМНЫЕ АЙТЕМЫ (работают автоматически без участия пользователя)  ////////////-->
 
 
-	<item name="system" caption="Системные данные">
+	<item name="system" caption="Системные данные" ag-id="1789" ag-hash="-887328209">
 		<child item="counter" single="true"/>
 		<child item="email_queue" single="true"/>
 		<child item="observers" single="true"/>
@@ -854,13 +872,13 @@
 	</item>
 
 
-	<item name="observer" caption="Подписчик" key="observer observable">
+	<item name="observer" caption="Подписчик" key="observer observable" ag-id="1790" ag-hash="348607190">
 		<parameter name="observer" caption="Подписчик" description="Наблюдатель" type="string" />
 		<parameter name="observable" caption="Объект" type="string" />
 	</item>
 
 
-	<item name="observers" caption="Подписки">
+	<item name="observers" caption="Подписки" ag-id="1791" ag-hash="-2078078883">
 		<child item="observer"/>
 	</item>
 

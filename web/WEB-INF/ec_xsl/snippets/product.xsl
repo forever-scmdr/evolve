@@ -6,6 +6,7 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
 	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
+	<xsl:variable name="is_subscribe" select="page/optional_modules/product_subscribe/status = 'on'"/>
 	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
 	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
@@ -68,9 +69,11 @@
 			</xsl:if>
 
 			<!-- subscribe -->
-			<div class="text_sm" style="margin-top: auto;">
-				<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-			</div>
+			<xsl:if test="$is_subscribe">
+				<div class="text_sm" style="margin-top: auto;">
+					<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+				</div>
+			</xsl:if>
 
 			<xsl:if test="$is_my_price">
 				<div class="text_sm" style="margin-top: auto;">
@@ -431,7 +434,9 @@
 				</xsl:if>
 
 				<!-- subscribe -->
-				<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+				<xsl:if test="$is_subscribe">
+					<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+				</xsl:if>
 
 				<xsl:if test="$is_my_price">
 					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>

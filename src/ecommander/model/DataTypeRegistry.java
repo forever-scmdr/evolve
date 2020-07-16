@@ -15,10 +15,10 @@ public class DataTypeRegistry {
 
 	private static DataTypeRegistry singleton;
 
-	private HashMap<Type, DataType> dataTypes = null;
+	private HashMap<Type, DataType> dataTypes;
 	
 	private DataTypeRegistry() {
-		dataTypes = new HashMap<Type, DataType>();
+		dataTypes = new HashMap<>();
 		dataTypes.put(Type.BYTE, new ByteDataType(Type.BYTE));
 		dataTypes.put(Type.INTEGER, new IntegerDataType(Type.INTEGER));
 		dataTypes.put(Type.LONG, new LongDataType(Type.LONG));
@@ -36,6 +36,7 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.PICTURE, new PictureDataType(Type.PICTURE));
 		dataTypes.put(Type.FILTER, new StringDataType(Type.FILTER));
 		dataTypes.put(Type.XML, new XmlDataType(Type.XML));
+		dataTypes.put(Type.TUPLE, new TupleDataType(Type.TUPLE));
 	}
 
 	private static DataTypeRegistry getRegistry() {

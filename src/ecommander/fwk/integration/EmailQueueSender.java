@@ -3,7 +3,10 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.fwk.*;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.UserGroupRegistry;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PagePE;
@@ -44,6 +47,10 @@ public class EmailQueueSender extends IntegrateBase {
 	public static final String DATE_ADDED = "date_added";
 	
 	private Item queue;
+
+	public EmailQueueSender() {
+
+	}
 
 	private EmailQueueSender(Command outer) {
 		super(outer);
@@ -151,18 +158,19 @@ public class EmailQueueSender extends IntegrateBase {
 		}
 	}
 
-	private void addEmailToQueueInt(String addressTo, Strings emailUrl) throws Exception {
+	private void addEmailToQueueInt(String addressTo, String emailUrl) throws Exception {
 		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM, getInitiator());
 		Item queue = ItemUtils.ensureSingleAnonymousItem(EMAIL_QUEUE, getInitiator(), system.getId());
 		if (queue.getOwnerGroupId() != UserGroupRegistry.getGroup("0dmin")) {
 			executeAndCommitCommandUnits(ChangeItemOwnerDBUnit.newGroup(queue, UserGroupRegistry.getGroup("0dmin")).ignoreUser(true));
+			queue = ItemUtils.ensureSingleAnonymousItem(EMAIL_QUEUE, getInitiator(), system.getId());
 		}
 		ItemType queueItemType = ItemTypeRegistry.getItemType(EMAIL_QUEUE_ITEM);
 		Item queueItem = Item.newChildItem(queueItemType, queue);
 		queueItem.setValue(DATE_ADDED, System.currentTimeMillis());
 		queueItem.setValue(ADDRESS_TO, addressTo);
 		queueItem.setValue(EMAIL_URL, emailUrl);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(queueItem));
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(queueItem).ignoreUser());
 	}
 
 	/**
@@ -172,7 +180,7 @@ public class EmailQueueSender extends IntegrateBase {
 	 * @param emailUrl
 	 * @throws Exception
 	 */
-	public static void addEmailToQueue(Command outer, String addressTo, Strings emailUrl) throws Exception {
+	public static void addEmailToQueue(Command outer, String addressTo, String emailUrl) throws Exception {
 		EmailQueueSender sender = new EmailQueueSender(outer);
 		sender.addEmailToQueueInt(addressTo, emailUrl);
 	}

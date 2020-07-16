@@ -127,7 +127,7 @@ public class SingleParameter extends Parameter {
 
 	@Override
 	public final boolean isEmpty() {
-		return (value == null || value.toString().length() == 0);
+		return desc.getDataType().isEmpty(value);
 	}
 
 	@Override

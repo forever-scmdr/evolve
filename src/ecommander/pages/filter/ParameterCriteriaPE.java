@@ -5,6 +5,9 @@ import ecommander.model.Compare;
 import ecommander.model.ItemType;
 import ecommander.model.ParameterDescription;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.PageElement;
+import ecommander.pages.PageElementContainer;
+import ecommander.pages.ValidationResults;
 import ecommander.pages.var.Variable;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +29,9 @@ import java.util.List;
  *    Также это значение уже установлено когда параметр десериализован.
  * 5. Тип сравнения. Если переменная содержит множество значений, то должен ли параметр совпадать с одним из значений этой переменной,
  *    либо с каждым ее значением.
+ * 6. Для типа данных map
+ *      6a. Может указываться конкретый ключ (key)
+ *      6b. Может храниться название переменной, которая хранит ключ (keyVar)
  *    
  * Множественные критерии фильтра
  * Критерий может содержать несколько переменных, тогда значение критерия берется из всех этих переменных
@@ -41,35 +47,56 @@ import java.util.List;
  * @author EEEE
  *
  */
-public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
-	
+public class ParameterCriteriaPE implements FilterCriteriaPE {
+
 	public static final String ELEMENT_NAME = "parameter";
 	
-	protected ArrayList<Variable> values = new ArrayList<>(3);
-	protected String sign;
-	protected String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
-	protected Compare compareType = Compare.ANY;
-	protected String sort; // Направление сортировки при группировке
-	/**
-	 * Конструктор создания исполяемой копии
-	 * @param template
-	 * @param parentPage
-	 */
-	protected ParameterCriteriaPE(ParameterCriteriaPE template, ExecutablePagePE parentPage) {
+	private ArrayList<Variable> values = new ArrayList<>(3);
+	private String sign;
+	private String pattern; // Для строковых критериев со знаком like. Формат: %v% - сначала символ %, потом значение параметра, потом опять %
+	private Compare compareType = Compare.ANY;
+	private String sort; // Направление сортировки при группировке
+
+	private String paramName = null;
+	private String paramNameVar = null;
+	private String paramIdVar = null;
+	private String tupleKey = null;
+	private String tupleKeyVar = null;
+	private ExecutablePagePE pageModel;
+
+
+	private ParameterCriteriaPE(ParameterCriteriaPE template, ExecutablePagePE parentPage) {
 		sign = template.sign;
 		pattern = template.pattern;
 		compareType = template.compareType;
 		sort = template.sort;
+
+		paramName = template.paramName;
+		paramNameVar = template.paramNameVar;
+		paramIdVar = template.paramIdVar;
+		tupleKey = template.tupleKey;
+		tupleKeyVar = template.tupleKeyVar;
+
+		this.pageModel = parentPage;
+
 		for (Variable var : template.values) {
 			addValue(var.getInited(parentPage));
 		}
 	}
+
 	
-	protected ParameterCriteriaPE(String sign, String pattern, Compare compType, String sort) {
+	private ParameterCriteriaPE(String paramName, String paramNameVar, String paramIdVar, String tupleKey, String tupleKeyVar,
+	                            String sign, String pattern, Compare compType, String sort) {
 		this.sign = sign;
 		this.pattern = pattern;
 		this.compareType = compType;
 		this.sort = sort;
+
+		if (StringUtils.isNotBlank(paramName)) this.paramName = paramName;
+		if (StringUtils.isNotBlank(paramNameVar)) this.paramNameVar = paramNameVar;
+		if (StringUtils.isNotBlank(paramIdVar)) this.paramIdVar = paramIdVar;
+		if (StringUtils.isNotBlank(tupleKey)) this.tupleKey = tupleKey;
+		if (StringUtils.isNotBlank(tupleKeyVar)) this.tupleKeyVar = tupleKeyVar;
 	}
 
 	public final List<String> getValueArray() {
@@ -86,7 +113,31 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		values.add(value);
 	}
 
-	public abstract ParameterDescription getParam(ItemType itemDesc);
+	public ParameterDescription getParam(ItemType itemDesc) {
+		if (paramName != null) {
+			return itemDesc.getParameter(paramName);
+		}
+		if (paramNameVar != null) {
+			itemDesc.getParameter(pageModel.getVariable(paramNameVar).writeSingleValue());
+		}
+		if (paramIdVar != null) {
+			int paramId = Integer.parseInt(pageModel.getVariable(paramNameVar).writeSingleValue());
+			return itemDesc.getParameter(paramId);
+		}
+		return null;
+	}
+
+	public boolean hasTupleKey() {
+		return tupleKey != null || tupleKeyVar != null;
+	}
+
+	public String getTupleKey() {
+		if (tupleKey != null)
+			return tupleKey;
+		if (tupleKeyVar != null)
+			return pageModel.getVariable(tupleKeyVar).writeSingleValue();
+		return null;
+	}
 
 	public final String getSign() {
 		return sign;
@@ -108,23 +159,50 @@ public abstract class ParameterCriteriaPE implements FilterCriteriaPE {
 		return sort;
 	}
 
-	public static ParameterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar, String sign,
+	public static ParameterCriteriaPE create(String paramName, String paramNameVar, String paramIdVar,
+	                                         String tupleKey, String tupleKeyVar, String sign,
 	                                         String pattern, Compare compType, String sort) {
-		ParameterCriteriaPE instance;
 		if (compType == null)
 			compType = Compare.ANY;
-		if (!StringUtils.isBlank(paramName)) {
-			instance = new HardParameterCriteriaPE(paramName, sign, pattern, compType, sort);
-		} else if (!StringUtils.isBlank(paramNameVar)) {
-			instance = new VariableParameterCriteriaPE(paramNameVar, sign, pattern, compType, sort);
-		} else if (!StringUtils.isBlank(paramIdVar)) {
-			instance = new IdVariableParameterCriteriaPE(paramIdVar, sign, pattern, compType, sort);
-		} else {
+		if (StringUtils.isBlank(paramName) && StringUtils.isBlank(paramNameVar) && StringUtils.isBlank(paramIdVar)) {
 			throw new IllegalArgumentException("Neither paramName nor paramNameVar supplied for filter criteria parameter");
 		}
-		return instance;
+		return new ParameterCriteriaPE(paramName, paramNameVar, paramIdVar, tupleKey, tupleKeyVar, sign, pattern, compType, sort);
 	}
-	
+
+	@Override
+	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
+		return new ParameterCriteriaPE(this, parentPage);
+	}
+
+	@Override
+	public void validate(String elementPath, ValidationResults results) {
+		for (Variable var : values) {
+			var.validate(elementPath, results);
+		}
+		ItemType desc = (ItemType) results.getBufferData();
+		if (paramName != null) {
+			if (desc.getParameter(paramName) == null) {
+				results.addError(elementPath + " > " + getKey(), "'" + desc.getName() + "' item does not contain '" + paramName + "'");
+			}
+			if (paramNameVar != null || paramIdVar != null) {
+				results.addError(elementPath + " > " + getKey(), "Only one attribyte of (name, name-var, id-var) are allowed");
+			}
+		} else if (paramNameVar != null) {
+			if (!paramNameVar.startsWith("$") && pageModel.getInitVariablePE(paramNameVar) == null) {
+				results.addError(elementPath + " > " + getKey(), "There is no '" + paramNameVar + "' variable in current page");
+			}
+			if (paramIdVar != null) {
+				results.addError(elementPath + " > " + getKey(), "Only one attribyte of (name, name-var, id-var) are allowed");
+			}
+		}
+		if (tupleKeyVar != null) {
+			if (!tupleKeyVar.startsWith("$") && pageModel.getInitVariablePE(tupleKeyVar) == null) {
+				results.addError(elementPath + " > " + getKey(), "There is no '" + tupleKeyVar + "' variable in current page");
+			}
+		}
+	}
+
 	public final String getKey() {
 		return "Filter criteria";
 	}
