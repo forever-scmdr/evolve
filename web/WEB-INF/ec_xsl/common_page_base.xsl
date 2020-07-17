@@ -6,6 +6,7 @@
 	<xsl:import href="warranty_form.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
+	<xsl:import href="product_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -551,6 +552,7 @@
 			</xsl:if>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a>
+			<a onclick="showDetails('{product_ajax_link}')">Быстрый просмотр</a>
 			<div class="device__article-number">Артикул: <xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -647,6 +649,7 @@
 			<div class="device__info">
 
 				<a href="{show_product}" class="device__title"><strong><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/></strong></a>
+				<a onclick="showDetails('{product_ajax_link}')">Быстрый просмотр</a>
 				<div class="device__description">
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 					<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
@@ -825,6 +828,7 @@
 
 
 	<xsl:template name="BODY">
+		<xsl:call-template name="PRODUCT_AJAX"/>
 		<div id="discount-popup-2" class="message" style="display: none;"></div>
 		<div id="discount-popup" class="discount-alert" style="display: none;"></div>
 	</xsl:template>
@@ -859,11 +863,14 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/app.css?version=1.0"/>
-				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
+<!--				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>-->
+
+<!--				<link rel="stylesheet" type="text/css" href="css/styles-mtb.css"/>-->
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
+				<link rel="stylesheet" type="text/css" href="css/styles.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 				<xsl:if test="$seo/extra_style">
@@ -875,15 +882,15 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 			</head>
-			<body>
+			<body class="mitaba">
 
 				<xsl:if test="$seo/body_class">
-					<xsl:attribute name="class" select="$seo/body_class"/>
+					<xsl:attribute name="class" select="concat($seo/body_class, ' ', 'mitaba')"/>
 				</xsl:if>
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
+				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index mitaba'"/></xsl:if>
 				<xsl:call-template name="BODY"/>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
@@ -901,14 +908,20 @@
 
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
+
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
-				<script type="text/javascript" src="admin/ajax/ajax.js"/>
+				<script type="text/javascript" src="admin/ajax/ajax.js?v=1"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript" src="js/search-tip.js"></script>
+
+				<xsl:if test="//product_ajax_link">
+					<script type="text/javascript" src="fotorama/fotorama.js"/>
+				</xsl:if>
+
 				<script type="text/javascript">
 					$(document).ready(function(){
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
@@ -1011,6 +1024,22 @@
 						var img = document.getElementById(imgId);
 						var win = window.open(img.src,"_blank");
 						win.onload = function(){win.print();}
+					}
+					function showDetails(link){
+						$("#product-ajax-popup").show();
+						insertAjax(link, 'product-ajax-content', function(){
+							$("#fotorama-ajax").fotorama();
+							$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
+								e.preventDefault();
+								$("#product-ajax-popup").find('a[data-toggle="tab"]').removeClass("tabs__link_active");
+								$("#product-ajax-popup").find('.tabs__content').removeClass("active");
+								$("#product-ajax-popup").find('.tabs__content').hide();
+								$(this).addClass("tabs__link_active");
+								var href = $(this).attr("href");
+								$(href).show();
+								$(href).addClass("active");
+							});
+						});
 					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>

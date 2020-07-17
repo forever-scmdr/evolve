@@ -211,6 +211,9 @@
 						<var var="label"/>
 					</parameter>
 				</filter>
+				<link name="product_ajax_link" target="product_ajax">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" var="sec" style="keypath"/>
 					<var name="prod" ref="prod" style="keypath"/>
@@ -350,6 +353,9 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
+			<link name="product_ajax_link" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
@@ -444,6 +450,9 @@
 					<var var="minqty"/>
 				</parameter>
 			</filter>
+			<link name="product_ajax_link" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
@@ -484,6 +493,65 @@
 			<var name="minqty" value=""/>
 		</link>
 		<include name="COMMON"/>
+	</page>
+
+	<!-- Product Ajax -->
+	<page name="product_ajax" template="product_ajax" cacheable="true">
+		<request>
+			<var name="prod" style="keypath"/>
+			<var name="discount_active" scope="cookie"/>
+		</request>
+		<single item="product" id="prod" var="prod" tag="product">
+			<single item="params"/>
+			<list item="product_extra"/>
+			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="cur_sec" style="key"/>
+				</link>
+			</ancestor>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<link name="cheaper_link" target="cheaper_form">
+				<var name="prod" ref="prod"/>
+			</link>
+
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="prod" parameter="name"/>
+				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<list item="line_product" id="lprod">
+				<list item="params"/>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="lprod" parameter="code"/>
+				</link>
+				<link name="one_click_link" target="one_click_ajax">
+					<var name="pname" ref="lprod" parameter="name"/>
+					<var name="pcode" ref="lprod" parameter="code"/>
+				</link>
+			</list>
+			<link name="canonical_link" target="product">
+				<var name="prod" ref="cur_sec" style="keypath"/>
+				<var name="prod" ref="prod" style="keypath"/>
+			</link>
+		</single>
+		<link name="fav_link" target="fav"/>
+		<link name="compare_link" target="compare"/>
+		<link name="show_cart" target="cart"/>
 	</page>
 
 
@@ -553,6 +621,9 @@
 					<var ref="prod" parameter="assoc_code"/>
 				</parameter>
 			</filter>
+			<link name="product_ajax_link" target="product_ajax">
+				<var name="prod" ref="assoc" style="key"/>
+			</link>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
@@ -1074,6 +1145,9 @@
 				</parameter>
 			</filter>
 			<link name="show_product" target="product">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="product_ajax_link" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="from_fav" target="cookie_list_action">

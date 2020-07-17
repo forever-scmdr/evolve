@@ -144,3 +144,13 @@ $(document).on("click", "body", function(e){
 		$(".popup-text-menu").hide();
 	}
 });
+
+function clearProductAjax() {
+	var html = "<div class=\"popup__body\">\n" +
+		"\t\t\t\t<div class=\"popup__content\">\n" +
+		"\t\t\t\t\t<a class=\"popup__close\" onclck=\"clearProductAjax();\">×</a>\n" +
+		"\t\t\t\t</div>\n" +
+		"\t\t\t</div>";
+	$("#product-ajax-popup").html(html);
+	$("#product-ajax-popup").hide();
+}
