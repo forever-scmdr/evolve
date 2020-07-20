@@ -1237,6 +1237,15 @@ public class Item implements ItemBasics {
 	public final BigDecimal getDecimalValue(String paramName) {
 		return (BigDecimal) getValue(paramName);
 	}
+
+	/**
+	 * Вернуть значение параметра типа Tuple
+	 * @param paramName
+	 * @return
+	 */
+	public final Pair<String, String> getTupleValue(String paramName) {
+		return (Pair<String, String>) getValue(paramName);
+	}
 	/**
 	 * Вернуть значение целочисленного параметра
 	 * @param paramName
@@ -1324,6 +1333,16 @@ public class Item implements ItemBasics {
 	 */
 	public final BigDecimal getDecimalValue(String paramName, BigDecimal defaultValue) {
 		return (BigDecimal) getValue(paramName, defaultValue);
+	}
+	/**
+	 * Возвращает значение одиночного парамтера.
+	 * Если параметр не задан - возвращается значение по умолчанию
+	 * @param paramName
+	 * @param defaultValue
+	 * @return
+	 */
+	public final Pair<String, String> getTupleValue(String paramName, Pair<String, String> defaultValue) {
+		return (Pair<String, String>) getValue(paramName, defaultValue);
 	}
 	/**
 	 * Возвращает значение одиночного парамтера.
