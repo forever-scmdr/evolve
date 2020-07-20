@@ -98,6 +98,11 @@
 								</div>
 							</div>
 						</div>
+						<script type="text/javascript">
+							insertAjax('cart_ajax');
+							insertAjax('compare_ajax');
+							insertAjax('fav_ajax');
+						</script>
 					</div>
 				</div>
 			</div>

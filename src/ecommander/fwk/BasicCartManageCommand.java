@@ -67,16 +67,37 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE addToCart() throws Exception {
+		ensureCart();
 		String code = getVarSingleValue(CODE_PARAM);
 		double quantity = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
-		addProduct(code, quantity);
+		if(checkGifts()) {
+			addProduct(code, quantity, getVarSingleValue("sum"));
+		}
 		recalculateCart();
 		return getResult("ajax");
 	}
 
+	private boolean checkGifts() throws Exception {
+		String code = getVarSingleValue(CODE_PARAM);
+		if(StringUtils.startsWith(code, "gift-")){
+			BigDecimal sum = cart.getDecimalValue(SUM_PARAM);
+			BigDecimal controlSum = new BigDecimal(getVarSingleValue("sum"));
+			if(controlSum.compareTo(sum) > -1){
+				ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+				for(Item bought : boughts){
+					if(StringUtils.startsWith(bought.getStringValue(CODE_PARAM), "gift-")){
+						getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
 
 	public ResultPE delete() throws Exception {
 		// В этом случае ID не самого продукта, а объекта bought
@@ -319,8 +340,8 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 
-	private void addProduct(String code, double qty) throws Exception {
-		ensureCart();
+	private void addProduct(String code, double qty, String sum) throws Exception {
+
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 		if (boughtProduct == null) {
@@ -328,12 +349,16 @@ public abstract class BasicCartManageCommand extends Command {
 				return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+
 			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			if(StringUtils.isNotBlank(getVarSingleValue("sum"))){
+				bought.setExtra("gift-sum", new BigDecimal(getVarSingleValue("sum")));
+			}
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -439,7 +464,9 @@ public abstract class BasicCartManageCommand extends Command {
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
 			double qty = DoubleDataType.parse(pair[1]);
-			addProduct(pair[0], qty);
+			if(!StringUtils.startsWith(pair[0], "gift-")) {
+				addProduct(pair[0], qty, "");
+			}
 		}
 		recalculateCart();
 		return null;
@@ -509,6 +536,17 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
+
+		//remove gift if necessary
+		for (Item bought : boughts) {
+			if(bought.getExtra("gift-sum") != null){
+				BigDecimal s = (BigDecimal) bought.getExtra("gift-sum");
+				if(sum.compareTo(s) < 0){
+					getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
+				}
+			}
+		}
+
 		sum = applyDiscount(sum);
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(QTY_PARAM, regularQuantity);

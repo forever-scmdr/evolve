@@ -951,6 +951,11 @@
 
 		<single item="gifts">
 			<list item="gift_section">
+				<filter>
+					<sorting direction="ASC">
+						<var value="sum"/>
+					</sorting>
+				</filter>
 				<list item="product" id="gift">
 					<link name="to_cart" target="cart_action">
 						<var name="action" value="addToCart"/>

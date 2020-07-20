@@ -1,4 +1,4 @@
-* {
+/** {
 	padding: 0;
 	margin: 0;
 	border: 0;
@@ -79,11 +79,11 @@ table {
 body {
 	font-family: "Arial", sans-serif;
 	font-size: 16px;
-}
+}*/
 
-.mitaba a {
+/*.mitaba a {
 	color: #0072bc;
-}
+}*/
 .mitaba .button {
 	line-height: 0.9;
 	padding: 7px 16px;
@@ -137,7 +137,6 @@ body {
 	padding: 4px 8px;
 	font-size: 13px;
 	color: #fff;
-	background-color: orange;
 }
 .mitaba .popup {
 	position: fixed;
@@ -146,7 +145,7 @@ body {
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
-	z-index: 3;
+	z-index: 4;
 }
 .mitaba .popup__body {
 	height: 100%;
@@ -227,10 +226,10 @@ body {
 	flex: 1 1 auto;
 	margin: 0;
 }
-.mitaba .fotorama {
+/*.mitaba .fotorama {
 	min-height: 400px;
 	background-color: #eee;
-}
+}*/
 @media (max-width: 425px) {
 	.mitaba .fotorama {
 		min-height: 200px;

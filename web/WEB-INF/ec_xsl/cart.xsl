@@ -11,6 +11,9 @@
 
 	<xsl:variable name="weights"><xsl:for-each select="$boughts"><xsl:value-of select="f:num(qty) * f:num(//page/product[code = current()/code]/params/param[starts-with(lower-case(@caption), 'вес')])" />,</xsl:for-each></xsl:variable>
 
+	<xsl:variable name="gifts" select="page/gifts/gift_section"/>
+	<xsl:variable name="min_gift" select="f:num($gifts[1]/sum)"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -72,7 +75,12 @@
 							</div>
 						</xsl:for-each>
 						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
-						<p><a href="#">Выбрать подарок</a></p>
+						<xsl:if test="f:num($cart/sum) &gt;= $min_gift">
+							<p><a onclick="$('#gifts').show();">Выбрать подарок</a></p>
+						</xsl:if>
+						<xsl:if test="not(f:num($cart/sum) &gt;= $min_gift * 1000)">
+							<p>Сделайте заказ на сумму от <b><xsl:value-of select="f:currency_decimal($gifts[1]/sum)" /> р.</b> чтобы получить <a onclick="$('#gifts').show();">подарок</a></p>
+						</xsl:if>
 
 						<div class="total">
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
@@ -99,8 +107,59 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</div>
-
+		<xsl:call-template name="GIFTS" />
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+	</xsl:template>
+
+	<xsl:template name="GIFTS">
+		<div class="popup" style="display: block;" id="gifts">
+			<div class="popup__body">
+			<div class="popup__content">
+				<a class="popup__close" onclick="$('#gifts').hide();">×</a>
+				<div class="popup__title title title_2">Доступны подарки</div>
+				<div class="gift-list">
+					<xsl:for-each select="$gifts">
+<!--						<div class="gift-list__item gift" style="text-align: center;">-->
+<!--							<b><xsl:value-of select="concat('при заказе на сумму от ', f:currency_decimal(sum))" /></b>-->
+<!--						</div>-->
+						<xsl:variable name="sum" select="f:num(sum)"/>
+						<xsl:for-each select="product">
+							<xsl:variable name="code" select="code"/>
+
+							<div class="gift-list__item gift">
+								<a class="gift__image">
+									<img src="{concat(@path, main_pic)}" />
+								</a>
+								<span class="gift__name">
+									Аккумуляторная болгарка Metabo PowerMaxx CC 12 BL
+								</span>
+								<div class="gift__status">
+									<xsl:if test="not(//bought[code = $code]) and $sum &lt;= f:num($cart/sum)">
+										<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_g_{@id}">
+											<input type="hidden" name="qty" value="1"/>
+											<input type="hidden" name="sum" value="{$sum}"/>
+											<input type="submit" class="button" value="Выбрать"/>
+										</form>
+									</xsl:if>
+									<xsl:if test="//bought[code = $code]">
+										<div class="gift__status">
+											Вы выбрали этот подарок
+										</div>
+									</xsl:if>
+									<xsl:if test="$sum &gt; f:num($cart/sum)">
+										<div class="gift__status">
+											<div class="gift__sum">+<xsl:value-of select="f:currency_decimal(string($sum - f:num($cart/sum)))"/> руб</div>
+											<div class="small-text">Добавьте в корзину товар на эту сумму, чтобы получить подарок</div>
+										</div>
+									</xsl:if>
+								</div>
+							</div>
+						</xsl:for-each>
+					</xsl:for-each>
+				</div>
+			</div>
+			</div>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>

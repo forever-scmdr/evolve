@@ -627,10 +627,11 @@
 				</xsl:choose>
 			</div>
 			<div class="taggs">
-				<xsl:for-each select="label">
+				<!-- <xsl:for-each select="label"> -->
+				<xsl:for-each select="tag">
 					<xsl:variable name="pos" select="index-of($labels_domain, .)"/>
 					<xsl:variable name="class" select="$labels_class[$pos]"/>
-					<div class="device__tag {$class}"><xsl:value-of select="." /></div>
+					<div class="device__tag"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 			</div>
 		</div>
@@ -743,10 +744,11 @@
 			</div>
 			</div>
 			<div class="taggs taggs_row">
-				<xsl:for-each select="label">
+				<!-- <xsl:for-each select="label"> -->
+				<xsl:for-each select="tag">
 					<xsl:variable name="pos" select="index-of($labels_domain, .)"/>
 					<xsl:variable name="class" select="$labels_class[$pos]"/>
-					<div class="device__tag {$class}"><xsl:value-of select="." /></div>
+					<div class="device__tag"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 			</div>
 		</div>
