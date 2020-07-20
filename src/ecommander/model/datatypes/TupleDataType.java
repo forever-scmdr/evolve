@@ -2,7 +2,6 @@ package ecommander.model.datatypes;
 
 import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
-import net.sf.saxon.expr.flwor.Tuple;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
