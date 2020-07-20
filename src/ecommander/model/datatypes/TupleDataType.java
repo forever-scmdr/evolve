@@ -76,4 +76,9 @@ public class TupleDataType extends FormatDataType {
 		}
 		return metas;
 	}
+
+	public static String createCombinedValue(Pair<String, String> value, Object formatter) {
+		if (formatter == null) formatter = DEFAULT_FORMAT;
+		return StringUtils.isBlank(value.getRight()) ? value.getLeft() : value.getLeft() + ((TupleFormatter) formatter).format + value.getRight();
+	}
 }

@@ -45,7 +45,7 @@ public class Pair<L, R> {
 	
 	@Override
 	public int hashCode() {
-		return left.hashCode() ^ right.hashCode();
+		return (left == null ? 0 : left.hashCode()) ^ (right == null ? 0 : right.hashCode());
 	}
 
 	@Override

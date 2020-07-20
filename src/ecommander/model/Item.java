@@ -430,8 +430,8 @@ public class Item implements ItemBasics {
 									if (currentParamDesc.getType() == Type.XML) {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
 									} else if (currentParamDesc.getType() == Type.TUPLE && metas.size() > 1) {
-										Pair<String, String> pair = new Pair<>(metas.get(0), metas.get(1));
-										strValue = currentParamDesc.getDataType().outputValue(pair, currentParamDesc.getFormatter());
+										Pair<String, String> pair = new Pair<>(metas.get(1), strValue);
+										strValue = TupleDataType.createCombinedValue(pair, currentParamDesc.getFormatter());
 									}
 									SingleParameter sp = param.createAndSetValue(strValue, true);
 									if (metas.size() > 0 && sp != null) {
