@@ -39,6 +39,11 @@
 	<xsl:variable name="discount" select="1 - f:num(page/common/discount)" />
 	<!-- -->
 
+
+	<!-- labels -->
+	<xsl:variable name="labels_class" select="('discount', 'sale', 'exclusive', 'box', 'new')" />
+	<xsl:variable name="labels_domain" select="('Скидка', 'Распродажа', 'Эксклюзив', 'BOX', 'Новинка')" />
+
 	<xsl:variable name="active_menu_item"/>
 
 
@@ -550,9 +555,10 @@
 					<i class="fas fa-search-plus"></i>
 				</a>
 			</xsl:if>
+			<a onclick="showDetails('{product_ajax_link}')" class="fast-preview-button" >Быстрый просмотр</a>
 			<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{show_product}" class="device__title" title="{name}"><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/></a>
-			<a onclick="showDetails('{product_ajax_link}')">Быстрый просмотр</a>
+
 			<div class="device__article-number">Артикул: <xsl:value-of select="code"/></div>
 			<xsl:if test="$has_price">
 				<div class="device__price">
@@ -620,9 +626,13 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<xsl:for-each select="tag">
-				<div class="device__tag"><xsl:value-of select="." /></div>
-			</xsl:for-each>
+			<div class="taggs">
+				<xsl:for-each select="label">
+					<xsl:variable name="pos" select="index-of($labels_domain, .)"/>
+					<xsl:variable name="class" select="$labels_class[$pos]"/>
+					<div class="device__tag {$class}"><xsl:value-of select="." /></div>
+				</xsl:for-each>
+			</div>
 		</div>
 	</xsl:template>
 
@@ -638,6 +648,7 @@
 
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
+			<a onclick="showDetails('{product_ajax_link}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
@@ -649,7 +660,6 @@
 			<div class="device__info">
 
 				<a href="{show_product}" class="device__title"><strong><xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/></strong></a>
-				<a onclick="showDetails('{product_ajax_link}')">Быстрый просмотр</a>
 				<div class="device__description">
 					<p><xsl:value-of select="short" disable-output-escaping="yes"/></p>
 					<xsl:variable name="extra" select="parse-xml(concat('&lt;extra&gt;', extra_xml, '&lt;/extra&gt;'))/extra"/>
@@ -732,9 +742,13 @@
 				</xsl:choose>
 			</div>
 			</div>
-			<xsl:for-each select="tag">
-				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
-			</xsl:for-each>
+			<div class="taggs taggs_row">
+				<xsl:for-each select="label">
+					<xsl:variable name="pos" select="index-of($labels_domain, .)"/>
+					<xsl:variable name="class" select="$labels_class[$pos]"/>
+					<div class="device__tag {$class}"><xsl:value-of select="." /></div>
+				</xsl:for-each>
+			</div>
 		</div>
 	</xsl:template>
 
@@ -862,10 +876,8 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=1.0"/>
-<!--				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>-->
-
-<!--				<link rel="stylesheet" type="text/css" href="css/styles-mtb.css"/>-->
+				<link rel="stylesheet" href="css/app.css?version=1.1"/>
+				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 				<link rel="stylesheet" href="fotorama/fotorama.css"/>

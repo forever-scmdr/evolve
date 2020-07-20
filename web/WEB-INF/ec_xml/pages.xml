@@ -115,6 +115,9 @@
 					<var name="pname" ref="prod" parameter="name"/>
 					<var name="pcode" ref="prod" parameter="code"/>
 				</link>
+				<link name="product_ajax_link" target="product_ajax">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
 				<single item="params"/>
 			</list>
 		</single>
@@ -1208,6 +1211,9 @@
 			<link name="one_click_link" target="one_click_ajax">
 				<var name="pname" ref="prod" parameter="name"/>
 				<var name="pcode" ref="prod" parameter="code"/>
+			</link>
+			<link name="product_ajax_link" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<list item="params"/>
 		</list>

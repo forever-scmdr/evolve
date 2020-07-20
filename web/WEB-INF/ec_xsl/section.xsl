@@ -115,6 +115,7 @@
 		<div class="page-content m-t">
 			<!-- Теги, подразделы -->
 			<xsl:call-template name="TAGS"/>
+
 			<!-- Фильтр по параметрам -->
 			<xsl:call-template name="FILTER"/>
 			<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
@@ -202,6 +203,7 @@
 				</xsl:if>
 		</xsl:if>
 	</xsl:template>
+
 
 	<xsl:template name="FILTER">
 		<xsl:variable name="inputs" select="$sel_sec/params_filter/filter/input[not(@caption = $sel_sec/hide_params)]"/>
@@ -292,6 +294,16 @@
 						</select>
 					</span>
 				</div>
+				<span>
+					<form method="GET" action="{page/source_link}">
+						<select name="label" class="form-control" value="{page/variables/label}" onchange="$(this).closest('form').submit();">
+							<option value="">Все</option>
+							<xsl:for-each select="$sel_sec/label">
+								<option value="{label}"><xsl:value-of select="label"/></option>
+							</xsl:for-each>
+						</select>
+					</form>
+				</span>
 			</div>
 		</xsl:if>
 	</xsl:template>

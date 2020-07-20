@@ -72,6 +72,7 @@
 							</div>
 						</xsl:for-each>
 						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
+						<p><a href="#">Выбрать подарок</a></p>
 
 						<div class="total">
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
