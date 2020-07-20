@@ -111,7 +111,7 @@
 	<xsl:template match="value">
 		<xsl:variable name="form" select="../.."/>
 		<div class="pic" id="param-{../@id}-{@index}">
-			<span><xsl:value-of select="."/></span>
+			<span><xsl:if test="@key"><xsl:value-of select="@key"/>: </xsl:if><xsl:value-of select="."/></span>
 			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>

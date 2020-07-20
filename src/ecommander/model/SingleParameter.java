@@ -116,7 +116,7 @@ public class SingleParameter extends Parameter {
 		return metas != null;
 	}
 
-	ArrayList<String> getAllMetas() {
+	public ArrayList<String> getAllMetas() {
 		ArrayList<String> allMetas = new ArrayList<>();
 		for (Map.Entry<String, String> entry : metas.entrySet()) {
 			allMetas.add(entry.getKey());

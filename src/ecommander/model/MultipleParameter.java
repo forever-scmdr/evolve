@@ -154,4 +154,16 @@ public final class MultipleParameter extends Parameter {
 		MultipleParameter mp = (MultipleParameter)obj;
 		return values.containsAll(mp.values) && mp.values.containsAll(values);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(getName() + ": ");
+		int count = 0;
+		for (SingleParameter value : values) {
+			if (count++ > 0)
+				sb.append(", ");
+			sb.append(value.getValue());
+		}
+		return sb.toString();
+	}
 }
