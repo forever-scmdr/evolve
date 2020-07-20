@@ -957,6 +957,9 @@
 					</sorting>
 				</filter>
 				<list item="product" id="gift">
+					<link name="show_product" target="product" type="exclusive">
+						<var name="prod" ref="gift" style="key"/>
+					</link>
 					<link name="to_cart" target="cart_action">
 						<var name="action" value="addToCart"/>
 						<var name="code" ref="gift" parameter="code"/>

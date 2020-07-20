@@ -41,7 +41,11 @@
 									<a href="{$p/show_product}" class="image-container">
 										<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 									</a>
-									<a href="{$p/show_product}" class="title"><xsl:value-of select="$p/name"/></a>
+									<a href="{$p/show_product}" class="title">
+										<xsl:value-of select="$p/name"/><br/>
+										<span><xsl:if test="starts-with($p/code, 'gift-')">Подарок.</xsl:if></span>
+									</a>
+
 								</xsl:if>
 								<xsl:if test="$p/product">
 									<a href="{$p/product/show_product}" class="image-container">
@@ -78,7 +82,7 @@
 						<xsl:if test="f:num($cart/sum) &gt;= $min_gift">
 							<p><a onclick="$('#gifts').show();">Выбрать подарок</a></p>
 						</xsl:if>
-						<xsl:if test="not(f:num($cart/sum) &gt;= $min_gift * 1000)">
+						<xsl:if test="not(f:num($cart/sum) &gt;= $min_gift)">
 							<p>Сделайте заказ на сумму от <b><xsl:value-of select="f:currency_decimal($gifts[1]/sum)" /> р.</b> чтобы получить <a onclick="$('#gifts').show();">подарок</a></p>
 						</xsl:if>
 
@@ -112,7 +116,7 @@
 	</xsl:template>
 
 	<xsl:template name="GIFTS">
-		<div class="popup" style="display: block;" id="gifts">
+		<div class="popup" style="display: none;" id="gifts">
 			<div class="popup__body">
 			<div class="popup__content">
 				<a class="popup__close" onclick="$('#gifts').hide();">×</a>
@@ -127,13 +131,13 @@
 							<xsl:variable name="code" select="code"/>
 
 							<div class="gift-list__item gift">
-								<a class="gift__image">
+								<a class="gift__image" href="{show_product}">
 									<img src="{concat(@path, main_pic)}" />
 								</a>
-								<span class="gift__name">
-									Аккумуляторная болгарка Metabo PowerMaxx CC 12 BL
-								</span>
-								<div class="gift__status">
+
+								<a href="{show_product}" class="gift__name"><xsl:value-of select="name"/></a>
+
+								<div class="gift__status" id="cart_list_g_{@id}">
 									<xsl:if test="not(//bought[code = $code]) and $sum &lt;= f:num($cart/sum)">
 										<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_g_{@id}">
 											<input type="hidden" name="qty" value="1"/>

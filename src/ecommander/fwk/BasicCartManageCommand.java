@@ -85,7 +85,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if(StringUtils.startsWith(code, "gift-")){
 			BigDecimal sum = cart.getDecimalValue(SUM_PARAM);
 			BigDecimal controlSum = new BigDecimal(getVarSingleValue("sum"));
-			if(controlSum.compareTo(sum) > -1){
+			if(controlSum.compareTo(sum) <= 0){
 				ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 				for(Item bought : boughts){
 					if(StringUtils.startsWith(bought.getStringValue(CODE_PARAM), "gift-")){
@@ -341,7 +341,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private void addProduct(String code, double qty, String sum) throws Exception {
-
+		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 		if (boughtProduct == null) {
@@ -356,8 +356,8 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, qty);
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
-			if(StringUtils.isNotBlank(getVarSingleValue("sum"))){
-				bought.setExtra("gift-sum", new BigDecimal(getVarSingleValue("sum")));
+			if(StringUtils.isNotBlank(sum)){
+				bought.setExtra("gift-sum", getVarSingleValue("sum"));
 			}
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
@@ -540,7 +540,7 @@ public abstract class BasicCartManageCommand extends Command {
 		//remove gift if necessary
 		for (Item bought : boughts) {
 			if(bought.getExtra("gift-sum") != null){
-				BigDecimal s = (BigDecimal) bought.getExtra("gift-sum");
+				BigDecimal s = new BigDecimal (bought.getExtra("gift-sum").toString());
 				if(sum.compareTo(s) < 0){
 					getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				}
