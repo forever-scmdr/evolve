@@ -1,9 +1,11 @@
 package ecommander.model;
 
+import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
+import ecommander.model.datatypes.TupleDataType;
 import ecommander.pages.InputValues;
 import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
@@ -425,8 +427,12 @@ public class Item implements ItemBasics {
 							if (!StringUtils.isBlank(strValue) && paramId != _NO_PARAM_ID) {
 								try {
 									Parameter param = getParameterFromMap(paramId);
-									if (currentParamDesc.getType() == Type.XML)
+									if (currentParamDesc.getType() == Type.XML) {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
+									} else if (currentParamDesc.getType() == Type.TUPLE && metas.size() > 1) {
+										Pair<String, String> pair = new Pair<>(metas.get(1), strValue);
+										strValue = TupleDataType.createCombinedValue(pair, currentParamDesc.getFormatter());
+									}
 									SingleParameter sp = param.createAndSetValue(strValue, true);
 									if (metas.size() > 0 && sp != null) {
 										for (int i = 0; i < metas.size(); i += 2) {
@@ -613,6 +619,7 @@ public class Item implements ItemBasics {
 			if (key.length() > 99) key = key.substring(0, 98);
 			if (StringUtils.isBlank(keyUnique)) {
 				keyUnique = Strings.translit(key);
+				keyUnique = StringUtils.isBlank(keyUnique)? Strings.translit(getItemType().getCaption() + '_' + id) : keyUnique;
 				if (keyUnique.length() > 99) keyUnique = keyUnique.substring(0, 98);
 			}
 			// Если айтем новый - также сохранить oldKeyUnique
@@ -1230,6 +1237,15 @@ public class Item implements ItemBasics {
 	public final BigDecimal getDecimalValue(String paramName) {
 		return (BigDecimal) getValue(paramName);
 	}
+
+	/**
+	 * Вернуть значение параметра типа Tuple
+	 * @param paramName
+	 * @return
+	 */
+	public final Pair<String, String> getTupleValue(String paramName) {
+		return (Pair<String, String>) getValue(paramName);
+	}
 	/**
 	 * Вернуть значение целочисленного параметра
 	 * @param paramName
@@ -1317,6 +1333,16 @@ public class Item implements ItemBasics {
 	 */
 	public final BigDecimal getDecimalValue(String paramName, BigDecimal defaultValue) {
 		return (BigDecimal) getValue(paramName, defaultValue);
+	}
+	/**
+	 * Возвращает значение одиночного парамтера.
+	 * Если параметр не задан - возвращается значение по умолчанию
+	 * @param paramName
+	 * @param defaultValue
+	 * @return
+	 */
+	public final Pair<String, String> getTupleValue(String paramName, Pair<String, String> defaultValue) {
+		return (Pair<String, String>) getValue(paramName, defaultValue);
 	}
 	/**
 	 * Возвращает значение одиночного парамтера.

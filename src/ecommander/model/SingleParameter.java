@@ -116,7 +116,7 @@ public class SingleParameter extends Parameter {
 		return metas != null;
 	}
 
-	ArrayList<String> getAllMetas() {
+	public ArrayList<String> getAllMetas() {
 		ArrayList<String> allMetas = new ArrayList<>();
 		for (Map.Entry<String, String> entry : metas.entrySet()) {
 			allMetas.add(entry.getKey());
@@ -127,7 +127,7 @@ public class SingleParameter extends Parameter {
 
 	@Override
 	public final boolean isEmpty() {
-		return (value == null || value.toString().length() == 0);
+		return desc.getDataType().isEmpty(value);
 	}
 
 	@Override

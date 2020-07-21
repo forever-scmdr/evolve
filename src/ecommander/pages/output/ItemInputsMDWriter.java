@@ -1,18 +1,18 @@
 package ecommander.pages.output;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 import ecommander.fwk.Strings;
-import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FileDataType;
 import ecommander.pages.ItemInputName;
 import ecommander.pages.ItemInputs;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Создает следующую структуру
@@ -175,8 +175,16 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 				List<String> values = inputs.getInputValues(inputKey);//item.getValues(paramDesc.getName());
 				xml.startElement(FIELD_ELEMENT, attrs.toArray(new Object[0]));
 				if (paramDesc.isMultiple()) {
+					if (paramDesc.getType() == DataType.Type.TUPLE) {
+						int i = 0;
+						for (SingleParameter sp : ((MultipleParameter) inputs.getItem().getParameter(paramDesc.getId())).getValues()) {
+							ArrayList<String> metas = sp.getAllMetas();
+							xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i++, metas.get(0), metas.get(1)).addText(sp.outputValue()).endElement();
+						}
+					} else {
 					for (int i = 0; i < values.size(); i++) {
 						xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i).addText(values.get(i)).endElement();
+					}
 					}
 				} else {
 					for (String value : values) {
