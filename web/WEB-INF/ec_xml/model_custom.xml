@@ -4191,7 +4191,7 @@
 <!--END_p343213-->
 
 <!--START_p371268-->
-<item name="p371268" caption="Принадлежности для фрезеров для снятия лака" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2564" ag-hash="2128554359">
+<item name="p371268" caption="Принадлежности для фрезеров для снятия лака" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2549" ag-hash="2128554359">
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p371268-->
@@ -4395,7 +4395,7 @@
 <!--END_p342848-->
 
 <!--START_p389884-->
-<item name="p389884" caption="Фрезы из твердого сплава для алюминия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2587" ag-hash="2129722032">
+<item name="p389884" caption="Фрезы из твердого сплава для алюминия" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2550" ag-hash="2129722032">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4455,7 +4455,7 @@
 <!--END_p343035-->
 
 <!--START_p367791-->
-<item name="p367791" caption="Принадлежности для пылесосов и стружкоотсосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2559" ag-hash="2127814475">
+<item name="p367791" caption="Принадлежности для пылесосов и стружкоотсосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2551" ag-hash="2127814475">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -4709,7 +4709,7 @@
 <!--END_p354607-->
 
 <!--START_p365061-->
-<item name="p365061" caption="NiCD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2555" ag-hash="2127748073">
+<item name="p365061" caption="NiCD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2552" ag-hash="2127748073">
 	<parameter name="napryagenie_akkumulyatornogo_bloka" caption="Напряжение аккумуляторного блока" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2014766324" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="Ач" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
@@ -8359,7 +8359,7 @@
 <!--END_p351206-->
 
 <!--START_p351217-->
-<item name="p351217" caption="Класс качества &quot;professional&quot; / UP-Т" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2547" ag-hash="2126707161">
+<item name="p351217" caption="Класс качества &quot;professional&quot; / UP-Т" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2553" ag-hash="2126707161">
 	<parameter name="diametr_h_otverstie" caption="Диаметр х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="67462295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery_segmenta" caption="Размеры сегмента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030966365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__chislo_oborotov" caption="Макс. число оборотов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1539423309" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8368,7 +8368,7 @@
 <!--END_p351217-->
 
 <!--START_p351228-->
-<item name="p351228" caption="Класс качества &quot;classic&quot; / UC" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2548" ag-hash="2126707193">
+<item name="p351228" caption="Класс качества &quot;classic&quot; / UC" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2554" ag-hash="2126707193">
 	<parameter name="diametr_h_otverstie" caption="Диаметр х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="67462295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery_segmenta" caption="Размеры сегмента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030966365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_segmentov" caption="Количество сегментов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1251761172" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8378,7 +8378,7 @@
 <!--END_p351228-->
 
 <!--START_p351245-->
-<item name="p351245" caption="Класс качества &quot;professional&quot; / UP" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2549" ag-hash="2126707252">
+<item name="p351245" caption="Класс качества &quot;professional&quot; / UP" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2555" ag-hash="2126707252">
 	<parameter name="diametr_h_otverstie" caption="Диаметр х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="67462295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery_segmenta" caption="Размеры сегмента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030966365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kolichestvo_segmentov" caption="Количество сегментов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1251761172" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8388,7 +8388,7 @@
 <!--END_p351245-->
 
 <!--START_p351264-->
-<item name="p351264" caption="Класс качества &quot;classic&quot; / UC-T" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2550" ag-hash="2126707313">
+<item name="p351264" caption="Класс качества &quot;classic&quot; / UC-T" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2556" ag-hash="2126707313">
 	<parameter name="diametr_h_otverstie" caption="Диаметр х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="67462295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery_segmenta" caption="Размеры сегмента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030966365" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8544,7 +8544,7 @@
 <!--END_p355146-->
 
 <!--START_p358287-->
-<item name="p358287" caption="Лобзиковые пилки для дерева и металла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2551" ag-hash="2126915915">
+<item name="p358287" caption="Лобзиковые пилки для дерева и металла" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2557" ag-hash="2126915915">
 	<parameter name="dlya_materialov" caption="Для материалов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="888235869" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="material" caption="Материал" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="299066663" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8557,7 +8557,7 @@
 <!--END_p358287-->
 
 <!--START_p358318-->
-<item name="p358318" caption="Flexiarapid Super Universal" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2552" ag-hash="2126916660">
+<item name="p358318" caption="Flexiarapid Super Universal" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2558" ag-hash="2126916660">
 	<parameter name="diametr_h_tolschina_h_otverstie" caption="Диаметр х толщина х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1239469974" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__chislo_oborotov" caption="Макс. число оборотов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1539423309" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8566,11 +8566,11 @@
 <!--END_p358318-->
 
 <!--START_p361280-->
-<item name="p361280" caption="Торцевые головки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2553" ag-hash="2127630892"></item>
+<item name="p361280" caption="Торцевые головки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2559" ag-hash="2127630892"></item>
 <!--END_p361280-->
 
 <!--START_p364861-->
-<item name="p364861" caption="Компактные войлочные круги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2554" ag-hash="2127725970">
+<item name="p364861" caption="Компактные войлочные круги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2560" ag-hash="2127725970">
 	<parameter name="diametr_h_tolschina_h_otverstie" caption="Диаметр х толщина х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1239469974" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="zernistost" caption="Зернистость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1595213907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya___upakovochnaya_edinitsa" caption="Товарная / упаковочная единица" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1423089905" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8578,20 +8578,20 @@
 <!--END_p364861-->
 
 <!--START_p365938-->
-<item name="p365938" caption="Перфорированные шлифовальные пластины с липучкой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2556" ag-hash="2127756636">
+<item name="p365938" caption="Перфорированные шлифовальные пластины с липучкой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2561" ag-hash="2127756636">
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina" caption="Ширина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2061610206" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p365938-->
 
 <!--START_p367182-->
-<item name="p367182" caption="Наборы отрезных кругов для болгарки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2557" ag-hash="2127808679">
+<item name="p367182" caption="Наборы отрезных кругов для болгарки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2562" ag-hash="2127808679">
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p367182-->
 
 <!--START_p367480-->
-<item name="p367480" caption="Шлифовальные листы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2558" ag-hash="2127811560">
+<item name="p367480" caption="Шлифовальные листы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2563" ag-hash="2127811560">
 	<parameter name="razmery" caption="Размеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="989249674" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="zernistost" caption="Зернистость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1595213907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8599,7 +8599,7 @@
 <!--END_p367480-->
 
 <!--START_p367930-->
-<item name="p367930" caption="Шлифовальные полотна для ленточной пилы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2560" ag-hash="2127816210">
+<item name="p367930" caption="Шлифовальные полотна для ленточной пилы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2564" ag-hash="2127816210">
 	<parameter name="zernistost" caption="Зернистость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1595213907" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery" caption="Размеры" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="989249674" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8609,7 +8609,7 @@
 <!--END_p367930-->
 
 <!--START_p368083-->
-<item name="p368083" caption="Универсальные алмазные отрезные круги серии &quot;Promotion&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2561" ag-hash="2127837510">
+<item name="p368083" caption="Универсальные алмазные отрезные круги серии &quot;Promotion&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2565" ag-hash="2127837510">
 	<parameter name="diametr_h_otverstie" caption="Диаметр х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="67462295" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmery_segmenta" caption="Размеры сегмента" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1030966365" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__chislo_oborotov" caption="Макс. число оборотов" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1539423309" description="/мин" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8618,7 +8618,7 @@
 <!--END_p368083-->
 
 <!--START_p368144-->
-<item name="p368144" caption="Комплекты отрезных кругов по нержавеющей стали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2562" ag-hash="2127838348">
+<item name="p368144" caption="Комплекты отрезных кругов по нержавеющей стали" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2566" ag-hash="2127838348">
 	<parameter name="klass_kachestva" caption="Класс качества" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1209458857" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_h_tolschina_h_otverstie" caption="Диаметр х толщина х отверстие" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1239469974" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8628,17 +8628,17 @@
 <!--END_p368144-->
 
 <!--START_p368160-->
-<item name="p368160" caption="Наборы фрез" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2563" ag-hash="2127838406"></item>
+<item name="p368160" caption="Наборы фрез" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2567" ag-hash="2127838406"></item>
 <!--END_p368160-->
 
 <!--START_p371277-->
-<item name="p371277" caption="Принадлежности для кромочных фрезеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2565" ag-hash="2128554389">
+<item name="p371277" caption="Принадлежности для кромочных фрезеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2568" ag-hash="2128554389">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p371277-->
 
 <!--START_p371302-->
-<item name="p371302" caption="Другие принадлежности для фрезеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2566" ag-hash="2128555128">
+<item name="p371302" caption="Другие принадлежности для фрезеров" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2569" ag-hash="2128555128">
 	<parameter name="otverstie_zagima" caption="Отверстие зажима" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-3812735" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8646,25 +8646,25 @@
 <!--END_p371302-->
 
 <!--START_p374365-->
-<item name="p374365" caption="Принадлежности шлифмашин для снятия лака" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2567" ag-hash="2128644690">
+<item name="p374365" caption="Принадлежности шлифмашин для снятия лака" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2570" ag-hash="2128644690">
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p374365-->
 
 <!--START_p380473-->
-<item name="p380473" caption="Строгальные ножи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2568" ag-hash="2129450037">
+<item name="p380473" caption="Строгальные ножи" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2571" ag-hash="2129450037">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p380473-->
 
 <!--START_p380482-->
-<item name="p380482" caption="Другие принадлежности для ручных рубанков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2569" ag-hash="2129450067">
+<item name="p380482" caption="Другие принадлежности для ручных рубанков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2572" ag-hash="2129450067">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p380482-->
 
 <!--START_p383522-->
-<item name="p383522" caption="Перемешивание: снизу вверх" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2570" ag-hash="2129540215">
+<item name="p383522" caption="Перемешивание: снизу вверх" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2573" ag-hash="2129540215">
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__kolichestvo_materiala" caption="Макс. количество материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-670822792" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8673,7 +8673,7 @@
 <!--END_p383522-->
 
 <!--START_p383553-->
-<item name="p383553" caption="Перемешивание: без воздушных карманов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2571" ag-hash="2129540309">
+<item name="p383553" caption="Перемешивание: без воздушных карманов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2574" ag-hash="2129540309">
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__kolichestvo_materiala" caption="Макс. количество материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-670822792" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8682,7 +8682,7 @@
 <!--END_p383553-->
 
 <!--START_p383559-->
-<item name="p383559" caption="Перемешивание: сверху вниз" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2572" ag-hash="2129540315">
+<item name="p383559" caption="Перемешивание: сверху вниз" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2575" ag-hash="2129540315">
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__kolichestvo_materiala" caption="Макс. количество материала" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-670822792" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8691,11 +8691,11 @@
 <!--END_p383559-->
 
 <!--START_p383612-->
-<item name="p383612" caption="Принадлежности для листовых и высечных ножниц" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2573" ag-hash="2129541145"></item>
+<item name="p383612" caption="Принадлежности для листовых и высечных ножниц" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2576" ag-hash="2129541145"></item>
 <!--END_p383612-->
 
 <!--START_p386665-->
-<item name="p386665" caption="Аккумуляторные фены" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2574" ag-hash="2129630676">
+<item name="p386665" caption="Аккумуляторные фены" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2577" ag-hash="2129630676">
 	<parameter name="napryagenie_akkumulyatora" caption="Напряжение аккумулятора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1464126130" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rashod_vozduha" caption="Расход воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1873928453" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="temperatura_vozduha" caption="Температура воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1636279772" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8706,7 +8706,7 @@
 <!--END_p386665-->
 
 <!--START_p386676-->
-<item name="p386676" caption="Аккумуляторные ножницы по металлу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2575" ag-hash="2129630708">
+<item name="p386676" caption="Аккумуляторные ножницы по металлу" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2578" ag-hash="2129630708">
 	<parameter name="tip_akkumulyatornogo_bloka" caption="Тип аккумуляторного блока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="102634664" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_akkumulyatora" caption="Напряжение аккумулятора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1464126130" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="maks__tolschina_lista_stali_400_n_mm" caption="Макс. толщина листа стали 400 Н/мм²" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1274588256" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8727,11 +8727,11 @@
 <!--END_p386676-->
 
 <!--START_p389721-->
-<item name="p389721" caption="Комплекты твердосплавных фрез" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2576" ag-hash="2129720882"></item>
+<item name="p389721" caption="Комплекты твердосплавных фрез" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2579" ag-hash="2129720882"></item>
 <!--END_p389721-->
 
 <!--START_p389726-->
-<item name="p389726" caption="Цилиндрическая фреза с закругленным концом (С-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2577" ag-hash="2129720887">
+<item name="p389726" caption="Цилиндрическая фреза с закругленным концом (С-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2580" ag-hash="2129720887">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8741,7 +8741,7 @@
 <!--END_p389726-->
 
 <!--START_p389743-->
-<item name="p389743" caption="Эллипсообразная фреза (E-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2578" ag-hash="2129720946">
+<item name="p389743" caption="Эллипсообразная фреза (E-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2581" ag-hash="2129720946">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8751,7 +8751,7 @@
 <!--END_p389743-->
 
 <!--START_p389760-->
-<item name="p389760" caption="Шарообразная фреза (шар / D-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2579" ag-hash="2129721005">
+<item name="p389760" caption="Шарообразная фреза (шар / D-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2582" ag-hash="2129721005">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8761,7 +8761,7 @@
 <!--END_p389760-->
 
 <!--START_p389777-->
-<item name="p389777" caption="Коническая фреза (круглый конус / L-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2580" ag-hash="2129721043">
+<item name="p389777" caption="Коническая фреза (круглый конус / L-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2583" ag-hash="2129721043">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8771,7 +8771,7 @@
 <!--END_p389777-->
 
 <!--START_p389794-->
-<item name="p389794" caption="Фреза в форме языка пламени (H-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2581" ag-hash="2129721102">
+<item name="p389794" caption="Фреза в форме языка пламени (H-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2584" ag-hash="2129721102">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8781,7 +8781,7 @@
 <!--END_p389794-->
 
 <!--START_p389811-->
-<item name="p389811" caption="Выпуклая закругленная коническая фреза (F-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2582" ag-hash="2129721812">
+<item name="p389811" caption="Выпуклая закругленная коническая фреза (F-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2585" ag-hash="2129721812">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8791,7 +8791,7 @@
 <!--END_p389811-->
 
 <!--START_p389828-->
-<item name="p389828" caption="Коническая фреза (острый конус / М-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2583" ag-hash="2129721850">
+<item name="p389828" caption="Коническая фреза (острый конус / М-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2586" ag-hash="2129721850">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8801,7 +8801,7 @@
 <!--END_p389828-->
 
 <!--START_p389845-->
-<item name="p389845" caption="Выпуклая остроконечная коническая фреза (G-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2584" ag-hash="2129721909">
+<item name="p389845" caption="Выпуклая остроконечная коническая фреза (G-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2587" ag-hash="2129721909">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8811,7 +8811,7 @@
 <!--END_p389845-->
 
 <!--START_p389862-->
-<item name="p389862" caption="Радиусная фреза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2585" ag-hash="2129721968">
+<item name="p389862" caption="Радиусная фреза" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2588" ag-hash="2129721968">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8821,7 +8821,7 @@
 <!--END_p389862-->
 
 <!--START_p389867-->
-<item name="p389867" caption="Цилиндрическая фреза (цилиндр / B-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2586" ag-hash="2129721973">
+<item name="p389867" caption="Цилиндрическая фреза (цилиндр / B-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2589" ag-hash="2129721973">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8831,7 +8831,7 @@
 <!--END_p389867-->
 
 <!--START_p389885-->
-<item name="p389885" caption="Шарообразная фреза для алюминия (шар / D-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2588" ag-hash="2129722033">
+<item name="p389885" caption="Шарообразная фреза для алюминия (шар / D-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2590" ag-hash="2129722033">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8841,7 +8841,7 @@
 <!--END_p389885-->
 
 <!--START_p389890-->
-<item name="p389890" caption="Цилиндрическая фреза для алюминия (цилиндр / B-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2590" ag-hash="2129722059">
+<item name="p389890" caption="Цилиндрическая фреза для алюминия (цилиндр / B-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2591" ag-hash="2129722059">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8851,7 +8851,7 @@
 <!--END_p389890-->
 
 <!--START_p389891-->
-<item name="p389891" caption="Цилиндрическая фреза для алюминия (с закругленным концом / С-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2591" ag-hash="2129722060">
+<item name="p389891" caption="Цилиндрическая фреза для алюминия (с закругленным концом / С-форма)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2592" ag-hash="2129722060">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8861,7 +8861,7 @@
 <!--END_p389891-->
 
 <!--START_p389935-->
-<item name="p389935" caption="Шлифовальные штифты из электрокорунда" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2592" ag-hash="2129722839">
+<item name="p389935" caption="Шлифовальные штифты из электрокорунда" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2593" ag-hash="2129722839">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8871,7 +8871,7 @@
 <!--END_p389935-->
 
 <!--START_p389936-->
-<item name="p389936" caption="Шлифовальные штифты из нормального корунда" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2593" ag-hash="2129722840">
+<item name="p389936" caption="Шлифовальные штифты из нормального корунда" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2594" ag-hash="2129722840">
 	<parameter name="diametr_golovki" caption="Диаметр головки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1924324700" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rabochaya_dlina" caption="Рабочая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="161347261" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="obschaya_dlina" caption="Общая длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2127577593" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8881,7 +8881,7 @@
 <!--END_p389936-->
 
 <!--START_p389937-->
-<item name="p389937" caption="Другие принадлежности для прямошлифовальных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2589" ag-hash="2129722841">
+<item name="p389937" caption="Другие принадлежности для прямошлифовальных машин" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2595" ag-hash="2129722841">
 	<parameter name="otverstie_zagima" caption="Отверстие зажима" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-3812735" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_hvostovika" caption="Диаметр хвостовика" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1494683645" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8894,26 +8894,26 @@
 <!--END_p389937-->
 
 <!--START_p393243-->
-<item name="p393243" caption="Фрезерные головки / звезды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2594" ag-hash="2130460916"></item>
+<item name="p393243" caption="Фрезерные головки / звезды" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2596" ag-hash="2130460916"></item>
 <!--END_p393243-->
 
 <!--START_p393251-->
-<item name="p393251" caption="Другие принадлежности шлифователей по снятию штукатурки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2595" ag-hash="2130460945"></item>
+<item name="p393251" caption="Другие принадлежности шлифователей по снятию штукатурки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2597" ag-hash="2130460945"></item>
 <!--END_p393251-->
 
 <!--START_p394136-->
-<item name="p394136" caption="Принадлежности для технических фенов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2596" ag-hash="2130489718"></item>
+<item name="p394136" caption="Принадлежности для технических фенов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2598" ag-hash="2130489718"></item>
 <!--END_p394136-->
 
 <!--START_p396336-->
-<item name="p396336" caption="Мешки для пылесосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2597" ag-hash="2130551222">
+<item name="p396336" caption="Мешки для пылесосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2599" ag-hash="2130551222">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p396336-->
 
 <!--START_p396393-->
-<item name="p396393" caption="Насадки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2598" ag-hash="2130551405">
+<item name="p396393" caption="Насадки" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2600" ag-hash="2130551405">
 	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="shirina" caption="Ширина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2061610206" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8922,14 +8922,14 @@
 <!--END_p396393-->
 
 <!--START_p396434-->
-<item name="p396434" caption="Фильтры для пылесосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2599" ag-hash="2130552181">
+<item name="p396434" caption="Фильтры для пылесосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2601" ag-hash="2130552181">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p396434-->
 
 <!--START_p396471-->
-<item name="p396471" caption="Всасывающие трубы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2600" ag-hash="2130552302">
+<item name="p396471" caption="Всасывающие трубы" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2602" ag-hash="2130552302">
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina" caption="Длина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tip" caption="Тип" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="114843" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8938,7 +8938,7 @@
 <!--END_p396471-->
 
 <!--START_p396484-->
-<item name="p396484" caption="Всасывающие шланги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2601" ag-hash="2130552336">
+<item name="p396484" caption="Всасывающие шланги" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2603" ag-hash="2130552336">
 	<parameter name="diametr_soedinitelnogo_elementa" caption="Диаметр соединительного элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="418612508" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="dlina_shlanga" caption="Длина шланга" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1459733485" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr_vsasyvayuschego_shlanga" caption="Диаметр всасывающего шланга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="688264184" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8949,25 +8949,25 @@
 <!--END_p396484-->
 
 <!--START_p396509-->
-<item name="p396509" caption="Адаптеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2602" ag-hash="2130553054">
+<item name="p396509" caption="Адаптеры" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2604" ag-hash="2130553054">
 	<parameter name="diametr_soedinitelnogo_elementa" caption="Диаметр соединительного элемента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="418612508" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p396509-->
 
 <!--START_p399731-->
-<item name="p399731" caption="Другие принадлежности для пылесосов и стружкоотсосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2603" ag-hash="2130644434">
+<item name="p399731" caption="Другие принадлежности для пылесосов и стружкоотсосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2605" ag-hash="2130644434">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tovarnaya_edinitsa" caption="Товарная единица" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1627738421" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p399731-->
 
 <!--START_p402789-->
-<item name="p402789" caption="Адаптеры и соединения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2604" ag-hash="-2144213774"></item>
+<item name="p402789" caption="Адаптеры и соединения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2606" ag-hash="-2144213774"></item>
 <!--END_p402789-->
 
 <!--START_p402795-->
-<item name="p402795" caption="Фильтры для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2605" ag-hash="-2144213747">
+<item name="p402795" caption="Фильтры для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2607" ag-hash="-2144213747">
 	<parameter name="vysota" caption="Высота" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-801445108" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="diametr" caption="Диаметр" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="rashod_vody" caption="Расход воды" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1271785460" description="л/ч" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8979,11 +8979,11 @@
 <!--END_p402795-->
 
 <!--START_p402812-->
-<item name="p402812" caption="Монтажные наборы для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2606" ag-hash="-2144213037"></item>
+<item name="p402812" caption="Монтажные наборы для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2608" ag-hash="-2144213037"></item>
 <!--END_p402812-->
 
 <!--START_p402817-->
-<item name="p402817" caption="Шланги для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2607" ag-hash="-2144213032">
+<item name="p402817" caption="Шланги для насосов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2609" ag-hash="-2144213032">
 	<parameter name="vnutr__" caption="Внутр. Ø" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="612078875" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tolschina_stenki" caption="Толщина стенки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1050884142" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="radius_izgiba" caption="Радиус изгиба" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1158684063" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -8996,30 +8996,30 @@
 <!--END_p402817-->
 
 <!--START_p402834-->
-<item name="p402834" caption="Защита от сухого хода" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2608" ag-hash="-2144212973"></item>
+<item name="p402834" caption="Защита от сухого хода" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2610" ag-hash="-2144212973"></item>
 <!--END_p402834-->
 
 <!--START_p405909-->
-<item name="p405909" caption="Принадлежности для пневматических отбойных молотков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2609" ag-hash="-2144122727"></item>
+<item name="p405909" caption="Принадлежности для пневматических отбойных молотков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2611" ag-hash="-2144122727"></item>
 <!--END_p405909-->
 
 <!--START_p405916-->
-<item name="p405916" caption="Принадлежности для краскопультов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2610" ag-hash="-2144122699">
+<item name="p405916" caption="Принадлежности для краскопультов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2612" ag-hash="-2144122699">
 	<parameter name="diametr" caption="Диаметр" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1655045266" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p405916-->
 
 <!--START_p406057-->
-<item name="p406057" caption="Принадлежности для пескоструйных пистолетов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2611" ag-hash="-2144101432"></item>
+<item name="p406057" caption="Принадлежности для пескоструйных пистолетов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2613" ag-hash="-2144101432"></item>
 <!--END_p406057-->
 
 <!--START_p406059-->
-<item name="p406059" caption="Принадлежности для пневматических кузовных пил" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2612" ag-hash="-2144101430"></item>
+<item name="p406059" caption="Принадлежности для пневматических кузовных пил" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2614" ag-hash="-2144101430"></item>
 <!--END_p406059-->
 
 <!--START_p406098-->
-<item name="p406098" caption="Шланги на катушке" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2613" ag-hash="-2144101307">
+<item name="p406098" caption="Шланги на катушке" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2615" ag-hash="-2144101307">
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vnutr__" caption="Внутр. Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="612078875" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="narug__" caption="Наруж. Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1727053713" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9029,7 +9029,7 @@
 <!--END_p406098-->
 
 <!--START_p406115-->
-<item name="p406115" caption="Шланги с текстильной прослойкой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2614" ag-hash="-2144100597">
+<item name="p406115" caption="Шланги с текстильной прослойкой" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2616" ag-hash="-2144100597">
 	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vnutr__" caption="Внутр. Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="612078875" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="narug__" caption="Наруж. Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1727053713" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9040,7 +9040,7 @@
 <!--END_p406115-->
 
 <!--START_p406148-->
-<item name="p406148" caption="Шланги спиральные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2615" ag-hash="-2144100501">
+<item name="p406148" caption="Шланги спиральные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2617" ag-hash="-2144100501">
 	<parameter name="dlina" caption="Длина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vnutr__" caption="Внутр. Ø" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="612078875" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="narug__" caption="Наруж. Ø" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1727053713" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9051,7 +9051,7 @@
 <!--END_p406148-->
 
 <!--START_p406384-->
-<item name="p406384" caption="Штуцеры для шлангов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2616" ag-hash="-2144098459">
+<item name="p406384" caption="Штуцеры для шлангов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2618" ag-hash="-2144098459">
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_soedineniya" caption="Размер соединения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1585022744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9060,7 +9060,7 @@
 <!--END_p406384-->
 
 <!--START_p406425-->
-<item name="p406425" caption="Штуцеры для пневмоинструмента" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2617" ag-hash="-2144097683">
+<item name="p406425" caption="Штуцеры для пневмоинструмента" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2619" ag-hash="-2144097683">
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_soedineniya" caption="Размер соединения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1585022744" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9069,7 +9069,7 @@
 <!--END_p406425-->
 
 <!--START_p406446-->
-<item name="p406446" caption="Соединители, переходники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2618" ag-hash="-2144097620">
+<item name="p406446" caption="Соединители, переходники" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2620" ag-hash="-2144097620">
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_soedineniya" caption="Размер соединения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1585022744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9078,7 +9078,7 @@
 <!--END_p406446-->
 
 <!--START_p406459-->
-<item name="p406459" caption="Зажимы и хомуты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2619" ag-hash="-2144097586">
+<item name="p406459" caption="Зажимы и хомуты" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2621" ag-hash="-2144097586">
 	<parameter name="ot_" caption="от Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="110362" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="do_" caption="до Ø" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="99636" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9087,7 +9087,7 @@
 <!--END_p406459-->
 
 <!--START_p406507-->
-<item name="p406507" caption="Разветвители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2620" ag-hash="-2144096782">
+<item name="p406507" caption="Разветвители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2622" ag-hash="-2144096782">
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_soedineniya" caption="Размер соединения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1585022744" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="profil" caption="Профиль" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-979812804" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9097,7 +9097,7 @@
 <!--END_p406507-->
 
 <!--START_p406516-->
-<item name="p406516" caption="Быстросъемные соединения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2621" ag-hash="-2144096752">
+<item name="p406516" caption="Быстросъемные соединения" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2623" ag-hash="-2144096752">
 	<parameter name="ispolnenie" caption="Исполнение" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-306338320" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="razmer_soedineniya" caption="Размер соединения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1585022744" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="upakovka" caption="Упаковка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1245811458" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9106,55 +9106,55 @@
 <!--END_p406516-->
 
 <!--START_p409915-->
-<item name="p409915" caption="Садовые распылители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2622" ag-hash="-2144003536"></item>
+<item name="p409915" caption="Садовые распылители" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2624" ag-hash="-2144003536"></item>
 <!--END_p409915-->
 
 <!--START_p416395-->
-<item name="p416395" caption="Принадлежности системы &quot;Quick&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2623" ag-hash="-2143174906"></item>
+<item name="p416395" caption="Принадлежности системы &quot;Quick&quot;" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2625" ag-hash="-2143174906"></item>
 <!--END_p416395-->
 
 <!--START_p416401-->
-<item name="p416401" caption="Принадлежности для PowerGrip/ Power Maxx" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2624" ag-hash="-2143174228"></item>
+<item name="p416401" caption="Принадлежности для PowerGrip/ Power Maxx" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2626" ag-hash="-2143174228"></item>
 <!--END_p416401-->
 
 <!--START_p416406-->
-<item name="p416406" caption="Адаптер для аккумуляторных блоков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2625" ag-hash="-2143174223"></item>
+<item name="p416406" caption="Адаптер для аккумуляторных блоков" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2627" ag-hash="-2143174223"></item>
 <!--END_p416406-->
 
 <!--START_p416410-->
-<item name="p416410" caption="Принадлежности для заклепочного пистолета" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2626" ag-hash="-2143174198">
+<item name="p416410" caption="Принадлежности для заклепочного пистолета" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2628" ag-hash="-2143174198">
 	<parameter name="podhodit_dlya" caption="Подходит для" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1911637324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="tverdost" caption="Твердость" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="653703003" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p416410-->
 
 <!--START_p416415-->
-<item name="p416415" caption="Принадлежности для аккумуляторных прожекторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2627" ag-hash="-2143174193"></item>
+<item name="p416415" caption="Принадлежности для аккумуляторных прожекторов" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2629" ag-hash="-2143174193"></item>
 <!--END_p416415-->
 
 <!--START_p416418-->
-<item name="p416418" caption="Аккумуляторы NiCD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2628" ag-hash="-2143174190">
+<item name="p416418" caption="Аккумуляторы NiCD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2630" ag-hash="-2143174190">
 	<parameter name="napryagenie_akkumulyatornogo_bloka" caption="Напряжение аккумуляторного блока" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2014766324" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="Ач" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p416418-->
 
 <!--START_p416431-->
-<item name="p416431" caption="Аккумуляторы Li-Ion, Li-Power" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2629" ag-hash="-2143174135">
+<item name="p416431" caption="Аккумуляторы Li-Ion, Li-Power" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2631" ag-hash="-2143174135">
 	<parameter name="napryagenie_akkumulyatornogo_bloka" caption="Напряжение аккумуляторного блока" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2014766324" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="Ач" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p416431-->
 
 <!--START_p416480-->
-<item name="p416480" caption="Аккумуляторы LiHD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2630" ag-hash="-2143173981">
+<item name="p416480" caption="Аккумуляторы LiHD" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2632" ag-hash="-2143173981">
 	<parameter name="napryagenie_akkumulyatornogo_bloka" caption="Напряжение аккумуляторного блока" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2014766324" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="Ач" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p416480-->
 
 <!--START_p416513-->
-<item name="p416513" caption="Зарядное устройство" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2631" ag-hash="-2143173234">
+<item name="p416513" caption="Зарядное устройство" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2633" ag-hash="-2143173234">
 	<parameter name="napryagenie_seti" caption="Напряжение сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-581534537" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="chastota_seti" caption="Частота сети" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1634367111" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="mkas__zaryadnyi_tok" caption="Мкас. зарядный ток" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1941046254" description="A" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -9163,7 +9163,7 @@
 <!--END_p416513-->
 
 <!--START_p416558-->
-<item name="p416558" caption="Комплекты (АКБ + зарядное ус-во)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2632" ag-hash="-2143173105">
+<item name="p416558" caption="Комплекты (АКБ + зарядное ус-во)" key="" virtual="false" user-def="true" description="" super="params *" ag-id="2634" ag-hash="-2143173105">
 	<parameter name="tip_akkumulyatornogo_bloka" caption="Тип аккумуляторного блока" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="102634664" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="napryagenie_akkumulyatornogo_bloka" caption="Напряжение аккумуляторного блока" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="2014766324" description="В" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="" owner-id="0" virtual="false" hidden="false"></parameter>
