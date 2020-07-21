@@ -1,0 +1,23 @@
+td .device {
+	min-width: 190px;
+}
+.orders-list .order a.button {
+	color: ;
+}
+.device__actions {
+	font-size: 12px !important;
+}
+table.compare td {
+	border: none;
+}
+@media (min-width: 768px) {
+	.events__banner {
+		flex: 1;
+	}
+}
+
+.hero .container {
+	display: grid;
+	grid-gap: 24px;
+	grid-te
+}
