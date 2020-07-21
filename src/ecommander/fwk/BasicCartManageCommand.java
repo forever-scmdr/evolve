@@ -3,9 +3,11 @@ package ecommander.fwk;
 import ecommander.controllers.PageController;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
+import ecommander.model.datatypes.LongDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +34,9 @@ public abstract class BasicCartManageCommand extends Command {
             if (StringUtils.equalsAny(name, "extra_line_overbuy",
                     "extra-line-overbuy", "extralineoverbuy", "extra_line_over_buy", "extra-line-over-buy"))
                 return extra_line_overbuy;
+	        if (StringUtils.equalsAny(name, "ignore_overbuy",
+			        "ignore-overbuy", "ignoreoverbuy", "ignore_over_buy", "ignore-over-buy"))
+		        return extra_line_overbuy;
             return deny_overbuy;
         }
     }
@@ -48,6 +53,7 @@ public abstract class BasicCartManageCommand extends Command {
     protected static final String QTY_AVAIL_PARAM = "qty_avail";
     protected static final String QTY_TOTAL_PARAM = "qty_total";
 	protected static final String SUM_PARAM = "sum";
+	protected static final String PROD_PARAM = "prod";
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
 	protected static final String PROCESSED_PARAM = "processed";
@@ -88,12 +94,14 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE addToCart() throws Exception {
 	    checkStrategy();
-		String code = getVarSingleValue(CODE_PARAM);
+		String idStr = getVarSingleValue(PROD_PARAM);
 		double quantity = 0;
+		long prodId = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
+			prodId = Long.parseLong(getVarSingleValue(QTY_PARAM));
 		} catch (Exception e) {/**/}
-		addProduct(code, quantity);
+		addProduct(prodId, quantity);
 		recalculateCart();
 		return getResult("ajax");
 	}
@@ -339,15 +347,15 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 
-	private void addProduct(String code, double qty) throws Exception {
+	private void addProduct(long prodId, double qty) throws Exception {
 	    checkStrategy();
 		ensureCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
-		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+		Item boughtProduct = getSessionMapper().getItemSingle(prodId);
 		if (boughtProduct == null) {
 			if (qty <= 0)
 				return;
-			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+			Item product = ItemQuery.loadById(prodId);
 			if (product == null)
 			    return;
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
@@ -479,18 +487,21 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
-	    checkStrategy();
-		loadCart();
-		if (cart != null)
-			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
 		if (StringUtils.isBlank(cookie))
+			return null;
+		checkStrategy();
+		loadCart();
+		if (cart != null)
 			return null;
 		String[] codeQtys = StringUtils.split(cookie, '/');
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
+			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, pair[0]);
 			double qty = DoubleDataType.parse(pair[1]);
-			addProduct(pair[0], qty);
+			if (product != null) {
+				addProduct(product.getId(), qty);
+			}
 		}
 		recalculateCart();
 		return null;
