@@ -1,6 +1,5 @@
 package ecommander.persistence.mappers;
 
-import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.model.datatypes.DateDataType;
@@ -27,7 +26,7 @@ import java.util.HashMap;
  */
 public class DataTypeMapper {
 	
-	abstract static class TypeMapper {
+	abstract class TypeMapper {
 	
 		protected void setPreparedStatementRequestValue(TemplateQuery pstmt, String value, String pattern) {
 			if (value == null) {
@@ -50,9 +49,11 @@ public class DataTypeMapper {
 		protected abstract String getTableName();
 		
 		protected abstract void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException;
+		
+		protected abstract Object defaultValue();
 	}
 	
-	private static class StringMapper extends TypeMapper {
+	private class StringMapper extends TypeMapper {
 
 		@Override
 		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
@@ -77,6 +78,11 @@ public class DataTypeMapper {
 		}
 
 		@Override
+		protected Object defaultValue() {
+			return Strings.EMPTY;
+		}
+
+		@Override
 		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
 			return rs.getString(col);
 		}
@@ -92,7 +98,7 @@ public class DataTypeMapper {
 		}
 	}
 	
-	private static class FileMapper extends StringMapper {
+	private class FileMapper extends StringMapper {
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
 			if (value instanceof String) {
@@ -109,7 +115,7 @@ public class DataTypeMapper {
 		}
 	}
 
-	private static class IntMapper extends TypeMapper {
+	private class IntMapper extends TypeMapper {
 
 		private Integer createValue(String string) {
 			return Integer.parseInt(string);
@@ -136,6 +142,11 @@ public class DataTypeMapper {
 		}
 
 		@Override
+		protected Object defaultValue() {
+			return 0;
+		}
+
+		@Override
 		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
 			return rs.getInt(col);
 		}
@@ -156,7 +167,7 @@ public class DataTypeMapper {
 		}
 	}
 	
-	private static class ByteMapper extends IntMapper {
+	private class ByteMapper extends IntMapper {
 
 		private Byte createValue(String string) {
 			return Byte.parseByte(string);
@@ -181,9 +192,14 @@ public class DataTypeMapper {
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
 			pstmt.long_(((Byte)value).longValue());
 		}
+		
+		@Override
+		protected Object defaultValue() {
+			return (byte)0;
+		}
 	}
 
-	private static class LongMapper extends IntMapper {
+	private class LongMapper extends IntMapper {
 
 		private Long createValue(String string) {
 			return Long.parseLong(string);
@@ -208,6 +224,11 @@ public class DataTypeMapper {
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
 			pstmt.long_(((Long)value).longValue());
 		}
+		
+		@Override
+		protected Object defaultValue() {
+			return (long)0;
+		}
 
 		@Override
 		protected void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values) {
@@ -225,7 +246,7 @@ public class DataTypeMapper {
 		}
 	}
 	
-	private static class DateMapper extends LongMapper {
+	private class DateMapper extends LongMapper {
 		
 		private Long createValue(String string, String pattern) {
 			Long date = null;
@@ -248,7 +269,7 @@ public class DataTypeMapper {
 		}
 	}
 	
-	private static class DoubleMapper extends TypeMapper {
+	private class DoubleMapper extends TypeMapper {
 
 		protected Double createValue(String string) {
 			return DoubleDataType.parse(string);
@@ -275,6 +296,11 @@ public class DataTypeMapper {
 		}
 
 		@Override
+		protected Object defaultValue() {
+			return (double)0;
+		}
+
+		@Override
 		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
 			return rs.getDouble(col);
 		}
@@ -295,7 +321,7 @@ public class DataTypeMapper {
 		}
 	}
 
-	private static class DecimalMapper extends TypeMapper {
+	private class DecimalMapper extends TypeMapper {
 
 		private final int scale;
 
@@ -328,6 +354,11 @@ public class DataTypeMapper {
 		}
 
 		@Override
+		protected Object defaultValue() {
+			return new BigDecimal(0);
+		}
+
+		@Override
 		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
 			return rs.getBigDecimal(col);
 		}
@@ -345,46 +376,6 @@ public class DataTypeMapper {
 		@Override
 		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
 			itemDoc.add(new DoublePoint(fieldName, ((BigDecimal) value).doubleValue()));
-		}
-	}
-
-	private static class TupleMapper extends TypeMapper {
-
-		@Override
-		protected void setPreparedStatementRequestValueFine(TemplateQuery pstmt, String value, String pattern) {
-			if (!StringUtils.isBlank(pattern))
-				value = pattern.replaceAll("v", value);
-			pstmt.string(value);
-		}
-
-		@Override
-		protected final String getTableName() {
-			return DBConstants.ItemIndexes.STRING_INDEX_TBL;
-		}
-
-		@Override
-		protected Object createValueFromResultSet(ResultSet rs) throws SQLException {
-			return rs.getString(DBConstants.ItemIndexes.II_VALUE);
-		}
-
-		@Override
-		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.string(StringUtils.substring(((Pair<String, String>)value).getLeft(), 0, 100));
-		}
-
-		@Override
-		protected Object createValueFromResultSet(ResultSet rs, int col) throws SQLException {
-			return rs.getString(col);
-		}
-
-		@Override
-		protected void setPreparedStatementRequestValues(TemplateQuery pstmt, Collection<String> values) {
-			pstmt.stringArray(values.toArray(new String[0]));
-		}
-
-		@Override
-		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
-			itemDoc.add(new StringField(fieldName, ((Pair<String, String>)value).getLeft(), Field.Store.NO));
 		}
 	}
 
@@ -414,7 +405,6 @@ public class DataTypeMapper {
 		typeMappers.put(Type.PLAIN_TEXT, stringMapper);
 		typeMappers.put(Type.FILTER, stringMapper);
 		typeMappers.put(Type.XML, stringMapper);
-		typeMappers.put(Type.TUPLE, new TupleMapper());
 	}
 
 	/**
