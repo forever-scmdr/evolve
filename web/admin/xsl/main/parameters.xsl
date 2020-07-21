@@ -52,7 +52,7 @@
 		<input
 				style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;"
 				class="field tuple tuple_value" type="text"/>
-		<input type="hidden" class="tuple_format" value="{@format}"/>
+		<input type="hidden" class="tuple_format" value="{if (@format and not(@format = '')) then @format else '$+$'}"/>
 		<input type="hidden" class="tuple_full" name="multipleParamValue"/>
 	</xsl:template>
 
