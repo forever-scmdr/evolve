@@ -12,9 +12,9 @@
 	<xsl:variable name="form" select="page/form"/>
 
 	<xsl:variable name="pname"
-	              select="if (page/variables/pname) then page/variables/pname else $form/input/product_name"/>
+				  select="if (page/product) then page/product/name else $form/input/product_name"/>
 	<xsl:variable name="pcode"
-	              select="if (page/variables/pcode) then page/variables/pcode else $form/input/observable"/>
+				  select="if (page/product) then page/product/code else $form/input/product_code"/>
 
     <xsl:template match="/">
 		<div class="result" id="modal-subscribe">

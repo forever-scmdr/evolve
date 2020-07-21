@@ -99,7 +99,7 @@ public abstract class BasicCartManageCommand extends Command {
 		long prodId = 0;
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
-			prodId = Long.parseLong(getVarSingleValue(QTY_PARAM));
+			prodId = Long.parseLong(idStr);
 		} catch (Exception e) {/**/}
 		addProduct(prodId, quantity);
 		recalculateCart();
