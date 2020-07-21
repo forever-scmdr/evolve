@@ -111,10 +111,11 @@
 	<xsl:template match="value">
 		<xsl:variable name="form" select="../.."/>
 		<div class="pic" id="param-{../@id}-{@index}">
-			<span><xsl:value-of select="."/></span>
+			<span><xsl:if test="@key"><xsl:value-of select="@key"/>: </xsl:if><xsl:value-of select="."/></span>
 			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
+
 
 
 
@@ -222,7 +223,14 @@
 		</div>
 	<xsl:call-template name="TINY_MCE"/>
 	<script>
+		var form = null;
 	<xsl:for-each select="$form/field[@quantifier='multiple']">
+		form = $('#addParameter<xsl:value-of select="@id"/>');
+		form.find('.tuple').change(function() {
+			var frm = $(this).closest('form');
+			var val = frm.find('.tuple_key').val() + frm.find('.tuple_format').val() + frm.find('.tuple_value').val();
+			frm.find('.tuple_full').val(val);
+		});
 		prepareSimpleFormView('addParameter<xsl:value-of select="@id"/>');
 	</xsl:for-each>
 	</script>

@@ -437,7 +437,7 @@
 	</page>
 
 
-	<page name="search" template="">
+	<page name="search" template="search">
 		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
@@ -558,7 +558,7 @@
 	</page>
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
 			<var name="discount_active" scope="cookie"/>
