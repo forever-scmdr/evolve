@@ -397,13 +397,14 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		boolean isMultiple = StringUtils.equalsIgnoreCase(paramEl.attr(MULTIPLE), TRUE_VALUE);
 		String dataTypeName = paramEl.attr(TYPE);
 		String format = paramEl.attr(FORMAT);
-		boolean isHidden = Boolean.valueOf(paramEl.attr(HIDDEN));
+		boolean isHidden = Boolean.parseBoolean(paramEl.attr(HIDDEN));
 		boolean isVirtual = Boolean.parseBoolean(paramEl.attr(VIRTUAL));
 		String textIndexStr = paramEl.attr(TEXT_INDEX);
 		ParameterDescription.TextIndex textIndex = ParameterDescription.TextIndex.none;
 		String textIndexParameter = paramEl.attr(TEXT_INDEX_PARAMETER);
 		String textIndexParser = paramEl.attr(TEXT_INDEX_PARSER);
 		String textIndexBoostStr = paramEl.attr(TEXT_INDEX_BOOST);
+		String textIndexItem = paramEl.attr(TEXT_INDEX_ITEM);
 		String defaultValue = paramEl.attr(DEFAULT);
 		ComputedDescription.Func func = ComputedDescription.Func.get(paramEl.attr(FUNCTION));
 		float textIndexBoost = -1f;
@@ -463,11 +464,27 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		} else {
 			paramsById.remove(paramIds.get(item.getName()).get(name).id);
 		}
+		// Если есть встроенный домен для параметра - создать домен и заполнить его
+		Elements domainValues = paramEl.getElementsByTag(VALUE);
+		if (!domainValues.isEmpty()) {
+			String newDomainName = item.getName() + "_" + name;
+			Domain domain = new Domain(newDomainName, "combobox");
+			for (Element domainValue : domainValues) {
+				String value = StringUtils.trim(domainValue.ownText());
+				if (StringUtils.isNotBlank(value))
+					domain.addValue(value);
+			}
+			if (!domain.getValues().isEmpty()) {
+				domainName = newDomainName;
+				DomainRegistry.addDomain(domain);
+			}
+		}
+
 		int paramId = paramIds.get(item.getName()).get(name).id;
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
 				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);
 		if (textIndex != ParameterDescription.TextIndex.none)
-			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser);
+			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexItem);
 
 		// Если есть функция - надо считать базовый параметр
 		if (func != null) {
@@ -485,7 +502,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		// поэтому сначала добавление в специальную структуру
 		ArrayList<ParameterDescription> itemParams = params.get(item.getTypeId());
 		if (itemParams == null) {
-			itemParams = new ArrayList<ParameterDescription>();
+			itemParams = new ArrayList<>();
 			params.put(item.getTypeId(), itemParams);
 		}
 		itemParams.add(param);

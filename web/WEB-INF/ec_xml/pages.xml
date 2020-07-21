@@ -437,7 +437,7 @@
 	</page>
 
 
-	<page name="search" template="search">
+	<page name="search" template="">
 		<request>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
@@ -973,7 +973,6 @@
 				</list>
 			</list>
 		</single>
-
 		<include name="COMMON"/>
 	</page>
 
