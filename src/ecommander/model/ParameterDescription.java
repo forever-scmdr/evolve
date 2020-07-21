@@ -33,7 +33,9 @@ public final class ParameterDescription {
 	private float textIndexBoost = -1f; // Увеличение веса параметра в поисковой выдаче
 	private String textIndexParamName; // Название параметра, в котором сохраняется значение этого параметра при полнотекстовом индексировании
 	private String textIndexParser = null; // Парсер для разбора текста
-	
+	private String textIndexItem = null;    // название айтема-предшественника в случае если при поиске должен находиться не
+											// сам айтем а его предшественник
+
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
 	public ParameterDescription(String name, int paramId, String type, boolean isMultiple, int parentItemId, String domainName, String caption,
@@ -70,7 +72,7 @@ public final class ParameterDescription {
 	 * @param paramName
 	 * @param boost
 	 */
-	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser) {
+	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser, String item) {
 		this.textIndex = indexType;
 		if (!StringUtils.isEmpty(paramName))
 			this.textIndexParamName = paramName;
@@ -80,6 +82,8 @@ public final class ParameterDescription {
 			this.textIndexBoost = boost;
 		if (!StringUtils.isBlank(parser))
 			this.textIndexParser = parser;
+		if (!StringUtils.isBlank(item))
+			this.textIndexItem = item;
 	}
 	/**
 	 * Создает параметр используя собственный тип (себя)
@@ -243,6 +247,24 @@ public final class ParameterDescription {
 	 */
 	public String getFulltextParser() {
 		return textIndexParser;
+	}
+
+	/**
+	 * Получить название айтема, который должен находиться при полнотекстовом поиске, в случае если
+	 * это не сам айтем, а его предок
+	 * @return
+	 */
+	public String getFulltextItem() {
+		return textIndexItem;
+	}
+
+	/**
+	 * Проверить, надо ли искать айтем-предшественник вместо айтема-владельца параметра при полнотекстовом
+	 * поиске
+	 * @return
+	 */
+	public boolean isFulltextOwnByPredecessor() {
+		return StringUtils.isNotBlank(textIndexItem);
 	}
 
 	/**

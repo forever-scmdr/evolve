@@ -1,10 +1,12 @@
 package ecommander.fwk;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Queue;
 
 /**
  * Таймер для отслеживания времени выполнения различных действий
@@ -77,7 +79,7 @@ public class Timer {
 	}
 	
 	private HashMap<String, TimeLogMessage> runningTasks = new HashMap<>();
-	private ArrayList<TimerMessage> log = new ArrayList<>();
+	private Queue<TimerMessage> log = new CircularFifoQueue<>(20);
 	
 	private static ThreadLocal<Timer> threadLocalInstance = ThreadLocal.withInitial(() -> new Timer());
 	/**
@@ -118,7 +120,7 @@ public class Timer {
 	public TimeLogMessage stop(String name) {
 		TimeLogMessage stamp = runningTasks.get(name);
 		if (stamp == null) {
-			ServerLogger.warn("Timer for task '" + name + "' not started");
+			//ServerLogger.warn("Timer for task '" + name + "' not started");
 			return null;
 		}
 		stamp.execTime = System.nanoTime() - stamp.execTime;

@@ -21,6 +21,7 @@ public interface DataModelXmlElementNames {
 	String ON_CREATE = "on-create";
 	String ON_UPDATE = "on-update";
 	String ON_DELETE = "on-delete";
+	String VALUE = "value";
 	/**
 	 * Атрибуты
 	 */
@@ -59,6 +60,7 @@ public interface DataModelXmlElementNames {
 	String TEXT_INDEX = "text-index";
 	String TEXT_INDEX_PARAMETER = "text-index-parameter";
 	String TEXT_INDEX_BOOST = "text-index-boost";
+	String TEXT_INDEX_ITEM = "text-index-item";
 	String TEXT_INDEX_PARSER = "text-index-parser";
 
 	/**

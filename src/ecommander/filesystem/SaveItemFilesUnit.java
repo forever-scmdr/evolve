@@ -92,6 +92,7 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 							fileName = FileDataType.getFileName((FileItem) value);
 						} else if (isDirect) {
 							fileName = ((File) value).getName();
+							fileName = Strings.getFileName(fileName);
 						} else if (isUrl) {
 							fileName = Strings.getFileName(((URL) value).getFile());
 						} else if (isBuffer) {
