@@ -24,7 +24,14 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	public static final String USERNAME_VALUE = "$username"; // текущий ползователь
 	public static final String PAGENAME_VALUE = "$pagename"; // название текущей страницы
 	public static final String PAGEURL_VALUE = "$pageurl"; // URL текущей страницы со всеми переменными
-	
+
+	private static final HashSet<String> NON_CACHE_VARS = new HashSet<>();
+	static {
+		NON_CACHE_VARS.add(NOW_VALUE);
+		NON_CACHE_VARS.add(PAGENAME_VALUE);
+		NON_CACHE_VARS.add(PAGEURL_VALUE);
+	}
+
 	private HashMap<String, ExecutableItemPE> identifiedElements = null; // отображение ID-название айтема => PageItem
 	// сабайтемы вместе с командами (одни айтемы могут загружаться перед командами, другие - после)
 	private ArrayList<ExecutablePE> executables;
@@ -261,7 +268,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			return false;
 		if (cacheVars != null) {
 			for(Variable pageVar : variables.values()) {
-				if (pageVar != null && !pageVar.isEmpty() && !cacheVars.contains(pageVar.getName()))
+				if (pageVar != null && !pageVar.isEmpty() && !NON_CACHE_VARS.contains(pageVar.getName()) && !cacheVars.contains(pageVar.getName()))
 					return false;
 			}
 		}

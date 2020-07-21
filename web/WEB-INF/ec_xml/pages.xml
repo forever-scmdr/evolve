@@ -108,31 +108,28 @@
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="to_cart" target="cart_action">
 			<var name="action" value="addToCart"/>
-			<var name="code" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 		</link>
-		<link name="to_fav" target="cookie_list_action">
+		<link name="to_fav" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="favourites"/>
-			<var name="update_cookie_value" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 			<var name="action" value="add"/>
 			<var name="src_page" value="fav_ajax"/>
 		</link>
-		<link name="to_compare" target="cookie_list_action">
+		<link name="to_compare" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="compare"/>
-			<var name="update_cookie_value" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 			<var name="action" value="add"/>
 			<var name="src_page" value="compare_ajax"/>
 		</link>
 		<link name="one_click_link" target="one_click_ajax">
-			<var name="pname" ref="prod" parameter="name"/>
-			<var name="pcode" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 		</link>
 		<link name="subscribe_link" target="subscribe_ajax">
-			<var name="pname" ref="prod" parameter="name"/>
-			<var name="pcode" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 		</link>
 		<link name="my_price_link" target="my_price_ajax">
-			<var name="pname" ref="prod" parameter="name"/>
-			<var name="pcode" ref="prod" parameter="code"/>
+			<var name="prod" ref="prod"/>
 		</link>
 		<single item="params"/>
 	</include-definition>
@@ -212,7 +209,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username" >
+	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -523,19 +520,16 @@
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
-					<var name="code" ref="lprod" parameter="code"/>
+					<var name="prod" ref="lprod"/>
 				</link>
 				<link name="one_click_link" target="one_click_ajax">
-					<var name="pname" ref="lprod" parameter="name"/>
-					<var name="pcode" ref="lprod" parameter="code"/>
+					<var name="prod" ref="lprod"/>
 				</link>
 				<link name="subscribe_link" target="subscribe_ajax">
-					<var name="pname" ref="lprod" parameter="name"/>
-					<var name="pcode" ref="lprod" parameter="code"/>
+					<var name="prod" ref="lprod"/>
 				</link>
 				<link name="my_price_link" target="my_price_ajax">
-					<var name="pname" ref="lprod" parameter="name"/>
-					<var name="pcode" ref="lprod" parameter="code"/>
+					<var name="prod" ref="lprod"/>
 				</link>
 			</list>
 
@@ -549,19 +543,16 @@
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" ref="assoc" parameter="code"/>
+				<var name="prod" ref="assoc"/>
 			</link>
 			<link name="one_click_link" target="one_click_ajax">
-				<var name="pname" ref="assoc" parameter="name"/>
-				<var name="pcode" ref="assoc" parameter="code"/>
+				<var name="prod" ref="assoc"/>
 			</link>
 			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="pname" ref="assoc" parameter="name"/>
-				<var name="pcode" ref="assoc" parameter="code"/>
+				<var name="prod" ref="assoc"/>
 			</link>
 			<link name="my_price_link" target="my_price_ajax">
-				<var name="pname" ref="assoc" parameter="name"/>
-				<var name="pcode" ref="assoc" parameter="code"/>
+				<var name="prod" ref="assoc"/>
 			</link>
 		</list>
 		<include name="COMMON"/>
@@ -668,12 +659,12 @@
 
 	<page name="my_price_ajax" template="my_price_ajax">
 		<request>
-			<var name="pname"/>
-			<var name="pcode"/>
+			<var name="prod"/>
 			<var name="result"/>
 			<var name="message"/>
 		</request>
 		<single item="my_price" cacheable="true"/>
+		<single item="product" var="prod"/>
 		<new item="my_price_form" id="form" tag="form">
 			<parameter-input ref="form" form="my_price"/>
 		</new>
@@ -688,11 +679,11 @@
 
 	<page name="one_click_ajax" template="one_click_ajax">
 		<request>
-			<var name="pname"/>
-			<var name="pcode"/>
+			<var name="prod"/>
 			<var name="result"/>
 			<var name="message"/>
 		</request>
+		<single item="product" var="prod"/>
 		<new item="one_click_form" id="form" tag="form">
 			<parameter-input ref="form" form="one_click"/>
 		</new>
@@ -707,16 +698,16 @@
 
 	<page name="subscribe_ajax" template="subscribe_ajax">
 		<request>
-			<var name="pname"/>
-			<var name="pcode"/>
+			<var name="prod"/>
 			<var name="result"/>
 			<var name="message"/>
 		</request>
+		<single item="product" var="prod" id="prod"/>
 		<new item="observer" id="form" tag="form">
 			<parameter-input ref="form" form="observer"/>
 		</new>
 		<link name="submit_link" target="subscribe_command" type="itemform">
-			<var name="pname" var="pname"/>
+			<var name="prod" ref="prod"/>
 		</link>
 	</page>
 
@@ -768,7 +759,7 @@
 
 	<page name="subscribe_command">
 		<request>
-			<var name="pname"/>
+			<var name="prod"/>
 		</request>
 		<link name="success" target="subscribe_ajax">
 			<var name="result" value="success"/>
@@ -776,7 +767,7 @@
 		</link>
 		<link name="error_not_set" target="subscribe_ajax">
 			<var name="result" value="error"/>
-			<var name="pname" var="pname"/>
+			<var name="prod" var="prod"/>
 			<var name="message" value="Заполните, пожалуйста, электронную почту"/>
 		</link>
 		<link name="general_error" target="subscribe_ajax">
@@ -829,7 +820,7 @@
 					<list item="abstract_product" id="product" tag="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
-							<var name="code" ref="product" parameter="code"/>
+							<var name="prod" ref="product"/>
 						</link>
 					</list>
 				</list>
@@ -1034,6 +1025,26 @@
 	</page>
 
 
+	<page name="cookie_list_action_redirect">
+		<request>
+			<var name="action"/>
+			<var name="update_cookie_name"/>
+			<var name="prod"/>
+			<var name="src_page"/>
+		</request>
+		<single item="product" var="prod" id="prod"/>
+		<link name="success" target="cookie_list_action">
+			<var name="action" var="action"/>
+			<var name="update_cookie_name" var="update_cookie_name"/>
+			<var name="update_cookie_value" ref="prod" parameter="code"/>
+			<var name="src_page" var="src_page"/>
+		</link>
+		<command class="ecommander.fwk.RedirectCommand">
+			<result name="success" type="redirect"/>
+		</command>
+	</page>
+
+
 	<page name="cookie_list_action">
 		<request>
 			<var name="action"/>
@@ -1069,7 +1080,7 @@
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
+				<var name="prod" ref="prod"/>
 			</link>
 			<link name="to_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -1078,12 +1089,10 @@
 				<var name="src_page" value="compare_ajax"/>
 			</link>
 			<link name="one_click_link" target="one_click_ajax">
-				<var name="pname" ref="prod" parameter="name"/>
-				<var name="pcode" ref="prod" parameter="code"/>
+				<var name="prod" ref="prod"/>
 			</link>
 			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="pname" ref="prod" parameter="name"/>
-				<var name="pcode" ref="prod" parameter="code"/>
+				<var name="prod" ref="prod"/>
 			</link>
 		</list>
 		<link name="set_view_table" target="fav">
@@ -1117,11 +1126,13 @@
 			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="code" ref="prod" parameter="code"/>
+				<var name="prod" ref="prod"/>
 			</link>
 			<link name="one_click_link" target="one_click_ajax">
-				<var name="pname" ref="prod" parameter="name"/>
-				<var name="pcode" ref="prod" parameter="code"/>
+				<var name="prod" ref="prod"/>
+			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="prod" ref="prod"/>
 			</link>
 			<single item="params"/>
 		</list>
