@@ -564,9 +564,6 @@
 			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
-			<!--             <link name="canonical_link" target="product" type="exclusive">
-							<var name="prod" item="prod" style="key"/>
-						</link> -->
 			<single item="seo" assoc="seo"/>
 			<single item="params"/>
 			<list item="product_extra"/>
@@ -618,9 +615,45 @@
 			</link>
 
 		</single>
+		<list item="product" id="box" tag="box">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="prod" parameter="box_code"/>
+				</parameter>
+			</filter>
+			<link name="product_ajax_link" target="product_ajax">
+				<var name="prod" ref="box" style="key"/>
+			</link>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="box" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="box" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="box" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="box" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<link name="cheaper_link" target="cheaper_form">
+				<var name="prod" ref="box"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="pname" ref="box" parameter="name"/>
+				<var name="pcode" ref="box" parameter="code"/>
+			</link>
+		</list>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
-				<parameter name="code" compare="SOME">
+				<parameter name="code" sign="=" compare="SOME">
 					<var ref="prod" parameter="assoc_code"/>
 				</parameter>
 			</filter>

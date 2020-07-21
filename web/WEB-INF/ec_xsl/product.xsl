@@ -359,6 +359,14 @@
 				</xsl:for-each>
 			</div>
 		</div>
+
+		<xsl:if test="page/box">
+			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Комплектация BOX</strong></h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/box"/>
+			</div>
+		</xsl:if>
+
 		<xsl:if test="page/assoc">
 			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Вас также может заинтересовать</strong></h3>
 			<div class="catalog-items">
