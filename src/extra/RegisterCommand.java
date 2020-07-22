@@ -12,7 +12,7 @@ public class RegisterCommand extends BasicRegisterCommand {
 
 	@Override
 	protected boolean validate() throws Exception {
-		Item form = getItemForm().getTransientSingleItem();
+		Item form = getItemForm().getItemSingleTransient();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		boolean hasError = false;
 		if (isPhys) {

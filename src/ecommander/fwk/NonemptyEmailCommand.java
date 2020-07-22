@@ -76,7 +76,7 @@ public class NonemptyEmailCommand extends Command {
 		MultipleHttpPostForm postForm = getItemForm();
 		String templatePageName = getVarSingleValue(TEMPLATE_PARAM);
 		// Сообщение об ошибке в случае если не все поля заполнены
-		Item message = postForm.getTransientSingleItem();
+		Item message = postForm.getItemSingleTransient();
 		String validationResult = validateInput(requiredStr, message);
 		if (!StringUtils.isBlank(validationResult)) {
 			saveSessionForm(formNameStr);
@@ -92,6 +92,7 @@ public class NonemptyEmailCommand extends Command {
 			ExecutablePagePE emailPage = null;
 			if (!StringUtils.isBlank(templatePageName)) {
 				try {
+					saveSessionForm(formNameStr);
 					emailPage = getExecutablePage(templatePageName);
 				} catch (Exception e) {
 					emailPage = null;
@@ -141,6 +142,7 @@ public class NonemptyEmailCommand extends Command {
 				textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
 			}
 			// Отправка письма
+			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic"))? topic : postForm.getSingleStringExtra("topic");
 			EmailUtils.sendGmailDefault(emailTo, topic, mp);
 		} catch (Exception e) {
 			try {
