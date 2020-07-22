@@ -36,7 +36,7 @@
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
 			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p/vendor, $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
@@ -99,7 +99,7 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag">
+				<xsl:for-each select="$p/label">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 
