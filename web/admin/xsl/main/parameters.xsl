@@ -108,14 +108,23 @@
 	</xsl:template>
 
 	<!-- Значение множественной строки -->
-	<xsl:template match="value">
+	<xsl:template match="value[../@type='tuple']">
 		<xsl:variable name="form" select="../.."/>
 		<div class="pic" id="param-{../@id}-{@index}">
-			<span><xsl:if test="@key"><xsl:value-of select="@key"/>: </xsl:if><xsl:value-of select="."/></span>
+			<span><xsl:value-of select="@key"/>: <xsl:value-of select="@value"/></span>
 			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
+
+    <!-- Значение множественной строки -->
+    <xsl:template match="value">
+        <xsl:variable name="form" select="../.."/>
+        <div class="pic" id="param-{../@id}-{@index}">
+            <span><xsl:value-of select="."/></span>
+            <a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+        </div>
+    </xsl:template>
 
 
 	<!--**************************************************************************-->

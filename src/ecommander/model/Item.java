@@ -429,9 +429,6 @@ public class Item implements ItemBasics {
 									Parameter param = getParameterFromMap(paramId);
 									if (currentParamDesc.getType() == Type.XML) {
 										strValue = StringEscapeUtils.unescapeXml(strValue);
-									} else if (currentParamDesc.getType() == Type.TUPLE && metas.size() > 1) {
-										Pair<String, String> pair = new Pair<>(metas.get(1), strValue);
-										strValue = TupleDataType.createCombinedValue(pair, currentParamDesc.getFormatter());
 									}
 									SingleParameter sp = param.createAndSetValue(strValue, true);
 									if (metas.size() > 0 && sp != null) {

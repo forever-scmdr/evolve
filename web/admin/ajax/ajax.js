@@ -252,6 +252,27 @@ function _default(variable, defaultValue) {
 	return variable;
 }
 
+function postFormView(form, lockElementIds) {
+	//console.log('postFormView called');
+	// console.log('lockElementIds: '+lockElementIds);
+	if (typeof form == 'string')
+		form = $('#' + form);
+	form.ajaxSubmit({
+		error: function() {
+			alert('Ошибка отправки формы');
+			// Разблокировка частей
+			unlock(lockElementIds);
+		},
+		success: function(data, status, arg3) {
+			$("#subitems").html(data);
+			//console.log(data);
+			unlock(lockElementIds);
+		}
+	});
+	// Блокировка частей
+	lock(lockElementIds);
+}
+
 
 $(".ajax-form").submit(function(e){
 	e.preventDefault();
