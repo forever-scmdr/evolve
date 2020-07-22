@@ -51,6 +51,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private User initiator;
 	private boolean isInsideOffer = false;
 	private boolean getPrice = false;
+	private boolean protectBox = false;
 	private Assoc catalogLinkAssoc;
 
 	
@@ -72,14 +73,19 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code);
 				boolean isProductNotNew = true;
 				Item section = sections.get(secCode);
+
 				if (product == null) {
 					isProductNotNew = false;
+					protectBox = false;
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
 					}
+				}else {
+					ArrayList<String> labels = product.getStringValues("label");
+					protectBox = labels != null && (labels.contains("BOX") || labels.contains("box"));
 				}
 
 				product.setValue(CODE_PARAM, code);
@@ -97,10 +103,12 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(VENDOR_PARAM, commonParams.get(VENDOR_ELEMENT));
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
-				if (getPrice)
-					product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				else
-					product.setValueUI(PRICE_PARAM, "0");
+				if(!protectBox) {
+					if (getPrice)
+						product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+					else
+						product.setValueUI(PRICE_PARAM, "0");
+				}
 
 				// Качать картинки только для новых товаров
 				if (product.isNew()) {

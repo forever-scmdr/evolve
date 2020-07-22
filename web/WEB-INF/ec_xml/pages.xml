@@ -558,7 +558,7 @@
 	</page>
 
 
-	<page name="product" template="" cacheable="true">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
 			<var name="discount_active" scope="cookie"/>
@@ -608,7 +608,6 @@
 					<var name="pcode" ref="lprod" parameter="code"/>
 				</link>
 			</list>
-
 			<link name="canonical_link" target="product">
 				<var name="prod" ref="cur_sec" style="keypath"/>
 				<var name="prod" ref="prod" style="keypath"/>

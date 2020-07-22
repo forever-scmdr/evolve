@@ -4,13 +4,17 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CopyItemDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.MoveItemDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -332,6 +336,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					//PRODUCT EXISTS
 					else {
 						//set product params
+						BigDecimal canonicalPrice = product.getDecimalValue(PRICE_PARAM);
+						BigDecimal canonicalOldPrice = product.getDecimalValue(PRICE_OLD_PARAM);
+
 						for (String header : headers) {
 							String paramName = HEADER_PARAM.get(header);
 							ItemType itemType = product.getItemType();
@@ -443,6 +450,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							}
 
+						}
+						ArrayList<String> labels = product.getStringValues("label");
+						if(labels != null && (labels.contains("BOX") || labels.contains("box"))){
+							product.setValue(PRICE_PARAM, canonicalPrice);
+							product.setValue(PRICE_OLD_PARAM, canonicalOldPrice);
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
 						//MANUALS

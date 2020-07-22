@@ -233,7 +233,7 @@
 	      default-page="product" super="described_product * seo_container">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<parameter name="label" type="string" caption="Ярлык" domain="label" multiple="true"/>
-		<parameter name="box_code" type="tuple" caption="Артукул BOX" description="список товаров BOXа" multiple="true"/>
+		<parameter name="box_code" type="string" caption="Артукул BOX" description="список товаров BOXа" multiple="true"/>
 		<child item="line_product"/>
 	</item>
 
