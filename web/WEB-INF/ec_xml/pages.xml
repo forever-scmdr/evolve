@@ -1697,4 +1697,23 @@
 		<command class="extra.UpdateCurrencyRates"/>
 	</page>
 
+
+
+
+	<page name="tuples">
+		<request>
+			<var name="direct_search" value="тест ключ"/>
+		</request>
+		<single item="product" tag="direct" id="prod">
+			<filter>
+				<parameter name="tuple_test"><var var="direct_search" /></parameter>
+			</filter>
+		</single>
+		<list item="product" tag="search">
+			<filter>
+				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>
+			</filter>
+		</list>
+	</page>
+
 </site>

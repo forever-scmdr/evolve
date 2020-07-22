@@ -64,7 +64,7 @@ public abstract class Variable {
 	 * Вернуть все значения в виде строки
 	 * @return
 	 */
-	public final ArrayList<String> writeAllValues() {
+	public ArrayList<String> writeAllValues() {
 		ArrayList<String> result = new ArrayList<>();
 		if (isEmpty())
 			return result;
