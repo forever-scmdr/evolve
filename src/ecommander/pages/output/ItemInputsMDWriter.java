@@ -179,7 +179,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 						int i = 0;
 						for (SingleParameter sp : ((MultipleParameter) inputs.getItem().getParameter(paramDesc.getId())).getValues()) {
 							ArrayList<String> metas = sp.getAllMetas();
-							xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i++, metas.get(0), metas.get(1)).addText(sp.outputValue()).endElement();
+							xml.startElement(VALUE_ELEMENT, INDEX_ATTRIBUTE, i++).insertAttributes(metas.toArray(new String[0])).addText(sp.outputValue()).endElement();
 						}
 					} else {
 					for (int i = 0; i < values.size(); i++) {

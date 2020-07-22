@@ -539,7 +539,7 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | box">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="price" select="if($discount_time) then format-number(f:num(price)*$discount, '#0.00') else price"/>
 		<xsl:variable name="price_old" select="if($discount_time) then format-number(f:num(price), '#0.00') else format-number(f:num(price_old), '#0.00')"/>
@@ -639,7 +639,7 @@
 
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="accessory | set | probe | product | assoc | box" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>

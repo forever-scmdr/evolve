@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class TupleDataType extends FormatDataType {
 
 	public static final String KEY_META = "key";
+	public static final String VALUE_META = "value";
 
 	private static TupleFormatter DEFAULT_FORMAT = new TupleFormatter();
 
@@ -36,7 +37,7 @@ public class TupleDataType extends FormatDataType {
 		private String output(Pair<String, String> value) {
 			if (value == null || StringUtils.isBlank(value.getLeft()))
 				return Strings.EMPTY;
-			return StringUtils.isBlank(value.getRight()) ? value.getLeft() : value.getRight();
+			return value.hasRigth() ? value.getLeft() + format + value.getRight() : value.getLeft();
 		}
 	}
 
@@ -71,7 +72,9 @@ public class TupleDataType extends FormatDataType {
 		HashMap<String, String> metas = null;
 		if (value != null) {
 			metas = new HashMap<>();
-			metas.put(KEY_META, ((Pair<String, String>) value).getLeft());
+			Pair<String, String> pair = (Pair<String, String>) value;
+			metas.put(KEY_META, pair.getLeft());
+			metas.put(VALUE_META, pair.hasRigth() ? pair.getRight() : "");
 		}
 		return metas;
 	}

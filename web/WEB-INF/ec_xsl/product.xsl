@@ -36,7 +36,7 @@
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
 			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p/vendor, $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
@@ -99,7 +99,7 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag">
+				<xsl:for-each select="$p/label">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>
 
@@ -359,6 +359,14 @@
 				</xsl:for-each>
 			</div>
 		</div>
+
+		<xsl:if test="page/box">
+			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Комплектация BOX</strong></h3>
+			<div class="catalog-items">
+				<xsl:apply-templates select="page/box"/>
+			</div>
+		</xsl:if>
+
 		<xsl:if test="page/assoc">
 			<h3 style="margin-bottom: 16px; margin-top: 0"><strong>Вас также может заинтересовать</strong></h3>
 			<div class="catalog-items">

@@ -1,8 +1,10 @@
 package ecommander.pages.var;
 
+import ecommander.fwk.Pair;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.datatypes.DataType;
 import ecommander.pages.ExecutableItemPE;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.ItemPE;
@@ -22,10 +24,12 @@ public class ItemVariable extends Variable {
 
 	private String itemPageId;
 	private String paramName;
-	boolean isKey = false;
-	boolean needPath = false;
+	private boolean isKey = false;
+	private boolean needPath = false;
 
 	private ArrayList<Object> valuesCache = null;
+	private ArrayList<String> stringCache = null;
+	private DataType.Type paramType = null;
 
 	public ItemVariable(String itemPageId, String paramName) {
 		super("unnamed");
@@ -60,6 +64,7 @@ public class ItemVariable extends Variable {
 				Item item = iter.getCurrentItem();
 				if (hasParam) {
 					if (item.isValueNotEmpty(paramName)) {
+						paramType = item.getItemType().getParameter(paramName).getType();
 						ArrayList vals = item.getValues(paramName);
 						for (Object val : vals) {
 							valuesCache.add(val);
@@ -71,6 +76,22 @@ public class ItemVariable extends Variable {
 			}
 		}
 		return valuesCache;
+	}
+
+	@Override
+	public ArrayList<String> writeAllValues() {
+		if (stringCache == null) {
+			stringCache = new ArrayList<>();
+			if (isEmpty())
+				return stringCache;
+			for (Object val : getAllValues()) {
+				if (paramType == DataType.Type.TUPLE)
+					stringCache.add(((Pair<String, String>) val).getLeft());
+				else
+					stringCache.add(val.toString());
+			}
+		}
+		return stringCache;
 	}
 
 	@Override

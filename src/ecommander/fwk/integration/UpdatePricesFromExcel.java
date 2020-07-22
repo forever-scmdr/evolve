@@ -12,6 +12,8 @@ import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /**
  * Created by anton on 06.12.2018.
@@ -40,6 +42,11 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
 				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
 				if(product != null){
+
+					//set product params
+					BigDecimal canonicalPrice = product.getDecimalValue(PRICE_PARAM);
+					BigDecimal canonicalOldPrice = product.getDecimalValue(PRICE_OLD_PARAM);
+
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
 						product.setValueUI(QTY_PARAM, qty);
@@ -59,6 +66,14 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 					if(unit != null) {
 						product.setValueUI(CURRENCY_ID_PARAM, currency);
 					}
+
+
+					ArrayList<String> labels = product.getStringValues("label");
+					if(labels != null && (labels.contains("BOX") || labels.contains("box"))){
+						product.setValue(PRICE_PARAM, canonicalPrice);
+						product.setValue(PRICE_OLD_PARAM, canonicalOldPrice);
+					}
+
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 					setProcessed(rowNum++);
 				}
