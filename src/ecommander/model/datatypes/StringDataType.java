@@ -30,6 +30,6 @@ public class StringDataType extends FormatDataType {
 
 	@Override
 	public boolean isEmpty(Object value) {
-		return value == null || StringUtils.isBlank((String) value);
+		return value == null || StringUtils.isBlank(value.toString());
 	}
 }
