@@ -1,5 +1,0 @@
-# Project exclude paths
-/out/
-/web/WEB-INF/settings.properties
-/web/META-INF/context.xml
-evolve.iml
