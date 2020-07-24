@@ -107,6 +107,7 @@ public class ImportPlatanRu extends IntegrateBase implements ItemNames {
 				try {
 					code = src.getValue(CODE_HEADER);
 					if (StringUtils.isNotBlank(code)) {
+						code += "pl";
 						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product_.CODE, code));
 						if (prod == null) {
 							prod = Product.get(Item.newChildItem(productType, section));
@@ -116,7 +117,7 @@ public class ImportPlatanRu extends IntegrateBase implements ItemNames {
 						prod.set_description(removeQuotes(src.getValue(DESCRIPTION_HEADER)));
 						prod.set_available(defaultDelay);
 						prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
-						prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
+						prod.set_min_qty(new BigDecimal(1));/*src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1))*/
 						BigDecimal price = DecimalDataType.parse(src.getValue(PRICE_HEADER), 2);
 						currencyRates.setAllPrices(prod, price, "RUB");
 						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));

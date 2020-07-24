@@ -52,7 +52,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a>
+				<a href="/">Главная страница</a> <a style="position: absolute; right: 0px" href="{page/save_excel_file}">Сохранить результаты</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -196,8 +196,9 @@
 			<td><xsl:value-of select="qty"/></td>
 			<td>
 				<xsl:if test="not(vendor_code)">
-					<xsl:if test="available and not(available = '0')"><xsl:value-of select="available"/> нед.</xsl:if>
+					<xsl:if test="available and not(available = '0') and f:num(available) &gt; 0"><xsl:value-of select="f:num(available) * 7"/> дней</xsl:if>
 					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+					<xsl:if test="available and f:num(available) &lt; 0">по запросу</xsl:if>
 				</xsl:if>
 			</td>
 			<td><xsl:value-of select="$unit"/></td>

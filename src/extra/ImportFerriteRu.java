@@ -101,6 +101,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 				try {
 					code = src.getValue(CODE_HEADER);
 					if (StringUtils.isNotBlank(code)) {
+						code += "fe";
 						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product_.CODE, code));
 						if (prod == null) {
 							prod = Product.get(Item.newChildItem(productType, section));

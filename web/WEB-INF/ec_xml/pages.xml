@@ -44,6 +44,7 @@
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="excel_search_link" target="excel_search" type="itemform"/>
+		<link name="admin_excel_search_link" target="admin_excel_search" type="itemform"/>
 		<link name="set_currency_byn" target-var="$pagename" copy-page-vars="yes">
 			<var name="cur" value="BYN"/>
 		</link>
@@ -268,6 +269,7 @@
 	</page>
 
 
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -316,8 +318,72 @@
 			<var name="q" var="q"/>
 			<var name="minqty" value=""/>
 		</link>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
+
+
+
+	<page name="search_bom" template="search">
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<list item="plain_section" id="plain_section"/>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+					<var var="q"/>
+				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="translit"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<single item="manual"/>
+			<ancestor item="plain_section"/>
+		</list>
+		<link name="set_view_table" target="search" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="search" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="show_only_available" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
 
 
 	<page name="search_ajax" template="search_ajax">
@@ -346,6 +412,7 @@
 			<var name="n"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
+		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<!--
 			<filter>
@@ -358,6 +425,7 @@
 				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -396,6 +464,10 @@
 			<var name="minqty" value=""/>
 		</link>
 		<link name="search_link" target="admin_search"/>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -411,7 +483,7 @@
 				<fulltext name="name" limit="200" threshold="0.02" type="prefix" compare="SOME">
 					<var var="q"/>
 				</fulltext>
-				<predecessor ref="ps" sing="IN"/>
+				<predecessor ref="ps" sign="IN"/>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -425,7 +497,7 @@
 
 
 	<page name="excel_search">
-		<link name="success" target="search"/>
+		<link name="success" target="search_bom"/><!-- search --><!-- search_for_xls -->
 		<link name="error" target="search">
 			<var name="message" value="Ошибка формата файла запроса"/>
 		</link>
@@ -434,6 +506,62 @@
 			<result name="error" type="redirect"/>
 		</command>
 	</page>
+
+
+
+	<page name="admin_excel_search">
+		<link name="success" target="admin_search"/><!-- search --><!-- search_for_xls -->
+		<link name="error" target="admin_search">
+			<var name="message" value="Ошибка формата файла запроса"/>
+		</link>
+		<command class="extra.ExcelSearch">
+			<result name="success" type="forward"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+
+
+	<page name="excel_search_action">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+		</request>
+		<link name="xml_link" target="excel_search_page">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+		<link name="success" target="excel_search_page"/>
+		<link name="error" target="search">
+			<var name="message" value="Ошибка формата файла запроса"/>
+		</link>
+		<command class="extra.CreateSearchExcel">
+			<result name="success" type="forward"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="excel_search_page" template="search_for_xls">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+		</request>
+		<list item="plain_section" id="plain_section"/>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+					<var var="q"/>
+				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
+			</filter>
+			<ancestor item="plain_section"/>
+		</list>
+		<include name="COMMON"/>
+	</page>
+
 
 
 	<page name="product" template="product" cacheable="true" critical-item="prod">
@@ -1475,6 +1603,17 @@
 	</page>
 
 
+	<page name="get_eltech" template="integration">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEltechSpbRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="reindex_all" template="integration/reindex">
 		<request>
 			<var name="action"/>
@@ -1495,17 +1634,14 @@
 	</page>
 
 
-
-	<page name="get_platan_auto_start" template="integration" schedule="0 0 0 ? * * *">
+	<page name="update_prices_from_excel_auto_start" template="integration/create_excel" schedule="0 0 22 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
-		<command class="extra.UpdateCurrencyRates"/>
-		<command class="extra.ImportPlatanRu">
+		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
 
 
 	<page name="get_ferrite_auto_start" template="integration" schedule="0 0 23 ? * * *">
@@ -1519,7 +1655,7 @@
 	</page>
 
 
-	<page name="get_compel_auto_start" template="integration" schedule="0 30 23 ? * * *">
+	<page name="get_compel_auto_start" template="integration" schedule="0 0 0 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1529,8 +1665,41 @@
 		</command>
 	</page>
 
+	<page name="get_platan_auto_start" template="integration" schedule="0 0 1 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlatanRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
-	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 1 ? * * *">
+
+	<page name="get_ebv_auto_start" template="integration" schedule="0 0 2 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEbvCom">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="get_eltech_auto_start" template="integration" schedule="0 0 3 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEltechSpbRu">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+
+	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 4 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1540,14 +1709,7 @@
 	</page>
 
 
-	<page name="update_prices_from_excel_auto_start" template="integration/create_excel" schedule="0 30 22 ? * * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+
 
 
 

@@ -184,6 +184,9 @@
 									<li class="visible" title="Разобрать прайс-лист ebv.com">
 										<a href="get_ebv/?action=start">Интеграция ebv.com</a>
 									</li>
+									<li class="visible" title="Разобрать прайс-лист eltech.spb.ru">
+										<a href="get_eltech/?action=start">Интеграция eltech.spb.ru</a>
+									</li>
 									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 										<a href="generate_sitemap">Обновить карту сайта</a>
 									</li>

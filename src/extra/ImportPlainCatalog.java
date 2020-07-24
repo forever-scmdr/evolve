@@ -89,11 +89,14 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				} else {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}
+				String suffix = StringUtils.substringBeforeLast(excel.getName(), ".");
+				final String codeSuffix = StringUtils.substring(suffix, 0, 5);
 				TableDataRowProcessor proc = src -> {
 					String code = null;
 					try {
 						code = src.getValue(CODE_HEADER);
 						if (StringUtils.isNotBlank(code)) {
+							code += codeSuffix;
 							Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 							if (prod == null) {
 								prod = Product.get(Item.newChildItem(productType, section));

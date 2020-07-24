@@ -41,7 +41,7 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 	//private static final String DELAY_HEADER = "срок поставки";
 	private static final String QTY_HEADER = "QTY";
 	private static final String MIN_QTY_HEADER = "MOQ";
-	private static final String PRICE_HEADER = "PRICE_3";
+	private static final String PRICE_HEADER = "PRICE_1";
 	private static final String VENDOR_HEADER = "PRODUCER";
 	private static final String NAME_EXTRA_HEADER = "CLASS_NAME";
 	//private static final String UNIT_HEADER = "единица измерения";
@@ -118,6 +118,7 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 			while ((row = reader.nextRow()) != null) {
 				String code = row.getString(CODE_HEADER);
 				if (StringUtils.isNotBlank(code)) {
+					code += "co";
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 					if (prod == null) {
 						prod = Product.get(Item.newChildItem(productType, section));

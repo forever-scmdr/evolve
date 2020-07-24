@@ -280,7 +280,8 @@
 					<div class="modal-body">
 						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
 						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
-						<form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
+						<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
+						<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
 							<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text(fileName($(this).val()))"/>
 							<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
 							<input type="submit" value="Найти" />

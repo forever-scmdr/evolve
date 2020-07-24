@@ -200,6 +200,15 @@ public abstract class Command implements AutoCloseable {
 	protected final MultipleHttpPostForm getItemForm() {
 		return page.getItemFrom();
 	}
+
+	/**
+	 * Получить ссылку по названию
+	 * @param linkName
+	 * @return
+	 */
+	protected final LinkPE getLink(String linkName) {
+		return page.getLink(linkName);
+	}
 	/**
 	 * Вернуть все айтемы, загруженные заданным страничным айтемом (с заданным ID)
 	 * Айтемы возвращаются в виде упорядоченного отображения (в порядке сортировки)
