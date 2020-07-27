@@ -1697,6 +1697,12 @@
 		</command>
 	</page>
 
+	<page name="update_currency_ratios">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+	</page>
 
 
 	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 4 ? * * *">
@@ -1708,7 +1714,53 @@
 		</command>
 	</page>
 
+	<page name="digikey_manual_authorise">
+		<request>
+			<var name="code" />
+		</request>
+		<link name="success" target="digikey_result">
+			<var name="result" value="Код доступа успешно сохранен. Вход выполнен"/>
+		</link>
+		<link name="error" target="digikey_result">
+			<var name="result" value="Не удалось войти по коду доступа."/>
+			<var name="code" var="code" />
+		</link>
+		<command class="extra.DigiKeySearch" method="getAccessCodeAndAuthorise">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
 
+	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
+		<command class="extra.DigiKeySearch" method="refreshAccessToken"/>
+	</page>
+
+	<page name="digikey_result">
+		<request>
+			<var name="result" />
+			<var name="code"/>
+		</request>
+	</page>
+
+	<page name="digikey_search" template="digikey_search_ajax">
+		<request>
+			<var name="query"/>
+			<var name="qty" />
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<link name="bad_request" target="digikey_result" >
+			<var name="result" value="bad_request"/>
+		</link>
+		<link name="generel_error" target="digikey_result">
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.DigiKeySearch" >
+			<result name="complete" type="xml"/>
+			<result name="bad_request" type="redirect"/>
+			<result name="generel_error" type="redirect"/>
+		</command>
+	</page>
 
 
 
