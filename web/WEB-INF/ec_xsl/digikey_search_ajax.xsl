@@ -13,7 +13,7 @@
 
 	<xsl:template match="/">
 		<table>
-			<tbody id="extra-search-ajax">
+			<tbody id="extra-search-ajax" class="result">
 			<xsl:if test="not(page/product)">
 				<tr>
 					<td colspan="10">
@@ -39,7 +39,7 @@
 			</td>
 			<td><xsl:value-of select="qty"/></td>
 			<td>
-				<xsl:value-of select="concat(page/price_catalog/default_ship_time, ' дней')"/>
+				<xsl:value-of select="concat(/page/price_catalog/default_ship_time, ' дней')"/>
 			</td>
 			<td>шт.</td>
 			<td><xsl:value-of select="min_qty"/></td>
@@ -58,8 +58,9 @@
 				</xsl:for-each>
 			</td>
 			<td id="cart_search_{@id}">
-				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+				<form action="cart_action/?action=addToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
+					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>
@@ -71,16 +72,16 @@
 		<xsl:param name="str" as="xs:string?"/>
 		<xsl:choose>
 			<xsl:when test="$currency = 'BYN'">
-				<xsl:sequence select="concat(f:byn($str),' ', $currency_out)"/>
+				<xsl:sequence select="concat(format-number(f:byn($str), '#0.0000'),' ', $currency_out)"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'USD'">
-				<xsl:sequence select="concat(f:usd($str),' ', $currency_out)"/>
+				<xsl:sequence select="concat(format-number(f:usd($str), '#0.0000'),' ', $currency_out)"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'RUB'">
-				<xsl:sequence select="concat(f:rub($str),' ', $currency_out)"/>
+				<xsl:sequence select="concat(format-number(f:rub($str), '#0.0000'),' ', $currency_out)"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'EUR'">
-				<xsl:sequence select="concat(f:eur($str),' ', $currency_out)"/>
+				<xsl:sequence select="concat(format-number(f:eur($str), '#0.0000'),' ', $currency_out)"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:function>

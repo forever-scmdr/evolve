@@ -20,6 +20,7 @@
 	<xsl:variable name="price_catalogs" select="page/price_catalog"/>
 	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
 	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
+	<xsl:variable name="l" select="concat('digikey_search?query=', page/variables/q)"/>
 
 
 	<xsl:template name="MAIN_CONTENT">
@@ -164,6 +165,7 @@
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+
 	</xsl:template>
 
 
@@ -283,6 +285,11 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+		<script>
+			$(document).ready(function() {
+				insertAjax('<xsl:value-of select="$l"/>');
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>
