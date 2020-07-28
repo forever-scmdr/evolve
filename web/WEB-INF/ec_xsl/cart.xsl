@@ -71,20 +71,25 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<xsl:if test="not(starts-with($p/code, 'gift-'))">
+										<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									</xsl:if>
+									<xsl:if test="starts-with($p/code, 'gift-')">
+										<input type="number" oninput="this.value = 1" value="1" name="{input/qty/@input}" max="1"/>
+									</xsl:if>
 									<!--<xsl:value-of select="$p2/params/@id" />-->
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 							</div>
 						</xsl:for-each>
-						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
 						<xsl:if test="(f:num($cart/sum) &gt;= $min_gift) and $gifts/product">
-							<p><a onclick="$('#gifts').show();">Выбрать подарок</a></p>
+							<p><a onclick="$('#gifts').show();" class="button secondary">Выбрать подарок</a></p>
 						</xsl:if>
 						<xsl:if test="(not(f:num($cart/sum) &gt;= $min_gift)) and $gifts/product">
 							<p>Сделайте заказ на сумму от <b><xsl:value-of select="f:currency_decimal($gifts[1]/sum)" /> р.</b> чтобы получить <a onclick="$('#gifts').show();">подарок</a></p>
 						</xsl:if>
+						<p><a href="dostavka#calculator">Узнать стоимость доставки</a></p>
 
 						<div class="total">
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
@@ -121,8 +126,11 @@
 				<div class="popup__body">
 				<div class="popup__content">
 					<a class="popup__close" onclick="$('#gifts').hide();">×</a>
-					<div class="popup__title title title_2">Доступны подарки</div>
+					<div class="popup__title title title_2">Доступны подарки
+						<p style="font-size:14px; font-weight: normal; margin-top:7px;">Вы можете выбрать один подарок.</p>
+					</div>
 					<div class="gift-list">
+
 						<xsl:for-each select="$gifts">
 							<xsl:variable name="sum" select="f:num(sum)"/>
 							<xsl:for-each select="product">
@@ -151,14 +159,16 @@
 										<xsl:if test="$sum &gt; f:num($cart/sum)">
 											<div class="gift__status">
 												<div class="gift__sum">+<xsl:value-of select="f:currency_decimal(string($sum - f:num($cart/sum)))"/> руб</div>
-												<div class="small-text">Добавьте в корзину товар на эту сумму, чтобы получить подарок</div>
+												<div class="small-text">Добавьте в корзину товар на эту сумму, чтобы получить именно этот подарок.</div>
 											</div>
 										</xsl:if>
 									</div>
 								</div>
 							</xsl:for-each>
 						</xsl:for-each>
+						<a class="button" onclick="$('#gifts').hide();" style="float: right; margin:20px 0;">Далее</a>
 					</div>
+
 				</div>
 				</div>
 			</div>

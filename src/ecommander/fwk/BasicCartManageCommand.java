@@ -541,6 +541,7 @@ public abstract class BasicCartManageCommand extends Command {
 		for (Item bought : boughts) {
 			if(bought.getExtra("gift-sum") != null){
 				BigDecimal s = new BigDecimal (bought.getExtra("gift-sum").toString());
+				bought.setValue(QTY_PARAM, 1d);
 				if(sum.compareTo(s) < 0){
 					getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				}
