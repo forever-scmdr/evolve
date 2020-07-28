@@ -7691,4 +7691,8 @@ a.toggle-list {
   .kvld-brands .wrap {
     grid-template-columns: repeat(2, 1fr);
   }
+  .catalog-item .price {flex-basis: 50%}
+  /* .lines .catalog-item .price {flex-basis: unset} */
+  .catalog-item .image-container {margin-right: 16px}
 }
+

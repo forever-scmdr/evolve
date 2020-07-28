@@ -63,7 +63,6 @@
 
 	<page name="index" template="index" cacheable="true">
 		<request>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="main_page">
 			<list item="section" id="sec_pics" tag="cat_pic" assoc="product_category">
@@ -97,7 +96,6 @@
 
 	<page name="catalog" template="catalog" cacheable="true">
 		<request>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<include name="COMMON"/>
 		<single item="catalog">
@@ -140,10 +138,6 @@
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="brand"/>
 			<var name="fil"/>
-
-			<!-- discount cookies -->
-			<var name="discount_active" scope="cookie"/>
-			<!-- END discount cookies -->
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
@@ -408,15 +402,13 @@
 
 	<page name="search" template="search">
 		<request>
-			<var name="discount_active" scope="cookie"/>
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" scope="cookie"/>
-
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="30" compare="EVERY" threshold="0.01"><var var="q"/></fulltext>
+				<fulltext limit="200" compare="EVERY" threshold="0.01"><var var="q"/></fulltext>
 				<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
@@ -475,10 +467,6 @@
 	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="key"/>
-
-			<!-- discount cookies -->
-			<var name="discount_active" scope="cookie"/>
-			<!-- END discount cookies -->
 		</request>
 		<single item="product" id="prod" var="prod">
 			<single item="seo"/>
@@ -548,7 +536,6 @@
 	<page name="news" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news">
 			<single item="seo"/>
@@ -570,7 +557,6 @@
 	<page name="articles" template="news" cacheable="true">
 		<request>
 			<var name="p" value="1"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="articles">
 			<list item="news_item" id="ni">
@@ -591,7 +577,6 @@
 	<page name="news_item" template="news_item" cacheable="true">
 		<request>
 			<var name="ni" style="key"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="news_item" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo"/>
@@ -605,7 +590,6 @@
 
 	<page name="dealers" template="dealers" cacheable="true">
 		<request>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="dealer_coords" cacheable="true"/>
 		<include name="COMMON"/>
@@ -614,7 +598,6 @@
 
 	<page name="docs" template="docs" cacheable="true">
 		<request>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="docs" cacheable="true"/>
 		<include name="COMMON"/>
@@ -642,7 +625,6 @@
 	<page name="page" cacheable="true" template="page">
 		<request>
 			<var name="p" style="key"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<single item="custom_page" var="p" cacheable="true" cache-vars="p">
 			<single item="seo"/>
@@ -760,12 +742,6 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<var name="current_time" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
-			<var name="discount_expires" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="window_closed" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -795,10 +771,6 @@
 			<var name="email" value="metabobelarus@gmail.com"/>
 			<!-- <var name="email" value="bio@forever-ds.com" /> -->
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="site_visit" scope="cookie"/>
-			<var name="current_time" scope="cookie"/>
-			<var name="discount_used" scope="cookie"/>
-			<var name="show_window" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -865,7 +837,6 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<new item="user_phys" id="user_phys" tag="phys_form">
 			<parameter-input ref="user_phys" form="customer_phys"/>
@@ -978,7 +949,6 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -1018,7 +988,6 @@
 	<page name="compare" template="compare">
 		<request>
 			<var name="compare" scope="cookie"/>
-			<var name="discount_active" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
