@@ -1746,7 +1746,7 @@
 		<request>
 			<var name="query"/>
 			<var name="qty" />
-			<var name="currency" scope="cookie" value="byn"/>
+			<var name="cur" scope="cookie" value="BYN"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<link name="bad_request" target="digikey_result" >

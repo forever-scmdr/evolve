@@ -162,7 +162,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 		doc.startElement("variables")
 				.startElement("query").addText(getVarSingleValue("query")).endElement()
 				.startElement("view").addText(getVarSingleValue("view")).endElement()
-				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
+				.startElement("currency").addText(getVarSingleValue("cur")).endElement()
 				.startElement("request_time").addText(searchRequestTime).endElement()
 				//.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
 				.endElement();
