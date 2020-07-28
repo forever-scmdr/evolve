@@ -66,6 +66,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		info.setCurrentJob("Opening: " + excelFile.getAbsolutePath());
 		if(excelFile == null || !excelFile.isFile()){
 			info.addError("Excel file does not exist.","");
+			catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 			return false;
 		}
 		priceWB = POIUtils.openExcel(excelFile).getWorkbook();
