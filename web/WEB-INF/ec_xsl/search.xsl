@@ -121,12 +121,45 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
+							<tbody id="extra-search-ajax">
+								<tr>
+									<td colspan="10">
+										Идет поиск по дополнительному каталогу
+									</td>
+								</tr>
+							</tbody>
 						</xsl:if>
 					</table>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
+				<div>
+					<xsl:if test="not($multiple)">
+						<table class="srtable">
+							<tr>
+								<th>Название</th>
+								<th>Описание</th>
+								<th>Производитель</th>
+								<!--<th>Код производителя</th>-->
+								<th>Количество</th>
+								<th>Срок поставки</th>
+								<th>Единица</th>
+								<th>Мин. заказ</th>
+								<th>Цена (<xsl:value-of select="$currency_out" />)</th>
+								<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
+								<th>Заказать</th>
+							</tr>
+							<tbody id="extra-search-ajax">
+								<tr>
+									<td colspan="10">
+										Идет поиск по дополнительному каталогу
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</xsl:if>
+				</div>
 			</xsl:if>
 		</div>
 

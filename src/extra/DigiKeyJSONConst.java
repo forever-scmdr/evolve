@@ -1,5 +1,7 @@
 package extra;
 
+import extra._generated.ItemNames;
+
 public interface DigiKeyJSONConst {
 	String JSON_PRODUCT_COUNT = "ProductsCount";
 	String JSON_EXACT = "ExactDigiKeyProduct";
@@ -24,6 +26,7 @@ public interface DigiKeyJSONConst {
 	String JSON_MANUAL = "PrimaryDatasheet";
 	String JSON_PARAMS = "Parameters";
 	String JSON_PARAM = "Parameter";
+	String JSON_TOTAL = "TotalPrice";
 
 
 
@@ -31,8 +34,8 @@ public interface DigiKeyJSONConst {
 	String PRODUCT = "product";
 	String NAME = "name";
 	String CODE = "code";
-	String VENDOR_CODE = "producer_code";
-	String VENDOR = "producer";
+	String VENDOR_CODE = ItemNames.product_.VENDOR_CODE;
+	String VENDOR = ItemNames.product_.VENDOR;
 	String MAIN_PIC = "main_pic";
 	String PRICE = "price";
 	String MIN_QTY = "min_qty";
@@ -41,4 +44,5 @@ public interface DigiKeyJSONConst {
 	String OLD_URL = "url";
 	String MANUAL = "doc_ref";
 	String PARAM = "parameter";
+	String SUM = "sum";
 }

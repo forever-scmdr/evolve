@@ -243,7 +243,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 			tmp.append(':');
 			tmp.append(specPrice.get(JSON_PRICE));
 			tmp.append(';');
-			doc.startElement("spec_price_map", "qty", specPrice.get(JSON_SPEC_QTY), "price", specPrice.get(JSON_PRICE)).endElement();
+			doc.startElement("spec_price_map", "qty", specPrice.get(JSON_SPEC_QTY), "price", specPrice.get(JSON_PRICE), "sum", specPrice.get(JSON_TOTAL)).endElement();
 		}
 		doc.startElement("spec_price").addText(tmp.toString()).endElement();
 		//Lead status and RoHSStatus;
