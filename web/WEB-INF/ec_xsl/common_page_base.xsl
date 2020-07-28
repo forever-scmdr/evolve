@@ -658,6 +658,7 @@
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
+				<link rel="stylesheet" href="css/styles-mtb.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
 				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"/>
@@ -678,6 +679,13 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
+				<div class="popup" style="display: none;" id="product-ajax-popup">
+					<div class="popup__body">
+						<div class="popup__content" id="product-ajax-content">
+							<a class="popup__close" onclick="clearProductAjax();">×</a>
+						</div>
+					</div>
+				</div>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -702,7 +710,7 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="js/fwk/common.js"/>
+				<script type="text/javascript" src="js/web.js"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){

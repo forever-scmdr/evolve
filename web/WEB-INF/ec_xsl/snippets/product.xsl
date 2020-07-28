@@ -35,6 +35,9 @@
 				</a>
 			</xsl:if>
 
+			<!-- quick view -->
+			<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
+
 			<!-- device title -->
 			<a href="{show_product}" class="dvc__title" title="{name}"><xsl:value-of select="name"/></a>
 
@@ -346,7 +349,10 @@
 						<i class="fas fa-search-plus"></i>
 					</a>
 				</xsl:if>
-				
+
+				<!-- quick view -->
+				<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
+
 				<!-- device image -->
 				<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			</div>

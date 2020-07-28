@@ -106,6 +106,9 @@
 
 
 	<include-definition name="PRODUCT_PARAMS_LINKS">
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="prod" style="key"/>
+		</link>
 		<link name="to_cart" target="cart_action">
 			<var name="action" value="addToCart"/>
 			<var name="prod" ref="prod"/>
@@ -532,13 +535,15 @@
 					<var name="prod" ref="lprod"/>
 				</link>
 			</list>
-
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="assoc" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -556,6 +561,21 @@
 			</link>
 		</list>
 		<include name="COMMON"/>
+	</page>
+
+
+	<!-- Product Ajax -->
+	<page name="product_ajax" template="product_ajax" cacheable="true">
+		<request>
+			<var name="prod" style="path"/>
+		</request>
+		<single item="product" id="prod" var="prod" tag="product">
+			<list item="product_extra"/>
+			<include name="PRODUCT_PARAMS_LINKS"/>
+		</single>
+		<link name="fav_link" target="fav"/>
+		<link name="compare_link" target="compare"/>
+		<link name="show_cart" target="cart"/>
 	</page>
 
 
@@ -1072,6 +1092,9 @@
 			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1122,6 +1145,9 @@
 				<var name="src_page" value="compare"/>
 			</link>
 			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -1296,6 +1322,9 @@
 				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS"/>
