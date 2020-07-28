@@ -50,8 +50,10 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 			protected void processRow() throws Exception {
 				String code = StringUtils.replace(getValue(CODE_HEADER), " ", "");
 				if (StringUtils.isNotBlank(code)) {
-					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(PRODUCT, product.CODE, code));
-					if (prod != null) {
+					List<Item> prods = new ItemQuery(PRODUCT, Item.STATUS_NORMAL, Item.STATUS_HIDDEN)
+									.addParameterCriteria(product.CODE, code, "=", null, Compare.SOME)
+									.loadItems();
+					for (Item prod : prods) {
 						String priceOld = getValue(PRICE_OLD_HEADER);
 						String priceNew = getValue(PRICE_NEW_HEADER);
 						boolean available = StringUtils.contains(getValue(AVAILABLE_HEADER), "+");
@@ -63,6 +65,11 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						}
 						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
+						if (!available && prod.isStatusNormal()) {
+							DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.hide(prod));
+						} else if (available && prod.isStatusHidden()) {
+							DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.restore(prod));
+						}
 						info.increaseProcessed();
 
 						// Создать подарок
@@ -80,7 +87,8 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 							}
 						}
 
-					} else {
+					}
+					if (prods.size() == 0) {
 						info.increaseLineNumber();
 						info.pushLog("Товар с кодом {} и названием {} не найден в каталоге", code, getValue(1));
 					}
