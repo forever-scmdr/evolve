@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -303,6 +302,7 @@ public abstract class BasicCartManageCommand extends Command {
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			BigDecimal maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY));
 			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+
 			if (minQuantity.intValue() == 0) minQuantity = new BigDecimal(1);
 			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
 			if (!isIntegerValue(qtyMinQtyFraction))
@@ -312,6 +312,7 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+			String map = getVarSingleValue("map");
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
