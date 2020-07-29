@@ -145,7 +145,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				}
 
 				//HEADERS
-				else if(StringUtils.isBlank(getCellAsString(row.getCell(0)))){
+				else if(StringUtils.isBlank(getCellAsString(row.getCell(0))) && "наименование".equalsIgnoreCase(getCellAsString(row.getCell(1)))){
 					initHeaders(row);
 				}
 
@@ -180,6 +180,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement()
 									.endElement();
 						}else if(CODE_PARAM.equals(paramName)){
+							if(StringUtils.isBlank(cellValue)) continue;
 							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
 							if(currentProduct == null){
 								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
