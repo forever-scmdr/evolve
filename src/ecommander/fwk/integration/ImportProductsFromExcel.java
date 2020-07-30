@@ -661,7 +661,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					try {
 						prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(currentProduct.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
 					}catch (NullPointerException e){
-						pushLog("Отсутствует родитель товара: "+ code);
+						addError("Отсутствует родитель товара: "+ code,"");
 						return catalog;
 					}
 
