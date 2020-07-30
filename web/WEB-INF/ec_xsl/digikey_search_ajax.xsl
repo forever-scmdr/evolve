@@ -63,6 +63,9 @@
 					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="hidden" value="{name}" name="name"/>
 					<input type="hidden" value="{qty}" name="max"/>
+					<input type="hidden" value="{vendor}" name="vendor"/>
+					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
+					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>

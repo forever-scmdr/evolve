@@ -312,7 +312,6 @@ public abstract class BasicCartManageCommand extends Command {
 			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 			bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
 			bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
-			String map = getVarSingleValue("map");
 			// Сохраняется bought
 			getSessionMapper().saveTemporaryItem(bought);
 			// Сохраняется девайс
@@ -345,11 +344,13 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
+
+
 	/**
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {
