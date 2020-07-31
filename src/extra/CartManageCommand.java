@@ -259,8 +259,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			String name = getVarSingleValue(NAME_PARAM);
 			String vendor_code = getVarSingleValue("vendor_code");
 			String vendor = getVarSingleValue("name");
-			String qty = getVarSingleValue("qty").replaceAll("^[\\d.,]", "").replace(',', '.');
-			String max = getVarSingleValue("max").replaceAll("^[\\d.,]", "").replace(',', '.');
+			String qty = getVarSingleValue("qty").replaceAll("[^0-9.,]", "").replace(',', '.');
+			String max = getVarSingleValue("max").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String map = getVarSingleValue("map");
 
 			BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
@@ -275,12 +275,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			if (maxQuantity.compareTo(new BigDecimal(0)) > 0)
 				decimalQty = maxQuantity.compareTo(decimalQty) > 0 ? decimalQty : maxQuantity;
 
-			getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+			bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			{
 				bought.setValue(CODE_PARAM, code);
 				bought.setValue(NAME_PARAM, name);
 				bought.setValue(QTY_PARAM, decimalQty.doubleValue());
-				bought.setExtra("map", priceMap);
+				bought.setExtra("map", map);
 				getSessionMapper().saveTemporaryItem(bought);
 
 				Item product = getSessionMapper().createSessionItem("product", bought.getId());
@@ -291,14 +291,27 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				product.setValue(QTY_PARAM, maxQuantity);
 				product.setValue("vendor", vendor);
 				product.setValue("vendor_code", vendor_code);
-				getSessionMapper().saveTemporaryItem(bought);
+				getSessionMapper().saveTemporaryItem(product);
 			}
 		}else {
 			Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			String qty = getVarSingleValue("qty").replaceAll("^[\\d.,]", "").replace(',', '.');
 			BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(bought.getDoubleValue(QTY_PARAM)));
-			BigDecimal max = new BigDecimal(boughtProduct.getDoubleValue(QTY_PARAM)).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
+			BigDecimal maxQuantity = new BigDecimal(boughtProduct.getDoubleValue(QTY_PARAM)).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
+			TreeMap<BigDecimal, BigDecimal> priceMap = parsePriceMap(bought.getExtra("map").toString());
+			BigDecimal minQuantity = priceMap.firstKey();
+			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
+			if (!isIntegerValue(qtyMinQtyFraction))
+				decimalQty = minQuantity.multiply(qtyMinQtyFraction.setScale(0, BigDecimal.ROUND_CEILING));
+			if (maxQuantity.compareTo(new BigDecimal(0)) > 0)
+				decimalQty = maxQuantity.compareTo(decimalQty) > 0 ? decimalQty : maxQuantity;
+			BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
+			currencyRates.setAllPrices(boughtProduct, priceUSD, "USD");
+			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
+			getSessionMapper().saveTemporaryItem(bought);
+			getSessionMapper().saveTemporaryItem(boughtProduct);
 		}
+		recalculateCart();
 		return getResult("ajax");
 	}
 

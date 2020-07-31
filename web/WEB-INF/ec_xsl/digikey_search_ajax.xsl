@@ -58,7 +58,7 @@
 				</xsl:for-each>
 			</td>
 			<td id="cart_search_{@id}">
-				<form action="cart_action/?action=addToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+				<form action="cart_action/?action=addDigiKeyToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
 					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="hidden" value="{name}" name="name"/>

@@ -1742,7 +1742,7 @@
 		</request>
 	</page>
 
-	<page name="digikey_search" template="">
+	<page name="digikey_search" template="digikey_search_ajax">
 		<request>
 			<var name="query"/>
 			<var name="qty" />
