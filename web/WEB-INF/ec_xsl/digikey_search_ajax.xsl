@@ -60,6 +60,7 @@
 			<td id="cart_search_{@id}">
 				<form action="cart_action/?action=addDigiKeyToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
+					<input type="hidden" name="img" value="{main_pic}"/>
 					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="hidden" value="{name}" name="name"/>
 					<input type="hidden" value="{qty}" name="max"/>
@@ -92,7 +93,7 @@
 	</xsl:function>
 
 	<xsl:variable name="cur_list" select="page/currencies"/>
-	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'Digikey']/quotient)"/>
+	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'digikey.com']/quotient)"/>
 
 
 	<xsl:function name="f:usd" as="xs:double">

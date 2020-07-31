@@ -67,7 +67,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		super();
 		try {
 			currencyRates = new CurrencyRates();
-			digiKeyQuotients = ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "Digikey");
+			digiKeyQuotients = ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "digikey.com");
 		}catch (Exception e){}
 		for (String paramName : ItemTypeRegistry.getItemType(CURRENCIES).getParameterNames()) {
 			if (StringUtils.endsWithIgnoreCase(paramName, RATE_POSTFIX)) {
@@ -280,6 +280,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				bought.setValue(CODE_PARAM, code);
 				bought.setValue(NAME_PARAM, name);
 				bought.setValue(QTY_PARAM, decimalQty.doubleValue());
+				bought.setValue("img", getVarSingleValue("img"));
 				bought.setExtra("map", map);
 				getSessionMapper().saveTemporaryItem(bought);
 
@@ -295,9 +296,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			}
 		}else {
 			Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
-			String qty = getVarSingleValue("qty").replaceAll("^[\\d.,]", "").replace(',', '.');
+			String qty = getVarSingleValue("qty").replaceAll("[^0-9.,]", "").replace(',', '.');
 			BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(bought.getDoubleValue(QTY_PARAM)));
-			BigDecimal maxQuantity = new BigDecimal(boughtProduct.getDoubleValue(QTY_PARAM)).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
+			BigDecimal maxQuantity = boughtProduct.getDecimalValue(QTY_PARAM);
 			TreeMap<BigDecimal, BigDecimal> priceMap = parsePriceMap(bought.getExtra("map").toString());
 			BigDecimal minQuantity = priceMap.firstKey();
 			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);

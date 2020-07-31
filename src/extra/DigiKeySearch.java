@@ -195,7 +195,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	}
 
 	private void addSupplierSettings(XmlDocumentBuilder doc) throws Exception {
-		Item supplierSettings = ItemQuery.loadSingleItemByParamValue(ItemNames.PRICE_CATALOG, ItemNames.price_catalog_.NAME, "digikey");
+		Item supplierSettings = ItemQuery.loadSingleItemByParamValue(ItemNames.PRICE_CATALOG, ItemNames.price_catalog_.NAME, "digikey.com");
 		if(supplierSettings != null){
 			doc.
 					startElement(ItemNames.PRICE_CATALOG, "id", supplierSettings.getId())
