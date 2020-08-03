@@ -32,6 +32,17 @@
 		<tr>
 			<td>
 				<b><xsl:value-of select="name"/></b>
+				<p><xsl:value-of select="prodcucer"/></p>
+				<ul class="parameters">
+				<xsl:for-each select="parameter[@name != 'RoHSStatus' and @name != 'LeadStatus']">
+					<li>
+						<b>
+							<xsl:value-of select="@name"/>:&nbsp;
+						</b>
+						<xsl:value-of select="."/>
+					</li>
+				</xsl:for-each>
+				</ul>
 			</td>
 			<td></td>
 			<td>

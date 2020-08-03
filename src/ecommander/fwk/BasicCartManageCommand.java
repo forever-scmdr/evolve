@@ -395,6 +395,7 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
+			Object extra = bought.getExtra("map");
 			if(bought.getExtra("map") != null) continue;
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double quantity = bought.getDoubleValue(QTY_PARAM);

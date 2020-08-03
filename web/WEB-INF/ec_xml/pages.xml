@@ -903,7 +903,7 @@
 	</page>
 
 
-	<page name="customer_email" template="customer_email">
+	<page name="customer_email" template="">
 		<request>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
@@ -930,36 +930,6 @@
 			</link>
 		</list>
 	</page>
-
-
-	<page name="shop_email" template="shop_email">
-		<request>
-			<var name="cur" value="BYN" scope="cookie"/>
-		</request>
-		<session>
-			<single item="cart">
-				<list item="bought" id="bought"/>
-			</single>
-			<new item="user_phys" id="user_phys">
-				<parameter-input ref="user_phys" form="customer_phys"/>
-			</new>
-			<new item="user_jur" id="user_jur">
-				<parameter-input ref="user_jur" form="customer_jur"/>
-			</new>
-		</session>
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<ancestor item="plain_section"/>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="translit"/>
-			</link>
-		</list>
-	</page>
-
 
 
 	<page name="shop_email" template="order_email">
@@ -968,7 +938,9 @@
 		</request>
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="product"/>
+				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
