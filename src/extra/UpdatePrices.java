@@ -58,6 +58,7 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						String priceOld = getValue(PRICE_OLD_HEADER);
 						String priceNew = getValue(PRICE_NEW_HEADER);
 						boolean available = StringUtils.contains(getValue(AVAILABLE_HEADER), "+");
+						boolean hidden = StringUtils.contains(getValue(AVAILABLE_HEADER), "-");
 						if (StringUtils.isNotBlank(priceNew)) {
 							prod.setValueUI(product.PRICE, priceNew.replaceAll("\\s", ""));
 							prod.setValueUI("price_old", priceOld.replaceAll("\\s", ""));
@@ -66,9 +67,9 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 						}
 						prod.setValue("available", available ? (byte)1 : (byte)0);
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
-						if (!available && prod.isStatusNormal()) {
+						if (hidden && prod.isStatusNormal()) {
 							DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.hide(prod));
-						} else if (available && prod.isStatusHidden()) {
+						} else if (!hidden && prod.isStatusHidden()) {
 							DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.restore(prod));
 						}
 						info.increaseProcessed();
