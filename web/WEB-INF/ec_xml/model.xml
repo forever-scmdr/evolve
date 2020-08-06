@@ -195,6 +195,7 @@
 	<item name="bought" caption="Покупка" virtual="true" key="code" ag-id="16" ag-hash="-1383211797">
 		<parameter name="name" type="string" caption="Наименование товара" description="не обязательно. Используется только в истории заказов"/>
 		<parameter name="code" type="string" caption="Код товара"/>
+		<parameter name="img" type="string" caption="Ссылка на изображение"/>
 		<parameter name="qty" type="double" caption="Количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="price_RUB" type="currency" caption="Цена RUB"/>

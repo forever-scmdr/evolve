@@ -9,9 +9,5 @@
 		<group name="common" role="admin"/>
 		<group name="registered" role="admin"/>
 	</user>
-	<user name="manager" password="ghbdtn" description="Менеджер">
-		<group name="common" role="admin"/>
-		<group name="registered" role="admin"/>
-	</user>
 </users>
 </authority>

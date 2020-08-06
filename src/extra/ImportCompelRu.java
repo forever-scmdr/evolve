@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Created by E on 8/6/2019.
@@ -100,9 +101,9 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 		final CurrencyRates currencyRates = new CurrencyRates();
 
 		// Загрузка раздела
-		section = ItemQuery.loadSingleItemByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, COMPEL_RU);
-		if (section != null) {
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(section));
+		List<Item> sections = ItemQuery.loadByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, COMPEL_RU);
+		for (Item sec : sections) {
+			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(sec));
 		}
 		section = Item.newChildItem(sectionType, catalog);
 		section.setValue(plain_section_.NAME, COMPEL_RU);
