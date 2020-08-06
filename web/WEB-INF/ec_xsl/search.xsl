@@ -20,6 +20,7 @@
 	<xsl:variable name="price_catalogs" select="page/price_catalog"/>
 	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
 	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
+	<xsl:variable name="l" select="concat('digikey_search?query=', page/variables/q)"/>
 
 
 	<xsl:template name="MAIN_CONTENT">
@@ -121,16 +122,50 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
+							<tbody id="extra-search-ajax">
+								<tr>
+									<td colspan="10">
+										Идет поиск по дополнительному каталогу
+									</td>
+								</tr>
+							</tbody>
 						</xsl:if>
 					</table>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
+				<div>
+					<xsl:if test="not($multiple)">
+						<table class="srtable">
+							<tr>
+								<th>Название</th>
+								<th>Описание</th>
+								<th>Производитель</th>
+								<!--<th>Код производителя</th>-->
+								<th>Количество</th>
+								<th>Срок поставки</th>
+								<th>Единица</th>
+								<th>Мин. заказ</th>
+								<th>Цена (<xsl:value-of select="$currency_out" />)</th>
+								<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
+								<th>Заказать</th>
+							</tr>
+							<tbody id="extra-search-ajax">
+								<tr>
+									<td colspan="10">
+										Идет поиск по дополнительному каталогу
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</xsl:if>
+				</div>
 			</xsl:if>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
+
 	</xsl:template>
 
 
@@ -250,6 +285,11 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+		<script>
+			$(document).ready(function() {
+				insertAjax('<xsl:value-of select="$l"/>');
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -15,20 +15,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by E on 6/6/2019.
  */
 public class UpdateCurrencyRates extends Command implements ItemNames {
 
-	private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx";
+	private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=";
 	private static final String RATE_SUFFIX = "_rate";
 	private static final String SCALE_SUFFIX = "_scale";
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("YYYY-M-d");
 
 	@Override
 	public ResultPE execute() throws Exception {
 		if (!StringUtils.equalsIgnoreCase(getVarSingleValue("action"), "start"))
 			return null;
-		String xml = WebClient.getString(NBNB_URL);
+		String xml = WebClient.getString(NBNB_URL + FORMAT.format(new Date()));
 		if (StringUtils.isNotBlank(xml)) {
 			xml = xml.substring(xml.indexOf('<'));
 		}

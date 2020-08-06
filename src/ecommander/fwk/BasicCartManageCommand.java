@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -303,6 +302,7 @@ public abstract class BasicCartManageCommand extends Command {
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			BigDecimal maxQuantity = product.getDecimalValue(QTY_PARAM, new BigDecimal(MAX_QTY));
 			BigDecimal minQuantity = product.getDecimalValue(MIN_QTY_PARAM, new BigDecimal(1));
+
 			if (minQuantity.intValue() == 0) minQuantity = new BigDecimal(1);
 			BigDecimal qtyMinQtyFraction = decimalQty.divide(minQuantity, BigDecimal.ROUND_HALF_EVEN);
 			if (!isIntegerValue(qtyMinQtyFraction))
@@ -344,11 +344,13 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
+
+
 	/**
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {
@@ -393,6 +395,8 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
+			Object extra = bought.getExtra("map");
+			if(bought.getExtra("map") != null) continue;
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);

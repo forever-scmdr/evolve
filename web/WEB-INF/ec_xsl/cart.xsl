@@ -69,7 +69,12 @@
 								<xsl:if test="$p/plain_section">
 								-->
 									<span class="image-container">
-										<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
+										<xsl:if test="not(img != '')">
+											<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
+										</xsl:if>
+										<xsl:if test="img != ''">
+											<img src="{img}" alt="{$p/name}"/>
+										</xsl:if>
 									</span>
 									<span class="title"><xsl:value-of select="$p/name"/></span>
 								<!--</xsl:if>-->
