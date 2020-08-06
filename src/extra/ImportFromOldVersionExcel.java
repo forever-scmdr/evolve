@@ -11,16 +11,14 @@ import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,6 +85,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		parse(priceWB);
 		info.setCurrentJob("");
 		priceWB.close();
+		//clear junk
+		//clearJunk();
 		//creating filters and item types
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -96,6 +96,24 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}
+
+	private void clearJunk() throws Exception {
+		setOperation("Удаление товаров без артикула");
+		long startID = 0;
+		ArrayList<Item> products;
+		info.setProcessed(0);
+		while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID)).size() > 0) {
+			for (Item product : products) {
+				startID = product.getId();
+				if(StringUtils.isBlank(product.getStringValue(CODE_PARAM))){
+					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product.getId()));
+					info.increaseProcessed();
+				}
+			}
+		}
+
+	}
+
 
 	private void parse(Workbook priceWB) throws Exception {
 		eval =  priceWB.getCreationHelper().createFormulaEvaluator();
@@ -180,7 +198,9 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement()
 									.endElement();
 						}else if(CODE_PARAM.equals(paramName)){
-							if(StringUtils.isBlank(cellValue)) continue;
+							if(StringUtils.isBlank(cellValue)){
+								currentProduct = null; break;
+							}
 							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
 							if(currentProduct == null){
 								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
@@ -226,7 +246,9 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							currentProduct.setValueUI(paramName, cellValue);
 						}
 					}
-
+					if(currentProduct == null){
+						info.increaseProcessed(); continue;
+					}
 					String searchString = generateSearchParam(userDefined);
 					currentProduct.setValueUI("search", searchString);
 					String unit = currentProduct.getStringValue(UNIT_PARAM, "шт");
