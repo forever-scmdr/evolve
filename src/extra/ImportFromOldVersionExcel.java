@@ -86,7 +86,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		info.setCurrentJob("");
 		priceWB.close();
 		//clear junk
-		//clearJunk();
+		clearJunk();
 		//creating filters and item types
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -135,8 +135,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				String sectionName = getCellAsString(row.getCell(1));
 
 				if(getFilledCellsCount(row) == 2 && StringUtils.isNotBlank(sectionCode) && StringUtils.isNotBlank(sectionName)){
-//					String sectionCode = getCellAsString(row.getCell(0));
-//					String sectionName = getCellAsString(row.getCell(1));
 
 					boolean isNew = false;
 
@@ -168,7 +166,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				}
 
 				//PRODUCT
-				else{
+				else if (StringUtils.isNotBlank(sectionCode)){
 
 					HashMap<String,String> userDefined = new HashMap<>();
 					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
@@ -198,9 +196,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement()
 									.endElement();
 						}else if(CODE_PARAM.equals(paramName)){
-							if(StringUtils.isBlank(cellValue)){
-								currentProduct = null; break;
-							}
 							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
 							if(currentProduct == null){
 								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
