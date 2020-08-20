@@ -71,8 +71,8 @@ public class CopyToUpload implements ItemEventCommandFactory, DBConstants.ItemTb
 				File srcFile = new File(this.createItemDirectoryName() + "/" + item.getValue(param.getParamId()));
 				item.setValue("file_hash", srcFile.hashCode());
 			}
-			else{
-				item.clearValue(PARAM_NAME);
+			else if(!item.getFileValue(PARAM_NAME, AppContext.getFilesDirPath(item.isFileProtected())).isFile()){
+				item.clearValue("file_hash");
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
 			if (item.hasChanged()) {

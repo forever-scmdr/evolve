@@ -102,7 +102,7 @@
 	</item>
 
 	<item name="stores" caption="Склады" ag-id="4325" ag-hash="-892066894">
-		<child item="store" inline="true" />
+		<child item="store" />
 	</item>
 
 	<item name="store" key="name" caption="Склад" ag-id="4326" ag-hash="109770977">
@@ -111,9 +111,6 @@
 		<parameter name="file_hash" type="integer" caption="Хэш файла"/>
 		<parameter name="old_file_hash" type="integer" caption="Хэш предыдущего файла"/>
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
-
-		<on-update class="ecommander.fwk.AddFileHash"/>
-		<on-create class="ecommander.fwk.AddFileHash"/>
 
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 		<on-create class="ecommander.fwk.CopyToUpload"/>

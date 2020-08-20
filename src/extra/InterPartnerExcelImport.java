@@ -2,6 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.ExcelTableData;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateExcelPriceList;
@@ -83,6 +84,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 	@Override
 	protected void integrate() throws Exception {
+		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		for (Map.Entry<Item, File> entry : files.entrySet()) {
 			File f = entry.getValue();
 			currentStore = entry.getKey();
@@ -90,9 +92,11 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				parseExcel(f);
 				if(replacePriceAnyway) replacePriceAnyway = false;
 			}else {
+				info.setCurrentJob("");
 				pushLog("Файл "+f.getName()+" был разобран ранее.");
 			}
 		}
+		info.setCurrentJob("");
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
@@ -111,6 +115,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 	private void parseExcel(File excelFile) throws Exception {
 		setOperation(String.format("Разбор файла %s. Склад: %s", excelFile.getName(), currentStore.getStringValue(NAME_PARAM)));
+		setProcessed(0);
 		InterpartnerDocument doc = new InterpartnerDocument(excelFile, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 		doc.iterate();
 		doc.close();
@@ -222,12 +227,14 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						String additionParamName = "qty_" + storeNumber;
 						product.setValue(additionParamName, q);
 					}else if(PRICE_PARAM.equalsIgnoreCase(paramName)){
+						//561429
 						BigDecimal currentPrice = replacePriceAnyway? BigDecimal.ZERO : product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
 						BigDecimal price = StringUtils.isBlank(cellValue)? BigDecimal.ZERO : DecimalDataType.parse(cellValue, 2);
-						price = price.compareTo(currentPrice) > 0? price : currentPrice;
-						product.setValue(PRICE_PARAM, price);
 						String additionParamName = "price_" + storeNumber;
 						product.setValue(additionParamName, price);
+						price = price.max(currentPrice);
+						product.setValue(PRICE_PARAM, price);
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex().noTriggerExtra());
 					}else {
 						if (StringUtils.isBlank(cellValue)) continue;
 						ParameterDescription pd = itemType.getParameter(paramName);
@@ -242,7 +249,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						}
 					}
 				}
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 				if(isProduct) currentProduct = product;
 				//AUX
 				if (hasAuxParams(headers)) {
@@ -275,7 +282,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
 						xml.startElement("parameter")
 								.startElement("name")
-								.addText(firstUpperCase(header))
+								.addText(firstUpperCase(header.replace(""+ ExcelTableData.PREFIX, "")))
 								.endElement()
 								.startElement("value")
 								.addText(cellValue)

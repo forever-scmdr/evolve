@@ -85,10 +85,11 @@ public class ExcelTableData implements TableDataSource {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
 					//fix duplicate keys
+					colHeader = StringUtils.lowerCase(colHeader);
 					if(headers.containsKey(colHeader)) {
-						headers.put(PREFIX + StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+						headers.put(PREFIX + colHeader, cell.getColumnIndex());
 					}else{
-						headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+						headers.put(colHeader, cell.getColumnIndex());
 					}
 				}
 			}
@@ -141,7 +142,13 @@ public class ExcelTableData implements TableDataSource {
 					for (Cell cell : row) {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
-							headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+							//fix duplicate keys
+							colHeader = StringUtils.lowerCase(colHeader);
+							if(headers.containsKey(colHeader)) {
+								headers.put(PREFIX + colHeader, cell.getColumnIndex());
+							}else{
+								headers.put(colHeader, cell.getColumnIndex());
+							}
 						}
 					}
 					SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
