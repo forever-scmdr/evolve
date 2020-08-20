@@ -14,7 +14,6 @@ public class Gal_part
 
     public final static String _NAME = "gal_part";
     public final static String NAME = "name";
-    public final static String TEXT = "text";
     public final static String MAIN_PIC = "main_pic";
     public final static String MEDIUM_PIC = "medium_pic";
     public final static String SMALL_PIC = "small_pic";
@@ -52,22 +51,6 @@ public class Gal_part
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_text(String value) {
-        setValue("text", value);
-    }
-
-    public String get_text() {
-        return getStringValue("text");
-    }
-
-    public String getDefault_text(String defaultVal) {
-        return getStringValue("text", defaultVal);
-    }
-
-    public boolean contains_text(String value) {
-        return containsValue("text", value);
     }
 
     public void add_main_pic(File value) {

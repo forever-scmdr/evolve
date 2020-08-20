@@ -23,8 +23,6 @@ public class Url_seo
     public final static String TEXT = "text";
     public final static String BOTTOM_TEXT = "bottom_text";
     public final static String TEXT_PIC = "text_pic";
-    public final static String EXTRA_STYLE = "extra_style";
-    public final static String BODY_CLASS = "body_class";
 
     private Url_seo(Item item) {
         super(item);
@@ -203,38 +201,6 @@ public class Url_seo
 
     public boolean contains_text_pic(File value) {
         return containsValue("text_pic", value);
-    }
-
-    public void set_extra_style(String value) {
-        setValue("extra_style", value);
-    }
-
-    public String get_extra_style() {
-        return getStringValue("extra_style");
-    }
-
-    public String getDefault_extra_style(String defaultVal) {
-        return getStringValue("extra_style", defaultVal);
-    }
-
-    public boolean contains_extra_style(String value) {
-        return containsValue("extra_style", value);
-    }
-
-    public void set_body_class(String value) {
-        setValue("body_class", value);
-    }
-
-    public String get_body_class() {
-        return getStringValue("body_class");
-    }
-
-    public String getDefault_body_class(String defaultVal) {
-        return getStringValue("body_class", defaultVal);
-    }
-
-    public boolean contains_body_class(String value) {
-        return containsValue("body_class", value);
     }
 
 }

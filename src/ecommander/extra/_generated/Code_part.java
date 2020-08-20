@@ -10,7 +10,6 @@ public class Code_part
 
     public final static String _NAME = "code_part";
     public final static String NAME = "name";
-    public final static String TEXT = "text";
     public final static String CODE = "code";
 
     private Code_part(Item item) {
@@ -46,22 +45,6 @@ public class Code_part
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_text(String value) {
-        setValue("text", value);
-    }
-
-    public String get_text() {
-        return getStringValue("text");
-    }
-
-    public String getDefault_text(String defaultVal) {
-        return getStringValue("text", defaultVal);
-    }
-
-    public boolean contains_text(String value) {
-        return containsValue("text", value);
     }
 
     public void set_code(String value) {

@@ -30,19 +30,19 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle sectionStyle;
 	private CellStyle auxHeaderStyle;
 	//file Constants
-	protected static final String CODE_FILE = "Код";
-	protected static final String IS_DEVICE_FILE = "Отдельный товар";
-	protected static final String NAME_FILE = "Наименование";
-	protected static final String PRICE_FILE = "Цена";
-	protected static final String PRICE_OLD_FILE = "Старая цена";
-	protected static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
-	protected static final String CURRENCY_ID_FILE = "Код валюты цены";
-	protected static final String QTY_FILE = "Количество";
-	protected static final String UNIT_FILE = "Единица измерения";
-	protected static final String AVAILABLE_FILE = "Наличие";
-	protected static final String AUX_TYPE_FILE = "ID типа товара";
-	protected static final String MANUAL = "Документация";
-	protected static final String VALUE_SEPARATOR = ";";
+	public static final String CODE_FILE = "Код";
+	public static final String IS_DEVICE_FILE = "Отдельный товар";
+	public static final String NAME_FILE = "Наименование";
+	public static final String PRICE_FILE = "Цена";
+	public static final String PRICE_OLD_FILE = "Старая цена";
+	public static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
+	public static final String CURRENCY_ID_FILE = "Код валюты цены";
+	public static final String QTY_FILE = "Количество";
+	public static final String UNIT_FILE = "Единица измерения";
+	public static final String AVAILABLE_FILE = "Наличие";
+	public static final String AUX_TYPE_FILE = "ID типа товара";
+	public static final String MANUAL = "Документация";
+	public static final String VALUE_SEPARATOR = ";";
 
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{

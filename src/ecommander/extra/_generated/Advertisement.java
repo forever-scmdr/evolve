@@ -4,28 +4,28 @@ package ecommander.extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Registered_catalog
+public class Advertisement
     extends Item
 {
 
-    public final static String _NAME = "registered_catalog";
+    public final static String _NAME = "advertisement";
 
-    private Registered_catalog(Item item) {
+    private Advertisement(Item item) {
         super(item);
     }
 
-    public static Registered_catalog get(Item item) {
+    public static Advertisement get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'registered_catalog' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'advertisement' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Registered_catalog(item);
+        return new Advertisement(item);
     }
 
-    public static Registered_catalog newChild(Item parent) {
+    public static Advertisement newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 

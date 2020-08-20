@@ -667,7 +667,7 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</single>
+					</list>
 				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
@@ -1216,6 +1216,15 @@
 			<result name="success" type="redirect"/>
 		</command>
 	</page> -->
+
+	<page name="parse_excel_interpartner" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.InterPartnerExcelImport" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 	<page name="ok"></page>
 

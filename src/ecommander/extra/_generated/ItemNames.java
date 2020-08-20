@@ -4,17 +4,14 @@ package ecommander.extra._generated;
 
 public interface ItemNames {
 
-    String PARSE_SECTION = "parse_section";
-    String PARSE_ITEM = "parse_item";
-    String BASE_SEO = "base_seo";
     String SEO = "seo";
     String URL_SEO = "url_seo";
     String URL_SEO_WRAP = "url_seo_wrap";
     String SEO_CATALOG = "seo_catalog";
     String SEO_CONTAINER = "seo_container";
-    String ORIGINAL_GALLERY = "original_gallery";
-    String GALLERY = "gallery";
     String CATALOG = "catalog";
+    String STORES = "stores";
+    String STORE = "store";
     String SECTION = "section";
     String ABSTRACT_PRODUCT = "abstract_product";
     String DESCRIBED_PRODUCT = "described_product";
@@ -38,12 +35,12 @@ public interface ItemNames {
     String BANNER_SECTION = "banner_section";
     String MAIN_PAGE = "main_page";
     String COMMON = "common";
+    String PRODUCT_SIDE = "product_side";
     String BLOCK = "block";
     String BLOCK_ARRAY = "block_array";
     String DELIVERY = "delivery";
     String PAYMENT = "payment";
     String DISCOUNTS = "discounts";
-    String CATALOG_TEXTS = "catalog_texts";
     String FOOTER = "footer";
     String TOPPER = "topper";
     String NEWS_WRAP = "news_wrap";
@@ -58,8 +55,6 @@ public interface ItemNames {
     String MY_PRICE_FORM = "my_price_form";
     String ONE_CLICK_FORM = "one_click_form";
     String CUSTOM_PAGES = "custom_pages";
-    String MENU_ITEM = "menu_item";
-    String PAGE_LINK = "page_link";
     String CUSTOM_PAGE = "custom_page";
     String MODULES = "modules";
     String NAMED_CODE = "named_code";
@@ -71,8 +66,13 @@ public interface ItemNames {
         String NAME = "name";
         String CODE = "code";
         String PRICE = "price";
+        String PRICE_1 = "price_1";
+        String PRICE_2 = "price_2";
+        String PRICE_3 = "price_3";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
+        String QTY_1 = "qty_1";
+        String QTY_2 = "qty_2";
+        String QTY_3 = "qty_3";
         String UNIT = "unit";
 
     }
@@ -87,6 +87,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "banner";
         String BACKGROUND = "background";
+        String BACKGROUND_PIC = "background_pic";
         String HEADER = "header";
         String TEXT = "text";
         String IMAGE_PIC = "image_pic";
@@ -100,22 +101,6 @@ public interface ItemNames {
 
         String _ITEM_NAME = "banner_section";
         String NAME = "name";
-
-    }
-
-    public interface base_seo_ {
-
-        String _ITEM_NAME = "base_seo";
-        String TITLE = "title";
-        String H1 = "h1";
-        String DESCRIPTION = "description";
-        String KEYWORDS = "keywords";
-        String META = "meta";
-        String TEXT = "text";
-        String BOTTOM_TEXT = "bottom_text";
-        String TEXT_PIC = "text_pic";
-        String EXTRA_STYLE = "extra_style";
-        String BODY_CLASS = "body_class";
 
     }
 
@@ -155,26 +140,16 @@ public interface ItemNames {
         String SUM = "sum";
         String SUM_DISCOUNT = "sum_discount";
         String PROCESSED = "processed";
-        String EXTRA_SUM_STR = "extra_sum_str";
-        String EXTRA_DATE_STR = "extra_date_str";
 
     }
 
     public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
-        String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
         String INTEGRATION_PENDING = "integration_pending";
         String BIG_INTEGRATION = "big_integration";
-
-    }
-
-    public interface catalog_texts_ {
-
-        String _ITEM_NAME = "catalog_texts";
-        String PAYMENT = "payment";
 
     }
 
@@ -187,7 +162,6 @@ public interface ItemNames {
         String LINK_LINK = "link_link";
         String BOTTOM = "bottom";
         String BOTTOM_ADDRESS = "bottom_address";
-        String DEBT_TEXT = "debt_text";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -216,9 +190,9 @@ public interface ItemNames {
         String HEADER = "header";
         String MAIN_PIC = "main_pic";
         String SHORT = "short";
+        String IN_MAIN_MENU = "in_main_menu";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
-        String IN_MAIN_MENU = "in_main_menu";
 
     }
 
@@ -256,12 +230,16 @@ public interface ItemNames {
         String NAME = "name";
         String CODE = "code";
         String PRICE = "price";
+        String PRICE_1 = "price_1";
+        String PRICE_2 = "price_2";
+        String PRICE_3 = "price_3";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
+        String QTY_1 = "qty_1";
+        String QTY_2 = "qty_2";
+        String QTY_3 = "qty_3";
         String UNIT = "unit";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
-        String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
@@ -271,25 +249,16 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
-        String PRICE_OPT = "price_opt";
-        String PRICE_OPT_OLD = "price_opt_old";
-        String NEXT_DELIVERY = "next_delivery";
-        String STATUS = "status";
-        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
-        String PIC_REF = "pic_ref";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String ASSOC_CODE = "assoc_code";
-        String ANALOG_CODE = "analog_code";
-        String SIMILAR_CODE = "similar_code";
-        String SUPPORT_CODE = "support_code";
-        String TAG = "tag";
         String GALLERY = "gallery";
+        String ASSOC_CODE = "assoc_code";
+        String TAG = "tag";
 
     }
 
@@ -338,25 +307,22 @@ public interface ItemNames {
 
     }
 
-    public interface gallery_ {
-
-        String _ITEM_NAME = "gallery";
-        String GALLERY = "gallery";
-
-    }
-
     public interface line_product_ {
 
         String _ITEM_NAME = "line_product";
         String NAME = "name";
         String CODE = "code";
         String PRICE = "price";
+        String PRICE_1 = "price_1";
+        String PRICE_2 = "price_2";
+        String PRICE_3 = "price_3";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
+        String QTY_1 = "qty_1";
+        String QTY_2 = "qty_2";
+        String QTY_3 = "qty_3";
         String UNIT = "unit";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
-        String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
@@ -366,25 +332,16 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
-        String PRICE_OPT = "price_opt";
-        String PRICE_OPT_OLD = "price_opt_old";
-        String NEXT_DELIVERY = "next_delivery";
-        String STATUS = "status";
-        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
-        String PIC_REF = "pic_ref";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String ASSOC_CODE = "assoc_code";
-        String ANALOG_CODE = "analog_code";
-        String SIMILAR_CODE = "similar_code";
-        String SUPPORT_CODE = "support_code";
-        String TAG = "tag";
         String GALLERY = "gallery";
+        String ASSOC_CODE = "assoc_code";
+        String TAG = "tag";
 
     }
 
@@ -412,13 +369,6 @@ public interface ItemNames {
         String LINK_NAME = "link_name";
         String LINK = "link";
         String PIC = "pic";
-
-    }
-
-    public interface menu_item_ {
-
-        String _ITEM_NAME = "menu_item";
-        String IN_MAIN_MENU = "in_main_menu";
 
     }
 
@@ -481,27 +431,8 @@ public interface ItemNames {
 
         String _ITEM_NAME = "one_click_form";
         String PHONE = "phone";
-        String NAME = "name";
         String PRODUCT_CODE = "product_code";
         String PRODUCT_NAME = "product_name";
-
-    }
-
-    public interface original_gallery_ {
-
-        String _ITEM_NAME = "original_gallery";
-        String WATERMARK_FILENAME = "watermark_filename";
-        String WATERMARK_FILE_MODIFIED = "watermark_file_modified";
-        String GALLERY = "gallery";
-
-    }
-
-    public interface page_link_ {
-
-        String _ITEM_NAME = "page_link";
-        String NAME = "name";
-        String LINK = "link";
-        String IN_MAIN_MENU = "in_main_menu";
 
     }
 
@@ -518,30 +449,6 @@ public interface ItemNames {
 
     }
 
-    public interface parse_item_ {
-
-        String _ITEM_NAME = "parse_item";
-        String URL = "url";
-        String DOWNLOADED = "downloaded";
-        String PARSED = "parsed";
-        String GOT_FILES = "got_files";
-        String DUPLICATED = "duplicated";
-        String HTML = "html";
-        String XML = "xml";
-        String TEST_URL = "test_url";
-        String FILE = "file";
-        String HTML_PIC = "html_pic";
-
-    }
-
-    public interface parse_section_ {
-
-        String _ITEM_NAME = "parse_section";
-        String ITEM_URLS = "item_urls";
-        String ITEM_URLS_BACKUP = "item_urls_backup";
-
-    }
-
     public interface payment_ {
 
         String _ITEM_NAME = "payment";
@@ -555,12 +462,16 @@ public interface ItemNames {
         String NAME = "name";
         String CODE = "code";
         String PRICE = "price";
+        String PRICE_1 = "price_1";
+        String PRICE_2 = "price_2";
+        String PRICE_3 = "price_3";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
+        String QTY_1 = "qty_1";
+        String QTY_2 = "qty_2";
+        String QTY_3 = "qty_3";
         String UNIT = "unit";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
-        String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
@@ -570,26 +481,18 @@ public interface ItemNames {
         String CURRENCY_ID = "currency_id";
         String PRICE_ORIGINAL = "price_original";
         String PRICE_OLD = "price_old";
-        String PRICE_OPT = "price_opt";
-        String PRICE_OPT_OLD = "price_opt_old";
-        String NEXT_DELIVERY = "next_delivery";
-        String STATUS = "status";
-        String MIN_QTY = "min_qty";
         String COUNTRY = "country";
-        String PIC_REF = "pic_ref";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String TEXT_PICS = "text_pics";
-        String ASSOC_CODE = "assoc_code";
-        String ANALOG_CODE = "analog_code";
-        String SIMILAR_CODE = "similar_code";
-        String SUPPORT_CODE = "support_code";
-        String TAG = "tag";
         String GALLERY = "gallery";
+        String ASSOC_CODE = "assoc_code";
+        String TAG = "tag";
         String HAS_LINES = "has_lines";
+        String OLD_URL = "old_url";
 
     }
 
@@ -599,6 +502,13 @@ public interface ItemNames {
         String NAME = "name";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
+
+    }
+
+    public interface product_side_ {
+
+        String _ITEM_NAME = "product_side";
+        String TEXT = "text";
 
     }
 
@@ -617,7 +527,6 @@ public interface ItemNames {
     public interface registered_catalog_ {
 
         String _ITEM_NAME = "registered_catalog";
-        String USERS_FILE = "users_file";
 
     }
 
@@ -632,7 +541,6 @@ public interface ItemNames {
 
         String _ITEM_NAME = "section";
         String NAME = "name";
-        String ICON = "icon";
         String SHOW_SUBS = "show_subs";
         String SUB_VIEW = "sub_view";
         String SHOW_DEVICES = "show_devices";
@@ -640,6 +548,8 @@ public interface ItemNames {
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
         String PARAMS_FILTER = "params_filter";
+        String HIDE_PARAMS = "hide_params";
+        String OLD_URL = "old_url";
 
     }
 
@@ -656,7 +566,6 @@ public interface ItemNames {
         String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
         String EXTRA_STYLE = "extra_style";
-        String BODY_CLASS = "body_class";
 
     }
 
@@ -669,6 +578,22 @@ public interface ItemNames {
     public interface seo_container_ {
 
         String _ITEM_NAME = "seo_container";
+
+    }
+
+    public interface store_ {
+
+        String _ITEM_NAME = "store";
+        String NAME = "name";
+        String FILE_HASH = "file_hash";
+        String OLD_FILE_HASH = "old_file_hash";
+        String BIG_INTEGRATION = "big_integration";
+
+    }
+
+    public interface stores_ {
+
+        String _ITEM_NAME = "stores";
 
     }
 
@@ -691,8 +616,6 @@ public interface ItemNames {
         String TEXT = "text";
         String BOTTOM_TEXT = "bottom_text";
         String TEXT_PIC = "text_pic";
-        String EXTRA_STYLE = "extra_style";
-        String BODY_CLASS = "body_class";
 
     }
 
@@ -709,7 +632,6 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
-        String REGISTERED = "registered";
         String PAYMENT = "payment";
 
     }
@@ -720,17 +642,11 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
-        String REGISTERED = "registered";
         String PAYMENT = "payment";
         String ORGANIZATION = "organization";
-        String CONTRACT_NUMBER = "contract_number";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
-        String CITY = "city";
-        String ROUTE = "route";
-        String DEBT = "debt";
-        String DISCOUNT = "discount";
         String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
         String NO_ACCOUNT = "no_account";
@@ -753,7 +669,6 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String PASSWORD = "password";
-        String REGISTERED = "registered";
         String PAYMENT = "payment";
         String NAME = "name";
         String ADDRESS = "address";

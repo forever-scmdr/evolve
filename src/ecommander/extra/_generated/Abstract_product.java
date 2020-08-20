@@ -14,8 +14,13 @@ public class Abstract_product
     public final static String NAME = "name";
     public final static String CODE = "code";
     public final static String PRICE = "price";
+    public final static String PRICE_1 = "price_1";
+    public final static String PRICE_2 = "price_2";
+    public final static String PRICE_3 = "price_3";
     public final static String QTY = "qty";
-    public final static String QTY_OPT = "qty_opt";
+    public final static String QTY_1 = "qty_1";
+    public final static String QTY_2 = "qty_2";
+    public final static String QTY_3 = "qty_3";
     public final static String UNIT = "unit";
 
     private Abstract_product(Item item) {
@@ -91,6 +96,72 @@ public class Abstract_product
         return containsValue("price", value);
     }
 
+    public void set_price_1(BigDecimal value) {
+        setValue("price_1", value);
+    }
+
+    public void setUI_price_1(String value)
+        throws Exception
+    {
+        setValueUI("price_1", value);
+    }
+
+    public BigDecimal get_price_1() {
+        return getDecimalValue("price_1");
+    }
+
+    public BigDecimal getDefault_price_1(BigDecimal defaultVal) {
+        return getDecimalValue("price_1", defaultVal);
+    }
+
+    public boolean contains_price_1(BigDecimal value) {
+        return containsValue("price_1", value);
+    }
+
+    public void set_price_2(BigDecimal value) {
+        setValue("price_2", value);
+    }
+
+    public void setUI_price_2(String value)
+        throws Exception
+    {
+        setValueUI("price_2", value);
+    }
+
+    public BigDecimal get_price_2() {
+        return getDecimalValue("price_2");
+    }
+
+    public BigDecimal getDefault_price_2(BigDecimal defaultVal) {
+        return getDecimalValue("price_2", defaultVal);
+    }
+
+    public boolean contains_price_2(BigDecimal value) {
+        return containsValue("price_2", value);
+    }
+
+    public void set_price_3(BigDecimal value) {
+        setValue("price_3", value);
+    }
+
+    public void setUI_price_3(String value)
+        throws Exception
+    {
+        setValueUI("price_3", value);
+    }
+
+    public BigDecimal get_price_3() {
+        return getDecimalValue("price_3");
+    }
+
+    public BigDecimal getDefault_price_3(BigDecimal defaultVal) {
+        return getDecimalValue("price_3", defaultVal);
+    }
+
+    public boolean contains_price_3(BigDecimal value) {
+        return containsValue("price_3", value);
+    }
+
     public void set_qty(Double value) {
         setValue("qty", value);
     }
@@ -113,26 +184,70 @@ public class Abstract_product
         return containsValue("qty", value);
     }
 
-    public void set_qty_opt(Double value) {
-        setValue("qty_opt", value);
+    public void set_qty_1(Double value) {
+        setValue("qty_1", value);
     }
 
-    public void setUI_qty_opt(String value)
+    public void setUI_qty_1(String value)
         throws Exception
     {
-        setValueUI("qty_opt", value);
+        setValueUI("qty_1", value);
     }
 
-    public Double get_qty_opt() {
-        return getDoubleValue("qty_opt");
+    public Double get_qty_1() {
+        return getDoubleValue("qty_1");
     }
 
-    public Double getDefault_qty_opt(Double defaultVal) {
-        return getDoubleValue("qty_opt", defaultVal);
+    public Double getDefault_qty_1(Double defaultVal) {
+        return getDoubleValue("qty_1", defaultVal);
     }
 
-    public boolean contains_qty_opt(Double value) {
-        return containsValue("qty_opt", value);
+    public boolean contains_qty_1(Double value) {
+        return containsValue("qty_1", value);
+    }
+
+    public void set_qty_2(Double value) {
+        setValue("qty_2", value);
+    }
+
+    public void setUI_qty_2(String value)
+        throws Exception
+    {
+        setValueUI("qty_2", value);
+    }
+
+    public Double get_qty_2() {
+        return getDoubleValue("qty_2");
+    }
+
+    public Double getDefault_qty_2(Double defaultVal) {
+        return getDoubleValue("qty_2", defaultVal);
+    }
+
+    public boolean contains_qty_2(Double value) {
+        return containsValue("qty_2", value);
+    }
+
+    public void set_qty_3(Double value) {
+        setValue("qty_3", value);
+    }
+
+    public void setUI_qty_3(String value)
+        throws Exception
+    {
+        setValueUI("qty_3", value);
+    }
+
+    public Double get_qty_3() {
+        return getDoubleValue("qty_3");
+    }
+
+    public Double getDefault_qty_3(Double defaultVal) {
+        return getDoubleValue("qty_3", defaultVal);
+    }
+
+    public boolean contains_qty_3(Double value) {
+        return containsValue("qty_3", value);
     }
 
     public void set_unit(String value) {

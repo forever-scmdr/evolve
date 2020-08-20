@@ -30,6 +30,7 @@ public class ExcelTableData implements TableDataSource {
 	private ArrayList<SheetHeader> validSheets = new ArrayList<>();
 	private String fileName;
 	private ArrayList<String> missingColumns = null;
+	public static final char PREFIX = '☬';
 
 	public ExcelTableData(String fileName, String... mandatoryCols) {
 		this.fileName = Strings.getFileName(fileName);
@@ -83,7 +84,12 @@ public class ExcelTableData implements TableDataSource {
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
-					headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					//fix duplicate keys
+					if(headers.containsKey(colHeader)) {
+						headers.put(PREFIX + StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					}else{
+						headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					}
 				}
 			}
 			currentHeader = headers;

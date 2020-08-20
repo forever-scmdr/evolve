@@ -4,8 +4,6 @@ package ecommander.extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-import java.math.BigDecimal;
-
 public class User_jur
     extends Item
 {
@@ -14,17 +12,11 @@ public class User_jur
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
-    public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
     public final static String ORGANIZATION = "organization";
-    public final static String CONTRACT_NUMBER = "contract_number";
     public final static String CONTACT_NAME = "contact_name";
     public final static String CONTACT_PHONE = "contact_phone";
     public final static String ADDRESS = "address";
-    public final static String CITY = "city";
-    public final static String ROUTE = "route";
-    public final static String DEBT = "debt";
-    public final static String DISCOUNT = "discount";
     public final static String SHIP_TYPE = "ship_type";
     public final static String PAY_TYPE = "pay_type";
     public final static String NO_ACCOUNT = "no_account";
@@ -106,28 +98,6 @@ public class User_jur
         return containsValue("password", value);
     }
 
-    public void set_registered(Byte value) {
-        setValue("registered", value);
-    }
-
-    public void setUI_registered(String value)
-        throws Exception
-    {
-        setValueUI("registered", value);
-    }
-
-    public Byte get_registered() {
-        return getByteValue("registered");
-    }
-
-    public Byte getDefault_registered(Byte defaultVal) {
-        return getByteValue("registered", defaultVal);
-    }
-
-    public boolean contains_registered(Byte value) {
-        return containsValue("registered", value);
-    }
-
     public void set_payment(String value) {
         setValue("payment", value);
     }
@@ -158,22 +128,6 @@ public class User_jur
 
     public boolean contains_organization(String value) {
         return containsValue("organization", value);
-    }
-
-    public void set_contract_number(String value) {
-        setValue("contract_number", value);
-    }
-
-    public String get_contract_number() {
-        return getStringValue("contract_number");
-    }
-
-    public String getDefault_contract_number(String defaultVal) {
-        return getStringValue("contract_number", defaultVal);
-    }
-
-    public boolean contains_contract_number(String value) {
-        return containsValue("contract_number", value);
     }
 
     public void set_contact_name(String value) {
@@ -222,82 +176,6 @@ public class User_jur
 
     public boolean contains_address(String value) {
         return containsValue("address", value);
-    }
-
-    public void set_city(String value) {
-        setValue("city", value);
-    }
-
-    public String get_city() {
-        return getStringValue("city");
-    }
-
-    public String getDefault_city(String defaultVal) {
-        return getStringValue("city", defaultVal);
-    }
-
-    public boolean contains_city(String value) {
-        return containsValue("city", value);
-    }
-
-    public void set_route(String value) {
-        setValue("route", value);
-    }
-
-    public String get_route() {
-        return getStringValue("route");
-    }
-
-    public String getDefault_route(String defaultVal) {
-        return getStringValue("route", defaultVal);
-    }
-
-    public boolean contains_route(String value) {
-        return containsValue("route", value);
-    }
-
-    public void set_debt(BigDecimal value) {
-        setValue("debt", value);
-    }
-
-    public void setUI_debt(String value)
-        throws Exception
-    {
-        setValueUI("debt", value);
-    }
-
-    public BigDecimal get_debt() {
-        return getDecimalValue("debt");
-    }
-
-    public BigDecimal getDefault_debt(BigDecimal defaultVal) {
-        return getDecimalValue("debt", defaultVal);
-    }
-
-    public boolean contains_debt(BigDecimal value) {
-        return containsValue("debt", value);
-    }
-
-    public void set_discount(Double value) {
-        setValue("discount", value);
-    }
-
-    public void setUI_discount(String value)
-        throws Exception
-    {
-        setValueUI("discount", value);
-    }
-
-    public Double get_discount() {
-        return getDoubleValue("discount");
-    }
-
-    public Double getDefault_discount(Double defaultVal) {
-        return getDoubleValue("discount", defaultVal);
-    }
-
-    public boolean contains_discount(Double value) {
-        return containsValue("discount", value);
     }
 
     public void set_ship_type(String value) {

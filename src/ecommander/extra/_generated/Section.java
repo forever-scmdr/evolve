@@ -6,6 +6,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
 import java.io.File;
+import java.util.List;
 
 public class Section
     extends Item
@@ -13,7 +14,6 @@ public class Section
 
     public final static String _NAME = "section";
     public final static String NAME = "name";
-    public final static String ICON = "icon";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
@@ -21,6 +21,8 @@ public class Section
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
     public final static String PARAMS_FILTER = "params_filter";
+    public final static String HIDE_PARAMS = "hide_params";
+    public final static String OLD_URL = "old_url";
 
     private Section(Item item) {
         super(item);
@@ -55,18 +57,6 @@ public class Section
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_icon(File value) {
-        setValue("icon", value);
-    }
-
-    public File get_icon() {
-        return getFileValue("icon", AppContext.getCommonFilesDirPath());
-    }
-
-    public boolean contains_icon(File value) {
-        return containsValue("icon", value);
     }
 
     public void set_show_subs(Byte value) {
@@ -171,6 +161,38 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void add_hide_params(String value) {
+        setValue("hide_params", value);
+    }
+
+    public List<String> getAll_hide_params() {
+        return getStringValues("hide_params");
+    }
+
+    public void remove_hide_params(String value) {
+        removeEqualValue("hide_params", value);
+    }
+
+    public boolean contains_hide_params(String value) {
+        return containsValue("hide_params", value);
+    }
+
+    public void set_old_url(String value) {
+        setValue("old_url", value);
+    }
+
+    public String get_old_url() {
+        return getStringValue("old_url");
+    }
+
+    public String getDefault_old_url(String defaultVal) {
+        return getStringValue("old_url", defaultVal);
+    }
+
+    public boolean contains_old_url(String value) {
+        return containsValue("old_url", value);
     }
 
 }

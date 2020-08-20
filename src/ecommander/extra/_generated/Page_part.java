@@ -10,7 +10,6 @@ public class Page_part
 
     public final static String _NAME = "page_part";
     public final static String NAME = "name";
-    public final static String TEXT = "text";
 
     private Page_part(Item item) {
         super(item);
@@ -45,22 +44,6 @@ public class Page_part
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
-    }
-
-    public void set_text(String value) {
-        setValue("text", value);
-    }
-
-    public String get_text() {
-        return getStringValue("text");
-    }
-
-    public String getDefault_text(String defaultVal) {
-        return getStringValue("text", defaultVal);
-    }
-
-    public boolean contains_text(String value) {
-        return containsValue("text", value);
     }
 
 }

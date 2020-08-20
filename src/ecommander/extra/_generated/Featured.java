@@ -19,6 +19,7 @@ public class Featured
     public final static String TAG = "tag";
     public final static String STYLE = "style";
     public final static String MAIN_PIC = "main_pic";
+    public final static String HASH = "hash";
 
     private Featured(Item item) {
         super(item);
@@ -151,6 +152,28 @@ public class Featured
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_hash(Integer value) {
+        setValue("hash", value);
+    }
+
+    public void setUI_hash(String value)
+        throws Exception
+    {
+        setValueUI("hash", value);
+    }
+
+    public Integer get_hash() {
+        return getIntValue("hash");
+    }
+
+    public Integer getDefault_hash(Integer defaultVal) {
+        return getIntValue("hash", defaultVal);
+    }
+
+    public boolean contains_hash(Integer value) {
+        return containsValue("hash", value);
     }
 
 }
