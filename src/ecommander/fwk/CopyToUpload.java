@@ -33,7 +33,8 @@ public class CopyToUpload implements ItemEventCommandFactory, DBConstants.ItemTb
 	}
 
 	public static class CopyFilePCU extends SingleItemDirectoryFileUnit {
-		private static final String PARAM_NAME = "big_integration";
+		private static final String FILE_PARAM_NAME = "big_integration";
+		private static final String HASH_PARAM_NAME = "file_hash";
 		private TransactionContext transaction;
 
 		public CopyFilePCU(Item item) {
@@ -41,7 +42,8 @@ public class CopyToUpload implements ItemEventCommandFactory, DBConstants.ItemTb
 		}
 
 		public void execute() throws Exception {
-			Parameter param = this.item.getParameterByName("big_integration");
+			if(item.getItemType().getParameter(FILE_PARAM_NAME) == null) return;
+			Parameter param = this.item.getParameterByName(FILE_PARAM_NAME);
 			if(param != null) {
 				if(param.hasChanged() && !param.isEmpty()) {
 					File srcFile = new File(this.createItemDirectoryName() + "/" + this.item.getValue(param.getParamId()));
@@ -67,12 +69,14 @@ public class CopyToUpload implements ItemEventCommandFactory, DBConstants.ItemTb
 				}
 
 			}
-			if(param.hasChanged() && !param.isEmpty()) {
-				File srcFile = new File(this.createItemDirectoryName() + "/" + item.getValue(param.getParamId()));
-				item.setValue("file_hash", srcFile.hashCode());
-			}
-			else if(!item.getFileValue(PARAM_NAME, AppContext.getFilesDirPath(item.isFileProtected())).isFile()){
-				item.clearValue("file_hash");
+
+			if(item.getItemType().getParameter(HASH_PARAM_NAME) != null) {
+				if (param.hasChanged() && !param.isEmpty()) {
+					File srcFile = new File(this.createItemDirectoryName() + "/" + item.getValue(param.getParamId()));
+					item.setValue(HASH_PARAM_NAME, srcFile.hashCode());
+				} else if (!item.getFileValue(FILE_PARAM_NAME, AppContext.getFilesDirPath(item.isFileProtected())).isFile()) {
+					item.clearValue(HASH_PARAM_NAME);
+				}
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
 			if (item.hasChanged()) {
