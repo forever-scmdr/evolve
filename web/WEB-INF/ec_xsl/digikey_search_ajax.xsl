@@ -11,6 +11,7 @@
 
 
 
+
 	<xsl:template match="/">
 		<table>
 			<tbody id="extra-search-ajax" class="result">
@@ -68,7 +69,7 @@
 					</p>
 				</xsl:for-each>
 			</td>
-			<td id="cart_search_{@id}">
+			<td id="cart_search_{code}">
 				<form action="cart_action/?action=addDigiKeyToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
 					<input type="hidden" name="img" value="{main_pic}"/>
@@ -78,6 +79,7 @@
 					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
 					<input type="hidden" value="{vendor}" name="vendor"/>
+					<input type="hidden" value="{url}" name="url"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>
@@ -107,15 +109,17 @@
 	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'digikey.com']/quotient)"/>
 
 
-	<xsl:function name="f:usd" as="xs:double">
-		<xsl:param name="str" as="xs:string?"/>
-		<xsl:sequence select="f:num($str) * $quotient" />
-	</xsl:function>
 	<xsl:function name="f:byn" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
-		<xsl:variable name="usd" select="f:usd($str)"/>
+		<xsl:variable name="usd" select="f:num($str) * $quotient"/>
 		<xsl:sequence select="$usd * (f:num($cur_list/USD_rate) * (f:num($cur_list/USD_extra)+1)) div f:num($cur_list/USD_scale)"/>
 	</xsl:function>
+	<xsl:function name="f:usd" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/USD_rate) * (f:num($cur_list/USD_extra)+1) ) * f:num($cur_list/USD_scale)" />
+	</xsl:function>
+
 	<xsl:function name="f:eur" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
 		<xsl:variable name="byn" select="f:byn($str)"/>

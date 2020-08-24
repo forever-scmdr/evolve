@@ -903,13 +903,15 @@
 	</page>
 
 
-	<page name="customer_email" template="">
+	<page name="customer_email" template="customer_email">
 		<request>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="product" tag="product" id="dgk-prod" />
+				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>

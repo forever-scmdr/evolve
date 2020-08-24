@@ -258,7 +258,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 			String name = getVarSingleValue(NAME_PARAM);
 			String vendor_code = getVarSingleValue("vendor_code");
-			String vendor = getVarSingleValue("name");
+			String vendor = getVarSingleValue("vendor");
 			String qty = getVarSingleValue("qty").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String max = getVarSingleValue("max").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String map = getVarSingleValue("map");
@@ -292,6 +292,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				product.setValue(QTY_PARAM, maxQuantity);
 				product.setValue("vendor", vendor);
 				product.setValue("vendor_code", vendor_code);
+				product.setValue("url", getVarSingleValue("url"));
 				getSessionMapper().saveTemporaryItem(product);
 			}
 		}else {
@@ -319,10 +320,11 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 
 	private BigDecimal getPriceFromMap(TreeMap<BigDecimal, BigDecimal> priceMap, BigDecimal qty){
+		if(priceMap.containsKey(qty)) return priceMap.get(qty);
 		if(priceMap.size() > 0){
 			BigDecimal price = priceMap.get(priceMap.firstKey());
 			for(BigDecimal breakpoint : priceMap.keySet()){
-				if(breakpoint.compareTo(qty) <= 0){
+				if(breakpoint.compareTo(qty) < 0){
 					price = priceMap.get(breakpoint);
 				}else{
 					return price;
