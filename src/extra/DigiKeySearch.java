@@ -21,17 +21,26 @@ import java.util.concurrent.TimeUnit;
 
 public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 //	SANDBOX AUTH DATA
-	private static final String CLIENT_ID = "XAoDppmZ6040hcvUj8AvVOXMR47RmFSm";
-	private static final String CLIENT_SECRET = "GBbMsDRcejZU6apI";
-	private static final String TOKEN_ENDPOINT = "https://sandbox-api.digikey.com/v1/oauth2/token";
+//	private static final String CLIENT_ID = "XAoDppmZ6040hcvUj8AvVOXMR47RmFSm";
+//	private static final String CLIENT_SECRET = "GBbMsDRcejZU6apI";
+//	private static final String TOKEN_ENDPOINT = "https://sandbox-api.digikey.com/v1/oauth2/token";
+//	private static final String CUSTOMER_ID = "5201995";
+//	private static final String REDIRECT_URI = "http://localhost:8080/digikey_manual_authorise";
+//	private static final String SEARCH_URI = "https://sandbox-api.digikey.com/Search/v3/Products/Keyword";
+//	private static final String DIGIKEY_BASE_URL = "https://www.digikey.com";
+
+//	PRODUCTION AUTH DATA
+	private static final String CLIENT_ID = "G6rxF9SF8QcTb6j5iSlR84g1S0EiewDI";
+	private static final String CLIENT_SECRET = "XBHDce9tEZQazr0Z";
+	private static final String TOKEN_ENDPOINT = "https://api.digikey.com/v1/oauth2/token";
 	private static final String CUSTOMER_ID = "5201995";
-	private static final String REDIRECT_URI = "http://localhost:8080/digikey_manual_authorise";
-	private static final String SEARCH_URI = "https://sandbox-api.digikey.com/Search/v3/Products/Keyword";
+	private static final String REDIRECT_URI = "https://alfacomponent.com/digikey_manual_authorise";
+	private static final String SEARCH_URI = "https://api.digikey.com/Search/v3/Products/Keyword";
 	private static final String DIGIKEY_BASE_URL = "https://www.digikey.com";
 
 	//Sandbox Manual login URL
-	//"https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=XAoDppmZ6040hcvUj8AvVOXMR47RmFSm&redirect_uri=http://localhost:8080/digikey_manual_authorise";
-	//Manual login URL "https://api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=SzCfaUwBSDFOOR7Sk0x6iywEoQxiApeD&redirect_uri=https://ictrade.by/digikey_manual_authorise";
+	//"https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=G6rxF9SF8QcTb6j5iSlR84g1S0EiewDI&redirect_uri=http://localhost:8080/digikey_manual_authorise";
+	//Manual login URL "https://api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=G6rxF9SF8QcTb6j5iSlR84g1S0EiewDI&redirect_uri=https://alfacomponent.com/digikey_manual_authorise";
 
 
 	private String bearerToken, refreshToken;
