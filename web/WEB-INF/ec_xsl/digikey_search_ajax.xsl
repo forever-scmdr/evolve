@@ -29,7 +29,7 @@
 		</table>
 	</xsl:template>
 
-	<xsl:template match="page/product">
+	<xsl:template match="product">
 		<tr>
 			<td>
 				<b><xsl:value-of select="name"/></b>
@@ -79,7 +79,6 @@
 					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
 					<input type="hidden" value="{vendor}" name="vendor"/>
-					<input type="hidden" value="{url}" name="url"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>

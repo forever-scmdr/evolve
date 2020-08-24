@@ -128,7 +128,19 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0d));
+				BigDecimal price;
+				if(StringUtils.isBlank(bought.getStringExtra("map"))){
+					price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0d));
+				}else{
+					TreeMap<BigDecimal, BigDecimal> priceMap = parsePriceMap(bought.getStringExtra("map"));
+					BigDecimal decimalQty = new BigDecimal(quantity).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
+					BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
+					currencyRates.setAllPrices(product, priceUSD, "USD");
+					multiplyAllPrices(product, digiKeyQuotients);
+					getSessionMapper().saveTemporaryItem(product);
+					price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0d));
+				}
+
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				HashMap<String, BigDecimal> currencyPrices = new HashMap<>();
 				HashMap<String, BigDecimal> currencyProductSums = new HashMap<>();
@@ -150,7 +162,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				if (section != null)
 					quotient = getTotalQuotient(productSum, section.getStringValue(Plain_section.NAME));
 				else if(bought.getExtra("map") != null){
-					quotient  = digiKeyQuotients.getDecimalValue(QUOTIENT_PARAM, BigDecimal.ONE);
+					//quotient  = digiKeyQuotients.getDecimalValue(QUOTIENT_PARAM, BigDecimal.ONE);
 				}
 				productSum = productSum.multiply(quotient).setScale(2, BigDecimal.ROUND_CEILING);
 				for (String currencyCode : currencyProductSums.keySet()) {
@@ -289,6 +301,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				product.setValueUI(CODE_PARAM, code);
 				BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
 				currencyRates.setAllPrices(product, priceUSD, "USD");
+				multiplyAllPrices(product, digiKeyQuotients);
 				product.setValue(QTY_PARAM, maxQuantity);
 				product.setValue("vendor", vendor);
 				product.setValue("vendor_code", vendor_code);
@@ -317,6 +330,13 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		return getResult("ajax");
 	}
 
+	private void multiplyAllPrices(Item product, Item digiKeyQuotients) {
+		BigDecimal q = digiKeyQuotients.getDecimalValue(QUOTIENT_PARAM, BigDecimal.ONE);
+		product.setValue("price", product.getDecimalValue("price", BigDecimal.ZERO).multiply(q));
+		product.setValue("price_USD", product.getDecimalValue("price_USD", BigDecimal.ZERO).multiply(q));
+		product.setValue("price_EUR", product.getDecimalValue("price_EUR", BigDecimal.ZERO).multiply(q));
+		product.setValue("price_RUB", product.getDecimalValue("price_RUB", BigDecimal.ZERO).multiply(q));
+	}
 
 
 	private BigDecimal getPriceFromMap(TreeMap<BigDecimal, BigDecimal> priceMap, BigDecimal qty){

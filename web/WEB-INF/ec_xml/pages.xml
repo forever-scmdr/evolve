@@ -819,11 +819,7 @@
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
-					<list item="product" id="prod" tag="product">
-						<link name="show_product" target="product" type="exclusive">
-							<var name="prod" ref="prod" style="translit"/>
-						</link>
-					</list>
+					<list item="product" id="prod" tag="product" />
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
 						<var name="bought" ref="bought"/>

@@ -282,200 +282,109 @@
 	</xsl:template>
 
 
+	<xsl:template name="MOCK">
+		<tbody id="extra-search-ajax" class="result">
+		<tr>
+			<td><b>BATT CONTACT CLIP AA SOLDER LUG</b><p></p>
+				<ul class="parameters">
+					<li><b>Part Status:&#160;
+					</b>Active
+					</li>
+					<li><b>Battery Type, Function:&#160;
+					</b>Cylindrical, Clip
+					</li>
+					<li><b>Style:&#160;
+					</b>Contact Clip
+					</li>
+					<li><b>Battery Cell Size:&#160;
+					</b>AA
+					</li>
+					<li><b>Number of Cells:&#160;
+					</b>1
+					</li>
+					<li><b>Battery Series:&#160;
+					</b>-
+					</li>
+					<li><b>Mounting Type:&#160;
+					</b>Chassis Mount
+					</li>
+					<li><b>Termination Style:&#160;
+					</b>Solder Lug
+					</li>
+					<li><b>Height Above Board:&#160;
+					</b>-
+					</li>
+					<li><b>Operating Temperature:&#160;
+					</b>-
+					</li>
+				</ul>
+			</td>
+			<td></td>
+			<td>Keystone Electronics</td>
+			<td>2078</td>
+			<td>14 дней</td>
+			<td>шт.</td>
+			<td>1</td>
+			<td>
+				<p>1.5120 USD</p>
+				<p>1.2734 USD</p>
+				<p>1.1077 USD</p>
+				<p>1.0343 USD</p>
+				<p>0.9120 USD</p>
+			</td>
+			<td>
+				<p>x1 = 1.5120 USD</p>
+				<p>x25 = 31.8360 USD</p>
+				<p>x100 = 110.7680 USD</p>
+				<p>x250 = 258.5800 USD</p>
+				<p>x500 = 455.9800 USD</p>
+			</td>
+			<td id="cart_search_36-100-ND">
+				<form action="cart_action/?action=addDigiKeyToCart&amp;code=36-100-ND" method="post" ajax="true" ajax-loader-id="cart_search_36-100-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Keystone%20Elect%20Photos/MFG_100.jpg"></input><input type="hidden" name="map" value="1:1.08;25:0.9096;100:0.7912;250:0.7388;500:0.6514;"></input><input type="hidden" value="BATT CONTACT CLIP AA SOLDER LUG" name="name"></input><input type="hidden" value="2078" name="max"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="submit" value="Заказать"></input></form>
+			</td>
+		</tr>
+		<tr>
+			<td><b>100 1/4" HIGH SPEED CUTTER,1/8"</b><p></p>
+				<ul class="parameters">
+					<li><b>Part Status:&#160;
+					</b>Active
+					</li>
+					<li><b>Accessory Type:&#160;
+					</b>Cutter
+					</li>
+					<li><b>For Use With/Related Products:&#160;
+					</b>-
+					</li>
+				</ul>
+			</td>
+			<td></td>
+			<td>Dremel</td>
+			<td>1</td>
+			<td>14 дней</td>
+			<td>шт.</td>
+			<td>1</td>
+			<td>
+				<p>8.3860 USD</p>
+			</td>
+			<td>
+				<p>x1 = 8.3860 USD</p>
+			</td>
+			<td id="cart_search_100DR-ND">
+				<form action="cart_action/?action=addDigiKeyToCart&amp;code=100DR-ND" method="post" ajax="true" ajax-loader-id="cart_search_100DR-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Dremel/MFG_100.jpg"></input><input type="hidden" name="map" value="1:5.99;"></input><input type="hidden" value="100 1/4&#34; HIGH SPEED CUTTER,1/8&#34;" name="name"></input><input type="hidden" value="1" name="max"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="submit" value="Заказать"></input></form>
+			</td>
+		</tr>
+		</tbody>
+	</xsl:template>
+
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script>
 			$(document).ready(function() {
-			//	insertAjax('<xsl:value-of select="$l"/>');
+				insertAjax('<xsl:value-of select="$l"/>');
 			});
 		</script>
-	</xsl:template>
-
-	<xsl:template name="MOCK">
-		<table xmlns="http://www.w3.org/1999/xhtml" xmlns:f="f:f">
-			<tbody id="extra-search-ajax" class="result">
-				<tr>
-					<td><b>BATT CONTACT CLIP AA SOLDER LUG</b><p></p>
-						<ul class="parameters">
-							<li><b>Part Status:&#160;
-							</b>Active
-							</li>
-							<li><b>Battery Type, Function:&#160;
-							</b>Cylindrical, Clip
-							</li>
-							<li><b>Style:&#160;
-							</b>Contact Clip
-							</li>
-							<li><b>Battery Cell Size:&#160;
-							</b>AA
-							</li>
-							<li><b>Number of Cells:&#160;
-							</b>1
-							</li>
-							<li><b>Battery Series:&#160;
-							</b>-
-							</li>
-							<li><b>Mounting Type:&#160;
-							</b>Chassis Mount
-							</li>
-							<li><b>Termination Style:&#160;
-							</b>Solder Lug
-							</li>
-							<li><b>Height Above Board:&#160;
-							</b>-
-							</li>
-							<li><b>Operating Temperature:&#160;
-							</b>-
-							</li>
-						</ul>
-					</td>
-					<td></td>
-					<td>Keystone Electronics</td>
-					<td>2078</td>
-					<td>14 дней</td>
-					<td>шт.</td>
-					<td>1</td>
-					<td>
-						<p>1.0800 USD</p>
-						<p>0.9096 USD</p>
-						<p>0.7912 USD</p>
-						<p>0.7388 USD</p>
-						<p>0.6514 USD</p>
-					</td>
-					<td>
-						<p>x1 = 1.0800 USD</p>
-						<p>x25 = 22.7400 USD</p>
-						<p>x100 = 79.1200 USD</p>
-						<p>x250 = 184.7000 USD</p>
-						<p>x500 = 325.7000 USD</p>
-					</td>
-					<td id="cart_search_36-100-ND">
-						<form action="cart_action/?action=addDigiKeyToCart&amp;code=36-100-ND" method="post" ajax="true" ajax-loader-id="cart_search_36-100-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Keystone%20Elect%20Photos/MFG_100.jpg"></input><input type="hidden" name="map" value="1:1.08;25:0.9096;100:0.7912;250:0.7388;500:0.6514;"></input><input type="hidden" value="BATT CONTACT CLIP AA SOLDER LUG" name="name"></input><input type="hidden" value="2078" name="max"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="submit" value="Заказать"></input></form>
-					</td>
-				</tr>
-				<tr>
-					<td><b>100 1/4" HIGH SPEED CUTTER,1/8"</b><p></p>
-						<ul class="parameters">
-							<li><b>Part Status:&#160;
-							</b>Active
-							</li>
-							<li><b>Accessory Type:&#160;
-							</b>Cutter
-							</li>
-							<li><b>For Use With/Related Products:&#160;
-							</b>-
-							</li>
-						</ul>
-					</td>
-					<td></td>
-					<td>Dremel</td>
-					<td>1</td>
-					<td>14 дней</td>
-					<td>шт.</td>
-					<td>1</td>
-					<td>
-						<p>5.9900 USD</p>
-					</td>
-					<td>
-						<p>x1 = 5.9900 USD</p>
-					</td>
-					<td id="cart_search_100DR-ND">
-						<form action="cart_action/?action=addDigiKeyToCart&amp;code=100DR-ND" method="post" ajax="true" ajax-loader-id="cart_search_100DR-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Dremel/MFG_100.jpg"></input><input type="hidden" name="map" value="1:5.99;"></input><input type="hidden" value="100 1/4&#34; HIGH SPEED CUTTER,1/8&#34;" name="name"></input><input type="hidden" value="1" name="max"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="submit" value="Заказать"></input></form>
-					</td>
-				</tr>
-				<tr>
-					<td><b>CAP CER 10PF 16V C0G/NP0 01005</b><p></p>
-						<ul class="parameters">
-							<li><b>Packaging:&#160;
-							</b>Cut Tape (CT)
-							</li>
-							<li><b>Part Status:&#160;
-							</b>Active
-							</li>
-							<li><b>Capacitance:&#160;
-							</b>10pF
-							</li>
-							<li><b>Tolerance:&#160;
-							</b>±5%
-							</li>
-							<li><b>Voltage - Rated:&#160;
-							</b>16V
-							</li>
-							<li><b>Temperature Coefficient:&#160;
-							</b>C0G, NP0
-							</li>
-							<li><b>Operating Temperature:&#160;
-							</b>-55°C ~ 125°C
-							</li>
-							<li><b>Features:&#160;
-							</b>-
-							</li>
-							<li><b>Ratings:&#160;
-							</b>-
-							</li>
-							<li><b>Applications:&#160;
-							</b>General Purpose
-							</li>
-							<li><b>Mounting Type:&#160;
-							</b>Surface Mount, MLCC
-							</li>
-							<li><b>Package / Case:&#160;
-							</b>01005 (0402 Metric)
-							</li>
-							<li><b>Size / Dimension:&#160;
-							</b>0.016" L x 0.008" W (0.40mm x 0.20mm)
-							</li>
-							<li><b>Height - Seated (Max):&#160;
-							</b>-
-							</li>
-							<li><b>Thickness (Max):&#160;
-							</b>0.009" (0.22mm)
-							</li>
-							<li><b>Lead Spacing:&#160;
-							</b>-
-							</li>
-							<li><b>Lead Style:&#160;
-							</b>-
-							</li>
-							<li><b>Base Part Number:&#160;
-							</b>GRM0225C1C
-							</li>
-						</ul>
-					</td>
-					<td></td>
-					<td>Murata Electronics</td>
-					<td>91514</td>
-					<td>14 дней</td>
-					<td>шт.</td>
-					<td>1</td>
-					<td>
-						<p>0.1000 USD</p>
-						<p>0.0470 USD</p>
-						<p>0.0254 USD</p>
-						<p>0.0208 USD</p>
-						<p>0.0148 USD</p>
-						<p>0.0116 USD</p>
-						<p>0.0106 USD</p>
-						<p>0.0097 USD</p>
-					</td>
-					<td>
-						<p>x1 = 0.1000 USD</p>
-						<p>x10 = 0.4700 USD</p>
-						<p>x50 = 1.2700 USD</p>
-						<p>x100 = 2.0800 USD</p>
-						<p>x500 = 7.4100 USD</p>
-						<p>x1000 = 11.6500 USD</p>
-						<p>x2500 = 26.4750 USD</p>
-						<p>x5000 = 48.7000 USD</p>
-					</td>
-					<td id="cart_search_490-13463-1-ND">
-						<form action="cart_action/?action=addDigiKeyToCart&amp;code=490-13463-1-ND" method="post" ajax="true" ajax-loader-id="cart_search_490-13463-1-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Renders/Murata%20Renders/01005-(0402-Metric)-0,22mm.jpg"></input><input type="hidden" name="map" value="1:0.1;10:0.047;50:0.0254;100:0.0208;500:0.01482;1000:0.01165;2500:0.01059;5000:0.00974;"></input><input type="hidden" value="CAP CER 10PF 16V C0G/NP0 01005" name="name"></input><input type="hidden" value="91514" name="max"></input><input type="hidden" value="Murata Electronics" name="vendor"></input><input type="hidden" value="GRM0225C1C100JA03L" name="vendor_code"></input><input type="hidden" value="Murata Electronics" name="vendor"></input><input type="submit" value="Заказать"></input></form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</xsl:template>
 
 </xsl:stylesheet>

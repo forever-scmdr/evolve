@@ -1,4 +1,9 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="f:f"
+		version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -86,7 +91,7 @@
 									</p>
 								</div>
 								-->
-								<xsl:if test="$has_price">
+								<xsl:if test="$has_price and not(item_own_extras/map)">
 									<div class="quantity" style="font-size: 11px">
 										<span>Цена</span>
 										<xsl:call-template name="ALL_PRICES">
@@ -106,6 +111,17 @@
                                             <xsl:with-param name="price_byn" select="f:num(price)"/>
 											<xsl:with-param name="need_sum" select="true()"/>
 										</xsl:call-template>
+									</div>
+								</xsl:if>
+								<xsl:if test="$has_price and item_own_extras/map">
+									<div class="quantity" style="font-size: 11px">
+										<span>Цена</span>
+										<xsl:value-of select="f:exchange(current(), 'price')"/>
+									</div>
+									<div class="quantity" style="font-size: 11px">
+										<span>Сумма</span>
+										<xsl:value-of select="$sum"/>
+										<!-- <xsl:value-of select="f:num(f:convert_curr(product/price_usd)) * f:num(qty)"/> -->
 									</div>
 								</xsl:if>
 								<div class="quantity">
@@ -143,4 +159,47 @@
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
+	<xsl:function name="f:convert_curr">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:choose>
+			<xsl:when test="$currency = 'BYN'">
+				<xsl:sequence select="concat(format-number(f:byn($str), '#0.0000'),' ', $currency_out)"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'USD'">
+				<xsl:sequence select="concat(format-number(f:usd($str), '#0.0000'),' ', $currency_out)"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'RUB'">
+				<xsl:sequence select="concat(format-number(f:rub($str), '#0.0000'),' ', $currency_out)"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'EUR'">
+				<xsl:sequence select="concat(format-number(f:eur($str), '#0.0000'),' ', $currency_out)"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:function>
+
+	<xsl:variable name="cur_list" select="page/currencies"/>
+	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'digikey.com']/quotient)"/>
+
+
+	<xsl:function name="f:byn" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="usd" select="f:num($str) * $quotient"/>
+		<xsl:sequence select="$usd * (f:num($cur_list/USD_rate) * (f:num($cur_list/USD_extra)+1)) div f:num($cur_list/USD_scale)"/>
+	</xsl:function>
+	<xsl:function name="f:usd" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/USD_rate) * (f:num($cur_list/USD_extra)+1) ) * f:num($cur_list/USD_scale)" />
+	</xsl:function>
+
+	<xsl:function name="f:eur" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/EUR_rate) * (f:num($cur_list/EUR_extra)+1) ) * f:num($cur_list/EUR_scale)" />
+	</xsl:function>
+	<xsl:function name="f:rub" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/RUR_rate) * (f:num($cur_list/RUR_extra)+1) ) * f:num($cur_list/RUR_scale)" />
+	</xsl:function>
 </xsl:stylesheet>
