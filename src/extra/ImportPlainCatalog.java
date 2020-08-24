@@ -20,6 +20,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by E on 30/11/2018.
@@ -74,9 +75,9 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt"))
 				continue;
 			// Загрузка раздела
-			section = ItemQuery.loadSingleItemByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
-			if (section != null) {
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(section));
+			List<Item> sections = ItemQuery.loadByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
+			for (Item sec : sections) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(sec));
 			}
 			section = Item.newChildItem(sectionType, catalog);
 			section.setValue(plain_section_.NAME, excel.getName());
