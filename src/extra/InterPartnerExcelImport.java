@@ -66,6 +66,11 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				}
 			}
 		}
+		//Init HEADER_PARAM
+		for (ParameterDescription param :  ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterList()) {
+			if (HEADER_PARAM.containsValue(param.getName())) continue;
+			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
+		}
 		return true;
 	}
 
@@ -234,7 +239,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						product.setValue(additionParamName, price);
 						price = price.max(currentPrice);
 						product.setValue(PRICE_PARAM, price);
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex().noTriggerExtra());
+					//	executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex().noTriggerExtra());
 					}else {
 						if (StringUtils.isBlank(cellValue)) continue;
 						ParameterDescription pd = itemType.getParameter(paramName);
@@ -324,7 +329,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 					Path mainPicPath = picsFolder.resolve(cellValue);
 					if (mainPicPath.toFile().isFile()) {
-						product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+						product.setValue(paramName, mainPicPath.toFile());
 					} else if (StringUtils.isNotBlank(cellValue)) {
 						pushLog("No file: " + mainPicPath.toAbsolutePath());
 					}
