@@ -274,6 +274,7 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
+			<var name="cur" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">

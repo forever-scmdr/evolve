@@ -17,12 +17,29 @@
 			<tbody id="extra-search-ajax" class="result">
 			<xsl:if test="not(page/product)">
 				<tr>
-					<td colspan="10">
-						В дополнительном катлоге ничего не найдено
+					<td colspan="10" style="text-align: center;">
+						<h2>В дополнительном катлоге ничего не найдено</h2>
 					</td>
 				</tr>
 			</xsl:if>
 			<xsl:if test="page/product">
+				<tr>
+					<td colspan="10" style="text-align: center;">
+						<h2>Результат поиска по дополнительному каталогу</h2>
+					</td>
+				</tr>
+				<tr>
+					<th>Название</th>
+					<th>Описание</th>
+					<th>Производитель</th>
+					<th>Количество</th>
+					<th>Срок поставки</th>
+					<th>Единица</th>
+					<th>Мин. заказ</th>
+					<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
+					<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
+					<th>Заказать</th>
+				</tr>
 				<xsl:apply-templates select="page/product" />
 			</xsl:if>
 			</tbody>
@@ -33,19 +50,23 @@
 		<tr>
 			<td>
 				<b><xsl:value-of select="name"/></b>
-				<p><xsl:value-of select="prodcucer"/></p>
-				<ul class="parameters">
-				<xsl:for-each select="parameter[@name != 'RoHSStatus' and @name != 'LeadStatus']">
-					<li>
-						<b>
-							<xsl:value-of select="@name"/>:&nbsp;
-						</b>
-						<xsl:value-of select="."/>
-					</li>
-				</xsl:for-each>
+			</td>
+			<td>
+				<xsl:value-of select="description" disable-output-escaping="yes"/>
+				<p>
+					<span onclick="$('#params_{@id}').toggle()" style="border-bottom: 1px dashed #707070; color: #707070; cursor: pointer">Характеритсики</span>
+				</p>
+				<ul class="parameters" id="params_{@id}" style="display: none; margin-top: 8px; padding-left: 0;">
+					<xsl:for-each select="parameter[@name != 'RoHSStatus' and @name != 'LeadStatus']">
+						<li>
+							<b>
+								<xsl:value-of select="@name"/>:&nbsp;
+							</b>
+							<xsl:value-of select="."/>
+						</li>
+					</xsl:for-each>
 				</ul>
 			</td>
-			<td></td>
 			<td>
 				<xsl:value-of select="vendor"/>
 			</td>
@@ -71,7 +92,7 @@
 			</td>
 			<td id="cart_search_{code}">
 				<form action="cart_action/?action=addDigiKeyToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
-					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
+					<!-- <input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/> -->
 					<input type="hidden" name="img" value="{main_pic}"/>
 					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="hidden" value="{name}" name="name"/>
@@ -79,7 +100,8 @@
 					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
 					<input type="hidden" value="{vendor}" name="vendor"/>
-					<input type="submit" value="Заказать"/>
+					<input type="hidden" value="{url}" name="url"/>
+					<!-- <input type="submit" value="Заказать"/> -->
 				</form>
 			</td>
 		</tr>
@@ -90,16 +112,16 @@
 		<xsl:param name="str" as="xs:string?"/>
 		<xsl:choose>
 			<xsl:when test="$currency = 'BYN'">
-				<xsl:sequence select="concat(format-number(f:byn($str), '#0.0000'),' ', $currency_out)"/>
+				<xsl:sequence select="format-number(f:byn($str), '#0.0000')"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'USD'">
-				<xsl:sequence select="concat(format-number(f:usd($str), '#0.0000'),' ', $currency_out)"/>
+				<xsl:sequence select="format-number(f:usd($str), '#0.0000')"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'RUB'">
-				<xsl:sequence select="concat(format-number(f:rub($str), '#0.0000'),' ', $currency_out)"/>
+				<xsl:sequence select="format-number(f:rub($str), '#0.0000')"/>
 			</xsl:when>
 			<xsl:when test="$currency = 'EUR'">
-				<xsl:sequence select="concat(format-number(f:eur($str), '#0.0000'),' ', $currency_out)"/>
+				<xsl:sequence select="format-number(f:eur($str), '#0.0000')"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:function>
@@ -127,7 +149,7 @@
 	<xsl:function name="f:rub" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
 		<xsl:variable name="byn" select="f:byn($str)"/>
-		<xsl:sequence select="$byn div (f:num($cur_list/RUR_rate) * (f:num($cur_list/RUR_extra)+1) ) * f:num($cur_list/RUR_scale)" />
+		<xsl:sequence select="$byn div (f:num($cur_list/RUB_rate) * (f:num($cur_list/RUB_extra)+1) ) * f:num($cur_list/RUB_scale)" />
 	</xsl:function>
 
 
