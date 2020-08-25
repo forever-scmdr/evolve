@@ -112,10 +112,12 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			File f = entry.getValue();
 			currentStore = entry.getKey();
 			if (checkHash(f)) {
-				replacePriceAnyway = dateDiffers(f);
+				//replacePriceAnyway =
+				if(dateDiffers(f)) {
+					stores.setValue("date", date);
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
+				}
 				parseExcel(f);
-				stores.setValue("date", date);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
 				//if(replacePriceAnyway) replacePriceAnyway = false;
 			} else {
 				info.setCurrentJob("");
@@ -140,6 +142,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		long id = 0;
 		while (products.size() > 0){
 			for (Item product : products) {
+				id = product.getId();
 				if(product.getLongValue("date", 0L) < date && product.getStatus() == Item.STATUS_NORMAL){
 					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
 				}
@@ -259,6 +262,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Item parent = (isProduct) ? currentSection : currentProduct;
 					product = Item.newChildItem(itemType, parent);
 				}
+				replacePriceAnyway = product.getLongValue("date", 0L) < date;
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
 					if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
