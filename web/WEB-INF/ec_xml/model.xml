@@ -139,6 +139,7 @@
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="date" type="date" caption="Дата последнего обновления" format="dd.MM.yyyy"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="price_1" type="currency" caption="Цена склад 1"/>
 		<parameter name="price_2" type="currency" caption="Цена склад 2"/>

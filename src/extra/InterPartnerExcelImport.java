@@ -10,9 +10,12 @@ import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.*;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -21,14 +24,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand implements CatalogConst {
 	private ExcelPriceList workbook;
 	private HashMap<Item, File> files = new HashMap<>();
 	private Item currentStore;
-	Item catalog;
+	private Item catalog;
+	private Item stores;
+	private static final SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 	private boolean newItemTypes = false;
+	private long date;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
@@ -44,12 +52,12 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 	}};
 
 
-
 	private boolean replacePriceAnyway = true;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
+		stores = ItemQuery.loadSingleItemByName("stores");
 		List<Item> stores = new ItemQuery("store").loadItems();
 		if (stores.size() == 0) {
 			addLog("Склады не созданы");
@@ -67,7 +75,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			}
 		}
 		//Init HEADER_PARAM
-		for (ParameterDescription param :  ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterList()) {
+		for (ParameterDescription param : ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterList()) {
 			if (HEADER_PARAM.containsValue(param.getName())) continue;
 			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
 		}
@@ -87,20 +95,34 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		return currentHash != oldHash;
 	}
 
+	private boolean dateDiffers(File f) throws ParseException {
+		long now = f.lastModified();
+		long then = stores.getLongValue("date", 0L);
+		String nowS = DAY_FORMAT.format(new Date(now));
+		String thenS = DAY_FORMAT.format(new Date(then));
+		date = DAY_FORMAT.parse(DAY_FORMAT.format(new Date(f.lastModified()))).getTime();
+		return !nowS.equals(thenS) && now > then;
+	}
+
 	@Override
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
+		revealProducts();
 		for (Map.Entry<Item, File> entry : files.entrySet()) {
 			File f = entry.getValue();
 			currentStore = entry.getKey();
 			if (checkHash(f)) {
+				replacePriceAnyway = dateDiffers(f);
 				parseExcel(f);
-				if(replacePriceAnyway) replacePriceAnyway = false;
-			}else {
+				stores.setValue("date", date);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
+				//if(replacePriceAnyway) replacePriceAnyway = false;
+			} else {
 				info.setCurrentJob("");
-				pushLog("Файл "+f.getName()+" был разобран ранее.");
+				pushLog("Файл " + f.getName() + " был разобран ранее.");
 			}
 		}
+		hideProducts();
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -109,6 +131,35 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
+	}
+
+	private void hideProducts() throws Exception {
+		setOperation("Скрытие товаров, отсутствующих на складах");
+		info.setProcessed(0);
+		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, 0);
+		long id = 0;
+		while (products.size() > 0){
+			for (Item product : products) {
+				if(product.getLongValue("date", 0L) < date && product.getStatus() == Item.STATUS_NORMAL){
+					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
+				}
+				info.increaseProcessed();
+			}
+			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
+		}
+		info.setOperation("Пересохранение завершено");
+	}
+
+	private void revealProducts() throws Exception {
+		setOperation("Восстановление скрытых товаров");
+		info.setProcessed(0);
+		List<Item> products = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN).loadItems();
+		info.setToProcess(products.size());
+		for (Item product : products) {
+			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(product.getId()));
+			info.increaseProcessed();
+		}
+		info.setOperation("Пересохранение завершено");
 	}
 
 	private void createFiltersAndItemTypes() throws Exception {
@@ -120,13 +171,15 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 	private void parseExcel(File excelFile) throws Exception {
 		setOperation(String.format("Разбор файла %s. Склад: %s", excelFile.getName(), currentStore.getStringValue(NAME_PARAM)));
+		info.setToProcess(0);
 		setProcessed(0);
 		InterpartnerDocument doc = new InterpartnerDocument(excelFile, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
+
 		doc.iterate();
 		doc.close();
 		currentStore.setValue("old_file_hash", excelFile.hashCode());
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(currentStore).noFulltextIndex().noTriggerExtra());
-		pushLog("Файл "+ excelFile.getName()+" разобран.");
+		pushLog("Файл " + excelFile.getName() + " разобран.");
 	}
 
 	@Override
@@ -225,22 +278,21 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						for (String s : arr) {
 							setPicture(s.trim(), paramName, product);
 						}
-					}else if(QTY_PARAM.equalsIgnoreCase(paramName)){
-						double currentQty = replacePriceAnyway? 0d : product.getDoubleValue(QTY_PARAM, 0d);
-						double q = StringUtils.isBlank(cellValue)? 0d : DoubleDataType.parse(cellValue) == null? 0d : DoubleDataType.parse(cellValue);
+					} else if (QTY_PARAM.equalsIgnoreCase(paramName)) {
+						double currentQty = replacePriceAnyway ? 0d : product.getDoubleValue(QTY_PARAM, 0d);
+						double q = StringUtils.isBlank(cellValue) ? 0d : DoubleDataType.parse(cellValue) == null ? 0d : DoubleDataType.parse(cellValue);
 						product.setValue(QTY_PARAM, currentQty + q);
 						String additionParamName = "qty_" + storeNumber;
 						product.setValue(additionParamName, q);
-					}else if(PRICE_PARAM.equalsIgnoreCase(paramName)){
+					} else if (PRICE_PARAM.equalsIgnoreCase(paramName)) {
 						//561429
-						BigDecimal currentPrice = replacePriceAnyway? BigDecimal.ZERO : product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-						BigDecimal price = StringUtils.isBlank(cellValue)? BigDecimal.ZERO : DecimalDataType.parse(cellValue, 2);
+						BigDecimal currentPrice = replacePriceAnyway ? BigDecimal.ZERO : product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
+						BigDecimal price = StringUtils.isBlank(cellValue) ? BigDecimal.ZERO : DecimalDataType.parse(cellValue, 2);
 						String additionParamName = "price_" + storeNumber;
 						product.setValue(additionParamName, price);
 						price = price.max(currentPrice);
 						product.setValue(PRICE_PARAM, price);
-					//	executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex().noTriggerExtra());
-					}else {
+					} else {
 						if (StringUtils.isBlank(cellValue)) continue;
 						ParameterDescription pd = itemType.getParameter(paramName);
 						if (pd.isMultiple()) {
@@ -254,8 +306,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						}
 					}
 				}
+				product.setValue("date", date);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
-				if(isProduct) currentProduct = product;
+				if (isProduct) currentProduct = product;
 				//AUX
 				if (hasAuxParams(headers)) {
 					String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
@@ -287,7 +340,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
 						xml.startElement("parameter")
 								.startElement("name")
-								.addText(firstUpperCase(header.replace(""+ ExcelTableData.PREFIX, "")))
+								.addText(firstUpperCase(header.replace("" + ExcelTableData.PREFIX, "")))
 								.endElement()
 								.startElement("value")
 								.addText(cellValue)
@@ -302,7 +355,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 							sectionsWithNewItemTypes.add(currentSection.getId());
 							continue;
 						}
-						if (StringUtils.isNotBlank(auxParams.get(param))) aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+						if (StringUtils.isNotBlank(auxParams.get(param)))
+							aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 					}
 
 					paramsXML.setValue(XML_PARAM, xml.toString());
@@ -318,7 +372,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		}
 
 		private void setPicture(String cellValue, String paramName, Item product) throws MalformedURLException {
-			if(StringUtils.isBlank(cellValue)) return;
+			if (StringUtils.isBlank(cellValue)) return;
 			Path picsFolder = Paths.get(AppContext.getContextPath()).resolve("");
 			cellValue = cellValue.replace(getUrlBase(), "").trim();
 			if (cellValue.matches("^(https?|ftp)://.*$")) {
