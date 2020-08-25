@@ -102,6 +102,7 @@
 	</item>
 
 	<item name="stores" caption="Склады" ag-id="4325" ag-hash="-892066894">
+		<parameter name="date" type="date" format="dd.MM.yyyy" caption="Дата последнего обновления"/>
 		<child item="store" />
 	</item>
 
