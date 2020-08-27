@@ -100,12 +100,12 @@
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 
-	<item name="stores" caption="Склады" ag-id="4325" ag-hash="-892066894">
+	<item name="stores" caption="Склады" ag-id="4923" ag-hash="-892066894">
 		<parameter name="date" type="date" format="dd.MM.yyyy" caption="Дата последнего обновления"/>
 		<child item="store" />
 	</item>
 
-	<item name="store" key="name" caption="Склад" ag-id="4326" ag-hash="109770977">
+	<item name="store" key="name" caption="Склад" ag-id="4924" ag-hash="109770977">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="number" type="integer" caption="Номер"/>
 		<parameter name="file_hash" type="integer" caption="Хэш файла"/>
@@ -138,7 +138,7 @@
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
-		<parameter name="date" type="date" caption="Дата последнего обновления" format="dd.MM.yyyy"/>
+		<parameter name="date" type="long" caption="Дата последнего обновления" />
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="price_1" type="currency" caption="Цена склад 1"/>
 		<parameter name="price_2" type="currency" caption="Цена склад 2"/>

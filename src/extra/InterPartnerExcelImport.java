@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand implements CatalogConst {
-	private ExcelPriceList workbook;
 	private HashMap<Item, File> files = new HashMap<>();
 	private Item currentStore;
 	private Item catalog;
@@ -116,6 +115,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				if(dateDiffers(f)) {
 					stores.setValue("date", date);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
+					date = stores.getLongValue("date");
 				}
 				parseExcel(f);
 				//if(replacePriceAnyway) replacePriceAnyway = false;
@@ -143,9 +143,14 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		while (products.size() > 0){
 			for (Item product : products) {
 				id = product.getId();
-				if(product.getLongValue("date", 0L) < date && product.getStatus() == Item.STATUS_NORMAL){
+				long productModificationDate = 0L;
+				try {
+					productModificationDate = product.getLongValue("date");
+				}catch (Exception e){}
+				if(productModificationDate < date && product.getStatus() == Item.STATUS_NORMAL){
 					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
 				}
+				info.increaseProcessed();
 				info.increaseProcessed();
 			}
 			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
