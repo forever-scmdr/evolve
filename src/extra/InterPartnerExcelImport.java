@@ -124,6 +124,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				pushLog("Файл " + f.getName() + " был разобран ранее.");
 			}
 		}
+		date = stores.getLongValue("date");
 		hideProducts();
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
