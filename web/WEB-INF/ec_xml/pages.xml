@@ -1275,4 +1275,13 @@
 		</command>
 	</page>
 
+	<page name="create_google_feed" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CreateTSVGoogleFeed" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
