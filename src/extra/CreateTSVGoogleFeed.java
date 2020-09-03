@@ -16,15 +16,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 	private Path feed;
 	private static final long THREE_MONTHS = 90L*24L*60L*60L*1000L;
+	private static final String FEED_FILE_NAME = "feed.txt";
+	private Date now = new Date();
+	private Date later = new Date(now.getTime() + THREE_MONTHS);
+	private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DDThh:mm:ss");
+
 	@Override
 	protected boolean makePreparations() throws Exception {
-		feed = Paths.get(AppContext.getContextPath(), "feed.txt");
+		feed = Paths.get(AppContext.getContextPath(), FEED_FILE_NAME);
 		Files.deleteIfExists(feed);
 		return true;
 	}
@@ -35,7 +41,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		long startID = 0;
 		ArrayList<Item> products;
 		info.setProcessed(0);
-		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(AppContext.getContextPath(), "feed.tsv"), StandardCharsets.UTF_8)){
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(AppContext.getContextPath(), FEED_FILE_NAME), StandardCharsets.UTF_8)){
 			writer.write(generateHeader());
 
 			try (Connection conn = MysqlConnector.getConnection()) {
@@ -53,38 +59,38 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 
 	private String processProduct(Item product) {
 		StringBuilder sb = new StringBuilder();
+		//id
 		sb.append(product.getStringValue(CODE_PARAM)).append('\t');
-		sb.append(product.getStringValue(TYPE_PARAM)+" Metabo "+product.getStringValue(NAME_PARAM)).append('\t');
-		sb.append(StripHtml(product.getStringValue(DESCRIPTION_PARAM))).append('\t');
-		sb.append(getUrlBase() + product.getKeyUnique()).append('\t');
-		sb.append(getUrlBase() + product.getKeyUnique()).append('\t');
-		sb.append(getSinglePicture(product, MAIN_PIC_PARAM)).append('\t');
-		sb.append(getMultiplePictures(product, GALLERY_PARAM)).append('\t');
-		String inStock = product.getDoubleValue(QTY_PARAM, 0d) > 0.1? "in stock" : "out of stock";
-		sb.append(inStock).append('\t');
-		String priceParam = product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO? PRICE_OLD_PARAM : PRICE_PARAM;
-		String price = product.getDecimalValue(priceParam, BigDecimal.ZERO) + " BYN";
-		String discountPrice = PRICE_OLD_PARAM.equals(priceParam)? product.getDecimalValue(PRICE_PARAM) + " BYN": "";
-		sb.append(price).append('\t');
-		sb.append(discountPrice).append('\t');
-		if(StringUtils.isBlank(discountPrice)){
-			sb.append('\t');
-		}else{
-			Date now = new Date();
-			Date later = new Date(now.getTime() + THREE_MONTHS);
-			sb.append(now + "/" + later).append('\t');
+		//title
+		sb.append('"'+(product.getStringValue(TYPE_PARAM,"")+" Metabo "+product.getStringValue(NAME_PARAM)).replaceAll("\"", "\"\"").trim() + '"').append('\t');
+		//description
+		sb.append(stripHtml(product.getStringValue(DESCRIPTION_PARAM, ""))).append('\t');
+		//link
+		sb.append(getUrlBase()+ "/" + product.getKeyUnique()).append('\t');
+		//image link
+		sb.append(getSinglePicture(product, MAIN_PIC_PARAM));
+		//availability
+		String av = product.getDoubleValue(QTY_PARAM, 0d) > 0.01? "in stock" : "out of stock";
+		sb.append(av).append('\t');
+		//price
+		boolean hasDiscount = product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO;
+		String priceParam = hasDiscount? PRICE_OLD_PARAM : PRICE_PARAM;
+		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		sb.append(price + " BYN");
+		if(hasDiscount){
+			sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
+
 		}
-		sb.append("Metabo").append('\t');
-		sb.append(product.getStringValue(CODE_PARAM)).append('\t');
-		sb.append(product.getStringValue(CODE_PARAM)).append('\t');
-		sb.append("no");
+		else{
+			sb.append("\t\t");
+		}
 		return sb.toString();
 	}
 
 	private String getSinglePicture(Item product, String paramName){
 		String picName = product.getStringValue(paramName);
 		if(StringUtils.isBlank(picName)) return "";
-		return AppContext.getFilesUrlPath(product.isFileProtected()) + product.getRelativeFilesPath() + URLEncoder.encode(picName);
+		return AppContext.getFilesUrlPath(product.isFileProtected()) + "/" + product.getRelativeFilesPath() + URLEncoder.encode(picName);
 	}
 
 	private String getMultiplePictures(Item product, String paramName){
@@ -97,9 +103,9 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		return String.join(",",newValues);
 	}
 
-	private String StripHtml(String stringValue) {
+	private String stripHtml(String stringValue) {
 		if(StringUtils.isBlank(stringValue)) return "";
-		return stringValue.replaceAll("<\\w+(\\s+(\\w+=\".*\")?)*(\\s*\\/)?>|<\\/\\w+>", "").replaceAll("\\s+", " ").trim();
+		return stringValue.replaceAll("<\\w+(\\s+(\\w+=\".*\")?)*(\\s*\\/)?>|<\\/\\w+>", "").replaceAll("\\s+|&nbsp;", " ").replaceAll("\"", "\"\"").trim();
 	}
 
 
@@ -109,17 +115,11 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		sb.append("title").append('\t');
 		sb.append("description").append('\t');
 		sb.append("link").append('\t');
-		sb.append("image_link").append("\t");
-		sb.append("additional_image_link").append("\t");
+		sb.append("image link").append('\t');
 		sb.append("availability").append('\t');
 		sb.append("price").append('\t');
-		sb.append("sale_price").append("\t");
-		sb.append("sale_price_effective_date").append("\t");
-		sb.append("sale_price_effective_date").append("\t");
-		sb.append("brand").append('\t');
-		sb.append("gtin").append('\t');
-		sb.append("MPN").append('\t');
-		sb.append("adult");
+		sb.append("sale price").append('\t');
+		sb.append("effective date");
 		return sb.toString();
 	}
 
