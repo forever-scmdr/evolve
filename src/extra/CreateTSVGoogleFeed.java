@@ -26,7 +26,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 	private static final String FEED_FILE_NAME = "feed.txt";
 	private Date now = new Date();
 	private Date later = new Date(now.getTime() + THREE_MONTHS);
-	private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DDThh:mm:ss");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DDThh:mm:ss");
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -77,12 +77,13 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		String priceParam = hasDiscount? PRICE_OLD_PARAM : PRICE_PARAM;
 		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
 		sb.append(price + " BYN");
+		//discount
 		if(hasDiscount){
 			sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
-
+			sb.append(DATE_FORMAT.format(now) +'/'+ DATE_FORMAT.format(later));
 		}
 		else{
-			sb.append("\t\t");
+			sb.append("\t");
 		}
 		return sb.toString();
 	}
