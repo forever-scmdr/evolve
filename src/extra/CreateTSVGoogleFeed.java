@@ -26,7 +26,8 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 	private static final String FEED_FILE_NAME = "feed.txt";
 	private Date now = new Date();
 	private Date later = new Date(now.getTime() + THREE_MONTHS);
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DDThh:mm:ss");
+	private SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("YYYY-MM-dd");
+	private SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm:ss");
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -64,11 +65,13 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		//title
 		sb.append('"'+(product.getStringValue(TYPE_PARAM,"")+" Metabo "+product.getStringValue(NAME_PARAM)).replaceAll("\"", "\"\"").trim() + '"').append('\t');
 		//description
-		sb.append(stripHtml(product.getStringValue(DESCRIPTION_PARAM, ""))).append('\t');
+		sb.append('"'+ stripHtml(product.getStringValue(DESCRIPTION_PARAM, ""))+'"').append('\t');
 		//link
 		sb.append(getUrlBase()+ "/" + product.getKeyUnique()).append('\t');
 		//image link
-		sb.append(getSinglePicture(product, MAIN_PIC_PARAM));
+		sb.append(getSinglePicture(product, MAIN_PIC_PARAM)).append('\t');
+		//additional image link
+		sb.append(getMultiplePictures(product, GALLERY_PARAM)).append('\t');
 		//availability
 		String av = product.getDoubleValue(QTY_PARAM, 0d) > 0.01? "in stock" : "out of stock";
 		sb.append(av).append('\t');
@@ -76,22 +79,26 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		boolean hasDiscount = product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO;
 		String priceParam = hasDiscount? PRICE_OLD_PARAM : PRICE_PARAM;
 		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
-		sb.append(price + " BYN");
+		sb.append(price + " BYN").append('\t');
 		//discount
 		if(hasDiscount){
 			sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
-			sb.append(DATE_FORMAT.format(now) +'/'+ DATE_FORMAT.format(later));
+			sb.append(DAY_FORMAT.format(now)+'T'+TIME_FORMAT.format(now) +'/'+ DAY_FORMAT.format(later)+'T'+TIME_FORMAT.format(later)).append('\t');
 		}
 		else{
-			sb.append("\t");
+			sb.append("\t\t");
 		}
+		//sb.append(product.getStringValue(CODE_PARAM)).append('\t');
+		sb.append("Metabo").append('\t');
+		//sb.append("mpn").append('\t');
+		sb.append("Adult");
 		return sb.toString();
 	}
 
 	private String getSinglePicture(Item product, String paramName){
 		String picName = product.getStringValue(paramName);
 		if(StringUtils.isBlank(picName)) return "";
-		return AppContext.getFilesUrlPath(product.isFileProtected()) + "/" + product.getRelativeFilesPath() + URLEncoder.encode(picName);
+		return getUrlBase()+ "/"+ AppContext.getFilesUrlPath(product.isFileProtected()) + product.getRelativeFilesPath() + URLEncoder.encode(picName);
 	}
 
 	private String getMultiplePictures(Item product, String paramName){
@@ -99,7 +106,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		ArrayList<String> newValues = new ArrayList<>();
 		String folder = AppContext.getFilesUrlPath(product.isFileProtected()) + product.getRelativeFilesPath();
 		for(int i=0; i < values.size() && i < 10; i++){
-			newValues.add(folder + URLEncoder.encode(values.get(i)));
+			newValues.add(getUrlBase()+ "/" + folder + URLEncoder.encode(values.get(i)));
 		}
 		return String.join(",",newValues);
 	}
@@ -117,10 +124,15 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		sb.append("description").append('\t');
 		sb.append("link").append('\t');
 		sb.append("image link").append('\t');
+		sb.append("additional image link").append('\t');
 		sb.append("availability").append('\t');
 		sb.append("price").append('\t');
 		sb.append("sale price").append('\t');
-		sb.append("effective date");
+		sb.append("effective date").append('\t');
+		//sb.append("gtin").append('\t');
+		sb.append("brand").append('\t');
+		//sb.append("mpn").append('\t');
+		sb.append("age group");
 		return sb.toString();
 	}
 
