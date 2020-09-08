@@ -207,7 +207,9 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 								if (needNewFile(currentProduct, pics[0])) {
 									if(!pics[0].equals("no-image.png")) {
 										File f = Paths.get(FILE_UPLOAD_FOLDER, pics[0].trim()).toFile();
-										currentProduct.setValue(MAIN_PIC_PARAM, f);
+										if (f.isFile()) {
+											currentProduct.setValue(MAIN_PIC_PARAM, f);
+										}
 									}
 
 								}
