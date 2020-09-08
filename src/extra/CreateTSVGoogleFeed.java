@@ -5,6 +5,7 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,6 +49,11 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 			try (Connection conn = MysqlConnector.getConnection()) {
 				while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID)).size() > 0) {
 					for (Item product : products) {
+						//fix key-unique
+						if(product.getKeyUnique().indexOf('.') != -1){
+							product.setKeyUnique(StringUtils.replaceChars(product.getKeyUnique(), '.', '_'));
+							executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreUser(true));
+						}
 						startID = product.getId();
 						writer.newLine();
 						writer.write(processProduct(product));
