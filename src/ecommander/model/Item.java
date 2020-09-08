@@ -614,6 +614,7 @@ public class Item implements ItemBasics {
 			if (StringUtils.isBlank(keyUnique)) {
 				keyUnique = Strings.translit(key);
 				if (keyUnique.length() > 99) keyUnique = keyUnique.substring(0, 98);
+				keyUnique = StringUtils.replaceChars(keyUnique, '.', '_');
 			}
 			// Если айтем новый - также сохранить oldKeyUnique
 			if (isNew())
