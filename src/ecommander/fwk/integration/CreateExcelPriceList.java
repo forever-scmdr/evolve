@@ -6,6 +6,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
+import ecommander.model.datatypes.DataType;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -409,7 +412,18 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			String paramName = param.getName();
 			if (BUILT_IN_PARAMS.contains(paramName)) continue;
 			ArrayList<Object> pv = product.getValues(paramName);
-			String value = (pv.size() == 0)? "" : (pv.size() == 1)? pv.get(0).toString() : join(pv);
+			String value = "";
+			if(param.getType() != DataType.Type.PICTURE && param.getType() != DataType.Type.FILE){
+				value = (pv.size() == 0)? "" : (pv.size() == 1)? pv.get(0).toString() : join(pv);
+			}else if(pv.size() > 0){
+				Path contextPath = Paths.get(AppContext.getFilesUrlPath(product.isFileProtected()), product.getRelativeFilesPath());
+				ArrayList<Object> sArr = new ArrayList<>();
+				for(Object o : pv){
+					Path p = contextPath.resolve(o.toString());
+					sArr.add(getUrlBase()+ "/" + p);
+				}
+				value = sArr.size() == 1? sArr.get(0).toString() : join(sArr);
+			}
 			row.createCell(++colIdx).setCellValue(value);
 		}
 		return colIdx;
