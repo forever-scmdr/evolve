@@ -53,6 +53,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 						if(product.getKeyUnique().indexOf('.') != -1){
 							product.setKeyUnique(StringUtils.replaceChars(product.getKeyUnique(), '.', '_'));
 							executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreUser(true));
+							pushLog("обновлен ключ продукта: " + product.getStringValue(CODE_PARAM));
 						}
 						startID = product.getId();
 						writer.newLine();
