@@ -6,6 +6,8 @@ import ecommander.model.ParameterDescription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Параметры, переданные через HTTP для одного айтема
@@ -28,6 +30,8 @@ public class ItemInputValues {
 						ParameterDescription param = item.getParameter(key.getParamId());
 						if (param != null) {
 							params.put(param.getName(), vals.get(o));
+						} else {
+							extras.put(key.getVarName(), vals.get(o));
 						}
 					}
 				}
@@ -81,4 +85,7 @@ public class ItemInputValues {
 		return (String) getExtra(paramName);
 	}
 
+	public Set<String> getExtraInputNames() {
+		return extras.keySet();
+	}
 }

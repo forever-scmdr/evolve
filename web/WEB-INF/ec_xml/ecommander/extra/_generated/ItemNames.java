@@ -167,6 +167,7 @@ public interface ItemNames {
         String _ITEM_NAME = "block";
         String HEADER = "header";
         String TEXT = "text";
+        String LINK = "link";
 
     }
 
@@ -367,11 +368,13 @@ public interface ItemNames {
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
+        String FILES = "files";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
-        String TUPLE_TEST = "tuple_test";
+        String LABEL = "label";
+        String EXTRA_INPUT = "extra_input";
         String GALLERY = "gallery";
 
     }
@@ -488,11 +491,13 @@ public interface ItemNames {
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
+        String FILES = "files";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
-        String TUPLE_TEST = "tuple_test";
+        String LABEL = "label";
+        String EXTRA_INPUT = "extra_input";
         String GALLERY = "gallery";
 
     }
@@ -767,11 +772,13 @@ public interface ItemNames {
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
+        String FILES = "files";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
         String TAG = "tag";
         String MARK = "mark";
-        String TUPLE_TEST = "tuple_test";
+        String LABEL = "label";
+        String EXTRA_INPUT = "extra_input";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
@@ -834,6 +841,8 @@ public interface ItemNames {
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
         String EXTRA = "extra";
+        String PARAMS_SHORT = "params_short";
+        String PARAMS_LIST = "params_list";
         String PARAMS_FILTER = "params_filter";
 
     }

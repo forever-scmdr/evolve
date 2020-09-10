@@ -44,11 +44,13 @@ public class Described_product
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
+    public final static String FILES = "files";
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
     public final static String TAG = "tag";
     public final static String MARK = "mark";
-    public final static String TUPLE_TEST = "tuple_test";
+    public final static String LABEL = "label";
+    public final static String EXTRA_INPUT = "extra_input";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -618,6 +620,22 @@ public class Described_product
         return containsValue("extra_xml", value);
     }
 
+    public void add_files(File value) {
+        setValue("files", value);
+    }
+
+    public List<File> getAll_files() {
+        return getFileValues("files", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_files(File value) {
+        removeEqualValue("files", value);
+    }
+
+    public boolean contains_files(File value) {
+        return containsValue("files", value);
+    }
+
     public void add_text_pics(File value) {
         setValue("text_pics", value);
     }
@@ -680,6 +698,38 @@ public class Described_product
 
     public boolean contains_mark(String value) {
         return containsValue("mark", value);
+    }
+
+    public void add_label(String value) {
+        setValue("label", value);
+    }
+
+    public List<String> getAll_label() {
+        return getStringValues("label");
+    }
+
+    public void remove_label(String value) {
+        removeEqualValue("label", value);
+    }
+
+    public boolean contains_label(String value) {
+        return containsValue("label", value);
+    }
+
+    public void add_extra_input(String value) {
+        setValue("extra_input", value);
+    }
+
+    public List<String> getAll_extra_input() {
+        return getStringValues("extra_input");
+    }
+
+    public void remove_extra_input(String value) {
+        removeEqualValue("extra_input", value);
+    }
+
+    public boolean contains_extra_input(String value) {
+        return containsValue("extra_input", value);
     }
 
     public void add_gallery(File value) {

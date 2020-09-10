@@ -4,6 +4,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -30,7 +31,13 @@ public class ItemUtils {
 		Item item = null;
 		if (items.size() == 1) {
 			item = items.get(0);
-		} else if (items.size() == 0) {
+		} else if (items.size() > 1) {
+			item = items.get(items.size() - 1);
+			for (int i = 0; i < items.size() - 1; i++) {
+				transaction.addCommandUnit(ItemStatusDBUnit.delete(items.get(i)));
+			}
+			transaction.execute();
+		} else {
 			item = Item.newItem(ItemTypeRegistry.getItemType(itemName),	parentId, userId, groupId, Item.STATUS_NORMAL, false);
 			transaction.addCommandUnit(SaveItemDBUnit.get(item));
 			transaction.execute();
