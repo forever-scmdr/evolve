@@ -4,10 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.MoveItemDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -83,6 +80,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 		if (files.size() > 1) {
 			addError("Обнаружено более одного доакумента Microsoft Excel", "/upload");
+			return false;
 		}
 		File f = (File) files.toArray()[0];
 		priceWB = new ExcelPriceList(f, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE) {
@@ -240,8 +238,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										}
 										break;
 									case SEARCH_BY_CELL_VALUE:
+										cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 										mainPicPath = picsFolder.resolve(cellValue);
-										product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+										if( mainPicPath.toFile().isFile()) {
+											product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
+										}else{
+											pushLog("No file: " + mainPicPath.toAbsolutePath());
+										}
 										break;
 									case DOWNLOAD: {
 										if (StringUtils.isNotBlank(cellValue)) {
@@ -266,8 +269,17 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									s = s.trim();
 									switch (withPictures) {
 										case SEARCH_BY_CELL_VALUE:
-											File p = picsFolder.resolve(s).toFile();
-											if (p.exists() && p.isFile()) product.setValue(paramName, p);
+											//ANTI-DOLBOEB fix
+											s = (StringUtils.startsWith(s, getUrlBase()))? s.replace(getUrlBase(), "") : s;
+											if (StringUtils.startsWith(s,"http://") || StringUtils.startsWith(s,"https://")) {
+
+												URL url = new URL(s);
+												product.setValue(paramName, url);
+											} else {
+												s = StringUtils.replaceChars(s, '\\', System.getProperty("file.separator").charAt(0));
+												File p = picsFolder.resolve(s).toFile();
+												if (p.isFile()) product.setValue(paramName, p);
+											}
 											break;
 										case DOWNLOAD:
 											if (StringUtils.isBlank(s)) continue;
@@ -289,14 +301,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									for (String val : values) {
 										product.setValueUI(paramName, val);
 									}
-
 								} else {
 									product.setValueUI(paramName, cellValue);
 								}
 							}
 						}
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
-
+						if(isProduct) currentProduct = product;
 						//MANUALS
 						for (String header : headers) {
 							if (CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)) {
@@ -327,7 +338,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
-								if(isProduct) currentProduct = product;
 							}
 						}
 
@@ -353,21 +363,23 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							} else if (MAIN_PIC_PARAM.equals(paramName)) {
 								Object mainPic = product.getValue(MAIN_PIC_PARAM, "");
+								File mainPicFile = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+								if(!mainPicFile.isFile()) product.clearValue(MAIN_PIC_PARAM);
 
-								if (mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
+								if (mainPicFile.isFile() && mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
 									continue;
 
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
-									File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
-									if (mainPicFile.exists()) {
+									mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
+									if (mainPicFile.isFile()) {
 										product.setValue(MAIN_PIC_PARAM, mainPicFile);
-										product.clearValue("medium_pic");
+//										product.clearValue("medium_pic");
 										product.clearValue("small_pic");
 									}
 								} else if (StringUtils.isBlank(mainPic.toString())) {
 									switch (withPictures) {
 										case SEARCH_BY_CODE:
-											File mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
+											mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 											if (mainPicFile.exists()) {
 												product.setValue(MAIN_PIC_PARAM, mainPicFile);
 												product.clearValue("medium_pic");
@@ -375,12 +387,22 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											}
 											break;
 										case SEARCH_BY_CELL_VALUE:
-											if (StringUtils.isBlank(cellValue)) break;
-											mainPicFile = picsFolder.resolve(cellValue).toFile();
-											if (mainPicFile.exists()) {
-												product.setValue(MAIN_PIC_PARAM, mainPicFile);
-												product.clearValue("medium_pic");
-												product.clearValue("small_pic");
+											//ANTI-DOLBOEB fix
+											cellValue = (StringUtils.startsWith(cellValue, getUrlBase()))? cellValue.replace(getUrlBase(), "") : cellValue;
+											if(StringUtils.startsWith(cellValue,"http://") || StringUtils.startsWith(cellValue,"https://")) {
+												URL url = new URL(cellValue);
+												product.setValue(paramName, url);
+											} else {
+												if (StringUtils.isBlank(cellValue)) break;
+												cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
+												mainPicFile = picsFolder.resolve(cellValue).toFile();
+												if (mainPicFile.isFile()) {
+													product.setValue(MAIN_PIC_PARAM, mainPicFile);
+													//product.clearValue("medium_pic");
+													product.clearValue("small_pic");
+												} else {
+													pushLog("No file: " + mainPicFile.getAbsolutePath());
+												}
 											}
 											break;
 										case DOWNLOAD:
@@ -586,15 +608,19 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				for (String s : apv) {
 					if (StringUtils.isBlank(s)) continue;
 					s = s.replace(";", "").trim();
+					s = StringUtils.startsWith(s, getUrlBase())? s.replace(getUrlBase(), "") : s;
 					if (StringUtils.isBlank(s)) continue;
 					if (StringUtils.startsWith(s, "https://") || StringUtils.startsWith(s, "http://")) {
 						URL url = new URL(s);
 						existingFiles.add(url);
 					}
 					else{
+						s = StringUtils.replaceChars(s, '\\', System.getProperty("file.separator").charAt(0));
 						File f = folder.resolve(s).toFile();
-						if (f.exists()) {
+						if (f.isFile()) {
 							existingFiles.add(f);
+						}else{
+							pushLog("No File: " + f.getAbsolutePath());
 						}
 					}
 				}
@@ -763,6 +789,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 	@Override
 	protected void integrate() throws Exception {
+/*
+		setOperation("Удаление старых записей. Подождите!");
+		CleanDeletedItemsDBUnit delete = new CleanDeletedItemsDBUnit(15000);
+		executeAndCommitCommandUnits(delete);
+*/
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Обновлние каталога");

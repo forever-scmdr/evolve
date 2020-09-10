@@ -21,6 +21,8 @@ public class Section
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
     public final static String EXTRA = "extra";
+    public final static String PARAMS_SHORT = "params_short";
+    public final static String PARAMS_LIST = "params_list";
     public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
@@ -204,6 +206,38 @@ public class Section
 
     public boolean contains_extra(String value) {
         return containsValue("extra", value);
+    }
+
+    public void set_params_short(String value) {
+        setValue("params_short", value);
+    }
+
+    public String get_params_short() {
+        return getStringValue("params_short");
+    }
+
+    public String getDefault_params_short(String defaultVal) {
+        return getStringValue("params_short", defaultVal);
+    }
+
+    public boolean contains_params_short(String value) {
+        return containsValue("params_short", value);
+    }
+
+    public void set_params_list(String value) {
+        setValue("params_list", value);
+    }
+
+    public String get_params_list() {
+        return getStringValue("params_list");
+    }
+
+    public String getDefault_params_list(String defaultVal) {
+        return getStringValue("params_list", defaultVal);
+    }
+
+    public boolean contains_params_list(String value) {
+        return containsValue("params_list", value);
     }
 
 }

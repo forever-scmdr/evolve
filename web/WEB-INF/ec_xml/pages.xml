@@ -134,7 +134,7 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="prod"/>
 		</link>
-		<single item="params"/>
+		<list item="params"/>
 	</include-definition>
 
 
@@ -229,6 +229,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
+				<var name="tag" var="tag"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -263,9 +264,12 @@
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="key" var="sec"/>
+				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">
+					<var name="tag" var="tag"/>
 					<var name="tag" parameter="tag" ref="tag"/>
+				</link>
+				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">
+					<var name="-tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
 			<list item="product" tag="mark" id="mark" assoc="* catalog_link">
@@ -513,6 +517,7 @@
 			</link>
 			<single item="seo" assoc="seo"/>
 			<single item="product_extra"/>
+			<list item="params_xml"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="cur_sec" style="key"/>
@@ -558,6 +563,14 @@
 			</link>
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="prod" ref="assoc"/>
+			</link>
+		</list>
+		<list item="product" tag="grouped" id="grouped">
+			<filter>
+				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="grouped" style="key"/>
 			</link>
 		</list>
 		<include name="COMMON"/>
@@ -903,6 +916,8 @@
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
+					<extra-input ref="bought" name="extra1"/>
+					<extra-input ref="bought" name="extra2"/>
 				</list>
 			</single>
 		</session>
@@ -1082,6 +1097,7 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
+			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -1729,20 +1745,20 @@
 
 
 
-	<page name="tuples">
-		<request>
-			<var name="direct_search" value="тест ключ"/>
-		</request>
-		<single item="product" tag="direct" id="prod">
-			<filter>
-				<parameter name="tuple_test"><var var="direct_search" /></parameter>
-			</filter>
-		</single>
-		<list item="product" tag="search">
-			<filter>
-				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>
-			</filter>
-		</list>
-	</page>
+<!--	<page name="tuples">-->
+<!--		<request>-->
+<!--			<var name="direct_search" value="тест ключ"/>-->
+<!--		</request>-->
+<!--		<single item="product" tag="direct" id="prod">-->
+<!--			<filter>-->
+<!--				<parameter name="tuple_test"><var var="direct_search" /></parameter>-->
+<!--			</filter>-->
+<!--		</single>-->
+<!--		<list item="product" tag="search">-->
+<!--			<filter>-->
+<!--				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>-->
+<!--			</filter>-->
+<!--		</list>-->
+<!--	</page>-->
 
 </site>

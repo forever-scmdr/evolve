@@ -1,0 +1,292 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 24px;
+}
+.grid_cols_3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+.grid_cols_8 {
+	grid-template-columns: repeat(8, 1fr);
+}
+@media (max-width: 425px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+	.grid_cols_8 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+
+
+
+/*device card*/
+.card {
+	box-shadow: -1px 0 0 0 #e6e6e6 inset, 0 -1px 0 0 #e6e6e6 inset, -1px -1px 0 0 #e6e6e6, -1px 0 0 0 #e6e6e6, 0 -1px 0 0 #e6e6e6;
+	padding: 8px;
+	position: relative;
+	background-color: #fff;
+}
+.card > * {
+	margin: 0;
+}
+.device_card {
+	text-align: center;
+	display: flex !important; /* override special items d-b */
+	flex-direction: column;
+	overflow: hidden; /* long titles w/a spaces */
+}
+.device_card > * {
+	margin-bottom: 8px;
+}
+.imgg__container {
+	position: relative;
+	display: block;
+}
+.imgg__container:before {
+	display: block;
+	width: 100%;
+	padding-top: 100%;
+	content: '';
+}
+.device__imgg {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+.price {
+	display: flex;
+}
+.price_device {
+	justify-content: center;
+	align-items: baseline;
+}
+.price_old {
+	font-size: .8em;
+	text-decoration: line-through;
+	color: #555;
+}
+.order_card {
+	margin-top: auto;
+}
+.device_card .price_old {
+	margin-left: 16px;
+	margin-right: unset; /*conflict app.css*/
+}
+.actions_device {
+	display: flex;
+	justify-content: space-around;
+}
+
+.tags_card {
+	position: absolute;
+	top: 0;
+	left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.tags_card .tag {
+	padding: 2px 6px;
+	background-color: #f2f2f2;
+	font-size: .8em;
+	margin: 8px 0 0 8px;
+	text-align: left;
+	text-transform: capitalize;
+}
+.tags_row {
+	display: flex;
+	margin-bottom: 8px;
+}
+.tags_row .tag {
+	padding: 2px 6px;
+	background-color: #f2f2f2;
+	font-size: .8em;
+	margin: 8px 8px 0 0;
+	text-align: left;
+	text-transform: capitalize;
+}
+
+.zoom-icon_card {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+.card input[type="number"] {
+	width: 40px;
+	margin-right: 4px;
+}
+ 
+
+
+.device_row {
+	display: flex;
+}
+.device_row > div {
+	margin-right: 16px !important;
+	position: relative;
+}
+.device_row > div:last-child {
+	margin-right: 0 !important;
+}
+.device_row > div:nth-child(2) {
+	flex: 1;
+}
+
+
+.view-container + .catalog-items {
+	grid-gap: 0;
+	grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 425px) {
+	.view-container + .catalog-items {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+.catalog-items.lines {
+	display: block;
+}
+
+/* main page special items */
+.slick-track {
+	display: flex !important;
+}
+.slick-slide {
+	height: unset !important;
+}
+
+
+/* typo */
+.text_sm {
+	font-size: .8em;
+}
+
+
+
+.container-fluid {
+	width: 100%;
+}
+
+
+
+/* banners custom styles */
+
+.about__title {
+	font-size: 24px;
+}
+
+section.gallery {
+	background-color: #e9e5dd;
+}
+
+.utp__item {
+	box-shadow: none;
+}
+.utp__image {
+	display: flex;
+	justify-content: center;
+	padding: 24px;
+}
+.utp__image img {
+	width: 70px;
+	height: 70px;
+}
+
+
+.logos__item {
+	box-shadow: none;
+}
+
+
+.block__header {
+	margin-bottom: 32px;
+}
+
+
+.block__title,
+.block__subtitle {
+	text-align: center;
+}
+
+.block__title {
+	font-weight: 700;
+	font-size: 32px;
+	text-transform: uppercase;
+}
+
+
+.banner__title_left {
+	text-align: left;
+}
+.banner__text {
+	font-size: 14px;
+	line-height: 150%;
+}
+.banner__link {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+
+
+.footer__column ul {
+	column-count: 2;
+	padding-left: 0;
+}
+.footer__column li {
+	list-style: none;
+	margin-bottom: 4px;
+}
+.footer__column a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+
+
+@media (max-width: 425px) {
+	.hero .container {
+		margin-left: unset;
+		margin-right: unset;
+	}
+	.fotorama {
+		margin-bottom: unset;
+	}
+	.pb {
+		padding-bottom: 16px;
+	}
+	.ptb {
+		padding-top: 16px;
+		padding-bottom: 16px;
+	}
+	.block__header {
+		margin-bottom: 24px;
+	}
+	.block__title {
+		font-size: 24px;
+		line-height: 1.2;
+	}
+	.block__subtitle {
+		font-size: 15px;
+		line-height: 1.2;
+		margin-top: 16px;
+	}
+	.block-title {
+		margin-bottom: 16px;
+		padding-bottom: unset;
+
+	}
+	.grid_cols_8 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}

@@ -140,7 +140,7 @@ $(document).on('click', '.show-sub',function(e){
 
 $(document).on("click", "body", function(e){
 	var trg = $(e.target);
-	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")){
+	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub") && trg.closest(".show-sub").length == 0){
 		$(".popup-text-menu").hide();
 	}
 });
@@ -171,3 +171,12 @@ function clearProductAjax() {
 	$("#product-ajax-popup").html(html);
 	$("#product-ajax-popup").hide();
 }
+
+$("a.tab").click(function() {
+	$("div.tab-container").hide(0);
+	$("a.tab").removeClass("tab_active");
+	var showSelector = $(this).attr("href");
+	$(showSelector).show("fade", 150);
+	$(this).addClass("tab_active");
+	return false;
+});

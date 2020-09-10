@@ -340,6 +340,14 @@ public abstract class BasicCartManageCommand extends Command {
 					getSessionMapper().removeItems(bought.getId());
 				}
 			}
+			// Добавление в bought значений дополнительных инпутов
+			for (String extraInputName : vals.getExtraInputNames()) {
+				bought.setExtra(extraInputName, null);
+				bought.setExtra(extraInputName, vals.getExtra(extraInputName));
+			}
+			if (vals.getExtraInputNames().size() > 0) {
+				getSessionMapper().saveTemporaryItem(bought);
+			}
 		}
 	}
 
