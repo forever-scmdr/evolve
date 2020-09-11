@@ -47,6 +47,12 @@
         <xsl:value-of select="f:rub_kop($price, '&#160;руб.&#160;', '&#160;коп.')"/>
     </xsl:function>
 
+    <!--  <xsl:function name="f:strip_html" as="xs:string">
+        <xsl:param name="str" as="xs:string?"/>
+        <xsl:variable name="html" select="parse($str)"/>
+        <xsl:sequence select="if($str and $str != '') then $html else ''"/>
+     </xsl:function> -->
+
     <xsl:template name="rub_kop_unit">
         <xsl:param name="price" as="xs:string"/>
         <xsl:param name="rub" as="xs:string" select="'&#x20;руб.&#x20;'"/>
@@ -77,6 +83,8 @@
             </xsl:if>
         </div>
     </xsl:template>
+
+
 
     <xsl:template match="/">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html"&gt;

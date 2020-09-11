@@ -509,7 +509,9 @@
 							<input type="submit" class="not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
-					 <a href="{defer_link}" class="online-button" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer">Онлайн-рассрочка</a>
+					 <a href="{defer_link}" class="online-button" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer">Оплата картой рассрочки
+						<span style="display: block; font-size: 1.2rem;">*цена без скидки</span>
+					 </a>
 				</div>
 				<!--<xsl:choose>-->
 					<!--<xsl:when test="qty and qty != '0'"><div class="quantity">Осталось <xsl:value-of select="qty"/> шт.</div></xsl:when>-->

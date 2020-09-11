@@ -17,8 +17,10 @@
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="price" select="if($discount_time) then format-number(f:num($p/price)*$discount, '#0.00') else $p/price"/>
 	<xsl:variable name="price_old" select="if($discount_time) then $p/price else $p/price_old"/>
+	<xsl:variable name="google_price" select="if(f:num($price_old) != 0) then $price_old else $price"/>
 
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
+	<xsl:variable name="avail" select="if(f:num($p/available) &gt; 0) then 'InStock' else 'OutOfStock'"/>
 
 	<xsl:template name="MARKUP">
 
@@ -28,13 +30,15 @@
 			"@context": "http://schema.org/",
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/gallery[1], $quote)" />,
+			"image": <xsl:value-of select="concat($quote, $base, '/', $p/@path, $p/main_pic, $quote)" />,
 			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
-			<xsl:if test="f:num($p/price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($p/price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($p/price) = 0">"price":"15000.00"</xsl:if>
+			<xsl:if test="f:num($p/price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($google_price), $quote)" /></xsl:if>
+			<xsl:if test="f:num($p/price) = 0">"price":"15000.00"</xsl:if>,
+			"availability": <xsl:value-of select="concat($quote,$avail, $quote)" />,
+			"description" : <xsl:value-of select="concat($quote, normalize-space($p/description), $quote)" />
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
@@ -101,10 +105,13 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
 					<div class="price">
-						<xsl:if test="$price_old and not($price_old = '')"><p><span>Цена</span><b>
-							<xsl:value-of select="$price_old"/> р.</b></p></xsl:if>
+						<p class="price-old-{code} price-old-page" style="{if($price_old and not($price_old = '')) then '' else 'display: none;'}">
+							<span>Цена</span>
+							<b id="price-old-{code}" class="op"><xsl:value-of select="if($price_old != '') then concat($price_old, ' р.') else ''"/></b>
+						</p>
+					<!-- </xsl:if> -->
 						<p>
-							<xsl:if test="$price_old and not($price_old = '')"><span>Цена со скидкой</span></xsl:if>
+						<span class="price-old-{code} price-old-page" style="{if($price_old and not($price_old = '')) then '' else 'display: none;'}">Цена со скидкой</span>
 							<e class="price-highlight" id="price-{$p/code}" data-price="{f:num($price)}" ><xsl:value-of select="if ($price) then $price else '0'"/> р.</e>
 						</p>
 					</div>
@@ -125,7 +132,9 @@
 						</form>
 					</div>
 
-					<a href="{$p/defer_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer" class="online-button product-button">Онлайн-рассрочка</a>
+					<a href="{$p/defer_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-defer" class="online-button product-button">Оплата картой рассрочки
+						<span style="display: block; font-size: 1.2rem;">*цена без скидки</span>
+					</a>
 					
 <!--					<xsl:choose>-->
 <!--						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>-->
