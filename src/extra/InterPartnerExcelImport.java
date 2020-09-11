@@ -3,6 +3,7 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.ExcelTableData;
+import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateExcelPriceList;
@@ -387,13 +388,21 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			cellValue = cellValue.replace(getUrlBase(), "").trim();
 			if (cellValue.matches("^(https?|ftp)://.*$")) {
 				URL url = new URL(cellValue);
-				product.setValue(paramName, url);
+				String name = StringUtils.substringAfterLast(cellValue, "/");
+				name = StringUtils.substringBefore(name, "?");
+				ArrayList<String> existingValues = product.outputValues(paramName);
+				if(!existingValues.contains(Strings.createFileName(name))) {
+					product.setValue(paramName, url);
+				}
 			} else {
 				try {
 					cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 					Path mainPicPath = picsFolder.resolve(cellValue);
 					if (mainPicPath.toFile().isFile()) {
-						product.setValue(paramName, mainPicPath.toFile());
+						ArrayList<String> existingValues = product.outputValues(paramName);
+						if(!existingValues.contains(Strings.createFileName(mainPicPath.toFile().getName()))) {
+							product.setValue(paramName, mainPicPath.toFile());
+						}
 					} else if (StringUtils.isNotBlank(cellValue)) {
 						pushLog("No file: " + mainPicPath.toAbsolutePath());
 					}
