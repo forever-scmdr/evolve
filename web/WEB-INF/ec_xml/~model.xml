@@ -94,18 +94,20 @@
 		<child item="seo" single="true"/>
 		<child item="stores" single="true"/>
 		<child item="section" />
-<!--		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />-->
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
-<!--		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />-->
-		<on-update class="ecommander.fwk.CopyToUpload"/>
+		<!-- <parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" /> -->
+		<!-- <parameter name="date" type="date" caption="Дата обновления каталога" format=""/> -->
+		
+		<!-- <parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" /> -->
+		<!-- <on-update class="ecommander.fwk.CopyToUpload"/> -->
 	</item>
 
-	<item name="stores" caption="Склады" ag-id="4923" ag-hash="-892066894">
+	<item name="stores" caption="Склады" ag-id="4923" ag-hash="-892066894" >
 		<parameter name="date" type="date" format="dd.MM.yyyy" caption="Дата последнего обновления"/>
 		<child item="store" />
 	</item>
 
-	<item name="store" key="name" caption="Склад" ag-id="4924" ag-hash="109770977">
+	<item name="store" key="name" caption="Склад" ag-id="4924" ag-hash="109770977" >
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="number" type="integer" caption="Номер"/>
 		<parameter name="file_hash" type="integer" caption="Хэш файла"/>
@@ -115,7 +117,6 @@
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 		<on-create class="ecommander.fwk.CopyToUpload"/>
 	</item>
-
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
@@ -137,8 +138,8 @@
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
+		<parameter name="date" type="long" caption="Дата последнего обновления"/>
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
-		<parameter name="date" type="long" caption="Дата последнего обновления" />
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="price_1" type="currency" caption="Цена склад 1"/>
 		<parameter name="price_2" type="currency" caption="Цена склад 2"/>
@@ -147,6 +148,7 @@
 		<parameter name="qty_1" type="double" caption="Количество на складе 1"/>
 		<parameter name="qty_2" type="double" caption="Количество на складе 2"/>
 		<parameter name="qty_3" type="double" caption="Количество на складе 3"/>
+		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 	</item>
 
@@ -175,12 +177,12 @@
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
-		<parameter name="tag" type="plain-text" caption="Тэг" multiple="true" text-index="fulltext"/>
+		<parameter name="tag" type="plain-text" caption="Тэг" multiple="true" />
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
-		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
-		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<!-- <on-update class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/> -->
 	</item>
 
 
@@ -442,6 +444,12 @@
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
 		<child item="product_side" single="true"/>
+		<child item="product_phone"/>
+	</item>
+
+	<item name="product_phone" key="phone" caption="Телефон для связи" description="В карточке товара" ag-id="5687" ag-hash="1382923806">
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="address" type="string" caption="Адрес"/>
 	</item>
 
 	<item name="product_side" caption="В карточке товара" ag-id="1834" ag-hash="1014531751" >
@@ -565,8 +573,8 @@
 		<child item="custom_page"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
-		<child item="seo" single="true"/>
+	<item name="custom_page" super="* seo_container" caption="Одиночная страница" key="header" key-unique="true" default-page="page" ag-id="27" ag-hash="-1777660259">
+		<!-- <child item="seo" single="true"/> -->
 		<child item="custom_page"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
