@@ -126,6 +126,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			}
 		}
 		date = stores.getLongValue("date");
+		fixGallery();
 		hideProducts();
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
@@ -135,6 +136,49 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
+	}
+
+	private void fixGallery() throws Exception {
+		setOperation("Очитска галерей");
+		info.setProcessed(0);
+		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, 0);
+		long id = 0;
+		while (products.size() > 0){
+			for (Item product : products) {
+				if(isBadGallery(product)){
+					fixSingleProductGallery(product);
+				}
+				id = product.getId();
+				info.increaseProcessed();
+			}
+			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
+		}
+	}
+
+	private void fixSingleProductGallery(Item product) throws Exception {
+		ArrayList<String> outputValues = product.outputValues(GALLERY_PARAM);
+		HashSet<String> distinct = new HashSet<>();
+		distinct.addAll(outputValues);
+		for (String v : distinct){
+			int counter = 0;
+			for(String ex : outputValues){
+				if(ex.equals(v)) counter++;
+				if(counter > 1){
+					product.removeEqualValue(GALLERY_PARAM, ex);
+				}
+			}
+		}
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreFileErrors().ignoreUser().noFulltextIndex());
+	}
+
+	private boolean isBadGallery(Item product){
+		ArrayList<String> outputValues = product.outputValues(GALLERY_PARAM);
+		if(outputValues.size() > 1){
+			HashSet<String> distinct = new HashSet<>();
+			distinct.addAll(outputValues);
+			return outputValues.size() != distinct.size();
+		}
+		return false;
 	}
 
 	private void hideProducts() throws Exception {
@@ -152,7 +196,6 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				if(productModificationDate < date && product.getStatus() == Item.STATUS_NORMAL){
 					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
 				}
-				info.increaseProcessed();
 				info.increaseProcessed();
 			}
 			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
@@ -286,7 +329,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					} else if (GALLERY_PARAM.equalsIgnoreCase(paramName) || TEXT_PICS_PARAM.equalsIgnoreCase(paramName)) {
 						if (StringUtils.isBlank(cellValue)) continue;
 						String[] arr = cellValue.split(CreateExcelPriceList.VALUE_SEPARATOR);
-						for (String s : arr) {
+						LinkedHashSet<String> distinctList = new LinkedHashSet<>();
+						distinctList.addAll(Arrays.asList(arr));
+						for (String s : distinctList) {
 							setPicture(s.trim(), paramName, product);
 						}
 					} else if (QTY_PARAM.equalsIgnoreCase(paramName)) {
