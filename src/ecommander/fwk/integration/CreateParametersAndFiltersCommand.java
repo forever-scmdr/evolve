@@ -266,7 +266,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 										String value = StringUtils.trim(valueEl.ownText());
 										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
 										if (StringUtils.isNotBlank(valuePair.getRight())) {
-											value = value.split("\\s")[0];
+											value = value.split("\\s*[^0-9\\.,]")[0];
 										}
 										params.setValueUI(name, value);
 									}
@@ -290,5 +290,6 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
+		System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
 	}
 }
