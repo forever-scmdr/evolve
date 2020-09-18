@@ -8,6 +8,7 @@ import ecommander.model.Item;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedWriter;
@@ -24,7 +25,7 @@ import java.util.Date;
 
 public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 	private Path feed;
-	private static final long THREE_MONTHS = 90L*24L*60L*60L*1000L;
+	private static final long THREE_MONTHS = 7L*24L*60L*60L*1000L;
 	private static final String FEED_FILE_NAME = "feed_2.txt";
 	private Date now = new Date();
 	private Date later = new Date(now.getTime() + THREE_MONTHS);
@@ -53,7 +54,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 						//fix key-unique
 						if (product.getKeyUnique().indexOf('.') != -1) {
 							product.setKeyUnique(StringUtils.replaceChars(product.getKeyUnique(), '.', '_'));
-							executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreUser(true));
+							executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra().ignoreUser(true));
 							pushLog("обновлен ключ продукта: " + product.getStringValue(CODE_PARAM));
 						}
 						startID = product.getId();
@@ -65,6 +66,10 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 					}
 				}
 			}
+			String commonDate = DAY_FORMAT.format(later);
+			Item common = ItemQuery.loadSingleItemByName(ItemNames.COMMON);
+			common.setValue("price_valid", commonDate);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(common).noFulltextIndex().ignoreUser().noTriggerExtra().ignoreFileErrors());
 		}
 	}
 
@@ -94,23 +99,23 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		String av = product.getByteValue(AVAILABLE_PARAM, (byte)0) > 0? "in stock" : "out of stock";
 		sb.append(av).append('\t');
 		//price
-//		boolean hasDiscount = product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO;
-//		String priceParam = hasDiscount? PRICE_OLD_PARAM : PRICE_PARAM;
-//		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
-//		sb.append(price + " BYN").append('\t');
-		sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
+		boolean hasDiscount = product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO;
+		String priceParam = hasDiscount? PRICE_OLD_PARAM : PRICE_PARAM;
+		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		sb.append(price + " BYN").append('\t');
+		//sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
 		//discount
-//		if(hasDiscount){
-//			sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
-//			sb.append(DAY_FORMAT.format(now)+'T'+TIME_FORMAT.format(now) +'/'+ DAY_FORMAT.format(later)+'T'+TIME_FORMAT.format(later)).append('\t');
-//		}
-//		else{
-//			sb.append("\t\t");
-//		}
+		if(hasDiscount){
+			sb.append(product.getDecimalValue(PRICE_PARAM)+" BYN").append('\t');
+			sb.append(DAY_FORMAT.format(now)+'T'+TIME_FORMAT.format(now) +'/'+ DAY_FORMAT.format(later)+'T'+TIME_FORMAT.format(later)).append('\t');
+		}
+		else{
+			sb.append("\t\t");
+		}
 		//sb.append(product.getStringValue(CODE_PARAM)).append('\t');
-		sb.append("Metabo").append('\t');
+		sb.append("Metabo");//.append('\t');
 		//sb.append("mpn").append('\t');
-		sb.append("Adult");
+		//sb.append("Adult");
 		return sb.toString();
 	}
 
@@ -153,12 +158,12 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		sb.append("additional image link").append('\t');
 		sb.append("availability").append('\t');
 		sb.append("price").append('\t');
-		//sb.append("sale price").append('\t');
-		//sb.append("effective date").append('\t');
+		sb.append("sale price").append('\t');
+		sb.append("effective date").append('\t');
 		//sb.append("gtin").append('\t');
-		sb.append("brand").append('\t');
+		sb.append("brand");//.append('\t');
 		//sb.append("mpn").append('\t');
-		sb.append("age group");
+		//sb.append("age group");
 		return sb.toString();
 	}
 
