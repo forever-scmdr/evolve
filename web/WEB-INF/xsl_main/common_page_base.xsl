@@ -798,6 +798,10 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template match="page_extra_code" mode="content">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+	</xsl:template>
+
 	<xsl:template match="common_gallery" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
 			<a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a>
