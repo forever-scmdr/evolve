@@ -786,71 +786,86 @@
 
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block" mode="content"/>
+		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block | page_extra_code" mode="content"/>
 	</xsl:template>
 
 	<xsl:template match="page_text" mode="content">
-		<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="common_gallery" mode="content">
-		<div id="nanogallery{@id}">
-			<script>
-				$(document).ready(function () {
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a>
+		</xsl:if>
+		<div id="spoiler-{@id}">
+			<div id="nanogallery{@id}">
+				<script>
+					$(document).ready(function () {
 
-					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-						// ### gallery settings ###
-						thumbnailHeight:  <xsl:value-of select="height"/>,
-						thumbnailWidth:   <xsl:value-of select="width"/>,
-						thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-						thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-						thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-						thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-						viewerToolbar: { display: false },
-						galleryLastRowFull:  false,
+						$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+							// ### gallery settings ###
+							thumbnailHeight:  <xsl:value-of select="height"/>,
+							thumbnailWidth:   <xsl:value-of select="width"/>,
+							thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+							thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+							thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+							thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+							viewerToolbar: { display: false },
+							galleryLastRowFull:  false,
 
-						// ### gallery content ###
-						items: [
-						<xsl:for-each select="picture">
-							{
-								src: '<xsl:value-of select="concat(@path, pic)"/>',
-								srct: '<xsl:value-of select="concat(@path, pic)"/>',
-								title: '<xsl:value-of select="header"/>'
-							},
-						</xsl:for-each>
-						]
+							// ### gallery content ###
+							items: [
+							<xsl:for-each select="picture">
+								{
+									src: '<xsl:value-of select="concat(@path, pic)"/>',
+									srct: '<xsl:value-of select="concat(@path, pic)"/>',
+									title: '<xsl:value-of select="header"/>'
+								},
+							</xsl:for-each>
+							]
+						});
 					});
-				});
-			</script>
+				</script>
+			</div>
 		</div>
 	</xsl:template>
 
 
 	<xsl:template match="simple_gallery" mode="content">
-		<div id="nanogallery{@id}">
-			<script>
-				$(document).ready(function () {
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a>
+		</xsl:if>
+		<div id="spoiler-{@id}">
+			<div id="nanogallery{@id}">
+				<script>
+					$(document).ready(function () {
 
-					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-						// ### gallery settings ###
-						thumbnailHeight:  <xsl:value-of select="height"/>,
-						thumbnailWidth:   <xsl:value-of select="width"/>,
-						thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-						thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-						thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-						thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-						viewerToolbar: { display: false },
-						galleryLastRowFull:  false,
+						$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+							// ### gallery settings ###
+							thumbnailHeight:  <xsl:value-of select="height"/>,
+							thumbnailWidth:   <xsl:value-of select="width"/>,
+							thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+							thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+							thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+							thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+							viewerToolbar: { display: false },
+							galleryLastRowFull:  false,
 
-						// ### gallery content ###
-						items: [
-						<xsl:for-each select="pic">
-						{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
-						</xsl:for-each>
-						]
+							// ### gallery content ###
+							items: [
+							<xsl:for-each select="pic">
+							{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
+							</xsl:for-each>
+							]
+						});
 					});
-				});
-			</script>
+				</script>
+			</div>
 		</div>
 	</xsl:template>
 
