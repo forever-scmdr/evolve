@@ -14,6 +14,7 @@
 
 	<xsl:variable name="news_items" select="/page/news_item | page/news_wrap/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
+	<xsl:variable name="small_news_parts" select="/page/text_part[small_news_item]"/>
 
 	<xsl:variable name="small_news" select="page/small_news_item | page/small_news/small_news_item"/>
 	<xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" />
@@ -37,7 +38,7 @@
 					</xsl:if>
 				</div>
 			</xsl:if>
-			<xsl:if test="count($small_news) &gt; 0">
+			<xsl:if test="count($small_news | $small_news_parts) &gt; 0">
 				<div class="row narrow">
 					<div class="col-full s-content__header" data-aos="fade-up">
 						<h1>
@@ -74,6 +75,7 @@
 								<div class="three-col-border"></div>
 							</xsl:if>
 						</xsl:for-each>
+						<xsl:apply-templates select="$small_news_parts" mode="masonry"/>
 					</div>
 					<xsl:if test="page/small_news/small_news_item_pages">
 						<xsl:variable name="last" select="count(page/small_news/small_news_item_pages/page)"/>
@@ -136,9 +138,14 @@
 	<xsl:template match="text_part" mode="masonry">
 		<xsl:variable name="nid" select="news_item/@id"/>
 		<xsl:variable name="cid" select="news_item/@id"/>
+		<xsl:variable name="snid" select="small_news_item/@id"/>
+		<xsl:variable name="scid" select="small_news_item/@id"/>
 		<xsl:if test="not($news_items[@id = $nid])">
 			<xsl:apply-templates select="news_item" mode="masonry"/>
 		</xsl:if>
+		<!-- <xsl:if test="not($small_news[@id = $snid])"> -->
+			<xsl:apply-templates select="small_news_item" mode="masonry"/>
+		<!-- </xsl:if> -->
 	</xsl:template>
 
 	<xsl:template match="small_news_item" mode="masonry">
@@ -147,7 +154,7 @@
 				<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 			</p>
 			<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
-				<a href="{show_small_news_item}">
+				<a href="{show_page}">
 					<xsl:value-of select="name"/>
 				</a>
 			</p>

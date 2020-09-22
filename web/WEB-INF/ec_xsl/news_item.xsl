@@ -125,8 +125,21 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 						<!-- Telegram -->
 						<p class="_article_paragraph article_paragraph"><strong>Подписывайтесь на наш <a href="https://t.me/temptingpro" target="_blank">Telegram-канал</a> и получайте актуальную информацию из мира новостей еще быстрее.</strong></p>
 						<xsl:if test="$ni/author != ''">
+							<xsl:variable name="author">
+								<xsl:choose>
+									<xsl:when test="starts-with($ni/author, 'Алина')">
+										<xsl:value-of select="concat('Подготовила: ', $ni/author)"/>
+									</xsl:when>
+									<xsl:when test="starts-with($ni/author, 'Подготовил')">
+										<xsl:value-of select="$ni/author"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat('Подготовил: ' , $ni/author)"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
 							<p>
-								<em>Автор: <xsl:value-of select="$ni/author"/></em>
+								<em><xsl:value-of select="$author"/></em>
 							</p>
 						</xsl:if>
 					</div>
@@ -138,7 +151,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 								 <span>Теги</span>
 								 <span class="s-content__tag-list">
 									 <xsl:for-each select="$ni/tag">
-										 <a href="{concat('tag/?tag=', .)}">
+										 <a href="{concat('tag/?tag=', replace(., '&amp;', '%26'))}">
 											 <xsl:value-of select="."/>
 										 </a>
 									 </xsl:for-each>
@@ -207,10 +220,9 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 						</a>
 					</div>
 				</div>
+
 			</article>
-
 			<xsl:call-template name="COMMENTS"/>
-
 		</section>
 
 		<!-- popular_posts -->
@@ -260,61 +272,28 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 4
 	</xsl:template>
 
 	<xsl:template name="COMMENTS">
-		<xsl:if test="$ni/comments">
-			<div class="comments-wrap">
-				<div id="comments" class="row">
-					<div class="col-full">
-						<xsl:if test="$ni/comments/comment">
-							<h3 class="h2"><xsl:value-of select="count($ni/comments//comment)"/> Комментариев</h3>
-							<ol class="commentlist" id="comment-{$ni/comments/@id}">
-								<xsl:for-each select="$ni/comments/comment">
-									<xsl:call-template name="COMMENT">
-										<xsl:with-param name="comment" select="."/>
-										<xsl:with-param name="level" select="1" />
-									</xsl:call-template>
-								</xsl:for-each>
-							</ol>
-						</xsl:if>
-						<div class="respond" id="modal-feedback" ajax-href="{$ni/comments/comment_link}" show-loader="yes">
-						</div>
-					</div>
-				</div>
-			</div>
-		</xsl:if>
-		<xsl:if test="not($ni/comments)">
-			<div style="height: 3rem;"></div>
-		</xsl:if>
+		<div id="disqus_thread"></div>
+		<script>
+
+			/**
+			*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+			*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+			/*
+			var disqus_config = function () {
+			this.page.url = '<xsl:value-of select="$canonical"/>';  // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = '<xsl:value-of select="concat($h1, ' ', f:utc_millis_to_bel_date(date/@millis))"/>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			};
+			*/
+			(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://tempting-pro.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 	</xsl:template>
 
-
-	<xsl:template name="COMMENT">
-		<xsl:param name="comment"/>
-		<xsl:param name="level"/>
-
-		<li class="{'thread-alt '[$level = 0]}depth-{$level+1} comment" id="cmt-{$comment/@id}">
-			<div class="comment__content">
-				<cite><xsl:value-of select="$comment/name"/></cite>
-				<div class="comment__meta">
-					<time class="comment__time"><xsl:value-of select="f:utc_millis_to_bel_date($comment/date/@millis)"/></time>
-					<a class="reply" href="{$comment/@id}">Ответить</a>
-				</div>
-				<div class="comment__text">
-					<xsl:value-of select="$comment/text" disable-output-escaping="yes"/>
-				</div>
-				<xsl:if test="$comment/comment">
-					<ul class="children">
-						<xsl:for-each select="$comment/comment">
-							<xsl:call-template name="COMMENT">
-								<xsl:with-param name="comment" select="."/>
-								<xsl:with-param name="level" select="$level+1" />
-							</xsl:call-template>
-						</xsl:for-each>
-					</ul>
-				</xsl:if>
-			</div>
-		</li>
-
-	</xsl:template>
 
 	<xsl:template name="ALSO">
 		<xsl:if test="$ni/news/news_item">

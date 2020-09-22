@@ -267,6 +267,11 @@
 					<var name="ni" ref="ni" style="translit"/>
 				</link>
 			</ancestor>
+			<ancestor item="small_news_item" id="sni">
+				<link name="show_page" target="small_news_item" type="exclusive">
+					<var name="ni" ref="sni" style="translit"/>
+				</link>
+			</ancestor>
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -481,7 +486,8 @@
 		</single>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="false">
+	<page name="news_item" template="news_item" cacheable="true">
+		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<request>
 			<var name="ni" style="translit"/>
 		</request>
@@ -664,11 +670,13 @@
 	</page>
 
 	<page name="small_news_item" template="small_news_item" cacheable="true">
+		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<request>
 			<var name="sni" style="translit"/>
 		</request>
 		<single item="small_news_item" var="sni" id="ni" >
 			<single item="seo"/>
+			<list item="page_part" />
 		</single>
 		<list item="small_news_item" tag="prev" id="prev" >
 			<filter>

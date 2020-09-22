@@ -123,11 +123,26 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 						   <xsl:apply-templates select="$ni" mode="content"/>
 							<!-- Telegram -->
 							<p class="_article_paragraph article_paragraph"><strong>Подписывайтесь на наш <a href="https://t.me/temptingpro" target="_blank">Telegram-канал</a> и получайте актуальную информацию из мира новостей еще быстрее.</strong></p>
-						   <xsl:if test="$ni/author != ''">
+			
+							<xsl:if test="$ni/author != ''">
+								<xsl:variable name="author">
+									<xsl:choose>
+										<xsl:when test="starts-with($ni/author, 'Алина')">
+											<xsl:value-of select="concat('Подготовила: ', $ni/author)"/>
+										</xsl:when>
+										<xsl:when test="starts-with($ni/author, 'Подготовил')">
+											<xsl:value-of select="$ni/author"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat('Подготовил: ' , $ni/author)"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
 								<p>
-									<em>Автор: <xsl:value-of select="$ni/author"/></em>
+									<em><xsl:value-of select="$author"/></em>
 								</p>
 							</xsl:if>
+
 						</div>
 					</div>
 					 <div>
@@ -140,7 +155,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 								 <span>Теги</span>
 								 <span class="s-content__tag-list">
 									 <xsl:for-each select="$ni/tag">
-										 <a href="{concat('tag/?tag=', .)}">
+										 <a href="{concat('tag/?tag=', replace(., '&amp;', '%26'))}">
 											 <xsl:value-of select="."/>
 										 </a>
 									 </xsl:for-each>
@@ -272,6 +287,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 						<div class="s-content__prev">
 							<a href="{page/prev/show_page}" rel="prev">
 								<span>Предыдущая новость</span>
+								<img src="{concat(page/prev/@path, page/prev/small_pic)}" alt=""/>
 								<xsl:value-of select="page/prev/name"/>
 							</a>
 						</div>
@@ -280,6 +296,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 						<div class="s-content__next">
 							<a href="{page/next/show_page}" rel="next">
 								<span>Следующая новость</span>
+								<img src="{concat(page/next/@path, page/next/small_pic)}" alt=""/>
 								<xsl:value-of select="page/next/name"/>
 							</a>
 						</div>

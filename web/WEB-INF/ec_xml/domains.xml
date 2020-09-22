@@ -39,8 +39,8 @@
 	</domain>
 
 	<domain name="author" view-type="combobox">
-		<value>Александр Болтрукевич alexbolt@tempting.pro</value>
-		<value>Алина Швецова shvetsova_alina@tempting.pro</value>
-		<value>Никита Смирнов nikita_smirnov@tempting.pro</value>
+		<value>Подготовил: Александр Болтрукевич alexbolt@tempting.pro</value>
+		<value>Подготовила: Алина Швецова shvetsova_alina@tempting.pro</value>
+		<value>Подготовил: Никита Смирнов nikita_smirnov@tempting.pro</value>
 	</domain>
 </domains>

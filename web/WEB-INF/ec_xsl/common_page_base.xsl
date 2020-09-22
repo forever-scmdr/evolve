@@ -96,7 +96,7 @@
 		<nav class="header__nav-wrap">
 			<h2 class="header__nav-heading h6">Главное меню</h2>
 			<ul class="header__nav">
-				<li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная страница</a></li>
+				<li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная</a></li>
 
 				<li class="has-children">
 					<a href="{page/news_link}">Новости</a>
@@ -161,7 +161,8 @@
 				<ul class="header__nav header_tags orange">
 					<xsl:for-each select="$t">
 						<xsl:if test="position() &lt; 6">
-							<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
+							<!-- <li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}"> -->
+							<li style="{if(color != '') then concat('background-color: ', color) else ''}">
 								<a href="{hot_link}" style="{if(text_color != '') then concat('color: ', text_color, ';') else ''}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:if>
@@ -171,7 +172,8 @@
 					<ul class="header__nav header_tags yellow">
 						<xsl:for-each select="$t">
 							<xsl:if test="position() &gt; 5">
-								<li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}">
+								<!-- <li style="{if(color != '') then concat('background-color: ', color) else ''}" class="{if(color != '') then 'no-sep' else ''}"> -->
+							<li style="{if(color != '') then concat('background-color: ', color) else ''}">
 									<a href="{hot_link}"  style="{if(text_color != '') then concat('color: ', text_color, ';') else ''}"><xsl:value-of select="name"/></a>
 								</li>
 							</xsl:if>
@@ -320,7 +322,7 @@
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.48"/>
+				<link rel="stylesheet" href="css/main.css?version=1.5"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -630,9 +632,11 @@
 		<xsl:if test="$adv_side">
 			<div class="border-top"></div>
 			<div class="adv_side" id="#adv_side">
-				<a href="{$adv_side/link}" target="_blank">
-					<img src="{concat($adv_side/@path, $adv_side/pic)}"/>
-				</a>
+				<xsl:if test="$adv_side/pic != ''">
+					<a href="{$adv_side/link}" target="_blank">
+						<img src="{concat($adv_side/@path, $adv_side/pic)}"/>
+					</a>
+				</xsl:if>
 				<xsl:value-of select="$adv_side/text" disable-output-escaping="yes"/>
 				<xsl:value-of select="$adv_side/code" disable-output-escaping="yes"/>
 			</div>
@@ -645,7 +649,9 @@
 				<div class="row" style="padding-left:0; padding-right:0;">
 					<div class="col-full">
 						<div class="banner-top-700" style="line-height: 1; margin:0 auto;">
+							<xsl:if test="$adv_top/pic != ''">
 							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>
+							</xsl:if>
 							<xsl:value-of select="$adv_top/code" disable-output-escaping="yes"/>
 						</div>
 					</div>
@@ -658,9 +664,11 @@
 		<xsl:if test="$adv_bottom">
 			<div style="margin-bottom: 1.5rem;"></div>
 			<div class="content-text banner banner-donate">
-				<a class="donate-link" href="{$adv_bottom/link}" target="_blank">
-					<img src="{concat($adv_bottom/@path, $adv_bottom/pic)}"/>
-				</a>
+				<xsl:if test="$adv_bottom/pic != ''">
+					<a class="donate-link" href="{$adv_bottom/link}" target="_blank">
+						<img src="{concat($adv_bottom/@path, $adv_bottom/pic)}"/>
+					</a>
+				</xsl:if>
 				<xsl:value-of select="$adv_bottom/text" disable-output-escaping="yes"/>
 				<xsl:value-of select="$adv_bottom/code" disable-output-escaping="yes"/>
 			</div>

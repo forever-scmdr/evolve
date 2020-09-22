@@ -8,12 +8,12 @@
 	<!--/////////////                             РЕКЛАМА                                 ////////////-->
 
 	<item name="advertisement" caption="Реклама" ag-id="42" ag-hash="-128069115" >
-		<child item="top_728x90" single="true"/>
-		<child item="side_240x400" single="true"/>
-		<child item="bottom_900x600" single="true"/>
+		<child item="top_728x90" />
+		<child item="side_240x400" />
+		<child item="bottom_900x600" />
 	</item>
 
-	<item name="ad_banner" caption="Баннер" virtual="true" ag-id="43" ag-hash="270078664">
+	<item name="ad_banner" caption="Баннер" virtual="true" key="name" ag-id="43" ag-hash="270078664">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="link" type="string" caption="Рекламная ссылка"/>
 		<parameter name="pic" type="picture" caption="Фоновое изображение"/>
