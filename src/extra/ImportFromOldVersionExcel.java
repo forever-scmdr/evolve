@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -252,7 +253,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					double min = currentProduct.getDoubleValue(MIN_QTY_PARAM, 1d);
 					currentProduct.setValue(UNIT_PARAM, unit);
 					currentProduct.setValue(STEP_PARAM, min);
-
+					byte available = currentProduct.getDoubleValue(QTY_PARAM, 0d) > 0 &&  currentProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO)!= BigDecimal.ZERO? (byte) 1 : (byte) 0;
+					currentProduct.setValue(AVAILABLE_PARAM, available);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 
 					if(StringUtils.isNotBlank(xml.toString())) {
