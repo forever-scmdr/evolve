@@ -123,6 +123,7 @@ public class CreateTSVGoogleFeed extends IntegrateBase implements CatalogConst {
 		if(StringUtils.isBlank(product.getStringValue(DESCRIPTION_PARAM))) return false;
 		if(StringUtils.isBlank(product.getStringValue(MAIN_PIC_PARAM))) return false;
 		if(product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO) == BigDecimal.ZERO) return false;
+		if (product.getByteValue(AVAILABLE_PARAM, (byte)0) > 0) return false;
 		return true;
 	}
 
