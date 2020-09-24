@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,6 +52,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private Item cart;
+	private Item catalog;
 
 	/**
 	 * Добавить товар в корзину
@@ -393,6 +393,12 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	private boolean recalculateCart() throws Exception {
+		catalog = ItemQuery.loadSingleItemByName("catalog");
+		double usdRatio = catalog.getDoubleValue("currency_ratio_usd", 0d);
+		double eurRatio = catalog.getDoubleValue("currency_ratio_eur", 0d);
+		double usdQ = 1d + catalog.getDoubleValue("q1_usd", 0d);
+		double eurQ = 1d + catalog.getDoubleValue("q1_eur", 0d);
+
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal sum = new BigDecimal(0); // полная сумма
@@ -411,6 +417,12 @@ public abstract class BasicCartManageCommand extends Command {
 			} else {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				if(StringUtils.lowerCase(product.getStringValue("currency_id","")).equals("usd")){
+					price = price.multiply(new BigDecimal(usdRatio * usdQ));
+				}
+				else if(StringUtils.lowerCase(product.getStringValue("currency_id","")).equals("eur")){
+					price = price.multiply(new BigDecimal(eurRatio * eurQ));
+				}
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);

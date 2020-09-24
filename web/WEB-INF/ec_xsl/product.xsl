@@ -17,7 +17,7 @@
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 
 	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
+		<xsl:variable name="price" select="f:convert_currency($p/price , $p/currency_id)"/>
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
 			{
@@ -29,7 +29,7 @@
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote, $price, $quote)" /></xsl:if>
 			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
@@ -114,13 +114,13 @@
 								<xsl:if test="$p/price_old">
 									<div class="price_old">
 										<span>
-											<xsl:value-of select="$p/price_old"/> руб.
+											<xsl:value-of select="f:convert_currency($p/price_old, $p/currency_id)"/> byn.
 											<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
 										</span>
 									</div>
 								</xsl:if>
 								<div class="price_normal">
-									<xsl:value-of select="if ($p/price) then $p/price else '0'"/> руб.
+									<xsl:value-of select="if ($p/price) then f:convert_currency($p/price, $p/currency_id) else '0'"/> byn.
 									<xsl:if test="$p/unit != ''">/<xsl:value-of select="$p/unit"/></xsl:if>
 								</div>
 							</div>
