@@ -9,6 +9,12 @@
 
     <xsl:decimal-format name="r" decimal-separator="." grouping-separator=" "/>
 
+    <xsl:variable name="usd_ratio" select="f:num(page/catalog/currency_ratio_usd)"/>
+    <xsl:variable name="eur_ratio" select="f:num(page/catalog/currency_ratio_eur)"/>
+
+    <xsl:variable name="usd_q" select="1 + f:num(page/catalog/q1_usd)"/>
+    <xsl:variable name="eur_q" select="1 + f:num(page/catalog/q1_eur)"/>
+
     <xsl:function name="f:num" as="xs:double">
         <xsl:param name="str" as="xs:string?"/>
         <xsl:sequence
@@ -18,6 +24,23 @@
     <xsl:function name="f:currency_decimal">
         <xsl:param name="str" as="xs:string?"/>
         <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
+    </xsl:function>
+    
+    <xsl:function name="f:convert_currency">
+        <xsl:param name="price" as="xs:string?"/>
+        <xsl:param name="currency" as="xs:string?" />
+       <xsl:choose>
+           <xsl:when test="$currency = 'usd'">
+               <xsl:sequence select="format-number(f:num($price) * $usd_ratio * $usd_q, '#0.00')"/>
+           </xsl:when>
+           <xsl:when test="$currency = 'eur'">
+               <xsl:sequence select="format-number(f:num($price) * $eur_ratio * $eur_q, '#0.00')"/>
+           </xsl:when>
+           <xsl:otherwise>
+               <xsl:sequence select="f:currency_decimal($price)"/>
+           </xsl:otherwise>
+       </xsl:choose>
+
     </xsl:function>
 
     <xsl:function name="f:rub_kop" as="xs:string">

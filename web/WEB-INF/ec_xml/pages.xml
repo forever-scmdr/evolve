@@ -1167,6 +1167,18 @@
 		</command>
 	</page>
 
+	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
+		<link name="success" target="currency_ratio_success"/>
+		<link name="error" target="currency_ratio_success">
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.LoadCurrencyFromNBRB">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+	<page name="currency_ratio_success" ></page>
+
 	<page name="ok"></page>
 
 </site>

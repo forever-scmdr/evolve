@@ -93,6 +93,14 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+
+		<!-- USD -->
+		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
+		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
+
+		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1EUR дают ... бел. руб."/>
+		<parameter name="q1_eur" caption="Прибавка к EUR"  type="double" description="0.03 = +3%" />
+
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
@@ -113,6 +121,7 @@
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 		<parameter name="hide_params" type="string" caption="скрыть параметр фильтра" multiple="true" />
+		<!-- <parameter name="unwanted" type="string" multiple="true" caption="параметры, НЕ участвующие в фильтре"/> -->
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -126,10 +135,10 @@
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
 	<item name="described_product" key="name" caption="Абстрактный товар с описанием" super="abstract_product *" virtual="true" ag-id="1021" ag-hash="1523682729">
-		<parameter name="mizida_code" type="string" caption="фирменный артикул MIZIDA" text-index="fulltext" />
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="mizida_code" type="string" caption="фирменный артикул MIZIDA" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -352,6 +361,7 @@
 
 	<item name="banner" caption="Баннер" key="header" ag-id="1023" ag-hash="-1396342996">
 		<parameter name="background" type="string" caption="background" description="baner__background"/>
+		<parameter name="background_pic" type="picture" caption="background-image" description="baner__background"/>
 		<parameter name="header" type="string" caption="Заголовок" description="banner__title"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="banner__text"/>
 		<parameter name="image_pic" type="picture" caption="Картинка-файл" description="banner__image"/>
@@ -403,7 +413,7 @@
 		<child item="delivery" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
-	<child item="product_side" single="true"/>
+		<child item="product_side" single="true"/>
 	</item>
 
 	<item name="product_side" caption="В карточке товара" ag-id="1834" ag-hash="1014531751" >
