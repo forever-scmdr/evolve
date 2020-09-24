@@ -136,7 +136,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 
 		bought.setValueUI("price_map", getVarSingleValue("dgk_spec"));
-
+		getSessionMapper().saveTemporaryItem(bought);
 		//ensureCart();
 
 		recalculateCart();
