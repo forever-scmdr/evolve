@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import ecommander.fwk.Strings;
 
+import java.util.Objects;
+
 public final class ParameterDescription {
 
 	public enum TextIndex {
@@ -34,6 +36,7 @@ public final class ParameterDescription {
 	private float textIndexBoost = -1f; // Увеличение веса параметра в поисковой выдаче
 	private String textIndexParamName; // Название параметра, в котором сохраняется значение этого параметра при полнотекстовом индексировании
 	private String textIndexParser = null; // Парсер для разбора текста
+	private String textIndexAnalyzer = null; // Анализатор для разбора текста
 	
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
@@ -71,7 +74,7 @@ public final class ParameterDescription {
 	 * @param paramName
 	 * @param boost
 	 */
-	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser) {
+	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser, String analyzer) {
 		this.textIndex = indexType;
 		if (!StringUtils.isEmpty(paramName))
 			this.textIndexParamName = paramName;
@@ -81,6 +84,8 @@ public final class ParameterDescription {
 			this.textIndexBoost = boost;
 		if (!StringUtils.isBlank(parser))
 			this.textIndexParser = parser;
+		if (!StringUtils.isBlank(analyzer))
+			this.textIndexAnalyzer = analyzer;
 	}
 	/**
 	 * Создает параметр используя собственный тип (себя)
@@ -247,6 +252,21 @@ public final class ParameterDescription {
 	}
 
 	/**
+	 * Нужно ли разбирать значение параметра для сохранения в
+	 * @return
+	 */
+	public boolean needFulltextSpecialAnalyzer() {
+		return textIndexAnalyzer != null;
+	}
+	/**
+	 * Получить парсер для полнотекстовой индексации
+	 * @return
+	 */
+	public String getFulltextAnalyzer() {
+		return textIndexAnalyzer;
+	}
+
+	/**
 	 * Получить значение по умолчанию в виде строки, так, как оно написано в XML файле
 	 * @return
 	 */
@@ -273,5 +293,18 @@ public final class ParameterDescription {
 	 */
 	public String toString() {
 		return getName() + ": " + type;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ParameterDescription that = (ParameterDescription) o;
+		return paramId == that.paramId;
+	}
+
+	@Override
+	public int hashCode() {
+		return paramId;
 	}
 }

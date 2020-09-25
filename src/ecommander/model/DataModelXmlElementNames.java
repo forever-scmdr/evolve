@@ -60,6 +60,7 @@ public interface DataModelXmlElementNames {
 	String TEXT_INDEX_PARAMETER = "text-index-parameter";
 	String TEXT_INDEX_BOOST = "text-index-boost";
 	String TEXT_INDEX_PARSER = "text-index-parser";
+	String TEXT_INDEX_ANALYZER = "text-index-analyzer";
 
 	/**
 	 * Значения

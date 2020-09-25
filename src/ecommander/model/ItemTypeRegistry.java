@@ -598,6 +598,21 @@ public class ItemTypeRegistry {
 	}
 
 	/**
+	 * Найти все параметры, для которых нужне специальный полнотекстовый анализатор
+	 * @return
+	 */
+	public static HashSet<ParameterDescription> getAllSpecialFulltextAnalyzerParams() {
+		HashSet<ParameterDescription> result = new HashSet<>();
+		for (ItemType item : getSingleton().itemsByIds.values()) {
+			for (ParameterDescription param : item.getParameterList()) {
+				if (param.needFulltextSpecialAnalyzer())
+					result.add(param);
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Получить список всех базовых типов айтемов, которые содержат параметры, которые в свою очередь
 	 * базируются на переданных в качестве аргумента параметрах.
 	 * Например, после изменения айтема, нужно получить список типов айтемов, которые должны быть подвергнуты
@@ -624,4 +639,5 @@ public class ItemTypeRegistry {
 	public static boolean hasAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
 		return CollectionUtils.containsAny(getSingleton().paramComputedSuperytpes.keySet(), modifiedParamIds);
 	}
+
 }

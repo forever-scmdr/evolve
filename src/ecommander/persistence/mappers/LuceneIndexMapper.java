@@ -11,7 +11,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -127,6 +129,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		analyzers.put("default", new StandardAnalyzer());
 		analyzers.put("ru", new RussianAnalyzer());
 		analyzers.put("en", new EnglishAnalyzer());
+		analyzers.put("keyword", new KeywordAnalyzer());
 	}
 	private static Analyzer currentAnalyzer = null;
 	
@@ -204,10 +207,21 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 
 	private static Analyzer getAnalyzer() {
 		if (currentAnalyzer == null) {
-			currentAnalyzer = analyzers.get(AppContext.getCurrentLocale().getLanguage());
-			if (currentAnalyzer == null)
-				currentAnalyzer = analyzers.get("default");
+			HashSet<ParameterDescription> params = ItemTypeRegistry.getAllSpecialFulltextAnalyzerParams();
+			HashMap<String, Analyzer> paramAnalyzers = new HashMap<>();
+			for (ParameterDescription param : params) {
+				Analyzer paramAnalyzer = analyzers.get(param.getFulltextAnalyzer());
+				if (paramAnalyzer != null)
+					paramAnalyzers.put(param.getName(), paramAnalyzer);
 			}
+			Analyzer defaultAnalyzer = analyzers.get(AppContext.getCurrentLocale().getLanguage());
+			if (defaultAnalyzer == null)
+				defaultAnalyzer = analyzers.get("default");
+			if (paramAnalyzers.size() > 0)
+				currentAnalyzer = new PerFieldAnalyzerWrapper(defaultAnalyzer, paramAnalyzers);
+			else
+				currentAnalyzer = defaultAnalyzer;
+		}
 		return currentAnalyzer;
 	}
 
@@ -301,8 +315,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName
-			, boolean needIncrement) throws IOException, SAXException, TikaException {
+	private void createParameterField(ParameterDescription param, String value, Document luceneDoc,
+	                                  String luceneParamName, boolean needIncrement) throws IOException, SAXException, TikaException {
 		if (StringUtils.isBlank(value))
 			return;
 		if (needIncrement)
