@@ -98,6 +98,7 @@
 		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
 		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
 
+		<!-- EUR -->
 		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1EUR дают ... бел. руб."/>
 		<parameter name="q1_eur" caption="Прибавка к EUR"  type="double" description="0.03 = +3%" />
 
