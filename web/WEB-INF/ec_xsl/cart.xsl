@@ -21,8 +21,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:convert_currency($p/price, $p/currency_id), ' p.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:convert_currency($p/price, $p/currency_id), ' byn.') else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' byn.') else ''"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">
 									<a href="{$p/show_product}" class="image-container">
@@ -57,7 +57,7 @@
 						</xsl:for-each>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
+								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> byn.</p>
 							</xsl:if>
 							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
