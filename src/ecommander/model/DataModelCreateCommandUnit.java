@@ -403,6 +403,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		ParameterDescription.TextIndex textIndex = ParameterDescription.TextIndex.none;
 		String textIndexParameter = paramEl.attr(TEXT_INDEX_PARAMETER);
 		String textIndexParser = paramEl.attr(TEXT_INDEX_PARSER);
+		String textIndexAnalyzer = paramEl.attr(TEXT_INDEX_ANALYZER);
 		String textIndexBoostStr = paramEl.attr(TEXT_INDEX_BOOST);
 		String textIndexItem = paramEl.attr(TEXT_INDEX_ITEM);
 		String defaultValue = paramEl.attr(DEFAULT);
@@ -484,7 +485,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
 				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);
 		if (textIndex != ParameterDescription.TextIndex.none)
-			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexItem);
+			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexItem, textIndexAnalyzer);
 
 		// Если есть функция - надо считать базовый параметр
 		if (func != null) {
