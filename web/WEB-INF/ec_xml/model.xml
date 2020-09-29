@@ -496,6 +496,7 @@
 
 	<item name="page_extra" caption="Дополнительные элементы страницы" key="name" virtual="true" ag-id="1766" ag-hash="1617031776">
 		<parameter name="name" type="string" caption="Название" description="для CMS"/>
+		<parameter name="spoiler" type="byte" domain="0-1" caption="Сделать скрываемым"/>
 	</item>
 
 	<item name="page_extra_part" caption="Часть дополнительного элемента страницы" key="name" virtual="true" ag-id="1778" ag-hash="1380296306">
@@ -526,6 +527,10 @@
 
 	<item name="page_text" caption="Текстовый блок" super="page_extra" ag-id="1771" ag-hash="883875037">
 		<parameter name="text" type="text" caption="Текст"/>
+	</item>
+
+	<item name="page_extra_code" caption="Блок кода" super="page_extra" ag-id="1771" ag-hash="883875037">
+		<parameter name="text" type="plain-text" caption="Текст"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
