@@ -399,6 +399,10 @@
 	</page>
 
 	<page name="all_news" template="all_news">
+		<include name="COMMON"/>
+	</page>
+
+	<!--<page name="all_news" template="all_news">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
@@ -449,7 +453,7 @@
 			<var name="min_date"/>
 			<var name="max_date"/>
 		</link>
-	</page>
+	</page> -->
 
 	<page name="all_news_ajax" template="news_page_ajax" cacheable="true">
 		<request>
@@ -495,14 +499,25 @@
 		<single item="news_item" var="ni" id="ni" >
 			<single item="seo"/>
 			<single item="top_gal"/>
-			<single item="comments" id="comment">
+			<!-- <single item="comments" id="comment">
 				<tree item="comment"/>
 				<link name="comment_link" target="comment_ajax">
 					<var name="id" ref="comment"/>
 					<var name="big_id" ref="comment"/>
 				</link>
-			</single>
-			<list item="page_part"/>
+			</single> -->
+			<list item="page_part">
+				<list item="news_item" id="rec_ni" assoc="news">
+					<link name="show_page" target="news_item" type="exclusive">
+						<var name="sel" ref="rec_ni" style="translit"/>
+					</link>
+				</list>
+				<list item="small_news_item" id="rec_sni" assoc="news">
+					<link name="show_page" target="small_news_item" type="exclusive">
+						<var name="sel" ref="rec_sni" style="translit"/>
+					</link>
+				</list>
+			</list>
 			<ancestor item="news" transit="false"/>
 			<ancestor item="news_wrap" id="parent" transit="true" tag="news">
 				<list item="news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni" transit="true">
@@ -944,7 +959,7 @@
 		</request>
 	</page>
 
-	<page name="check_future" schedule="0 0/15 * ? * * *">
+	<page name="check_future" schedule="0 0/5 0 ? * * *">
 		<command class="ecommander.fwk.ArticleFromFuture" />
 	</page>
 
