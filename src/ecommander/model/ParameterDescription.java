@@ -1,10 +1,9 @@
 package ecommander.model;
 
+import ecommander.fwk.Strings;
 import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FormatDataType;
 import org.apache.commons.lang3.StringUtils;
-
-import ecommander.fwk.Strings;
 
 public final class ParameterDescription {
 
@@ -36,6 +35,7 @@ public final class ParameterDescription {
 	private String textIndexParser = null; // Парсер для разбора текста
 	private String textIndexItem = null;    // название айтема-предшественника в случае если при поиске должен находиться не
 											// сам айтем а его предшественник
+	private String textIndexAnalyzer = null; // Анализатор для разбора текста
 
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
@@ -73,7 +73,7 @@ public final class ParameterDescription {
 	 * @param paramName
 	 * @param boost
 	 */
-	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser, String item) {
+	public void setFulltextSearch(TextIndex indexType, String paramName, float boost, String parser, String item, String analyzer) {
 		this.textIndex = indexType;
 		if (!StringUtils.isEmpty(paramName))
 			this.textIndexParamName = paramName;
@@ -85,6 +85,8 @@ public final class ParameterDescription {
 			this.textIndexParser = parser;
 		if (!StringUtils.isBlank(item))
 			this.textIndexItem = item;
+		if (!StringUtils.isBlank(analyzer))
+			this.textIndexAnalyzer = analyzer;
 	}
 	/**
 	 * Создает параметр используя собственный тип (себя)
@@ -267,6 +269,20 @@ public final class ParameterDescription {
 	public boolean isFulltextOwnByPredecessor() {
 		return StringUtils.isNotBlank(textIndexItem);
 	}
+	/**
+	 * Нужно ли разбирать значение параметра для сохранения в
+	 * @return
+	 */
+	public boolean needFulltextSpecialAnalyzer() {
+		return textIndexAnalyzer != null;
+	}
+	/**
+	 * Получить парсер для полнотекстовой индексации
+	 * @return
+	 */
+	public String getFulltextAnalyzer() {
+		return textIndexAnalyzer;
+	}
 
 	/**
 	 * Получить значение по умолчанию в виде строки, так, как оно написано в XML файле
@@ -295,5 +311,18 @@ public final class ParameterDescription {
 	 */
 	public String toString() {
 		return getName() + ": " + type;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ParameterDescription that = (ParameterDescription) o;
+		return paramId == that.paramId;
+	}
+
+	@Override
+	public int hashCode() {
+		return paramId;
 	}
 }
