@@ -60,6 +60,8 @@
 		<single item="url_seo_wrap">
 			<list item="url_seo"/>
 		</single>
+
+		<list item="ratio"/>
 	</include-definition>
 
 

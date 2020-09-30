@@ -427,7 +427,7 @@ public abstract class BasicCartManageCommand extends Command {
 				if(ratioItem != null){
 					double ratio = ratioItem.getDoubleValue("currency_ratio", 1d);
 					double q = 1 + ratioItem.getDoubleValue("q", 0d);
-					double scale = (double) ratioItem.getIntValue("scale", 1);
+					double scale = ratioItem.getIntValue("scale", 1);
 					price = price.multiply(new BigDecimal(ratio * q / scale));
 				}
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
