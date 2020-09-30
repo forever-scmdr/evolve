@@ -26,7 +26,7 @@
 		<xsl:param name="price" as="xs:string?"/>
 		<xsl:param name="currency" as="xs:string?"/>
 
-		<xsl:variable name="ratio_item" select="$ratios[code = $currency]"/>
+		<xsl:variable name="ratio_item" select="$ratios[lower-case(code) = lower-case($currency)]"/>
 		<xsl:variable name="ratio" select="f:num($ratio_item/currency_ratio)"/>
 		<xsl:variable name="q" select="f:num($ratio_item/q) + 1"/>
 		<xsl:variable name="scale" select="if(f:num($ratio_item/scale) &gt; 0) then f:num($ratio_item/scale) else 1"/>

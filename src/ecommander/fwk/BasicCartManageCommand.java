@@ -398,7 +398,7 @@ public abstract class BasicCartManageCommand extends Command {
 		List<Item> ratios = new ItemQuery("ratio").loadItems();
 		HashMap<String, Item> ratioMap = new HashMap<>();
 		for(Item r: ratios){
-			String currencyCode = r.getStringValue("currency_ratio", "");
+			String currencyCode = r.getStringValue("code", "");
 			if(StringUtils.isNotBlank(currencyCode)){
 				ratioMap.put(StringUtils.lowerCase(currencyCode), r);
 			}
@@ -423,7 +423,7 @@ public abstract class BasicCartManageCommand extends Command {
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
 
-				Item ratioItem = ratioMap.get(product.getStringValue("currency_id", ""));
+				Item ratioItem = ratioMap.get(StringUtils.lowerCase(product.getStringValue("currency_id", "")));
 				if(ratioItem != null){
 					double ratio = ratioItem.getDoubleValue("currency_ratio", 1d);
 					double q = 1 + ratioItem.getDoubleValue("q", 0d);
