@@ -322,7 +322,7 @@
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.5"/>
+				<link rel="stylesheet" href="css/main.css?version=1.52"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -362,7 +362,7 @@
 
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="text_part | gallery_part | code_part" mode="content"/>
+		<xsl:apply-templates select="text_part | gallery_part | code_part | more_news" mode="content"/>
 	</xsl:template>
 
 	<xsl:template match="audio">
@@ -387,9 +387,38 @@
 	</xsl:template>
 
 	<xsl:template match="code_part" mode="content">
-	
 		<xsl:value-of select="code" disable-output-escaping="yes"/>
-	
+	</xsl:template>
+
+	<xsl:template match="more_news" mode="content">
+		<div class="col-full recommended">
+			<div class="desktop-only background-rectangle"></div>
+			<h3>Рекомендовано</h3>
+			<xsl:if test="count(news_item | small_mews_item) = 1">
+				<xsl:for-each select="news_item | small_mews_item">
+					<div class="col-full recommended-item">
+						<a href="{show_page}">
+							<img src="concat($base, @path, small_pic)"/>
+							<span>
+								<xsl:value-of select="name"/>
+							</span>
+						</a>
+					</div>
+				</xsl:for-each>
+			</xsl:if>
+			<xsl:if test="count(news_item | small_mews_item) &gt; 1">
+				<xsl:for-each select="news_item | small_mews_item">
+					<div class="col-six tab-full recommended-item">
+						<a href="{show_page}">
+							<img src="{concat('https://tempting.pro/', @path, small_pic)}"/>
+							<span>
+								<xsl:value-of select="name"/>
+							</span>
+						</a>
+					</div>
+				</xsl:for-each>
+			</xsl:if>
+		</div>
 	</xsl:template>
 
 	<xsl:template name="PAGE_TITLE">
