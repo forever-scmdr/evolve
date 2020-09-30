@@ -94,14 +94,6 @@
 		<child item="seo" single="true"/>
 		<child item="section" />
 
-		<!-- USD -->
-		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
-		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
-
-		<!-- EUR -->
-		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1EUR дают ... бел. руб."/>
-		<parameter name="q1_eur" caption="Прибавка к EUR"  type="double" description="0.03 = +3%" />
-
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
@@ -555,6 +547,19 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
+	<item name="currency" caption="Курсы валют" ag-id="1976" ag-hash="575402001">
+		<child item="ratio"/>
+	</item>
+
+	<item name="ratio" caption="Курс" key="name" ag-id="1977" ag-hash="108285963">
+		<parameter name="name" type="string" caption="Название" description="для поиска по админке"/>
+		<parameter name="code" type="string" caption="Код валюты" description="должен соответствовать коду у товаров"/>
+		<parameter name="currency_ratio" caption="Курс валюты" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб." default="1" format="###,##0.#####"/>
+		<parameter name="q" caption="Прибавка к Курсу"  type="double" description="0.03 = +3%" default="0" format="###,##0.#####"/>
+		<parameter name="scale" caption="размерность" type="integer" default="1" />
+		<parameter name="nbrb_id" type="string" caption="ID нацбанка" description="http://www.nbrb.by/Services/XmlExRates.aspx"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
@@ -571,6 +576,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="currency" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
