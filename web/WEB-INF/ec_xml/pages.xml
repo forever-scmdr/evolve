@@ -760,6 +760,45 @@
 		</link>
 	</page>
 
+	<page name="comment_ajax" template="feedback_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="comment" id="form">
+			<parameter-input ref="form" form="comment"/>
+		</new>
+		<link name="submit_link" target="comment_command" type="itemform">
+			<var name="form_name" value="comment"/>
+			<var name="source_page" value="comment_ajax"/>
+		</link>
+	</page>
+
+	<page name="comment_command">
+		<request>
+			<var name="form_name"/>
+			<var name="source_page"/>
+			<var name="required" value="phone|email, message"/>
+		</request>
+		<link name="success" target-var="source_page">
+			<var name="result" value="success"/>
+			<var name="message" value="Ваш отзыв передан на модерацию, спасибо"/>
+		</link>
+		<link name="error_not_set" target-var="source_page">
+			<var name="result" value="error"/>
+			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
+		</link>
+		<link name="general_error" target-var="source_page">
+			<var name="result" value="error"/>
+			<var name="message"
+				 value="Отзыв не был обработан из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+		</link>
+		<command class="extra.AddCommentCommand">
+			<result name="success" type="redirect"/>
+			<result name="error_not_set" type="redirect"/>
+			<result name="general_error" type="redirect"/>
+		</command>
+	</page>
 
 	<page name="feedback_command">
 		<request>

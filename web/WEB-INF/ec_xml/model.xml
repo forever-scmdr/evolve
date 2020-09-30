@@ -894,6 +894,30 @@
 		<child item="observer"/>
 	</item>
 
+	<item name="comments" caption="Отзывы">
+		<child item="moderated" single="true"/>
+		<child item="unmoderated" single="true"/>
+	</item>
+
+	<item name="moderated" caption="Модерированные отзывы">
+		<child item="comment"/>
+	</item>
+	<item name="unmoderated" caption="Новые отзывы">
+		<child item="comment" />
+	</item>
+
+	<item name="comment" key="name, date">
+		<parameter name="name" type="string" caption="Имя и отчество"/>
+		<parameter name="date" type="date" caption="Дата"/>
+		<parameter name="visit_date" type="string" caption="Месяц и год отдыха"/>
+		<parameter name="birth_year" type="string" caption="Год рождения"/>
+		<parameter name="country" type="string" caption="Страна"/>
+		<parameter name="flag" domain="flag" type="string" caption="Флаг"/>
+		<parameter name="type" type="string" caption="Тип отдыха"/>
+		<parameter name="email" type="string" caption="email"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="text" type="text" caption="Отзыв"/>
+	</item>
 
 	<!--/////////////                         	СИСТЕМНЫЕ АЙТЕМЫ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->

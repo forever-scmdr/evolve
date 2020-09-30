@@ -11,6 +11,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddCommentCommand extends Command {
 	private static final String REQUIRED_PARAM = "required";
@@ -46,6 +47,7 @@ public class AddCommentCommand extends Command {
 			Item parent = ItemQuery.loadSingleItemByName(UNMODERATED);
 			Item comment = ItemUtils.newChildItem("comment", parent);
 			Item.updateParamValues(message, comment);
+			comment.setValue("date", new Date().getTime());
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(comment));
 		}catch (Exception e){
 			return getResult(GENERAL_ERROR_RESULT);
