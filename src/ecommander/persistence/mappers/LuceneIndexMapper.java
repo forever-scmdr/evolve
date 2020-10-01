@@ -1,18 +1,21 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.KeywordTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.document.Document;
@@ -20,7 +23,10 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.IndexOptions;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
@@ -37,7 +43,6 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -94,6 +99,18 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		}
 	}
 
+	private static class LowerCaseKeywordAnalyzer extends Analyzer {
+
+		@Override
+		protected TokenStreamComponents createComponents(String fieldName) {
+			KeywordTokenizer src = new KeywordTokenizer();
+			TokenStream result = new StandardFilter(src);
+			result = new LowerCaseFilter(result);
+			return new TokenStreamComponents(src, result);
+		}
+	}
+
+
 	private static final FieldType FULLTEXT_STORE_FIELD_TYPE = new FieldType();
 	private static final FieldType POSITION_INCREMENT_FIELD_TYPE = new FieldType();
 	static {
@@ -122,7 +139,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		analyzers.put("default", new StandardAnalyzer());
 		analyzers.put("ru", new RussianAnalyzer());
 		analyzers.put("en", new EnglishAnalyzer());
-		analyzers.put("keyword", new KeywordAnalyzer());
+		analyzers.put("keyword", new LowerCaseKeywordAnalyzer());
 	}
 	private static Analyzer currentAnalyzer = null;
 	

@@ -13,6 +13,7 @@ public class ParsedQuery extends LuceneQueryCreator {
 
 	protected String escapeInput(String input) {
 		StringBuilder sb = new StringBuilder();
+		input = StringUtils.lowerCase(input);
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
 			if (StringUtils.contains(ESCAPE_CHARS, c))
