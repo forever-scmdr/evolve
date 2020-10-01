@@ -20,7 +20,7 @@
 	<xsl:variable name="price_catalogs" select="page/price_catalog"/>
 	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
 	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
-	<xsl:variable name="l" select="concat('digikey_search?query=', page/variables/q)"/>
+	<xsl:variable name="l" select="concat('digikey_search?query=', page/variables/q[1])"/>
 
 
 	<xsl:template name="MAIN_CONTENT">
@@ -124,8 +124,8 @@
 							</xsl:for-each>
 							<tbody id="extra-search-ajax">
 								<tr>
-									<td colspan="10">
-										Идет поиск по дополнительному каталогу
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительному каталогу...</h3>
 									</td>
 								</tr>
 							</tbody>
@@ -151,14 +151,13 @@
 								<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
 								<th>Заказать</th>
 							</tr>
-							<xsl:call-template name="MOCK" />
-<!--							<tbody id="extra-search-ajax">-->
-<!--								<tr>-->
-<!--									<td colspan="10">-->
-<!--										Идет поиск по дополнительному каталогу-->
-<!--									</td>-->
-<!--								</tr>-->
-<!--							</tbody>-->
+							<tbody id="extra-search-ajax">
+								<tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительному каталогу...</h3>
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</xsl:if>
 				</div>
@@ -282,109 +281,17 @@
 	</xsl:template>
 
 
-	<xsl:template name="MOCK">
-		<tbody id="extra-search-ajax" class="result">
-		<tr>
-			<td><b>BATT CONTACT CLIP AA SOLDER LUG</b><p></p>
-				<ul class="parameters">
-					<li><b>Part Status:&#160;
-					</b>Active
-					</li>
-					<li><b>Battery Type, Function:&#160;
-					</b>Cylindrical, Clip
-					</li>
-					<li><b>Style:&#160;
-					</b>Contact Clip
-					</li>
-					<li><b>Battery Cell Size:&#160;
-					</b>AA
-					</li>
-					<li><b>Number of Cells:&#160;
-					</b>1
-					</li>
-					<li><b>Battery Series:&#160;
-					</b>-
-					</li>
-					<li><b>Mounting Type:&#160;
-					</b>Chassis Mount
-					</li>
-					<li><b>Termination Style:&#160;
-					</b>Solder Lug
-					</li>
-					<li><b>Height Above Board:&#160;
-					</b>-
-					</li>
-					<li><b>Operating Temperature:&#160;
-					</b>-
-					</li>
-				</ul>
-			</td>
-			<td></td>
-			<td>Keystone Electronics</td>
-			<td>2078</td>
-			<td>14 дней</td>
-			<td>шт.</td>
-			<td>1</td>
-			<td>
-				<p>1.5120 USD</p>
-				<p>1.2734 USD</p>
-				<p>1.1077 USD</p>
-				<p>1.0343 USD</p>
-				<p>0.9120 USD</p>
-			</td>
-			<td>
-				<p>x1 = 1.5120 USD</p>
-				<p>x25 = 31.8360 USD</p>
-				<p>x100 = 110.7680 USD</p>
-				<p>x250 = 258.5800 USD</p>
-				<p>x500 = 455.9800 USD</p>
-			</td>
-			<td id="cart_search_36-100-ND">
-				<form action="cart_action/?action=addDigiKeyToCart&amp;code=36-100-ND" method="post" ajax="true" ajax-loader-id="cart_search_36-100-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Keystone%20Elect%20Photos/MFG_100.jpg"></input><input type="hidden" name="map" value="1:1.08;25:0.9096;100:0.7912;250:0.7388;500:0.6514;"></input><input type="hidden" value="BATT CONTACT CLIP AA SOLDER LUG" name="name"></input><input type="hidden" value="2078" name="max"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Keystone Electronics" name="vendor"></input><input type="submit" value="Заказать"></input></form>
-			</td>
-		</tr>
-		<tr>
-			<td><b>100 1/4" HIGH SPEED CUTTER,1/8"</b><p></p>
-				<ul class="parameters">
-					<li><b>Part Status:&#160;
-					</b>Active
-					</li>
-					<li><b>Accessory Type:&#160;
-					</b>Cutter
-					</li>
-					<li><b>For Use With/Related Products:&#160;
-					</b>-
-					</li>
-				</ul>
-			</td>
-			<td></td>
-			<td>Dremel</td>
-			<td>1</td>
-			<td>14 дней</td>
-			<td>шт.</td>
-			<td>1</td>
-			<td>
-				<p>8.3860 USD</p>
-			</td>
-			<td>
-				<p>x1 = 8.3860 USD</p>
-			</td>
-			<td id="cart_search_100DR-ND">
-				<form action="cart_action/?action=addDigiKeyToCart&amp;code=100DR-ND" method="post" ajax="true" ajax-loader-id="cart_search_100DR-ND-dgk"><input type="number" name="qty" value="1" min="1" step="1"></input><input type="hidden" name="img" value="https://media.digikey.com/Photos/Dremel/MFG_100.jpg"></input><input type="hidden" name="map" value="1:5.99;"></input><input type="hidden" value="100 1/4&#34; HIGH SPEED CUTTER,1/8&#34;" name="name"></input><input type="hidden" value="1" name="max"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="hidden" value="100" name="vendor_code"></input><input type="hidden" value="Dremel" name="vendor"></input><input type="submit" value="Заказать"></input></form>
-			</td>
-		</tr>
-		</tbody>
-	</xsl:template>
-
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
-		<script>
-			$(document).ready(function() {
-				insertAjax('<xsl:value-of select="$l"/>');
-			});
-		</script>
+		<xsl:if test="count(page/variables/q) = 1">
+			<script>
+				$(document).ready(function() {
+					insertAjax('<xsl:value-of select="$l"/>');
+				});
+			</script>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
