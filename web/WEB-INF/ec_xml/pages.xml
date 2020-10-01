@@ -760,7 +760,7 @@
 		</link>
 	</page>
 
-	<page name="comment_ajax" template="feedback_ajax">
+	<page name="comment_ajax" template="comment_ajax">
 		<request>
 			<var name="result"/>
 			<var name="message"/>
@@ -778,7 +778,7 @@
 		<request>
 			<var name="form_name"/>
 			<var name="source_page"/>
-			<var name="required" value="phone|email, message"/>
+			<var name="required" value="phone|email, text"/>
 		</request>
 		<link name="success" target-var="source_page">
 			<var name="result" value="success"/>

@@ -47,6 +47,7 @@ public interface ItemNames {
     String SIMPLE_GALLERY = "simple_gallery";
     String COMMON_GALLERY = "common_gallery";
     String PAGE_TEXT = "page_text";
+    String PAGE_EXTRA_CODE = "page_extra_code";
     String MAIN_PROMO_BOTTOM = "main_promo_bottom";
     String MAIN_SLIDER_FRAME = "main_slider_frame";
     String BANNER = "banner";
@@ -84,6 +85,10 @@ public interface ItemNames {
     String EMAIL_QUEUE_ITEM = "email_queue_item";
     String OBSERVER = "observer";
     String OBSERVERS = "observers";
+    String COMMENTS = "comments";
+    String MODERATED = "moderated";
+    String UNMODERATED = "unmoderated";
+    String COMMENT = "comment";
 
     public interface abstract_product_ {
 
@@ -221,6 +226,28 @@ public interface ItemNames {
 
     }
 
+    public interface comment_ {
+
+        String _ITEM_NAME = "comment";
+        String NAME = "name";
+        String DATE = "date";
+        String VISIT_DATE = "visit_date";
+        String BIRTH_YEAR = "birth_year";
+        String COUNTRY = "country";
+        String FLAG = "flag";
+        String TYPE = "type";
+        String EMAIL = "email";
+        String PHONE = "phone";
+        String TEXT = "text";
+
+    }
+
+    public interface comments_ {
+
+        String _ITEM_NAME = "comments";
+
+    }
+
     public interface common_ {
 
         String _ITEM_NAME = "common";
@@ -239,6 +266,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "common_gallery";
         String NAME = "name";
+        String SPOILER = "spoiler";
         String HEIGHT = "height";
         String WIDTH = "width";
         String BORDER = "border";
@@ -282,6 +310,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "custom_block";
         String NAME = "name";
+        String SPOILER = "spoiler";
         String HEADER = "header";
         String SUBHEADER = "subheader";
         String TEXT = "text";
@@ -536,6 +565,12 @@ public interface ItemNames {
 
     }
 
+    public interface moderated_ {
+
+        String _ITEM_NAME = "moderated";
+
+    }
+
     public interface module_ {
 
         String _ITEM_NAME = "module";
@@ -658,6 +693,16 @@ public interface ItemNames {
 
         String _ITEM_NAME = "page_extra";
         String NAME = "name";
+        String SPOILER = "spoiler";
+
+    }
+
+    public interface page_extra_code_ {
+
+        String _ITEM_NAME = "page_extra_code";
+        String NAME = "name";
+        String SPOILER = "spoiler";
+        String TEXT = "text";
 
     }
 
@@ -681,6 +726,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "page_text";
         String NAME = "name";
+        String SPOILER = "spoiler";
         String TEXT = "text";
 
     }
@@ -880,6 +926,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "simple_gallery";
         String NAME = "name";
+        String SPOILER = "spoiler";
         String HEIGHT = "height";
         String WIDTH = "width";
         String BORDER = "border";
@@ -897,6 +944,12 @@ public interface ItemNames {
     public interface topper_ {
 
         String _ITEM_NAME = "topper";
+
+    }
+
+    public interface unmoderated_ {
+
+        String _ITEM_NAME = "unmoderated";
 
     }
 
