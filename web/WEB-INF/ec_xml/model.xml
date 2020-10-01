@@ -529,7 +529,7 @@
 		<parameter name="text" type="text" caption="Текст"/>
 	</item>
 
-	<item name="page_extra_code" caption="Блок кода" super="page_extra" ag-id="1771" ag-hash="883875037">
+	<item name="page_extra_code" caption="Блок кода" super="page_extra" ag-id="1811" ag-hash="1379922028">
 		<parameter name="text" type="plain-text" caption="Текст"/>
 	</item>
 
@@ -894,19 +894,19 @@
 		<child item="observer"/>
 	</item>
 
-	<item name="comments" caption="Отзывы">
+	<item name="comments" caption="Отзывы" ag-id="1812" ag-hash="-602415628">
 		<child item="moderated" single="true"/>
 		<child item="unmoderated" single="true"/>
 	</item>
 
-	<item name="moderated" caption="Модерированные отзывы">
+	<item name="moderated" caption="Модерированные отзывы" ag-id="1813" ag-hash="-2004704319">
 		<child item="comment"/>
 	</item>
-	<item name="unmoderated" caption="Новые отзывы">
+	<item name="unmoderated" caption="Новые отзывы" ag-id="1814" ag-hash="-1936264888">
 		<child item="comment" />
 	</item>
 
-	<item name="comment" key="name, date">
+	<item name="comment" caption="Отзыв" key="name date" ag-id="1815" ag-hash="950398559">
 		<parameter name="name" type="string" caption="Имя и отчество"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<parameter name="visit_date" type="string" caption="Месяц и год отдыха"/>
@@ -939,6 +939,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>

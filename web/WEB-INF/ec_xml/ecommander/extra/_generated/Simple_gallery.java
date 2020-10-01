@@ -13,6 +13,7 @@ public class Simple_gallery
 
     public final static String _NAME = "simple_gallery";
     public final static String NAME = "name";
+    public final static String SPOILER = "spoiler";
     public final static String HEIGHT = "height";
     public final static String WIDTH = "width";
     public final static String BORDER = "border";
@@ -52,6 +53,28 @@ public class Simple_gallery
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_spoiler(Byte value) {
+        setValue("spoiler", value);
+    }
+
+    public void setUI_spoiler(String value)
+        throws Exception
+    {
+        setValueUI("spoiler", value);
+    }
+
+    public Byte get_spoiler() {
+        return getByteValue("spoiler");
+    }
+
+    public Byte getDefault_spoiler(Byte defaultVal) {
+        return getByteValue("spoiler", defaultVal);
+    }
+
+    public boolean contains_spoiler(Byte value) {
+        return containsValue("spoiler", value);
     }
 
     public void set_height(String value) {

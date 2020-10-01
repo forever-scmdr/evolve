@@ -12,6 +12,7 @@ public class Custom_block
 
     public final static String _NAME = "custom_block";
     public final static String NAME = "name";
+    public final static String SPOILER = "spoiler";
     public final static String HEADER = "header";
     public final static String SUBHEADER = "subheader";
     public final static String TEXT = "text";
@@ -55,6 +56,28 @@ public class Custom_block
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_spoiler(Byte value) {
+        setValue("spoiler", value);
+    }
+
+    public void setUI_spoiler(String value)
+        throws Exception
+    {
+        setValueUI("spoiler", value);
+    }
+
+    public Byte get_spoiler() {
+        return getByteValue("spoiler");
+    }
+
+    public Byte getDefault_spoiler(Byte defaultVal) {
+        return getByteValue("spoiler", defaultVal);
+    }
+
+    public boolean contains_spoiler(Byte value) {
+        return containsValue("spoiler", value);
     }
 
     public void set_header(String value) {
