@@ -1169,7 +1169,7 @@
 		</command>
 	</page>
 
-	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
+	<page name="update_currency_ratio" schedule="30 * * ? * * *">
 		<link name="success" target="currency_ratio_success"/>
 		<link name="error" target="currency_ratio_success">
 			<var name="result" value="error"/>

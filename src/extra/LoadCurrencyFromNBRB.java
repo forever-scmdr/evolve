@@ -7,21 +7,22 @@ import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
 	private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=";
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("YYYY-M-d");
+	private static final DateTimeFormatter REPORT_FORMATTER = DateTimeFormat.forPattern("YYYY-M-d").withZoneUTC();
 	@Override
 	public ResultPE execute() throws Exception {
-		Document doc = Jsoup.parse(new URL(NBNB_URL+FORMAT.format(new Date())), 5000);
+		Document doc = Jsoup.parse(new URL(NBNB_URL + REPORT_FORMATTER.print(DateTime.now())), 5000);
 		List<Item> ratios = new ItemQuery("ratio").loadItems();
 
 		for(Item ratioItem : ratios){
