@@ -111,7 +111,7 @@
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
 							<input type="hidden" class="input input_type_number" name="qty" value="1" min="0" />
-							<button class="button button_not-available" type="submit">Запросить цену</button>
+							<button class="button button_request" type="submit">Запросить цену1</button>
 						</xsl:if>
 					</form>
 				</div>
@@ -282,7 +282,7 @@
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="hidden" class="input input_type_number" name="qty" value="1" min="0" />
-								<button class="button" type="submit">Запросить цену</button>
+								<button class="button" type="submit">Запросить цену5</button>
 							</xsl:if>
 						</form>
 					</div>

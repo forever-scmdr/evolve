@@ -159,7 +159,7 @@
 					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then 'Купить' else 'Заказать'}"/>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<input type="submit" class="button button_primary" style="background-color: #707070; border-color: #707070;" value="Запросить цену"/>
+					<input type="submit" class="button button_primary" style="background-color: #707070; border-color: #707070;" value="Запросить цену3"/>
 				</xsl:if>
 			</form>
 		</span>

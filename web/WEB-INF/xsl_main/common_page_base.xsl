@@ -770,6 +770,25 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 
+
+				<div class="popup" style="display: none;">
+					<div class="popup__body">
+						<div class="popup__content">
+							<a class="popup__close" href="#">×</a>
+							<div class="popup__title title title_2">Аккумуляторная болгарка Metabo PowerMaxx CC 12 BL</div>
+							<form>
+								<div class="form__item">
+									<label class="form-label">Ваше имя:</label>
+									<input class="form__element" type="text"></input>
+								</div>
+								<div class="form__proceed">
+									<input class="button" type="submit" value="Отправить форму" />
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
 			</body>
 		</html>
 	</xsl:template>

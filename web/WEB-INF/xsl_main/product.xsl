@@ -143,7 +143,7 @@
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty" value="1" min="0"/>
-									<button class="button button_size_lg" type="submit">Запросить цену</button>
+									<button class="button button_size_lg" type="submit">Запросить цену2</button>
 								</xsl:if>
 							</form>
 						</div>
@@ -228,7 +228,7 @@
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Запросить цену" />
+										<input type="submit" class="button" value="Запросить цену4" />
 									</xsl:if>
 								</form>
 							</div>
