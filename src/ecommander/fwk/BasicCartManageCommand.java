@@ -13,6 +13,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -428,7 +429,9 @@ public abstract class BasicCartManageCommand extends Command {
 					double ratio = ratioItem.getDoubleValue("currency_ratio", 1d);
 					double q = 1 + ratioItem.getDoubleValue("q", 0d);
 					double scale = ratioItem.getIntValue("scale", 1);
+					boolean round = ratioItem.getByteValue("round", (byte)0) > 0;
 					price = price.multiply(new BigDecimal(ratio * q / scale));
+					if(round) price = price.setScale(0, RoundingMode.HALF_EVEN);
 				}
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
