@@ -30,9 +30,11 @@
 		<xsl:variable name="ratio" select="f:num($ratio_item/currency_ratio)"/>
 		<xsl:variable name="q" select="f:num($ratio_item/q) + 1"/>
 		<xsl:variable name="scale" select="if(f:num($ratio_item/scale) &gt; 0) then f:num($ratio_item/scale) else 1"/>
+		<xsl:variable name="round" select="f:num($ratio_item/round) &gt; 0" />
+		<xsl:variable name="converted_price" select="f:num($price) * $ratio * $q div $scale"/>
 		<xsl:choose>
 			<xsl:when test="$ratio != 1 and $ratio != 0">
-				<xsl:sequence select="format-number(f:num($price) * $ratio * $q div $scale, '#0.00')"/>
+				<xsl:sequence select="format-number(if($round) then round($converted_price) else $converted_price, '#0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:sequence select="f:currency_decimal($price)"/>
