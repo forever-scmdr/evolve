@@ -557,6 +557,7 @@
 		<parameter name="currency_ratio" caption="Курс валюты" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб." default="1" format="###,##0.#####"/>
 		<parameter name="q" caption="Прибавка к Курсу"  type="double" description="0.03 = +3%" default="0" format="###,##0.#####"/>
 		<parameter name="scale" caption="размерность" type="integer" default="1" />
+		<parameter name="round" caption="округлять" type="byte" default="0" domain="0-1" />
 		<parameter name="nbrb_id" type="string" caption="ID нацбанка" description="http://www.nbrb.by/Services/XmlExRates.aspx"/>
 	</item>
 
