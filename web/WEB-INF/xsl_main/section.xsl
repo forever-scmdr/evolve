@@ -68,11 +68,11 @@
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
-				<a class="path__link" href="{$main_host}">Главная страница</a> 
-				<i class="fas fa-angle-right"></i> 
+				<a class="path__link" href="{$main_host}">Главная страница</a>
+				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
-					<i class="fas fa-angle-right"></i>
+					<div class="path__arrow"></div>
 					<a class="path__link" href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
@@ -142,22 +142,27 @@
 	</xsl:template>
 
 	<xsl:template name="TAGS">
-		<div class="labels labels_section">
-			<xsl:if test="$subs or $sel_sec/tag">
-				<xsl:if test="$show_devices">
+		<xsl:if test="$subs or $sel_sec/tag">
+			<xsl:if test="$show_devices">
+				<div class="labels labels_section">
 					<xsl:apply-templates select="$sel_sec/tag"/>
-				</xsl:if>
-				<xsl:if test="not($sel_sec/show_subs = '0')">
-					<xsl:if test="$subs and $sub_view = 'tags'">
+				</div>
+			</xsl:if>
+			<xsl:if test="not($sel_sec/show_subs = '0')">
+				<xsl:if test="$subs and $sub_view = 'tags'">
+					<div class="labels labels_section">
 						<xsl:apply-templates select="$subs" mode="tag"/>
-					</xsl:if>
-					<xsl:if test="$subs and $sub_view = 'pics'">
-						<xsl:apply-templates select="$subs" mode="pic"/>
-					</xsl:if>
+					</div>
+				</xsl:if>
+				<xsl:if test="$subs and $sub_view = 'pics'">
+					<div class="catalog-items">
+						<div class="catalog-items__wrap">
+							<xsl:apply-templates select="$subs" mode="pic"/>
+						</div>
+					</div>
 				</xsl:if>
 			</xsl:if>
-		</div>
-
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="FILTER">
@@ -288,12 +293,16 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="pic">
-		<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-		<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
-		<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-		<div class="device items-catalog__section">
-			<a href="{show_products}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
-			<a href="{show_products}" class="device__title"><xsl:value-of select="name"/></a>
+		<div class="catalog-item">
+			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
+			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
+			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
+			<div class="catalog-item__info">
+				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
+				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+				<a href="{show_products}" class="catalog-item__link"></a>
+			</div>
 		</div>
 	</xsl:template>
 

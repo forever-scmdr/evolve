@@ -13,6 +13,7 @@ public class Section
     public final static String _NAME = "section";
     public final static String NAME = "name";
     public final static String ICON = "icon";
+    public final static String SHORT = "short";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
@@ -70,6 +71,22 @@ public class Section
 
     public boolean contains_icon(File value) {
         return containsValue("icon", value);
+    }
+
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_show_subs(Byte value) {
