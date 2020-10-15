@@ -625,7 +625,7 @@
 	</item>
 
 
-	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" ag-id="11" ag-hash="300774655">
+	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container" ag-id="11" ag-hash="300774655">
 		<child item="seo" single="true"/>
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
@@ -710,8 +710,7 @@
 		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
 	</item>
 
-	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item" default-page="page" ag-id="27" ag-hash="-1777660259">
-		<child item="seo" single="true"/>
+	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container" default-page="page" ag-id="27" ag-hash="-1777660259">
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей"/>
