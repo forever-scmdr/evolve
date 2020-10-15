@@ -497,12 +497,12 @@
 	<item name="topper" caption="Топпер (верх)" super="block_array" ag-id="908" ag-hash="-868027480"/>
 
 	<item name="page_extra" caption="Дополнительные элементы страницы" key="name" virtual="true" ag-id="1766" ag-hash="1617031776">
-		<parameter name="name" type="string" caption="Название" description="для CMS"/>
+		<parameter name="name" type="string" caption="Название" text-index="fulltext" description="для CMS"/>
 		<parameter name="spoiler" type="byte" domain="0-1" caption="Сделать скрываемым"/>
 	</item>
 
 	<item name="page_extra_part" caption="Часть дополнительного элемента страницы" key="name" virtual="true" ag-id="1778" ag-hash="1380296306">
-		<parameter name="name" type="string" caption="Название" description="для CMS"/>
+		<parameter name="name" type="string" caption="Название" text-index="fulltext" description="для CMS"/>
 	</item>
 
 	<item name="picture" caption="Картинка" super="page_extra_part" ag-id="1767" ag-hash="-577741570">
@@ -528,11 +528,11 @@
 	</item>
 
 	<item name="page_text" caption="Текстовый блок" super="page_extra" ag-id="1771" ag-hash="883875037">
-		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text" type="text" caption="Текст" text-index="fulltext"/>
 	</item>
 
-	<item name="page_extra_code" caption="Блок кода" super="page_extra" ag-id="1811" ag-hash="1379922028">
-		<parameter name="text" type="plain-text" caption="Текст"/>
+	<item name="page_extra_code" caption="Произвольный код" super="page_extra" ag-id="1787" ag-hash="1379922028">
+		<parameter name="text" type="plain-text" caption="Код"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
@@ -627,11 +627,11 @@
 
 	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container" ag-id="11" ag-hash="300774655">
 		<child item="seo" single="true"/>
-		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
-		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text" type="text" caption="Текст" text-index="fulltext"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_extra" inline="true"/>
 	</item>
@@ -708,6 +708,7 @@
 	<item name="page_link" caption="Ссылка" super="* menu_item" key="name link" ag-id="1434" ag-hash="883640234">
 		<parameter name="name" type="string" caption="Название" description="как выводить в пункте меню"/>
 		<parameter name="link" type="string" caption="Ссылка" description="относительная ссылка (без http:// и домена сайта)"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
 	</item>
 
 	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container" default-page="page" ag-id="27" ag-hash="-1777660259">
