@@ -61,20 +61,16 @@
 			<!-- device identification code -->
 			<div class="text_size_sm"><xsl:value-of select="code"/></div>
 
-			<!-- device price (why <span class="price__value"> is doubled?) -->
+			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
 				<div class="price device__price">
 					<xsl:if test="price_old">
 						<div class="price__item_old">
-							<span class="price__value">
-								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-							</span>
+							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 						</div>
 					</xsl:if>
 					<div class="price__item_new">
-						<span class="price__value">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-						</span>
+						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
 					</div>
 				</div>
 			</xsl:if>
@@ -111,7 +107,8 @@
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
 							<input type="hidden" class="input input_type_number" name="qty" value="1" min="0" />
-							<button class="button button_request" type="submit">Запросить цену1</button>
+							<!-- кнопка запросить цену в списке товаров -->
+							<button class="button button_request" type="submit">Запросить цену</button>
 						</xsl:if>
 					</form>
 				</div>

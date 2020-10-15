@@ -86,7 +86,7 @@
 	<xsl:template name="CONTENT">
 		
 		<xsl:if test="$seo[1]/text">
-			<div class="page-content m-t">
+			<div class="section-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
@@ -219,13 +219,13 @@
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
 						<div class="icon">
-							<img src="img/icon-gear.svg" alt="" />
+							<img src="img/icon-grid.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Плиткой</span>
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
 						<div class="icon">
-							<img src="img/icon-gear.svg" alt="" />
+							<img src="img/icon-lines.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Строками</span>
 					</a>

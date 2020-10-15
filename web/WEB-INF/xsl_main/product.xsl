@@ -143,7 +143,8 @@
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty" value="1" min="0"/>
-									<button class="button button_size_lg" type="submit">Запросить цену2</button>
+									<!-- кнопка запросить цену на стрранице товара -->
+									<button class="button button_size_lg" type="submit">Запросить цену</button>
 								</xsl:if>
 							</form>
 						</div>
@@ -301,7 +302,7 @@
 					</xsl:if>
 					<xsl:if test="$p/params">
 						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
-							<table class="params">
+							<table class="full-params">
 								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $p/params_xml/xml, '&lt;/params&gt;'))"/>
 								<xsl:apply-templates select="$params_xml/params/group"/>
 								<xsl:apply-templates select="$params_xml/params/parameter"/>
@@ -323,9 +324,9 @@
 		</div>
 
 		<xsl:if test="page/grouped">
-			<div class="block devices-block ptb">
+			<div class="block devices-block pt">
 				<div class="title title_2">Варианты цветов</div>
-				<div class="devices-block__wrap device-carousel-similar">
+				<div class="devices-block__wrap device-carousel-colors">
 					<xsl:for-each select="page/grouped[gallery[2] and not(code = $p/code)]">
 						<div class="devices-block__column">
 							<div class="card device">
@@ -337,21 +338,23 @@
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav"></div>
+				<div class="device-nav-colors device-nav"></div>
 			</div>
 		</xsl:if>
 
 
 		<xsl:if test="page/assoc">
-			<div class="block devices-block ptb">
+			<div class="block devices-block pt">
 				<div class="title title_2">Выгодные предложения</div>
 				<div class="devices-block__wrap device-carousel-similar">
-					<div class="devices-block__column">
-						<!-- это обычный товар -->
-						<xsl:apply-templates select="page/assoc"/>
-					</div>
+					<xsl:for-each select="page/assoc">
+						<div class="devices-block__column">
+							<!-- это обычный товар -->
+							<xsl:apply-templates select="."/>
+						</div>
+					</xsl:for-each>
 				</div>
-				<div class="device-nav"></div>
+				<div class="device-nav-similar device-nav"></div>
 			</div>
 		</xsl:if>
 

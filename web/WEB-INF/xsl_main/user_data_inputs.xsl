@@ -44,7 +44,7 @@
 					</xsl:for-each>
 				</select>
 			</div>
-			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты: </label>
+			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты: <a href="oplata">подробнее</a></label>
 				<select class="form__element" id="form_pay"
 						name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
 					<option value="">Выберите способ оплаты</option>
@@ -99,7 +99,7 @@
 					</xsl:for-each>
 				</select>
 			</div>
-			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты: </label>
+			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты:  <a href="oplata">подробнее</a></label>
 				<select class="form__element" id="form_pay"
 						name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
 					<option value="">Выберите способ оплаты</option>

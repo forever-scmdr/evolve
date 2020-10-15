@@ -33,7 +33,7 @@
 									<img src="{@path}{image}" alt="" />
 								</div>
 								<div class="banner-sections__title"><xsl:value-of select="header" /></div>
-								<div class="banner-sections__link"></div>
+								<a href="{link}" class="banner-sections__link"></a>
 							</div>
 						</xsl:for-each>
 					</div>
