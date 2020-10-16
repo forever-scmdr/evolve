@@ -18,6 +18,7 @@ public abstract class LuceneQueryCreator {
 
 	public Query createLuceneQuery(String queryStr, String[] paramNames, Occur occur) {
 		QueryParser parser = LuceneIndexMapper.createQueryParser(paramNames[0]);
+		parser.setAllowLeadingWildcard(true);
 		if (paramNames.length == 1) {
 			return createQuery(parser, paramNames[0], queryStr, occur);
 		}

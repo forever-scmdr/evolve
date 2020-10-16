@@ -2,6 +2,7 @@ package ecommander.persistence.commandunits;
 
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
@@ -16,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Команда для сохранения уже существующего айтема
@@ -120,8 +123,10 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 		ItemMapper.insertItemParametersToIndex(item, mode, getTransactionContext());
 
 		// Вставка в Lucene индекс
-		if (insertIntoFulltextIndex)
-			LuceneIndexMapper.getSingleton().updateItem(item);
+		if (insertIntoFulltextIndex) {
+			LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(item.getId());
+			LuceneIndexMapper.getSingleton().updateItem(item, ancestors.get(item.getId()));
+		}
 
 		// Дополнительная обработка
 		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.update)) {
