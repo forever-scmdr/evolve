@@ -3,6 +3,7 @@ package ecommander.persistence.mappers;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
 import ecommander.fwk.MysqlConnector;
+import ecommander.fwk.Pair;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.common.TransactionContext;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
+public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
 
 	public enum Mode {
 		INSERT, // вставка в таблицу (без изменения и удаления)
@@ -270,6 +271,36 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants, ItemQuery.C
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				result.put(rs.getString(1), rs.getLong(2));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Загрузить ID всех предшественников по всем ассоциациям заданных айтемов
+	 * @param itemId
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> loadItemAncestors(Long... itemId) throws SQLException, NamingException {
+		LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> result = new LinkedHashMap<>();
+		for (Long key : itemId) {
+			result.put(key, null);
+		}
+		TemplateQuery select= new TemplateQuery("Select item ancestors by it's ID");
+		select.SELECT(IP_CHILD_ID, IP_ASSOC_ID, IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE().col_IN(IP_CHILD_ID).longIN(itemId);
+		try(Connection conn = MysqlConnector.getConnection();
+		    PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Long childId = rs.getLong(1);
+				ArrayList<Pair<Byte, Long>> preds = result.get(childId);
+				if (preds == null) {
+					preds = new ArrayList<>();
+					result.put(childId, preds);
+				}
+				preds.add(new Pair<>(rs.getByte(2), rs.getLong(3)));
 			}
 		}
 		return result;

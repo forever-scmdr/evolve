@@ -1,12 +1,11 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -31,6 +30,7 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.poi.util.LongField;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -264,7 +264,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void insertItem(Item item) throws IOException, SAXException, TikaException {
+	private void insertItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
@@ -277,11 +277,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		for (String pred : itemPreds) {
 			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
 		}
-		//		// Заполняются все предшественники (в которые айтем вложен)
-		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-		//		for (String contId : containerIds) {
-		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-		//		}
+		// Заполняются все предшественники (в которые айтем вложен)
+		if (ancestors != null) {
+			for (Pair<Byte, Long> ancestor : ancestors) {
+				itemDoc.add(new StringField(DBConstants.ItemTbl.I_SUPERTYPE, ancestor.getRight() + "", Store.YES));
+			}
+		}
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
 
@@ -356,16 +357,17 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * Обновить айтем, который уже присутствует в индеске.
 	 * Если айтема еще нет в индексе, он добавляется
 	 * @param item
+	 * @param ancestors
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public void updateItem(Item item) throws IOException, SAXException, TikaException {
+	public void updateItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
 		if (!item.getItemType().isFulltextSearchable())
 			return;
 		writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
-		insertItem(item);
+		insertItem(item, ancestors);
 	}
 
 	/**
@@ -516,8 +518,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					try (Connection conn = MysqlConnector.getConnection()) {
 						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
 					}
+					ArrayList<Long> ids = new ArrayList<>();
 					for (Item item : items) {
-						updateItem(item);
+						ids.add(item.getId());
+					}
+					LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(ids.toArray(new Long[0]));
+					for (Item item : items) {
+						updateItem(item, ancestors.get(item.getId()));
 					}
 					if (items.size() > 0)
 						startFrom = items.get(items.size() - 1).getId() + 1;
