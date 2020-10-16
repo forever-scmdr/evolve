@@ -5,8 +5,10 @@ import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.TermQuery;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,23 +72,18 @@ class PredecessorCriteria implements FilterCriteria, ItemQuery.Const, DBConstant
 	}
 
 	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
-		/*
 		if (!sign.equals(IN) && !sign.equals(NOT_IN))
 			return queryBuilder;
 		BooleanQuery.Builder innerQuery = new BooleanQuery.Builder();
-		Occur innerOccur = Occur.SHOULD;
+		BooleanClause.Occur innerOccur = BooleanClause.Occur.SHOULD;
 		if (sign.equals("NOT IN"))
-			innerOccur = Occur.MUST_NOT;
+			innerOccur = BooleanClause.Occur.MUST_NOT;
 		for (Long value : itemIds) {
-			innerQuery.add(new TermQuery(new Term(IP_PARENT_ID, value.toString())), innerOccur);
+			innerQuery.add(new TermQuery(new Term(I_SUPERTYPE, value.toString())), innerOccur);
 		}
 		if (queryBuilder == null)
 			return innerQuery;
 		queryBuilder.add(innerQuery.build(), occur);
-		return queryBuilder;
-		*/
-
-		// Временно ничего не делает
 		return queryBuilder;
 	}
 

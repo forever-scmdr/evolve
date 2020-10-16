@@ -653,16 +653,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		} else {
 			query.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
 		}
-		/*
 		// Родительский критерий (только для обычных айтемов и successor айтемов)
-		if (hasParent && (queryType != Type.PARENT_OF && queryType != Type.PREDECESSORS_OF)) {
-			BooleanQuery parentQuery = new BooleanQuery();
+		if (hasParent && !isParent) {
+			BooleanQuery.Builder parentQuery = new BooleanQuery.Builder();
 			for (Long parentId : ancestorIds) {
-				parentQuery.add(new TermQuery(new Term(DBConstants.Item.DIRECT_PARENT_ID, parentId.toString())), Occur.SHOULD);
+				parentQuery.add(new TermQuery(new Term(DBConstants.ItemTbl.I_SUPERTYPE, parentId.toString())), Occur.SHOULD);
 			}
-			query.add(parentQuery, Occur.MUST);
+			query.add(parentQuery.build(), Occur.MUST);
 		}
-		*/
 		// Добавить другие (неполнотектовые) критерии фильтра, если они есть
 		if (hasFilter()) {
 			filter.appendLuceneQuery(query, Occur.MUST);
