@@ -193,6 +193,7 @@
 		<child item="product"/>
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
+		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
