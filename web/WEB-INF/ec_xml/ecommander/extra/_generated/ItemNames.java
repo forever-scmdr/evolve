@@ -619,6 +619,7 @@ public interface ItemNames {
     public interface news_ {
 
         String _ITEM_NAME = "news";
+        String IN_MAIN_MENU = "in_main_menu";
         String NAME = "name";
         String ON_MAIN = "on_main";
 
