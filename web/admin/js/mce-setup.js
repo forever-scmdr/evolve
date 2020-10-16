@@ -2,22 +2,25 @@ var mceSettings = {
 	"mce_big" : {
 		selector : "textarea.mce_big",
 		language : 'ru',
-	//	theme : "modern",
+		//	theme : "modern",
 		skin : "lightgray"
 		,content_css : [
-				"css/text-style.css",
-				"font-awesome-4.6.3/css/font-awesome.min.css" ]
+			"css/text-style.css?v=2"]
 		,plugins : [
-				'advlist autolink lists link image charmap print preview anchor textcolor',
-				'searchreplace visualblocks code fullscreen',
-				'insertdatetime media table contextmenu paste code'
-				// ,"fontawesome noneditable"
-				, "visualchars", "spoiler" ],
+			'advlist autolink lists link image charmap print preview anchor textcolor',
+			'searchreplace visualblocks code fullscreen',
+			'insertdatetime media table contextmenu paste code'
+			// ,"fontawesome noneditable"
+			, "visualchars", "spoiler", "imagetools"],
+
 		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
+		extended_valid_elements: "figure,figcaption",
+		image_caption: true,
 		style_formats : [
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+			{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
 			{
 			title : 'Теги HTML-5',
 			items : [ {
@@ -59,21 +62,24 @@ var mceSettings = {
 	,"mce_medium" : {
 		selector : "textarea.mce_medium",
 		language : 'ru',
-	//	theme : "modern",
+		content_css : [
+		"css/text-style.css?v=2"],
 		skin : "lightgray"
-		,content_css : ["css/text-style.css",
-				"font-awesome-4.6.3/css/font-awesome.min.css" ]
+
 		,plugins : [
-				'advlist autolink lists link image charmap print preview anchor textcolor',
-				'searchreplace visualblocks code fullscreen',
-				'insertdatetime media table contextmenu paste code'
-				// ,"fontawesome noneditable"
-				, "visualchars", "spoiler" ],
+			'advlist autolink lists link image charmap print preview anchor textcolor',
+			'searchreplace visualblocks code fullscreen',
+			'insertdatetime media table contextmenu paste code'
+			// ,"fontawesome noneditable"
+			, "visualchars", "spoiler", "imagetools" ],
 		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
+		extended_valid_elements: "figure,figcaption",
+		image_caption: true,
 		style_formats : [
 		{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+		{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
 		{
 			title : 'Теги HTML-5',
 			items : [ {
@@ -191,9 +197,21 @@ $(document).ready(function(){
 						var val = $(this).val().replace("C:\\fakepath\\", "");
 						val = translit(val);
 						callback(uploadPath + val);
+					});
+				}
+				,setup: function (editor) {
+					editor.on('init', function(args) {
+						editor = args.target;
+
+						editor.on('NodeChange', function(e) {
+							if (e && e.element.nodeName.toLowerCase() == 'img') {
+								tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+							}
 						});
-					}
+					});
+				}
 			});
+
 		}
 		//console.log(mceSettings[setting]);
 		tinymce.init(mceSettings[setting]);

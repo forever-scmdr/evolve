@@ -516,7 +516,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<single item="product_extra"/>
+			<list item="product_extra"/>
 			<list item="params_xml"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">

@@ -880,6 +880,7 @@ public interface ItemNames {
         String _ITEM_NAME = "section";
         String NAME = "name";
         String ICON = "icon";
+        String SHORT = "short";
         String SHOW_SUBS = "show_subs";
         String SUB_VIEW = "sub_view";
         String SHOW_DEVICES = "show_devices";

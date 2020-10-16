@@ -32,14 +32,18 @@
 		<div class="tabs tabs_product">
 
 			<xsl:if test="$message and not($success)">
-				<div class="alert alert-danger">
-					<h4>Ошибка</h4>
-					<p><xsl:value-of select="$message"/></p>
+				<div class="alert alert_danger">
+					<div class="alert__title">Ошибка</div>
+					<div class="alert__text">
+						<p><xsl:value-of select="$message"/></p>
+					</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="$message and $success">
-				<div class="alert alert-success">
-					<p><xsl:value-of select="$message"/></p>
+				<div class="alert alert_success">
+					<div class="alert__text">
+						<p><xsl:value-of select="$message"/></p>
+					</div>
 				</div>
 			</xsl:if>
 
@@ -92,17 +96,17 @@
 
 
 	<xsl:template name="TOTAL">
-		<div class="total">
-			<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
+		<div class="cart-total">
+			<div class="cart-total__text">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</div>
 <!-- 			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
 				<div class="discount-total">
 					Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.
 					Сумма без учета скидки: <xsl:value-of select="page/cart/sum"/> руб.
 				</div>
 			</xsl:if> -->
-		</div>
-		<div class="form__proceed">
-			<input type="submit" class="button button_size_lg" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
+			<div class="cart-total__buttons">
+				<input type="submit" class="button button_2 cart-total__button" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
+			</div>
 		</div>
 	</xsl:template>
 

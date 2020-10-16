@@ -76,7 +76,7 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_PAGES">
 		<div class="side-menu">
 			<!-- чтобы выводить все разделы надо удалить [.//@id = $p/@id] -->
-			<xsl:for-each select="page/custom_pages/custom_page">
+			<xsl:for-each select="page/custom_pages/custom_page[.//@id = $p/@id]/custom_page">
 				<xsl:variable name="l1_active" select="@id = $p/@id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l1_active]}"><xsl:value-of select="header"/></a>

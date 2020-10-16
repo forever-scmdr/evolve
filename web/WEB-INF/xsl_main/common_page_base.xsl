@@ -141,7 +141,7 @@
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Поиск по каталогу" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
+							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 							<button class="button header-search__button" type="submit">Найти</button>
 							<!-- quick search -->
 							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
@@ -174,13 +174,13 @@
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a class="icon-link">
+							<a href="{page/cart_link}" class="icon-link">
 								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
 								<span class="icon-link__item">Корзина</span>
 							</a>
 						</div>
 						<div class="links">
-							<a href="" class="icon-link">
+							<a href="/kontakty" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>

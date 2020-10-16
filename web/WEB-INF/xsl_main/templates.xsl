@@ -33,7 +33,7 @@
 									<img src="{@path}{image}" alt="" />
 								</div>
 								<div class="banner-sections__title"><xsl:value-of select="header" /></div>
-								<div class="banner-sections__link"></div>
+								<a href="{link}" class="banner-sections__link"></a>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -98,7 +98,7 @@
 						<div class="contacts-block contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 					</div>
 					<div class="map">
-						<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A6b86e573117022b84d86b6247fce9facf6e235b972a3a2f7050d57db37ffa117&amp;source=constructor" width="100%" height="350" frameborder="0"></iframe>
+						<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3bcb9da99b1b8c51f6dce673b4be2c8cfeee83c9362822124f6c3e28a3c5ebca&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>
 					</div>
 				</div>
 			</div>
