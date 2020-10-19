@@ -229,23 +229,53 @@
 					</ul>
 				<div class="tab-content">
 					<xsl:if test="$p/params">
+
+						<xsl:variable name="paramsXml" select="$p/params_xml"/>
+
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-							<table>
-								<colgroup>
-									<col style="width: 40%"/>
-								</colgroup>
-								<xsl:for-each select="$p/params/param">
-									<tr>
-										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
-										</td>
-										<td>
-											<p><xsl:value-of select="."/></p>
-										</td>
-									</tr>
-								</xsl:for-each>
-							</table>
+							<xsl:for-each select="$paramsXml/group">
+								<xsl:variable name="group_name" select="@name"/>
+								<table>
+									<colgroup>
+										<col style="width: 40%"/>
+									</colgroup>
+									<xsl:if test="$group_name != ''">
+										<tr>
+											<td colspan="2">
+												<xsl:value-of select="$group_name"/>
+											</td>
+										</tr>
+									</xsl:if>
+									<xsl:for-each select="param">
+										<xsl:variable name="caption" select="name"/>
+										<xsl:variable name="product_param" select="$p/params/param[@caption = $caption]"/>
+										<tr>
+											<td>
+												<p><strong><xsl:value-of select="$caption"/></strong></p>
+											</td>
+											<td>
+												<p><xsl:value-of select="$product_param"/></p>
+											</td>
+										</tr>
+									</xsl:for-each>
+								</table>
+							</xsl:for-each>
+<!--							<table>-->
+<!--								<colgroup>-->
+<!--									<col style="width: 40%"/>-->
+<!--								</colgroup>-->
+<!--								<xsl:for-each select="$p/params/param">-->
+<!--									<tr>-->
+<!--										<td>-->
+<!--											<p><strong><xsl:value-of select="@caption"/></strong></p>-->
+<!--										</td>-->
+<!--										<td>-->
+<!--											<p><xsl:value-of select="."/></p>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</xsl:for-each>-->
+<!--							</table>-->
 
 						</div>
 					</xsl:if>
