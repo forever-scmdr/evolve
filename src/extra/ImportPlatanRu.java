@@ -115,7 +115,7 @@ public class ImportPlatanRu extends IntegrateBase implements ItemNames {
 							prod.set_code(code);
 						}
 						prod.set_name(removeQuotes(src.getValue(NAME_HEADER)));
-						prod.set_description(removeQuotes(src.getValue(DESCRIPTION_HEADER)));
+						prod.set_name_extra(removeQuotes(src.getValue(DESCRIPTION_HEADER)));
 						prod.set_available(defaultDelay);
 						prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
 						prod.set_min_qty(new BigDecimal(1));/*src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1))*/
