@@ -38,11 +38,14 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	private Item catalog;
 	private String name;
 	private String company;
+	private String base;
 
 	@Override
 	public ResultPE execute() throws Exception {
 		name = getVarSingleValue(NAME_ELEMENT);
 		company = getVarSingleValue(COMPANY_ELEMENT);
+		base = getVarSingleValue("base");
+		base = StringUtils.isNotBlank(base) ? base : getUrlBase();
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		return createYandex();
 	}
@@ -58,7 +61,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 			xml.startElement(SHOP_ELEMENT);
 			xml.startElement(NAME_ELEMENT).addText(name).endElement();
 			xml.startElement(COMPANY_ELEMENT).addText(company).endElement();
-			xml.startElement(URL_ELEMENT).addText(getUrlBase()).endElement();
+			xml.startElement(URL_ELEMENT).addText(base).endElement();
 			xml.startElement(CURRENCIES_ELEMENT).addEmptyElement(CURRENCY_ELEMENT, ID_ATTR, "BYN", RATE_ATTR, "1").endElement(); // currencies
 			xml.startElement(CATEGORIES_ELEMENT);
 			processCategory(catalog);
