@@ -15,6 +15,7 @@ import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -1198,8 +1199,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				ArrayList<Pair<String, String>> queryAndHighlight = fulltext.getQueryAndHighlightedText(item.getId());
 				if (queryAndHighlight != null) {
 					for (Pair<String, String> qandh : queryAndHighlight) {
-						item.setExtra(FulltextCriteria.QUERY, qandh.getLeft());
-						item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, qandh.getRight());
+						item.setExtra(FulltextCriteria.QUERY, StringEscapeUtils.escapeXml10(qandh.getLeft()));
+						item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, StringEscapeUtils.escapeXml10(qandh.getRight()));
 					}
 				}
 			}

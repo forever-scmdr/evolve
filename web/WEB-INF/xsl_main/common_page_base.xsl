@@ -663,7 +663,7 @@
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<!-- popup -->
-				<div class="popup" style="display: none;" id="product-ajax-popup">
+				<div class="popup" style="display: none;" id="feedback-ajax-popup">
 					<div class="popup__body">
 						<div class="popup__content" id="product-ajax-content">
 							<a class="popup__close" onclick="clearProductAjax();">×</a>
