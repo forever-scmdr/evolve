@@ -48,6 +48,7 @@ public interface AdminXML {
 	 * Атрибут XML
 	 */
 	String NAME_ATTRIBUTE = "name";
+	String DESCRIPTION_ATTRIBUTE = "description";
 	String TYPE_NAME_ATTRIBUTE = "type-name";
 	String ASSOC_NAME_ATTRIBUTE = "assoc-name";
 	String CAPTION_ATTRIBUTE = "caption";
