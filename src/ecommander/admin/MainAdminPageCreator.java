@@ -291,13 +291,15 @@ public class MainAdminPageCreator implements AdminXML {
 		private final long parentId;
 		private final boolean isVirtual;
 		private final byte assocId;
+		private final String description;
 
-		private ItemToAdd(String baseItem, long parentId, byte assocId, boolean isVirtual) throws SQLException {
+		private ItemToAdd(String baseItem, long parentId, byte assocId, boolean isVirtual, String description) throws SQLException {
 			extenders = new ArrayList<>();
 			this.baseItem = baseItem;
 			this.parentId = parentId;
 			this.assocId = assocId;
 			this.isVirtual = isVirtual;
+			this.description = description;
 			LinkedHashSet<String> toAdd = ItemTypeRegistry.getItemExtenders(baseItem);
 			if (toAdd.size() > 1) {
 				for (String itemName : toAdd) {
@@ -311,7 +313,8 @@ public class MainAdminPageCreator implements AdminXML {
 		public XmlDocumentBuilder write(XmlDocumentBuilder xml) {
 			ItemType itemDesc = ItemTypeRegistry.getItemType(baseItem);
 			xml.startElement(ITEM_TO_ADD_ELEMENT, NAME_ATTRIBUTE, itemDesc.getName(), ID_ATTRIBUTE,
-					itemDesc.getTypeId(), CAPTION_ATTRIBUTE, itemDesc.getCaption(), ASSOC_ID_INPUT, assocId, VIRTUAL_ATTRIBUTE, isVirtual);
+					itemDesc.getTypeId(), CAPTION_ATTRIBUTE, itemDesc.getCaption(), ASSOC_ID_INPUT, assocId,
+					DESCRIPTION_ATTRIBUTE, description, VIRTUAL_ATTRIBUTE, isVirtual);
 			for (String ext : extenders) {
 				ItemType extender = ItemTypeRegistry.getItemType(ext);
 				String createExtUrl = createAdminUrl(CREATE_ITEM_ACTION, PARENT_ID_INPUT, parentId, ITEM_TYPE_INPUT, extender.getTypeId());
@@ -942,7 +945,8 @@ public class MainAdminPageCreator implements AdminXML {
 		}
 		if (addItemToAdd) {
 			boolean isVirtual = parentDesc.isChildVirtual(childDesc.assocName, childDesc.itemName);
-			itemsToAdd.add(new ItemToAdd(childDesc.itemName, parentId, assocId, isVirtual));
+			String desc = ItemTypeRegistry.getItemType(childDesc.itemName).getDescription();
+			itemsToAdd.add(new ItemToAdd(childDesc.itemName, parentId, assocId, isVirtual, desc));
 		}
 	}
 
