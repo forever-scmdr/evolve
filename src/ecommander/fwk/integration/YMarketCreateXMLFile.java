@@ -33,12 +33,14 @@ import java.util.List;
 public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 	private static final String YANDEX_FILE_NAME = "yandex_market.xml";
+	private static final String YANDEX_ZERO_FILE_NAME = "yandex_market_zero.xml";
 
 	private XmlDocumentBuilder xml;
 	private Item catalog;
 	private String name;
 	private String company;
 	private String base;
+	private boolean isNoZero;
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -46,13 +48,15 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 		company = getVarSingleValue(COMPANY_ELEMENT);
 		base = getVarSingleValue("base");
 		base = StringUtils.isNotBlank(base) ? base : getUrlBase();
+		isNoZero = StringUtils.isNotBlank(getVarSingleValue("nozero"));
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		return createYandex();
 	}
 
 	private ResultPE createYandex() throws EcommanderException {
 		String nowStr = DateDataType.outputDate(System.currentTimeMillis(), DateTimeFormat.forPattern("dd-MM-yyyy HH:mm").withZoneUTC());
-		Path file = Paths.get(AppContext.getFilesDirPath(false) + YANDEX_FILE_NAME);
+		String fileName = isNoZero ? YANDEX_FILE_NAME : YANDEX_ZERO_FILE_NAME;
+		Path file = Paths.get(AppContext.getFilesDirPath(false) + fileName);
 		try {
 			FileUtils.deleteQuietly(file.toFile());
 
@@ -77,7 +81,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 			//catalog.setValue(ItemNames.catalog.YML_FILE, file.toFile());
 			//executeAndCommitCommandUnits(new UpdateItemDBUnit(catalog));
 
-			return getResult("success").setValue(AppContext.getCommonFilesUrlPath() + YANDEX_FILE_NAME);
+			return getResult("success").setValue(AppContext.getCommonFilesUrlPath() + fileName);
 		} catch (Exception e) {
 			ServerLogger.error("Create YML file error", e);
 			return getResult("error").setValue(file.toString());
@@ -115,7 +119,11 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 
 			for (Item product : subProducts) {
 				BigDecimal price = product.getDecimalValue(PRICE_PARAM, zero);
-				String avail = price.doubleValue() <= 0.001d ? "false" : "true";
+				boolean isAvailable = price.doubleValue() >= 0.001d;
+				// Пропустить товары без цены если это надо
+				if (!isAvailable && isNoZero)
+					continue;
+				String avail = isAvailable ? "false" : "true";
 				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
 				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/";
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
