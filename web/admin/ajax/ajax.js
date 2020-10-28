@@ -89,6 +89,21 @@ function initAjax(elementId) {
 			insertAjax(elem.attr("href"));
 		}
 	});
+    $(idPrefix + "a[ajax-popup]").click(function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var loaderId = link.attr("ajax-loader-id");
+        var popupId = link.attr("ajax-popup");
+        var targetElem = $("#" + popupId);
+        if (targetElem != null) {
+            //if (targetElem.)
+            if (loaderId) {
+                insertAjax(link.attr("href"), loaderId);
+            } else {
+                insertAjax(link.attr("href"));
+            }
+        }
+    });
 	$(idPrefix + "select[value]").each(function() {
 		$(this).val($(this).attr("value"));
 	});
