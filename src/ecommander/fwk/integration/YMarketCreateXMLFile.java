@@ -54,7 +54,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 	}
 
 	private ResultPE createYandex() throws EcommanderException {
-		String nowStr = DateDataType.outputDate(System.currentTimeMillis(), DateTimeFormat.forPattern("dd-MM-yyyy HH:mm").withZoneUTC());
+		String nowStr = DateDataType.outputDate(System.currentTimeMillis(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").withZoneUTC());
 		String fileName = isNoZero ? YANDEX_FILE_NAME : YANDEX_ZERO_FILE_NAME;
 		Path file = Paths.get(AppContext.getFilesDirPath(false) + fileName);
 		try {
@@ -125,7 +125,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 					continue;
 				String avail = isAvailable ? "false" : "true";
 				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
-				String url = getUrlBase() + "/" + baseProduct.getKeyUnique() + "/";
+				String url = base + "/" + baseProduct.getKeyUnique() + "/";
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
 				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
 				xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();
@@ -150,12 +150,12 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				// Галерея
 				boolean hasGallery = false;
 				for (String picName : baseProduct.outputValues(GALLERY_PARAM)) {
-					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+					xml.startElement("picture").addText(base + "/" + AppContext.getFilesUrlPath(false) +
 							Item.createItemFilesPath(baseProduct.getId()) + picName).endElement();
 					hasGallery = true;
 				}
 				if (!hasGallery && baseProduct.isValueNotEmpty(MAIN_PIC_PARAM)) {
-					xml.startElement("picture").addText(getUrlBase() + "/" + AppContext.getFilesUrlPath(false) +
+					xml.startElement("picture").addText(base + "/" + AppContext.getFilesUrlPath(false) +
 							Item.createItemFilesPath(baseProduct.getId()) + baseProduct.outputValue(MAIN_PIC_PARAM)).endElement();
 				}
 
