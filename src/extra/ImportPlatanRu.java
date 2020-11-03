@@ -122,7 +122,6 @@ public class ImportPlatanRu extends IntegrateBase implements ItemNames {
 						BigDecimal price = DecimalDataType.parse(src.getValue(PRICE_HEADER), 2);
 						currencyRates.setAllPrices(prod, price, "RUB");
 						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));
-						prod.set_name_extra(removeQuotes(src.getValue(NAME_EXTRA_HEADER)));
 						prod.set_unit(src.getValue(UNIT_HEADER));
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 						info.increaseProcessed();
