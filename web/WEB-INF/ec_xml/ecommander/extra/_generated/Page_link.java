@@ -1,6 +1,8 @@
 
 package ecommander.extra._generated;
 
+import java.io.File;
+import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -11,6 +13,7 @@ public class Page_link
     public final static String _NAME = "page_link";
     public final static String NAME = "name";
     public final static String LINK = "link";
+    public final static String MAIN_PIC = "main_pic";
     public final static String IN_MAIN_MENU = "in_main_menu";
 
     private Page_link(Item item) {
@@ -62,6 +65,18 @@ public class Page_link
 
     public boolean contains_link(String value) {
         return containsValue("link", value);
+    }
+
+    public void set_main_pic(File value) {
+        setValue("main_pic", value);
+    }
+
+    public File get_main_pic() {
+        return getFileValue("main_pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_main_pic(File value) {
+        return containsValue("main_pic", value);
     }
 
     public void set_in_main_menu(String value) {

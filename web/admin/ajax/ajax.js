@@ -89,20 +89,24 @@ function initAjax(elementId) {
 			insertAjax(elem.attr("href"));
 		}
 	});
-    $(idPrefix + "a[ajax-popup]").click(function(event) {
+    $(idPrefix + "a[popup], input[popup], button[popup]").click(function(event) {
         event.preventDefault();
         var link = $(this);
         var loaderId = link.attr("ajax-loader-id");
-        var popupId = link.attr("ajax-popup");
+        var popupId = link.attr("popup");
+		var href = link.attr("href");
         var targetElem = $("#" + popupId);
         if (targetElem != null) {
-            //if (targetElem.)
-            if (loaderId) {
-                insertAjax(link.attr("href"), loaderId);
-            } else {
-                insertAjax(link.attr("href"));
-            }
-        }
+        	if (href != null && href.trim() != '') {
+				insertAjax(href, loaderId, function (argData) {
+					targetElem.show('fade', 130);
+				});
+			} else {
+				targetElem.show('fade', 130);
+			}
+        } else {
+        	alert("AJAX popup: element '" + popupId + "' is not found or URL '" + href + "' is incorrect");
+		}
     });
 	$(idPrefix + "select[value]").each(function() {
 		$(this).val($(this).attr("value"));
@@ -111,9 +115,9 @@ function initAjax(elementId) {
 
 $(document).ready(initAjax());
 
-$(document).on('click', '.close-popup', function(e){
+$(document).on('click', '.popup__close', function(e){
 	e.preventDefault();
-	$("#popup").hide();
+	$(this).closest('.popup').hide('fade', 130);
 });
 
 function insertAjax(url, lockElementIds, additionalHandling) {

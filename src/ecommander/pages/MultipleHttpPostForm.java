@@ -174,6 +174,14 @@ public class MultipleHttpPostForm implements Serializable {
 	}
 
 	/**
+	 * Получить все extra (поля вне айтема)
+	 * @return
+	 */
+	public InputValues getExtras() {
+		return extras;
+	}
+
+	/**
 	 * Создать айтем и добавить его в дерево в указанное место (к указанному родителю)
 	 * @param parent
 	 * @param input

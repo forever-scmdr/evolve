@@ -531,7 +531,7 @@
 		<parameter name="text" type="text" caption="Текст" text-index="fulltext"/>
 	</item>
 
-	<item name="page_extra_code" caption="Произвольный код" super="page_extra" ag-id="1787" ag-hash="1379922028">
+	<item name="page_extra_code" caption="Произвольный код" super="page_extra" ag-id="1811" ag-hash="1379922028">
 		<parameter name="text" type="plain-text" caption="Код"/>
 	</item>
 
@@ -677,6 +677,15 @@
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="message" type="string" caption="Сообщение" />
+	</item>
+
+	<!--
+	Форма, поля в которой могут быть любыми. Они указываются только в HTML форме в виде произвольных названий инпутов.
+	Может быть много инпутов с одним названием, в качестве значений инпутов могут быть файлы.
+	"Физически" значения полей в айтеме формы хранятся в extra.
+	-->
+	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1841" ag-hash="-263108052">
+		<parameter name="generic" type="string" caption="Должно быть заполнено для создания айтема в форме и в сеансе"/>
 	</item>
 
 	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="828" ag-hash="442678893">
