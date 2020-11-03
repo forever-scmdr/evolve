@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
-	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
@@ -662,15 +661,6 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-				<!-- popup -->
-				<div class="popup" style="display: none;" id="feedback-ajax-popup">
-					<div class="popup__body">
-						<div class="popup__content" id="product-ajax-content">
-							<a class="popup__close" onclick="clearProductAjax();">×</a>
-						</div>
-					</div>
-				</div>
-				<!-- popup end -->
 
 				<!-- ALL CONTENT BEGIN -->
 				<div class="wrapper">
@@ -687,7 +677,6 @@
 				<xsl:call-template name="MY_PRICE_FORM"/>
 				<xsl:call-template name="ONE_CLICK_FORM"/>
 				<xsl:call-template name="SUBSCRIBE_FORM"/>
-				<xsl:call-template name="FEEDBACK_FORM"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<!-- <script type="text/javascript" src="js/bootstrap.js"/> -->
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
@@ -771,23 +760,7 @@
 				</xsl:for-each>
 
 
-				<div class="popup" style="display: none;">
-					<div class="popup__body">
-						<div class="popup__content">
-							<a class="popup__close" href="#">×</a>
-							<div class="popup__title title title_2">Аккумуляторная болгарка Metabo PowerMaxx CC 12 BL</div>
-							<form>
-								<div class="form__item">
-									<label class="form-label">Ваше имя:</label>
-									<input class="form__element" type="text"></input>
-								</div>
-								<div class="form__proceed">
-									<input class="button" type="submit" value="Отправить форму" />
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
 
 			</body>
 		</html>

@@ -63,6 +63,7 @@ public interface ItemNames {
     String DOCS = "docs";
     String CONTACTS = "contacts";
     String FEEDBACK_FORM = "feedback_form";
+    String GENERIC_FORM = "generic_form";
     String MY_PRICE_FORM = "my_price_form";
     String ONE_CLICK_FORM = "one_click_form";
     String CUSTOM_PAGES = "custom_pages";
@@ -486,6 +487,12 @@ public interface ItemNames {
 
     }
 
+    public interface generic_form_ {
+
+        String _ITEM_NAME = "generic_form";
+
+    }
+
     public interface line_product_ {
 
         String _ITEM_NAME = "line_product";
@@ -719,6 +726,7 @@ public interface ItemNames {
         String _ITEM_NAME = "page_link";
         String NAME = "name";
         String LINK = "link";
+        String MAIN_PIC = "main_pic";
         String IN_MAIN_MENU = "in_main_menu";
 
     }

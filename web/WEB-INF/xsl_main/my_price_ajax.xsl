@@ -73,7 +73,7 @@
 	</xsl:template>
 
 	<xsl:template name="MY_PRICE_FORM">
-		<div class="modal fade" tabindex="-1" role="dialog" id="modal-my_price">
+		<div class="modal fade" tabindex="-1" role="dialog" id="modal-my_price" style="display:none">
 		+++
 		</div>
 	</xsl:template>
