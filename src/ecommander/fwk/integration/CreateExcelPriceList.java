@@ -460,7 +460,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private void writeExtraPages(Row row, int colIdx){
 		for(Item extraPage : extraPages){
 			StringBuilder sb = new StringBuilder();
-			sb.append("<id>").append(extraPage.getId()).append("</id>");
 			sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
 			sb.append(extraPage.getStringValue(TEXT_PARAM,""));
 			row.createCell(++colIdx).setCellValue(sb.toString());

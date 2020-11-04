@@ -10,7 +10,6 @@ import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -574,14 +573,23 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private void createExtraPages(Item product) throws Exception {
+				ItemQuery extraPagesQuery = new ItemQuery("product_extra");
+				extraPagesQuery.setParentId(product.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+				for(Item tab : extraPagesQuery.loadItems()){
+					executeCommandUnit(ItemStatusDBUnit.delete(tab.getId()).noFulltextIndex());
+				}
+				commitCommandUnits();
 				int extraCount = Integer.parseInt(getValue(CreateExcelPriceList.EXTRA_COLS));
 				if(extraCount == 0) return;
 				for(int i = getHeaders().size(); i < getHeaders().size() + extraCount; i++){
-					String cellValue = getValue(i).trim();
-					String idStr = StringUtils.substringBetween(cellValue, "<id>", "</id>");
+					String cellValue = getValue(i);
+					if(StringUtils.isBlank(cellValue)) continue;
+					cellValue = cellValue.trim();
+
+					//String idStr = StringUtils.substringBetween(cellValue, "<id>", "</id>");
 					String name = StringUtils.substringBetween(cellValue, "<h>", "</h>");
 					String text = StringUtils.substringAfter(cellValue, "</h>");
-					Item page = (cellValue.indexOf("<id>") == 0)? ItemQuery.loadById(Long.parseLong(idStr)) : Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.product_extra_._ITEM_NAME), product);
+					Item page = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 					page.setValue(NAME_PARAM, name);
 					page.setValue(TEXT_PARAM, text);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(page).ignoreUser(true).noFulltextIndex());
