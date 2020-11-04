@@ -10,6 +10,7 @@ import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -565,8 +566,26 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					if (hasAuxParams) {
 						createAuxTypeItem(product);
 					}
+
+					createExtraPages(product);
+
 				}
 
+			}
+
+			private void createExtraPages(Item product) throws Exception {
+				int extraCount = Integer.parseInt(getValue(CreateExcelPriceList.EXTRA_COLS));
+				if(extraCount == 0) return;
+				for(int i = getHeaders().size(); i < getHeaders().size() + extraCount; i++){
+					String cellValue = getValue(i).trim();
+					String idStr = StringUtils.substringBetween(cellValue, "<id>", "</id>");
+					String name = StringUtils.substringBetween(cellValue, "<h>", "</h>");
+					String text = StringUtils.substringAfter(cellValue, "</h>");
+					Item page = (cellValue.indexOf("<id>") == 0)? ItemQuery.loadById(Long.parseLong(idStr)) : Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.product_extra_._ITEM_NAME), product);
+					page.setValue(NAME_PARAM, name);
+					page.setValue(TEXT_PARAM, text);
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(page).ignoreUser(true).noFulltextIndex());
+				}
 			}
 
 			private void createAuxTypeItem(Item product) throws Exception {
@@ -634,7 +653,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				TreeSet<String> headers = getHeaders();
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
-					if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
+					if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header))
 						continue;
 					Matcher m = PARAM_WITH_GROUP.matcher(header);
 					boolean hasGroup = m.matches();
@@ -770,7 +789,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 		for (String header : headers) {
 			String paramName = HEADER_PARAM.get(header);
-			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
 				continue;
 			return true;
 		}
