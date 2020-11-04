@@ -62,7 +62,7 @@
 
 	<xsl:template match="group">
 		<tr>
-			<th colspan="2"><xsl:value-of select="@name"/></th>
+			<th colspan="2"><xsl:value-of select="name"/></th>
 		</tr>
 		<xsl:apply-templates select="parameter"/>
 	</xsl:template>

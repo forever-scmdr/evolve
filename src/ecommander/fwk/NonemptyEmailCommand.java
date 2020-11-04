@@ -1,10 +1,7 @@
 package ecommander.fwk;
 
 import ecommander.controllers.PageController;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
+import ecommander.model.*;
 import ecommander.pages.*;
 import ecommander.pages.var.StaticVariable;
 import org.apache.commons.fileupload.FileItem;
@@ -19,6 +16,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Отправка сообщения на email с валидацией (проверка заполненности определенных полей).
  * В случае если не все обязательные поля заполнены, возвращается ошибка и отсылка не осуществляется
@@ -77,17 +76,36 @@ public class NonemptyEmailCommand extends Command {
 		String templatePageName = getVarSingleValue(TEMPLATE_PARAM);
 		// Сообщение об ошибке в случае если не все поля заполнены
 		Item message = postForm.getItemSingleTransient();
-		String validationResult = validateInput(requiredStr, message);
+		InputValues messageInput = new InputValues(); // Все данные, полученные из формы в единообразном виде (и параметры и extra)
+		ItemType postDesc = ItemTypeRegistry.getItemType(message.getTypeId());
+		// Переписать сначала все параметры
+		for (ParameterDescription param : postDesc.getParameterList()) {
+			ParameterDescription paramDesc = postDesc.getParameter(param.getName());
+			Collection<SingleParameter> paramVals = message.getParamValues(paramDesc.getName());
+			for (SingleParameter paramVal : paramVals) {
+				messageInput.add(paramDesc.getName(), paramVal.getValue());
+			}
+			if (paramVals.size() == 0) {
+				messageInput.add(paramDesc.getName(), "");
+			}
+		}
+		// Переписать все extra
+		for (Object extraKey : postForm.getExtras().getKeys()) {
+			ArrayList<Object> extras = postForm.getExtras().getExtraList(extraKey.toString());
+			for (Object extra : extras) {
+				message.setExtra(extraKey.toString(), extra);
+			}
+		}
+		String validationResult = validateInput(requiredStr, messageInput);
 		if (!StringUtils.isBlank(validationResult)) {
 			saveSessionForm(formNameStr);
 			return getRollbackResult(ERROR_NOT_SET_RESULT);
 		}
 		// Если обнаружен спам - просто вернуть успешный результат без отправки письма
-		if (isSpam(spamStr, message)) {
+		if (isSpam(spamStr, messageInput)) {
 			return getResult(SUCCESS_RESULT);
 		}
 		try {
-			ItemType postDesc = ItemTypeRegistry.getItemType(message.getTypeId());
 			// Если есть шаблон письма
 			ExecutablePagePE emailPage = null;
 			if (!StringUtils.isBlank(templatePageName)) {
@@ -101,16 +119,12 @@ public class NonemptyEmailCommand extends Command {
 			boolean hasTemplate = emailPage != null;
 			// Формирование тела письма
 			Multipart mp = new MimeMultipart();
-			String mailMessage = "";
-			spamStr = StringUtils.replace(spamStr, " ", "");
-			String[] spam = StringUtils.split(spamStr, ',');
-			for (ParameterDescription param : postDesc.getParameterList()) {
-				ParameterDescription paramDesc = postDesc.getParameter(param.getName());
-				if (ArrayUtils.contains(spam, paramDesc.getName()))
-					continue;
-				if (paramDesc.getDataType().isFile()) {
-					Object value = message.getValue(param.getName());
-					if (value != null && value instanceof FileItem) {
+			StringBuilder mailMessage = new StringBuilder();
+			for (Object key : messageInput.getKeys()) {
+				String paramName = key.toString();
+				ArrayList<Object> values = messageInput.getExtraList(paramName);
+				if (values.size() > 0 && values.get(0) instanceof FileItem) {
+					for (Object value : values) {
 						FileItem file = (FileItem) value;
 						DataSource dataSource = new ByteArrayDataSource(file.getInputStream(), file.getContentType());
 						MimeBodyPart filePart = new MimeBodyPart();
@@ -120,12 +134,11 @@ public class NonemptyEmailCommand extends Command {
 					}
 				} else {
 					if (hasTemplate) {
-						String varName = param.getName();
-						String varValue = message.getValue(param.getId()).toString();
-						emailPage.addVariable(new StaticVariable(varName, varValue));
-					} else if (StringUtils.isNotBlank(message.getStringValue(param.getName()))) {
-						mailMessage += postDesc.getParameter(param.getName()).getCaption() + ": "
-								+ message.getValue(param.getId()) + "\r\n";
+						emailPage.addVariable(new StaticVariable(paramName, values.toArray(new Object[0])));
+					} else {
+						ParameterDescription paramDesc = postDesc.getParameter(paramName);
+						String caption = paramDesc != null ? paramDesc.getCaption() : paramName;
+						mailMessage.append(caption + ": " + StringUtils.joinWith(", ", values) + "\r\n");
 					}
 				}
 			}
@@ -158,39 +171,40 @@ public class NonemptyEmailCommand extends Command {
 		return getResult(SUCCESS_RESULT);
 	}
 
-	private String validateInput(String requiredStr, Item message) {
+	private String validateInput(String requiredStr, InputValues message) {
 		ArrayList<String> notSetParams = new ArrayList<>();
 		requiredStr = StringUtils.replace(requiredStr, " ", "");
 		String[] required = StringUtils.split(requiredStr, ',');
 		for (String reqParam : required) {
 			boolean isValid;
-			if (reqParam.indexOf('|') > 0)
+			if (reqParam.indexOf('|') > 0) {
 				isValid = validateInputOr(reqParam, message);
-			else
-				isValid = !StringUtils.isBlank((String)message.getValue(reqParam));
+			} else {
+				isValid = message.get(reqParam) != null && StringUtils.isNotBlank(message.get(reqParam).toString());
+			}
 			if (!isValid)
 				notSetParams.add(reqParam);
 		}
 		return StringUtils.join(notSetParams, ',');
 	}
 	
-	private boolean isSpam(String spamStr, Item message) {
+	private boolean isSpam(String spamStr, InputValues message) {
 		spamStr = StringUtils.replace(spamStr, " ", "");
 		String[] spam = StringUtils.split(spamStr, ',');
 		for (String spamParam : spam) {
-			if (!StringUtils.isBlank(message.getStringValue(spamParam)) || !StringUtils.isBlank(message.getStringExtra(spamParam)))
+			if (message.get(spamParam) != null && StringUtils.isNotBlank(message.get(spamParam).toString()))
 				return true;
 		}
 		return false;
 	}
 
-	private boolean validateInputOr(String requiredStr, Item message) {
+	private boolean validateInputOr(String requiredStr, InputValues message) {
 		String[] required = StringUtils.split(requiredStr, '|');
 		boolean isValid = false;
 		for (String reqParam : required) {
-			Object value = message.getValue(reqParam);
+			Object value = message.get(reqParam);
 			if (value instanceof String)
-				isValid |= !StringUtils.isBlank((String)value);
+				isValid |= StringUtils.isNotBlank((String)value);
 			else
 				isValid |= value != null;
 		}
