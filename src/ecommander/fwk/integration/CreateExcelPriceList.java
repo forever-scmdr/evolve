@@ -49,6 +49,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	protected static final String AUX_TYPE_FILE = "ID типа товара";
 	protected static final String MANUAL = "Документация";
 	protected static final String VALUE_SEPARATOR = ";";
+	protected static final String EXTRA_COLS = ">EXTRA<";
 
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
@@ -242,6 +243,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.getCell(colIdx).setCellStyle(headerStyle);
 		}
 
+		//Extra columns count
+		row.createCell(++colIdx).setCellValue(EXTRA_COLS);
 		for (int i = 0; i < colIdx+1; i++) {
 			row.getCell(i).setCellStyle(headerStyle);
 		}
@@ -319,15 +322,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
 			CellStyle cellStyle = chooseCellStyle(product);
-//			double price;
-//			if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
-//				price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
-//			}else{
-//				price = product.getDoubleValue(PRICE_PARAM,0d);
-//			}
 
-			String priceValue = product.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(Math.round(price*100d)/100d) : "";
-			String qtyValue = product.outputValue(QTY_PARAM);//(product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
+
+			String priceValue = product.outputValue(PRICE_PARAM);
+			String qtyValue = product.outputValue(QTY_PARAM);
 			String priceOldValue = product.outputValue(PRICE_OLD_PARAM);
 			String priceOrigValue = product.outputValue(PRICE_ORIGINAL_PARAM);
 			String currencyID = product.outputValue(CURRENCY_ID_PARAM);
@@ -366,13 +364,27 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				row.createCell(++colIdx).setCellValue(manuals.toString());
 			}
 
+
+			//Extra pages count
+			List<Item> extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
+			row.createCell(++colIdx).setCellValue(extraPages.size());
+
 			if (cellStyle != null) {
 				for (int i = 0; i < colIdx + 1; i++) {
 					row.getCell(i).setCellStyle(cellStyle);
 				}
 			}
+
 			if(writeAuxParams) {
-				writeAux(row, aux, colIdx);
+				colIdx = writeAux(row, aux, colIdx);
+			}
+
+			//Extra pages
+			for(Item extraPage : extraPages){
+				StringBuilder sb = new StringBuilder();
+				sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
+				sb.append(extraPage.getStringValue(TEXT_PARAM,""));
+				row.createCell(++colIdx).setCellValue(sb.toString());
 			}
 
 			info.increaseProcessed();
@@ -421,6 +433,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 							colIdx = writeParams(row, lineProduct, colIdx, productItemType);
 						}
 
+						//Extra pages count
+						extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
+						row.createCell(++colIdx).setCellValue(extraPages.size());
+
 						if (cellStyle != null) {
 							for (int i = 0; i < colIdx + 1; i++) {
 								row.getCell(i).setCellStyle(cellStyle);
@@ -430,7 +446,15 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						//write aux params
 						if (writeAuxParams) {
 							aux = new ItemQuery(PARAMS_ITEM).setParentId(lineProduct.getId(), false).loadFirstItem();
-							writeAux(row, aux, colIdx);
+							colIdx = writeAux(row, aux, colIdx);
+						}
+
+						//Extra pages
+						for(Item extraPage : extraPages){
+							StringBuilder sb = new StringBuilder();
+							sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
+							sb.append(extraPage.getStringValue(TEXT_PARAM,""));
+							row.createCell(++colIdx).setCellValue(sb.toString());
 						}
 						info.increaseProcessed();
 					}
@@ -451,8 +475,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return colIdx;
 	}
 
-	private void writeAux(Row row, Item aux, int colIdx){
-		if(aux == null) return;
+	private int writeAux(Row row, Item aux, int colIdx){
+		if(aux == null) return colIdx;
 		row.createCell(++colIdx).setCellValue(aux.getTypeId());
 		row.getCell(colIdx).setCellStyle(auxStyle);
 		//for (ParameterDescription param : aux.getItemType().getParameterList()){
@@ -462,6 +486,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.createCell(++colIdx).setCellValue(value);
 			row.getCell(colIdx).setCellStyle(auxStyle);
 		}
+		return colIdx;
 	}
 
 	protected static String join(ArrayList<Object> pv) {
