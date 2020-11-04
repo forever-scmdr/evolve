@@ -18,10 +18,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by user on 05.12.2018.
@@ -366,8 +363,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 
 			//Extra pages count
-			List<Item> extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
-			row.createCell(++colIdx).setCellValue(extraPages.size());
+			List<Item> extraPages = new ArrayList<>();
+			colIdx = writeExtraPagesCount(row, product, colIdx, extraPages);
 
 			if (cellStyle != null) {
 				for (int i = 0; i < colIdx + 1; i++) {
@@ -380,12 +377,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			//Extra pages
-			for(Item extraPage : extraPages){
-				StringBuilder sb = new StringBuilder();
-				sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
-				sb.append(extraPage.getStringValue(TEXT_PARAM,""));
-				row.createCell(++colIdx).setCellValue(sb.toString());
-			}
+			writeExtraPages(row, colIdx, extraPages);
 
 			info.increaseProcessed();
 			if (writeLineProducts) {
@@ -434,8 +426,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 
 						//Extra pages count
-						extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
-						row.createCell(++colIdx).setCellValue(extraPages.size());
+						extraPages = new ArrayList<>();
+						colIdx = writeExtraPagesCount(row, lineProduct, colIdx, extraPages);
 
 						if (cellStyle != null) {
 							for (int i = 0; i < colIdx + 1; i++) {
@@ -450,18 +442,29 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 
 						//Extra pages
-						for(Item extraPage : extraPages){
-							StringBuilder sb = new StringBuilder();
-							sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
-							sb.append(extraPage.getStringValue(TEXT_PARAM,""));
-							row.createCell(++colIdx).setCellValue(sb.toString());
-						}
+						writeExtraPages(row, colIdx, extraPages);
 						info.increaseProcessed();
 					}
 				}
 			}
 		}
 		return rowI;
+	}
+
+	private int writeExtraPagesCount(Row row, Item product, int colIdx, Collection<Item> extraPages) throws Exception{
+		extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
+		row.createCell(++colIdx).setCellValue(extraPages.size());
+		return colIdx;
+	}
+
+	private void writeExtraPages(Row row, int colIdx, Collection<Item> extraPages){
+		for(Item extraPage : extraPages){
+			StringBuilder sb = new StringBuilder();
+			sb.append("<id>").append(extraPage.getId()).append("</id>");
+			sb.append("<h>").append(extraPage.getStringValue(NAME_PARAM,"")).append("</h>");
+			sb.append(extraPage.getStringValue(TEXT_PARAM,""));
+			row.createCell(++colIdx).setCellValue(sb.toString());
+		}
 	}
 
 	private int writeParams(Row row, Item product, int colIdx, ItemType productItemType){
