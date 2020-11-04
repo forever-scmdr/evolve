@@ -747,17 +747,17 @@
 
 
 	<page name="feedback_ajax" template="feedback_ajax">
-		<request>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<new item="generic_form" id="email_form">
-			<parameter-input ref="email_form" form="feedback"/>
-		</new>
-		<link name="submit_link" target="feedback_command" type="itemform">
-			<var name="form_name" value="feedback"/>
-			<var name="source_page" value="feedback_ajax"/>
-		</link>
+<!--		<request>-->
+<!--			<var name="result"/>-->
+<!--			<var name="message"/>-->
+<!--		</request>-->
+<!--		<new item="generic_form" id="email_form">-->
+<!--			<parameter-input ref="email_form" form="feedback"/>-->
+<!--		</new>-->
+<!--		<link name="submit_link" target="feedback_command" type="itemform">-->
+<!--			<var name="form_name" value="feedback"/>-->
+<!--			<var name="source_page" value="feedback_ajax"/>-->
+<!--		</link>-->
 	</page>
 
 	<page name="comment_ajax" template="comment_ajax">

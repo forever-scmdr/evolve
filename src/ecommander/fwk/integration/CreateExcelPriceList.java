@@ -88,9 +88,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private boolean hasUnits = false;
 	private long secId = 0L;
 
+
 	//vars
 	private HashMap<String,String> paramCaptions = new HashMap();
 	private ArrayList<String> paramsOrder = new ArrayList<>();
+	private Collection<Item> extraPages = new ArrayList<>();
 
 
 
@@ -363,8 +365,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 
 			//Extra pages count
-			List<Item> extraPages = new ArrayList<>();
-			colIdx = writeExtraPagesCount(row, product, colIdx, extraPages);
+			colIdx = writeExtraPagesCount(row, product, colIdx);
 
 			if (cellStyle != null) {
 				for (int i = 0; i < colIdx + 1; i++) {
@@ -377,7 +378,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 
 			//Extra pages
-			writeExtraPages(row, colIdx, extraPages);
+			writeExtraPages(row, colIdx);
 
 			info.increaseProcessed();
 			if (writeLineProducts) {
@@ -426,8 +427,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 
 						//Extra pages count
-						extraPages = new ArrayList<>();
-						colIdx = writeExtraPagesCount(row, lineProduct, colIdx, extraPages);
+						colIdx = writeExtraPagesCount(row, lineProduct, colIdx);
 
 						if (cellStyle != null) {
 							for (int i = 0; i < colIdx + 1; i++) {
@@ -442,7 +442,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 
 						//Extra pages
-						writeExtraPages(row, colIdx, extraPages);
+						writeExtraPages(row, colIdx);
 						info.increaseProcessed();
 					}
 				}
@@ -451,13 +451,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		return rowI;
 	}
 
-	private int writeExtraPagesCount(Row row, Item product, int colIdx, Collection<Item> extraPages) throws Exception{
+	private int writeExtraPagesCount(Row row, Item product, int colIdx) throws Exception{
 		extraPages = new ItemQuery("product_extra").setParentId(product.getId(), false).loadItems();
 		row.createCell(++colIdx).setCellValue(extraPages.size());
 		return colIdx;
 	}
 
-	private void writeExtraPages(Row row, int colIdx, Collection<Item> extraPages){
+	private void writeExtraPages(Row row, int colIdx){
 		for(Item extraPage : extraPages){
 			StringBuilder sb = new StringBuilder();
 			sb.append("<id>").append(extraPage.getId()).append("</id>");
