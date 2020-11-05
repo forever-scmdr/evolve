@@ -40,7 +40,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	//File constants
 	private final static HashMap<String, String> HEADER_PARAMS = new HashMap<>();
 	static{
-
 		HEADER_PARAMS.put("наименование", NAME_PARAM);
 		HEADER_PARAMS.put("наличие", QTY_PARAM);
 		HEADER_PARAMS.put("ед. изм", UNIT_PARAM);
@@ -294,7 +293,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private String generateSearchParam(HashMap<String,String> userDefined) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(currentSection.getStringValue(NAME_PARAM, "")).append(' ');
-		sb.append(processString(currentProduct.getStringValue(NAME_PARAM,"")));
+		sb.append(processString(currentProduct.getStringValue(NAME_PARAM,""))).append(' ');
+		sb.append(currentProduct.getStringValue(CODE_PARAM, ""));
 
 		userDefined.forEach((k,v) ->{
 			sb.append(' ').append(k);
