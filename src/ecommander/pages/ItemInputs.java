@@ -52,7 +52,8 @@ public class ItemInputs {
 		}
 		// Если айтем не имеет ни одного параметра - создать один псевдопараметр, чтобы было хотя-бы одно поле ввода
 		// Это нужно для создания айетмов, которые не имеют параметров, например, каталог продукции
-		addExtra("pseudo");
+		if (!inputs.isNotEmpty())
+			addExtra("pseudo");
 	}
 
 	void addParameters(String... paramNames) {
