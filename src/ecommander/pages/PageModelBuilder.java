@@ -951,11 +951,15 @@ public class PageModelBuilder {
 					pageItem.addElement(ReferencePE.createUrlReference(itemSubnode.attr(VAR_ATTRIBUTE)));
 			// Инпут parameter
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), PARAMETER_INPUT_ELEMENT)) {
-				pageItem.addElement(InputSetPE.createParams(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
+				String ref = itemSubnode.attr(REF_ATTRIBUTE);
+				ref = StringUtils.isBlank(ref) ? pageItemId : ref;
+				pageItem.addElement(InputSetPE.createParams(ref, itemSubnode.attr(FORM_ATTRIBUTE),
 						StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 				// Инпут extra
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), EXTRA_INPUT_ELEMENT)) {
-				pageItem.addElement(InputSetPE.createExtra(itemSubnode.attr(REF_ATTRIBUTE), itemSubnode.attr(FORM_ATTRIBUTE),
+				String ref = itemSubnode.attr(REF_ATTRIBUTE);
+				ref = StringUtils.isBlank(ref) ? pageItemId : ref;
+				pageItem.addElement(InputSetPE.createExtra(ref, itemSubnode.attr(FORM_ATTRIBUTE),
 						StringUtils.split(itemSubnode.attr(NAME_ATTRIBUTE), ' ')));
 			// Фильтр
 			} else if (StringUtils.equalsIgnoreCase(itemSubnode.tagName(), FILTER_ELEMENT)) {

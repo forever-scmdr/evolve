@@ -685,7 +685,6 @@
 	"Физически" значения полей в айтеме формы хранятся в extra.
 	-->
 	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1841" ag-hash="-263108052">
-		<parameter name="generic" type="string" caption="Должно быть заполнено для создания айтема в форме и в сеансе"/>
 	</item>
 
 	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="828" ag-hash="442678893">
