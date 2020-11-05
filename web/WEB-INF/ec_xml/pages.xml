@@ -411,7 +411,7 @@
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY">
+				<fulltext limit="5" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>

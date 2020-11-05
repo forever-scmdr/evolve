@@ -250,6 +250,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					currentProduct.setValueUI("search", searchString);
 					String unit = currentProduct.getStringValue(UNIT_PARAM, "шт");
 					double min = currentProduct.getDoubleValue(MIN_QTY_PARAM, 1d);
+					double qty = currentProduct.getDoubleValue(QTY_PARAM, 0d);
+					currentProduct.setValue(QTY_PARAM, qty);
 					currentProduct.setValue(UNIT_PARAM, unit);
 					currentProduct.setValue(STEP_PARAM, min);
 					byte available = currentProduct.getDoubleValue(QTY_PARAM, 0d) > 0 &&  currentProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO)!= BigDecimal.ZERO? (byte) 1 : (byte) 0;
