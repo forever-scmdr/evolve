@@ -199,7 +199,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
 					if(catalog.equals(product)) return;
-					TreeSet<String> headers = getHeaders();
+					LinkedHashSet<String> headers = getHeaders();
 					Path picsFolder = Paths.get(AppContext.getContextPath()).resolve("");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists

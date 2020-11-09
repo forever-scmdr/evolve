@@ -513,7 +513,7 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<div class="side-menu">
 			<div class="update-time">
-				Обновлено: <xsl:value-of select="f:utc_millis_to_bel_date(page/catalog[1]/date/@millis)"/>
+				Обновлено: <xsl:value-of select="f:utc_millis_to_bel_date(page/catalog/stores/date/@millis)"/>
 			</div>
 			<xsl:for-each select="page/catalog/section">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
@@ -600,7 +600,6 @@
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 					<i class="fas fa-search-plus"></i>
@@ -699,12 +698,15 @@
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
-					<i class="fas fa-search-plus"></i>
-				</a>
-			</xsl:if>
-			<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')}">&#160;</a>
+			
+			<div  style="position: relative;">
+				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+						<i class="fas fa-search-plus"></i>
+					</a>
+				</xsl:if>
+				<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(',$pic_path,');')} text-decoration: none;">&#160;</a>
+			</div>
 			<div class="device__info">
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
@@ -887,7 +889,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?v=1.3"/>
+				<link rel="stylesheet" href="css/app.css?v=1.41"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

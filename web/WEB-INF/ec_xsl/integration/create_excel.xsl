@@ -61,20 +61,7 @@
                         </td>
                     </tr>
                 </table>
-                <xsl:if test="/page/error">
-                    <h2>ошибки выполнения интеграции</h2>
-<!--                    <table>-->
-<!--                        <xsl:for-each select="/page/error">-->
-<!--                            <tr>-->
-<!--                                <td class="string-no">-->
-<!--                                    Строка: <span class="no"><xsl:value-of select="@line"/></span>-->
-<!--                                    Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>-->
-<!--                                </td>-->
-<!--                                <td class="error"><xsl:value-of select="."/></td>-->
-<!--                            </tr>-->
-<!--                        </xsl:for-each>-->
-<!--                    </table>-->
-                </xsl:if>
+               
                 <table>
                     <tr>
                         <td>Строка файла:</td>
@@ -119,6 +106,20 @@
                         </tr>
                     </xsl:for-each>
                 </table>
+                 <xsl:if test="/page/error">
+                    <h2>ошибки выполнения интеграции</h2>
+                    <table>
+                        <xsl:for-each select="/page/error">
+                            <tr>
+                                <td class="string-no">
+                                    Строка: <span class="no"><xsl:value-of select="@line"/></span>
+                                    Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
+                                </td>
+                                <td class="error"><xsl:value-of select="."/></td>
+                            </tr>
+                        </xsl:for-each>
+                    </table>
+                </xsl:if>
             </body>
         </html>
     </xsl:template>

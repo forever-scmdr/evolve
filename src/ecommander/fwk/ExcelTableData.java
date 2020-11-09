@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 /**
  * Прайс-лист
@@ -23,7 +23,7 @@ public class ExcelTableData implements TableDataSource {
 	private POIExcelWrapper doc;
 	private boolean isValid = false;
 	private Sheet currentSheet;
-	private HashMap<String, Integer> currentHeader = new HashMap<>();
+	private LinkedHashMap<String, Integer> currentHeader = new LinkedHashMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
@@ -62,7 +62,7 @@ public class ExcelTableData implements TableDataSource {
 	}
 
 	public void reInit(String... mandatoryCols) throws Exception {
-		boolean rowChecked = false;
+		boolean rowChecked;
 		headerCell = new POIUtils.CellXY(currentRow.getRowNum(), -1);
 		String firstMandatory = mandatoryCols[0];
 		headerCell = POIUtils.findNextContaining(currentSheet, eval, firstMandatory, headerCell);
@@ -80,7 +80,7 @@ public class ExcelTableData implements TableDataSource {
 			throw new Exception("Missing columns: "+ missingColumns.toString());
 		}
 		if (rowChecked) {
-			HashMap<String, Integer> headers = new HashMap<>();
+			LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
@@ -104,6 +104,7 @@ public class ExcelTableData implements TableDataSource {
 		if(wb == null) {
 			ServerLogger.error("Workbook not exists");
 		}
+		assert wb != null;
 		eval = wb.getCreationHelper().createFormulaEvaluator();
 
 		ArrayList<String> missingColumnsTest;
@@ -138,7 +139,7 @@ public class ExcelTableData implements TableDataSource {
 				}
 				if (rowChecked && headerCell != null) {
 					Row row = sheet.getRow(headerCell.row);
-					HashMap<String, Integer> headers = new HashMap<>();
+					LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 					for (Cell cell : row) {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
@@ -172,8 +173,7 @@ public class ExcelTableData implements TableDataSource {
 	}
 
 	public final String getSheetName(){
-		String shitName = currentSheet.getSheetName();
-		return shitName;
+		return currentSheet.getSheetName();
 	}
 
 	public final String getValue(int colIndex) {
@@ -249,10 +249,8 @@ public class ExcelTableData implements TableDataSource {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
-		TreeSet<String> a = new TreeSet<>();
-		a.addAll(currentHeader.keySet());
-		return a;
+	public final LinkedHashSet<String> getHeaders(){
+		return new LinkedHashSet<>(currentHeader.keySet());
 	}
 
 	public int getLinesCount() {
@@ -275,9 +273,9 @@ public class ExcelTableData implements TableDataSource {
 
 	protected static class SheetHeader{
 		private Sheet sheet;
-		private HashMap<String, Integer> header = new HashMap<>();
+		private LinkedHashMap<String, Integer> header = new LinkedHashMap<>();
 		private POIUtils.CellXY headerCell;
-		protected SheetHeader(Sheet sheet, HashMap<String, Integer> header, POIUtils.CellXY headerCell){
+		protected SheetHeader(Sheet sheet, LinkedHashMap<String, Integer> header, POIUtils.CellXY headerCell){
 			this.sheet = sheet;
 			this.header = header;
 			this.headerCell = headerCell;

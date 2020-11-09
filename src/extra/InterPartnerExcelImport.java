@@ -113,7 +113,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			currentStore = entry.getKey();
 			if (checkHash(f)) {
 				//replacePriceAnyway =
-				if(dateDiffers(f)) {
+				if (dateDiffers(f)) {
 					stores.setValue("date", date);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
 					date = stores.getLongValue("date");
@@ -143,9 +143,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		info.setProcessed(0);
 		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, 0);
 		long id = 0;
-		while (products.size() > 0){
+		while (products.size() > 0) {
 			for (Item product : products) {
-				if(isBadGallery(product)){
+				if (isBadGallery(product)) {
 					fixSingleProductGallery(product);
 				}
 				id = product.getId();
@@ -159,11 +159,11 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		ArrayList<String> outputValues = product.outputValues(GALLERY_PARAM);
 		HashSet<String> distinct = new HashSet<>();
 		distinct.addAll(outputValues);
-		for (String v : distinct){
+		for (String v : distinct) {
 			int counter = 0;
-			for(String ex : outputValues){
-				if(ex.equals(v)) counter++;
-				if(counter > 1){
+			for (String ex : outputValues) {
+				if (ex.equals(v)) counter++;
+				if (counter > 1) {
 					product.removeEqualValue(GALLERY_PARAM, ex);
 				}
 			}
@@ -171,9 +171,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreFileErrors().ignoreUser().noFulltextIndex());
 	}
 
-	private boolean isBadGallery(Item product){
+	private boolean isBadGallery(Item product) {
 		ArrayList<String> outputValues = product.outputValues(GALLERY_PARAM);
-		if(outputValues.size() > 1){
+		if (outputValues.size() > 1) {
 			HashSet<String> distinct = new HashSet<>();
 			distinct.addAll(outputValues);
 			return outputValues.size() != distinct.size();
@@ -186,14 +186,15 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		info.setProcessed(0);
 		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, 0);
 		long id = 0;
-		while (products.size() > 0){
+		while (products.size() > 0) {
 			for (Item product : products) {
 				id = product.getId();
 				long productModificationDate = 0L;
 				try {
 					productModificationDate = product.getLongValue("date");
-				}catch (Exception e){}
-				if(productModificationDate < date && product.getStatus() == Item.STATUS_NORMAL){
+				} catch (Exception e) {
+				}
+				if (productModificationDate < date && product.getStatus() == Item.STATUS_NORMAL) {
 					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
 				}
 				info.increaseProcessed();
@@ -301,9 +302,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			else if (code.equals(CreateExcelPriceList.CODE_FILE)) {
 				reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 			}
-			//product
+			//productd
 			else {
-				TreeSet<String> headers = getHeaders();
+				LinkedHashSet<String> headers = getHeaders();
 				boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 				Item product = getExistingProduct(code, isProduct);
 				ItemType itemType = (isProduct) ? PRODUCT_ITEM_TYPE : LINE_PRODUCT_ITEM_TYPE;
@@ -371,21 +372,31 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					ItemType auxType = null;
 					Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
 					paramsXML = (paramsXML == null) ? Item.newChildItem(paramsXMLItemType, product) : paramsXML;
+					HashMap<String, String> auxParams = new HashMap<>();
+					Item aux = null;
 					if (StringUtils.isNotBlank(auxTypeString)) {
 						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-					}
-					Item aux = null;
-					HashMap<String, String> auxParams = new HashMap<>();
-					if (auxType != null) {
-						aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
-						aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
 
-						for (ParameterDescription pd : auxType.getParameterList()) {
-							auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
+						//Item aux = null;
+
+						if (auxType != null) {
+							aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
+							for (ParameterDescription pd : auxType.getParameterList()) {
+								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
+							}
 						}
 					} else {
-						newItemTypes = true;
-						sectionsWithNewItemTypes.add(currentSection.getId());
+						aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+						if (aux != null) {
+							auxType = aux.getItemType();
+							for (ParameterDescription pd : auxType.getParameterList()) {
+								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
+							}
+						} else {
+							newItemTypes = true;
+							sectionsWithNewItemTypes.add(currentSection.getId());
+						}
 					}
 					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 					for (String header : headers) {
@@ -436,7 +447,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				String name = StringUtils.substringAfterLast(cellValue, "/");
 				name = StringUtils.substringBefore(name, "?");
 				ArrayList<String> existingValues = product.outputValues(paramName);
-				if(!existingValues.contains(Strings.createFileName(name))) {
+				if (!existingValues.contains(Strings.createFileName(name))) {
 					product.setValue(paramName, url);
 				}
 			} else {
@@ -445,7 +456,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Path mainPicPath = picsFolder.resolve(cellValue);
 					if (mainPicPath.toFile().isFile()) {
 						ArrayList<String> existingValues = product.outputValues(paramName);
-						if(!existingValues.contains(Strings.createFileName(mainPicPath.toFile().getName()))) {
+						if (!existingValues.contains(Strings.createFileName(mainPicPath.toFile().getName()))) {
 							product.setValue(paramName, mainPicPath.toFile());
 						}
 					} else if (StringUtils.isNotBlank(cellValue)) {
