@@ -14,6 +14,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -99,6 +100,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				if (testDouble(value)) {
 					return new Pair<>(DataType.Type.DOUBLE, null);
 				} else {
+					//fix bug with % material
+					if(value.matches("\\d+([\\.,]\\d+)?%\\D+")){
+						return new Pair<>(DataType.Type.STRING, null);
+					}
 					if (value.matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$")) {
 						int unitStart = 0;
 						for (; unitStart < value.length() && StringUtils.contains(DIGITS, value.charAt(unitStart)); unitStart++) { /* */ }
@@ -169,7 +174,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
 					}
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null) {
+					if (paramsXml != null && StringUtils.isNotBlank(paramsXml.getStringValue(XML_PARAM))) {
 						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
@@ -178,6 +183,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 							if (!nameElements.isEmpty()) {
 								String caption = StringUtils.trim(nameElements.first().ownText());
 								if (StringUtils.isNotBlank(caption)) {
+									caption = caption.replaceAll("\\s+", " ");
 									Elements values = paramEl.getElementsByTag(VALUE);
 									for (Element value : values) {
 										params.addParameter(caption, StringUtils.trim(value.ownText()), values.size() > 1);
@@ -189,7 +195,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				}
 
 				// Создание фильтра
-				String className = "p" + section.getId();
+				String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
+				String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
 				String classCaption = section.getStringValue(NAME_PARAM);
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
@@ -239,7 +246,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
 		for (Item section : sections) {
-			String className = "p" + section.getId();
+			String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
+			String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
 			ItemType paramDesc = ItemTypeRegistry.getItemType(className);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
@@ -290,6 +298,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
+		System.out.println("100% полиэтер".matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$"));
 		System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
 	}
 }

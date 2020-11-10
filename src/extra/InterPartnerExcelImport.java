@@ -290,6 +290,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					currentSection.setValue(CATEGORY_ID_PARAM, secInfo[1].trim());
 					currentSection.setValue(PARENT_ID_PARAM, sectionParentId);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noTriggerExtra().noFulltextIndex());
+					newItemTypes = true;
 					sectionsWithNewItemTypes.add(currentSection.getId());
 					info.pushLog("Создан раздел: " + sectionName);
 				} else if (!currentSection.getStringValue(NAME_PARAM, "").equals(name)) {
@@ -376,28 +377,21 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Item aux = null;
 					if (StringUtils.isNotBlank(auxTypeString)) {
 						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-
-						//Item aux = null;
-
-						if (auxType != null) {
-							aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
-							aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
-							for (ParameterDescription pd : auxType.getParameterList()) {
-								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
-							}
+					} else {
+						auxType = ItemTypeRegistry.getItemType("p" + currentSection.getStringValue(CATEGORY_ID_PARAM,""));
+						auxType = auxType == null?  ItemTypeRegistry.getItemType("p" + currentSection.getId()) : auxType;
+					}
+					if (auxType != null) {
+						aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+						aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
+						for (ParameterDescription pd : auxType.getParameterList()) {
+							auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
 						}
 					} else {
-						aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
-						if (aux != null) {
-							auxType = aux.getItemType();
-							for (ParameterDescription pd : auxType.getParameterList()) {
-								auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
-							}
-						} else {
-							newItemTypes = true;
-							sectionsWithNewItemTypes.add(currentSection.getId());
-						}
+						newItemTypes = true;
+						sectionsWithNewItemTypes.add(currentSection.getId());
 					}
+
 					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 					for (String header : headers) {
 						String paramName = HEADER_PARAM.get(header);
@@ -415,7 +409,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 								.endElement();
 
 						if (auxType == null) continue;
-						String param = auxParams.get(header.toLowerCase());
+						String param = auxParams.get(header.toLowerCase().replaceAll("\\s+"," ").trim());
 						//Если добавился новый параметр
 						if (!auxType.getParameterNames().contains(param)) {
 							newItemTypes = true;
@@ -488,7 +482,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			if (!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
 			for (String header : headers) {
 				String paramName = HEADER_PARAM.get(header);
-				if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
+				if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
 					continue;
 				return true;
 			}
