@@ -90,10 +90,10 @@ public class NonemptyEmailCommand extends Command {
 			}
 		}
 		// Переписать все extra
-		for (Object extraKey : postForm.getExtras().getKeys()) {
-			ArrayList<Object> extras = postForm.getExtras().getExtraList(extraKey.toString());
+		for (String extraKey : message.getExtraKeys()) {
+			ArrayList<Object> extras = message.getListExtra(extraKey);
 			for (Object extra : extras) {
-				message.setExtra(extraKey.toString(), extra);
+				messageInput.add(extraKey, extra);
 			}
 		}
 		String validationResult = validateInput(requiredStr, messageInput);
