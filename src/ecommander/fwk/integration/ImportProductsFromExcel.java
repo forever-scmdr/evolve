@@ -208,6 +208,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						paramsXml = paramsXml == null? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
 						paramsXml.setValue(XML_PARAM, createEtalonXmlFromMap());
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser(true));
+						findAuxType();
 					}
 				} else {
 					if (currentSubsection == null) currentSubsection = currentSection;
@@ -598,7 +599,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 			private void createAuxTypeItem(Item product) throws Exception {
 				Item paramsXML = ensureParamsXML(product);
-				Item aux = findAuxItem(product);
+				Item aux = ensureAuxItem(product);
 				String xml = createXmlFromMap();
 				paramsXML.setValue(XML_PARAM, xml);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
@@ -633,12 +634,20 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				});
 			}
 
-			private boolean hasNewParams(){
+			private void findAuxType(){
 				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
-				if(StringUtils.isBlank(auxTypeString)){
-					return true;
+				if(StringUtils.isNotBlank(auxTypeString)){
+					auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
+				}else {
+					String  n1 = "p" + currentSection.getStringValue(CATEGORY_ID_PARAM,"");
+					String n2 =  "p" + currentSection.getId();
+					auxType = ItemTypeRegistry.getItemType(n1);
+					if(auxType == null) auxType = ItemTypeRegistry.getItemType(n2);
 				}
-				auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
+			}
+
+			private boolean hasNewParams(){
+
 				if(auxType == null){ return true;}
 				HashMap<String, String> auxParams = new HashMap<>();
 				for (ParameterDescription pd : auxType.getParameterList()) {
@@ -718,12 +727,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				return xml.toString();
 			}
 
-			private Item findAuxItem(Item product) throws Exception {
-				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
-				auxType = null;
-				if (StringUtils.isNotBlank(auxTypeString)) {
-					auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-				}
+			private Item ensureAuxItem(Item product) throws Exception {
 				if (auxType != null) {
 					Item aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					return (aux == null)? Item.newChildItem(auxType, product) : aux;
@@ -793,7 +797,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	}
 
 	private boolean hasAuxParams(Collection<String> headers) {
-		if (!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
+		//if (!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
 
 		for (String header : headers) {
 			String paramName = HEADER_PARAM.get(header);
