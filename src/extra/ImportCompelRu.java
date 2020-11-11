@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -47,7 +48,6 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 	private static final String NAME_EXTRA_HEADER = "CLASS_NAME";
 	//private static final String UNIT_HEADER = "единица измерения";
 
-	private TableDataSource price;
 	private Item section;
 	private Item catalog;
 	private ItemType productType;
@@ -131,10 +131,16 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 					prod.setUI_qty(row.getString(QTY_HEADER));
 					prod.setUI_min_qty(row.getString(MIN_QTY_HEADER));
 					BigDecimal price = DecimalDataType.parse(row.getString(PRICE_HEADER), 2);
+					BigDecimal minQty = prod.get_min_qty();
+					BigDecimal quotient = getQtyQuotient(price);
+					price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
+					minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
+					String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
+					prod.set_min_qty(minQty);
+					prod.set_unit(unit);
 					currencyRates.setAllPrices(prod, price, "USD");
 					prod.set_vendor(row.getString(VENDOR_HEADER));
 					prod.set_name_extra(row.getString(NAME_EXTRA_HEADER));
-					prod.set_unit("шт.");
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 					info.increaseProcessed();
 				}
@@ -154,5 +160,19 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+	private static final BigDecimal D_0003 = new BigDecimal(0.003);
+	private static final BigDecimal D_003 = new BigDecimal(0.03);
+	private static final BigDecimal D_10 = new BigDecimal(10);
+	private static final BigDecimal D_100 = new BigDecimal(100);
+
+	private static BigDecimal getQtyQuotient(BigDecimal price) {
+		if (price.compareTo(D_0003) < 0) {
+			return D_100;
+		} else if (price.compareTo(D_003) < 0) {
+			return D_10;
+		}
+		return new BigDecimal(1);
 	}
 }
