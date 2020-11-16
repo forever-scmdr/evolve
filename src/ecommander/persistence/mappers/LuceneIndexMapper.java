@@ -307,12 +307,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 				}
 				for (Document doc : docs.values()) {
 					if (param.isMultiple()) {
-						for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+						for (SingleParameter sp : ((MultipleParameter) item.getParameterByName(param.getName())).getValues()) {
 							createParameterField(param, sp.outputValue(), doc, ftParam, needIncrement);
 							needIncrement = true;
 						}
 					} else {
-						createParameterField(param, ((SingleParameter) item.getParameter(param.getId())).outputValue(),
+						createParameterField(param, ((SingleParameter) item.getParameterByName(param.getName())).outputValue(),
 								doc, ftParam, needIncrement);
 						needIncrement = true;
 					}

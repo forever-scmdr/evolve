@@ -8,50 +8,63 @@
 	</xsl:template>
 
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
+	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
-	<xsl:template name="CONTENT">
-		<!-- CONTENT BEGIN -->
-		<div class="path-container">
-			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
-			</div>
-			<xsl:call-template name="PRINT"/>
-		</div>
-		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
+	<xsl:template name="PAGE_PATH">
+		<div class="path path_common">
+			<div class="path__item">
+				<a class="path__link" href="{$main_host}">Главная страница</a>
+				<div class="path__arrow"></div>
+				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+			</div>
+		</div>
+
+	</xsl:template>
+
+
+	<xsl:template name="CONTENT">
 		<div class="page-content m-t">
 
 			<xsl:if test="$products">
-				<div class="view-container desktop">
-					<div class="view">
-						<span class="{'active'[not($view = 'list')]}">
-							<i class="fas fa-th-large"></i>
-							<a href="{page/set_view_table}">Плиткой</a>
-						</span>
-						<span class="{'active'[$view = 'list']}">
-							<i class="fas fa-th-list"></i>
-							<a href="{page/set_view_list}">Строками</a>
-						</span>
+				<div class="view view_section">
+					<div class="view__column">
+						<a href="{page/set_view_table}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-grid.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Плиткой</span>
+						</a>
+						<a href="{page/set_view_list}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-lines.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Строками</span>
+						</a>
 					</div>
 				</div>
 			</xsl:if>
 
-			<div class="catalog-items{' lines'[$view = 'list']}">
-					<xsl:if test="$view = 'table'">
+			<div class="devices devices_section{' lines'[$view = 'list']}">
+				<xsl:if test="$view = 'table'">
+					<div class="devices__wrap">
 						<xsl:apply-templates select="$products"/>
-					</xsl:if>
-					<xsl:if test="$view = 'list'">
+					</div>
+				</xsl:if>
+				<xsl:if test="$view = 'list'">
+					<div class="devices__wrap devices__wrap_rows">
 						<xsl:apply-templates select="$products" mode="lines"/>
-					</xsl:if>
-				</div>
-			<xsl:if test="not($products)">
-				<h4>По заданным критериям товары не найдены</h4>
-			</xsl:if>
+					</div>
+				</xsl:if>
+				<xsl:if test="not($products)">
+					<h4>По заданным критериям товары не найдены</h4>
+				</xsl:if>
+			</div>
 
 		</div>
 

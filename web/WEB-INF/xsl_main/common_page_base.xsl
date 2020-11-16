@@ -18,7 +18,7 @@
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 	<xsl:variable name="currencies" select="page/catalog/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
-
+	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -199,16 +199,16 @@
 									<span class="icon-link__item">Вход / Регистрация</span>
 								</a>
 							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
 								<a class="icon-link">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
 									<span class="icon-link__item">Избранное</span>
+								</a>
+							</div>
+							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
+								<a class="icon-link">
+									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+									<span class="icon-link__item">Сравнение</span>
 								</a>
 							</div>
 						</div>
@@ -247,7 +247,7 @@
 							</xsl:for-each>
 						</div>
 					</div>
-					<xsl:for-each select="page/news">
+					<xsl:for-each select="page/news[in_main_menu = 'да']">
 						<xsl:variable name="key" select="@key"/>
 						<xsl:variable name="sel" select="page/varibles/sel"/>
 						<div class="main-menu__item {'active'[$sel = $key]}">
@@ -476,7 +476,18 @@
 		<xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/>
 	</xsl:template>
 
-
+	<xsl:template name="INC_SIDE_MENU_INTERNAL_NEWS">
+		<div class="side-menu">
+			<xsl:for-each select="page/news">
+				<xsl:variable name="id" select="@id"/>
+				<div class="side-menu__item side-menu__item_level_1">
+					<a class="side-menu__link{' side-menu__link_active'[$id = $sel_news_id]}" href="{show_page}">
+						<xsl:value-of select="name"/>
+					</a>
+				</div>
+			</xsl:for-each>
+		</div>
+	</xsl:template>
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="side-menu">
@@ -585,13 +596,13 @@
 					<div class="content__main">
 						<xsl:call-template name="PAGE_PATH"/>
 						<xsl:call-template name="PAGE_HEADING"/>
+						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+							<div class="text">
+								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
 						<xsl:call-template name="CONTENT"/>
 					</div>
-					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
-						<div class="page-content">
-							<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:if>
 				</div>
 			</div>
 		</div>
@@ -639,7 +650,7 @@
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.0"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.5"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
@@ -783,7 +794,7 @@
 
 	<xsl:template match="page_text" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
-			<a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a>
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
 		</xsl:if>
 		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
 			<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -791,12 +802,17 @@
 	</xsl:template>
 
 	<xsl:template match="page_extra_code" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
 			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="common_gallery" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
-			<a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a>
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a></div>
 		</xsl:if>
 		<div id="spoiler-{@id}">
 			<div id="nanogallery{@id}">
@@ -925,4 +941,7 @@
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
+
+	<xsl:template name="PRINT"/>
+	<xsl:template name="ACTIONS_MOBILE"/>
 </xsl:stylesheet>
