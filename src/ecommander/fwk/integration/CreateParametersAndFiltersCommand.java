@@ -16,6 +16,7 @@ import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.utils.ExceptionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -204,21 +205,33 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				for (String paramName : params.paramTypes.keySet()) {
 					if (params.notInFilter.contains(paramName))
 						continue;
+					if(StringUtils.isEmpty(paramName))
+						continue;
 					String caption = params.paramCaptions.get(paramName).getLeft();
+					if(StringUtils.isEmpty(caption))
+						continue;
 					String unit = params.paramUnits.get(paramName);
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
-				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				try {
+					section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				}catch (Exception e){
+					addError(ExceptionUtils.getStackTrace(e),"");
+					addError("Не удадалось создать фильтр в разделе \""+section.getStringValue(NAME_PARAM,"")+"\"","");
+				}
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
 						PARAMS_ITEM, null, false, true, false, false);
 				for (String paramName : params.paramTypes.keySet()) {
+					if(StringUtils.isBlank(paramName))
+						continue;
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
+
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
 					String unit = params.paramUnits.get(paramName);
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,

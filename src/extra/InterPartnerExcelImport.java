@@ -107,6 +107,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 	@Override
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
+		fixGallery();
 		revealProducts();
 		for (Map.Entry<Item, File> entry : files.entrySet()) {
 			File f = entry.getValue();
@@ -126,7 +127,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			}
 		}
 		date = stores.getLongValue("date");
-		fixGallery();
+
 		hideProducts();
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
@@ -171,12 +172,23 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra().ignoreFileErrors().ignoreUser().noFulltextIndex());
 	}
 
-	private boolean isBadGallery(Item product) {
+	private boolean isBadGallery(Item product) throws Exception {
 		ArrayList<String> outputValues = product.outputValues(GALLERY_PARAM);
 		if (outputValues.size() > 1) {
 			HashSet<String> distinct = new HashSet<>();
 			distinct.addAll(outputValues);
-			return outputValues.size() != distinct.size();
+			if (outputValues.size() != distinct.size()) return true;
+
+			for(String v : outputValues){
+				if(!StringUtils.startsWith(v,"gallery_")){
+					product.removeEqualValue(GALLERY_PARAM, "gallery_" + v);
+				}
+			}
+			int sz = outputValues.size();
+			outputValues = product.outputValues(GALLERY_PARAM);
+			if(outputValues.size() != sz){
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors().noTriggerExtra());
+			}
 		}
 		return false;
 	}
@@ -441,7 +453,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				String name = StringUtils.substringAfterLast(cellValue, "/");
 				name = StringUtils.substringBefore(name, "?");
 				ArrayList<String> existingValues = product.outputValues(paramName);
-				if (!existingValues.contains(Strings.createFileName(name))) {
+				String processedValue = Strings.createFileName(Strings.createFileName(name));
+				if (!existingValues.contains(processedValue)) {
 					product.setValue(paramName, url);
 				}
 			} else {
@@ -450,7 +463,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Path mainPicPath = picsFolder.resolve(cellValue);
 					if (mainPicPath.toFile().isFile()) {
 						ArrayList<String> existingValues = product.outputValues(paramName);
-						if (!existingValues.contains(Strings.createFileName(mainPicPath.toFile().getName()))) {
+						String processedValue = Strings.createFileName(mainPicPath.toFile().getName());
+						if (!existingValues.contains(processedValue) && !existingValues.contains(paramName + "_" + processedValue)) {
 							product.setValue(paramName, mainPicPath.toFile());
 						}
 					} else if (StringUtils.isNotBlank(cellValue)) {
