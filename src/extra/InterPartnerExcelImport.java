@@ -19,7 +19,10 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -515,4 +518,32 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
 
+	public static void main(String[] args){
+		try {
+			BufferedImage img1 = ImageIO.read(Paths.get("J:/Dopbox 3/pic1.png").toFile());
+			BufferedImage img2 = ImageIO.read(Paths.get("J:/Dopbox 3/pic2.png").toFile());
+			System.out.println(isSamePicture(img1, img2));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static boolean isSamePicture(BufferedImage img1, BufferedImage img2){
+		long startTime = System.nanoTime();
+		if(img1.getWidth() != img2.getWidth() || img1.getHeight() != img2.getHeight()){
+			System.out.println(String.format("elapsed: %tN",  System.nanoTime() - startTime));
+			return false;
+		}
+		for(int y = 0; y< img1.getHeight(); y++){
+			for(int x = 0; x < img1.getWidth(); x++){
+				int color1 = img1.getRGB(x,y);
+				int color2 = img2.getRGB(x,y);
+				if(color1 != color2){
+					return false;
+				}
+			}
+		}
+		System.out.println(String.format("elapsed: %tN",  System.nanoTime() - startTime));
+		return true;
+	}
 }
