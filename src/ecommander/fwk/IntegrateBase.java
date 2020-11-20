@@ -38,7 +38,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
 	private static final Object MUTEX = new Object();
-	private static boolean isInProgress = false;
+	private volatile static boolean isInProgress = false;
 	protected static Info info = null;
 	protected volatile boolean needTermination = false;
 
@@ -286,6 +286,9 @@ public abstract class IntegrateBase extends Command {
 			return buildResult();
 		} else {
 			synchronized (MUTEX) {
+				if (isInProgress) {
+					return buildResult();
+				}
 				isInProgress = true;
 				newInfo().setInProgress(true);
 				setOperation("Инициализация");

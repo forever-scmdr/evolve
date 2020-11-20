@@ -280,7 +280,7 @@
 		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)(extra.ThirdQuery)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
