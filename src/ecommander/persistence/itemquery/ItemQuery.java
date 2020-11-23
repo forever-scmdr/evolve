@@ -951,8 +951,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception 
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Connection... conn) throws Exception {
-		return loadByIdsLong(ids, null, conn);
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Byte[] status, Connection... conn) throws Exception {
+		return loadByIdsLong(ids, null, status, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID и вернуть в заданном порядке
@@ -962,13 +962,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order, Byte[] status, Connection... conn) throws Exception {
 		if (ids.size() == 0)
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
 				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
-				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+				.AND().col_IN(I_STATUS).byteIN(status);
 		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
@@ -987,7 +987,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				idsLong.add(Long.parseLong(id));
 			} catch (Exception e) { }
 		}
-		return loadByIdsLong(idsLong, null, conn);
+		return loadByIdsLong(idsLong, null, new Byte[] {Item.STATUS_NORMAL}, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID с учетом типа айтема
@@ -1037,7 +1037,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				ids.add(rs.getLong(1));
 			rs.close();
 			queryFinished(connection);
-			return loadByIdsLong(ids, connection);
+			return loadByIdsLong(ids, new Byte[]{Item.STATUS_NORMAL}, connection);
 		} finally {
 			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);
