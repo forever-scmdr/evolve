@@ -620,7 +620,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 	private void createFiltersAndItemTypesIfNeeded() throws Exception {
 		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
-		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
+		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes, new Byte[] {Item.STATUS_NORMAL});
 		doCreate(sections);
 	}
 

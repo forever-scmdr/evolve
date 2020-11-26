@@ -34,7 +34,7 @@
 						<div class="past-order__qty">Позиций: <xsl:value-of select="qty"/></div>
 					</div>
 					<div class="past-order__action" style="display: none">
-						<button class="button past-order__button submit_all_again">В корзину</button>
+						<button class="button past-order__button submit_all_again"><xsl:value-of select="$to_cart_available_label"/></button>
 					</div>
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
@@ -65,11 +65,11 @@
 										<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
 											<xsl:if test="$has_price">
 												<input class="input" type="number" name="qty" value="{qty}" min="0"/>
-												<button type="submit" class="button">В корзину</button>
+												<button type="submit" class="button"><xsl:value-of select="$to_cart_available_label"/></button>
 											</xsl:if>
 											<xsl:if test="not($has_price)">
 												<input class="input" type="number" name="qty" value="1" min="0"/>
-												<button class="button button_not-available" type="submit">Запросить цену</button>
+												<button class="button button_not-available" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 											</xsl:if>
 										</form>
 									</div>
