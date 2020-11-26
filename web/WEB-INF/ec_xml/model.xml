@@ -81,7 +81,7 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text" caption="текст сверху" type="text"/>
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
@@ -244,7 +244,7 @@
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
-		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
+		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
@@ -525,6 +525,12 @@
 
 	<item name="common_gallery" caption="Галерея" super="page_extra gallery_base *" ag-id="1770" ag-hash="-1850462978">
 		<child item="picture" inline="true"/>
+		<child item="video" inline="true"/>
+	</item>
+
+	<item name="video" caption="Видеоролик" key="name" ag-id="1817" ag-hash="112202875">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
 	</item>
 
 	<item name="page_text" caption="Текстовый блок" super="page_extra" ag-id="1771" ag-hash="883875037">
@@ -620,7 +626,7 @@
 
 
 
-	<item name="news_wrap" caption="Новостые разделы" ag-id="815" ag-hash="301189686">
+	<item name="news_wrap" super="* seo_container" caption="Новостые разделы" ag-id="815" ag-hash="301189686">
 		<child item="news"/>
 	</item>
 
@@ -636,10 +642,10 @@
 		<child item="page_extra" inline="true"/>
 	</item>
 
-	<item name="news" super="menu_item" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
+	<item name="news" super="menu_item seo_container" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение"/>
 		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
-		<child item="seo" single="true"/>
 		<child item="news_item"/>
 	</item>
 

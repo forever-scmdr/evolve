@@ -62,7 +62,7 @@
 
 	<xsl:template match="group">
 		<tr>
-			<th colspan="2"><xsl:value-of select="name"/></th>
+			<td colspan="2"><b><xsl:value-of select="@name"/></b></td>
 		</tr>
 		<xsl:apply-templates select="parameter"/>
 	</xsl:template>
@@ -80,10 +80,10 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
+		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
+				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -122,7 +122,7 @@
 						<div class="price price_product">
 							<xsl:if test="$p/price_old">
 								<div class="price__item price__item_old">
-									<span class="price__label">Старая цена</span>
+									<span class="price__label">Цена</span>
 									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
 								</div>
 							</xsl:if>
@@ -138,13 +138,15 @@
 						<div id="cart_list_{$p/@id}" class="order order_product">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty" value="1" min="0"/>
-									<button class="button button_size_lg" type="submit">Заказать</button>
+									<input type="number" class="input input_size_lg input_type_number" name="qty"
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
+									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
-									<input type="number" class="input input_size_lg input_type_number" name="qty" value="1" min="0"/>
+									<input type="number" class="input input_size_lg input_type_number" name="qty"
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
 									<!-- кнопка запросить цену на стрранице товара -->
-									<button class="button button_size_lg" type="submit">Запросить цену</button>
+									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 							</form>
 						</div>
@@ -225,11 +227,11 @@
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="В корзину" />
+										<input type="submit" class="button" value="{$to_cart_available_label}" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty" value="1" min="0" />
-										<input type="submit" class="button" value="Запросить цену4" />
+										<input type="submit" class="button" value="{$to_cart_na_label}" />
 									</xsl:if>
 								</form>
 							</div>
@@ -303,7 +305,8 @@
 					<xsl:if test="$p/params">
 						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
 							<table class="full-params">
-								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $p/params_xml/xml, '&lt;/params&gt;'))"/>
+								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
+								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
 								<xsl:apply-templates select="$params_xml/params/group"/>
 								<xsl:apply-templates select="$params_xml/params/parameter"/>
 							</table>

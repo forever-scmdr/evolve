@@ -92,7 +92,6 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		public final String parentName;
 		public final String assoc;
 		public final boolean isSingle;
-		@SuppressWarnings("unused")
 		public final boolean isVirtual;
 	}
 

@@ -26,7 +26,7 @@
 		<div class="block sections-block ptb">
 			<div class="container">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
-					<div class="sections-block sections-block_wrap">
+					<div class="sections-block_wrap">
 						<xsl:for-each select="custom_block">
 							<div class="banner-sections">
 								<div class="banner-sections__image img">
@@ -94,8 +94,8 @@
 				<div class="container">
 					<div class="contacts-block__wrap">
 						<div class="contacts-block_title title title_2"><xsl:value-of select="header" /></div>
-						<div class="contacts-block contacts-block_subtitle"><xsl:value-of select="subheader" /></div>
-						<div class="contacts-block contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
+						<div class="contacts-block_subtitle"><xsl:value-of select="subheader" /></div>
+						<div class="contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 					</div>
 					<div class="map">
 						<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3bcb9da99b1b8c51f6dce673b4be2c8cfeee83c9362822124f6c3e28a3c5ebca&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>

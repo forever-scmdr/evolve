@@ -65,7 +65,7 @@
 
     <xsl:function name="f:format_currency">
         <xsl:param name="num"/>
-        <xsl:value-of select="format-number($num, '#0.00')"/>
+        <xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>
     </xsl:function>
 
     <xsl:function name="f:format_currency_precise">
@@ -81,8 +81,9 @@
 
 
     <xsl:variable name="rates" select="page/catalog/currencies"/>
+    <xsl:variable name="rates_on" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
     <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
-    <xsl:variable name="BYN_cur" select="if ($rates) then ' бел.р.' else ' pуб.'"/>
+    <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then ' бел.р.' else ' pуб.'"/>
     <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur) else $currency"/>
 
     <xsl:function name="f:exchange_param">
@@ -109,7 +110,7 @@
         <xsl:variable name="sum" select="if ($sum_check) then f:num($sum_check) else $default"/>
         <xsl:choose>
             <xsl:when test="not(f:is_numeric($sum))"><xsl:value-of select="$default" /></xsl:when>
-            <xsl:when test="$is_byn"><xsl:value-of select="$sum" /></xsl:when>
+            <xsl:when test="$is_byn"><xsl:value-of select="f:format_currency($sum)" /></xsl:when>
             <xsl:when test="$rates/*[name() = concat($currency, '_rate')]">
                 <xsl:variable name="rate" select="f:num($rates/*[name() = concat($currency, '_rate')])"/>
                 <xsl:variable name="scale" select="f:num($rates/*[name() = concat($currency, '_scale')])"/>

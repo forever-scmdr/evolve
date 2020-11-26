@@ -346,12 +346,14 @@
 	</page>
 
 
+
 	<page name="sub" template="sub" cacheable="false">
 		<request>
 			<var name="sec" style="key"/>
 		</request>
 		<include name="COMMON"/>
 	</page>
+
 
 
 	<page name="tag_section" template="tag_section">
@@ -918,7 +920,7 @@
 
 	<page name="cart_action">
 		<request>
-			<var name="strategy" value="extra_line_overbuy"/>
+			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
