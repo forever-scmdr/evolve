@@ -1248,4 +1248,13 @@
 		</command>
 	</page>
 
+	<page name="clear_gallery" template="integration" >
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.FindAndRemoveSamePics" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
