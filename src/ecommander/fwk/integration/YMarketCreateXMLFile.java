@@ -124,7 +124,7 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				if (!isAvailable && isNoZero)
 					continue;
 				String avail = isAvailable ? "false" : "true";
-				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, avail);
+				xml.startElement(OFFER_ELEMENT, ID_ATTR, product.getStringValue(CODE_PARAM), AVAILABLE_ATTR, product.getByteValue(AVAILABLE_PARAM, (byte)0) > 0);
 				String url = base + "/" + baseProduct.getKeyUnique() + "/";
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
 				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
