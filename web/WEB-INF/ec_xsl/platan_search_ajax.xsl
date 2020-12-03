@@ -14,7 +14,7 @@
 		<xsl:if test="items/item">
 			<div id="extra_search_1" class="result">
 				<h2>Результат поиска по дополнительному каталогу №1</h2>
-				<xsl:value-of select="items/minq"/>
+				
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="items/item" mode="lines"/>

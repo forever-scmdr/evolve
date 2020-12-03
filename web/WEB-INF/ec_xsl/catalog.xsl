@@ -28,7 +28,8 @@
 				<xsl:for-each select="/page/catalog/section">
 					<div class="catalog-item">
 						<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-						<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
+						<xsl:variable name="pwp" select="product[main_pic and main_pic != '']"/>
+						<xsl:variable name="product_pic" select="if ($pwp) then concat($pwp[1]/@path, $pwp[1]/main_pic) else ''"/>
 						<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 						<a href="{show_products}" class="image-container" style="background-image: url({$pic})"><!-- <img src="{$pic_path}" onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}"/> --></a>
 						<div>

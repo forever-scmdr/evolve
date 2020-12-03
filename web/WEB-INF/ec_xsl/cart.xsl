@@ -135,7 +135,7 @@
 					<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
 
 					<a class="image-container">
-						<img src="i{$img}" alt="{$p/name}"/>
+						<img src="{$img}" alt="{$p/name}"/>
 					</a>
 					<a class="title">
 						<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)

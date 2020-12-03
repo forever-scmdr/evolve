@@ -165,6 +165,11 @@
 		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
 		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
 
+		<!-- EUR -->
+		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1€ дают ... бел. руб."/>
+		<parameter name="q1_eur" caption="Прибавка к Eur"  type="double" description="0.03 = +3%" />
+		<parameter name="q2_eur" caption="Прибавка к цене товараов с Farnell"  type="double" description="0.03 = +3%" />
+
 <!--		<on-update class="ecommander.fwk.CopyToUpload"/>-->
 	</item>
 

@@ -6,6 +6,7 @@
 	<xsl:variable name="title" select="concat($p/name, ' купить в Минске – магазин радиодеталей Чип Электроникс')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="has_price" select="f:num($p/qty) != 0"/>
 
 	<xsl:variable name="meta_description" select="concat($p/name, ' в Минске от Чип Электроникс. Звоните ☎☎☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси.')"/>
 	<xsl:variable name="meta_keywords" select="$p/name"/>
@@ -98,16 +99,19 @@
 				<!-- new html -->
 				<xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each>
-
-				<xsl:variable name="has_price" select="f:num($p/price) != 0 and f:num($p/qty) != 0"/>
+				</xsl:for-each>			
  
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
-						<xsl:if test="$has_price">
+						<xsl:if test="f:num($p/price) &gt; 0">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog($p/price_old, '','')"/></span></div></xsl:if>
 								<div class="price_normal"><xsl:value-of select="f:price_catalog($p/price, $p/unit, $p/min_qty)" /></div>
+							</div>
+						</xsl:if>
+						<xsl:if test="f:num($p/price) = 0">
+							<div class="device__price device__price_device-page">
+								Цена по запросу
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
@@ -153,14 +157,14 @@
 						<div></div>
 
 						<xsl:for-each select="$p/line_product">
-							<xsl:variable name="has_price" select="price and price != '0'"/>
+							<xsl:variable name="has_price" select="f:num(price) &gt; 0 and f:num(qty) &gt; 0"/>
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__price">
-								<xsl:if test="$has_price">
+								<xsl:if test="f:num($p/price) &gt; 0">
 									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
 									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
 								</xsl:if>
-								<xsl:if test="not($has_price)">
+								<xsl:if test="not(f:num($p/price) = 0)">
 									<div class="multi-device__price_new">по запросу</div>
 								</xsl:if>
 							</div>

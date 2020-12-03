@@ -107,12 +107,13 @@
 		<section class="header desktop">
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
-
-					<form action="{page/search_link}" method="get" class="header__search header__column">
-						<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
-						<input type="submit" class="button header__button" value="Поиск" />
-					</form>
-
+				<form class="header__search header__column" action="{page/search_link}" method="get" style="flex-wrap: wrap">
+					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
+					<input type="submit" class="button header__button" value="Поиск" />
+					<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
+					Поиск по нашему складу и складам партнеров
+					</div>
+				</form>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
@@ -192,6 +193,7 @@
 					<form action="{page/search_link}" method="post">
 						<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}"/>
 					</form>
+					<p style="color: #9f9f9f;font-size: 1.45rem;">поиск по нашему складу и складам партнеров</p>
 				</div>
 			</div>
 		</div>
@@ -557,11 +559,11 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
+							<xsl:if test="f:num(qty) &gt; 0">
 								<input type="number" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="f:num(qty) = 0">
 								<input type="hidden" class="text-input" name="qty" value="{min_qty}" step="{min_qty}" min="{min_qty}"/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -788,7 +790,6 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<!--<base href="https://ttd.by"/> -->
 				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -803,7 +804,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css"/>
+				<link rel="stylesheet" href="css/app.css?version=1.2"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

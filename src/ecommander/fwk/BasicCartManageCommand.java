@@ -674,7 +674,7 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	private TreeMap<Double, String> parsePriceMap(String specPrice) throws Exception {
-		if(specPrice.indexOf(':') == -1) return new TreeMap<>();
+		if(StringUtils.isBlank(specPrice) || specPrice.indexOf(':') == -1) return new TreeMap<>();
 		Item catalog = ItemQuery.loadSingleItemByName("catalog");
 		double ratio = catalog.getDoubleValue("currency_ratio_usd");
 		double q1 = 1 + catalog.getDoubleValue("q1_usd", 0.0);

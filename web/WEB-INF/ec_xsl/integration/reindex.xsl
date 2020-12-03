@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/reindex_all");
+				document.location.replace("/reindex");
 			}, 5000);
 		</script>
 		</head>
