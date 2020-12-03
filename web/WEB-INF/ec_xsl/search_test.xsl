@@ -24,9 +24,12 @@
 		</div>
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
-		<div class="page-content m-t">
+		<p>
+			<a href="oeder_email" target="_blank">Письмо покупателю</a><br/>
+			<a href="shop_email" target="_blank">Письмо магазаину</a><br/>
+		</p>
 
-			<!-- <xsl:if test="$products"> -->
+		<div class="page-content m-t">
 				<div class="view-container desktop">
 					<div class="view">
 						<span class="{'active'[not($view = 'list')]}">
@@ -54,27 +57,19 @@
 						<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
 					</div>
 				</div>
-			<!-- </xsl:if> -->
-
-			<div class="catalog-items{' lines'[$view = 'list']}">
-					<xsl:if test="$view = 'table'">
-						<xsl:apply-templates select="$products"/>
-					</xsl:if>
-					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="$products" mode="lines"/>
-					</xsl:if>
-			</div>
-			<xsl:if test="not($products)">
-				<h4>По заданным критериям товары не найдены</h4>
-			</xsl:if>
+			<p>Поиск по основному каталогу отключен.</p>
+			<div class="catalog-items{' lines'[$view = 'list']}"></div>
+<!--			<xsl:if test="not($products)">-->
+<!--				<h4>По заданным критериям товары не найдены</h4>-->
+<!--			</xsl:if>-->
 			<div id="extra_search_1">
-				Идет поиск по дополнительным каталогам...
+				<p>Поиск по каталогу PLATAN отключен.</p>
 			</div>
-			<div id="extra_search_2">подождите.
-				<form action="digikey_search" method="POST" id="dgk-form">
-					<input type="hidden" name="query" value="{page/variables/q}" />
-					<input type="hidden" name="qty" value="{page/variables/minqty}" />
-				</form>
+			<div id="extra_search_2">
+				<p>Поиск по каталогу DIGIKEY отключен.</p>
+			</div>
+			<div id="extra_search_3">
+				<h2>Идет поиск по FARNELL</h2>
 			</div>
 		</div>
 
@@ -86,11 +81,22 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
-				postForm('dgk-form');
+				//insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
+				//postForm('dgk-form');
+				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 			})
 
 		</script>
+	</xsl:template>
+
+	<xsl:template name="SEARCH_FORM">
+		<form class="header__search header__column" action="search_test" method="get" style="flex-wrap: wrap">
+			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
+			<input type="submit" class="button header__button" value="Поиск" />
+			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
+				Поиск по нашему складу и складам партнеров
+			</div>
+		</form>
 	</xsl:template>
 
 </xsl:stylesheet>

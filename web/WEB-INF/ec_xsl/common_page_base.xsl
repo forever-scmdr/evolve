@@ -107,13 +107,14 @@
 		<section class="header desktop">
 			<div class="container">
 				<a href="{$main_host}" class="logo"><img src="img/logo.png" alt="" /></a>
-				<form class="header__search header__column" action="{page/search_link}" method="get" style="flex-wrap: wrap">
-					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
-					<input type="submit" class="button header__button" value="Поиск" />
-					<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-					Поиск по нашему складу и складам партнеров
-					</div>
-				</form>
+				<xsl:call-template name="SEARCH_FORM" />
+<!--				<form class="header__search header__column" action="{page/search_link}" method="get" style="flex-wrap: wrap">-->
+<!--					<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />-->
+<!--					<input type="submit" class="button header__button" value="Поиск" />-->
+<!--					<div style="color: #9f9e9e; display: block; flex-basis: 100%;">-->
+<!--					Поиск по нашему складу и складам партнеров-->
+<!--					</div>-->
+<!--				</form>-->
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
@@ -943,10 +944,15 @@
 
 	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
 
-
-
-
-
+	<xsl:template name="SEARCH_FORM">
+		<form class="header__search header__column" action="{page/search_link}" method="get" style="flex-wrap: wrap">
+			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
+			<input type="submit" class="button header__button" value="Поиск" />
+			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
+				Поиск по нашему складу и складам партнеров
+			</div>
+		</form>
+	</xsl:template>
 
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>

@@ -487,7 +487,39 @@
 		<include name="COMMON"/>
 	</page>
 
+	<page name="search_test" template="search_test" authority-groups="common">
+		<request>
+			<var name="q" value="fuse"/>
+			<var name="old_query"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="-1" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<!--		<command class="extra.FixSearchQuery"/>-->
 
+		<link name="set_view_table" target="search_test" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="search_test" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="show_only_available" target="search_test">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="search_test">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="set_currency_byn" target="search_test" copy-page-vars="yes">
+			<var name="currency" value="byn"/>
+		</link>
+		<link name="set_currency_rur" target="search_test" copy-page-vars="yes">
+			<var name="currency" value="rur"/>
+		</link>
+		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
+		<include name="COMMON"/>
+	</page>
 
 	<page name="product" template="product" cacheable="true">
 		<request>
@@ -832,6 +864,39 @@
 		<include name="COMMON"/>
 	</page>
 
+	<page name="shop_email" template="order_email">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<single item="catalog"/>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<!-- 		<list item="product" tag="product" id="prod">
+					<filter>
+						<parameter name="code" compare="SOME" sign="=">
+							<var ref="bought" parameter="code"/>
+						</parameter>
+					</filter>
+
+				</list> -->
+		<single item="common"/>
+	</page>
 
 	<page name="order_email" template="order_email">
 		<request>
@@ -1611,11 +1676,11 @@
 
 	<page name="farnell_search" template="farnell_search_ajax">
 		<request>
-			<var name="query" value="транзистор"/>
+			<var name="q" value="fuse"/>
 			<var name="page" value="1"/>
 			<var name="limit" value="30"/>
 
-			<var name="qty" />
+			<var name="minqty" value="-1"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>

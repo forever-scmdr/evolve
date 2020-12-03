@@ -29,11 +29,12 @@
 					<h2>Результаты поиска по доп. кталогу №3</h2>
 					<p>Найдено товаров: <xsl:value-of select="$found"/></p>
 					<p>
-						EUR = <xsl:value-of select="$ratio_eur"/><br/>
-						100 RUR = <xsl:value-of select="$ratio_rur"/><br/>
+						EUR = <xsl:value-of select="$ratio_eur"/>BYN<br/>
+						100 RUR = <xsl:value-of select="$ratio_rur"/>BYN<br/>
 						Надбавка к курсу Евро = <xsl:value-of select="$q1_eur"/><br/>
 						Надбавка для Farnell = <xsl:value-of select="$q2_eur"/><br/>
-						test conversion: 1€ = <xsl:value-of select="f:eur_to_byn('1')"/>BYN = <xsl:value-of select="f:eur_to_rur('1')"/>RUR</p>
+						test conversion: 1€ = <xsl:value-of select="f:eur_to_byn('1')"/>BYN = <xsl:value-of select="f:eur_to_rur('1')"/>RUR
+					</p>
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="$page/products" mode="lines"/>
@@ -42,6 +43,25 @@
 							<xsl:apply-templates select="$page/products"/>
 						</xsl:if>
 					</div>
+					<script type="text/javascript">
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+						type: 'image',
+						closeOnContentClick: true,
+						mainClass: 'mfp-img-mobile',
+						image: {
+						verticalFit: true
+						}
+						});
+						$(document).ready(function(){
+						//Инициализация всплывающей панели для
+						//элементов веб-страницы, имеющих атрибут
+						//data-toggle="popover"
+						$('[data-toggle="popover"]').popover({
+						//Установление направления отображения popover
+						placement : 'top'
+						});
+						});
+					</script>
 				</div>
 			</body>
 		</html>
@@ -132,7 +152,7 @@
 		<xsl:variable name="price_pack" select="f:num(orderMultiples) * f:num(prices[1]/cost)"/>
 
 		<div class="device items-catalog__device">
-			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
+			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{displayName}" rel="nofollow">
 				<i class="fas fa-search-plus"></i>
 			</a>
 			<a class="device__image" style="background-image: url('{$pic}');"></a>

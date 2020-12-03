@@ -57,29 +57,27 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 		}
 		String pageVar = getVarSingleValue("page");
 		String limitVar = getVarSingleValue("limit");
-		String inStockVar = getVarSingleValue("qty");
+		String inStockVar = getVarSingleValue("minqty");
 
 		int limit = StringUtils.isBlank(limitVar)? 30 : Integer.parseInt(limitVar);
 		int page = StringUtils.isBlank(pageVar)? 1 : Integer.parseInt(pageVar);
 		int offset = (page - 1) * limit;
 
-		boolean inStock = StringUtils.isNotBlank(inStockVar) && Integer.parseInt(inStockVar) > 0;
-		if(inStock){
-			urlBuilder.append('&').append(IN_STOCK_AND_ROHS).append('=').append(inStock);
+		int stock = StringUtils.isBlank(inStockVar)? -1 : Integer.parseInt(inStockVar);
+		if(stock > -1){
+			urlBuilder.append('&').append(IN_STOCK_AND_ROHS).append('=').append("inStock");
 		}
 		urlBuilder.append('&').append(OFFSET).append('=').append(offset);
 		urlBuilder.append('&').append(NUMBER_OF_RESULTS).append('=').append(limit);
 
-		String query = URLEncoder.encode(':' + getVarSingleValue("query"), StandardCharsets.UTF_8.toString());
+		String query = URLEncoder.encode(':' + getVarSingleValue("q"), StandardCharsets.UTF_8.toString());
 
 		urlBuilder.append('&').append(TERM).append('=').append("any").append(query);
 		System.out.println(urlBuilder);
 
 		doc = Jsoup.parse(new URL(urlBuilder.toString()), 5000);
 
-		Element results = doc.getElementsByTag("keywordSearchReturn").first();
-
-		addVarToResult("query", getVarSingleValue("query"));
+		addVarToResult("query", getVarSingleValue("q"));
 		addVarToResult("currency", getVarSingleValue("currency"));
 		addVarToResult("view", getVarSingleValue("view"));
 
@@ -90,7 +88,6 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 		addVarToResult("q2_eur", catalog.outputValue("q2_eur"));
 		addVarToResult("offset", String.valueOf(offset));
 		addVarToResult("limit", String.valueOf(limit));
-
 
 		ResultPE result;
 		try {
@@ -114,6 +111,8 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 		if(variables == null){
 			variables = doc.getElementsByTag("keywordSearchReturn").first().prependElement("variables");
 		}
+		if(StringUtils.isBlank(name)) return;
+		value = StringUtils.isBlank(value)? "" : value;
 		variables.appendElement(name).html(value);
 	}
 
