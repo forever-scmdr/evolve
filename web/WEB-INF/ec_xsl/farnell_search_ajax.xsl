@@ -61,6 +61,8 @@
 						placement : 'top'
 						});
 						});
+						//обновить корзину
+						insertAjax("cart_ajax");
 					</script>
 				</div>
 			</body>
@@ -127,8 +129,8 @@
 				</div>
 			</div>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{sku}">
-					<form action="cart_action/?action=addFarToCart&amp;code={sku}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+				<div id="cart_list_{normalize-space(sku)}">
+					<form action="cart_action/?action=addFarToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 
 						<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 
@@ -187,8 +189,8 @@
 				</xsl:if>
 			</div>
 			<div class="device__order">
-				<div id="cart_list_{sku}">
-					<form action="cart_action/?action=addFarToCart&amp;code={sku}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+				<div id="cart_list_{normalize-space(sku)}">
+					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
 
 						<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 

@@ -25,8 +25,8 @@
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<p>
-			<a href="oeder_email" target="_blank">Письмо покупателю</a><br/>
-			<a href="shop_email" target="_blank">Письмо магазаину</a><br/>
+			<a href="oeder_email" target="_blank">Смотреть письмо покупателю</a><br/>
+			<a href="shop_email" target="_blank">Смотреть письмо магазаину</a><br/>
 		</p>
 
 		<div class="page-content m-t">

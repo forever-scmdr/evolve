@@ -83,7 +83,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	/**
 	 * Добавить товар в корзину
-	 * @return
+	 * @return updated "cart_ajax" page
 	 * @throws Exception
 	 */
 	public ResultPE addToCart() throws Exception {
@@ -99,8 +99,58 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	/**
-	 * Добавить товар c digiKey в корзину
-	 * @return
+	 * Добавить товар Farnell в корзину
+	 * @return updated "cart_ajax" page
+	 * @throws Exception
+	 */
+	public ResultPE addFarnellToCart() throws Exception{
+		checkStrategy();
+		String code = getVarSingleValue(CODE_PARAM).trim();
+		double quantity = 0;
+		try {
+			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM).trim());
+		} catch (Exception e) {
+			return getResult("ajax");
+		}
+		ensureCart();
+		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
+		Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+		if(boughtProduct == null){
+			String name = getVarSingleValue(NAME_PARAM).trim().replaceAll("\\s+", " ");
+			bought.setValue(NAME_PARAM, name);
+			bought.setValue(CODE_PARAM, code);
+			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE).trim());
+			bought.setValue("aux", "farnell");
+			bought.setExtra("img", getVarSingleValue("img").trim());
+			//build price map
+			try{
+				StringBuilder sb = new StringBuilder();
+				int i=0;
+				for(Object v : getVarValues("price")){
+					if(i > 0) sb.append(';');
+					sb.append(v);
+					i++;
+				}
+				bought.setValueUI("price_map",sb.toString());
+			}catch (Exception e){}
+			getSessionMapper().saveTemporaryItem(bought);
+			Item product = getSessionMapper().createSessionItem("product", bought.getId());
+			product.setValueUI(NAME_PARAM, name);
+			product.setValueUI(CODE_PARAM, code);
+			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
+			product.setValueUI("unit", getVarSingleValue("unit"));
+			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
+			product.setValue(QTY_PARAM, qty);
+			getSessionMapper().saveTemporaryItem(product);
+			setBoughtQtys(product, bought, quantity);
+		}
+		recalculateCart();
+		return getResult("ajax");
+	}
+
+	/**
+	 * Добавить товар c DigiKey в корзину
+	 * @return updated "cart_ajax" page
 	 * @throws Exception
 	 */
 	public ResultPE addDgkToCart() throws Exception {
@@ -138,13 +188,11 @@ public abstract class BasicCartManageCommand extends Command {
 
 		bought.setValueUI("price_map", getVarSingleValue("dgk_spec"));
 		getSessionMapper().saveTemporaryItem(bought);
-		//ensureCart();
-
 		recalculateCart();
 		return getResult("ajax");
 	}
 	/**
-	 * Добавить товар c платана в корзину
+	 * Добавить товар c Платана в корзину
 	 * @return
 	 * @throws Exception
 	 */
@@ -613,6 +661,16 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 	    checkStrategy();
 		loadCart();
+
+		Item catalog = ItemQuery.loadSingleItemByName("catalog");
+		double ratioUsd = catalog.getDoubleValue("currency_ratio_usd");
+		double q1Usd = 1 + catalog.getDoubleValue("q1_usd", 0d);
+		double q2Usd = 1 + catalog.getDoubleValue("q2_usd", 0d);
+
+		double ratioEur = catalog.getDoubleValue("currency_ratio_eur");
+		double q1Eur = 1 + catalog.getDoubleValue("q1_eur", 0d);
+		double q2Eur = 1 + catalog.getDoubleValue("q2_eur", 0d);
+
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal totalSum = new BigDecimal(0); // полная сумма
 		double totalQuantity = 0;
@@ -636,7 +694,21 @@ public abstract class BasicCartManageCommand extends Command {
 				}
 			}else if("digikey".equals(aux)){
 				String specPrice = bought.getStringValue("price_map");
-				TreeMap<Double, String> priceMap = parsePriceMap(specPrice);
+				TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioUsd, q1Usd, q2Usd);
+
+				if(priceMap.size() > 0){
+					for(Double breakpoint : priceMap.keySet()){
+						if(breakpoint <= totalQty){
+							product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+						}
+						else{
+							break;
+						}
+					}
+				}
+			}else if("farnell".equals(aux)){
+				String specPrice = bought.getStringValue("price_map");
+				TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioEur, q1Eur, q2Eur);
 
 				if(priceMap.size() > 0){
 					for(Double breakpoint : priceMap.keySet()){
@@ -673,15 +745,9 @@ public abstract class BasicCartManageCommand extends Command {
 		return result && totalQuantity > 0;
 	}
 
-	private TreeMap<Double, String> parsePriceMap(String specPrice) throws Exception {
+	private TreeMap<Double, String> parsePriceMap(String specPrice, double ratio, double q1, double q2) throws Exception {
 		if(StringUtils.isBlank(specPrice) || specPrice.indexOf(':') == -1) return new TreeMap<>();
-		Item catalog = ItemQuery.loadSingleItemByName("catalog");
-		double ratio = catalog.getDoubleValue("currency_ratio_usd");
-		double q1 = 1 + catalog.getDoubleValue("q1_usd", 0.0);
-		double q2 = 1 + catalog.getDoubleValue("q2_usd", 0.0);
-
 		TreeMap<Double, String> result = new TreeMap<>();
-
 		String[] z = specPrice.split(";");
 		for(String pair : z){
 			String[] p = pair.split(":");

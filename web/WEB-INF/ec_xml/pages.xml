@@ -864,7 +864,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="shop_email" template="order_email">
+	<page name="shop_email" template="shop_email">
 		<request>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
