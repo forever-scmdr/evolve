@@ -887,14 +887,6 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<!-- 		<list item="product" tag="product" id="prod">
-					<filter>
-						<parameter name="code" compare="SOME" sign="=">
-							<var ref="bought" parameter="code"/>
-						</parameter>
-					</filter>
-
-				</list> -->
 		<single item="common"/>
 	</page>
 
