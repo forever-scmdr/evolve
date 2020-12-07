@@ -128,6 +128,8 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 				String url = base + "/" + baseProduct.getKeyUnique() + "/";
 				xml.startElement(URL_ELEMENT).addText(url).endElement();
 				xml.startElement(PRICE_ELEMENT).addText(product.getDecimalValue(PRICE_PARAM)).endElement();
+				//patch 07.12.2020 <option cost="10" days="2 or 40"/>
+				xml.startElement("option", "days", product.getByteValue(AVAILABLE_PARAM, (byte)0) > 0? 2 : 40, "cost", 10).endElement();
 				xml.startElement(CURRENCY_ID_ELEMENT).addText("BYN").endElement();
 				xml.startElement(CATEGORY_ID_ELEMENT).addText(category.getId()).endElement();
 				String name = baseProduct.getStringValue(NAME_PARAM);
