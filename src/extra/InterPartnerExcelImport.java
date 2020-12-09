@@ -41,6 +41,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 	private boolean newItemTypes = false;
 	private long date;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
+	private HashSet<Long> memoryKillerAndDisgrace = new HashSet<>();
 
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
@@ -115,7 +116,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		for (Map.Entry<Item, File> entry : files.entrySet()) {
 			File f = entry.getValue();
 			currentStore = entry.getKey();
-			if (checkHash(f)) {
+			//if (checkHash(f)) {
 				//replacePriceAnyway =
 				if (dateDiffers(f)) {
 					stores.setValue("date", date);
@@ -124,10 +125,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				}
 				parseExcel(f);
 				//if(replacePriceAnyway) replacePriceAnyway = false;
-			} else {
-				info.setCurrentJob("");
-				pushLog("Файл " + f.getName() + " был разобран ранее.");
-			}
+			//} else {
+			//	info.setCurrentJob("");
+			//	pushLog("Файл " + f.getName() + " был разобран ранее.");
+			//}
 		}
 		date = stores.getLongValue("date");
 
@@ -329,7 +330,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Item parent = (isProduct) ? currentSection : currentProduct;
 					product = Item.newChildItem(itemType, parent);
 				}
-				replacePriceAnyway = product.getLongValue("date", 0L) < date;
+				//replacePriceAnyway = product.getLongValue("date", 0L) < date;
+
+				//very dumb fix
+				replacePriceAnyway = !memoryKillerAndDisgrace.contains(product.getId());
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
 					if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
@@ -381,6 +385,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				}
 				product.setValue("date", date);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
+
+				//very dumb fix
+				memoryKillerAndDisgrace.add(product.getId());
+
 				if (isProduct) currentProduct = product;
 				//AUX
 				if (hasAuxParams(headers)) {
@@ -431,7 +439,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 							sectionsWithNewItemTypes.add(currentSection.getId());
 							continue;
 						}
-						if (StringUtils.isNotBlank(auxParams.get(param)))
+
+						if (StringUtils.isNotBlank(auxParams.get(header.toLowerCase())))
 							aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
 					}
 

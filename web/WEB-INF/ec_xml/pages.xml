@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -16,6 +16,7 @@
 					</filter>
 				</list>
 			</tree>
+			<single item="stores"/>
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="false" >
@@ -36,6 +37,7 @@
 				<list item="block"/>
 			</list>
 			<single item="product_side"/>
+			<list item="product_phone"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="articles_link" target="articles"/>
@@ -129,7 +131,7 @@
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
-			<var name="sort" value="price" scope="cookie"/>
+			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
 			<var name="fil"/>
@@ -144,6 +146,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
+					<!-- <parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter> -->
 					<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
@@ -446,7 +449,7 @@
 			<var name="p" style="translit"/>
 		</request>
 		<single item="custom_page" var="p" cacheable="false" cache-vars="p">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="translit" name="p"/>
@@ -573,11 +576,11 @@
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
-						<single item="product" id="parent">
+						<list item="product" id="parent">
 							<link name="show_product" target="product" type="exclusive">
 								<var name="prod" ref="parent" style="translit"/>
 							</link>
-						</single>
+						</list>
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
@@ -667,7 +670,7 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
-					</list>
+					</single>
 				</list>
 			</single>
 			<new item="user_phys" id="user_phys">
@@ -1217,15 +1220,6 @@
 		</command>
 	</page> -->
 
-	<page name="parse_excel_interpartner" template="integration/create_excel" authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.InterPartnerExcelImport" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 	<page name="ok"></page>
 
 	<page name="import_from_ancient" template="integration" authority-groups="common">
@@ -1248,6 +1242,15 @@
 		</command>
 	</page>
 
+	<page name="parse_excel_interpartner" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.InterPartnerExcelImport" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 	<page name="clear_gallery" template="integration" >
 		<request>
 			<var name="action"/>
@@ -1256,5 +1259,4 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
 </site>
