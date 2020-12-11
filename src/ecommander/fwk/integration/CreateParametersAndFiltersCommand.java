@@ -253,14 +253,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		try {
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 			if(SystemUtils.IS_OS_LINUX){
-				Path model = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "model.xml");
-				Path modelCustom = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "model_custom.xml");
-				Path modelBackup = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "~model.xml");
-				Path modelCustomBackup = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "~model_custom.xml");
-				Runtime.getRuntime().exec(new String[]{"chmod", "775", model.toAbsolutePath().toString()});
-				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelCustom.toAbsolutePath().toString()});
-				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelBackup.toAbsolutePath().toString()});
-				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelCustomBackup.toAbsolutePath().toString()});
+				Path ecXml = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml");
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", ecXml.toAbsolutePath().toString()});
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);
