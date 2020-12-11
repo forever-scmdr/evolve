@@ -1,5 +1,6 @@
 package ecommander.fwk.integration;
 
+import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
@@ -16,6 +17,7 @@ import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.tika.utils.ExceptionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,6 +25,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
@@ -248,6 +252,16 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 		try {
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+			if(SystemUtils.IS_OS_LINUX){
+				Path model = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "model.xml");
+				Path modelCustom = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "model_custom.xml");
+				Path modelBackup = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "~model.xml");
+				Path modelCustomBackup = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml", "~model_custom.xml");
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", model.toAbsolutePath().toString()});
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelCustom.toAbsolutePath().toString()});
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelBackup.toAbsolutePath().toString()});
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", modelCustomBackup.toAbsolutePath().toString()});
+			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);
 			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
@@ -310,8 +324,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	}
 
 	public static void main(String[] args) {
-		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
-		System.out.println("100% полиэтер".matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$"));
-		System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
+		//System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
+		//System.out.println("100% полиэтер".matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$"));
+		//System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
 	}
 }
