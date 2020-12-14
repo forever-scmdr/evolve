@@ -38,12 +38,14 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	public static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
 	public static final String CURRENCY_ID_FILE = "Код валюты цены";
 	public static final String QTY_FILE = "Количество";
+	public static final String QTY_1_FILE = "Количество на складе 1";
+	public static final String QTY_2_FILE = "Количество на складе 2";
+	public static final String QTY_3_FILE = "Количество на складе 3";
 	public static final String UNIT_FILE = "Единица измерения";
 	public static final String AVAILABLE_FILE = "Наличие";
 	public static final String AUX_TYPE_FILE = "ID типа товара";
 	public static final String MANUAL = "Документация";
 	public static final String VALUE_SEPARATOR = ";";
-
 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
 		add(CODE_PARAM);
@@ -209,6 +211,12 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(UNIT_FILE);
 		sh.setColumnWidth(colIdx, 20 * 256);
+		row.createCell(++colIdx).setCellValue(QTY_1_FILE);
+		sh.setColumnWidth(colIdx, 25 * 256);
+		row.createCell(++colIdx).setCellValue(QTY_2_FILE);
+		sh.setColumnWidth(colIdx, 25 * 256);
+		row.createCell(++colIdx).setCellValue(QTY_3_FILE);
+		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(AVAILABLE_FILE);
 		sh.setColumnWidth(colIdx, 20 * 256);
 
@@ -283,15 +291,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			Row row = sh.createRow(++rowI);
 			int colIdx = -1;
 			CellStyle cellStyle = chooseCellStyle(product);
-//			double price;
-//			if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
-//				price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
-//			}else{
-//				price = product.getDoubleValue(PRICE_PARAM,0d);
-//			}
-
-			String priceValue = product.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(Math.round(price*100d)/100d) : "";
-			String qtyValue = product.outputValue(QTY_PARAM);//(product.getDecimalValue(QTY_PARAM) != null) ? String.valueOf(product.getDecimalValue(QTY_PARAM)) : "";
+			String priceValue = product.outputValue(PRICE_PARAM);
+			String qtyValue = product.outputValue(QTY_PARAM);
 			String priceOldValue = product.outputValue(PRICE_OLD_PARAM);
 			String priceOrigValue = product.outputValue(PRICE_ORIGINAL_PARAM);
 			String currencyID = product.outputValue(CURRENCY_ID_PARAM);
@@ -306,9 +307,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			row.createCell(++colIdx).setCellValue(priceOrigValue);
 			row.createCell(++colIdx).setCellValue(currencyID);
 			row.createCell(++colIdx).setCellValue(qtyValue);
-			if(hasUnits) {
-				row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
-			}
+			row.createCell(++colIdx).setCellValue(product.getStringValue("unit", ""));
+			row.createCell(++colIdx).setCellValue(product.outputValue("qty_1"));
+			row.createCell(++colIdx).setCellValue(product.outputValue("qty_2"));
+			row.createCell(++colIdx).setCellValue(product.outputValue("qty_3"));
+
 			row.createCell(++colIdx).setCellValue(String.valueOf(product.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
 
@@ -358,19 +361,15 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 						row = sh.createRow(++rowI);
 						cellStyle = chooseCellStyle(lineProduct);
-//						if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
-//							price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
-//						}else{
-//							price = lineProduct.getDoubleValue(PRICE_PARAM,0d);
-//						}
-						priceValue = lineProduct.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(price) : "";
-						qtyValue = lineProduct.outputValue(QTY_PARAM);//(lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
+						priceValue = lineProduct.outputValue(PRICE_PARAM);
+						qtyValue = lineProduct.outputValue(QTY_PARAM);
 						priceOldValue = lineProduct.outputValue(PRICE_OLD_PARAM);
 						priceOrigValue = lineProduct.outputValue(PRICE_ORIGINAL_PARAM);
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
-
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
-						row.createCell(++colIdx).setCellValue("");
+						if(writeLineProductsHeader) {
+							row.createCell(++colIdx).setCellValue("");
+						}
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
@@ -378,6 +377,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						row.createCell(++colIdx).setCellValue(currencyID);
 						row.createCell(++colIdx).setCellValue(qtyValue);
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue("unit", ""));
+						row.createCell(++colIdx).setCellValue(product.outputValue("qty_1"));
+						row.createCell(++colIdx).setCellValue(product.outputValue("qty_2"));
+						row.createCell(++colIdx).setCellValue(product.outputValue("qty_3"));
 						row.createCell(++colIdx).setCellValue(String.valueOf(lineProduct.getByteValue(AVAILABLE_PARAM, (byte) 0)));
 
 						//write all product params/

@@ -33,16 +33,29 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code) || StringUtils.startsWith(code,"разд:")) return;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
 				String qty = getValue(CreateExcelPriceList.QTY_FILE);
+				String qty1 = getValue(CreateExcelPriceList.QTY_1_FILE);
+				String qty2 = getValue(CreateExcelPriceList.QTY_2_FILE);
+				String qty3 = getValue(CreateExcelPriceList.QTY_3_FILE);
 				String av = getValue(CreateExcelPriceList.AVAILABLE_FILE);
 				String oldPrice = getValue(CreateExcelPriceList.PRICE_OLD_FILE);
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
+
 				Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, CODE_PARAM, code);
 				if(product != null){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
 					if(qty != null) {
 						product.setValueUI(QTY_PARAM, qty);
+					}
+					if(qty1 != null) {
+						product.setValueUI("qty_1", qty1);
+					}
+					if(qty2 != null) {
+						product.setValueUI("qty_2", qty2);
+					}
+					if(qty3 != null) {
+						product.setValueUI("qty_3", qty3);
 					}
 					if(av != null) {
 						product.setValueUI(AVAILABLE_PARAM, av);
