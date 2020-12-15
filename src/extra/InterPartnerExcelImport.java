@@ -9,6 +9,7 @@ import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateExcelPriceList;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
@@ -440,8 +441,16 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 							continue;
 						}
 
-						if (StringUtils.isNotBlank(auxParams.get(header.toLowerCase())))
-							aux.setValueUI(auxParams.get(header.toLowerCase()), cellValue);
+						if (auxType.getParameterNames().contains(param)){
+							DataType.Type paramType = auxType.getParameter(param).getDataType().getType();
+							if(paramType == DataType.Type.CURRENCY || paramType == DataType.Type.CURRENCY_PRECISE || paramType == DataType.Type.DECIMAL || paramType == DataType.Type.DOUBLE){
+								String clear = cellValue.replaceAll("[^0-9\\.,]", "");
+								aux.setValueUI(param, clear);
+							}
+							else {
+								aux.setValueUI(param, cellValue);
+							}
+						}
 					}
 
 					paramsXML.setValue(XML_PARAM, xml.toString());
