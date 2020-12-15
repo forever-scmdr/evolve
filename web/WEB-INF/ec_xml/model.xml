@@ -94,9 +94,9 @@
 		<child item="seo" single="true"/>
 		<child item="stores" single="true"/>
 		<child item="section" />
-		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
-		<!-- <parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" /> -->
-		<!-- <parameter name="date" type="date" caption="Дата обновления каталога" format=""/> -->
+		<parameter name="integration_pending" type="byte" caption="Идет интеграция" domain="0-1" />
+		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="date" type="date" caption="Дата обновления каталога" />
 		
 		<!-- <parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" /> -->
 		<!-- <on-update class="ecommander.fwk.CopyToUpload"/> -->
