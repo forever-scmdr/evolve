@@ -75,7 +75,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (test.getRight() != null) {
+			if (test.getRight() != null && test.getLeft() != DataType.Type.STRING) {
 				paramUnits.put(paramName, test.getRight());
 			}
 		}
