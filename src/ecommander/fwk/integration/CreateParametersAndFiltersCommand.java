@@ -78,6 +78,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (test.getRight() != null && test.getLeft() != DataType.Type.STRING) {
 				paramUnits.put(paramName, test.getRight());
 			}
+			if(test.getLeft() == DataType.Type.STRING){
+				paramUnits.remove(paramName);
+			}
 		}
 
 		protected void addNotInFilter(String name) {
@@ -237,7 +240,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String caption = params.paramCaptions.get(paramName).getLeft();
 
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramUnits.get(paramName);
+					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING? params.paramUnits.get(paramName) : null;
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
@@ -294,7 +297,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
 										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
-										if (StringUtils.isNotBlank(valuePair.getRight())) {
+										if (StringUtils.isNotBlank(valuePair.getRight()) && valuePair.getLeft() != DataType.Type.STRING) {
 											value = value.split("\\s*[^0-9\\.,]")[0];
 										}
 										params.setValueUI(name, value);
