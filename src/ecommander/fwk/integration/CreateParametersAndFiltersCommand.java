@@ -217,7 +217,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					if(StringUtils.isEmpty(caption))
 						continue;
-					String unit = params.paramUnits.get(paramName);
+					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING? params.paramUnits.get(paramName) : null;
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
