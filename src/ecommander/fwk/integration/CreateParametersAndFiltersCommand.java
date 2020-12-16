@@ -296,9 +296,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									Elements values = paramEl.getElementsByTag("value");
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
-										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
-										if (StringUtils.isNotBlank(valuePair.getRight()) && valuePair.getLeft() != DataType.Type.STRING) {
-											value = value.split("\\s*[^0-9\\.,]")[0];
+										if(paramDesc.getParameter(name).getDataType().getType() != DataType.Type.STRING) {
+											Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
+											if (StringUtils.isNotBlank(valuePair.getRight())) {
+												value = value.split("\\s*[^0-9\\.,]")[0];
+											}
 										}
 										params.setValueUI(name, value);
 									}
