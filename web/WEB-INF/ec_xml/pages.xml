@@ -1695,4 +1695,13 @@
 			<var name="source_page" value="ajax_special_order"/>
 		</link>
 	</page>
+
+	<page name="reindex" template="integration/import_from_ancient" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.ReindexCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 </site>

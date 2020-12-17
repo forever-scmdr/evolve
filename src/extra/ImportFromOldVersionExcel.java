@@ -92,7 +92,15 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
 		info.setOperation("Индексация названий товаров");
+		//Exclusive patch for Ictrade hide section "Прочее"
+		Item shitSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, "16");
+		if(shitSection != null){
+			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
+		}
 		LuceneIndexMapper.getSingleton().reindexAll();
+		if(shitSection != null){
+			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
+		}
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
 	}
