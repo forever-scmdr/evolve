@@ -95,11 +95,11 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		//Exclusive patch for Ictrade hide section "Прочее"
 		Item shitSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, "16");
 		if(shitSection != null){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
+		//	executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
 		}
 		LuceneIndexMapper.getSingleton().reindexAll();
 		if(shitSection != null){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
+		//	executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
 		}
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
