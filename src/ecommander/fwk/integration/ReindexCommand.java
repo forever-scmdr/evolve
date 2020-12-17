@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
@@ -21,11 +20,11 @@ public class ReindexCommand extends IntegrateBase implements CatalogConst{
 		info.indexsationStarted();
 		Item shitSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, "16");
 		if(shitSection != null){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
+		//	executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
 		}
 		LuceneIndexMapper.getSingleton().reindexAll();
 		if(shitSection != null){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
+		//	executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
 		}
 	}
 
