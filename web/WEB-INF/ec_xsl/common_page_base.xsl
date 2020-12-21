@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Templates for https://metabo-belarus.by/ -->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="cheaper_form.xsl"/>
@@ -864,8 +867,8 @@
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
-				<base href="{page/base}"/>
-<!--				<base href="{$main_host}"/>-->
+<!--				<base href="{page/base}"/>-->
+				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
