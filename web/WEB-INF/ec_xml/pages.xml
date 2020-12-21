@@ -1284,4 +1284,19 @@
 		</command>
 	</page>
 
+	<page name="webpay_form" template="">
+		<session>
+			<single item="user"/>
+			<single item="cart">
+				<list item="bought">
+					<list item="product" tag="product"/>
+				</list>
+			</single>
+		</session>
+		<link name="confirm_link" target="cart_action" type="itemform">
+			<var name="action" value="confirm"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
 </site>

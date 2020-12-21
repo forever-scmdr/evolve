@@ -119,4 +119,9 @@
 
     </xsl:template>
 
+    <xsl:function name="f:date_time_to_millis">
+        <xsl:param name="date" as="xs:dateTime"/>
+        <xsl:sequence select="($date - xs:dateTime('1970-01-01T00:00:00Z')) div xs:dayTimeDuration('PT0.001S')"/>
+    </xsl:function>
+
 </xsl:stylesheet>

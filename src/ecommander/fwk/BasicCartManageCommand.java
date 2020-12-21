@@ -7,6 +7,7 @@ import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
@@ -163,7 +164,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Отправка на ящик заказчика
 		try {
-			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+	//		EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -172,7 +173,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+	//		EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
@@ -238,6 +239,11 @@ public abstract class BasicCartManageCommand extends Command {
 
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
+		long seed = System.nanoTime() % System.currentTimeMillis();
+		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.outputValue("sum") + "secretKey";
+		String digestedSignature = DigestUtils.sha1Hex(signature);
+		cart.setExtra("signature", digestedSignature);
+		cart.setExtra("seed", seed);
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("confirm");
@@ -291,6 +297,7 @@ public abstract class BasicCartManageCommand extends Command {
     }
 	private void addProduct(String code, double qty, String discount) throws Exception {
 		ensureCart();
+		refreshCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 		if (boughtProduct == null) {
@@ -337,7 +344,7 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(cart);
 			}
 		}
-		refreshCart();
+		//refreshCart();
 	}
 
 	/**
@@ -362,7 +369,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
-		refreshCart();
+		//refreshCart();
 	}
 
 	/**
@@ -393,7 +400,6 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
-
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -406,7 +412,6 @@ public abstract class BasicCartManageCommand extends Command {
 			addProduct(pair[0], qty);
 		}
 		recalculateCart();
-
 		return null;
 	}
 
