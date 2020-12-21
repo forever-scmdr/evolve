@@ -481,7 +481,7 @@ public class SessionItemMapper {
 			}
 		}
 		// Загрузка айтемов из БД
-		result.addAll(ItemQuery.loadByIdsLong(itemIds));
+		result.addAll(ItemQuery.loadByIdsLong(itemIds, new Byte[] {Item.STATUS_NORMAL}));
 		return result;
 	}
 
