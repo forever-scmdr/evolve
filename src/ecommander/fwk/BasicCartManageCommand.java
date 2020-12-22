@@ -243,7 +243,7 @@ public abstract class BasicCartManageCommand extends Command {
 		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.outputValue("sum") + "secretKey";
 		String digestedSignature = DigestUtils.sha1Hex(signature);
 		cart.setExtra("signature", digestedSignature);
-		cart.setExtra("seed", seed);
+		cart.setExtra("seed", String.valueOf(seed));
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("confirm");

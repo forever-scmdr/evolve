@@ -1284,7 +1284,7 @@
 		</command>
 	</page>
 
-	<page name="webpay_form" template="">
+	<page name="webpay_form" template="webpay/form">
 		<session>
 			<single item="user"/>
 			<single item="cart">
@@ -1293,10 +1293,9 @@
 				</list>
 			</single>
 		</session>
-		<link name="confirm_link" target="cart_action" type="itemform">
-			<var name="action" value="confirm"/>
-		</link>
 		<include name="COMMON"/>
 	</page>
-
+	<page name="webpay_success"></page>
+	<page name="webpay_notify"></page>
+	<page name="webpay_cancel"></page>
 </site>

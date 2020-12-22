@@ -24,7 +24,7 @@
 			Сумма: <span><xsl:value-of select="$cart/sum"/> BYN</span>
 		</div>
 		<p><a class="script toggle" onclick="$('#order_details').toggle(); return false;">Подробности заказа</a></p>
-		<div id="order_details">
+		<div id="order_details" style="display: none;">
 			<div class="checkout-cont1">
 				<div class="info" style="padding-bottom: 20px;">
 					<xsl:if test="$is_phys">
@@ -150,23 +150,52 @@
 
 		<form action="https://securesandbox.webpay.by/" method="post">
 
-			<input type="text" name="wsb_customer_name" value="{$contacts/name}"/>
-			<input type="text" name="wsb_customer_address" value="{$contacts/address}" />
+			<div class="form-group">
+				<label>Имя плательщика</label>
+				<input class="form-control" type="text" name="wsb_customer_name" value="{$contacts/name}"/>
+			</div>
+			<div class="form-group">
+				<label>Адрес плательщика</label>
+				<input class="form-control" type="text" name="wsb_customer_address" value="{$contacts/address}"/>
+			</div>
+			<div class="form-group">
+				<label>Телефон плательщика</label>
+				<input class="form-control" type="text" name="wsb_phone" value="{$contacts/address}"/>
+			</div>
+			<div class="form-group">
+				<label>Email плательщика</label>
+				<input class="form-control" type="text" name="wsb_email" value="{$contacts/address}"/>
+			</div>
 
 			<input type="hidden" name="*scart"/>
+			<input type="hidden" name="wsb_store" value="Магазин «метабо.бел»"/>
 			<input type="hidden" name="wsb_version" value="2"/>
-			<input type="hidden" name="wsb_language_id" value="Russian"/>
+			<input type="hidden" name="wsb_language_id" value="russian"/>
 			<input type="hidden" name="wsb_storeid" value="920427307"/>
 			<input type="hidden" name="wsb_order_num" value="{concat('№', $cart/order_num)}"/>
 			<input type="hidden" name="wsb_test" value="1"/>
 			<input type="hidden" name="wsb_currency_id" value="BYN"/>
-			<input type="hidden" name="wsb_seed" value="{$cart/random}"/>
-			<input type="hidden" name="wsb_signature" value="{$cart/signature}"/>
+			<input type="hidden" name="wsb_seed" value="{$cart/item_own_extras/seed}"/>
+			<input type="hidden" name="wsb_signature" value="{$cart/item_own_extras/signature}"/>
 			<input type="hidden" name="wsb_service_date" value="Доставка до 1 января 2016 года"/>
-			<input type="hidden" name="wsb_return_url" value="http://yoursiteurl.com/success.php"/>
-			<input type="hidden" name="wsb_cancel_return_url" value="http://yoursiteurl.com/cancel.php"/>
-			<input type="hidden" name="wsb_notify_url" value="http://yoursiteurl.com/notify.php"/>
+			<input type="hidden" name="wsb_return_url" value="http://localhost:8080/webpay_success"/>
+			<input type="hidden" name="wsb_cancel_return_url" value="http://localhost:8080/webpay_cancel"/>
+			<input type="hidden" name="wsb_notify_url" value="http://localhost:8080/webpay_notify"/>
 
+			<!-- Boughts -->
+			<xsl:for-each select="$cart/bought">
+				<xsl:variable name="p" select="position()-1"/>
+				<input type="hidden" name="wsb_invoice_item_name[{$p}]" value="{product/name}"/>
+				<input type="hidden" name="wsb_invoice_item_quantity[{$p}]" value="{qty}"/>
+				<input type="hidden" name="wsb_invoice_item_price[{$p}]" value="{product/price}"/>
+			</xsl:for-each>
+			<!-- END_Boughts -->
+
+			<input type="hidden" name="wsb_shipping_name" value="Доставка: {$contacts/ship_type}"/>
+			<input type="hidden" name="wsb_shipping_price" value="0.00"/>
+
+			<input type="hidden" name="wsb_total" value="{$cart/sum}"/>
+			<input type="submit" value="Перейти к оплате через webpay"/>
 		</form>
 	</xsl:template>
 
