@@ -33,7 +33,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	private static final String CLIENT_ID = "G6rxF9SF8QcTb6j5iSlR84g1S0EiewDI";
 	private static final String CLIENT_SECRET = "XBHDce9tEZQazr0Z";
 	private static final String TOKEN_ENDPOINT = "https://api.digikey.com/v1/oauth2/token";
-	private static final String CUSTOMER_ID = "5201995";
+	private static final String CUSTOMER_ID = "5531195";
 	private static final String REDIRECT_URI = "https://alfacomponent.com/digikey_manual_authorise";
 	private static final String SEARCH_URI = "https://api.digikey.com/Search/v3/Products/Keyword";
 	private static final String DIGIKEY_BASE_URL = "https://www.digikey.com";
