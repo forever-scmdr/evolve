@@ -18,7 +18,7 @@
 			<xsl:if test="not(page/product)">
 				<tr>
 					<td colspan="10" style="text-align: center;">
-						<h2>В дополнительном катлоге ничего не найдено</h2>
+						<h2>В дополнительном каталоге ничего не найдено</h2>
 					</td>
 				</tr>
 			</xsl:if>
@@ -42,19 +42,46 @@
 				</tr>
 				<xsl:apply-templates select="page/product" />
 			</xsl:if>
+			<script>
+				$(document).ready(function(){
+					$(".magnific_popup-image")
+					.magnificPopup({
+         				type: 'image',
+         				closeOnContentClick: true,
+         				mainClass: 'mfp-img-mobile',
+         				image: {
+         					verticalFit: true
+         				}
+         			});
+				});
+			</script>
 			</tbody>
 		</table>
 	</xsl:template>
 
 	<xsl:template match="product">
-		<tr>
+		<tr class="parent">
 			<td>
-				<b><xsl:value-of select="name"/></b>
+				<xsl:if test="not(main_pic != '')">
+					<b>
+						<!-- <xsl:value-of select="name"/> -->
+						<xsl:value-of select="vendor_code"/>
+					</b>
+				</xsl:if>
+				<xsl:if test="not(main_pic = '')">
+					<b>
+						<a href="{main_pic}" class="magnific_popup-image" title="{name}">
+							<!-- <xsl:value-of select="name"/> -->
+							<xsl:value-of select="vendor_code"/>
+						</a>
+					</b>
+				</xsl:if>
 			</td>
 			<td>
-				<xsl:value-of select="description" disable-output-escaping="yes"/>
+				<xsl:value-of select="name"/>
+				<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
 				<p>
-					<span onclick="$('#params_{@id}').toggle()" style="border-bottom: 1px dashed #707070; color: #707070; cursor: pointer">Характеритсики</span>
+					<span onclick="$('#params_{@id}').toggle()" style="border-bottom: 1px dashed #707070; color: #707070; cursor: pointer">Характеристики</span>
 				</p>
 				<ul class="parameters" id="params_{@id}" style="display: none; margin-top: 8px; padding-left: 0;">
 					<xsl:for-each select="parameter[@name != 'RoHSStatus' and @name != 'LeadStatus']">
@@ -153,4 +180,5 @@
 	</xsl:function>
 
 
-</xsl:stylesheet>
+</xsl:styleshe
+		et>

@@ -86,9 +86,9 @@
 	<!--Товар из магазина yandex market-->
 	<item name="product" key="name vendor_code" caption="Продукт" extendable="false" key-unique="true" default-page="product" ag-id="6" ag-hash="-309474065">
 		<child item="seo" single="true"/>
-		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
+		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
@@ -411,6 +411,7 @@
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="search_stop_chars" type="string" caption="Символы для замены на пробел при поиске" default="-_,.(){}[]“\/&lt;&gt;|;:&amp;%$#@!"/>
 		<child item="delivery" single="true"/>
 	</item>
 

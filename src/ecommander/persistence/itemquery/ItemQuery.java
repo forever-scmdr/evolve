@@ -15,6 +15,7 @@ import ecommander.persistence.mappers.ItemMapper;
 import org.apache.commons.collections4.MultiMapUtils;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -641,16 +642,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		} else {
 			query.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
 		}
-		/*
 		// Родительский критерий (только для обычных айтемов и successor айтемов)
-		if (hasParent && (queryType != Type.PARENT_OF && queryType != Type.PREDECESSORS_OF)) {
-			BooleanQuery parentQuery = new BooleanQuery();
+		if (hasParent && !isParent) {
+			BooleanQuery.Builder parentQuery = new BooleanQuery.Builder();
 			for (Long parentId : ancestorIds) {
-				parentQuery.add(new TermQuery(new Term(DBConstants.Item.DIRECT_PARENT_ID, parentId.toString())), Occur.SHOULD);
+				parentQuery.add(new TermQuery(new Term(DBConstants.ItemTbl.I_SUPERTYPE, parentId.toString())), Occur.SHOULD);
 			}
-			query.add(parentQuery, Occur.MUST);
+			query.add(parentQuery.build(), Occur.MUST);
 		}
-		*/
 		// Добавить другие (неполнотектовые) критерии фильтра, если они есть
 		if (hasFilter()) {
 			filter.appendLuceneQuery(query, Occur.MUST);
@@ -1163,8 +1162,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				ArrayList<Pair<String, String>> queryAndHighlight = fulltext.getQueryAndHighlightedText(item.getId());
 				if (queryAndHighlight != null) {
 					for (Pair<String, String> qandh : queryAndHighlight) {
-						item.setExtra(FulltextCriteria.QUERY, qandh.getLeft());
-						item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, qandh.getRight());
+						item.setExtra(FulltextCriteria.QUERY, StringEscapeUtils.escapeXml10(qandh.getLeft()));
+						item.setExtra(FulltextCriteria.HIGHLIGHT_EXTRA_NAME, StringEscapeUtils.escapeXml10(qandh.getRight()));
 					}
 				}
 			}

@@ -1339,7 +1339,7 @@ public class Item implements ItemBasics {
 		StringBuilder sb = new StringBuilder();
 		int index = 0;
 		while (index < idStr.length()) {
-			sb.append(idStr.substring(index, Math.min(index + DIR_NAME_LENGTH, idStr.length()))).append('/');
+			sb.append(idStr, index, Math.min(index + DIR_NAME_LENGTH, idStr.length())).append('/');
 			index += DIR_NAME_LENGTH;
 		}
 		sb.setCharAt(sb.length() - 1, FINAL_DIR_CHAR);

@@ -1,19 +1,23 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.KeywordTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.document.Document;
@@ -26,6 +30,7 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.poi.util.LongField;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -99,6 +104,18 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		}
 	}
 
+	private static class LowerCaseKeywordAnalyzer extends Analyzer {
+
+		@Override
+		protected TokenStreamComponents createComponents(String fieldName) {
+			KeywordTokenizer src = new KeywordTokenizer();
+			TokenStream result = new StandardFilter(src);
+			result = new LowerCaseFilter(result);
+			return new TokenStreamComponents(src, result);
+		}
+	}
+
+
 	private static final FieldType FULLTEXT_STORE_FIELD_TYPE = new FieldType();
 	private static final FieldType POSITION_INCREMENT_FIELD_TYPE = new FieldType();
 	static {
@@ -127,6 +144,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		analyzers.put("default", new StandardAnalyzer());
 		analyzers.put("ru", new RussianAnalyzer());
 		analyzers.put("en", new EnglishAnalyzer());
+		analyzers.put("keyword", new LowerCaseKeywordAnalyzer());
 	}
 	private static Analyzer currentAnalyzer = null;
 	
@@ -204,10 +222,21 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 
 	private static Analyzer getAnalyzer() {
 		if (currentAnalyzer == null) {
-			currentAnalyzer = analyzers.get(AppContext.getCurrentLocale().getLanguage());
-			if (currentAnalyzer == null)
-				currentAnalyzer = analyzers.get("default");
+			HashSet<ParameterDescription> params = ItemTypeRegistry.getAllSpecialFulltextAnalyzerParams();
+			HashMap<String, Analyzer> paramAnalyzers = new HashMap<>();
+			for (ParameterDescription param : params) {
+				Analyzer paramAnalyzer = analyzers.get(param.getFulltextAnalyzer());
+				if (paramAnalyzer != null)
+					paramAnalyzers.put(param.getName(), paramAnalyzer);
 			}
+			Analyzer defaultAnalyzer = analyzers.get(AppContext.getCurrentLocale().getLanguage());
+			if (defaultAnalyzer == null)
+				defaultAnalyzer = analyzers.get("default");
+			if (paramAnalyzers.size() > 0)
+				currentAnalyzer = new PerFieldAnalyzerWrapper(defaultAnalyzer, paramAnalyzers);
+			else
+				currentAnalyzer = defaultAnalyzer;
+		}
 		return currentAnalyzer;
 	}
 
@@ -235,7 +264,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void insertItem(Item item) throws IOException, SAXException, TikaException {
+	private void insertItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс
 		if (!item.getItemType().isFulltextSearchable())
 			return;
@@ -248,11 +277,12 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		for (String pred : itemPreds) {
 			itemDoc.add(new StringField(I_TYPE_ID, ItemTypeRegistry.getItemTypeId(pred) + "", Store.YES));
 		}
-		//		// Заполняются все предшественники (в которые айтем вложен)
-		//		String[] containerIds = StringUtils.split(item.getPredecessorsPath(), '/');
-		//		for (String contId : containerIds) {
-		//			itemDoc.add(new StringField(DBConstants.Item.DIRECT_PARENT_ID, contId, Store.YES));
-		//		}
+		// Заполняются все предшественники (в которые айтем вложен)
+		if (ancestors != null) {
+			for (Pair<Byte, Long> ancestor : ancestors) {
+				itemDoc.add(new StringField(DBConstants.ItemTbl.I_SUPERTYPE, ancestor.getRight() + "", Store.YES));
+			}
+		}
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
 
@@ -301,8 +331,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void createParameterField(ParameterDescription param, String value, Document luceneDoc, String luceneParamName
-			, boolean needIncrement) throws IOException, SAXException, TikaException {
+	private void createParameterField(ParameterDescription param, String value, Document luceneDoc,
+	                                  String luceneParamName, boolean needIncrement) throws IOException, SAXException, TikaException {
 		if (StringUtils.isBlank(value))
 			return;
 		if (needIncrement)
@@ -327,16 +357,17 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * Обновить айтем, который уже присутствует в индеске.
 	 * Если айтема еще нет в индексе, он добавляется
 	 * @param item
+	 * @param ancestors
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public void updateItem(Item item) throws IOException, SAXException, TikaException {
+	public void updateItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws IOException, SAXException, TikaException {
 		// Ссылки не добавлять в индекс (и не дуалять соответственно)
 		if (!item.getItemType().isFulltextSearchable())
 			return;
 		writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
-		insertItem(item);
+		insertItem(item, ancestors);
 	}
 
 	/**
@@ -487,8 +518,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					try (Connection conn = MysqlConnector.getConnection()) {
 						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
 					}
+					ArrayList<Long> ids = new ArrayList<>();
 					for (Item item : items) {
-						updateItem(item);
+						ids.add(item.getId());
+					}
+					LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(ids.toArray(new Long[0]));
+					for (Item item : items) {
+						updateItem(item, ancestors.get(item.getId()));
 					}
 					if (items.size() > 0)
 						startFrom = items.get(items.size() - 1).getId() + 1;

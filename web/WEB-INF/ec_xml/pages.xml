@@ -277,11 +277,13 @@
 			<var name="cur" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
+		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
+				<predecessor ref="plain_section" sign="IN"/>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="translit"/>
@@ -337,7 +339,7 @@
 		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
@@ -423,7 +425,7 @@
 			</filter>
 		-->
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
@@ -553,7 +555,7 @@
 		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" type="(straight)(prefix)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME"><!-- (extra.ThirdQuery) -->
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
@@ -1630,6 +1632,17 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.UpdatePricesFromExcel" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="integrate_excel_auto_start" template="integrate" schedule="0 0 21 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlainCatalog" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

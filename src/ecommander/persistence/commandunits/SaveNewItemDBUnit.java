@@ -2,6 +2,7 @@ package ecommander.persistence.commandunits;
 
 import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
+import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemBasics;
@@ -16,6 +17,8 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Сохранение нового айтема в базоне
@@ -182,7 +185,8 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 		// Добавление в полнотекстовый индекс
 		if (insertIntoFulltextIndex) {
-			LuceneIndexMapper.getSingleton().updateItem(item);
+			LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(item.getId());
+			LuceneIndexMapper.getSingleton().updateItem(item, ancestors.get(item.getId()));
 		}
 	}
 
