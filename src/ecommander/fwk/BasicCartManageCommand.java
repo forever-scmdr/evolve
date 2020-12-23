@@ -41,7 +41,6 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String NUM_PARAM = "num";
 	private static final String DATE_PARAM = "date";
 	private static final String EMAIL_PARAM = "email";
-	private static final String NO_DISCOUNT_PAYMENT = "Оплата через webpay";
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -57,6 +56,8 @@ public abstract class BasicCartManageCommand extends Command {
 
 	private Item cart;
 	private Item cartContacts;
+	private Item delivery;
+	private Item payment;
 
 	/**
 	 * Добавить товар в корзину
@@ -102,6 +103,16 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		cartContacts = getItemForm().getItemSingleTransient();
+
+		delivery = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("ship_type","0")));
+		payment = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("pay_type","0")));
+
+		if(delivery != null){
+			cartContacts.setValue("ship_type", delivery.getStringValue("option"));
+		}
+		if(payment != null){
+			cartContacts.setValue("pay_type", payment.getStringValue("option"));
+		}
 		getSessionMapper().saveTemporaryItem(cartContacts);
 
 		if (!validate()) {
@@ -480,7 +491,7 @@ public abstract class BasicCartManageCommand extends Command {
 	private BigDecimal  applyDiscount(Item bought) throws Exception{
 		common = common == null? ItemQuery.loadSingleItemByName(ItemNames.COMMON) : common;
 		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-		if(cartContacts == null || !cartContacts.getStringValue("pay_type","").equalsIgnoreCase(NO_DISCOUNT_PAYMENT)){
+		if(cartContacts == null || payment.getByteValue("cancel_discount", (byte)0) == 0){
 			double dsc = 1 - common.getDoubleValue(ItemNames.common.DISCOUNT, 0);
 			String useDiscount = bought.getStringValue("discount","");
 			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
