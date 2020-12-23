@@ -16,16 +16,18 @@
 		<div class="form-group">
 			<label>Способ доставки <a href="dostavka">Подробнее об условиях доставки</a></label>
 			<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">
-				<xsl:for-each select="page/common/delivery/option">
-					<option><xsl:value-of select="."/></option>
+				<xsl:for-each select="page/common/delivery">
+					<xsl:variable name="option" select="if(f:num(price) &gt; 0) then concat(option, ' (стоимость ', f:currency_decimal(price) , 'BYN)') else option"/>
+					<option value="{@id}"><xsl:value-of select="$option"/></option>
 				</xsl:for-each>
 			</select>
 		</div>
 		<div class="form-group">
 			<label>Способ оплаты</label>
 			<select class="form-control" name="{$inp/pay_type/@input}" value="{$inp/pay_type}" error="{$inp/pay_type/@validation-error}">
-				<xsl:for-each select="page/common/payment/option">
-					<option><xsl:value-of select="."/></option>
+				<xsl:for-each select="page/common/payment">
+					<xsl:variable name="option" select="if(cancel_discount = '1') then concat(option, ' (стоимость без скидки)') else option"/>
+					<option value="{@id}"><xsl:value-of select="$option"/></option>
 				</xsl:for-each>
 			</select>
 		</div>
