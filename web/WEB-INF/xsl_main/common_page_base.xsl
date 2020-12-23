@@ -19,6 +19,7 @@
 	<xsl:variable name="currencies" select="page/catalog/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
+	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -115,20 +116,41 @@
 			<div class="container">
 				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
 				<!-- static -->
+				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
+				<xsl:variable name="has_many_cities" select="count($common/topper/block) &gt; 1"/>
 				<xsl:for-each select="$common/topper/block">
-				<div class="top-info__wrap wrap">
-					<div class="top-info__location">
-						<a href="{link}" class="link icon-link icon-link_after">
-							<span><xsl:value-of select="header"/></span>
-							<div class="icon icon_size_sm"><img src="img/icon-caret-down.svg" alt="" /></div>
-						</a>
+					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
+					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
+						<div class="top-info__location">
+							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
+								<span><xsl:value-of select="header"/></span>
+								<div class="icon icon_size_sm"><img src="img/icon-caret-down.svg" alt="" /></div>
+							</a>
+						</div>
+						<div class="top-info__content">
+							<xsl:value-of select="text" disable-output-escaping="yes"/>
+						</div>
 					</div>
-					<div class="top-info__content">
-						<xsl:value-of select="text" disable-output-escaping="yes"/>
-					</div>
-				</div>
 				</xsl:for-each>
 				<!-- static end -->
+				<ul class="location-list">
+					<xsl:for-each select="$common/topper/block">
+						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
+					</xsl:for-each>
+				</ul>
+				<script>
+					function showCityHeaderSelector() {
+						$('.location-list').show();
+						return false;
+					}
+					function showCityHeader(cityId, cityName) {
+						$('.top-info__wrap').hide();
+						$('.location-list').hide();
+						$('#' + cityId).show('fade', 200);
+						insertAjax('set_city?city=' + cityName);
+						return false;
+					}
+				</script>
 			</div>
 		</div>
 
