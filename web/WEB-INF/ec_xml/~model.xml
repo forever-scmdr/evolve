@@ -415,24 +415,27 @@
         <parameter name="google_verification" type="string" caption="google verification code"/>
         <parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<parameter name="price_valid" type="string" caption="дата окончания скидки" description="для фида"/>
-        <child item="delivery" single="true"/>
-        <child item="payment" single="true"/>
+        <child item="delivery" />
+        <child item="payment" />
         <child item="product_text"/>
     </item>
 
-    <item name="product_text" caption="Текст на странице товара" key="name" ag-id="2450" ag-hash="1014558333">
+    <item name="product_text" caption="Текст на странице товара" key="name" ag-id="2452" ag-hash="1014558333">
     	<parameter name="name" type="string" caption="Название"/>
     	<parameter name="icon" type="string" caption="Значок"/>
     	<parameter name="link" type="string" caption="Ссылка"/>
     	<parameter name="text" type="text" caption="текст"/>
     </item>
 
-	<item name="delivery" caption="Доставка" ag-id="1667" ag-hash="823466996">
-		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	<item name="delivery" caption="Доставка" key="option" ag-id="1667" ag-hash="823466996">
+		<parameter name="option" type="string" caption="Название" />
+		<parameter name="price" type="currency" caption="Цена" />
 	</item>
 
-	<item name="payment" caption="Оплата" ag-id="1668" ag-hash="-786681338">
-		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
+	<item name="payment" caption="Оплата" key="option" ag-id="1668" ag-hash="-786681338">
+		<parameter name="option" type="string" caption="Название" />
+		<parameter name="webpay" type="byte" domain="0-1" caption="Оплата через webpay"/>
+		<parameter name="cancel_discount" type="byte" domain="0-1" caption="Отменяет скидки"/>
 	</item>
 
 	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="25" ag-hash="-1950071490">
