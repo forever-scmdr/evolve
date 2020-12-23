@@ -13,6 +13,7 @@
 	<include-definition name="COMMON">
 		<request>
 			<var name="cur" value="BYN" scope="cookie"/>
+			<var name="city" scope="cookie"/>
 		</request>
 
 		<personal>
@@ -189,7 +190,11 @@
 	</page>
 
 
-
+    <page name="set_city">
+        <request>
+            <var name="city" scope="cookie"/>
+        </request>
+    </page>
 
 
 

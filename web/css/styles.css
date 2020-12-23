@@ -1998,6 +1998,27 @@ table.full-params th {
     color: gray;
     padding: 16px; }
 
+.location-list {
+  display: none;
+  position: absolute;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  top: 30px; }
+  .location-list li {
+    padding: 5px; }
+  .location-list a {
+    font-size: 14px;
+    color: #0072bc; }
+  .location-list:before {
+    content: '';
+    display: block;
+    border: 6px solid transparent;
+    border-bottom-color: #fff;
+    position: absolute;
+    top: -12px;
+    left: 10px; }
+
 body {
   color: #333; }
 
