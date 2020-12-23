@@ -104,8 +104,10 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		cartContacts = getItemForm().getItemSingleTransient();
 
-		delivery = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("ship_type","0")));
-		payment = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("pay_type","0")));
+		try {
+			delivery = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("ship_type", "0")));
+			payment = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("pay_type", "0")));
+		}catch (NumberFormatException e){}
 
 		if(delivery != null){
 			cartContacts.setValue("ship_type", delivery.getStringValue("option"));
@@ -255,13 +257,23 @@ public abstract class BasicCartManageCommand extends Command {
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
 		long seed = System.nanoTime() % System.currentTimeMillis();
-		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.outputValue("sum") + "secretKey";
+		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.getDecimalValue("sum", BigDecimal.ZERO) + "secretKey";
 		String digestedSignature = DigestUtils.sha1Hex(signature);
 		cart.setExtra("signature", digestedSignature);
 		cart.setExtra("seed", String.valueOf(seed));
+		cart.setExtra("now", String.valueOf(new Date().getTime()/1000 + 3600 * 24));
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
-		return getResult("confirm");
+
+		ResultPE res = getResult("confirm");
+		if(delivery != null){
+			res.addVariable("delivery", String.valueOf(delivery.getId()));
+		}
+		if(payment != null){
+			res.addVariable("payment", String.valueOf(payment.getId()));
+		}
+
+		return res;
 	}
 
 	private boolean discountUsed() {

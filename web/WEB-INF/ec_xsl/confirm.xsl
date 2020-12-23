@@ -9,6 +9,11 @@
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
 	<xsl:variable name="contacts" select="if (page/user_jur) then page/user_jur else page/user_phys"/>
+	<xsl:variable name="payment_var" select="page/variables/payment"/>
+	<xsl:variable name="delivery_var" select="page/variables/delivery"/>
+	<xsl:variable name="payment_item" select="//payment[@id = $payment_var]"/>
+	<xsl:variable name="delivery_item" select="//delivery[@id = $delivery_var]"/>
+
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -24,8 +29,57 @@
 		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span>
+			Сумма: <span><xsl:value-of select="f:currency_decimal(string(f:num($cart/sum) - f:num($delivery_item/price)))"/></span><br/>
+			Доставка: <span><xsl:value-of select="f:currency_decimal($delivery_item/price)"/></span><br/>
+			Итого: <span><xsl:value-of select="f:currency_decimal($cart/sum)"/></span>
 		</div>
+		<xsl:if test="f:num($payment_item/webpay) = 1">
+			<form action="https://securesandbox.webpay.by/" method="post">
+				<input type="hidden" name="wsb_customer_name" value="{$contacts/name}"/>
+				<input type="hidden" name="wsb_customer_address" value="{$contacts/address}"/>
+				<input type="hidden" name="wsb_phone" value="{$contacts/address}"/>
+				<input type="hidden" name="wsb_email" value="{$contacts/address}"/>
+				<input type="hidden" name="*scart"/>
+				<input type="hidden" name="wsb_store" value="Магазин «метабо.бел»"/>
+				<input type="hidden" name="wsb_version" value="2"/>
+				<input type="hidden" name="wsb_language_id" value="russian"/>
+				<input type="hidden" name="wsb_storeid" value="920427307"/>
+				<input type="hidden" name="wsb_order_num" value="{concat('№', $cart/order_num)}"/>
+				<input type="hidden" name="wsb_test" value="1"/>
+				<input type="hidden" name="wsb_currency_id" value="BYN"/>
+				<input type="hidden" name="wsb_seed" value="{$cart/item_own_extras/seed}"/>
+				<input type="hidden" name="wsb_signature" value="{$cart/item_own_extras/signature}"/>
+				<input type="hidden" name="wsb_service_date" value="Доставка до 1 января 2016 года"/>
+				<input type="hidden" name="wsb_return_url" value="http://localhost:8080/webpay_success"/>
+				<input type="hidden" name="wsb_cancel_return_url" value="http://localhost:8080/webpay_cancel"/>
+				<input type="hidden" name="wsb_notify_url" value="http://localhost:8080/webpay_notify"/>
+
+				<!-- Boughts -->
+				<xsl:for-each select="$cart/bought">
+					<xsl:variable name="p" select="position()-1"/>
+					<input type="hidden" name="wsb_invoice_item_name[{$p}]" value="{product/name}"/>
+					<input type="hidden" name="wsb_invoice_item_quantity[{$p}]" value="{qty}"/>
+					<xsl:if test="not($payment_item/cancel_discount = '1')">
+						<input type="hidden" name="wsb_invoice_item_price[{$p}]" value="{product/price}"/>
+					</xsl:if>
+					<xsl:if test="$payment_item/cancel_discount = '1'">
+						<xsl:variable name="price" select="if(f:num(product/price_old) &gt; f:num(product/price)) then f:num(product/price_old) else f:num(product/price)"/>
+						<input type="hidden" name="wsb_invoice_item_price[{$p}]" value="{$price}"/>
+					</xsl:if>
+				</xsl:for-each>
+				<!-- END_Boughts -->
+
+				<input type="hidden" name="wsb_shipping_name" value="Доставка: {$contacts/ship_type}"/>
+				<input type="hidden" name="wsb_shipping_price" value="{f:num($delivery_item/price)}"/>
+
+<!--			<input type="hidden" name="wsb_terminal" value="80000003"/>-->
+				<input type="hidden" name="wsb_due_date" value="{$cart/item_own_extras/now}"/>
+
+				<input type="hidden" name="wsb_total" value="{f:currency_decimal($cart/sum)}"/>
+				<p><input type="submit" value="Перейти к оплате через webpay"/></p>
+			</form>
+		</xsl:if>
+
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
 				<xsl:if test="$is_phys">
