@@ -20,8 +20,8 @@
 			</link>
 		</list>
 		<single item="common" cacheable="true">
-			<single item="delivery"/>
-			<single item="payment"/>
+			<list item="delivery"/>
+			<list item="payment"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
