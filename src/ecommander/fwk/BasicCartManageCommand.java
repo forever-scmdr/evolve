@@ -479,6 +479,11 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
+		if(delivery != null){
+			BigDecimal deliveryCost = delivery.getDecimalValue("price", BigDecimal.ZERO);
+			sum = sum.add(deliveryCost);
+			simpleSum = simpleSum.add(deliveryCost);
+		}
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(ItemNames.cart.SIMPLE_SUM, simpleSum);
 		cart.setValue(QTY_PARAM, regularQuantity);
