@@ -51,8 +51,9 @@
 						</div>
 						<xsl:if test="f:num(page/cart/simple_sum) &gt; f:num(page/cart/sum)">
 							<div class="total" style="margin-top:0;">
-								<p>Сэкономьте: <xsl:value-of select="f:currency_decimal(string(f:num(page/cart/simple_sum) - f:num(page/cart/sum)))"/> р.</p>
+								<p>Сэкономьте*: <xsl:value-of select="f:currency_decimal(string(f:num(page/cart/simple_sum) - f:num(page/cart/sum)))"/> р.</p>
 							</div>
+							<p>*При некоторых способах оплаты скидки не применяются.</p>
 						</xsl:if>
 					</form>
 				</xsl:when>
