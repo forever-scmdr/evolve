@@ -178,7 +178,11 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 							if (StringUtils.isNotBlank(subValue))
 								value = subValue;
 						}
-						xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption()).addText(value).endElement();
+						if(!paramDesc.getCaption().equals("Размер")){
+							xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption()).addText(value).endElement();
+						}else{
+							xml.startElement(PARAM_ELEMENT, NAME_ATTR, paramDesc.getCaption(), "unit","INT").addText(value).endElement();
+						}
 					}
 				}
 
