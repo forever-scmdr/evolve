@@ -73,16 +73,14 @@
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
 		<parameter name="text" caption="текст" type="text"/>
-		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="bottom_text" caption="текст снизу" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="1661" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
-
-
-
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -106,8 +104,10 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
+		<parameter name="integration_pending" type="byte" caption="Интеграция в процессе" domain="0-1"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
+		<parameter name="delete_list" type="plain-text" caption="Артикулы для удаления" description="разделитель - пробел или ,"/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -127,9 +127,6 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
-
-
-
 
 
 	<!--Товар из магазина yandex market-->
@@ -217,13 +214,9 @@
 		<child item="product_present"/>
 	</item>
 
-
-
 	<!--/////////////                            END КАТАЛОГ                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
 
 
 
@@ -237,7 +230,6 @@
 		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
 		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
 		<parameter name="email_from_password" type="string" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь"/>
-		<parameter name="encoding" type="string" caption="Кодировка" description="В большинстве случаев подходит UTF-8"/>
 	</item>
 
 
@@ -268,8 +260,6 @@
 	<!--/////////////                            END КОРЗИНА                               ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
 
 
 
@@ -391,8 +381,8 @@
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
-        <child item="seo" single="true"/>
-        <parameter name="text" type="text" caption="Текст"/>
+		<child item="seo" single="true"/>
+		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
 		<parameter name="bottom_text" type="text" caption="Как добраться"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
@@ -412,20 +402,20 @@
         <parameter name="bottom_copy" type="short-text" caption="Копирайт внизу"/>
         <parameter name="bottom_cards" type="short-text" caption="Оплата карточками внизу"/>
         <parameter name="bottom_social" type="short-text" caption="Социальные сети внизу"/>
-        <parameter name="google_verification" type="string" caption="google verification code"/>
-        <parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<parameter name="google_verification" type="string" caption="google verification code"/>
+		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<parameter name="price_valid" type="string" caption="дата окончания скидки" description="для фида"/>
-        <child item="delivery" />
-        <child item="payment" />
-        <child item="product_text"/>
-    </item>
+		<child item="delivery" />
+		<child item="payment" />
+		<child item="product_text"/>
+	</item>
 
-    <item name="product_text" caption="Текст на странице товара" key="name" ag-id="2452" ag-hash="1014558333">
-    	<parameter name="name" type="string" caption="Название"/>
-    	<parameter name="icon" type="string" caption="Значок"/>
-    	<parameter name="link" type="string" caption="Ссылка"/>
-    	<parameter name="text" type="text" caption="текст"/>
-    </item>
+	<item name="product_text" caption="Текст на странице товара" key="name" ag-id="2450" ag-hash="1014558333">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="icon" type="string" caption="Значок"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="text" type="text" caption="текст"/>
+	</item>
 
 	<item name="delivery" caption="Доставка" key="option" ag-id="1667" ag-hash="823466996">
 		<parameter name="option" type="string" caption="Название" />
@@ -516,5 +506,5 @@
 	</root>
 
 
-<!--EXP-->
+	<!--EXP-->
 </model>
