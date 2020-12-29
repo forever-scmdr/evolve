@@ -7,7 +7,6 @@ import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.Multipart;
@@ -55,9 +54,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private Item cart;
-	private Item cartContacts;
-	private Item delivery;
-	private Item payment;
 
 	/**
 	 * Добавить товар в корзину
@@ -102,20 +98,8 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
-		cartContacts = getItemForm().getItemSingleTransient();
-
-		try {
-			delivery = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("ship_type", "0")));
-			payment = ItemQuery.loadById(Long.parseLong(cartContacts.getStringValue("pay_type", "0")));
-		}catch (NumberFormatException e){}
-
-		if(delivery != null){
-			cartContacts.setValue("ship_type", delivery.getStringValue("option"));
-		}
-		if(payment != null){
-			cartContacts.setValue("pay_type", payment.getStringValue("option"));
-		}
-		getSessionMapper().saveTemporaryItem(cartContacts);
+		Item form = getItemForm().getItemSingleTransient();
+		getSessionMapper().saveTemporaryItem(form);
 
 		if (!validate()) {
 			return getResult("validation_failed");
@@ -126,15 +110,13 @@ public abstract class BasicCartManageCommand extends Command {
 		final String FALSE = "false";
 		loadCart();
 		// Была ли использована скидка
-		//if(discountUsed()){
+		if(discountUsed()){
 			BigDecimal simpleSum = cart.getDecimalValue("simple_sum");
 			if(simpleSum != null || simpleSum.compareTo(BigDecimal.ZERO) != 0){
 				recalculateCart();
-				if(discountUsed()) {
-					return getResult("discount_used");
-				}
+				return getResult("discount_used");
 			}
-		//}
+		}
 
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
 			return getResult("confirm");
@@ -214,7 +196,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// 2. Потом надо попробовать загружить пользователя по введенному email
 		if (userItem == null) {
-			String email = cartContacts.getStringValue(EMAIL_PARAM);
+			String email = form.getStringValue(EMAIL_PARAM);
 			if (StringUtils.isNotBlank(email))
 				userItem = new ItemQuery(USER_ITEM).addParameterCriteria(EMAIL_PARAM, email, "=", null, Compare.SOME).loadFirstItem();
 		}
@@ -222,13 +204,13 @@ public abstract class BasicCartManageCommand extends Command {
 		// 3. Если пользователь не нашелся по email, надо создать нового пользователя
 		//    сам пользователь не создается (логин-пароль), только айтем пользователя
 		if (userItem == null) {
-			if (StringUtils.isNotBlank(cartContacts.getStringValue(EMAIL_PARAM))) {
+			if (StringUtils.isNotBlank(form.getStringValue(EMAIL_PARAM))) {
 				Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
 						UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-				cartContacts.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
-				cartContacts.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
-				executeCommandUnit(SaveItemDBUnit.get(cartContacts).ignoreUser());
-				userItem = cartContacts;
+				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
+				form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
+				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser());
+				userItem = form;
 			}
 		}
 
@@ -256,30 +238,16 @@ public abstract class BasicCartManageCommand extends Command {
 
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
-		long seed = System.nanoTime() % System.currentTimeMillis();
-		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.getDecimalValue("sum", BigDecimal.ZERO) + "secretKey";
-		String digestedSignature = DigestUtils.sha1Hex(signature);
-		cart.setExtra("signature", digestedSignature);
-		cart.setExtra("seed", String.valueOf(seed));
-		cart.setExtra("now", String.valueOf(new Date().getTime()/1000 + 3600 * 24));
 		setCookieVariable(CART_COOKIE, null);
 		getSessionMapper().saveTemporaryItem(cart);
-
-		ResultPE res = getResult("confirm");
-		if(delivery != null){
-			res.addVariable("delivery", String.valueOf(delivery.getId()));
-		}
-		if(payment != null){
-			res.addVariable("payment", String.valueOf(payment.getId()));
-		}
-
-		return res;
+		return getResult("confirm");
 	}
 
 	private boolean discountUsed() {
 		String discountUsedCookie = getVarSingleValue("discount_used");
 		if(StringUtils.isBlank(discountUsedCookie)){}
 		else {
+			long then = new Date(Long.parseLong(discountUsedCookie)).getTime();
 			return DATE_FORMAT.format(new Date()).equals(DATE_FORMAT);
 		}
 		return false;
@@ -318,12 +286,11 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 
-    private void addProduct(String code, double qty) throws Exception {
-	    addProduct(code,qty,"");
-    }
+	private void addProduct(String code, double qty) throws Exception {
+		addProduct(code,qty,"");
+	}
 	private void addProduct(String code, double qty, String discount) throws Exception {
 		ensureCart();
-		refreshCart();
 		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
 		Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 		if (boughtProduct == null) {
@@ -370,7 +337,7 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(cart);
 			}
 		}
-		//refreshCart();
+		refreshCart();
 	}
 
 	/**
@@ -395,7 +362,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		}
-		//refreshCart();
+		refreshCart();
 	}
 
 	/**
@@ -426,6 +393,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		loadCart();
+
 		if (cart != null)
 			return null;
 		String cookie = getVarSingleValue(CART_COOKIE);
@@ -438,6 +406,7 @@ public abstract class BasicCartManageCommand extends Command {
 			addProduct(pair[0], qty);
 		}
 		recalculateCart();
+
 		return null;
 	}
 
@@ -450,8 +419,8 @@ public abstract class BasicCartManageCommand extends Command {
 	private boolean recalculateCart() throws Exception {
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
-		BigDecimal sum = BigDecimal.ZERO; // полная сумма
-		BigDecimal simpleSum = BigDecimal.ZERO;
+		BigDecimal sum = new BigDecimal(0); // полная сумма
+		BigDecimal simpleSum = new BigDecimal(0);
 		double zeroQuantity = 0;
 		double regularQuantity = 0;
 		boolean result = true;
@@ -467,13 +436,13 @@ public abstract class BasicCartManageCommand extends Command {
 			} else {
 				// Первоначальная сумма
 				//BigDecimal price = applyDiscount(bought);
-				//product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
+				//product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
 				BigDecimal q = new BigDecimal(quantity);
 				BigDecimal price = applyDiscount(bought);
 				BigDecimal productSum = price.multiply(q);
 
 				if (maxQuantity <= 0) {
-					productSum = BigDecimal.ZERO;
+					productSum = new BigDecimal(0);
 					zeroQuantity += quantity;
 				} else {
 					regularQuantity += quantity;
@@ -481,20 +450,13 @@ public abstract class BasicCartManageCommand extends Command {
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
 				sum = sum.add(productSum);
-				if(productSum.compareTo(BigDecimal.ZERO) == 1){
-					BigDecimal p = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-					BigDecimal oldPrice = product.getDecimalValue("price_old", BigDecimal.ZERO);
-					oldPrice = oldPrice.compareTo(p) > 0? oldPrice : p;
+				if(productSum.compareTo(new BigDecimal(0)) == 1){
+					BigDecimal oldPrice = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
 					simpleSum = simpleSum.add(oldPrice.multiply(q));
 				}
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
 			}
-		}
-		if(delivery != null){
-			BigDecimal deliveryCost = delivery.getDecimalValue("price", BigDecimal.ZERO);
-			sum = sum.add(deliveryCost);
-			simpleSum = simpleSum.add(deliveryCost);
 		}
 		cart.setValue(SUM_PARAM, sum);
 		cart.setValue(ItemNames.cart.SIMPLE_SUM, simpleSum);
@@ -507,21 +469,15 @@ public abstract class BasicCartManageCommand extends Command {
 
 	private BigDecimal  applyDiscount(Item bought) throws Exception{
 		common = common == null? ItemQuery.loadSingleItemByName(ItemNames.COMMON) : common;
+		double dsc = 1 - common.getDoubleValue(ItemNames.common.DISCOUNT, 0);
+		String useDiscount = bought.getStringValue("discount","");
 		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-		if(cartContacts == null || payment.getByteValue("cancel_discount", (byte)0) == 0){
-			double dsc = 1 - common.getDoubleValue(ItemNames.common.DISCOUNT, 0);
-			String useDiscount = bought.getStringValue("discount","");
-			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-			if(StringUtils.isBlank(useDiscount) || discountUsed()) return price;
-			if(product.getStringValue(CODE_PARAM,"").equals(useDiscount)){
-				dsc = 1 - product.getDoubleValue("discount",0);
-			}
-			return price.multiply(new BigDecimal(dsc));
-		}else{
-			BigDecimal oldPrice = product.getDecimalValue("price_old", BigDecimal.ZERO);
-			BigDecimal price = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
-			return oldPrice.compareTo(price) > 0? oldPrice : price;
+		BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+		if(StringUtils.isBlank(useDiscount)) return price;
+		if(product.getStringValue(CODE_PARAM,"").equals(useDiscount)){
+			dsc = 1 - product.getDoubleValue("discount",0);
 		}
+		return price.multiply(new BigDecimal(dsc));
 	}
 
 	@Override
