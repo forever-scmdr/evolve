@@ -58,7 +58,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 		protected Params(String caption, String className) {
 			this.classCaption = caption;
-			this.className = Strings.createXmlElementName(className.toLowerCase());
+			this.className = Strings.createXmlElementName(StringUtils.lowerCase(className));
 		}
 
 		protected void addParameter(String name, String value, boolean isMultiple) {
@@ -204,7 +204,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				// Создание фильтра
 				String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
 				String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
-				className = className.toLowerCase();
+				className = StringUtils.lowerCase(className);
 				String classCaption = section.getStringValue(NAME_PARAM);
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
@@ -262,7 +262,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		for (Item section : sections) {
 			String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
 			String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
-			ItemType paramDesc = ItemTypeRegistry.getItemType(className.toLowerCase());
+			ItemType paramDesc = ItemTypeRegistry.getItemType(StringUtils.lowerCase(className));
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
 
