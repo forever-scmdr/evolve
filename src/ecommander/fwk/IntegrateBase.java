@@ -373,6 +373,7 @@ public abstract class IntegrateBase extends Command {
 					integrate();
 					setOperation("Интеграция завершена успешно");
 				} catch (Exception se) {
+					se.printStackTrace();
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
 					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);

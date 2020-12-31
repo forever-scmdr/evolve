@@ -51,7 +51,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	//default page var values
 	private enum varValues {
 		UPDATE, COPY, CREATE, COPY_IF_PARENT_DIFFERS, MOVE_IF_PARENT_DIFFERS, DELETE, IGNORE, CLEAR, SEARCH_BY_CODE,
-		UPDATE_IF_DIFFER, SEARCH_BY_CELL_VALUE, DOWNLOAD
+		UPDATE_IF_DIFFER, SEARCH_BY_CELL_VALUE, DOWNLOAD, SEARCH_BY_MAIN_PIC;
 	}
 
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
@@ -215,7 +215,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
-					Path picsFolder = contextPath.resolve("product_pics");
+					Path picsFolder = Paths.get(AppContext.getContextPath()).resolve("product_pics");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
 					if (product == null) {
@@ -277,7 +277,33 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 											}
 
 										}
-									}
+									}break;
+									case SEARCH_BY_MAIN_PIC:
+										if (StringUtils.isBlank(cellValue)) break;
+										cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
+										File mainPicFile = picsFolder.resolve(cellValue).toFile();
+										if (mainPicFile.isFile()) {
+											product.setValue(MAIN_PIC_PARAM, mainPicFile);
+											product.clearValue("small_pic");
+
+											File parentFolder = mainPicFile.getParentFile();
+											String fileName = mainPicFile.getName();
+											String regEx = StringUtils.substringBeforeLast(fileName,".") + "_\\d+." + StringUtils.substringAfterLast(fileName,".");
+											File[] fileList = parentFolder.listFiles((file, s) -> s.matches(regEx));
+											TreeMap<Integer, File> sorted = new TreeMap<>();
+											for(File f : fileList){
+												String n = StringUtils.substringBeforeLast(f.getName(),".");
+												n = StringUtils.substringAfterLast(n, "_");
+												sorted.put(Integer.parseInt(n), f);
+											}
+											product.clearValue(GALLERY_PARAM);
+											for(Map.Entry<Integer, File> f : sorted.entrySet()){
+												product.setValue(GALLERY_PARAM, f.getValue());
+											}
+										} else {
+											pushLog("No file: " + mainPicFile.getAbsolutePath());
+										}
+										break;
 									default:
 										break;
 								}
@@ -389,9 +415,10 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								File mainPicFile = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 								if (!mainPicFile.isFile()) product.clearValue(MAIN_PIC_PARAM);
 
-								if (mainPicFile.isFile() && mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
-									continue;
-
+								if(varValues.SEARCH_BY_MAIN_PIC != withPictures) {
+									if (mainPicFile.isFile() && mainPic.toString().equals(cellValue) && StringUtils.isNotBlank(mainPic.toString()))
+										continue;
+								}
 								if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR && withPictures == varValues.SEARCH_BY_CODE) {
 									mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
 									if (mainPicFile.isFile()) {
@@ -399,7 +426,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 //										product.clearValue("medium_pic");
 										product.clearValue("small_pic");
 									}
-								} else if (StringUtils.isBlank(mainPic.toString())) {
+								} else if (StringUtils.isBlank(mainPic.toString()) || withPictures == varValues.SEARCH_BY_MAIN_PIC) {
 									switch (withPictures) {
 										case SEARCH_BY_CODE:
 											mainPicFile = picsFolder.resolve(code + ".jpg").toFile();
@@ -421,7 +448,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												mainPicFile = picsFolder.resolve(cellValue).toFile();
 												if (mainPicFile.isFile()) {
 													product.setValue(MAIN_PIC_PARAM, mainPicFile);
-													//product.clearValue("medium_pic");
 													product.clearValue("small_pic");
 												} else {
 													pushLog("No file: " + mainPicFile.getAbsolutePath());
@@ -438,11 +464,39 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 											}
 											break;
+										case SEARCH_BY_MAIN_PIC:
+											if (StringUtils.isBlank(cellValue)) break;
+											cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
+											mainPicFile = picsFolder.resolve(cellValue).toFile();
+											if (mainPicFile.isFile()) {
+												product.setValue(MAIN_PIC_PARAM, mainPicFile);
+												product.clearValue("small_pic");
+
+												File parentFolder = mainPicFile.getParentFile();
+												String fileName = mainPicFile.getName();
+												String regEx = StringUtils.substringBeforeLast(fileName,".") + "_\\d+." + StringUtils.substringAfterLast(fileName,".");
+												File[] fileList = parentFolder.listFiles((file, s) -> s.matches(regEx));
+												TreeMap<Integer, File> sorted = new TreeMap<>();
+												for(File f : fileList){
+													String n = StringUtils.substringBeforeLast(f.getName(),".");
+													n = StringUtils.substringAfterLast(n, "_");
+													sorted.put(Integer.parseInt(n), f);
+												}
+												product.clearValue(GALLERY_PARAM);
+												for(Map.Entry<Integer, File> f : sorted.entrySet()){
+													File file = f.getValue();
+													product.setValue(GALLERY_PARAM, file);
+												}
+											} else {
+												pushLog("No file: " + mainPicFile.getAbsolutePath());
+											}
+											break;
 										default:
 											break;
 									}
 								}
 							} else if (GALLERY_PARAM.equals(paramName)) {
+								if(withPictures == varValues.SEARCH_BY_MAIN_PIC) continue;
 								String currVa = getStr(product, paramName);
 								if (currVa.equals(cellValue) && StringUtils.isNotBlank(currVa)) continue;
 								else if ((StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) || StringUtils.isBlank(currVa)) {
@@ -637,8 +691,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			private void findAuxType(){
 				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
 				if(StringUtils.isNotBlank(auxTypeString)){
-					auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-				}else {
+					try {
+						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
+					}catch (NumberFormatException e){}
+				}
+				if (auxType == null){
 					String  n1 = "p" + currentSection.getStringValue(CATEGORY_ID_PARAM,"");
 					String n2 =  "p" + currentSection.getId();
 					auxType = ItemTypeRegistry.getItemType(n1);

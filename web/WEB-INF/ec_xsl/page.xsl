@@ -41,6 +41,7 @@
 			</div>
 			<xsl:apply-templates select="$p" mode="content"/>
 		</div>
+		
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="utils/utils.xsl"/>
+	<xsl:import href="snippets/constants.xsl"/>
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="params" select="$p/params"/>
@@ -156,10 +157,10 @@
 			<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_a_{$p/@id}" style="display: inline;">
 				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty" value="1" min="0" />
 				<xsl:if test="$has_price">
-					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then 'Купить' else 'Заказать'}"/>
+					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then $to_cart_available_label else $to_cart_na_label}"/>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<input type="submit" class="button button_primary" style="background-color: #707070; border-color: #707070;" value="Запросить цену3"/>
+					<input type="submit" class="button button_primary" style="background-color: #707070; border-color: #707070;" value="{$to_cart_na_label}"/>
 				</xsl:if>
 			</form>
 		</span>

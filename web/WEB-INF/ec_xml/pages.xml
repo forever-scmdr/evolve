@@ -13,6 +13,7 @@
 	<include-definition name="COMMON">
 		<request>
 			<var name="cur" value="BYN" scope="cookie"/>
+			<var name="city" scope="cookie"/>
 		</request>
 
 		<personal>
@@ -189,7 +190,11 @@
 	</page>
 
 
-
+    <page name="set_city">
+        <request>
+            <var name="city" scope="cookie"/>
+        </request>
+    </page>
 
 
 
@@ -346,12 +351,14 @@
 	</page>
 
 
+
 	<page name="sub" template="sub" cacheable="false">
 		<request>
 			<var name="sec" style="key"/>
 		</request>
 		<include name="COMMON"/>
 	</page>
+
 
 
 	<page name="tag_section" template="tag_section">
@@ -918,7 +925,7 @@
 
 	<page name="cart_action">
 		<request>
-			<var name="strategy" value="extra_line_overbuy"/>
+			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
@@ -1723,6 +1730,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+			<var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">

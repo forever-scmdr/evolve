@@ -8,6 +8,7 @@
 	</xsl:template>
 
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
+	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
@@ -20,7 +21,7 @@
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 			</div>
-			<xsl:call-template name="PRINT"/>
+			<!-- <xsl:call-template name="PRINT"/> -->
 		</div>
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
@@ -55,7 +56,7 @@
 
 		</div>
 
-		<xsl:call-template name="ACTIONS_MOBILE"/>
+		<!-- <xsl:call-template name="ACTIONS_MOBILE"/> -->
 	</xsl:template>
 
 
