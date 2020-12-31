@@ -1,5 +1,6 @@
 package ecommander.fwk.integration;
 
+import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
@@ -16,12 +17,15 @@ import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
@@ -70,8 +74,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (test.getRight() != null) {
+			if (test.getRight() != null && test.getLeft() != DataType.Type.STRING) {
 				paramUnits.put(paramName, test.getRight());
+			}
+			if(test.getLeft() == DataType.Type.STRING){
+				paramUnits.remove(paramName);
 			}
 		}
 
@@ -217,10 +224,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
 						PARAMS_ITEM, null, false, true, false, false);
 				for (String paramName : params.paramTypes.keySet()) {
+					if(StringUtils.isBlank(paramName))
+						continue;
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramUnits.get(paramName);
+					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING? params.paramUnits.get(paramName) : null;
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
@@ -235,6 +244,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 		try {
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+			if(SystemUtils.IS_OS_LINUX){
+				Path ecXml = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml");
+				Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", ecXml.toAbsolutePath().toString()});
+			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);
 			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
@@ -272,9 +285,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									Elements values = paramEl.getElementsByTag("value");
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
+										if(paramDesc.getParameter(name).getDataType().getType() != DataType.Type.STRING) {
 										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
 										if (StringUtils.isNotBlank(valuePair.getRight())) {
 											value = value.split("\\s*[^0-9\\.,]")[0];
+										}
 										}
 										params.setValueUI(name, value);
 									}
