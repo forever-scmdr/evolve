@@ -31,19 +31,19 @@ public class ExcelTableData implements TableDataSource {
 	private String fileName;
 	private ArrayList<String> missingColumns = null;
 
-	public ExcelTableData(String fileName, String... mandatoryCols) {
+	public ExcelTableData(String fileName, String... mandatoryCols) throws Exception {
 		this.fileName = Strings.getFileName(fileName);
 		this.doc = POIUtils.openExcel(fileName);
 		init(mandatoryCols);
 	}
 
-	public ExcelTableData(File file, String... mandatoryCols) {
+	public ExcelTableData(File file, String... mandatoryCols) throws Exception {
 		this.fileName = file.getName();
 		this.doc = POIUtils.openExcel(file);
 		init(mandatoryCols);
 	}
 
-	public ExcelTableData(Path path, String... mandatoryCols) {
+	public ExcelTableData(Path path, String... mandatoryCols) throws Exception {
 		this.fileName = path.getFileName().toString();
 		this.doc = POIUtils.openExcel(path);
 		init(mandatoryCols);
@@ -90,7 +90,7 @@ public class ExcelTableData implements TableDataSource {
 		}
 	}
 
-	private void init(String... mandatoryCols) {
+	private void init(String... mandatoryCols) throws Exception {
 		if (doc == null)
 			return;
 		Workbook wb = doc.getWorkbook();
@@ -145,11 +145,14 @@ public class ExcelTableData implements TableDataSource {
 			}
 		}
 
-
 		if (validSheets.size() > 0){
 			currentSheet = validSheets.get(0).sheet;
 			headerCell = validSheets.get(0).headerCell;
 			currentHeader = validSheets.get(0).header;
+		}
+		//Wrong document with no valid sheets
+		else{
+			throw new Exception("В файле отсутствуют обязательные колонки: " + missingColumns.toString());
 		}
 	}
 

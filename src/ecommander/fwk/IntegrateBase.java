@@ -360,7 +360,16 @@ public abstract class IntegrateBase extends Command {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-			if (!makePreparations()) {
+
+			boolean readyToStart = false;
+			try {
+				readyToStart = makePreparations();
+			}catch (Exception e){
+				ServerLogger.error(e);
+				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+			}
+
+			if (!readyToStart) {
 				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
 				runningTask.isFinished = true;
 				//runningTasks.remove(CLASS_NAME);
