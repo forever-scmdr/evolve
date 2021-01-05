@@ -270,6 +270,7 @@
 
 
 
+
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -280,7 +281,7 @@
 		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="parsed" compare="SOME"><!-- name name_extra (parsed extra.FirstQuery)(extra.SecondQuery) -->
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
