@@ -70,6 +70,10 @@
 	</xsl:template>
 
 	<xsl:template match="products" mode="lines">
+		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
+		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
+		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
+
 		<div class="device device_row">
 			<a class="device__image device_row__image"
 			   style="background-image: url({concat($apos,'https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName) , $apos)});"> </a>
@@ -92,9 +96,8 @@
 								</xsl:for-each>
 							</span>
 						</xsl:if>
-						<xsl:if test="f:num(orderMultiples) &gt; 1">
-							<xsl:variable name="price_pack" select="f:num(orderMultiples) * f:num(prices[1]/cost)"/>
-							<br/><span><b>Минимальный заказ:</b>&#160;<xsl:value-of select="normalize-space(orderMultiples)"/></span>
+						<xsl:if test="$min &gt; 1">
+							<br/><span><b>Минимальный заказ:</b>&#160;<xsl:value-of select="$min"/></span>
 							<br/><span><b>Цена за мин. заказ:</b>&#160;<xsl:value-of select="f:price_farnell(string($price_pack))"/></span>
 						</xsl:if>
 					</p>
@@ -116,7 +119,12 @@
 			<div class="device__price device_row__price">
 				<xsl:if test="prices[f:num(from) = 1]">
 					<div class="price_normal">
-						<xsl:value-of select="concat(prices[f:num(from) = 1]/f:price_farnell(cost), '/', 'шт')"/>
+						<xsl:if test="$min &gt; 1">
+							<xsl:value-of select="concat(f:price_farnell(string($price_pack)), ' за ', $min, 'шт')"/>
+						</xsl:if>
+						<xsl:if test="$min &lt; 2">
+							<xsl:value-of select="concat(f:price_farnell(string($price_pack)), '/шт')"/>
+						</xsl:if>
 					</div>
 				</xsl:if>
 				<div class="manyPrice">
@@ -130,7 +138,7 @@
 			</div>
 			<div class="device__order device_row__order">
 				<div id="cart_list_{normalize-space(sku)}">
-					<form action="cart_action/?action=addFarToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
 
 						<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 
@@ -139,7 +147,7 @@
 						<input type="hidden" value="{displayName}" name="name"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
-						<input type="number" class="text-input" name="qty" value="{f:num(orderMultiples)}" min="{f:num(orderMultiples)}"/>
+						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>
@@ -151,7 +159,8 @@
 	</xsl:template>
 	<xsl:template match="products">
 		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
-		<xsl:variable name="price_pack" select="f:num(orderMultiples) * f:num(prices[1]/cost)"/>
+		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
+		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
 
 		<div class="device items-catalog__device">
 			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{displayName}" rel="nofollow">
@@ -172,10 +181,10 @@
 			</div>
 			<div class="device__price" style="display:block;">
 				<div class="price_normal">
-					<xsl:if test="f:num(orderMultiples) &gt; 1">
-						<xsl:value-of select="concat(f:price_farnell(string($price_pack)), ' за ', f:num(orderMultiples), 'шт')"/>
+					<xsl:if test="$min &gt; 1">
+						<xsl:value-of select="concat(f:price_farnell(string($price_pack)), ' за ', $min, 'шт')"/>
 					</xsl:if>
-					<xsl:if test="f:num(orderMultiples) &lt; 2">
+					<xsl:if test="$min &lt; 2">
 						<xsl:value-of select="concat(f:price_farnell(string($price_pack)), '/шт')"/>
 					</xsl:if>
 				</div>
@@ -199,7 +208,7 @@
 						<input type="hidden" value="{displayName}" name="name"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
-						<input type="number" class="text-input" name="qty" value="{f:num(orderMultiples)}" min="{f:num(orderMultiples)}"/>
+						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>

@@ -47,7 +47,7 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 	private static final String SIGNATURE_VAR = "userInfo.signature";
 	private static final String TIMESTAMP_VAR = "userInfo.timestamp";
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm:ss.SSS");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
 	private Document doc;
 	private Element variables;
