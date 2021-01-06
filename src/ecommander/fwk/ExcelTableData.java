@@ -21,7 +21,7 @@ public class ExcelTableData implements TableDataSource {
 	private boolean isValid = false;
 	private Sheet currentSheet;
 	private HashMap<String, Integer> currentHeader = new HashMap<>();
-	private TreeMap<Integer, String> originalHeader = new TreeMap<>();
+	private TreeMap<String, String> originalHeader = new TreeMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
@@ -83,15 +83,15 @@ public class ExcelTableData implements TableDataSource {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
 					headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
-					originalHeader.put(cell.getColumnIndex(), colHeader);
+					originalHeader.put(StringUtils.lowerCase(colHeader), colHeader);
 				}
 			}
 			currentHeader = headers;
 		}
 	}
 
-	public String getOriginalHeader(int index){
-		return originalHeader.get(index);
+	public String getOriginalHeader(String key){
+		return originalHeader.get(key);
 	}
 
 	private void init(String... mandatoryCols) throws Exception {
@@ -136,7 +136,7 @@ public class ExcelTableData implements TableDataSource {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
 							headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
-							originalHeader.put(cell.getColumnIndex(), colHeader);
+							originalHeader.put(StringUtils.lowerCase(colHeader), colHeader);
 						}
 					}
 					SheetHeader sh = new SheetHeader(sheet, headers, headerCell);

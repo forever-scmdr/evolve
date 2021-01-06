@@ -205,6 +205,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 						paramsXml = paramsXml == null ? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
 						paramsXml.setValue(XML_PARAM, createEtalonXmlFromMap());
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser(true));
+						if (currentSubsection == null) currentSubsection = currentSection;
 						findAuxType();
 					}
 				} else {
@@ -690,19 +691,19 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private void findAuxType() {
-				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
-				if (StringUtils.isNotBlank(auxTypeString)) {
-					try {
-						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-					} catch (NumberFormatException e) {
-					}
-				}
-				if (auxType == null) {
-					String n1 = "p" + currentSection.getStringValue(CATEGORY_ID_PARAM, "");
-					String n2 = "p" + currentSection.getId();
-					auxType = ItemTypeRegistry.getItemType(n1);
+//				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
+//				if (StringUtils.isNotBlank(auxTypeString)) {
+//					try {
+//						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
+//					} catch (NumberFormatException e) {
+//					}
+//				}
+//				if (auxType == null) {
+					String n1 = "p" + currentSubsection.getStringValue(CATEGORY_ID_PARAM, "");
+					String n2 = "p" + currentSubsection.getId();
+					auxType = ItemTypeRegistry.getItemType(n1.toLowerCase());
 					if (auxType == null) auxType = ItemTypeRegistry.getItemType(n2);
-				}
+//				}
 			}
 
 			private boolean hasNewParams() {
@@ -733,9 +734,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				TreeSet<String> headers = getHeaders();
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
+
 					if (productItemType.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header))
 						continue;
-					Matcher m = PARAM_WITH_GROUP.matcher(header);
+					String originalHeader = getOriginalHeader(header);
+					Matcher m = PARAM_WITH_GROUP.matcher(originalHeader);
 					boolean hasGroup = m.matches();
 					String group = hasGroup ? m.group("group").trim() : "";
 					boolean needAdd = map.get(group) == null;
