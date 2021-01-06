@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Прайс-лист
@@ -24,6 +21,7 @@ public class ExcelTableData implements TableDataSource {
 	private boolean isValid = false;
 	private Sheet currentSheet;
 	private HashMap<String, Integer> currentHeader = new HashMap<>();
+	private TreeMap<Integer, String> originalHeader = new TreeMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
@@ -80,14 +78,20 @@ public class ExcelTableData implements TableDataSource {
 		}
 		if (rowChecked) {
 			HashMap<String, Integer> headers = new HashMap<>();
+			originalHeader = new TreeMap<>();
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
 					headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+					originalHeader.put(cell.getColumnIndex(), colHeader);
 				}
 			}
 			currentHeader = headers;
 		}
+	}
+
+	public String getOriginalHeader(int index){
+		return originalHeader.get(index);
 	}
 
 	private void init(String... mandatoryCols) throws Exception {
@@ -132,6 +136,7 @@ public class ExcelTableData implements TableDataSource {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
 							headers.put(StringUtils.lowerCase(colHeader), cell.getColumnIndex());
+							originalHeader.put(cell.getColumnIndex(), colHeader);
 						}
 					}
 					SheetHeader sh = new SheetHeader(sheet, headers, headerCell);
