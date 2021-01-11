@@ -82,7 +82,8 @@ public class EmailUtils {
 		String emailFrom = (String) feedbackParams.getValue("email_from");
 		String serverFrom = (String) feedbackParams.getValue("server_from");
 		String emailFromPassword = (String) feedbackParams.getValue("email_from_password");
-		String encoding = (String) feedbackParams.getValue("encoding");
+		//String encoding = (String) feedbackParams.getValue("encoding");
+		String encoding = "UTF-8";
 		if (StringUtils.isBlank(to) || StringUtils.isBlank(serverFrom) || StringUtils.isBlank(emailFrom)
 				|| StringUtils.isBlank(emailFromPassword) || StringUtils.isBlank(encoding))
 			throw new EcommanderException(ErrorCodes.EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
