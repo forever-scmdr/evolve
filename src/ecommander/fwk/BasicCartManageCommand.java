@@ -41,6 +41,7 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String NUM_PARAM = "num";
 	private static final String DATE_PARAM = "date";
 	private static final String EMAIL_PARAM = "email";
+	private static final String STORE_ID = "674065730";
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -257,7 +258,7 @@ public abstract class BasicCartManageCommand extends Command {
 		cart.setValue(PROCESSED_PARAM, (byte)1);
 		cart.setExtra(IN_PROGRESS, null);
 		long seed = System.nanoTime() % System.currentTimeMillis();
-		String signature = seed + "920427307№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.getDecimalValue("sum", BigDecimal.ZERO) + "secretKey";
+		String signature = seed + STORE_ID +"№" + cart.getStringValue("order_num") + 1 + "BYN" + cart.getDecimalValue("sum", BigDecimal.ZERO) + "secretKey";
 		String digestedSignature = DigestUtils.sha1Hex(signature);
 		cart.setExtra("signature", digestedSignature);
 		cart.setExtra("seed", String.valueOf(seed));
