@@ -200,16 +200,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE);
 					hasAuxParams = hasAuxParams(getHeaders());
 					if (hasAuxParams) {
+						if (currentSubsection == null) currentSubsection = currentSection;
 						paramGroups = buildGroupMap();
-						Item paramsXml = new ItemQuery(paramsXMLItemType).setParentId(currentSection.getId(), false).loadFirstItem();
-						paramsXml = paramsXml == null ? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
+						Item paramsXml = new ItemQuery(paramsXMLItemType).setParentId(currentSubsection.getId(), false).loadFirstItem();
+						paramsXml = paramsXml == null ? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSubsection) : paramsXml;
 						paramsXml.setValue(XML_PARAM, createEtalonXmlFromMap());
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser(true));
-						if (currentSubsection == null) currentSubsection = currentSection;
 						findAuxType();
 					}
 				} else {
-					if (currentSubsection == null) currentSubsection = currentSection;
+					//if (currentSubsection == null) currentSubsection = currentSection;
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
 					TreeSet<String> headers = getHeaders();
@@ -662,7 +662,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
 				if (!hasNewParams() && aux != null) {
 					populateAuxItem(aux);
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex());
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex().noTriggerExtra());
 				} else {
 					newItemTypes = true;
 					sectionsWithNewItemTypes.add(currentSubsection.getId());
@@ -691,19 +691,10 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			}
 
 			private void findAuxType() {
-//				String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
-//				if (StringUtils.isNotBlank(auxTypeString)) {
-//					try {
-//						auxType = ItemTypeRegistry.getItemType(Integer.parseInt(auxTypeString));
-//					} catch (NumberFormatException e) {
-//					}
-//				}
-//				if (auxType == null) {
 					String n1 = "p" + currentSubsection.getStringValue(CATEGORY_ID_PARAM, "");
 					String n2 = "p" + currentSubsection.getId();
 					auxType = ItemTypeRegistry.getItemType(n1.toLowerCase());
 					if (auxType == null) auxType = ItemTypeRegistry.getItemType(n2);
-//				}
 			}
 
 			private boolean hasNewParams() {
