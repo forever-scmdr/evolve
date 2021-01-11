@@ -182,7 +182,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Отправка на ящик заказчика
 		try {
-	//		EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
+			EmailUtils.sendGmailDefault(customerEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra (IN_PROGRESS, null);
@@ -191,7 +191,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 		// Отправка на ящик магазина
 		try {
-	//		EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
+			EmailUtils.sendGmailDefault(shopEmail, regularTopic, regularMP);
 		} catch (Exception e) {
 			ServerLogger.error("Unable to send email", e);
 			cart.setExtra(IN_PROGRESS, null);
