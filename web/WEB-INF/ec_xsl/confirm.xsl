@@ -49,7 +49,6 @@
 				<input type="hidden" name="wsb_currency_id" value="BYN"/>
 				<input type="hidden" name="wsb_seed" value="{$cart/item_own_extras/seed}"/>
 				<input type="hidden" name="wsb_signature" value="{$cart/item_own_extras/signature}"/>
-				<input type="hidden" name="wsb_service_date" value="Доставка до 1 января 2016 года"/>
 				<input type="hidden" name="wsb_return_url" value="http://localhost:8080/webpay_success"/>
 				<input type="hidden" name="wsb_cancel_return_url" value="http://localhost:8080/webpay_cancel"/>
 				<input type="hidden" name="wsb_notify_url" value="http://localhost:8080/webpay_notify"/>
