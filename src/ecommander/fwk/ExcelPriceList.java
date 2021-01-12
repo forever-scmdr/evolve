@@ -11,15 +11,15 @@ import java.nio.file.Path;
  */
 public abstract class ExcelPriceList extends ExcelTableData implements TableDataRowProcessor {
 
-	public ExcelPriceList(String fileName, String... mandatoryCols) {
+	public ExcelPriceList(String fileName, String... mandatoryCols) throws Exception {
 		super(fileName, mandatoryCols);
 	}
 
-	public ExcelPriceList(File file, String... mandatoryCols) {
+	public ExcelPriceList(File file, String... mandatoryCols) throws Exception {
 		super(file, mandatoryCols);
 	}
 
-	public ExcelPriceList(Path path, String... mandatoryCols) {
+	public ExcelPriceList(Path path, String... mandatoryCols) throws Exception {
 		super(path, mandatoryCols);
 	}
 
