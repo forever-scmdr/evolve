@@ -32,4 +32,11 @@ public class ParsedQuery extends LuceneQueryCreator {
 			return parser.createBooleanQuery(param, value, occur);
 		}
 	}
+
+	@Override
+	protected QueryParser createQueryParser(String paramName) {
+		QueryParser parser = super.createQueryParser(paramName);
+		parser.setDefaultOperator(QueryParser.Operator.AND);
+		return parser;
+	}
 }

@@ -36,7 +36,7 @@ public abstract class BasicCartManageCommand extends Command {
                 return extra_line_overbuy;
 	        if (StringUtils.equalsAny(name, "ignore_overbuy",
 			        "ignore-overbuy", "ignoreoverbuy", "ignore_over_buy", "ignore-over-buy"))
-		        return extra_line_overbuy;
+		        return ignore_overbuy;
             return deny_overbuy;
         }
     }

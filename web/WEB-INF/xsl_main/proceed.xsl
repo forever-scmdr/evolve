@@ -33,9 +33,9 @@
 
 			<xsl:if test="$message and not($success)">
 				<div class="alert alert_danger">
-					<div class="alert__title">Ошибка</div>
+					<div class="alert__title">Ошибка.</div>
 					<div class="alert__text">
-						<p><xsl:value-of select="$message"/></p>
+						<p><xsl:value-of select="$message"/>.</p>
 					</div>
 				</div>
 			</xsl:if>

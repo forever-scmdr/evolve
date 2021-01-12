@@ -34,7 +34,7 @@
 
 		<div class="info-items info-items_section">
 			<div class="info-items__wrap">
-				<xsl:for-each select="$p/custom_page">
+				<xsl:for-each select="$p/custom_page | $p/news">
 					<div class="info-item card">
 						<div class="info-item__image img"><img src="{@path}{main_pic}" alt="" /></div>
 						<div class="info-item__info">
@@ -62,6 +62,11 @@
 		<div class="text">
 			<xsl:apply-templates select="$p" mode="content"/>
 		</div>
+		<xsl:if test="$seo/bottom_text !=''">
+			<div class="text seo">
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
 
 	</xsl:template>
 
@@ -82,13 +87,13 @@
 					<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l1_active]}"><xsl:value-of select="header"/></a>
 				</div>
 				<xsl:if test=".//@id = $p/@id">
-					<xsl:for-each select="custom_page">
+					<xsl:for-each select="custom_page | news">
 						<xsl:variable name="l2_active" select="@id = $p/@id"/>
 						<div class="side-menu__item side-menu__item_level_2">
 							<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="header"/></a>
 						</div>
 						<xsl:if test=".//@id = $p/@id">
-							<xsl:for-each select="custom_page">
+							<xsl:for-each select="custom_page | news">
 								<xsl:variable name="l3_active" select="@id = $p/@id"/>
 								<div class="side-menu__item side-menu__item_level_3">
 									<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="header"/></a>
