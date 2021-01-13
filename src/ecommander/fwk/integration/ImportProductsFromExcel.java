@@ -73,7 +73,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		put(CreateExcelPriceList.CURRENCY_ID_FILE.toLowerCase(), CURRENCY_ID_PARAM);
 		put(CreateExcelPriceList.QTY_FILE.toLowerCase(), QTY_PARAM);
 		put(CreateExcelPriceList.AVAILABLE_FILE.toLowerCase(), AVAILABLE_PARAM);
-
 	}};
 
 	private static final ItemType PARAMS_XML_ITEM_TYPE = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
@@ -99,6 +98,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 		//load catalog
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+
+		//load common product parameters
+		for (ParameterDescription param : PRODUCT_ITEM_TYPE.getParameterList()) {
+			if (HEADER_PARAM.containsValue(param.getName())) continue;
+			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
+		}
 		return true;
 	}
 
@@ -162,7 +167,10 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				executeCommandUnit(ItemStatusDBUnit.delete(tab.getId()).noFulltextIndex());
 			}
 			commitCommandUnits();
-			int extraCount = Integer.parseInt(getValue(CreateExcelPriceList.EXTRA_COLS));
+			int extraCount = 0;
+			try {
+				extraCount = Integer.parseInt(getValue(CreateExcelPriceList.EXTRA_COLS));
+			}catch(Exception e){}
 			if(extraCount == 0) return;
 			for(int i = getHeaders().size(); i < getHeaders().size() + extraCount; i++){
 				String cellValue = getValue(i);
