@@ -127,6 +127,12 @@
 				</div>
 			</div>
 		</xsl:if>
+
+		<xsl:if test="$seo[1]/bottom_text">
+			<div class="section-text" style="margin-top:30px;">
+				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
