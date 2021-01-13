@@ -116,11 +116,11 @@
 
 
 
-		<!-- <section class="s-info">
+		<section class="s-info">
 			<div class="container">
 				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</section> -->
+		</section>
 
 	</xsl:template>
 

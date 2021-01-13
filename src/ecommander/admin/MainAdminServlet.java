@@ -1,5 +1,6 @@
 package ecommander.admin;
 
+import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
@@ -24,8 +25,12 @@ import org.apache.commons.lang3.math.NumberUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,6 +50,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	
 	
 	private static class UserInput {
+		private String robotsContent;
 		// ID типа айтема
 		private int itemTypeId= -1;
 		// Является ли действие пользователя действием в режиме визуального редактирования
@@ -185,6 +191,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 			resp.sendRedirect(target);
 			return;
 		}
+		else if(actionName.equalsIgnoreCase(MainAdminPageCreator.LOAD_ROBOTS_TXT_ACTION)){
+			result = loadRobotsTxt(pageCreator);
+		}
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
@@ -193,6 +202,33 @@ public class MainAdminServlet extends BasicAdminServlet {
 				result.output(resp);
 			}
 		}
+	}
+
+	/**
+	 * Загрузка robots.txt
+	 * @param pageCreator
+	 * @return форма редактирования robots.txt
+	 * @throws IOException
+	 */
+	private AdminPage loadRobotsTxt(MainAdminPageCreator pageCreator) throws IOException {
+		Path robots = Paths.get(AppContext.getContextPath(), "robots.txt");
+		String content = (robots.toFile().isFile())? Files.readString(robots) : "";
+		content = content.replaceAll("\t", "    ");
+		return pageCreator.createRobotsTxtContentPage(content);
+	}
+
+	/**
+	 * Сохранение изменений в robots.txt
+	 * @param pageCreator
+	 * @param in
+	 * @return форма редактирования robots.txt
+	 * @throws IOException
+	 */
+	private AdminPage saveRobotsTxt(UserInput in, MainAdminPageCreator pageCreator) throws IOException {
+		String content = in.robotsContent;
+		Path robots = Paths.get(AppContext.getContextPath(), "robots.txt");
+		Files.writeString(robots, content.replaceAll(" {4}", "\t"));
+		return pageCreator.createRobotsTxtContentPage(content);
 	}
 
 	/**
