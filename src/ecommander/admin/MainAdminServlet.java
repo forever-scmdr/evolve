@@ -194,6 +194,9 @@ public class MainAdminServlet extends BasicAdminServlet {
 		else if(actionName.equalsIgnoreCase(MainAdminPageCreator.LOAD_ROBOTS_TXT_ACTION)){
 			result = loadRobotsTxt(pageCreator);
 		}
+		else if(actionName.equalsIgnoreCase(MainAdminPageCreator.SAVE_ROBOTS_TXT_ACTION)){
+			result = saveRobotsTxt(input, pageCreator);
+		}
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
