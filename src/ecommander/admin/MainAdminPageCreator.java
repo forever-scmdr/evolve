@@ -158,8 +158,8 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
-	public static final String LOAD_ROBOTS_TXT_ACTION = "view_robots";
-	public static final String SAVE_ROBOTS_TXT_ACTION = "update_robots";
+	public static final String LOAD_ROBOTS_TXT_ACTION = "load_robots";
+	public static final String SAVE_ROBOTS_TXT_ACTION = "save_robots";
 	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
@@ -636,7 +636,6 @@ public class MainAdminPageCreator implements AdminXML {
 		//TODO wrap string into a form
 		return basePage;
 	}
-
 
 	/**
 	 * Создает часть страницы, которая содержит список айтемов, доступных для прикрепления к ним выбранного айтема, а также
