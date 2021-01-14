@@ -172,7 +172,7 @@
 								<ul class="no-drag">
 									<li class="visible" title="Открыть index">
 										<a href="#" onclick="insertAjaxView('admin_extra', 'right_col'); window.scrollTo(0, 0); return false;">
-											Открыть дополнительные функции
+											Дополнительные функции
 										</a>
 									</li>
 								</ul>
