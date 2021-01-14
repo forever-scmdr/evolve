@@ -13,6 +13,7 @@ import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.core.KeywordTokenizer;
+import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
@@ -108,7 +109,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 
 		@Override
 		protected TokenStreamComponents createComponents(String fieldName) {
-			KeywordTokenizer src = new KeywordTokenizer();
+			//KeywordTokenizer src = new KeywordTokenizer();
+			WhitespaceTokenizer src = new WhitespaceTokenizer();
 			TokenStream result = new StandardFilter(src);
 			result = new LowerCaseFilter(result);
 			return new TokenStreamComponents(src, result);
@@ -338,19 +340,17 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		if (needIncrement)
 			//luceneDoc.add(new TextField(luceneParamName, new PositionIncrementTokenStream(10)));
 			luceneDoc.add(new Field(luceneParamName, TEN_SPACES_STREAM, POSITION_INCREMENT_FIELD_TYPE));
-		Field field;
 		if (param.needFulltextParsing() && tikaParsers.containsKey(param.getFulltextParser())) {
 			InputStream input = IOUtils.toInputStream(value, "UTF-8");
 			ContentHandler handler = new BodyContentHandler();
 			Metadata metadata = new Metadata();
 			tikaParsers.get(param.getFulltextParser()).parse(input, handler, metadata, new ParseContext());
 			//field = new TextField(luceneParamName, handler.toString(), Store.YES);
-			field = new Field(luceneParamName, handler.toString(), FULLTEXT_STORE_FIELD_TYPE);
+			luceneDoc.add(new Field(luceneParamName, handler.toString(), FULLTEXT_STORE_FIELD_TYPE));
 		} else {
 			//field = new TextField(luceneParamName, value, Store.YES);
-			field = new Field(luceneParamName, value, FULLTEXT_STORE_FIELD_TYPE);
+			luceneDoc.add(new Field(luceneParamName, value, FULLTEXT_STORE_FIELD_TYPE));
 		}
-		luceneDoc.add(field);
 	}
 
 	/**
