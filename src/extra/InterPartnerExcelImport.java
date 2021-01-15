@@ -406,7 +406,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						auxType = auxType == null?  ItemTypeRegistry.getItemType("p" + currentSection.getId()) : auxType;
 					}
 					if (auxType != null) {
-						aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+						aux = new ItemQuery(auxType).setParentId(product.getId(), false).loadFirstItem();
 						aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
 						for (ParameterDescription pd : auxType.getParameterList()) {
 							auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
@@ -457,7 +457,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex());
 
 					if (auxType != null) {
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex().noTriggerExtra());
 					}
 				}
 				info.increaseProcessed();
