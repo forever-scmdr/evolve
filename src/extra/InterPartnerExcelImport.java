@@ -335,6 +335,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 				//very dumb fix
 				replacePriceAnyway = !memoryKillerAndDisgrace.contains(product.getId());
+				if(replacePriceAnyway){
+					clearQtys(product);
+				}
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
 					if (!itemType.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header))
@@ -362,6 +365,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						product.setValue(QTY_PARAM, currentQty + q);
 						String additionParamName = "qty_" + storeNumber;
 						product.setValue(additionParamName, q);
+						product.setValue(AVAILABLE_PARAM, currentQty > 0? (byte) 1 : (byte)0);
 					} else if (PRICE_PARAM.equalsIgnoreCase(paramName)) {
 						//561429
 						BigDecimal currentPrice = replacePriceAnyway ? BigDecimal.ZERO : product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
@@ -463,6 +467,16 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				info.increaseProcessed();
 			}
 
+		}
+
+		private void clearQtys(Item product){
+			product.clearValue(QTY_PARAM);
+			product.clearValue(AVAILABLE_PARAM);
+			for(String pn : product.getItemType().getParameterNames()){
+				if(pn.matches(QTY_PARAM+"_\\d+")){
+					product.clearValue(pn);
+				}
+			}
 		}
 
 		private void setPicture(String cellValue, String paramName, Item product) throws MalformedURLException {
