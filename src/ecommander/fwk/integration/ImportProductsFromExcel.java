@@ -212,7 +212,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					//if (currentSubsection == null) currentSubsection = currentSection;
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
-					TreeSet<String> headers = getHeaders();
+
+					Collection<String> headers = getHeaders();
 					Path picsFolder = Paths.get(AppContext.getContextPath());
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
@@ -722,7 +723,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 
 			private LinkedHashMap<String, ArrayList<String>> buildGroupMap() {
 				LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
-				TreeSet<String> headers = getHeaders();
+				Collection<String> headers = getHeaders();
 				for (String header : headers) {
 					String paramName = HEADER_PARAM.get(header);
 

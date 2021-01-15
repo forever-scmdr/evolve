@@ -20,7 +20,7 @@ public class ExcelTableData implements TableDataSource {
 	private POIExcelWrapper doc;
 	private boolean isValid = false;
 	private Sheet currentSheet;
-	private HashMap<String, Integer> currentHeader = new HashMap<>();
+	private LinkedHashMap<String, Integer> currentHeader = new LinkedHashMap<>();
 	private TreeMap<String, String> originalHeader = new TreeMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
@@ -77,7 +77,7 @@ public class ExcelTableData implements TableDataSource {
 			throw new Exception("Missing columns: "+ missingColumns.toString());
 		}
 		if (rowChecked) {
-			HashMap<String, Integer> headers = new HashMap<>();
+			LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 			originalHeader = new TreeMap<>();
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
@@ -131,7 +131,7 @@ public class ExcelTableData implements TableDataSource {
 				}
 				if (rowChecked && headerCell != null) {
 					Row row = sheet.getRow(headerCell.row);
-					HashMap<String, Integer> headers = new HashMap<>();
+					LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 					for (Cell cell : row) {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
@@ -239,8 +239,8 @@ public class ExcelTableData implements TableDataSource {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
-		TreeSet<String> a = new TreeSet<>();
+	public final Collection<String> getHeaders(){
+		LinkedHashSet<String> a = new LinkedHashSet<>();
 		a.addAll(currentHeader.keySet());
 		return a;
 	}
@@ -265,9 +265,9 @@ public class ExcelTableData implements TableDataSource {
 
 	protected static class SheetHeader{
 		private Sheet sheet;
-		private HashMap<String, Integer> header = new HashMap<>();
+		private LinkedHashMap<String, Integer> header = new LinkedHashMap();
 		private POIUtils.CellXY headerCell;
-		protected SheetHeader(Sheet sheet, HashMap<String, Integer> header, POIUtils.CellXY headerCell){
+		protected SheetHeader(Sheet sheet, LinkedHashMap<String, Integer> header, POIUtils.CellXY headerCell){
 			this.sheet = sheet;
 			this.header = header;
 			this.headerCell = headerCell;
