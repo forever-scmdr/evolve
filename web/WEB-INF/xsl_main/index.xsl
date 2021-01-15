@@ -78,7 +78,7 @@
 			<div class="container">
 				<div class="title title_2">Выгодные предложения</div>
 				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product[tag = ('Новинка', 'новинка', 'НОВИНКА')]">
+					<xsl:for-each select="page/main_page/product">
 						<div class="devices-block__column">
 							<xsl:apply-templates select="."/>
 						</div>
@@ -116,11 +116,11 @@
 
 
 
-		<!-- <section class="s-info">
+		<section class="s-info">
 			<div class="container">
-				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
+				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</section> -->
+		</section>
 
 	</xsl:template>
 

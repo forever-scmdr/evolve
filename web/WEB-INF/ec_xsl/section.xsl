@@ -128,6 +128,12 @@
 			</div>
 		</xsl:if>
 
+		<xsl:if test="$seo[1]/bottom_text">
+			<div class="page-content m-t">
+				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
+
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 

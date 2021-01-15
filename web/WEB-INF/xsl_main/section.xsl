@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
+	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
@@ -51,10 +51,8 @@
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
@@ -127,6 +125,12 @@
 						</a>
 					</xsl:for-each>
 				</div>
+			</div>
+		</xsl:if>
+
+		<xsl:if test="$seo[1]/bottom_text">
+			<div class="section-text" style="clear: both; margin-top: 30px;">
+				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
 	</xsl:template>
@@ -214,7 +218,7 @@
 	</xsl:template>
 
 	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="$show_devices and not($not_found) and $sel_sec/product">
+		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">
 			<div class="view view_section">
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
@@ -230,33 +234,42 @@
 						<span class="icon-link__item">Строками</span>
 					</a>
 				</div>
-				<div class="view__column">
-					<select value="{page/variables/sort}{page/variables/direction}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-						<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-						<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-						<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-					</select>
-				</div>
-				<xsl:if test="$sel_sec/mark">
+				<xsl:if test="/page/@name != 'fav'">
 					<div class="view__column">
-						<select value="{page/variables/mark}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-							<option value="" link="{page/set_mark_default}">Все товары</option>
-							<xsl:for-each select="$sel_sec/mark">
-								<option value="{mark}" link="{set_mark}"><xsl:value-of select="mark"/></option>
-							</xsl:for-each>
+						<select value="{page/variables/sort}{page/variables/direction}" onchange="window.location.href = $(this).find(':selected').attr('link')">
+							<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
+							<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+							<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
+							<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
+						</select>
+					</div>
+					<xsl:if test="$sel_sec/mark">
+						<div class="view__column">
+							<select value="{page/variables/mark}" onchange="window.location.href = $(this).find(':selected').attr('link')">
+								<option value="" link="{page/set_mark_default}">Все товары</option>
+								<xsl:for-each select="$sel_sec/mark">
+									<option value="{mark}" link="{set_mark}"><xsl:value-of select="mark"/></option>
+								</xsl:for-each>
+							</select>
+						</div>
+					</xsl:if>
+					<div class="view__column">
+						Кол-во на странице:
+						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">					
+								<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
+									<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
+									<option value="{$nos}" link="{.}">
+										<xsl:value-of select="$nos"/>
+									</option>
+								</xsl:for-each>	
 						</select>
 					</div>
 				</xsl:if>
-				<div class="view__column">
-					Кол-во на странице:
-					<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<option value="48" link="{page/set_limit_48}">48</option>
-						<option value="96" link="{page/set_limit_96}">96</option>
-						<option value="144" link="{page/set_limit_144}">144</option>
-					</select>
-				</div>
+				<xsl:if test="/page/@name = 'fav'">
+					<div class="view__column" style=""></div>
+					<div class="view__column" style=""></div>
+				</xsl:if>
 			</div>
 
 				<!-- <div class="view">

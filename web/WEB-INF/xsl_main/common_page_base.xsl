@@ -124,7 +124,11 @@
 						<div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
-								<div class="icon icon_size_sm"><img src="img/icon-caret-down.svg" alt="" /></div>
+								<xsl:if test="$has_many_cities">
+									<div class="icon icon_size_sm">
+										<img src="img/icon-caret-down.svg" alt="" />
+									</div>
+								</xsl:if>
 							</a>
 						</div>
 						<div class="top-info__content">
@@ -133,11 +137,17 @@
 					</div>
 				</xsl:for-each>
 				<!-- static end -->
-				<ul class="location-list">
-					<xsl:for-each select="$common/topper/block">
-						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
+				<xsl:if test="$has_many_cities">
+					<ul class="location-list">
+						<xsl:for-each select="$common/topper/block">
+							<li>
+								<a href="#" onclick="return showCityHeader('{@id}', '{header}')">
+								<xsl:value-of select="header"/>
+								</a>
+							</li>
+						</xsl:for-each>
+					</ul>
+				</xsl:if>
 				<script>
 					function showCityHeaderSelector() {
 						$('.location-list').show();
@@ -197,7 +207,7 @@
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 							<a href="{page/cart_link}" class="icon-link">
 								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Корзина</span>
+								<span class="icon-link__item">Загрузка...</span>
 							</a>
 						</div>
 						<div class="links">

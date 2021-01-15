@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xmlns:f="f:f" version="2.0">
 	<xsl:import href="feedback_ajax.xsl"/>
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
@@ -146,7 +147,7 @@
 					</div>
 				</xsl:if>
 				<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-					<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+					<a href=""><i class="fas fa-shopping-cart"></i>Загрузка...</a>
 					<!-- <div>Товаров: <strong>2</strong></div>
 					<div>Cумма: <strong>1250 руб.</strong></div> -->
 				</div>

@@ -123,16 +123,16 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">удалить</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>удалить</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
 							<a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
+								<i class="fas fa-star"></i>выбрать
 							</a>
 						</div>
 					</xsl:otherwise>
@@ -218,16 +218,16 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">удалить</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>удалить</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
 							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
+								<i class="fas fa-star"></i>выбрать
 							</a>
 						</div>
 					</xsl:otherwise>
@@ -274,16 +274,16 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">удалить</a></span>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>удалить</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
 							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
+								<i class="fas fa-star"></i>выбрать
 							</a>
 						</div>
 					</xsl:otherwise>
@@ -458,16 +458,16 @@
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_compare">
-						<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+						<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">удалить</a></span>
 					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$is_fav">
-							<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+							<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>удалить</a>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{@id}">
 								<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-									<i class="fas fa-star"></i>отложить
+									<i class="fas fa-star"></i>выбрать
 								</a>
 							</div>
 						</xsl:otherwise>

@@ -136,14 +136,14 @@
 					<xsl:when test="$is_fav">
 						<a href="{from_fav}" class="add__item icon-link">
 							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-							<span>Убрать</span>
+							<span>Удалить</span>
 						</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
 							<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span>Отложить</span>
+								<span>Выбрать</span>
 							</a>
 						</div>
 					</xsl:otherwise>
@@ -159,7 +159,7 @@
 				<xsl:if test="$is_compare">
 					<a href="{from_compare}" class="add__item icon-link">
 						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-						<span>Убрать</span>
+						<span>Удалить</span>
 					</a>
 				</xsl:if>
 			</div>
@@ -229,13 +229,24 @@
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 						<xsl:variable name="p" select="current()"/>
-						<xsl:for-each select="$captions">
-							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-							<tr class="tr">
-								<td><xsl:value-of select="$param/@caption"/></td>
-								<td><xsl:value-of select="$param"/></td>
-							</tr>
-						</xsl:for-each>
+						<xsl:if test="//page/@name != 'fav'">
+							<xsl:for-each select="$captions">
+								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+								<tr class="tr">
+									<td><xsl:value-of select="$param/@caption"/></td>
+									<td><xsl:value-of select="$param"/></td>
+								</tr>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="//page/@name = 'fav'">
+							<xsl:for-each select="$captions[position() &lt; 5]">
+								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+								<tr class="tr">
+									<td><xsl:value-of select="$param/@caption"/></td>
+									<td><xsl:value-of select="$param"/></td>
+								</tr>
+							</xsl:for-each>
+						</xsl:if>
 					</table>
 				</div>
 
@@ -316,14 +327,14 @@
 						<xsl:when test="$is_fav">
 							<a href="{from_fav}" class="add__item icon-link">
 								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span>Убрать</span>
+								<span>Удалить</span>
 							</a>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{@id}">
 								<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span>Отложить</span>
+									<span>Выбрать</span>
 								</a>
 							</div>
 						</xsl:otherwise>
@@ -339,7 +350,7 @@
 					<xsl:if test="$is_compare">
 						<a href="{from_compare}" class="add__item icon-link">
 							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span>Убрать</span>
+							<span>Удалить</span>
 						</a>
 					</xsl:if>
 				</div>
