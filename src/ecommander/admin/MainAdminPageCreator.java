@@ -631,7 +631,7 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Загружает форму для редактрования файла robots.txt
 	 */
-	AdminPage createRobotsTxtContentPage(String content) {ext
+	AdminPage createRobotsTxtContentPage(String content) {
 		AdminPage basePage = new AdminPage(PARAMETERS_PAGE, domain, currentUser.getName());
 		//TODO wrap string into a form
 		return basePage;
