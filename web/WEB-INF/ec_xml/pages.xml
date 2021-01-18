@@ -1214,6 +1214,7 @@
 					<var var="compare"/>
 				</parameter>
 			</filter>
+			<list item="params_xml"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1236,7 +1237,7 @@
 			<link name="subscribe_link" target="subscribe_ajax">
 				<var name="prod" ref="prod"/>
 			</link>
-			<single item="params"/>
+			<list item="params"/>
 		</list>
 		<include name="COMMON"/>
 	</page>

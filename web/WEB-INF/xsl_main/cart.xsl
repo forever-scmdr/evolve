@@ -21,7 +21,11 @@
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
-									<div class="cart-item__image"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></div>
+									<div class="cart-item__image">
+										<a href="{$p/show_product}">
+											<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" />
+										</a>
+									</div>
 									<div class="cart-item__info">
 										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>

@@ -242,8 +242,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private LinkedHashMap<String, ArrayList<String>> buildGroupMap() {
 			LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
-			TreeSet<String> headers = getHeaders();
-			for (String header : headers) {
+			for (String header : getHeaders()) {
 				String paramName = HEADER_PARAM.get(header);
 				if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header))
 					continue;
