@@ -297,8 +297,14 @@
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
 		</link>
+		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
 		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
+		</link>
+		<link name="set_limit_72" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="72"/>
 		</link>
 		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
@@ -1168,15 +1174,18 @@
 			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
 				<var name="action" value="remove"/>
 				<var name="src_page" value="fav"/>
 			</link>
+			<include name="PRODUCT_PARAMS_LINKS"/>
+			<!-- 
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="prod" ref="prod"/>
@@ -1192,7 +1201,7 @@
 			</link>
 			<link name="subscribe_link" target="subscribe_ajax">
 				<var name="prod" ref="prod"/>
-			</link>
+			</link> -->
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1214,6 +1223,7 @@
 					<var var="compare"/>
 				</parameter>
 			</filter>
+			<list item="params_xml"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1223,20 +1233,7 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<single item="params"/>
+			<include name="PRODUCT_PARAMS_LINKS" />
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -1730,7 +1727,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-			<var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
+            <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
