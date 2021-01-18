@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Прайс-лист
@@ -23,7 +20,7 @@ public class ExcelTableData implements TableDataSource {
 	private POIExcelWrapper doc;
 	private boolean isValid = false;
 	private Sheet currentSheet;
-	private HashMap<String, Integer> currentHeader = new HashMap<>();
+	private LinkedHashMap<String, Integer> currentHeader = new LinkedHashMap<>();
 	private HashMap<String, String> originalHeader = new HashMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
@@ -80,7 +77,7 @@ public class ExcelTableData implements TableDataSource {
 			throw new Exception("Missing columns: "+ missingColumns.toString());
 		}
 		if (rowChecked) {
-			HashMap<String, Integer> headers = new HashMap<>();
+			LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 			originalHeader = new HashMap<>();
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
@@ -134,7 +131,7 @@ public class ExcelTableData implements TableDataSource {
 				}
 				if (rowChecked && headerCell != null) {
 					Row row = sheet.getRow(headerCell.row);
-					HashMap<String, Integer> headers = new HashMap<>();
+					LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
 					for (Cell cell : row) {
 						String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 						if (StringUtils.isNotBlank(colHeader)) {
@@ -243,10 +240,8 @@ public class ExcelTableData implements TableDataSource {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
-		TreeSet<String> a = new TreeSet<>();
-		a.addAll(currentHeader.keySet());
-		return a;
+	public final Collection<String> getHeaders(){
+		return currentHeader.keySet();
 	}
 
 	public int getLinesCount() {
@@ -269,9 +264,9 @@ public class ExcelTableData implements TableDataSource {
 
 	protected static class SheetHeader{
 		private Sheet sheet;
-		private HashMap<String, Integer> header = new HashMap<>();
+		private LinkedHashMap<String, Integer> header;
 		private POIUtils.CellXY headerCell;
-		protected SheetHeader(Sheet sheet, HashMap<String, Integer> header, POIUtils.CellXY headerCell){
+		protected SheetHeader(Sheet sheet, LinkedHashMap<String, Integer> header, POIUtils.CellXY headerCell){
 			this.sheet = sheet;
 			this.header = header;
 			this.headerCell = headerCell;
