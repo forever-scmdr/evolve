@@ -4,7 +4,7 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.json.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import java.util.List;
 

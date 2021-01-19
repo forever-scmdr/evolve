@@ -937,11 +937,15 @@ public class CrawlerController {
 	 * @return
 	 */
 	String getStyleForUrl(String url) {
+		String style = null;
 		for (Entry<String, String> entry : urlStyles.entrySet()) {
-			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey()))
-				return entry.getValue();
+			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey())) {
+				style = entry.getValue();
+				if (!StringUtils.equalsIgnoreCase(StringUtils.trim(style), NO_TEMPLATE))
+					return style;
+			}
 		}
-		return null;
+		return style;
 	}
 	
 	private void initElementCache(String fileName) {

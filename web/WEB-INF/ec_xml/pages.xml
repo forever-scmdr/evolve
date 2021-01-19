@@ -1164,7 +1164,7 @@
 			<var name="action"/>
 			<var name="job"/>
 		</request>
-		<command class="extra.MetaboCrawlCommand">
+		<command class="lunacrawler.CrawlCommand">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

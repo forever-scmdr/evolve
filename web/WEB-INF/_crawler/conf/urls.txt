@@ -13,5 +13,6 @@ https://laserlevel.ru
 # Pages to parse
 #
 
+.*laserlevel\.ru/.*     -     https://laserlevel.ru/shop/pribory-kontrolja-i-diagnostiki/videoskopy
 .*laserlevel\.ru/shop/.*\.html     product.xsl     https://laserlevel.ru/shop/dalnomery/lazernye-dalnomery/lazernyi-dalnomer-ada-cosmo-mini.html
 
