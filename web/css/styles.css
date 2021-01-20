@@ -66,17 +66,17 @@ table {
   font-weight: 700;
   margin: 0 0 8px; }
 
-.title_1 {
+.title_1, h1 {
   font-weight: 700;
   font-size: 30px;
   margin: 0 0 24px; }
 
-.title_2 {
+.title_2, h2 {
   font-size: 25px;
   font-weight: 700;
   margin: 0 0 16px; }
 
-.title_3 {
+.title_3, h3 {
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 8px; }
@@ -1782,7 +1782,8 @@ table.full-params th {
 
 .cart-item {
   display: grid;
-  grid-template-areas: "im in pr qt sm dl" "ex ex ex ex ex ex";
+  grid-template-areas: "im in pr qt sm dl"
+ "ex ex ex ex ex ex";
   grid-template-columns: 100px 1fr 100px 100px 100px 20px;
   font-size: 13px;
   border: 1px solid #e0e0e0;
@@ -1794,7 +1795,9 @@ table.full-params th {
     margin-bottom: 4px; }
   @media (max-width: 425px) {
     .cart-item {
-      grid-template-areas: "im in in" "pr qt sm" "ex ex ex";
+      grid-template-areas: "im in in"
+ "pr qt sm"
+ "ex ex ex";
       grid-template-columns: 100px 1fr 1fr; } }
 
 .cart-item__image {
@@ -1997,27 +2000,6 @@ table.full-params th {
     font-weight: 700;
     color: gray;
     padding: 16px; }
-
-.location-list {
-  display: none;
-  position: absolute;
-  padding: 10px;
-  background-color: white;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  top: 30px; }
-  .location-list li {
-    padding: 5px; }
-  .location-list a {
-    font-size: 14px;
-    color: #0072bc; }
-  .location-list:before {
-    content: '';
-    display: block;
-    border: 6px solid transparent;
-    border-bottom-color: #fff;
-    position: absolute;
-    top: -12px;
-    left: 10px; }
 
 body {
   color: #333; }
