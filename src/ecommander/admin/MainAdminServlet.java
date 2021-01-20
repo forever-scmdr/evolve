@@ -19,18 +19,18 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -214,8 +214,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 * @throws IOException
 	 */
 	private AdminPage loadRobotsTxt(MainAdminPageCreator pageCreator) throws IOException {
-		Path robots = Paths.get(AppContext.getContextPath(), "robots.txt");
-		String content = (robots.toFile().isFile())? Files.readString(robots) : "";
+		File robots = new File(AppContext.getContextPath(), "robots.txt");
+		String content = (robots.isFile())? FileUtils.readFileToString(robots, StandardCharsets.UTF_8) : "";
 		content = content.replaceAll("\t", "    ");
 		return pageCreator.createRobotsTxtContentPage(content);
 	}
@@ -229,8 +229,8 @@ public class MainAdminServlet extends BasicAdminServlet {
 	 */
 	private AdminPage saveRobotsTxt(UserInput in, MainAdminPageCreator pageCreator) throws IOException {
 		String content = in.robotsContent;
-		Path robots = Paths.get(AppContext.getContextPath(), "robots.txt");
-		Files.writeString(robots, content.replaceAll(" {4}", "\t"));
+		File robots = new File(AppContext.getContextPath(), "robots.txt");
+		FileUtils.write(robots, content.replaceAll(" {4}", "\t"), StandardCharsets.UTF_8);
 		return pageCreator.createRobotsTxtContentPage(content);
 	}
 
