@@ -152,6 +152,7 @@ $(document).on("click", "body", function(e){
 	}
 });
 
+
 function showDetails(link) {
 	$("#product-ajax-popup").show();
 	insertAjax(link, 'product-ajax-content', function(){
@@ -168,6 +169,7 @@ function showDetails(link) {
 		});
 	});
 }
+
 
 function clearProductAjax() {
 	var html = "<div class=\"popup__body\">\n" +
