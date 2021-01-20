@@ -262,6 +262,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				//input.itemId = itemId;
 			}
 		}
+		input.robotsContent = req.getParameter(MainAdminPageCreator.ROBOTS_INPUT);
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
 			input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
