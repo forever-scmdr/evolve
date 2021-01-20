@@ -1,0 +1,6 @@
+.button {
+  min-height: 28px;
+}
+input[type="number"] {
+  padding: 4px;
+}

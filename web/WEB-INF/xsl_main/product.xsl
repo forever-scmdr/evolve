@@ -61,10 +61,12 @@
 	</xsl:template>
 
 	<xsl:template match="group">
-		<tr>
-			<td colspan="2"><b><xsl:value-of select="@name"/></b></td>
-		</tr>
-		<xsl:apply-templates select="parameter"/>
+		<xsl:if test="parameter/value">
+			<tr>
+				<th colspan="2"><b><xsl:value-of select="@name"/></b></th>
+			</tr>
+			<xsl:apply-templates select="parameter"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="parameter">
@@ -154,13 +156,13 @@
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span>Отложить</span>
+									<span><xsl:value-of select="$compare_add_label"/></span>
 								</a>
 							</div>
 							<div id="compare_list_{$p/@id}">
 								<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span>Сравнить</span>
+									<span><xsl:value-of select="$go_to_compare_label"/></span>
 								</a>
 							</div>
 						</div>
@@ -241,12 +243,12 @@
 					<div class="multi-device__links">
 						<div id="compare_list_{$p/@id}">
 							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-								<i class="fas fa-balance-scale"></i>сравнить
+								<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
 							</a>
 						</div>
 						<div id="fav_list_{$p/@id}">
 							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-								<i class="fas fa-star"></i>отложить
+								<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
 							</a>
 						</div>
 					</div>
@@ -328,7 +330,7 @@
 
 		<xsl:if test="page/grouped">
 			<div class="block devices-block pt">
-				<div class="title title_2">Варианты цветов</div>
+				<div class="title title_2">Другие цвета данной модели</div>
 				<div class="devices-block__wrap device-carousel-colors">
 					<xsl:for-each select="page/grouped[gallery[2] and not(code = $p/code)]">
 						<div class="devices-block__column">
@@ -348,7 +350,7 @@
 
 		<xsl:if test="page/assoc">
 			<div class="block devices-block pt">
-				<div class="title title_2">Выгодные предложения</div>
+				<div class="title title_2">Вас также могут заинтересовать</div>
 				<div class="devices-block__wrap device-carousel-similar">
 					<xsl:for-each select="page/assoc">
 						<div class="devices-block__column">

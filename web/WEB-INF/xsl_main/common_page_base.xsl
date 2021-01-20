@@ -124,7 +124,11 @@
 						<div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
-								<div class="icon icon_size_sm"><img src="img/icon-caret-down.svg" alt="" /></div>
+								<xsl:if test="$has_many_cities">
+									<div class="icon icon_size_sm">
+										<img src="img/icon-caret-down.svg" alt="" />
+									</div>
+								</xsl:if>
 							</a>
 						</div>
 						<div class="top-info__content">
@@ -197,7 +201,7 @@
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 							<a href="{page/cart_link}" class="icon-link">
 								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Корзина</span>
+								<span class="icon-link__item">Загрузка...</span>
 							</a>
 						</div>
 						<div class="links">
@@ -673,6 +677,7 @@
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.5"/>
+				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>

@@ -297,14 +297,17 @@
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
 		</link>
+		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
 		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
+		<link name="set_limit_72" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="72"/>
+		</link>
 		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
-		</link>
-		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="144"/>
 		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
@@ -402,14 +405,17 @@
 		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_48" target="tag_section" copy-page-vars="yes">
+		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_96" target="tag_section" copy-page-vars="yes">
-			<var name="limit" value="96"/>
+		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="72"/>
 		</link>
-		<link name="set_limit_144" target="tag_section" copy-page-vars="yes">
-			<var name="limit" value="144"/>
+		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="96"/>
 		</link>
 		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
@@ -1177,6 +1183,12 @@
 				<var name="action" value="remove"/>
 				<var name="src_page" value="fav"/>
 			</link>
+			<include name="PRODUCT_PARAMS_LINKS"/>
+			<!--
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="prod" ref="prod"/>
@@ -1192,7 +1204,7 @@
 			</link>
 			<link name="subscribe_link" target="subscribe_ajax">
 				<var name="prod" ref="prod"/>
-			</link>
+			</link> -->
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1224,20 +1236,7 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<list item="params"/>
+			<include name="PRODUCT_PARAMS_LINKS" />
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -1731,6 +1730,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+            <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">

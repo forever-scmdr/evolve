@@ -128,20 +128,27 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 }
 
+var activeShowSub = null;
 $(document).on('click', '.show-sub',function(e){
 	e.preventDefault();
-	var href = $(this).attr("href"); 
+	var href = $(this).attr("href");
 	var trg = $(href);
 	// $(".popup-text-menu").not(trg).hide();
 	// var l = $(this).position().left - 50;
 	// trg.css({"left": l});
 	trg.toggle();
+	if (trg != activeShowSub) {
+		if (activeShowSub != null)
+			activeShowSub.toggle();
+		activeShowSub = trg;
+	}
 });
 
 $(document).on("click", "body", function(e){
 	var trg = $(e.target);
-	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub") && trg.closest(".show-sub").length == 0){
+	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub") && trg.closest(".show-sub").length == 0) {
 		$(".popup-text-menu").hide();
+		activeShowSub = null;
 	}
 });
 
