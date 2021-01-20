@@ -158,8 +158,8 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
-	public static final String LOAD_ROBOTS_TXT_ACTION = "load_robots";
-	public static final String SAVE_ROBOTS_TXT_ACTION = "save_robots";
+	public static final String LOAD_ROBOTS_TXT_ACTION = "admin_load_robots";
+	public static final String SAVE_ROBOTS_TXT_ACTION = "admin_save_robots";
 	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
@@ -247,6 +247,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String GO_TO_PARENT_INPUT = "goToParent";
 	public static final String ITEM_IDS_INPUT = "ids";
 	public static final String BUFFERED_ITEM_IDS_INPUT = "ids_b";
+	public static final String ROBOTS_INPUT = "robots_content";
 	/**
 	 * Значения
 	 */

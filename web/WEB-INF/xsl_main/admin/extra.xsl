@@ -66,6 +66,9 @@
 					<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
 						<a href="generate_sitemap">Обновить sitemap.xml</a>
 					</li>
+					<li class="visible" title="Будет сгенерирован и презаписан robots.txt">
+						<a href="admin_load_robots.action">Редактировать robots.txt</a>
+					</li>
 				</ul>
 
 				<h3>Служебные функции</h3>
