@@ -137,7 +137,7 @@
 					</div>
 				</xsl:for-each>
 				<!-- static end -->
-				<ul class="location-list">
+				<ul class="location-list" style="display:none">
 					<xsl:for-each select="$common/topper/block">
 						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>

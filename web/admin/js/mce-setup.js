@@ -55,7 +55,7 @@ var mceSettings = {
 		height : 300
 		,rel_list: [
 			 {title: '-', value: ''}
-			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
+			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
   		]
 	}
