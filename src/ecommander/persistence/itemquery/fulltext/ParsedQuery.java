@@ -9,7 +9,7 @@ import org.apache.lucene.search.Query;
 
 public class ParsedQuery extends LuceneQueryCreator {
 
-	private static final String ESCAPE_CHARS = "-!(){}[]^\"~:\\";
+	private static final String ESCAPE_CHARS = "-!(){}[]^\"~:\\&+|/";
 
 	protected String escapeInput(String input) {
 		StringBuilder sb = new StringBuilder();
