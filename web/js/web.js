@@ -170,7 +170,6 @@ function showDetails(link) {
 	});
 }
 
-
 function clearProductAjax() {
 	var html = "<div class=\"popup__body\">\n" +
 		"\t\t\t\t<div class=\"popup__content\">\n" +
