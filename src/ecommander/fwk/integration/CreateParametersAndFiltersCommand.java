@@ -235,7 +235,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 							"", caption, unit, "", false, false, null, null));
 				}
 				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
-
+				pushLog("class \""+newClass.getCaption()+"\" добавлен");
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
@@ -244,10 +244,14 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 
 		try {
+			pushLog("Попытка обновить информационную модель");
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
+			pushLog("Информационную модель обновлена");
 			if(SystemUtils.IS_OS_LINUX){
+				pushLog("Попытка смены прав доступа к модели");
 				Path ecXml = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml");
 				Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", ecXml.toAbsolutePath().toString()});
+				pushLog("Прав доступа к модели успешно изменены");
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);

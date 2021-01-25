@@ -978,7 +978,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	private void createFiltersAndItemTypes() throws Exception {
 		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
-		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
+		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes, new Byte[]{Item.STATUS_NORMAL});
 		doCreate(sections);
 	}
 
