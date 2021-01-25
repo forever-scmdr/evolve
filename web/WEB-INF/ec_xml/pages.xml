@@ -1777,6 +1777,14 @@
 		</command>
 	</page>
 
+	<page name="promelec_search">
+		<request>
+			<var name="query" value="1234"/>
+		</request>
+		<command class="extra.PromelecSearchCommand">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 
 
