@@ -130,6 +130,18 @@ public class XmlDocumentBuilder {
 		return this;
 	}
 	/**
+	 * Закрывет все открытые элементы
+	 */
+	 public final XmlDocumentBuilder endAllElements(){
+	 	while (openTags.size() > 1){
+			xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
+			xml.append("</").append(openTags.pop().tag).append('>');
+		}
+	 	return  this;
+	 }
+
+
+	/**
 	 * Добавляет текст к текущему открытому элементу
 	 * @param text
 	 */
@@ -189,21 +201,27 @@ public class XmlDocumentBuilder {
 				"</cool>\n" +
 				"<cool>ffff</cool>";
 		XmlDocumentBuilder context = XmlDocumentBuilder.newDoc();
-		context.startElement("item", "id", "1");
-		context.insertAttributes("cool", "mega");
-		context.startElement("item");
-		context.startElement("filter", "direction", "desc");
-		context.endElement();
-		context.startElement("sorting");
-		context.addText("dddddddffffffffffgggggggggg");
-		context.endElement();
-		context.startElement("cooling", "mega", "ultra");
-		context.addElements(part);
-		context.endElement();
-		context.addEmptyElement("empty", "1", "2", "3", "4", "5", "6", "7", "8");
-		context.insertAttributes("9", "10", "11", "12");
-		context.endElement();
-		context.endElement();
+		context.startElement("page");
+		context.startElement("variables");
+		context.addEmptyElement("var", "name", "v", "value", "val");
+		context.addEmptyElement("var", "name", "v1", "value", "val1");
+		context.addEmptyElement("var", "name", "v2", "value", "val2");
+		context.endAllElements();
+//		context.startElement("item", "id", "1");
+//		context.insertAttributes("cool", "mega");
+//		context.startElement("item");
+//		context.startElement("filter", "direction", "desc");
+//		context.endElement();
+//		context.startElement("sorting");
+//		context.addText("dddddddffffffffffgggggggggg");
+//		context.endElement();
+//		context.startElement("cooling", "mega", "ultra");
+//		context.addElements(part);
+//		context.endElement();
+//		context.addEmptyElement("empty", "1", "2", "3", "4", "5", "6", "7", "8");
+//		context.insertAttributes("9", "10", "11", "12");
+//		context.endElement();
+//		context.endElement();
 		System.out.println(context);
 	}
 }
