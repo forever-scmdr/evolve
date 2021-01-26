@@ -855,8 +855,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	}
 
 	private boolean hasAuxParams(Collection<String> headers) {
-		//if (!headers.contains(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase())) return false;
-
 		for (String header : headers) {
 			String paramName = HEADER_PARAM.get(header);
 			if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
