@@ -15,17 +15,18 @@
 	<xsl:template match="/">
 		<table>
 			<tbody id="extra-search-ajax" class="result">
-			<xsl:if test="not(page/product)">
+			<xsl:if test="not(page/result/row)">
 				<tr>
 					<td colspan="10" style="text-align: center;">
 						<h2>В дополнительном каталоге ничего не найдено</h2>
 					</td>
 				</tr>
 			</xsl:if>
-			<xsl:if test="page/product">
+			<xsl:if test="page/result/row">
 				<tr>
 					<td colspan="10" style="text-align: center;">
 						<h2>Результат поиска по дополнительному каталогу</h2>
+						<xsl:value-of select="$currency = 'BYN'"/>
 					</td>
 				</tr>
 				<tr>
@@ -45,7 +46,7 @@
 					</xsl:if>
 					<th>Заказать</th>
 				</tr>
-				<xsl:apply-templates select="page/product" />
+				<xsl:apply-templates select="page/result/row" />
 			</xsl:if>
 			<script>
 				$(document).ready(function(){
@@ -64,6 +65,85 @@
 		</table>
 	</xsl:template>
 
+	<xsl:template match="row">
+		<xsl:variable name="main_pic" select="@photo_url"/>
+		<xsl:variable name="vendor_code" select="@sort_name"/>
+		<xsl:variable name="map" select="string-join(pricebreaks/break/concat(@quant,':', @price),';')"/>
+
+		<tr class="parent">
+			<td>
+					<b>
+						<xsl:if test="$main_pic != ''">
+							<a href="{$main_pic}" class="magnific_popup-image" title="{@name}">
+								<xsl:value-of select="$vendor_code"/>
+							</a>
+						</xsl:if>
+						<xsl:if test="not($main_pic != '')">
+							<xsl:value-of select="$vendor_code"/>
+						</xsl:if>
+					</b>
+			</td>
+			<td>
+				<xsl:value-of select="@name"/>
+				<p><xsl:value-of select="@description"/></p>
+			</td>
+			<td>
+				<xsl:value-of select="@producer_name"/>
+			</td>
+			<td><xsl:value-of select="@quant"/></td>
+			<td>
+				<xsl:value-of select="concat(/page/price_catalog/default_ship_time, ' дней')"/>
+			</td>
+			<td>шт.</td>
+			<td><xsl:value-of select="f:num(@moq) * f:num(@pack_quant)"/></td>
+			<td>
+				<xsl:if test="pricebreaks">
+					<xsl:for-each select="pricebreaks/break">
+						<p>
+							<xsl:value-of select="f:convert_curr(@price)"/>
+						</p>
+					</xsl:for-each>
+				</xsl:if>
+			</td>
+			<td>
+				<xsl:if test="pricebreaks">
+					<xsl:for-each select="pricebreaks/break">
+						<p>
+							<xsl:value-of select="concat('x', @quant, ' = ', f:convert_curr(@price))" />
+						</p>
+					</xsl:for-each>
+				</xsl:if>
+			</td>
+			<xsl:if test="//page/variables/admin = 'true'">
+				<td>
+					<xsl:if test="pricebreaks">
+						<xsl:for-each select="break">
+							<p>
+								<xsl:value-of select="f:convert_curr_no_extra(@price)"/>
+							</p>
+						</xsl:for-each>
+					</xsl:if>
+				</td>
+				<td>promelec.ru</td>
+				<td></td>
+			</xsl:if>
+
+			<td id="cart_search_{@id}">
+				<form action="cart_action/?action=addDigiKeyToCart&amp;code={@id}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+					<input type="number" name="qty" value="{f:num(@moq) * f:num(@pack_quant)}" min="{f:num(@moq) * f:num(@pack_quant)}" step="{f:num(@pack_quant)}"/>
+					<input type="hidden" name="img" value="{$main_pic}"/>
+					<input type="hidden" name="map" value="{$map}"/>
+					<input type="hidden" value="{@name}" name="name"/>
+					<input type="hidden" value="{@quant}" name="max"/>
+					<input type="hidden" value="{@producer_name}" name="vendor"/>
+					<input type="hidden" value="{@altname}" name="vendor_code"/>
+<!--					<input type="hidden" value="{url}" name="url"/>-->
+					<input type="submit" value="Заказать"/>
+				</form>
+			</td>
+		</tr>
+	</xsl:template>
+
 	<xsl:template match="product">
 		<tr class="parent">
 			<td>
@@ -73,7 +153,7 @@
 						<xsl:value-of select="vendor_code"/>
 					</b>
 				</xsl:if>
-				<xsl:if test="not(main_pic = '')">
+				<xsl:if test="main_pic != ''">
 					<b>
 						<a href="{main_pic}" class="magnific_popup-image" title="{name}">
 							<!-- <xsl:value-of select="name"/> -->
@@ -190,13 +270,13 @@
 	</xsl:function>
 
 	<xsl:variable name="cur_list" select="page/currencies"/>
-	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'digikey.com']/quotient)"/>
+	<xsl:variable name="quotient" select="f:num(page/price_catalog[name = 'promelec.ru']/quotient)"/>
 
 
 	<xsl:function name="f:byn" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
-		<xsl:variable name="usd" select="f:num($str) * $quotient"/>
-		<xsl:sequence select="$usd * (f:num($cur_list/USD_rate) * (f:num($cur_list/USD_extra)+1)) div f:num($cur_list/USD_scale)"/>
+		<xsl:variable name="rub" select="f:num($str) * $quotient"/>
+		<xsl:sequence select="$rub * (f:num($cur_list/RUB_rate) * (f:num($cur_list/RUB_extra)+1)) div f:num($cur_list/RUB_scale)"/>
 	</xsl:function>
 	<xsl:function name="f:usd" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
@@ -217,8 +297,8 @@
 
 	<xsl:function name="f:byn_n" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
-		<xsl:variable name="usd" select="f:num($str)"/>
-		<xsl:sequence select="$usd * (f:num($cur_list/USD_rate) * 1) div f:num($cur_list/USD_scale)"/>
+		<xsl:variable name="rub" select="f:num($str)"/>
+		<xsl:sequence select="$rub * (f:num($cur_list/RUB_rate) * 1) div f:num($cur_list/RUB_scale)"/>
 	</xsl:function>
 	<xsl:function name="f:usd_n" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>

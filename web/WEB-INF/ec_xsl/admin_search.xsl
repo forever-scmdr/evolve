@@ -22,6 +22,8 @@
 	<xsl:variable name="price_intervals_default" select="$price_catalogs[name = 'default']/price_interval"/>
 	<!--<xsl:variable name="Q" select="f:num(page/price_catalog/quotient)"/>-->
 	<xsl:variable name="Q" select="f:num(page/price_catalog[name = 'default']/quotient)"/>
+	<xsl:variable name="l" 
+		select="concat('digikey_search?query=', page/variables/q[1], '&#38;','admin=true')"/>
 
 
 	<xsl:template name="MAIN_CONTENT">
@@ -45,6 +47,12 @@
 	</xsl:template>
 
 
+	<xsl:template name="SEARCH_FORM">
+		<form action="{page/search_link[1]}" method="post">
+			<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" autocomplete="off"/>
+			<input type="submit" value="Найти"/>
+		</form>
+	</xsl:template>
 
 
 
@@ -52,7 +60,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="/">Главная страница</a> <a style="position: absolute; right: 0px" href="{page/save_excel_file}">Сохранить результаты</a>
+				<a style="position: absolute; right: 0px; font-weight: bold;" href="{page/save_excel_file}"><img src="img/excel2.png"/> Сохранить результаты</a>
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
@@ -125,12 +133,25 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
+
 						</xsl:if>
 					</table>
+					
 				</div>
 			</xsl:if>
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
+			</xsl:if>
+			<xsl:if test="not($multiple)">
+				<table class="srtable">
+					<tbody id="extra-search-ajax">
+						<tr>
+							<td colspan="10" style="text-align: center;">
+								<h3>Идет поиск по дополнительному каталогу...</h3>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</xsl:if>
 		</div>
 
@@ -255,6 +276,13 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+		<xsl:if test="count(page/variables/q) = 1">
+			<script>
+				$(document).ready(function() {
+					insertAjax('<xsl:value-of select="$l" disable-output-escaping="yes"/>');
+				});
+			</script>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

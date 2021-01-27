@@ -1777,7 +1777,7 @@
 		</command>
 	</page>
 
-	<page name="promelec_search">
+	<page name="promelec_search" template="promelec_search_ajax">
 		<request>
 			<var name="query" value="1234"/>
 			<var name="qty" />
