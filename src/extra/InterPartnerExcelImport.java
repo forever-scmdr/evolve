@@ -105,7 +105,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		long then = stores.getLongValue("date", 0L);
 		String nowS = DAY_FORMAT.format(new Date(now));
 		String thenS = DAY_FORMAT.format(new Date(then));
-		date = DAY_FORMAT.parse(DAY_FORMAT.format(new Date(f.lastModified()))).getTime();
+		date = DAY_FORMAT.parse(nowS).getTime();
 		return !nowS.equals(thenS) && now > then;
 	}
 
@@ -133,7 +133,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		}
 		date = stores.getLongValue("date");
 
-		hideProducts();
+		hideProducts(ItemNames.PRODUCT);
+		hideProducts(ItemNames.LINE_PRODUCT);
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -198,10 +199,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		return false;
 	}
 
-	private void hideProducts() throws Exception {
+	private void hideProducts(String typeName) throws Exception {
 		setOperation("Скрытие товаров, отсутствующих на складах");
 		info.setProcessed(0);
-		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, 0);
+		List<Item> products = ItemMapper.loadByName(typeName, 500, 0);
 		long id = 0;
 		while (products.size() > 0) {
 			for (Item product : products) {
@@ -218,6 +219,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			}
 			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
 		}
+
 		info.setOperation("Пересохранение завершено");
 	}
 
