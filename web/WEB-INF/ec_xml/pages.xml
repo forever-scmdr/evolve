@@ -1779,7 +1779,7 @@
 
 	<page name="promelec_search" template="promelec_search_ajax">
 		<request>
-			<var name="query" value="1234"/>
+			<var name="query" />
 			<var name="qty" />
 			<var name="cur" scope="cookie" value="BYN"/>
 			<var name="view" value="table" scope="cookie"/>

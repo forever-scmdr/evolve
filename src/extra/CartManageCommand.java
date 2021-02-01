@@ -23,6 +23,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
 	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
+
 	static {
 		MANDATORY_PHYS.add(user_phys_.NAME);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.ADDRESS);
@@ -68,7 +69,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		try {
 			currencyRates = new CurrencyRates();
 			digiKeyQuotients = ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "digikey.com");
-		}catch (Exception e){}
+		} catch (Exception e) {
+		}
 		for (String paramName : ItemTypeRegistry.getItemType(CURRENCIES).getParameterNames()) {
 			if (StringUtils.endsWithIgnoreCase(paramName, RATE_POSTFIX)) {
 				currencyCodes.add(StringUtils.substringBefore(paramName, RATE_POSTFIX));
@@ -129,14 +131,17 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			} else {
 				// Первоначальная сумма
 				BigDecimal price;
-				if(StringUtils.isBlank(bought.getStringExtra("map"))){
+				if (StringUtils.isBlank(bought.getStringExtra("map"))) {
 					price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0d));
-				}else{
+				} else {
 					TreeMap<BigDecimal, BigDecimal> priceMap = parsePriceMap(bought.getStringExtra("map"));
 					BigDecimal decimalQty = new BigDecimal(quantity).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
 					BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
-					currencyRates.setAllPrices(product, priceUSD, "USD");
-					multiplyAllPrices(product, digiKeyQuotients);
+
+					currencyRates.setAllPrices(product, priceUSD, bought.getStringExtra("currency_code"));
+					String quotientsV = bought.getStringExtra("quotients");
+					Item quotients = StringUtils.isBlank(quotientsV) ? digiKeyQuotients : ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "promelec.ru");
+					multiplyAllPrices(product, quotients);
 					getSessionMapper().saveTemporaryItem(product);
 					price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0d));
 				}
@@ -161,7 +166,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				BigDecimal quotient = new BigDecimal(1);
 				if (section != null)
 					quotient = getTotalQuotient(productSum, section.getStringValue(Plain_section.NAME));
-				else if(bought.getExtra("map") != null){
+				else if (bought.getExtra("map") != null) {
 					//quotient  = digiKeyQuotients.getDecimalValue(QUOTIENT_PARAM, BigDecimal.ONE);
 				}
 				productSum = productSum.multiply(quotient).setScale(2, BigDecimal.ROUND_CEILING);
@@ -222,6 +227,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 	/**
 	 * Вычислить коэффициент для товара учитвая количество заказанных единиц
+	 *
 	 * @param productSum
 	 * @return
 	 */
@@ -266,7 +272,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		String code = getVarSingleValue(CODE_PARAM);
 
 		Item bought = getSessionMapper().getSingleItemByParamValue(BOUGHT_ITEM, CODE_PARAM, code);
-		if(bought == null) {
+		if (bought == null) {
 
 			String name = getVarSingleValue(NAME_PARAM);
 			String vendor_code = getVarSingleValue("vendor_code");
@@ -274,6 +280,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			String qty = getVarSingleValue("qty").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String max = getVarSingleValue("max").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String map = getVarSingleValue("map");
+			String currencyCode = getVarSingleValue("currency_code");
+			currencyCode = StringUtils.isBlank(currencyCode) ? "USD" : currencyCode;
+			Item quotients = StringUtils.isBlank(getVarSingleValue("quotients")) ? digiKeyQuotients : ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "promelec.ru");
 
 			BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
 			if (decimalQty.compareTo(BigDecimal.ZERO) < 1) return getResult("ajax");
@@ -294,21 +303,25 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 				bought.setValue("img", getVarSingleValue("img"));
 				bought.setExtra("map", map);
+				bought.setExtra("currency_code", currencyCode);
+				bought.setExtra("quotients", getVarSingleValue("quotients"));
 				getSessionMapper().saveTemporaryItem(bought);
 
 				Item product = getSessionMapper().createSessionItem("product", bought.getId());
 				product.setValueUI(NAME_PARAM, name);
 				product.setValueUI(CODE_PARAM, code);
 				BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
-				currencyRates.setAllPrices(product, priceUSD, "USD");
-				multiplyAllPrices(product, digiKeyQuotients);
+
+				currencyRates.setAllPrices(product, priceUSD, currencyCode);
+
+				multiplyAllPrices(product, quotients);
 				product.setValue(QTY_PARAM, maxQuantity);
 				product.setValue("vendor", vendor);
 				product.setValue("vendor_code", vendor_code);
 				product.setValue("url", getVarSingleValue("url"));
 				getSessionMapper().saveTemporaryItem(product);
 			}
-		}else {
+		} else {
 			Item boughtProduct = getSessionMapper().getSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			String qty = getVarSingleValue("qty").replaceAll("[^0-9.,]", "").replace(',', '.');
 			BigDecimal decimalQty = new BigDecimal(qty).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN).add(new BigDecimal(bought.getDoubleValue(QTY_PARAM)));
@@ -321,7 +334,11 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			if (maxQuantity.compareTo(new BigDecimal(0)) > 0)
 				decimalQty = maxQuantity.compareTo(decimalQty) > 0 ? decimalQty : maxQuantity;
 			BigDecimal priceUSD = getPriceFromMap(priceMap, decimalQty);
-			currencyRates.setAllPrices(boughtProduct, priceUSD, "USD");
+
+			String currencyCode = getVarSingleValue("currency_code");
+			currencyCode = StringUtils.isBlank(currencyCode) ? "USD" : currencyCode;
+
+			currencyRates.setAllPrices(boughtProduct, priceUSD, currencyCode);
 			bought.setValue(QTY_PARAM, decimalQty.doubleValue());
 			getSessionMapper().saveTemporaryItem(bought);
 			getSessionMapper().saveTemporaryItem(boughtProduct);
@@ -339,28 +356,29 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 	}
 
 
-	private BigDecimal getPriceFromMap(TreeMap<BigDecimal, BigDecimal> priceMap, BigDecimal qty){
-		if(priceMap.containsKey(qty)) return priceMap.get(qty);
-		if(priceMap.size() > 0){
+	private BigDecimal getPriceFromMap(TreeMap<BigDecimal, BigDecimal> priceMap, BigDecimal qty) {
+		if (priceMap.containsKey(qty)) return priceMap.get(qty);
+		if (priceMap.size() > 0) {
 			BigDecimal price = priceMap.get(priceMap.firstKey());
-			for(BigDecimal breakpoint : priceMap.keySet()){
-				if(breakpoint.compareTo(qty) < 0){
+			for (BigDecimal breakpoint : priceMap.keySet()) {
+				if (breakpoint.compareTo(qty) < 0) {
 					price = priceMap.get(breakpoint);
-				}else{
+				} else {
 					return price;
 				}
 			}
+			return price;
 		}
 		return BigDecimal.ZERO;
 	}
 
-	private TreeMap<BigDecimal, BigDecimal> parsePriceMap(String map){
+	private TreeMap<BigDecimal, BigDecimal> parsePriceMap(String map) {
 		TreeMap prices = new TreeMap();
-		for(String pair : StringUtils.split(map, ';')){
+		for (String pair : StringUtils.split(map, ';')) {
 			String[] p = StringUtils.split(pair, ':');
 			BigDecimal k = new BigDecimal(p[0]).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
 			BigDecimal v = new BigDecimal(p[1]).setScale(BIG_DECIMAL_SCALE_6, BigDecimal.ROUND_HALF_EVEN);
-			prices.put(k,v);
+			prices.put(k, v);
 		}
 		return prices;
 	}

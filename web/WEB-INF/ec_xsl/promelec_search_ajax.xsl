@@ -14,18 +14,18 @@
 
 	<xsl:template match="/">
 		<table>
-			<tbody id="extra-search-ajax" class="result">
+			<tbody id="extra-search-ajax-promelec" class="result">
 			<xsl:if test="not(page/result/row)">
 				<tr>
 					<td colspan="10" style="text-align: center;">
-						<h2>В дополнительном каталоге ничего не найдено</h2>
+						<h2>В каталоге promelec.ru ничего не найдено</h2>
 					</td>
 				</tr>
 			</xsl:if>
 			<xsl:if test="page/result/row">
 				<tr>
 					<td colspan="10" style="text-align: center;">
-						<h2>Результат поиска по дополнительному каталогу</h2>
+						<h2>Результат поиска по каталогу promelec.ru</h2>
 						<xsl:value-of select="$currency = 'BYN'"/>
 					</td>
 				</tr>
@@ -128,8 +128,8 @@
 				<td></td>
 			</xsl:if>
 
-			<td id="cart_search_{@id}">
-				<form action="cart_action/?action=addDigiKeyToCart&amp;code={@id}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
+			<td id="cart_search_{@item_id}">
+				<form action="cart_action/?action=addDigiKeyToCart&amp;code={@item_id}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
 					<input type="number" name="qty" value="{f:num(@moq) * f:num(@pack_quant)}" min="{f:num(@moq) * f:num(@pack_quant)}" step="{f:num(@pack_quant)}"/>
 					<input type="hidden" name="img" value="{$main_pic}"/>
 					<input type="hidden" name="map" value="{$map}"/>
@@ -137,6 +137,8 @@
 					<input type="hidden" value="{@quant}" name="max"/>
 					<input type="hidden" value="{@producer_name}" name="vendor"/>
 					<input type="hidden" value="{@altname}" name="vendor_code"/>
+					<input type="hidden" value="RUB" name="currency_code"/>
+					<input type="hidden" value="promelec.ru" name="quotients"/>
 <!--					<input type="hidden" value="{url}" name="url"/>-->
 					<input type="submit" value="Заказать"/>
 				</form>

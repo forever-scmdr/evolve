@@ -159,6 +159,13 @@
 									</td>
 								</tr>
 							</tbody>
+							<tbody id="extra-search-ajax-promelec">
+								<tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по каталогу promelec...</h3>
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</xsl:if>
 				</div>
@@ -290,6 +297,7 @@
 			<script>
 				$(document).ready(function() {
 					insertAjax('<xsl:value-of select="$l"/>');
+					insertAjax('<xsl:value-of select="$promelec_link"/>');
 				});
 			</script>
 		</xsl:if>
