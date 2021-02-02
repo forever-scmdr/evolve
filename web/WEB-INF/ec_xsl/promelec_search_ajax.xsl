@@ -157,7 +157,9 @@
 <!--					</xsl:if>-->
 				</td>
 				<td>promelec.ru</td>
-				<td></td>
+				<td>
+
+				</td>
 			</xsl:if>
 
 			<td id="cart_search_{@item_id}">
