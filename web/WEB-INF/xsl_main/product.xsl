@@ -63,7 +63,7 @@
 	<xsl:template match="group">
 		<xsl:if test="parameter/value">
 			<tr>
-				<td colspan="2"><b><xsl:value-of select="@name"/></b></td>
+				<th colspan="2"><b><xsl:value-of select="@name"/></b></th>
 			</tr>
 			<xsl:apply-templates select="parameter"/>
 		</xsl:if>
@@ -156,13 +156,13 @@
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span>Выбрать</span>
+									<span><xsl:value-of select="$compare_add_label"/></span>
 								</a>
 							</div>
 							<div id="compare_list_{$p/@id}">
 								<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span>Сравнить</span>
+									<span><xsl:value-of select="$go_to_compare_label"/></span>
 								</a>
 							</div>
 						</div>
@@ -243,12 +243,12 @@
 					<div class="multi-device__links">
 						<div id="compare_list_{$p/@id}">
 							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-								<i class="fas fa-balance-scale"></i>сравнить
+								<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
 							</a>
 						</div>
 						<div id="fav_list_{$p/@id}">
 							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-								<i class="fas fa-star"></i>отложить
+								<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
 							</a>
 						</div>
 					</div>
@@ -337,8 +337,13 @@
 							<div class="card device">
 								<xsl:variable  name="main_pic" select="gallery[2]"/>
 								<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-								<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
-								<div class="text_size_sm"><xsl:value-of select="code"/></div>
+								<a href="{show_product}" class="device__image img">
+									<img src="{$pic_path}" alt="" />
+								</a>
+								<div class="text_size_sm">
+									<!-- <xsl:value-of select="code"/> -->
+									<xsl:value-of select="name_extra"/>
+								</div>
 							</div>
 						</div>
 					</xsl:for-each>

@@ -78,7 +78,7 @@
 			<div class="container">
 				<div class="title title_2">Выгодные предложения</div>
 				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product">
+					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
 						<div class="devices-block__column">
 							<xsl:apply-templates select="."/>
 						</div>

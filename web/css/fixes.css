@@ -1,0 +1,9 @@
+.button {
+  min-height: 28px;
+}
+input[type="number"] {
+  padding: 4px;
+}
+.compare-items__item .device {
+	min-height: 410px;
+}

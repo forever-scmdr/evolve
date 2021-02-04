@@ -46,7 +46,10 @@
 				</xsl:for-each>
 				-->
 				<xsl:for-each select="label">
-					<div class="tag device__tag"><xsl:value-of select="." /></div>
+					
+					<div class="tag device__tag {f:translit(.)}">
+						<xsl:value-of select="." />
+					</div>
 				</xsl:for-each>
 			</div>
 
@@ -136,14 +139,14 @@
 					<xsl:when test="$is_fav">
 						<a href="{from_fav}" class="add__item icon-link">
 							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-							<span>Удалить</span>
+							<span><xsl:value-of select="$compare_remove_label"/></span>
 						</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<div id="fav_list_{@id}">
 							<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span>Выбрать</span>
+								<span><xsl:value-of select="$compare_add_label"/></span>
 							</a>
 						</div>
 					</xsl:otherwise>
@@ -152,14 +155,14 @@
 					<div id="compare_list_{@id}">
 						<a href="{to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span>Сравнить</span>
+							<span><xsl:value-of select="$go_to_compare_label"/></span>
 						</a>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
 					<a href="{from_compare}" class="add__item icon-link">
 						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-						<span>Удалить</span>
+						<span><xsl:value-of select="$compare_remove_label"/></span>
 					</a>
 				</xsl:if>
 			</div>
@@ -195,7 +198,11 @@
 				</div>
 
 				<!-- device image -->
-				<div class="device__image img"><img src="{$pic_path}" alt="" /></div>
+				<div class="device__image img">
+					<a href="{show_product}">
+						<img src="{$pic_path}" alt="" />
+					</a>
+				</div>
 
 				<!-- device tags -->
 				<div class="tags device__tags">
@@ -208,7 +215,9 @@
 					</xsl:for-each>
 					-->
 					<xsl:for-each select="label">
-						<div class="tag device__tag"><xsl:value-of select="." /></div>
+						<div class="tag device__tag {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
 					</xsl:for-each>
 				</div>
 
@@ -327,14 +336,14 @@
 						<xsl:when test="$is_fav">
 							<a href="{from_fav}" class="add__item icon-link">
 								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span>Удалить</span>
+								<span><xsl:value-of select="$compare_remove_label"/></span>
 							</a>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{@id}">
 								<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span>Выбрать</span>
+									<span><xsl:value-of select="$compare_add_label"/></span>
 								</a>
 							</div>
 						</xsl:otherwise>
@@ -343,14 +352,14 @@
 						<div id="compare_list_{@id}">
 							<a href="{to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{@id}">
 								<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-								<span>Сравнить</span>
+								<span><xsl:value-of select="$go_to_compare_label"/></span>
 							</a>
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_compare">
 						<a href="{from_compare}" class="add__item icon-link">
 							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span>Удалить</span>
+							<span><xsl:value-of select="$compare_remove_label"/></span>
 						</a>
 					</xsl:if>
 				</div>
