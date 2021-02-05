@@ -15,7 +15,7 @@
 	<xsl:template match="/">
 		<table>
 			<tbody id="extra-search-ajax-promelec" class="result">
-				<xsl:if test="not(page/variables/admin = 'true')">
+				<!-- <xsl:if test="not(page/variables/admin = 'true')">
 					<tr>
 
 						<td colspan="5">
@@ -41,37 +41,41 @@
 							</form>
 						</td>
 					</tr>
+				</xsl:if> -->
+			<xsl:if test="not(page/result/row) and not(page/variables/admin = 'true')">
+				<xsl:if test="not(page/variables/admin = 'true')">
+					<tr>
+						<td colspan="10" style="text-align: center;">
+							<h2>В каталоге promelec.ru ничего не найдено</h2>
+						</td>
+					</tr>
 				</xsl:if>
-			<xsl:if test="not(page/result/row)">
-				<tr>
-					<td colspan="10" style="text-align: center;">
-						<h2>В каталоге promelec.ru ничего не найдено</h2>
-					</td>
-				</tr>
 			</xsl:if>
 			<xsl:if test="page/result/row">
-				<tr>
-					<td colspan="10" style="text-align: center;">
-						<h2>Результат поиска по каталогу promelec.ru</h2>
-					</td>
-				</tr>
-				<tr>
-					<th>Название</th>
-					<th>Описание</th>
-					<th>Производитель</th>
-					<th>Количество</th>
-					<th>Срок поставки</th>
-					<th>Единица</th>
-					<th>Мин. заказ</th>
-					<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
-					<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
-					<xsl:if test="page/variables/admin = 'true'">
-						<th>Начальная цена</th>
-						<th>Склад</th>
-						<th>Обновлено</th>
-					</xsl:if>
-					<th>Заказать</th>
-				</tr>
+				<xsl:if test="not(page/variables/admin = 'true')">
+					<tr>
+						<td colspan="10" style="text-align: center;">
+							<h2>Результат поиска по каталогу promelec.ru</h2>
+						</td>
+					</tr>
+					<tr>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Производитель</th>
+						<th>Количество</th>
+						<th>Срок поставки</th>
+						<th>Единица</th>
+						<th>Мин. заказ</th>
+						<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
+						<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
+						<xsl:if test="page/variables/admin = 'true'">
+							<th>Начальная цена</th>
+							<th>Склад</th>
+							<th>Обновлено</th>
+						</xsl:if>
+						<th>Заказать</th>
+					</tr>
+				</xsl:if>
 				<xsl:apply-templates select="page/result/row" />
 			</xsl:if>
 			<script>
@@ -149,7 +153,7 @@
 			<xsl:if test="//page/variables/admin = 'true'">
 				<td>
 <!--					<xsl:if test="pricebreaks">-->
-						<xsl:for-each select="break">
+						<xsl:for-each select="$pricebreaks/break">
 							<p>
 								<xsl:value-of select="f:convert_curr_no_extra(@price)"/>
 							</p>
