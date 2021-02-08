@@ -1,5 +1,6 @@
 package extra;
 
+import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
@@ -8,13 +9,16 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import lunacrawler.fwk.Parse_item;
 import lunacrawler.fwk.ParsedInfoProvider;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,6 +59,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private final String XML = "xml";
 	private final String ASSOC_CODE = "assoc_code";
 	private final String ASSOC = "assoc";
+	private final String URL = "url";
 	private final String MANUAL = "manual";
 	private final String PARTS = "parts";
 
@@ -119,7 +124,12 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				ServerLogger.error("Error parsing product xml file", e);
 				info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 			}
-			deployProduct(productDoc, parent, null);
+			try {
+				deployProduct(productDoc, parent, null);
+			} catch (Exception e) {
+				ServerLogger.error("Error while deploying product");
+				info.addError("Товар '" + code + "' не может быть размещен корректно", code);
+			}
 		}
 	}
 
@@ -143,8 +153,8 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			extraXml += videoEl.outerHtml();
 		}
 		Elements manuals = productEl.getElementsByTag(MANUAL);
-		if (manuals.size() > 0) {
-			extraXml += manuals.first().outerHtml();
+		for (Element manualEl : manuals) {
+			extraXml += manualEl.outerHtml();
 		}
 		Elements spareParts = productEl.getElementsByTag(PARTS);
 		if (spareParts.size() > 0) {
@@ -174,9 +184,12 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			}
 		}
 		ArrayList<String> assocCodes = new ArrayList<>();
-		Elements codeEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(CODE);
-		for (Element codeEl : codeEls) {
-			assocCodes.add(codeEl.ownText());
+		Elements urlEls = productEl.getElementsByTag(ASSOC).first().getElementsByTag(URL);
+		for (Element urlEl : urlEls) {
+			Element assocProduct = infoProvider.getTree().getElementsByAttributeValue(URL, urlEl.ownText()).first();
+			if (assocProduct != null) {
+				assocCodes.add(assocProduct.attr(ID));
+			}
 		}
 		// Продукт
 
@@ -202,8 +215,14 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		if (gallery.size() > 0) {
 			Path firstPic = gallery.get(0);
 			Path newMainPic = firstPic.resolveSibling("main_" + firstPic.getFileName());
-            ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
-			Files.write(newMainPic, bos.toByteArray());
+			FileUtils.copyFile(firstPic.toFile(), newMainPic.toFile());
+            try {
+	            ByteArrayOutputStream bos = ResizeImagesFactory.resize(firstPic.toFile(), 0, 400);
+	            Files.write(newMainPic, bos.toByteArray());
+            } catch (Exception e) {
+            	ServerLogger.error("Error while resizing file for small pic", e);
+	            FileUtils.copyFile(firstPic.toFile(), newMainPic.toFile());
+            }
 			product.setValue(MAIN_PIC, newMainPic.toFile());
 		}
 
@@ -213,31 +232,24 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 		if (StringUtils.isNotBlank(tech)) {
-		Element techEl = productEl.getElementsByTag(TECH).first().getElementById("attributes");
-			Elements childrenDivs = techEl.children();
-			for (Element div : childrenDivs) {
-				String divClass = div.attr("class");
-				if (StringUtils.equalsIgnoreCase(divClass, "attributesGroup")) {
-					xml.endElement();
-					xml.startElement("group").startElement("name").addText(div.ownText()).endElement();
-				} else if (StringUtils.equalsIgnoreCase(divClass, "attributes")) {
-					Elements rows = div.children();
-					for (Element row : rows) {
-						Elements nameValue = row.children();
-						if (nameValue.size() > 0) {
-							String paramName = nameValue.get(0).ownText();
-							xml.startElement("parameter").startElement("name").addText(paramName).endElement();
-							if (nameValue.size() > 1) {
-								String paramValue = nameValue.get(1).ownText();
-								xml.startElement("value").addText(paramValue).endElement();
-							}
-							xml.endElement(); // параметр закрывается
-						}
-					}
-					xml.endElement(); // группа закрывается
-				}
+			Element techEl = productEl.getElementsByTag(TECH).first();
+			Elements trs = techEl.getElementsByTag("tr");
+			for (Element tr : trs) {
+				Elements tds = tr.getElementsByTag("td");
+				if (tds.size() != 2)
+					continue;
+				Element nameTd = tds.get(0);
+				Element valueTd = tds.get(1);
+				if (nameTd.hasAttr("class"))
+					continue;
+				String value = StringUtils.normalizeSpace(valueTd.ownText());
+				if (StringUtils.isBlank(value) || StringUtils.startsWith(value, "&"))
+					continue;
+				String paramName = nameTd.ownText();
+				xml.startElement("parameter").startElement("name").addText(paramName).endElement();
+				xml.startElement("value").addText(value).endElement();
+				xml.endElement(); // параметр закрывается
 			}
-
 			Item paramsXml = Item.newChildItem(paramsXmlType, product);
 			paramsXml.setValue(XML, xml.toString());
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noFulltextIndex().ignoreFileErrors());
@@ -251,9 +263,25 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		// комплектность поставки
 
 		if (StringUtils.isNotBlank(packageTxt)) {
+			Document packDoc = Jsoup.parse(packageTxt);
+			for (Element imgEl : packDoc.getElementsByTag("img")) {
+				String relSrc = imgEl.attr("src");
+				File newFile = new File(AppContext.getRealPath(relSrc));
+				File dir = newFile.getParentFile();
+				try {
+					dir.mkdirs();
+					String src = "https://laserlevel.ru" + imgEl.attr("src");
+					WebClient.saveFile(src, newFile.getParent(), newFile.getName());
+					//FileUtils.copyURLToFile(new URL(src), newFile, 5000, 5000);
+				} catch (Exception e) {
+					ServerLogger.error("Error while coopying files from HTML", e);
+					info.addError("Error while coopying file from HTML: " + relSrc, newFile.getAbsolutePath());
+				}
+			}
 			Item packageItem = Item.newChildItem(productExtraType, product);
 			packageItem.setValue(NAME, "package");
 			packageItem.setValue(TEXT, packageTxt);
+
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(packageItem).noFulltextIndex().ignoreFileErrors());
 		}
 

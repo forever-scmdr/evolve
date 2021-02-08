@@ -34,7 +34,8 @@
 			Итого: <span><xsl:value-of select="f:currency_decimal($cart/sum)"/></span>
 		</div>
 		<xsl:if test="f:num($payment_item/webpay) = 1">
-			<form action="https://securesandbox.webpay.by/" method="post">
+			<!-- <form action="https://securesandbox.webpay.by/" method="post"> -->
+			<form action="https://payment.webpay.by" method="post">
 				<input type="hidden" name="wsb_customer_name" value="{$contacts/name}"/>
 				<input type="hidden" name="wsb_customer_address" value="{$contacts/address}"/>
 				<input type="hidden" name="wsb_phone" value="{$contacts/address}"/>
@@ -43,15 +44,17 @@
 				<input type="hidden" name="wsb_store" value="Магазин «метабо.бел»"/>
 				<input type="hidden" name="wsb_version" value="2"/>
 				<input type="hidden" name="wsb_language_id" value="russian"/>
-				<input type="hidden" name="wsb_storeid" value="920427307"/>
+				<!-- <input type="hidden" name="wsb_storeid" value="920427307"/> -->
+				<input type="hidden" name="wsb_storeid" value="674065730"/>
 				<input type="hidden" name="wsb_order_num" value="{concat('№', $cart/order_num)}"/>
-				<input type="hidden" name="wsb_test" value="1"/>
+				<input type="hidden" name="wsb_test" value="0"/>
 				<input type="hidden" name="wsb_currency_id" value="BYN"/>
 				<input type="hidden" name="wsb_seed" value="{$cart/item_own_extras/seed}"/>
 				<input type="hidden" name="wsb_signature" value="{$cart/item_own_extras/signature}"/>
-				<input type="hidden" name="wsb_return_url" value="http://localhost:8080/webpay_success"/>
-				<input type="hidden" name="wsb_cancel_return_url" value="http://localhost:8080/webpay_cancel"/>
-				<input type="hidden" name="wsb_notify_url" value="http://localhost:8080/webpay_notify"/>
+				<!-- <input type="hidden" name="wsb_service_date" value="Доставка до 1 января 2016 года"/> -->
+				<input type="hidden" name="wsb_return_url" value="https://xn--80ack1anv.xn--90ais/webpay_success"/>
+				<input type="hidden" name="wsb_cancel_return_url" value="https://xn--80ack1anv.xn--90ais/webpay_cancel"/>
+				<input type="hidden" name="wsb_notify_url" value="https://xn--80ack1anv.xn--90ais/webpay_notify"/>
 
 				<!-- Boughts -->
 				<xsl:for-each select="$cart/bought">
@@ -59,7 +62,7 @@
 					<input type="hidden" name="wsb_invoice_item_name[{$p}]" value="{product/name}"/>
 					<input type="hidden" name="wsb_invoice_item_quantity[{$p}]" value="{qty}"/>
 					<xsl:if test="not($payment_item/cancel_discount = '1')">
-						<input type="hidden" name="wsb_invoice_item_price[{$p}]" value="{product/price}"/>
+						<input type="hidden" name="wsb_invoice_item_price[{$p}]" value="{f:num(product/price)}"/>
 					</xsl:if>
 					<xsl:if test="$payment_item/cancel_discount = '1'">
 						<xsl:variable name="price" select="if(f:num(product/price_old) &gt; f:num(product/price)) then f:num(product/price_old) else f:num(product/price)"/>

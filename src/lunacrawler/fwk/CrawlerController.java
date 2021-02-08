@@ -169,6 +169,7 @@ import net.sf.saxon.TransformerFactoryImpl;
 public class CrawlerController {
 
 	public static final String ID = "id";
+	public static final String URL = "url";
 	public static final String H_PARENT = "h_parent"; // hierarchy parent
 	public static final String PARENT = "parent";
 	public static final String ELEMENT = "element";
@@ -250,10 +251,12 @@ public class CrawlerController {
 	private static class ParsedItem {
 		private String id;
 		private String element;
+		private String url;
 
-		public ParsedItem(String id, String element) {
+		public ParsedItem(String id, String element, String url) {
 			this.id = id;
 			this.element = element;
+			this.url = url;
 		}
 
 		@Override
@@ -838,7 +841,9 @@ public class CrawlerController {
 				String xml = new String(Files.readAllBytes(xmlFile), UTF_8);
 				Document pageDoc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 				Element fullItem = pageDoc.children().first();
-				ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName());
+				Elements hrefEls = pageDoc.getElementsByTag(URL);
+				String href = hrefEls.first() != null ? hrefEls.first().ownText() : "";
+				ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName(), href);
 				Elements directParents = fullItem.getElementsByTag(H_PARENT);
 				boolean hasValidParents = false;
 				// Добавить запись для каждого отдельного родителя (считается что он непосредственный)
@@ -851,7 +856,7 @@ public class CrawlerController {
 						}
 						hasValidParents |= StringUtils.isNotBlank(parentId);
 						if (StringUtils.isNotBlank(parentId)) {
-							ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT));
+							ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT), directParent.attr(URL));
 							if (parentChildren.containsKey(parent)) {
 								parentChildren.get(parent).add(item);
 							} else {
@@ -920,7 +925,7 @@ public class CrawlerController {
 	 * @param parent
 	 */
 	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
-		xml.startElement(parent.element, ID, parent.id);
+		xml.startElement(parent.element, ID, parent.id, URL, parent.url);
 		// Добавить всех потомков
 		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
 		if (children != null) {
