@@ -72,7 +72,7 @@
 			<xsl:if test="vendors/vendor">
 				<input type="submit" class="button" value="Подробнее"/>
 				<div id="price-popup-{@id}">
-					<xsl:variable name="id" select="@id"/>
+					<xsl:variable name="id" select="@item_id"/>
 					<xsl:variable name="name" select="@name"/>
 					<xsl:call-template name="TO_CART">
 						<xsl:with-param name="vendor" select="."/>
@@ -97,7 +97,7 @@
 	<xsl:template name="TO_CART">
 		<xs:param name="vendor"/>
 		<xs:param name="name" select="$vendor/@name"/>
-		<xs:param name="id" select="$vendor/@id"/>
+		<xs:param name="id" select="$vendor/@item_id"/>
 		<xsl:param name="pic" select="$vendor/@photo_url"/>
 
 
@@ -105,7 +105,7 @@
 			<xsl:for-each select="$vendor/pricebreaks/break">
 				<xsl:value-of select="concat(@quant, '+ ')"/>
 				<strong>
-					<xsl:value-of select="@price"/>
+					<xsl:value-of select="f:price_promelec(@price)"/>
 				</strong><br/>
 			</xsl:for-each>
 			<xsl:call-template name="CART_CORE">
@@ -122,14 +122,14 @@
 	<xsl:template name="CART_CORE">
 		<xs:param name="vendor" />
 		<xs:param name="name"  select="$vendor/@name"/>
-		<xs:param name="id" select="$vendor/@id" />
+		<xs:param name="id" select="$vendor/@item_id" />
 		<xsl:param name="pic" select="$vendor/@photo_url"/>
 
-		<xsl:variable name="code" select="if($id != $vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
+		<xsl:variable name="code" select="if($vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
 		<xsl:variable name="map" select="string-join(pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>
 
 		<div class="device__order">
-			<div id="cart_list_{concat($id, $code)}">
+			<div id="cart_list_{$code}">
 				<form action="cart_action/?action=addPromelecToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 					<input type="hidden" value="{$name}" name="vendor_code"/>
 					<input type="hidden" value="{if(f:num(@qant) != 0) then 0 else 1}" name="not_available"/>
@@ -142,7 +142,7 @@
 					<input type="hidden" value="{@quant}" name="max"/>
 					<input type="number" class="text-input" name="qty" value="{@moq}" min="{@moq}"/>
 
-					<xsl:if test="f:num(qty) != 0">
+					<xsl:if test="f:num(@quant) != 0">
 						<input type="hidden" name="price_map" value="{$map}"/>
 					</xsl:if>
 					<input type="hidden" name="img" value="{$pic}"/>

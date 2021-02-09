@@ -98,153 +98,6 @@ public abstract class BasicCartManageCommand extends Command {
 		return getResult("ajax");
 	}
 
-	/**
-	 * Добавить товар Farnell в корзину
-	 * @return updated "cart_ajax" page
-	 * @throws Exception
-	 */
-	public ResultPE addFarnellToCart() throws Exception{
-		checkStrategy();
-		String code = getVarSingleValue(CODE_PARAM).trim();
-		double quantity = 0;
-		try {
-			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM).trim());
-		} catch (Exception e) {
-			return getResult("ajax");
-		}
-		ensureCart();
-		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
-		Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-		if(boughtProduct == null){
-			String name = getVarSingleValue(NAME_PARAM).trim().replaceAll("\\s+", " ");
-			bought.setValue(NAME_PARAM, name);
-			bought.setValue(CODE_PARAM, code);
-			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE).trim());
-			bought.setValue("aux", "farnell");
-			bought.setExtra("img", getVarSingleValue("img").trim());
-			//build price map
-			try{
-				StringBuilder sb = new StringBuilder();
-				int i=0;
-				for(Object v : getVarValues("price")){
-					if(i > 0) sb.append(';');
-					sb.append(v);
-					i++;
-				}
-				bought.setValueUI("price_map",sb.toString());
-			}catch (Exception e){}
-			getSessionMapper().saveTemporaryItem(bought);
-			Item product = getSessionMapper().createSessionItem("product", bought.getId());
-			product.setValueUI(NAME_PARAM, name);
-			product.setValueUI(CODE_PARAM, code);
-			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
-			product.setValueUI("unit", getVarSingleValue("unit"));
-			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
-			product.setValue(QTY_PARAM, qty);
-			getSessionMapper().saveTemporaryItem(product);
-			setBoughtQtys(product, bought, quantity);
-		}
-		recalculateCart();
-		return getResult("ajax");
-	}
-
-	/**
-	 * Добавить товар c DigiKey в корзину
-	 * @return updated "cart_ajax" page
-	 * @throws Exception
-	 */
-	public ResultPE addDgkToCart() throws Exception {
-		checkStrategy();
-		String code = getVarSingleValue(CODE_PARAM);
-		double quantity = 0;
-		try {
-			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
-		} catch (Exception e) {
-			return getResult("ajax");
-		}
-
-		ensureCart();
-
-		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
-		Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-		if(boughtProduct == null){
-			String name = getVarSingleValue(NAME_PARAM);
-			bought.setValue(NAME_PARAM, name);
-			bought.setValue(CODE_PARAM, code);
-			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
-			bought.setValue("aux", getVarSingleValue("aux"));
-			bought.setExtra("img", getVarSingleValue("img"));
-			getSessionMapper().saveTemporaryItem(bought);
-			Item product = getSessionMapper().createSessionItem("product", bought.getId());
-			product.setValueUI(NAME_PARAM, name);
-			product.setValueUI(CODE_PARAM, code);
-			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
-			product.setValueUI("unit", getVarSingleValue("unit"));
-			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
-			product.setValue(QTY_PARAM, qty);
-			getSessionMapper().saveTemporaryItem(product);
-			setBoughtQtys(product, bought, quantity);
-		}
-
-		bought.setValueUI("price_map", getVarSingleValue("dgk_spec"));
-		getSessionMapper().saveTemporaryItem(bought);
-		recalculateCart();
-		return getResult("ajax");
-	}
-	/**
-	 * Добавить товар c Платана в корзину
-	 * @return
-	 * @throws Exception
-	 */
-	public ResultPE addPltToCart() throws Exception {
-		checkStrategy();
-		String code = getVarSingleValue(CODE_PARAM);
-		double quantity = 0;
-		try {
-			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
-		} catch (Exception e) {
-			return getResult("ajax");
-		}
-
-		ensureCart();
-		// Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
-		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
-		if(boughtProduct == null){
-			String name = getVarSingleValue(NAME_PARAM);
-			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			bought.setValue(NAME_PARAM, name);
-			bought.setValue(CODE_PARAM, code);
-			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
-			bought.setValue("aux", getVarSingleValue("aux"));
-			getSessionMapper().saveTemporaryItem(bought);
-			Item product = getSessionMapper().createSessionItem("product", bought.getId());
-			product.setValueUI(NAME_PARAM, name);
-			product.setValueUI(CODE_PARAM, code);
-			product.setValueUI("unit", getVarSingleValue("unit"));
-			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
-			product.setValue(QTY_PARAM, qty);
-			double specQ = StringUtils.isBlank(getVarSingleValue("upack"))? Double.MAX_VALUE : Double.parseDouble(getVarSingleValue("upack"));
-			product.setValue("spec_qty", specQ);
-
-			String price = getVarSingleValue("price");
-			String priceSpec =  getVarSingleValue("price_spec");
-
-			String priceStr = quantity >= specQ? priceSpec : price;
-			priceStr = StringUtils.isBlank(priceStr)? getVarSingleValue("price") : priceStr;
-			product.setValueUI(PRICE_PARAM, priceStr);
-			product.setValueUI(PRICE_OPT_PARAM, priceSpec);
-			product.setValueUI("price_old", price);
-			getSessionMapper().saveTemporaryItem(product);
-			setBoughtQtys(product, bought, quantity);
-		}else{
-			Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
-			setBoughtQtys(boughtProduct, bought, quantity);
-		}
-		recalculateCart();
-		return getResult("ajax");
-	}
-
-
 	public ResultPE delete() throws Exception {
 		// В этом случае ID не самого продукта, а объекта bought
 		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
@@ -536,7 +389,7 @@ public abstract class BasicCartManageCommand extends Command {
      * @param bought
      * @param qtyWanted
      */
-	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
+	protected void setBoughtQtys(Item product, Item bought, double qtyWanted) {
 
 		qtyWanted = round(qtyWanted, product.getDoubleValue("min_qty", 1d));
 
@@ -574,7 +427,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {
@@ -684,6 +537,8 @@ public abstract class BasicCartManageCommand extends Command {
 			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+
+			extraActionWithBought(bought, product);
 			String aux = bought.getStringValue("aux");
 			if(StringUtils.isNotBlank(aux) && "platan".equals(aux)) {
 				//product = getSessionMapper().getSingleItemByName(ItemNames.PRODUCT, bought.getId());
@@ -745,6 +600,8 @@ public abstract class BasicCartManageCommand extends Command {
 		saveCookie();
 		return result && totalQuantity > 0;
 	}
+
+	protected void extraActionWithBought(Item bought, Item product){}
 
 	private TreeMap<Double, String> parsePriceMap(String specPrice, double ratio, double q1, double q2) throws Exception {
 		if(StringUtils.isBlank(specPrice) || specPrice.indexOf(':') == -1) return new TreeMap<>();
