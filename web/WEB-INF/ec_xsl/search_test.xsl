@@ -25,7 +25,7 @@
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<p>
-			<a href="oeder_email" target="_blank">Смотреть письмо покупателю</a><br/>
+			<a href="order_email" target="_blank">Смотреть письмо покупателю</a><br/>
 			<a href="shop_email" target="_blank">Смотреть письмо магазаину</a><br/>
 		</p>
 
@@ -71,6 +71,9 @@
 			<div id="extra_search_3">
 				<h2>Идет поиск по FARNELL</h2>
 			</div>
+			<div id="extra_search_4">
+				<h2>Идет поиск по PROMELEC</h2>
+			</div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -81,7 +84,7 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>');
 				//postForm('dgk-form');
 				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 			})

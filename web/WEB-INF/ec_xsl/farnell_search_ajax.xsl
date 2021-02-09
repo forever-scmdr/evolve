@@ -26,44 +26,41 @@
 			</head>
 			<body>
 				<div id="extra_search_3" class="result">
-					<h2>Результаты поиска по доп. кталогу №3</h2>
-					<p>Найдено товаров: <xsl:value-of select="$found"/></p>
-					<p>
-						EUR = <xsl:value-of select="$ratio_eur"/>BYN<br/>
-						100 RUR = <xsl:value-of select="$ratio_rur"/>BYN<br/>
-						Надбавка к курсу Евро = <xsl:value-of select="$q1_eur"/><br/>
-						Надбавка для Farnell = <xsl:value-of select="$q2_eur"/><br/>
-						test conversion: 1€ = <xsl:value-of select="f:eur_to_byn('1')"/>BYN = <xsl:value-of select="f:eur_to_rur('1')"/>RUR
-					</p>
-					<div class="catalog-items{' lines'[$view = 'list']}">
-						<xsl:if test="$view = 'list'">
-							<xsl:apply-templates select="$page/products" mode="lines"/>
-						</xsl:if>
-						<xsl:if test="not($view = 'list')">
-							<xsl:apply-templates select="$page/products"/>
-						</xsl:if>
-					</div>
-					<script type="text/javascript">
-						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-						type: 'image',
-						closeOnContentClick: true,
-						mainClass: 'mfp-img-mobile',
-						image: {
-						verticalFit: true
-						}
-						});
-						$(document).ready(function(){
-						//Инициализация всплывающей панели для
-						//элементов веб-страницы, имеющих атрибут
-						//data-toggle="popover"
-						$('[data-toggle="popover"]').popover({
-						//Установление направления отображения popover
-						placement : 'top'
-						});
-						});
-						//обновить корзину
-						insertAjax("cart_ajax");
-					</script>
+					<h2>Результат поиска по Farnell</h2>
+					<xsl:if test="not($page/products)">
+						<p>Товары не найдены</p>
+					</xsl:if>
+					<xsl:if test="$page/products">
+						<div class="catalog-items{' lines'[$view = 'list']}">
+							<xsl:if test="$view = 'list'">
+								<xsl:apply-templates select="$page/products" mode="lines"/>
+							</xsl:if>
+							<xsl:if test="not($view = 'list')">
+								<xsl:apply-templates select="$page/products"/>
+							</xsl:if>
+						</div>
+						<script type="text/javascript">
+							$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+							type: 'image',
+							closeOnContentClick: true,
+							mainClass: 'mfp-img-mobile',
+							image: {
+							verticalFit: true
+							}
+							});
+							$(document).ready(function(){
+							//Инициализация всплывающей панели для
+							//элементов веб-страницы, имеющих атрибут
+							//data-toggle="popover"
+							$('[data-toggle="popover"]').popover({
+							//Установление направления отображения popover
+							placement : 'top'
+							});
+							});
+							//обновить корзину
+							insertAjax("cart_ajax");
+						</script>
+					</xsl:if>
 				</div>
 			</body>
 		</html>
@@ -73,6 +70,7 @@
 		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
+		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 
 		<div class="device device_row">
 			<a class="device__image device_row__image"
@@ -126,6 +124,7 @@
 							<xsl:value-of select="concat(f:price_farnell(string($price_pack)), '/шт')"/>
 						</xsl:if>
 					</div>
+					<div class="nds">*цена c НДС</div>
 				</xsl:if>
 				<div class="manyPrice">
 					<xsl:for-each select="prices">
@@ -140,7 +139,7 @@
 				<div id="cart_list_{normalize-space(sku)}">
 					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
 
-						<xsl:variable name="available" select="f:num(stock/status) = 1"/>
+						
 
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
@@ -153,6 +152,12 @@
 						</xsl:for-each>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
+					<xsl:if test="$available">
+<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-10 дней</div>
+					</xsl:if>
+					<xsl:if test="not($available)">
+						<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
+					</xsl:if>
 				</div>
 			</div>
 		</div>
@@ -161,6 +166,7 @@
 		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
+		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 
 		<div class="device items-catalog__device">
 			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{displayName}" rel="nofollow">
@@ -188,6 +194,7 @@
 						<xsl:value-of select="concat(f:price_farnell(string($price_pack)), '/шт')"/>
 					</xsl:if>
 				</div>
+				<div class="nds">*цена включает НДС</div>
 				<xsl:if test="count(prices) &gt; 1">
 					<xsl:variable name="x">
 						<xsl:for-each select="prices">
@@ -201,7 +208,7 @@
 				<div id="cart_list_{normalize-space(sku)}">
 					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
 
-						<xsl:variable name="available" select="f:num(stock/status) = 1"/>
+						
 
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
@@ -214,6 +221,12 @@
 						</xsl:for-each>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
+					<xsl:if test="$available">
+						<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-10 дней</div>
+					</xsl:if>
+					<xsl:if test="not($available)">
+						<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
+					</xsl:if>
 				</div>
 			</div>
 		</div>

@@ -549,6 +549,7 @@
 						</div>
 					</xsl:if>
 					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/>.</div>
+					<div class="nds">*цена включает НДС</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -669,6 +670,7 @@
 				<div class="device__price device_row__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog(price_old, '','')"/></span></div></xsl:if>
 					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/></div>
+					<div class="nds">*цена c НДС</div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -805,7 +807,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=1.2"/>
+				<link rel="stylesheet" href="css/app.css?version=1.3"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -848,7 +850,7 @@
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" src="js/bootstrap.js"/>
-				<script type="text/javascript" src="admin/ajax/ajax.js"/>
+				<script type="text/javascript" src="admin/ajax/ajax.js?v=1.0"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/fwk/common.js"/>
@@ -949,7 +951,7 @@
 			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 			<input type="submit" class="button header__button" value="Поиск" />
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-				Поиск по нашему складу и складам партнеров
+				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL
 			</div>
 		</form>
 	</xsl:template>
@@ -1001,6 +1003,7 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
+		
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>

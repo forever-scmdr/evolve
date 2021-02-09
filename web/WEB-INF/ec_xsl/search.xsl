@@ -70,6 +70,9 @@
 			<div id="extra_search_1">
 				Идет поиск по дополнительным каталогам...
 			</div>
+			<div id="extra_search_3">
+				<!-- <h2>Идет поиск по FARNELL</h2> -->
+			</div>
 			<div id="extra_search_2">подождите.
 				<form action="digikey_search" method="POST" id="dgk-form">
 					<input type="hidden" name="query" value="{page/variables/q}" />
@@ -88,6 +91,7 @@
 			$(document).ready(function(){
 				insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
 				postForm('dgk-form');
+				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 			})
 
 		</script>

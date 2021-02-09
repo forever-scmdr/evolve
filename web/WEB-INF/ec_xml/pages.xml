@@ -1709,4 +1709,17 @@
 		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
 		<include name="COMMON"/>
 	</page>
+
+
+	<page name="promelec_search" template="promelec_search_ajax">
+		<request>
+			<var name="query" value="1234"/>
+			<var name="view" scope="cookie"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="minqty" value="" scope="cookie"/>
+		</request>
+		<command class="extra.PromelecSearchCommand">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 </site>

@@ -13,8 +13,7 @@
 	<xsl:template match="/">
 		<xsl:if test="items/item">
 			<div id="extra_search_1" class="result">
-				<h2>Результат поиска по дополнительному каталогу №1</h2>
-				
+				<h2>Результат поиска по Platan</h2>
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="items/item" mode="lines"/>
@@ -26,7 +25,10 @@
 			</div>
 		</xsl:if>
 		<xsl:if test="not(items/item)">
-			<div id="extra_search_1" class="result"></div>
+			<div id="extra_search_1" class="result">
+				<h2>Результат поиска по Platan</h2>
+				<p>Товары не найдены</p>
+			</div>
 		</xsl:if>
 	</xsl:template>
 
@@ -50,6 +52,9 @@
 					<div class="device__price" style="flex-direction: column">
 						<div class="price_normal">
 							<xsl:value-of select="concat($price, '/', EI_NAME)"/>
+						</div>
+						<div class="nds">
+							*цена включает НДС
 						</div>
 						<xsl:if test="f:num(CENA_PACK) != 0">
 							<div class="price_special">
@@ -131,6 +136,9 @@
 					<div class="price_normal">
 						<xsl:value-of select="concat($price, '/', EI_NAME)"/>
 					</div>
+					<div class="nds">
+							*цена c НДС
+						</div>
 					<xsl:if test="f:num(CENA_PACK) != 0">
 						<div class="price_special">
 							Спец цена:

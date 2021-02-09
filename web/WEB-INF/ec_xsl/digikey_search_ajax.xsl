@@ -14,38 +14,43 @@
 		<div>
 			<xsl:if test="page/product">
 				<div id="extra_search_2" class="result">
-					<h2>Результат поиска по дополнительному каталогу №2</h2>
-					<div class="catalog-items{' lines'[$view = 'list']}">
-						<xsl:if test="$view = 'list'">
-							<xsl:apply-templates select="page/product" mode="lines"/>
-						</xsl:if>
-						<xsl:if test="not($view = 'list')">
-							<xsl:apply-templates select="page/product"/>
-						</xsl:if>
-					</div>
-					<script type="text/javascript">
-						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-							type: 'image',
-							closeOnContentClick: true,
-							mainClass: 'mfp-img-mobile',
-							image: {
-								verticalFit: true
-							}
-						});
-						$(document).ready(function(){
-							//Инициализация всплывающей панели для
-							//элементов веб-страницы, имеющих атрибут
-							//data-toggle="popover"
-							$('[data-toggle="popover"]').popover({
-							//Установление направления отображения popover
-							placement : 'top'
+					<h2>Результат поиска по Digikey</h2>			
+					
+						<div class="catalog-items{' lines'[$view = 'list']}">
+							<xsl:if test="$view = 'list'">
+								<xsl:apply-templates select="page/product" mode="lines"/>
+							</xsl:if>
+							<xsl:if test="not($view = 'list')">
+								<xsl:apply-templates select="page/product"/>
+							</xsl:if>
+						</div>
+						<script type="text/javascript">
+							$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+								type: 'image',
+								closeOnContentClick: true,
+								mainClass: 'mfp-img-mobile',
+								image: {
+									verticalFit: true
+								}
 							});
-						});
-					</script>
+							$(document).ready(function(){
+								//Инициализация всплывающей панели для
+								//элементов веб-страницы, имеющих атрибут
+								//data-toggle="popover"
+								$('[data-toggle="popover"]').popover({
+								//Установление направления отображения popover
+								placement : 'top'
+								});
+							});
+						</script>
+					
 				</div>
 			</xsl:if>
 			<xsl:if test="not(page/product)">
-				<div id="extra_search_2" class="result"></div>
+				<div id="extra_search_2" class="result">
+					<h2>Результат поиска по Digikey</h2>
+					<p>Товары не найдены</p>
+				</div>
 			</xsl:if>
 		</div>
 	</xsl:template>
@@ -79,6 +84,7 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
+				
 				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
 						<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/> -->
@@ -95,6 +101,7 @@
 					</xsl:for-each>
 				</div> -->
 			</div>
+			<div class="nds" style="margin-top: -8px; margin-bottom: 10px;">*цена включает НДС</div>
 			<div class="device__order">
 				<div id="cart_list_{code}">
 					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
@@ -183,6 +190,7 @@
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
 				</div>
+				<div class="nds">*цена c НДС</div>
 				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
 						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
@@ -204,6 +212,7 @@
 				<div id="cart_list_{code}">
 					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
+							<input type="hidden" value="{producer_code}" name="vendor_code"/>
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
@@ -217,6 +226,7 @@
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
+							<input type="hidden" value="{producer_code}" name="vendor_code"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>

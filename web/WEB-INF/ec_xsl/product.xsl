@@ -106,7 +106,11 @@
 						<xsl:if test="f:num($p/price) &gt; 0">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog($p/price_old, '','')"/></span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="f:price_catalog($p/price, $p/unit, $p/min_qty)" /></div>
+								<div class="price_normal">
+									<xsl:value-of select="f:price_catalog($p/price, $p/unit, $p/min_qty)" />
+									<div class="nds">*Цена включает НДС</div>
+								</div>
+
 							</div>
 						</xsl:if>
 						<xsl:if test="f:num($p/price) = 0">

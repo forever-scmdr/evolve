@@ -158,17 +158,20 @@
 		<!-- RUB -->
 		<parameter name="currency_ratio" caption="Курс российского рубля" type="double" description="Курс НБРБ. за 100 рос. руб дают ... бел. руб."/>
 		<parameter name="q1" caption="Прибавка к курсу российского рубля"  type="double" description="0.03 = +3%" />
-		<parameter name="q2" caption="Прибавка к цене товараов с Платана"  type="double" description="0.03 = +3%" />
 
 		<!-- USD -->
 		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
 		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
 
 		<!-- EUR -->
 		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1€ дают ... бел. руб."/>
 		<parameter name="q1_eur" caption="Прибавка к Eur"  type="double" description="0.03 = +3%" />
+
+		<!-- Надбавки -->
+		<parameter name="q2" caption="Прибавка к цене товараов с Платана"  type="double" description="0.03 = +3%" />
+		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
 		<parameter name="q2_eur" caption="Прибавка к цене товараов с Farnell"  type="double" description="0.03 = +3%" />
+		<parameter name="q2_prom" caption="Прибавка к цене товараов с Promelec"  type="double" description="0.03 = +3%" />
 
 <!--		<on-update class="ecommander.fwk.CopyToUpload"/>-->
 	</item>
