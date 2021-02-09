@@ -24,6 +24,8 @@
     <xsl:variable name="q1_eur" select="f:num($catalog/q1_eur)"/>
     <xsl:variable name="q2_eur" select="f:num($catalog/q2_eur)"/>
 
+    <xsl:variable name="qp" select="f:num($catalog/q2_prom)"/>
+
     <!-- AUTOCONVERSIONS -->
 
     <!-- Catalog -->
@@ -72,6 +74,11 @@
         <xsl:sequence select="concat((if($curr = 'byn') then f:eur_to_byn($price) else f:eur_to_rur($price)), ' ', upper-case($curr))"/>
     </xsl:function>
 
+    <!-- Promelec -->
+    <xsl:function name="f:price_promelec">
+        <xsl:param name="price" as="xs:string?" />
+        <xsl:sequence select="concat((if($curr = 'byn') then f:rur_to_byn_promelec($price) else f:rur_to_rur_promelec($price)), ' ', upper-case($curr))"/>
+    </xsl:function>
 
     <!-- TO RUR CONVERSIONS -->
     <xsl:function name="f:byn_to_rur">
@@ -79,10 +86,16 @@
        <xsl:variable name="price_rur" select="(f:num($price) * 100) div $ratio_rur * (1 + $q1_rur)" />
        <xsl:sequence select="f:number_decimal($price_rur)"/>
     </xsl:function>
-    
+
     <xsl:function name="f:rur_to_rur">
         <xsl:param name="price" as="xs:string?" />
         <xsl:variable name="price_rur" select="f:num($price) * (1 + $q1_rur) * (1 + $q2_rur)" />
+        <xsl:sequence select="f:number_decimal($price_rur)"/>
+    </xsl:function>
+
+    <xsl:function name="f:rur_to_rur_promelec">
+        <xsl:param name="price" as="xs:string?" />
+        <xsl:variable name="price_rur" select="f:num($price) * (1 + $q1_rur) * (1 + $qp)" />
         <xsl:sequence select="f:number_decimal($price_rur)"/>
     </xsl:function>
 
@@ -104,6 +117,12 @@
     <xsl:function name="f:rur_to_byn">
         <xsl:param name="price" as="xs:string?" />
         <xsl:variable name="price_byn" select="(f:num($price) div 100) * $ratio_rur * (1 + $q1_rur) * (1 + $q2_rur)" />
+        <xsl:sequence select="f:number_decimal($price_byn)"/>
+    </xsl:function>
+
+    <xsl:function name="f:rur_to_byn_promelec">
+        <xsl:param name="price" as="xs:string?" />
+        <xsl:variable name="price_byn" select="(f:num($price) div 100) * $ratio_rur * (1 + $q1_rur) * (1 + $qp)" />
         <xsl:sequence select="f:number_decimal($price_byn)"/>
     </xsl:function>
 

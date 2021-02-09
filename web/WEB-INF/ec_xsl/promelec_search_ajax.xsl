@@ -54,13 +54,13 @@
 			</div>
 			<div class="device__price">
 				<div class="price_normal">
-					от <xsl:value-of select="$min_price"/>/шт.
+					от <xsl:value-of select="f:price_promelec(string($min_price))"/>/шт.
 				</div>
 			</div>
 			<xsl:if test="not(vendors/vendor)">
 				<xsl:variable name="prices">
 					<xsl:for-each select="$pricebreaks/break">
-						<xsl:value-of select="concat(@quant, '+ ', '&lt;strong&gt;', @price, '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+						<xsl:value-of select="concat(@quant, '+ ', '&lt;strong&gt;', f:price_promelec(@price), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
 				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$prices}">Цена зависит от количества</a>
@@ -70,6 +70,7 @@
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:if test="vendors/vendor">
+				<input type="submit" class="button" value="Подробнее"/>
 				<div id="price-popup-{@id}">
 					<xsl:variable name="id" select="@id"/>
 					<xsl:variable name="name" select="@name"/>
@@ -125,13 +126,13 @@
 		<xsl:param name="pic" select="$vendor/@photo_url"/>
 
 		<xsl:variable name="code" select="if($id != $vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
-		<xsl:variable name="map" select="string-join(pricebreaks/break/concat(@quant, ':', @price), ';')"/>
+		<xsl:variable name="map" select="string-join(pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>
 
 		<div class="device__order">
 			<div id="cart_list_{concat($id, $code)}">
 				<form action="cart_action/?action=addPromelecToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 					<input type="hidden" value="{$name}" name="vendor_code"/>
-					<input type="hidden" value="{if(f:num(@qant) != 0) then 1 else 0}" name="available"/>
+					<input type="hidden" value="{if(f:num(@qant) != 0) then 0 else 1}" name="not_available"/>
 					<input type="hidden" value="promelec" name="aux"/>
 
 					<input type="hidden" value="{$name}" name="name"/>
