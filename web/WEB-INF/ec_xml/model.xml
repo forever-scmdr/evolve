@@ -524,7 +524,7 @@
 		<child item="video" inline="true"/>
 	</item>
 
-	<item name="video" caption="Видеоролик" key="name" ag-id="1817" ag-hash="112202875">
+	<item name="video" caption="Видеоролик" key="name" ag-id="1867" ag-hash="112202875">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 	</item>
@@ -686,7 +686,7 @@
 	Может быть много инпутов с одним названием, в качестве значений инпутов могут быть файлы.
 	"Физически" значения полей в айтеме формы хранятся в extra.
 	-->
-	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1818" ag-hash="-263108052">
+	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1841" ag-hash="-263108052">
 	</item>
 
 	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="828" ag-hash="442678893">
@@ -935,6 +935,17 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
+	<item name="styles" caption="Cтили" ag-id="1868" ag-hash="-891774750">
+		<parameter name="css" caption="дополнительный файл CSS" type="file"/>
+		<child item="label_style"/>
+	</item>
+
+	<item name="label_style" key="name" caption="Стиль ярлыка" ag-id="1869" ag-hash="404813990">
+		<parameter name="name" type="string" caption="Название"
+		 description="должно совпадать с ярлыком в товаре"/>
+		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
@@ -953,6 +964,7 @@
 		<child item="seo_catalog" single="true"/>
 		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
+		<child item="styles" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
