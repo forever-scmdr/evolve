@@ -113,3 +113,10 @@ $(document).on("click", "body", function(e){
 		$(".popup-text-menu").hide();
 	}
 });
+
+$(document).on("click", ".pop", function(e){
+	var trg = $(e.target);
+	if(trg.is(".pop__close") || trg.closest(".pop__close").length > 0 || (trg.closest(".pop__body").length == 0 && !trg.is(".pop__body"))){
+		$(this).hide();
+	}
+});

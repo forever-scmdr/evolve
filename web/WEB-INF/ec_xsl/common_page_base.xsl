@@ -853,7 +853,7 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js?v=1.0"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="js/fwk/common.js"/>
+				<script type="text/javascript" src="js/fwk/common.js?v=1"/>
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){

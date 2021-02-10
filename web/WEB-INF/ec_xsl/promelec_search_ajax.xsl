@@ -85,7 +85,51 @@
 		<xsl:variable name="pricebreaks" select="if(pricebreaks != '') then pricebreaks else vendors/vendor/pricebreaks" />
 		<xsl:variable name="min_price" select="min($pricebreaks/break/f:num(@price))"/>
 
-
+		<div class="device device_row">
+			<a class="device__image device_row__image"
+			   style="background-image: url('{if(@photo_url != '') then @photo_url else 'img/no_image.png'}');">&nbsp;
+			</a>
+			<div class="device__info">
+				<a class="device__title">
+					<xsl:value-of select="@name"/>
+				</a>
+				<div class="device__description">
+					<p class="basics">
+						<span><b>Код:</b>&#160;<xsl:value-of select="@item_id"/></span><br/>
+						<span><b>Производитель:</b>&#160;<xsl:value-of select="@producer_name" /></span>
+						<xsl:if test="@description != ''">
+							<br/><span><b>Описание:</b>&#160;<xsl:value-of select="@description" disable-output-escaping="yes" /></span>
+						</xsl:if>
+					</p>
+				</div>
+			</div>
+			<div class="device__article-number"><xsl:value-of select="@item_id"/></div>
+			<div class="device__actions device_row__actions"></div>
+			<div class="device__price device_row__price">
+				<div class="price_normal">
+					от <xsl:value-of select="f:price_platan(string($min_price))"/> за шт.
+				</div>
+				<div class="nds">*цена c НДС</div>
+				<xsl:if test="not(vendors/vendor)">
+					<div class="manyPrice__item">
+						<xsl:for-each select="$pricebreaks/break">
+							<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
+							<div class="manyPrice__price"><xsl:value-of select="f:price_promelec(@price)" /></div>
+						</xsl:for-each>
+					</div>
+				</xsl:if>
+			</div>
+			<div class="device__order device_row__order">
+				<xsl:if test="not(vendors/vendor)">
+					<xsl:call-template name="CART_CORE">
+						<xsl:with-param name="vendor" select="." />
+					</xsl:call-template>
+				</xsl:if>
+				<xsl:if test="vendors/vendor">
+					<input type="submit" onclick="$('#price-popup-{./@item_id}').show()" class="button" value="Подробнее"/>
+				</xsl:if>
+			</div>
+		</div>
 	</xsl:template>
 
 	<xsl:template name="CART_POPUP">
@@ -95,7 +139,7 @@
 			<div class="pop__body">
 				<div class="pop__title">
 					<xsl:value-of select="string-join(($row/@name, $row/@class2name), ' ')"/>
-					<a href="" class="pop__close"><img src="{//page/base}/img/icon-close.png" alt=""/></a>
+					<a class="pop__close"><img src="{//page/base}/img/icon-close.png" alt=""/></a>
 					<p style="font-size: 16px; font-weight: normal;">
 						<xsl:value-of select="$row/@description" disable-output-escaping="yes" />
 					</p>
