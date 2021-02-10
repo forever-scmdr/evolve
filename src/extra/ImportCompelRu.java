@@ -121,10 +121,11 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 				if (StringUtils.isNotBlank(code)) {
 					code += "co";
 					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
-					if (prod == null) {
-						prod = Product.get(Item.newChildItem(productType, section));
-						prod.set_code(code);
+					if (prod != null) {
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(prod));
 					}
+					prod = Product.get(Item.newChildItem(productType, section));
+					prod.set_code(code);
 					String name = row.getString(NAME_HEADER);
 					prod.set_name(name);
 					prod.set_available(defaultDelay);
