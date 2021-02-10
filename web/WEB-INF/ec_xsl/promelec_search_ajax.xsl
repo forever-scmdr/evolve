@@ -107,7 +107,7 @@
 			<div class="device__actions device_row__actions"></div>
 			<div class="device__price device_row__price">
 				<div class="price_normal">
-					от <xsl:value-of select="f:price_platan(string($min_price))"/> за шт.
+					от <xsl:value-of select="f:price_promelec(string($min_price))"/> за шт.
 				</div>
 				<div class="nds">*цена c НДС</div>
 				<xsl:if test="not(vendors/vendor)">
