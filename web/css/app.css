@@ -9077,7 +9077,7 @@ label input {
 	position: relative;
 	font-size: 24px;
 	font-weight: 700;
-	margin-bottom: 50px;
+	/*margin-bottom: 50px;*/
 }
 .pop__close {
 	position: absolute;

@@ -128,15 +128,15 @@
 							<div><xsl:value-of select="@quant"/>+</div>
 							<div><xsl:value-of select="f:price_promelec(@price)"/></div>
 						</div>
-						<div class="pop-price__order">
-							<xsl:call-template name="CART_CORE">
-								<xsl:with-param name="vendor" select="$vendor" />
-								<xsl:with-param name="name" select="$name"/>
-								<xsl:with-param name="id" select="$id"/>
-								<xsl:with-param name="pic" select="$pic"/>
-							</xsl:call-template>
-						</div>
 					</xsl:for-each>
+					<div class="pop-price__order" style="max-width: 150px; margin-top: 1rem;">
+						<xsl:call-template name="CART_CORE">
+							<xsl:with-param name="vendor" select="$vendor" />
+							<xsl:with-param name="name" select="$name"/>
+							<xsl:with-param name="id" select="$id"/>
+							<xsl:with-param name="pic" select="$pic"/>
+						</xsl:call-template>
+					</div>
 				</div>
 			</div>
 		</xsl:if>
