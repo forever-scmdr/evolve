@@ -162,6 +162,7 @@
 
 	<page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
+		<link name="canonical_link" target="catalog"/>
 		<single item="catalog">
 			<single item="seo" assoc="seo"/>
 		</single>
@@ -186,6 +187,7 @@
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section">
 				<var name="sec" ref="cur_sec" style="key"/>
+				<var name="page" var="page"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -486,6 +488,7 @@
 		<link name="set_currency_rur" target="search" copy-page-vars="yes">
 			<var name="currency" value="rur"/>
 		</link>
+		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
 		<include name="COMMON"/>
 	</page>
 
