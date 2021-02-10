@@ -35,7 +35,7 @@
 	</xsl:template>
 
 	<xsl:template match="row">
-		<xsl:variable name="pricebreaks" select="if(pricebreaks != '') then pricebreaks else vendor/pricebreaks" />
+		<xsl:variable name="pricebreaks" select="if(pricebreaks != '') then pricebreaks else vendors/vendor/pricebreaks" />
 		<xsl:variable name="min_price" select="min($pricebreaks/break/f:num(@price))"/>
 
 		<div class="device items-catalog__device">
@@ -76,23 +76,26 @@
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:if test="vendors/vendor">
-				<input type="submit" class="button" value="Подробнее"/>
+				<input type="submit" onclick="$('#price-popup-{./@item_id}').show()" class="button" value="Подробнее"/>
 			</xsl:if>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="row" mode="lines">
+		<xsl:variable name="pricebreaks" select="if(pricebreaks != '') then pricebreaks else vendors/vendor/pricebreaks" />
+		<xsl:variable name="min_price" select="min($pricebreaks/break/f:num(@price))"/>
+
 
 	</xsl:template>
 
 	<xsl:template name="CART_POPUP">
 		<xsl:param name="row" />
 
-		<div class="pop" id="price-popup-{$row/@item_id}">
+		<div class="pop" id="price-popup-{$row/@item_id}" style="display: none;">
 			<div class="pop__body">
 				<div class="pop__title">
 					<xsl:value-of select="string-join(($row/@name, $row/@class2name), ' ')"/>
-					<a href="" class="pop__close"><img src="img/icon-close.png" alt=""/></a>
+					<a href="" class="pop__close"><img src="{//page/base}/img/icon-close.png" alt=""/></a>
 					<p style="font-size: 16px; font-weight: normal;">
 						<xsl:value-of select="$row/@description" disable-output-escaping="yes" />
 					</p>
@@ -104,8 +107,8 @@
 					<xsl:for-each select="$row/vendors/vendor">
 						<xsl:call-template name="POPUP_PRICE_VARIANT">
 							<xsl:with-param name="vendor" select="."/>
-							<xsl:with-param name="name" select="$row/name"/>
-							<xsl:with-param name="id" select="$row/id"/>
+							<xsl:with-param name="name" select="$row/@name"/>
+							<xsl:with-param name="id" select="$row/@item_id"/>
 							<xsl:with-param name="pic" select="$row/@photo_url" />
 						</xsl:call-template>
 					</xsl:for-each>
@@ -122,6 +125,9 @@
 
 		<xsl:if test="$vendor/pricebreaks/break">
 			<div class="pop-prices__item pop-price">
+				<div class="pop-price__price" style="font-size: 16px;">
+					<xsl:value-of select="concat('Доступно: ', @quant, 'шт.')" />
+				</div>
 				<div class="pop-price__variants">
 					<xsl:for-each select="$vendor/pricebreaks/break">
 						<div class="pop-price__variant">
@@ -145,7 +151,7 @@
 
 	<xsl:template name="CART_CORE">
 		<xs:param name="vendor" />
-		<xs:param name="name"  select="$vendor/@name"/>
+		<xs:param name="name" select="$vendor/@name"/>
 		<xs:param name="id" select="$vendor/@item_id" />
 		<xsl:param name="pic" select="$vendor/@photo_url"/>
 

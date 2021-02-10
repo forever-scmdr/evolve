@@ -218,7 +218,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		bought.setValueUI("price_map", getVarSingleValue("price_map"));
 		getSessionMapper().saveTemporaryItem(bought);
 		recalculateCart();
-		return getResult("aux");
+		return getResult("ajax");
 	}
 
 	@Override

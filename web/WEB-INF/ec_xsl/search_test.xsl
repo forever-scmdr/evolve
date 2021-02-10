@@ -84,11 +84,11 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-			})
 
+			});
 		</script>
 	</xsl:template>
 

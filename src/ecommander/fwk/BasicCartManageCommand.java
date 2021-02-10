@@ -419,6 +419,7 @@ public abstract class BasicCartManageCommand extends Command {
         bought.setValue(QTY_TOTAL_PARAM, qtyTotal);
         bought.setValue(QTY_PARAM, qty);
         bought.setValue(NOT_AVAILABLE, qtyAvail == qtyTotal ? (byte) 0 : (byte) 1);
+        getSessionMapper().saveTemporaryItem(bought);
     }
 
 
@@ -524,9 +525,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
-			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+			double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
 
 			if (totalQty <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
