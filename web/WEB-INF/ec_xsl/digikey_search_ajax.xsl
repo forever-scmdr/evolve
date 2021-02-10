@@ -38,6 +38,11 @@
 					<th>Мин. заказ</th>
 					<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
 					<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
+					<xsl:if test="page/variables/admin = 'true'">
+						<th>Начальная цена</th>
+						<th>Склад</th>
+						<th>Обновлено</th>
+					</xsl:if>
 					<th>Заказать</th>
 				</tr>
 				<xsl:apply-templates select="page/product" />
@@ -117,9 +122,22 @@
 					</p>
 				</xsl:for-each>
 			</td>
+
+			<xsl:if test="//page/variables/admin = 'true'">
+				<td>
+					<xsl:for-each select="spec_price_map" >
+					<p>
+						<xsl:value-of select="f:convert_curr_no_extra(@price)"/>
+					</p>
+				</xsl:for-each>
+				</td>
+				<td>digikey.com</td>
+				<td></td>
+			</xsl:if>
+
 			<td id="cart_search_{code}">
 				<form action="cart_action/?action=addDigiKeyToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">
-					<!-- <input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/> -->
+					<input type="number" name="qty" value="{min_qty}" min="{min_qty}" step="{min_qty}"/>
 					<input type="hidden" name="img" value="{main_pic}"/>
 					<input type="hidden" name="map" value="{spec_price}"/>
 					<input type="hidden" value="{name}" name="name"/>
@@ -128,7 +146,7 @@
 					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
 					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="hidden" value="{url}" name="url"/>
-					<!-- <input type="submit" value="Заказать"/> -->
+					<input type="submit" value="Заказать"/>
 				</form>
 			</td>
 		</tr>
@@ -149,6 +167,24 @@
 			</xsl:when>
 			<xsl:when test="$currency = 'EUR'">
 				<xsl:sequence select="format-number(f:eur($str), '#0.0000')"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:function>
+
+	<xsl:function name="f:convert_curr_no_extra">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:choose>
+			<xsl:when test="$currency = 'BYN'">
+				<xsl:sequence select="format-number(f:byn_n($str), '#0.0000')"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'USD'">
+				<xsl:sequence select="format-number(f:usd_n($str), '#0.0000')"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'RUB'">
+				<xsl:sequence select="format-number(f:rub_n($str), '#0.0000')"/>
+			</xsl:when>
+			<xsl:when test="$currency = 'EUR'">
+				<xsl:sequence select="format-number(f:eur_n($str), '#0.0000')"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:function>
@@ -179,6 +215,27 @@
 		<xsl:sequence select="$byn div (f:num($cur_list/RUB_rate) * (f:num($cur_list/RUB_extra)+1) ) * f:num($cur_list/RUB_scale)" />
 	</xsl:function>
 
+	<xsl:function name="f:byn_n" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="usd" select="f:num($str)"/>
+		<xsl:sequence select="$usd * (f:num($cur_list/USD_rate) * 1) div f:num($cur_list/USD_scale)"/>
+	</xsl:function>
+	<xsl:function name="f:usd_n" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn_n($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/USD_rate) * 1) * f:num($cur_list/USD_scale)" />
+	</xsl:function>
 
-</xsl:styleshe
-		et>
+	<xsl:function name="f:eur_n" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn_n($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/EUR_rate) * 1) * f:num($cur_list/EUR_scale)" />
+	</xsl:function>
+	<xsl:function name="f:rub_n" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:variable name="byn" select="f:byn_n($str)"/>
+		<xsl:sequence select="$byn div (f:num($cur_list/RUB_rate) * 1) * f:num($cur_list/RUB_scale)" />
+	</xsl:function>
+
+
+</xsl:stylesheet>

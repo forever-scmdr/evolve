@@ -59,9 +59,11 @@
 		</div>
 		<xsl:if test="not($multiple)">
 			<h1>Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
+			<a onclick="insertAjax('{$promelec_link}&amp;admin=true')">admin search test</a>
 		</xsl:if>
 		<xsl:if test="$multiple">
 			<h1>Результаты поиска</h1>
+			<a onclick="insertAjax('{$promelec_link}&amp;admin=true')">admin search test</a>
 		</xsl:if>
 
 		<div class="page-content m-t">
@@ -123,10 +125,17 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
-							<tbody id="extra-search-ajax">
+<!--							<tbody id="extra-search-ajax">-->
+<!--								<tr>-->
+<!--									<td colspan="10" style="text-align: center;">-->
+<!--										<h3>Идет поиск по дополнительному каталогу...</h3>-->
+<!--									</td>-->
+<!--								</tr>-->
+<!--							</tbody>-->
+							<tbody id="extra-search-ajax-promelec">
 								<tr>
 									<td colspan="10" style="text-align: center;">
-										<h3>Идет поиск по дополнительному каталогу...</h3>
+										<h3>Идет поиск по каталогу promelec...</h3>
 									</td>
 								</tr>
 							</tbody>
@@ -296,7 +305,7 @@
 		<xsl:if test="count(page/variables/q) = 1">
 			<script>
 				$(document).ready(function() {
-					insertAjax('<xsl:value-of select="$l"/>');
+<!--					insertAjax('<xsl:value-of select="$l"/>');-->
 					insertAjax('<xsl:value-of select="$promelec_link"/>');
 				});
 			</script>

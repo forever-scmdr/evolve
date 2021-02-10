@@ -28,6 +28,14 @@
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 
 
+	<xsl:template name="SEARCH_FORM">
+		<form action="{page/search_link[1]}" method="post">
+			<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" autocomplete="off" id="q-ipt"/>
+			<input type="submit" value="Найти"/>
+			<div id="search-result"></div>
+		</form>
+	</xsl:template>
+
 
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="container-fluid top-stripe desktop">
@@ -43,11 +51,7 @@
 							<a href="{$main_host}"><img src="img/logo.png" alt="На главную страницу" /></a>
 						</div>
 						<div class="search">
-							<form action="{page/search_link[1]}" method="post">
-								<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" autocomplete="off" id="q-ipt"/>
-								<input type="submit" value="Найти"/>
-								<div id="search-result"></div>
-							</form>
+							<xsl:call-template name="SEARCH_FORM"/>
 							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
 							<!-- <form action="{page/excel_search_link}" method="post" enctype="multipart/form-data">
 								<input type="file" name="file"/>
@@ -278,7 +282,7 @@
 						}
 					</script>
 					<div class="modal-body">
-						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро нахдить большое количество товаров.</p>
+						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро находить большое количество товаров.</p>
 						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 						<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
 						<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
@@ -799,7 +803,7 @@
 				<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:100,300,400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet" />
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/app.css?version=3.2"/>
+				<link rel="stylesheet" href="css/app.css?version=3.19"/>
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>

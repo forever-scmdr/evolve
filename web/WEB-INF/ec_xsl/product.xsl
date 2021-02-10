@@ -89,8 +89,9 @@
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<td><xsl:value-of select="qty"/><xsl:text> </xsl:text><xsl:value-of select="$unit"/></td>
 			<td>
-				<xsl:if test="available and not(available = '0')"><xsl:value-of select="f:num(available) * 7"/> дней</xsl:if>
-				<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+					<xsl:if test="available and not(available = '0') and f:num(available) &gt; 0"><xsl:value-of select="f:num(available) * 7"/> дней</xsl:if>
+					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
+					<xsl:if test="available and f:num(available) &lt; 0">по запросу</xsl:if>
 			</td>
 			<td><xsl:value-of select="$unit"/></td>
 			<td><xsl:value-of select="$min_qty"/></td>
@@ -185,10 +186,11 @@
 				</xsl:for-each>
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 				<xsl:if test="$has_price">
+					<!--
 					<div class="price">
-						<!-- <p><span>Старая цена</span>100 р.</p> -->
-						<p><!-- <span>Новая цена</span> --><span>Цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
+						<p><span>Цена</span><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</p>
 					</div>
+					-->
 				</xsl:if>
 				<div class="order">
 					<xsl:if test="not($price_items)">
@@ -206,10 +208,12 @@
 							</form>
 						</div>
 					</xsl:if>
+					<!--
 					<xsl:choose>
 						<xsl:when test="$p/qty and $p/qty != '0'"><div class="quantity">Осталось <xsl:value-of select="$p/qty"/> шт.</div></xsl:when>
-						<xsl:otherwise><!-- <div class="quantity">Нет на складе</div> --></xsl:otherwise>
+						<xsl:otherwise>- <div class="quantity">Нет на складе</div> -</xsl:otherwise>
 					</xsl:choose>
+					-->
 				</div>
 				<div class="links">
 					<div id="compare_list_{$p/code}">

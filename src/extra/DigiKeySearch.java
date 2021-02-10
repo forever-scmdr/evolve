@@ -8,17 +8,12 @@ import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import okhttp3.*;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Properties;
@@ -162,13 +157,13 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	}
 
 	private ResultPE buildXML(String jsonString) throws Exception {
-		File out = Paths.get(AppContext.getContextPath(), "search_result.json").toFile();
-		FileUtils.deleteQuietly(out);
-		FileUtils.writeStringToFile(out, jsonString, Charset.forName("UTF-8"));
-		if(SystemUtils.IS_OS_LINUX){
-			Path ecXml = Paths.get(AppContext.getContextPath(), "search_result.json");
-			Runtime.getRuntime().exec(new String[]{"chmod", "775", ecXml.toAbsolutePath().toString()});
-		}
+//		File out = Paths.get(AppContext.getContextPath(), "search_result.json").toFile();
+////		FileUtils.deleteQuietly(out);
+////		FileUtils.writeStringToFile(out, jsonString, Charset.forName("UTF-8"));
+////		if(SystemUtils.IS_OS_LINUX){
+////			Path ecXml = Paths.get(AppContext.getContextPath(), "search_result.json");
+////			Runtime.getRuntime().exec(new String[]{"chmod", "775", ecXml.toAbsolutePath().toString()});
+////		}
 		long start = System.currentTimeMillis();
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
