@@ -66,6 +66,7 @@ public class PromelecSearchCommand extends Command {
 		addCurrencyRatios(outputPage);
 		//String re = response.body().string();
 		Document searchResult = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
+		searchResult.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml);
 		Elements el = searchResult.select("rowdata");
 		if(!el.isEmpty()){
 			outputPage.startElement("result");

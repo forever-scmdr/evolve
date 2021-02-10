@@ -9055,3 +9055,93 @@ label input {
 	font-size: 13px;
 	color: #828282;
 }
+.pop {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+}
+.pop__body {
+	margin: auto;
+	width: 600px;
+	max-height: 80%;
+	background: #fff;
+	padding: 50px;
+	border-radius: 4px;
+}
+.pop__title {
+	padding-right: 50px;
+	position: relative;
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 50px;
+}
+.pop__close {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.pop-prices {
+	display: flex;
+	justify-content: space-between;
+}
+.pop-price {
+	display: flex;
+	flex-direction: column;
+	margin-right: 50px;
+}
+.pop-price:last-child {
+	margin-right: 0;
+}
+.pop-price__price {
+	font-size: 18px;
+	font-weight: 700;
+}
+.pop-price__description {
+	font-size: 13px;
+	color: gray;
+}
+.pop-price__variants {
+	margin: 20px 0;
+}
+.pop-price__variant {
+	font-size: 13px;
+	display: flex;
+}
+.pop-price__variant > div:first-child {
+	flex: 0 0 50px;
+}
+.pop-price__variant > div:last-child {
+	flex: 0 0 auto;
+	font-weight: 700;
+}
+.pop-price__order form {
+	display: flex;
+	height: 30px;
+}
+.pop-price__order input[type='number'] {
+	padding: 5px 7px;
+	flex: 0 0 50px;
+	width: 50px;
+	margin-right: 5px;
+	border: none;
+	box-shadow: inset 0 0 15px #b7b7b7 !important;
+	padding: 5px;
+	border-radius: 2px !important;
+}
+.pop-price__order button {
+	flex: 0 0 auto;
+	border: none;
+	background: linear-gradient(#6eade2, #387eba 49%, #1d68a9 51%, #174973);
+	color: #ffffff;
+	cursor: pointer;
+	border-radius: 4px;
+	padding: 2px 8px;
+}
+.pop-price__status {
+	color: green;
+	margin-top: 20px;
+}

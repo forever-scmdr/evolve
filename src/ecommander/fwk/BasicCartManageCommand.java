@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TreeMap;
 
 /**
  * Управление корзиной
@@ -516,15 +515,6 @@ public abstract class BasicCartManageCommand extends Command {
 	    checkStrategy();
 		loadCart();
 
-		Item catalog = ItemQuery.loadSingleItemByName("catalog");
-		double ratioUsd = catalog.getDoubleValue("currency_ratio_usd");
-		double q1Usd = 1 + catalog.getDoubleValue("q1_usd", 0d);
-		double q2Usd = 1 + catalog.getDoubleValue("q2_usd", 0d);
-
-		double ratioEur = catalog.getDoubleValue("currency_ratio_eur");
-		double q1Eur = 1 + catalog.getDoubleValue("q1_eur", 0d);
-		double q2Eur = 1 + catalog.getDoubleValue("q2_eur", 0d);
-
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal totalSum = new BigDecimal(0); // полная сумма
 		double totalQuantity = 0;
@@ -538,50 +528,12 @@ public abstract class BasicCartManageCommand extends Command {
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 
-			extraActionWithBought(bought, product);
-			String aux = bought.getStringValue("aux");
-			if(StringUtils.isNotBlank(aux) && "platan".equals(aux)) {
-				//product = getSessionMapper().getSingleItemByName(ItemNames.PRODUCT, bought.getId());
-				double specQ = product.getDoubleValue("spec_qty", Double.MAX_VALUE);
-				if(bought.getDoubleValue(QTY_AVAIL_PARAM, 0d) >= specQ){
-					product.setValue(PRICE_PARAM, product.getValue(PRICE_OPT_PARAM));
-				}else{
-					product.setValue(PRICE_PARAM, product.getValue("price_old"));
-				}
-			}else if("digikey".equals(aux)){
-				String specPrice = bought.getStringValue("price_map");
-				TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioUsd, q1Usd, q2Usd);
-
-				if(priceMap.size() > 0){
-					for(Double breakpoint : priceMap.keySet()){
-						if(breakpoint <= totalQty){
-							product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
-						}
-						else{
-							break;
-						}
-					}
-				}
-			}else if("farnell".equals(aux)){
-				String specPrice = bought.getStringValue("price_map");
-				TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioEur, q1Eur, q2Eur);
-
-				if(priceMap.size() > 0){
-					for(Double breakpoint : priceMap.keySet()){
-						if(breakpoint <= totalQty){
-							product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
-						}
-						else{
-							break;
-						}
-					}
-				}
-			}
-
 			if (totalQty <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
 				result = false;
 			} else {
+
+				extraActionWithBought(bought);
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
 				BigDecimal productSum = price.multiply(new BigDecimal(availableQty).divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d))));
@@ -601,20 +553,9 @@ public abstract class BasicCartManageCommand extends Command {
 		return result && totalQuantity > 0;
 	}
 
-	protected void extraActionWithBought(Item bought, Item product){}
+	protected void extraActionWithBought(Item bought) throws Exception {}
 
-	private TreeMap<Double, String> parsePriceMap(String specPrice, double ratio, double q1, double q2) throws Exception {
-		if(StringUtils.isBlank(specPrice) || specPrice.indexOf(':') == -1) return new TreeMap<>();
-		TreeMap<Double, String> result = new TreeMap<>();
-		String[] z = specPrice.split(";");
-		for(String pair : z){
-			String[] p = pair.split(":");
-			Double q = DoubleDataType.parse(p[0]);
-			Double pr = DoubleDataType.parse(p[1]) * q1 * q2 * ratio;
-			result.put(q, String.valueOf(pr));
-		}
-		return result;
-	}
+
 
 	@Override
 	public ResultPE execute() throws Exception {

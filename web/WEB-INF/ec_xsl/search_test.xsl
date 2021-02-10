@@ -69,7 +69,7 @@
 				<p>Поиск по каталогу DIGIKEY отключен.</p>
 			</div>
 			<div id="extra_search_3">
-				<h2>Идет поиск по FARNELL</h2>
+				<h2>Поиск по каталогу FARNELL отключен.</h2>
 			</div>
 			<div id="extra_search_4">
 				<h2>Идет поиск по PROMELEC</h2>
@@ -86,7 +86,7 @@
 			$(document).ready(function(){
 				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>');
 				//postForm('dgk-form');
-				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
+				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 			})
 
 		</script>
