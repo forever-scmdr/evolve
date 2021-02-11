@@ -48,7 +48,7 @@
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 									<input type="number" value="{qty}" name="{input/qty/@input}" class="input qty-input" data-old="{qty}"
-										   min="{if (min_qty) then min_qty else 1}" step="0.1" />
+										   min="{if (min_qty) then min_qty else 1}" step="{if (min_qty) then min_qty else 0.1}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">

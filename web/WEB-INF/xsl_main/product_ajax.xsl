@@ -155,7 +155,8 @@
 	<xsl:template name="CART">
 		<span id="cart_list_a_{$p/@id}">
 			<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_a_{$p/@id}" style="display: inline;">
-				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty" value="1" min="0" />
+				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty"
+					   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else 0.1}" />
 				<xsl:if test="$has_price">
 					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then $to_cart_available_label else $to_cart_na_label}"/>
 				</xsl:if>
