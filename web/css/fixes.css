@@ -7,3 +7,7 @@ input[type="number"] {
 .compare-items__item .device {
 	min-height: 410px;
 }
+.icon_size_lg {
+  width: 34px;
+  height: 34px;
+}
