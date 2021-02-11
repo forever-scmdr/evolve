@@ -95,7 +95,8 @@ table {
     line-height: 1.2; }
 
 input[type=number] {
-  width: 50px; }
+  width: 60px;
+  padding: 4px; }
 
 input[type=checkbox] {
   margin-right: 4px; }
@@ -114,7 +115,8 @@ input[type=checkbox] {
   padding: 8px 16px;
   background-color: #E6D0B0;
   color: #212121;
-  border: 1px solid #E6D0B0; }
+  border: 1px solid #E6D0B0;
+  min-height: 28px; }
   .button_secondary {
     background-color: #212121;
     color: #212121;
@@ -557,7 +559,7 @@ img {
 .top-info__location {
   margin-right: 36px; }
   .top-info__location a {
-    color: rgb(0, 51, 204);
+    color: #0033cc;
     font-size: 16px; }
     .top-info__location a span {
       margin-right: -5px; }
@@ -956,6 +958,9 @@ img {
   .add__item .icon {
     height: 12px;
     margin-right: 0; }
+
+.compare-items__item .device {
+  min-height: 410px; }
 
 .device_row {
   flex-direction: row;
@@ -1613,11 +1618,21 @@ img {
 
 .device-basic__column:first-child {
   flex: 0 0 40%;
-  margin-right: 24px; }
+  margin-right: 24px;
+  position: relative; }
   @media (max-width: 425px) {
     .device-basic__column:first-child {
       flex-basis: 100%;
       margin-right: 0; } }
+  .device-basic__column:first-child .tags {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; }
+  .device-basic__column:first-child .tag {
+    margin-bottom: 5px; }
+    .device-basic__column:first-child .tag:last-child {
+      margin-bottom: 0; }
 
 .device-basic__column:last-child {
   flex: 1 1 auto; }
@@ -1782,8 +1797,7 @@ table.full-params th {
 
 .cart-item {
   display: grid;
-  grid-template-areas: "im in pr qt sm dl"
- "ex ex ex ex ex ex";
+  grid-template-areas: "im in pr qt sm dl" "ex ex ex ex ex ex";
   grid-template-columns: 100px 1fr 100px 100px 100px 20px;
   font-size: 13px;
   border: 1px solid #e0e0e0;
@@ -1795,9 +1809,7 @@ table.full-params th {
     margin-bottom: 4px; }
   @media (max-width: 425px) {
     .cart-item {
-      grid-template-areas: "im in in"
- "pr qt sm"
- "ex ex ex";
+      grid-template-areas: "im in in" "pr qt sm" "ex ex ex";
       grid-template-columns: 100px 1fr 1fr; } }
 
 .cart-item__image {
@@ -2001,10 +2013,68 @@ table.full-params th {
     color: gray;
     padding: 16px; }
 
+.location-list {
+  display: none;
+  position: absolute;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  top: 30px; }
+  .location-list li {
+    padding: 5px; }
+  .location-list a {
+    font-size: 14px;
+    color: #0072bc; }
+  .location-list:before {
+    content: '';
+    display: block;
+    border: 6px solid transparent;
+    border-bottom-color: #fff;
+    position: absolute;
+    top: -12px;
+    left: 10px; }
+
+.compared-container {
+  width: 100%;
+  overflow-x: auto; }
+
+.compared {
+  min-width: unset; }
+  .compared tr {
+    border: none; }
+  .compared td, .compared th {
+    width: 200px;
+    padding: 0;
+    padding-right: 15px; }
+    .compared td:last-child, .compared th:last-child {
+      padding-right: 0;
+      font-weight: unset; }
+  .compared th {
+    font-weight: unset;
+    padding-bottom: 15px; }
+  .compared .device {
+    width: 200px; }
+    .compared .device__name {
+      height: 56px;
+      overflow: hidden; }
+  .compared .compared__section {
+    font-weight: 700 !important;
+    font-size: 15px;
+    padding-top: 15px; }
+  .compared .compared__name {
+    font-size: 13px;
+    color: #9e9e9e;
+    padding-bottom: 0;
+    padding-top: 10px; }
+  .compared .compared__value {
+    font-size: 13px;
+    color: #333;
+    padding-top: 0; }
+
 body {
   color: #333; }
 
-.title_2 {
+.title_2, h2 {
   font-size: 28.5px;
   margin-bottom: 20px; }
 
@@ -2053,8 +2123,7 @@ body {
     margin-right: 19px; }
 
 input[type=number] {
-  font-size: 16px;
-  padding-left: 18px; }
+  font-size: 16px; }
 
 .order form > * {
   margin-right: 10px; }
@@ -2208,7 +2277,7 @@ input[type=number] {
 .path_common {
   margin-bottom: 0; }
 
-.title_1 {
+.title_1, h1 {
   font-size: 28px;
   margin-bottom: 34px; }
 
@@ -2264,7 +2333,7 @@ input[type=number] {
   .side-button + .side-info a {
     font-size: 14.7px; }
 
-.title_1 {
+.title_1, h1 {
   max-width: 770px;
   line-height: 1.1; }
 

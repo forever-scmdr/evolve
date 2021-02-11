@@ -102,6 +102,9 @@
 		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
+		<single item="styles">
+			<list item="label_style"/>
+		</single>
 	</include-definition>
 
 
@@ -309,9 +312,6 @@
 		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
 		</link>
-		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="144"/>
-		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
 		</link>
@@ -408,14 +408,17 @@
 		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_48" target="tag_section" copy-page-vars="yes">
+		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_96" target="tag_section" copy-page-vars="yes">
-			<var name="limit" value="96"/>
+		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="72"/>
 		</link>
-		<link name="set_limit_144" target="tag_section" copy-page-vars="yes">
-			<var name="limit" value="144"/>
+		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="96"/>
 		</link>
 		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
@@ -1174,6 +1177,9 @@
 			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1181,11 +1187,11 @@
 				<var name="src_page" value="fav"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS"/>
-			<!-- 
+			<!--
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			
+
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="prod" ref="prod"/>
