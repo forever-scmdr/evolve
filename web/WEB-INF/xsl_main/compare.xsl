@@ -13,6 +13,7 @@
 	<xsl:variable name="params_xml_item" select="page/product[1]/params_xml"/>
 
 	<xsl:variable name="products" select="page/product"/>
+	<xsl:variable name="test_params" select="$products/params/param[. != '']"/>
 
 
 	<xsl:template name="CONTENT">
@@ -38,8 +39,6 @@
 	<xsl:template match="params_xml">
 		<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', xml, '&lt;/params&gt;'))/params"/>
 
-		<xsl:variable name="test_params" select="$products/params/param[. != '']"/>
-
 		<xsl:for-each select="$params_xml/group">
 			<xsl:variable name="group_param_names" select="parameter/normalize-space(lower-case(name))"/>
 			<xsl:variable name="group_has_values" select="$test_params[normalize-space(lower-case(@caption)) = $group_param_names]"/>
@@ -50,24 +49,7 @@
 						<td class="compared__section"><xsl:value-of select="if($group/@name != '') then $group/@name else 'Дополнительно'"/></td>
 					</xsl:for-each>
 				</tr>
-				<xsl:for-each select="parameter">
-					<xsl:variable name="caption" select="name"/>
-					<xsl:variable name="name" select="lower-case(normalize-space(current()/name))"/>
-					<xsl:variable name="has_values" select="$test_params[lower-case(normalize-space(@caption)) = $name]"/>
-					<xsl:if test="$has_values">
-						<tr>
-							<xsl:for-each select="$products">
-								<td class="compared__name"><xsl:value-of select="$caption" /></td>
-							</xsl:for-each>
-						</tr>
-						<tr>
-							<xsl:for-each select="$products">
-								<xsl:variable name="v" select="params/param[lower-case(normalize-space(@caption)) = $name]" />
-								<td class="compared__value"><xsl:value-of select="$v" /></td>
-							</xsl:for-each>
-						</tr>
-					</xsl:if>
-				</xsl:for-each>
+				<xsl:apply-templates select="parameter"/>
 			</xsl:if>
 		</xsl:for-each>
 
@@ -80,27 +62,28 @@
 			</tr>
 		</xsl:if>
 
+		<xsl:apply-templates select="$params_xml/parameter"/>
 
-		<xsl:for-each select="$params_xml/parameter">
-			<xsl:variable name="caption" select="name"/>
-			<xsl:variable name="name" select="lower-case(normalize-space(current()/name))"/>
-			<xsl:variable name="has_values" select="$test_params[lower-case(normalize-space(@caption)) = $name]"/>
-			<xsl:if test="$has_values">
-				<tr>
-					<xsl:for-each select="$products">
-						<td class="compared__name"><xsl:value-of select="$caption" /></td>
-					</xsl:for-each>
-				</tr>
-				<tr>
-					<xsl:for-each select="$products">
-						<xsl:variable name="v" select="params/param[lower-case(normalize-space(@caption)) = $name]" />
-						<td class="compared__value"><xsl:value-of select="$v" /></td>
-					</xsl:for-each>
-				</tr>
-			</xsl:if>
-		</xsl:for-each>
+	</xsl:template>
 
 
+	<xsl:template match="parameter">
+		<xsl:variable name="caption" select="name"/>
+		<xsl:variable name="name" select="lower-case(normalize-space(current()/name))"/>
+		<xsl:variable name="has_values" select="$test_params[lower-case(normalize-space(@caption)) = $name]"/>
+		<xsl:if test="$has_values">
+			<tr>
+				<xsl:for-each select="$products">
+					<td class="compared__name"><xsl:value-of select="$caption" /></td>
+				</xsl:for-each>
+			</tr>
+			<tr>
+				<xsl:for-each select="$products">
+					<xsl:variable name="v" select="params/param[lower-case(normalize-space(@caption)) = $name]" />
+					<td class="compared__value"><xsl:value-of select="$v" /></td>
+				</xsl:for-each>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 
 

@@ -148,12 +148,12 @@
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else 0.1}"/>
 									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else 0.1}"/>
 									<!-- кнопка запросить цену на стрранице товара -->
 									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
@@ -235,11 +235,13 @@
 							<div class="multi-device__actions" id="cart_list_{@id}">
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty" value="1" min="0" />
+										<input type="number" class="text-input" name="qty"
+											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (min_qty) then min_qty else 0.1}" />
 										<input type="submit" class="button" value="{$to_cart_available_label}" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty" value="1" min="0" />
+										<input type="number" class="text-input" name="qty"
+											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (min_qty) then min_qty else 0.1}" />
 										<input type="submit" class="button" value="{$to_cart_na_label}" />
 									</xsl:if>
 								</form>
