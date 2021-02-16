@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"> 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -85,6 +85,13 @@
 		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
+				<div class="tags">
+					<xsl:for-each select="$p/label">
+						<div class="tag device__tag {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
+					</xsl:for-each>
+				</div>
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
@@ -212,7 +219,7 @@
 						<div style="padding-left: 0;">Размер</div>
 						<div>Цена</div>
 						<div></div>
-				
+
 						<xsl:for-each select="$p/line_product">
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
@@ -238,7 +245,7 @@
 								</form>
 							</div>
 						</xsl:for-each>
-				
+
 					</div>
 					<div class="multi-device__links">
 						<div id="compare_list_{$p/@id}">
@@ -337,8 +344,13 @@
 							<div class="card device">
 								<xsl:variable  name="main_pic" select="gallery[2]"/>
 								<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-								<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
-								<div class="text_size_sm"><xsl:value-of select="code"/></div>
+								<a href="{show_product}" class="device__image img">
+									<img src="{$pic_path}" alt="" />
+								</a>
+								<div class="text_size_sm">
+									<!-- <xsl:value-of select="code"/> -->
+									<xsl:value-of select="name_extra"/>
+								</div>
 							</div>
 						</div>
 					</xsl:for-each>

@@ -334,4 +334,11 @@
 
     </xsl:template>
 
+    <xsl:function name="f:translit">
+        <xsl:param name="el"/>
+        <xsl:variable name="ru" select="' абвгдеёжзийклмнопрстуфхцчшщъыьэюя%-'"/>
+        <xsl:variable name="en" select="'_abvgdeëğziïklmnoprstufhxcśś_ũ_Əjǎ-_'"/>
+        <xsl:sequence select="translate(lower-case(string($el)), $ru, $en)"/>
+    </xsl:function>
+
 </xsl:stylesheet>

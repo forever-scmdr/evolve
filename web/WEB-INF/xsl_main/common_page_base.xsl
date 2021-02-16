@@ -676,11 +676,25 @@
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.5"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
+
+				<xsl:if test="page/styles">
+					<xsl:if test="page/styles/css != ''">
+						<link rel="stylesheet" type="text/css" href="{concat(page/styles/@path,page/styles/css)}"/>
+					</xsl:if>
+					<style type="text/css">
+						<xsl:for-each select="page/styles/label_style">
+							.<xsl:value-of select="f:translit(name)"/>{
+								<xsl:value-of select="style" disable-output-escaping="yes"/>
+							}
+						</xsl:for-each>
+					</style>
+				</xsl:if>
+
 				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"/>
 				<xsl:if test="$seo/extra_style">
 					<style>
@@ -839,36 +853,46 @@
 
 	<xsl:template match="common_gallery" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a></div>
+			<div><a class="toggle" href="#spoiler-{@id}"  onclick="initNanoCommon{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a></div>
 		</xsl:if>
-		<div id="spoiler-{@id}">
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
 			<div id="nanogallery{@id}">
 				<script>
-					$(document).ready(function () {
-
-						$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-							// ### gallery settings ###
-							thumbnailHeight:  <xsl:value-of select="height"/>,
-							thumbnailWidth:   <xsl:value-of select="width"/>,
-							thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-							thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-							thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-							thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-							viewerToolbar: { display: false },
-							galleryLastRowFull:  false,
-
-							// ### gallery content ###
-							items: [
-							<xsl:for-each select="picture">
-								{
-									src: '<xsl:value-of select="concat(@path, pic)"/>',
-									srct: '<xsl:value-of select="concat(@path, pic)"/>',
-									title: '<xsl:value-of select="header"/>'
-								},
-							</xsl:for-each>
-							]
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+							initNanoCommon<xsl:value-of select="@id"/>();
 						});
-					});
+					</xsl:if>
+					function initNanoCommon<xsl:value-of select="@id"/>() {
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
+
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="picture">
+									{
+										src: '<xsl:value-of select="concat(@path, pic)"/>',
+										srct: '<xsl:value-of select="concat(@path, pic)"/>',
+										title: '<xsl:value-of select="header"/>'
+									},
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+						</xsl:if>
+					}
 				</script>
 			</div>
 		</div>
@@ -877,32 +901,42 @@
 
 	<xsl:template match="simple_gallery" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
-			<a class="toggle" href="#spoiler-{@id}" rel="Скрыть галерею ↑">Галерея ↓</a>
+			<a class="toggle" href="#spoiler-{@id}" onclick="initNano{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a>
 		</xsl:if>
-		<div id="spoiler-{@id}">
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
 			<div id="nanogallery{@id}">
 				<script>
-					$(document).ready(function () {
-
-						$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-							// ### gallery settings ###
-							thumbnailHeight:  <xsl:value-of select="height"/>,
-							thumbnailWidth:   <xsl:value-of select="width"/>,
-							thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-							thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-							thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-							thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-							viewerToolbar: { display: false },
-							galleryLastRowFull:  false,
-
-							// ### gallery content ###
-							items: [
-							<xsl:for-each select="pic">
-							{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
-							</xsl:for-each>
-							]
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+							initNano<xsl:value-of select="@id"/>();
 						});
-					});
+					</xsl:if>
+					function initNano<xsl:value-of select="@id"/>(){
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
+
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="pic">
+								{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+						</xsl:if>
+					}
 				</script>
 			</div>
 		</div>

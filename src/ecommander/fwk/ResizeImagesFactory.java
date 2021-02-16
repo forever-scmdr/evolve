@@ -295,8 +295,12 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				w = targetWidth;
 				h = targetHeight;
 			}
-
+			if((w <= targetWidth || h <= targetHeight) && stepQuotient > 1) return  ret;
+			int emergencyStopper = 20;
+			int em = 0;
 			do {
+				em++;
+
 				if (stepQuotient > 1) {
 					if (w > targetWidth) {
 						w /= stepQuotient;
@@ -320,7 +324,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				g2.dispose();
 
 				ret = tmp;
-			} while (w != targetWidth || h != targetHeight);
+			} while ((w != targetWidth || h != targetHeight) && (em < emergencyStopper));
 
 			return ret;
 		}

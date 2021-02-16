@@ -46,7 +46,10 @@
 				</xsl:for-each>
 				-->
 				<xsl:for-each select="label">
-					<div class="tag device__tag"><xsl:value-of select="." /></div>
+
+					<div class="tag device__tag {f:translit(.)}">
+						<xsl:value-of select="." />
+					</div>
 				</xsl:for-each>
 			</div>
 
@@ -195,7 +198,11 @@
 				</div>
 
 				<!-- device image -->
-				<div class="device__image img"><img src="{$pic_path}" alt="" /></div>
+				<div class="device__image img">
+					<a href="{show_product}">
+						<img src="{$pic_path}" alt="" />
+					</a>
+				</div>
 
 				<!-- device tags -->
 				<div class="tags device__tags">
@@ -208,7 +215,9 @@
 					</xsl:for-each>
 					-->
 					<xsl:for-each select="label">
-						<div class="tag device__tag"><xsl:value-of select="." /></div>
+						<div class="tag device__tag {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
 					</xsl:for-each>
 				</div>
 

@@ -102,6 +102,9 @@
 		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
+		<single item="styles">
+			<list item="label_style"/>
+		</single>
 	</include-definition>
 
 
