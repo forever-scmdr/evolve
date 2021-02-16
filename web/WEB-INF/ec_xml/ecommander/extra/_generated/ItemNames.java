@@ -46,6 +46,7 @@ public interface ItemNames {
     String GALLERY_BASE = "gallery_base";
     String SIMPLE_GALLERY = "simple_gallery";
     String COMMON_GALLERY = "common_gallery";
+    String VIDEO = "video";
     String PAGE_TEXT = "page_text";
     String PAGE_EXTRA_CODE = "page_extra_code";
     String MAIN_PROMO_BOTTOM = "main_promo_bottom";
@@ -90,6 +91,8 @@ public interface ItemNames {
     String MODERATED = "moderated";
     String UNMODERATED = "unmoderated";
     String COMMENT = "comment";
+    String STYLES = "styles";
+    String LABEL_STYLE = "label_style";
 
     public interface abstract_product_ {
 
@@ -227,6 +230,12 @@ public interface ItemNames {
 
     }
 
+    public interface comments_ {
+
+        String _ITEM_NAME = "comments";
+
+    }
+
     public interface comment_ {
 
         String _ITEM_NAME = "comment";
@@ -243,21 +252,12 @@ public interface ItemNames {
 
     }
 
-    public interface comments_ {
-
-        String _ITEM_NAME = "comments";
-
-    }
-
     public interface common_ {
 
         String _ITEM_NAME = "common";
-        String TOP = "top";
         String LEFT = "left";
         String LINK_TEXT = "link_text";
         String LINK_LINK = "link_link";
-        String BOTTOM = "bottom";
-        String BOTTOM_ADDRESS = "bottom_address";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -324,6 +324,12 @@ public interface ItemNames {
 
     }
 
+    public interface custom_pages_ {
+
+        String _ITEM_NAME = "custom_pages";
+
+    }
+
     public interface custom_page_ {
 
         String _ITEM_NAME = "custom_page";
@@ -336,9 +342,9 @@ public interface ItemNames {
 
     }
 
-    public interface custom_pages_ {
+    public interface dealers_page_ {
 
-        String _ITEM_NAME = "custom_pages";
+        String _ITEM_NAME = "dealers_page";
 
     }
 
@@ -348,12 +354,6 @@ public interface ItemNames {
         String NAME = "name";
         String ADDRESS = "address";
         String INFO = "info";
-
-    }
-
-    public interface dealers_page_ {
-
-        String _ITEM_NAME = "dealers_page";
 
     }
 
@@ -493,6 +493,14 @@ public interface ItemNames {
 
     }
 
+    public interface label_style_ {
+
+        String _ITEM_NAME = "label_style";
+        String NAME = "name";
+        String STYLE = "style";
+
+    }
+
     public interface line_product_ {
 
         String _ITEM_NAME = "line_product";
@@ -578,16 +586,16 @@ public interface ItemNames {
 
     }
 
+    public interface modules_ {
+
+        String _ITEM_NAME = "modules";
+
+    }
+
     public interface module_ {
 
         String _ITEM_NAME = "module";
         String NAME = "name";
-
-    }
-
-    public interface modules_ {
-
-        String _ITEM_NAME = "modules";
 
     }
 
@@ -628,6 +636,7 @@ public interface ItemNames {
         String _ITEM_NAME = "news";
         String IN_MAIN_MENU = "in_main_menu";
         String NAME = "name";
+        String MAIN_PIC = "main_pic";
         String ON_MAIN = "on_main";
 
     }
@@ -650,17 +659,17 @@ public interface ItemNames {
 
     }
 
+    public interface observers_ {
+
+        String _ITEM_NAME = "observers";
+
+    }
+
     public interface observer_ {
 
         String _ITEM_NAME = "observer";
         String OBSERVER = "observer";
         String OBSERVABLE = "observable";
-
-    }
-
-    public interface observers_ {
-
-        String _ITEM_NAME = "observers";
 
     }
 
@@ -945,6 +954,13 @@ public interface ItemNames {
 
     }
 
+    public interface styles_ {
+
+        String _ITEM_NAME = "styles";
+        String CSS = "css";
+
+    }
+
     public interface system_ {
 
         String _ITEM_NAME = "system";
@@ -1041,6 +1057,14 @@ public interface ItemNames {
         String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
         String COMMENT = "comment";
+
+    }
+
+    public interface video_ {
+
+        String _ITEM_NAME = "video";
+        String NAME = "name";
+        String LINK = "link";
 
     }
 

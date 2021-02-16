@@ -1,80 +1,36 @@
 
 package ecommander.extra._generated;
 
-import java.io.File;
-import java.util.List;
-import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Simple_gallery
+public class Gallery_base
     extends Item
 {
 
-    public final static String _NAME = "simple_gallery";
-    public final static String NAME = "name";
-    public final static String SPOILER = "spoiler";
+    public final static String _NAME = "gallery_base";
     public final static String HEIGHT = "height";
     public final static String WIDTH = "width";
     public final static String BORDER = "border";
     public final static String GUTTER = "gutter";
-    public final static String PIC = "pic";
 
-    private Simple_gallery(Item item) {
+    private Gallery_base(Item item) {
         super(item);
     }
 
-    public static Simple_gallery get(Item item) {
+    public static Gallery_base get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'simple_gallery' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'gallery_base' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Simple_gallery(item);
+        return new Gallery_base(item);
     }
 
-    public static Simple_gallery newChild(Item parent) {
+    public static Gallery_base newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
-    }
-
-    public void set_name(String value) {
-        setValue("name", value);
-    }
-
-    public String get_name() {
-        return getStringValue("name");
-    }
-
-    public String getDefault_name(String defaultVal) {
-        return getStringValue("name", defaultVal);
-    }
-
-    public boolean contains_name(String value) {
-        return containsValue("name", value);
-    }
-
-    public void set_spoiler(Byte value) {
-        setValue("spoiler", value);
-    }
-
-    public void setUI_spoiler(String value)
-        throws Exception
-    {
-        setValueUI("spoiler", value);
-    }
-
-    public Byte get_spoiler() {
-        return getByteValue("spoiler");
-    }
-
-    public Byte getDefault_spoiler(Byte defaultVal) {
-        return getByteValue("spoiler", defaultVal);
-    }
-
-    public boolean contains_spoiler(Byte value) {
-        return containsValue("spoiler", value);
     }
 
     public void set_height(String value) {
@@ -139,22 +95,6 @@ public class Simple_gallery
 
     public boolean contains_gutter(String value) {
         return containsValue("gutter", value);
-    }
-
-    public void add_pic(File value) {
-        setValue("pic", value);
-    }
-
-    public List<File> getAll_pic() {
-        return getFileValues("pic", AppContext.getCommonFilesDirPath());
-    }
-
-    public void remove_pic(File value) {
-        removeEqualValue("pic", value);
-    }
-
-    public boolean contains_pic(File value) {
-        return containsValue("pic", value);
     }
 
 }
