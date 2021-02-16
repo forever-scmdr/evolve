@@ -238,16 +238,16 @@
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 						<xsl:variable name="p" select="current()"/>
-						<xsl:if test="//page/@name != 'fav'">
-							<xsl:for-each select="$captions">
+						<!-- <xsl:if test="//page/@name != 'fav'">
+							<xsl:for-each select="$captions[position() &lt;5]">
 								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 								<tr class="tr">
 									<td><xsl:value-of select="$param/@caption"/></td>
 									<td><xsl:value-of select="$param"/></td>
 								</tr>
 							</xsl:for-each>
-						</xsl:if>
-						<xsl:if test="//page/@name = 'fav'">
+						</xsl:if> -->
+						<!-- <xsl:if test="//page/@name = 'fav'"> -->
 							<xsl:for-each select="$captions[position() &lt; 5]">
 								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 								<tr class="tr">
@@ -255,7 +255,7 @@
 									<td><xsl:value-of select="$param"/></td>
 								</tr>
 							</xsl:for-each>
-						</xsl:if>
+						<!-- </xsl:if> -->
 					</table>
 				</div>
 

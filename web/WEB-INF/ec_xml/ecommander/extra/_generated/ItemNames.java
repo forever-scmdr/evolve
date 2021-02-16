@@ -230,12 +230,6 @@ public interface ItemNames {
 
     }
 
-    public interface comments_ {
-
-        String _ITEM_NAME = "comments";
-
-    }
-
     public interface comment_ {
 
         String _ITEM_NAME = "comment";
@@ -249,6 +243,12 @@ public interface ItemNames {
         String EMAIL = "email";
         String PHONE = "phone";
         String TEXT = "text";
+
+    }
+
+    public interface comments_ {
+
+        String _ITEM_NAME = "comments";
 
     }
 
@@ -324,12 +324,6 @@ public interface ItemNames {
 
     }
 
-    public interface custom_pages_ {
-
-        String _ITEM_NAME = "custom_pages";
-
-    }
-
     public interface custom_page_ {
 
         String _ITEM_NAME = "custom_page";
@@ -342,9 +336,9 @@ public interface ItemNames {
 
     }
 
-    public interface dealers_page_ {
+    public interface custom_pages_ {
 
-        String _ITEM_NAME = "dealers_page";
+        String _ITEM_NAME = "custom_pages";
 
     }
 
@@ -354,6 +348,12 @@ public interface ItemNames {
         String NAME = "name";
         String ADDRESS = "address";
         String INFO = "info";
+
+    }
+
+    public interface dealers_page_ {
+
+        String _ITEM_NAME = "dealers_page";
 
     }
 
@@ -391,6 +391,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
@@ -528,6 +529,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
@@ -586,16 +588,16 @@ public interface ItemNames {
 
     }
 
-    public interface modules_ {
-
-        String _ITEM_NAME = "modules";
-
-    }
-
     public interface module_ {
 
         String _ITEM_NAME = "module";
         String NAME = "name";
+
+    }
+
+    public interface modules_ {
+
+        String _ITEM_NAME = "modules";
 
     }
 
@@ -659,17 +661,17 @@ public interface ItemNames {
 
     }
 
-    public interface observers_ {
-
-        String _ITEM_NAME = "observers";
-
-    }
-
     public interface observer_ {
 
         String _ITEM_NAME = "observer";
         String OBSERVER = "observer";
         String OBSERVABLE = "observable";
+
+    }
+
+    public interface observers_ {
+
+        String _ITEM_NAME = "observers";
 
     }
 
@@ -829,6 +831,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
