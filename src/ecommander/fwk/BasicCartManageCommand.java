@@ -3,11 +3,9 @@ package ecommander.fwk;
 import ecommander.controllers.PageController;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
-import ecommander.model.datatypes.LongDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.ItemMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
@@ -400,6 +398,11 @@ public abstract class BasicCartManageCommand extends Command {
 		byte b = getInitiator().getRole("registered");
 		String qp = b > -1? "qty_opt" : QTY_PARAM;
         double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
+
+        //fix 16.02.2021 Product quantity step added
+        double step = product.getDoubleValue("step", product.getDoubleValue("min_qty", 1));
+        qtyWanted = Math.ceil(qtyWanted / step) * step;
+
         double qtyAvail = 0;
         double qtyTotal = 0;
         double qty = 0;
