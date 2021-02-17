@@ -401,7 +401,8 @@ public abstract class BasicCartManageCommand extends Command {
 
         //fix 16.02.2021 Product quantity step added
         double step = product.getDoubleValue("step", product.getDoubleValue("min_qty", 1));
-        qtyWanted = Math.ceil(qtyWanted / step) * step;
+        qtyWanted = Math.max(product.getDoubleValue("min_qty", 0), qtyWanted);
+        qtyWanted = product.getDoubleValue("min_qty", 0) + Math.ceil((qtyWanted - product.getDoubleValue("min_qty", 0)) / step) * step;
 
         double qtyAvail = 0;
         double qtyTotal = 0;
