@@ -6,7 +6,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -138,7 +137,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param formName
 	 * @return
 	 */
-	protected final MultipleHttpPostForm getSessionForm(String formName) {
+	protected final  MultipleHttpPostForm getSessionForm(String formName) {
 		return page.getSessionContext().getForm(formName);
 	}
 	/**
