@@ -232,7 +232,9 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<div style="display:none">
+					<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				</div>
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -264,59 +266,22 @@
 
 			</div>
 
-			<!-- device price -->
-			<div class="device__column">
-				<div class="price device__price">
-					<xsl:if test="$has_price">
-						<xsl:if test="price_old">
-							<div class="price__item_old">
-								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-							</div>
-						</xsl:if>
-						<div class="price__item_new">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-						</div>
+
+
+
+			<!-- stock status (not displayed, delete display: none to show) -->
+			<div style="display:none">
+				<div class="device__column" style="display: none">
+					<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+						<div class="">в наличии</div>
 					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<div></div>
+					<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+						<div class="">под заказ</div>
 					</xsl:if>
 				</div>
 			</div>
 
-			<!-- stock status (not displayed, delete display: none to show) -->
-			<div class="device__column" style="display: none">
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="">в наличии</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="">под заказ</div>
-				</xsl:if>
-			</div>
-
 			<div class="device__column">
-
-				<!-- device order -->
-				<xsl:if test="not($has_lines)">
-					<div class="order device-order" id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
-								<input type="number" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-							</xsl:if>
-						</form>
-					</div>
-				</xsl:if>
-				<xsl:if test="$has_lines">
-					<div class="order device-order">
-						<a class="button" href="{show_product}">Подробнее</a>
-					</div>
-				</xsl:if>
 
 				<!-- one click -->
 				<xsl:if test="$is_one_click">
@@ -333,40 +298,85 @@
 					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 				</xsl:if>
 
+			</div>
+
+
+			<div class="device__column">
+				<!-- device price -->
+				<div class="price device__price">
+					<xsl:if test="$has_price">
+						<div class="price__item_new">
+							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</div>
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<div class="price__tag">-10%</div>
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div></div>
+					</xsl:if>
+				</div>
+
+				<!-- device order -->
+				<xsl:if test="not($has_lines)">
+					<div class="order device-order" id="cart_list_{@id}">
+						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
+							<xsl:if test="$has_price">
+								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
+								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+							</xsl:if>
+							<xsl:if test="not($has_price)">
+								<input type="hidden" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
+								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+							</xsl:if>
+						</form>
+					</div>
+				</xsl:if>
+				<xsl:if test="$has_lines">
+					<div class="order device-order">
+						<a class="button" href="{show_product}">Подробнее</a>
+					</div>
+				</xsl:if>
+
 				<!-- device actions (compare and favourites) -->
 				<div class="add">
 					<xsl:choose>
 						<xsl:when test="$is_fav">
-							<a href="{from_fav}" class="add__item icon-link">
-								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span><xsl:value-of select="$compare_remove_label"/></span>
-							</a>
+							<a class="add__item" href="{from_fav}">
+	              <img src="img/icon-device-01.png" alt="" />
+								<!-- <xsl:value-of select="$compare_remove_label"/> -->
+	            </a>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{@id}">
-								<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span><xsl:value-of select="$compare_add_label"/></span>
-								</a>
+								<a class="add__item" href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}">
+	                <img src="img/icon-device-01.png" alt="" />
+									<!-- <xsl:value-of select="$compare_add_label"/> -->
+	              </a>
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
+
 					<xsl:if test="not($is_compare)">
 						<div id="compare_list_{@id}">
-							<a href="{to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-								<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-								<span><xsl:value-of select="$go_to_compare_label"/></span>
-							</a>
+							<a class="add__item" href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}">
+	              <img src="img/icon-device-02.png" alt="" />
+								<!-- <xsl:value-of select="$go_to_compare_label"/> -->
+	            </a>
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_compare">
-						<a href="{from_compare}" class="add__item icon-link">
-							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span><xsl:value-of select="$compare_remove_label"/></span>
-						</a>
+						<a class="add__item" href="{from_compare}">
+	            <img src="img/icon-device-02.png" alt="" />
+							<!-- <xsl:value-of select="$compare_remove_label"/> -->
+	          </a>
 					</xsl:if>
 				</div>
 			</div>
+
 		</div>
 
 
