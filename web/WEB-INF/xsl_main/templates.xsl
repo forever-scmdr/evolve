@@ -94,18 +94,21 @@
 
 
 	<xsl:template match="custom_block[type='type_map']">
-		<div class="block contacts-block ptb">
-				<div class="container">
-					<div class="contacts-block__wrap">
-						<div class="contacts-block_title title title_2"><xsl:value-of select="header" /></div>
-						<div class="contacts-block_subtitle"><xsl:value-of select="subheader" /></div>
-						<div class="contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
-					</div>
-					<div class="map">
-						<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3bcb9da99b1b8c51f6dce673b4be2c8cfeee83c9362822124f6c3e28a3c5ebca&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>
-					</div>
-				</div>
-			</div>
+		<div class="contacts-block">
+      <div class="container">
+        <div class="title_1"><xsl:value-of select="header" /></div>
+        <div class="contacts-block__wrap">
+          <div class="map">
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Ace84b090cc2d15f790b4d05edfb76965ba4579b10b2bdb86233bbe4425a9a3da&amp;amp;source=constructor" width="100%" height="100%" frameborder="0"></iframe>
+          </div>
+          <div class="contacts-block__text">
+						<xsl:for-each select="custom_block">
+							<div class="contacts-block__item"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+						</xsl:for-each>
+	        </div>
+	      </div>
+	    </div>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>
