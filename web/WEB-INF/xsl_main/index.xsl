@@ -47,28 +47,43 @@
 	<xsl:template name="INDEX_BLOCKS">
 
 
-
-		<!-- slider -->
-		<div class="slider">
-			<xsl:for-each select="page/main_page/main_slider_frame">
-				<div class="slider__item">
-					<div class="slider__content">
-						<div class="container slider__container">
-							<div class="slider__body">
-								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
-								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
-							</div>
-						</div>
-					</div>
-					<div class="slider__image">
-						<img src="{@path}{pic}" alt="" />
-					</div>
-				</div>
-			</xsl:for-each>
-		</div>
-		<div class="slider-nav"></div>
-		<!-- slider end -->
+		<!-- ads -->
+		<div class="ads">
+      <div class="container">
+        <div class="ads__wrap">
+          <div class="ads__slider">
+            <xsl:apply-templates select="page/main_page/custom_block[type='type_slider']"></xsl:apply-templates>
+          </div>
+          <div class="ads__banners">
+            <div class="ads__banner">
+              <div class="banner">
+                <div class="banner__image">
+                  <img src="img/banner-1.jpg" alt="" />
+                </div>
+                <div class="banner__content">
+                  <div class="banner__title">Все, что нужно для систем наблюдения</div>
+                  <div class="banner__subtitle">Хорошие цены</div>
+                </div>
+                <a class="banner__link" href=""></a>
+              </div>
+            </div>
+            <div class="ads__banner">
+              <div class="banner">
+                <div class="banner__image">
+                  <img src="img/banner-2.jpg" alt="" />
+                </div>
+                <div class="banner__content">
+                  <div class="banner__title">Все, что нужно для систем наблюдения</div>
+                  <div class="banner__subtitle">Хорошие цены</div>
+                </div>
+                <a class="banner__link" href=""></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+		<!-- ads end -->
 
 
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
-	
-	
-	
-	
+
+
+
+
 
 	<xsl:template match="custom_block[type='type_about']">
 		<div class="block blockquote-block ptb">
@@ -16,9 +16,24 @@
 				</div>
 			</div>
 		</div>
+	</xsl:template>
 
 
-
+	<xsl:template match="custom_block[type='type_slider']">
+		<div class="slider">
+			<xsl:for-each select="custom_block">
+	      <div class="slider__item">
+	        <div class="slider__image">
+	          <img src="{@path}{image}" alt="" />
+	        </div>
+	        <div class="slider__content">
+	          <div class="slider__title"><xsl:value-of select="header" disable-output-escaping="yes"/></div>
+	          <div class="slider__subtitle"><xsl:value-of select="subheader" disable-output-escaping="yes"/></div>
+	        </div>
+	        <a class="slider__link" href=""></a>
+	      </div>
+			</xsl:for-each>
+    </div>
 	</xsl:template>
 
 
