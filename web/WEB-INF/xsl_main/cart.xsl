@@ -47,7 +47,7 @@
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
-									<xsl:value-of select="$p/min_qty"/>
+									
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
 										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
 								</div>
@@ -107,6 +107,7 @@
 			$(".qty-input").change(function(){
 				$t = $(this);
 				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
+					alert();
 					$form = $(this).closest('form');
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
 					$form.submit();
