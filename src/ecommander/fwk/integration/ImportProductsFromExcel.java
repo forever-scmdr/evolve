@@ -92,7 +92,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 //			addError("Обнаружено более одного доакумента Microsoft Excel", "/upload");
 //			return false;
 //		}
-		if(integrationFile.isFile()){
+		if(!integrationFile.isFile()){
 			addError("не найден файл интеграции", "Каталог. -> Excel файл интеграции [полное обонвление]");
 			return false;
 		}
