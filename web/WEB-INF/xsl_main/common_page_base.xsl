@@ -234,22 +234,8 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="" class="forever">
-							<img src="img/forever.png" alt="" />
-							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
+						<a href="" class="forever">Разработка сайта — <br />студия веб-дизайна Forever
 						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star-line.svg" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, molestiae.
-							</div>
-						</div>
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
