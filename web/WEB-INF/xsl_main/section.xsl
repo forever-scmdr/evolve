@@ -82,7 +82,7 @@
 
 
 	<xsl:template name="CONTENT">
-		
+
 		<xsl:if test="$seo[1]/text">
 			<div class="section-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -96,9 +96,9 @@
 			<div class="h3">Товары</div>
 		</xsl:if>
 		<xsl:call-template name="DISPLAY_CONTROL"/>
-		
+
 		<xsl:if test="$show_devices">
-			<div class="devices devices_section{' lines'[$view = 'list']}">
+			<div class="devices{' lines'[$view = 'list']}">
 				<xsl:if test="$view = 'table'">
 					<div class="devices__wrap">
 						<xsl:apply-templates select="$sel_sec/product"/>
@@ -256,13 +256,13 @@
 					</xsl:if>
 					<div class="view__column">
 						Кол-во на странице:
-						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">					
+						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
 									<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
 									<option value="{$nos}" link="{.}">
 										<xsl:value-of select="$nos"/>
 									</option>
-								</xsl:for-each>	
+								</xsl:for-each>
 						</select>
 					</div>
 				</xsl:if>
@@ -274,11 +274,11 @@
 
 				<!-- <div class="view">
 					<span class="{'active'[not($view = 'list')]}">
-						
+
 						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
-						
+
 						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
 					</span>
 				</div> -->
@@ -297,7 +297,7 @@
 						в наличии на складе
 					</label>
 				</div> -->
-				
+
 		</xsl:if>
 	</xsl:template>
 
