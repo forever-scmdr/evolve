@@ -66,17 +66,16 @@
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
 
 		<!-- products carousel -->
-		<div class="block devices-block ptb">
-			<div class="container">
-				<div class="title title_2">Выгодные предложения</div>
-				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
+		<div class="devices-block">
+      <div class="container">
+        <div class="title_1">Лучшие товары</div>
+        <div class="devices-block__wrap device-carousel">
+          <xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
 						<div class="devices-block__column">
 							<xsl:apply-templates select="."/>
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav"></div>
 			</div>
 		</div>
 
