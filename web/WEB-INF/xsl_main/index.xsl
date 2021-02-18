@@ -55,30 +55,7 @@
             <xsl:apply-templates select="page/main_page/custom_block[type='type_slider']"></xsl:apply-templates>
           </div>
           <div class="ads__banners">
-            <div class="ads__banner">
-              <div class="banner">
-                <div class="banner__image">
-                  <img src="img/banner-1.jpg" alt="" />
-                </div>
-                <div class="banner__content">
-                  <div class="banner__title">Все, что нужно для систем наблюдения</div>
-                  <div class="banner__subtitle">Хорошие цены</div>
-                </div>
-                <a class="banner__link" href=""></a>
-              </div>
-            </div>
-            <div class="ads__banner">
-              <div class="banner">
-                <div class="banner__image">
-                  <img src="img/banner-2.jpg" alt="" />
-                </div>
-                <div class="banner__content">
-                  <div class="banner__title">Все, что нужно для систем наблюдения</div>
-                  <div class="banner__subtitle">Хорошие цены</div>
-                </div>
-                <a class="banner__link" href=""></a>
-              </div>
-            </div>
+            <xsl:apply-templates select="page/main_page/custom_block[type='type_banners']"></xsl:apply-templates>
           </div>
         </div>
       </div>

@@ -30,10 +30,28 @@
 	          <div class="slider__title"><xsl:value-of select="header" disable-output-escaping="yes"/></div>
 	          <div class="slider__subtitle"><xsl:value-of select="subheader" disable-output-escaping="yes"/></div>
 	        </div>
-	        <a class="slider__link" href=""></a>
+	        <a class="slider__link" href="{link}"></a>
 	      </div>
 			</xsl:for-each>
     </div>
+	</xsl:template>
+
+
+	<xsl:template match="custom_block[type='type_banners']">
+		<xsl:for-each select="custom_block">
+      <div class="ads__banner">
+        <div class="banner">
+          <div class="banner__image">
+            <img src="{@path}{image}" alt="" />
+          </div>
+          <div class="banner__content">
+            <div class="banner__title"><xsl:value-of select="header" disable-output-escaping="yes"/></div>
+            <div class="banner__subtitle"><xsl:value-of select="subheader" disable-output-escaping="yes"/></div>
+          </div>
+          <a class="banner__link" href="{link}"></a>
+        </div>
+      </div>
+		</xsl:for-each>
 	</xsl:template>
 
 
