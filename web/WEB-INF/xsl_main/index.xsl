@@ -65,6 +65,7 @@
 
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
 
+
 		<!-- products carousel -->
 		<div class="devices-block">
       <div class="container">
@@ -79,31 +80,28 @@
 			</div>
 		</div>
 
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_digits']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_utp']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_gifts']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_map']"></xsl:apply-templates>
-
-		<!-- <section class="news pt">
+		<div class="news-block">
 			<div class="container">
-				<div class="block__title block__title_left">
-					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
-				</div>
-				<div class="grid">
+				<div class="title_1">Новости</div>
+				<div class="news-block__wrap">
 					<xsl:for-each select="page//news_item">
-						<div class="news__item">
-							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
-							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
+						<div class="news-block__item news-item">
+							<a class="news-item__image" href="{show_news_item}">
+								<img src="{@path}{main_pic}" alt="" />
+							</a>
+							<div class="news-item__info">
+								<a class="news-item__title" href="news-item.html"><xsl:value-of select="header" /></a>
+								<div class="news-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+							</div>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</section> -->
+		</div>
+		<xsl:apply-templates select="page/main_page/custom_block[type='type_brands']"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[type='type_map']"></xsl:apply-templates>
+
+
 
 
 

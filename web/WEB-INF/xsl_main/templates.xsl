@@ -74,54 +74,24 @@
 		</div>
 	</xsl:template>
 
-
-	<xsl:template match="custom_block[type='type_digits']">
-		<div class="block numbers-block ptb">
-			<div class="container">
-				<div class="numbers-block__wrap">
+	<xsl:template match="custom_block[type='type_brands']">
+		<div class="brands-block">
+      <div class="container">
+        <div class="title_1"><xsl:value-of select="header" /></div>
+        <div class="brands-block__wrap">
 					<xsl:for-each select="custom_block">
-						<div class="banner-numbers">
-							<div class="banner-numbers__title"><xsl:value-of select="header" /></div>
-							<div class="banner-numbers__text"><xsl:value-of select="subheader" /></div>
-						</div>
+	          <div class="brands-block__item">
+	            <div class="brand">
+	              <img src="{@path}{image}" alt="" />
+	            </div>
+	          </div>
 					</xsl:for-each>
 				</div>
 			</div>
 		</div>
 	</xsl:template>
 
-	<xsl:template match="custom_block[type='type_utp']">
-		<div class="block icons-block ptb">
-			<div class="container">
-				<div class="title title_2"><xsl:value-of select="header" /></div>
-				<div class="icons-block__wrap">
-					<xsl:for-each select="custom_block">
-						<div class="banner-icons">
-							<div class="banner-icons__image"><img src="{@path}{image}" alt="" /></div>
-							<div class="banner-icons__title"><xsl:value-of select="header" /></div>
-							<div class="banner-icons__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</div>
-	</xsl:template>
 
-	<xsl:template match="custom_block[type='type_gifts']">
-		<div class="block gifts-block ptb">
-			<div class="container">
-				<div class="gifts-block__wrap">
-					<xsl:for-each select="custom_block">
-						<div class="banner-gift">
-							<div class="banner-gift__image"><img src="{@path}{image}" alt="" /></div>
-							<div class="banner-gift__title"><xsl:value-of select="header" /></div>
-							<div class="banner-gift__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</div>
-	</xsl:template>
 
 	<xsl:template match="custom_block[type='type_map']">
 		<div class="block contacts-block ptb">
