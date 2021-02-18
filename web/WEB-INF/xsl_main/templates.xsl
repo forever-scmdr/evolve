@@ -56,23 +56,24 @@
 
 
 	<xsl:template match="custom_block[type='type_sections']">
-		<div class="block sections-block ptb">
+		<div class="sections-block">
 			<div class="container">
-				<div class="title title_2"><xsl:value-of select="header" /></div>
-					<div class="sections-block_wrap">
+				<div class="title_1"><xsl:value-of select="header" /></div>
+					<div class="sections-block__wrap">
 						<xsl:for-each select="custom_block">
-							<div class="banner-sections">
-								<div class="banner-sections__image img">
-									<img src="{@path}{image}" alt="" />
-								</div>
-								<div class="banner-sections__title"><xsl:value-of select="header" /></div>
-								<a href="{link}" class="banner-sections__link"></a>
-							</div>
+							<div class="catalog-section">
+		            <a class="catalog-section__image" href="{link}">
+		              <img src="{@path}{image}" alt="" />
+		            </a>
+		            <div class="catalog-section__subtitle">Раздел</div>
+		            <a class="catalog-section__title" href="{link}"><xsl:value-of select="header" /></a>
+		          </div>
 						</xsl:for-each>
 					</div>
 			</div>
 		</div>
 	</xsl:template>
+
 
 	<xsl:template match="custom_block[type='type_digits']">
 		<div class="block numbers-block ptb">
