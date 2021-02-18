@@ -105,19 +105,32 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
 			$(".qty-input").change(function(){
+
+				if(typeof recalcTo != "undefined"){
+					clearTimeout(recalcTo);
+				}
+
 				$t = $(this);
 				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
-					alert();
-					$form = $(this).closest('form');
-					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
-					$form.submit();
+
+					var $form = $(this).closest('form');
+					var func = function(){
+						$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
+						$form.submit();
+					};
+
+					recalcTo = setTimeout(func, 1000);
+					
 				} else if(!validate($t.val())){
+
 					if(validate($t.attr("data-old"))){
 						$t.val($t.attr("data-old"));
 					}else{
 						$t.val("1");
 					}
 				}
+
+				console.log(recalcTo);
 			});
 
 			function validate(val){
