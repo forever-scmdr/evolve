@@ -128,84 +128,42 @@
 
 		<div class="header">
 			<div class="container">
-				<div class="header__wrap wrap">
-					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+				<div class="header__wrap">
+					<a href="{$main_host}" class="header__logo">
+						<img src="img/logo.png" alt="" />
 					</a>
-					<div class="header__column header__search header-search">
+					<div class="header__search">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
-							<!-- quick search end -->
+							<input type="text" placeholder="Поиск по каталогу товаров" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
+							<button class="button" type="submit">Найти</button>
 						</form>
 					</div>
-					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
-							<div class="catalog-currency">
-								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-								<ul class="currency-options">
-									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="active" select="$currency = $cur"/>
-										<li class="{'active'[$active]}">
-											<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-											<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</div>
-						</div>
-					</xsl:if>
-					<!-- need styles end -->
-					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
-						<div class="links">
-							<a href="/kontakty" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-phone.svg" alt="" />
-								</div>
-							</a>
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-bars.svg" alt="" />
-								</div>
-							</a>
-						</div>
-						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
-							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
-						</div>
+					<div class="header__mobile-icons header-mobile-icons">
+            <div class="header-mobile-icon">
+              <div class="header-mobile-icon__icon">
+                <img src="img/icon-cart.png" alt="" />
+              </div>
+              <!-- <div class="header-mobile-icon__label">2</div> -->
+              <a class="header-mobile__link" href="{page/cart_ajax_link}"></a>
+            </div>
+						<div class="header-mobile-icon">
+              <div class="header-mobile-icon__icon">
+                <img src="img/icon-phone.png" alt="" />
+              </div>
+              <a class="header-mobile__link" href="/kontakty"></a>
+            </div>
+            <div class="header-mobile-icon">
+              <div class="header-mobile-icon__icon">
+                <img src="img/icon-menu.png" alt="" />
+              </div>
+              <a class="header-mobile__link" href="javascript:showMobileMainMenu()"></a>
+            </div>
+					</div>
+					<div class="header__icons header-icons">
+            <div class="header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
+            <div class="header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no"></div>
+            <div class="header-icon" id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no"></div>
+            <div class="header-icon" id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no"></div>
 					</div>
 				</div>
 			</div>
@@ -213,9 +171,14 @@
 
 		<div class="main-menu">
 			<div class="container">
-				<div class="main-menu__wrap wrap">
+				<div class="main-menu__wrap">
 					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
+						<a href="{page/catalog_link}" class="{'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu">
+							<div class="main-menu__icon">
+								<img src="img/icon-catalog.png" alt="" />
+							</div>
+							<span>Каталог товаров</span>
+						</a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
