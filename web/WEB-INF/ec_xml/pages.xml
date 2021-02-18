@@ -115,6 +115,7 @@
 			<var name="sec" style="key"/>
 			<var name="page" value="1"/>
 			<var name="minqty" scope="cookie"/>
+			<var name="tag"/>
 			<var name="view" value="list" scope="cookie"/>
 			<var name="limit" value="12" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
@@ -130,6 +131,7 @@
 			<list item="product" id="prod" transit="true" assoc="catalog_link *">
 				<filter>
 					<parameter name="available" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="tag" compare="ANY"><var var="tag" /></parameter>
 					<child item="params" transit="false" ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<sorting direction-var="direction"><var var="sort"/></sorting>
 					<limit><var var="limit"/></limit>

@@ -38,6 +38,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	private final String PARAMS_XML = "params_xml";
 
 	private final String NAME = "name";
+	private final String TAG = "tag";
 	private final String ID = "id";
 	private final String NAME_EXTRA = "name_extra";
 	private final String DESCRIPTION = "description";
@@ -136,6 +137,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 	Item deployProduct(Element productEl, Item parent, Parse_item pi) throws Exception {
 		String code = productEl.getElementsByTag(CODE).first().ownText();
 		String name = productEl.getElementsByTag(NAME).first().ownText();
+		String tag = StringUtils.substringBefore(name, " ");
 		String type = productEl.getElementsByTag(TYPE).first().ownText();
 		String nameExtra = productEl.getElementsByTag(NAME_EXTRA).first().ownText();
 		String shortTxt = productEl.getElementsByTag(SHORT).first().html();
@@ -206,6 +208,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		product.setValue(DESCRIPTION, description);
 		product.setValue(TEXT, text);
 		product.setValue(EXTRA_XML, extraXml);
+		product.setValue(TAG, tag);
 		for (String assocCode : assocCodes) {
 			product.setValue(ASSOC_CODE, assocCode);
 		}
