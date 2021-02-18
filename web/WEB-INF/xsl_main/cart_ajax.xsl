@@ -16,7 +16,7 @@
 			<div class="result" id="cart_ajax">
 
         <div class="header-icon__icon">
-          <img src="img/icon-cart.png" alt="">
+          <img src="img/icon-cart.png" alt="" />
           <div class="header-icon__label"><xsl:value-of select="count($cart/bought)"/></div>
         </div>
         <xsl:if test="f:num($cart/sum) &gt; 0">
