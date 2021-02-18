@@ -240,6 +240,7 @@
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
+		<parameter name="step" type="double" caption="Шаг заказа"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
