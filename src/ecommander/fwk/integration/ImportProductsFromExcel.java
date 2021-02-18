@@ -78,9 +78,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 	protected boolean makePreparations() throws Exception {
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		initSettings();
-		Path contextPath = Paths.get(AppContext.getContextPath(), "upload");
-		Collection<File> files = FileUtils.listFiles(contextPath.toFile(), new String[]{"xls", "xlsx"}, false);
-
+		//Path contextPath = Paths.get(AppContext.getContextPath(), "upload");
+		//Collection<File> files = FileUtils.listFiles(contextPath.toFile(), new String[]{"xls", "xlsx"}, false);
+		File integrationFile = catalog.getFileValue("big_integration", AppContext.getFilesDirPath(catalog.isFileProtected()));
 		ItemType productItemType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		ItemType paramsXMLItemType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		for (ParameterDescription param : productItemType.getParameterList()) {
@@ -88,12 +88,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			HEADER_PARAM.put(param.getCaption().toLowerCase(), param.getName());
 		}
 
-		if (files.size() > 1) {
-			addError("Обнаружено более одного доакумента Microsoft Excel", "/upload");
+//		if (files.size() > 1) {
+//			addError("Обнаружено более одного доакумента Microsoft Excel", "/upload");
+//			return false;
+//		}
+		if(integrationFile.isFile()){
+			addError("не найден файл интеграции", "Каталог. -> Excel файл интеграции [полное обонвление]");
 			return false;
 		}
-		File f = (File) files.toArray()[0];
-		priceWB = new ExcelPriceList(f, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE) {
+		priceWB = new ExcelPriceList(integrationFile, CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE) {
 			@Override
 			protected void processRow() throws Exception {
 				info.setLineNumber(getRowNum() + 1);
