@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.pages.*;
 import ecommander.pages.var.StaticVariable;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
@@ -22,20 +21,20 @@ import java.util.Collection;
  * Отправка сообщения на email с валидацией (проверка заполненности определенных полей).
  * В случае если не все обязательные поля заполнены, возвращается ошибка и отсылка не осуществляется
  * Параметры:
- * 		topic - тема письма
- * 		email - адрес отсылки
- * 		required - разделенный , и | список названий параметров. Через , перечисляются обязательные параметры,
- * 				   через | параметры, один из которых должен присутствовать
- * 		spam - разделенный , список названий параметров. Если заполнен хотя-бы один из них, то считается что 
- * 			   это спам
- * 	    form_name - название формы для сохранения
- * 		template - страница, которая содержит шаблон письма (необязательный параметр)
- *
+ * topic - тема письма
+ * email - адрес отсылки
+ * required - разделенный , и | список названий параметров. Через , перечисляются обязательные параметры,
+ * через | параметры, один из которых должен присутствовать
+ * spam - разделенный , список названий параметров. Если заполнен хотя-бы один из них, то считается что
+ * это спам
+ * form_name - название формы для сохранения
+ * template - страница, которая содержит шаблон письма (необязательный параметр)
+ * <p>
  * Результаты:
- * 		error_not_set - не заполнены обязательные поля
- * 		general_error - какая-то ошибка отправки почты
- *		success - успешное выполнение
- *
+ * error_not_set - не заполнены обязательные поля
+ * general_error - какая-то ошибка отправки почты
+ * success - успешное выполнение
+ * <p>
  * Пояснение к параметру template:
  * Если есть параметр template, то он должен хранить название страницы, которая должна выводить шаблон письма.
  * Текстовые данные, которые вводит пользователь, передаются на эту страницу как переменные страницы.
@@ -44,7 +43,6 @@ import java.util.Collection;
  * присоединял файлы, то они добавляются в виде вложений в письмо.
  *
  * @author E
- *
  */
 public class NonemptyEmailCommand extends Command {
 
@@ -108,7 +106,7 @@ public class NonemptyEmailCommand extends Command {
 		try {
 			// Если есть шаблон письма
 			ExecutablePagePE emailPage = null;
-			if (!StringUtils.isBlank(templatePageName)) {
+			if (StringUtils.isNotBlank(templatePageName)) {
 				try {
 					saveSessionForm(formNameStr);
 					emailPage = getExecutablePage(templatePageName);
@@ -151,12 +149,40 @@ public class NonemptyEmailCommand extends Command {
 				textPart.setContent(bos.toString("UTF-8"), emailPage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER) + ";charset=UTF-8");
 			}
 			// Простое письмо
-			else if (!StringUtils.isBlank(mailMessage)) {
+			else if (StringUtils.isNotBlank(mailMessage)) {
 				textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
 			}
 			// Отправка письма
-			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic"))? topic : postForm.getSingleStringExtra("topic");
+			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic")) ? topic : postForm.getSingleStringExtra("topic");
 			EmailUtils.sendGmailDefault(emailTo, topic, mp);
+
+			if (StringUtils.isNotBlank(getVarSingleValue("client_template"))) {
+				saveSessionForm(formNameStr);
+				emailPage = getExecutablePage(getVarSingleValue("client_template"));
+				for (Object key : messageInput.getKeys()) {
+					String paramName = key.toString();
+					ArrayList<Object> values = messageInput.getExtraList(paramName);
+					if (values.size() > 0 && values.get(0) instanceof FileItem) {
+						for (Object value : values) {
+							FileItem file = (FileItem) value;
+							DataSource dataSource = new ByteArrayDataSource(file.getInputStream(), file.getContentType());
+							MimeBodyPart filePart = new MimeBodyPart();
+							filePart.setDataHandler(new DataHandler(dataSource));
+							filePart.setFileName(file.getName());
+							mp.addBodyPart(filePart);
+						}
+					} else {
+						emailPage.addVariable(new StaticVariable(paramName, values.toArray(new Object[0])));
+					}
+				}
+				textPart = new MimeBodyPart();
+				mp.addBodyPart(textPart);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				PageController.newSimple().executePage(emailPage, bos);
+				textPart.setContent(bos.toString("UTF-8"), emailPage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER) + ";charset=UTF-8");
+				EmailUtils.sendGmailDefault(emailTo, getUrlBase() + " noreply", mp);
+			}
+
 		} catch (Exception e) {
 			try {
 				saveSessionForm(formNameStr);
@@ -187,7 +213,7 @@ public class NonemptyEmailCommand extends Command {
 		}
 		return StringUtils.join(notSetParams, ',');
 	}
-	
+
 	private boolean isSpam(String spamStr, InputValues message) {
 		spamStr = StringUtils.replace(spamStr, " ", "");
 		String[] spam = StringUtils.split(spamStr, ',');
@@ -204,7 +230,7 @@ public class NonemptyEmailCommand extends Command {
 		for (String reqParam : required) {
 			Object value = message.get(reqParam);
 			if (value instanceof String)
-				isValid |= StringUtils.isNotBlank((String)value);
+				isValid |= StringUtils.isNotBlank((String) value);
 			else
 				isValid |= value != null;
 		}
