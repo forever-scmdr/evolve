@@ -222,16 +222,12 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-grid.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Плиткой</span>
+						<img src="img/icon-view-cards-active.png" alt="" />
+						<!-- <span class="icon-link__item">Плиткой</span> -->
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Строками</span>
+						<img src="img/icon-view-rows.png" alt="" />
+						<!-- <span class="icon-link__item">Строками</span> -->
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
@@ -255,7 +251,7 @@
 						</div>
 					</xsl:if>
 					<div class="view__column">
-						Кол-во на странице:
+						<span>Кол-во на странице:</span>
 						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
 									<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
