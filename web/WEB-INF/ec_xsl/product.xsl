@@ -54,7 +54,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}"><xsl:value-of select="name"/></a>
@@ -104,8 +104,8 @@
 					<div class="device-page__actions">
 						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span></div></xsl:if>
-								<div class="price_normal"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></div>
+								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$p/price_old"/> руб.</span></div></xsl:if>
+								<div class="price_normal"><xsl:value-of select="if ($p/price) then $p/price else '0'"/> р.</div>
 							</div>
 						</xsl:if>
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
@@ -139,21 +139,6 @@
 					</div>
 				</xsl:if>
 
-				<xsl:if test="$is_one_click or $is_my_price">
-					<div class="extra-buttons">
-						<xsl:if test="$is_one_click">
-							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-						</xsl:if>
-						<xsl:if test="$is_my_price">
-							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
-						</xsl:if>
-						<!-- <a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a> -->
-						<xsl:if test="$is_subscribe">
-							<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-						</xsl:if>
-					</div>
-				</xsl:if>
-
 				<xsl:if test="$has_lines">
 					<div class="multi-device">
 						<div style="padding-left: 0;">Размер</div>
@@ -165,8 +150,8 @@
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="f:exchange(current(), $price_old_param_name, 0)"/></div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="f:exchange(current(), $price_param_name, 0)"/></div>
+									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>
@@ -229,53 +214,23 @@
 					</ul>
 				<div class="tab-content">
 					<xsl:if test="$p/params">
-
-						<xsl:variable name="paramsXml" select="$p/params_xml"/>
-
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
-							<xsl:for-each select="$paramsXml/group">
-								<xsl:variable name="group_name" select="@name"/>
-								<table>
-									<colgroup>
-										<col style="width: 40%"/>
-									</colgroup>
-									<xsl:if test="$group_name != ''">
-										<tr>
-											<td colspan="2">
-												<xsl:value-of select="$group_name"/>
-											</td>
-										</tr>
-									</xsl:if>
-									<xsl:for-each select="param">
-										<xsl:variable name="caption" select="name"/>
-										<xsl:variable name="product_param" select="$p/params/param[@caption = $caption]"/>
-										<tr>
-											<td>
-												<p><strong><xsl:value-of select="$caption"/></strong></p>
-											</td>
-											<td>
-												<p><xsl:value-of select="$product_param"/></p>
-											</td>
-										</tr>
-									</xsl:for-each>
-								</table>
-							</xsl:for-each>
-<!--							<table>-->
-<!--								<colgroup>-->
-<!--									<col style="width: 40%"/>-->
-<!--								</colgroup>-->
-<!--								<xsl:for-each select="$p/params/param">-->
-<!--									<tr>-->
-<!--										<td>-->
-<!--											<p><strong><xsl:value-of select="@caption"/></strong></p>-->
-<!--										</td>-->
-<!--										<td>-->
-<!--											<p><xsl:value-of select="."/></p>-->
-<!--										</td>-->
-<!--									</tr>-->
-<!--								</xsl:for-each>-->
-<!--							</table>-->
+							<table>
+								<colgroup>
+									<col style="width: 40%"/>
+								</colgroup>
+								<xsl:for-each select="$p/params/param">
+									<tr>
+										<td>
+											<p><strong><xsl:value-of select="@caption"/></strong></p>
+										</td>
+										<td>
+											<p><xsl:value-of select="."/></p>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
 
 						</div>
 					</xsl:if>

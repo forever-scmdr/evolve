@@ -13,7 +13,6 @@
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
 	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
-	<xsl:variable name="is_manual_filter_on" select="page/optional_modules/display_settings/manual_filter_params = 'on'"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -70,7 +69,7 @@
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
-				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
+				<a href="{$main_host}">Home Page</a> <i class="fas fa-angle-right"></i> <a href="{page/catalog_link}">Каталог</a>
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<i class="fas fa-angle-right"></i>
 					<a href="{show_products}">
@@ -174,10 +173,8 @@
 	</xsl:template>
 
 	<xsl:template name="FILTER">
-		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
-		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '\|')"/>
-		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
-		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
+		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input"/>
+
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="toggle-filters">
 				<i class="fas fa-cog"></i>
@@ -185,30 +182,27 @@
 			</div>
 			<form method="post" action="{$sel_sec/filter_base_link}">
 				<div class="filters" style="{'display: none'[not($user_filter)]}" id="filters_container">
-					   <xsl:for-each select="$captions">
-							<xsl:variable name="input" select="$valid_inputs[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-							<xsl:if test="$input">
-								<xsl:variable name="name" select="$input/@id"/>
-								<div class="active checkgroup">
-									<strong>
-										<xsl:value-of select="$input/@caption"/>
-									</strong>
-									<div class="values">
-										<xsl:for-each select="$input/domain/value">
-											<div class="checkbox">
-												<label>
-													<input name="{$name}" type="checkbox" value="{.}">
-														<xsl:if test=". = $user_filter/input[@id = $name]">
-															<xsl:attribute name="checked" select="'checked'"/>
-														</xsl:if>
-													</input>
-													&#160;<xsl:value-of select="."/>
-												</label>
-											</div>
-										</xsl:for-each>
-									</div>
+					   <xsl:for-each select="$valid_inputs">
+						   <xsl:variable name="name" select="@id"/>
+							<div class="active checkgroup">
+								<strong>
+									<xsl:value-of select="@caption"/>
+								</strong>
+								<div class="values">
+									<xsl:for-each select="domain/value">
+										<div class="checkbox">
+											<label>
+												<input name="{$name}" type="checkbox" value="{.}">
+													<xsl:if test=". = $user_filter/input[@id = $name]">
+														<xsl:attribute name="checked" select="'checked'"/>
+													</xsl:if>
+												</input>
+												&#160;<xsl:value-of select="."/>
+											</label>
+										</div>
+									</xsl:for-each>
 								</div>
-							</xsl:if>
+							</div>
 					   </xsl:for-each>
 					   <div class="buttons">
 							<input class="button" type="submit" value="Показать найденное"/>
@@ -259,17 +253,6 @@
 						<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 					</select>
 				</span>
-				<xsl:if test="$sel_sec/mark">
-					&#160;
-					<span>
-						<select class="form-control" value="{page/variables/mark}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-							<option value="" link="{page/set_mark_default}">Все товары</option>
-							<xsl:for-each select="$sel_sec/mark">
-								<option value="{mark}" link="{set_mark}"><xsl:value-of select="mark"/></option>
-							</xsl:for-each>
-						</select>
-					</span>
-				</xsl:if>
 				<div class="quantity">
 					<span>Кол-во на странице:</span>
 					<span>

@@ -130,7 +130,7 @@
 
 	<xsl:template name="MAIN_CONTENT">
 		<!-- MAIN COLOUMNS BEGIN -->
-		<div class="container">
+		<div class="container" style="position: relateive; z-index: 2;">
 			<div class="row">
 
 				<!-- RIGHT COLOUMN BEGIN -->
@@ -145,74 +145,199 @@
 		</div>
 		<!-- MAIN COLOUMNS END -->
 	</xsl:template>
-
-
-
-	<xsl:template match="banner">
-		<div class="banner {extra_style}">
-			<div class="banner__background" style="{background}"></div>
-			<div class="banner__image">
-				<xsl:choose>
-					<xsl:when test="image_code and not(image_code = '')"><xsl:value-of select="image_code" disable-output-escaping="yes" /></xsl:when>
-					<xsl:otherwise>
-						<xsl:if test="image_pic and not(image_pic = '')"><img src="{@path}{image_pic}"/></xsl:if>
-					</xsl:otherwise>
-				</xsl:choose>
+	
+	<!-- Новая шапка со слайдером для главной страницы -->
+	<xsl:template name="INC_DESKTOP_HEADER">
+		<div class="wrapper">
+			<div class="slider fotorama" data-width="100%" data-height="100%" data-fit="cover" data-nav="false" data-autoplay="3000">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<img src="{@path}{pic}" alt="{name}"/>
+					<!-- <div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div> -->
+					<!-- <div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+						<div class="slider-item__block fotorama__select">
+							<div class="slider-item__wrapper">
+								<div class="slider-item__text">
+									<xsl:value-of select="text" disable-output-escaping="yes"/>
+								</div>
+								<div class="slider-item__title"><xsl:value-of select="name" /></div>
+								<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+							</div>
+						</div>
+					</div> -->
+				</xsl:for-each>
 			</div>
-			<div class="banner__title"><xsl:value-of select="header" /></div>
-			<div class="banner__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
-			<a href="{link}" class="banner__link"></a>
+			<div class="slider__gradient"></div>
+			<div class="header header_main">
+				<div class="top-stripe">
+					<div class="top-stripe__nav">
+						<xsl:apply-templates select="page/custom_pages/*[not(in_main_menu = ('да', 'нет'))]" mode="top_stripe"/>
+						<!-- <a href="{page/contacts_link}">Contacts</a> -->
+						
+					</div>
+					<div class="top-stripe__info">
+						<!-- <div><strong>Minsk</strong> coordinator@mhr-gi.net</div>
+						<div><strong>Damascus</strong> operations@mhr-gi.net</div> -->
+						<div><strong>Minsk</strong> assistant_bel@mhr-gi.net</div>
+						<div><strong>Damascus</strong> assistant@mhr-gi.net</div>
+					</div>
+				</div>
+				<div class="navigation">
+					<div class="logo">
+						<a href="/index">
+							<img src="img/logo.png" alt="" itemprop="image"/>
+						</a>
+					</div>
+					<div class="main-menu">
+						<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
+						<!-- <a href="">Business Development Consultancy</a>
+						<a href="">About Us</a>
+						<a href="">Educational Programs</a>
+						<a href="">Admission</a> -->
+					</div>
+				</div>
+				<div class="menu">
+					<a href=""><img src="img/assets/icon-bars.svg" alt=""/></a>
+				</div>
+				<div class="content">
+					<!-- <div class="content__text">If you like to grow, we like to help</div> -->
+					<div class="content__title">Management &amp; human resource group international bel</div>
+					<div class="content__links">
+<!--						<a href="/about_us" class="content__link">Learn more</a>-->
+						<a href="/contacts" class="content__link">Contact us</a>
+					</div>
+				</div>
+				<div class="events">
+					<!-- <div class="events__header">Join Our  Webinar Online!</div> -->
+					<div class="events__content">
+					
+						<div class="events__item desktop-only" style="display: block;">
+							<xsl:value-of select="//main_slider_frame[1]/text" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</div>
+				<div class="social">
+					<a href="https://www.facebook.com/mhrgibel/notifications/" class="social__item"><img src="img/assets/icon-facebook.png" alt=""/></a>
+					<a href="https://www.youtube.com/channel/UCyqKM5QXCwgsTi1JFcoPZPQ" class="social__item"><img src="img/assets/icon-youtube.png" alt=""/></a>
+					<a href="https://www.instagram.com/p/BibsfJwHQcs/?utm_source=ig_embed" class="social__item"><img src="img/assets/icon-instagram.png" alt=""/></a>
+				</div>
+			</div>
 		</div>
 	</xsl:template>
 
+
+
+
+
 	<xsl:template name="INDEX_BLOCKS">
-		<section class="hero pb">
-			<div class="container container-fluid">
-				<div class="fotorama" data-width="100%" data-height="400" data-fit="cover">
+		<!-- <section class="hero pb">
+			<div class="container">
+				<div class="fotorama" data-width="100%">
 					<xsl:for-each select="page/main_page/main_slider_frame">
-						<div class="slider-item" style="background-image: url({@path}{pic});">
-							<div class="container">
-								<div class="slider-item__block fotorama__select">
-									<div class="slider-item__wrapper">
-										<!-- <div class="slider-item__title"><xsl:value-of select="name" /></div> -->
-										<div class="slider-item__text">
-											<xsl:value-of select="text" disable-output-escaping="yes"/>
-										</div>
-										<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+						<img src="{@path}{pic}" alt="{name}"/>
+						<div data-img="{@path}{pic}"><a class="slider__link" href="{link}"></a></div>
+						<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
+							<div class="slider-item__block fotorama__select">
+								<div class="slider-item__wrapper">
+									<div class="slider-item__title"><xsl:value-of select="name" /></div>
+									<div class="slider-item__text">
+										<xsl:value-of select="text" disable-output-escaping="yes"/>
 									</div>
+									<a href="{link}" class="slider-item__button"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 								</div>
 							</div>
 						</div>
 					</xsl:for-each>
 				</div>
 			</div>
-		</section>
+		</section> -->
 
 
 
+
+				<div class="wrapper mobile">
+					<div class="slider fotorama" data-width="100%" data-fit="cover" data-nav="false">
+						<xsl:for-each select="page/main_page/main_slider_frame">
+							<img src="{@path}{pic}" alt="{name}"/>
+							
+						</xsl:for-each>
+					</div>
+					<div class="slider__gradient"></div>
+					<div class="header header_main">
+						<!-- <div class="top-stripe">
+							<div class="top-stripe__nav">
+								<xsl:apply-templates select="page/custom_pages/*[not(in_main_menu = ('да', 'нет'))]" mode="top_stripe"/>
+								<a href="{page/contacts_link}">Contacts</a>
+							</div>
+							<div class="top-stripe__info">
+								<div><strong>Minsk</strong> katya@mhr-gi.net</div>
+								<div><strong>Damascus</strong> hani@mhr-gi.net</div>
+							</div>
+						</div>
+						<div class="navigation">
+							<div class="logo">
+								<a href="/index">
+									<img src="img/logo.png" alt=""/>
+								</a>
+							</div>
+							<div class="main-menu">
+								<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
+								<a href="">Business Development Consultancy</a>
+								<a href="">About Us</a>
+								<a href="">Educational Programs</a>
+								<a href="">Admission</a>
+							</div>
+						</div>
+						<div class="menu">
+							<a href=""><img src="img/assets/icon-bars.svg" alt=""/></a>
+						</div> -->
+						<div class="content" >
+							<!-- <div class="content__text">If you like to grow, we like to help</div> -->
+							<div class="content__title" >Management &amp; human resource group international bel</div>
+							<!-- <div class="content__links">
+								<a href="/about_us" class="content__link">Learn more</a>
+								<a href="/contacts" class="content__link">Contact us</a>
+							</div> -->
+						</div>
+						
+						<!-- <div class="events">
+							<div class="events__header">Join Our  Webinar Online!</div>
+							<div class="events__content">
+								<div class="events__item">
+									<a href="/corporate_leadership_and_strategy" class="events__title">Corporate Leadership and Strategy During COVID-19 Crisis.</a>
+									<p>Thursday, May 28, 2020. 5 PM-6:30 PM - Minsk. Damascus. 4 PM - 5:30 PM - Rome</p>
+								</div>
+							</div>
+						</div>
+						<div class="social">
+							<a href="https://www.facebook.com/mhr.gi/" class="social__item"><img src="img/assets/icon-facebook.png" alt=""/></a>
+							<a href="https://www.youtube.com/channel/UCyqKM5QXCwgsTi1JFcoPZPQ" class="social__item"><img src="img/assets/icon-youtube.png" alt=""/></a>
+							<a href="https://www.instagram.com/p/BibsfJwHQcs/?utm_source=ig_embed" class="social__item"><img src="img/assets/icon-instagram.png" alt=""/></a>
+						</div> -->
+					</div>
+				</div>
+
+				<section>
+					<div class="container mobile-only" style="padding: 10px 16px 0 16px;">
+						<div class="banner__text">
+							<xsl:value-of select="//main_slider_frame[1]/text" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</section>
 
 		<!-- banners -->
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']" mode="content"></xsl:apply-templates>
-
-		<section class="special-items ptb" style="background-color: #e9e5dd;">
-			<div class="container">
-				<div class="block-title">Новинки и акции</div>
-				<div class="slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag = ('Новинка', 'новинка', 'НОВИНКА')]"/>
-				</div>
-			</div>
-		</section>
-
+		<xsl:apply-templates select="page/main_page/custom_block[1]"></xsl:apply-templates>
 		<xsl:apply-templates select="page/main_page/custom_block[2]"></xsl:apply-templates>
 		<xsl:apply-templates select="page/main_page/custom_block[3]"></xsl:apply-templates>
 		<xsl:apply-templates select="page/main_page/custom_block[4]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[5]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[6]"></xsl:apply-templates>
 
-		<!-- <section class="news pt">
+		<section class="news pt">
 			<div class="container">
 				<div class="block__title block__title_left">
 					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
 				</div>
-				<div class="grid">
+				<div class="wrap">
 					<xsl:for-each select="page//news_item">
 						<div class="news__item">
 							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
@@ -223,11 +348,11 @@
 					</xsl:for-each>
 				</div>
 			</div>
-		</section> -->
+		</section>
 
 
 		<xsl:apply-templates select="page/main_page/custom_block[7]"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[8]"></xsl:apply-templates>
+		<xsl:apply-templates select="page/main_page/custom_block[8]"></xsl:apply-templates> 
 
 		<!-- <section class="s-info">
 			<div class="container">
@@ -236,8 +361,6 @@
 		</section> -->
 
 	</xsl:template>
-
-
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>

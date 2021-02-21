@@ -1,0 +1,534 @@
+{
+  "LimitedTaxonomy": {
+    "Children": [
+      {
+        "Children": [
+          {
+            "Children": [],
+            "ProductCount": 1,
+            "NewProductCount": 0,
+            "ParameterId": -8,
+            "ValueId": "308",
+            "Parameter": "Categories",
+            "Value": "Rectangular Connectors - Arrays, Edge Type, Mezzanine (Board to Board)"
+          }
+        ],
+        "ProductCount": 1,
+        "NewProductCount": 0,
+        "ParameterId": -8,
+        "ValueId": "20",
+        "Parameter": "Categories",
+        "Value": "Connectors, Interconnects"
+      }
+    ],
+    "ProductCount": 1,
+    "NewProductCount": 0,
+    "ParameterId": -8,
+    "ValueId": "0",
+    "Parameter": "Categories",
+    "Value": "Out of Bounds"
+  },
+  "FilterOptions": [
+    {
+      "Values": [
+        {
+          "ValueId": "612",
+          "Value": "Samtec Inc."
+        }
+      ],
+      "ParameterId": -1,
+      "Parameter": "Manufacturer"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "2",
+          "Value": "Cut Tape (CT)"
+        }
+      ],
+      "ParameterId": 7,
+      "Parameter": "Packaging"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "14211",
+          "Value": "ASP"
+        }
+      ],
+      "ParameterId": -5,
+      "Parameter": "Series"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "0",
+          "Value": "Active"
+        }
+      ],
+      "ParameterId": 1989,
+      "Parameter": "Part Status"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "314974",
+          "Value": "Array, Female Sockets"
+        }
+      ],
+      "ParameterId": 28,
+      "Parameter": "Connector Type"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "212835",
+          "Value": "400"
+        }
+      ],
+      "ParameterId": 88,
+      "Parameter": "Number of Positions"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "7022",
+          "Value": "0.050\" (1.27mm)"
+        }
+      ],
+      "ParameterId": 89,
+      "Parameter": "Pitch"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "i10",
+          "Value": "10"
+        }
+      ],
+      "ParameterId": 2172,
+      "Parameter": "Number of Rows"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "409393",
+          "Value": "Surface Mount"
+        }
+      ],
+      "ParameterId": 69,
+      "Parameter": "Mounting Type"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "477562",
+          "Value": "VITA 57"
+        }
+      ],
+      "ParameterId": 5,
+      "Parameter": "Features"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "350796",
+          "Value": "Gold"
+        }
+      ],
+      "ParameterId": 30,
+      "Parameter": "Contact Finish"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "180903",
+          "Value": "30.0µin (0.76µm)"
+        }
+      ],
+      "ParameterId": 834,
+      "Parameter": "Contact Finish Thickness"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "1",
+          "Value": "-"
+        }
+      ],
+      "ParameterId": 1263,
+      "Parameter": "Mated Stacking Heights"
+    },
+    {
+      "Values": [
+        {
+          "ValueId": "16408",
+          "Value": "0.258\" (6.55mm)"
+        }
+      ],
+      "ParameterId": 759,
+      "Parameter": "Height Above Board"
+    }
+  ],
+  "Products": [
+    {
+      "StandardPricing": [
+        {
+          "BreakQuantity": 1,
+          "UnitPrice": 27.42,
+          "TotalPrice": 27.42
+        },
+        {
+          "BreakQuantity": 10,
+          "UnitPrice": 24.749,
+          "TotalPrice": 247.49
+        },
+        {
+          "BreakQuantity": 25,
+          "UnitPrice": 23.712,
+          "TotalPrice": 592.8
+        },
+        {
+          "BreakQuantity": 50,
+          "UnitPrice": 22.23,
+          "TotalPrice": 1111.5
+        },
+        {
+          "BreakQuantity": 100,
+          "UnitPrice": 21.489,
+          "TotalPrice": 2148.9
+        }
+      ],
+      "RoHSStatus": "ROHS3 Compliant",
+      "LeadStatus": "Lead Free",
+      "Parameters": [
+        {
+          "ParameterId": 7,
+          "ValueId": "2",
+          "Parameter": "Packaging",
+          "Value": "Cut Tape (CT)"
+        },
+        {
+          "ParameterId": 1989,
+          "ValueId": "0",
+          "Parameter": "Part Status",
+          "Value": "Active"
+        },
+        {
+          "ParameterId": 28,
+          "ValueId": "314974",
+          "Parameter": "Connector Type",
+          "Value": "Array, Female Sockets"
+        },
+        {
+          "ParameterId": 88,
+          "ValueId": "212835",
+          "Parameter": "Number of Positions",
+          "Value": "400"
+        },
+        {
+          "ParameterId": 89,
+          "ValueId": "7022",
+          "Parameter": "Pitch",
+          "Value": "0.050\" (1.27mm)"
+        },
+        {
+          "ParameterId": 2172,
+          "ValueId": "i10",
+          "Parameter": "Number of Rows",
+          "Value": "10"
+        },
+        {
+          "ParameterId": 69,
+          "ValueId": "409393",
+          "Parameter": "Mounting Type",
+          "Value": "Surface Mount"
+        },
+        {
+          "ParameterId": 5,
+          "ValueId": "477562",
+          "Parameter": "Features",
+          "Value": "VITA 57"
+        },
+        {
+          "ParameterId": 30,
+          "ValueId": "350796",
+          "Parameter": "Contact Finish",
+          "Value": "Gold"
+        },
+        {
+          "ParameterId": 834,
+          "ValueId": "180903",
+          "Parameter": "Contact Finish Thickness",
+          "Value": "30.0µin (0.76µm)"
+        },
+        {
+          "ParameterId": 1263,
+          "ValueId": "1",
+          "Parameter": "Mated Stacking Heights",
+          "Value": "-"
+        },
+        {
+          "ParameterId": 759,
+          "ValueId": "16408",
+          "Parameter": "Height Above Board",
+          "Value": "0.258\" (6.55mm)"
+        }
+      ],
+      "ProductUrl": "https://www.digikey.com/product-detail/en/samtec-inc/ASP-134486-01/SAM8728CT-ND/2135095",
+      "PrimaryDatasheet": "",
+      "PrimaryPhoto": "https://media.digikey.com/Photos/Samtec%20Photos/ASP-134486-01.jpg",
+      "PrimaryVideo": "",
+      "Series": {
+        "ParameterId": -5,
+        "ValueId": "14211",
+        "Parameter": "Series",
+        "Value": "ASP"
+      },
+      "ManufacturerLeadWeeks": "8 weeks",
+      "ManufacturerPageUrl": "https://www.digikey.com/en/supplier-centers/samtec",
+      "ProductStatus": "Active",
+      "AlternatePackaging": [
+        {
+          "ManufacturerPartNumber": "ASP-134486-01",
+          "MinimumOrderQuantity": 200,
+          "NonStock": false,
+          "Packaging": {
+            "ParameterId": 7,
+            "ValueId": "1",
+            "Parameter": "Packaging",
+            "Value": "Tape & Reel (TR)"
+          },
+          "QuantityAvailable": 800,
+          "DigiKeyPartNumber": "SAM8728TR-ND",
+          "ProductDescription": "CONN ARRAY RCPT 400POS SMD GOLD",
+          "UnitPrice": 21.489,
+          "Manufacturer": {
+            "ParameterId": -1,
+            "ValueId": "612",
+            "Parameter": "Manufacturer",
+            "Value": "Samtec Inc."
+          },
+          "ManufacturerPublicQuantity": 0,
+          "QuantityOnOrder": 2000,
+          "DKPlusRestriction": false,
+          "SupplierDirectShip": false
+        }
+      ],
+      "DetailedDescription": "400 Position Connector Array, Female Sockets Surface Mount Gold",
+      "ReachStatus": "Reach unaffected",
+      "ExportControlClassNumber": "EAR99",
+      "HTSUSCode": "8536.69.4040",
+      "TariffDescription": "",
+      "MoistureSensitivityLevel": "1  (Unlimited)",
+      "ManufacturerPartNumber": "ASP-134486-01",
+      "MinimumOrderQuantity": 1,
+      "NonStock": false,
+      "Packaging": {
+        "ParameterId": 7,
+        "ValueId": "2",
+        "Parameter": "Packaging",
+        "Value": "Cut Tape (CT)"
+      },
+      "QuantityAvailable": 948,
+      "DigiKeyPartNumber": "SAM8728CT-ND",
+      "ProductDescription": "CONN ARRAY RCPT 400POS SMD GOLD",
+      "UnitPrice": 27.42,
+      "Manufacturer": {
+        "ParameterId": -1,
+        "ValueId": "612",
+        "Parameter": "Manufacturer",
+        "Value": "Samtec Inc."
+      },
+      "ManufacturerPublicQuantity": 0,
+      "QuantityOnOrder": 0,
+      "DKPlusRestriction": false,
+      "SupplierDirectShip": false
+    }
+  ],
+  "ProductsCount": 1,
+  "ExactManufacturerProductsCount": 1,
+  "ExactManufacturerProducts": [
+    {
+      "StandardPricing": [
+        {
+          "BreakQuantity": 1,
+          "UnitPrice": 27.42,
+          "TotalPrice": 27.42
+        },
+        {
+          "BreakQuantity": 10,
+          "UnitPrice": 24.749,
+          "TotalPrice": 247.49
+        },
+        {
+          "BreakQuantity": 25,
+          "UnitPrice": 23.712,
+          "TotalPrice": 592.8
+        },
+        {
+          "BreakQuantity": 50,
+          "UnitPrice": 22.23,
+          "TotalPrice": 1111.5
+        },
+        {
+          "BreakQuantity": 100,
+          "UnitPrice": 21.489,
+          "TotalPrice": 2148.9
+        }
+      ],
+      "RoHSStatus": "ROHS3 Compliant",
+      "LeadStatus": "Lead Free",
+      "Parameters": [
+        {
+          "ParameterId": 7,
+          "ValueId": "2",
+          "Parameter": "Packaging",
+          "Value": "Cut Tape (CT)"
+        },
+        {
+          "ParameterId": 1989,
+          "ValueId": "0",
+          "Parameter": "Part Status",
+          "Value": "Active"
+        },
+        {
+          "ParameterId": 28,
+          "ValueId": "314974",
+          "Parameter": "Connector Type",
+          "Value": "Array, Female Sockets"
+        },
+        {
+          "ParameterId": 88,
+          "ValueId": "212835",
+          "Parameter": "Number of Positions",
+          "Value": "400"
+        },
+        {
+          "ParameterId": 89,
+          "ValueId": "7022",
+          "Parameter": "Pitch",
+          "Value": "0.050\" (1.27mm)"
+        },
+        {
+          "ParameterId": 2172,
+          "ValueId": "i10",
+          "Parameter": "Number of Rows",
+          "Value": "10"
+        },
+        {
+          "ParameterId": 69,
+          "ValueId": "409393",
+          "Parameter": "Mounting Type",
+          "Value": "Surface Mount"
+        },
+        {
+          "ParameterId": 5,
+          "ValueId": "477562",
+          "Parameter": "Features",
+          "Value": "VITA 57"
+        },
+        {
+          "ParameterId": 30,
+          "ValueId": "350796",
+          "Parameter": "Contact Finish",
+          "Value": "Gold"
+        },
+        {
+          "ParameterId": 834,
+          "ValueId": "180903",
+          "Parameter": "Contact Finish Thickness",
+          "Value": "30.0µin (0.76µm)"
+        },
+        {
+          "ParameterId": 1263,
+          "ValueId": "1",
+          "Parameter": "Mated Stacking Heights",
+          "Value": "-"
+        },
+        {
+          "ParameterId": 759,
+          "ValueId": "16408",
+          "Parameter": "Height Above Board",
+          "Value": "0.258\" (6.55mm)"
+        }
+      ],
+      "ProductUrl": "https://www.digikey.com/product-detail/en/samtec-inc/ASP-134486-01/SAM8728CT-ND/2135095",
+      "PrimaryDatasheet": "",
+      "PrimaryPhoto": "https://media.digikey.com/Photos/Samtec%20Photos/ASP-134486-01.jpg",
+      "PrimaryVideo": "",
+      "Series": {
+        "ParameterId": -5,
+        "ValueId": "14211",
+        "Parameter": "Series",
+        "Value": "ASP"
+      },
+      "ManufacturerLeadWeeks": "8 weeks",
+      "ManufacturerPageUrl": "https://www.digikey.com/en/supplier-centers/samtec",
+      "ProductStatus": "Active",
+      "AlternatePackaging": [
+        {
+          "ManufacturerPartNumber": "ASP-134486-01",
+          "MinimumOrderQuantity": 200,
+          "NonStock": false,
+          "Packaging": {
+            "ParameterId": 7,
+            "ValueId": "1",
+            "Parameter": "Packaging",
+            "Value": "Tape & Reel (TR)"
+          },
+          "QuantityAvailable": 800,
+          "DigiKeyPartNumber": "SAM8728TR-ND",
+          "ProductDescription": "CONN ARRAY RCPT 400POS SMD GOLD",
+          "UnitPrice": 21.489,
+          "Manufacturer": {
+            "ParameterId": -1,
+            "ValueId": "612",
+            "Parameter": "Manufacturer",
+            "Value": "Samtec Inc."
+          },
+          "ManufacturerPublicQuantity": 0,
+          "QuantityOnOrder": 2000,
+          "DKPlusRestriction": false,
+          "SupplierDirectShip": false
+        }
+      ],
+      "DetailedDescription": "400 Position Connector Array, Female Sockets Surface Mount Gold",
+      "ReachStatus": "Reach unaffected",
+      "ExportControlClassNumber": "EAR99",
+      "HTSUSCode": "8536.69.4040",
+      "TariffDescription": "",
+      "MoistureSensitivityLevel": "1  (Unlimited)",
+      "ManufacturerPartNumber": "ASP-134486-01",
+      "MinimumOrderQuantity": 1,
+      "NonStock": false,
+      "Packaging": {
+        "ParameterId": 7,
+        "ValueId": "2",
+        "Parameter": "Packaging",
+        "Value": "Cut Tape (CT)"
+      },
+      "QuantityAvailable": 948,
+      "DigiKeyPartNumber": "SAM8728CT-ND",
+      "ProductDescription": "CONN ARRAY RCPT 400POS SMD GOLD",
+      "UnitPrice": 27.42,
+      "Manufacturer": {
+        "ParameterId": -1,
+        "ValueId": "612",
+        "Parameter": "Manufacturer",
+        "Value": "Samtec Inc."
+      },
+      "ManufacturerPublicQuantity": 0,
+      "QuantityOnOrder": 0,
+      "DKPlusRestriction": false,
+      "SupplierDirectShip": false
+    }
+  ],
+  "ExactDigiKeyProduct": null,
+  "SearchLocaleUsed": {
+    "Site": "US",
+    "Language": "en",
+    "Currency": "USD",
+    "ShipToCountry": "BY"
+  }
+}gi

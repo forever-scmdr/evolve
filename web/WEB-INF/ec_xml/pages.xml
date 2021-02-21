@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>           
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -8,14 +8,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-
-
 	<include-definition name="COMMON">
-		<request>
-			<var name="cur" value="BYN" scope="cookie"/>
-			<var name="city" scope="cookie"/>
-		</request>
-
 		<personal>
 			<list item="user" tag="registration">
 				<filter>
@@ -26,14 +19,7 @@
 			</list>
 		</personal>
 
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-
-		<single item="catalog" id="catalog_main" cacheable="true">
-			<single item="currencies"/>
+		<single item="catalog" id="catalog_main" cacheable="false">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
@@ -51,7 +37,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="true" >
+		<single item="custom_pages" id="custom_pages" cacheable="false" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
@@ -59,12 +45,12 @@
 			</tree>
 		</single>
  
-		<list item="news" id="news" cacheable="true">
+		<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
 		</list>
-		<single item="common" cacheable="true">
+		<single item="common" cacheable="false">
 			<list item="block_array">
 				<list item="block"/>
 			</list>
@@ -92,57 +78,14 @@
 			<var name="login" value="true"/>
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
-		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
-			<var name="cur" value=""/>
-		</link>
 
-		<single item="modules" cacheable="true">
+		<single item="modules" cacheable="false">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap" cacheable="true">
+		<single item="url_seo_wrap" cacheable="false">
 			<list item="url_seo"/>
 		</single>
-		<single item="styles">
-			<list item="label_style"/>
-		</single>
 	</include-definition>
-
-
-
-	<include-definition name="PRODUCT_PARAMS_LINKS">
-		<link name="show_product_ajax" target="product_ajax">
-			<var name="prod" ref="prod" style="key"/>
-		</link>
-		<link name="to_cart" target="cart_action">
-			<var name="action" value="addToCart"/>
-			<var name="prod" ref="prod"/>
-		</link>
-		<link name="to_fav" target="cookie_list_action_redirect">
-			<var name="update_cookie_name" value="favourites"/>
-			<var name="prod" ref="prod"/>
-			<var name="action" value="add"/>
-			<var name="src_page" value="fav_ajax"/>
-		</link>
-		<link name="to_compare" target="cookie_list_action_redirect">
-			<var name="update_cookie_name" value="compare"/>
-			<var name="prod" ref="prod"/>
-			<var name="action" value="add"/>
-			<var name="src_page" value="compare_ajax"/>
-		</link>
-		<link name="one_click_link" target="one_click_ajax">
-			<var name="prod" ref="prod"/>
-		</link>
-		<link name="subscribe_link" target="subscribe_ajax">
-			<var name="prod" ref="prod"/>
-		</link>
-		<link name="my_price_link" target="my_price_ajax">
-			<var name="prod" ref="prod"/>
-		</link>
-		<list item="params"/>
-	</include-definition>
-
-
-
 
 
 
@@ -153,11 +96,11 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-
-
-
-	<page name="index" template="index" cacheable="true" cache-vars="cur">
-		<single item="main_page" id="main" cacheable="true">
+	<page name="index" template="index" cacheable="false">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<single item="main_page" id="main" cacheable="false">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
@@ -165,16 +108,32 @@
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
 				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="prod" parameter="code"/>
+				</link>
+				<link name="to_fav" target="cookie_list_action">
+					<var name="update_cookie_name" value="favourites"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="fav_ajax"/>
+				</link>
+				<link name="to_compare" target="cookie_list_action">
+					<var name="update_cookie_name" value="compare"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="compare_ajax"/>
+				</link>
+				<single item="params"/>
 			</list>
 			<list item="custom_block">
-				<list item="custom_block"/>
+				<list item="custom_element"></list>
 			</list>
 		</single>
-		<list item="banner_section" id="banner_section" cacheable="true">
+		<list item="banner_section" id="banner_section" cacheable="false">
 			<list item="banner"/>
 		</list>
-		<single item="news_wrap" cacheable="true">
+		<single item="news_wrap" cacheable="false">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<sorting direction="DESC">
@@ -193,12 +152,6 @@
 	</page>
 
 
-    <page name="set_city">
-        <request>
-            <var name="city" scope="cookie"/>
-        </request>
-    </page>
-
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -210,8 +163,7 @@
 
 
 
-
-    <page name="catalog" template="catalog" cacheable="true">
+    <page name="catalog" template="catalog" cacheable="false">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -220,24 +172,23 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec" cache-vars="sec page view limit $username" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
-			<var name="mark"/>
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
-				<var name="tag" var="tag"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -260,31 +211,34 @@
 					<parameter name="tag" sign="=" compare="ANY">
 						<var var="tag"/>
 					</parameter>
-					<parameter name="mark" sign="=" compare="ANY">
-						<var var="mark"/>
-					</parameter>
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" var="sec" style="keypath"/>
 					<var name="prod" ref="prod" style="keypath"/>
 				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="prod" parameter="code"/>
+				</link>
+				<link name="to_fav" target="cookie_list_action">
+					<var name="update_cookie_name" value="favourites"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="fav_ajax"/>
+				</link>
+				<link name="to_compare" target="cookie_list_action">
+					<var name="update_cookie_name" value="compare"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="compare_ajax"/>
+				</link>
+				<single item="params"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
-				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">
-					<var name="tag" var="tag"/>
-					<var name="tag" parameter="tag" ref="tag"/>
-				</link>
-				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">
-					<var name="-tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
-			<list item="product" tag="mark" id="mark" assoc="* catalog_link">
-				<aggregation parameter="mark"/>
-				<link name="set_mark" type="exclusive" target="section" copy-page-vars="no">
+				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
 					<var name="sec" style="key" var="sec"/>
-					<var name="mark" parameter="mark" ref="mark"/>
+					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
 			<list item="product" tag="min" assoc="* catalog_link">
@@ -300,17 +254,14 @@
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
 		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_72" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
 		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
+		</link>
+		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="144"/>
 		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
@@ -350,12 +301,8 @@
 		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="sort" value=""/>
 		</link>
-		<link name="set_mark_default" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="mark" value=""/>
-		</link>
 		<include name="COMMON"/>
 	</page>
-
 
 
 	<page name="sub" template="sub" cacheable="false">
@@ -366,10 +313,10 @@
 	</page>
 
 
-
 	<page name="tag_section" template="tag_section">
 		<request>
 			<var name="tag"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<request>
 			<var name="page" value="1"/>
@@ -400,7 +347,23 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<single item="params"/>
 		</list>
 		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -408,17 +371,14 @@
 		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
-		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
-		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_48" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
-		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
+		<link name="set_limit_96" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="96"/>
+		</link>
+		<link name="set_limit_144" target="tag_section" copy-page-vars="yes">
+			<var name="limit" value="144"/>
 		</link>
 		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
@@ -449,23 +409,9 @@
 			<var name="q"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
-			<var name="cur" value="BYN" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<personal>
-			<list item="user" tag="registration">
-				<filter>
-					<parameter name="registered">
-						<var value="1"/>
-					</parameter>
-				</filter>
-			</list>
-		</personal>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY">
@@ -490,6 +436,7 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
@@ -502,7 +449,23 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+			<single item="params"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -518,44 +481,59 @@
 			<var name="q" var="q"/>
 			<var name="minqty" value=""/>
 		</link>
+		<link name="set_currency_byn" target="search" copy-page-vars="yes">
+			<var name="currency" value="byn"/>
+		</link>
+		<link name="set_currency_rur" target="search" copy-page-vars="yes">
+			<var name="currency" value="rur"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="keypath"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<list item="product_extra"/>
-			<list item="params_xml"/>
+			<single item="params"/>
+			<single item="product_extra"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="cur_sec" style="key"/>
 				</link>
 			</ancestor>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+
 			<list item="line_product" id="lprod">
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
 					<var name="action" value="addToCart"/>
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="one_click_link" target="one_click_ajax">
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="subscribe_link" target="subscribe_ajax">
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="my_price_link" target="my_price_ajax">
-					<var name="prod" ref="lprod"/>
+					<var name="code" ref="lprod" parameter="code"/>
 				</link>
 			</list>
+
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -564,50 +542,9 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="my_price_link" target="my_price_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-		</list>
-		<list item="product" tag="grouped" id="grouped">
-			<filter>
-				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="grouped" style="key"/>
-			</link>
 		</list>
 		<include name="COMMON"/>
 	</page>
-
-
-	<!-- Product Ajax -->
-	<page name="product_ajax" template="product_ajax" cacheable="true">
-		<request>
-			<var name="prod" style="path"/>
-		</request>
-		<single item="product" id="prod" var="prod" tag="product">
-			<list item="product_extra"/>
-			<include name="PRODUCT_PARAMS_LINKS"/>
-		</single>
-		<link name="fav_link" target="fav"/>
-		<link name="compare_link" target="compare"/>
-		<link name="show_cart" target="cart"/>
-	</page>
-
-
 
 
 
@@ -620,8 +557,7 @@
 
 
 
-
-    <page name="news" template="news" cacheable="true">
+    <page name="news" template="news" cacheable="false">
 		<request>
 			<var name="sel" style="key"/>
 			<var name="p" value="1"/>
@@ -649,11 +585,11 @@
 	</page>
 
 
-    <page name="news_item" template="news_item" cacheable="true" critical-item="sni">
+    <page name="news_item" template="news_item" cacheable="false" critical-item="sni">
 		<request>
 			<var name="ni" style="key"/>
 		</request>
-        <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
+        <single item="news_item" id="sni" var="ni" cacheable="false" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
@@ -661,23 +597,27 @@
 	</page>
 
 
-    <page name="contacts" template="contacts" cacheable="true">
-        <single item="contacts" cacheable="true">
+    <page name="contacts" template="contacts" cacheable="false">
+        <single item="contacts" cacheable="false">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+	<page name="update_prices" template="update_prices">
+		<command class="extra.UpdatePrices" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+    <page name="page" cacheable="false" template="page" critical-item="sp">
 		<request>
 			<var name="p" style="key"/>
 		</request>
-        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
+        <single item="custom_page" var="p" cacheable="false" cache-vars="p" id="sp">
 			<single item="seo"/>
-			<list item="page_extra">
-				<list item="page_extra_part"/>
-			</list>
+			<list item="page_extra"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>
@@ -693,85 +633,13 @@
 	</page>
 
 
-
-
-
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                    AJAX И ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ                      ////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-
-
-
-	<page name="my_price_ajax" template="my_price_ajax">
-		<request>
-			<var name="prod"/>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<single item="my_price" cacheable="true"/>
-		<single item="product" var="prod"/>
-		<new item="my_price_form" id="form" tag="form">
-			<parameter-input ref="form" form="my_price"/>
-		</new>
-		<link name="submit_link" target="feedback_command" type="itemform">
-			<var name="form_name" value="my_price"/>
-			<var name="source_page" value="my_price_ajax"/>
-			<var name="required" value="phone,price"/>
-			<var name="topic" value="Моя цена"/>
-		</link>
-	</page>
-
-
-	<page name="one_click_ajax" template="one_click_ajax">
-		<request>
-			<var name="prod"/>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<single item="product" var="prod"/>
-		<new item="one_click_form" id="form" tag="form">
-			<parameter-input ref="form" form="one_click"/>
-		</new>
-		<link name="submit_link" target="feedback_command" type="itemform">
-			<var name="form_name" value="one_click"/>
-			<var name="source_page" value="one_click_ajax"/>
-			<var name="required" value="phone"/>
-			<var name="topic" value="Заказ в один клик"/>
-		</link>
-	</page>
-
-
-	<page name="subscribe_ajax" template="subscribe_ajax">
-		<request>
-			<var name="prod"/>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<single item="product" var="prod" id="prod"/>
-		<new item="observer" id="form" tag="form">
-			<parameter-input ref="form" form="observer"/>
-		</new>
-		<link name="submit_link" target="subscribe_command" type="itemform">
-			<var name="prod" ref="prod"/>
-		</link>
-	</page>
-
-
-
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
 			<var name="result"/>
 			<var name="message"/>
 		</request>
-		<new item="generic_form" id="email_form">
-			<extra-input name="name" form="feedback"/>
-			<extra-input name="email" form="feedback"/>
-			<extra-input name="phone" form="feedback"/>
-			<extra-input name="message" form="feedback"/>
+		<new item="feedback_form" id="form">
+			<parameter-input ref="form" form="feedback"/>
 		</new>
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
@@ -779,67 +647,29 @@
 		</link>
 	</page>
 
-	<page name="comment_ajax" template="comment_ajax">
-		<request>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<new item="comment" id="form">
-			<parameter-input ref="form" form="comment"/>
-		</new>
-		<link name="submit_link" target="comment_command" type="itemform">
-			<var name="form_name" value="comment"/>
-			<var name="source_page" value="comment_ajax"/>
-		</link>
-	</page>
-
-	<page name="comment_command">
-		<request>
-			<var name="form_name"/>
-			<var name="source_page"/>
-			<var name="required" value="phone|email, text"/>
-		</request>
-		<link name="success" target-var="source_page">
-			<var name="result" value="success"/>
-			<var name="message" value="Ваш отзыв передан на модерацию, спасибо"/>
-		</link>
-		<link name="error_not_set" target-var="source_page">
-			<var name="result" value="error"/>
-			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
-		</link>
-		<link name="general_error" target-var="source_page">
-			<var name="result" value="error"/>
-			<var name="message"
-				 value="Отзыв не был обработан из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
-		</link>
-		<command class="extra.AddCommentCommand">
-			<result name="success" type="redirect"/>
-			<result name="error_not_set" type="redirect"/>
-			<result name="general_error" type="redirect"/>
-		</command>
-	</page>
+	<page name="client_email" template="client_email"></page>
 
 	<page name="feedback_command">
 		<request>
-			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="topic" value="client feedback from mhr-gi"/>
+			<var name="email" value="assistant_bel@mhr-gi.net, assistant@mhr-hi.net"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
+			<var name="client_template" value="client_email"/>
 			<var name="required" value="phone|email, message"/>
-			<var name="template" value="feedback_email"/>
 		</request>
 		<link name="success" target-var="source_page">
 			<var name="result" value="success"/>
-			<var name="message" value="Сообщение успешно отправлено, спасибо"/>
+			<var name="message" value="Message send successfully. Thank you."/>
 		</link>
 		<link name="error_not_set" target-var="source_page">
 			<var name="result" value="error"/>
-			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
+			<var name="message" value="Please, fill in the required fields"/>
 		</link>
 		<link name="general_error" target-var="source_page">
 			<var name="result" value="error"/>
 			<var name="message"
-				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+				 value="Email sending error. Please try again later."/>
 		</link>
 		<command class="ecommander.fwk.NonemptyEmailCommand">
 			<result name="success" type="redirect"/>
@@ -847,54 +677,6 @@
 			<result name="general_error" type="redirect"/>
 		</command>
 	</page>
-
-
-	<page name="subscribe_command">
-		<request>
-			<var name="prod"/>
-		</request>
-		<link name="success" target="subscribe_ajax">
-			<var name="result" value="success"/>
-			<var name="message" value="Вы подписаны на обновление, спасибо"/>
-		</link>
-		<link name="error_not_set" target="subscribe_ajax">
-			<var name="result" value="error"/>
-			<var name="prod" var="prod"/>
-			<var name="message" value="Заполните, пожалуйста, электронную почту"/>
-		</link>
-		<link name="general_error" target="subscribe_ajax">
-			<var name="result" value="error"/>
-			<var name="message"
-				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
-		</link>
-		<command class="ecommander.fwk.SubscribeCommand">
-			<result name="success" type="redirect"/>
-			<result name="error_not_set" type="redirect"/>
-			<result name="general_error" type="redirect"/>
-		</command>
-	</page>
-
-
-
-	<page name="subscribe_inform_email" template="subscribe_inform_email">
-		<request>
-			<var name="prod"/>
-		</request>
-		<single item="product" id="prod" var="prod" tag="product" parameter="code">
-			<include name="PRODUCT_PARAMS_LINKS"/>
-		</single>
-	</page>
-
-
-	<page name="feedback_email" template="feedback_email">
-		<new item="generic_form" id="email_form">
-			<extra-input name="name" form="feedback"/>
-			<extra-input name="email" form="feedback"/>
-			<extra-input name="phone" form="feedback"/>
-			<extra-input name="message" form="feedback"/>
-		</new>
-	</page>
-
 
 
 
@@ -906,13 +688,10 @@
 
 
 
-
-
-
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="cur" value="BYN" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -922,7 +701,7 @@
 					<list item="abstract_product" id="product" tag="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
-							<var name="prod" ref="product"/>
+							<var name="code" ref="product" parameter="code"/>
 						</link>
 					</list>
 				</list>
@@ -934,7 +713,7 @@
 
 	<page name="cart_action">
 		<request>
-			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
+			<var name="strategy" value="extra_line_overbuy"/>
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
@@ -965,6 +744,7 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -985,8 +765,6 @@
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
-					<extra-input ref="bought" name="extra1"/>
-					<extra-input ref="bought" name="extra2"/>
 				</list>
 			</single>
 		</session>
@@ -1003,6 +781,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -1129,26 +908,6 @@
 	</page>
 
 
-	<page name="cookie_list_action_redirect">
-		<request>
-			<var name="action"/>
-			<var name="update_cookie_name"/>
-			<var name="prod"/>
-			<var name="src_page"/>
-		</request>
-		<single item="product" var="prod" id="prod"/>
-		<link name="success" target="cookie_list_action">
-			<var name="action" var="action"/>
-			<var name="update_cookie_name" var="update_cookie_name"/>
-			<var name="update_cookie_value" ref="prod" parameter="code"/>
-			<var name="src_page" var="src_page"/>
-		</link>
-		<command class="ecommander.fwk.RedirectCommand">
-			<result name="success" type="redirect"/>
-		</command>
-	</page>
-
-
 	<page name="cookie_list_action">
 		<request>
 			<var name="action"/>
@@ -1166,7 +925,6 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
-			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -1177,24 +935,15 @@
 			<link name="show_product" target="product">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
 				<var name="action" value="remove"/>
 				<var name="src_page" value="fav"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
-			<!--
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
-				<var name="prod" ref="prod"/>
+				<var name="code" ref="prod" parameter="code"/>
 			</link>
 			<link name="to_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
@@ -1202,12 +951,6 @@
 				<var name="action" value="add"/>
 				<var name="src_page" value="compare_ajax"/>
 			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="prod"/>
-			</link> -->
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1229,7 +972,6 @@
 					<var var="compare"/>
 				</parameter>
 			</filter>
-			<list item="params_xml"/>
 			<link name="from_compare" target="cookie_list_action">
 				<var name="update_cookie_name" value="compare"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1239,13 +981,14 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS" />
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
+			<single item="params"/>
 		</list>
 		<include name="COMMON"/>
 	</page>
-
-
-
 
 
 
@@ -1254,9 +997,6 @@
 	<!--/////////////                       РЕГИСТРАЦИЯ И КАБИНЕТ                          ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-
 
 
 
@@ -1403,26 +1143,31 @@
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="code" ref="prod" parameter="code"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<link name="to_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
 		</list>
 		<include name="COMMON"/>
 	</page>
-
-
-
-
-
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                       ИНТЕГРАЦИЯ И ПАРСИНГ                           ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
 
 
 	<!--//                                                                                                  -->
@@ -1546,13 +1291,6 @@
 		</command>
 	</page>
 
-
-	<page name="update_prices" template="update_prices">
-		<command class="extra.UpdatePrices" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
 		<headers content-type="xml"/>
@@ -1594,7 +1332,7 @@
 		</list>
 	</page>
 
-    <page name="sitemap_section" template="sitemap_section" cacheable="true">
+    <page name="sitemap_section" template="sitemap_section" cacheable="false">
 		<request>
 			<var name="sec" style="key"/>
 		</request>
@@ -1733,7 +1471,6 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-            <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
@@ -1767,62 +1504,5 @@
 			<result name="error" type="redirect"/>
 		</command>
 	</page>
-
-
-	<page name="set_optional" authority-groups="0dmin">
-		<command class="extra.SetOptional"/>
-	</page>
-
-	<page name="admin_extra" template="admin/extra" authority-groups="common">
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-	</page>
-
-
-	<page name="send_emails" schedule="0 */10 * ? * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="ecommander.fwk.integration.EmailQueueSender">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-
-	<page name="inform_subscribers" schedule="0 5/10 * ? * *">
-		<command class="ecommander.fwk.integration.InformSubscribersCommand">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
-
-	<page name="get_rates" schedule="0 0 */2 ? * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="extra.UpdateCurrencyRates"/>
-	</page>
-
-
-
-
-<!--	<page name="tuples">-->
-<!--		<request>-->
-<!--			<var name="direct_search" value="тест ключ"/>-->
-<!--		</request>-->
-<!--		<single item="product" tag="direct" id="prod">-->
-<!--			<filter>-->
-<!--				<parameter name="tuple_test"><var var="direct_search" /></parameter>-->
-<!--			</filter>-->
-<!--		</single>-->
-<!--		<list item="product" tag="search">-->
-<!--			<filter>-->
-<!--				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>-->
-<!--			</filter>-->
-<!--		</list>-->
-<!--	</page>-->
 
 </site>

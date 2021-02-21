@@ -1,0 +1,12 @@
+{
+  "Keywords": "RHS1A151MCN1GS",
+  "RecordCount": 50,
+  "Sort": {
+    "SortOption": "SortByUnitPrice",
+    "Direction": "Ascending"
+  },
+  "SearchOptions": [
+    "ManufacturerPartSearch",
+    "CollapsePackagingTypes"
+  ]
+}
