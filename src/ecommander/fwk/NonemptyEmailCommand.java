@@ -76,6 +76,7 @@ public class NonemptyEmailCommand extends Command {
 		Item message = postForm.getItemSingleTransient();
 		InputValues messageInput = new InputValues(); // Все данные, полученные из формы в единообразном виде (и параметры и extra)
 		ItemType postDesc = ItemTypeRegistry.getItemType(message.getTypeId());
+		topic = StringUtils.isNotBlank(postForm.getSingleStringExtra("topic"))? postForm.getSingleStringExtra("topic") : topic;
 		// Переписать сначала все параметры
 		for (ParameterDescription param : postDesc.getParameterList()) {
 			ParameterDescription paramDesc = postDesc.getParameter(param.getName());
@@ -150,13 +151,14 @@ public class NonemptyEmailCommand extends Command {
 			}
 			// Простое письмо
 			else if (StringUtils.isNotBlank(mailMessage)) {
-				textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
+				textPart.setContent(mailMessage.toString(), "text/plain;charset=UTF-8");
 			}
 			// Отправка письма
 			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic")) ? topic : postForm.getSingleStringExtra("topic");
 			EmailUtils.sendGmailDefault(emailTo, topic, mp);
 
 			if (StringUtils.isNotBlank(getVarSingleValue("client_template"))) {
+				emailTo = messageInput.get("email").toString();
 				saveSessionForm(formNameStr);
 				emailPage = getExecutablePage(getVarSingleValue("client_template"));
 				for (Object key : messageInput.getKeys()) {
@@ -175,12 +177,15 @@ public class NonemptyEmailCommand extends Command {
 						emailPage.addVariable(new StaticVariable(paramName, values.toArray(new Object[0])));
 					}
 				}
+				emailPage.addVariable(new StaticVariable("topic", topic));
+				mp = new MimeMultipart();
 				textPart = new MimeBodyPart();
 				mp.addBodyPart(textPart);
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				PageController.newSimple().executePage(emailPage, bos);
 				textPart.setContent(bos.toString("UTF-8"), emailPage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER) + ";charset=UTF-8");
-				EmailUtils.sendGmailDefault(emailTo, getUrlBase() + " noreply", mp);
+				topic = getUrlBase() + " noreply";
+				EmailUtils.sendGmailDefault(emailTo, topic, mp);
 			}
 
 		} catch (Exception e) {

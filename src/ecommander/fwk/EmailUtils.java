@@ -18,7 +18,7 @@ public class EmailUtils {
 		private static final long serialVersionUID = 2361116501952410474L;
 		{
 			put("smtp.gmail.com", "587");
-		//	put("smtp.yandex.ru", "465");
+			put("smtp.yandex.ru", "587");
 		}
 	};
 
@@ -82,7 +82,7 @@ public class EmailUtils {
 		String emailFrom = (String) feedbackParams.getValue("email_from");
 		String serverFrom = (String) feedbackParams.getValue("server_from");
 		String emailFromPassword = (String) feedbackParams.getValue("email_from_password");
-		String encoding = (String) feedbackParams.getValue("encoding");
+
 		if (StringUtils.isBlank(to) || StringUtils.isBlank(serverFrom) || StringUtils.isBlank(emailFrom)
 				|| StringUtils.isBlank(emailFromPassword))
 			throw new EcommanderException(ErrorCodes.EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
