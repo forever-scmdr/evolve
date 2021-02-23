@@ -687,6 +687,15 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
+	<page name="test_cart">
+		<session>
+			<single item="cart">
+				<list item="bought">
+					<list item="abstract_product" id="product" tag="product" />
+				</list>
+			</single>
+		</session>
+	</page>
 
 
 	<page name="cart_ajax" template="cart_ajax">

@@ -336,6 +336,7 @@
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="price_map" type="string" caption="Зависимость цены от количества"/>
+		<parameter name="delivery_time" type="string" caption="Срок доставки"/>
 		<child item="product" single="true"/>
 	</item>
 

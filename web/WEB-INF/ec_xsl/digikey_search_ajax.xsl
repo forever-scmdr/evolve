@@ -117,6 +117,7 @@
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
+							<input type="hidden" name="delivery_time" value="7-10 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -130,6 +131,7 @@
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
+							<input type="hidden" name="delivery_time" value=""/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>
@@ -223,6 +225,7 @@
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="delivery_time" value="7-10 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -237,6 +240,7 @@
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
+							<input type="hidden" name="delivery_time" value=""/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
 						</xsl:if>
 					</form>

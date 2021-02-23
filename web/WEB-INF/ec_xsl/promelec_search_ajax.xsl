@@ -203,6 +203,7 @@
 
 			<xsl:variable name="code" select="if($vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
 			<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>
+			<xsl:variable name="days" select="concat(f:num(@delivery)+7 ,'-', f:num(@delivery)+14)"/>
 
 			<div class="device__order">
 				<div id="cart_list_{$code}">
@@ -222,12 +223,13 @@
 							<input type="hidden" name="price_map" value="{$map}"/>
 						</xsl:if>
 						<input type="hidden" name="img" value="{$pic}"/>
+						<input type="hidden" name="delivery_time" value="{$days} дней"/>
 						<input type="submit" class="button" value="В корзину"/>
 					</form>
 				</div>
 			</div>
 			<xsl:if test="f:num(@quant) != 0">
-				<xsl:variable name="days" select="concat(f:num(@delivery)+7 ,'-', f:num(@delivery)+14)"/>
+
 				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(@quant) &lt; 500000) then concat(' ',f:num(@quant), ' шт.') else ''" /> в течение <xsl:value-of select="$days"/> дней</div>
 			</xsl:if>
 			<xsl:if test="f:num(@quant) = 0">

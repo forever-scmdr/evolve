@@ -150,6 +150,7 @@
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>
+						<input type="hidden" name="delivery_time" value="7-10 дней"/>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
 					<xsl:if test="$available">
@@ -219,6 +220,7 @@
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>
+						<input type="hidden" name="delivery_time" value="7-10 дней"/>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
 					<xsl:if test="$available">
