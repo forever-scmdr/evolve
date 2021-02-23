@@ -98,7 +98,7 @@
 								<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 								<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
-								<input type="hidden" name="delivery_time" value=""/>
+								<input type="hidden" name="delivery_time" value=" "/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
 						</form>

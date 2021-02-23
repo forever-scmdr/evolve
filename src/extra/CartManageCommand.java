@@ -58,6 +58,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE).trim());
+			String days = getVarSingleValue("delivery_time");
+			if(StringUtils.isNotBlank(days))
+				bought.setValueUI("delivery_time", days.trim());
 			bought.setValue("aux", "farnell");
 			bought.setExtra("img", getVarSingleValue("img").trim());
 			//build price map
@@ -110,6 +113,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
+			String days = getVarSingleValue("delivery_time");
+			if(StringUtils.isNotBlank(days))
+				bought.setValueUI("delivery_time", days.trim());
 			bought.setValue("aux", getVarSingleValue("aux"));
 			bought.setExtra("img", getVarSingleValue("img"));
 			getSessionMapper().saveTemporaryItem(bought);
@@ -153,6 +159,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
+			String days = getVarSingleValue("delivery_time");
+			if(StringUtils.isNotBlank(days))
+				bought.setValueUI("delivery_time", days.trim());
 			bought.setValue("aux", getVarSingleValue("aux"));
 			getSessionMapper().saveTemporaryItem(bought);
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
@@ -201,6 +210,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE));
+			String days = getVarSingleValue("delivery_time");
+			if(StringUtils.isNotBlank(days))
+			bought.setValueUI("delivery_time", days.trim());
 			bought.setValue("aux", getVarSingleValue("aux"));
 			bought.setExtra("img", getVarSingleValue("img"));
 			getSessionMapper().saveTemporaryItem(bought);

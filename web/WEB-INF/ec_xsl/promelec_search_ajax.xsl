@@ -223,7 +223,7 @@
 							<input type="hidden" name="price_map" value="{$map}"/>
 						</xsl:if>
 						<input type="hidden" name="img" value="{$pic}"/>
-						<input type="hidden" name="delivery_time" value="{if(f:num(@quant) != 0) then concat($days, '  дней') else ''}"/>
+						<input type="hidden" name="delivery_time" value="{if(f:num(@quant) != 0) then concat($days, '  дней') else ' '}"/>
 						<input type="submit" class="button" value="В корзину"/>
 					</form>
 				</div>
