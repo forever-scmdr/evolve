@@ -1,12 +1,13 @@
 
 package ecommander.extra._generated;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.List;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.List;
 
 public class Line_product
     extends Item
