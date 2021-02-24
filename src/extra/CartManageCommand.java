@@ -3,6 +3,7 @@ package extra;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.pages.ResultPE;
 import extra._generated.ItemNames;
 
 import java.util.HashSet;
@@ -37,6 +38,11 @@ public class CartManageCommand extends BasicCartManageCommand {
 		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}
 
+	@Override
+	public ResultPE recalculate() throws Exception {
+		super.recalculate();
+		return getResult("ajax");
+	}
 
 	@Override
 	protected boolean validate() throws Exception {

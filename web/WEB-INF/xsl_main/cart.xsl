@@ -17,7 +17,7 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'по запросу'"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'Ожидается'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
@@ -43,7 +43,7 @@
 								<div class="cart-item__price">
 									<span class="text-label">Цена</span>
 									<span><xsl:value-of select="$price"/></span>
-									<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>
+									<xsl:if test="not_available = '1'"><span>Ожидается</span></xsl:if>
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
@@ -54,7 +54,7 @@
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span><xsl:value-of select="$sum"/></span>
+										<span id="sum-{code}"><xsl:value-of select="$sum"/></span>
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">
@@ -82,11 +82,11 @@
 						</xsl:for-each>
 						<div class="cart-total">
 							<xsl:if test="page/cart/sum != '0'">
-								<div class="cart-total__text">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
+								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
 							</xsl:if>
 							<div class="cart-total__buttons">
 								<button class="button button_2 cart-total__button" type="submit"
-										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')">Пересчитать</button>
+										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
 								<button class="button button_2 cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
 							</div>
@@ -116,10 +116,11 @@
 					var $form = $(this).closest('form');
 					var func = function(){
 						$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
-						$form.submit();
+						//$form.submit();
+						postForm($form);
 					};
 
-					recalcTo = setTimeout(func, 1000);
+					recalcTo = setTimeout(func, 500);
 					
 				} else if(!validate($t.val())){
 
@@ -129,14 +130,12 @@
 						$t.val("1");
 					}
 				}
-
-				console.log(recalcTo);
 			});
 
 			function validate(val){
 				return parseFloat(val) &gt; 0;
 			}
-		</script>
+		</script> 
 	</xsl:template>
 
 </xsl:stylesheet>
