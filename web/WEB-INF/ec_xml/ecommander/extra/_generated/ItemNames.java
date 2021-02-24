@@ -391,6 +391,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
@@ -528,6 +529,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
@@ -829,6 +831,7 @@ public interface ItemNames {
         String STATUS = "status";
         String SEARCH = "search";
         String MIN_QTY = "min_qty";
+        String STEP = "step";
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";

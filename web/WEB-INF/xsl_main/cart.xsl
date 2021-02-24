@@ -47,13 +47,14 @@
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" class="input qty-input" data-old="{qty}"
-										   min="{if (min_qty) then min_qty else 1}" step="{if (min_qty) then min_qty else 0.1}" />
+
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span><xsl:value-of select="$sum"/></span>
+										<span id="sum-{code}"><xsl:value-of select="$sum"/></span>
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">
@@ -81,11 +82,11 @@
 						</xsl:for-each>
 						<div class="cart-total">
 							<xsl:if test="page/cart/sum != '0'">
-								<div class="cart-total__text">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
+								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
 							</xsl:if>
 							<div class="cart-total__buttons">
 								<button class="button button_2 cart-total__button" type="submit"
-										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')">Пересчитать</button>
+										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
 								<button class="button button_2 cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
 							</div>
@@ -104,11 +105,23 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
 			$(".qty-input").change(function(){
+
+				if(typeof recalcTo != "undefined"){
+					clearTimeout(recalcTo);
+				}
+
 				$t = $(this);
 				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
-					$form = $(this).closest('form');
+
+					var $form = $(this).closest('form');
+					var func = function(){
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
-					$form.submit();
+						//$form.submit();
+						postForm($form,'v', function(){ $t.attr("data-old", $t.val()); });
+					};
+
+					recalcTo = setTimeout(func, 500);
+
 				} else if(!validate($t.val())){
 					if(validate($t.attr("data-old"))){
 						$t.val($t.attr("data-old"));
@@ -119,7 +132,7 @@
 			});
 
 			function validate(val){
-				return parseInt(val) &gt; 0;
+				return parseFloat(val) &gt; 0;
 			}
 		</script>
 	</xsl:template>
