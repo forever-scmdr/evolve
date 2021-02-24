@@ -117,7 +117,7 @@
 					var func = function(){
 						$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
 						//$form.submit();
-						postForm($form);
+						postForm($form,'v', function(){ $t.attr("data-old", $t.val()); });
 					};
 
 					recalcTo = setTimeout(func, 500);
