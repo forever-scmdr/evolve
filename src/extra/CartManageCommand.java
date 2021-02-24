@@ -1,33 +1,11 @@
 package extra;
 
-import com.lowagie.text.pdf.BaseFont;
-import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
 import ecommander.fwk.BasicCartManageCommand;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-import ecommander.pages.ExecutablePagePE;
-import ecommander.pages.LinkPE;
-import ecommander.pages.MultipleHttpPostForm;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
-import extra._generated.User_jur;
-import org.apache.commons.lang3.StringUtils;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.math.BigDecimal;
 import java.util.HashSet;
 
 /**
@@ -60,9 +38,11 @@ public class CartManageCommand extends BasicCartManageCommand {
 		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}
 
-
-	//private Discounts discounts;
-
+	@Override
+	public ResultPE recalculate() throws Exception {
+		super.recalculate();
+		return getResult("ajax");
+	}
 
 	@Override
 	protected boolean validate() throws Exception {
