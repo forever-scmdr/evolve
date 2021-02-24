@@ -10,6 +10,7 @@ import ecommander.model.Item;
 import ecommander.model.Parameter;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -58,6 +59,10 @@ public class CopyToUpload implements ItemEventCommandFactory {
 
 					File destFile1 = Paths.get(AppContext.getContextPath(), new String[]{"upload", this.item.getValue(param.getParamId()).toString()}).toFile();
 					FileUtils.copyFile(srcFile, destFile1);
+					if(SystemUtils.IS_OS_LINUX){
+						Path ecXml = Paths.get(AppContext.getContextPath(),new String[]{"upload", this.item.getValue(param.getParamId()).toString()});
+						Runtime.getRuntime().exec(new String[]{"chmod", "775", ecXml.toAbsolutePath().toString()});
+					}
 				}
 
 			}

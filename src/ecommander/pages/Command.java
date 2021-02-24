@@ -6,7 +6,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;

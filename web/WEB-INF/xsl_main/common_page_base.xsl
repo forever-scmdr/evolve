@@ -309,14 +309,10 @@
 						</a>
 						<div class="google-rating">
 							<div class="google-rating__stars">
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star.svg" alt="" />
-								<img src="img/star-line.svg" alt="" />
+								<img src="img/icon-google-rating.png" alt="" />
 							</div>
 							<div class="google-rating__text">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, molestiae.
+								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
 							</div>
 						</div>
 					</div>
