@@ -14,6 +14,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -401,8 +402,28 @@ public abstract class BasicCartManageCommand extends Command {
 
         //fix 16.02.2021 Product quantity step added
         double step = product.getDoubleValue("step", product.getDoubleValue("min_qty", 1));
-        qtyWanted = Math.max(product.getDoubleValue("min_qty", 0), qtyWanted);
-        qtyWanted = product.getDoubleValue("min_qty", 0) + Math.ceil((qtyWanted - product.getDoubleValue("min_qty", 0)) / step) * step;
+
+        //double sucks! use BigDecimal
+		BigDecimal wanted = new BigDecimal(qtyWanted);
+		BigDecimal stepD = new BigDecimal(step);
+		BigDecimal min = new BigDecimal(product.getDoubleValue("min_qty", 0));
+
+		wanted  = wanted.setScale(6, RoundingMode.HALF_UP);
+		stepD = stepD.setScale(6, RoundingMode.DOWN);
+		min = min.setScale(6, RoundingMode.HALF_UP);
+
+		BigDecimal res = wanted.subtract(min);
+		res = res.divide(stepD, RoundingMode.CEILING);
+		res = res.multiply(stepD);
+		res = res.add(min);
+		res = res.setScale(6, RoundingMode.HALF_UP);
+
+		qtyWanted = res.doubleValue();
+
+//        qtyWanted = Math.max(product.getDoubleValue("min_qty", 0), qtyWanted);
+//       	double minQ = product.getDoubleValue("min_qty", 0);
+//       	double q = qtyWanted - minQ;
+//        qtyWanted = minQ + Math.ceil(q / step) * step;
 
         double qtyAvail = 0;
         double qtyTotal = 0;

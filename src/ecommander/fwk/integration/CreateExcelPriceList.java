@@ -118,6 +118,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		info.pushLog("Обнаружено разделов первого уровня: " + sections.size());
 
 		workBook = new HSSFWorkbook();
+		pushLog("workbook created");
 		initCellStyles();
 
 		for (Item section : sections) {
@@ -639,6 +640,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 		String sectionId = getVarSingleValue(SECTION_VAR);
 		if (StringUtils.isNotBlank(sectionId)) secId = Long.parseLong(sectionId);
+		pushLog("preparation complete");
 		return true;
 	}
 }

@@ -34,7 +34,6 @@ public abstract class IntegrateBase extends Command {
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
 	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
-
 	static {
 		runningTasks = new ConcurrentHashMap<>();
 	}
@@ -374,14 +373,16 @@ public abstract class IntegrateBase extends Command {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
+
+			boolean readyToStart = false;
 			try {
-				if (!makePreparations()) {
-					setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
-					runningTask.isFinished = true;
-					return buildResult();
-				}
+				readyToStart = makePreparations();
 			} catch (Exception e) {
-				info.addError(e);
+				ServerLogger.error(e.getMessage(), e);
+				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+			}
+
+			if (!readyToStart) {
 				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
 				runningTask.isFinished = true;
 				return buildResult();

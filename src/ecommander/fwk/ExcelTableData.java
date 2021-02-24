@@ -21,7 +21,7 @@ public class ExcelTableData implements TableDataSource {
 	private boolean isValid = false;
 	private Sheet currentSheet;
 	private LinkedHashMap<String, Integer> currentHeader = new LinkedHashMap<>();
-	private HashMap<String, String> originalHeader = new HashMap<>();
+	private TreeMap<String, String> originalHeader = new TreeMap<>();
 	private Row currentRow;
 	private POIUtils.CellXY headerCell;
 	private FormulaEvaluator eval;
@@ -78,7 +78,7 @@ public class ExcelTableData implements TableDataSource {
 		}
 		if (rowChecked) {
 			LinkedHashMap<String, Integer> headers = new LinkedHashMap<>();
-			originalHeader = new HashMap<>();
+			originalHeader = new TreeMap<>();
 			for (Cell cell : currentRow) {
 				String colHeader = StringUtils.trim(POIUtils.getCellAsString(cell, eval));
 				if (StringUtils.isNotBlank(colHeader)) {
@@ -149,7 +149,6 @@ public class ExcelTableData implements TableDataSource {
 				isValid = true;
 			}
 		}
-
 
 		if (validSheets.size() > 0){
 			currentSheet = validSheets.get(0).sheet;
@@ -241,7 +240,9 @@ public class ExcelTableData implements TableDataSource {
 	}
 
 	public final Collection<String> getHeaders(){
-		return currentHeader.keySet();
+		LinkedHashSet<String> a = new LinkedHashSet<>();
+		a.addAll(currentHeader.keySet());
+		return a;
 	}
 
 	public int getLinesCount() {
@@ -264,7 +265,7 @@ public class ExcelTableData implements TableDataSource {
 
 	protected static class SheetHeader{
 		private Sheet sheet;
-		private LinkedHashMap<String, Integer> header;
+		private LinkedHashMap<String, Integer> header = new LinkedHashMap();
 		private POIUtils.CellXY headerCell;
 		protected SheetHeader(Sheet sheet, LinkedHashMap<String, Integer> header, POIUtils.CellXY headerCell){
 			this.sheet = sheet;
