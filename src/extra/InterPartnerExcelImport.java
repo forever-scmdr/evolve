@@ -69,15 +69,16 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			return false;
 		}
 		for (Item store : stores) {
-			String fileName = store.getStringValue("big_integration");
-			if (!StringUtils.isBlank(fileName)) {
-				File f = Paths.get(AppContext.getContextPath(), "upload", fileName).toFile();
+			//String fileName = store.getStringValue("big_integration");
+			//if (!StringUtils.isBlank(fileName)) {
+			//	File f = Paths.get(AppContext.getContextPath(), "upload", fileName).toFile();
+				File f = store.getFileValue("big_integration", AppContext.getFilesDirPath(store.isFileProtected()));
 				if (f.isFile()) {
 					files.put(store, f);
 				} else {
-					pushLog("Отсутствует файл: " + fileName);
+					pushLog("Отсутствует файл: " + f.getName());
 				}
-			}
+			//}
 		}
 		//Init HEADER_PARAM
 		for (ParameterDescription param : ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameterList()) {
@@ -114,16 +115,17 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		fixGallery();
 		revealProducts();
+		//date = stores.getLongValue("date");
+		date = new Date().getTime();
 		for (Map.Entry<Item, File> entry : files.entrySet()) {
 			File f = entry.getValue();
 			currentStore = entry.getKey();
 			//if (checkHash(f)) {
 				//replacePriceAnyway =
-				if (dateDiffers(f)) {
-					stores.setValue("date", date);
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
-					date = stores.getLongValue("date");
-				}
+				//if (dateDiffers(f)) {
+				//	stores.setValue("date", date);
+				//	executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
+				//}
 				parseExcel(f);
 				//if(replacePriceAnyway) replacePriceAnyway = false;
 			//} else {
@@ -131,7 +133,8 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			//	pushLog("Файл " + f.getName() + " был разобран ранее.");
 			//}
 		}
-		date = stores.getLongValue("date");
+		stores.setValue("date", date);
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(stores));
 
 		hideProducts(ItemNames.PRODUCT);
 		hideProducts(ItemNames.LINE_PRODUCT);
@@ -207,13 +210,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		while (products.size() > 0) {
 			for (Item product : products) {
 				id = product.getId();
-				long productModificationDate = 0L;
-				try {
-					productModificationDate = product.getLongValue("date");
-				} catch (Exception e) {
-				}
-				if (productModificationDate < date && product.getStatus() == Item.STATUS_NORMAL) {
-					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(product.getId()));
+				info.setCurrentJob("hiding " + product.getTypeName() + " id: " + product.getTypeId() + ". trg = 1022");
+				if (product.getTimeUpdated() < date && product.getStatus() == Item.STATUS_NORMAL) {
+					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(id));
 				}
 				info.increaseProcessed();
 			}
@@ -250,8 +249,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 		doc.iterate();
 		doc.close();
-		currentStore.setValue("old_file_hash", excelFile.hashCode());
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(currentStore).noFulltextIndex().noTriggerExtra());
+
 		pushLog("Файл " + excelFile.getName() + " разобран.");
 	}
 
