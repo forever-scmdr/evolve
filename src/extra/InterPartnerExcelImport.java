@@ -205,19 +205,19 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 	private void hideProducts(String typeName) throws Exception {
 		setOperation("Скрытие товаров, отсутствующих на складах");
 		info.setProcessed(0);
-		List<Item> products = ItemMapper.loadByName(typeName, 500, 0);
-		long id = 0;
-		while (products.size() > 0) {
-			for (Item product : products) {
-				id = product.getId();
+		//List<Item> products = ItemMapper.loadByName(typeName, 500, 0);
+		//long id = 0;
+		//while (products.size() > 0) {
+			for (Item product : new ItemQuery(typeName).loadItems()) {
+				long id = product.getId();
 				info.setCurrentJob("hiding " + product.getTypeName() + " id: " + product.getTypeId() + ". trg = 1022");
 				if (product.getTimeUpdated() < date && product.getStatus() == Item.STATUS_NORMAL) {
 					executeAndCommitCommandUnits(ItemStatusDBUnit.hide(id));
 				}
 				info.increaseProcessed();
 			}
-			products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
-		}
+		//	products = ItemMapper.loadByName(ItemNames.PRODUCT, 500, id);
+		//}
 
 		info.setOperation("Пересохранение завершено");
 	}
@@ -226,6 +226,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		setOperation("Восстановление скрытых товаров");
 		info.setProcessed(0);
 		List<Item> products = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN).loadItems();
+		products.addAll(new ItemQuery(LINE_PRODUCT_ITEM, Item.STATUS_HIDDEN).loadItems());
 		info.setToProcess(products.size());
 		for (Item product : products) {
 			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(product.getId()));
