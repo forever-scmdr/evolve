@@ -179,7 +179,7 @@ public class CrawlerController {
 	public static final String APPEND_IF_DIFFERS = "append-if-differs";
 	public static final String DOWNLOAD = "download";
 
-	public enum Mode { get, transform, join, compile, files, all};
+	public enum Mode { get, transform, join, compile, files, all_but_get, all};
 
 	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
 	public static final String STORAGE_DIR = "parsing.storage_dir"; // директория для хранения временных файлов программой crawler4j
@@ -368,16 +368,16 @@ public class CrawlerController {
 		if (mode == Mode.get || mode == Mode.all) {
 			initAndStartCrawler(crawlerClass);
 		}
-		if (mode == Mode.transform || mode == Mode.all) {
+		if (mode == Mode.transform || mode == Mode.all || mode == Mode.all_but_get) {
 			transformSource();
 		}
-		if (mode == Mode.join || mode == Mode.all) {
+		if (mode == Mode.join || mode == Mode.all || mode == Mode.all_but_get) {
 			joinData();
 		}
-		if (mode == Mode.compile || mode == Mode.all) {
+		if (mode == Mode.compile || mode == Mode.all || mode == Mode.all_but_get) {
 			compileAndBuildResult();
 		}
-		if (mode == Mode.files || mode == Mode.all) {
+		if (mode == Mode.files || mode == Mode.all || mode == Mode.all_but_get) {
 			downloadFiles();
 		}
 	}
@@ -402,6 +402,8 @@ public class CrawlerController {
 		CONFIG.setMaxPagesToFetch(maxPages);
 		CONFIG.setMaxDepthOfCrawling(maxDepth);
 		CONFIG.setUserAgentString("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+		CONFIG.setConnectionTimeout(60000);
+		CONFIG.setSocketTimeout(60000);
 
 		/*
 		 * Instantiate the controller for this crawl.
@@ -516,17 +518,17 @@ public class CrawlerController {
 				Document result = Jsoup.parse(path.toFile(), UTF_8);
 				Elements downloads = result.getElementsByAttribute(DOWNLOAD);
 				for (Element download : downloads) {
-						// Найти первого родителя с заданным ID
-						Element idOwner = download;
-						String id = null;
-						for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
-							id = idOwner.attr(ID);
-						}
-						if (!StringUtils.isBlank(id)) {
-							String fileName = download.ownText();
-							String url = download.attr(DOWNLOAD);
-							if (StringUtils.isBlank(fileName))
-								fileName = Strings.getFileName(url);
+					// Найти первого родителя с заданным ID
+					Element idOwner = download;
+					String id = null;
+					for (; idOwner != null && StringUtils.isBlank(id); idOwner = idOwner.parent()) {
+						id = idOwner.attr(ID);
+					}
+					if (!StringUtils.isBlank(id)) {
+						String fileName = download.ownText();
+						String url = download.attr(DOWNLOAD);
+						if (StringUtils.isBlank(fileName))
+							fileName = Strings.getFileName(url);
 						downloadQueue.add(new Download(id, url, fileName));
 					}
 				}
@@ -561,12 +563,18 @@ public class CrawlerController {
 
 					}
 				};
+				threads[i].setDaemon(true);
 				threads[i].start();
 			}
-
+			for (Thread thread : threads) {
+				thread.join();
+			}
 			info.pushLog("Finished downloading files");
 		} catch (IOException e) {
-			info.pushLog("Can not parse result file", e);
+			info.pushLog("Can not parse result file");
+		} catch (InterruptedException e) {
+			ServerLogger.error("Thread join error", e);
+			info.pushLog("Ошибка объединения потоков скачивания файлов");
 		}
 	}
 	/**
@@ -715,6 +723,8 @@ public class CrawlerController {
 				Elements items = pageDoc.select("result > *[" + ID + "]");
 				for (Element partItem : items) {
 					String itemId = partItem.attr(ID);
+					if (StringUtils.isBlank(itemId))
+						continue;
 					String fileName = Strings.createFileName(itemId) + ".xml";
 					Path file = joinedDir.resolve(fileName);
 					Files.write(file, partItem.outerHtml().getBytes(UTF_8),
@@ -803,6 +813,7 @@ public class CrawlerController {
 				info.increaseProcessed();
 			}
 		} catch (IOException e) {
+			ServerLogger.error("Error while normalizing item personal file", e);
 			info.pushLog("Error while normalizing item personal file", e);
 		}
 		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");
@@ -926,11 +937,15 @@ public class CrawlerController {
 	 * @return
 	 */
 	String getStyleForUrl(String url) {
+		String style = null;
 		for (Entry<String, String> entry : urlStyles.entrySet()) {
-			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey()))
-				return entry.getValue();
+			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey())) {
+				style = entry.getValue();
+				if (!StringUtils.equalsIgnoreCase(StringUtils.trim(style), NO_TEMPLATE))
+					return style;
+			}
 		}
-		return null;
+		return style;
 	}
 	
 	private void initElementCache(String fileName) {

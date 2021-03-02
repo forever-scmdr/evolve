@@ -35,7 +35,7 @@ public class POIUtils {
 	public static class CellXY {
 		public int row;
 		public int column;
-		private CellXY(int row, int col) {
+		public CellXY(int row, int col) {
 			this.row = row;
 			this.column = col;
 		}
@@ -101,26 +101,19 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
-                    newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
-                    newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
-                    newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
-            }
+			if (oldCell.getCellType() == CellType.BLANK) {
+				newCell.setCellValue(oldCell.getStringCellValue());
+			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+				newCell.setCellValue(oldCell.getBooleanCellValue());
+			} else if (oldCell.getCellType() == CellType.ERROR) {
+				newCell.setCellErrorValue(oldCell.getErrorCellValue());
+			} else if (oldCell.getCellType() == CellType.FORMULA) {
+				newCell.setCellFormula(oldCell.getCellFormula());
+			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+				newCell.setCellValue(oldCell.getNumericCellValue());
+			} else if (oldCell.getCellType() == CellType.STRING) {
+				newCell.setCellValue(oldCell.getRichStringCellValue());
+			}
         }
 
         // If there are are any merged regions in the source row, copy to new row
@@ -212,26 +205,19 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
-                    newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
-                    newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
-                    newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
-                    newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
-                    newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
-            }
+			if (oldCell.getCellType() == CellType.BLANK) {
+				newCell.setCellValue(oldCell.getStringCellValue());
+			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
+				newCell.setCellValue(oldCell.getBooleanCellValue());
+			} else if (oldCell.getCellType() == CellType.ERROR) {
+				newCell.setCellErrorValue(oldCell.getErrorCellValue());
+			} else if (oldCell.getCellType() == CellType.FORMULA) {
+				newCell.setCellFormula(oldCell.getCellFormula());
+			} else if (oldCell.getCellType() == CellType.NUMERIC) {
+				newCell.setCellValue(oldCell.getNumericCellValue());
+			} else if (oldCell.getCellType() == CellType.STRING) {
+				newCell.setCellValue(oldCell.getRichStringCellValue());
+			}
         }
 
         // If there are are any merged regions in the source row, copy to new row
@@ -271,8 +257,8 @@ public class POIUtils {
 		try {
 			hssfColor = palette.findColor(r, g, b);
 			if (hssfColor == null) {
-				palette.setColorAtIndex(HSSFColor.LAVENDER.index, r, g, b);
-				hssfColor = palette.getColor(HSSFColor.LAVENDER.index);
+				palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex(), r, g, b);
+				hssfColor = palette.getColor(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex());
 			}
 		} catch (Exception e) {
 			ServerLogger.error(e);
@@ -303,6 +289,35 @@ public class POIUtils {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Вернуть
+	 * @param sheet
+	 * @param evaluator
+	 * @param cellContent
+	 * @param prevCell
+	 * @return
+	 */
+	public static CellXY findNextContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent, CellXY prevCell) {
+		if (prevCell == null)
+			prevCell = new CellXY(-1, -1);
+		Iterator<Row> rowIter = sheet.iterator();
+		while (rowIter.hasNext()) {
+			Row row = rowIter.next();
+			if (row.getRowNum() < prevCell.row)
+				continue;
+			Iterator<Cell> cellIter = row.iterator();
+			while (cellIter.hasNext()) {
+				Cell cell = cellIter.next();
+				String cellValue = getCellAsString(cell, evaluator);
+				if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
+					if (row.getRowNum() > prevCell.row || cell.getColumnIndex() > prevCell.column)
+						return new CellXY(row.getRowNum(), cell.getColumnIndex());
+				}
+			}
+		}
+		return null;
 	}
 	/**
 	 * Найти первую ячейку с заданным текстом
