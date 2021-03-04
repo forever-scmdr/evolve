@@ -3,14 +3,15 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -26,19 +27,26 @@ import java.util.Date;
  */
 public abstract class IntegrateBase extends Command {
 
-	/*********************************************************************************************************
-	 *********************************************************************************************************
-	 * 
-	 * ВЫВОД ИНФОРМАЦИИ О ПРОЦЕССЕ РАЗБОРА
-	 * 
-	 *********************************************************************************************************
-	 *********************************************************************************************************/
+	/*******************************************
+	 *
+	 *          СТАТИЧЕСКИЕ ПОЛЯ
+	 *
+	 *******************************************/
 
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
-	private static final Object MUTEX = new Object();
-	private static boolean isInProgress = false;
-	protected static Info info = null;
+	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
+	static {
+		runningTasks = new ConcurrentHashMap<>();
+	}
+
+
+	/*********************************************************************************************************
+	 * 
+	 * ВЫВОД ИНФОРМАЦИИ О ПРОЦЕССЕ РАЗБОРА
+	 *
+	 *********************************************************************************************************/
+
 
 	private static final class LogMessage {
 		private Date date;
@@ -70,6 +78,13 @@ public abstract class IntegrateBase extends Command {
 			this.originator = originator;
 		}
 
+		private Error(Throwable e, Info info) {
+			message = ExceptionUtils.getStackTrace(e);
+			lineNumber = info.lineNumber;
+			position = info.position;
+			originator = "";
+		}
+
 		@SuppressWarnings("unused")
 		private boolean isLineNumber() {
 			return lineNumber != -1;
@@ -80,6 +95,7 @@ public abstract class IntegrateBase extends Command {
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
+		private volatile String currentJob = "Инициализация";
 		private volatile int lineNumber = 0;
 		private volatile int position = 0;
 		private volatile int processed = 0;
@@ -88,9 +104,15 @@ public abstract class IntegrateBase extends Command {
 		private ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 30;
+		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
+		private String host;
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;
+		}
+
+		public synchronized void setCurrentJob(String currentJob) {
+			this.currentJob = currentJob;
 		}
 
 		public synchronized void setLineNumber(int lineNumber) {
@@ -149,6 +171,10 @@ public abstract class IntegrateBase extends Command {
 			errors.add(new Error(message, lineNumber, position));
 		}
 
+		public synchronized void addError(Throwable e) {
+			errors.add(new Error(e, this));
+		}
+
 		public synchronized void addError(String message, String originator) {
 			errors.add(new Error(message, originator));
 		}
@@ -157,8 +183,21 @@ public abstract class IntegrateBase extends Command {
 			this.inProgress = inProgress;
 		}
 
+		public synchronized void addSlowQuery(String queryLog, long nanos) {
+			slowQueries.put(nanos, queryLog);
+			if (slowQueries.size() > 100) {
+				slowQueries.remove(slowQueries.firstKey());
+			}
+		}
+
+		public String getHost() {
+			return host;
+		}
+
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
+			doc.startElement("base").addText(host).endElement();
 			doc.startElement("operation").addText(operation).endElement();
+			doc.startElement("current_job").addText(currentJob).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
@@ -184,6 +223,19 @@ public abstract class IntegrateBase extends Command {
 				doc.startElement("error", "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
 						.addText(error.message).endElement();
 			}
+			if (slowQueries.size() > 0) {
+				doc.startElement("slow");
+				for (Map.Entry<Long, String> entry : slowQueries.entrySet()) {
+					doc
+							.startElement("q")
+							.startElement("log").addText(entry.getValue()).endElement()
+							.startElement("time").addText(entry.getKey() / 1000000).endElement()
+							.endElement();
+
+
+				}
+				doc.endElement();
+			}
 			ServerLogger.debug(doc.toString());
 		}
 
@@ -191,6 +243,19 @@ public abstract class IntegrateBase extends Command {
 			operation = _indexation;
 		}
 	}
+
+
+	/*********************************************************************************************************
+	 *
+	 *          ПОЛЯ И МЕТОДЫ ЭКЗЕМПЛЯРА
+	 *
+	 *********************************************************************************************************/
+
+
+	protected Info info = null;
+	protected volatile boolean needTermination = false;
+	protected volatile boolean isFinished = false;
+
 
 	public IntegrateBase() {
 
@@ -200,66 +265,73 @@ public abstract class IntegrateBase extends Command {
 		super(outer);
 	}
 
-	private static Info getInfo() {
+	private Info getInfo() {
 		if (info != null)
 			return info;
 		return newInfo();
 	}
 	
-	private static Info newInfo() {
+	private Info newInfo() {
 		info = new Info();
 		return info;
 	}
 	/**
 	 * Установить текущую операцию
+	 *
 	 * @param opName
 	 */
-	protected static void setOperation(String opName) {
+	protected void setOperation(String opName) {
 		getInfo().setOperation(opName);
 	}
 	/**
 	 * Установить текущий номер строки
+	 *
 	 * @param lineNumber
 	 */
-	protected static void setLineNumber(int lineNumber) {
+	protected void setLineNumber(int lineNumber) {
 		getInfo().setLineNumber(lineNumber);
 	}
 	/**
 	 * Установить количество обработанных информационных единиц (например, товаров)
+	 *
 	 * @param processed
 	 */
-	protected static void setProcessed(int processed) {
+	protected void setProcessed(int processed) {
 		getInfo().setProcessed(processed);
 	}
 	/**
 	 * Добавить запись в конец лога
-	 * @param message/
+	 *
+	 * @param message
 	 */
-	protected static void addLog(String message) {
+	protected void addLog(String message) {
 		getInfo().addLog(message);
 	}
 	/**
 	 * Добавить запись в начало лога
+	 *
 	 * @param message
 	 */
-	protected static void pushLog(String message) {
+	protected void pushLog(String message) {
 		getInfo().pushLog(message);
 	}	
 	/**
 	 * Добавить ошибку с точным местом в файле интеграции
+	 *
 	 * @param message
 	 * @param lineNumber
 	 * @param position
 	 */
-	protected static void addError(String message, int lineNumber, int position) {
+	protected void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
 	/**
 	 * Добавить ошибку с неточным местом в файле интеграции
+	 *
 	 * @param message
 	 * @param originator
 	 */
-	protected static void addError(String message, String originator) {
+	protected void addError(String message, String originator) {
 		getInfo().addError(message, originator);
 	}	
 	
@@ -276,19 +348,38 @@ public abstract class IntegrateBase extends Command {
 		String operation = getVarSingleValue("action");
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
+		final String CLASS_NAME = getClass().getName();
+		IntegrateBase runningTask = runningTasks.get(CLASS_NAME);
+		boolean isInProgress = runningTask != null && !runningTask.isFinished;
 		if (isInProgress && "terminate".equals(operation)) {
-			terminate();
-			return buildResult();
-		} else if (isInProgress || !"start".equals(operation)) {
+			runningTask.needTermination = true;
+			runningTask.terminate();
+			return runningTask.buildResult();
+		} else if (isInProgress || !StringUtils.equalsIgnoreCase("start", operation)) {
+			if (runningTask == null) {
+				newInfo();
 			return buildResult();
 		} else {
-			synchronized (MUTEX) {
-				isInProgress = true;
+				return runningTask.buildResult();
+			}
+		} else if (StringUtils.equalsIgnoreCase("start", operation)) {
+			runningTask = this;
+			runningTasks.put(CLASS_NAME, this);
 				newInfo().setInProgress(true);
 				setOperation("Инициализация");
 				// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-				if (!makePreparations()) {
-					setOperation("Интеграция завершена с ошибками");
+
+			boolean readyToStart = false;
+			try {
+				readyToStart = makePreparations();
+			} catch (Exception e) {
+				ServerLogger.error(e.getMessage(), e);
+				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+			}
+
+			if (!readyToStart) {
+				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
+				runningTask.isFinished = true;
 					return buildResult();
 				}
 				setOperation("Выполнение интеграции");
@@ -302,16 +393,19 @@ public abstract class IntegrateBase extends Command {
 						ServerLogger.error("Integration error", se);
 						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
 					} finally {
-						isInProgress = false;
+					isFinished = true;
 						getInfo().setInProgress(false);
+					//runningTasks.remove(CLASS_NAME);
 					}
 				});
+			thread.setDaemon(true);
 				if (async)
 					thread.start();
 				else
 					thread.run();
 			}
-		}
+		if (runningTask != null)
+			return runningTask.buildResult();
 		return buildResult();
 	}
 	/**
@@ -323,8 +417,8 @@ public abstract class IntegrateBase extends Command {
 	 */
 	protected abstract void integrate() throws Exception;
 	/**
-	 * Прервать процесс интеграции
-	 * @throws Exception
+	 * Действие по прерыванию команды
+	 * Посылается команде
 	 */
 	protected abstract void terminate() throws Exception;
 	/**
@@ -339,7 +433,7 @@ public abstract class IntegrateBase extends Command {
 		doc.startElement("base").addText(getUrlBase()).endElement();
 		getInfo().output(doc);
 		doc.endElement();
-		ResultPE result = null;
+		ResultPE result;
 		try {
 			result = getResult("complete");
 		} catch (EcommanderException e) {
