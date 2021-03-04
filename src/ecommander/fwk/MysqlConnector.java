@@ -6,38 +6,17 @@
 */
 package ecommander.fwk;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -51,14 +30,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 public class MysqlConnector
 {
 	private static final int MAX_CONNECTIONS = 24;
+	private static final int LOG_OPEN_COUNT = 7;
+
+	private static AtomicInteger _open_count = new AtomicInteger(0);
+	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
+	//private static final HashSet<Integer> openConnections = new HashSet<>();
+	private static final HashMap<Integer, String> openTraces = new HashMap<>();
+	private static final HashSet<Thread> openThreads = new HashSet<>();
+	private static AtomicInteger com_name_counter = new AtomicInteger(0);
 	
-	private static volatile int _open_count = 0;
-	private static HashMap<Integer, Integer> connectionNames = new HashMap<Integer, Integer>();
-	private static HashSet<Integer> openConnections = new HashSet<Integer>();
-	private static int com_name_counter = 0;
-	
-	private static final Lock lock = new ReentrantLock();
-	private static final Condition isNotFull = lock.newCondition();
+	//private static final Lock lock = new ReentrantLock();
+	//private static final Condition isNotFull = lock.newCondition();
 
 	public static class AutoRollback implements AutoCloseable {
 		private boolean committed = false;
@@ -80,7 +62,7 @@ public class MysqlConnector
 		}
 	}
 
-	public static class ConnectionCount implements Connection {
+	public static class LoggedConnection implements Connection {
 
 		private final Connection conn;
 		private final HttpServletRequest request;
@@ -90,32 +72,50 @@ public class MysqlConnector
 		private long createTime;
 		private String currentQuery;
 		
-		private ConnectionCount(Connection conn, HttpServletRequest request) {
+		private LoggedConnection(Connection conn, HttpServletRequest request) {
 			this.conn = conn;
 			this.request = request;
-			try {
-				lock.lock();
-				if (_open_count >= MAX_CONNECTIONS)
-					isNotFull.await();
-				_open_count++;
+			logOpenConnections();
+//			try {
+//				lock.lock();
+//				if (_open_count >= MAX_CONNECTIONS)
+//					isNotFull.await();
+				_open_count.incrementAndGet();
 				Integer name = connectionNames.get(conn.hashCode());
 				if (name == null) {
-					name = ++com_name_counter;
+					name = com_name_counter.incrementAndGet();
 					connectionNames.put(conn.hashCode(), name);
 				}
-				openConnections.add(name);
+//				synchronized (openConnections) {
+//					openConnections.add(name);
+//				}
 				createTime = System.currentTimeMillis();
 				StackTraceElement[] els = Thread.currentThread().getStackTrace();
-				String trace = "";
+				StringBuilder trace = new StringBuilder();
 				for (int i = 2; i < 12 && i < els.length; i++) {
-					trace += "\n" + els[i];
+					trace.append("\n").append(els[i]);
 				}
-				ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
-			} catch (InterruptedException e) {
-				ServerLogger.error("Interrupted", e);
-			} finally {
-				lock.unlock();
+				synchronized (openTraces) {
+					openTraces.put(name, trace.toString());
+					if (openTraces.size() > 5) {
+						ServerLogger.error("\n\n\n/////////////---------- " + openTraces.size() + " CONNECTIONS ----------/////////////");
+						StringBuilder message = new StringBuilder();
+						for (Integer connName : openTraces.keySet()) {
+							message.append("\n\n\tCONNECTION ").append(connName).append(":").append(openTraces.get(connName));
+				}
+						ServerLogger.error(message.toString());
+					}
 			}
+				synchronized (openThreads) {
+					openThreads.add(Thread.currentThread());
+				}
+				//ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
+//			} catch (InterruptedException e) {
+//				ServerLogger.error("Interrupted", e);
+//			}
+//			finally {
+//				lock.unlock();
+//			}
 		}
 		
 		public void queryFinished() {
@@ -148,19 +148,19 @@ public class MysqlConnector
 		}
 
 		public void close() throws SQLException {
-			if (conn.isClosed())
-				return;
-			Integer name = connectionNames.get(conn.hashCode());
-			conn.close();
-			try {
-				lock.lock();
-				_open_count--;
-				if (_open_count < MAX_CONNECTIONS)
-					isNotFull.signal();
-			} finally {
-				lock.unlock();
+			if (!conn.isClosed()) {
+				conn.close();
 			}
-			openConnections.remove(name);
+			_open_count.decrementAndGet();
+			Integer name = connectionNames.get(conn.hashCode());
+//			try {
+//				lock.lock();
+//				_open_count--;
+//				if (_open_count < MAX_CONNECTIONS)
+//					isNotFull.signal();
+//			} finally {
+//				lock.unlock();
+//			}
 			String logEntry = "";
 			for (int i = 0; i < queryTimes.size(); i++) {
 				logEntry += "\n" + queryTimes.get(i) + "\t" + queries.get(i);
@@ -169,8 +169,17 @@ public class MysqlConnector
 			ServerLogger.error(logEntry);
 			ServerLogger.error("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
-			ServerLogger
-					.error("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections, ", ") + " ----------/////////////");
+			synchronized (openTraces) {
+				openTraces.remove(name);
+			}
+			synchronized (openThreads) {
+				openThreads.remove(Thread.currentThread());
+			}
+//			synchronized (openConnections) {
+//				openConnections.remove(name);
+//				ServerLogger
+//						.error("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections, ", ") + " ----------/////////////");
+//			}
 		}
 
 		public void commit() throws SQLException {
@@ -296,8 +305,18 @@ public class MysqlConnector
 			return conn.prepareStatement(sql);
 		}
 
+		public PreparedStatement prepareStatement(String sql, String statementForLog) throws SQLException {
+			rememberPrepare(statementForLog);
+			return conn.prepareStatement(sql);
+		}
+
 		public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
 			rememberPrepare(sql);
+			return conn.prepareStatement(sql, autoGeneratedKeys);
+		}
+
+		public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys, String statementForLog) throws SQLException {
+			rememberPrepare(statementForLog);
 			return conn.prepareStatement(sql, autoGeneratedKeys);
 		}
 
@@ -402,14 +421,14 @@ public class MysqlConnector
 	 * @throws SQLException 
 	 */
 	public static synchronized Connection getConnection() throws NamingException, SQLException {
-		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new ConnectionCount(_DS.getConnection(), null);
+		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
+		return new LoggedConnection(_DS.getConnection(), null);
 		//return _DS.getConnection();
 	}
 
 	public static synchronized Connection getConnection(HttpServletRequest request) throws NamingException, SQLException, InterruptedException {
-		ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
-		return new ConnectionCount(_DS.getConnection(), request);
+		//ServerLogger.debug("/////////////---------- trying to get connection ----------/////////////");
+		return new LoggedConnection(_DS.getConnection(), request);
 		//return _DS.getConnection();
 	}
 	/**
@@ -431,5 +450,38 @@ public class MysqlConnector
 	
 	public static void closeStatement(Statement stmt) throws SQLException {
 		if (stmt != null) stmt.close();
+	}
+
+
+	private static void logOpenConnections() {
+		if (_open_count.get() > LOG_OPEN_COUNT) {
+			StringBuilder message = new StringBuilder("\n\n\n\t\tTOO MANY CONNECTIOS\n\n\n\tThreads of these connections currently doing:\n\n\n");
+			synchronized (openThreads) {
+				for (Thread openThread : openThreads) {
+					message.append(getThreadDump(openThread));
+				}
+			}
+			ServerLogger.error(message);
+		}
+	}
+
+
+	private static StringBuilder getThreadDump(Thread thread) {
+		final StringBuilder dump = new StringBuilder();
+		final ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+		final ThreadInfo[] threadInfos = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds(), 20);
+		for (ThreadInfo threadInfo : threadInfos) {
+			dump.append('"').append(threadInfo.getThreadName()).append("\" ");
+			final Thread.State state = threadInfo.getThreadState();
+			dump.append("\n   java.lang.Thread.State: ");
+			dump.append(state);
+			final StackTraceElement[] stackTraceElements = threadInfo.getStackTrace();
+			for (final StackTraceElement stackTraceElement : stackTraceElements) {
+				dump.append("\n        at ");
+				dump.append(stackTraceElement);
+			}
+			dump.append("\n\n");
+		}
+		return dump;
 	}
 }
