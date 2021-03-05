@@ -64,6 +64,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
 	private HashSet<String> duplicateCodes = new HashSet<>();
 
+
 	//Excel file columns
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
@@ -216,13 +217,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 
+		private Collection<String> getHeadersSafe(){
+			Collection<String> headers = getHeaders();
+			headers.removeAll(IGNORE_HEADERS);
+			return headers;
+		}
+
 		private LinkedHashMap<String, ArrayList<String>> buildGroupMap() {
 			LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
-			for (String header : getHeaders()) {
-
-				if(IGNORE_HEADERS.contains(header)) continue;
-
-							String paramName = HEADER_PARAM.get(header);
+			for (String header : getHeadersSafe()) {String paramName = HEADER_PARAM.get(header);
 				if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header))
 								continue;
 					String originalHeader = getOriginalHeader(header);
@@ -319,9 +322,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 						}
 
 		private void populateProduct(Item product) throws Exception {
-			for (String header : getHeaders()) {
-				if(IGNORE_HEADERS.contains(header)) continue;
-							String paramName = HEADER_PARAM.get(header);
+			for (String header : getHeadersSafe()) {String paramName = HEADER_PARAM.get(header);
 				if (!PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName)) continue;
 
 							String cellValue = getValue(header);
@@ -421,7 +422,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 	}
 
 		private boolean hasAuxParams() {
-			for (String header : getHeaders()) {
+			for (String header : getHeadersSafe()) {
 			if(IGNORE_HEADERS.contains(header)) continue;
 			String paramName = HEADER_PARAM.get(header);
 				if ((PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header)))

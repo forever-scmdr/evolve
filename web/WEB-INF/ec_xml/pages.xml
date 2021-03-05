@@ -1132,7 +1132,7 @@
 		<request>
 			<var name="action"/>
 			<var name="if_blank" value="clear"/>
-			<!--<var name="with_existing_sections" value="copy"/>-->
+			<var name="pics_folder" var="catalog:big_integration"/>
 		</request>
 		<command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
 			<result name="complete" type="xml"/>
