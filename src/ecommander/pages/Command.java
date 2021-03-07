@@ -6,7 +6,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -131,6 +130,15 @@ public abstract class Command implements AutoCloseable {
 	protected final void removeSessionForm(String formName) {
 		if (page.getItemFrom() != null)
 			page.getSessionContext().removeForm(formName);
+	}
+
+	/**
+	 * Получить сохраненную в сеансе форму
+	 * @param formName
+	 * @return
+	 */
+	protected final MultipleHttpPostForm getSessionForm(String formName) {
+		return page.getSessionContext().getForm(formName);
 	}
 	/**
 	 * Получить другую страницу
@@ -362,5 +370,13 @@ public abstract class Command implements AutoCloseable {
 		ResultPE result = getResult(name);
 		result.rollback();
 		return result;
+	}
+
+	protected final boolean hasCriticalItem() {
+		ExecutableItemPE pageItem = page.getItemPEById(page.getCriticalItem());
+		if (!pageItem.hasFoundItems() && !pageItem.isLoadedFromCache()) {
+			return false;
+		}
+		return true;
 	}
 }

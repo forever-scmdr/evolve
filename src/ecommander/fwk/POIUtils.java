@@ -1,35 +1,22 @@
 package ecommander.fwk;
 
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
+import org.apache.poi.xwpf.usermodel.*;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 public class POIUtils {
 	public static class CellXY {
@@ -79,12 +66,7 @@ public class POIUtils {
             // Copy style from old cell and apply to new cell
             HSSFCellStyle newCellStyle = workbook.createCellStyle();
 			newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-//			newCellStyle.setFillForegroundColor(oldCell.getCellStyle().getFillForegroundColor());
-//			newCellStyle.setFillPattern(oldCell.getCellStyle().getFillPattern());
-//			newCellStyle.setBorderTop(oldCell.getCellStyle().getBorderTop());
-//			newCellStyle.setBorderBottom(oldCell.getCellStyle().getBorderBottom());
-//			newCellStyle.setBorderLeft(oldCell.getCellStyle().getBorderLeft());
-//			newCellStyle.setBorderRight(oldCell.getCellStyle().getBorderRight());
+
 			newCell.setCellStyle(newCellStyle);
             
             // If there is a cell comment, copy
@@ -101,25 +83,18 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
+			if (oldCell.getCellType() == CellType.BLANK) {
                     newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
+			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
                     newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
+			} else if (oldCell.getCellType() == CellType.ERROR) {
                     newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
+			} else if (oldCell.getCellType() == CellType.FORMULA) {
                     newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
+			} else if (oldCell.getCellType() == CellType.NUMERIC) {
                     newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
+			} else if (oldCell.getCellType() == CellType.STRING) {
                     newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
             }
         }
 
@@ -186,16 +161,7 @@ public class POIUtils {
 				XSSFCellBorder borderNew = new XSSFCellBorder(border.getCTBorder());
 				newStylesSource.putBorder(borderNew);
 			}
-//			for (XSSFFont font : oldStylesSource.getFonts()) {
-//				XSSFFont fontNew = new XSSFFont(font.getCTFont());
-//				fontNew.registerTo(newStylesSource);
-//			}
-//			newCellStyle.setFillForegroundColor(oldCell.getCellStyle().getFillForegroundColor());
-//			newCellStyle.setFillPattern(oldCell.getCellStyle().getFillPattern());
-//			newCellStyle.setBorderTop(oldCell.getCellStyle().getBorderTop());
-//			newCellStyle.setBorderBottom(oldCell.getCellStyle().getBorderBottom());
-//			newCellStyle.setBorderLeft(oldCell.getCellStyle().getBorderLeft());
-//			newCellStyle.setBorderRight(oldCell.getCellStyle().getBorderRight());
+
 			newCell.setCellStyle(newCellStyle);
             
             // If there is a cell comment, copy
@@ -212,25 +178,18 @@ public class POIUtils {
             newCell.setCellType(oldCell.getCellType());
 
             // Set the cell data value
-            switch (oldCell.getCellType()) {
-                case Cell.CELL_TYPE_BLANK:
+			if (oldCell.getCellTypeEnum() == CellType.BLANK) {
                     newCell.setCellValue(oldCell.getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_BOOLEAN:
+			} else if (oldCell.getCellTypeEnum() == CellType.BOOLEAN) {
                     newCell.setCellValue(oldCell.getBooleanCellValue());
-                    break;
-                case Cell.CELL_TYPE_ERROR:
+			} else if (oldCell.getCellTypeEnum() == CellType.ERROR) {
                     newCell.setCellErrorValue(oldCell.getErrorCellValue());
-                    break;
-                case Cell.CELL_TYPE_FORMULA:
+			} else if (oldCell.getCellTypeEnum() == CellType.FORMULA) {
                     newCell.setCellFormula(oldCell.getCellFormula());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
+			} else if (oldCell.getCellTypeEnum() == CellType.NUMERIC) {
                     newCell.setCellValue(oldCell.getNumericCellValue());
-                    break;
-                case Cell.CELL_TYPE_STRING:
+			} else if (oldCell.getCellTypeEnum() == CellType.STRING) {
                     newCell.setCellValue(oldCell.getRichStringCellValue());
-                    break;
             }
         }
 
@@ -271,8 +230,8 @@ public class POIUtils {
 		try {
 			hssfColor = palette.findColor(r, g, b);
 			if (hssfColor == null) {
-				palette.setColorAtIndex(HSSFColor.LAVENDER.index, r, g, b);
-				hssfColor = palette.getColor(HSSFColor.LAVENDER.index);
+				palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex(), r, g, b);
+				hssfColor = palette.getColor(HSSFColor.HSSFColorPredefined.LAVENDER.getIndex());
 			}
 		} catch (Exception e) {
 			ServerLogger.error(e);

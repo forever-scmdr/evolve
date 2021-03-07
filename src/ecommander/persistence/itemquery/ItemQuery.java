@@ -57,6 +57,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	public static final int MAX_PAGE = 20;
 	public static final int ITEM_STATUS_COUNT = 3;
 
+	public static Collection<? extends Item> loadByIdsLong(ArrayList<Long> itemIds) throws Exception {
+		return loadByIdsLong(itemIds, new Byte[]{Item.STATUS_NORMAL});
+	}
+
 	public interface Const {
 		String DISTINCT = "<<DISTINCT>>";
 		String JOIN = "<<JOIN_PART>>";

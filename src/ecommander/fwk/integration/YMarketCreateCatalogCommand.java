@@ -4,7 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.DeleteItemTypeBDUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -117,7 +116,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	}
 
 
-	private static boolean removeDoctype(File file) throws FileNotFoundException {
+	private boolean removeDoctype(File file) throws FileNotFoundException {
 		File tempFile = new File("__temp__.xml");
 		final String DOCTYPE = "!DOCTYPE";
 		boolean containsDoctype = false;

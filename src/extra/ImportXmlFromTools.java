@@ -39,7 +39,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		setOperation("Соединение с "+URL);
+		setOperation("Соединение с " + URL);
 		content = Request.Get(URL).execute().returnContent();
 		return content != null;
 	}
@@ -53,17 +53,18 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 		SAXParser parser = factory.newSAXParser();
 
 		ItemQuery q = new ItemQuery(SECTION_ITEM, Item.STATUS_HIDDEN);
-		q.addParameterCriteria(NAME_PARAM,TOOLS_NAME,"=",null,Compare.SOME);
+		q.addParameterCriteria(NAME_PARAM, TOOLS_NAME, "=", null, Compare.SOME);
 		Item section = q.loadFirstItem();
-		if(section == null){
+		if (section == null) {
 			Item catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 			section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), catalog);
 			section.setValue(NAME_PARAM, TOOLS_NAME);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex().ignoreUser());
 			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section.getId()).noFulltextIndex().noTriggerExtra().ignoreUser());
 		}
-
-		parser.parse(content.asStream(), new ToolsParser(section, getInitiator()));
+		ToolsParser toolsParser = new ToolsParser(section, getInitiator());
+		toolsParser.setInfo(info);
+		parser.parse(content.asStream(), toolsParser);
 	}
 
 	@Override
@@ -93,6 +94,11 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 		private HashMap<String, String> currentParams;
 		private static final HashSet<String> PARAMS = new HashSet<>();
 		private static User initiator;
+		private static Info info1;
+
+		public static void setInfo(Info info) {
+			ToolsParser.info1 = info;
+		}
 
 		static {
 			PARAMS.add(URL);
@@ -107,8 +113,8 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 			PARAMS.add(NAME);
 		}
 
-		private ToolsParser (Item section, User initiator){
-			setOperation("Импорт информации");
+		private ToolsParser(Item section, User initiator) {
+			info1.setOperation("Импорт информации");
 			this.section = section;
 			this.initiator = initiator;
 		}
@@ -118,64 +124,68 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 			if (isInsideOffer && PARAMS.contains(qName) && parameterReady) {
 				currentParams.put(paramName, StringUtils.trim(paramValue.toString()));
 				parameterReady = false;
-			}else if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
+			} else if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				String code = currentParams.get(CODE);
-				code = StringUtils.isAllBlank(code)? currentParams.get(ID_ATTR) : code;
+				code = StringUtils.isAllBlank(code) ? currentParams.get(ID_ATTR) : code;
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN);
 				q.setParentId(section.getId(), false);
 				q.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
 				try {
 					Item product = q.loadFirstItem();
-					if(product == null) product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
+					if (product == null)
+						product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT_ITEM), section);
 					product.setValue(CODE_PARAM, code);
 					product.setValue(NAME_PARAM, currentParams.get(NAME));
 					product.setValue(VENDOR_PARAM, currentParams.get(VENDOR_ELEMENT));
 					product.setValue(DESCRIPTION_PARAM, currentParams.get(DESCRIPTION));
 					product.setValue(URL_PARAM, currentParams.get(URL));
-					product.setValueUI(AVAILABLE_PARAM, "true".equalsIgnoreCase(currentParams.get(AVAILABLE))? "1" : "0");
+					product.setValueUI(AVAILABLE_PARAM, "true".equalsIgnoreCase(currentParams.get(AVAILABLE)) ? "1" : "0");
 					product.setValueUI(PRICE_PARAM, currentParams.get(PRICE));
 					product.setValue(CURRENCY_ID_PARAM, currentParams.get(CURRENCY_ID));
 					File pic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if(!pic.isFile()){
+					if (!pic.isFile()) {
 						URL picUrl = null;
-						try{
+						try {
 							picUrl = new URL(currentParams.get(PICTURE));
-						}catch (Exception e){
-							pushLog("Img not found. URL:\""+currentParams.get(PICTURE)+"\"");
-						}if(picUrl != null){
+						} catch (Exception e) {
+							info1.pushLog("Img not found. URL:\"" + currentParams.get(PICTURE) + "\"");
+						}
+						if (picUrl != null) {
 							product.setValue(MAIN_PIC_PARAM, picUrl);
 						}
 					}
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors().ignoreUser());
 					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
-					info.increaseProcessed();
+					info1.increaseProcessed();
 				} catch (Exception e) {
-					addError(ExceptionUtils.getExceptionStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
+					info1.addError(ExceptionUtils.getExceptionStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
 				}
 				isInsideOffer = false;
 				parameterReady = false;
 			}
 		}
+
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
-			if(parameterReady) paramValue.append(ch, start, length);
+			if (parameterReady) paramValue.append(ch, start, length);
 		}
+
 		@Override
 		public void setDocumentLocator(Locator locator) {
 			this.locator = locator;
 		}
+
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			parameterReady = false;
 			paramValue = new StringBuilder();
-			info.setLineNumber(locator.getLineNumber());
+			info1.setLineNumber(locator.getLineNumber());
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				currentParams = new HashMap<>();
 				currentParams.put(AVAILABLE, attributes.getValue(AVAILABLE));
 				currentParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 				isInsideOffer = true;
-			}
-			else if (isInsideOffer) {
+			} else if (isInsideOffer) {
 				paramName = qName;
 				parameterReady = true;
 			}
