@@ -30,6 +30,7 @@ public class Book
     public final static String CURRENCY_ID = "currency_id";
     public final static String PRICE_ORIGINAL = "price_original";
     public final static String PRICE_OLD = "price_old";
+    public final static String PRICE_OLD_ORIGINAL = "price_old_original";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
@@ -55,6 +56,7 @@ public class Book
     public final static String LANGUAGE = "language";
     public final static String ISBN = "ISBN";
     public final static String PICTURE = "picture";
+    public final static String PARENT_ID = "parent_id";
 
     private Book(Item item) {
         super(item);
@@ -375,6 +377,28 @@ public class Book
 
     public boolean contains_price_old(BigDecimal value) {
         return containsValue("price_old", value);
+    }
+
+    public void set_price_old_original(BigDecimal value) {
+        setValue("price_old_original", value);
+    }
+
+    public void setUI_price_old_original(String value)
+        throws Exception
+    {
+        setValueUI("price_old_original", value);
+    }
+
+    public BigDecimal get_price_old_original() {
+        return getDecimalValue("price_old_original");
+    }
+
+    public BigDecimal getDefault_price_old_original(BigDecimal defaultVal) {
+        return getDecimalValue("price_old_original", defaultVal);
+    }
+
+    public boolean contains_price_old_original(BigDecimal value) {
+        return containsValue("price_old_original", value);
     }
 
     public void set_main_pic(File value) {
@@ -773,6 +797,22 @@ public class Book
 
     public boolean contains_picture(String value) {
         return containsValue("picture", value);
+    }
+
+    public void set_parent_id(String value) {
+        setValue("parent_id", value);
+    }
+
+    public String get_parent_id() {
+        return getStringValue("parent_id");
+    }
+
+    public String getDefault_parent_id(String defaultVal) {
+        return getStringValue("parent_id", defaultVal);
+    }
+
+    public boolean contains_parent_id(String value) {
+        return containsValue("parent_id", value);
     }
 
 }

@@ -1,13 +1,12 @@
 
 package ecommander.extra._generated;
 
-import ecommander.controllers.AppContext;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
+import ecommander.controllers.AppContext;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Described_product
     extends Item
@@ -43,6 +42,11 @@ public class Described_product
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
+    public final static String PIC_PATH = "pic_path";
+    public final static String SPECIAL_PRICE = "special_price";
+    public final static String HIT = "hit";
+    public final static String NEW = "new";
+    public final static String SOON = "soon";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
@@ -53,6 +57,16 @@ public class Described_product
     public final static String MARK = "mark";
     public final static String LABEL = "label";
     public final static String EXTRA_INPUT = "extra_input";
+    public final static String PICTURE = "picture";
+    public final static String FILE = "file";
+    public final static String STRICT_SEARCH = "strict_search";
+    public final static String ANALOG_SEARCH = "analog_search";
+    public final static String ANALOG_CODE = "analog_code";
+    public final static String EXTRA_PIC = "extra_pic";
+    public final static String FILEVID = "filevid";
+    public final static String REL_CODE = "rel_code";
+    public final static String ANALOG = "analog";
+    public final static String BARCODE = "barcode";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -596,6 +610,104 @@ public class Described_product
         return containsValue("small_pic", value);
     }
 
+    public void set_pic_path(String value) {
+        setValue("pic_path", value);
+    }
+
+    public String get_pic_path() {
+        return getStringValue("pic_path");
+    }
+
+    public String getDefault_pic_path(String defaultVal) {
+        return getStringValue("pic_path", defaultVal);
+    }
+
+    public boolean contains_pic_path(String value) {
+        return containsValue("pic_path", value);
+    }
+
+    public void set_special_price(String value) {
+        setValue("special_price", value);
+    }
+
+    public String get_special_price() {
+        return getStringValue("special_price");
+    }
+
+    public String getDefault_special_price(String defaultVal) {
+        return getStringValue("special_price", defaultVal);
+    }
+
+    public boolean contains_special_price(String value) {
+        return containsValue("special_price", value);
+    }
+
+    public void set_hit(Byte value) {
+        setValue("hit", value);
+    }
+
+    public void setUI_hit(String value)
+        throws Exception
+    {
+        setValueUI("hit", value);
+    }
+
+    public Byte get_hit() {
+        return getByteValue("hit");
+    }
+
+    public Byte getDefault_hit(Byte defaultVal) {
+        return getByteValue("hit", defaultVal);
+    }
+
+    public boolean contains_hit(Byte value) {
+        return containsValue("hit", value);
+    }
+
+    public void set_new(Byte value) {
+        setValue("new", value);
+    }
+
+    public void setUI_new(String value)
+        throws Exception
+    {
+        setValueUI("new", value);
+    }
+
+    public Byte get_new() {
+        return getByteValue("new");
+    }
+
+    public Byte getDefault_new(Byte defaultVal) {
+        return getByteValue("new", defaultVal);
+    }
+
+    public boolean contains_new(Byte value) {
+        return containsValue("new", value);
+    }
+
+    public void set_soon(Long value) {
+        setValue("soon", value);
+    }
+
+    public void setUI_soon(String value)
+        throws Exception
+    {
+        setValueUI("soon", value);
+    }
+
+    public Long get_soon() {
+        return getLongValue("soon");
+    }
+
+    public Long getDefault_soon(Long defaultVal) {
+        return getLongValue("soon", defaultVal);
+    }
+
+    public boolean contains_soon(Long value) {
+        return containsValue("soon", value);
+    }
+
     public void set_description(String value) {
         setValue("description", value);
     }
@@ -754,6 +866,162 @@ public class Described_product
 
     public boolean contains_extra_input(String value) {
         return containsValue("extra_input", value);
+    }
+
+    public void set_picture(File value) {
+        setValue("picture", value);
+    }
+
+    public File get_picture() {
+        return getFileValue("picture", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_picture(File value) {
+        return containsValue("picture", value);
+    }
+
+    public void set_file(String value) {
+        setValue("file", value);
+    }
+
+    public String get_file() {
+        return getStringValue("file");
+    }
+
+    public String getDefault_file(String defaultVal) {
+        return getStringValue("file", defaultVal);
+    }
+
+    public boolean contains_file(String value) {
+        return containsValue("file", value);
+    }
+
+    public void set_strict_search(String value) {
+        setValue("strict_search", value);
+    }
+
+    public String get_strict_search() {
+        return getStringValue("strict_search");
+    }
+
+    public String getDefault_strict_search(String defaultVal) {
+        return getStringValue("strict_search", defaultVal);
+    }
+
+    public boolean contains_strict_search(String value) {
+        return containsValue("strict_search", value);
+    }
+
+    public void set_analog_search(String value) {
+        setValue("analog_search", value);
+    }
+
+    public String get_analog_search() {
+        return getStringValue("analog_search");
+    }
+
+    public String getDefault_analog_search(String defaultVal) {
+        return getStringValue("analog_search", defaultVal);
+    }
+
+    public boolean contains_analog_search(String value) {
+        return containsValue("analog_search", value);
+    }
+
+    public void set_analog_code(String value) {
+        setValue("analog_code", value);
+    }
+
+    public String get_analog_code() {
+        return getStringValue("analog_code");
+    }
+
+    public String getDefault_analog_code(String defaultVal) {
+        return getStringValue("analog_code", defaultVal);
+    }
+
+    public boolean contains_analog_code(String value) {
+        return containsValue("analog_code", value);
+    }
+
+    public void set_extra_pic(String value) {
+        setValue("extra_pic", value);
+    }
+
+    public String get_extra_pic() {
+        return getStringValue("extra_pic");
+    }
+
+    public String getDefault_extra_pic(String defaultVal) {
+        return getStringValue("extra_pic", defaultVal);
+    }
+
+    public boolean contains_extra_pic(String value) {
+        return containsValue("extra_pic", value);
+    }
+
+    public void set_filevid(String value) {
+        setValue("filevid", value);
+    }
+
+    public String get_filevid() {
+        return getStringValue("filevid");
+    }
+
+    public String getDefault_filevid(String defaultVal) {
+        return getStringValue("filevid", defaultVal);
+    }
+
+    public boolean contains_filevid(String value) {
+        return containsValue("filevid", value);
+    }
+
+    public void set_rel_code(String value) {
+        setValue("rel_code", value);
+    }
+
+    public String get_rel_code() {
+        return getStringValue("rel_code");
+    }
+
+    public String getDefault_rel_code(String defaultVal) {
+        return getStringValue("rel_code", defaultVal);
+    }
+
+    public boolean contains_rel_code(String value) {
+        return containsValue("rel_code", value);
+    }
+
+    public void set_analog(String value) {
+        setValue("analog", value);
+    }
+
+    public String get_analog() {
+        return getStringValue("analog");
+    }
+
+    public String getDefault_analog(String defaultVal) {
+        return getStringValue("analog", defaultVal);
+    }
+
+    public boolean contains_analog(String value) {
+        return containsValue("analog", value);
+    }
+
+    public void set_barcode(String value) {
+        setValue("barcode", value);
+    }
+
+    public String get_barcode() {
+        return getStringValue("barcode");
+    }
+
+    public String getDefault_barcode(String defaultVal) {
+        return getStringValue("barcode", defaultVal);
+    }
+
+    public boolean contains_barcode(String value) {
+        return containsValue("barcode", value);
     }
 
     public void add_gallery(File value) {

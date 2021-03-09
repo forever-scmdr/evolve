@@ -178,7 +178,13 @@
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
+		<parameter name="price_update" type="file" caption="XML файл обновление цен"/>
+		<parameter name="price_micro_update" type="file" caption="РУЧНОЕ обновлене цен"/>
+		<parameter name="hash" type="integer" caption="Хэш-сумма файла обновления цен."/>
+		<parameter name="analogs" type="file" caption="списки аналогов и сопутсвтующих товаров" description="коды группы аналогов через запятую / коды сопутсвующих"/>
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
+		<parameter name="text" type="text" caption="Текст на главной старнице" description="текст с картинками" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description="для прикрепления к тексту" />
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
 		<on-update class="ecommander.fwk.CopyToUpload"/>
@@ -202,7 +208,13 @@
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="code" type="string" caption="Код раздела"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
+		<parameter name="limit_1" type="double" caption="Лимит для маленьких скидок" description="сколько единиц надо заказать чтобы получить маленькую скидку" />
+		<parameter name="limit_2" type="double" caption="Лимит для больших скидок" description="сколько единиц надо заказать чтобы получить большую скидку" />
+		<parameter name="discount_1" type="integer" caption="Маленькая скидка" description="количество процентов, например 10 или 20, без знака %" />
+		<parameter name="discount_2" type="integer" caption="Большая скидка" description="количество процентов, например 10 или 20, без знака %" />
+		<parameter name="norm" type="double" caption="Норма отпуска" description="минимальный размер партии при заказе" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
+		<parameter name="pic_path" type="string" caption="Путь к изображению" description="путь к файлу" />
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
@@ -222,11 +234,11 @@
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
 	<item name="described_product" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="865" ag-hash="1523682729">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
-		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" /><!-- textop -->
+		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" /><!-- producer -->
+		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" /><!-- mark -->
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
+		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/><!-- avlb -->
 		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
@@ -245,6 +257,15 @@
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
+		<parameter name="pic_path" type="string" caption="Путь к изображениям"
+				   description="путь к файлам (большому и маленькому) и начало имени файлов без расширения, например resistors/SMD_0603" />
+
+		<!-- FLAGS -->
+		<parameter name="special_price" type="string" caption="Акция" description="является ли товар акционным (да/нет)"/>
+		<parameter name="hit" type="byte" caption="Хит продаж" description="если хит, то значение 1"/>
+		<parameter name="new" type="byte" caption="Новинка" description="если новинка, то значение 1"/>
+		<parameter name="soon" type="date" caption="Дата поставки"/>
+
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
@@ -256,7 +277,20 @@
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
 
-<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
+		<!-- SERVICE PARAMS AND FULLTEXT -->
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description="для прикрепления к тексту" />
+		<parameter name="file" type="string" quantifier="multiple" caption="Название файла" description="документация" />
+		<parameter name="search" quantifier="multiple" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
+		<parameter name="strict_search" quantifier="multiple" type="string" caption="Ключевые слова для поиска по строгому соответствию"/>
+		<parameter name="analog_search" quantifier="multiple" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
+		<parameter name="analog_code" type="string" quantifier="multiple" caption="Коды аналогов" description="других товаров из каталога"/>
+		<parameter name="extra_pic" type="string" quantifier="multiple" caption="дополнительные картинки"/>
+		<parameter name="filevid" type="string" quantifier="multiple" caption="видео"/>
+		<parameter name="rel_code" type="string" quantifier="multiple" caption="Коды сопутствующих товаров"/>
+		<parameter name="analog" type="string" caption="Аналоги" description="перечисление аналогов устройства"/>
+		<parameter name="barcode" type="string" caption="Штрихкод" description="в виде строки"/>
+
+		<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
@@ -346,21 +380,52 @@
 		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
+		<parameter name="qty_zero" type="double" format="###.#" />
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
-		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
+		<parameter name="limit_1" type="double" caption="Лимит для маленьких скидок" />
+		<parameter name="limit_2" type="double" caption="Лимит для больших скидок" />
+		<parameter name="discount_1" type="integer" caption="Маленькая скидка" description="количество процентов, например 10 или 20, без знака %" />
+		<parameter name="discount_2" type="integer" caption="Большая скидка" description="количество процентов, например 10 или 20, без знака %" />
+		<parameter name="type" type="string" caption="Название типа" description="caption типа айтема продукта для группировки" />
 		<child item="product" single="true"/>
 	</item>
+
+	<item name="custom_bought" virtual="true" ag-id="1895" ag-hash="678018425">
+		<parameter name="position" type="integer" caption="Порядковый номер"/>
+		<parameter name="mark" type="string" caption="Маркировка"/>
+		<parameter name="type" type="string" caption="Тип прибора"/>
+		<parameter name="case" type="string" caption="Корпус"/>
+		<parameter name="qty" type="string" caption="Количество"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="extra" type="string" caption="Дополнительная информация"/>
+		<parameter name="nonempty" type="string" caption="Позиция не пустая" description="заполнен хотя-бы один параметр"/>
+	</item>
+
 
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
+		<parameter name="zero_qty" type="double" />
+		<parameter name="custom_qty" type="double" />
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="simple_sum"  type="currency" caption="Сумма без учета скидок" format="###,##0.00" />
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
+		<parameter name="margin"  type="currency" caption="Сумма скидки" format="###,##0.00" />
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
+		<parameter name="order_id" type="long" caption="ID заказа"/>
 		<child item="bought"/>
+		<child item="custom_bought"/>
+	</item>
+
+	<item name="preorders" caption="Предзаказы" ag-id="1896" ag-hash="-1024766136">
+		<child item="preorder"/>
+	</item>
+
+	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="1897" ag-hash="-1279982965">
+		<parameter name="email" type="string" caption="email" />
+		<parameter name="code" type="string" caption="артикул товара" quantifier="multiple"/>
 	</item>
 
 
@@ -386,6 +451,33 @@
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" caption="Общее количество"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+
+		<parameter name="int_number" type="integer" caption="Номер (число)"/>
+		<parameter name="status" type="byte" caption="Состояние"/>
+		<parameter name="payed" type="byte" caption="Оплачен" domain="0-1"/>
+		<parameter name="status_log" type="byte" caption="журнал стаутса" quantifier="multiple"/>
+		<parameter name="status_date" type="long" caption="дата изменения статуса" quantifier="multiple"/>
+
+		<parameter name="client_id" type="long" caption="id клиента"/>
+		<parameter name="login" type="string" caption="Логин клиента"/>
+		<!-- Для анонимусов -->
+		<parameter name="email" type="string" caption="email клиента"/>
+		<parameter name="phone" type="string" caption="телефон клиента"/>
+		<parameter name="client_name" type="string" caption="имя клиента"/>
+		<parameter name="second_name" type="string" caption="фамилия клиента"/>
+		<parameter name="phys" type="byte" caption="физ. лицо" domain="0-1"/>
+
+		<parameter name="cookie" type="string" caption="Печенька"/>
+
+		<!-- Дополнительные сведения -->
+		<parameter name="payment" type="string" caption="Способ оплаты"/>
+		<parameter name="delivery" type="string" caption="Способ доставки"/>
+		<parameter name="index" type="integer" caption="Почтовый индекс" description="для доствки почтой"/>
+		<parameter name="city" type="string" caption="Насаленный пункт"/>
+		<parameter name="region" type="string" caption="Область"/>
+		<parameter name="address" type="string" caption="Адрес для доставки почтой"/>
+		<parameter name="if_absent" type="string" caption="В случае отсутствия некоторых позиций" />
+
 		<child item="bought"/>
 	</item>
 
@@ -437,6 +529,46 @@
 		<parameter name="users_file" type="file" caption="Файл пользователей"/>
 		<child item="user"/>
 	</item>
+
+	<item name="order_emails" caption="Варианты  письма клиенту" ag-id="1898" ag-hash="634088040">
+		<parameter name="min_jur" type="double" caption="Минимальная сумма заказа Юр. лиц" description="с учетом стоимости заказных позиций"/>
+		<parameter name="min_phys" type="double" caption="Минимальная сумма заказа Физ. лиц" description="без учета стоимости заказных позиций"/>
+		<parameter name="min_post" type="double" caption="Минимальная сумма заказа при отправке ПОЧТОЙ для Физ. лиц"/>
+
+		<parameter name="self" type="text" caption="текст самовывоз" description="на станице &#34;заказ отправлен&#34;"/>
+		<parameter name="post" type="text" caption="текст почта"  description="на станице &#34;заказ отправлен&#34;"/>
+		<parameter name="kur" type="text" caption="текст курьер"  description="на станице &#34;заказ отправлен&#34;"/>
+		<parameter name="custom" type="text" caption="текст заказные товары"  description="на станице &#34;заказ отправлен&#34;"/>
+
+		<child item="jur" single="true"/>
+		<child item="phys" single="true"/>
+	</item>
+
+	<item name="mail_texts" caption="тексты письма" virtual="true" ag-id="1899" ag-hash="-966892450">
+		<parameter name="top" type="short-text" caption="текст сверху"/>
+		<parameter name="bottom" type="short-text" caption="текст снизу"/>
+	</item>
+
+	<item name="bed" caption="Беды" extends="mail_texts" ag-id="1900" ag-hash="97409" />
+	<item name="skr" caption="Скрыганова" extends="mail_texts" ag-id="1901" ag-hash="113946" />
+	<item name="post" caption="Почтой (zakaz2@belchip.by)" extends="mail_texts" ag-id="1902" ag-hash="3446944" />
+	<item name="custom" caption="Индивиуальный заказ" extends="mail_texts" ag-id="1903" ag-hash="-1349088399" />
+
+
+	<item name="jur" caption="для юр.лиц" ag-id="1904" ag-hash="105607">
+		<child item="bed" single="true"/>
+		<child item="skr" single="true"/>
+		<child item="post" single="true"/>
+		<child item="custom" single="true"/>
+	</item>
+
+	<item name="phys" caption="для физ.лиц" ag-id="1905" ag-hash="3440402">
+		<child item="bed" single="true"/>
+		<child item="skr" single="true"/>
+		<child item="post" single="true"/>
+		<child item="custom" single="true"/>
+	</item>
+
 
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                            END РЕГИСТРАЦИЯ                           ////////////-->
@@ -525,7 +657,7 @@
 		<child item="video" inline="true"/>
 	</item>
 
-	<item name="video" caption="Видеоролик" key="name" ag-id="1817" ag-hash="112202875">
+	<item name="video" caption="Видеоролик" key="name" ag-id="1867" ag-hash="112202875">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 	</item>
@@ -687,7 +819,7 @@
 	Может быть много инпутов с одним названием, в качестве значений инпутов могут быть файлы.
 	"Физически" значения полей в айтеме формы хранятся в extra.
 	-->
-	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1818" ag-hash="-263108052">
+	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1841" ag-hash="-263108052">
 	</item>
 
 	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="828" ag-hash="442678893">
@@ -936,12 +1068,12 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="styles" caption="Cтили" ag-id="1823" ag-hash="-891774750">
+	<item name="styles" caption="Cтили" ag-id="1868" ag-hash="-891774750">
 		<parameter name="css" caption="дополнительный файл CSS" type="file"/>
 		<child item="label_style"/>
 	</item>
 
-	<item name="label_style" key="name" caption="Стиль ярлыка" ag-id="1824" ag-hash="404813990">
+	<item name="label_style" key="name" caption="Стиль ярлыка" ag-id="1869" ag-hash="404813990">
 		<parameter name="name" type="string" caption="Название"
 		 description="должно совпадать с ярлыком в товаре"/>
 		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>
@@ -966,6 +1098,8 @@
 		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
+		<child item="order_emails" single="true" />
+		<child item="preorders" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

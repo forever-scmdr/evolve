@@ -31,10 +31,10 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 		ELEMENT_PARAM.put("company_name", ORGANIZATION);
 		ELEMENT_PARAM.put("person", CONTACT_NAME);
 		ELEMENT_PARAM.put("phone_number", PHONE);
-		ELEMENT_PARAM.put("city", CITY);
-		ELEMENT_PARAM.put("route", ROUTE);
-		ELEMENT_PARAM.put("debt", DEBT);
-		ELEMENT_PARAM.put("discount", DISCOUNT);
+//		ELEMENT_PARAM.put("city", CITY);
+//		ELEMENT_PARAM.put("route", ROUTE);
+//		ELEMENT_PARAM.put("debt", DEBT);
+//		ELEMENT_PARAM.put("discount", DISCOUNT);
 	}
 
 

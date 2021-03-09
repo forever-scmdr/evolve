@@ -15,10 +15,15 @@ public class Bought
     public final static String QTY = "qty";
     public final static String QTY_AVAIL = "qty_avail";
     public final static String QTY_TOTAL = "qty_total";
+    public final static String QTY_ZERO = "qty_zero";
     public final static String PRICE = "price";
     public final static String NOT_AVAILABLE = "not_available";
     public final static String SUM = "sum";
-    public final static String AUX = "aux";
+    public final static String LIMIT_1 = "limit_1";
+    public final static String LIMIT_2 = "limit_2";
+    public final static String DISCOUNT_1 = "discount_1";
+    public final static String DISCOUNT_2 = "discount_2";
+    public final static String TYPE = "type";
 
     private Bought(Item item) {
         super(item);
@@ -137,6 +142,28 @@ public class Bought
         return containsValue("qty_total", value);
     }
 
+    public void set_qty_zero(Double value) {
+        setValue("qty_zero", value);
+    }
+
+    public void setUI_qty_zero(String value)
+        throws Exception
+    {
+        setValueUI("qty_zero", value);
+    }
+
+    public Double get_qty_zero() {
+        return getDoubleValue("qty_zero");
+    }
+
+    public Double getDefault_qty_zero(Double defaultVal) {
+        return getDoubleValue("qty_zero", defaultVal);
+    }
+
+    public boolean contains_qty_zero(Double value) {
+        return containsValue("qty_zero", value);
+    }
+
     public void set_price(BigDecimal value) {
         setValue("price", value);
     }
@@ -203,20 +230,108 @@ public class Bought
         return containsValue("sum", value);
     }
 
-    public void set_aux(String value) {
-        setValue("aux", value);
+    public void set_limit_1(Double value) {
+        setValue("limit_1", value);
     }
 
-    public String get_aux() {
-        return getStringValue("aux");
+    public void setUI_limit_1(String value)
+        throws Exception
+    {
+        setValueUI("limit_1", value);
     }
 
-    public String getDefault_aux(String defaultVal) {
-        return getStringValue("aux", defaultVal);
+    public Double get_limit_1() {
+        return getDoubleValue("limit_1");
     }
 
-    public boolean contains_aux(String value) {
-        return containsValue("aux", value);
+    public Double getDefault_limit_1(Double defaultVal) {
+        return getDoubleValue("limit_1", defaultVal);
+    }
+
+    public boolean contains_limit_1(Double value) {
+        return containsValue("limit_1", value);
+    }
+
+    public void set_limit_2(Double value) {
+        setValue("limit_2", value);
+    }
+
+    public void setUI_limit_2(String value)
+        throws Exception
+    {
+        setValueUI("limit_2", value);
+    }
+
+    public Double get_limit_2() {
+        return getDoubleValue("limit_2");
+    }
+
+    public Double getDefault_limit_2(Double defaultVal) {
+        return getDoubleValue("limit_2", defaultVal);
+    }
+
+    public boolean contains_limit_2(Double value) {
+        return containsValue("limit_2", value);
+    }
+
+    public void set_discount_1(Integer value) {
+        setValue("discount_1", value);
+    }
+
+    public void setUI_discount_1(String value)
+        throws Exception
+    {
+        setValueUI("discount_1", value);
+    }
+
+    public Integer get_discount_1() {
+        return getIntValue("discount_1");
+    }
+
+    public Integer getDefault_discount_1(Integer defaultVal) {
+        return getIntValue("discount_1", defaultVal);
+    }
+
+    public boolean contains_discount_1(Integer value) {
+        return containsValue("discount_1", value);
+    }
+
+    public void set_discount_2(Integer value) {
+        setValue("discount_2", value);
+    }
+
+    public void setUI_discount_2(String value)
+        throws Exception
+    {
+        setValueUI("discount_2", value);
+    }
+
+    public Integer get_discount_2() {
+        return getIntValue("discount_2");
+    }
+
+    public Integer getDefault_discount_2(Integer defaultVal) {
+        return getIntValue("discount_2", defaultVal);
+    }
+
+    public boolean contains_discount_2(Integer value) {
+        return containsValue("discount_2", value);
+    }
+
+    public void set_type(String value) {
+        setValue("type", value);
+    }
+
+    public String get_type() {
+        return getStringValue("type");
+    }
+
+    public String getDefault_type(String defaultVal) {
+        return getStringValue("type", defaultVal);
+    }
+
+    public boolean contains_type(String value) {
+        return containsValue("type", value);
     }
 
 }

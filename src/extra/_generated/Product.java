@@ -17,6 +17,7 @@ public class Product
     public final static String CODE = "code";
     public final static String PRICE = "price";
     public final static String QTY = "qty";
+    public final static String QTY_OPT = "qty_opt";
     public final static String UNIT = "unit";
     public final static String TYPE = "type";
     public final static String NAME_EXTRA = "name_extra";
@@ -34,19 +35,38 @@ public class Product
     public final static String PRICE_OPT_OLD = "price_opt_old";
     public final static String NEXT_DELIVERY = "next_delivery";
     public final static String STATUS = "status";
+    public final static String SEARCH = "search";
     public final static String MIN_QTY = "min_qty";
+    public final static String STEP = "step";
+    public final static String SPEC_QTY = "spec_qty";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
+    public final static String PIC_PATH = "pic_path";
+    public final static String SPECIAL_PRICE = "special_price";
+    public final static String HIT = "hit";
+    public final static String NEW = "new";
+    public final static String SOON = "soon";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
+    public final static String FILES = "files";
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
-    public final static String ANALOG_CODE = "analog_code";
-    public final static String SIMILAR_CODE = "similar_code";
-    public final static String SUPPORT_CODE = "support_code";
     public final static String TAG = "tag";
+    public final static String MARK = "mark";
+    public final static String LABEL = "label";
+    public final static String EXTRA_INPUT = "extra_input";
+    public final static String PICTURE = "picture";
+    public final static String FILE = "file";
+    public final static String STRICT_SEARCH = "strict_search";
+    public final static String ANALOG_SEARCH = "analog_search";
+    public final static String ANALOG_CODE = "analog_code";
+    public final static String EXTRA_PIC = "extra_pic";
+    public final static String FILEVID = "filevid";
+    public final static String REL_CODE = "rel_code";
+    public final static String ANALOG = "analog";
+    public final static String BARCODE = "barcode";
     public final static String GALLERY = "gallery";
     public final static String HAS_LINES = "has_lines";
 
@@ -143,6 +163,28 @@ public class Product
 
     public boolean contains_qty(Double value) {
         return containsValue("qty", value);
+    }
+
+    public void set_qty_opt(Double value) {
+        setValue("qty_opt", value);
+    }
+
+    public void setUI_qty_opt(String value)
+        throws Exception
+    {
+        setValueUI("qty_opt", value);
+    }
+
+    public Double get_qty_opt() {
+        return getDoubleValue("qty_opt");
+    }
+
+    public Double getDefault_qty_opt(Double defaultVal) {
+        return getDoubleValue("qty_opt", defaultVal);
+    }
+
+    public boolean contains_qty_opt(Double value) {
+        return containsValue("qty_opt", value);
     }
 
     public void set_unit(String value) {
@@ -447,6 +489,22 @@ public class Product
         return containsValue("status", value);
     }
 
+    public void set_search(String value) {
+        setValue("search", value);
+    }
+
+    public String get_search() {
+        return getStringValue("search");
+    }
+
+    public String getDefault_search(String defaultVal) {
+        return getStringValue("search", defaultVal);
+    }
+
+    public boolean contains_search(String value) {
+        return containsValue("search", value);
+    }
+
     public void set_min_qty(Double value) {
         setValue("min_qty", value);
     }
@@ -467,6 +525,50 @@ public class Product
 
     public boolean contains_min_qty(Double value) {
         return containsValue("min_qty", value);
+    }
+
+    public void set_step(Double value) {
+        setValue("step", value);
+    }
+
+    public void setUI_step(String value)
+        throws Exception
+    {
+        setValueUI("step", value);
+    }
+
+    public Double get_step() {
+        return getDoubleValue("step");
+    }
+
+    public Double getDefault_step(Double defaultVal) {
+        return getDoubleValue("step", defaultVal);
+    }
+
+    public boolean contains_step(Double value) {
+        return containsValue("step", value);
+    }
+
+    public void set_spec_qty(Double value) {
+        setValue("spec_qty", value);
+    }
+
+    public void setUI_spec_qty(String value)
+        throws Exception
+    {
+        setValueUI("spec_qty", value);
+    }
+
+    public Double get_spec_qty() {
+        return getDoubleValue("spec_qty");
+    }
+
+    public Double getDefault_spec_qty(Double defaultVal) {
+        return getDoubleValue("spec_qty", defaultVal);
+    }
+
+    public boolean contains_spec_qty(Double value) {
+        return containsValue("spec_qty", value);
     }
 
     public void set_country(String value) {
@@ -507,6 +609,104 @@ public class Product
 
     public boolean contains_small_pic(File value) {
         return containsValue("small_pic", value);
+    }
+
+    public void set_pic_path(String value) {
+        setValue("pic_path", value);
+    }
+
+    public String get_pic_path() {
+        return getStringValue("pic_path");
+    }
+
+    public String getDefault_pic_path(String defaultVal) {
+        return getStringValue("pic_path", defaultVal);
+    }
+
+    public boolean contains_pic_path(String value) {
+        return containsValue("pic_path", value);
+    }
+
+    public void set_special_price(String value) {
+        setValue("special_price", value);
+    }
+
+    public String get_special_price() {
+        return getStringValue("special_price");
+    }
+
+    public String getDefault_special_price(String defaultVal) {
+        return getStringValue("special_price", defaultVal);
+    }
+
+    public boolean contains_special_price(String value) {
+        return containsValue("special_price", value);
+    }
+
+    public void set_hit(Byte value) {
+        setValue("hit", value);
+    }
+
+    public void setUI_hit(String value)
+        throws Exception
+    {
+        setValueUI("hit", value);
+    }
+
+    public Byte get_hit() {
+        return getByteValue("hit");
+    }
+
+    public Byte getDefault_hit(Byte defaultVal) {
+        return getByteValue("hit", defaultVal);
+    }
+
+    public boolean contains_hit(Byte value) {
+        return containsValue("hit", value);
+    }
+
+    public void set_new(Byte value) {
+        setValue("new", value);
+    }
+
+    public void setUI_new(String value)
+        throws Exception
+    {
+        setValueUI("new", value);
+    }
+
+    public Byte get_new() {
+        return getByteValue("new");
+    }
+
+    public Byte getDefault_new(Byte defaultVal) {
+        return getByteValue("new", defaultVal);
+    }
+
+    public boolean contains_new(Byte value) {
+        return containsValue("new", value);
+    }
+
+    public void set_soon(Long value) {
+        setValue("soon", value);
+    }
+
+    public void setUI_soon(String value)
+        throws Exception
+    {
+        setValueUI("soon", value);
+    }
+
+    public Long get_soon() {
+        return getLongValue("soon");
+    }
+
+    public Long getDefault_soon(Long defaultVal) {
+        return getLongValue("soon", defaultVal);
+    }
+
+    public boolean contains_soon(Long value) {
+        return containsValue("soon", value);
     }
 
     public void set_description(String value) {
@@ -557,6 +757,22 @@ public class Product
         return containsValue("extra_xml", value);
     }
 
+    public void add_files(File value) {
+        setValue("files", value);
+    }
+
+    public List<File> getAll_files() {
+        return getFileValues("files", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_files(File value) {
+        removeEqualValue("files", value);
+    }
+
+    public boolean contains_files(File value) {
+        return containsValue("files", value);
+    }
+
     public void add_text_pics(File value) {
         setValue("text_pics", value);
     }
@@ -589,54 +805,6 @@ public class Product
         return containsValue("assoc_code", value);
     }
 
-    public void add_analog_code(String value) {
-        setValue("analog_code", value);
-    }
-
-    public List<String> getAll_analog_code() {
-        return getStringValues("analog_code");
-    }
-
-    public void remove_analog_code(String value) {
-        removeEqualValue("analog_code", value);
-    }
-
-    public boolean contains_analog_code(String value) {
-        return containsValue("analog_code", value);
-    }
-
-    public void add_similar_code(String value) {
-        setValue("similar_code", value);
-    }
-
-    public List<String> getAll_similar_code() {
-        return getStringValues("similar_code");
-    }
-
-    public void remove_similar_code(String value) {
-        removeEqualValue("similar_code", value);
-    }
-
-    public boolean contains_similar_code(String value) {
-        return containsValue("similar_code", value);
-    }
-
-    public void add_support_code(String value) {
-        setValue("support_code", value);
-    }
-
-    public List<String> getAll_support_code() {
-        return getStringValues("support_code");
-    }
-
-    public void remove_support_code(String value) {
-        removeEqualValue("support_code", value);
-    }
-
-    public boolean contains_support_code(String value) {
-        return containsValue("support_code", value);
-    }
-
     public void add_tag(String value) {
         setValue("tag", value);
     }
@@ -651,6 +819,210 @@ public class Product
 
     public boolean contains_tag(String value) {
         return containsValue("tag", value);
+    }
+
+    public void add_mark(String value) {
+        setValue("mark", value);
+    }
+
+    public List<String> getAll_mark() {
+        return getStringValues("mark");
+    }
+
+    public void remove_mark(String value) {
+        removeEqualValue("mark", value);
+    }
+
+    public boolean contains_mark(String value) {
+        return containsValue("mark", value);
+    }
+
+    public void add_label(String value) {
+        setValue("label", value);
+    }
+
+    public List<String> getAll_label() {
+        return getStringValues("label");
+    }
+
+    public void remove_label(String value) {
+        removeEqualValue("label", value);
+    }
+
+    public boolean contains_label(String value) {
+        return containsValue("label", value);
+    }
+
+    public void add_extra_input(String value) {
+        setValue("extra_input", value);
+    }
+
+    public List<String> getAll_extra_input() {
+        return getStringValues("extra_input");
+    }
+
+    public void remove_extra_input(String value) {
+        removeEqualValue("extra_input", value);
+    }
+
+    public boolean contains_extra_input(String value) {
+        return containsValue("extra_input", value);
+    }
+
+    public void set_picture(File value) {
+        setValue("picture", value);
+    }
+
+    public File get_picture() {
+        return getFileValue("picture", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_picture(File value) {
+        return containsValue("picture", value);
+    }
+
+    public void set_file(String value) {
+        setValue("file", value);
+    }
+
+    public String get_file() {
+        return getStringValue("file");
+    }
+
+    public String getDefault_file(String defaultVal) {
+        return getStringValue("file", defaultVal);
+    }
+
+    public boolean contains_file(String value) {
+        return containsValue("file", value);
+    }
+
+    public void set_strict_search(String value) {
+        setValue("strict_search", value);
+    }
+
+    public String get_strict_search() {
+        return getStringValue("strict_search");
+    }
+
+    public String getDefault_strict_search(String defaultVal) {
+        return getStringValue("strict_search", defaultVal);
+    }
+
+    public boolean contains_strict_search(String value) {
+        return containsValue("strict_search", value);
+    }
+
+    public void set_analog_search(String value) {
+        setValue("analog_search", value);
+    }
+
+    public String get_analog_search() {
+        return getStringValue("analog_search");
+    }
+
+    public String getDefault_analog_search(String defaultVal) {
+        return getStringValue("analog_search", defaultVal);
+    }
+
+    public boolean contains_analog_search(String value) {
+        return containsValue("analog_search", value);
+    }
+
+    public void set_analog_code(String value) {
+        setValue("analog_code", value);
+    }
+
+    public String get_analog_code() {
+        return getStringValue("analog_code");
+    }
+
+    public String getDefault_analog_code(String defaultVal) {
+        return getStringValue("analog_code", defaultVal);
+    }
+
+    public boolean contains_analog_code(String value) {
+        return containsValue("analog_code", value);
+    }
+
+    public void set_extra_pic(String value) {
+        setValue("extra_pic", value);
+    }
+
+    public String get_extra_pic() {
+        return getStringValue("extra_pic");
+    }
+
+    public String getDefault_extra_pic(String defaultVal) {
+        return getStringValue("extra_pic", defaultVal);
+    }
+
+    public boolean contains_extra_pic(String value) {
+        return containsValue("extra_pic", value);
+    }
+
+    public void set_filevid(String value) {
+        setValue("filevid", value);
+    }
+
+    public String get_filevid() {
+        return getStringValue("filevid");
+    }
+
+    public String getDefault_filevid(String defaultVal) {
+        return getStringValue("filevid", defaultVal);
+    }
+
+    public boolean contains_filevid(String value) {
+        return containsValue("filevid", value);
+    }
+
+    public void set_rel_code(String value) {
+        setValue("rel_code", value);
+    }
+
+    public String get_rel_code() {
+        return getStringValue("rel_code");
+    }
+
+    public String getDefault_rel_code(String defaultVal) {
+        return getStringValue("rel_code", defaultVal);
+    }
+
+    public boolean contains_rel_code(String value) {
+        return containsValue("rel_code", value);
+    }
+
+    public void set_analog(String value) {
+        setValue("analog", value);
+    }
+
+    public String get_analog() {
+        return getStringValue("analog");
+    }
+
+    public String getDefault_analog(String defaultVal) {
+        return getStringValue("analog", defaultVal);
+    }
+
+    public boolean contains_analog(String value) {
+        return containsValue("analog", value);
+    }
+
+    public void set_barcode(String value) {
+        setValue("barcode", value);
+    }
+
+    public String get_barcode() {
+        return getStringValue("barcode");
+    }
+
+    public String getDefault_barcode(String defaultVal) {
+        return getStringValue("barcode", defaultVal);
+    }
+
+    public boolean contains_barcode(String value) {
+        return containsValue("barcode", value);
     }
 
     public void add_gallery(File value) {

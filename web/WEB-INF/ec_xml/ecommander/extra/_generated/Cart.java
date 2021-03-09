@@ -12,9 +12,14 @@ public class Cart
     public final static String _NAME = "cart";
     public final static String ORDER_NUM = "order_num";
     public final static String QTY = "qty";
+    public final static String ZERO_QTY = "zero_qty";
+    public final static String CUSTOM_QTY = "custom_qty";
     public final static String SUM = "sum";
+    public final static String SIMPLE_SUM = "simple_sum";
     public final static String SUM_DISCOUNT = "sum_discount";
+    public final static String MARGIN = "margin";
     public final static String PROCESSED = "processed";
+    public final static String ORDER_ID = "order_id";
 
     private Cart(Item item) {
         super(item);
@@ -73,6 +78,50 @@ public class Cart
         return containsValue("qty", value);
     }
 
+    public void set_zero_qty(Double value) {
+        setValue("zero_qty", value);
+    }
+
+    public void setUI_zero_qty(String value)
+        throws Exception
+    {
+        setValueUI("zero_qty", value);
+    }
+
+    public Double get_zero_qty() {
+        return getDoubleValue("zero_qty");
+    }
+
+    public Double getDefault_zero_qty(Double defaultVal) {
+        return getDoubleValue("zero_qty", defaultVal);
+    }
+
+    public boolean contains_zero_qty(Double value) {
+        return containsValue("zero_qty", value);
+    }
+
+    public void set_custom_qty(Double value) {
+        setValue("custom_qty", value);
+    }
+
+    public void setUI_custom_qty(String value)
+        throws Exception
+    {
+        setValueUI("custom_qty", value);
+    }
+
+    public Double get_custom_qty() {
+        return getDoubleValue("custom_qty");
+    }
+
+    public Double getDefault_custom_qty(Double defaultVal) {
+        return getDoubleValue("custom_qty", defaultVal);
+    }
+
+    public boolean contains_custom_qty(Double value) {
+        return containsValue("custom_qty", value);
+    }
+
     public void set_sum(BigDecimal value) {
         setValue("sum", value);
     }
@@ -93,6 +142,28 @@ public class Cart
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_simple_sum(BigDecimal value) {
+        setValue("simple_sum", value);
+    }
+
+    public void setUI_simple_sum(String value)
+        throws Exception
+    {
+        setValueUI("simple_sum", value);
+    }
+
+    public BigDecimal get_simple_sum() {
+        return getDecimalValue("simple_sum");
+    }
+
+    public BigDecimal getDefault_simple_sum(BigDecimal defaultVal) {
+        return getDecimalValue("simple_sum", defaultVal);
+    }
+
+    public boolean contains_simple_sum(BigDecimal value) {
+        return containsValue("simple_sum", value);
     }
 
     public void set_sum_discount(BigDecimal value) {
@@ -117,6 +188,28 @@ public class Cart
         return containsValue("sum_discount", value);
     }
 
+    public void set_margin(BigDecimal value) {
+        setValue("margin", value);
+    }
+
+    public void setUI_margin(String value)
+        throws Exception
+    {
+        setValueUI("margin", value);
+    }
+
+    public BigDecimal get_margin() {
+        return getDecimalValue("margin");
+    }
+
+    public BigDecimal getDefault_margin(BigDecimal defaultVal) {
+        return getDecimalValue("margin", defaultVal);
+    }
+
+    public boolean contains_margin(BigDecimal value) {
+        return containsValue("margin", value);
+    }
+
     public void set_processed(Byte value) {
         setValue("processed", value);
     }
@@ -137,6 +230,28 @@ public class Cart
 
     public boolean contains_processed(Byte value) {
         return containsValue("processed", value);
+    }
+
+    public void set_order_id(Long value) {
+        setValue("order_id", value);
+    }
+
+    public void setUI_order_id(String value)
+        throws Exception
+    {
+        setValueUI("order_id", value);
+    }
+
+    public Long get_order_id() {
+        return getLongValue("order_id");
+    }
+
+    public Long getDefault_order_id(Long defaultVal) {
+        return getLongValue("order_id", defaultVal);
+    }
+
+    public boolean contains_order_id(Long value) {
+        return containsValue("order_id", value);
     }
 
 }

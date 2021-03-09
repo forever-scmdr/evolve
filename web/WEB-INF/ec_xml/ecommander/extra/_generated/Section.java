@@ -20,7 +20,13 @@ public class Section
     public final static String CATEGORY_ID = "category_id";
     public final static String CODE = "code";
     public final static String PARENT_ID = "parent_id";
+    public final static String LIMIT_1 = "limit_1";
+    public final static String LIMIT_2 = "limit_2";
+    public final static String DISCOUNT_1 = "discount_1";
+    public final static String DISCOUNT_2 = "discount_2";
+    public final static String NORM = "norm";
     public final static String MAIN_PIC = "main_pic";
+    public final static String PIC_PATH = "pic_path";
     public final static String EXTRA = "extra";
     public final static String PARAMS_SHORT = "params_short";
     public final static String PARAMS_LIST = "params_list";
@@ -197,6 +203,116 @@ public class Section
         return containsValue("parent_id", value);
     }
 
+    public void set_limit_1(Double value) {
+        setValue("limit_1", value);
+    }
+
+    public void setUI_limit_1(String value)
+        throws Exception
+    {
+        setValueUI("limit_1", value);
+    }
+
+    public Double get_limit_1() {
+        return getDoubleValue("limit_1");
+    }
+
+    public Double getDefault_limit_1(Double defaultVal) {
+        return getDoubleValue("limit_1", defaultVal);
+    }
+
+    public boolean contains_limit_1(Double value) {
+        return containsValue("limit_1", value);
+    }
+
+    public void set_limit_2(Double value) {
+        setValue("limit_2", value);
+    }
+
+    public void setUI_limit_2(String value)
+        throws Exception
+    {
+        setValueUI("limit_2", value);
+    }
+
+    public Double get_limit_2() {
+        return getDoubleValue("limit_2");
+    }
+
+    public Double getDefault_limit_2(Double defaultVal) {
+        return getDoubleValue("limit_2", defaultVal);
+    }
+
+    public boolean contains_limit_2(Double value) {
+        return containsValue("limit_2", value);
+    }
+
+    public void set_discount_1(Integer value) {
+        setValue("discount_1", value);
+    }
+
+    public void setUI_discount_1(String value)
+        throws Exception
+    {
+        setValueUI("discount_1", value);
+    }
+
+    public Integer get_discount_1() {
+        return getIntValue("discount_1");
+    }
+
+    public Integer getDefault_discount_1(Integer defaultVal) {
+        return getIntValue("discount_1", defaultVal);
+    }
+
+    public boolean contains_discount_1(Integer value) {
+        return containsValue("discount_1", value);
+    }
+
+    public void set_discount_2(Integer value) {
+        setValue("discount_2", value);
+    }
+
+    public void setUI_discount_2(String value)
+        throws Exception
+    {
+        setValueUI("discount_2", value);
+    }
+
+    public Integer get_discount_2() {
+        return getIntValue("discount_2");
+    }
+
+    public Integer getDefault_discount_2(Integer defaultVal) {
+        return getIntValue("discount_2", defaultVal);
+    }
+
+    public boolean contains_discount_2(Integer value) {
+        return containsValue("discount_2", value);
+    }
+
+    public void set_norm(Double value) {
+        setValue("norm", value);
+    }
+
+    public void setUI_norm(String value)
+        throws Exception
+    {
+        setValueUI("norm", value);
+    }
+
+    public Double get_norm() {
+        return getDoubleValue("norm");
+    }
+
+    public Double getDefault_norm(Double defaultVal) {
+        return getDoubleValue("norm", defaultVal);
+    }
+
+    public boolean contains_norm(Double value) {
+        return containsValue("norm", value);
+    }
+
     public void set_main_pic(File value) {
         setValue("main_pic", value);
     }
@@ -207,6 +323,22 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_pic_path(String value) {
+        setValue("pic_path", value);
+    }
+
+    public String get_pic_path() {
+        return getStringValue("pic_path");
+    }
+
+    public String getDefault_pic_path(String defaultVal) {
+        return getStringValue("pic_path", defaultVal);
+    }
+
+    public boolean contains_pic_path(String value) {
+        return containsValue("pic_path", value);
     }
 
     public void set_extra(String value) {

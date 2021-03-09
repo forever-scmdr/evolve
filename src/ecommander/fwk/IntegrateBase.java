@@ -279,7 +279,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param opName
 	 */
-	protected void setOperation(String opName) {
+	public void setOperation(String opName) {
 		getInfo().setOperation(opName);
 	}
 
@@ -288,7 +288,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param lineNumber
 	 */
-	protected void setLineNumber(int lineNumber) {
+	public void setLineNumber(int lineNumber) {
 		getInfo().setLineNumber(lineNumber);
 	}
 
@@ -297,7 +297,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param processed
 	 */
-	protected void setProcessed(int processed) {
+	public void setProcessed(int processed) {
 		getInfo().setProcessed(processed);
 	}
 
@@ -326,7 +326,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param lineNumber
 	 * @param position
 	 */
-	protected void addError(String message, int lineNumber, int position) {
+	public void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
 
@@ -336,7 +336,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param message
 	 * @param originator
 	 */
-	protected void addError(String message, String originator) {
+	public void addError(String message, String originator) {
 		getInfo().addError(message, originator);
 	}
 

@@ -9,13 +9,9 @@ public class Common
 {
 
     public final static String _NAME = "common";
-    public final static String TOP = "top";
     public final static String LEFT = "left";
     public final static String LINK_TEXT = "link_text";
     public final static String LINK_LINK = "link_link";
-    public final static String BOTTOM = "bottom";
-    public final static String BOTTOM_ADDRESS = "bottom_address";
-    public final static String DEBT_TEXT = "debt_text";
     public final static String GOOGLE_VERIFICATION = "google_verification";
     public final static String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -36,22 +32,6 @@ public class Common
 
     public static Common newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
-    }
-
-    public void set_top(String value) {
-        setValue("top", value);
-    }
-
-    public String get_top() {
-        return getStringValue("top");
-    }
-
-    public String getDefault_top(String defaultVal) {
-        return getStringValue("top", defaultVal);
-    }
-
-    public boolean contains_top(String value) {
-        return containsValue("top", value);
     }
 
     public void set_left(String value) {
@@ -100,54 +80,6 @@ public class Common
 
     public boolean contains_link_link(String value) {
         return containsValue("link_link", value);
-    }
-
-    public void set_bottom(String value) {
-        setValue("bottom", value);
-    }
-
-    public String get_bottom() {
-        return getStringValue("bottom");
-    }
-
-    public String getDefault_bottom(String defaultVal) {
-        return getStringValue("bottom", defaultVal);
-    }
-
-    public boolean contains_bottom(String value) {
-        return containsValue("bottom", value);
-    }
-
-    public void set_bottom_address(String value) {
-        setValue("bottom_address", value);
-    }
-
-    public String get_bottom_address() {
-        return getStringValue("bottom_address");
-    }
-
-    public String getDefault_bottom_address(String defaultVal) {
-        return getStringValue("bottom_address", defaultVal);
-    }
-
-    public boolean contains_bottom_address(String value) {
-        return containsValue("bottom_address", value);
-    }
-
-    public void set_debt_text(String value) {
-        setValue("debt_text", value);
-    }
-
-    public String get_debt_text() {
-        return getStringValue("debt_text");
-    }
-
-    public String getDefault_debt_text(String defaultVal) {
-        return getStringValue("debt_text", defaultVal);
-    }
-
-    public boolean contains_debt_text(String value) {
-        return containsValue("debt_text", value);
     }
 
     public void set_google_verification(String value) {

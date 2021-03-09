@@ -26,12 +26,23 @@ public interface ItemNames {
     String PARAMS_XML = "params_xml";
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
+    String CUSTOM_BOUGHT = "custom_bought";
     String CART = "cart";
+    String PREORDERS = "preorders";
+    String PREORDER = "preorder";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
     String USER_PHYS = "user_phys";
     String REGISTERED_CATALOG = "registered_catalog";
+    String ORDER_EMAILS = "order_emails";
+    String MAIL_TEXTS = "mail_texts";
+    String BED = "bed";
+    String SKR = "skr";
+    String POST = "post";
+    String CUSTOM = "custom";
+    String JUR = "jur";
+    String PHYS = "phys";
     String COMMON = "common";
     String BLOCK = "block";
     String BLOCK_ARRAY = "block_array";
@@ -171,6 +182,12 @@ public interface ItemNames {
 
     }
 
+    public interface bed_ {
+
+        String _ITEM_NAME = "bed";
+
+    }
+
     public interface block_ {
 
         String _ITEM_NAME = "block";
@@ -194,10 +211,15 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_AVAIL = "qty_avail";
         String QTY_TOTAL = "qty_total";
+        String QTY_ZERO = "qty_zero";
         String PRICE = "price";
         String NOT_AVAILABLE = "not_available";
         String SUM = "sum";
-        String AUX = "aux";
+        String LIMIT_1 = "limit_1";
+        String LIMIT_2 = "limit_2";
+        String DISCOUNT_1 = "discount_1";
+        String DISCOUNT_2 = "discount_2";
+        String TYPE = "type";
 
     }
 
@@ -206,9 +228,14 @@ public interface ItemNames {
         String _ITEM_NAME = "cart";
         String ORDER_NUM = "order_num";
         String QTY = "qty";
+        String ZERO_QTY = "zero_qty";
+        String CUSTOM_QTY = "custom_qty";
         String SUM = "sum";
+        String SIMPLE_SUM = "simple_sum";
         String SUM_DISCOUNT = "sum_discount";
+        String MARGIN = "margin";
         String PROCESSED = "processed";
+        String ORDER_ID = "order_id";
 
     }
 
@@ -217,7 +244,13 @@ public interface ItemNames {
         String _ITEM_NAME = "catalog";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
+        String PRICE_UPDATE = "price_update";
+        String PRICE_MICRO_UPDATE = "price_micro_update";
+        String HASH = "hash";
+        String ANALOGS = "analogs";
         String DATE = "date";
+        String TEXT = "text";
+        String PICTURE = "picture";
         String INTEGRATION_PENDING = "integration_pending";
         String BIG_INTEGRATION = "big_integration";
 
@@ -307,6 +340,12 @@ public interface ItemNames {
 
     }
 
+    public interface custom_ {
+
+        String _ITEM_NAME = "custom";
+
+    }
+
     public interface custom_block_ {
 
         String _ITEM_NAME = "custom_block";
@@ -321,6 +360,20 @@ public interface ItemNames {
         String LINK = "link";
         String CLASS = "class";
         String TYPE = "type";
+
+    }
+
+    public interface custom_bought_ {
+
+        String _ITEM_NAME = "custom_bought";
+        String POSITION = "position";
+        String MARK = "mark";
+        String TYPE = "type";
+        String CASE = "case";
+        String QTY = "qty";
+        String LINK = "link";
+        String EXTRA = "extra";
+        String NONEMPTY = "nonempty";
 
     }
 
@@ -396,6 +449,11 @@ public interface ItemNames {
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
+        String PIC_PATH = "pic_path";
+        String SPECIAL_PRICE = "special_price";
+        String HIT = "hit";
+        String NEW = "new";
+        String SOON = "soon";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
@@ -406,6 +464,16 @@ public interface ItemNames {
         String MARK = "mark";
         String LABEL = "label";
         String EXTRA_INPUT = "extra_input";
+        String PICTURE = "picture";
+        String FILE = "file";
+        String STRICT_SEARCH = "strict_search";
+        String ANALOG_SEARCH = "analog_search";
+        String ANALOG_CODE = "analog_code";
+        String EXTRA_PIC = "extra_pic";
+        String FILEVID = "filevid";
+        String REL_CODE = "rel_code";
+        String ANALOG = "analog";
+        String BARCODE = "barcode";
         String GALLERY = "gallery";
 
     }
@@ -494,6 +562,12 @@ public interface ItemNames {
 
     }
 
+    public interface jur_ {
+
+        String _ITEM_NAME = "jur";
+
+    }
+
     public interface label_style_ {
 
         String _ITEM_NAME = "label_style";
@@ -534,6 +608,11 @@ public interface ItemNames {
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
+        String PIC_PATH = "pic_path";
+        String SPECIAL_PRICE = "special_price";
+        String HIT = "hit";
+        String NEW = "new";
+        String SOON = "soon";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
@@ -544,7 +623,25 @@ public interface ItemNames {
         String MARK = "mark";
         String LABEL = "label";
         String EXTRA_INPUT = "extra_input";
+        String PICTURE = "picture";
+        String FILE = "file";
+        String STRICT_SEARCH = "strict_search";
+        String ANALOG_SEARCH = "analog_search";
+        String ANALOG_CODE = "analog_code";
+        String EXTRA_PIC = "extra_pic";
+        String FILEVID = "filevid";
+        String REL_CODE = "rel_code";
+        String ANALOG = "analog";
+        String BARCODE = "barcode";
         String GALLERY = "gallery";
+
+    }
+
+    public interface mail_texts_ {
+
+        String _ITEM_NAME = "mail_texts";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -699,6 +796,19 @@ public interface ItemNames {
 
     }
 
+    public interface order_emails_ {
+
+        String _ITEM_NAME = "order_emails";
+        String MIN_JUR = "min_jur";
+        String MIN_PHYS = "min_phys";
+        String MIN_POST = "min_post";
+        String SELF = "self";
+        String POST = "post";
+        String KUR = "kur";
+        String CUSTOM = "custom";
+
+    }
+
     public interface original_gallery_ {
 
         String _ITEM_NAME = "original_gallery";
@@ -795,12 +905,38 @@ public interface ItemNames {
 
     }
 
+    public interface phys_ {
+
+        String _ITEM_NAME = "phys";
+
+    }
+
     public interface picture_ {
 
         String _ITEM_NAME = "picture";
         String NAME = "name";
         String HEADER = "header";
         String PIC = "pic";
+
+    }
+
+    public interface post_ {
+
+        String _ITEM_NAME = "post";
+
+    }
+
+    public interface preorder_ {
+
+        String _ITEM_NAME = "preorder";
+        String EMAIL = "email";
+        String CODE = "code";
+
+    }
+
+    public interface preorders_ {
+
+        String _ITEM_NAME = "preorders";
 
     }
 
@@ -836,6 +972,11 @@ public interface ItemNames {
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
+        String PIC_PATH = "pic_path";
+        String SPECIAL_PRICE = "special_price";
+        String HIT = "hit";
+        String NEW = "new";
+        String SOON = "soon";
         String DESCRIPTION = "description";
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
@@ -846,6 +987,16 @@ public interface ItemNames {
         String MARK = "mark";
         String LABEL = "label";
         String EXTRA_INPUT = "extra_input";
+        String PICTURE = "picture";
+        String FILE = "file";
+        String STRICT_SEARCH = "strict_search";
+        String ANALOG_SEARCH = "analog_search";
+        String ANALOG_CODE = "analog_code";
+        String EXTRA_PIC = "extra_pic";
+        String FILEVID = "filevid";
+        String REL_CODE = "rel_code";
+        String ANALOG = "analog";
+        String BARCODE = "barcode";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
@@ -878,6 +1029,24 @@ public interface ItemNames {
         String QTY_AVAIL = "qty_avail";
         String QTY_TOTAL = "qty_total";
         String SUM = "sum";
+        String INT_NUMBER = "int_number";
+        String STATUS = "status";
+        String PAYED = "payed";
+        String CLIENT_ID = "client_id";
+        String LOGIN = "login";
+        String EMAIL = "email";
+        String PHONE = "phone";
+        String CLIENT_NAME = "client_name";
+        String SECOND_NAME = "second_name";
+        String PHYS = "phys";
+        String COOKIE = "cookie";
+        String PAYMENT = "payment";
+        String DELIVERY = "delivery";
+        String INDEX = "index";
+        String CITY = "city";
+        String REGION = "region";
+        String ADDRESS = "address";
+        String IF_ABSENT = "if_absent";
 
     }
 
@@ -907,7 +1076,13 @@ public interface ItemNames {
         String CATEGORY_ID = "category_id";
         String CODE = "code";
         String PARENT_ID = "parent_id";
+        String LIMIT_1 = "limit_1";
+        String LIMIT_2 = "limit_2";
+        String DISCOUNT_1 = "discount_1";
+        String DISCOUNT_2 = "discount_2";
+        String NORM = "norm";
         String MAIN_PIC = "main_pic";
+        String PIC_PATH = "pic_path";
         String EXTRA = "extra";
         String PARAMS_SHORT = "params_short";
         String PARAMS_LIST = "params_list";
@@ -954,6 +1129,12 @@ public interface ItemNames {
         String BORDER = "border";
         String GUTTER = "gutter";
         String PIC = "pic";
+
+    }
+
+    public interface skr_ {
+
+        String _ITEM_NAME = "skr";
 
     }
 
