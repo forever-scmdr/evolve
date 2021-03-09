@@ -14,7 +14,7 @@ public class PerformDeletedCleaningDBUnit extends DBPersistenceCommandUnit {
 	private int batchSize;
 	private int maxWorkingSeconds;
 
-	PerformDeletedCleaningDBUnit(int batchSize, int maxSeconds) {
+	public PerformDeletedCleaningDBUnit(int batchSize, int maxSeconds) {
 		this.batchSize = batchSize;
 		this.maxWorkingSeconds = maxSeconds;
 	}

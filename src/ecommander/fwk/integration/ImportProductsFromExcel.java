@@ -6,10 +6,7 @@ import ecommander.fwk.ItemUtils;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.MoveItemDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
@@ -88,6 +85,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		//init settings
 		initSettings();
 
+		executeAndCommitCommandUnits(new PerformDeletedCleaningDBUnit(500, 300).ignoreUser(true));
+
 		//load integration file
 		files = loadExcelFiles();
 		//TODO возможность разбора множества файлов
@@ -100,7 +99,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			return false;
 		}
 		//load catalog
-		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		if(catalog == null) {
+			catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		}
+		try{
+			Item catalogFuckUp = ItemQuery.loadRootItem(CATALOG_ITEM, User.ANONYMOUS_ID,User.NO_GROUP_ID);
+			if(catalog.getId() !=  catalogFuckUp.getId()){
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalogFuckUp.getId()).ignoreUser(true));
+				executeAndCommitCommandUnits(new PerformDeletedCleaningDBUnit(500, 300).ignoreUser(true));
+			}
+		}catch (Exception e){}
 
 		//load common product parameters
 		for (ParameterDescription param : PRODUCT_ITEM_TYPE.getParameterList()) {
@@ -144,7 +152,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM_TYPE).setParentId(currentSection.getId(), false).loadFirstItem();
 					paramsXml = paramsXml == null? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
 					paramsXml.setValue(XML_PARAM, createEtalonXmlFromMap());
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser());
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser(true));
 					loadCurrentAuxItemType();
 							}
 						}
@@ -154,7 +162,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				Item product = ensureProduct(code, isProduct);
 				populateProduct(product);
 				postProcessProduct(product);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex().ignoreUser());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex().ignoreUser(true));
 				if (hasAuxParams) {
 					processAuxType(product);
 				}
@@ -558,6 +566,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		} else {
 			String[] param = StringUtils.split(loadOption, ':');
 			Item item = ItemQuery.loadSingleItemByName(param[0]);
+			catalog = item;
 			return item.getFileValues(param[1], AppContext.getFilesDirPath(item.isFileProtected()));
 	}
 		return new ArrayList<>();

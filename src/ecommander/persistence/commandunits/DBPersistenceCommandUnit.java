@@ -62,8 +62,8 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * 
 	 * @return
 	 */
-	public DBPersistenceCommandUnit ignoreUser() {
-		this.ignoreUser = true;
+	public DBPersistenceCommandUnit ignoreUser(boolean... ignore) {
+		this.ignoreUser = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 	/**
@@ -72,7 +72,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 * @return
 	 */
 	public DBPersistenceCommandUnit ignoreFileErrors(boolean... ignore) {
-		this.ignoreFileErrors = (ignore.length > 0)? ignore[0]: true;
+		this.ignoreFileErrors = ignore.length <= 0 || ignore[0];
 		return this;
 	}
 
