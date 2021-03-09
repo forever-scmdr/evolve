@@ -80,7 +80,7 @@
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
-		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text" caption="текст сверху" type="text"/>
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
@@ -160,6 +160,7 @@
 		<child item="parse_section" single="true"/>
 		<child item="section" />
 		<child item="product"/>
+		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
