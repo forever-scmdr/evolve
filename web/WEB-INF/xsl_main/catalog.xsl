@@ -21,7 +21,7 @@
 						<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 						<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 						<a class="catalog-section__image" href="{show_products}"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></a>
-						<div class="catalog-section__subtitle">Раздел</div>
+						<!-- <div class="catalog-section__subtitle">Раздел</div> -->
 						<a class="catalog-section__title" href="{show_products}"><xsl:value-of select="name"/></a>
 						<!-- <div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div> -->
 					</div>
