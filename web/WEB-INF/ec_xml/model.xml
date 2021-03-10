@@ -197,7 +197,7 @@
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="pack_db" type="double" caption="Упаковка 1С" description="Величина упаковки в 1С" default="1"/>
-		<parameter name="pack" type="double" caption="Упаковка" description="Величина упаковки на сайте" default="1"/>
+		<parameter name="pack" type="double" caption="Упаковка продажа" description="Величина упаковки на сайте" default="1"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>

@@ -293,8 +293,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private Item ensureAuxItem(Item product) throws Exception {
-			pushLog("product: " + String.valueOf(product));
-			pushLog("item type: " + String.valueOf(currentAuxItemType));
+			//pushLog("product: " + String.valueOf(product));
+			//pushLog("item type: " + String.valueOf(currentAuxItemType));
 			if (currentAuxItemType != null) {
 				Item aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 				return (aux == null)? Item.newChildItem(currentAuxItemType, product) : aux;
