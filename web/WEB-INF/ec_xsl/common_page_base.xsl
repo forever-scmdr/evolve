@@ -81,10 +81,10 @@
 							<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" />
 							<input type="submit" class="button header__button" value="Найти" />
 						</form>
-						<!-- <div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href=""><i class="fas fa-shopping-cart"></i>Корзина</a>
+						<div class="cart-info header__column" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
+							<a href="cart"><i class="fas fa-shopping-cart"></i>Корзина</a>
 						</div>
-						<div class="user-links header__column">
+						<!-- <div class="user-links header__column">
 							<xsl:call-template name="PERSONAL_DESKTOP"/>
 							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}">
 								<a href=""><i class="fas fa-star"/>Избранное</a>
@@ -520,8 +520,8 @@
 			<!-- <div class="device__article-number"><xsl:value-of select="code"/></div> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб./<xsl:value-of select="if(unit != '') then unit else 'шт'"/></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:pack(price_old, pack_db, pack)"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:pack(price, pack_db, pack)"/> руб./<xsl:value-of select="f:unit(unit, pack)"/></div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -529,7 +529,7 @@
 
 				</div>
 			</xsl:if>
-			<!-- <div class="device__order">
+			<div class="device__order">
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
@@ -547,7 +547,7 @@
 				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
-			</div>-->
+			</div>
 			<!--<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">-->
 			<xsl:if test="available = '1'">
 				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div>
@@ -635,8 +635,8 @@
 			</div> -->
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="price"/> руб./<xsl:value-of select="unit"/></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:pack(price_old, pack_db, pack)"/> руб.</span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:pack(price, pack_db, pack)"/> руб./<xsl:value-of select="f:unit(unit, pack)"/></div>
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
@@ -645,7 +645,7 @@
 				</div>
 			</xsl:if>
 			<div class="device__order device_row__order">
-				<!-- <xsl:if test="not($has_lines)">
+				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
@@ -658,10 +658,10 @@
 							</xsl:if>
 						</form>
 					</div>
-				</xsl:if> -->
-				<!-- <xsl:if test="$has_lines">
+				</xsl:if>
+				<xsl:if test="$has_lines">
 					<a class="button" href="{show_product}">Подробнее</a>
-				</xsl:if> -->
+				</xsl:if>
 				<xsl:if test="available = '1'">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии</div>
 				</xsl:if>

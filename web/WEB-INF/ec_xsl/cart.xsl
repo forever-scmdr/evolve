@@ -21,7 +21,7 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' p.') else 'по запросу'"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:pack($p/price, $p/pack_db, $p/pack), ' p.') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' p.') else ''"/>
 							<div class="item">
 								<xsl:if test="not($p/product)">

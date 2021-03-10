@@ -9,6 +9,27 @@
 
     <xsl:decimal-format name="r" decimal-separator="." grouping-separator=" "/>
 
+    <xsl:function name="f:pack">
+       <xsl:param name="price" as="xs:string?"/>
+       <xsl:param name="pack_db" as="xs:string?"/>
+       <xsl:param name="pack" as="xs:string?"/>
+
+       <xsl:variable name="pr" select="f:num($price)"/>
+       <xsl:variable name="p1" select="if(f:num($pack_db) = 0) then 1 else f:num($pack_db)"/>
+       <xsl:variable name="p2" select="if(f:num($pack) = 0) then 1 else f:num($pack)"/>
+
+       <xsl:variable name="res" select="$pr * ($p2 div $p1)"/>
+       <xsl:sequence select="format-number($res, '#0.00')"/>
+    </xsl:function>
+
+    <xsl:function name="f:unit">
+        <xsl:param name="unit" as="xs:string?"/>
+        <xsl:param name="pack" as="xs:string?"/>
+
+        <xsl:variable name="q" select="if(f:num($pack) &lt; 2) then '' else $pack"/>
+        <xsl:sequence select="if($unit != '') then concat($q, $unit) else concat($q, 'шт')"/>
+    </xsl:function>
+
     <xsl:function name="f:num" as="xs:double">
         <xsl:param name="str" as="xs:string?"/>
         <xsl:sequence

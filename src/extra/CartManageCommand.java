@@ -5,6 +5,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import extra._generated.ItemNames;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 
 /**
@@ -37,6 +38,14 @@ public class CartManageCommand extends BasicCartManageCommand {
 		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}
 
+	@Override
+	protected BigDecimal getProductPrice(Item product){
+		BigDecimal qdb = new BigDecimal(product.getDoubleValue("pack_db", 1));
+		BigDecimal qs = new BigDecimal(product.getDoubleValue("pack", 1));
+		BigDecimal price = product.getDecimalValue("price", BigDecimal.ZERO);
+		price = price.multiply(qs).divide(qdb);
+		return price;
+	}
 
 	@Override
 	protected boolean validate() throws Exception {

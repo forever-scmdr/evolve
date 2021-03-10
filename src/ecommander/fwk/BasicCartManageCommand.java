@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -410,7 +409,7 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+				BigDecimal price = getProductPrice(product);
 				BigDecimal productSum = price.multiply(new BigDecimal(quantity));
 				if (maxQuantity <= 0) {
 					productSum = new BigDecimal(0);
@@ -431,6 +430,10 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && regularQuantity > 0;
+	}
+
+	protected BigDecimal getProductPrice(Item product){
+		return product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
 	}
 
 	@Override
