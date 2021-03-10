@@ -437,7 +437,6 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private boolean hasAuxParams() {
 			for (String header : getHeadersSafe()) {
-			if(IGNORE_HEADERS.contains(header)) continue;
 			String paramName = HEADER_PARAM.get(header);
 				if ((PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header)))
 				continue;
