@@ -293,6 +293,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private Item ensureAuxItem(Item product) throws Exception {
+			pushLog("product: " + String.valueOf(product));
+			pushLog("item type: " + String.valueOf(currentAuxItemType));
 			if (currentAuxItemType != null) {
 				Item aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
 				return (aux == null)? Item.newChildItem(currentAuxItemType, product) : aux;
@@ -339,7 +341,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) {
 									continue;
 				} else if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) {
-									product.clearValue(paramName);
+					try {
+						product.clearValue(paramName);
+					}catch (NullPointerException e){
+						pushLog(paramName);
+					}
 					if(paramName.equals(MAIN_PIC_PARAM)){
 						product.clearValue(SMALL_PIC_PARAM);
 											}

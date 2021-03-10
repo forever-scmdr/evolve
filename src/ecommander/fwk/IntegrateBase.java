@@ -374,7 +374,7 @@ public abstract class IntegrateBase extends Command {
 				readyToStart = makePreparations();
 			} catch (Exception e) {
 				ServerLogger.error(e.getMessage(), e);
-				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+				getInfo().addError(e);
 			}
 
 			if (!readyToStart) {
@@ -391,7 +391,7 @@ public abstract class IntegrateBase extends Command {
 					} catch (Exception se) {
 						setOperation("Интеграция завершена с ошибками");
 						ServerLogger.error("Integration error", se);
-						getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+						getInfo().addError(se);
 					} finally {
 					isFinished = true;
 						getInfo().setInProgress(false);
