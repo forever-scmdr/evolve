@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
-import ecommander.fwk.ItemUtils;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
@@ -97,7 +96,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			return false;
 		}
 		//load catalog
-		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
+
+
 
 		//load common product parameters
 		for (ParameterDescription param : PRODUCT_ITEM_TYPE.getParameterList()) {
@@ -462,7 +463,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private void initSection(String code, String name, String parentCode) throws Exception {
-			currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL);
+			currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code, Item.STATUS_NORMAL);
 
 			//section not exists
 			if (currentSection == null) {
@@ -543,7 +544,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			}
 			if (!currentSection.getStringValue(NAME_PARAM, "").equals(name)) {
 				currentSection.setValue(NAME_PARAM, name);
-				info.addLog("Обновлено название раздела " + currentSection.getStringValue(CODE_PARAM) + ": \"" + currentSection.getStringValue(NAME_PARAM, "") + "\"");
+				info.addLog("Обновлено название раздела " + currentSection.getStringValue(CATEGORY_ID_PARAM) + ": \"" + currentSection.getStringValue(NAME_PARAM, "") + "\"");
 			}
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noTriggerExtra().noFulltextIndex().ignoreUser());
 		}

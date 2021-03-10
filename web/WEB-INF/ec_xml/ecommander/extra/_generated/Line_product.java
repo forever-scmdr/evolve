@@ -1,13 +1,12 @@
 
 package ecommander.extra._generated;
 
-import ecommander.controllers.AppContext;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
+import ecommander.controllers.AppContext;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 
 public class Line_product
     extends Item
@@ -38,7 +37,6 @@ public class Line_product
     public final static String STATUS = "status";
     public final static String SEARCH = "search";
     public final static String MIN_QTY = "min_qty";
-    public final static String STEP = "step";
     public final static String SPEC_QTY = "spec_qty";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
@@ -510,28 +508,6 @@ public class Line_product
 
     public boolean contains_min_qty(Double value) {
         return containsValue("min_qty", value);
-    }
-
-    public void set_step(Double value) {
-        setValue("step", value);
-    }
-
-    public void setUI_step(String value)
-        throws Exception
-    {
-        setValueUI("step", value);
-    }
-
-    public Double get_step() {
-        return getDoubleValue("step");
-    }
-
-    public Double getDefault_step(Double defaultVal) {
-        return getDoubleValue("step", defaultVal);
-    }
-
-    public boolean contains_step(Double value) {
-        return containsValue("step", value);
     }
 
     public void set_spec_qty(Double value) {

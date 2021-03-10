@@ -1733,7 +1733,7 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-            <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
+            <var name="file_location" value="catalog:big_integration"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
