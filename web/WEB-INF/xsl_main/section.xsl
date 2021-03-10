@@ -176,10 +176,8 @@
 		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="filter filter_section">
-				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
-					<div class="icon">
-						<img src="img/icon-gear.svg" alt="" />
-					</div>
+				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="filter__button button">
+					<img src="img/icon-filter-toggle.png" alt="" />
 					<span class="icon-link__item">Подбор по параметрам</span>
 				</a>
 				<form method="post" action="{$sel_sec/filter_base_link}">
@@ -208,8 +206,8 @@
 							</xsl:if>
 						</xsl:for-each>
 						<div class="filter__actions">
-							<button class="button button_2" type="submit">Показать результат</button>
-							<button class="button button_2" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить</button>
+							<button class="button" type="submit">Применить фильтр</button>
+							<button class="button" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить фильтр</button>
 						</div>
 					</div>
 				</form>
@@ -284,11 +282,11 @@
 					<label>
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
+									 onclick="window.location.href = '{page/show_only_available}'"/>
 						</xsl:if>
 						<xsl:if test="$only_available">
 							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
+									 onclick="window.location.href = '{page/show_all}'"/>
 						</xsl:if>
 						в наличии на складе
 					</label>

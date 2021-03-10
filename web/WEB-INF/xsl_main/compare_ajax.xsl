@@ -23,14 +23,20 @@
       <!-- ссылка в товаре -->
 			<xsl:for-each select="$prod">
 				<div class="result" id="compare_list_{@id}">
-					<a href="{//page/compare_link}" class="add__item icon-link">
+					<!-- <a href="{//page/compare_link}" class="add__item icon-link">
 						<div class="icon"><img src="img/icon-balance-active.svg" alt="" /></div>
-						<span>Сравнение</span>
+						<span>Сравнениеd</span>
+					</a> -->
+					<a href="{//page/compare_link}" class="add__item" title="Перейти к сравнению">
+						<img src="img/icon-device-01-active.png" alt="" />
 					</a>
+					<!-- <a class="add__item" href="{from_compare}">
+					<img src="img/icon-device-01-active.png" alt="" />4
+				</a> -->
 				</div>
 			</xsl:for-each>
 		</xsl:if>
-    
+
     <!-- шапка, ничего дне добавлено в сравнение -->
 		<xsl:if test="not($prod)">
 			<div class="result" id="compare_ajax">

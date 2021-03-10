@@ -9,27 +9,27 @@
 		<xsl:if test="not($registered)">
 			<div class="result" id="personal_desktop">
 				<div class="header-icon__icon">
-          <img src="img/icon-user.png" alt="" />
-        </div>
-        <div class="dropdown-menu">
-          <div class="dropdown-menu__container">
-            <a class="dropdown-menu__link" href="{page/login_link}">Вход / регистрация</a>
-          </div>
-        </div>
+					<img src="img/icon-user.png" alt="" />
+				</div>
+				<div class="dropdown-menu">
+					<div class="dropdown-menu__container">
+						<a class="dropdown-menu__link" href="{page/login_link}">Вход / регистрация</a>
+					</div>
+				</div>
 			</div>
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
 				<div class="header-icon__icon">
-          <img src="img/icon-user.png" alt="" />
-        </div>
-        <div class="dropdown-menu">
-          <div class="dropdown-menu__container">
-            <a class="dropdown-menu__link" href="{page/personal_link}">Аккаунт</a>
-            <a class="dropdown-menu__link" href="{page/purchase_history_link}">История заказов</a>
-            <a class="dropdown-menu__link" href="/logout.login?target=index">Выход</a>
-          </div>
-        </div>
+					<img src="img/icon-user.png" alt="" />
+				</div>
+				<div class="dropdown-menu">
+					<div class="dropdown-menu__container">
+						<a class="dropdown-menu__link" href="{page/personal_link}">Аккаунт</a>
+						<a class="dropdown-menu__link" href="{page/purchase_history_link}">История заказов</a>
+						<a class="dropdown-menu__link" href="/logout.login?target=index">Выход</a>
+					</div>
+				</div>
 			</div>
 		</xsl:if>
 	</xsl:template>

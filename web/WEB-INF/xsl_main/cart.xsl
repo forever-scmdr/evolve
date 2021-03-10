@@ -48,7 +48,7 @@
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 									<input type="number" value="{qty}" name="{input/qty/@input}" class="input qty-input" data-old="{qty}"
-										   min="{if (min_qty) then min_qty else 1}" step="0.1" />
+											 min="{if (min_qty) then min_qty else 1}" step="0.1" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
@@ -69,8 +69,8 @@
 											<div class="extra-values__row">
 												<div class="extra-values__value">
 													<input type="text"
-														   name="{$b/input/*[name() = concat('extra', $pos)]/@input}"
-														   value="{$b/input/*[name() = concat('extra', $pos)]}"	/>
+															 name="{$b/input/*[name() = concat('extra', $pos)]/@input}"
+															 value="{$b/input/*[name() = concat('extra', $pos)]}"	/>
 												</div>
 												<div class="extra-values__parameter"><p><xsl:value-of select="." /></p></div>
 											</div>
@@ -84,9 +84,9 @@
 								<div class="cart-total__text">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
 							</xsl:if>
 							<div class="cart-total__buttons">
-								<button class="button button_2 cart-total__button" type="submit"
+								<button class="button cart-total__button" type="submit"
 										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')">Пересчитать</button>
-								<button class="button button_2 cart-total__button" type="submit"
+								<button class="button cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
 							</div>
 						</div>

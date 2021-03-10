@@ -24,13 +24,11 @@
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-			<div style="display: none">
-				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
-						<i class="fas fa-search-plus"></i>
-					</a>
-				</xsl:if>
-			</div>
+			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom" title="{name}" rel="nofollow">
+					<img src="img/icon-zoom.png" alt=""/>
+				</a>
+			</xsl:if>
 
 			<!-- device image -->
 			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
@@ -56,34 +54,38 @@
 			<div class="add">
 				<xsl:choose>
 					<xsl:when test="$is_fav">
-						<a class="add__item" href="{from_fav}">
-              <img src="img/icon-device-01.png" alt="" />
+						<!-- удаление из сравнения -->
+						<a class="add__item" href="{from_fav}"  title="Удалить из избранного">
+							<img src="img/icon-device-02-del.png" alt="" />
 							<!-- <xsl:value-of select="$compare_remove_label"/> -->
-            </a>
+						</a>
 					</xsl:when>
 					<xsl:otherwise>
+						<!-- товар не добавлен в сравнение -->
 						<div id="fav_list_{@id}">
-							<a class="add__item" href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}">
-                <img src="img/icon-device-01.png" alt="" />
+							<a class="add__item" href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}"  title="Добавить в избранное">
+								<img src="img/icon-device-02.png" alt="" />
 								<!-- <xsl:value-of select="$compare_add_label"/> -->
-              </a>
+							</a>
 						</div>
 					</xsl:otherwise>
 				</xsl:choose>
 
 				<xsl:if test="not($is_compare)">
+					<!-- товар не добавлен в избранное -->
 					<div id="compare_list_{@id}">
-						<a class="add__item" href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}">
-              <img src="img/icon-device-02.png" alt="" />
+						<a class="add__item" href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}" title="Добавить в сравнение">
+							<img src="img/icon-device-01.png" alt="" />
 							<!-- <xsl:value-of select="$go_to_compare_label"/> -->
-            </a>
+						</a>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_compare">
-					<a class="add__item" href="{from_compare}">
-            <img src="img/icon-device-02.png" alt="" />
+					<!-- удаление из сравнения ? -->
+					<a class="add__item" href="{from_compare}" title="Удалить из сравнения">
+						<img src="img/icon-device-01-del.png" alt="" />
 						<!-- <xsl:value-of select="$compare_remove_label"/> -->
-          </a>
+					</a>
 				</xsl:if>
 			</div>
 
@@ -97,9 +99,7 @@
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
-			<div style="display:none">
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
-			</div>
+			<div class="artnumber artnumber_device">Код: <xsl:value-of select="code"/></div>
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -107,9 +107,10 @@
 					<div class="price__item_new">
 						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
 					</div>
-					<xsl:if test="price_old">
+					<xsl:if test="price_old and f:num(price_old) != f:num(price)">
 						<div class="price__item_old">
-							<div class="price__tag">-10%</div>
+							<xsl:variable name="discount" select="round((f:num(price_old) - f:num(price)) div f:num(price_old) * 100) "/>
+							<div class="price__tag">-<xsl:value-of select="$discount"/>%</div>
 							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 						</div>
 					</xsl:if>
@@ -147,7 +148,7 @@
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
+							<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
 							<!-- кнопка запросить цену в списке товаров -->
 							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
@@ -186,13 +187,11 @@
 			<div class="device__column">
 
 				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-				<div style="display: none">
-					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-						<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
-							<i class="fas fa-search-plus"></i>
-						</a>
-					</xsl:if>
-				</div>
+				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom" title="{name}">
+						<img src="img/icon-zoom.png" alt=""/>
+					</a>
+				</xsl:if>
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
 				<!-- TODO add display check -->
@@ -232,9 +231,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div style="display:none">
-					<div class="text_size_sm"><xsl:value-of select="code"/></div>
-				</div>
+				<div class="artnumber artnumber_device_row">Код: <xsl:value-of select="code"/></div>
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -308,9 +305,10 @@
 						<div class="price__item_new">
 							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
 						</div>
-						<xsl:if test="price_old">
+						<xsl:if test="price_old and f:num(price_old) != f:num(price)">
+							<xsl:variable name="discount" select="round((f:num(price_old) - f:num(price)) div f:num(price_old) * 100) "/>
 							<div class="price__item_old">
-								<div class="price__tag">-10%</div>
+								<div class="price__tag">-<xsl:value-of select="$discount"/>%</div>
 								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 							</div>
 						</xsl:if>
@@ -329,7 +327,7 @@
 								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
+								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
 								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 							</xsl:if>
 						</form>
@@ -345,34 +343,34 @@
 				<div class="add">
 					<xsl:choose>
 						<xsl:when test="$is_fav">
-							<a class="add__item" href="{from_fav}">
-	              <img src="img/icon-device-01.png" alt="" />
+							<a class="add__item" href="{from_fav}" title="Удалить из избранного">
+								<img src="img/icon-device-02-del.png" alt="" />
 								<!-- <xsl:value-of select="$compare_remove_label"/> -->
-	            </a>
+							</a>
 						</xsl:when>
 						<xsl:otherwise>
 							<div id="fav_list_{@id}">
-								<a class="add__item" href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}">
-	                <img src="img/icon-device-01.png" alt="" />
+								<a class="add__item" href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}"  title="Добавить в избранное">
+									<img src="img/icon-device-02.png" alt="" />
 									<!-- <xsl:value-of select="$compare_add_label"/> -->
-	              </a>
+								</a>
 							</div>
 						</xsl:otherwise>
 					</xsl:choose>
 
 					<xsl:if test="not($is_compare)">
 						<div id="compare_list_{@id}">
-							<a class="add__item" href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}">
-	              <img src="img/icon-device-02.png" alt="" />
+							<a class="add__item" href="{to_compare}" ajax="true" ajax-loader-id="compare_list_{@id}" title="Добавить в сравнение">
+								<img src="img/icon-device-01.png" alt="" />
 								<!-- <xsl:value-of select="$go_to_compare_label"/> -->
-	            </a>
+							</a>
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_compare">
-						<a class="add__item" href="{from_compare}">
-	            <img src="img/icon-device-02.png" alt="" />
+						<a class="add__item" href="{from_compare}" title="Удалить из сравнения">
+							<img src="img/icon-device-01-del.png" alt="" />
 							<!-- <xsl:value-of select="$compare_remove_label"/> -->
-	          </a>
+						</a>
 					</xsl:if>
 				</div>
 			</div>

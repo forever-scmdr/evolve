@@ -23,10 +23,16 @@
       <!-- избранное в списке товаров и на странице товара -->
 			<xsl:for-each select="$prod">
 				<div class="result" id="fav_list_{@id}">
-					<a href="{//page/fav_link}" class="add__item icon-link">
+					<!-- <a href="{//page/fav_link}" class="add__item icon-link">
 						<div class="icon"><img src="img/icon-star-active.svg" alt="" /></div>
-						<span>Избранное</span>
+						<span>Избранноеd</span>
+					</a> -->
+					<a href="{//page/fav_link}" class="add__item"  title="Перейти к избранному">
+						<img src="img/icon-device-02-active.png" alt="" />
 					</a>
+					<!-- <a class="add__item" href="{from_fav}">
+            <img src="img/icon-device-02-active.png" alt="" />1
+          </a> -->
 				</div>
 			</xsl:for-each>
 		</xsl:if>

@@ -27,7 +27,7 @@
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
-    <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
+		<xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
 	<xsl:variable name="has_currency_rates" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -139,31 +139,31 @@
 						</form>
 					</div>
 					<div class="header__mobile-icons header-mobile-icons">
-            <div class="header-mobile-icon">
-              <div class="header-mobile-icon__icon">
-                <img src="img/icon-cart.png" alt="" />
-              </div>
-              <!-- <div class="header-mobile-icon__label">2</div> -->
-              <a class="header-mobile__link" href="{page/cart_ajax_link}"></a>
-            </div>
 						<div class="header-mobile-icon">
-              <div class="header-mobile-icon__icon">
-                <img src="img/icon-phone.png" alt="" />
-              </div>
-              <a class="header-mobile__link" href="/kontakty"></a>
-            </div>
-            <div class="header-mobile-icon">
-              <div class="header-mobile-icon__icon">
-                <img src="img/icon-menu.png" alt="" />
-              </div>
-              <a class="header-mobile__link" href="javascript:showMobileMainMenu()"></a>
-            </div>
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-cart.png" alt="" />
+							</div>
+							<!-- <div class="header-mobile-icon__label">2</div> -->
+							<a class="header-mobile-icon__link" href="/cart"></a>
+						</div>
+						<div class="header-mobile-icon">
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-phone.png" alt="" />
+							</div>
+							<a class="header-mobile-icon__link" href="/kontakty"></a>
+						</div>
+						<div class="header-mobile-icon">
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-menu.png" alt="" />
+							</div>
+							<a class="header-mobile-icon__link" href="javascript:showMobileMainMenu()"></a>
+						</div>
 					</div>
 					<div class="header__icons header-icons">
-            <div class="header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
-            <div class="header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no"></div>
-            <div class="header-icon" id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no"></div>
-            <div class="header-icon" id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no"></div>
 					</div>
 				</div>
 			</div>
@@ -250,62 +250,72 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-user.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/login_link}" class="menu-content__link">Вход / регистрация</a>
+					</div>
+				</div>
+				<div class="menu-content__line"></div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-user.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/personal_link}" class="menu-content__link">Аккаунт</a>
+						<a href="{page/purchase_history_link}" class="menu-content__link">История заказов</a>
+						<a href="/logout.login?target=index" class="menu-content__link">Выход</a>
+					</div>
+				</div>
+				<div class="menu-content__line"></div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-catalog-dark.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a onclick="showMobileCatalogMenu(); return false" class="menu-content__link">Каталог товаров</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-cart.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/cart_link}" class="menu-content__link">Корзина</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-star.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/fav_link}" class="menu-content__link">Избранное</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-compare.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/compare_link}" class="menu-content__link">Сравнение</a>
+					</div>
+				</div>
+				<div class="menu-content__line"></div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<!-- <img src="img/icon-compare.png" alt=""/> -->
+					</div>
+					<div class="menu-content__links">
+						<xsl:for-each select="page/news">
+							<a href="{show_page}" class="menu-content__link"><xsl:value-of select="name"/></a>
+						</xsl:for-each>
+						<xsl:for-each select="page/custom_pages/custom_page">
+							<a href="{show_page}" class="menu-content__link"><xsl:value-of select="header"/></a>
+						</xsl:for-each>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script>
@@ -668,10 +678,10 @@
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
 						<xsl:if test="$has_quick_search">
-                        $("#q-ipt").keyup(function(){
+												$("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
-                        </xsl:if>
+												</xsl:if>
 					});
 
 

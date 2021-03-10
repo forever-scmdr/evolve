@@ -73,7 +73,7 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
+				<td><span><xsl:value-of select="$param/@caption"/></span></td>
 				<td><xsl:value-of select="$param"/></td>
 			</tr>
 		</xsl:if>
@@ -81,7 +81,7 @@
 
 	<xsl:template name="CONTENT">
 
-		<!-- <p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p> -->
+		<div class="artnumber artnumber_product">Код: <xsl:value-of select="$p/code"/></div>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 
@@ -129,37 +129,38 @@
 
 					<div class="buy">
 						<xsl:if test="$has_price">
-	            <div class="price price_product">
-	              <div class="price__item_new">
-	                <span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
-	              </div>
-								<xsl:if test="$p/price_old">
-		              <div class="price__item_old">
-		                <div class="price__tag">-10%</div>
-		                <span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
-		              </div>
+							<div class="price price_product">
+								<div class="price__item_new">
+									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
+								</div>
+								<xsl:if test="$p/price_old and f:num($p/price_old) != f:num($p/price)">
+									<xsl:variable name="discount" select="round((f:num($p/price_old) - f:num($p/price)) div f:num($p/price_old) * 100) "/>
+									<div class="price__item_old">
+										<div class="price__tag">-<xsl:value-of select="$discount"/>%</div>
+										<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
+									</div>
 								</xsl:if>
-	            </div>
-	            <!-- <div class="order order_product" id="cart_list_386380">
-	              <form action="" method="post" ajax="true" ajax-loader-id="">
-	                <input class="input input_qty" type="number" name="qty" value="1" min="0" />
-	                <button class="button button_device" type="submit">Заказать</button>
-	              </form>
-	            </div> -->
+							</div>
+							<!-- <div class="order order_product" id="cart_list_386380">
+								<form action="" method="post" ajax="true" ajax-loader-id="">
+									<input class="input input_qty" type="number" name="qty" value="1" min="0" />
+									<button class="button button_device" type="submit">Заказать</button>
+								</form>
+							</div> -->
 						</xsl:if>
 						<div class="order order_product" id="cart_list_{$p/@id}">
-              <form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-	                <input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
-	                <button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
+									<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
-	                <input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
-	                <button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
+									<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
-              </form>
-            </div>
-          </div>
+							</form>
+						</div>
+					</div>
 
 					<!-- цена -->
 					<!-- <xsl:if test="$has_price">
@@ -180,23 +181,23 @@
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
 						<div class="add add_product">
-              <div id="fav_list_{$p/@id}">
-                <a class="add__item" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-                  <img src="img/icon-device-01.png" alt="" />
+							<div id="fav_list_{$p/@id}">
+								<a class="add__item" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+									<img src="img/icon-device-02.png" alt="" />add
 									<!-- <span><xsl:value-of select="$compare_add_label"/></span> -->
-                </a>
-              </div>
-              <div id="compare_list_{$p/@id}">
-                <a class="add__item" href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-                  <img src="img/icon-device-02.png" alt="" />
+								</a>
+							</div>
+							<div id="compare_list_{$p/@id}">
+								<a class="add__item" href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+									<img src="img/icon-device-01.png" alt="" />add
 									<!-- <span><xsl:value-of select="$go_to_compare_label"/></span> -->
-                </a>
-              </div>
-            </div>
+								</a>
+							</div>
+						</div>
 						<a class="info-link" href="">
-              <img src="img/icon-info.png" alt="" />
-              <span>Оплата и доставка</span>
-            </a>
+							<img src="img/icon-info.png" alt="" />
+							<span>Оплата и доставка</span>
+						</a>
 						<!-- <div id="cart_list_{$p/@id}" class="order order_product">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
@@ -205,7 +206,7 @@
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
+											 value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
 									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 							</form>
@@ -235,7 +236,7 @@
 					-->
 
 					<!-- параметры -->
-					<table class="params">
+					<!-- <table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
@@ -246,7 +247,7 @@
 								<td><xsl:value-of select="$param"/></td>
 							</tr>
 						</xsl:for-each>
-					</table>
+					</table> -->
 				</xsl:if>
 
 				<!-- один клик и своя цена не сверстаны -->
