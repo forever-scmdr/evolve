@@ -160,14 +160,12 @@
 			</xsl:if>
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
-			<div style="display: none">
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="text_sm">в наличии</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="text_sm">под заказ</div>
-				</xsl:if>
-			</div>
+			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+				<div class="status__a">в наличии</div>
+			</xsl:if>
+			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+				<div class="status__na">под заказ: 3-7 дней</div>
+			</xsl:if>
 
 
 		</div>
@@ -266,17 +264,7 @@
 
 
 
-			<!-- stock status (not displayed, delete display: none to show) -->
-			<div style="display:none">
-				<div class="device__column" style="display: none">
-					<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-						<div class="">в наличии</div>
-					</xsl:if>
-					<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-						<div class="">под заказ</div>
-					</xsl:if>
-				</div>
-			</div>
+
 
 			<div class="device__column">
 
@@ -337,6 +325,14 @@
 					<div class="order device-order">
 						<a class="button" href="{show_product}">Подробнее</a>
 					</div>
+				</xsl:if>
+
+				<!-- stock status -->
+				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+					<div class="status__a">в наличии</div>
+				</xsl:if>
+				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+					<div class="status__na">под заказ: 3-7 дней</div>
 				</xsl:if>
 
 				<!-- device actions (compare and favourites) -->

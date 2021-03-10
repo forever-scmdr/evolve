@@ -178,23 +178,28 @@
 						</div>
 					</xsl:if> -->
 
+					<xsl:choose>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="status__a"> в наличии</div></xsl:when>
+						<xsl:otherwise><div class="status__na">под заказ: 3-7 дней</div></xsl:otherwise>
+					</xsl:choose>
+
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
 						<div class="add add_product">
 							<div id="fav_list_{$p/@id}">
 								<a class="add__item" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-									<img src="img/icon-device-02.png" alt="" />add
+									<img src="img/icon-device-02.png" alt="" />
 									<!-- <span><xsl:value-of select="$compare_add_label"/></span> -->
 								</a>
 							</div>
 							<div id="compare_list_{$p/@id}">
 								<a class="add__item" href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-									<img src="img/icon-device-01.png" alt="" />add
+									<img src="img/icon-device-01.png" alt="" />
 									<!-- <span><xsl:value-of select="$go_to_compare_label"/></span> -->
 								</a>
 							</div>
 						</div>
-						<a class="info-link" href="">
+						<a class="info-link" href="/oplata_i_dostavka/">
 							<img src="img/icon-info.png" alt="" />
 							<span>Оплата и доставка</span>
 						</a>
@@ -228,12 +233,9 @@
 					</div>
 					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 
-					<!--
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-					</xsl:choose>
-					-->
+
+
+
 
 					<!-- параметры -->
 					<!-- <table class="params">

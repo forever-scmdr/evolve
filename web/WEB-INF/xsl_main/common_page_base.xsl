@@ -250,24 +250,13 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<div class="menu-content__item">
-					<div class="menu-content__icon">
+				<div class="menu-content__item" id="personal_mobile">
+<!-- 					<div class="menu-content__icon">
 						<img src="img/icon-user.png" alt=""/>
 					</div>
 					<div class="menu-content__links">
 						<a href="{page/login_link}" class="menu-content__link">Вход / регистрация</a>
-					</div>
-				</div>
-				<div class="menu-content__line"></div>
-				<div class="menu-content__item">
-					<div class="menu-content__icon">
-						<img src="img/icon-user.png" alt=""/>
-					</div>
-					<div class="menu-content__links">
-						<a href="{page/personal_link}" class="menu-content__link">Аккаунт</a>
-						<a href="{page/purchase_history_link}" class="menu-content__link">История заказов</a>
-						<a href="/logout.login?target=index" class="menu-content__link">Выход</a>
-					</div>
+					</div> -->
 				</div>
 				<div class="menu-content__line"></div>
 				<div class="menu-content__item">
