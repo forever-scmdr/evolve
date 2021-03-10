@@ -344,7 +344,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					try {
 						product.clearValue(paramName);
 					}catch (NullPointerException e){
-						pushLog(paramName);
+						//pushLog(paramName);
 					}
 					if(paramName.equals(MAIN_PIC_PARAM)){
 						product.clearValue(SMALL_PIC_PARAM);
