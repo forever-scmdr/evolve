@@ -160,7 +160,12 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<a href="{page/feedback_form_link}" class="banner__link" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-feedback"></a>
+			<xsl:if test="not(link)">
+				<a href="{page/feedback_form_link}" class="banner__link" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-feedback"></a>
+			</xsl:if>
+			<xsl:if test="link">
+				<a href="{link}" class="banner__link"></a>
+			</xsl:if>
 		</div>
 	</xsl:template>
 
@@ -199,17 +204,17 @@
 		</section>
 		<section class="special-items">
 			<div class="container">
-				<div class="block-title">Хиты продаж</div>
-				<div class="special-items__devices slick-slider">
-					<xsl:apply-templates select="page/main_page/product[tag='Хит продаж']"/>
+				<div class="block-title">Акции</div>
+				<div class="special-items__devices slick-slider zu">
+					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
 				</div>
 			</div>
 		</section>
 		<section class="special-items">
 			<div class="container">
-				<div class="block-title">Акции</div>
-				<div class="special-items__devices slick-slider zu">
-					<xsl:apply-templates select="page/main_page/product[tag='Акция']"/>
+				<div class="block-title">Хиты продаж</div>
+				<div class="special-items__devices slick-slider">
+					<xsl:apply-templates select="page/main_page/product[tag='Хит продаж']"/>
 				</div>
 			</div>
 		</section>

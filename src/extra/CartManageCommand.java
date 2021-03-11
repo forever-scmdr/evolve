@@ -48,6 +48,14 @@ public class CartManageCommand extends BasicCartManageCommand {
 	}
 
 	@Override
+	protected double getMaxQty(Item product){
+		double max = super.getMaxQty(product);
+		max = max * product.getDoubleValue("pack_db",1) / product.getDoubleValue("pack", 1);
+		max = Math.round(max * 1000)/1000;
+		return max;
+	}
+
+	@Override
 	protected boolean validate() throws Exception {
 		Item form = getItemForm().getTransientSingleItem();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();

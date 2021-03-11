@@ -1112,7 +1112,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return loadByParamValue(itemName, paramName, Collections.singletonList(paramValue), status);
 	}
 	/**
-	 * Загрзуить один айтем по значению параметра, подразумевается, что значение этого параметра является уникальным
+	 * Загрзуить один случайный айтем по значению параметра
 	 * @param itemName
 	 * @param paramName
 	 * @param paramValue
@@ -1126,6 +1126,29 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			return null;
 		return items.get(0);
 	}
+
+
+	/**
+	 * Загрзуить один айтем по значению параметра, подразумевается, что значение этого параметра является уникальным.
+	 * Если значение не уникально, кидает исключение.
+	 * @param itemName
+	 * @param paramName
+	 * @param paramValue
+	 * @param status
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item loadUniqueItemByParamValue(String itemName, String paramName, String paramValue, Byte... status) throws Exception {
+		ArrayList<Item> items = loadByParamValue(itemName, paramName, paramValue, status);
+		if(items.size() > 0){
+			String message = String.format("There is more ten 1 \"%s\" item with %s = %s", itemName, paramName, paramValue);
+			throw new Exception(message);
+		}
+		if (items.size() == 0)
+			return null;
+		return items.get(0);
+	}
+
 	/**
 	 * Загрузить единственный айтем по названию.
 	 * Если айтем не найден - возвращается null

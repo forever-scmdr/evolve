@@ -250,7 +250,7 @@ public abstract class BasicCartManageCommand extends Command {
 				} catch (NumberFormatException e) { /**/ }
 				if (quantity > 0) {
 					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-					double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+					double maxQuantity = getMaxQty(product);
 					if (maxQuantity > 0)
 						quantity = maxQuantity > quantity ? quantity : maxQuantity;
 					bought.setValue(QTY_PARAM, quantity);
@@ -271,9 +271,9 @@ public abstract class BasicCartManageCommand extends Command {
 		if (boughtProduct == null) {
 			if (qty <= 0)
 				return;
-			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
 			Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+			double maxQuantity =  getMaxQty(product);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
@@ -296,12 +296,16 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().removeItems(bought.getId());
 				return;
 			}
-			double maxQuantity = boughtProduct.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity =  getMaxQty(boughtProduct);
 			if (maxQuantity > 0)
 				qty = maxQuantity > qty ? qty : maxQuantity;
 			bought.setValue(QTY_PARAM, qty);
 			getSessionMapper().saveTemporaryItem(bought);
 		}
+	}
+
+	protected double getMaxQty(Item product){
+		return product.getDoubleValue(QTY_PARAM, 1000000d);
 	}
 
 	/**
@@ -402,7 +406,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-			double maxQuantity = product.getDoubleValue(QTY_PARAM, 1000000d);
+			double maxQuantity = getMaxQty(product);
 			double quantity = bought.getDoubleValue(QTY_PARAM);
 			if (quantity <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);

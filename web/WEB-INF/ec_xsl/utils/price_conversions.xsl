@@ -30,6 +30,18 @@
         <xsl:sequence select="if($unit != '') then concat($q, $unit) else concat($q, 'шт')"/>
     </xsl:function>
 
+    <xsl:function name="f:qty">
+        <xsl:param name="qty" as="xs:string?"/>
+        <xsl:param name="pack_db" as="xs:string?"/>
+        <xsl:param name="pack" as="xs:string?"/>
+
+        <xsl:variable name="q" select="f:num($qty)"/>
+        <xsl:variable name="p1" select="if(f:num($pack_db) = 0) then 1 else f:num($pack_db)"/>
+        <xsl:variable name="p2" select="if(f:num($pack) = 0) then 1 else f:num($pack)"/>
+
+        <xsl:sequence select="$q * $p1 div $p2"/>
+    </xsl:function>
+
     <xsl:function name="f:num" as="xs:double">
         <xsl:param name="str" as="xs:string?"/>
         <xsl:sequence
