@@ -341,6 +341,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				if (StringUtils.isBlank(cellValue) && ifBlank == varValues.IGNORE) {
 									continue;
 				} else if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) {
+					if(paramName.equals(MAIN_PIC_PARAM)) continue;
 					try {
 						product.clearValue(paramName);
 					}catch (NullPointerException e){
@@ -348,9 +349,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					}
 					if(paramName.equals(MAIN_PIC_PARAM)){
 						product.clearValue(SMALL_PIC_PARAM);
-											}
+					}
 					continue;
-								}
+				}
 
 				ParameterDescription parameterDescription = PRODUCT_ITEM_TYPE.getParameter(paramName);
 				boolean isFile = parameterDescription.getType().isFile();
