@@ -585,15 +585,24 @@
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
 		<session>
-			<single item="cart">
-				<list item="bought">
-					<list item="product" tag="product"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent">
+							<link name="show_product" target="product" type="exclusive">
+								<var name="prod" ref="parent" style="translit"/>
+							</link>
+						</single>
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" ref="prod" style="translit"/>
+						</link>
+					</list>
 				</list>
 			</single>
 		</session>
-		<link name="confirm_link" target="cart_action" type="itemform">
-			<var name="action" value="confirm"/>
-		</link>
+<!--		<link name="confirm_link" target="cart_action" type="itemform">-->
+<!--			<var name="action" value="confirm"/>-->
+<!--		</link>-->
 		<include name="COMMON"/>
 	</page>
 

@@ -22,10 +22,7 @@
 
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
-		<div class="item-summ" style="padding-bottom: 20px;">
-			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
-		</div>
+
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">
 				<xsl:if test="$is_phys">
@@ -104,9 +101,9 @@
 			<div class="table-responsive">
 				<table>
 					<tr>
-						<th>
-							Код
-						</th>
+<!--						<th>-->
+<!--							Код-->
+<!--						</th>-->
 						<th>
 							Наименование
 						</th>
@@ -126,9 +123,9 @@
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
 						<tr>
-							<td>
-								<xsl:value-of select="product/code"/>
-							</td>
+<!--							<td>-->
+<!--								<xsl:value-of select="product/code"/>-->
+<!--							</td>-->
 							<td valign="top">
 								<strong><xsl:value-of select="product/name"/></strong>
 							</td>
@@ -148,6 +145,10 @@
 					</xsl:for-each>
 				</table>
 			</div>
+		</div>
+		<div class="item-summ" style="padding-bottom: 20px;">
+			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
 		</div>
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>

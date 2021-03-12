@@ -5,6 +5,9 @@
 
 	<xsl:variable name="title" select="'Список товаров'" />
 
+	<xsl:variable name="processed" select="f:num(page/cart/processed) = 1"/>
+	<xsl:variable name="h1" select="if($processed) then concat('Заявка №', page/cart/order_num) else 'Список товаров'"/>
+
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
@@ -13,11 +16,15 @@
 			</div>
 			<xsl:call-template name="PRINT"/>
 		</div>
-		<h1>Список товаров</h1>
+		<h1><xsl:value-of select="$h1"/></h1>
+
+		<xsl:if test="$processed">
+			<p>Заказ уже был успешно отправлен нашим менеджерам. С Вами свяжутся в ближайшее время для уточнения деталей.</p>
+		</xsl:if>
 
 		<div class="cart-container">
 			<xsl:choose>
-				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
+				<xsl:when test="page/cart/bought">
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
@@ -46,18 +53,27 @@
 								</div>
 								<div class="quantity">
 									<span>Кол-во</span>
-									<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									<xsl:if test="not($processed)">
+										<input type="number" value="{qty}" name="{input/qty/@input}" min="0"/>
+									</xsl:if>
+									<xsl:if test="$processed">
+										<xsl:value-of select="qty"/>
+									</xsl:if>
 								</div>
 								<!-- <div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div> -->
+								<xsl:if test="not($processed)">
 								<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
 							</xsl:if>
-							<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+							<xsl:if test="not($processed)">
+								<input type="submit" class="button" value="Пересчитать" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
+								<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+							</xsl:if>
 						</div>
 
 					</form>
