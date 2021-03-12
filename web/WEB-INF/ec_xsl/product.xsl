@@ -142,14 +142,15 @@
 				<xsl:if test="$has_lines">
 					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
 					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
-					<xsl:variable name="col_qty" select="count($param_names) + 5"/>
+					<!-- <xsl:variable name="col_qty" select="count($param_names) + 5"/> -->
+					<xsl:variable name="col_qty" select="5"/>
 					<div style="height: 340px; overflow-y: scroll; margin-bottom: 32px; padding-right: 16px;">
 					<div class="multi-device" style="grid-template-columns: repeat({$col_qty}, auto);">
 							<!-- <div>Артикул</div> -->
 							<div>Название</div>
-						<xsl:for-each select="$param_captions">
+						<!-- <xsl:for-each select="$param_captions">
 							<div><xsl:value-of select="." /></div>
-						</xsl:for-each>
+						</xsl:for-each> -->
 							<div>Цена с НДС</div>
 							<div>Ед. изм.</div>
 							<div>Доступность</div>
@@ -160,13 +161,13 @@
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 								<div><xsl:value-of select="name" /></div>
 								<!-- <div><xsl:value-of select="vendor_code" /></div> -->
-							<xsl:for-each select="$param_names">
+							<!-- <xsl:for-each select="$param_names">
 								<div><xsl:value-of select="$lp/params/param[@name = current()]" /></div>
-							</xsl:for-each>
+							</xsl:for-each> -->
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="f:pack(price_old, pack_db, pack)"/> руб.</div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="if (price) then f:pack(price, pack_db, pack) else '0'"/></div>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<div class="multi-device__price_new">по запросу</div>

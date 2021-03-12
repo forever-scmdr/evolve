@@ -42,10 +42,10 @@
 							<label>Ваше имя *:</label>
 							<input type="text" class="form-control" name="{$inp/name/@input}" value="{if($inp/name != '') then $inp/name else $phys_reg/name}" error="{$inp/name/@validation-error}"/>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="">Адрес:</label>
 							<input type="text" class="form-control" name="{$inp/address/@input}" value="{if($inp/address != '') then $inp/address else $phys_reg/address}" error="{$inp/address/@validation-error}"/>
-						</div>
+						</div> -->
 						<!-- <div class="form-group">
 							<label>Способ доставки <a href="">Подробнее об условиях доставки</a></label>
 							<select class="form-control" name="{$inp/ship_type/@input}" value="{$inp/ship_type}" error="{$inp/ship_type/@validation-error}">

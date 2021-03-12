@@ -88,7 +88,7 @@
 					<var name="action" value="add"/>
 					<var name="src_page" value="compare_ajax"/>
 				</link>
-				<single item="params"/>
+				<list item="params"/>
 			</list>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
@@ -600,9 +600,6 @@
 				</list>
 			</single>
 		</session>
-<!--		<link name="confirm_link" target="cart_action" type="itemform">-->
-<!--			<var name="action" value="confirm"/>-->
-<!--		</link>-->
 		<include name="COMMON"/>
 	</page>
 
