@@ -62,8 +62,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		add(TEXT_PICS_PARAM);
 		add("small_pic");
 		add("old_file");
-		add("vendor_code");
-		add("offer_id");
+		//add("vendor_code");
+		//add("offer_id");
 		add("extra_xml");
 		add("unit");
 	}};
