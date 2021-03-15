@@ -309,8 +309,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private void postProcessProduct(Item product){
 			String code = product.getStringValue(CODE_PARAM);
-			product.setValue(OFFER_ID_PARAM, product.getStringValue(OFFER_ID_PARAM, code));
-			product.setValue(VENDOR_CODE_PARAM, product.getStringValue(VENDOR_CODE_PARAM, code));
+			if(StringUtils.isBlank(product.getStringValue(OFFER_ID_PARAM))) {
+				product.setValue(OFFER_ID_PARAM, product.getStringValue(OFFER_ID_PARAM, code));
+			}
+			if(StringUtils.isBlank(product.getStringValue(VENDOR_CODE_PARAM))) {
+				product.setValue(VENDOR_CODE_PARAM, product.getStringValue(VENDOR_CODE_PARAM, code));
+			}
 			if(settings.get(WITH_FILES_VAR) == varValues.SEARCH_BY_CODE){
 										Path mainPicPath = picsFolder.resolve(code + ".jpg");
 										Path filesPath = picsFolder.resolve(code);
