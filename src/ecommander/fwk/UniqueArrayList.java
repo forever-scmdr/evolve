@@ -1,7 +1,6 @@
 package ecommander.fwk;
 
-import ecommander.model.Item;
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;

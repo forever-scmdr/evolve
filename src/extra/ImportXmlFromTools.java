@@ -1,6 +1,5 @@
 package extra;
 
-import com.uwyn.jhighlight.tools.ExceptionUtils;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.integration.CatalogConst;
@@ -13,6 +12,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.xml.sax.Attributes;
@@ -158,7 +158,7 @@ public class ImportXmlFromTools extends IntegrateBase implements CatalogConst {
 					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 					info1.increaseProcessed();
 				} catch (Exception e) {
-					info1.addError(ExceptionUtils.getExceptionStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
+					info1.addError(ExceptionUtils.getStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
 				}
 				isInsideOffer = false;
 				parameterReady = false;
