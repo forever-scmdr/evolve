@@ -504,7 +504,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 							product.setValue(paramName, mainPicPath.toFile());
 						}
 					} else if (StringUtils.isNotBlank(cellValue)) {
-						pushLog("No file: " + mainPicPath.toAbsolutePath());
+						//pushLog("No file: " + mainPicPath.toAbsolutePath());
 					}
 				} catch (Exception e) {
 					info.addError(e);
