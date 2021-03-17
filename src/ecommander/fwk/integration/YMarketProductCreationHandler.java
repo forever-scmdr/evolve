@@ -16,13 +16,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
+
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
 		SINGLE_PARAMS.add(PRICE_ELEMENT);
@@ -70,7 +70,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean getPrice = false;
 	private Assoc catalogLinkAssoc;
 
-	
+
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
@@ -225,68 +225,67 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 
 				boolean needSave = false;
-				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-				for (File galleryPic : galleryPics) {
-					if (!galleryPic.exists()) {
-						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
-					}
-				}
-				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				for (String picUrl : picUrls) {
-					try {
-						String fileName = Strings.getFileName(picUrl);
-						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							product.setValue(GALLERY_PARAM, new URL(picUrl));
-							needSave = true;
+
+				boolean skipFiles = true;
+				if (!skipFiles) {
+					ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+					for (File galleryPic : galleryPics) {
+						if (!galleryPic.exists()) {
+							product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 						}
-					} catch (Exception e) {
-						info.addError("Неверный формат картинки: " + picUrl, picUrl);
 					}
-				}
+					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+					for (String picUrl : picUrls) {
+						try {
+							String fileName = Strings.getFileName(picUrl);
+							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+								product.setValue(GALLERY_PARAM, new URL(picUrl));
+								needSave = true;
+							}
+						} catch (Exception e) {
+							info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						}
+					}
 
-				// Генерация маленького изображения
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
-				if (!noMainPic) {
-					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.exists()) {
-						product.clearValue(MAIN_PIC_PARAM);
-						noMainPic = true;
+					// Генерация маленького изображения
+					boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+					if (!noMainPic) {
+						File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+						if (!mainPic.exists()) {
+							product.clearValue(MAIN_PIC_PARAM);
+							noMainPic = true;
+						}
 					}
+					if (noMainPic && picUrls.size() > 0) {
+						if (picUrls.size() > 0) {
+							product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+						}
+						try {
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+						} catch (Exception e) {
+							info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						}
+						needSave = false;
+					}
+					if (needSave) {
+						try {
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+						} catch (Exception e) {
+							info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						}
+					}
+				}else{
+					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 				}
-				if (noMainPic && picUrls.size() > 0) {
-					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
-					}
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-					needSave = false;
-				}
-				if (needSave) {
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-				}
-
 				info.increaseProcessed();
 				isInsideOffer = false;
-			}
-
-			else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
@@ -303,7 +302,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(parameterReady)
+		if (parameterReady)
 			paramValue.append(ch, start, length);
 	}
 
