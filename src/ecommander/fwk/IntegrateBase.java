@@ -261,9 +261,14 @@ public abstract class IntegrateBase extends Command {
 
 	public IntegrateBase(Command outer) {
 		super(outer);
+		if(IntegrateBase.class.isAssignableFrom(outer.getClass())){
+			this.info = ((IntegrateBase)outer).getInfo();
+		}else {
+			info = new Info();
+		}
 	}
 
-	private Info getInfo() {
+	protected Info getInfo() {
 		if (info != null)
 			return info;
 		return newInfo();
