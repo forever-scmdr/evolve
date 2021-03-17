@@ -121,7 +121,7 @@
 				<xsl:for-each select="$common/topper/block">
 					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
+						<!-- <div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
 								<xsl:if test="$has_many_cities">
@@ -130,7 +130,7 @@
 									</div>
 								</xsl:if>
 							</a>
-						</div>
+						</div> -->
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
@@ -247,7 +247,7 @@
 			<div class="container">
 				<div class="main-menu__wrap wrap">
 					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
+						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-menu-catalog.png" alt="" /></div><span>Каталог товаров</span></a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
