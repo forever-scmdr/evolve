@@ -1692,6 +1692,7 @@
     <page name="create_excel_pricelist" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+			<var name="prod_params" value="yes"/>
             <var name="sec"/>
         </request>
         <command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
