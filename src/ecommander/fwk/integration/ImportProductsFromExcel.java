@@ -380,13 +380,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			varValues withPics = settings.get(WITH_FILES_VAR);
 			if (withPics != varValues.SEARCH_BY_CELL_VALUE) return;
 			//fast copy inside the site
-			value = (StringUtils.startsWith(value, getUrlBase())) ? value.replace(getUrlBase(), "") : value;
+			boolean fromSameDomain = StringUtils.startsWith(value, getUrlBase());
+			value = (fromSameDomain) ? value.replace(getUrlBase(), "") : value;
 			if (StringUtils.startsWith(value, "http://") || StringUtils.startsWith(value, "https://")) {
 				URL url = new URL(value);
 				product.setValue(paramName, url);
 			} else {
 				value = StringUtils.replaceChars(value, '\\', System.getProperty("file.separator").charAt(0));
-				Path picPath = picsFolder.resolve(value);
+				String contextPath = AppContext.getContextPath();
+				Path picPath = (fromSameDomain)? Paths.get(contextPath, value) : picsFolder.resolve(value);
+
 				if (picPath.toFile().isFile()) {
 					boolean needsSet = !paramName.equals(MAIN_PIC_PARAM);
 					if (!needsSet) {

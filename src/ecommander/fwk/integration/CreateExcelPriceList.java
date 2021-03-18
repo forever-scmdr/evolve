@@ -6,6 +6,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
+import ecommander.model.datatypes.DataType;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.FileOutputStream;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -74,6 +76,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private static final String SECTION_VAR = "sec";
 	private static final String PRICE_ONLY_VAR = "price_only";//sets all vars to write only prices. cancels all other settings
 	private static final String MANUALS_VAR = "manuals";
+	private static final String FULL_FILE_URL_VAR = "full_file_urls";
+
 	private static final String YES = "yes";
 	private static final String NO = "no";
 
@@ -85,12 +89,13 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private boolean writeLineProducts = true;
 	private boolean writeLineProductsHeader = true;
 	private boolean writeHierarchy = true;
+	private boolean writeFullFileURLs = true;
 	private boolean hasUnits = false;
 	private long secId = 0L;
 
 
 	//vars
-	private HashMap<String,String> paramCaptions = new HashMap();
+	private Map<String, String> paramCaptions = new HashMap();
 	private ArrayList<String> paramsOrder = new ArrayList<>();
 	private Collection<Item> extraPages = new ArrayList<>();
 
@@ -250,8 +255,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 
 		//Write aux params
-		row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
-		row.getCell(colIdx).setCellStyle(auxStyle);
+		//row.createCell(++colIdx).setCellValue(AUX_TYPE_FILE);
+		//row.getCell(colIdx).setCellStyle(auxStyle);
 		if(auxType.length > 0 && writeAuxParams){
 			ItemType aux = auxType[0];
 			paramCaptions = new HashMap<>();
@@ -400,11 +405,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						}
 						row = sh.createRow(++rowI);
 						cellStyle = chooseCellStyle(lineProduct);
-//						if(priceType == DataType.Type.DECIMAL || priceType == DataType.Type.CURRENCY || priceType == DataType.Type.CURRENCY_PRECISE) {
-//							price = lineProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO).doubleValue();
-//						}else{
-//							price = lineProduct.getDoubleValue(PRICE_PARAM,0d);
-//						}
 						priceValue = lineProduct.outputValue(PRICE_PARAM);//(price > 0.001) ? String.valueOf(price) : "";
 						qtyValue = lineProduct.outputValue(QTY_PARAM);//(lineProduct.getDoubleValue(QTY_PARAM) != null) ? String.valueOf(lineProduct.getDoubleValue(QTY_PARAM)) : "";
 						priceOldValue = lineProduct.outputValue(PRICE_OLD_PARAM);
@@ -412,7 +412,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
-						row.createCell(++colIdx).setCellValue("");
+						if (writeLineProductsHeader) {
+							row.createCell(++colIdx).setCellValue("");
+						}
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
@@ -471,9 +473,26 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		for (ParameterDescription param : productItemType.getParameterList()) {
 			String paramName = param.getName();
 			if (BUILT_IN_PARAMS.contains(paramName)) continue;
+
+			if (writeFullFileURLs && (param.getDataType().getType() == DataType.Type.FILE || param.getDataType().getType() == DataType.Type.PICTURE)) {
+				String filesUrlPath = AppContext.getFilesUrlPath(product.isFileProtected());
+				String urlBase = getUrlBase();
+				String folder = product.getRelativeFilesPath();
+
+				ArrayList<Object> pv = product.getValues(paramName);
+				ArrayList<Object> newVals = new ArrayList();
+				for (Object value : pv) {
+					value = urlBase + "/" + Paths.get(filesUrlPath, folder, value.toString());
+					newVals.add(StringUtils.replaceChars(value.toString(), '\\', '/'));
+				}
+				Object cellValue = (newVals.size() == 0) ? "" : newVals.size() == 1 ? newVals.get(0) : join(newVals);
+				row.createCell(++colIdx).setCellValue(cellValue.toString());
+
+			} else {
 			ArrayList<Object> pv = product.getValues(paramName);
 			String value = (pv.size() == 0)? "" : (pv.size() == 1)? pv.get(0).toString() : join(pv);
 			row.createCell(++colIdx).setCellValue(value);
+		}
 		}
 		return colIdx;
 	}
@@ -618,12 +637,14 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		String manualsVar = getVarSingleValue(MANUALS_VAR);
 		String lineProductsVar = getVarSingleValue(LINE_PRODUCTS_VAR);
 		String priceOnlyVar = getVarSingleValue(PRICE_ONLY_VAR);
+		String fullUrlsVar = getVarSingleValue(FULL_FILE_URL_VAR);
 
 		writeAllProductParams = (YES.equals(prodParamsVar)) || writeAllProductParams && !NO.equals(prodParamsVar);
 		writeAuxParams = (YES.equals(auxParamsVar)) || writeAuxParams && !NO.equals(auxParamsVar);
 		writeProducts = (YES.equals(productsVar)) || writeProducts && !NO.equals(productsVar);
 		writeManuals = (YES.equals(manualsVar)) || writeManuals && !NO.equals(manualsVar);
 		writeLineProducts = (YES.equals(lineProductsVar)) || writeLineProducts && !NO.equals(lineProductsVar);
+		writeFullFileURLs = (YES.equals(fullUrlsVar)) || writeFullFileURLs && !NO.equals(fullUrlsVar);
 
 		writeManuals = ItemTypeRegistry.getItemType(MANUAL_PARAM) != null && writeManuals;
 		hasUnits = ItemTypeRegistry.getItemType(PRODUCT_ITEM).getParameter("unit") != null;
