@@ -403,7 +403,9 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 						currencyID = lineProduct.outputValue(CURRENCY_ID_PARAM);
 
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(CODE_PARAM, ""));
+						if (writeLineProductsHeader) {
 							row.createCell(++colIdx).setCellValue("");
+						}
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
