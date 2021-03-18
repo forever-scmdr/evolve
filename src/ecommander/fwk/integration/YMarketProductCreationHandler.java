@@ -226,58 +226,54 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				boolean needSave = false;
 
-				boolean skipFiles = true;
-				if (!skipFiles) {
-					ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					for (File galleryPic : galleryPics) {
-						if (!galleryPic.exists()) {
-							product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
-						}
+				boolean skipFiles = false;
+				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+				for (File galleryPic : galleryPics) {
+					if (!galleryPic.exists()) {
+						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 					}
-					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-					for (String picUrl : picUrls) {
-						try {
-							String fileName = Strings.getFileName(picUrl);
-							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-								product.setValue(GALLERY_PARAM, new URL(picUrl));
-								needSave = true;
-							}
-						} catch (Exception e) {
-							info.addError("Неверный формат картинки: " + picUrl, picUrl);
+				}
+				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+				for (String picUrl : picUrls) {
+					try {
+						String fileName = Strings.getFileName(picUrl);
+						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+							product.setValue(GALLERY_PARAM, new URL(picUrl));
+							needSave = true;
 						}
+					} catch (Exception e) {
+						info.addError("Неверный формат картинки: " + picUrl, picUrl);
 					}
+				}
 
-					// Генерация маленького изображения
-					boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
-					if (!noMainPic) {
-						File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-						if (!mainPic.exists()) {
-							product.clearValue(MAIN_PIC_PARAM);
-							noMainPic = true;
-						}
+				// Генерация маленького изображения
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+				if (!noMainPic) {
+					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+					if (!mainPic.exists()) {
+						product.clearValue(MAIN_PIC_PARAM);
+						noMainPic = true;
 					}
-					if (noMainPic && picUrls.size() > 0) {
-						if (picUrls.size() > 0) {
-							product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
-						}
-						try {
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-						} catch (Exception e) {
-							info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-						}
-						needSave = false;
+				}
+				if (noMainPic && picUrls.size() > 0) {
+					if (picUrls.size() > 0) {
+						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
 					}
-					if (needSave) {
-						try {
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						} catch (Exception e) {
-							info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-						}
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
-				}else{
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					needSave = false;
+				}
+				if (needSave) {
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+					}
 				}
 				info.increaseProcessed();
 				isInsideOffer = false;
