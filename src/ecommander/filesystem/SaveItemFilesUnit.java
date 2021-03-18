@@ -11,6 +11,7 @@ import ecommander.model.datatypes.FileDataType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -157,6 +158,11 @@ public class SaveItemFilesUnit extends SingleItemDirectoryFileUnit {
 					}
 				}
 			}
+		}
+
+		//Выставить права если ситема Линукс
+		if(SystemUtils.IS_OS_LINUX){
+			Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", fileDirectoryName});
 		}
 	}
 	/**
