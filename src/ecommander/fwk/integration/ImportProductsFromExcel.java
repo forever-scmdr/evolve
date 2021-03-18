@@ -2,7 +2,6 @@ package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ExcelPriceList;
-import ecommander.fwk.ItemUtils;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
@@ -97,7 +96,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			return false;
 		}
 		//load catalog
-		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		//catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 
 		//load common product parameters
 		for (ParameterDescription param : PRODUCT_ITEM_TYPE.getParameterList()) {
@@ -379,15 +379,20 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			varValues withPics = settings.get(WITH_FILES_VAR);
 			if (withPics != varValues.SEARCH_BY_CELL_VALUE) return;
 			//fast copy inside the site
-			value = (StringUtils.startsWith(value, getUrlBase())) ? value.replace(getUrlBase(), "") : value;
+			boolean fromSameDomain = StringUtils.startsWith(value, getUrlBase());
+			value = (fromSameDomain) ? value.replace(getUrlBase(), "") : value;
 			if (StringUtils.startsWith(value, "http://") || StringUtils.startsWith(value, "https://")) {
 				URL url = new URL(value);
 				product.setValue(paramName, url);
+
 			} else {
 				value = StringUtils.replaceChars(value, '\\', System.getProperty("file.separator").charAt(0));
-				Path picPath = picsFolder.resolve(value);
+				String contextPath = AppContext.getContextPath();
+				Path picPath = (fromSameDomain)? Paths.get(contextPath, value) : picsFolder.resolve(value);
+
 				if (picPath.toFile().isFile()) {
 					boolean needsSet = !paramName.equals(MAIN_PIC_PARAM);
+
 					if (!needsSet) {
 						File oldMainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 						if (!oldMainPic.isFile()) {
