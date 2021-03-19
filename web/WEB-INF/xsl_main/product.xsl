@@ -129,16 +129,16 @@
 					<!-- цена -->
 					<xsl:if test="$has_price">
 						<div class="price price_product">
-							<xsl:if test="$p/price_old">
-								<div class="price__item price__item_old">
-									<span class="price__label">Цена</span>
-									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
-								</div>
-							</xsl:if>
 							<div class="price__item price__item_new">
 								<span class="price__label">Цена<xsl:if test="$p/price_old"> со скидкой</xsl:if></span>
 								<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
 							</div>
+							<xsl:if test="$p/price_old">
+								<div class="price__item price__item_old">
+									<span class="price__label">Старая цена</span>
+									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
+								</div>
+							</xsl:if>
 						</div>
 					</xsl:if>
 
@@ -149,7 +149,7 @@
 								<xsl:if test="$has_price">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
 										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<button class="button button_device button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
@@ -183,7 +183,7 @@
 					-->
 
 					<!-- параметры -->
-					<table class="params">
+					<!-- <table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
@@ -194,8 +194,11 @@
 								<td><xsl:value-of select="$param"/></td>
 							</tr>
 						</xsl:for-each>
-					</table>
+					</table> -->
 				</xsl:if>
+				<div class="product-common">
+					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+				</div>
 
 				<!-- один клик и своя цена не сверстаны -->
 				<xsl:if test="$is_one_click or $is_my_price">
@@ -267,28 +270,6 @@
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div>
 
-				<div class="product-icons">
-					<xsl:if test="$p/files">
-						<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
-							<div class="icon icon_size_lg">
-								<img src="img/product-icon-02.png" alt="" />
-							</div>
-							<span class="icon-link__item">скачать</span>
-						</a>
-					</xsl:if>
-					<a href="" class="icon-link product-icons__item">
-						<div class="icon icon_size_lg">
-							<img src="img/product-icon-02.png" alt="" />
-						</div>
-						<span class="icon-link__item">поделиться</span>
-					</a>
-					<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" target="_blank">
-						<div class="icon icon_size_lg">
-							<img src="img/product-icon-02.png" alt="" />
-						</div>
-						<span class="icon-link__item">распечатать</span>
-					</a>
-				</div>
 
 			</div>
 		</div>
@@ -331,10 +312,6 @@
 				</div>
 			</div>
 
-			<hr/>
-			<div class="extra-info extra-info_product">
-				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
-			</div>
 		</div>
 
 		<xsl:if test="page/grouped">

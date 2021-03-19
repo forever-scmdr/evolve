@@ -232,7 +232,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<div class="device__code">Артикул: <xsl:value-of select="code"/></div>
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -264,37 +264,34 @@
 
 			</div>
 
-			<!-- device price -->
-			<div class="device__column">
-				<div class="price device__price">
-					<xsl:if test="$has_price">
-						<xsl:if test="price_old">
-							<div class="price__item_old">
-								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-							</div>
-						</xsl:if>
-						<div class="price__item_new">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-						</div>
-					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<div></div>
-					</xsl:if>
-				</div>
-			</div>
 
 			<!-- stock status (not displayed, delete display: none to show) -->
-			<div class="device__column" style="display: none">
+			<!-- <div class="device__column" style="display: none">
 				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="">в наличии</div>
 				</xsl:if>
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 					<div class="">под заказ</div>
 				</xsl:if>
-			</div>
+			</div> -->
 
 			<div class="device__column">
-
+				<!-- device-price -->
+				<div class="price device__price">
+					<xsl:if test="$has_price">
+						<div class="price__item_new">
+							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</div>
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div></div>
+					</xsl:if>
+				</div>
 				<!-- device order -->
 				<xsl:if test="not($has_lines)">
 					<div class="order device-order" id="cart_list_{@id}">

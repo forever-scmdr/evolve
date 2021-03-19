@@ -178,7 +178,7 @@
 			<div class="filter filter_section">
 				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
 					<div class="icon">
-						<img src="img/icon-gear.svg" alt="" />
+						<img src="img/icon-toggle-filters.png" alt="" />
 					</div>
 					<span class="icon-link__item">Подбор по параметрам</span>
 				</a>
@@ -208,8 +208,8 @@
 							</xsl:if>
 						</xsl:for-each>
 						<div class="filter__actions">
-							<button class="button button_2" type="submit">Показать результат</button>
-							<button class="button button_2" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить</button>
+							<button class="button" type="submit">Показать результат</button>
+							<button class="button" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить</button>
 						</div>
 					</div>
 				</form>
