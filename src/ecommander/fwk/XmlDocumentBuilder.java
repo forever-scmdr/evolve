@@ -107,6 +107,23 @@ public class XmlDocumentBuilder {
 		xml.append("/>");
 		return this;
 	}
+
+	/**
+	 * добавляет тэг без вложенных тегов и его атрибуты
+	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 * @param tagName
+	 * @param text
+	 * @param attributes
+	 */
+	public final XmlDocumentBuilder addElement(String tagName, Object text, Object... attributes){
+		if(text == null || StringUtils.isBlank(text.toString())){
+			return addEmptyElement(tagName, attributes);
+		}
+		String txt = StringEscapeUtils.escapeXml10(text.toString());
+		startElement(tagName, attributes).addText(txt);
+		return endElement();
+	}
+
 	/**
 	 * Добавить комментарий, который расположен на отдельной строке
 	 * Знаки начала и конца комментария надо указвать явно

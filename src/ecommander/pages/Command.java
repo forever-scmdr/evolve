@@ -6,7 +6,6 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -39,7 +38,6 @@ public abstract class Command implements AutoCloseable {
 		this.transaction = outer.transaction;
 		this.sessionMapper = outer.sessionMapper;
 	}
-
 
 	void init(ExecutablePagePE page) {
 		this.page = page;
@@ -379,5 +377,13 @@ public abstract class Command implements AutoCloseable {
 			return false;
 		}
 		return true;
+	}
+
+	public LinkPE getRequestLink() {
+		return page.getRequestLink();
+	}
+
+	public Collection<Variable> getAllVariables(){
+		return page.getAllVariables();
 	}
 }
