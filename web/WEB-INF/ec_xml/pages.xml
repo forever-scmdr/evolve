@@ -1734,4 +1734,10 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+	<page name="arrow_search">
+		<command class="extra.ArrowSearchCommand">
+			<result name="success" type="xml"/>
+		</command>
+	</page>
 </site>

@@ -823,6 +823,7 @@
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
+				<script>insertAjax('https://www.verical.com/pd/honeywell-photodiode-SMD2420-001-1995948')</script>
 			</head>
 			<body>
 				<xsl:if test="$seo/body_class">
