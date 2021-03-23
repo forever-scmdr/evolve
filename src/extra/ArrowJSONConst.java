@@ -29,7 +29,7 @@ public interface ArrowJSONConst {
 	String PRICE = "price";
 	String MIN_QTY = "minQty";
 	String MAX_QTY = "fohQty";
-	String IN_STOCK = "inStock";
+	String IN_STOCK = "availabilityMessage";
 	String COUNTRY = "countryOfOrigin";
 	String SEARCH_SUCCESS = "success";
 	String CODE = "sourcePartId";

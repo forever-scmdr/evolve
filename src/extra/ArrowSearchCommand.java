@@ -55,7 +55,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 			JSONObject d = data.getJSONObject(i);
 			JSONArray products = d.getJSONArray(PRODUCTS_ARR);
 			for(int j = 0; j < products.length(); j++){
-				JSONObject product = products.getJSONObject(i);
+				JSONObject product = products.getJSONObject(j);
 				addProduct(xml, product);
 			}
 		}
@@ -90,7 +90,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 			if(source.getString(STORE_ID).equals(VERICAL_VAL)){
 				JSONArray offers = source.getJSONArray(OFFERS);
 				for(int j = 0; j < offers.length(); j++){
-					processOffer(xml, offers.getJSONObject(i));
+					processOffer(xml, offers.getJSONObject(j));
 				}
 			}
 
@@ -107,19 +107,19 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		xml.startElement("offer");
 		String code = "vrc_" + offer.getString(CODE);
 		xml.addElement("code", code);
-		xml.addElement("country", COUNTRY);
+		xml.addElement("country", offer.getString(COUNTRY));
 		JSONObject priceLv1 = offer.getJSONObject(PRICE_LV1);
-		JSONArray priceLv2 = offer.getJSONArray(PRICE_LV2_ARR);
+		JSONArray priceLv2 = priceLv1.getJSONArray(PRICE_LV2_ARR);
 		for(int i = 0; i < priceLv2.length(); i++){
 			JSONObject price = priceLv2.getJSONObject(i);
 			xml.addElement("price", price.getDouble(PRICE));
-			xml.addElement("min_qty", MIN_QTY);
+			xml.addElement("min_qty", price.getInt(MIN_QTY));
 		}
 		JSONArray availability = offer.getJSONArray(AVAILABILITY_ARR);
 		for(int i = 0; i < availability.length(); i++){
 			JSONObject av = availability.getJSONObject(i);
 			xml.addElement("qty", av.getInt(MAX_QTY));
-			xml.addElement("available", av.getBoolean(IN_STOCK)? 1 : 0);
+			xml.addElement("available", av.getString(IN_STOCK).equals("In Stock")? 1 : 0);
 		}
 		xml.endElement();
 	}
