@@ -1736,6 +1736,9 @@
 	</page>
 
 	<page name="arrow_search">
+		<request>
+			<var name="query" value="smd"/>
+		</request>
 		<command class="extra.ArrowSearchCommand">
 			<result name="success" type="xml"/>
 		</command>

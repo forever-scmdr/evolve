@@ -7,10 +7,16 @@ import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.pages.var.Variable;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 /**
@@ -23,23 +29,45 @@ import java.nio.file.Paths;
 
 public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
+	private static final String LOGIN = "chipelectronics1";
+	private static final String KEY = "65647ca3414db6b933a1dbdc14cf51e1ee9ad2f85730db19bdc1760b7ea4c651";
+	private static final String REQUEST_URL = "http://api.arrow.com/itemservice/v4/en/search/token";
 
 	@Override
 	public ResultPE execute() throws Exception {
-		JSONObject searchResult = loadJsonFromFile();
+		String query = getVarSingleValue("query");
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDoc();
 		xml.startElement("page", "name", getPageName());
-
 		addPageBasics(xml);
-		boolean hasProducts = addGeneralResponseInfo(xml, searchResult);
-		if (hasProducts) {
-			addProducts(xml, searchResult);
+		if(StringUtils.isNotBlank(query)) {
+			JSONObject searchResult = loadFromArrowApi(query);
+			if(searchResult != null) {
+				boolean hasProducts = addGeneralResponseInfo(xml, searchResult);
+				if (hasProducts) {
+					addProducts(xml, searchResult);
+				}
+			}
 		}
 		xml.endElement();
 
 		ResultPE result = getResult("success");
 		result.setValue(xml.toString());
 		return result;
+	}
+
+	private JSONObject loadFromArrowApi(String searchRequest) throws Exception {
+		String login = URLEncoder.encode(LOGIN, "UTF-8");
+		String query = URLEncoder.encode(searchRequest, "UTF-8");
+		URL ArrowAPIUrl = new URL(REQUEST_URL + "?login=" + login + "&apikey=" + KEY + "&search_token=" + query);
+		InputStreamReader is = new InputStreamReader(ArrowAPIUrl.openStream(), Charset.forName("UTF-8"));
+		try(BufferedReader reader = new BufferedReader(is)){
+			StringBuilder sb = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null){
+				sb.append(line);
+			}
+			return new JSONObject(sb.toString());
+		}
 	}
 
 	/**
