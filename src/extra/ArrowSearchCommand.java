@@ -158,6 +158,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		}catch (Exception e){}
 		xml.addElement("country", country);
 		xml.addElement("shipment", getShipment(offer));
+		xml.addElement("step", offer.getInt(STEP));
 		JSONObject priceLv1 = offer.getJSONObject(PRICE_LV1);
 		JSONArray priceLv2 = priceLv1.getJSONArray(PRICE_LV2_ARR);
 		for(int i = 0; i < priceLv2.length(); i++){

@@ -42,4 +42,5 @@ public interface ArrowJSONConst {
 	String IMG_SMALL_VAL = "image_small";
 	String IMG_VAL = "image_large";
 	String PARAMS_VAL = "cloud_part_detail";
+	String STEP = "packSize";
 }

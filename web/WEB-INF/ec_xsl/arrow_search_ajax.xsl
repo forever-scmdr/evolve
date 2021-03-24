@@ -89,7 +89,44 @@
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="offer" />
 		<xsl:param name="product" />
-		CART_BUTTON
+
+		<xsl:variable name="code" select="$offer/code"/>
+		<xsl:variable name="map" select="string-join($offer/concat(min_qty, ':', price), ';')"/>
+
+		<div class="device__order">
+			<div id="cart_list_{$code}">
+				<form action="cart_action/?action=addArrowToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
+					<input type="hidden" value="{$product/code}" name="vendor_code"/>
+					<input type="hidden" value="{$offer/available}" name="available"/>
+					<input type="hidden" value="arrow" name="aux"/>
+
+					<input type="hidden" value="{$product/name}" name="name"/>
+					<input type="hidden" value="шт" name="unit"/>
+					<input type="hidden" value="{$offer/step}" name="upack"/>
+
+					<input type="hidden" value="{$offer/qty}" name="max"/>
+					<input type="number" class="text-input" name="qty" value="{$offer/min_qty[1]}" min="{$offer/min_qty[1]}"/>
+
+					<xsl:if test="f:num(@quant) != 0">
+						<input type="hidden" name="price_map" value="{$map}"/>
+					</xsl:if>
+
+					<input type="hidden" name="img" value="{$product/main_pic}"/>
+					<input type="hidden" name="delivery_time" value="7-10 дней"/>
+					<input type="submit" class="button" value="В корзину"/>
+				</form>
+			</div>
+		</div>
+		<xsl:if test="f:num($offer/available) = 1">
+			<div class="device__in-stock">
+				<i class="fas fa-check"></i>поставка в течение 7-10 дней
+			</div>
+		</xsl:if>
+		<xsl:if test="f:num($offer/available) != 1">
+			<div class="device__in-stock device__in-stock_no">
+				<i class="far fa-clock"></i>под заказ
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
