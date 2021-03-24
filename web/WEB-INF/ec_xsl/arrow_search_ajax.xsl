@@ -44,7 +44,64 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-	<xsl:template match="product" mode="lines">PRODUCT_L<br/></xsl:template>
+
+	<xsl:template match="product" mode="lines">
+		<div class="device device_row">
+			<xsl:if test="main_pic != ''">
+				<a class="device__image device_row__image" style="background-image: url('{main_pic}');">&nbsp;</a>
+			</xsl:if>
+			<xsl:if test="not(main_pic != '')">
+				<a class="device__image device_row__image" style="background-image: url('img/no_image.png');">&nbsp;</a>
+			</xsl:if>
+			<div class="device__info">
+				<a class="device__title">
+					<xsl:value-of select="name"/>
+				</a>
+				<div class="device__description">
+					<p class="basics">
+						<span><b>Код:</b>&#160;<xsl:value-of select="code"/></span><br/>
+						<span><b>Страна производства:</b>&#160;<xsl:value-of select="country" /></span>
+						<xsl:if test="doc">
+							<br/><span><b>Документация:</b>&#160;<a href="{doc}" target="_blank">файл PDF</a></span>
+						</xsl:if>
+					</p>
+				</div>
+			</div>
+			<div class="device__article-number"><xsl:value-of select="code"/></div>
+			<div class="device__actions device_row__actions"></div>
+			<div class="device__price device_row__price">
+				<div class="price_normal">
+					<xsl:variable name="price" select="string(min(current()//price))"/>
+					<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+				</div>
+				<div class="nds">*цена c НДС</div>
+				<xsl:if test="count(offer) = 1 and count(offer/price) &gt; 1">
+					<xsl:variable name="prc" select="offer/price" />
+					<xsl:variable name="p" select="position()"/>
+					<div class="manyPrice">
+						<xsl:for-each select="offer/min_qty">
+							<xsl:variable name="p" select="position()"/>
+							<div class="manyPrice__item">
+								<div class="manyPrice__qty"><xsl:value-of select="." />+</div>
+								<div class="manyPrice__price"><xsl:value-of select="f:price_arrow($prc[$p])" /></div>
+							</div>
+						</xsl:for-each>
+					</div>
+				</xsl:if>
+			</div>
+			<div class="device__order device_row__order">
+				<xsl:if test="count(offer) = 1">
+					<xsl:call-template name="CART_BUTTON">
+						<xsl:with-param name="offer" select="offer"/>
+						<xsl:with-param name="product" select="current()"/>
+					</xsl:call-template>
+				</xsl:if>
+				<xsl:if test="count(offer) &gt; 1">
+					<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
+				</xsl:if>
+			</div>
+		</div>
+	</xsl:template>
 
 
 	<xsl:template match="product" mode="offers_popup">

@@ -150,11 +150,11 @@
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>
-						<input type="hidden" name="delivery_time" value="{if($available) then '7-10 дней' else ' '}"/>
+						<input type="hidden" name="delivery_time" value="{if($available) then '7-14 дней' else ' '}"/>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
 					<xsl:if test="$available">
-<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-10 дней</div>
+<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-14 дней</div>
 					</xsl:if>
 					<xsl:if test="not($available)">
 						<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
@@ -220,11 +220,11 @@
 						<xsl:for-each select="prices">
 							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>
 						</xsl:for-each>
-						<input type="hidden" name="delivery_time" value="{if($available) then '7-10 дней' else ' '}"/>
+						<input type="hidden" name="delivery_time" value="{if($available) then '7-14 дней' else ' '}"/>
 						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 					</form>
 					<xsl:if test="$available">
-						<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-10 дней</div>
+						<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение 7-14 дней</div>
 					</xsl:if>
 					<xsl:if test="not($available)">
 						<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>

@@ -20,6 +20,14 @@
 		</div>
 		<h1 class="page-title">Спасибо за заявку!</h1>
 
+		<div class="page-content m-t">
+			<p>
+				По вопросам связанным с обработкой заказов обращаться по телефону : +375 29 5027139 или +375 17 2699236
+			</p>
+			<p>
+				После уведомления о готовности заказа Вы можете его получить с 10.00 до 16.30 по адресу: г. Минск, <a href="https://yandex.by/maps/-/CGGd5APU" target="_blank">пр-т Партизанский, 14</a>, 5 этаж, каб 514.
+			</p> 
+		</div>
 
 		<h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
@@ -125,10 +133,10 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
-						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
+						<xsl:variable name="product" select="product"/>
 						<tr>
 							<td>
-								<xsl:value-of select="$product/code"/>
+								<xsl:value-of select="code"/>
 							</td>
 							<td valign="top">
 								<strong><xsl:value-of select="$product/name"/></strong>

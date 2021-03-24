@@ -60,8 +60,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 			String name = getVarSingleValue(NAME_PARAM);
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
-			String available = getVarSingleValue(NOT_AVAILABLE);
-			available = (StringUtils.isBlank(available))? "0" :  String.valueOf(Integer.parseInt(available)%2);
+			String available = getVarSingleValue("available");
+			available = (StringUtils.isBlank(available))? "0" :  String.valueOf((Integer.parseInt(available)+1)%2);
 			bought.setValueUI(NOT_AVAILABLE, available);
 			String days = getVarSingleValue("delivery_time");
 			if(StringUtils.isNotBlank(days))
@@ -71,7 +71,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			getSessionMapper().saveTemporaryItem(bought);
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
-			product.setValueUI(CODE_PARAM, code);
+			product.setValueUI(CODE_PARAM, getVarSingleValue("vendor_code"));
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));

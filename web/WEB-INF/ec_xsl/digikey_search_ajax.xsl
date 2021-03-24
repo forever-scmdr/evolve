@@ -117,7 +117,7 @@
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="hidden" name="delivery_time" value="7-10 дней"/>
+							<input type="hidden" name="delivery_time" value="7-14 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -138,7 +138,7 @@
 				</div>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-10 дней</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-14 дней</div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
@@ -225,7 +225,7 @@
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
-							<input type="hidden" name="delivery_time" value="7-10 дней"/>
+							<input type="hidden" name="delivery_time" value="7-14 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
@@ -247,7 +247,7 @@
 				</div>
 				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-10 дней
+						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-14 дней
 					</div>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">

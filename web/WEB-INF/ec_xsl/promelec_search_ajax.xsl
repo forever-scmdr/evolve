@@ -111,10 +111,12 @@
 				</div>
 				<div class="nds">*цена c НДС</div>
 				<xsl:if test="not(vendors/vendor)">
-					<div class="manyPrice__item">
+					<div class="manyPrice">
 						<xsl:for-each select="$pricebreaks/break">
-							<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
-							<div class="manyPrice__price"><xsl:value-of select="f:price_promelec(@price)" /></div>
+							<div class="manyPrice__item">
+								<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
+								<div class="manyPrice__price"><xsl:value-of select="f:price_promelec(@price)" /></div>
+							</div>
 						</xsl:for-each>
 					</div>
 				</xsl:if>

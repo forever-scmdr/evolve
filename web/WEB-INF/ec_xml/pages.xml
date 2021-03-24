@@ -687,15 +687,6 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<page name="test_cart">
-		<session>
-			<single item="cart">
-				<list item="bought">
-					<list item="abstract_product" id="product" tag="product" />
-				</list>
-			</single>
-		</session>
-	</page>
 
 
 	<page name="cart_ajax" template="cart_ajax">
@@ -827,19 +818,21 @@
 		</new>
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent">
+							<link name="show_product" target="product">
+								<var name="prod" ref="parent" style="key"/>
+							</link>
+						</single>
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
 			</single>
 		</session>
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
+
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
@@ -847,7 +840,33 @@
 	</page>
 
 
-	<page name="order_email" template="order_email">
+<!-- 	<page name="order_email" template="shop_email">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<single item="catalog"/>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<single item="common"/>
+	</page> -->
+
+	<page name="customer_email" template="order_email">
 		<request>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
