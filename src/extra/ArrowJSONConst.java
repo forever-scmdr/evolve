@@ -9,10 +9,9 @@ public interface ArrowJSONConst {
 	String ROOT = "itemserviceresult";
 	String RESPONSE_ARR = "transactionArea";
 	String RESPONSE = "response";
-	String ERROR_CODE = "returnCode";
 	String ERROR_MSG = "returnMsg";
 	String RESULTS_ARR = "data";
-	String STORES_ARR = "resources";
+	String STORES_ARR = "webSites";
 	String PRODUCTS_ARR = "PartList";
 	String ID = "itemId";
 	String VENDOR_CODE = "partNum";
@@ -22,7 +21,7 @@ public interface ArrowJSONConst {
 	String SOURCES_ARR = "sources";
 	String CURRENCY = "currency";
 	String STORE_ID = "sourceCd";
-	String VERICAL_VAL = "VERICAL";
+	String VERICAL_VAL = "Verical.com";
 	String OFFERS = "sourceParts";
 	String PRICE_LV1 = "Prices";
 	String PRICE_LV2_ARR = "resaleList";
@@ -34,6 +33,7 @@ public interface ArrowJSONConst {
 	String SEARCH_SUCCESS = "success";
 	String CODE = "sourcePartId";
 	String AVAILABILITY_ARR = "Availability";
+	String SHIPMENT = "shipsIn";
 
 	String URI_ARR = "resources";
 	String URI_TYPE = "type";
@@ -41,5 +41,5 @@ public interface ArrowJSONConst {
 	String PDF_VAL = "datasheet";
 	String IMG_SMALL_VAL = "image_small";
 	String IMG_VAL = "image_large";
-	String PARAMS_VAL = "api_part_detail";
+	String PARAMS_VAL = "cloud_part_detail";
 }

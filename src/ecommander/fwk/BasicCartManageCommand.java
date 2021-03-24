@@ -184,7 +184,7 @@ public abstract class BasicCartManageCommand extends Command {
 			shopTemplate = null;
 		}
 		if (shopTemplate == null) {
-			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
+			shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
 			shopTemplate = getExecutablePage(shopEmailLink.serialize());
 		}
 		ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();

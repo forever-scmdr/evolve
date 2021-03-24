@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="utils/price_conversions.xsl"/>
+
+	<xsl:variable name="curr" select="page/variables/currency"/>
+	<xsl:variable name="in_stock" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
+	<xsl:variable name="view" select="page/variables/view"/>
+
+
+	<xsl:template match="product">
+		<div class="device items-catalog__device">
+			<xsl:if test="main_pic != ''">
+				<a class="device__image" style="background-image: url('{main_pic}');"></a>
+			</xsl:if>
+			<xsl:if test="not(main_pic != '')">
+				<a class="device__image" style="background-image: url('img/no_image.png');"></a>
+			</xsl:if>
+			<a class="device__title" >
+				<xsl:value-of select="name"/>
+			</a>
+			<div class="device__article-number">
+				<xsl:value-of select="code"/>
+			</div>
+			<xsl:if test="doc != ''">
+				<div class="device__article-number">
+					<a href="{doc}" target="_blank">Документация PDF</a>
+				</div>
+			</xsl:if>
+			<div class="device__price">
+				<div class="price_normal">
+					<xsl:variable name="price" select="string(min(current()//price))"/>
+					<xsl:value-of select="if(count(offer) = 1) then $price else concat('от ', $price)"/>/шт.
+				</div>
+			</div>
+			<xsl:if test="count(offer) = 1">
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="offer" select="offer"/>
+					<xsl:with-param name="product" select="current()"/>
+				</xsl:call-template>
+			</xsl:if>
+			<xsl:if test="count(offer) &gt; 1">
+				<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
+			</xsl:if>
+		</div>
+	</xsl:template>
+	<xsl:template match="product" mode="lines">PRODUCT_L<br/></xsl:template>
+
+
+	<xsl:template match="product" mode="offers_popup">
+		<div class="pop" id="price-popup-{@id}" style="display: none;">
+			<div class="pop__body">
+				<div class="pop__title">
+					<a class="pop__close"><img src="{//page/base}/img/icon-close.png" alt=""/></a>
+					<xsl:value-of select="name"/>
+				</div>
+				<div class="pop-prices">
+					<xsl:apply-templates select="offer"/>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="offer">
+		<div class="pop-prices__item pop-price">
+			<div class="pop-price__price" style="font-size: 16px;">
+				<xsl:value-of select="concat('Доступно: ', format-number(qty, '# ###', 'r'), 'шт')" />
+			</div>
+			<div class="pop-price__variants">
+				<xsl:variable name="min_qty" select="min_qty"/>
+				<xsl:for-each select="price">
+					<xsl:variable name="p" select="position()"/>
+					<div class="pop-price__variant">
+						<div><xsl:value-of select="$min_qty[$p]"/>+</div>
+						<div><xsl:value-of select="."/></div>
+					</div>
+				</xsl:for-each>
+				<div class="pop-price__order" style="max-width: 150px; margin-top: 1rem;">
+					<xsl:variable name="product" select="current()/.."/>
+					<xsl:call-template name="CART_BUTTON">
+						<xsl:with-param name="offer" select="current()"/>
+						<xsl:with-param name="product" select="$product"/>
+					</xsl:call-template>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="CART_BUTTON">
+		<xsl:param name="offer" />
+		<xsl:param name="product" />
+		CART_BUTTON
+	</xsl:template>
+
+
+	<xsl:template match="/">
+		<div class="result" id="arrow_search">
+			<xsl:if test="page/summery/response/success = 'true'">
+				<h2>Результат поиска по verical</h2>
+				<div class="catalog-items{' lines'[$view = 'list']}">
+					<xsl:if test="$view = 'list'">
+						<xsl:apply-templates select="page/products/product"  mode="lines" />
+					</xsl:if>
+					<xsl:if test="not($view = 'list')">
+						<xsl:apply-templates select="page/products/product" />
+					</xsl:if>
+				</div>
+				<div>
+					<xsl:apply-templates select="page/products/product" mode="offers_popup"/>
+				</div>
+			</xsl:if>
+			<xsl:if test="not(page/summery/response/success = 'true')">
+				<h2>Результат поиска по verical</h2>
+				<p>Товары не найдены</p>
+				<xsl:if test="page/summery/response/error">
+					<p>
+						<xsl:value-of select="page/summery/response/error"/>
+					</p>
+				</xsl:if>
+			</xsl:if>
+			<script type="text/javascript">
+				$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+				type: 'image',
+				closeOnContentClick: true,
+				mainClass: 'mfp-img-mobile',
+				image: {
+				verticalFit: true
+				}
+				});
+				$(document).ready(function(){
+				//Инициализация всплывающей панели для
+				//элементов веб-страницы, имеющих атрибут
+				//data-toggle="popover"
+				$('[data-toggle="popover"]').popover({
+				//Установление направления отображения popover
+				placement : 'top'
+				});
+				});
+				insertAjax('cart_ajax');
+			</script>
+		</div>
+	</xsl:template>
+
+</xsl:stylesheet>

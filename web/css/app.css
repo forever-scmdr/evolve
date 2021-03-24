@@ -7573,6 +7573,7 @@ td .catalog-item {
 	height:57px;*/
 	line-height:1;
 	font-size: 14px;
+	color: #1b5e98;
 }
 .device__article-number {
 	color:#828282;
@@ -9063,10 +9064,11 @@ label input {
 	left: 0;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
+	z-index: 2;
 }
 .pop__body {
 	margin: auto;
-	width: 600px;
+	/*width: 600px;*/
 	max-height: 80%;
 	background: #fff;
 	padding: 50px;

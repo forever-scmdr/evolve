@@ -1735,9 +1735,12 @@
 		</command>
 	</page>
 
-	<page name="arrow_search">
+	<page name="arrow_search" template="arrow_search_ajax">
 		<request>
-			<var name="query" value="smd"/>
+			<var name="query" value="1234"/>
+			<var name="view" scope="cookie"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="minqty" value="" scope="cookie"/>
 		</request>
 		<command class="extra.ArrowSearchCommand">
 			<result name="success" type="xml"/>

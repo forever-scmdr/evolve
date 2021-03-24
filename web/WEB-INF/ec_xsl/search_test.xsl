@@ -72,7 +72,10 @@
 				<h2>Поиск по каталогу FARNELL отключен.</h2>
 			</div>
 			<div id="extra_search_4">
-				<h2>Идет поиск по PROMELEC</h2>
+				<h2>Поиск по PROMELEC  отключен.</h2>
+			</div>
+			<div id="arrow_search">
+				<h2>Идет поиск по verical.com</h2>
 			</div>
 		</div>
 
@@ -84,9 +87,10 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
+				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
+				insertAjax('<xsl:value-of select="concat('arrow_search', '?query=', page/variables/q)"/>');
 			});
 		</script>
 	</xsl:template>
