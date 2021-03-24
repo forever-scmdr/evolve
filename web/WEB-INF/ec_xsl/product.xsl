@@ -8,7 +8,7 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="has_price" select="f:num($p/qty) != 0"/>
 
-	<xsl:variable name="meta_description" select="concat($p/name, ' в Минске от Чип Электроникс. Звоните ☎☎☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси.')"/>
+	<xsl:variable name="meta_description" select="concat($p/name, ' в Минске от Чип Электроникс ✅. Оптом и в розницу! Звоните ☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси.')"/>
 	<xsl:variable name="meta_keywords" select="$p/name"/>
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -69,7 +69,7 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native" data-maxwidth="300">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
