@@ -35,6 +35,56 @@ public class CartManageCommand extends BasicCartManageCommand {
 	private double ratioEur = -1;
 	private double q1Eur = -1;
 	private double q2Eur  = -1;
+	private double q2Arrow = -1;
+
+	/**
+	 * Добавить товар Verical (arrow.com) в корзину
+	 * @return updated "cart_ajax" page
+	 * @throws Exception
+	 */
+	public ResultPE addArrowToCart() throws Exception{
+		checkStrategy();
+		String code = getVarSingleValue(CODE_PARAM);
+		double quantity = 0;
+		try {
+			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
+		} catch (Exception e) {
+			return getResult("ajax");
+		}
+
+		ensureCart();
+
+		Item boughtProduct = getSessionMapper().getSingleItemByParamValue("product", CODE_PARAM, code);
+		Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
+		if(boughtProduct == null){
+			String name = getVarSingleValue(NAME_PARAM);
+			bought.setValue(NAME_PARAM, name);
+			bought.setValue(CODE_PARAM, code);
+			String available = getVarSingleValue(NOT_AVAILABLE);
+			available = (StringUtils.isBlank(available))? "0" :  String.valueOf(Integer.parseInt(available)%2);
+			bought.setValueUI(NOT_AVAILABLE, available);
+			String days = getVarSingleValue("delivery_time");
+			if(StringUtils.isNotBlank(days))
+				bought.setValueUI("delivery_time", days.trim());
+			bought.setValue("aux", getVarSingleValue("aux"));
+			bought.setExtra("img", getVarSingleValue("img"));
+			getSessionMapper().saveTemporaryItem(bought);
+			Item product = getSessionMapper().createSessionItem("product", bought.getId());
+			product.setValueUI(NAME_PARAM, name);
+			product.setValueUI(CODE_PARAM, code);
+			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
+			product.setValueUI("unit", getVarSingleValue("unit"));
+			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
+			product.setValue(QTY_PARAM, qty);
+			getSessionMapper().saveTemporaryItem(product);
+			setBoughtQtys(product, bought, quantity);
+		}
+
+		bought.setValueUI("price_map", getVarSingleValue("price_map"));
+		getSessionMapper().saveTemporaryItem(bought);
+		recalculateCart();
+		return getResult("ajax");
+	}
 
 	/**
 	 * Добавить товар Farnell в корзину
@@ -244,6 +294,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 				case "digikey" : digikeyPriceAction(bought, product); break;
 				case "promelec" : promelecPriceAction(bought, product); break;
 				case "farnell" : farnellPriceAction(bought, product); break;
+				case "arrow" : arrowPriceAction(bought, product); break;
 			}
 		}
 	}
@@ -258,6 +309,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			ratioEur = catalog.getDoubleValue("currency_ratio_eur");
 			q1Eur = 1 + catalog.getDoubleValue("q1_eur", 0d);
 			q2Eur = 1 + catalog.getDoubleValue("q2_eur", 0d);
+			q2Arrow = 1 + catalog.getDoubleValue("q2_arrow", 0d);
 		}
 	}
 
@@ -266,6 +318,22 @@ public class CartManageCommand extends BasicCartManageCommand {
 		String specPrice = bought.getStringValue("price_map");
 		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioEur, q1Eur, q2Eur);
 
+		if(priceMap.size() > 0){
+			for(Double breakpoint : priceMap.keySet()){
+				if(breakpoint <= totalQty){
+					product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+				}
+				else{
+					break;
+				}
+			}
+		}
+	}
+
+	private void arrowPriceAction(Item bought, Item product) throws Exception {
+		double totalQty =  bought.getDoubleValue(QTY_TOTAL_PARAM);
+		String specPrice = bought.getStringValue("price_map");
+		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioUsd, q1Usd, q2Arrow);
 		if(priceMap.size() > 0){
 			for(Double breakpoint : priceMap.keySet()){
 				if(breakpoint <= totalQty){

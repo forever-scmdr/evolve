@@ -172,8 +172,7 @@
 		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
 		<parameter name="q2_eur" caption="Прибавка к цене товараов с Farnell"  type="double" description="0.03 = +3%" />
 		<parameter name="q2_prom" caption="Прибавка к цене товараов с Promelec"  type="double" description="0.03 = +3%" />
-
-<!--		<on-update class="ecommander.fwk.CopyToUpload"/>-->
+		<parameter name="q2_arrow" caption="Прибавка к цене Verical" type="double" description="0.03 = +3%" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
