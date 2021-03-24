@@ -69,10 +69,10 @@
 				<p>Поиск по каталогу DIGIKEY отключен.</p>
 			</div>
 			<div id="extra_search_3">
-				<h2>Поиск по каталогу FARNELL отключен.</h2>
+				<p>Поиск по каталогу FARNELL отключен.</p>
 			</div>
 			<div id="extra_search_4">
-				<h2>Поиск по PROMELEC  отключен.</h2>
+				<p>Поиск по PROMELEC  отключен.</p>
 			</div>
 			<div id="arrow_search">
 				<h2>Идет поиск по verical.com</h2>

@@ -2,10 +2,13 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.pages.var.Variable;
+import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -40,6 +43,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		xml.startElement("page", "name", getPageName());
 		addPageBasics(xml);
 		if(StringUtils.isNotBlank(query)) {
+			addCurrencyRatios(xml);
 			JSONObject searchResult = loadFromArrowApi(query);
 			if(searchResult != null) {
 				boolean hasProducts = addGeneralResponseInfo(xml, searchResult);
@@ -53,6 +57,16 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		ResultPE result = getResult("success");
 		result.setValue(xml.toString());
 		return result;
+	}
+
+	private void addCurrencyRatios(XmlDocumentBuilder doc) throws Exception {
+		Item currencies = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
+		if(currencies != null){
+			doc.
+					startElement(ItemNames.CATALOG, "id", currencies.getId())
+					.addElements(currencies.outputValues())
+					.endElement();
+		}
 	}
 
 //	public ResultPE getDetail(String keyUnique, String id) throws Exception {

@@ -282,4 +282,14 @@
 
     </xsl:template>
 
+    <xsl:function name="f:map">
+        <xsl:param name="arg" />
+        <xsl:variable name="q" select="$arg/min_qty"/>
+        <xsl:variable name="p" select="$arg/price"/>
+        <xsl:for-each select="$q">
+            <xsl:variable name="pos" select="position()"/>
+            <xsl:value-of select="concat(., ':', $p[$pos], if($pos != last()) then ';' else '')"/>
+        </xsl:for-each>
+    </xsl:function>
+
 </xsl:stylesheet>

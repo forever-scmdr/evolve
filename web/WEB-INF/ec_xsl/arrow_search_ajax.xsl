@@ -30,7 +30,7 @@
 			<div class="device__price">
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
-					<xsl:value-of select="if(count(offer) = 1) then $price else concat('от ', $price)"/>/шт.
+					<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
 				</div>
 			</div>
 			<xsl:if test="count(offer) = 1">
@@ -72,7 +72,7 @@
 					<xsl:variable name="p" select="position()"/>
 					<div class="pop-price__variant">
 						<div><xsl:value-of select="$min_qty[$p]"/>+</div>
-						<div><xsl:value-of select="."/></div>
+						<div><xsl:value-of select="f:price_arrow(.)"/></div>
 					</div>
 				</xsl:for-each>
 				<div class="pop-price__order" style="max-width: 150px; margin-top: 1rem;">
@@ -91,7 +91,7 @@
 		<xsl:param name="product" />
 
 		<xsl:variable name="code" select="$offer/code"/>
-		<xsl:variable name="map" select="string-join($offer/concat(min_qty, ':', price), ';')"/>
+		<xsl:variable name="map" select="f:map($offer)"/>
 
 		<div class="device__order">
 			<div id="cart_list_{$code}">
@@ -107,7 +107,7 @@
 					<input type="hidden" value="{$offer/qty}" name="max"/>
 					<input type="number" class="text-input" name="qty" value="{$offer/min_qty[1]}" min="{$offer/min_qty[1]}"/>
 
-					<xsl:if test="f:num(@quant) != 0">
+					<xsl:if test="f:num($offer/qty) != 0">
 						<input type="hidden" name="price_map" value="{$map}"/>
 					</xsl:if>
 
