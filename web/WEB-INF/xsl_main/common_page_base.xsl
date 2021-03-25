@@ -307,14 +307,14 @@
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
 						</a>
-						<div class="google-rating">
+						<!-- <div class="google-rating">
 							<div class="google-rating__stars">
 								<img src="img/icon-google-rating.png" alt="" />
 							</div>
 							<div class="google-rating__text">
 								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
