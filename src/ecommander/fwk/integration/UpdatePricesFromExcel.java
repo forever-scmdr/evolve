@@ -50,7 +50,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				products = ItemQuery.loadByParamValue(ItemNames.ABSTRACT_PRODUCT, VENDOR_CODE_PARAM, code);
 //				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
 
-//				if(products.size() > 1) info.pushLog(code);
+				if(products.size() > 1) {info.pushLog(String.format("%d Duplicates: [%s]. Price: %s", products.size(),code, price));}
 
 				for(Item product : products){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
