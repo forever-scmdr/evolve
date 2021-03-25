@@ -26,17 +26,19 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 	ExcelPriceList priceWB;
 	Item catalog;
 
+	private static final String ART = "Артикул";
+
 	@Override
 	protected boolean makePreparations() throws Exception {
 		catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
 		String repository = AppContext.getFilesDirPath(catalog.isFileProtected());
 		File priceList = catalog.getFileValue(INTEGRATION_PARAM, repository);
-		priceWB = new ExcelPriceList(priceList, CreateExcelPriceList.CODE_FILE) {
+		priceWB = new ExcelPriceList(priceList, ART) {
 			private int rowNum = 0;
 			@Override
 			protected void processRow() throws Exception {
-				String code = getValue(CreateExcelPriceList.CODE_FILE);
-				if(StringUtils.isBlank(code) || CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code) || StringUtils.startsWith(code,"разд:")) return;
+				String code = getValue(ART);
+				if(StringUtils.isBlank(code) || ART.equalsIgnoreCase(code) || StringUtils.startsWith(code,"разд:")) return;
 				String price = getValue(CreateExcelPriceList.PRICE_FILE);
 				String qty = getValue(CreateExcelPriceList.QTY_FILE);
 				String av;
@@ -45,10 +47,10 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
 				ArrayList<Item> products;
-				products = ItemQuery.loadByParamValue(ItemNames.ABSTRACT_PRODUCT, CODE_PARAM, code);
+				products = ItemQuery.loadByParamValue(ItemNames.ABSTRACT_PRODUCT, VENDOR_CODE_PARAM, code);
 //				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
 
-				if(products.size() > 1) info.pushLog(code);
+//				if(products.size() > 1) info.pushLog(code);
 
 				for(Item product : products){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));

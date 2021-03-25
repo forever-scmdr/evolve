@@ -176,6 +176,7 @@
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="vendor_code" type="string" caption="Артикул" description="для обновления цен" text-index="fulltext" />
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
@@ -186,7 +187,7 @@
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
+
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<!-- <parameter name="short" type="tiny-text" caption="Краткое описание" text-index="fulltext" /> -->
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -232,8 +233,8 @@
 	</item>
 
 
-	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
-		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
+	<item name="params" caption="Параметры товара" extendable="true" ag-id="1790" ag-hash="-995427962" >
+		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/>
 		<on-create class="ecommander.fwk.integration.UpdateProductParamsXml"/>
 	</item>
 
