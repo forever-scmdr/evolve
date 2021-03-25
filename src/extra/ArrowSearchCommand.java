@@ -69,23 +69,6 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		}
 	}
 
-//	public ResultPE getDetail(String keyUnique, String id) throws Exception {
-//		String url = "https://www.arrow.com/en/products/" + keyUnique;
-//		Document html = Jsoup.parse(new URL(url), 5000);
-//		Element params = html.select(".product-details__specifications-tbl").first();
-//
-//		XmlDocumentBuilder xml = XmlDocumentBuilder.newDoc();
-//		xml.startElement("page", "name", getPageName());
-//		addPageBasics(xml);
-//		xml.addElement("params", params.outerHtml(), "id", id);
-//		xml.endElement();
-//		xml.endElement();
-//
-//		ResultPE result = getResult("success");
-//		result.setValue(xml.toString());
-//		return result;
-//	}
-
 	private JSONObject loadFromArrowApi(String searchRequest) throws Exception {
 		String login = URLEncoder.encode(LOGIN, "UTF-8");
 		String query = URLEncoder.encode(searchRequest, "UTF-8");
@@ -144,7 +127,8 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
 		for(int i = 0; i < stores.length(); i++){
 			JSONObject store = stores.getJSONObject(i);
-			if(store.getString("name").equals(VERICAL_VAL)){
+			xml.addElement("site", store.getString("name"));
+			//if(store.getString("name").equals(VERICAL_VAL)){
 				JSONArray  priceSources = store.getJSONArray(SOURCES_ARR);
 				for(int j = 0; j < priceSources.length(); j++){
 					JSONArray offers = priceSources.getJSONObject(j).getJSONArray(OFFERS);
@@ -152,7 +136,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 						processOffer(xml, offers.getJSONObject(k));
 					}
 				}
-			}
+			//}
 		}
 	//	xml.endElement();
 		xml.endElement();
@@ -173,12 +157,16 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		xml.addElement("country", country);
 		xml.addElement("shipment", getShipment(offer));
 		xml.addElement("step", offer.getInt(STEP));
-		JSONObject priceLv1 = offer.getJSONObject(PRICE_LV1);
-		JSONArray priceLv2 = priceLv1.getJSONArray(PRICE_LV2_ARR);
-		for(int i = 0; i < priceLv2.length(); i++){
-			JSONObject price = priceLv2.getJSONObject(i);
-			xml.addElement("price", price.getDouble(PRICE));
-			xml.addElement("min_qty", price.getInt(MIN_QTY));
+		if(offer.has(PRICE_LV1)) {
+			JSONObject priceLv1 = offer.getJSONObject(PRICE_LV1);
+			JSONArray priceLv2 = priceLv1.getJSONArray(PRICE_LV2_ARR);
+			for (int i = 0; i < priceLv2.length(); i++) {
+				JSONObject price = priceLv2.getJSONObject(i);
+				xml.addElement("price", price.getDouble(PRICE));
+				xml.addElement("min_qty", price.getInt(MIN_QTY));
+			}
+		}else {
+			xml.addElement("no_price", "");
 		}
 		JSONArray availability = offer.getJSONArray(AVAILABILITY_ARR);
 		for(int i = 0; i < availability.length(); i++){
