@@ -30,7 +30,12 @@
 			<div class="device__price">
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
-					<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+					<xsl:if test="f:num($price) &gt; 0">
+						<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+					</xsl:if>
+					<xsl:if test="f:num($price) = 0">
+						Цена по запросу
+					</xsl:if>
 				</div>
 			</div>
 			<xsl:if test="count(offer) = 1">
@@ -41,6 +46,11 @@
 			</xsl:if>
 			<xsl:if test="count(offer) &gt; 1">
 				<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
+			</xsl:if>
+			<xsl:if test="not(offer)">
+				<xsl:call-template name="CART_BUTTON_ZERO" >
+					<xsl:with-param name="product" select="current()"/>
+				</xsl:call-template>
 			</xsl:if>
 		</div>
 	</xsl:template>
@@ -72,7 +82,12 @@
 			<div class="device__price device_row__price">
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
-					<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+					<xsl:if test="f:num($price) &gt; 0">
+						<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+					</xsl:if>
+					<xsl:if test="f:num($price) = 0">
+						Цена по запросу
+					</xsl:if>
 				</div>
 				<div class="nds">*цена c НДС</div>
 				<xsl:if test="count(offer) = 1 and count(offer/price) &gt; 1">
@@ -98,6 +113,11 @@
 				</xsl:if>
 				<xsl:if test="count(offer) &gt; 1">
 					<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
+				</xsl:if>
+				<xsl:if test="not(offer)">
+					<xsl:call-template name="CART_BUTTON_ZERO" >
+						<xsl:with-param name="product" select="current()"/>
+					</xsl:call-template>
 				</xsl:if>
 			</div>
 		</div>
@@ -140,6 +160,34 @@
 					</xsl:call-template>
 				</div>
 			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="CART_BUTTON_ZERO">
+		<xsl:param name="product" />
+		<xsl:variable name="id" select="concat('v',$product/@id)"/>
+
+		<div class="device__order">
+			<div id="cart_list_{$id}">
+				<form action="cart_action/?action=addArrowToCart&amp;code={$id}" method="post" ajax="true" ajax-loader-id="cart_list_{$id}">
+					<input type="hidden" value="{$product/code}" name="vendor_code"/>
+					<input type="hidden" value="0" name="available"/>
+					<input type="hidden" value="arrow" name="aux"/>
+
+					<input type="hidden" value="{$product/name}" name="name"/>
+					<input type="hidden" value="шт" name="unit"/>
+					<input type="hidden" value="1" name="upack"/>
+
+					<input type="hidden" value="0" name="max"/>
+					<input type="number" class="text-input" name="qty" value="1" min="1"/>
+
+					<input type="hidden" name="img" value="{$product/main_pic}"/>
+					<input type="submit" class="button not_available" value="Под заказ"/>
+				</form>
+			</div>
+		</div>
+		<div class="device__in-stock device__in-stock_no">
+			<i class="far fa-clock"></i>под заказ
 		</div>
 	</xsl:template>
 
@@ -188,15 +236,23 @@
 
 
 	<xsl:template match="/">
+
+		<xsl:variable name="products" select="if(page/variables/minqty = '0') then page/products/product[offer != ''] else page/products/product"/>
+
 		<div class="result" id="arrow_search">
 			<xsl:if test="page/summery/response/success = 'true'">
 				<h2>Результат поиска по verical</h2>
+
+				<xsl:if test="page/variables/minqty = '0' and count($products) = 0">
+					<p>Найдены только товары под заказ.</p>
+				</xsl:if>
+
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="page/products/product"  mode="lines" />
+						<xsl:apply-templates select="$products"  mode="lines" />
 					</xsl:if>
 					<xsl:if test="not($view = 'list')">
-						<xsl:apply-templates select="page/products/product" />
+						<xsl:apply-templates select="$products" />
 					</xsl:if>
 				</div>
 				<div>

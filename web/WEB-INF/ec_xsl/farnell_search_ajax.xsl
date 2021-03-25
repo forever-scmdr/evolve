@@ -209,8 +209,6 @@
 				<div id="cart_list_{normalize-space(sku)}">
 					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
 
-						
-
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
 						<input type="hidden" value="{displayName}" name="name"/>
