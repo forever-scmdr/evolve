@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>                      
 <site>
+	<page name="test">
+		<request>
+			<var name="vendor_code" value="01004325"/>
+		</request>
+		<list item="described_product">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var var="vendor_code" />
+				</parameter>
+			</filter>
+		</list>
+	</page>
+
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
 	<include-definition name="COMMON">

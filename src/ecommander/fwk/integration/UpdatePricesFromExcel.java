@@ -46,11 +46,19 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 				String origPrice = getValue(CreateExcelPriceList.PRICE_ORIGINAL_FILE);
 				String currency = getValue(CreateExcelPriceList.CURRENCY_ID_FILE);
 				String unit = getValue(CreateExcelPriceList.UNIT_FILE);
-				ArrayList<Item> products;
-				products = ItemQuery.loadByParamValue(ItemNames.ABSTRACT_PRODUCT, VENDOR_CODE_PARAM, code);
+				ArrayList<Item> products = new ArrayList<>();
+
+				ItemQuery q = new ItemQuery(ItemNames.DESCRIBED_PRODUCT);
+				q.addParameterCriteria(VENDOR_CODE_PARAM, code, "=", null, Compare.SOME);
+				products.addAll(q.loadItems());
+
+//				products = ItemQuery.loadByParamValue(ItemNames.PRODUCT, VENDOR_CODE_PARAM, code);
+//				products.addAll(ItemQuery.loadByParamValue(ItemNames.LINE_PRODUCT, VENDOR_CODE_PARAM, code));
 //				products = products.size() == 0? ItemQuery.loadByParamValue(ItemNames.PRODUCT, CODE_PARAM, code) : products;
 
-				if(products.size() > 1) {info.pushLog(String.format("%d Duplicates: [%s]. Price: %s", products.size(),code, price));}
+				if(products.size() > 1) {
+					info.pushLog(String.format("%d Duplicates: [%s]. Price: %s", products.size(),code, price));
+				}
 
 				for(Item product : products){
 					product.setValueUI(PRICE_PARAM, price.replaceAll("[^\\d,.]",""));
@@ -76,7 +84,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 						product.setValueUI(CURRENCY_ID_PARAM, currency);
 					}
 					DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
-					if(products.size() > 1) info.pushLog("updating:" + code + ". Price = "+ price);
+					//if(products.size() > 1) info.pushLog("updating:" + code + ". Price = "+ price);
 					setProcessed(rowNum++);
 				}
 			}
@@ -94,7 +102,7 @@ public class UpdatePricesFromExcel extends IntegrateBase implements CatalogConst
 		info.setOperation("Обновлние цен");
 		info.setProcessed(0);
 		info.setLineNumber(0);
-		info.setToProcess(priceWB.getLinesCount());
+		//info.setToProcess(priceWB.getLinesCount());
 		priceWB.iterate();
 		checkAvailable();
 		info.setOperation("Интеграция завершена");
