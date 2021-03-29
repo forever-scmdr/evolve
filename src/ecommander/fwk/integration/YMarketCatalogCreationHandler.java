@@ -75,7 +75,6 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 
 				if (currentSection == null) {
 					if (parentSection == null) {
-						//currentSection = Item.newChildItem(sectionDesc, catalog);
 						newSectionParent.put(code, new Pair<>(null, parentCode));
 						currentSection = null;
 					} else {
