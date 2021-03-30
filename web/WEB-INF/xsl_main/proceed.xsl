@@ -105,7 +105,7 @@
 				</div>
 			</xsl:if> -->
 			<div class="cart-total__buttons">
-				<input type="submit" class="button button_2 cart-total__button" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
+				<input type="submit" class="button cart-total__button" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
 			</div>
 		</div>
 	</xsl:template>

@@ -45,8 +45,10 @@ public class Line_product
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
     public final static String FILES = "files";
+    public final static String PDF = "pdf";
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
+    public final static String ANALOG_CODE = "analog_code";
     public final static String TAG = "tag";
     public final static String MARK = "mark";
     public final static String LABEL = "label";
@@ -636,6 +638,22 @@ public class Line_product
         return containsValue("files", value);
     }
 
+    public void add_pdf(String value) {
+        setValue("pdf", value);
+    }
+
+    public List<String> getAll_pdf() {
+        return getStringValues("pdf");
+    }
+
+    public void remove_pdf(String value) {
+        removeEqualValue("pdf", value);
+    }
+
+    public boolean contains_pdf(String value) {
+        return containsValue("pdf", value);
+    }
+
     public void add_text_pics(File value) {
         setValue("text_pics", value);
     }
@@ -666,6 +684,22 @@ public class Line_product
 
     public boolean contains_assoc_code(String value) {
         return containsValue("assoc_code", value);
+    }
+
+    public void add_analog_code(String value) {
+        setValue("analog_code", value);
+    }
+
+    public List<String> getAll_analog_code() {
+        return getStringValues("analog_code");
+    }
+
+    public void remove_analog_code(String value) {
+        removeEqualValue("analog_code", value);
+    }
+
+    public boolean contains_analog_code(String value) {
+        return containsValue("analog_code", value);
     }
 
     public void add_tag(String value) {

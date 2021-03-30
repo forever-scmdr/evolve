@@ -215,6 +215,7 @@ public interface ItemNames {
     public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
+        String BELCHIP_Q = "belchip_q";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
@@ -399,8 +400,10 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String FILES = "files";
+        String PDF = "pdf";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";
@@ -536,8 +539,10 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String FILES = "files";
+        String PDF = "pdf";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";
@@ -837,8 +842,10 @@ public interface ItemNames {
         String TEXT = "text";
         String EXTRA_XML = "extra_xml";
         String FILES = "files";
+        String PDF = "pdf";
         String TEXT_PICS = "text_pics";
         String ASSOC_CODE = "assoc_code";
+        String ANALOG_CODE = "analog_code";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";

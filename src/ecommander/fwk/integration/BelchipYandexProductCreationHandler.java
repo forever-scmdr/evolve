@@ -50,6 +50,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
 		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
 		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
+		MULTIPLE_PARAMS.add("download");
 		MULTIPLE_PARAMS.add("related");
 	}
 
@@ -166,6 +167,15 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 						}
 					}
 				}
+				if (product.getItemType().hasParameter("pdf") && multipleParams.containsKey("download")) {
+					product.clearValue("pdf");
+					for (String val : multipleParams.get("download")) {
+						String[] parts = StringUtils.split(val, ',');
+						for (String part : parts) {
+							product.setValueUI("pdf", StringUtils.trim(part));
+						}
+					}
+				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 				//hide if not available. Restore if available.
@@ -174,7 +184,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
 				if (isExistingProduct) {
-					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
+					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName(), Item.STATUS_NORMAL, Item.STATUS_HIDDEN).setParentId(product.getId(), false).loadItems();
 					for (Item paramsXml : paramsXmls) {
 						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
 					}

@@ -19,7 +19,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<div class="card device">
+		<div class="device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
@@ -105,16 +105,14 @@
 				<div class="order device-order" id="cart_list_{@id}">
 					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
-							<input type="number" class="input input_type_number" name="qty"
-								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-							<button class="button button_not-available" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+							<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
+							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="input input_type_number" name="qty"
-								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+							<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
 							<!-- кнопка запросить цену в списке товаров -->
-							<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
 					</form>
 				</div>
@@ -124,48 +122,14 @@
 			</xsl:if>
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
-			<div style="display: none">
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="text_sm">в наличии</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="text_sm">под заказ</div>
-				</xsl:if>
-			</div>
+			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+				<div class="status__a">в наличии</div>
+			</xsl:if>
+			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+				<div class="status__na">под заказ: 3-7 дней</div>
+			</xsl:if>
 
-			<!-- device actions (compare and favourites) -->
-			<div class="add">
-				<xsl:choose>
-					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="add__item icon-link">
-							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-							<span><xsl:value-of select="$compare_remove_label"/></span>
-						</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span><xsl:value-of select="$compare_add_label"/></span>
-							</a>
-						</div>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:if test="not($is_compare)">
-					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span><xsl:value-of select="$go_to_compare_label"/></span>
-						</a>
-					</div>
-				</xsl:if>
-				<xsl:if test="$is_compare">
-					<a href="{from_compare}" class="add__item icon-link">
-						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-						<span><xsl:value-of select="$compare_remove_label"/></span>
-					</a>
-				</xsl:if>
-			</div>
+
 		</div>
 	</xsl:template>
 

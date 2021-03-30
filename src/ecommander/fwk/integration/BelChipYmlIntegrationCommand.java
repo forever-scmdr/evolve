@@ -50,6 +50,7 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		SAXParser parser = factory.newSAXParser();
 
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		q = catalog.getDecimalValue("belchip_q", q);
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
 		for (File xml : xmls) {

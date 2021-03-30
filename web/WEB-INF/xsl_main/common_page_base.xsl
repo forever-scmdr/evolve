@@ -27,7 +27,7 @@
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
-    <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
+		<xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
 	<xsl:variable name="has_currency_rates" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -115,129 +115,55 @@
 		<div class="top-info">
 			<div class="container">
 				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
-				<!-- static -->
 				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
 				<xsl:variable name="has_many_cities" select="count($common/topper/block) &gt; 1"/>
 				<xsl:for-each select="$common/topper/block">
 					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
-							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
-								<span><xsl:value-of select="header"/></span>
-								<xsl:if test="$has_many_cities">
-									<div class="icon icon_size_sm">
-										<img src="img/icon-caret-down.svg" alt="" />
-									</div>
-								</xsl:if>
-							</a>
-						</div>
-						<div class="top-info__content">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
+						<xsl:value-of select="text" disable-output-escaping="yes"/>
 					</div>
 				</xsl:for-each>
-				<!-- static end -->
-				<ul class="location-list" style="display:none">
-					<xsl:for-each select="$common/topper/block">
-						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
-				<script>
-					function showCityHeaderSelector() {
-						$('.location-list').show();
-						return false;
-					}
-					function showCityHeader(cityId, cityName) {
-						$('.top-info__wrap').hide();
-						$('.location-list').hide();
-						$('#' + cityId).show('fade', 200);
-						insertAjax('set_city?city=' + cityName);
-						return false;
-					}
-				</script>
 			</div>
 		</div>
 
 		<div class="header">
 			<div class="container">
-				<div class="header__wrap wrap">
-					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+				<div class="header__wrap">
+					<a href="{$main_host}" class="header__logo">
+						<img src="img/logo.png" alt="" />
 					</a>
-					<div class="header__column header__search header-search">
+					<div class="header__search">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
-							<!-- quick search end -->
+							<input type="text" placeholder="Поиск по каталогу товаров" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
+							<button class="button" type="submit">Найти</button>
 						</form>
 					</div>
-					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
-							<div class="catalog-currency">
-								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-								<ul class="currency-options">
-									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="active" select="$currency = $cur"/>
-										<li class="{'active'[$active]}">
-											<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-											<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-										</li>
-									</xsl:for-each>
-								</ul>
+					<div class="header__mobile-icons header-mobile-icons">
+						<div class="header-mobile-icon">
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-cart.png" alt="" />
 							</div>
+							<!-- <div class="header-mobile-icon__label">2</div> -->
+							<a class="header-mobile-icon__link" href="/cart"></a>
 						</div>
-					</xsl:if>
-					<!-- need styles end -->
-					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
-						<div class="links">
-							<a href="/kontakty" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-phone.svg" alt="" />
-								</div>
-							</a>
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-bars.svg" alt="" />
-								</div>
-							</a>
-						</div>
-						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
+						<div class="header-mobile-icon">
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-phone.png" alt="" />
 							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
+							<a class="header-mobile-icon__link" href="/kontakty"></a>
 						</div>
+						<div class="header-mobile-icon">
+							<div class="header-mobile-icon__icon">
+								<img src="img/icon-menu.png" alt="" />
+							</div>
+							<a class="header-mobile-icon__link" href="javascript:showMobileMainMenu()"></a>
+						</div>
+					</div>
+					<div class="header__icons header-icons">
+						<div class="header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no"></div>
+						<div class="header-icon" id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no"></div>
 					</div>
 				</div>
 			</div>
@@ -245,9 +171,14 @@
 
 		<div class="main-menu">
 			<div class="container">
-				<div class="main-menu__wrap wrap">
+				<div class="main-menu__wrap">
 					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
+						<a href="{page/catalog_link}" class="{'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu">
+							<div class="main-menu__icon">
+								<img src="img/icon-catalog.png" alt="" />
+							</div>
+							<span>Каталог товаров</span>
+						</a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
 								<xsl:for-each select="page/catalog/section">
@@ -303,18 +234,8 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="" class="forever">
-							<img src="img/forever.png" alt="" />
-							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
+						<a href="" class="forever">Разработка сайта — <br />студия веб-дизайна Forever
 						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div>
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
@@ -329,62 +250,61 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
+				<div class="menu-content__item" id="personal_mobile">
+<!-- 					<div class="menu-content__icon">
+						<img src="img/icon-user.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/login_link}" class="menu-content__link">Вход / регистрация</a>
+					</div> -->
+				</div>
+				<div class="menu-content__line"></div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-catalog-dark.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a onclick="showMobileCatalogMenu(); return false" class="menu-content__link">Каталог товаров</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-cart.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/cart_link}" class="menu-content__link">Корзина</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-star.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/fav_link}" class="menu-content__link">Избранное</a>
+					</div>
+				</div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<img src="img/icon-compare.png" alt=""/>
+					</div>
+					<div class="menu-content__links">
+						<a href="{page/compare_link}" class="menu-content__link">Сравнение</a>
+					</div>
+				</div>
+				<div class="menu-content__line"></div>
+				<div class="menu-content__item">
+					<div class="menu-content__icon">
+						<!-- <img src="img/icon-compare.png" alt=""/> -->
+					</div>
+					<div class="menu-content__links">
+						<xsl:for-each select="page/news">
+							<a href="{show_page}" class="menu-content__link"><xsl:value-of select="name"/></a>
+						</xsl:for-each>
+						<xsl:for-each select="page/custom_pages/custom_page">
+							<a href="{show_page}" class="menu-content__link"><xsl:value-of select="header"/></a>
+						</xsl:for-each>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script>
@@ -674,7 +594,7 @@
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
-				<link  href="css/fotorama.css" rel="stylesheet" />
+				<link  href="fotorama/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
 
@@ -747,10 +667,10 @@
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
 						<xsl:if test="$has_quick_search">
-                        $("#q-ipt").keyup(function(){
+												$("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
-                        </xsl:if>
+												</xsl:if>
 					});
 
 

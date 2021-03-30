@@ -16,16 +16,14 @@
 		<div class="catalog-items">
 			<div class="catalog-items__wrap">
 				<xsl:for-each select="/page/catalog/section">
-					<div class="catalog-item">
+					<div class="catalog-section">
 						<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 						<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 						<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-						<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
-						<div class="catalog-item__info">
-							<div class="catalog-item__title"><xsl:value-of select="name"/></div>
-							<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
-							<a href="{show_products}" class="catalog-item__link"></a>
-						</div>
+						<a class="catalog-section__image" href="{show_products}"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></a>
+						<!-- <div class="catalog-section__subtitle">Раздел</div> -->
+						<a class="catalog-section__title" href="{show_products}"><xsl:value-of select="name"/></a>
+						<!-- <div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div> -->
 					</div>
 				</xsl:for-each>
 			</div>

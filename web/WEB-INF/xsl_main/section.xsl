@@ -82,7 +82,7 @@
 
 
 	<xsl:template name="CONTENT">
-		
+
 		<xsl:if test="$seo[1]/text">
 			<div class="section-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -96,9 +96,9 @@
 			<div class="h3">Товары</div>
 		</xsl:if>
 		<xsl:call-template name="DISPLAY_CONTROL"/>
-		
+
 		<xsl:if test="$show_devices">
-			<div class="devices devices_section{' lines'[$view = 'list']}">
+			<div class="devices{' lines'[$view = 'list']}">
 				<xsl:if test="$view = 'table'">
 					<div class="devices__wrap">
 						<xsl:apply-templates select="$sel_sec/product"/>
@@ -176,10 +176,8 @@
 		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="filter filter_section">
-				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
-					<div class="icon">
-						<img src="img/icon-gear.svg" alt="" />
-					</div>
+				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="filter__button button">
+					<img src="img/icon-filter-toggle.png" alt="" />
 					<span class="icon-link__item">Подбор по параметрам</span>
 				</a>
 				<form method="post" action="{$sel_sec/filter_base_link}">
@@ -189,7 +187,10 @@
 							<xsl:if test="$input">
 								<xsl:variable name="name" select="$input/@id"/>
 								<div class="filter__item active checkgroup">
-									<div class="filter__title"><xsl:value-of select="$input/@caption"/></div>
+									<div class="filter__title">
+										
+										<xsl:value-of select="if($input/@description != '') then concat($input/@caption, ', ', $input/@description) else  $input/@caption"/>
+									</div>
 									<div class="filter__values">
 										<xsl:for-each select="$input/domain/value">
 											<div class="filter__value">
@@ -208,8 +209,8 @@
 							</xsl:if>
 						</xsl:for-each>
 						<div class="filter__actions">
-							<button class="button button_2" type="submit">Показать результат</button>
-							<button class="button button_2" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить</button>
+							<button class="button" type="submit">Применить фильтр</button>
+							<button class="button" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить фильтр</button>
 						</div>
 					</div>
 				</form>
@@ -222,16 +223,12 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-grid.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Плиткой</span>
+						<img src="img/icon-view-cards-active.png" alt="" />
+						<!-- <span class="icon-link__item">Плиткой</span> -->
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Строками</span>
+						<img src="img/icon-view-rows.png" alt="" />
+						<!-- <span class="icon-link__item">Строками</span> -->
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
@@ -255,14 +252,14 @@
 						</div>
 					</xsl:if>
 					<div class="view__column">
-						Кол-во на странице:
-						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">					
+						<span>Кол-во на странице:</span>
+						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
 								<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
 									<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
 									<option value="{$nos}" link="{.}">
 										<xsl:value-of select="$nos"/>
 									</option>
-								</xsl:for-each>	
+								</xsl:for-each>
 						</select>
 					</div>
 				</xsl:if>
@@ -274,11 +271,11 @@
 
 				<!-- <div class="view">
 					<span class="{'active'[not($view = 'list')]}">
-						
+
 						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
 					</span>
 					<span class="{'active'[$view = 'list']}">
-						
+
 						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
 					</span>
 				</div> -->
@@ -288,16 +285,16 @@
 					<label>
 						<xsl:if test="not($only_available)">
 							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
+									 onclick="window.location.href = '{page/show_only_available}'"/>
 						</xsl:if>
 						<xsl:if test="$only_available">
 							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
+									 onclick="window.location.href = '{page/show_all}'"/>
 						</xsl:if>
 						в наличии на складе
 					</label>
 				</div> -->
-				
+
 		</xsl:if>
 	</xsl:template>
 
@@ -306,16 +303,14 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="pic">
-		<div class="catalog-item">
+		<div class="catalog-section">
 			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
-			<div class="catalog-item__info">
-				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
-				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
-				<a href="{show_products}" class="catalog-item__link"></a>
-			</div>
+			<a class="catalog-section__image" href="{show_products}"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></a>
+			<!-- <div class="catalog-section__subtitle">Раздел</div> -->
+			<a class="catalog-section__title" href="{show_products}"><xsl:value-of select="name"/></a>
+			<!-- <div class="catalog-section__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div> -->
 		</div>
 	</xsl:template>
 

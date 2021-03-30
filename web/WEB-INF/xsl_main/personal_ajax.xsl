@@ -8,26 +8,46 @@
 	<xsl:template match="/">
 		<xsl:if test="not($registered)">
 			<div class="result" id="personal_desktop">
-				<a href="{page/login_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">Вход / Регистрация</span>
-				</a>
+				<div class="header-icon__icon">
+					<img src="img/icon-user.png" alt="" />
+				</div>
+				<div class="dropdown-menu">
+					<div class="dropdown-menu__container">
+						<a class="dropdown-menu__link" href="{page/login_link}">Вход / регистрация</a>
+					</div>
+				</div>
+			</div>
+			<div class="result" id="personal_mobile">
+				<div class="menu-content__icon">
+					<img src="img/icon-user.png" alt=""/>
+				</div>
+				<div class="menu-content__links">
+					<a href="{page/login_link}" class="menu-content__link">Вход / регистрация</a>
+				</div>
 			</div>
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
-				<a href="{page/personal_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">Анкета</span>
-				</a> /
-				<a href="{page/purchase_history_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">Заказы</span>
-				</a> /
-				<a href="/logout.login?target=index" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">x</span>
-				</a>
+				<div class="header-icon__icon">
+					<img src="img/icon-user.png" alt="" />
+				</div>
+				<div class="dropdown-menu">
+					<div class="dropdown-menu__container">
+						<a class="dropdown-menu__link" href="{page/personal_link}">Аккаунт</a>
+						<a class="dropdown-menu__link" href="{page/purchase_history_link}">История заказов</a>
+						<a class="dropdown-menu__link" href="/logout.login?target=index">Выход</a>
+					</div>
+				</div>
+			</div>
+			<div class="result" id="personal_mobile">
+				<div class="menu-content__icon">
+					<img src="img/icon-user.png" alt=""/>
+				</div>
+				<div class="menu-content__links">
+					<a href="{page/personal_link}" class="menu-content__link">Аккаунт</a>
+					<a href="{page/purchase_history_link}" class="menu-content__link">История заказов</a>
+					<a href="/logout.login?target=index" class="menu-content__link">Выход</a>
+				</div>
 			</div>
 		</xsl:if>
 	</xsl:template>

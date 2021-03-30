@@ -1,6 +1,53 @@
-.button {
-  min-height: 28px;
+body {
+ background-color: #fff;
 }
-input[type="number"] {
-  padding: 4px;
+.catalog-section__title {
+ text-align: center;
+}
+.catalog-section__image {
+ margin-bottom: 10px;
+}
+.status__a,
+.status__na {
+  font-size: 14px;
+  color: #828282;
+}
+.status__a {
+  color: #689f38;
+}
+.device_row .device__column > * {
+	margin-bottom: 10px;
+}
+.device_row .device__price > div {
+	margin-bottom: 10px;
+}
+
+.device-basic .status__a,
+.device-basic .status__na {
+  margin-bottom: 30px;
+}
+.device-basic .price_product {
+  margin-bottom: 0;
+}
+.device-basic .buy {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 425px) {
+  .catalog-section__title {
+    font-size: 14px;
+  }
+}
+.info-item__image img {
+  object-fit: cover;
+}
+
+.filter__item {
+  height: 220px;
+}
+.filter__values {
+  min-height: unset;
+}
+.device-basic__column:first-child {
+  flex: 0 0 300px;
 }

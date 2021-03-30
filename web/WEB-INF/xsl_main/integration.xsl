@@ -22,7 +22,7 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-		<script>
+			<script>
 				function endsWith(str, suffix) {
 					return str.indexOf(suffix, str.length - suffix.length) !== -1;
 				}
@@ -48,7 +48,7 @@
 						refresher.classList.add("clicked");
 					}
 				}
-		</script>
+			</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>

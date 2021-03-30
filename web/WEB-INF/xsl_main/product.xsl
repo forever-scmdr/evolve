@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Мозыре')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -61,7 +61,7 @@
 	</xsl:template>
 
 	<xsl:template match="group">
-		<xsl:if test="parameter/value != ''">
+		<xsl:if test="parameter/value">
 			<tr>
 				<th colspan="2"><b><xsl:value-of select="@name"/></b></th>
 			</tr>
@@ -73,8 +73,8 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
-				<td><xsl:value-of select="$param"/></td>
+				<td><span><xsl:value-of select="$param/@caption"/></span></td>
+				<td><xsl:value-of select="string-join(($param, $param/@description), ' ')"/></td>
 			</tr>
 		</xsl:if>
 	</xsl:template>

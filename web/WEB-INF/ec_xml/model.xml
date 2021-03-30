@@ -176,6 +176,7 @@
 	<item name="catalog" super="* seo_container" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="currencies" single="true"/>
 		<child item="section" />
+		<parameter name="belchip_q" type="currency" caption="Множитель для товаров с белчип" default="1"/>
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
@@ -248,6 +249,7 @@
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="files" type="file" caption="Файлы" multiple="true"/>
+		<parameter name="pdf" type="string" caption="Документация" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="analog_code" type="string" caption="Код аналога" multiple="true"/>
