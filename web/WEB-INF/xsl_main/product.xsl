@@ -377,6 +377,21 @@
 			</div>
 		</xsl:if>
 
+		<xsl:if test="page/analog">
+			<div class="block devices-block pt">
+				<div class="title title_2">Аналогичные товары</div>
+				<div class="devices-block__wrap device-carousel-similar">
+					<xsl:for-each select="page/analog">
+						<div class="devices-block__column">
+							<!-- это обычный товар -->
+							<xsl:apply-templates select="."/>
+						</div>
+					</xsl:for-each>
+				</div>
+				<div class="device-nav-similar device-nav"></div>
+			</div>
+		</xsl:if>
+
 
 	</xsl:template>
 

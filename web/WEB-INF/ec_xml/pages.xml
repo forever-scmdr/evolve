@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>           
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -27,12 +27,12 @@
 		</personal>
 
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>
 
-		<single item="catalog" id="catalog_main" cacheable="true">
+		<single item="catalog" id="catalog_main" cacheable="false">
 			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -51,20 +51,20 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="true" >
+		<single item="custom_pages" id="custom_pages" cacheable="false" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
 				</link>
 			</tree>
 		</single>
- 
-		<list item="news" id="news" cacheable="true">
+
+		<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
 		</list>
-		<single item="common" cacheable="true">
+		<single item="common" cacheable="false">
 			<list item="block_array">
 				<list item="block"/>
 			</list>
@@ -96,10 +96,10 @@
 			<var name="cur" value=""/>
 		</link>
 
-		<single item="modules" cacheable="true">
+		<single item="modules" cacheable="false">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap" cacheable="true">
+		<single item="url_seo_wrap" cacheable="false">
 			<list item="url_seo"/>
 		</single>
 		<single item="styles">
@@ -156,8 +156,8 @@
 
 
 
-	<page name="index" template="index" cacheable="true" cache-vars="cur">
-		<single item="main_page" id="main" cacheable="true">
+	<page name="index" template="index" cacheable="false" cache-vars="cur">
+		<single item="main_page" id="main" cacheable="false">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
@@ -171,10 +171,10 @@
 				<list item="custom_block"/>
 			</list>
 		</single>
-		<list item="banner_section" id="banner_section" cacheable="true">
+		<list item="banner_section" id="banner_section" cacheable="false">
 			<list item="banner"/>
 		</list>
-		<single item="news_wrap" cacheable="true">
+		<single item="news_wrap" cacheable="false">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<sorting direction="DESC">
@@ -211,7 +211,7 @@
 
 
 
-    <page name="catalog" template="catalog" cacheable="true">
+    <page name="catalog" template="catalog" cacheable="false">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -220,7 +220,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -453,7 +453,7 @@
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>
@@ -468,7 +468,7 @@
 		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY">
+				<fulltext limit="5" compare="EVERY" type="wildcard">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -523,7 +523,7 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
@@ -580,6 +580,54 @@
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="prod" ref="assoc"/>
 			</link>
+			<link name="to_fav" target="cookie_list_action_redirect">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="prod" ref="assoc"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action_redirect">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="prod" ref="assoc"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
+		</list>
+		<list item="product" tag="analog" id="analog">
+			<filter>
+				<parameter name="code" compare="SOME"><var ref="prod" parameter="analog_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="analog" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="analog" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="prod" ref="analog"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="prod" ref="analog"/>
+			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="prod" ref="analog"/>
+			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="prod" ref="analog"/>
+			</link>
+			<link name="to_fav" target="cookie_list_action_redirect">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="prod" ref="analog"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="fav_ajax"/>
+			</link>
+			<link name="to_compare" target="cookie_list_action_redirect">
+				<var name="update_cookie_name" value="compare"/>
+				<var name="prod" ref="analog"/>
+				<var name="action" value="add"/>
+				<var name="src_page" value="compare_ajax"/>
+			</link>
 		</list>
 		<list item="product" tag="grouped" id="grouped">
 			<filter>
@@ -594,7 +642,7 @@
 
 
 	<!-- Product Ajax -->
-	<page name="product_ajax" template="product_ajax" cacheable="true">
+	<page name="product_ajax" template="product_ajax" cacheable="false">
 		<request>
 			<var name="prod" style="path"/>
 		</request>
@@ -621,7 +669,7 @@
 
 
 
-    <page name="news" template="news" cacheable="true">
+    <page name="news" template="news" cacheable="false">
 		<request>
 			<var name="sel" style="key"/>
 			<var name="p" value="1"/>
@@ -649,11 +697,11 @@
 	</page>
 
 
-    <page name="news_item" template="news_item" cacheable="true" critical-item="sni">
+    <page name="news_item" template="news_item" cacheable="false" critical-item="sni">
 		<request>
 			<var name="ni" style="key"/>
 		</request>
-        <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
+        <single item="news_item" id="sni" var="ni" cacheable="false" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
@@ -661,19 +709,19 @@
 	</page>
 
 
-    <page name="contacts" template="contacts" cacheable="true">
-        <single item="contacts" cacheable="true">
+    <page name="contacts" template="contacts" cacheable="false">
+        <single item="contacts" cacheable="false">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+    <page name="page" cacheable="false" template="page" critical-item="sp">
 		<request>
 			<var name="p" style="key"/>
 		</request>
-        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
+        <single item="custom_page" var="p" cacheable="false" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="page_extra">
 				<list item="page_extra_part"/>
@@ -712,7 +760,7 @@
 			<var name="result"/>
 			<var name="message"/>
 		</request>
-		<single item="my_price" cacheable="true"/>
+		<single item="my_price" cacheable="false"/>
 		<single item="product" var="prod"/>
 		<new item="my_price_form" id="form" tag="form">
 			<parameter-input ref="form" form="my_price"/>
@@ -822,7 +870,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="info@radiomarket-mozyr.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -938,7 +986,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="info@radiomarket-mozyr.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -1483,6 +1531,18 @@
 		</command>
 	</page>
 
+	<!--//                                                                          -->
+	<!--//                      Разбор файлов Yandex Market BELCHIP                 -->
+	<!--//                                                                          -->
+	<page name="integrate_belchip" template="integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.BelChipYmlIntegrationCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="import_from_ancient" template="integration" authority-groups="common">
 		<request>
@@ -1594,7 +1654,7 @@
 		</list>
 	</page>
 
-    <page name="sitemap_section" template="sitemap_section" cacheable="true">
+    <page name="sitemap_section" template="sitemap_section" cacheable="false">
 		<request>
 			<var name="sec" style="key"/>
 		</request>
@@ -1692,6 +1752,7 @@
     <page name="create_excel_pricelist" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
+            <var name="prod_params" value="yes"/>
             <var name="sec"/>
         </request>
         <command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
@@ -1733,7 +1794,8 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-            <var name="file_location" value="catalog:big_integration"/>
+            <!-- SEARCH_BY_MAIN_PIC is for texfrom.by only-->
+            <!-- <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/> -->
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
@@ -1775,7 +1837,7 @@
 
 	<page name="admin_extra" template="admin/extra" authority-groups="common">
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>

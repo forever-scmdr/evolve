@@ -91,15 +91,14 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
-				boolean isExistingProduct = true;
+				boolean isExistingProduct = product != null;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
-				if (product == null) {
+				if (!isExistingProduct) {
 					String secCode = "-000-";
 					if (categoryIds.size() > 0) {
 						secCode = categoryIds.iterator().next();
 					}
 					Item section = sections.get(secCode);
-					isExistingProduct = false;
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
 						productContainers.add(secCode);
@@ -150,18 +149,20 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
 
 				if (product.getItemType().hasParameter("assoc_code") && multipleParams.containsKey("related")) {
+					product.clearValue("assoc_code");
 					for (String val : multipleParams.get("related")) {
 						String[] parts = StringUtils.split(val, ',');
 						for (String part : parts) {
-							product.setValueUI("assoc_code", StringUtils.trim(part));
+							product.setValueUI("assoc_code", "b_" + StringUtils.trim(part));
 						}
 					}
 				}
 				if (product.getItemType().hasParameter(ANALOG_CODE_PARAM) && multipleParams.containsKey(ANALOG_ELEMENT)) {
+					product.clearValue(ANALOG_CODE_PARAM);
 					for (String val : multipleParams.get(ANALOG_ELEMENT)) {
 						String[] parts = StringUtils.split(val, ',');
 						for (String part : parts) {
-							product.setValueUI(ANALOG_CODE_PARAM, StringUtils.trim(part));
+							product.setValueUI(ANALOG_CODE_PARAM, "b_" + StringUtils.trim(part));
 						}
 					}
 				}

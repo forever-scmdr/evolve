@@ -22,11 +22,33 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-		<script>
-			setTimeout(function(){
-				document.location.replace("/integrate_parsed");
-			}, 5000);
-		</script>
+			<script>
+				function endsWith(str, suffix) {
+					return str.indexOf(suffix, str.length - suffix.length) !== -1;
+				}
+
+				refreshTimeout = setTimeout(
+						function () {
+							h = document.location.href;
+							h = h.replace("_start", "");
+							h = h.replace("?action=start", "");
+							document.location.replace(h);
+						},
+						5000
+				);
+				function toggleRefresh() {
+					refresher = document.getElementById('refresher');
+					if (refresher.classList.contains("clicked")) {
+						h = document.location.href;
+						h = h.replace("_start", "");
+						h = h.replace("?action=start", "");
+						document.location.replace(h);
+					} else {
+						clearTimeout(refreshTimeout);
+						refresher.classList.add("clicked");
+					}
+				}
+			</script>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>

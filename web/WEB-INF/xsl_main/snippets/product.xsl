@@ -15,7 +15,7 @@
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | analog">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -170,7 +170,7 @@
 	</xsl:template>
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="accessory | set | probe | product | assoc | analog" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
