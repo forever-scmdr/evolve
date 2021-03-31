@@ -349,8 +349,6 @@
 
 <!--START_pt1-->
 <item name="pt1" caption="Ткани тюлевые" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1820" ag-hash="111277">
-	<parameter name="kod_gruppy" caption="Код группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1342467822" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kod_svyazannoi_gruppy" caption="Код связанной группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="39942723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid" caption="Вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="116753" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -388,8 +386,6 @@
 
 <!--START_pt2-->
 <item name="pt2" caption="Ткани портьерные" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1821" ag-hash="111278">
-	<parameter name="kod_gruppy" caption="Код группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1342467822" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kod_svyazannoi_gruppy" caption="Код связанной группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="39942723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid" caption="Вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="116753" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -427,8 +423,6 @@
 
 <!--START_pt3-->
 <item name="pt3" caption="Ткани блэкаут" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1822" ag-hash="111279">
-	<parameter name="kod_gruppy" caption="Код группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1342467822" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kod_svyazannoi_gruppy" caption="Код связанной группы" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="39942723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid" caption="Вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="116753" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>
@@ -466,8 +460,6 @@
 
 <!--START_ptz-->
 <item name="ptz" caption="Ткани шаблоны" key="" virtual="false" user-def="true" description="" super="params *" ag-id="1823" ag-hash="111350">
-	<parameter name="kod_gruppy" caption="Код группы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1342467822" description="" owner-id="0" virtual="false" hidden="false"></parameter>
-	<parameter name="kod_svyazannoi_gruppy" caption="Код связанной группы" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="39942723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="vid" caption="Вид" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="116753" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kategoriya" caption="Категория" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-275590802" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 	<parameter name="kollektsiya" caption="Коллекция" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="592508680" description="" owner-id="0" virtual="false" hidden="false"></parameter>

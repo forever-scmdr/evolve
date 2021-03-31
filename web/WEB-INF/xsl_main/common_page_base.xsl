@@ -635,6 +635,7 @@
 	<xsl:template name="CONTENT" />
 	<xsl:template name="INDEX_BLOCKS"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
+	<xsl:template name="EXTRA_CSS"/>
 
 
 
@@ -700,6 +701,7 @@
 				<xsl:for-each select="$head-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
+				<xsl:call-template name="EXTRA_CSS"/>
 			</head>
 			<body>
 				<xsl:if test="$seo/body_class">

@@ -24,7 +24,7 @@
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-			<div style="display: none">
+			<div style="display: none;">
 				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
 						<i class="fas fa-search-plus"></i>
@@ -46,7 +46,7 @@
 				</xsl:for-each>
 				-->
 				<xsl:for-each select="label">
-					
+
 					<div class="tag device__tag {f:translit(.)}">
 						<xsl:value-of select="." />
 					</div>
@@ -75,6 +75,14 @@
 					</xsl:if>
 					<div class="price__item_new">
 						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+					</div>
+				</div>
+			</xsl:if>
+
+			<xsl:if test="not($has_price)">
+				<div class="price device__price">
+					<div class="price__item_new">
+						Ожидается
 					</div>
 				</div>
 			</xsl:if>
@@ -111,10 +119,10 @@
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="input input_type_number" name="qty"
+							<input type="number" class="input input_type_number" name="qty"
 								   value="{if (min_qty) then f:num(min_qty) else 1}" min="{if (min_qty) then f:num(min_qty) else 0}" step="{if (step) then f:num(step) else 0.1}" />
 							<!-- кнопка запросить цену в списке товаров -->
-							<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+							<button class="button" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
 					</form>
 				</div>
@@ -183,7 +191,7 @@
 			<div class="device__column">
 
 				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-				<div style="display: none">
+				<div style="display: none;">
 					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 						<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 							<i class="fas fa-search-plus"></i>
@@ -275,7 +283,9 @@
 						</div>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<div></div>
+						<div class="price__item_new">
+							Ожидается
+						</div>
 					</xsl:if>
 				</div>
 			</div>
@@ -302,7 +312,7 @@
 								<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="input input_type_number" name="qty"
+								<input type="number" class="input input_type_number" name="qty"
 									   value="{if (min_qty) then f:num(min_qty) else 1}" min="{if (min_qty) then f:num(min_qty) else 0}" step="{if (step) then f:num(step) else 0.1}" />
 								<button class="button" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 							</xsl:if>

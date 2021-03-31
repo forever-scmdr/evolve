@@ -4,6 +4,33 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:template name="EXTRA_CSS">
+		<style type="text/css">
+			<xsl:for-each select="page/main_page/main_slider_frame">
+				<xsl:if test="container_style != ''">
+					<xsl:value-of select="concat('#slide-', @id)"/>{
+						<xsl:value-of select="container_style"/>
+					}
+				</xsl:if>
+				<xsl:if test="header_style != ''">
+					<xsl:value-of select="concat('#slide-title-', @id)"/>{
+						<xsl:value-of select="header_style"/>
+					}
+				</xsl:if>
+				<xsl:if test="text_style != ''">
+					<xsl:value-of select="concat('#slide-text-', @id)"/>{
+						<xsl:value-of select="text_style"/>
+					}
+				</xsl:if>
+				<xsl:if test="button_style != ''">
+					<xsl:value-of select="concat('#slide-button-', @id)"/>{
+						<xsl:value-of select="button_style"/>
+					}
+				</xsl:if>
+			</xsl:for-each>
+		</style>
+	</xsl:template>
+
 	<xsl:template name="MARKUP">
 		<script type="application/ld+json">
 			{
@@ -52,12 +79,12 @@
 		<div class="slider">
 			<xsl:for-each select="page/main_page/main_slider_frame">
 				<div class="slider__item">
-					<div class="slider__content">
+					<div class="slider__content" id="slide-{@id}">
 						<div class="container slider__container">
 							<div class="slider__body">
-								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
-								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								<div class="slider__title" id="slide-title-{@id}"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
+								<div class="slider__text"  id="slide-text-{@id}"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+								<a class="slider__button button" href="{link}" id="slide-button-{@id}"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 							</div>
 						</div>
 					</div>
