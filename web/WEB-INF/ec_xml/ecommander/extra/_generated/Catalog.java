@@ -1,11 +1,12 @@
 
 package ecommander.extra._generated;
 
-import java.io.File;
-import java.math.BigDecimal;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.io.File;
+import java.math.BigDecimal;
 
 public class Catalog
     extends Item

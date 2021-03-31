@@ -65,7 +65,7 @@
 		            <a class="catalog-section__image" href="{link}">
 		              <img src="{@path}{image}" alt="" />
 		            </a>
-		            <!-- <div class="catalog-section__subtitle">Раздел</div> -->
+		            <div class="catalog-section__subtitle">Раздел</div>
 		            <a class="catalog-section__title" href="{link}"><xsl:value-of select="header" /></a>
 		          </div>
 						</xsl:for-each>

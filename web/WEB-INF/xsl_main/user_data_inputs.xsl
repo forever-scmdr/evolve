@@ -15,7 +15,7 @@
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form__item">
-			<label class="form-label" for="form_name">Ваше имя *:</label>
+			<label class="form-label" for="form_name">Ваше имя:</label>
 			<input class="input form__element" type="text" id="form_name"
 				   name="{$inp/name/@input}" value="{f:not_empty($inp/name, $vals/name)}" error="{$inp/name/@validation-error}"/>
 		</div>
@@ -25,17 +25,17 @@
 				   name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}" error="{$inp/address/@validation-error}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_phone">Телефон *:</label>
+			<label class="form-label" for="form_phone">Телефон:</label>
 			<input class="input form__element" type="text" id="form_phone"
 				   name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}" error="{$inp/phone/@validation-error}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_name">Электронная почта *:</label>
+			<label class="form-label" for="form_name">Электронная почта:</label>
 			<input class="input form__element" type="text" id="form_name"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}" error="{$inp/email/@validation-error}"/>
 		</div>
 		<xsl:if test="page/@name != 'register'">
-			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки *: <!-- <a href="dostavka">подробнее</a> --></label>
+			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки: <a href="dostavka">подробнее</a></label>
 				<select class="form__element" id="form_ship"
 						name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}" error="{$inp/ship_type/@validation-error}">
 					<option value="">Выберите способ доставки</option>
@@ -44,7 +44,7 @@
 					</xsl:for-each>
 				</select>
 			</div>
-			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты *: <!-- <a href="oplata">подробнее</a> --></label>
+			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты: <a href="oplata">подробнее</a></label>
 				<select class="form__element" id="form_pay"
 						name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
 					<option value="">Выберите способ оплаты</option>
@@ -65,22 +65,22 @@
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form__item">
-			<label class="form-label" for="form_org">Наименование организации *:</label>
+			<label class="form-label" for="form_org">Наименование организации:</label>
 			<input class="input form__element" type="text" id="form_org"
 				   name="{$inp/organization/@input}" value="{f:not_empty($inp/organization, $vals/organization)}" error="{$inp/organization/@validation-error}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_org">Телефон/факс *:</label>
+			<label class="form-label" for="form_org">Телефон/факс:</label>
 			<input class="input form__element" type="text" id="form_org"
 				   name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_email">E-mail *:</label>
+			<label class="form-label" for="form_email">E-mail:</label>
 			<input class="input form__element" type="text" id="form_email"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_contact">Контактное лицо *:</label>
+			<label class="form-label" for="form_contact">Контактное лицо:</label>
 			<input class="input form__element" type="text" id="form_contact"
 				   name="{$inp/contact_name/@input}" value="{f:not_empty($inp/contact_name, $vals/contact_name)}"/>
 		</div>
@@ -90,7 +90,7 @@
 				   name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
 		</div>
 		<xsl:if test="page/@name != 'register'">
-			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки *: <!-- <a href="dostavka">подробнее</a> --></label>
+			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки: <a href="dostavka">подробнее</a></label>
 				<select class="form__element" id="form_ship"
 						name="{$inp/ship_type/@input}" value="{f:not_empty($inp/ship_type, $vals/ship_type)}" error="{$inp/ship_type/@validation-error}">
 					<option value="">Выберите способ доставки</option>
@@ -99,7 +99,7 @@
 					</xsl:for-each>
 				</select>
 			</div>
-			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты *:  <!-- a href="oplata">подробнее</a> --></label>
+			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты:  <a href="oplata">подробнее</a></label>
 				<select class="form__element" id="form_pay"
 						name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
 					<option value="">Выберите способ оплаты</option>
@@ -135,7 +135,7 @@
 				   name="{$inp/bank_code/@input}" value="{f:not_empty($inp/bank_code, $vals/bank_code)}"/>
 		</div>
 		<div class="form__item">
-			<label class="form-label" for="form_unp">УНП *:</label>
+			<label class="form-label" for="form_unp">УНП:</label>
 			<input class="input form__element" type="text" id="form_unp"
 				   name="{$inp/unp/@input}" value="{f:not_empty($inp/unp, $vals/unp)}"/>
 		</div>

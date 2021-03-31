@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Мозыре')"/>
+	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -74,24 +74,17 @@
 		<xsl:if test="$param">
 			<tr>
 				<td><span><xsl:value-of select="$param/@caption"/></span></td>
-				<td><xsl:value-of select="string-join(($param, $param/@description), ' ')"/></td>
+				<td><xsl:value-of select="$param"/></td>
 			</tr>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
 
-		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
+		<div class="artnumber artnumber_product">Код: <xsl:value-of select="$p/code"/></div>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
-				<div class="tags">
-					<xsl:for-each select="$p/label">
-						<div class="tag device__tag {f:translit(.)}">
-							<xsl:value-of select="." />
-						</div>
-					</xsl:for-each>
-				</div>
+
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
@@ -119,6 +112,13 @@
 					</script>
 			</div>
 			<div class="device-basic__column">
+				<div class="tags device-basic__tags">
+					<xsl:for-each select="$p/label">
+						<div class="tag  {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
+					</xsl:for-each>
+				</div>
 				<!-- <xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each> -->
@@ -126,8 +126,44 @@
 				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
 				<xsl:if test="not($has_lines)">
+
+					<div class="buy">
+						<xsl:if test="$has_price">
+							<div class="price price_product">
+								<div class="price__item_new">
+									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
+								</div>
+								<xsl:if test="$p/price_old and f:num($p/price_old) != f:num($p/price)">
+									<xsl:variable name="discount" select="round((f:num($p/price_old) - f:num($p/price)) div f:num($p/price_old) * 100) "/>
+									<div class="price__item_old">
+										<div class="price__tag">-<xsl:value-of select="$discount"/>%</div>
+										<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
+									</div>
+								</xsl:if>
+							</div>
+							<!-- <div class="order order_product" id="cart_list_386380">
+								<form action="" method="post" ajax="true" ajax-loader-id="">
+									<input class="input input_qty" type="number" name="qty" value="1" min="0" />
+									<button class="button button_device" type="submit">Заказать</button>
+								</form>
+							</div> -->
+						</xsl:if>
+						<div class="order order_product" id="cart_list_{$p/@id}">
+							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+								<xsl:if test="$has_price">
+									<input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
+									<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+								</xsl:if>
+								<xsl:if test="not($has_price)">
+									<input class="input input_qty" type="number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="1" />
+									<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+								</xsl:if>
+							</form>
+						</div>
+					</div>
+
 					<!-- цена -->
-					<xsl:if test="$has_price">
+					<!-- <xsl:if test="$has_price">
 						<div class="price price_product">
 							<xsl:if test="$p/price_old">
 								<div class="price__item price__item_old">
@@ -140,26 +176,47 @@
 								<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
 							</div>
 						</div>
-					</xsl:if>
+					</xsl:if> -->
+
+					<xsl:choose>
+						<xsl:when test="$p/qty and $p/qty != '0'"><div class="status__a"> в наличии</div></xsl:when>
+						<xsl:otherwise><div class="status__na">под заказ: 3-7 дней</div></xsl:otherwise>
+					</xsl:choose>
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<div id="cart_list_{$p/@id}" class="order order_product">
+						<div class="add add_product">
+							<div id="fav_list_{$p/@id}">
+								<a class="add__item" href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+									<img src="img/icon-device-02.png" alt="" />
+									<!-- <span><xsl:value-of select="$compare_add_label"/></span> -->
+								</a>
+							</div>
+							<div id="compare_list_{$p/@id}">
+								<a class="add__item" href="{$p/to_compare}" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+									<img src="img/icon-device-01.png" alt="" />
+									<!-- <span><xsl:value-of select="$go_to_compare_label"/></span> -->
+								</a>
+							</div>
+						</div>
+						<a class="info-link" href="/oplata_i_dostavka/">
+							<img src="img/icon-info.png" alt="" />
+							<span>Оплата и доставка</span>
+						</a>
+						<!-- <div id="cart_list_{$p/@id}" class="order order_product">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
+									<input type="number" class="input input_size_lg input_type_number" name="qty" value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
 									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<!-- кнопка запросить цену на стрранице товара -->
+											 value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="0.1"/>
 									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 							</form>
-						</div>
-						<div class="add add_product">
+						</div> -->
+						<!-- <div class="add add_product">
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
 									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
@@ -172,18 +229,16 @@
 									<span><xsl:value-of select="$go_to_compare_label"/></span>
 								</a>
 							</div>
-						</div>
+						</div> -->
 					</div>
+					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 
-					<!--
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-					</xsl:choose>
-					-->
+
+
+
 
 					<!-- параметры -->
-					<table class="params">
+					<!-- <table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
@@ -194,7 +249,7 @@
 								<td><xsl:value-of select="$param"/></td>
 							</tr>
 						</xsl:for-each>
-					</table>
+					</table> -->
 				</xsl:if>
 
 				<!-- один клик и своя цена не сверстаны -->
@@ -235,13 +290,11 @@
 							<div class="multi-device__actions" id="cart_list_{@id}">
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
 										<input type="submit" class="button" value="{$to_cart_available_label}" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+										<input type="number" class="text-input" name="qty" value="1" min="0" />
 										<input type="submit" class="button" value="{$to_cart_na_label}" />
 									</xsl:if>
 								</form>
@@ -267,7 +320,7 @@
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 				</div>
 
-				<div class="product-icons">
+				<!-- <div class="product-icons">
 					<xsl:if test="$p/files">
 						<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
 							<div class="icon icon_size_lg">
@@ -288,7 +341,7 @@
 						</div>
 						<span class="icon-link__item">распечатать</span>
 					</a>
-				</div>
+				</div> -->
 
 			</div>
 		</div>
@@ -329,11 +382,6 @@
 						</div>
 					</xsl:for-each>
 				</div>
-			</div>
-
-			<hr/>
-			<div class="extra-info extra-info_product">
-				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 			</div>
 		</div>
 
@@ -379,7 +427,7 @@
 
 		<xsl:if test="page/analog">
 			<div class="block devices-block pt">
-				<div class="title title_2">Аналогичные товары</div>
+				<div class="title title_2">Аналоичные товары</div>
 				<div class="devices-block__wrap device-carousel-similar">
 					<xsl:for-each select="page/analog">
 						<div class="devices-block__column">

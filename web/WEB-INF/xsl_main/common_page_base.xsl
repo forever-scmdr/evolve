@@ -594,7 +594,7 @@
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
-				<link  href="fotorama/fotorama.css" rel="stylesheet" />
+				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
 
