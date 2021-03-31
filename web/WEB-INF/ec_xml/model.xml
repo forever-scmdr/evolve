@@ -181,7 +181,6 @@
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
-		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -204,8 +203,9 @@
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
-		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
-		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
+		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" />
+		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" />
+		<parameter name="params_product" type="plain-text" caption="Параметры и группы, ЗАПРЕЩЕННЫЕ на странице товара" description="через | или ;" format="height: 50px" />
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
 	</item>
 
@@ -253,6 +253,10 @@
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
 		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
 		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
+
+		<parameter name="group_code" type="string" caption="Код группы" multiple="true" />
+		<parameter name="assoc_group_code" type="string" caption="Код связанной группы" multiple="true" />
+
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
 
@@ -567,6 +571,10 @@
 		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
 		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
 		<parameter name="pic" type="picture" caption="Картинка"/>
+		<parameter name="container_style" type="plain-text" caption="Стиль слайда" description="без фигурных скобок"/>
+		<parameter name="header_style" type="plain-text" caption="Стиль заголовка" description="без фигурных скобок"/>
+		<parameter name="text_style" type="plain-text" caption="Стиль текста" description="без фигурных скобок"/>
+		<parameter name="button_style" type="plain-text" caption="Стиль кнопки" description="без фигурных скобок"/>
 	</item>
 
 	<item name="banner" caption="Баннер" key="header" ag-id="867" ag-hash="-1396342996">

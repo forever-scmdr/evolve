@@ -158,6 +158,8 @@ public class MainAdminPageCreator implements AdminXML {
 	/**
 	 * Разные экшены
 	 */
+	public static final String LOAD_ROBOTS_TXT_ACTION = "admin_load_robots";
+	public static final String SAVE_ROBOTS_TXT_ACTION = "admin_save_robots";
 	public static final String PRESERVE_PASTE_BUFFER_VAR = "preserve_buffer_content";
 	public static final String INITIALIZE_ACTION = "admin_initialize";
 	public static final String SET_ITEM_ACTION = "admin_set_item";
@@ -245,6 +247,7 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String GO_TO_PARENT_INPUT = "goToParent";
 	public static final String ITEM_IDS_INPUT = "ids";
 	public static final String BUFFERED_ITEM_IDS_INPUT = "ids_b";
+	public static final String ROBOTS_INPUT = "robots_content";
 	/**
 	 * Значения
 	 */
@@ -280,11 +283,12 @@ public class MainAdminPageCreator implements AdminXML {
 	public static final String IMG_UPLOADED_PAGE = "main/image_uploaded";
 	public static final String PASTE_PAGE = "main/paste";
 	public static final String USERS_PAGE = "main/users";
+	private static final String ROBOTS_PAGE = "main/robots";
 	/**
 	 * Параметры сеанса
 	 */
 	public static final String PASTE_LIST = "admin_paste_list";
-	
+
 	private static class ItemToAdd extends MetaDataWriter {
 		private final String baseItem; // Имя айтема-родоначальника 
 		private final ArrayList<String> extenders;
@@ -626,6 +630,15 @@ public class MainAdminPageCreator implements AdminXML {
 		addViewLinks(basePage, parentId);
 		return basePage;
 	}
+	/**
+	 * Загружает форму для редактрования файла robots.txt
+	 */
+	AdminPage createRobotsTxtContentPage(String content) {
+		AdminPage basePage = new AdminPage(ROBOTS_PAGE, domain, currentUser.getName());
+		basePage.addElement(new LeafMDWriter("robots_txt", content));
+		return basePage;
+	}
+
 	/**
 	 * Создает часть страницы, которая содержит список айтемов, доступных для прикрепления к ним выбранного айтема, а также
 	 * список айтемов, к которым прикреплен выбранный айтем

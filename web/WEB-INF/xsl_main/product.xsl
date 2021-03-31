@@ -61,17 +61,24 @@
 	</xsl:template>
 
 	<xsl:template match="group">
-		<xsl:if test="parameter/value != ''">
+		<xsl:param name="banish"/>
+		<xsl:variable name="parameter" select="parameter"/>
+		<xsl:if test="parameter != '' and not($banish = @name)">
 			<tr>
-				<th colspan="2"><b><xsl:value-of select="@name"/></b></th>
+				<th colspan="2">
+					<b><xsl:value-of select="@name"/></b>
+				</th>
 			</tr>
-			<xsl:apply-templates select="parameter"/>
+			<xsl:apply-templates select="parameter">
+				<xsl:with-param name="banish" select="$banish"/>
+			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="parameter">
+		<xsl:param name="banish"/>
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
-		<xsl:if test="$param">
+		<xsl:if test="$param  and not($banish = $param/@caption)">
 			<tr>
 				<td><xsl:value-of select="$param/@caption"/></td>
 				<td><xsl:value-of select="$param"/></td>
@@ -138,6 +145,14 @@
 							<div class="price__item price__item_new">
 								<span class="price__label">Цена<xsl:if test="$p/price_old"> со скидкой</xsl:if></span>
 								<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
+							</div>
+						</div>
+					</xsl:if>
+
+					<xsl:if test="not($has_price)">
+						<div class="price price_product">
+							<div class="price__item price__item_new">
+								<span class="price__value">Ожидается</span>
 							</div>
 						</div>
 					</xsl:if>
@@ -314,12 +329,20 @@
 						</div>
 					</xsl:if>
 					<xsl:if test="$p/params">
+						<xsl:variable name="user_banished_params" select="tokenize($sel_sec/params_product, '[\|;]\s*')"/>
 						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
 							<table class="full-params">
-								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
+								<xsl:variable name="params_xml_item" select="if($p/product_section/params_xml != '') then $p/product_section/params_xml else $p/params_xml"/>
+
 								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
-								<xsl:apply-templates select="$params_xml/params/group"/>
-								<xsl:apply-templates select="$params_xml/params/parameter"/>
+
+
+								<xsl:apply-templates select="$params_xml/params/group">
+									<xsl:with-param name="banish" select="$user_banished_params"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$params_xml/params/parameter">
+									<xsl:with-param name="banish" select="$user_banished_params"/>
+								</xsl:apply-templates>
 							</table>
 						</div>
 					</xsl:if>
@@ -337,7 +360,7 @@
 			</div>
 		</div>
 
-		<xsl:if test="page/grouped">
+		<xsl:if test="page/grouped[gallery[2] and not(code = $p/code)]">
 			<div class="block devices-block pt">
 				<div class="title title_2">Другие цвета данной модели</div>
 				<div class="devices-block__wrap device-carousel-colors">

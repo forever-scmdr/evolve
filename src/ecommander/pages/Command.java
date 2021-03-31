@@ -137,7 +137,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param formName
 	 * @return
 	 */
-	protected final  MultipleHttpPostForm getSessionForm(String formName) {
+	protected final MultipleHttpPostForm getSessionForm(String formName) {
 		return page.getSessionContext().getForm(formName);
 	}
 	/**

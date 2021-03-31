@@ -533,11 +533,12 @@
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product_extra"/>
-			<list item="params_xml"/>
+			
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="cur_sec" style="key"/>
 				</link>
+				<list item="params_xml"/>
 			</ancestor>
 			<include name="PRODUCT_PARAMS_LINKS"/>
 			<list item="line_product" id="lprod">
@@ -1734,6 +1735,7 @@
         <request>
             <var name="action"/>
             <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
+            <var name="file_location" value="catalog:big_integration"/>
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">

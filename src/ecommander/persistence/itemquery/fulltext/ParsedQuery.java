@@ -9,7 +9,7 @@ import org.apache.lucene.search.Query;
 
 public class ParsedQuery extends LuceneQueryCreator {
 
-	private static final String ESCAPE_CHARS = "-!(){}[]^\"~:\\";
+	private static final String ESCAPE_CHARS = "-!(){}[]^\"~:\\&+|/";
 
 	protected String escapeInput(String input) {
 		StringBuilder sb = new StringBuilder();
@@ -31,5 +31,12 @@ public class ParsedQuery extends LuceneQueryCreator {
 			ServerLogger.error("Error parsing Lucene query", e);
 			return parser.createBooleanQuery(param, value, occur);
 		}
+	}
+
+	@Override
+	protected QueryParser createQueryParser(String paramName) {
+		QueryParser parser = super.createQueryParser(paramName);
+		parser.setDefaultOperator(QueryParser.Operator.AND);
+		return parser;
 	}
 }

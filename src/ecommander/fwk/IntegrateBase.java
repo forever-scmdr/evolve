@@ -16,14 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
  *
- * 
+ *
  * <page> <message>Валидация показала наличие следующих ошибок. Интеграция не произведена</message> <error line="10" coloumn="30">Сообщение об
  * ошибке 1</error> <error line="20" coloumn="30">Сообщение об ошибке 2</error> .............. <error line="500" coloumn="40">Сообщение об ошибке
  * 50</error> </page>
- * 
- * 
- * @author EEEE
  *
+ * @author EEEE
  */
 public abstract class IntegrateBase extends Command {
 
@@ -52,7 +50,7 @@ public abstract class IntegrateBase extends Command {
 		private Date date;
 		private String message;
 
-		private LogMessage(String message, Object...params) {
+		private LogMessage(String message, Object... params) {
 			this.date = new Date();
 			this.message = MessageFormatter.arrayFormat(message, params).getMessage();
 		}
@@ -78,7 +76,7 @@ public abstract class IntegrateBase extends Command {
 			this.originator = originator;
 		}
 
-		private Error(Throwable e, Info info){
+		private Error(Throwable e, Info info) {
 			message = ExceptionUtils.getStackTrace(e);
 			lineNumber = info.lineNumber;
 			position = info.position;
@@ -151,13 +149,13 @@ public abstract class IntegrateBase extends Command {
 			this.lineNumber++;
 		}
 
-		public synchronized void addLog(String message, Object...params) {
+		public synchronized void addLog(String message, Object... params) {
 			if (log.size() >= logSize)
 				log.removeFirst();
 			log.addLast(new LogMessage(message, params));
 		}
 
-		public synchronized void pushLog(String message, Object...params) {
+		public synchronized void pushLog(String message, Object... params) {
 			if (log.size() >= logSize)
 				log.removeLast();
 			log.addFirst(new LogMessage(message, params));
@@ -171,7 +169,7 @@ public abstract class IntegrateBase extends Command {
 			errors.add(new Error(message, lineNumber, position));
 		}
 
-		public synchronized void addError(Throwable e){
+		public synchronized void addError(Throwable e) {
 			errors.add(new Error(e, this));
 		}
 
@@ -185,10 +183,11 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void addSlowQuery(String queryLog, long nanos) {
 			slowQueries.put(nanos, queryLog);
-			if(slowQueries.size() > 100){
+			if (slowQueries.size() > 100) {
 				slowQueries.remove(slowQueries.firstKey());
 			}
 		}
+
 		public String getHost() {
 			return host;
 		}
@@ -222,14 +221,14 @@ public abstract class IntegrateBase extends Command {
 				doc.startElement("error", "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
 						.addText(error.message).endElement();
 			}
-			if(slowQueries.size() > 0){
+			if (slowQueries.size() > 0) {
 				doc.startElement("slow");
-				for(Map.Entry<Long, String> entry : slowQueries.entrySet()){
+				for (Map.Entry<Long, String> entry : slowQueries.entrySet()) {
 					doc
 							.startElement("q")
 							.startElement("log").addText(entry.getValue()).endElement()
-							.startElement("time").addText(entry.getKey()/1000000).endElement()
-					.endElement();
+							.startElement("time").addText(entry.getKey() / 1000000).endElement()
+							.endElement();
 
 
 				}
@@ -262,55 +261,72 @@ public abstract class IntegrateBase extends Command {
 
 	public IntegrateBase(Command outer) {
 		super(outer);
+		if(IntegrateBase.class.isAssignableFrom(outer.getClass())){
+			this.info = ((IntegrateBase)outer).getInfo();
+		}else {
+			info = new Info();
+		}
 	}
 
-	private Info getInfo() {
+	protected Info getInfo() {
 		if (info != null)
 			return info;
 		return newInfo();
 	}
-	
+
 	private Info newInfo() {
 		info = new Info();
 		return info;
 	}
+
 	/**
 	 * Установить текущую операцию
+	 *
 	 * @param opName
 	 */
 	protected void setOperation(String opName) {
 		getInfo().setOperation(opName);
 	}
+
 	/**
 	 * Установить текущий номер строки
+	 *
 	 * @param lineNumber
 	 */
 	protected void setLineNumber(int lineNumber) {
 		getInfo().setLineNumber(lineNumber);
 	}
+
 	/**
 	 * Установить количество обработанных информационных единиц (например, товаров)
+	 *
 	 * @param processed
 	 */
 	protected void setProcessed(int processed) {
 		getInfo().setProcessed(processed);
 	}
+
 	/**
 	 * Добавить запись в конец лога
+	 *
 	 * @param message
 	 */
 	protected void addLog(String message) {
 		getInfo().addLog(message);
 	}
+
 	/**
 	 * Добавить запись в начало лога
+	 *
 	 * @param message
 	 */
 	protected void pushLog(String message) {
 		getInfo().pushLog(message);
-	}	
+	}
+
 	/**
 	 * Добавить ошибку с точным местом в файле интеграции
+	 *
 	 * @param message
 	 * @param lineNumber
 	 * @param position
@@ -318,20 +334,22 @@ public abstract class IntegrateBase extends Command {
 	protected void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
+
 	/**
 	 * Добавить ошибку с неточным местом в файле интеграции
+	 *
 	 * @param message
 	 * @param originator
 	 */
 	protected void addError(String message, String originator) {
 		getInfo().addError(message, originator);
-	}	
-	
+	}
+
 	/*********************************************************************************************************
 	 *********************************************************************************************************
-	 * 
+	 *
 	 * САМ РАЗБОР ФАЙЛА
-	 * 
+	 *
 	 *********************************************************************************************************
 	 *********************************************************************************************************/
 
@@ -364,15 +382,14 @@ public abstract class IntegrateBase extends Command {
 			boolean readyToStart = false;
 			try {
 				readyToStart = makePreparations();
-			}catch (Exception e){
-				ServerLogger.error(e);
+			} catch (Exception e) {
+				ServerLogger.error(e.getMessage(), e);
 				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
 			}
 
 			if (!readyToStart) {
 				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
 				runningTask.isFinished = true;
-				//runningTasks.remove(CLASS_NAME);
 				return buildResult();
 			}
 			setOperation("Выполнение интеграции");
@@ -382,7 +399,6 @@ public abstract class IntegrateBase extends Command {
 					integrate();
 					setOperation("Интеграция завершена успешно");
 				} catch (Exception se) {
-					se.printStackTrace();
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
 					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
@@ -403,22 +419,26 @@ public abstract class IntegrateBase extends Command {
 			return runningTask.buildResult();
 		return buildResult();
 	}
+
 	/**
 	 * Действия до начала работы потока интеграции
 	 */
 	protected abstract boolean makePreparations() throws Exception;
+
 	/**
 	 * Сам процесс интеграции
 	 */
 	protected abstract void integrate() throws Exception;
+
 	/**
 	 * Действие по прерыванию команды
 	 * Посылается команде
 	 */
 	protected abstract void terminate() throws Exception;
+
 	/**
 	 * Создать результат выполнения команды (xml документ)
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */

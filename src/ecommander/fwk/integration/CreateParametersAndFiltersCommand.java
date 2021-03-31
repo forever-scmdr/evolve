@@ -24,6 +24,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
@@ -174,7 +175,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
 
 				// Анализ параметров продуктов
-				Params params = new Params(section.getStringValue(NAME_PARAM), "s" + section.getId());
+				String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
+				String className = StringUtils.lowerCase((StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId);
+				className = Strings.createXmlElementName(className);
+				Params params = new Params(section.getStringValue(NAME_PARAM), className);
 				for (Item product : products) {
 					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
 					for (Item oldParam : oldParams) {
@@ -202,9 +206,6 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				}
 
 				// Создание фильтра
-				String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
-				String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
-				className = StringUtils.lowerCase(className);
 				String classCaption = section.getStringValue(NAME_PARAM);
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
@@ -244,15 +245,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 
 		try {
+			changeRights("WEB-INF", "ec_xml");
 			pushLog("Попытка обновить информационную модель");
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 			pushLog("Информационную модель обновлена");
-			if(SystemUtils.IS_OS_LINUX){
-				pushLog("Попытка смены прав доступа к модели");
-				Path ecXml = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml");
-				Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", ecXml.toAbsolutePath().toString()});
-				pushLog("Прав доступа к модели успешно изменены");
-			}
+			changeRights("WEB-INF", "ec_xml");
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);
 			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
@@ -266,6 +263,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		for (Item section : sections) {
 			String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
 			String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
+			className = Strings.createXmlElementName(className);
 			ItemType paramDesc = ItemTypeRegistry.getItemType(StringUtils.lowerCase(className));
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			if (products.size() > 0) {
@@ -319,5 +317,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
 		System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
+	}
+
+	private void changeRights(String... folder) throws IOException {
+		if(!SystemUtils.IS_OS_LINUX || folder == null || folder.length == 0) return;
+		Path path = Paths.get(AppContext.getContextPath(),folder);
+		Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", path.toAbsolutePath().toString()});
 	}
 }

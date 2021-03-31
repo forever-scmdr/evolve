@@ -1,25 +1,17 @@
 package lunacrawler.fwk;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
+import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
+import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
+import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -29,15 +21,17 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import ecommander.controllers.AppContext;
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
-import net.sf.saxon.TransformerFactoryImpl;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * В стилях самостоятельные сущности должны содержать атрибут ID. По этому ID они будут идентифицироваться на разных страницах
  * одного сайта. Поэтому ID должен получаться как часть URL, ведущего на страницу
@@ -169,6 +163,7 @@ import net.sf.saxon.TransformerFactoryImpl;
 public class CrawlerController {
 
 	public static final String ID = "id";
+	public static final String URL = "url";
 	public static final String H_PARENT = "h_parent"; // hierarchy parent
 	public static final String PARENT = "parent";
 	public static final String ELEMENT = "element";
@@ -179,7 +174,7 @@ public class CrawlerController {
 	public static final String APPEND_IF_DIFFERS = "append-if-differs";
 	public static final String DOWNLOAD = "download";
 
-	public enum Mode { get, transform, join, compile, files, all};
+	public enum Mode { get, transform, join, compile, files, all_but_get, all};
 
 	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
 	public static final String STORAGE_DIR = "parsing.storage_dir"; // директория для хранения временных файлов программой crawler4j
@@ -250,10 +245,12 @@ public class CrawlerController {
 	private static class ParsedItem {
 		private String id;
 		private String element;
+		private String url;
 
-		public ParsedItem(String id, String element) {
+		public ParsedItem(String id, String element, String url) {
 			this.id = id;
 			this.element = element;
+			this.url = url;
 		}
 
 		@Override
@@ -368,16 +365,16 @@ public class CrawlerController {
 		if (mode == Mode.get || mode == Mode.all) {
 			initAndStartCrawler(crawlerClass);
 		}
-		if (mode == Mode.transform || mode == Mode.all) {
+		if (mode == Mode.transform || mode == Mode.all || mode == Mode.all_but_get) {
 			transformSource();
 		}
-		if (mode == Mode.join || mode == Mode.all) {
+		if (mode == Mode.join || mode == Mode.all || mode == Mode.all_but_get) {
 			joinData();
 		}
-		if (mode == Mode.compile || mode == Mode.all) {
+		if (mode == Mode.compile || mode == Mode.all || mode == Mode.all_but_get) {
 			compileAndBuildResult();
 		}
-		if (mode == Mode.files || mode == Mode.all) {
+		if (mode == Mode.files || mode == Mode.all || mode == Mode.all_but_get) {
 			downloadFiles();
 		}
 	}
@@ -838,7 +835,9 @@ public class CrawlerController {
 				String xml = new String(Files.readAllBytes(xmlFile), UTF_8);
 				Document pageDoc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 				Element fullItem = pageDoc.children().first();
-				ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName());
+				Elements hrefEls = pageDoc.getElementsByTag(URL);
+				String href = hrefEls.first() != null ? hrefEls.first().ownText() : "";
+				ParsedItem item = new ParsedItem(fullItem.attr(ID), fullItem.tagName(), href);
 				Elements directParents = fullItem.getElementsByTag(H_PARENT);
 				boolean hasValidParents = false;
 				// Добавить запись для каждого отдельного родителя (считается что он непосредственный)
@@ -851,7 +850,7 @@ public class CrawlerController {
 						}
 						hasValidParents |= StringUtils.isNotBlank(parentId);
 						if (StringUtils.isNotBlank(parentId)) {
-							ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT));
+							ParsedItem parent = new ParsedItem(parentId, directParent.attr(ELEMENT), directParent.attr(URL));
 							if (parentChildren.containsKey(parent)) {
 								parentChildren.get(parent).add(item);
 							} else {
@@ -920,7 +919,7 @@ public class CrawlerController {
 	 * @param parent
 	 */
 	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
-		xml.startElement(parent.element, ID, parent.id);
+		xml.startElement(parent.element, ID, parent.id, URL, parent.url);
 		// Добавить всех потомков
 		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
 		if (children != null) {
@@ -937,11 +936,15 @@ public class CrawlerController {
 	 * @return
 	 */
 	String getStyleForUrl(String url) {
+		String style = null;
 		for (Entry<String, String> entry : urlStyles.entrySet()) {
-			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey()))
-				return entry.getValue();
+			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey())) {
+				style = entry.getValue();
+				if (!StringUtils.equalsIgnoreCase(StringUtils.trim(style), NO_TEMPLATE))
+					return style;
+			}
 		}
-		return null;
+		return style;
 	}
 	
 	private void initElementCache(String fileName) {

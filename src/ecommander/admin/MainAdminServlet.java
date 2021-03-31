@@ -1,5 +1,6 @@
 package ecommander.admin;
 
+import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
 import ecommander.filesystem.DeleteItemFileUnit;
@@ -18,14 +19,18 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,6 +50,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 	
 	
 	private static class UserInput {
+		private String robotsContent;
 		// ID типа айтема
 		private int itemTypeId= -1;
 		// Является ли действие пользователя действием в режиме визуального редактирования
@@ -185,6 +191,12 @@ public class MainAdminServlet extends BasicAdminServlet {
 			resp.sendRedirect(target);
 			return;
 		}
+		else if(actionName.equalsIgnoreCase(MainAdminPageCreator.LOAD_ROBOTS_TXT_ACTION)){
+			result = loadRobotsTxt(pageCreator);
+		}
+		else if(actionName.equalsIgnoreCase(MainAdminPageCreator.SAVE_ROBOTS_TXT_ACTION)){
+			result = saveRobotsTxt(input, pageCreator);
+		}
 		if (result != null) {
 			// Редирект
 			if (result.isRedirect()) {
@@ -193,6 +205,33 @@ public class MainAdminServlet extends BasicAdminServlet {
 				result.output(resp);
 			}
 		}
+	}
+
+	/**
+	 * Загрузка robots.txt
+	 * @param pageCreator
+	 * @return форма редактирования robots.txt
+	 * @throws IOException
+	 */
+	private AdminPage loadRobotsTxt(MainAdminPageCreator pageCreator) throws IOException {
+		File robots = new File(AppContext.getContextPath(), "robots.txt");
+		String content = (robots.isFile())? FileUtils.readFileToString(robots, StandardCharsets.UTF_8) : "";
+		content = content.replaceAll("\t", "    ");
+		return pageCreator.createRobotsTxtContentPage(content);
+	}
+
+	/**
+	 * Сохранение изменений в robots.txt
+	 * @param pageCreator
+	 * @param in
+	 * @return форма редактирования robots.txt
+	 * @throws IOException
+	 */
+	private AdminPage saveRobotsTxt(UserInput in, MainAdminPageCreator pageCreator) throws IOException {
+		String content = in.robotsContent;
+		File robots = new File(AppContext.getContextPath(), "robots.txt");
+		FileUtils.write(robots, content.replaceAll(" {4}", "\t"), StandardCharsets.UTF_8);
+		return pageCreator.createRobotsTxtContentPage(content);
 	}
 
 	/**
@@ -223,6 +262,7 @@ public class MainAdminServlet extends BasicAdminServlet {
 				//input.itemId = itemId;
 			}
 		}
+		input.robotsContent = req.getParameter(MainAdminPageCreator.ROBOTS_INPUT);
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT)))
 			input.itemId = Long.parseLong(req.getParameter(MainAdminPageCreator.ITEM_ID_INPUT));
 		if (!StringUtils.isBlank(req.getParameter(MainAdminPageCreator.ITEM_TYPE_INPUT)))
