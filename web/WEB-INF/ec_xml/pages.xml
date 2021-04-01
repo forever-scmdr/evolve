@@ -1462,14 +1462,14 @@
 	<!--//                                                                          -->
 	<!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
 	<!--//                                                                          -->
-	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.DeployParsedSingleSameCatalog" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+<!--	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">-->
+<!--		<request>-->
+<!--			<var name="action"/>-->
+<!--		</request>-->
+<!--		<command class="extra.DeployParsedSingleSameCatalog" clear-cache="yes">-->
+<!--			<result name="complete" type="xml"/>-->
+<!--		</command>-->
+<!--	</page>-->
 
 
 	<!--//                                                                          -->
@@ -1483,17 +1483,6 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
-
-	<page name="import_from_ancient" template="integration" authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="extra.ImportFromAncientXML" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 
     <page name="crawl" template="integration/crawl">
         <request>
@@ -1515,14 +1504,14 @@
         </command>
     </page>
 
-    <page name="integrate_parsed" template="integrate_parsed">
-        <request>
-            <var name="action"/>
-        </request>
-        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
-            <result name="complete" type="xml"/>
-        </command>
-    </page>
+<!--    <page name="integrate_parsed" template="integrate_parsed">-->
+<!--        <request>-->
+<!--            <var name="action"/>-->
+<!--        </request>-->
+<!--        <command class="extra.IntegrateParsedCommand" clear-cache="yes">-->
+<!--            <result name="complete" type="xml"/>-->
+<!--        </command>-->
+<!--    </page>-->
 
 
     <page name="create_filters" template="create_filters">
@@ -1547,12 +1536,6 @@
 		</command>
 	</page>
 
-
-	<page name="update_prices" template="update_prices">
-		<command class="extra.UpdatePrices" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
 
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
