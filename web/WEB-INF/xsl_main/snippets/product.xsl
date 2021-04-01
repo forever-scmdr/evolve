@@ -19,7 +19,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<div class="card device">
+		<div class="device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
@@ -59,25 +59,28 @@
 				<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
 			</div>
 
-			<!-- device title -->
-			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
-
-			<!-- device identification code -->
-			<div class="text_size_sm"><xsl:value-of select="code"/></div>
-
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
 				<div class="price device__price">
+					<div class="price__item_new">
+						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+					</div>
 					<xsl:if test="price_old">
 						<div class="price__item_old">
 							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 						</div>
 					</xsl:if>
-					<div class="price__item_new">
-						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-					</div>
 				</div>
 			</xsl:if>
+
+
+			<!-- device title -->
+			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
+
+			<!-- device identification code -->
+			<!-- <div class="text_size_sm"><xsl:value-of select="code"/></div> -->
+
+
 
 			<!-- one click -->
 			<xsl:if test="$is_one_click">
@@ -107,14 +110,14 @@
 						<xsl:if test="$has_price">
 							<input type="number" class="input input_type_number" name="qty"
 								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-							<button class="button button_not-available" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="input input_type_number" name="qty"
+							<input type="number" class="input input_type_number" name="qty"
 								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
 							<!-- кнопка запросить цену в списке товаров -->
-							<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+							<button class="button button_device button_na" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
 					</form>
 				</div>
@@ -229,7 +232,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<div class="device__code">Артикул: <xsl:value-of select="code"/></div>
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -261,37 +264,34 @@
 
 			</div>
 
-			<!-- device price -->
-			<div class="device__column">
-				<div class="price device__price">
-					<xsl:if test="$has_price">
-						<xsl:if test="price_old">
-							<div class="price__item_old">
-								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-							</div>
-						</xsl:if>
-						<div class="price__item_new">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-						</div>
-					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<div></div>
-					</xsl:if>
-				</div>
-			</div>
 
 			<!-- stock status (not displayed, delete display: none to show) -->
-			<div class="device__column" style="display: none">
+			<!-- <div class="device__column" style="display: none">
 				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
 					<div class="">в наличии</div>
 				</xsl:if>
 				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
 					<div class="">под заказ</div>
 				</xsl:if>
-			</div>
+			</div> -->
 
 			<div class="device__column">
-
+				<!-- device-price -->
+				<div class="price device__price">
+					<xsl:if test="$has_price">
+						<div class="price__item_new">
+							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</div>
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div></div>
+					</xsl:if>
+				</div>
 				<!-- device order -->
 				<xsl:if test="not($has_lines)">
 					<div class="order device-order" id="cart_list_{@id}">
@@ -299,12 +299,12 @@
 							<xsl:if test="$has_price">
 								<input type="number" class="input input_type_number" name="qty"
 									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="hidden" class="input input_type_number" name="qty"
+								<input type="number" class="input input_type_number" name="qty"
 									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+								<button class="button button_device button_na" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 							</xsl:if>
 						</form>
 					</div>

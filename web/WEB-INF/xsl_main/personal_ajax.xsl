@@ -21,12 +21,10 @@
 					<span class="icon-link__item">Анкета</span>
 				</a> /
 				<a href="{page/purchase_history_link}" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
 					<span class="icon-link__item">Заказы</span>
 				</a> /
 				<a href="/logout.login?target=index" class="icon-link">
-					<div class="icon"><img src="img/icon-lock.svg" alt="" /></div>
-					<span class="icon-link__item">x</span>
+					<span class="icon-link__item">×</span>
 				</a>
 			</div>
 		</xsl:if>

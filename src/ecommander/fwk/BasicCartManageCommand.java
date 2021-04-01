@@ -478,6 +478,9 @@ public abstract class BasicCartManageCommand extends Command {
 				cart = getSessionMapper().createSessionRootItem(CART_ITEM);
 				getSessionMapper().saveTemporaryItem(cart);
 			}
+		}else{
+			cart = getSessionMapper().createSessionRootItem(CART_ITEM);
+			getSessionMapper().saveTemporaryItem(cart);
 		}
 	}
 
