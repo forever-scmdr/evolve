@@ -27,7 +27,7 @@
 		</personal>
 
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="false">
+			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
 			</list>
 		</usergroup>
@@ -453,7 +453,7 @@
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="false">
+			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
 			</list>
 		</usergroup>
@@ -1837,7 +1837,7 @@
 
 	<page name="admin_extra" template="admin/extra" authority-groups="common">
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="false">
+			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
 			</list>
 		</usergroup>
