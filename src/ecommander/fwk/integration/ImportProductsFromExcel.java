@@ -527,8 +527,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			//section not exists
 			if (currentSection == null) {
 				saveNewSection(code, name, parentCode);
-				if("-".equals(hide)){
+				if("+".equals(hide)){
 					currentSection.setValue("hide", (byte)1);
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).ignoreUser().noTriggerExtra().noFulltextIndex());
 				}
 				return;
 			}
@@ -561,8 +562,9 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					updateSection(name, parentCode);
 					break;
 			}
-			if("-".equals(hide)){
+			if("+".equals(hide)){
 				currentSection.setValue("hide", (byte)1);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).ignoreUser().noTriggerExtra().noFulltextIndex());
 			}
 		}
 
