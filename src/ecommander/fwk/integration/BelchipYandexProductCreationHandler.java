@@ -55,6 +55,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 	}
 
 	private final BigDecimal quotient;
+	private final Map<String, BigDecimal> specialQuotients = new HashMap<>();
 
 
 	private Locator locator;
@@ -75,14 +76,27 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 	private boolean getPrice = false;
 	private Assoc catalogLinkAssoc;
 
-	public BelchipYandexProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator, BigDecimal quotient) {
+	public BelchipYandexProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) throws Exception {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
-		this.quotient = quotient;
+		Item belchipQuotients = ItemQuery.loadSingleItemByName("belchip_quotients");
+		quotient = belchipQuotients.getDecimalValue("belchip_q", BigDecimal.ONE);
+		initQuotients(belchipQuotients);
+	}
+
+	private void initQuotients(Item belchipQuotients) {
+		String specialSections = belchipQuotients.getStringValue("add_q");
+		if (StringUtils.isNotBlank(specialSections)) {
+			for (String q : specialSections.split("[\\n;]")) {
+				String[] pair = q.split("=");
+				BigDecimal qtn = new BigDecimal(pair[1].trim().replace(',', '.'));
+				specialQuotients.put(pair[0].trim(), qtn);
+			}
+		}
 	}
 
 	@Override
@@ -94,11 +108,11 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isExistingProduct = product != null;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
+				String secCode = "-000-";
+				if (categoryIds.size() > 0) {
+					secCode = categoryIds.iterator().next();
+				}
 				if (!isExistingProduct) {
-					String secCode = "-000-";
-					if (categoryIds.size() > 0) {
-						secCode = categoryIds.iterator().next();
-					}
 					Item section = sections.get(secCode);
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
@@ -130,12 +144,12 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
 					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OPT_PARAM))
-					product.setValue(PRICE_OPT_PARAM, calculatePrice(singleParams.get(OPTPRICE_ELEMENT)));
+					product.setValue(PRICE_OPT_PARAM, calculatePrice(singleParams.get(OPTPRICE_ELEMENT), secCode));
 				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
-					product.setValue(PRICE_OLD_PARAM, calculatePrice(singleParams.get(OLDPRICE_ELEMENT)));
+					product.setValue(PRICE_OLD_PARAM, calculatePrice(singleParams.get(OLDPRICE_ELEMENT), secCode));
 				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
-					product.setValue(PRICE_OPT_OLD_PARAM, calculatePrice(singleParams.get(OLDOPTPRICE_ELEMENT)));
-				product.setValue(PRICE_PARAM, calculatePrice(singleParams.get(PRICE_ELEMENT)));
+					product.setValue(PRICE_OPT_OLD_PARAM, calculatePrice(singleParams.get(OLDOPTPRICE_ELEMENT), secCode));
+				product.setValue(PRICE_PARAM, calculatePrice(singleParams.get(PRICE_ELEMENT), secCode));
 				if (product.getItemType().hasParameter(MIN_QTY_PARAM)) {
 					String minQty = singleParams.get(MIN_QUANTITY_ELEMENT);
 					if (StringUtils.isBlank(minQty))
@@ -330,12 +344,15 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 	}
 
 
-	private BigDecimal calculatePrice(String value) {
+	private BigDecimal calculatePrice(String value, String secCode) {
 		BigDecimal price = DecimalDataType.parse(value, 2);
 		if (price != null) {
-			return price.multiply(quotient);
+			price = price.multiply(quotient);
+			if (specialQuotients.containsKey(secCode)) {
+				price = price.multiply(specialQuotients.get(secCode));
+			}
 		}
-		return null;
+		return price;
 	}
 
 }

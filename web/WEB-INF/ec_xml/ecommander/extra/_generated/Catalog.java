@@ -1,19 +1,16 @@
 
 package ecommander.extra._generated;
 
+import java.io.File;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
-
-import java.io.File;
-import java.math.BigDecimal;
 
 public class Catalog
     extends Item
 {
 
     public final static String _NAME = "catalog";
-    public final static String BELCHIP_Q = "belchip_q";
     public final static String SHIP_DATE = "ship_date";
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
@@ -37,28 +34,6 @@ public class Catalog
 
     public static Catalog newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
-    }
-
-    public void set_belchip_q(BigDecimal value) {
-        setValue("belchip_q", value);
-    }
-
-    public void setUI_belchip_q(String value)
-        throws Exception
-    {
-        setValueUI("belchip_q", value);
-    }
-
-    public BigDecimal get_belchip_q() {
-        return getDecimalValue("belchip_q");
-    }
-
-    public BigDecimal getDefault_belchip_q(BigDecimal defaultVal) {
-        return getDecimalValue("belchip_q", defaultVal);
-    }
-
-    public boolean contains_belchip_q(BigDecimal value) {
-        return containsValue("belchip_q", value);
     }
 
     public void set_ship_date(Long value) {

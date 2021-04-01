@@ -16,6 +16,7 @@ public interface ItemNames {
     String GALLERY = "gallery";
     String CURRENCIES = "currencies";
     String CATALOG = "catalog";
+    String BELCHIP_QUOTIENTS = "belchip_quotients";
     String SECTION = "section";
     String ABSTRACT_PRODUCT = "abstract_product";
     String DESCRIBED_PRODUCT = "described_product";
@@ -171,6 +172,14 @@ public interface ItemNames {
 
     }
 
+    public interface belchip_quotients_ {
+
+        String _ITEM_NAME = "belchip_quotients";
+        String BELCHIP_Q = "belchip_q";
+        String ADD_Q = "add_q";
+
+    }
+
     public interface block_ {
 
         String _ITEM_NAME = "block";
@@ -215,7 +224,6 @@ public interface ItemNames {
     public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
-        String BELCHIP_Q = "belchip_q";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";

@@ -16,14 +16,12 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
 public class BelChipYmlIntegrationCommand extends IntegrateBase implements CatalogConst {
 
 	private static final String INTEGRATION_DIR = "ym_integrate";
-	private BigDecimal q = BigDecimal.ONE;
 	private Collection<File> xmls;
 
 
@@ -50,7 +48,6 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		SAXParser parser = factory.newSAXParser();
 
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		q = catalog.getDecimalValue("belchip_q", q);
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
 		for (File xml : xmls) {
@@ -68,7 +65,7 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
-		DefaultHandler prodHandler = new BelchipYandexProductCreationHandler(secHandler.getSections(), info, getInitiator(), q);
+		DefaultHandler prodHandler = new BelchipYandexProductCreationHandler(secHandler.getSections(), info, getInitiator());
 		for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
 		}
