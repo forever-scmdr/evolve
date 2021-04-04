@@ -7,8 +7,44 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-
-
+	<include-definition name="DOMAINS">
+		<request>
+			<var name="domain" value="pooper.com"/>
+		</request>
+		<list item="domain" cacheable="true" cache-vars="domain">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var var="domain"/>
+				</parameter>
+			</filter>
+			<single item="custom_pages" id="custom_pages">
+				<tree item="menu_item" id="custom_page">
+					<link name="show_page" target="page" type="exclusive">
+						<var name="p" ref="custom_page" style="key"/>
+					</link>
+				</tree>
+			</single>
+			<single item="common" >
+				<list item="block_array">
+					<list item="block"/>
+				</list>
+				<single item="catalog_texts"/>
+				<single item="payment"/>
+				<single item="delivery"/>
+			</single>
+			<single item="modules">
+				<list item="named_code"/>
+			</single>
+			<single item="extra_styles">
+				<list item="style"/>
+			</single>
+			<single item="slideshow" >
+				<list item="main_slider_frame"/>
+			</single>
+			<single item="hardcode_header"></single>
+			<single item="hardcode_footer"></single>
+		</list>
+	</include-definition>
 
 	<include-definition name="COMMON">
 		<request>
@@ -51,30 +87,8 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="true" >
-			<tree item="menu_item" id="custom_page">
-				<link name="show_page" target="page" type="exclusive">
-					<var name="p" ref="custom_page" style="key"/>
-				</link>
-			</tree>
-		</single>
- 
-		<list item="news" id="news" cacheable="true">
-			<link name="show_page" target="news" type="exclusive">
-				<var name="sel" ref="news" style="key"/>
-			</link>
-		</list>
-		<single item="common" cacheable="true">
-			<list item="block_array">
-				<list item="block"/>
-			</list>
-			<single item="catalog_texts"/>
-			<single item="payment"/>
-			<single item="delivery"/>
-		</single>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
-		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
@@ -96,9 +110,6 @@
 			<var name="cur" value=""/>
 		</link>
 
-		<single item="modules" cacheable="true">
-			<list item="named_code"/>
-		</single>
 		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
@@ -142,10 +153,6 @@
 	</include-definition>
 
 
-
-
-
-
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                                ИНДЕКС                                ////////////-->
@@ -159,7 +166,6 @@
 	<page name="index" template="index" cacheable="true" cache-vars="cur">
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
-			<list item="main_slider_frame"/>
 			<single item="seo"/>
 			<list item="product" id="prod" assoc="general">
 				<link name="show_product" target="product">
@@ -189,6 +195,7 @@
 				</link>
 			</list>
 		</single>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -212,6 +219,7 @@
 
 
     <page name="catalog" template="catalog" cacheable="true">
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -353,6 +361,7 @@
 		<link name="set_mark_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="mark" value=""/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -362,6 +371,7 @@
 		<request>
 			<var name="sec" style="key"/>
 		</request>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -439,6 +449,7 @@
 		<link name="set_sort_default" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value=""/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -518,6 +529,7 @@
 			<var name="q" var="q"/>
 			<var name="minqty" value=""/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -589,6 +601,7 @@
 				<var name="prod" ref="grouped" style="key"/>
 			</link>
 		</list>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -645,6 +658,7 @@
 				</link>
 			</list>
 		</single>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -657,16 +671,18 @@
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
 
-    <page name="contacts" template="contacts" cacheable="true">
-        <single item="contacts" cacheable="true">
-			<single item="seo"/>
-		</single>
-		<include name="COMMON"/>
-	</page>
+<!--    <page name="contacts" template="contacts" cacheable="true">-->
+<!--		<single item="contacts" cacheable="true">-->
+<!--			<single item="seo"/>-->
+<!--		</single>-->
+<!--		<include name=DOMAINS"/>
+<include name="COMMON"/>-->
+<!--	</page>-->
 
 
     <page name="page" cacheable="true" template="page" critical-item="sp">
@@ -689,6 +705,7 @@
 				</link>
 			</ancestor>
 		</single>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -996,6 +1013,7 @@
 		<link name="proceed_link" target="cart_action" type="itemform">
 			<var name="action" value="proceed"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1021,6 +1039,7 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1053,6 +1072,7 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1215,6 +1235,7 @@
 		<link name="set_view_list" target="fav">
 			<var name="view" value="list"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1241,6 +1262,7 @@
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" />
 		</list>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1279,6 +1301,7 @@
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1358,6 +1381,7 @@
 			<var name="action" value="login"/>
 			<var name="src" value="login_form"/>
 		</link>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1383,6 +1407,7 @@
 				</link>
 			</single>
 		</personal>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1408,6 +1433,7 @@
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS"/>
 		</list>
+		<include name="DOMAINS"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1580,7 +1606,6 @@
 		</list>
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
-		<link name="contacts_link" target="contacts"/>
 
 		<list item="news_item" id="ni">
 			<filter>

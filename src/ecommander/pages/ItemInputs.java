@@ -39,7 +39,9 @@ public class ItemInputs {
 	}
 
 	public void addAllParameters() {
+		boolean hasSingleParameter = false;
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
+			if(!paramDesc.isMultiple()){hasSingleParameter = true;}
 			ArrayList<String> vals = item.outputValues(paramDesc.getName());
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
@@ -52,7 +54,8 @@ public class ItemInputs {
 		}
 		// Если айтем не имеет ни одного параметра - создать один псевдопараметр, чтобы было хотя-бы одно поле ввода
 		// Это нужно для создания айетмов, которые не имеют параметров, например, каталог продукции
-		if (!inputs.isNotEmpty())
+		//if (!inputs.isNotEmpty())
+		if(!hasSingleParameter)
 			addExtra("pseudo");
 	}
 

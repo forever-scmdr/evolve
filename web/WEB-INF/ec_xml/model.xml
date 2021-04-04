@@ -444,9 +444,45 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                      ДОМЕНЫ                                          ////////////-->
+	<!--/////////////                                                                      ////////////-->
 
+	<item name="domain" caption="Домен" key="name" ag-id="1827" ag-hash="-1326197564">
+		<parameter name="name" type="string" caption="Название" description="Например http://domain.com"/>
+		<parameter name="logo" type="picture" caption="Логотип" />
+		<child item="common" single="true"/>
+		<child item="modules" single="true"/>
+		<child item="custom_pages" single="true"/>
+		<child item="extra_styles" single="true"/>
+		<child item="slideshow" single="true"/>
+		<child item="hardcode_header" single="true"/>
+		<child item="hardcode_footer" single="true"  />
+	</item>
 
+	<item name="extra_styles" caption="Стили и скрипты" ag-id="1828" ag-hash="1420120049">
+		<child item="style"/>
+	</item>
 
+	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1829" ag-hash="109780401">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="description" type="plain-text" caption="Описание" description="что делает этот скрипт или стиль?"/>
+		<parameter name="file" type="file" caption="Прикерпите файл"/>
+		<parameter name="code" type="plain-text" caption="Или введите код вручную"/>
+	</item>
+
+	<item name="slideshow" caption="Слайды" ag-id="1830" ag-hash="-795551698">
+		<child item="main_slider_frame" inline="true"/>
+	</item>
+
+	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1831" ag-hash="225061716">
+		<parameter name="code" type="plain-text" caption="код хедера"/>
+	</item>
+
+	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1832" ag-hash="177471074">
+		<parameter name="code" type="plain-text" caption="код футера"/>
+	</item>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -639,14 +675,10 @@
 		<child item="page_extra" inline="true"/>
 	</item>
 
-	<item name="news" super="menu_item seo_container" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
-		<parameter name="name" type="string" caption="Название"/>
+	<item name="news" super="menu_item seo_container" caption="Новостной раздел" key="header" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
+		<parameter name="header" type="string" caption="Название"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение"/>
 		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
-		<child item="news_item"/>
-	</item>
-
-	<item name="articles" caption="Статьи" ag-id="823" ag-hash="-1228877251">
 		<child item="news_item"/>
 	</item>
 
@@ -666,13 +698,13 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">
-		<child item="seo" single="true"/>
-		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
-		<parameter name="bottom_text" type="text" caption="Как добраться"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-	</item>
+<!--	<item name="contacts" caption="Контакты" ag-id="21" ag-hash="-567451565">-->
+<!--		<child item="seo" single="true"/>-->
+<!--		<parameter name="text" type="text" caption="Текст"/>-->
+<!--		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>-->
+<!--		<parameter name="bottom_text" type="text" caption="Как добраться"/>-->
+<!--		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>-->
+<!--	</item>-->
 
 
 	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="25" ag-hash="-1950071490">
@@ -951,16 +983,11 @@
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
 		<child item="main_page" single="true"/>
-		<child item="news_wrap" single="true"/>
-		<child item="articles" single="true"/>
 		<child item="dealers_page" single="true"/>
 		<child item="docs" single="true"/>
-		<child item="contacts" single="true"/>
-		<child item="common" single="true"/>
-		<child item="custom_pages" single="true"/>
+		<child item="domain"/>
 		<child item="registered_catalog" single="true"/>
 		<child item="system" single="true" virtual="true"/>
-		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
 		<child item="comments" single="true"/>
