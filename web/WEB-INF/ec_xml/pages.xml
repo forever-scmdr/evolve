@@ -41,10 +41,12 @@
 			<single item="slideshow" >
 				<list item="main_slider_frame"/>
 			</single>
-			<single item="delivery"/>
-			<single item="payment"/>
-			<single item="order_texts" />
-			<single item="emails" />
+			<single item="cart_and_feedback_settings">
+				<single item="delivery"/>
+				<single item="payment"/>
+				<single item="order_texts" />
+				<single item="emails" id="emails" />
+			</single>
 			<single item="hardcode_header"/>
 			<single item="hardcode_footer"/>
 		</list>
@@ -849,6 +851,7 @@
 			<var name="required" value="phone|email, message"/>
 			<var name="template" value="feedback_email"/>
 		</request>
+		<include name="DOMAINS"/>
 		<link name="success" target-var="source_page">
 			<var name="result" value="success"/>
 			<var name="message" value="Сообщение успешно отправлено, спасибо"/>
@@ -962,6 +965,7 @@
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
+		<include name="DOMAINS"/>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
 		<link name="proceed" target="proceed"/>
@@ -1104,7 +1108,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
-		<single item="common"/>
+		<include name="DOMAINS"/>
 	</page>
 
 
