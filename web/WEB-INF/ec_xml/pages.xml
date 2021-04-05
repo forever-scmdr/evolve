@@ -41,12 +41,12 @@
 			<single item="slideshow" >
 				<list item="main_slider_frame"/>
 			</single>
-			<single item="cart_and_feedback_settings">
+			<list item="cart_and_feedback_settings">
 				<single item="delivery"/>
 				<single item="payment"/>
 				<single item="order_texts" />
-				<single item="emails" id="emails" />
-			</single>
+				<list item="emails" id="emails" />
+			</list>
 			<single item="hardcode_header"/>
 			<single item="hardcode_footer"/>
 		</list>
@@ -964,8 +964,9 @@
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="domain" value="pooper.com"/>
 		</request>
-		<include name="DOMAINS"/>
+
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
 		<link name="proceed" target="proceed"/>

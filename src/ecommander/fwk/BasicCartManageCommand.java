@@ -179,7 +179,7 @@ public abstract class BasicCartManageCommand extends Command {
 				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
-		final String shopEmail = getVarSingleValue("email");
+		final String shopEmail = getShopEmail();
 
 		// Письмо для продавца
 		Multipart shopMultipart = new MimeMultipart();
@@ -313,6 +313,10 @@ public abstract class BasicCartManageCommand extends Command {
 
 	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
 		return true;
+	}
+
+	protected String getShopEmail() throws Exception {
+		return getVarSingleValue("email");
 	}
 
 
@@ -526,8 +530,11 @@ public abstract class BasicCartManageCommand extends Command {
 			return null;
 		checkStrategy();
 		loadCart();
-		if (cart != null)
-			return null;
+		if (cart != null){
+			if(getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId()).size() > 0){
+				return null;
+			}
+		}
 		String[] codeQtys = StringUtils.split(cookie, '/');
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
