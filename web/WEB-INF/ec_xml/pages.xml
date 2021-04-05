@@ -41,8 +41,12 @@
 			<single item="slideshow" >
 				<list item="main_slider_frame"/>
 			</single>
-			<single item="hardcode_header"></single>
-			<single item="hardcode_footer"></single>
+			<single item="delivery"/>
+			<single item="payment"/>
+			<single item="order_texts" />
+			<single item="emails" />
+			<single item="hardcode_header"/>
+			<single item="hardcode_footer"/>
 		</list>
 	</include-definition>
 
@@ -163,7 +167,7 @@
 
 
 
-	<page name="index" template="index" cacheable="true" cache-vars="cur">
+	<page name="index" template="index" cacheable="false" >
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<single item="seo"/>

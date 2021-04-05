@@ -459,6 +459,26 @@
 		<child item="slideshow" single="true"/>
 		<child item="hardcode_header" single="true"/>
 		<child item="hardcode_footer" single="true"  />
+		<child item="cart_and_feedback_settings" single="true" />
+	</item>
+
+	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1833" ag-hash="960890710">
+		<child item="emails" single="true"/>
+		<child item="delivery" single="true"/>
+		<child item="payment" single="true"/>
+		<child item="order_texts" single="true"/>
+	</item>
+
+	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1834" ag-hash="-1299765161">
+		<parameter name="order_email" type="plain-text" caption="Заказы слать на адреса:" format="height: 30px"/>
+		<parameter name="feedback" type="plain-text" caption="Сообщаения слать на адреса:" format="height: 30px"/>
+	</item>
+
+	<item name="order_texts" caption="Тексты в заказе" ag-id="1835" ag-hash="1973754037">
+		<parameter name="cart_text" type="text" caption="Дополнительный текстовый блок под заказом"/>
+		<parameter name="confirm_text" type="text" caption="Подтверждение о том, что заказ отправлен"/>
+		<parameter name="email_text" type="text" caption="Текст в письме клиенту"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
 	<item name="extra_styles" caption="Стили и скрипты" ag-id="1828" ag-hash="1420120049">
@@ -496,8 +516,6 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
-		<child item="delivery" single="true"/>
-		<child item="payment" single="true"/>
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>

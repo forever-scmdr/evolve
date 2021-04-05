@@ -11,7 +11,7 @@
 				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
+				"logo":"<xsl:value-of select="concat($domain/@path, $domain/logo)"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
 					"ratingCount": "53",
@@ -19,10 +19,10 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "TTD"
+					"name": "<xsl:value-of select="$domain"/>"
 				},
 				"contactPoint": [
-					<xsl:for-each select="page/common/phone" >
+					<xsl:for-each select="$common/phone" >
 						<xsl:if test="position() != 1">,</xsl:if>{
 						"@type":"ContactPoint",
 						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
@@ -30,8 +30,8 @@
 						}
 					</xsl:for-each>
 				]
-				<xsl:if test="page/common/email != ''">
-				,"email":[<xsl:for-each select="page/common/email" >
+				<xsl:if test="$common/email != ''">
+				,"email":[<xsl:for-each select="$common/email" >
 						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
 				</xsl:if>
 			}
@@ -41,17 +41,12 @@
 
 	<xsl:template name="MAIN_CONTENT" />
 
-
-
-
 	<xsl:template name="INDEX_BLOCKS">
-
-
 
 		<!-- slider -->
 		<div class="slider">
 			<div class="container">
-				<xsl:for-each select="page/main_page/main_slider_frame">
+				<xsl:for-each select="$domain/slideshow/main_slider_frame">
 					<img src="{@path}{pic}" alt="" />
 				</xsl:for-each>
 			</div>
@@ -90,8 +85,6 @@
 		</div>
 
 	</xsl:template>
-
-
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>

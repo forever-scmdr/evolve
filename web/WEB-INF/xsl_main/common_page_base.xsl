@@ -740,7 +740,8 @@
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/web.js"/>
-				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
+<!--				<script type="text/javascript" src="slick/slick.min.js"></script>-->
+
 				<script type="text/javascript">
 					$(document).ready(function(){
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
@@ -817,7 +818,7 @@
 				</xsl:for-each>
 
 
-				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+				<div class="popup" style="display: none;" id="modal_popup" > Loading... </div>
 
 			</body>
 		</html>
