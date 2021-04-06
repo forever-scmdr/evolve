@@ -532,10 +532,12 @@
 	</item>
 
 	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
+		<parameter name="link" type="string" caption="Ссылка на страницу о доставке"/>
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 
 	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">
+		<parameter name="link" type="string" caption="Ссылка на страницу об оплате"/>
 		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
 	</item>
 

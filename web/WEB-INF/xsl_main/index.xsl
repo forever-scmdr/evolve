@@ -19,7 +19,7 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "<xsl:value-of select="$domain"/>"
+					"name": "<xsl:value-of select="$domain/name"/>"
 				},
 				"contactPoint": [
 					<xsl:for-each select="$common/phone" >

@@ -9,7 +9,7 @@
 
 	<include-definition name="DOMAINS">
 		<request>
-			<var name="domain" value="pooper.com"/>
+			<var name="domain" value="super.com"/>
 		</request>
 		<list item="domain" cacheable="true" cache-vars="domain">
 			<filter>
@@ -964,7 +964,7 @@
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="domain" value="pooper.com"/>
+			<var name="domain" value="super.com"/>
 		</request>
 
 		<link name="ajax" target="cart_ajax"/>
