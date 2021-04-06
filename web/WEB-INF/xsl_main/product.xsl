@@ -197,7 +197,7 @@
 					</table> -->
 				</xsl:if>
 				<div class="product-common">
-					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+					<xsl:value-of select="$common/catalog_texts/payment" disable-output-escaping="yes"/>
 				</div>
 
 				<!-- один клик и своя цена не сверстаны -->
