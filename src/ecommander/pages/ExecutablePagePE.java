@@ -20,6 +20,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	/**
 	 * Предопределенные переменные страницы
 	 */
+	public static final String DOMAIN_VALUE = "$domain"; // текущее имя домена
 	public static final String NOW_VALUE = "$now"; // текущая дата на сервере
 	public static final String USERNAME_VALUE = "$username"; // текущий ползователь
 	public static final String PAGENAME_VALUE = "$pagename"; // название текущей страницы
@@ -151,6 +152,13 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 				addVariable(new StaticVariable(initialVar.getName(), initialVar.getDefaultValue()));
 			}
 		}
+
+		String domainName = urlBase.replaceAll("https?:\\/\\/", "");
+		if(StringUtils.endsWith(domainName, "/")){
+			domainName = domainName.replace("/", "");
+		}
+		addVariable(new StaticVariable(DOMAIN_VALUE, domainName));
+
 		// Удалить значения, переданные в негативных переменных
 		for (RequestVariablePE negVar : negativeVars) {
 			VariablePE initialVar = getInitVariablePE(negVar.getPositiveName());

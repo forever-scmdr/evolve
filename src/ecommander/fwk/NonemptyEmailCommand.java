@@ -4,8 +4,8 @@ import ecommander.controllers.PageController;
 import ecommander.model.*;
 import ecommander.pages.*;
 import ecommander.pages.var.StaticVariable;
+import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
@@ -65,7 +65,8 @@ public class NonemptyEmailCommand extends Command {
 	@Override
 	public ResultPE execute() throws Exception {
 		String topic = getVarSingleValue(TOPIC_PARAM);
-		String emailTo = getVarSingleValue(EMAIL_PARAM);
+		///String emailTo = getVarSingleValue(EMAIL_PARAM);
+		String emailTo = getEmailTo();
 		String requiredStr = getVarSingleValue(REQUIRED_PARAM);
 		if (StringUtils.isBlank(requiredStr)) requiredStr = Strings.EMPTY;
 		String spamStr = getVarSingleValue(SPAM_PARAM);
@@ -169,6 +170,14 @@ public class NonemptyEmailCommand extends Command {
 		// Удалить форму из сеанса
 		removeSessionForm(formNameStr);
 		return getResult(SUCCESS_RESULT);
+	}
+
+	private String getEmailTo() throws Exception {
+		String domain = getVarSingleValue("domain");
+		Item domainItem = ItemQuery.loadSingleItemByParamValue("domain", "name", domain);
+		ItemQuery q = new ItemQuery("emails").setParentId(domainItem.getId(), true);
+		Item emails = q.loadFirstItem();
+		return emails.getStringValue("feedback").trim();
 	}
 
 	private String validateInput(String requiredStr, InputValues message) {

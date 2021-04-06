@@ -226,6 +226,7 @@ function addVariableToUrl(url, name, value) {
  * @param lockElementIds
  */
 function lock(lockElementIds) {
+	if(isBadId(lockElementIds)) return;
 	if (Object.prototype.toString.call(lockElementIds) === '[object Array]') {
 		for (var i = 0; i < lockElementIds.length; i++) {
 			if ($('#' + lockElementIds[i]).length == 1)
@@ -238,6 +239,7 @@ function lock(lockElementIds) {
 }
 
 function unlock(lockElementIds) {
+	if(isBadId(lockElementIds)) return;
 	if (Object.prototype.toString.call(lockElementIds) === '[object Array]') {
 		for (var i = 0; i < lockElementIds.length; i++) {
 			if ($('#' + lockElementIds[i]).length == 1)
@@ -247,6 +249,10 @@ function unlock(lockElementIds) {
 		if ($('#' + lockElementIds).length == 1)
 			destroyLoader($('#' + lockElementIds));
 	}
+}
+
+function isBadId(lockElementIds) {
+	return typeof lockElementIds == "undefined" || lockElementIds == null || lockElementIds == '';
 }
 
 function coverWithLoader (el){
