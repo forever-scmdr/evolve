@@ -112,51 +112,6 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-		<div class="top-info">
-			<div class="container">
-				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
-				<!-- static -->
-				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
-				<xsl:variable name="has_many_cities" select="count($common/topper/block) &gt; 1"/>
-				<xsl:for-each select="$common/topper/block">
-					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
-					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
-							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
-								<span><xsl:value-of select="header"/></span>
-								<xsl:if test="$has_many_cities">
-									<div class="icon icon_size_sm">
-										<img src="img/icon-caret-down.svg" alt="" />
-									</div>
-								</xsl:if>
-							</a>
-						</div>
-						<div class="top-info__content">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
-					</div>
-				</xsl:for-each>
-				<!-- static end -->
-				<ul class="location-list" style="display:none">
-					<xsl:for-each select="$common/topper/block">
-						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
-				<script>
-					function showCityHeaderSelector() {
-						$('.location-list').show();
-						return false;
-					}
-					function showCityHeader(cityId, cityName) {
-						$('.top-info__wrap').hide();
-						$('.location-list').hide();
-						$('#' + cityId).show('fade', 200);
-						insertAjax('set_city?city=' + cityName);
-						return false;
-					}
-				</script>
-			</div>
-		</div>
 
 		<div class="header">
 			<div class="container">
@@ -164,46 +119,7 @@
 					<a href="{$main_host}" class="header__column logo">
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
-					<div class="header__column header__search header-search">
-						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
-							<!-- quick search end -->
-						</form>
-					</div>
-					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
-							<div class="catalog-currency">
-								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-								<ul class="currency-options">
-									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="active" select="$currency = $cur"/>
-										<li class="{'active'[$active]}">
-											<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-											<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</div>
-						</div>
-					</xsl:if>
-					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
 						<div class="links">
 							<a href="/kontakty" class="icon-link">
 								<div class="icon">
@@ -216,74 +132,11 @@
 								</div>
 							</a>
 						</div>
-						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
-							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="main-menu">
-			<div class="container">
-				<div class="main-menu__wrap wrap">
-					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
-						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
-										<a href="{show_products}" rel="#sub_{@id}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-									<xsl:if test="not(section)">
-										<a href="{show_products}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-
-							<xsl:for-each select="page/catalog/section">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
-									</xsl:for-each>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
-					<xsl:for-each select="page/news[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<div class="main-menu__item {'active'[$sel = $key]}">
-							<a href="{show_page}"><span><xsl:value-of select="name"/></span></a>
-						</div>
-					</xsl:for-each>
-					<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
-				</div>
-			</div>
-		</div>
 	</xsl:template>
 
 
@@ -299,7 +152,7 @@
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
-					<div class="footer__column">
+					<!-- <div class="footer__column">
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
@@ -307,16 +160,9 @@
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
 						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div>
-					</div>
-					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
+					</div> -->
+					<xsl:apply-templates select="$footer/block" mode="footer"/>
+					<!-- <xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/> -->
 				</div>
 			</div>
 		</div>
@@ -575,6 +421,18 @@
 
 	<xsl:template name="COMMON_LEFT_COLOUMN">
 		<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
+		<!-- news -->
+		<a href="/novosti" style="text-decoration: none; color: black">Новости</a>
+		<div class="grid">
+			<xsl:for-each select="page//news_item">
+				<div class="news__item">
+					<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
+					<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
+					<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+			</xsl:for-each>
+		</div>
 	</xsl:template>
 
 
@@ -612,17 +470,19 @@
 		<div class="content">
 			<div class="container">
 				<div class="content__wrap">
+					<xsl:if test="not(page/@name='index')">
+						<xsl:call-template name="PAGE_PATH"/>
+						<xsl:call-template name="PAGE_HEADING"/>
+					</xsl:if>
+					<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+						<div class="text">
+							<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+						</div>
+					</xsl:if>
 					<div class="content__side">
 						<xsl:call-template name="LEFT_COLOUMN"/>
 					</div>
 					<div class="content__main">
-						<xsl:call-template name="PAGE_PATH"/>
-						<xsl:call-template name="PAGE_HEADING"/>
-						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
-							<div class="text">
-								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
-							</div>
-						</xsl:if>
 						<xsl:call-template name="CONTENT"/>
 					</div>
 				</div>

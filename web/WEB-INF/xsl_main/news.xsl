@@ -22,7 +22,7 @@
 			<div class="info-items__wrap">
 				<xsl:for-each select="page/selected_news/news_item">
 					<xsl:variable name="main_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat($news/@path, $news/main_pic)"/>
-					<div class="info-item card">
+					<div class="info-item">
 						<div class="info-item__image img"><img src="{$main_pic}" alt="" style="max-width:100%;" /></div>
 						<div class="info-item__info">
 							<div class="info-item__date"><xsl:value-of select="date"/></div>

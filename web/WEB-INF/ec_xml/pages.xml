@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>           
+<?xml version="1.0" encoding="UTF-8"?>
 <site>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -58,7 +58,7 @@
 				</link>
 			</tree>
 		</single>
- 
+
 		<list item="news" id="news" cacheable="true">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
@@ -156,42 +156,43 @@
 
 
 
-	<page name="index" template="index" cacheable="true" cache-vars="cur">
-		<single item="main_page" id="main" cacheable="true">
-			<list item="main_promo_bottom"/>
-			<list item="main_slider_frame"/>
-			<single item="seo"/>
-			<list item="product" id="prod" assoc="general">
-				<link name="show_product" target="product">
-					<var name="prod" ref="prod" style="key"/>
-				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
+		<page name="index" cacheable="true" template="page" critical-item="sp">
+			<request>
+				<var name="p" value="392906"/>
+			</request>
+			<list item="news" >
+				<list item="news_item" id="ni">
+					<filter>
+						<sorting direction="DESC">
+							<var value="date"/>
+						</sorting>
+						<limit>
+							<var value="1"/>
+						</limit>
+					</filter>
+					<link name="show_news_item" target="news_item" type="exclusive">
+						<var name="ni" ref="ni" style="key"/>
+					</link>
+				</list>
 			</list>
-			<list item="custom_block">
-				<list item="custom_block"/>
-			</list>
-		</single>
-		<list item="banner_section" id="banner_section" cacheable="true">
-			<list item="banner"/>
-		</list>
-		<single item="news_wrap" cacheable="true">
-			<list item="news_item" id="ni" transit="true">
-				<filter>
-					<sorting direction="DESC">
-						<var value="date"/>
-					</sorting>
-					<limit>
-						<var value="4"/>
-					</limit>
-				</filter>
-				<link name="show_news_item" target="news_item" type="exclusive">
-					<var name="ni" ref="ni" style="key"/>
-				</link>
-			</list>
-		</single>
-		<include name="COMMON"/>
-	</page>
-
+	        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
+				<single item="seo"/>
+				<list item="page_extra">
+					<list item="page_extra_part"/>
+				</list>
+				<list item="custom_page" id="child">
+					<link target="page" type="exclusive" name="show_page">
+						<var ref="child" style="key" name="p"/>
+					</link>
+				</list>
+				<ancestor item="custom_page" id="parents" tag="parent" transit="true">
+					<link target="page" type="exclusive" name="show_page">
+						<var ref="parents" style="key" name="sp"/>
+					</link>
+				</ancestor>
+			</single>
+			<include name="COMMON"/>
+		</page>
 
     <page name="set_city">
         <request>
@@ -673,6 +674,21 @@
 		<request>
 			<var name="p" style="key"/>
 		</request>
+		<list item="news" >
+			<list item="news_item" id="ni">
+				<filter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var value="1"/>
+					</limit>
+				</filter>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="ni" ref="ni" style="key"/>
+				</link>
+			</list>
+		</list>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="page_extra">
