@@ -165,6 +165,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private Sheet initializeSheet(Item section) throws Exception {
 		String[] secInfo = getSectionName(section);
 		String sheetName = secInfo[2];
+		sheetName = sheetName.replace('/', '_');
 		setOperation(section.getValue(NAME_PARAM) + ". Обработка подразделов.");
 		return workBook.createSheet(sheetName);
 	}
