@@ -25,8 +25,8 @@ import java.util.List;
 public class BelChipYmlIntegrationCommand extends IntegrateBase implements CatalogConst {
 
 	private static final String INTEGRATION_DIR = "ym_integrate";
-	//public static final long PRODUCT_LIFESPAN = 30 * 24 * 3600000;
-	public static final long PRODUCT_LIFESPAN = 600000;
+	public static final long PRODUCT_LIFESPAN = 30 * 24 * 3600000;
+	//public static final long PRODUCT_LIFESPAN = 600000;
 	private long now = new Date().getTime();
 	private Collection<File> xmls;
 
