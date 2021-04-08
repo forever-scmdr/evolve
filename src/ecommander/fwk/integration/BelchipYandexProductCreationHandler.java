@@ -25,6 +25,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
+	private long now = new Date().getTime();
 
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
@@ -105,6 +106,14 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
+
+				if(StringUtils.isBlank(code)){
+					info.pushLog("No code", "line: ", locator.getLineNumber());
+					info.increaseProcessed();
+					isInsideOffer = false;
+					return;
+				}
+
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isExistingProduct = product != null;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
@@ -122,6 +131,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 						return;
 					}
 				}
+				long updated = product.getTimeUpdated();
 				product.setValue(CODE_PARAM, "b_" + code);
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
@@ -190,10 +200,25 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 						}
 					}
 				}
-
-				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+				if(product.getByteValue(AVAILABLE_PARAM, (byte)0) == 0 && !isExistingProduct){
+					info.increaseProcessed();
+					isInsideOffer = false;
+					return;
+				}
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
 				//hide if not available. Restore if available.
-				PersistenceCommandUnit itemStatusCommand = product.getByteValue(AVAILABLE_PARAM) > 0 ? ItemStatusDBUnit.restore(product.getId()).noFulltextIndex().ignoreUser(true) : ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreUser(true);
+				PersistenceCommandUnit itemStatusCommand = null;
+				if(product.getByteValue(AVAILABLE_PARAM, (byte)0) > 0){
+					itemStatusCommand = ItemStatusDBUnit.restore(product.getId()).noFulltextIndex().ignoreUser(true);
+				}else{
+					long passed = now - updated;
+					if(passed >= BelChipYmlIntegrationCommand.PRODUCT_LIFESPAN && product.getStatus() == Item.STATUS_HIDDEN){
+						itemStatusCommand = ItemStatusDBUnit.delete(product.getId()).noFulltextIndex().ignoreUser(true);
+					}else{
+						itemStatusCommand = ItemStatusDBUnit.hide(product.getId()).noFulltextIndex().ignoreUser(true);
+					}
+				}
+
 				DelayedTransaction.executeSingle(initiator, itemStatusCommand);
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
@@ -246,6 +271,10 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+
+				//TEST MODE no pic download
+				//picUrls = new LinkedHashSet<>();
+
 				for (String picUrl : picUrls) {
 					try {
 						String fileName = Strings.getFileName(picUrl);
