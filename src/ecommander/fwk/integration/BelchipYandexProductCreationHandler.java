@@ -275,15 +275,20 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 				//TEST MODE no pic download
 				//picUrls = new LinkedHashSet<>();
 
-				for (String picUrl : picUrls) {
-					try {
-						String fileName = Strings.getFileName(picUrl);
-						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							product.setValue(GALLERY_PARAM, new URL(picUrl));
-							needSave = true;
+				if(picUrls.size() > 1){
+					int i = 0;
+					for (String picUrl : picUrls) {
+						if(i == 0) continue;
+						try {
+							String fileName = Strings.getFileName(picUrl);
+							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+								product.setValue(GALLERY_PARAM, new URL(picUrl));
+								needSave = true;
+							}
+						} catch (Exception e) {
+							info.addError("Неверный формат картинки: " + picUrl, picUrl);
 						}
-					} catch (Exception e) {
-						info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						i++;
 					}
 				}
 
@@ -291,7 +296,7 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				if (!noMainPic) {
 					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.exists()) {
+					if (!mainPic.isFile()) {
 						product.clearValue(MAIN_PIC_PARAM);
 						noMainPic = true;
 					}

@@ -22,37 +22,37 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+
 /**
  * Команда, которая преобразует картинки айтема к определенному формату после сохранения айтема
  * Используется атрибут format определения параметра (ParameterDescription)
- * 
+ * <p>
  * src - параметр, который хранит исходную картинку, если он пустой - исходная картинка есть сам параметр
  * width - новая ширина картинки (в пикселях), если не установлена, масштабируется пропорционально с высотой
  * height - новая высота картинки (в пикселях), если не установлена, масштабируется пропорционально с шириной
  * format - формат файла (расширение), используется в алгоритмах сжатия
  * crop ( НЕ РАБОТАЕТ ) - если заданы ширина и высота, каким образом обрезать картинку
- * 		  (BOTTOM_CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, CENTER_LEFT, CENTER_RIGHT, TOP_CENTER, TOP_LEFT, TOP_RIGHT)
- * 
+ * (BOTTOM_CENTER, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER, CENTER_LEFT, CENTER_RIGHT, TOP_CENTER, TOP_LEFT, TOP_RIGHT)
+ * <p>
  * format="src:main_img;width:400;height:500;crop:CENTER"
- * 		  картинка делается размерами 400х500 и обрезается по центру (чтобы не деформировалось изображение)
- * 
+ * картинка делается размерами 400х500 и обрезается по центру (чтобы не деформировалось изображение)
+ * <p>
  * format="src:main_img;width:400;height:500"
- * 		  ширина и высота преборазуются таким образом, чтобы максимальный был равен заданному соответствующему,
- * 		  в то же время сохраняются пропорции картинки
- * 
+ * ширина и высота преборазуются таким образом, чтобы максимальный был равен заданному соответствующему,
+ * в то же время сохраняются пропорции картинки
+ * <p>
  * format="src:main_img;width:400"
- * 		  картинка из параметра main_img преобразуется к ширине 400 и высоте, пропорционально изменению ширины
- * 
+ * картинка из параметра main_img преобразуется к ширине 400 и высоте, пропорционально изменению ширины
+ * <p>
  * format="height:50;format:gif"
- * 		  картинка самого параметра преобразуется к высоте 400 и ширине, пропорционально изменению высоты
- * 
+ * картинка самого параметра преобразуется к высоте 400 и ширине, пропорционально изменению высоты
+ * <p>
  * Принцип работы:
  * Если картинка для ресайза имеет заполненный src, а также значение - файл (т. е. есть файл картинки для этого параметра),
  * то этот файл не заменяется. Однако, если источником картинки является сам этот параметр, т.е. сам должен ресайзиться,
  * то ресайз происходит всегда, даже когда есть заполненная картинка.
- * 
- * @author E
  *
+ * @author E
  */
 public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants.ItemTbl {
 	public static final String SRC = "src";
@@ -66,17 +66,17 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		private TransactionContext transaction;
 		private ArrayList<File> files = new ArrayList<>();
 		private String format;
-		
+
 		public ResizeImages(Item item) {
 			super(item);
 			format = null;
 		}
-		
+
 		public ResizeImages(Item item, String format) {
 			super(item);
 			this.format = format;
 		}
-		
+
 		public void execute() throws Exception {
 			for (ParameterDescription param : item.getItemType().getParameterList()) {
 				if (param.getType() == Type.PICTURE && (param.hasFormat() || format != null)) {
@@ -90,7 +90,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 					int width = 0;
 					String format = null;
 					//Positions crop = null;
-					
+
 					// Разбор параметров ресайза
 					try {
 						for (String opt : opts) {
@@ -103,7 +103,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 								height = Integer.parseInt(vals[1].trim());
 							else if (vals[0].trim().equals(FORMAT))
 								format = vals[1].trim();
-							else if (vals[0].trim().equals(CROP)) {}
+							else if (vals[0].trim().equals(CROP)) {
+							}
 							//	crop = Positions.valueOf(vals[1].trim());
 							else throw new Exception("Image resize parameter '" + vals[0] + "' is undefiled");
 						}
@@ -117,9 +118,9 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 								+ item.getTypeName() + "', parameter: '" + param.getName()
 								+ ", format: " + param.getFormat(), e);
 					}
-					
+
 					// Одиночный параметр - более сложная логика (нужна проверка, если файл существует)
-					if (!srcParam.isMultiple())	{
+					if (!srcParam.isMultiple()) {
 						// Ничего не делать если параметр-источник не поменялся, а у изменяемого параметра уже есть занчение
 						if (!item.getParameter(srcParam.getId()).hasChanged() && !item.getParameter(param.getId()).isEmpty())
 							continue;
@@ -130,36 +131,36 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 								destFile = new File(createItemDirectoryName() + "/" + item.getValue(param.getId()));
 							File srcFile = new File(createItemDirectoryName() + "/" + item.getValue(srcParam.getId()));
 							// ничего не делать в случае если исходной картинки нет
-							if (!srcFile.exists())
+							if (!srcFile.isFile())
 								continue;
 							// не производить ресайз, если картинка уже есть (т.к. она может быть намеренно другой)
-							if (destFile != null && destFile.exists() && srcParam.getId() != param.getId())
+							if (destFile != null && destFile.isFile() && srcParam.getId() != param.getId())
 								continue;
 							if (height <= 0 && width <= 0)
 								continue;
 							if (format == null)
 								format = StringUtils.substringAfterLast(srcFile.getName(), ".");
-							
+
 							// Сначала прочитать файл, перед тем как он может быть удален
 							BufferedImage srcImg = ImageIO.read(srcFile);
-			
+
 							// Проверка, нужен ли ресайз
 							boolean resizeNeeded = (width > 0 && srcImg.getWidth() > width) || (height > 0 && srcImg.getHeight() > height);
-							if (!resizeNeeded)
-								continue;
-							
-							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
-							if (!selfResize)
-								fileName = param.getName() + "_" + fileName;
-							destFile = new File(createItemDirectoryName() + "/" + fileName);
-							resize(srcImg, destFile, width, height, format);
-							// Установка значения параметра
-							item.setValueUI(param.getId(), fileName);
+							//Если нужен ресайз - ресайзим.
+							if (resizeNeeded) {
+								String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
+								if (!selfResize)
+									fileName = param.getName() + "_" + fileName;
+								destFile = new File(createItemDirectoryName() + "/" + fileName);
+								resize(srcImg, destFile, width, height, format);
+								// Установка значения параметра
+								item.setValueUI(param.getId(), fileName);
+							}
 						} catch (Exception e) {
 							ServerLogger.error("Error resizing image", e);
 						}
 					}
-					
+
 					// Множественный параметр - всегда удаляются и пересоздаются все производные файлы
 					else {
 						boolean selfResize = srcParam.getId() == param.getId();
@@ -175,7 +176,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 						if (!selfResize) {
 							for (SingleParameter val : destVals.getValues()) {
 								File deleteFile = new File(createItemDirectoryName() + "/" + val.getValue());
-								if (deleteFile.exists() && !deleteFile.delete())
+								if (deleteFile.isFile() && !deleteFile.delete())
 									throw new Exception("File '" + deleteFile.getName() + "' can not be deleted");
 							}
 							destVals.clear();
@@ -184,7 +185,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
 							File srcFile = new File(createItemDirectoryName() + "/" + srcVal.getValue());
-							if (srcFile.exists()) {
+							if (srcFile.isFile()) {
 								try {
 									if (format == null)
 										format = StringUtils.substringAfterLast(srcFile.getName(), ".");
@@ -210,27 +211,27 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 			}
 			// Апдейт базы данных (сохранение новых параметров айтема)
 			if (item.hasChanged()) {
-					Connection conn = getTransactionContext().getConnection();
-					// Сохранить новое ключевое значение и параметры в основную таблицу
-					String sql = "UPDATE " + ITEM_TBL + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
-							+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
+				Connection conn = getTransactionContext().getConnection();
+				// Сохранить новое ключевое значение и параметры в основную таблицу
+				String sql = "UPDATE " + ITEM_TBL + " SET " + I_KEY + "=?, " + I_T_KEY + "=?, " + I_PARAMS + "=?, "
+						+ I_UPDATED + "=NULL WHERE " + I_ID + "=" + item.getId();
 				try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 					pstmt.setString(1, item.getKey());
 					pstmt.setString(2, item.getKeyUnique());
 					pstmt.setString(3, item.outputValues());
 					pstmt.executeUpdate();
 					pstmt.close();
-					
+
 					// Выполнить запросы для сохранения параметров
 					ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.UPDATE, getTransactionContext());
 				}
 			}
 		}
-		
+
 		private void resize(BufferedImage srcImg, File destFile, int width, int height, String format) throws Exception {
 			// Если исходный файл и файл назначения совпадают (т.е. ресайзится картинка одного параметра)
 			// то надо удалить старый файл
-			if (destFile.exists() && !destFile.delete())
+			if (destFile.isFile() && !destFile.delete())
 				throw new Exception("File '" + destFile.getName() + "' can not be deleted");
 
 			//			Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);
@@ -295,7 +296,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 				w = targetWidth;
 				h = targetHeight;
 			}
-			if((w <= targetWidth || h <= targetHeight) && stepQuotient > 1) return  ret;
+			if ((w <= targetWidth || h <= targetHeight) && stepQuotient > 1) return ret;
 			int emergencyStopper = 20;
 			int em = 0;
 			do {
@@ -331,7 +332,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 
 
 		public static BufferedImage getScaledInstance(BufferedImage img, int targetWidth, int targetHeight, double stepQuotient) {
-			return getScaledInstance(img, targetWidth, targetHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR ,stepQuotient);
+			return getScaledInstance(img, targetWidth, targetHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR, stepQuotient);
 		}
 
 
@@ -350,7 +351,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		public void setTransactionContext(TransactionContext context) {
 			this.transaction = context;
 		}
-	
+
 	}
 
 	@Override
