@@ -16,7 +16,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
@@ -88,7 +87,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				String code = singleParams.get(ID_ATTR);
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
-				boolean isProductNotNew = true;
+				boolean isExistingProduct = true;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
 					String secCode = "-000-";
@@ -96,7 +95,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						secCode = categoryIds.iterator().next();
 					}
 					Item section = sections.get(secCode);
-					isProductNotNew = false;
+					isExistingProduct = false;
 					if (section != null) {
 						product = Item.newChildItem(productType, section);
 						productContainers.add(secCode);
@@ -183,7 +182,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
-				if (isProductNotNew) {
+				if (isExistingProduct) {
 					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
 					for (Item paramsXml : paramsXmls) {
 						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
@@ -205,7 +204,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
-				if (isProductNotNew) {
+				if (isExistingProduct) {
 					// Загрузить разделы, содержащие товар
 					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
 							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
@@ -227,20 +226,25 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				boolean needSave = false;
 				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 				for (File galleryPic : galleryPics) {
-					if (!galleryPic.exists()) {
+					if (!galleryPic.isFile()) {
 						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				for (String picUrl : picUrls) {
-					try {
-						String fileName = Strings.getFileName(picUrl);
-						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							product.setValue(GALLERY_PARAM, new URL(picUrl));
-							needSave = true;
+				if(picUrls.size() > 1){
+					int i = 0;
+					for (String picUrl : picUrls) {
+						if(i == 0) continue;
+						try {
+							String fileName = Strings.getFileName(picUrl);
+							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+								product.setValue(GALLERY_PARAM, new URL(picUrl));
+								needSave = true;
+							}
+						} catch (Exception e) {
+							info.addError("Неверный формат картинки: " + picUrl, picUrl);
 						}
-					} catch (Exception e) {
-						info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						i++;
 					}
 				}
 
@@ -248,7 +252,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				if (!noMainPic) {
 					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.exists()) {
+					if (!mainPic.isFile()) {
 						product.clearValue(MAIN_PIC_PARAM);
 						noMainPic = true;
 					}
