@@ -74,7 +74,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected String getShopEmail() throws Exception {
-		String domain = getVarSingleValue("dom");
+		String domain = getVarSingleValue("$domain");
 		Item domainItem = ItemQuery.loadSingleItemByParamValue("domain", NAME_PARAM, domain);
 		ItemQuery q = new ItemQuery("emails").setParentId(domainItem.getId(), true);
 		Item emails = q.loadFirstItem();

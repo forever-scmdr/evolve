@@ -8,13 +8,13 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 	<include-definition name="DOMAINS">
-		<request>
-			<var name="domain" value="super.com" scope="cookie"/>
-		</request>
+<!--		<request>-->
+<!--			<var name="domain" value="super.com" scope="cookie"/>-->
+<!--		</request>-->
 		<list item="domain" cacheable="true" cache-vars="domain">
 			<filter>
 				<parameter name="name" sign="=" compare="SOME">
-					<var var="domain"/>
+					<var var="$domain"/>
 				</parameter>
 			</filter>
 			<single item="custom_pages" id="custom_pages">
@@ -212,11 +212,11 @@
         </request>
     </page>
 
-	<page name="set_domain">
-		<request>
-			<var name="domain" scope="cookie"/>
-		</request>
-	</page>
+<!--	<page name="set_domain">-->
+<!--		<request>-->
+<!--			<var name="domain" scope="cookie"/>-->
+<!--		</request>-->
+<!--	</page>-->
 
 
 

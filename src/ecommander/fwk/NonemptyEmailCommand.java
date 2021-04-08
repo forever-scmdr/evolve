@@ -173,7 +173,7 @@ public class NonemptyEmailCommand extends Command {
 	}
 
 	private String getEmailTo() throws Exception {
-		String domain = getVarSingleValue("dom");
+		String domain = getVarSingleValue("$domain");
 		Item domainItem = ItemQuery.loadSingleItemByParamValue("domain", "name", domain);
 		ItemQuery q = new ItemQuery("emails").setParentId(domainItem.getId(), true);
 		Item emails = q.loadFirstItem();

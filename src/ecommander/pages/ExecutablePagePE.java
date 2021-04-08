@@ -153,7 +153,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			}
 		}
 
-		String domainName = urlBase.replaceAll("https?:\\/\\/", "");
+		String domainName = urlBase.replaceAll("https?:\\/\\/(www.)?", "");
 		if(StringUtils.endsWith(domainName, "/")){
 			domainName = domainName.replace("/", "");
 		}

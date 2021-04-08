@@ -117,23 +117,23 @@
 
 	<xsl:template name="INC_DESKTOP_HEADER">
 
-		<div id="test-domain-switcher" style="top:0; left:0; position: fixed; z-index:2">
-			<script>
-				function reloadPage(){setTimeout(function(){document.location.reload(true)}, 1000)}
-			</script>
-			<xsl:variable name="domains" select="('super.com', 'pooper.com', 'dooper.com')"/>
-			<xsl:variable name="cookie" select="page/variables/domain"/>
-			<select onchange="insertAjax('set_domain?domain='+$(this).val(), '', reloadPage())">
-				<xsl:for-each select="$domains">
-					<xsl:if test="current() = $cookie">
-						<option selected="selected"><xsl:value-of select="."/></option>
-					</xsl:if>
-					<xsl:if test="current() != $cookie">
-						<option><xsl:value-of select="."/></option>
-					</xsl:if>
-				</xsl:for-each>
-			</select>
-		</div>
+<!--		<div id="test-domain-switcher" style="top:0; left:0; position: fixed; z-index:2">-->
+<!--			<script>-->
+<!--				function reloadPage(){setTimeout(function(){document.location.reload(true)}, 1000)}-->
+<!--			</script>-->
+<!--			<xsl:variable name="domains" select="('super.com', 'pooper.com', 'dooper.com')"/>-->
+<!--			<xsl:variable name="cookie" select="page/variables/domain"/>-->
+<!--			<select onchange="insertAjax('set_domain?domain='+$(this).val(), '', reloadPage())">-->
+<!--				<xsl:for-each select="$domains">-->
+<!--					<xsl:if test="current() = $cookie">-->
+<!--						<option selected="selected"><xsl:value-of select="."/></option>-->
+<!--					</xsl:if>-->
+<!--					<xsl:if test="current() != $cookie">-->
+<!--						<option><xsl:value-of select="."/></option>-->
+<!--					</xsl:if>-->
+<!--				</xsl:for-each>-->
+<!--			</select>-->
+<!--		</div>-->
 
 		<div class="top-info">
 			<div class="container">
