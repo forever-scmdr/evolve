@@ -22,11 +22,13 @@
 			<div class="path__item">
 				<a href="{$main_host}" class="path__link">Главная страница</a>
 				<div class="path__arrow"></div>
-				<xsl:for-each select="$p/parent">
+			</div>
+			<xsl:for-each select="$p/parent">
+				<div class="path__item">
 					<a href="{show_page}" class="path__link"><xsl:value-of select="header"/></a>
 					<div class="path__arrow"></div>
-				</xsl:for-each>
-			</div>
+				</div>
+			</xsl:for-each>
 		</div>
 	</xsl:template>
 

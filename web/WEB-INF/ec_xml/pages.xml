@@ -27,12 +27,12 @@
 		</personal>
 
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>
 
-		<single item="catalog" id="catalog_main" cacheable="true">
+		<single item="catalog" id="catalog_main" cacheable="false">
 			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -51,7 +51,7 @@
 			</tree>
 		</single>
 
-		<single item="custom_pages" id="custom_pages" cacheable="true" >
+		<single item="custom_pages" id="custom_pages" cacheable="false" >
 			<tree item="menu_item" id="custom_page">
 				<link name="show_page" target="page" type="exclusive">
 					<var name="p" ref="custom_page" style="key"/>
@@ -59,12 +59,12 @@
 			</tree>
 		</single>
 
-		<list item="news" id="news" cacheable="true">
+		<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
 		</list>
-		<single item="common" cacheable="true">
+		<single item="common" cacheable="false">
 			<list item="block_array">
 				<list item="block"/>
 			</list>
@@ -96,10 +96,10 @@
 			<var name="cur" value=""/>
 		</link>
 
-		<single item="modules" cacheable="true">
+		<single item="modules" cacheable="false">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap" cacheable="true">
+		<single item="url_seo_wrap" cacheable="false">
 			<list item="url_seo"/>
 		</single>
 		<single item="styles">
@@ -156,7 +156,7 @@
 
 
 
-		<page name="index" cacheable="true" template="page" critical-item="sp">
+		<page name="index" cacheable="false" template="page" critical-item="sp">
 			<request>
 				<var name="p" value="392906"/>
 			</request>
@@ -175,7 +175,7 @@
 					</link>
 				</list>
 			</list>
-	        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
+	        <single item="custom_page" var="p" cacheable="false" cache-vars="p" id="sp">
 				<single item="seo"/>
 				<list item="page_extra">
 					<list item="page_extra_part"/>
@@ -212,7 +212,7 @@
 
 
 
-    <page name="catalog" template="catalog" cacheable="true">
+    <page name="catalog" template="catalog" cacheable="false">
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo"/>
@@ -221,7 +221,7 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
@@ -454,7 +454,7 @@
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>
@@ -524,7 +524,7 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="product" cacheable="false">
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
@@ -595,7 +595,7 @@
 
 
 	<!-- Product Ajax -->
-	<page name="product_ajax" template="product_ajax" cacheable="true">
+	<page name="product_ajax" template="product_ajax" cacheable="false">
 		<request>
 			<var name="prod" style="path"/>
 		</request>
@@ -622,7 +622,7 @@
 
 
 
-    <page name="news" template="news" cacheable="true">
+    <page name="news" template="news" cacheable="false">
 		<request>
 			<var name="sel" style="key"/>
 			<var name="p" value="1"/>
@@ -650,11 +650,11 @@
 	</page>
 
 
-    <page name="news_item" template="news_item" cacheable="true" critical-item="sni">
+    <page name="news_item" template="news_item" cacheable="false" critical-item="sni">
 		<request>
 			<var name="ni" style="key"/>
 		</request>
-        <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
+        <single item="news_item" id="sni" var="ni" cacheable="false" cache-vars="ni">
 			<single item="seo"/>
 			<ancestor item="news"/>
 		</single>
@@ -662,15 +662,15 @@
 	</page>
 
 
-    <page name="contacts" template="contacts" cacheable="true">
-        <single item="contacts" cacheable="true">
+    <page name="contacts" template="contacts" cacheable="false">
+        <single item="contacts" cacheable="false">
 			<single item="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+    <page name="page" cacheable="false" template="page" critical-item="sp">
 		<request>
 			<var name="p" style="key"/>
 		</request>
@@ -689,7 +689,7 @@
 				</link>
 			</list>
 		</list>
-        <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
+        <single item="custom_page" var="p" cacheable="false" cache-vars="p" id="sp">
 			<single item="seo"/>
 			<list item="page_extra">
 				<list item="page_extra_part"/>
@@ -728,7 +728,7 @@
 			<var name="result"/>
 			<var name="message"/>
 		</request>
-		<single item="my_price" cacheable="true"/>
+		<single item="my_price" cacheable="false"/>
 		<single item="product" var="prod"/>
 		<new item="my_price_form" id="form" tag="form">
 			<parameter-input ref="form" form="my_price"/>
@@ -1610,7 +1610,7 @@
 		</list>
 	</page>
 
-    <page name="sitemap_section" template="sitemap_section" cacheable="true">
+    <page name="sitemap_section" template="sitemap_section" cacheable="false">
 		<request>
 			<var name="sec" style="key"/>
 		</request>
@@ -1793,7 +1793,7 @@
 
 	<page name="admin_extra" template="admin/extra" authority-groups="common">
 		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
+			<list item="optional_modules" cacheable="false">
 				<list item="module"/>
 			</list>
 		</usergroup>

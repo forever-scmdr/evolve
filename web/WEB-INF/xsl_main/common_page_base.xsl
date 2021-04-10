@@ -121,11 +121,11 @@
 					</a>
 					<div class="header__column header__column_links">
 						<div class="links">
-							<a href="/kontakty" class="icon-link">
+							<!-- <a href="/kontakty" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
-							</a>
+							</a> -->
 							<a href="javascript:showMobileMainMenu()" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-bars.svg" alt="" />
@@ -175,52 +175,6 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
-				</ul>
 				<ul>
 					<xsl:for-each select="page/news">
 						<li><a href="{show_page}">
@@ -422,16 +376,17 @@
 	<xsl:template name="COMMON_LEFT_COLOUMN">
 		<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
 		<!-- news -->
-		<a href="/novosti" style="text-decoration: none; color: black">Новости</a>
-		<div class="grid">
+		<div class="news">
+			<div class="news__heading">Новости</div>
 			<xsl:for-each select="page//news_item">
 				<div class="news__item">
-					<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
-					<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
+					<!-- <a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a> -->
+					<div class="news__date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
 					<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
-					<xsl:value-of select="short" disable-output-escaping="yes"/>
+					<!-- <xsl:value-of select="short" disable-output-escaping="yes"/> -->
 				</div>
 			</xsl:for-each>
+			<a href="/novosti" class="news__go-link">Все новости</a>
 		</div>
 	</xsl:template>
 
