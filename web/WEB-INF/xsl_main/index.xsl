@@ -74,11 +74,11 @@
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
 
 		<!-- products carousel -->
-		<div class="block devices-block ptb">
+		<!-- <div class="block devices-block ptb">
 			<div class="container">
 				<div class="title title_2">Выгодные предложения</div>
 				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
+					<xsl:for-each select="page/main_page/product">
 						<div class="devices-block__column">
 							<xsl:apply-templates select="."/>
 						</div>
@@ -86,17 +86,11 @@
 				</div>
 				<div class="device-nav"></div>
 			</div>
-		</div>
+		</div> -->
 
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_digits']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']"></xsl:apply-templates>
-		<div class="divider"></div>
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_utp']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_gifts']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_map']"></xsl:apply-templates>
 
-		<!-- <section class="news pt">
+		<section class="news pt">
 			<div class="container">
 				<div class="block__title block__title_left">
 					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
@@ -112,15 +106,15 @@
 					</xsl:for-each>
 				</div>
 			</div>
-		</section> -->
+		</section>
 
 
 
-		<section class="s-info">
+		<!-- <section class="s-info">
 			<div class="container">
 				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</section>
+		</section> -->
 
 	</xsl:template>
 

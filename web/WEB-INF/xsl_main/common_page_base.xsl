@@ -121,7 +121,7 @@
 				<xsl:for-each select="$common/topper/block">
 					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
+						<!-- <div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
 								<xsl:if test="$has_many_cities">
@@ -130,7 +130,7 @@
 									</div>
 								</xsl:if>
 							</a>
-						</div>
+						</div> -->
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
@@ -164,46 +164,7 @@
 					<a href="{$main_host}" class="header__column logo">
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
-					<div class="header__column header__search header-search">
-						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
-							<!-- quick search end -->
-						</form>
-					</div>
-					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
-							<div class="catalog-currency">
-								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-								<ul class="currency-options">
-									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="active" select="$currency = $cur"/>
-										<li class="{'active'[$active]}">
-											<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-											<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</div>
-						</div>
-					</xsl:if>
-					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
 						<div class="links">
 							<a href="/kontakty" class="icon-link">
 								<div class="icon">
@@ -216,28 +177,6 @@
 								</div>
 							</a>
 						</div>
-						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
-							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -246,33 +185,6 @@
 		<div class="main-menu">
 			<div class="container">
 				<div class="main-menu__wrap wrap">
-					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
-						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
-										<a href="{show_products}" rel="#sub_{@id}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-									<xsl:if test="not(section)">
-										<a href="{show_products}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-
-							<xsl:for-each select="page/catalog/section">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
-									</xsl:for-each>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
 					<xsl:for-each select="page/news[in_main_menu = 'да']">
 						<xsl:variable name="key" select="@key"/>
 						<xsl:variable name="sel" select="page/varibles/sel"/>
@@ -307,14 +219,14 @@
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
 						</a>
-						<div class="google-rating">
+						<!-- <div class="google-rating">
 							<div class="google-rating__stars">
 								<img src="img/icon-google-rating.png" alt="" />
 							</div>
 							<div class="google-rating__text">
 								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
