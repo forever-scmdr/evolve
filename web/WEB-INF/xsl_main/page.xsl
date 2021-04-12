@@ -39,8 +39,8 @@
 						<div class="info-item__image img"><img src="{@path}{main_pic}" alt="" /></div>
 						<div class="info-item__info">
 							<div class="info-item__date"><xsl:value-of select="date"/></div>
-							<a href="{show_page}" class="info-item__title"><xsl:value-of select="header"/></a>
 							<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+							<a href="{show_page}" class="info-item__title"><xsl:value-of select="header"/></a>
 						</div>
 						<a href="{show_page}" class="info-item__link"></a>
 					</div>

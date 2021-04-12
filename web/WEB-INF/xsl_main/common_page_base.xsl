@@ -79,7 +79,7 @@
 				<a href="#ts_{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
 				</a>
-				<div id="ts_{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
+				<div id="ts_{@id}" class="popup-text-menu" style="position: absolute; z-index: 1000; display: none;">
 					<div class="sections">
 						<xsl:apply-templates select="custom_page | page_link" mode="menu"/>
 					</div>
@@ -241,52 +241,6 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
-				</ul>
 				<ul>
 					<xsl:for-each select="page/news">
 						<li><a href="{show_page}">

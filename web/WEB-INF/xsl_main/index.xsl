@@ -50,22 +50,24 @@
 
 		<!-- slider -->
 		<div class="slider">
-			<xsl:for-each select="page/main_page/main_slider_frame">
-				<div class="slider__item">
-					<div class="slider__content">
-						<div class="container slider__container">
-							<div class="slider__body">
-								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
-								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<div class="container">
+						<div class="slider__item">
+							<div class="slider__content">
+								<div class="container slider__container">
+									<div class="slider__body">
+										<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
+										<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+										<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+									</div>
+								</div>
+							</div>
+							<div class="slider__image">
+								<img src="{@path}{pic}" alt="" />
 							</div>
 						</div>
 					</div>
-					<div class="slider__image">
-						<img src="{@path}{pic}" alt="" />
-					</div>
-				</div>
-			</xsl:for-each>
+				</xsl:for-each>
 		</div>
 		<div class="slider-nav"></div>
 		<!-- slider end -->
