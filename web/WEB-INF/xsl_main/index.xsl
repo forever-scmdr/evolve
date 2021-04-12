@@ -90,15 +90,15 @@
 
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_utp']"></xsl:apply-templates>
 
-		<section class="news pt">
+		<section class="news ptb">
 			<div class="container">
-				<div class="block__title block__title_left">
-					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
+				<div class="title title_2">
+					<a href="/novosti" style="text-decoration: none; color: black">Новости</a>
 				</div>
 				<div class="grid">
 					<xsl:for-each select="page//news_item">
 						<div class="news__item">
-							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
+							<!-- <a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a> -->
 							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
 							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
 							<xsl:value-of select="short" disable-output-escaping="yes"/>
