@@ -306,6 +306,10 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private boolean addPics(Item product) throws MalformedURLException {
 		//if(picCounter > 49) return false;
 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
+		if(picUrls == null){
+			info.addLog("No pics for ["+product.getValue(CODE_PARAM)+"]", String.valueOf(productStartLineNumber));
+			return false;
+		}
 		boolean needSave = false;
 		ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 		for (File galleryPic : galleryPics) {
