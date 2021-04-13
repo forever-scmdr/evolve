@@ -40,7 +40,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QTY_PARAM);
-		SINGLE_PARAMS.add(STATUS_ELEMENT);
+		//SINGLE_PARAMS.add(STATUS_ELEMENT);
 		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
 
 		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
@@ -48,6 +48,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
 		MULTIPLE_PARAMS.add(SIMILAR_ITEMS_ELEMENT);
 		MULTIPLE_PARAMS.add(SUPPORT_ITEMS_ELEMENT);
+		MULTIPLE_PARAMS.add(STATUS_ELEMENT);
 	}
 
 
@@ -140,7 +141,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				if (product.getItemType().hasParameter(TAG_PARAM)) {
 					product.clearValue(TAG_PARAM);
-					product.setValueUI(TAG_PARAM, singleParams.get(STATUS_ELEMENT));
+					LinkedHashSet<String> tags = multipleParams.get(STATUS_ELEMENT);
+					for(String tag :tags) {
+						product.setValueUI(TAG_PARAM, tag);
+					}
 				}
 				if (product.getItemType().hasParameter(NEXT_DELIVERY_PARAM))
 					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
