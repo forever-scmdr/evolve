@@ -1,0 +1,1 @@
+не работает Command.getLoadedItems(String itemPageId); для ожниончных айтемов <single>

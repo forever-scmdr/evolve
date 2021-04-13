@@ -145,9 +145,8 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 			
 							// Проверка, нужен ли ресайз
 							boolean resizeNeeded = (width > 0 && srcImg.getWidth() > width) || (height > 0 && srcImg.getHeight() > height);
-							if (!resizeNeeded)
-								continue;
-							
+							//Если нужен ресайз - ресайзим.
+							if (resizeNeeded) {
 							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
 							if (!selfResize)
 								fileName = param.getName() + "_" + fileName;
@@ -155,6 +154,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 							resize(srcImg, destFile, width, height, format);
 							// Установка значения параметра
 							item.setValueUI(param.getId(), fileName);
+							}
 						} catch (Exception e) {
 							ServerLogger.error("Error resizing image", e);
 						}
@@ -175,7 +175,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 						if (!selfResize) {
 							for (SingleParameter val : destVals.getValues()) {
 								File deleteFile = new File(createItemDirectoryName() + "/" + val.getValue());
-								if (deleteFile.exists() && !deleteFile.delete())
+								if (deleteFile.isFile() && !deleteFile.delete())
 									throw new Exception("File '" + deleteFile.getName() + "' can not be deleted");
 							}
 							destVals.clear();
@@ -184,7 +184,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 								.getId())).getValues());
 						for (SingleParameter srcVal : vals) {
 							File srcFile = new File(createItemDirectoryName() + "/" + srcVal.getValue());
-							if (srcFile.exists()) {
+							if (srcFile.isFile()) {
 								try {
 									if (format == null)
 										format = StringUtils.substringAfterLast(srcFile.getName(), ".");
@@ -230,7 +230,7 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 		private void resize(BufferedImage srcImg, File destFile, int width, int height, String format) throws Exception {
 			// Если исходный файл и файл назначения совпадают (т.е. ресайзится картинка одного параметра)
 			// то надо удалить старый файл
-			if (destFile.exists() && !destFile.delete())
+			if (destFile.isFile() && !destFile.delete())
 				throw new Exception("File '" + destFile.getName() + "' can not be deleted");
 
 			//			Thumbnails.Builder<BufferedImage> thumbnailer = Thumbnails.of(srcImg);
