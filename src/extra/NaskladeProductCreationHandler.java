@@ -92,7 +92,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		put("service_center", "service_center");
 	}};
 
-	private int picCounter = 0;
+	//private int picCounter = 0;
 
 	private Map<String, Item> sections;
 	private IntegrateBase.Info info;
@@ -304,7 +304,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}
 
 	private boolean addPics(Item product) throws MalformedURLException {
-		if(picCounter > 49) return false;
+		//if(picCounter > 49) return false;
 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
 		boolean needSave = false;
 		ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
@@ -355,8 +355,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			}
 		}
 
-		picCounter++;
-
+		//picCounter++;
 		return isSaved;
 	}
 

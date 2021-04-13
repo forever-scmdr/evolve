@@ -481,38 +481,38 @@
 		<child item="order_texts" single="true"/>
 	</item>
 
-	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1834" ag-hash="-1299765161">
+	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1829" ag-hash="-1299765161">
 		<parameter name="order_email" type="plain-text" caption="Заказы слать на адреса:" format="height: 30px"/>
 		<parameter name="feedback" type="plain-text" caption="Сообщаения слать на адреса:" format="height: 30px"/>
 	</item>
 
-	<item name="order_texts" caption="Тексты в заказе" ag-id="1835" ag-hash="1973754037">
+	<item name="order_texts" caption="Тексты в заказе" ag-id="1830" ag-hash="1973754037">
 		<parameter name="cart_text" type="text" caption="Дополнительный текстовый блок под заказом"/>
 		<parameter name="confirm_text" type="text" caption="Подтверждение о том, что заказ отправлен"/>
 		<parameter name="email_text" type="text" caption="Текст в письме клиенту"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="extra_styles" caption="Стили и скрипты" ag-id="1828" ag-hash="1420120049">
+	<item name="extra_styles" caption="Стили и скрипты" ag-id="1831" ag-hash="1420120049">
 		<child item="style"/>
 	</item>
 
-	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1829" ag-hash="109780401">
+	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1832" ag-hash="109780401">
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="description" type="plain-text" caption="Описание" description="что делает этот скрипт или стиль?"/>
 		<parameter name="file" type="file" caption="Прикерпите файл"/>
 		<parameter name="code" type="plain-text" caption="Или введите код вручную"/>
 	</item>
 
-	<item name="slideshow" caption="Слайды" ag-id="1830" ag-hash="-795551698">
+	<item name="slideshow" caption="Слайды" ag-id="1833" ag-hash="-795551698">
 		<child item="main_slider_frame" inline="true"/>
 	</item>
 
-	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1831" ag-hash="225061716">
+	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1834" ag-hash="225061716">
 		<parameter name="code" type="plain-text" caption="код хедера"/>
 	</item>
 
-	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1832" ag-hash="177471074">
+	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1835" ag-hash="177471074">
 		<parameter name="code" type="plain-text" caption="код футера"/>
 	</item>
 
