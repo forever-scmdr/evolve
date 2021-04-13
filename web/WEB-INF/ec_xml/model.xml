@@ -233,8 +233,8 @@
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
-		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена Д1" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_2" type="currency" caption="Оптовая цена Д2" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
@@ -243,6 +243,7 @@
 		<parameter name="step" type="double" caption="Шаг заказа"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
+		<parameter name="orig_country" type="string" caption="Страна, в которой зарегистрирован бренд"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
@@ -255,15 +256,26 @@
 		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
+		<parameter name="net_weight" type="double" caption="Масса нетто" />
+		<parameter name="gross_weight" type="double" caption="Масса брутто" />
+		<parameter name="length" type="double" caption="Длина" />
+		<parameter name="width" type="double" caption="Ширина" />
+		<parameter name="height" type="double" caption="Высота" />
+		<parameter name="barcode" type="string" caption="Штрихкод" />
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
+		<child item="warranty" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
+	<item name="warranty" caption="Гарантия" ag-id="2238" ag-hash="501547260">
+		<parameter name="months" type="integer" caption="Срок гарантии" description="месяцы"/>
+		<parameter name="service_center" type="string" caption="Сервисный центр"/>
+	</item>
 
 	<!--Товар, который вложен в другой товар-->
 	<!--Обновляет цену ОТ (минимальная цена) своего родительского товара при сохранении-->

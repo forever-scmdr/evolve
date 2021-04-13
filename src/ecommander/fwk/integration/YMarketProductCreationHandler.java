@@ -71,7 +71,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private Assoc catalogLinkAssoc;
 
 	
-	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
+	public  YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
 		this.productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);

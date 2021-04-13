@@ -281,7 +281,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Установить текущую операцию
-	 *
 	 * @param opName
 	 */
 	protected void setOperation(String opName) {
@@ -290,7 +289,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Установить текущий номер строки
-	 *
 	 * @param lineNumber
 	 */
 	protected void setLineNumber(int lineNumber) {
@@ -299,7 +297,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Установить количество обработанных информационных единиц (например, товаров)
-	 *
 	 * @param processed
 	 */
 	protected void setProcessed(int processed) {
@@ -308,7 +305,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Добавить запись в конец лога
-	 *
 	 * @param message
 	 */
 	protected void addLog(String message) {
@@ -317,7 +313,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Добавить запись в начало лога
-	 *
 	 * @param message
 	 */
 	protected void pushLog(String message) {
@@ -326,7 +321,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Добавить ошибку с точным местом в файле интеграции
-	 *
 	 * @param message
 	 * @param lineNumber
 	 * @param position
@@ -337,7 +331,6 @@ public abstract class IntegrateBase extends Command {
 
 	/**
 	 * Добавить ошибку с неточным местом в файле интеграции
-	 *
 	 * @param message
 	 * @param originator
 	 */
@@ -378,16 +371,7 @@ public abstract class IntegrateBase extends Command {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-
-			boolean readyToStart = false;
-			try {
-				readyToStart = makePreparations();
-			} catch (Exception e) {
-				ServerLogger.error(e.getMessage(), e);
-				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
-			}
-
-			if (!readyToStart) {
+			if (!makePreparations()) {
 				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
 				runningTask.isFinished = true;
 				return buildResult();
@@ -401,7 +385,7 @@ public abstract class IntegrateBase extends Command {
 				} catch (Exception se) {
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
-					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+					getInfo().addError(se);
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);
