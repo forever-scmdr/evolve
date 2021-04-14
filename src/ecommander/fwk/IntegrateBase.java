@@ -335,6 +335,7 @@ public abstract class IntegrateBase extends Command {
 		getInfo().addError(message, lineNumber, position);
 	}
 
+
 	/**
 	 * Добавить ошибку с неточным местом в файле интеграции
 	 *
@@ -343,6 +344,14 @@ public abstract class IntegrateBase extends Command {
 	 */
 	protected void addError(String message, String originator) {
 		getInfo().addError(message, originator);
+	}
+
+	/**
+	 * Добавить ошибку со стек-трейсом исключения
+	 * @param e
+	 */
+	protected void addError(Throwable e) {
+		getInfo().addError(e);
 	}
 
 	/*********************************************************************************************************
@@ -378,16 +387,7 @@ public abstract class IntegrateBase extends Command {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-
-			boolean readyToStart = false;
-			try {
-				readyToStart = makePreparations();
-			} catch (Exception e) {
-				ServerLogger.error(e.getMessage(), e);
-				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
-			}
-
-			if (!readyToStart) {
+			if (!makePreparations()) {
 				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
 				runningTask.isFinished = true;
 				return buildResult();
@@ -401,7 +401,7 @@ public abstract class IntegrateBase extends Command {
 				} catch (Exception se) {
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
-					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+					getInfo().addError(se);
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);

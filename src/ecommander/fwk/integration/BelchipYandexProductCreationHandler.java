@@ -18,10 +18,15 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 public class BelchipYandexProductCreationHandler extends DefaultHandler implements CatalogConst {
+	// For limiting picture downloads in test mode.
+	// Disable in production version. or set limit to Integer.MAX_VALUE
+	private static final int PIC_LIMIT = Integer.MAX_VALUE;
+	private int picCounter = 0;
 
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
@@ -262,63 +267,13 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
 				}
 
+				boolean isSaved = addPictures(product);
 
-				boolean needSave = false;
-				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-				for (File galleryPic : galleryPics) {
-					if (!galleryPic.isFile()) {
-						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
-					}
-				}
-				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-
-				//TEST MODE no pic download
-				//picUrls = new LinkedHashSet<>();
-
-				if(picUrls.size() > 1){
-					int i = 0;
-					for (String picUrl : picUrls) {
-						if(i == 0) continue;
-						try {
-							String fileName = Strings.getFileName(picUrl);
-							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-								product.setValue(GALLERY_PARAM, new URL(picUrl));
-								needSave = true;
-							}
-						} catch (Exception e) {
-							info.addError("Неверный формат картинки: " + picUrl, picUrl);
-						}
-						i++;
-					}
-				}
-
-				// Генерация маленького изображения
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
-				if (!noMainPic) {
-					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.isFile()) {
-						product.clearValue(MAIN_PIC_PARAM);
-						noMainPic = true;
-					}
-				}
-				if (noMainPic && picUrls.size() > 0) {
-					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
-					}
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-					needSave = false;
-				}
-				if (needSave) {
+				if (!isSaved) {
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						info.addError("Some error while saving product", product.getStringValue(NAME_PARAM));
 					}
 				}
 				info.increaseProcessed();
@@ -338,6 +293,61 @@ public class BelchipYandexProductCreationHandler extends DefaultHandler implemen
 			info.setLinePosition(locator.getColumnNumber());
 			info.addError(e);
 		}
+	}
+
+	private boolean addPictures(Item product) throws MalformedURLException {
+		if(picCounter >= PIC_LIMIT){return false;}
+		boolean needSave = false;
+		ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+		for (File galleryPic : galleryPics) {
+			if (!galleryPic.isFile()) {
+				product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
+			}
+		}
+		LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+
+		if(picUrls.size() > 1){
+			int i = 0;
+			for (String picUrl : picUrls) {
+				i++;
+				if(i == 1) continue;
+				try {
+					String fileName = Strings.getFileName(picUrl);
+					if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+						product.setValue(GALLERY_PARAM, new URL(picUrl));
+						needSave = true;
+					}
+				} catch (Exception e) {
+					info.addError("Неверный формат картинки: " + picUrl, picUrl);
+				}
+			}
+		}
+
+		// Генерация маленького изображения
+		boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+		if (!noMainPic) {
+			File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
+			if (!mainPic.isFile()) {
+				product.clearValue(MAIN_PIC_PARAM);
+				noMainPic = true;
+			}
+		}
+		boolean isSaved = false;
+		if (noMainPic && picUrls.size() > 0) {
+			if (picUrls.size() > 0) {
+				product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+			}
+			try {
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+				DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+				isSaved = true;
+			} catch (Exception e) {
+				info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+			}
+		}
+		picCounter++;
+		return isSaved;
 	}
 
 	@Override

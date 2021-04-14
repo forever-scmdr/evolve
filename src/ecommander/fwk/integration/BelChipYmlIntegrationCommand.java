@@ -18,32 +18,41 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
-import java.util.Collection;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
 public class BelChipYmlIntegrationCommand extends IntegrateBase implements CatalogConst {
 
 	private static final String INTEGRATION_DIR = "ym_integrate";
+	private static final String FILE_URL = "https://belchip.by/sitefiles/yandex_market.xml";
 	public static final long PRODUCT_LIFESPAN = 180 * 24 * 3600000;
+	//1GB
+	private static final int MAX_FILE_SIZE = 1073741824;
 	//public static final long PRODUCT_LIFESPAN = 600000;
 	private long now = new Date().getTime();
-	private Collection<File> xmls;
+	private File xmls;
 
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
-		if (!integrationDir.exists()) {
-			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
-			return false;
-		}
-		xmls = FileUtils.listFiles(integrationDir, new String[]{"xml"}, true);
-		if (xmls.size() == 0) {
-			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
-			return false;
-		}
-		info.pushLog("Файлов найдено: " + xmls.size());
+		URL fileUrl = new URL(FILE_URL);
+		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "yandex_market.xml");
+		FileUtils.copyURLToFile(fileUrl, destPath.toFile());
+		xmls = destPath.toFile();
+//		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
+//		if (!integrationDir.exists()) {
+//			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
+//			return false;
+//		}
+//		xmls = FileUtils.listFiles(integrationDir, new String[]{"xml"}, true);
+//		if (xmls.size() == 0) {
+//			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
+//			return false;
+//		}
+//		info.pushLog("Файлов найдено: " + xmls.size());
 		return true;
 	}
 
@@ -56,15 +65,15 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
-		for (File xml : xmls) {
+		//for (File xml : xmls) {
 			// Удалить DOCTYPE
-			if (removeDoctype(xml)) {
-				parser.parse(xml, secHandler);
+			if (removeDoctype(xmls)) {
+				parser.parse(xmls, secHandler);
 				info.increaseProcessed();
 			} else {
-				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+				addError("Невозможно удалить DOCTYPE " + xmls, xmls.getName());
 			}
-		}
+		//}
 
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
@@ -72,9 +81,9 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 		DefaultHandler prodHandler = new BelchipYandexProductCreationHandler(secHandler.getSections(), info, getInitiator());
-		for (File xml : xmls) {
-			parser.parse(xml, prodHandler);
-		}
+		//for (File xml : xmls) {
+			parser.parse(xmls, prodHandler);
+		//}
 		info.pushLog("Создание товаров завершено");
 
 		info.setCurrentJob("Удаление долго отсутствовавших товров");
