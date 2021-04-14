@@ -40,7 +40,9 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 	protected boolean makePreparations() throws Exception {
 		URL fileUrl = new URL(FILE_URL);
 		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "yandex_market.xml");
+		info.setCurrentJob("Скачивание файла");
 		FileUtils.copyURLToFile(fileUrl, destPath.toFile());
+		info.pushLog("Файл скачан");
 		xmls = destPath.toFile();
 //		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
 //		if (!integrationDir.exists()) {
@@ -76,6 +78,8 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 		//}
 
 		// Создание самих товаров
+		info.setCurrentJob("");
+		info.setOperation("Создание разделов");
 		info.pushLog("Подготовка каталога и типов завершена.");
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
