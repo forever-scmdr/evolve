@@ -40,6 +40,7 @@ public class BelChipYmlIntegrationCommand extends IntegrateBase implements Catal
 	protected boolean makePreparations() throws Exception {
 		URL fileUrl = new URL(FILE_URL);
 		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "yandex_market.xml");
+		FileUtils.deleteQuietly(destPath.toFile());
 		info.setCurrentJob("Скачивание файла");
 		FileUtils.copyURLToFile(fileUrl, destPath.toFile());
 		info.pushLog("Файл скачан");
