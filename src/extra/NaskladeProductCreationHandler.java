@@ -10,6 +10,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -250,25 +251,41 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		}
 
 		String months = warrantyParams.get("warranty");
-		String serviceCenter = warrantyParams.get("service_center");
-		warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("service_center"), serviceCenter);
-		warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("warranty"), months);
-		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(warranty).noFulltextIndex().ignoreFileErrors());
+		if(StringUtils.isNotBlank(extraPageParams.get("warranty"))) {
+			String serviceCenter = warrantyParams.get("service_center");
+			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("service_center"), serviceCenter);
+			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("warranty"), months);
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(warranty).noFulltextIndex().ignoreFileErrors());
+		}else if(!warranty.isNew()){
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(warranty.getId()).noFulltextIndex().ignoreFileErrors());
+		}
 
-		tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("tech"));
-		String text = extraPageParams.get("tech").trim();
-		tech.setValueUI(ItemNames.product_extra_.TEXT, text);
-		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(tech).noFulltextIndex().ignoreFileErrors());
+		if(StringUtils.isNotBlank(extraPageParams.get("tech"))) {
+			tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("tech"));
+			String text = extraPageParams.get("tech").trim();
+			tech.setValueUI(ItemNames.product_extra_.TEXT, text);
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(tech).noFulltextIndex().ignoreFileErrors());
+		}else if(!tech.isNew()){
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(tech.getId()).noFulltextIndex().ignoreFileErrors());
+		}
 
-		pack.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("package"));
-		text = extraPageParams.get("package").trim();
-		pack.setValueUI(ItemNames.product_extra_.TEXT, text);
-		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(pack).noFulltextIndex().ignoreFileErrors());
+		if(StringUtils.isNotBlank(extraPageParams.get("package"))) {
+			pack.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("package"));
+			String text = extraPageParams.get("package").trim();
+			pack.setValueUI(ItemNames.product_extra_.TEXT, text);
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(pack).noFulltextIndex().ignoreFileErrors());
+		}else if(!pack.isNew()){
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(pack.getId()).noFulltextIndex().ignoreFileErrors());
+		}
 
-		video.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("video"));
-		text = extraPageParams.get("video").trim();
-		video.setValueUI(ItemNames.product_extra_.TEXT, text);
-		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(video).noFulltextIndex().ignoreFileErrors());
+		if(StringUtils.isNotBlank(extraPageParams.get("video"))) {
+			video.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("video"));
+			String text = extraPageParams.get("video").trim();
+			video.setValueUI(ItemNames.product_extra_.TEXT, text);
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(video).noFulltextIndex().ignoreFileErrors());
+		}else if(!video.isNew()){
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(video.getId()).noFulltextIndex().ignoreFileErrors());
+		}
 	}
 
 	private void addWarrantyAndPagesQuick(Item product) throws Exception {
