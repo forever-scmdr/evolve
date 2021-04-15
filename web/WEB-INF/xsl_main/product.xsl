@@ -73,7 +73,7 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
+				<td><span><xsl:value-of select="$param/@caption"/></span></td>
 				<td><xsl:value-of select="$param"/></td>
 			</tr>
 		</xsl:if>
@@ -100,23 +100,6 @@
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
-				<script>
-					$('.fotorama')
-						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
-						if (e.type === 'fotorama:fullscreenenter') {
-							// Options for the fullscreen
-							fotorama.setOptions({
-								fit: 'scaledown'
-							});
-						} else {
-							// Back to normal settings
-							fotorama.setOptions({
-								fit: 'contain'
-							});
-						}
-						})
-						.fotorama();
-					</script>
 			</div>
 			<div class="device-basic__column">
 				<!-- <xsl:for-each select="$p/tag">
@@ -266,9 +249,9 @@
 					</div>
 				</xsl:if>
 
-				<div class="product-lables">
-					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-				</div>
+<!--				<div class="product-lables">-->
+<!--					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>-->
+<!--				</div>-->
 
 
 			</div>
