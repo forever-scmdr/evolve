@@ -5,7 +5,7 @@ var mceSettings = {
 		//	theme : "modern",
 		skin : "lightgray"
 		,content_css : [
-			"css/text-style.css?v=2"]
+			"css/text-style.css?v=2.1"]
 		,plugins : [
 			'advlist autolink lists link image charmap print preview anchor textcolor',
 			'searchreplace visualblocks code fullscreen',
@@ -19,8 +19,9 @@ var mceSettings = {
 		extended_valid_elements: "figure,figcaption",
 		image_caption: true,
 		style_formats : [
-			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
 			{title : 'Желтый фон', selector : 'p', classes : 'yellow-bg', wrapper: false, merge_siblings : true},
+			{title : 'Автор цитаты', selector : 'blockquote p', classes : 'person', wrapper : true},
 			{
 				title : 'Теги HTML-5',
 				items : [ {
@@ -61,7 +62,7 @@ var mceSettings = {
 		selector : "textarea.mce_medium",
 		language : 'ru',
 		content_css : [
-		"css/text-style.css?v=2"],
+		"css/text-style.css?v=2.1"],
 		skin : "lightgray"
 
 		,plugins : [
@@ -76,8 +77,9 @@ var mceSettings = {
 		extended_valid_elements: "figure,figcaption",
 		image_caption: true,
 		style_formats : [
-			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
+			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
 			{title : 'Желтый фон', selector : 'div', classes : 'yellow-bg', wrapper : true},
+			{title : 'Автор цитаты', selector : 'blockquote p', classes : 'person', wrapper : true},
 			{
 				title : 'Теги HTML-5',
 				items : [ {

@@ -116,6 +116,11 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
+	<item name="more_news" caption="Рекомендации" super="page_part" ag-id="47" ag-hash="1813239165">
+		<child item="news_item" assoc="news"/>
+		<child item="small_news_item" assoc="news"/>
+	</item>
+
 	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
 		
 		<child item="seo" single="true"/>
@@ -345,6 +350,12 @@
 		<parameter name="style" type="string" caption="Стиль"/>
 	</item>
 
+	<item name="telegram_link" caption="Ссылка на телеграм" ag-id="48" ag-hash="40040568">
+		<parameter name="name" type="string" caption="Текст ссылки"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="style" type="string" caption="Стиль"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="main_page" single="true"/>
@@ -360,6 +371,7 @@
 		<child item="hot_tags" single="true"/>
 		<child item="overused" single="true"/>
 		<child item="links" single="true"/>
+		<child item="telegram_link" single="true"/>
 		<child item="advertisement" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>

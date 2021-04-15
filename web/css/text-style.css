@@ -13,3 +13,7 @@ border-radius: .4rem;
     background: rgba(255, 255, 0, 0.2);
     margin: 1rem 0;
 }
+
+blockquote .person{
+	font-weight: 600;
+}

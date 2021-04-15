@@ -5,6 +5,9 @@
 
 	<xsl:variable name="title" select="$ni/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="meta_description" select="$ni/twitter_description"/>
+	<xsl:variable name="meta_keywords" select="string-join(($ni/tag), ', ')"/>
+	
 	<xsl:variable name="active_menu_item" select="'news'"/>
 	<xsl:variable name="soc_image" select="if($ni/soc_image != '') then $ni/soc_image else $ni/medium_pic"/>
 
@@ -60,56 +63,58 @@
 						&lt;!--noindex--&gt;&lt;!--googleoff: index--&gt;
 					</xsl:text>
 					<xsl:if test="$ni/complexity != '' or $ni/read_time != '' or $ni/size != ''">
-						<div class="tags">
-							<xsl:if test="$ni/complexity != ''">
-								<span class="entry__category yellow" style="padding-left: .5rem;">
-								<span style="
-display: inline-block;
-margin-top:-1px;
-height: 2rem;
-vertical-align: middle;
-line-height: 2rem;
-border-radius: 2rem;
-width: 2rem;
-background: #fff;
-text-transform: lowercase;
-font-size: 1.5rem;
-font-family: georgia;
- cursor: pointer;
-font-style: italic;
-" class="tip desctop-only" title="A1 - текст будет понятен для широкого круга читателей&#13;B2 - текст будет понятен тем, кто в какой-то степени уже знаком с данной тематикой и обладает какой-то информацией и знаниями&#13;C3 - сложный текст, в основном для людей, которые наверняка разбираются в данной сфере">i</span>
-								
-									<a style="padding-left: .5rem;">Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
-								</span>
-							</xsl:if>
-							<xsl:if test="$ni/read_time != ''">
-								<span class="entry__category blue">
-									<a style="padding-left: .5rem;">Время прочтения: <b id="read-time-"><xsl:value-of select="$ni/read_time" /></b></a>
-								</span>
-							</xsl:if>
-							<xsl:if test="$ni/size != ''">
-								<span class="entry__category red" style="padding-left: .5rem;">
-								<span style="display: inline-block;
-margin-top:-1px;
-height: 2rem;
-vertical-align: middle;
-line-height: 2rem;
-border-radius: 2rem;
-width: 2rem;
-background: #fff;
-text-transform: lowercase;
-font-size: 1.5rem;
-font-family: georgia;
- cursor: pointer;
-font-style: italic;" class="tip desctop-only" title="Маленький - до 150 слов&#13;Средний - до 300 слов&#13;Большой - свыше 300 слов">i</span>
-								
-									<a >Размер новости: <b><xsl:value-of select="$ni/size" /></b></a>
-								</span>
-							</xsl:if>
-							<xsl:text disable-output-escaping="yes">
-								&lt;!--googleon: index--&gt;&lt;!--/noindex--&gt;
-							</xsl:text>
-						</div>
+						<noindex>
+							<div class="tags">
+								<xsl:if test="$ni/complexity != ''">
+									<span class="entry__category yellow" style="padding-left: .5rem;">
+									<span style="
+	display: inline-block;
+	margin-top:-1px;
+	height: 2rem;
+	vertical-align: middle;
+	line-height: 2rem;
+	border-radius: 2rem;
+	width: 2rem;
+	background: #fff;
+	text-transform: lowercase;
+	font-size: 1.5rem;
+	font-family: georgia;
+	 cursor: pointer;
+	font-style: italic;
+	" class="tip desctop-only" title="A1 - текст будет понятен для широкого круга читателей&#13;B2 - текст будет понятен тем, кто в какой-то степени уже знаком с данной тематикой и обладает какой-то информацией и знаниями&#13;C3 - сложный текст, в основном для людей, которые наверняка разбираются в данной сфере">i</span>
+									
+										<a style="padding-left: .5rem;">Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
+									</span>
+								</xsl:if>
+								<xsl:if test="$ni/read_time != ''">
+									<span class="entry__category blue">
+										<a style="padding-left: .5rem;">Время прочтения: <b id="read-time-"><xsl:value-of select="$ni/read_time" /></b></a>
+									</span>
+								</xsl:if>
+								<xsl:if test="$ni/size != ''">
+									<span class="entry__category red" style="padding-left: .5rem;">
+									<span style="display: inline-block;
+	margin-top:-1px;
+	height: 2rem;
+	vertical-align: middle;
+	line-height: 2rem;
+	border-radius: 2rem;
+	width: 2rem;
+	background: #fff;
+	text-transform: lowercase;
+	font-size: 1.5rem;
+	font-family: georgia;
+	 cursor: pointer;
+	font-style: italic;" class="tip desctop-only" title="Маленький - до 150 слов&#13;Средний - до 300 слов&#13;Большой - свыше 300 слов">i</span>
+									
+										<a >Размер новости: <b><xsl:value-of select="$ni/size" /></b></a>
+									</span>
+								</xsl:if>
+								<xsl:text disable-output-escaping="yes">
+									&lt;!--googleon: index--&gt;&lt;!--/noindex--&gt;
+								</xsl:text>
+							</div>
+						</noindex>						
 					</xsl:if>
 				</div>
 
@@ -186,7 +191,7 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 							 </div>
 						 </div>
 					 </div>
-
+					 <xsl:call-template name="COMMENTS"/>
 					 <xsl:call-template name="ALSO"/>
 					 <xsl:call-template name="PREV-NEXT" />
 				</div>
@@ -227,9 +232,6 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 
 				</div>
 			</article>
-
-			<xsl:call-template name="COMMENTS"/>
-
 		</section>
 
 		<!-- popular_posts -->
@@ -237,6 +239,8 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 
 			<div class="row top">
 				<div class="col-full md-six tab-full popular mobile-only">
+					<xsl:call-template name="BANNER_SIDE" />
+					<div class="border-top"></div>
 					<h3>Последние новости</h3>
 					<xsl:for-each select="page/latest">
 						<article class="col-block popular__post">
@@ -324,9 +328,31 @@ font-style: italic;" class="tip desctop-only" title="Маленький - до 1
 	</xsl:template>
 
 
+	
 	<xsl:template name="COMMENTS">
-		<div style="height: 3rem;"></div>
+		<div style="padding-top: 15px;"></div>
+		<div id="disqus_thread"></div>
+		<script>
+
+			/**
+			*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+			*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+			/*
+			var disqus_config = function () {
+			this.page.url = '<xsl:value-of select="$canonical"/>';  // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = '<xsl:value-of select="concat($h1, ' ', f:utc_millis_to_bel_date(date/@millis))"/>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			};
+			*/
+			(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://tempting-pro.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 	</xsl:template>
+	
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>

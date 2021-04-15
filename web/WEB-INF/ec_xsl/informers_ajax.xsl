@@ -62,6 +62,7 @@
 		<xsl:text disable-output-escaping="yes">
 			&lt;script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async&gt;
 			{
+  				"showSymbolLogo": true,
   				"symbols": [
 		</xsl:text>
 	</xsl:template>

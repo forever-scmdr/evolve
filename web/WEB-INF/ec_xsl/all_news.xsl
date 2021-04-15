@@ -6,7 +6,7 @@
 	<xsl:variable name="quot">"</xsl:variable>
 	<xsl:variable name="dt" select="if(page/variables/min_date != '') then concat(' за', f:day_month_year(f:millis_to_date(page/variables/min_date))) else ''"/>
 	<xsl:variable name="postfix" select="if(page/variables/tag != '') then concat($dt, ' по тегу ',$quot, page/variables/tag, $quot) else ''" />
-	<xsl:variable name="title" select="concat('Статьи', $postfix)" />
+	<xsl:variable name="title" select="concat('Извините, данная страница удалена', $postfix)" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
@@ -33,7 +33,8 @@
 
 					</xsl:if>
 					<div class="lead">
-						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+						<!-- <xsl:value-of select="$seo/text" disable-output-escaping="yes"/> -->
+						<p>Пожалуйста, воспользуйтесь главным меню или поиском по сайту.</p>
 					</div>
 				</div>
 			</div>

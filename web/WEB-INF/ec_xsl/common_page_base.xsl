@@ -18,7 +18,8 @@
 	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
 
 	<xsl:variable name="title" select="'Tempting.Pro'"/>
-	<xsl:variable name="meta_description" select="''"/>
+	<xsl:variable name="meta_description" />
+	<xsl:variable name="meta_keywords" />
 	<xsl:variable name="base" select="page/base"/>
 	<xsl:variable name="main_host"
 				  select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base"/>
@@ -60,6 +61,14 @@
 <!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
 		<xsl:call-template name="BANNER_TOP" />
 
+		<xsl:if test="page/telegram_link/link != ''">
+			<div class="telagram-link-top">
+				<a href="{page/telegram_link/link}" style="{page/telegram_link/style}">
+					<xsl:value-of select="page/telegram_link/name"/>
+				</a>
+			</div>
+		</xsl:if>
+
 		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
 				<div class="header__content row">
@@ -68,17 +77,32 @@
 							<img src="images/logo.png" alt="на главную - {$main_host}"/>
 						</a>
 					</div>
-					<xsl:if test="$common/soc_link">
-						<ul class="header__social">
-							<xsl:for-each select="$common/soc_link">
-								<li>
-									<a href="{link}" target="_blank">
-										<i class="fa fa-{name}" aria-hidden="true"></i>
-									</a>
-								</li>
-							</xsl:for-each>
-					</ul>
-					</xsl:if>
+					<div class="header__social">
+						<xsl:if test="$common/soc_link">
+							<ul >
+								<xsl:for-each select="$common/soc_link">
+									<li>
+										<a href="{link}" target="_blank">
+											<i class="fa fa-{name}" aria-hidden="true"></i>
+										</a>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</xsl:if>
+						<a class="lang" href="https://eng.tempting.pro/">
+							English version
+						</a>
+					</div>
+					<a class="lang mobile-only" style="width: 0;
+height: 20px;
+overflow: hidden;
+padding-left: 28px;
+position: absolute;
+top: 10px;
+right: 50%;
+margin-right: -100px;" href="https://eng.tempting.pro/">
+							English version
+						</a>
 					<xsl:call-template name="SEARCH"/>
 					<xsl:call-template name="HEADER_NAV" />
 				</div>
@@ -246,7 +270,7 @@
 				<div class="row">
 					<div class="col-full">
 						<div class="s-footer__copyright">
-							<span>© Tempting.Pro 2020</span>
+							<span>© Tempting.Pro 2021</span>
 							<span>Нашли ошибку? Выделите текст и нажмите Ctrl+Enter.</span>
 							<span><a href="mailto:info@tempting.pro">info@tempting.pro</a></span>
 						</div>
@@ -322,7 +346,7 @@
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.52"/>
+				<link rel="stylesheet" href="css/main.css?version=1.508"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -394,11 +418,11 @@
 		<div class="col-full recommended">
 			<div class="desktop-only background-rectangle"></div>
 			<h3>Рекомендовано</h3>
-			<xsl:if test="count(news_item | small_mews_item) = 1">
-				<xsl:for-each select="news_item | small_mews_item">
+			<xsl:if test="count(news_item | small_news_item) = 1">
+				<xsl:for-each select="news_item | small_news_item">
 					<div class="col-full recommended-item">
 						<a href="{show_page}">
-							<img src="concat($base, @path, small_pic)"/>
+							<img src="{concat($base,'/', @path, small_pic)}"/>
 							<span>
 								<xsl:value-of select="name"/>
 							</span>
@@ -406,11 +430,11 @@
 					</div>
 				</xsl:for-each>
 			</xsl:if>
-			<xsl:if test="count(news_item | small_mews_item) &gt; 1">
-				<xsl:for-each select="news_item | small_mews_item">
+			<xsl:if test="count(news_item | small_news_item) &gt; 1">
+				<xsl:for-each select="news_item | small_news_item">
 					<div class="col-six tab-full recommended-item">
 						<a href="{show_page}">
-							<img src="{concat('https://tempting.pro/', @path, small_pic)}"/>
+							<img src="{concat($base,'/', @path, small_pic)}"/>
 							<span>
 								<xsl:value-of select="name"/>
 							</span>
@@ -469,6 +493,7 @@
 				<xsl:value-of select="$title"/>
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+			<meta name="keywords" content="{replace($meta_keywords, $quote, '')}"/>
 		</xsl:if>
 		<meta name="google-site-verification" content="{page/url_seo_wrap/google_verification}"/>
 		<meta name="yandex-verification" content="{page/url_seo_wrap/yandex_verification}"/>
@@ -575,6 +600,9 @@
 		<xsl:variable name="inf" select="page/main_page/informer_wrap"/>
 		<xsl:if test="$inf">
 			<div class="header__content row">
+				<div class="desctop-only" style="font-size: 1.5rem; font-family: Trebuchet MS, roboto, ubuntu, sans-serif; text-align: right; margin-top: -20px;">
+					По данным <a style="text-decoration: underline;" href="https://ru.tradingview.com/" target="_blank">TraidingView</a>
+				</div>
 				<div class="informers-container">
 					<div class="informer-menu">
 						<a class="toggler" onclick="$('.informer-link').not('.active').toggleClass('visible'); updateHeight();">
@@ -626,6 +654,9 @@
 					</script>
 				</div>
 			</div>
+			<div class="mobile-only" style="margin: 4px 0; position: relative; font-size: 1.5rem; font-family: Trebuchet MS, roboto, ubuntu, sans-serif;">
+				По данным <a style="text-decoration: underline;" href="https://ru.tradingview.com/" target="_blank">TraidingView</a>
+			</div>
 			<div style="margin-bottom: 20px;"></div>
 		</xsl:if>
 	</xsl:template>
@@ -658,11 +689,12 @@
 
 	<!-- ADVERTISEMENT -->
 	<xsl:template name="BANNER_SIDE">
+		<xsl:variable name="sep" select="if(contains(page/common/banner[1]/link, '?')) then '&amp;' else '?'"/>
 		<xsl:if test="$adv_side">
 			<div class="border-top"></div>
 			<div class="adv_side" id="#adv_side">
 				<xsl:if test="$adv_side/pic != ''">
-					<a href="{$adv_side/link}" target="_blank">
+					<a href="{concat($adv_side/link, $sep, $utm)}" target="_blank">
 						<img src="{concat($adv_side/@path, $adv_side/pic)}"/>
 					</a>
 				</xsl:if>

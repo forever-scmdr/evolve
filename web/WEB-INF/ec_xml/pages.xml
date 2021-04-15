@@ -68,6 +68,7 @@
 		<single item="advertisement">
 			<list item="ad_banner"/>
 		</single>
+		<single item="telegram_link"/>
 	</include-definition>
 
 
@@ -959,7 +960,7 @@
 		</request>
 	</page>
 
-	<page name="check_future" schedule="0 0/2 * ? * * *">
+	<page name="check_future" schedule="0 0/5 0 ? * * *">
 		<command class="ecommander.fwk.ArticleFromFuture" />
 	</page>
 
