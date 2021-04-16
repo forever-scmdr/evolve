@@ -366,6 +366,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			if (!mainPic.isFile()) {
 				product.clearValue(MAIN_PIC_PARAM);
 				noMainPic = true;
+				needSave = true;
 			}
 		}
 		boolean isSaved = false;
