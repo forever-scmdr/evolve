@@ -28,7 +28,7 @@ import java.util.*;
 
 public class NaskladeProductCreationHandler extends DefaultHandler implements CatalogConst {
 
-	private static final Set<String> SINGLE_ELEMENTS = new HashSet(){{
+	private static final Set<String> SINGLE_ELEMENTS = new HashSet() {{
 		add(NAME_ELEMENT);
 		add(URL_ELEMENT);
 		add(PRICE_ELEMENT);
@@ -51,21 +51,21 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		add("width");
 		add("height");
 	}};
-	private static final Set<String> MULTIPLE_ELEMENTS = new HashSet(){{
+	private static final Set<String> MULTIPLE_ELEMENTS = new HashSet() {{
 		add(STATUS_ELEMENT);
 		add(PICTURE_ELEMENT);
 	}};
-	private static final Set<String> EXTRA_PAGE_ELEMENTS = new HashSet(){{
+	private static final Set<String> EXTRA_PAGE_ELEMENTS = new HashSet() {{
 		add("tech");
 		add("package");
 		add("video");
 	}};
-	private static final Set<String> WARRANTY_ELEMENTS = new HashSet(){{
+	private static final Set<String> WARRANTY_ELEMENTS = new HashSet() {{
 		add("warranty");
 		add("service_center");
 	}};
 
-	private static final Map<String, String> ELEMENT_PARAM_DICTIONARY = new HashMap(){{
+	private static final Map<String, String> ELEMENT_PARAM_DICTIONARY = new HashMap() {{
 		put(NAME_ELEMENT, NAME_PARAM);
 		put(URL_ELEMENT, URL_PARAM);
 		put(PRICE_ELEMENT, PRICE_PARAM);
@@ -126,7 +126,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
 
-				if (StringUtils.isBlank(code)){
+				if (StringUtils.isBlank(code)) {
 					info.addError("No code", "line: " + productStartLineNumber);
 					info.increaseProcessed();
 					isInsideOffer = false;
@@ -153,60 +153,62 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 
-				for(String element : singleParams.keySet()){
-					if(ELEMENT_PARAM_DICTIONARY.containsKey(element)){
-						String param = ELEMENT_PARAM_DICTIONARY.get(element);
-						String value = singleParams.get(element);
-						value = value.trim();
-						product.setValueUI(param, value);
-					}
-				}
-				for(String element : multipleParams.keySet()){
-					if(ELEMENT_PARAM_DICTIONARY.containsKey(element)){
-						String param = ELEMENT_PARAM_DICTIONARY.get(element);
-						Set<String> values = multipleParams.get(element);
-						product.clearValue(param);
-						for(String value : values) {
+				for (String element : SINGLE_ELEMENTS) {
+					if (singleParams.containsKey(element)) {
+						if (ELEMENT_PARAM_DICTIONARY.containsKey(element)) {
+							String param = ELEMENT_PARAM_DICTIONARY.get(element);
+							String value = singleParams.get(element);
 							value = value.trim();
 							product.setValueUI(param, value);
 						}
+					} else if (ELEMENT_PARAM_DICTIONARY.containsKey(element)) {
+						String param = ELEMENT_PARAM_DICTIONARY.get(element);
+						product.clearValue(param);
+					}
+				}
+				for (String element : MULTIPLE_ELEMENTS) {
+					if (multipleParams.containsKey(element)) {
+						if (ELEMENT_PARAM_DICTIONARY.containsKey(element)) {
+							String param = ELEMENT_PARAM_DICTIONARY.get(element);
+							Set<String> values = multipleParams.get(element);
+							product.clearValue(param);
+							for (String value : values) {
+								value = value.trim();
+								product.setValueUI(param, value);
+							}
+						}
+					}else if(ELEMENT_PARAM_DICTIONARY.containsKey(element)){
+						String param = ELEMENT_PARAM_DICTIONARY.get(element);
+						product.clearValue(param);
 					}
 				}
 
 				//duplicate labels in tags
 				product.clearValue(TAG_PARAM);
-				for(String label : product.getStringValues("label")){
+				for (String label : product.getStringValues("label")) {
 					product.setValueUI(TAG_PARAM, label);
 				}
 
 				boolean isSaved = addPics(product);
-				if(!isSaved){
+				if (!isSaved) {
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 				}
 
-				if (isExistingProduct){
+				if (isExistingProduct) {
 					addWarrantyAndPages(product);
-				}else{
+				} else {
 					addWarrantyAndPagesQuick(product);
 				}
 
 				info.increaseProcessed();
 				isInsideOffer = false;
-			}
-
-			else if (isInsideOffer && SINGLE_ELEMENTS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_ELEMENTS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if(isInsideOffer && EXTRA_PAGE_ELEMENTS.contains(qName) && parameterReady){
+			} else if (isInsideOffer && EXTRA_PAGE_ELEMENTS.contains(qName) && parameterReady) {
 				extraPageParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if(isInsideOffer && WARRANTY_ELEMENTS.contains(qName) && parameterReady){
+			} else if (isInsideOffer && WARRANTY_ELEMENTS.contains(qName) && parameterReady) {
 				warrantyParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && MULTIPLE_ELEMENTS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && MULTIPLE_ELEMENTS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
@@ -229,74 +231,74 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		Item video = null;
 		Item pack = null;
 
-		for(Item item : subs){
-			if(item.getTypeName().equals("warranty")){
+		for (Item item : subs) {
+			if (item.getTypeName().equals("warranty")) {
 				warranty = item;
-			}else if(item.getTypeName().equals("product_extra")){
+			} else if (item.getTypeName().equals("product_extra")) {
 				String name = item.getStringValue(NAME_PARAM);
-				if(ELEMENT_PARAM_DICTIONARY.get("tech").equals(name)){
+				if (ELEMENT_PARAM_DICTIONARY.get("tech").equals(name)) {
 					tech = item;
-				}else if(ELEMENT_PARAM_DICTIONARY.get("package").equals(name)){
+				} else if (ELEMENT_PARAM_DICTIONARY.get("package").equals(name)) {
 					pack = item;
-				}else if(ELEMENT_PARAM_DICTIONARY.get("video").equals(name)){
+				} else if (ELEMENT_PARAM_DICTIONARY.get("video").equals(name)) {
 					video = item;
 				}
 			}
 		}
 
-		if(warranty == null){
+		if (warranty == null) {
 			warranty = Item.newChildItem(ItemTypeRegistry.getItemType("warranty"), product);
 		}
-		if(tech == null){
+		if (tech == null) {
 			tech = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 		}
-		if(video == null){
+		if (video == null) {
 			video = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 		}
-		if(pack == null){
+		if (pack == null) {
 			pack = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 		}
 
 		String months = warrantyParams.get("warranty");
-		if(StringUtils.isNotBlank(extraPageParams.get("warranty"))) {
+		if (StringUtils.isNotBlank(extraPageParams.get("warranty"))) {
 			String serviceCenter = warrantyParams.get("service_center");
 			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("service_center"), serviceCenter);
 			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("warranty"), months);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(warranty).noFulltextIndex().ignoreFileErrors());
-		}else if(!warranty.isNew()){
+		} else if (!warranty.isNew()) {
 			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(warranty.getId()).noFulltextIndex().ignoreFileErrors());
 		}
 
-		if(StringUtils.isNotBlank(extraPageParams.get("tech"))) {
+		if (StringUtils.isNotBlank(extraPageParams.get("tech"))) {
 			tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("tech"));
 			String text = extraPageParams.get("tech").trim();
 			tech.setValueUI(ItemNames.product_extra_.TEXT, text);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(tech).noFulltextIndex().ignoreFileErrors());
-		}else if(!tech.isNew()){
+		} else if (!tech.isNew()) {
 			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(tech.getId()).noFulltextIndex().ignoreFileErrors());
 		}
 
-		if(StringUtils.isNotBlank(extraPageParams.get("package"))) {
+		if (StringUtils.isNotBlank(extraPageParams.get("package"))) {
 			pack.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("package"));
 			String text = extraPageParams.get("package").trim();
 			pack.setValueUI(ItemNames.product_extra_.TEXT, text);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(pack).noFulltextIndex().ignoreFileErrors());
-		}else if(!pack.isNew()){
+		} else if (!pack.isNew()) {
 			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(pack.getId()).noFulltextIndex().ignoreFileErrors());
 		}
 
-		if(StringUtils.isNotBlank(extraPageParams.get("video"))) {
+		if (StringUtils.isNotBlank(extraPageParams.get("video"))) {
 			video.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("video"));
 			String text = extraPageParams.get("video").trim();
 			video.setValueUI(ItemNames.product_extra_.TEXT, text);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(video).noFulltextIndex().ignoreFileErrors());
-		}else if(!video.isNew()){
+		} else if (!video.isNew()) {
 			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(video.getId()).noFulltextIndex().ignoreFileErrors());
 		}
 	}
 
 	private void addWarrantyAndPagesQuick(Item product) throws Exception {
-		if(StringUtils.isNotBlank(warrantyParams.get("warranty"))){
+		if (StringUtils.isNotBlank(warrantyParams.get("warranty"))) {
 			Item warranty = Item.newChildItem(ItemTypeRegistry.getItemType("warranty"), product);
 			String months = warrantyParams.get("warranty");
 			String serviceCenter = warrantyParams.get("service_center");
@@ -304,21 +306,21 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("warranty"), months);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(warranty).noFulltextIndex().ignoreFileErrors());
 		}
-		if(StringUtils.isNotBlank(extraPageParams.get("tech"))){
+		if (StringUtils.isNotBlank(extraPageParams.get("tech"))) {
 			Item tech = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 			tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("tech"));
 			String text = extraPageParams.get("tech").trim();
 			tech.setValueUI(ItemNames.product_extra_.TEXT, text);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(tech).noFulltextIndex().ignoreFileErrors());
 		}
-		if(StringUtils.isNotBlank(extraPageParams.get("package"))){
+		if (StringUtils.isNotBlank(extraPageParams.get("package"))) {
 			Item tech = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 			tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("package"));
 			String text = extraPageParams.get("package").trim();
 			tech.setValueUI(ItemNames.product_extra_.TEXT, text);
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(tech).noFulltextIndex().ignoreFileErrors());
 		}
-		if(StringUtils.isNotBlank(extraPageParams.get("video"))){
+		if (StringUtils.isNotBlank(extraPageParams.get("video"))) {
 			Item tech = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), product);
 			tech.setValueUI(ItemNames.product_extra_.NAME, ELEMENT_PARAM_DICTIONARY.get("video"));
 			String text = extraPageParams.get("video").trim();
@@ -330,8 +332,8 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private boolean addPics(Item product) throws MalformedURLException {
 		//if(picCounter > 49) return false;
 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
-		if(picUrls == null){
-			info.addLog("No pics for ["+product.getValue(CODE_PARAM)+"]", String.valueOf(productStartLineNumber));
+		if (picUrls == null) {
+			info.addLog("No pics for [" + product.getValue(CODE_PARAM) + "]", String.valueOf(productStartLineNumber));
 			return false;
 		}
 		boolean needSave = false;
@@ -341,11 +343,11 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 			}
 		}
-		if(picUrls.size() > 1){
+		if (picUrls.size() > 1) {
 			int i = 0;
 			for (String picUrl : picUrls) {
 				i++;
-				if(i == 1) continue;
+				if (i == 1) continue;
 				try {
 					String fileName = Strings.getFileName(picUrl);
 					if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
@@ -419,7 +421,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(parameterReady)
+		if (parameterReady)
 			paramValue.append(ch, start, length);
 	}
 
