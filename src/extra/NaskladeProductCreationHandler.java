@@ -361,6 +361,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 
 		// Генерация маленького изображения
 		boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
+		needSave = noMainPic || needSave;
 		if (!noMainPic) {
 			File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 			if (!mainPic.isFile()) {
@@ -380,6 +381,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 				isSaved = true;
 			} catch (Exception e) {
+				e.printStackTrace();
 				info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 			}
 		}
