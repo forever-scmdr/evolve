@@ -260,7 +260,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		}
 
 		String months = warrantyParams.get("warranty");
-		if (StringUtils.isNotBlank(extraPageParams.get("warranty"))) {
+		if (StringUtils.isNotBlank(warrantyParams.get("warranty"))) {
 			String serviceCenter = warrantyParams.get("service_center");
 			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("service_center"), serviceCenter);
 			warranty.setValueUI(ELEMENT_PARAM_DICTIONARY.get("warranty"), months);
