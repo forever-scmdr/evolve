@@ -172,6 +172,13 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 						}
 					}
 				}
+
+				//duplicate labels in tags
+				product.clearValue(TAG_PARAM);
+				for(String label : product.getStringValues("label")){
+					product.setValueUI(TAG_PARAM, label);
+				}
+
 				boolean isSaved = addPics(product);
 				if(!isSaved){
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
