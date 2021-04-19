@@ -840,31 +840,6 @@
 	</page>
 
 
-<!-- 	<page name="order_email" template="shop_email">
-		<request>
-			<var name="currency" value="byn" scope="cookie"/>
-		</request>
-		<single item="catalog"/>
-		<session>
-			<single item="cart">
-				<list item="bought" id="bought">
-					<list item="abstract_product" id="prod" tag="product">
-						<link name="show_product" target="product">
-							<var name="prod" ref="prod" style="key"/>
-						</link>
-					</list>
-				</list>
-			</single>
-			<list item="user" tag="registration"/>
-			<new item="user_phys" id="user_phys">
-				<parameter-input ref="user_phys" form="customer_phys"/>
-			</new>
-			<new item="user_jur" id="user_jur">
-				<parameter-input ref="user_jur" form="customer_jur"/>
-			</new>
-		</session>
-		<single item="common"/>
-	</page> -->
 
 	<page name="customer_email" template="order_email">
 		<request>
@@ -889,14 +864,6 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-<!-- 		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			
-		</list> -->
 		<single item="common"/>
 	</page>
 
@@ -1685,7 +1652,6 @@
 		<request>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
-		<single item="catalog"/>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1704,8 +1670,38 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
+		<single item="catalog"/>
 		<single item="common"/>
 	</page>
+
+	<page name="order_excel" template="order_excel">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<single item="catalog"/>
+		<single item="common"/>
+	</page>
+
+
+
 
 	<page name="search_test" template="search_test" >
 		<request>
@@ -1756,7 +1752,7 @@
 
 	<page name="arrow_search" template="arrow_search_ajax">
 		<request>
-			<var name="query" value="123"/>
+			<var name="query" value="1234"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>

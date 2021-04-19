@@ -204,7 +204,8 @@
 		<xsl:if test="$vendor/pricebreaks/break">
 
 			<xsl:variable name="code" select="if($vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
-			<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>
+<!--		<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>-->
+			<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', @price), ';')"/>
 			<xsl:variable name="days" select="concat(f:num(@delivery)+7 ,'-', f:num(@delivery)+14)"/>
 
 			<div class="device__order">

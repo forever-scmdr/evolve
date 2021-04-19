@@ -89,7 +89,7 @@
 								<xsl:for-each select="datasheets">
 									<xsl:if test="position() &gt; 1"></xsl:if>
 									<a href="{normalize-space(url)}" target="_blank">
-										<xsl:value-of select="normalize-space(description)" />
+										<xsl:value-of select="normalize-space(if(description) then description else 'документ PDF')" />
 									</a>
 								</xsl:for-each>
 							</span>
@@ -144,6 +144,7 @@
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
 						<input type="hidden" value="{displayName}" name="name"/>
+						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
@@ -212,6 +213,7 @@
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
 						<input type="hidden" value="{displayName}" name="name"/>
+						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>

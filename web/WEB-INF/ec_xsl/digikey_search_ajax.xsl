@@ -80,6 +80,11 @@
 				Артикул производителя:<br/>
 				<xsl:value-of select="producer_code"/>
 			</div>
+			<xsl:if test="doc_ref">
+				<div class="device__article-number">
+					<a href="{doc_ref}" target="_blank">Документация PDF</a>
+				</div>
+			</xsl:if>
 			<div class="device__price">
 				<div class="price_normal">
 					<xsl:value-of select="concat($price, '/', 'шт')"/>
@@ -107,6 +112,7 @@
 					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
@@ -122,6 +128,7 @@
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
@@ -173,6 +180,12 @@
 						</xsl:if>
 					</p>
 
+					<xsl:if test="doc_ref">
+						<p>
+							<a href="{doc_ref}" target="_blank">Документация PDF</a>
+						</p>
+					</xsl:if>
+
 					<a style="color: #707070; text-decoration: underline;" class="javascript" onclick="$('#tech-{@id}').toggle();">Показать технические характеристики</a>
 					<table class="features table-bordered" id="tech-{@id}" style="display:none;">
 					<xsl:for-each select="parameter">
@@ -215,6 +228,7 @@
 					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
@@ -230,6 +244,7 @@
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>

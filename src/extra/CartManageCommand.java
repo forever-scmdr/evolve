@@ -45,6 +45,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 	private double q1Eur = -1;
 	private double q2Eur  = -1;
 	private double q2Arrow = -1;
+	private double ratioRur = -1;
+	private double q1Rur = -1;
+	private double qPromelec = -1;
 
 	/**
 	 * Добавить товар Verical (arrow.com) в корзину
@@ -81,10 +84,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
 			product.setValueUI(CODE_PARAM, getVarSingleValue("vendor_code"));
+			product.setValueUI(ItemNames.product_.VENDOR, getVarSingleValue("vendor"));
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValueUI("currency_id", "USD");
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}
@@ -117,6 +122,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			bought.setValue(NAME_PARAM, name);
 			bought.setValue(CODE_PARAM, code);
 			bought.setValueUI(NOT_AVAILABLE, getVarSingleValue(NOT_AVAILABLE).trim());
+
 			String days = getVarSingleValue("delivery_time");
 			if(StringUtils.isNotBlank(days))
 				bought.setValueUI("delivery_time", days.trim());
@@ -141,6 +147,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValue(QTY_PARAM, qty);
+			product.setValueUI("currency_id", "EUR");
+			product.setValueUI(ItemNames.product_.VENDOR, getVarSingleValue("vendor"));
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}
@@ -185,6 +194,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValueUI("currency_id", "USD");
+			product.setValueUI(ItemNames.product_.VENDOR, getVarSingleValue("vendor"));
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}
@@ -225,6 +236,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			getSessionMapper().saveTemporaryItem(bought);
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
+			product.setValueUI("vendor", getVarSingleValue("vendor"));
 			product.setValueUI(CODE_PARAM, code);
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
@@ -236,10 +248,17 @@ public class CartManageCommand extends BasicCartManageCommand {
 			String priceSpec =  getVarSingleValue("price_spec");
 
 			String priceStr = quantity >= specQ? priceSpec : price;
+
 			priceStr = StringUtils.isBlank(priceStr)? getVarSingleValue("price") : priceStr;
 			product.setValueUI(PRICE_PARAM, priceStr);
 			product.setValueUI(PRICE_OPT_PARAM, priceSpec);
 			product.setValueUI("price_old", price);
+			product.setValueUI("currency_id", "RUR");
+
+			product.setExtra("orig", getVarSingleValue("price_original"));
+			String spec = StringUtils.isNotBlank("price_original_spec")? getVarSingleValue("price_original_spec") : getVarSingleValue("price_original");
+			product.setExtra("orig_spec", spec);
+
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}else{
@@ -282,6 +301,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max"))? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValueUI("currency_id", "RUR");
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}
@@ -319,6 +339,10 @@ public class CartManageCommand extends BasicCartManageCommand {
 			q1Eur = 1 + catalog.getDoubleValue("q1_eur", 0d);
 			q2Eur = 1 + catalog.getDoubleValue("q2_eur", 0d);
 			q2Arrow = 1 + catalog.getDoubleValue("q2_arrow", 0d);
+
+			ratioRur = catalog.getDoubleValue("currency_ratio");
+			q1Rur = 1 + catalog.getDoubleValue("q1", 0d);
+			qPromelec = 1 + catalog.getDoubleValue("q2_prom", 0d);
 		}
 	}
 
@@ -326,11 +350,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 		double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 		String specPrice = bought.getStringValue("price_map");
 		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioEur, q1Eur, q2Eur);
-
+		TreeMap<Double, String> priceOrigMap = parsePriceMap(specPrice, 1, 1, 1);
 		if(priceMap.size() > 0){
 			for(Double breakpoint : priceMap.keySet()){
 				if(breakpoint <= totalQty){
 					product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+					product.setValueUI("price_original", priceOrigMap.get(breakpoint));
 				}
 				else{
 					break;
@@ -343,10 +368,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 		double totalQty =  bought.getDoubleValue(QTY_TOTAL_PARAM);
 		String specPrice = bought.getStringValue("price_map");
 		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioUsd, q1Usd, q2Arrow);
+		TreeMap<Double, String> priceOrigMap = parsePriceMap(specPrice, 1, 1,1);
 		if(priceMap.size() > 0){
 			for(Double breakpoint : priceMap.keySet()){
 				if(breakpoint <= totalQty){
 					product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+					product.setValueUI("price_original", priceOrigMap.get(breakpoint));
 				}
 				else{
 					break;
@@ -359,11 +386,13 @@ public class CartManageCommand extends BasicCartManageCommand {
 		double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 		String specPrice = bought.getStringValue("price_map");
 
-		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, 1, 1, 1);
+		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioRur, q1Rur, qPromelec);
+		TreeMap<Double, String> priceOrigMap = parsePriceMap(specPrice, 1, 1, 1);
 		if(priceMap.size() > 0){
 			for(Double breakpoint : priceMap.keySet()){
 				if(breakpoint <= totalQty){
 					product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+					product.setValueUI("price_original", priceOrigMap.get(breakpoint));
 				}
 				else{
 					break;
@@ -375,12 +404,13 @@ public class CartManageCommand extends BasicCartManageCommand {
 	private void digikeyPriceAction(Item bought, Item product) throws Exception {
 		double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 		String specPrice = bought.getStringValue("price_map");
-
+		TreeMap<Double, String> priceOrigMap = parsePriceMap(specPrice, 1, 1,1);
 		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioUsd, q1Usd, q2Usd);
 		if(priceMap.size() > 0){
 			for(Double breakpoint : priceMap.keySet()){
 				if(breakpoint <= totalQty){
 					product.setValueUI(PRICE_PARAM, priceMap.get(breakpoint));
+					product.setValueUI("price_original", priceOrigMap.get(breakpoint));
 				}
 				else{
 					break;
@@ -389,12 +419,14 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 	}
 
-	private void platanPriceAction(Item bought, Item product) {
+	private void platanPriceAction(Item bought, Item product) throws Exception {
 		double specQ = product.getDoubleValue("spec_qty", Double.MAX_VALUE);
 		if(bought.getDoubleValue(QTY_AVAIL_PARAM, 0d) >= specQ){
 			product.setValue(PRICE_PARAM, product.getValue(PRICE_OPT_PARAM));
+			product.setValueUI("price_original", product.getExtra("orig_spec").toString());
 		}else{
 			product.setValue(PRICE_PARAM, product.getValue("price_old"));
+			product.setValueUI("price_original", product.getExtra("orig").toString());
 		}
 	}
 
@@ -440,6 +472,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected boolean addExtraEmailBodyParts(boolean isCustomerEmail, Multipart mp) throws Exception {
+		if (isCustomerEmail) return true;
+
 		LinkPE customerEmailLink = LinkPE.newDirectLink("link", "excel_email", false);
 		ExecutablePagePE excelTemplate = getExecutablePage(customerEmailLink.serialize());
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();

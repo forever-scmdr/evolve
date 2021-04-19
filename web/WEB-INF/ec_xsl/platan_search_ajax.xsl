@@ -80,10 +80,13 @@
 								<input type="hidden" value="0" name="not_available"/>
 								<input type="hidden" value="platan" name="aux"/>
 								<input type="hidden" value="{NAME}" name="name"/>
+								<input type="hidden" value="{MANUFAC}" name="vendor"/>
 								<input type="hidden" value="{EI_NAME}" name="unit"/>
 								<input type="hidden" value="{UPACK}" name="upack"/>
 								<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 								<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
+								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
+								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
 								<input type="hidden" value="{QUANTY}" name="max"/>
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="hidden" name="delivery_time" value="7-10 дней"/>
@@ -92,11 +95,14 @@
 							<xsl:if test="f:num(QUANTY) = 0">
 								<input type="hidden" value="platan" name="aux"/>
 								<input type="hidden" value="{NAME}" name="name"/>
+								<input type="hidden" value="{MANUFAC}" name="vendor"/>
 								<input type="hidden" value="1" name="not_available"/>
 								<input type="hidden" value="{EI_NAME}" name="unit"/>
 								<input type="hidden" value="{UPACK}" name="upack"/>
 								<input type="hidden" value="{f:rur_to_byn(CENA_ROZ)}" name="price"/>
 								<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
+								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
+								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
 								<input type="number" class="text-input" name="qty" value="1" min="0"/>
 								<input type="hidden" name="delivery_time" value=" "/>
 								<input type="submit" class="button not_available" value="Под заказ"/>

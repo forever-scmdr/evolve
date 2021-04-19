@@ -121,6 +121,11 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		//xml.addElement("params_link", StringUtils.substringAfterLast(getUri(product, PARAMS_VAL), "products/"));
 		xml.addElement("doc", getUri(product, PDF_VAL));
 
+		JSONObject vendor = product.getJSONObject(VENDOR);
+		String vendorName = vendor.getString(VENDOR_NAME);
+
+		xml.addElement("vendor", vendorName);
+
 		//prices and availability
 		JSONArray stores = product.getJSONObject(INVENTORY).getJSONArray(STORES_ARR);
 		//xml.startElement("offers");

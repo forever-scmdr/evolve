@@ -70,8 +70,9 @@
 				<div class="device__description">
 					<p class="basics">
 						<span><b>Код:</b>&#160;<xsl:value-of select="code"/></span><br/>
+						<span><b>Производитель:</b>&#160;<xsl:value-of select="vendor" /></span><br/>
 						<span><b>Страна производства:</b>&#160;<xsl:value-of select="country" /></span>
-						<xsl:if test="doc">
+						<xsl:if test="doc != ''">
 							<br/><span><b>Документация:</b>&#160;<a href="{doc}" target="_blank">файл PDF</a></span>
 						</xsl:if>
 					</p>
@@ -173,6 +174,7 @@
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
 					<input type="hidden" value="0" name="available"/>
 					<input type="hidden" value="arrow" name="aux"/>
+					<input type="hidden" value="{$product/vendor}" name="vendor"/>
 
 					<input type="hidden" value="{$product/name}" name="name"/>
 					<input type="hidden" value="шт" name="unit"/>
@@ -206,6 +208,7 @@
 					<input type="hidden" value="arrow" name="aux"/>
 
 					<input type="hidden" value="{$product/name}" name="name"/>
+					<input type="hidden" value="{$product/vendor}" name="vendor"/>
 					<input type="hidden" value="шт" name="unit"/>
 					<input type="hidden" value="{$offer/step}" name="upack"/>
 

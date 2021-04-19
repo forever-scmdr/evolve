@@ -34,6 +34,8 @@ public interface ArrowJSONConst {
 	String CODE = "sourcePartId";
 	String AVAILABILITY_ARR = "Availability";
 	String SHIPMENT = "shipsIn";
+	String VENDOR = "manufacturer";
+	String VENDOR_NAME = "mfrName";
 
 	String URI_ARR = "resources";
 	String URI_TYPE = "type";
