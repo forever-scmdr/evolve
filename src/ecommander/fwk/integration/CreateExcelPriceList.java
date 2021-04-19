@@ -87,7 +87,6 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private long secId = 0L;
 
 
-
 	@Override
 	protected void integrate() throws Exception {
 		setOperation("Загрузка каталога товаров");

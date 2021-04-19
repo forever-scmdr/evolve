@@ -1,14 +1,23 @@
 package extra;
 
+import ecommander.controllers.PageController;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.datatypes.DoubleDataType;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.TreeMap;
 
@@ -427,6 +436,33 @@ public class CartManageCommand extends BasicCartManageCommand {
 			saveSessionForm("customer_jur");
 		}
 		return !hasError;
+	}
+
+	@Override
+	protected boolean addExtraEmailBodyParts(boolean isCustomerEmail, Multipart mp) throws Exception {
+		LinkPE customerEmailLink = LinkPE.newDirectLink("link", "excel_email", false);
+		ExecutablePagePE excelTemplate = getExecutablePage(customerEmailLink.serialize());
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(excelTemplate, bos);
+		DataSource dataSource = new ByteArrayDataSource(bos.toByteArray(), "application/vnd.ms-excel");
+		MimeBodyPart filePart = new MimeBodyPart();
+		filePart.setDataHandler(new DataHandler(dataSource));
+		String additionalInfo = "";
+		if(isCustomerEmail){
+			additionalInfo = "Заказ \"Чип электроникс\" ";
+		}else{
+			Item contacts = getSessionMapper().getSingleRootItemByName(ItemNames.USER_PHYS);
+			if(contacts != null){
+				additionalInfo = "Заказ " + contacts.getValue(NAME_PARAM) + " ";
+			}else{
+				contacts = getSessionMapper().getSingleRootItemByName(ItemNames.USER_JUR);
+				additionalInfo = "Заказ " + contacts.getValue(ItemNames.user_jur_.ORGANIZATION) + " ";
+			}
+		}
+		filePart.setFileName(additionalInfo + cart.getValue("order_num") + ".xls");
+		mp.addBodyPart(filePart);
+		bos.close();
+		return true;
 	}
 
 }

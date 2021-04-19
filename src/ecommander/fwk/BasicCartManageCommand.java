@@ -191,7 +191,7 @@ public abstract class BasicCartManageCommand extends Command {
 		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
 		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
-		addExtraEmailBodyPart(false, shopMultipart);
+		addExtraEmailBodyParts(false, shopMultipart);
 
 		// Письмо для покупателя
 		Multipart customerMultipart = new MimeMultipart();
@@ -204,11 +204,11 @@ public abstract class BasicCartManageCommand extends Command {
 			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
 			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(true, customerMultipart);
+			addExtraEmailBodyParts(true, customerMultipart);
 		} catch (Exception e) {
 			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(false, customerMultipart);
+			addExtraEmailBodyParts(false, customerMultipart);
 		}
 
 		// Отправка на ящик заказчика
@@ -302,7 +302,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 	protected abstract boolean validate() throws Exception;
 
-	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
+	protected boolean addExtraEmailBodyParts(boolean isCustomerEmail, Multipart mp) throws Exception {
 		return true;
 	}
 
