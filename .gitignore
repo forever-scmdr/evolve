@@ -3,3 +3,5 @@
 /web/WEB-INF/settings.properties
 /web/META-INF/context.xml
 /evolve.iml
+/.idea/
+/web/WEB-INF/_lucene/
