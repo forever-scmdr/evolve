@@ -26,7 +26,9 @@
 						<td>Количество</td>
 						<td>ед. изм.</td>
 						<td>Цена отпускная</td>
+						<td>Валюта покупки</td>
 						<td>Цена поставщика</td>
+						<td>Валюта поставщика</td>
 						<td>Поставщик</td>
 						<td>Срок поставки</td>
 						<td>Описание</td>
@@ -41,7 +43,7 @@
 	<xsl:template match="bought">
 
 		<xsl:variable name="product" select="product"/>
-		<xsl:variable name="price" select="if(aux != '') then concat(f:cart_price_platan($product/price),' ', upper-case($curr)) else f:price_catalog($product/price,'', $product/min_qty)"/>
+		<xsl:variable name="price" select="if(aux != '') then f:cart_price_platan($product/price) else f:price_catalog($product/price,'', $product/min_qty)"/>
 		<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '', '')"/>
 
 		<tr>
@@ -49,7 +51,7 @@
 				<xsl:value-of select="if(aux = 'promelec' and contains($product/code, 'v')) then substring-before($product/code, 'v') else $product/code"/>
 			</td>
 			<td>
-				<xsl:value-of select="$product/name"/>
+				<xsl:value-of select="if(aux = 'digikey') then $product/vendor_code else $product/name"/>
 			</td>
 			<td>
 				<xsl:value-of select="qty"/>
@@ -61,7 +63,13 @@
 				<xsl:value-of select="$price"/>
 			</td>
 			<td>
-				<xsl:value-of select="if(aux != '') then concat($product/price_original, $product/currency_id) else concat($product/price_opt, 'BYN')"/>
+				<xsl:value-of select="$curr"/>
+			</td>
+			<td>
+				<xsl:value-of select="if(aux != '') then $product/price_original else $product/price_opt"/>
+			</td>
+			<td>
+				<xsl:value-of select="if(aux != '') then $product/currency_id else 'BYN'"/>
 			</td>
 			<td>
 				<xsl:value-of select="if(aux != '') then aux else 'ictrade'"/>

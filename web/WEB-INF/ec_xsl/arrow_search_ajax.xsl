@@ -197,7 +197,7 @@
 		<xsl:param name="offer" />
 		<xsl:param name="product" />
 
-		<xsl:variable name="code" select="$offer/code"/>
+		<xsl:variable name="code" select="replace($offer/code, ':', '-')"/>
 		<xsl:variable name="map" select="f:map($offer)"/>
 
 		<div class="device__order">

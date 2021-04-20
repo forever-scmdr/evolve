@@ -113,6 +113,9 @@
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
 							<input type="hidden" value="{producer}" name="vendor"/>
+							<textarea style="display:none;" name="description">
+								<xsl:value-of select="description"/>
+							</textarea>
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
@@ -128,6 +131,9 @@
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<textarea style="display:none;" name="description">
+								<xsl:value-of select="description"/>
+							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
@@ -228,6 +234,9 @@
 					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 						<xsl:if test="f:num(qty) != 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<textarea style="display:none;" name="description">
+								<xsl:value-of select="description"/>
+							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="0" name="not_available"/>
 							<input type="hidden" value="digikey" name="aux"/>
@@ -244,6 +253,9 @@
 						</xsl:if>
 						<xsl:if test="f:num(qty) = 0">
 							<input type="hidden" value="{producer_code}" name="vendor_code"/>
+							<textarea style="display:none;" name="description">
+								<xsl:value-of select="description"/>
+							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="digikey" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
