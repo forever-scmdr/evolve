@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * Created by user on 12.12.2018.
  */
-public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
+public class  ImportProductsFromExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
 	ExcelPriceList priceWB;
 	Item catalog;
 	Item currentSection;

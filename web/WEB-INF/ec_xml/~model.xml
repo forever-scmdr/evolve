@@ -88,7 +88,7 @@
 		<child item="seo" single="true"/>
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
