@@ -195,6 +195,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
 			product.setValueUI(CODE_PARAM, code);
+			product.setValueUI(ItemNames.product_.DESCRIPTION, getVarSingleValue("description"));
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max")) ? 0d : Double.parseDouble(getVarSingleValue("max"));
