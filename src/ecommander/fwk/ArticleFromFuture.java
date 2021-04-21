@@ -1,6 +1,5 @@
 package ecommander.fwk;
 
-import ecommander.controllers.PageController;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -8,7 +7,6 @@ import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 
 import java.util.Date;
@@ -44,18 +42,18 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
         q = new ItemQuery("featured", Item.STATUS_HIDDEN);
         articles.addAll(q.loadItems());
 
-        boolean needReindex = false;
+       // boolean needReindex = false;
         for(Item a : articles){
             long v = a.getLongValue(ItemNames.news_item_.DATE, 0);
             if(v < now){
                 executeAndCommitCommandUnits(ItemStatusDBUnit.restore(a).ignoreUser(true).noTriggerExtra());
-                needReindex = true;
+           //     needReindex = true;
             }
         }
-        if(needReindex){
-            LuceneIndexMapper.getSingleton().reindexAll();
-            PageController.clearCache();
-        }
+//        if(needReindex){
+//            LuceneIndexMapper.getSingleton().reindexAll();
+//            PageController.clearCache();
+//        }
         return null;
     }
 }
