@@ -499,8 +499,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 
 	private int writeAux(Row row, Item aux, int colIdx){
 		if(aux == null) return ++colIdx;
-		row.createCell(++colIdx).setCellValue(aux.getTypeId());
-		row.getCell(colIdx).setCellStyle(auxStyle);
+//		row.createCell(++colIdx).setCellValue(aux.getTypeId());
+//		row.getCell(colIdx).setCellStyle(auxStyle);
 		//for (ParameterDescription param : aux.getItemType().getParameterList()){
 		for (String param : paramsOrder){
 			ArrayList<Object> pv = aux.getValues(param);
