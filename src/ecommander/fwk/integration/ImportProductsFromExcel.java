@@ -152,16 +152,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				postProcessProduct(product);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex().ignoreUser());
 
-				String ass;
-				if(StringUtils.isNotBlank(ass = getValue(ON_MAIN))){
-					homepage = homepage == null? ItemQuery.loadSingleItemByName("main_page") : homepage;
-					if("+".equals(ass)){
+				String ass = getValue(ON_MAIN);
+				//if (StringUtils.isNotBlankge(ass = tValue(ON_MAIN))) {
+
+					if ("1".equals(ass)) {
 						executeAndCommitCommandUnits(CreateAssocDBUnit.childExistsSoft(product, homepage.getId(), ItemTypeRegistry.getAssoc("general").getId()));
-					}
-					if("-".equals(ass)){
+					} else {
 						executeAndCommitCommandUnits(new DeleteAssocDBUnit(product, homepage.getId(), ItemTypeRegistry.getAssoc("general").getId()));
 					}
-				}
+				//}
 
 				if (hasAuxParams) {
 					processAuxType(product);
@@ -261,11 +260,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				String paramName = HEADER_PARAM.get(header);
 				if (
 						PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName)
-						|| CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header)
-						|| CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)
-						|| CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header)
-						|| CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header)
-						|| ON_MAIN.equalsIgnoreCase(header)
+								|| CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header)
+								|| CreateExcelPriceList.MANUAL.equalsIgnoreCase(header)
+								|| CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header)
+								|| CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header)
+								|| ON_MAIN.equalsIgnoreCase(header)
 				)
 					continue;
 				String originalHeader = getOriginalHeader(header);
@@ -401,7 +400,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			varValues withPics = settings.get(WITH_FILES_VAR);
 			if (withPics != varValues.SEARCH_BY_CELL_VALUE && !paramName.equals(MAIN_PIC_PARAM)) return;
 			if (withPics == varValues.SEARCH_BY_MAIN_PIC && paramName.equals(MAIN_PIC_PARAM)) {
-				if(StringUtils.isBlank(value)) return;
+				if (StringUtils.isBlank(value)) return;
 				value = StringUtils.replaceChars(value, '\\', System.getProperty("file.separator").charAt(0));
 				File mainPicFile = picsFolder.resolve(value).toFile();
 				if (mainPicFile.isFile()) {
@@ -422,7 +421,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					for (Map.Entry<Integer, File> f : sorted.entrySet()) {
 						product.setValue(GALLERY_PARAM, f.getValue());
 					}
-				}else {
+				} else {
 					pushLog("No file: " + mainPicFile.getAbsolutePath());
 				}
 			} else {
@@ -519,6 +518,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			super(file, mandatoryCols);
 			String pics_location = StringUtils.isBlank(getVarSingleValue(PICS_FOLDER_VAR)) ? DEFAULT_PICS_FOLDER : getVarSingleValue(PICS_FOLDER_VAR);
 			picsFolder = Paths.get(AppContext.getContextPath(), pics_location);
+			homepage = ItemQuery.loadSingleItemByName("main_page");
 		}
 
 		private void initSection(String code, String name, String parentCode, String hide) throws Exception {
@@ -527,8 +527,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			//section not exists
 			if (currentSection == null) {
 				saveNewSection(code, name, parentCode);
-				if("+".equals(hide)){
-					currentSection.setValue("hide", (byte)1);
+				if ("+".equals(hide)) {
+					currentSection.setValue("hide", (byte) 1);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).ignoreUser().noTriggerExtra().noFulltextIndex());
 				}
 				return;
@@ -562,8 +562,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					updateSection(name, parentCode);
 					break;
 			}
-			if("+".equals(hide)){
-				currentSection.setValue("hide", (byte)1);
+			if ("+".equals(hide)) {
+				currentSection.setValue("hide", (byte) 1);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).ignoreUser().noTriggerExtra().noFulltextIndex());
 			}
 		}
