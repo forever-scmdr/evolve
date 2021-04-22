@@ -26,14 +26,14 @@ public class AnalogHandler {
 
 	public void parse(Path AnalogList) throws Exception {
 		 List<String> lines = Files.readAllLines(AnalogList, StandardCharsets.UTF_8);
-		 info.setCurrentLine(0);
-		 info.setLineCount(lines.size());
-		 info.setProductsCreated(0);
+		 info.setLineNumber(0);
+		 info.setToProcess(lines.size());
+		 info.setProcessed(0);
 		 int lineCount = 0;
 		 int productsCreated = 0;
 		 for(String line : lines){
 			 lineCount++;
-			 info.setCurrentLine(lineCount);
+			 info.setLineNumber(lineCount);
 			 String analogs = StringUtils.substringBefore(line, "/");
 			 String related = StringUtils.substringAfter(line, "/");
 			 ArrayList<String> analogCodes = new ArrayList<String>();
@@ -66,13 +66,13 @@ public class AnalogHandler {
 				 if(transaction.getCommandCount() > 49){
 					 productsCreated += transaction.getCommandCount();
 					 transaction.execute();
-					 info.setProductsCreated(productsCreated);
+					 info.setProcessed(productsCreated);
 				 }
 			 }
 		 }
 		 productsCreated += transaction.getCommandCount();
 		 transaction.execute();
-		 info.setProductsCreated(productsCreated);
+		 info.setProcessed(productsCreated);
 	}
 
 }

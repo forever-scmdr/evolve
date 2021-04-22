@@ -11,6 +11,7 @@ public interface IConst {
 	 */
 	String PARAMETER_ELEMENT = "parameter";
 	String NAME_ELEMENT = "name";
+	String VALUE_ELEMENT = "value";
 	String MARK_ELEMENT = "mark";
 	String PRODUCER_ELEMENT = "producer";
 	String CODE_ELEMENT = "code";
@@ -31,6 +32,10 @@ public interface IConst {
 	String ANALOG_CODE_ELEMENT = "analog_code";
 	String TEXT_TOP_ELEMENT = "textop";
 	String VIDEO = "filevid";
+	String KURS_ELEMENT = "kurs";
+	String USD_ELEMENT = "usd";
+	String EUR_ELEMENT = "eur";
+	String RUB_ELEMENT = "rub";
 	
 	/**
 	 * Атрибуты элементов
@@ -50,9 +55,12 @@ public interface IConst {
 	String NORM_PARAM = "norm";
 	String TYPE_PARAM = "type";
 
-	String FILTER_PARAMETER = "product_filter";
-	
+	String FILTER_PARAMETER = "params_filter";
+
+
 	String[] COMMON_PARAMS = { NAME_ELEMENT, MARK_ELEMENT, PRODUCER_ELEMENT, CODE_ELEMENT, PRICE_ELEMENT, DESCRIPTION_ELEMENT,
 			COUNTRY_ELEMENT, PIC_PATH_ELEMENT, ANALOG_ELEMENT, FILE_ELEMENT, QTY_ELEMENT, QTY_S1_ELEMENT, QTY_S2_ELEMENT, UNIT_ELEMENT,
 			MIN_QTY_ELEMENT, BARCODE_ELEMENT, SPECIAL_PRICE_ELEMENT, ANALOG_CODE_ELEMENT, TEXT_TOP_ELEMENT, VIDEO };
+
+
 }

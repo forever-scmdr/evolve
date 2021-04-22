@@ -61,7 +61,7 @@ public class PreorderCommand extends Command {
 
 								LogMessage m1 = info.addLog("Загрузка поступивших товаров");
 								q = new ItemQuery(ItemNames.PRODUCT);
-								ArrayList<String> z = new ArrayList<String>();
+								ArrayList<String> z = new ArrayList<>();
 								z.addAll(codes);
 								q.addParameterCriteria(Product.CODE, z, "=", null, Compare.SOME.SOME);
 								q.addParameterCriteria(Product.QTY, "0", ">", null, Compare.SOME.SOME);

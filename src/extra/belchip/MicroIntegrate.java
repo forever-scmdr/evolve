@@ -16,7 +16,9 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 
 public class MicroIntegrate extends IntegrateBase {
-	
+
+	private static final String INTEGRATION_DIR = "integrate/";
+
 	private File integration;
 	private int hash = 0;
 	private Item catalog;
@@ -26,10 +28,11 @@ public class MicroIntegrate extends IntegrateBase {
 	@Override
 	protected boolean makePreparations() throws Exception {
 		catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
-		String paramName = getVarSingleValue("param"); 
-		integration = catalog.getFileValue(paramName, AppContext.getFilesDirPath(catalog.isFileProtected()));
+		String fileName = getVarSingleValue("param");
+		//integration = catalog.getFileValue(paramName, AppContext.getFilesDirPath(catalog.isFileProtected()));
+		integration = new File(AppContext.getRealPath(INTEGRATION_DIR + fileName));
 		info.addLog("Разбор файла: "+ integration.getAbsolutePath());
-		if(integration == null) { info.addError("parameter not set", "set parameter "+paramName); return false;}
+		if(integration == null) { info.addError("parameter not set", "set parameter " + fileName); return false;}
 		if(!integration.isFile()) {
 			info.addError("unable to reach file", integration.getAbsolutePath());
 		}

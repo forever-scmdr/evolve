@@ -1,1 +1,3 @@
+XmlXslOutputController кешировать TransformerFactory factory = TransformerFactoryImpl.newInstance();
+Добавить пассивное удаление картинок (чисту картинок) удаленных айтемов
 Сделать тип переменных страницы. Переменные этого типа нельзя будет установить через УРЛ.

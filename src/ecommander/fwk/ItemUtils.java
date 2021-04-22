@@ -46,6 +46,19 @@ public class ItemUtils {
 	}
 
 	/**
+	 * Загрузить определенный одиночный айтем по его названию. Если айтем не найден, то создать его.
+	 * Аналогично ensureSingleItem только пользователь и группа берутся из родитлеьского айтема
+	 * @param itemName
+	 * @param initiator
+	 * @param parent
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item ensureSingleChild(String itemName, User initiator, Item parent) throws Exception {
+		return ensureSingleItem(itemName, initiator, parent.getId(), parent.getOwnerGroupId(), parent.getOwnerUserId());
+	}
+
+	/**
 	 * Создать айтем с заданным родительским и владельцем, взятым от родительского
 	 * @param itemName
 	 * @param parent

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="js/fotorama.js"></script>
+  <script src="js/slick.min.js"></script>
+  <script src="js/script.min.js"></script>
+  <link rel="canonical" href="http://main.must.by/">
+  <title>M.A.I.N. </title>
+  <script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"Organization",
+"url":"http://main.must.by/",
+"name":"",
+"logo":"http://main.must.by/img/logo_big.svg",
+"aggregateRating": {
+"@type": "AggregateRating",
+"ratingCount": "53",
+"reviewCount": "53",
+"bestRating": "5",
+"ratingValue": "4,9",
+"worstRating": "1",
+"name": "TTD"
+},
+"contactPoint": [
+]
+}</script>
+  <link rel="stylesheet" type="text/css" href="http://main.must.by/magnific_popup/magnific-popup.css">
+  <link rel="stylesheet" href="css/styles.css?version=1.0">
+  <link href="http://main.must.by/css/fotorama.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://main.must.by/js/nanogallery/css/nanogallery2.woff.min.css">
+  <link href="http://main.must.by/js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="http://main.must.by/js/nanogallery/jquery.nanogallery2.js"></script>
+</head>
+
+</html>
+
+<body>
+  <div class="wrapper">
+    <div class="top-info">
+      <div class="container">
+        <div class="top-info__wrap wrap">
+          <div class="top-info__location">
+            <a class="link icon-link icon-link_after" href="">
+              <span>Минск</span>
+              <div class="icon icon_size_sm">
+                <img src="img/icon-caret-down.svg" alt="">
+              </div>
+            </a>
+          </div>
+          <div class="top-info__content">
+            <p>+375 29 55-33-000 (Viber, WhatsApp, Telegram)</p>
+            <p>Адрес салона: ул. Веры Хоружей,6Б ТЦ Зеркало, этаж 2, павильон 16А</p>
+            <p>Время работы: с 10.00 до 22.00</p>
+          </div>
+        </div>
+        <ul class="location-list" style="display:none">
+          <li>
+            <a href="#" onclick="return showCityHeader('386385', 'Минск')">Минск</a>
+          </li>
+        </ul>
+        <script></script>
+      </div>
+    </div>
+    <div class="header">
+      <div class="container">
+        <div class="header__wrap wrap">
+          <a class="header__column logo" href="index.html">
+            <img class="logo__image" src="img/logo.png" alt="">
+          </a>
+          <div class="header__column header__search header-search">
+            <form action="search/" method="post">
+              <input class="input header-search__input" id="q-ipt" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="" value="" autofocus="">
+              <button class="button header-search__button" type="submit">Найти</button>
+            </form>
+          </div>
+          <div class="header__column header__column_links">
+            <div class="cart" id="cart_ajax" ajax-href="cart_ajax/" ajax-show-loader="no">
+              <a class="icon-link" href="cart.html">
+                <div class="icon">
+                  <img src="img/icon-cart.svg" alt="">
+                </div>
+                <span class="icon-link__item">Ваш заказ</span>
+              </a>
+              <div class="cart__item">Позиций: <span>2</span>
+              </div>
+              <div class="cart__item">Сумма: <span>446.00 руб.</span>
+              </div>
+            </div>
+            <div class="links">
+              <a class="icon-link" href="/kontakty">
+                <div class="icon">
+                  <img src="img/icon-phone.svg" alt="">
+                </div>
+              </a>
+              <a class="icon-link" href="javascript:showMobileMainMenu()">
+                <div class="icon">
+                  <img src="img/icon-bars.svg" alt="">
+                </div>
+              </a>
+            </div>
+            <div class="user">
+              <div id="personal_desktop" ajax-href="personal_ajax/" ajax-show-loader="no">
+                <a class="icon-link" href="register.html">
+                  <div class="icon">
+                    <img src="img/icon-lock.svg" alt="">
+                  </div>
+                  <span class="icon-link__item">Вход / Регистрация</span>
+                </a>
+              </div>
+              <div id="fav_ajax" ajax-href="fav_ajax/" ajax-show-loader="no">
+                <a class="icon-link" href="favourite.html">
+                  <div class="icon">
+                    <img src="img/icon-star.svg" alt="">
+                  </div>
+                  <span class="icon-link__item">Избранное</span>
+                </a>
+              </div>
+              <div id="compare_ajax" ajax-href="compare_ajax/" ajax-show-loader="no">
+                <a class="icon-link" href="compare.html">
+                  <div class="icon">
+                    <img src="img/icon-balance.svg" alt="">
+                  </div>
+                  <span class="icon-link__item">Сравнение</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-menu">
+      <div class="container">
+        <div class="main-menu__wrap wrap">
+          <div class="main-menu__item">
+            <a class="icon-link" id="catalog_main_menu" href="catalog.html">
+              <div class="icon">
+                <img src="img/icon-bars.svg" alt="">
+              </div>
+              <span>Каталог</span>
+            </a>
+            <div class="popup-catalog-menu" id="cat_menu" style="position: absolute; display: none">
+              <div class="sections">
+                <a href="catalog-section.html" rel="#sub_386337">Шторы</a>
+                <a href="catalog-section.html" rel="#sub_386337">Ламбрекены</a>
+                <a href="catalog-section.html" rel="#sub_386337">Покрывалас</a>
+                <a href="catalog-section.html" rel="#sub_386337">Подушки</a>
+                <a href="catalog-section.html" rel="#sub_386337">Балдахины</a>
+                <a href="catalog-section.html" rel="#sub_386337">Постельное белье</a>
+                <a href="catalog-section.html" rel="#sub_386337">Чехлы на мебель</a>
+                <a href="catalog-section.html" rel="#sub_386337">Столовое белье</a>
+                <a href="catalog-section.html" rel="#sub_386337">Текстиль для детей</a>
+                <a href="catalog-section.html" rel="#sub_386337">Подарочный текстиль</a>
+                <a href="catalog-section.html" rel="#sub_386337">Ткани</a>
+                <a href="catalog-section.html" rel="#sub_386337">Аксессуары</a>
+              </div>
+              <div class="subsections" id="sub_386337" style="display: none">
+                <a href="catalog-section.html">Шторы</a>
+                <a href="catalog-section.html">Ламбрекены</a>
+                <a href="catalog-section.html">Покрывалас</a>
+                <a href="catalog-section.html">Подушки</a>
+                <a href="catalog-section.html">Балдахины</a>
+                <a href="catalog-section.html">Постельное белье</a>
+                <a href="catalog-section.html">Чехлы на мебель</a>
+                <a href="catalog-section.html">Столовое белье</a>
+                <a href="catalog-section.html">Текстиль для детей</a>
+                <a href="catalog-section.html">Подарочный текстиль</a>
+                <a href="catalog-section.html">Ткани</a>
+                <a href="catalog-section.html">Аксессуары</a>
+              </div>
+            </div>
+          </div>
+          <div class="main-menu__item">
+            <a href="/oplata/">
+              <span>Оплата</span>
+            </a>
+          </div>
+          <div class="main-menu__item">
+            <a href="/dostavka/">
+              <span>Доставка</span>
+            </a>
+          </div>
+          <div class="main-menu__item" style="position: relative;">
+            <a class="show-sub" href="#ts_386375">
+              <span>Услуги</span>
+            </a>
+            <div class="popup-text-menu" id="ts_386375" style="position: absolute; z-index: 2; display: none;">
+              <div class="sections">
+                <a href="/montag/">Монтаж</a>
+                <a href="/remont/">Ремонт</a>
+              </div>
+            </div>
+          </div>
+          <div class="main-menu__item">
+            <a href="/kak_zakazat/">
+              <span>Как заказать</span>
+            </a>
+          </div>
+          <div class="main-menu__item">
+            <a href="/o_nas/">
+              <span>О нас</span>
+            </a>
+          </div>
+          <div class="main-menu__item">
+            <a href="/kontakty/">
+              <span>Контакты</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="container">
+        <div class="content__wrap">
+          <div class="content__side">
+            <div class="side-menu">
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Шторы</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Ламбрекены</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Покрывала</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Подушки</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Балдахины</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Постельное белье</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Чехлы на мебель</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Столовое белье</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Текстиль для детей</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Подарочный текстиль</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Ткани</a>
+              </div>
+              <div class="side-menu__item side-menu__item_level_1">
+                <a class="side-menu__link" href="/shtory/">Аксессуары</a>
+              </div>
+            </div>
+            <div class="side-banner">
+              <div class="side-banner__image">
+                <img src="img/side-banner-01.png" alt="">
+              </div>
+              <div class="side-banner__link"> </div>
+            </div>
+            <div class="side-links">
+              <div class="title title_3">Акции</div>
+              <div class="side-links__list">
+                <a class="side-links__link" href="#">Акция месяца</a>
+                <a class="side-links__link" href="#">Акция для новоселов</a>
+                <a class="side-links__link" href="#">При заказе на сумму от 100 рублей скидка на карнизы 20%!</a>
+                <a class="side-links__link" href="#">При заказе на сумму от 500 рублей выезд дизайнера в подарок!</a>
+              </div>
+            </div>
+            <div class="side-banner">
+              <div class="side-banner__image">
+                <img src="img/side-banner-02.png" alt="">
+              </div>
+              <div class="side-banner__link"> </div>
+            </div>
+            <div class="side-info">
+              <div class="title title_3">Заказ и консультация</div>
+              <p>+375 (29) 55-33-000</p>
+              <p>+375(29) 55-44-000</p>
+              <p>email: <a href="mailto:zakaz@texform.by">zakaz@texform.by</a>
+              </p>
+            </div>
+            <div class="side-button">
+              <button class="button">Форма обратной связи</button>
+            </div>
+            <div class="side-info">
+              <p>
+                <a href="contacts.html">Схема проезда к салону</a>
+              </p>
+            </div>
+          </div>
+          <div class="content__main">
+            <div class="path path_common">
+              <div class="path__item">
+                <a class="path__link" href="index.html">Главная страница</a>
+                <div class="path__arrow"></div>
+                <a class="path__link" href="info-section.html">Услуги</a>
+                <div class="path__arrow"></div>
+              </div>
+            </div>
+            <div class="title title_1">Монтаж</div>
+            <div class="info-items info-items__section">
+              <div class="info-items__wrap"></div>
+            </div>
+            <div class="text">
+              <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus vero perferendis iusto quidem atque ipsam, saepe fuga sint, iure laborum esse, aspernatur eius tempore, repellendus ipsa! Esse porro, voluptatibus illo?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <div class="footer__wrap">
+          <div class="footer__column">
+            <div class="footer__title">ООО «Тексформ», 2020</div>
+            <a class="forever" href="">
+              <img src="img/forever.png" alt="">
+              <span>Разработка сайта
+                <br>студия веб-дизайна Forever
+              </span>
+            </a>
+            <div class="google-rating">
+              <div class="google-rating__stars">
+                <img src="img/star.svg" alt="">
+                <img src="img/star.svg" alt="">
+                <img src="img/star.svg" alt="">
+                <img src="img/star.svg" alt="">
+                <img src="img/star-line.svg" alt="">
+              </div>
+              <div class="google-rating__text">Наш рейтинг: 4,8 (188 голосов)
+                на основе отзывов Google</div>
+            </div>
+          </div>
+          <div class="footer__column">
+            <div class="footer__title">Полезная информация</div>
+            <div class="footer__text">
+              <ul class="footer__list">
+                <li>
+                  <a>Виды тканей</a>
+                </li>
+                <li>
+                  <a>Виды швейных изделий</a>
+                </li>
+                <li>
+                  <a>Советы по выбору</a>
+                </li>
+                <li>
+                  <a>Символы по уходу</a>
+                </li>
+                <li>
+                  <a>Инструкции</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer__column">
+            <div class="footer__title">Заказ и консультация</div>
+            <div class="footer__text">
+              <p>+375 (29) 55-33-0000</p>
+              <p>+375 (29) 55-44-0000</p>
+              <p>email: <a href="mailto:zakaz@texform.by">zakaz@texform.by</a>
+              </p>
+            </div>
+          </div>
+          <div class="footer__column">
+            <div class="footer__title">Адрес и время работы</div>
+            <div class="footer__text">
+              <p>г. Минск, ул. Веры Хоружей, 6Б
+                <br>ТЦ Зеркало, этаж 2, секция Галерея, павильон 16А
+              </p>
+              <p>Пн-Вс: с 10.00 до 20.00
+                <br>без выходных
+              </p>
+            </div>
+          </div>
+          <div class="footer__column">
+            <div class="footer__title">Прочие сведения</div>
+            <div class="footer__text">
+              <p>Зарегистрировано в Реестре бытовых услуг РБ от 24.01.2020 № 83640</p>
+              <p>Принимаем заказы из всех городов Беларуси</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-container mobile">
+      <div class="menu-overlay" onclick="showMobileMainMenu()"></div>
+      <div class="menu-content">
+        <ul>
+          <li>
+            <a class="icon-link" href="#">
+              <div class="icon">
+                <img src="img/icon-lock.svg" alt="">
+              </div>
+              <span class="icon-link__item">Вход / регистрация</span>
+            </a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a class="icon-link" href="#" onclick="showMobileCatalogMenu(); return false">
+              <div class="icon">
+                <img src="img/icon-cart.svg" alt="">
+              </div>
+              <span class="icon-link__item">Каталог продукции</span>
+            </a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a class="icon-link" href="cart/">
+              <div class="icon">
+                <img src="img/icon-cart.svg" alt="">
+              </div>
+              <span class="icon-link__item">Корзина</span>
+            </a>
+          </li>
+          <li>
+            <a class="icon-link" href="fav/">
+              <div class="icon">
+                <img src="img/icon-star.svg" alt="">
+              </div>
+              <span class="icon-link__item">Избранное</span>
+            </a>
+          </li>
+          <li>
+            <a class="icon-link" href="compare/">
+              <div class="icon">
+                <img src="img/icon-balance.svg" alt="">
+              </div>
+              <span class="icon-link__item">Сравнение</span>
+            </a>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="/novosti/">Новости</a>
+          </li>
+          <li>
+            <a href="/stati/">Статьи</a>
+          </li>
+          <li>
+            <a href="/oplata/">Оплата</a>
+          </li>
+          <li>
+            <a href="/dostavka/">Доставка</a>
+          </li>
+          <li>
+            <a href="/uslugi/">Услуги</a>
+          </li>
+          <li>
+            <a href="/kak_zakazat/">Как заказать</a>
+          </li>
+          <li>
+            <a href="/o_nas/">О нас</a>
+          </li>
+          <li>
+            <a href="/kontakty/">Контакты</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script>function showMobileCatalogMenu() {
+$('#mobile_catalog_menu').toggle();
+}
+$(document).ready(function() {
+$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
+//event.preventDefault();
+var menuItem = $(this);
+var parentMenuContainer = menuItem.closest('.content');
+parentMenuContainer.css('left', '-100%');
+var childMenuContainer = $(menuItem.attr('rel'));
+childMenuContainer.css('left', '0%');
+});
+$('#mobile_catalog_menu a.back').click(function(event) {
+event.preventDefault();
+var back = $(this);
+var childMenuContainer = back.closest('.content');
+childMenuContainer.css('left', '100%');
+var parentMenuContainer = $(back.attr('rel'));
+parentMenuContainer.css('left', '0%');
+});
+});
+function hideMobileCatalogMenu() {
+$("#mobile_catalog_menu .content").css('left', '100%');
+$("#m_sub_cat").css('left', '0%');
+$('#mobile_catalog_menu').hide();
+}</script>
+    <div class="nav-container mobile" id="mobile_catalog_menu" style="display: none; position:absolute; width: 100%; overflow:hidden">
+      <div class="content" id="m_sub_cat">
+        <div class="small-nav">
+          <a class="header">Каталог продукции</a>
+          <a class="close" href="" onclick="hideMobileCatalogMenu(); return false;">&times;</a>
+        </div>
+        <ul>
+          <li>
+            <a rel="#m_sub_386337">Шторы</a>
+            <span>&gt;</span>
+          </li>
+          <li>
+            <a href="/lambrekeny/">Ламбрекены</a>
+          </li>
+          <li>
+            <a href="/pokryvala/">Балдахины</a>
+          </li>
+          <li>
+            <a href="/podushki/">Подхваты</a>
+          </li>
+          <li>
+            <a href="/baldahiny/">Балдахины</a>
+          </li>
+          <li>
+            <a href="/postelnoe_bele/">Постельное белье</a>
+          </li>
+          <li>
+            <a href="/chehly_na_mebel/">Чехлы на мебель</a>
+          </li>
+          <li>
+            <a href="/stolovoe_bele/">Столовое белье</a>
+          </li>
+          <li>
+            <a href="/tekstil_dlya_detei/">Текстиль для детей</a>
+          </li>
+          <li>
+            <a href="/podarochnyi_tekstil/">Подарочный текстиль</a>
+          </li>
+          <li>
+            <a href="/tkani/">Ткани</a>
+          </li>
+          <li>
+            <a href="/aksessuary/">Аксессуары</a>
+          </li>
+        </ul>
+      </div>
+      <div class="content next" id="m_sub_386337">
+        <div class="small-nav">
+          <a class="back" href="" rel="#m_sub_cat">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+          <a class="header" href="/shtory/">&SHcy;&tcy;&ocy;&rcy;&ycy;</a>
+          <a class="close" href="" onclick="hideMobileCatalogMenu(); return false;">
+            <i class="fas fa-times"></i>
+          </a>
+        </div>
+        <ul>
+          <li>
+            <a href="/shtory/shtory_na_lente/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_s_ruchnymi_skladkami/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_na_lyuversah/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_na_petlyah/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_na_kulise/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_s_otvorotom/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_italyanskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_rimskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_rimskie_kaskadnye/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_romanskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_londonskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_angliiskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_avstriiskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_frantsuzskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_kitaiskie/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_rukav_episkopa/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_pesochnye_chasy/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_parus/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_kolonna/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_skreschennye/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_na_arochnoe_okno/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_na_kosoe_okno/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/shtory_mini_kafe/">Шторы на ленте</a>
+          </li>
+          <li>
+            <a href="/shtory/paneli_yaponskie/">Шторы на ленте</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal fade" id="modal-one_click" xmlns="http://www.w3.org/1999/xhtml" tabindex="-1" role="dialog"></div>
+    <div class="modal fade" id="modal-subscribe" xmlns="http://www.w3.org/1999/xhtml" tabindex="-1" role="dialog"></div>
+    <script type="text/javascript" src="http://main.must.by/magnific_popup/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="http://main.must.by/admin/ajax/ajax.js"></script>
+    <script type="text/javascript" src="http://main.must.by/admin/js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="http://main.must.by/admin/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://main.must.by/js/web.js"></script>
+    <script type="text/javascript">$(document).ready(function(){
+$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+type: 'image',
+closeOnContentClick: true,
+mainClass: 'mfp-img-mobile',
+image: {
+verticalFit: true
+}
+});
+initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+initDropDownHeader();
+});
+function initDropDownHeader() {
+$('.dd_menu_item').click(function() {
+var mi = $(this);
+$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
+$('.dd_block').hide();
+$('#' + mi.attr('dd-id')).show();
+});
+}
+function searchAjax(el){
+var $el = $(el);
+var val = $el.val();
+if(val.length > 2){
+var $form = $("<form>",
+{'method' : 'post', 'action' : 'search_ajax/', 'id' : 'tmp-form'}
+);
+var $ipt2 = $("<input>",
+{'type' : 'text', 'value': val, 'name' : 'q'});
+$ipt2.val(val);
+$form.append($ipt2);
+$('body').append($form);
+postForm('tmp-form', 'search-result');
+$('#tmp-form').remove();
+$('#search-result').show();
+}
+}
+$(document).on('click', 'body', function(e){
+var $trg = $(e.target);
+if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+$('#search-result').hide();
+$('#search-result').html('');
+});
+function showMobileMainMenu() {
+$('.wrapper').toggleClass('visible-no');
+$('.menu-container').toggleClass('visible-yes');
+}</script>
+    <script type="text/javascript" src="fotorama/fotorama.js"></script><!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-151018102-3"></script>
+    <script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-151018102-3');</script><!-- Yandex.Metrika counter-->
+    <script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ym(56638765, "init", {
+clickmap:true,
+trackLinks:true,
+accurateTrackBounce:true,
+webvisor:true,
+ecommerce:"dataLayer"
+});</script>
+    <noscript>
+      <div>
+        <img src="https://mc.yandex.ru/watch/56638765" style="position:absolute; left:-9999px;" alt="">
+      </div>
+    </noscript><!-- /Yandex.Metrika counter-->
+    <div class="popup" style="display: none;">
+      <div class="popup__body">
+        <div class="popup__content">
+          <a class="popup__close" href="#">&times;</a>
+          <div class="popup__title title title_2">Metabo PowerMaxx CC 12 BL</div>
+          <form>
+            <div class="form__item">
+              <label class="form-label">Ваше имя:</label>
+              <input class="form__element" type="text">
+            </div>
+            <div class="form__proceed">
+              <input class="button" type="submit" value="Отправить форму">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

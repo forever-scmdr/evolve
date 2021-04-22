@@ -19,6 +19,8 @@ public class Purchase
     public final static String INT_NUMBER = "int_number";
     public final static String STATUS = "status";
     public final static String PAYED = "payed";
+    public final static String STATUS_LOG = "status_log";
+    public final static String STATUS_DATE = "status_date";
     public final static String CLIENT_ID = "client_id";
     public final static String LOGIN = "login";
     public final static String EMAIL = "email";
@@ -244,6 +246,50 @@ public class Purchase
 
     public boolean contains_payed(Byte value) {
         return containsValue("payed", value);
+    }
+
+    public void set_status_log(Byte value) {
+        setValue("status_log", value);
+    }
+
+    public void setUI_status_log(String value)
+        throws Exception
+    {
+        setValueUI("status_log", value);
+    }
+
+    public Byte get_status_log() {
+        return getByteValue("status_log");
+    }
+
+    public Byte getDefault_status_log(Byte defaultVal) {
+        return getByteValue("status_log", defaultVal);
+    }
+
+    public boolean contains_status_log(Byte value) {
+        return containsValue("status_log", value);
+    }
+
+    public void set_status_date(Long value) {
+        setValue("status_date", value);
+    }
+
+    public void setUI_status_date(String value)
+        throws Exception
+    {
+        setValueUI("status_date", value);
+    }
+
+    public Long get_status_date() {
+        return getLongValue("status_date");
+    }
+
+    public Long getDefault_status_date(Long defaultVal) {
+        return getLongValue("status_date", defaultVal);
+    }
+
+    public boolean contains_status_date(Long value) {
+        return containsValue("status_date", value);
     }
 
     public void set_client_id(Long value) {

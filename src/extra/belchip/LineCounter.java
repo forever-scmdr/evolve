@@ -28,11 +28,11 @@ public class LineCounter  extends DefaultHandler{
 	@Override
 	public void endDocument() throws SAXException {
 		lineNumber = locator.getLineNumber();
-		this.info.setLineCount(lineNumber);
+		this.info.setLineNumber(lineNumber);
 		end = new Date().getTime();
 		long elapsedTime = end - start;
 		String msg = MSG + MsBike.showTime(elapsedTime);
-		this.info.addMessage(msg);
+		this.info.addLog(msg);
 	}
 	
 }

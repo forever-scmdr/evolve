@@ -740,11 +740,11 @@ public class PageModelBuilder {
 			readIncludes(document, includes);
 			docs.add(document);
 		}
-		// Потом добавить все includes
-		for (Document doc : docs) {
-			appendIncludes(doc, includes);
-		}
 		try {
+			// Потом добавить все includes
+			for (Document doc : docs) {
+				appendIncludes(doc, includes);
+			}
 			for (Document document : docs) {
 				Elements pages = document.getElementsByTag(PAGE_ELEMENT);
 				for (Element pageNode : pages) {
@@ -880,7 +880,7 @@ public class PageModelBuilder {
 		for (Element includeRef : includes) {
 			Element include = includesMap.get(includeRef.attr(NAME_ATTRIBUTE));
 			if (include == null)
-				throw new PrimaryValidationException(include.parent().tagName() + " '" + includeRef.attr(NAME_ATTRIBUTE) + "'",
+				throw new PrimaryValidationException("include '" + includeRef.attr(NAME_ATTRIBUTE) + "'",
 						"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
 			for (Element includeSubnode : detachedDirectChildren(include)) {
 				Element importedNode = includeSubnode.clone();

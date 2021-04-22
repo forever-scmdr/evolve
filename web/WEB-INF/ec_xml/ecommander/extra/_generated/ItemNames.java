@@ -430,6 +430,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -589,6 +590,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -953,6 +955,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -1032,6 +1035,8 @@ public interface ItemNames {
         String INT_NUMBER = "int_number";
         String STATUS = "status";
         String PAYED = "payed";
+        String STATUS_LOG = "status_log";
+        String STATUS_DATE = "status_date";
         String CLIENT_ID = "client_id";
         String LOGIN = "login";
         String EMAIL = "email";

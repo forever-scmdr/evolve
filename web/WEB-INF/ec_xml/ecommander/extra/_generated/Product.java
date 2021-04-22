@@ -23,6 +23,7 @@ public class Product
     public final static String NAME_EXTRA = "name_extra";
     public final static String VENDOR = "vendor";
     public final static String VENDOR_CODE = "vendor_code";
+    public final static String IS_SERVICE = "is_service";
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
     public final static String GROUP_ID = "group_id";
@@ -265,6 +266,28 @@ public class Product
 
     public boolean contains_vendor_code(String value) {
         return containsValue("vendor_code", value);
+    }
+
+    public void set_is_service(Byte value) {
+        setValue("is_service", value);
+    }
+
+    public void setUI_is_service(String value)
+        throws Exception
+    {
+        setValueUI("is_service", value);
+    }
+
+    public Byte get_is_service() {
+        return getByteValue("is_service");
+    }
+
+    public Byte getDefault_is_service(Byte defaultVal) {
+        return getByteValue("is_service", defaultVal);
+    }
+
+    public boolean contains_is_service(Byte value) {
+        return containsValue("is_service", value);
     }
 
     public void set_offer_id(String value) {

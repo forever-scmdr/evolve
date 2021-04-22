@@ -1,8 +1,10 @@
 package extra.belchip;
 
 import ecommander.controllers.AppContext;
+import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -10,9 +12,7 @@ import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
-import extra._generated.Product;
-import extra._generated.Section;
+import extra._generated.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
@@ -26,21 +26,47 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CatalogCreationHandler extends DefaultHandler {
-	
+
 	private static final SimpleDateFormat SOON_FORMAT = new SimpleDateFormat("ddMMyy");
-	private static final Set<String> PRODUCT_COMMON_PARAMS = new HashSet<String>();
-	private static final char[]ETC = new char[] {'a','c','d','e','f'};
+	private static final HashMap<String, String> PRODUCT_COMMON_PARAMS = new HashMap<>();
+	private static final HashMap<String, String> CURRENCIES_COMMON_PARAMS = new HashMap<>();
+	private static final char[] ETC = new char[] {'a','c','d','e','f'};
 	
 	static {
-		CollectionUtils.addAll(PRODUCT_COMMON_PARAMS, IConst.COMMON_PARAMS);
+		PRODUCT_COMMON_PARAMS.put(IConst.NAME_ELEMENT, Product.NAME);
+		PRODUCT_COMMON_PARAMS.put(IConst.MARK_ELEMENT, Product.NAME_EXTRA);
+		PRODUCT_COMMON_PARAMS.put(IConst.PRODUCER_ELEMENT, Product.VENDOR);
+		PRODUCT_COMMON_PARAMS.put(IConst.CODE_ELEMENT, Product.CODE);
+		PRODUCT_COMMON_PARAMS.put(IConst.PRICE_ELEMENT, Product.PRICE);
+		PRODUCT_COMMON_PARAMS.put(IConst.DESCRIPTION_ELEMENT, Product.DESCRIPTION);
+		PRODUCT_COMMON_PARAMS.put(IConst.COUNTRY_ELEMENT, Product.COUNTRY);
+		PRODUCT_COMMON_PARAMS.put(IConst.PIC_PATH_ELEMENT, Product.PIC_PATH);
+		PRODUCT_COMMON_PARAMS.put(IConst.ANALOG_ELEMENT, Product.ANALOG);
+		PRODUCT_COMMON_PARAMS.put(IConst.FILE_ELEMENT, Product.FILE);
+		PRODUCT_COMMON_PARAMS.put(IConst.QTY_ELEMENT, Product.QTY);
+		PRODUCT_COMMON_PARAMS.put(IConst.QTY_S1_ELEMENT, Product.QTY);
+		//PRODUCT_COMMON_PARAMS.put(IConst.QTY_S2_ELEMENT, null);
+		PRODUCT_COMMON_PARAMS.put(IConst.UNIT_ELEMENT, Product.UNIT);
+		PRODUCT_COMMON_PARAMS.put(IConst.MIN_QTY_ELEMENT, Product.MIN_QTY);
+		PRODUCT_COMMON_PARAMS.put(IConst.BARCODE_ELEMENT, Product.BARCODE);
+		PRODUCT_COMMON_PARAMS.put(IConst.SPECIAL_PRICE_ELEMENT, Product.SPECIAL_PRICE);
+		PRODUCT_COMMON_PARAMS.put(IConst.ANALOG_CODE_ELEMENT, Product.ANALOG_CODE);
+		PRODUCT_COMMON_PARAMS.put(IConst.TEXT_TOP_ELEMENT, Product.TEXT);
+
+		CURRENCIES_COMMON_PARAMS.put(IConst.EUR_ELEMENT, Currencies.EUR_RATE);
+		CURRENCIES_COMMON_PARAMS.put(IConst.USD_ELEMENT, Currencies.USD_RATE);
+		CURRENCIES_COMMON_PARAMS.put(IConst.RUB_ELEMENT, Currencies.RUB_RATE);
 	}
-	
+
+
+
 	private Stack<Item> stack = new Stack<>();
 	private Locator locator;
 	private boolean parameterReady = false;
 	private boolean currencyReady = false;
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
+	private XmlDocumentBuilder xmlParams = null;
 	private ArrayList<Integer> bigArts = new ArrayList<>();
 	
 	private DelayedTransaction transaction = new DelayedTransaction(User.getDefaultUser());
@@ -48,7 +74,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 	private boolean fatalError = false;
 
 	private Integrate_2.Info info; // информация для пользователя
-	private int сreated = 0; // информация для пользователя
+	private Item currencies = null; // курсы валют
 	
 	
 	public CatalogCreationHandler(Item catalog, Integrate_2.Info info) {
@@ -56,11 +82,12 @@ public class CatalogCreationHandler extends DefaultHandler {
 		this.info = info;
 	}
 
+
 	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException {
+	public void endElement(String uri, String localName, String qName) {
 		try {
 			if (fatalError) return;
-			if (IConst.PRODUCT_ELEMENT.equalsIgnoreCase(qName) || IConst.SECTION_ELEMENT.equalsIgnoreCase(qName)) {
+			if (StringUtils.equalsAnyIgnoreCase(qName, IConst.PRODUCT_ELEMENT, IConst.SECTION_ELEMENT, IConst.KURS_ELEMENT)) {
 				Item top = stack.pop();
 				// Товар может быть уже сохранен, поэтому нужна проверка top.getId() == 0
 				if (qName.equals(IConst.PRODUCT_ELEMENT) && top.getId() == 0) {
@@ -82,7 +109,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					top.setValue(Product.SEARCH, fullNameAnalyzed);
 					top.setValue(Product.SEARCH, code);
 					String strictSearch = name + ' ' + mark + ' ' + code;
-					int lim = strictSearch.length() < 80? strictSearch.length() : 80;
+					int lim = Math.min(strictSearch.length(), 80);
 					top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, lim));
 					if(strictSearch.length() > 80) {
 						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(strictSearch.length()/2));
@@ -115,7 +142,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 						top.setValue("is_service", (byte)1);
 						top.setValue(IConst.QTY_ELEMENT, 100000d);
 						top.setValue(Product.AVAILABLE, (byte)1);
-					}else {
+					} else {
 						top.setValue("is_service", (byte)0);
 					}
 					
@@ -131,37 +158,41 @@ public class CatalogCreationHandler extends DefaultHandler {
 					
 					// Добавление команды сохранения продукта
 					transaction.addCommandUnit(SaveItemDBUnit.get(top).noFulltextIndex());
-					if (transaction.getCommandCount() >= 20) {
-						сreated += transaction.execute();
-						info.setProductsCreated(сreated);
-					}
+					transaction.execute();
+					Item paramsXml = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PARAMS_XML), top);
+					paramsXml.setValueUI(Params_xml.XML, xmlParams.toString());
+					transaction.addCommandUnit(SaveItemDBUnit.get(paramsXml).noFulltextIndex());
+					transaction.execute();
+					info.increaseProcessed();
+					xmlParams = null;
 				} else if (qName.equals(IConst.SECTION_ELEMENT)) {
-					сreated += transaction.execute();
-					info.setProductsCreated(сreated);
+					transaction.execute();
+					info.increaseProcessed();
+				} else if (StringUtils.equalsIgnoreCase(qName, IConst.KURS_ELEMENT)) {
+					transaction.addCommandUnit(SaveItemDBUnit.get(currencies).noFulltextIndex());
+					transaction.execute();
 				}
 			}
 			// Установка значения параметра
-			if (parameterReady && !(IConst.QTY_S1_ELEMENT.equals(paramName)||IConst.QTY_S2_ELEMENT.equals(paramName))) {
+			if (parameterReady) {
 				Item product = stack.peek();
-				String pvs = paramValue.toString();
-				product.setValueUI(paramName, pvs.trim());
-			}else if(IConst.QTY_S1_ELEMENT.equals(paramName)){
-				Item product = stack.peek();
-				String pvs = paramValue.toString();
-				product.setValueUI(Product.QTY, pvs.trim());
-			}
-			else if("rub".equalsIgnoreCase(qName)) {
-				Item rub = ItemQuery.loadSingleItemByParamValue("currency", "name", "rub");
-				if(rub != null) {
-					rub.setValueUI("ratio", paramValue.toString().trim());
-					currencyReady = false;
-					transaction.addCommandUnit(SaveItemDBUnit.get(rub).ignoreUser(true).noFulltextIndex());
+				if (StringUtils.equalsIgnoreCase(qName, IConst.PARAMETER_ELEMENT)) {
+					xmlParams.startElement(IConst.PARAMETER_ELEMENT);
+					xmlParams.addElement(IConst.NAME_ELEMENT, paramName);
+					xmlParams.addElement(IConst.VALUE_ELEMENT, paramValue.toString());
+					xmlParams.endElement();
+				} else {
+					product.setValueUI(paramName, paramValue.toString().trim());
 				}
+			}
+			else if (currencyReady) {
+				currencies.setValueUI(paramName, paramValue.toString().trim());
 			}
 
 			parameterReady = false;
+			currencyReady = false;
 			// Инфо
-			info.setCurrentLine(locator.getLineNumber());
+			info.setLineNumber(locator.getLineNumber());
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
 			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
@@ -170,7 +201,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void characters(char[] ch, int start, int length) throws SAXException {
+	public void characters(char[] ch, int start, int length) {
 		try {
 			if ((!parameterReady && !currencyReady) || fatalError)
 				return;
@@ -188,7 +219,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		parameterReady = false;
 		if (fatalError) return;
 		try {
@@ -197,11 +228,8 @@ public class CatalogCreationHandler extends DefaultHandler {
 				Item parent = stack.peek();
 				String name = attributes.getValue(IConst.NAME_ATTRIBUTE);
 				String code = attributes.getValue(IConst.CODE_ATTRIBUTE);
-//-- PIC PATH FIX
-//-- @author Anton
 				String picPath = attributes.getValue(IConst.PIC_PATH_ATTRIBUTE);
 				Item section = ItemQuery.loadByParamValue(Section._NAME, Section.CODE, code).get(0);
-//-- Сразу сохраняем картинку раздела.
 				if(StringUtils.isNotBlank(picPath)){
 					section.setValue(Section.PIC_PATH, picPath);
 					transaction.addCommandUnit(SaveItemDBUnit.get(section).ignoreUser(true));
@@ -227,24 +255,31 @@ public class CatalogCreationHandler extends DefaultHandler {
 				product.setValue(Product.HIT, hitFlag);
 				product.setValue(Product.NEW, newFlag);
 				product.setValue("type", productDesc.getCaption());
-				if(soonFlag != null){
+				if (soonFlag != null) {
 					product.setValue(IConst.SOON_ATTRIBUTE, soonFlag.getTime()+3*60*60*1000);
 				}
+				xmlParams = XmlDocumentBuilder.newDocPart();
 				stack.push(product);
+			}
+			// Курсы валют
+			else if (IConst.KURS_ELEMENT.equalsIgnoreCase(qName)) {
+				currencies = ItemUtils.ensureSingleChild(ItemNames.CURRENCIES, User.getDefaultUser(), stack.firstElement());
+				stack.push(currencies);
+			}
+			else if (CURRENCIES_COMMON_PARAMS.containsKey(qName) && stack.peek() == currencies) {
+				paramName = CURRENCIES_COMMON_PARAMS.get(qName);
+				currencyReady = true;
 			}
 
 			// Параметры продуктов (общие)
-			else if (PRODUCT_COMMON_PARAMS.contains(qName.toLowerCase())) {
-				paramName = qName;
+			else if (PRODUCT_COMMON_PARAMS.containsKey(qName.toLowerCase())) {
+				paramName = PRODUCT_COMMON_PARAMS.get(qName);
 				parameterReady = true;
 			}
 			// Пользовательские параметры продуктов
 			else if (IConst.PARAMETER_ELEMENT.equalsIgnoreCase(qName)) {
-				paramName = Strings.createXmlElementName(attributes.getValue(IConst.NAME_ATTRIBUTE));
+				paramName = attributes.getValue(IConst.NAME_ATTRIBUTE);
 				parameterReady = true;
-			}
-			else if("rub".equalsIgnoreCase(qName)) {
-				currencyReady = true;
 			}
 			paramValue = new StringBuilder();
 		} catch (Exception e) {
@@ -253,15 +288,14 @@ public class CatalogCreationHandler extends DefaultHandler {
 			fatalError = true;
 		}
 		// Инфо
-		info.setCurrentLine(locator.getLineNumber());
+		info.setLineNumber(locator.getLineNumber());
 	}
 
 	@Override
-	public void endDocument() throws SAXException {
+	public void endDocument() {
 		try {
 			transaction.execute();
-			сreated += transaction.execute();
-			info.setProductsCreated(сreated);
+			info.increaseProcessed();
 			info.setOperation("Поиск новых товаров");
 			Collections.sort(bigArts, Collections.reverseOrder());
 			int i = 0;
