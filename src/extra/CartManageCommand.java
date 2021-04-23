@@ -401,7 +401,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 		String specPrice = bought.getStringValue("price_map");
 
-		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioRur, q1Rur, qPromelec);
+		TreeMap<Double, String> priceMap = parsePriceMap(specPrice, ratioRur, q1Rur, qPromelec, 100);
 		TreeMap<Double, String> priceOrigMap = parsePriceMap(specPrice, 1, 1, 1);
 		if (priceMap.size() > 0) {
 			for (Double breakpoint : priceMap.keySet()) {
@@ -447,14 +447,15 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 	}
 
-	private TreeMap<Double, String> parsePriceMap(String specPrice, double ratio, double q1, double q2) throws Exception {
+	private TreeMap<Double, String> parsePriceMap(String specPrice, double ratio, double q1, double q2, int... scale) throws Exception {
+		int currencyScale = (scale != null && scale.length > 0)? scale[0] : 1;
 		if (StringUtils.isBlank(specPrice) || specPrice.indexOf(':') == -1) return new TreeMap<>();
 		TreeMap<Double, String> result = new TreeMap<>();
 		String[] z = specPrice.split(";");
 		for (String pair : z) {
 			String[] p = pair.split(":");
 			Double q = DoubleDataType.parse(p[0]);
-			Double pr = DoubleDataType.parse(p[1]) * q1 * q2 * ratio;
+			Double pr = (DoubleDataType.parse(p[1]) * q1 * q2 * ratio)/currencyScale;
 			result.put(q, String.valueOf(pr));
 		}
 		return result;
