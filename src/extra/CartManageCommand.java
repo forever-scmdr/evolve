@@ -42,7 +42,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	@Override
 	public ResultPE recalculate() throws Exception {
 		super.recalculate();
-		return getResult("ajax");
+		return getResult("cart");
 	}
 
 	@Override
