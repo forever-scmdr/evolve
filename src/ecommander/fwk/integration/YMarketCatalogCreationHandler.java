@@ -123,7 +123,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 		} else if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName)) {
 			try {
 				if (currentSection != null) {
-					currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
+					if(currentSection.isNew()){
+						currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));
+					}
 					DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection).noTriggerExtra());
 					currentSection = null;
 					code = null;
