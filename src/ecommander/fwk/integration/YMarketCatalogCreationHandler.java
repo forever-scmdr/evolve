@@ -105,7 +105,9 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						Item section = Item.newChildItem(sectionDesc, categories.get(sec.getRight()));
 						section.setValue(PARENT_ID_PARAM, sec.getRight());
 						section.setValue(CATEGORY_ID_PARAM, newCode);
-						section.setValue(NAME_PARAM, sec.getLeft());
+						if(section.isNew()) {
+							section.setValue(NAME_PARAM, sec.getLeft());
+						}
 						try {
 							DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
 							categories.put(newCode, section);
