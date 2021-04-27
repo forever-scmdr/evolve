@@ -244,7 +244,7 @@
 
 		<div class="result" id="arrow_search">
 			<xsl:if test="page/summery/response/success = 'true'">
-				<h2>Результат поиска по verical</h2>
+				<h2>Результат поиска по Arrow</h2>
 
 				<xsl:if test="page/variables/minqty = '0' and count($products) = 0">
 					<p>Найдены только товары под заказ.</p>
@@ -263,7 +263,7 @@
 				</div>
 			</xsl:if>
 			<xsl:if test="not(page/summery/response/success = 'true')">
-				<h2>Результат поиска по verical</h2>
+				<h2>Результат поиска по Arrow</h2>
 				<p>Товары не найдены</p>
 				<xsl:if test="page/summery/response/error">
 					<p>

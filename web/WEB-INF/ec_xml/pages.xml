@@ -1635,11 +1635,11 @@
 
 	<page name="farnell_search" template="farnell_search_ajax">
 		<request>
-			<var name="q" value="fuse"/>
+			<var name="q"/>
 			<var name="page" value="1"/>
 			<var name="limit" value="30"/>
 
-			<var name="minqty" value="-1"/>
+			<var name="minqty" value="-1" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>

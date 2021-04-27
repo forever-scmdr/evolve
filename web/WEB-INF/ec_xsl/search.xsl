@@ -76,11 +76,15 @@
 			<div id="extra_search_4">
 				<!-- <h2>Идет поиск по PROMELEC</h2> -->
 			</div>
+
 			<div id="extra_search_2">подождите.
 				<form action="digikey_search" method="POST" id="dgk-form">
 					<input type="hidden" name="query" value="{page/variables/q}" />
 					<input type="hidden" name="qty" value="{page/variables/minqty}" />
 				</form>
+			</div>
+			<div id="arrow_search">
+				<!-- <h2>Идет поиск по arrow.com</h2> -->
 			</div>
 		</div>
 
@@ -96,6 +100,7 @@
 				postForm('dgk-form');
 				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('arrow_search', '?query=', page/variables/q)"/>');
 			})
 
 		</script>

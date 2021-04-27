@@ -71,6 +71,7 @@
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
 		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
+		<xsl:variable name="vendor_code" select="normalize-space(translatedManufacturerPartNumber)" />
 
 		<div class="device device_row">
 			<a class="device__image device_row__image"
@@ -82,7 +83,7 @@
 				<div class="device__description">
 					<p class="basics">
 						<span><b>Код:</b>&#160;<xsl:value-of select="normalize-space(sku)"/></span><br/>
-						<span><b>Ариткул производителя:</b>&#160;<xsl:value-of select="normalize-space(translatedManufacturerPartNumber)"/></span><br/>
+						<span><b>Ариткул производителя:</b>&#160;<xsl:value-of select="$vendor_code"/></span><br/>
 						<span><b>Производитель:</b>&#160;<xsl:value-of select="normalize-space(vendorName)" /></span>
 						<xsl:if test="datasheets/url != ''">
 							<br/><span><b>Документация:</b>&#160;
@@ -138,13 +139,11 @@
 			<div class="device__order device_row__order">
 				<div id="cart_list_{normalize-space(sku)}">
 					<form action="cart_action/?action=addFarnellToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
-
-						
-
 						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="farnell" name="aux"/>
 						<input type="hidden" value="{displayName}" name="name"/>
 						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
+						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
@@ -169,6 +168,7 @@
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
 		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
+		<xsl:variable name="vendor_code" select="normalize-space(translatedManufacturerPartNumber)" />
 
 		<div class="device items-catalog__device">
 			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{displayName}" rel="nofollow">
@@ -214,6 +214,7 @@
 						<input type="hidden" value="farnell" name="aux"/>
 						<input type="hidden" value="{displayName}" name="name"/>
 						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
+						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>

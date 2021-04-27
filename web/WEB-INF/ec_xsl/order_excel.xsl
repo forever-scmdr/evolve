@@ -17,6 +17,18 @@
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+				<style>
+					*{
+						font-size: 16px;
+					}
+					table{
+						border-collapse: collapse;
+					}
+					td{
+						border: 1px solid #000;
+					}
+					@page { size:landscape; }
+				</style>
 			</head>
 			<body>
 				<table>
@@ -45,13 +57,14 @@
 		<xsl:variable name="product" select="product"/>
 		<xsl:variable name="price" select="if(aux != '') then f:cart_price_platan($product/price) else f:price_catalog($product/price,'', $product/min_qty)"/>
 		<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '', '')"/>
+		<xsl:variable name="price_original_s"
 
 		<tr>
 			<td>
 				<xsl:value-of select="if(aux = 'promelec' and contains($product/code, 'v')) then substring-before($product/code, 'v') else $product/code"/>
 			</td>
 			<td>
-				<xsl:value-of select="if(aux = 'digikey') then $product/vendor_code else $product/name"/>
+				<xsl:value-of select="if(aux = 'digikey' or aux = 'farnell') then $product/vendor_code else $product/name"/>
 			</td>
 			<td>
 				<xsl:value-of select="qty"/>
@@ -60,13 +73,13 @@
 				<xsl:value-of select="if($product/unit != '') then $product/unit else 'шт'"/>
 			</td>
 			<td>
-				<xsl:value-of select="$price"/>
+				<xsl:value-of select="normalize-space(replace(replace($price, '\.', ','), upper-case($curr), ''))"/>
 			</td>
 			<td>
-				<xsl:value-of select="$curr"/>
+				<xsl:value-of select="upper-case($curr)"/>
 			</td>
 			<td>
-				<xsl:value-of select="if(aux != '') then $product/price_original else $product/price_opt"/>
+				<xsl:value-of select="replace(if(aux != '') then $product/price_original else $product/price_opt, '\.', ',')"/>
 			</td>
 			<td>
 				<xsl:value-of select="if(aux != '') then $product/currency_id else 'BYN'"/>
@@ -78,7 +91,7 @@
 				<xsl:value-of select="delivery_time"/>
 			</td>
 			<td>
-				<xsl:value-of select="$product/description"/>
+				<xsl:value-of select="if(aux = 'farnell') then $product/name else $product/description"/>
 			</td>
 			<td>
 				<xsl:value-of select="$product/vendor"/>

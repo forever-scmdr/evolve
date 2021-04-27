@@ -3,3 +3,4 @@
 /web/WEB-INF/settings.properties
 evolve.iml
 /web/WEB-INF/_lucene/
+/web/WEB-INF/ec_xml/model_custom.xml

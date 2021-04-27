@@ -219,7 +219,7 @@
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
-		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
+		<parameter name="price_original" type="currency-precise" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="price_opt" type="currency" caption="Себестоимость"/>
 		<parameter name="margin" type="double" caption="Наценка"/>

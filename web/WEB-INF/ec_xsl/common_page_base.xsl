@@ -229,7 +229,7 @@
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				<div class="footer__column">
-					<p><a href="http://ictrade.by">Электронные компоненты Чип Электроникс</a></p>
+					<p>Электронные компоненты Чип Электроникс</p>
                   <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A
                      								<br />Ст. метро «Пролетарская»
                   </p>
@@ -951,7 +951,7 @@
 			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 			<input type="submit" class="button header__button" value="Поиск" />
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL
+				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL
 			</div>
 		</form>
 	</xsl:template>
