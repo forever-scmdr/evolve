@@ -43,7 +43,7 @@
 
                 <ul class="no-drag">
                     <li><a href="parse_excel?action=start">Импорт каталога Excel</a></li>
-                    <li><a href="create_excel_pricelist/?action-start">Экспорт каталога Excel</a></li>
+                    <li><a href="create_excel_pricelist/?action=start">Экспорт каталога Excel</a></li>
                     <li><a href="update_prices_from_excel/?action=start">Импорт прайса Excel</a></li>
                     <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li>
                 </ul>

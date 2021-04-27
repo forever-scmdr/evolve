@@ -53,11 +53,12 @@
 		</div>
 		<!-- slider end -->
 
+		<!-- products carousel -->
 		<div class="devices-block">
 			<div class="container">
-				<div class="title title_block">Лучшие цены</div>
+				<div class="title_1">Лучшие цены</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
+					<xsl:for-each select="page/product[tag = 'Акция']">
 						<xsl:apply-templates select="."/>
 					</xsl:for-each>
 				</div>
@@ -67,9 +68,9 @@
 			<div class="container">
 				<div class="title title_block">Хиты продаж</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
+					<xsl:for-each-group select="page/product[tag = 'Хит продаж']" group-by="@id"> 
+						<xsl:apply-templates select="current-group()[1]"/>
+					</xsl:for-each-group>
 				</div>
 			</div>
 		</div>
@@ -77,9 +78,9 @@
 			<div class="container">
 				<div class="title title_block">Новинки</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
+					<xsl:for-each-group select="page/product[tag = 'Новый товар']" group-by="@id">
+						<xsl:apply-templates select="current-group()[1]"/>
+					</xsl:for-each-group>
 				</div>
 			</div>
 		</div>

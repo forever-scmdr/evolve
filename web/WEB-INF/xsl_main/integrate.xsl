@@ -55,6 +55,11 @@
 			<h2>Процесс выполнения</h2>
 			<table>
 				<tr>
+                        <td colspan="2">
+                            <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
+                        </td>
+                    </tr>
+				<tr>
 					<td>Строка файла:</td>
 					<td class="error">
 						<span id="prcnt"></span>

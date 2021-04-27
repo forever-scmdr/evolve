@@ -8,10 +8,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 	<include-definition name="DOMAINS">
-<!--		<request>-->
-<!--			<var name="domain" value="super.com" scope="cookie"/>-->
-<!--		</request>-->
-		<list item="domain" cacheable="true" cache-vars="domain">
+		<list item="domain" cacheable="true" cache-vars="$domain">
 			<filter>
 				<parameter name="name" sign="=" compare="SOME">
 					<var var="$domain"/>
@@ -158,6 +155,147 @@
 		<list item="params"/>
 	</include-definition>
 
+	<include-definition name="NEW_PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product" type="exclusive">
+			<var name="prod" ref="new" style="key"/>
+		</link>
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="new" style="key"/>
+		</link>
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="prod" ref="new"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="prod" ref="new"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="prod" ref="new"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="prod" ref="new"/>
+		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="prod" ref="new"/>
+		</link>
+		<link name="my_price_link" target="my_price_ajax">
+			<var name="prod" ref="new"/>
+		</link>
+		<list item="params"/>
+	</include-definition>
+
+	<include-definition name="HIT_PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product" type="exclusive">
+			<var name="prod" ref="hit" style="key"/>
+		</link>
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="hit" style="key"/>
+		</link>
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="prod" ref="hit"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="prod" ref="hit"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="prod" ref="hit"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="prod" ref="hit"/>
+		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="prod" ref="hit"/>
+		</link>
+		<link name="my_price_link" target="my_price_ajax">
+			<var name="prod" ref="hit"/>
+		</link>
+		<list item="params"/>
+	</include-definition>
+
+	<include-definition name="SALE_PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product" type="exclusive">
+			<var name="prod" ref="sale" style="key"/>
+		</link>
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="sale" style="key"/>
+		</link>
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="prod" ref="sale"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="prod" ref="sale"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="prod" ref="sale"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="prod" ref="sale"/>
+		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="prod" ref="sale"/>
+		</link>
+		<link name="my_price_link" target="my_price_ajax">
+			<var name="prod" ref="sale"/>
+		</link>
+		<list item="params"/>
+	</include-definition>
+
+
+	<include-definition name="PROMO_PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product" type="exclusive">
+			<var name="prod" ref="promo" style="key"/>
+		</link>
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="promo" style="key"/>
+		</link>
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="prod" ref="promo"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="prod" ref="promo"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="prod" ref="promo"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="prod" ref="promo"/>
+		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="prod" ref="promo"/>
+		</link>
+		<link name="my_price_link" target="my_price_ajax">
+			<var name="prod" ref="promo"/>
+		</link>
+		<list item="params"/>
+	</include-definition>
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -183,6 +321,43 @@
 				<list item="custom_block"/>
 			</list>
 		</single>
+
+		<list item="product" id="new">
+			<filter>
+				<parameter name="tag" sign="=" compare="SOME">
+					<var value="Новый товар"/>
+				</parameter>
+				<limit>
+					<var value="18"/>
+				</limit>
+			</filter>
+			<include name="NEW_PRODUCT_PARAMS_LINKS"/>
+		</list>
+
+		<list item="product" id="sale">
+			<filter>
+				<parameter name="tag" sign="=" compare="SOME">
+					<var value="Акция"/>
+				</parameter>
+				<limit>
+					<var value="18"/>
+				</limit>
+			</filter>
+			<include name="SALE_PRODUCT_PARAMS_LINKS"/>
+		</list>
+
+		<list item="product" id="hit">
+			<filter>
+				<parameter name="tag" sign="=" compare="SOME">
+					<var value="Хит продаж"/>
+				</parameter>
+				<limit>
+					<var value="18"/>
+				</limit>
+			</filter>
+			<include name="HIT_PRODUCT_PARAMS_LINKS"/>
+		</list>
+
 		<list item="banner_section" id="banner_section" cacheable="true">
 			<list item="banner"/>
 		</list>
@@ -211,13 +386,6 @@
             <var name="city" scope="cookie"/>
         </request>
     </page>
-
-<!--	<page name="set_domain">-->
-<!--		<request>-->
-<!--			<var name="domain" scope="cookie"/>-->
-<!--		</request>-->
-<!--	</page>-->
-
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -556,6 +724,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
+			<single item="warranty"/>
 			<list item="product_extra"/>
 			<list item="params_xml"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
@@ -856,7 +1025,7 @@
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
 			<var name="template" value="feedback_email"/>
-			<var name="domain" scope="cookie"/>
+			
 		</request>
 		<include name="DOMAINS"/>
 		<link name="success" target-var="source_page">
@@ -971,7 +1140,7 @@
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="domain" scope="cookie"/>
+			
 		</request>
 
 		<link name="ajax" target="cart_ajax"/>

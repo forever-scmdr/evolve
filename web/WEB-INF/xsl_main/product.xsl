@@ -93,12 +93,10 @@
 					</xsl:for-each>
 				</div>
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+					<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
-					</xsl:if>
 				</div>
 			</div>
 			<div class="device-basic__column">
@@ -178,6 +176,12 @@
 							</tr>
 						</xsl:for-each>
 					</table> -->
+				</xsl:if>
+				<xsl:if test="$p/warranty">
+					<div style="margin-bottom: 2rem;">
+						<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
+						<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
+					</div>
 				</xsl:if>
 				<div class="product-common">
 					<xsl:value-of select="$common/catalog_texts/payment" disable-output-escaping="yes"/>
@@ -267,8 +271,10 @@
 					<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
 					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
+					<xsl:for-each select="$p/product_extra[text !='']">
+						<a href="#tab_{@id}" class="tab {'tab_active'[not($has_text) and position() = 1]}">
+							<xsl:value-of select="name"/>
+						</a>
 					</xsl:for-each>
 				</div>
 				<div class="tabs__content">
@@ -288,7 +294,7 @@
 						</div>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
-						<div class="tab-container" id="tab_{@id}" style="display: none">
+						<div class="tab-container" id="tab_{@id}" style="{if($has_text or position() != 1) then 'display: none' else 'display: block'}">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
