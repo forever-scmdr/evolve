@@ -11,6 +11,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes"/>
 
 	<xsl:variable name="cart" select="page/cart"/>
+	<xsl:decimal-format name="exc" decimal-separator="," grouping-separator=" "/>
 
 
 	<xsl:template match="/">
@@ -57,14 +58,16 @@
 		<xsl:variable name="product" select="product"/>
 		<xsl:variable name="price" select="if(aux != '') then f:cart_price_platan($product/price) else f:price_catalog($product/price,'', $product/min_qty)"/>
 		<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '', '')"/>
-		<xsl:variable name="price_original_s"
+		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
+		<xsl:variable name="price_original" select="format-number(f:num($price_original_str), '# ### ##0,00000', 'exc')"/>
+		<xsl:variable name="vendor_code_for_name" select="('digikey', 'farnell', 'arrow')"/>
 
 		<tr>
 			<td>
 				<xsl:value-of select="if(aux = 'promelec' and contains($product/code, 'v')) then substring-before($product/code, 'v') else $product/code"/>
 			</td>
 			<td>
-				<xsl:value-of select="if(aux = 'digikey' or aux = 'farnell') then $product/vendor_code else $product/name"/>
+				<xsl:value-of select="if(aux = $vendor_code_for_name) then $product/vendor_code else $product/name"/>
 			</td>
 			<td>
 				<xsl:value-of select="qty"/>
@@ -79,7 +82,7 @@
 				<xsl:value-of select="upper-case($curr)"/>
 			</td>
 			<td>
-				<xsl:value-of select="replace(if(aux != '') then $product/price_original else $product/price_opt, '\.', ',')"/>
+				<xsl:value-of select="$price_original"/>
 			</td>
 			<td>
 				<xsl:value-of select="if(aux != '') then $product/currency_id else 'BYN'"/>
@@ -90,8 +93,8 @@
 			<td>
 				<xsl:value-of select="delivery_time"/>
 			</td>
-			<td>
-				<xsl:value-of select="if(aux = 'farnell') then $product/name else $product/description"/>
+			<td style="width: 400px;">
+				<xsl:value-of select="if(aux != 'digikey' and aux = $vendor_code_for_name) then $product/name else $product/description"/>
 			</td>
 			<td>
 				<xsl:value-of select="$product/vendor"/>
