@@ -30,6 +30,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
 	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
 
+	private static final String MIN_QTY_PARAM = "min_qty";
+
 	static {
 		MANDATORY_PHYS.add(ItemNames.user_phys_.NAME);
 		MANDATORY_PHYS.add(ItemNames.user_phys_.PHONE);
@@ -85,6 +87,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			getSessionMapper().saveTemporaryItem(bought);
 			Item product = getSessionMapper().createSessionItem("product", bought.getId());
 			product.setValueUI(NAME_PARAM, name);
+			product.setValueUI(MIN_QTY_PARAM, getVarSingleValueDefault("min_qty", "1"));
 			product.setValueUI(CODE_PARAM, getVarSingleValue("vendor_code"));
 			product.setValueUI(ItemNames.product_.VENDOR, getVarSingleValue("vendor"));
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
@@ -150,7 +153,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max")) ? 0d : Double.parseDouble(getVarSingleValue("max"));
-			product.setValue(QTY_PARAM, qty);
+			product.setValueUI(MIN_QTY_PARAM, getVarSingleValueDefault("min_qty", "1"));
 			product.setValue(QTY_PARAM, qty);
 			product.setValueUI("currency_id", "EUR");
 			product.setValueUI(ItemNames.product_.VENDOR, getVarSingleValue("vendor"));
@@ -197,6 +200,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI(CODE_PARAM, code);
 			product.setValueUI(ItemNames.product_.DESCRIPTION, getVarSingleValue("description"));
 			product.setValueUI(ItemNames.product_.VENDOR_CODE, getVarSingleValue("vendor_code"));
+			product.setValueUI(MIN_QTY_PARAM, getVarSingleValueDefault("min_qty", "1"));
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max")) ? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
@@ -248,6 +252,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max")) ? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValueUI(MIN_QTY_PARAM, getVarSingleValueDefault("min_qty", "1"));
 			double specQ = StringUtils.isBlank(getVarSingleValue("upack")) ? Double.MAX_VALUE : Double.parseDouble(getVarSingleValue("upack"));
 			product.setValue("spec_qty", specQ);
 
@@ -308,6 +313,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValueUI("unit", getVarSingleValue("unit"));
 			double qty = StringUtils.isBlank(getVarSingleValue("max")) ? 0d : Double.parseDouble(getVarSingleValue("max"));
 			product.setValue(QTY_PARAM, qty);
+			product.setValueUI(MIN_QTY_PARAM, getVarSingleValueDefault("min_qty", "1"));
 			product.setValueUI("currency_id", "RUR");
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);

@@ -145,6 +145,7 @@
 						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
 						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
+						<input type="hidden" value="{$min}" name="min_qty"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
 						<xsl:for-each select="prices">
@@ -216,6 +217,7 @@
 						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
 						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
 						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
+						<input type="hidden" value="{$min}" name="min_qty"/>
 						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
 						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
 						<xsl:for-each select="prices">

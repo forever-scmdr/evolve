@@ -181,7 +181,8 @@
 					<input type="hidden" value="1" name="upack"/>
 
 					<input type="hidden" value="0" name="max"/>
-					<input type="number" class="text-input" name="qty" value="1" min="1"/>
+					<input type="hidden" value="min_qty" name="min_qty"/>
+					<input type="number" class="text-input" name="qty" value="1" min="{min_qty}"/>
 
 					<input type="hidden" name="img" value="{$product/main_pic}"/>
 					<input type="submit" class="button not_available" value="Под заказ"/>
@@ -213,6 +214,7 @@
 					<input type="hidden" value="{$offer/step}" name="upack"/>
 
 					<input type="hidden" value="{$offer/qty}" name="max"/>
+					<input type="hidden" value="{$offer/min_qty}" name="min_qty"/>
 					<input type="number" class="text-input" name="qty" value="{$offer/min_qty[1]}" min="{$offer/min_qty[1]}"/>
 
 					<xsl:if test="f:num($offer/qty) != 0">

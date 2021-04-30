@@ -121,6 +121,7 @@
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="{qty}" name="upack"/>
+							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
@@ -143,6 +144,7 @@
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
+							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="delivery_time" value=""/>
 							<input type="submit" class="button not_available" value="Под заказ"/>
@@ -247,6 +249,7 @@
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
+							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
 							<input type="hidden" name="delivery_time" value="7-14 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
@@ -265,6 +268,7 @@
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
 							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="delivery_time" value=" "/>

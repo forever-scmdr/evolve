@@ -45,7 +45,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PRICE_OPT_PARAM = "price_opt";
 	protected static final String NOT_AVAILABLE = "not_available";
 	protected static final String QTY_PARAM = "qty";
-    protected static final String QTY_AVAIL_PARAM = "qty_avail";
+	protected static final String QTY_AVAIL_PARAM = "qty_avail";
     protected static final String QTY_TOTAL_PARAM = "qty_total";
 	protected static final String SUM_PARAM = "sum";
 	protected static final String CODE_PARAM = "code";
