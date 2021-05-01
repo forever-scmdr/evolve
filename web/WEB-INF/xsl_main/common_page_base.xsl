@@ -111,181 +111,6 @@
 	</xsl:template>
 
 
-	<xsl:template name="INC_DESKTOP_HEADER">
-		<div class="top-info">
-			<div class="container">
-				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
-				<!-- static -->
-				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
-				<xsl:variable name="has_many_cities" select="count($common/topper/block) &gt; 1"/>
-				<xsl:for-each select="$common/topper/block">
-					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
-					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
-							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
-								<span><xsl:value-of select="header"/></span>
-								<xsl:if test="$has_many_cities">
-									<div class="icon icon_size_sm">
-										<img src="img/icon-caret-down.svg" alt="" />
-									</div>
-								</xsl:if>
-							</a>
-						</div>
-						<div class="top-info__content">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
-					</div>
-				</xsl:for-each>
-				<!-- static end -->
-				<ul class="location-list" style="display:none">
-					<xsl:for-each select="$common/topper/block">
-						<li><a href="#" onclick="return showCityHeader('{@id}', '{header}')"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
-				<script>
-					function showCityHeaderSelector() {
-						$('.location-list').show();
-						return false;
-					}
-					function showCityHeader(cityId, cityName) {
-						$('.top-info__wrap').hide();
-						$('.location-list').hide();
-						$('#' + cityId).show('fade', 200);
-						insertAjax('set_city?city=' + cityName);
-						return false;
-					}
-				</script>
-			</div>
-		</div>
-
-		<div class="header">
-			<div class="container">
-				<div class="header__wrap wrap">
-					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
-					</a>
-					<div class="header__column header__search header-search">
-						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
-							<!-- quick search end -->
-						</form>
-					</div>
-					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
-							<div class="catalog-currency">
-								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-								<ul class="currency-options">
-									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="active" select="$currency = $cur"/>
-										<li class="{'active'[$active]}">
-											<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-											<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-										</li>
-									</xsl:for-each>
-								</ul>
-							</div>
-						</div>
-					</xsl:if>
-					<!-- need styles end -->
-					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
-						<div class="links">
-							<a href="/kontakty" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-phone.svg" alt="" />
-								</div>
-							</a>
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-bars.svg" alt="" />
-								</div>
-							</a>
-						</div>
-						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
-							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="main-menu">
-			<div class="container">
-				<div class="main-menu__wrap wrap">
-					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
-						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
-										<a href="{show_products}" rel="#sub_{@id}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-									<xsl:if test="not(section)">
-										<a href="{show_products}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-
-							<xsl:for-each select="page/catalog/section">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
-									</xsl:for-each>
-								</div>
-							</xsl:for-each>
-						</div>
-					</div>
-					<xsl:for-each select="page/news[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<div class="main-menu__item {'active'[$sel = $key]}">
-							<a href="{show_page}"><span><xsl:value-of select="name"/></span></a>
-						</div>
-					</xsl:for-each>
-					<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
-				</div>
-			</div>
-		</div>
-	</xsl:template>
-
 
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
@@ -325,226 +150,15 @@
 
 
 
-	<xsl:template name="INC_MOBILE_MENU">
-		<div class="menu-container mobile">
-			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
-			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page">
-						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
-					</xsl:for-each>
-				</ul>
-			</div>
-		</div>
-		<script>
-			function showMobileCatalogMenu() {
-				$('#mobile_catalog_menu').toggle();
-			}
-
-			$(document).ready(function() {
-				$("#mobile_catalog_menu .content li a[rel]").click(function(event) {
-					//event.preventDefault();
-					var menuItem = $(this);
-					var parentMenuContainer = menuItem.closest('.content');
-					parentMenuContainer.css('left', '-100%');
-					var childMenuContainer = $(menuItem.attr('rel'));
-					childMenuContainer.css('left', '0%');
-				});
-
-				$('#mobile_catalog_menu a.back').click(function(event) {
-					event.preventDefault();
-					var back = $(this);
-					var childMenuContainer = back.closest('.content');
-					childMenuContainer.css('left', '100%');
-					var parentMenuContainer = $(back.attr('rel'));
-					parentMenuContainer.css('left', '0%');
-				});
-			});
-
-			function hideMobileCatalogMenu() {
-				$("#mobile_catalog_menu .content").css('left', '100%');
-				$("#m_sub_cat").css('left', '0%');
-				$('#mobile_catalog_menu').hide();
-			}
-		</script>
-	</xsl:template>
 
 
 
-	<xsl:template name="INC_MOBILE_NAVIGATION">
-		<div id="mobile_catalog_menu" class="nav-container mobile" style="display: none; position:absolute; width: 100%; overflow:hidden">
-			<div class="content" id="m_sub_cat">
-				<div class="small-nav">
-					<a class="header">Каталог продукции</a>
-					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
-				</div>
-				<ul>
-					<xsl:for-each select="page/catalog/section">
-						<li>
-							<xsl:if test="section">
-								<a rel="{concat('#m_sub_', @id)}">
-									<xsl:value-of select="name"/>
-								</a>
-								<span>></span>
-							</xsl:if>
-							<xsl:if test="not(section)">
-								<a href="{show_products}">
-									<xsl:value-of select="name"/>
-								</a>
-							</xsl:if>
-						</li>
-					</xsl:for-each>
-				</ul>
-			</div>
-			<xsl:for-each select="page/catalog/section[section]">
-				<div class="content next" id="m_sub_{@id}">
-					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
-					</div>
-					<ul>
-						<xsl:for-each select="section">
-							<li>
-								<xsl:if test="section">
-									<a rel="{concat('#m_sub_', @id)}">
-										<xsl:value-of select="name"/>
-									</a>
-									<i class="fas fa-chevron-right"></i>
-								</xsl:if>
-								<xsl:if test="not(section)">
-									<a href="{show_products}" >
-										<xsl:value-of select="name"/>
-									</a>
-								</xsl:if>
-							</li>
-						</xsl:for-each>
-					</ul>
-				</div>
-			</xsl:for-each>
-			<xsl:for-each select="page/catalog/section/section[section]">
-				<div class="content next" id="m_sub_{@id}">
-					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
-						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
-					</div>
-					<ul>
-						<xsl:for-each select="section">
-							<li>
-								<a href="{show_products}"><xsl:value-of select="name"/></a>
-							</li>
-						</xsl:for-each>
-					</ul>
-				</div>
-			</xsl:for-each>
-		</div>
-	</xsl:template>
 
 
 
-	<xsl:template name="INC_SIDE_MENU_INTERNAL">
-		<xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/>
-	</xsl:template>
 
-	<xsl:template name="INC_SIDE_MENU_INTERNAL_NEWS">
-		<div class="side-menu">
-			<xsl:for-each select="page/news">
-				<xsl:variable name="id" select="@id"/>
-				<div class="side-menu__item side-menu__item_level_1">
-					<a class="side-menu__link{' side-menu__link_active'[$id = $sel_news_id]}" href="{show_page}">
-						<xsl:value-of select="name"/>
-					</a>
-				</div>
-			</xsl:for-each>
-		</div>
-	</xsl:template>
 
-	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
-		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
-				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
-				<div class="side-menu__item side-menu__item_level_1">
-					<a class="side-menu__link{' side-menu__link_active'[$l1_active]}" href="{show_products}"><xsl:value-of select="name"/> </a>
-				</div>
-				<xsl:if test=".//@id = $sel_sec_id">
-					<xsl:for-each select="section">
-						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
-						<div class="side-menu__item side-menu__item_level_2">
-							<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="name"/></a>
-						</div>
-						<xsl:if test=".//@id = $sel_sec_id">
-							<xsl:for-each select="section">
-								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
-								<div class="side-menu__item side-menu__item_level_3">
-									<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="name"/></a>
-								</div>
-								<xsl:if test=".//@id = $sel_sec_id">
-									<xsl:for-each select="section">
-										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
-										<div class="side-menu__item side-menu__item_level_4">
-											<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l4_active]}"><xsl:value-of select="name"/></a>
-										</div>
-									</xsl:for-each>
-								</xsl:if>
-							</xsl:for-each>
-						</xsl:if>
-					</xsl:for-each>
-				</xsl:if>
-			</xsl:for-each>
-		</div>
-	</xsl:template>
+
 
 
 
@@ -573,19 +187,6 @@
 
 
 
-	<xsl:template name="COMMON_LEFT_COLOUMN">
-		<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
-	</xsl:template>
-
-
-
-	<xsl:template name="CATALOG_LEFT_COLOUMN">
-		<xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/>
-		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
-	</xsl:template>
-
-
-
 
 
 
@@ -608,36 +209,48 @@
 	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
 
 
-	<xsl:template name="MAIN_CONTENT">
-		<div class="content">
-			<div class="container">
-				<div class="content__wrap">
-					<div class="content__side">
-						<xsl:call-template name="LEFT_COLOUMN"/>
-					</div>
-					<div class="content__main">
-						<xsl:call-template name="PAGE_PATH"/>
-						<xsl:call-template name="PAGE_HEADING"/>
-						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
-							<div class="text">
-								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
-							</div>
-						</xsl:if>
-						<xsl:call-template name="CONTENT"/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</xsl:template>
 
 
-	<xsl:template name="LEFT_COLOUMN" />
 	<xsl:template name="CONTENT" />
-	<xsl:template name="INDEX_BLOCKS"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
 
 
 
+	<!-- ****************************    ШАБЛОНЫ ТОЛЬКО ДЛЯ ЭТОЙ СТРАНИЦЫ    ******************************** -->
+
+
+	<xsl:template match="section" mode="desktop">
+		<xsl:param name="level"/>
+        <xsl:variable name="active" select="@id = $sel_sec_id"/>
+		<xsl:variable name="active_parent" select=".//section/@id = $sel_sec_id"/>
+		<div class="side-menu__item side-menu__item_level_{$level}{' side-menu__item_active'[$active]}">
+			<a class="side-menu__toggle" href="#" onclick="return toggleDesktopCatalogSection('{@id}');">
+				<img src="{if (section) then (if ($active_parent) then 'img/icon-toggle-minus.png' else 'img/icon-toggle-plus.png') else 'img/icon-toggle-dash.png'}"
+						alt="" id="cat_plus_{@id}"/>
+			</a>
+			<a class="side-menu__link" href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+		</div>
+		<xsl:if test="section">
+			<div id="subsec_{@id}" style="{'display:none'[not($active_parent)]}">
+				<xsl:apply-templates select="section" mode="desktop">
+					<xsl:with-param name="level" select="number($level) + 1"/>
+				</xsl:apply-templates>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
+
+
+	<xsl:template match="section" mode="mobile">
+		<div class="popup-menu__item">
+			<div class="popup-menu__link">
+				<a onclick="$('#mobile_sec{@id}').css('transform', ''); return false;"><xsl:value-of select="name"/></a>
+			</div>
+			<div class="popup-menu__arrow">
+				<img src="img/icon-menu-right.png" alt=""/>
+			</div>
+		</div>
+	</xsl:template>
 
 
 
@@ -647,171 +260,690 @@
 	<xsl:template match="/">
 	<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;
 	</xsl:text>
-		<html lang="ru">
+		<html lang="en">
 			<head>
-				<xsl:text disable-output-escaping="yes">
-&lt;!--
-				</xsl:text>
-<xsl:value-of select="page/source_link"/>
-				<xsl:text disable-output-escaping="yes">
---&gt;
-				</xsl:text>
 				<base href="{$main_host}"/>
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
-
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
-				<script src="js/script.js"></script>
-
+				<script src="js/script.min.js"></script>
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-
 				<xsl:call-template name="SEO"/>
-				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
-				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
-				<link  href="css/fotorama.css" rel="stylesheet" />
+				<link rel="stylesheet" type="text/css" href="http://main.must.by/magnific_popup/magnific-popup.css"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.0"/>
+				<link href="css/fotorama.css" rel="stylesheet"/>
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
-				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
-
-				<xsl:if test="page/styles">
-					<xsl:if test="page/styles/css != ''">
-						<link rel="stylesheet" type="text/css" href="{concat(page/styles/@path,page/styles/css)}"/>
-					</xsl:if>
-					<style type="text/css">
-						<xsl:for-each select="page/styles/label_style">
-							.<xsl:value-of select="f:translit(name)"/>{
-								<xsl:value-of select="style" disable-output-escaping="yes"/>
-							}
-						</xsl:for-each>
-					</style>
-				</xsl:if>
-
-				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"/>
-				<xsl:if test="$seo/extra_style">
-					<style>
-						<xsl:value-of select="$seo/extra_style" disable-output-escaping="yes"/>
-					</style>
-				</xsl:if>
-				<xsl:for-each select="$head-end-modules">
-					<xsl:value-of select="code" disable-output-escaping="yes"/>
-				</xsl:for-each>
-			</head>
-			<body>
-				<xsl:if test="$seo/body_class">
-					<xsl:attribute name="class" select="$seo/body_class"/>
-				</xsl:if>
-				<xsl:for-each select="$body-start-modules">
-					<xsl:value-of select="code" disable-output-escaping="yes"/>
-				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-
-				<!-- ALL CONTENT BEGIN -->
-				<div class="wrapper">
-					<xsl:call-template name="INC_DESKTOP_HEADER"/>
-					<xsl:call-template name="MAIN_CONTENT"/>
-					<xsl:call-template name="INDEX_BLOCKS"/>
-					<xsl:call-template name="INC_FOOTER"/>
-				</div>
-				<!-- ALL CONTENT END -->
-
-
-				<xsl:call-template name="INC_MOBILE_MENU"/>
-				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
-				<xsl:call-template name="MY_PRICE_FORM"/>
-				<xsl:call-template name="ONE_CLICK_FORM"/>
-				<xsl:call-template name="SUBSCRIBE_FORM"/>
-				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
-				<!-- <script type="text/javascript" src="js/bootstrap.js"/> -->
-				<script type="text/javascript" src="admin/ajax/ajax.js"/>
-				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
-				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="js/web.js"/>
-				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-							type: 'image',
-							closeOnContentClick: true,
-							mainClass: 'mfp-img-mobile',
-							image: {
-								verticalFit: true
-							}
-						});
-
-						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
-						initDropDownHeader();
-						<xsl:if test="$has_quick_search">
-                        $("#q-ipt").keyup(function(){
-							searchAjax(this);
-						});
-                        </xsl:if>
-					});
-
-
-					function initDropDownHeader() {
-						$('.dd_menu_item').click(function() {
-							var mi = $(this);
-							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
-							$('.dd_block').hide();
-							$('#' + mi.attr('dd-id')).show();
-						});
-					}
-
-
-					function searchAjax(el){
-						var $el = $(el);
-						<!-- console.log($el); -->
-						var val = $el.val();
-						if(val.length > 2){
-							<xsl:text disable-output-escaping="yes">
-								var $form = $("&lt;form&gt;",
-							</xsl:text>
-								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
-							);
-							<xsl:text disable-output-escaping="yes">
-								var $ipt2 = $("&lt;input&gt;",
-							</xsl:text>
-							 {'type' : 'text', 'value': val, 'name' : 'q'});
-
-							 $ipt2.val(val);
-
-							$form.append($ipt2);
-							$('body').append($form);
-							postForm('tmp-form', 'search-result');
-							$('#tmp-form').remove();
-							$('#search-result').show();
+				<link href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
+				<link href="js/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
+				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"></script>
+				<script type="text/javascript" src="js/script.js"></script>
+				<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js"></script>
+				<script type="text/javascript" src="js/jquery-ui/jquery-ui.js"></script>
+				<link rel="stylesheet" type="text/css" href="fancybox/source/jquery.fancybox.css" media="screen" />
+				<script  type="text/javascript">
+					function toggleDesktopCatalogSection(id) {
+						var subsec = $('#subsec_' + id);
+						var isHidden = subsec.css('display') == 'none';
+						if (isHidden) {
+							subsec.show();
+							$('#cat_plus_' + id).attr('src', 'img/icon-toggle-minus.png');
+						} else {
+							subsec.hide();
+							$('#cat_plus_' + id).attr('src', 'img/icon-toggle-plus.png');
 						}
+						return false;
 					}
-
-					$(document).on('click', 'body', function(e){
-						var $trg = $(e.target);
-						if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
-						$('#search-result').hide();
-						$('#search-result').html('');
-					});
-
-					function showMobileMainMenu() {
-						$('.wrapper').toggleClass('visible-no');
-						$('.menu-container').toggleClass('visible-yes');
-					}
-
 				</script>
-				<xsl:call-template name="EXTRA_SCRIPTS"/>
-				<xsl:for-each select="$body-end-modules">
-					<xsl:value-of select="code" disable-output-escaping="yes"/>
-				</xsl:for-each>
+			</head>
 
-
-				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
-
-			</body>
 		</html>
+
+		<body>
+			<div class="wrapper">
+				<div class="top-info">
+					<div class="container">
+						<div class="top-info__wrap wrap">
+							<div class="top-info__location">
+								<p>Магазин «Белчип», ул. Л.Беды, 2Б</p>
+								<div>
+									<a href="mailto:info@belchip.by">info@belchip.by</a>
+									<a href="about.html">схема проезда</a>
+								</div>
+							</div>
+							<div class="top-info__phones phones">
+								<div class="phones__item">
+									<div class="phones__number">+375 (29) 126-14-13</div>
+									<div class="phones__description">розница</div>
+								</div>
+								<div class="phones__item">
+									<div class="phones__number">+375 (29) 126-14-13</div>
+									<div class="phones__description">розница</div>
+								</div>
+								<div class="phones__item">
+									<div class="phones__number">+375 (29) 126-14-13</div>
+									<div class="phones__description">розница</div>
+								</div>
+								<div class="phones__item">
+									<div class="phones__number">+375 (29) 126-14-13</div>
+									<div class="phones__description">розница</div>
+								</div>
+								<div class="phones__item">
+									<div class="phones__number">+375 (29) 126-14-13</div>
+									<div class="phones__description">розница</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="header">
+					<div class="container">
+						<div class="header__wrap wrap">
+							<div class="header__column logo">
+								<a href="index.html">
+									<img class="logo__image" src="img/logo.png" alt=""/>
+								</a>
+								<div class="work-hours logo__hours">
+									<p>пн.-пт.<span>9:00-20:00</span>
+									</p>
+									<p>сб.-вс.<span>10:00-17:00</span>
+									</p>
+								</div>
+							</div>
+							<div class="header__column header__search header-search">
+								<form action="search/" method="post">
+									<div>
+										<a class="useless-button" href="">
+											<img src="img/icon-search.png" alt=""/>
+										</a>
+										<input class="input header-search__input" id="q-ipt" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="" value="" autofocus=""/>
+										<a class="header-search__reset" href="">
+											<img src="img/icon-close.png" alt=""/>
+										</a>
+										<button class="button header-search__button" type="submit">Найти</button>
+									</div>
+									<div>
+										<div class="header-search__option">
+											<input type="checkbox"/>
+											<label for="">только по товарам в наличии</label>
+										</div>
+										<div class="header-search__option">
+											<input type="checkbox"/>
+											<label for="">строгое соответствие</label>
+										</div>
+									</div>
+									<div class="suggest">
+										<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
+										<div class="suggest__results">
+											<div class="suggest__result suggest-result">
+												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+												<div class="suggest-result__info">
+													<div class="suggest-result__code">код 04434</div>
+													<div class="suggest-result__vendor">KLS</div>
+													<div class="suggest-result__price">1,46 руб./шт.</div>
+													<div class="suggest-result__status">на складе: 19 шт.</div>
+												</div>
+											</div>
+											<div class="suggest__result suggest-result">
+												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+												<div class="suggest-result__info">
+													<div class="suggest-result__code">код 04434</div>
+													<div class="suggest-result__vendor">KLS</div>
+													<div class="suggest-result__price">1,46 руб./шт.</div>
+													<div class="suggest-result__status">на складе: 19 шт.</div>
+												</div>
+											</div>
+											<div class="suggest__result suggest-result">
+												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+												<div class="suggest-result__info">
+													<div class="suggest-result__code">код 04434</div>
+													<div class="suggest-result__vendor">KLS</div>
+													<div class="suggest-result__price">1,46 руб./шт.</div>
+													<div class="suggest-result__status">на складе: 19 шт.</div>
+												</div>
+											</div>
+											<div class="suggest__result suggest-result">
+												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+												<div class="suggest-result__info">
+													<div class="suggest-result__code">код 04434</div>
+													<div class="suggest-result__vendor">KLS</div>
+													<div class="suggest-result__price">1,46 руб./шт.</div>
+													<div class="suggest-result__status">на складе: 19 шт.</div>
+												</div>
+											</div>
+										</div>
+										<a class="suggest__all" href="search.html">Показать все результаты</a>
+									</div>
+								</form>
+							</div>
+							<div class="header__column header__column_links header-icons">
+								<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icon__icon">
+										<img src="img/icon-cart.png" alt=""/>
+										<div class="header-icon__counter">2</div>
+									</div>
+									<div class="header-icon__info">
+										<a href="">Корзина</a>
+										<span>58,25</span>
+										<a class="header-icon__dd">
+											<img src="img/icon-caret-down-small.png" alt=""/>
+										</a>
+									</div>
+									<div class="dd-cart">
+										<div class="dd-cart__scroll">
+											<div class="dd-cart__item">
+												<a class="dd-cart__image" href="">
+													<img src="img/image-device.jpg" alt=""/>
+												</a>
+												<div class="dd-cart__info">
+													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="dd-cart__code">Кол-во: 6 шт.</div>
+													<div class="ddcart__price">21,17 руб.</div>
+												</div>
+												<a class="dd-cart__close" href="">
+													<img src="img/icon-close.png" alt=""/>
+												</a>
+											</div>
+											<div class="dd-cart__item">
+												<a class="dd-cart__image" href="">
+													<img src="img/image-device.jpg" alt=""/>
+												</a>
+												<div class="dd-cart__info">
+													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="dd-cart__code">Кол-во: 6 шт.</div>
+													<div class="ddcart__price">21,17 руб.</div>
+												</div>
+												<a class="dd-cart__close" href="">
+													<img src="img/icon-close.png" alt=""/>
+												</a>
+											</div>
+											<div class="dd-cart__item">
+												<a class="dd-cart__image" href="">
+													<img src="img/image-device.jpg" alt=""/>
+												</a>
+												<div class="dd-cart__info">
+													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="dd-cart__code">Кол-во: 6 шт.</div>
+													<div class="ddcart__price">21,17 руб.</div>
+												</div>
+												<a class="dd-cart__close" href="">
+													<img src="img/icon-close.png" alt=""/>
+												</a>
+											</div>
+											<div class="dd-cart__item">
+												<a class="dd-cart__image" href="">
+													<img src="img/image-device.jpg" alt=""/>
+												</a>
+												<div class="dd-cart__info">
+													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="dd-cart__code">Кол-во: 6 шт.</div>
+													<div class="ddcart__price">21,17 руб.</div>
+												</div>
+												<a class="dd-cart__close" href="">
+													<img src="img/icon-close.png" alt=""/>
+												</a>
+											</div>
+											<div class="dd-cart__item">
+												<a class="dd-cart__image" href="">
+													<img src="img/image-device.jpg" alt=""/>
+												</a>
+												<div class="dd-cart__info">
+													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="dd-cart__code">Кол-во: 6 шт.</div>
+													<div class="ddcart__price">21,17 руб.</div>
+												</div>
+												<a class="dd-cart__close" href="">
+													<img src="img/icon-close.png" alt=""/>
+												</a>
+											</div>
+										</div>
+										<a class="dd-cart__button" href="cart.html">Перейти в корзину</a>
+									</div>
+								</div>
+								<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icon__icon">
+										<img src="img/icon-currency.png" alt=""/>
+									</div>
+									<div class="header-icon__info">
+										<a href="">RUB</a>
+										<a class="header-icon__dd">
+											<img src="img/icon-caret-down-small.png" alt=""/>
+										</a>
+									</div>
+									<div class="dropdown header-icon__dropdown">
+										<a class="dropdown__item active" href="">RUB</a>
+										<a class="dropdown__item" href="">RUB</a>
+										<a class="dropdown__item" href="">RUB</a>
+									</div>
+								</div>
+								<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icon__icon">
+										<img src="img/icon-star.png" alt=""/>
+										<div class="header-icon__counter">21</div>
+									</div>
+									<div class="header-icon__info">
+										<a href="">Избранное</a>
+									</div>
+								</div>
+								<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icon__icon">
+										<img src="img/icon-truck.png" alt=""/>
+									</div>
+									<div class="header-icon__info">
+										<a href="">Где заказ</a>
+									</div>
+								</div>
+								<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icon__icon">
+										<img src="img/icon-user.png" alt=""/>
+									</div>
+									<div class="header-icon__info">
+										<a href="">Вход</a>
+										<a class="header-icon__dd">
+											<img src="img/icon-caret-down-small.png" alt=""/>
+										</a>
+									</div>
+									<div class="dropdown dropdown_last header-icon__dropdown">
+										<a class="dropdown__item" href="">Вход</a>
+										<a class="dropdown__item" href="">Регистрация</a>
+										<a class="dropdown__item" href="">Кабинет</a>
+										<a class="dropdown__item" href="">История заказов</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="header-mobile">
+					<div class="header-mobile__top">
+						<a class="header-mobile__logo">
+							<img src="img/logo.png" alt=""/>
+						</a>
+						<div class="header-mobile__small-icons">
+							<div class="mobile-small-icon header-mobile__small-icon">
+								<div class="mobile-small-icon__icon">
+									<img src="img/icon-small-search.png" alt=""/>
+								</div>
+								<a class="mobile-small-icon__link"></a>
+							</div>
+							<div class="mobile-small-icon header-mobile__small-icon">
+								<div class="mobile-small-icon__icon">
+									<img src="img/icon-small-phone.png" alt=""/>
+								</div>
+								<a class="mobile-small-icon__link"></a>
+							</div>
+							<div class="mobile-small-icon header-mobile__small-icon">
+								<div class="mobile-small-icon__icon">
+									<img src="img/icon-small-menu.png" alt=""/>
+								</div>
+								<a class="mobile-small-icon__link"></a>
+							</div>
+						</div>
+					</div>
+					<div class="header-mobile__nav">
+						<div class="header-mobile__menu">
+							<button class="button">Каталог</button>
+						</div>
+						<div class="header-mobile__icons">
+							<div class="header-mobile__icon mobile-icon">
+								<div class="mobile-icon__icon">
+									<img src="img/icon-cart.png" alt=""/>
+								</div>
+								<div class="mobile-icon__qty">2</div>
+								<div class="mobile-icon__label">58,25</div>
+								<a class="mobile-icon__link"></a>
+							</div>
+							<div class="header-mobile__icon mobile-icon">
+								<div class="mobile-icon__icon">
+									<img src="img/icon-star.png" alt=""/>
+								</div>
+								<div class="mobile-icon__qty">2</div>
+								<div class="mobile-icon__label">Избранное</div>
+								<a class="mobile-icon__link"></a>
+							</div>
+							<div class="header-mobile__icon mobile-icon">
+								<div class="mobile-icon__icon">
+									<img src="img/icon-currency.png" alt=""/>
+								</div>
+								<div class="mobile-icon__label">BYN</div>
+								<a class="mobile-icon__link"></a>
+							</div>
+							<div class="header-mobile__icon mobile-icon">
+								<div class="mobile-icon__icon">
+									<img src="img/icon-user.png" alt=""/>
+								</div>
+								<div class="mobile-icon__label">Конст...</div>
+								<a class="mobile-icon__link"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="main-menu">
+					<div class="container">
+						<div class="main-menu__wrap wrap">
+							<div class="main-menu__item active">
+								<a href="index.html">
+									<span>Главная</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="catalog.html">
+									<span>Каталог</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="about.html">
+									<span>О магазине</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="price.html">
+									<span>Прайс-лист</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="payments.html">
+									<span>Оплата и доставка</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="info.html">
+									<span>Полезная информация</span>
+								</a>
+							</div>
+							<div class="main-menu__item">
+								<a href="">
+									<span>Translate</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="content">
+					<div class="container">
+						<div class="content__wrap">
+							<div class="content__side">
+								<div class="side-menu">
+									<div class="side-menu__header">
+										<a class="side-menu__title" href="catalog.html">Каталог товаров</a>
+
+										<xsl:if test="not(/page/catalog/udate_in_progress = '1')">
+											<div class="side-menu__update">Обновлен
+												<xsl:value-of select="substring(/page/catalog/date, 0,11)" />
+												в <xsl:value-of select="substring(/page/catalog/date, 12, 5)" />
+											</div>
+										</xsl:if>
+										<xsl:if test="/page/catalog/udate_in_progress = '1'">
+											<div class="side-menu__update">
+												<b>Идет обновление каталога!</b><br/>
+												Заказ товаров и поиск могут работать некорректно, пожалуйста, подождите несколько минут.
+											</div>
+										</xsl:if>
+									</div>
+									<div class="side-menu__links">
+										<xsl:apply-templates select="page/catalog/section" mode="desktop">
+                                            <xsl:with-param name="level" select="'1'"/>
+                                        </xsl:apply-templates>
+									</div>
+								</div>
+							</div>
+							<xsl:call-template name="CONTENT"/>
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="container">
+						<div class="footer__wrap">
+							<div class="footer__column">
+								<div class="footer__title">Частное производственно-торговое унитарное предприятие «БелЧип»</div>
+								<div class="footer__text">
+									<p> </p>Республика Беларусь, 220040,г.Минск,ул Л.Беды, 2Б, пом.317
+									<br/>УНП 191623250 Свидетельство №191623250
+									<br/>выдано 17.01.2012г Минским горисполкомом
+									<br/>Дата регистрации интернет-магазина в Торговом реестре Республики беларусь: 29.12.2016 г.
+								</div>
+							</div>
+							<div class="footer__column">
+								<div class="footer__phones phones">
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="footer__phones-jur">Работа с юридическими лицами пн.-пт. с 9:00 до 17:30</div>
+								</div>
+							</div>
+							<div class="footer__column">
+								<div class="footer__social footer-social">
+									<div class="footer-social__icons">
+										<a class="footer-social__icon">
+											<img src="img/icon-social-footer-01.png" alt=""/>
+										</a>
+										<a class="footer-social__icon">
+											<img src="img/icon-social-footer-01.png" alt=""/>
+										</a>
+										<a class="footer-social__icon">
+											<img src="img/icon-social-footer-01.png" alt=""/>
+										</a>
+									</div>
+									<a href="mailto:info@belchip.by">info@belchip.by</a>
+								</div>
+								<div class="footer__copyright copyright">© «Белчип», 2012–2020</div>
+								<a class="forever" href="">Разработка сайта
+									<br/>студия веб-дизайна Forever
+								</a>
+							</div>
+							<div class="footer__payments footer-payments">
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+								<div class="footer-payments__icon">
+									<img src="img/icon-payment-footer-01.png" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- меню каталога-->
+				<div class="popup" style="display: none;" id="mobile_catalog">
+					<div class="popup__body">
+						<div class="popup__content">
+							<div class="popup__header">
+								<div class="popup__title">Каталог продукции</div>
+								<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
+									<img src="img/icon-menu-close.png" alt=""/>
+								</a>
+							</div>
+							<div class="popup-menu">
+								<xsl:apply-templates select="page/catalog/section" mode="mobile"/>
+							</div>
+						</div>
+						<xsl:for-each select="page/catalog//section[section]">
+							<div class="popup__content popup__content_next" id="mobile_sec_{@id}">
+								<div class="popup__header">
+									<a class="popup__back" href="#" onlick="$('#mobile_sec{@id}').css('transform', 'translateX(100%)'); return false;">
+										<img src="img/icon-menu-back.png" alt=""/>
+									</a>
+									<div class="popup__title"><xsl:value-of select="name"/></div>
+									<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup-menu">
+									<xsl:apply-templates select="section" mode="mobile"/>
+								</div>
+							</div>
+						</xsl:for-each>
+					</div>
+				</div><!-- главное меню-->
+				<div class="popup" style="display: none;">
+					<div class="popup__body">
+						<div class="popup__content">
+							<div class="popup__header">
+								<div class="popup__title">Меню</div>
+								<a class="popup__close">
+									<img src="img/icon-menu-close.png" alt=""/>
+								</a>
+							</div>
+							<div class="popup-menu">
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">Главная страница</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">Каталог товаров</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">О магазине</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">Прайс-лист</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">Оплата и доставка</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+								<div class="popup-menu__item">
+									<div class="popup-menu__link">Полезная информация</div>
+									<div class="popup-menu__arrow">
+										<img src="img/icon-menu-right.png" alt=""/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- поиск-->
+				<div class="popup" style="display: none;">
+					<div class="popup__body">
+						<div class="popup__content">
+							<div class="popup__header">
+								<div class="popup__title">Поиск по каталогу</div>
+								<a class="popup__close">
+									<img src="img/icon-menu-close.png" alt=""/>
+								</a>
+							</div>
+							<div class="search-mobile">
+								<form>
+									<div>
+										<input type="text"/>
+										<div class="search-mobile__reset">
+											<img src="img/icon-close.png" alt=""/>
+										</div>
+										<button class="button">Найти</button>
+									</div>
+									<div class="search-mobile__options">
+										<div class="search-mobile__option search-option">
+											<input type="checkbox"/>
+											<label for="">только по товарам в наличии</label>
+										</div>
+										<div class="search-mobile__option search-option">
+											<input type="checkbox"/>
+											<label for="">строгое соответствие</label>
+										</div>
+									</div>
+								</form>
+								<div class="suggest">
+									<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
+									<div class="suggest__results">
+										<div class="suggest__result suggest-result">
+											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+											<div class="suggest-result__info">
+												<div class="suggest-result__code">код 04434</div>
+												<div class="suggest-result__vendor">KLS</div>
+												<div class="suggest-result__price">1,46 руб./шт.</div>
+												<div class="suggest-result__status">на складе: 19 шт.</div>
+											</div>
+										</div>
+										<div class="suggest__result suggest-result">
+											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+											<div class="suggest-result__info">
+												<div class="suggest-result__code">код 04434</div>
+												<div class="suggest-result__vendor">KLS</div>
+												<div class="suggest-result__price">1,46 руб./шт.</div>
+												<div class="suggest-result__status">на складе: 19 шт.</div>
+											</div>
+										</div>
+										<div class="suggest__result suggest-result">
+											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+											<div class="suggest-result__info">
+												<div class="suggest-result__code">код 04434</div>
+												<div class="suggest-result__vendor">KLS</div>
+												<div class="suggest-result__price">1,46 руб./шт.</div>
+												<div class="suggest-result__status">на складе: 19 шт.</div>
+											</div>
+										</div>
+										<div class="suggest__result suggest-result">
+											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+											<div class="suggest-result__info">
+												<div class="suggest-result__code">код 04434</div>
+												<div class="suggest-result__vendor">KLS</div>
+												<div class="suggest-result__price">1,46 руб./шт.</div>
+												<div class="suggest-result__status">на складе: 19 шт.</div>
+											</div>
+										</div>
+									</div>
+									<a class="suggest__all" href="search.html">Показать все результаты</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<xsl:call-template name="EXTRA_SCRIPTS"/>
+			<xsl:for-each select="$body-end-modules">
+				<xsl:value-of select="code" disable-output-escaping="yes"/>
+			</xsl:for-each>
+			<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+		</body>
 	</xsl:template>
 
 

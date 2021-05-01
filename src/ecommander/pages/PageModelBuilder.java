@@ -2,6 +2,7 @@ package ecommander.pages;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
+import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.ValidationException;
@@ -10,11 +11,9 @@ import ecommander.model.UserGroupRegistry;
 import ecommander.pages.filter.*;
 import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StrTokenizer;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.*;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
@@ -334,11 +333,22 @@ import java.util.*;
 		<link ...> // могут быть ссылки
 		...
 		</link>	
-	</item_include>
+	</include-definition>
 	
 	<include name="COMMON"/> // этот тэг заменяется содержимым тэга include-definition с таким же именем
-	
-	
+
+
+    // Замена текста в include-definition
+
+	 <include-definition name="PRODUCT_LINKS">
+		...
+        <link ref="$prod"> // могут быть айтемы
+            <li
+		</link>
+		...
+	</include-definition>
+
+    <include name="PRODUCT_LINKS" replace="$prod:new"/>
 	
 	***********************   ВИДЫ ФИЛЬТРАЦИИ И ПРЕДШЕСТВЕННИКИ   ***********************
 	
@@ -656,6 +666,7 @@ public class PageModelBuilder {
 	public static final String COPY_PAGE_VARS_ATTRIBUTE = "copy-page-vars";
 	public static final String FORM_ATTRIBUTE = "form";
 	public static final String VAR_ATTRIBUTE = "var";
+	public static final String REPLACE_ATTRIBUTE = "replace";
 	
 	public static final String SINGLE_VALUE = "single";
 	public static final String MULTIPLE_VALUE = "multiple";
@@ -882,8 +893,21 @@ public class PageModelBuilder {
 			if (include == null)
 				throw new PrimaryValidationException("include '" + includeRef.attr(NAME_ATTRIBUTE) + "'",
 						"There is no include with name '" + includeRef.attr(NAME_ATTRIBUTE) + "'");
+			String replaceStr = includeRef.attr(REPLACE_ATTRIBUTE);
+			String[] replaceParts = StringUtils.split(replaceStr,";, ");
+			HashMap<String, String> replace = new HashMap<>();
+			for (String replacePart : replaceParts) {
+				String[] keyValue = StringUtils.split(replacePart, ":=");
+				if (keyValue.length == 2)
+					replace.put(keyValue[0], keyValue[1]);
+			}
 			for (Element includeSubnode : detachedDirectChildren(include)) {
-				Element importedNode = includeSubnode.clone();
+				Node importedNode = includeSubnode.clone();
+				String xml = importedNode.outerHtml();
+				for (String key : replace.keySet()) {
+					xml = StringUtils.replace(xml, key, replace.get(key));
+				}
+				importedNode =  JsoupUtils.parseXml(xml).child(0);
 				includeRef.before(importedNode);
 			}
 			includeRef.remove();

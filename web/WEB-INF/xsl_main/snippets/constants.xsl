@@ -7,7 +7,7 @@
         xmlns:f="f:f"
         version="2.0">
 
-    <xsl:variable name="to_cart_available_label" select="'Заказать'"/>
+    <xsl:variable name="to_cart_available_label" select="'В корзину'"/>
     <xsl:variable name="to_cart_na_label" select="'Заказать'"/>
     <xsl:variable name="go_to_cart_label" select="'Оформить заказ'"/>
 
@@ -15,5 +15,8 @@
     <xsl:variable name="compare_remove_label" select="'Удалить'"/>
     <xsl:variable name="go_to_compare_label" select="'Сравнить'"/>
 
+    <xsl:variable name="fav_add_label" select="'Добавить в избранное'"/>
+    <xsl:variable name="fav_remove_label" select="'Удалить'"/>
+    <xsl:variable name="go_to_fav_label" select="'Избранное'"/>
 
 </xsl:stylesheet>

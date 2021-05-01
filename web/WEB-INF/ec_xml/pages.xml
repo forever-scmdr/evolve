@@ -110,35 +110,39 @@
 
 
 	<include-definition name="PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product">
+			<var name="prod" ref="$prod" />
+		</link>
 		<link name="show_product_ajax" target="product_ajax">
-			<var name="prod" ref="prod" style="key"/>
+			<var name="prod" ref="$prod"/>
 		</link>
 		<link name="to_cart" target="cart_action">
 			<var name="action" value="addToCart"/>
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 		</link>
 		<link name="to_fav" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="favourites"/>
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 			<var name="action" value="add"/>
 			<var name="src_page" value="fav_ajax"/>
 		</link>
 		<link name="to_compare" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="compare"/>
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 			<var name="action" value="add"/>
 			<var name="src_page" value="compare_ajax"/>
 		</link>
 		<link name="one_click_link" target="one_click_ajax">
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 		</link>
 		<link name="subscribe_link" target="subscribe_ajax">
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 		</link>
 		<link name="my_price_link" target="my_price_ajax">
-			<var name="prod" ref="prod"/>
+			<var name="prod" ref="$prod"/>
 		</link>
 		<list item="params"/>
+		<ancestor item="section" />
 	</include-definition>
 
 
@@ -157,16 +161,17 @@
 
 
 	<page name="index" template="index" cacheable="true" cache-vars="cur">
+		<request>
+			<!-- <var name="page" value="1" />
+			<var name="sorting" value="name"/> -->
+			<var name="page" />
+			<var name="sorting"/>
+			<var name="dir" value="ASC" />
+		</request>
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo"/>
-			<list item="product" id="prod" assoc="general">
-				<link name="show_product" target="product">
-					<var name="prod" ref="prod" style="key"/>
-				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
-			</list>
 			<list item="custom_block">
 				<list item="custom_block"/>
 			</list>
@@ -189,6 +194,24 @@
 				</link>
 			</list>
 		</single>
+		<list item="product" id="hit" tag="hit" cacheable="true">
+			<filter>
+				<parameter name="hit" compare="SOME"><var value="1" /></parameter>
+				<parameter name="qty" sign="&gt;" compare="SOME"><var value="0" /></parameter>
+				<limit><var value="20"/></limit>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:hit"/>
+		</list>
+		<list item="product" id="new" tag="new" cacheable="true">
+			<filter>
+				<parameter name="new" compare="SOME"><var value="1" /></parameter>
+				<limit><var value="20" /></limit>
+				<sorting direction-var="dir"><var var="sorting" /></sorting>
+				<pages><var name="page" var="page"/></pages>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
+		</list>
+
 		<include name="COMMON"/>
 	</page>
 
@@ -264,11 +287,7 @@
 						<var var="mark"/>
 					</parameter>
 				</filter>
-				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" var="sec" style="keypath"/>
-					<var name="prod" ref="prod" style="keypath"/>
-				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
@@ -397,10 +416,7 @@
 					<var var="tag"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -499,10 +515,7 @@
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -539,7 +552,7 @@
 					<var name="sec" ref="cur_sec" style="key"/>
 				</link>
 			</ancestor>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<list item="line_product" id="lprod">
 				<list item="params"/>
 				<link name="to_cart" target="cart_action">
@@ -561,25 +574,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="my_price_link" target="my_price_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<list item="product" tag="grouped" id="grouped">
 			<filter>
@@ -596,11 +591,11 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="path"/>
+			<var name="prod"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra"/>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</single>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_link" target="compare"/>
@@ -881,7 +876,7 @@
 			<var name="prod"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product" parameter="code">
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</single>
 	</page>
 
@@ -1174,40 +1169,13 @@
 					<var var="favourites"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
 				<var name="action" value="remove"/>
 				<var name="src_page" value="fav"/>
 			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
-			<!--
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="prod"/>
-			</link> -->
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1236,10 +1204,7 @@
 				<var name="action" value="remove"/>
 				<var name="src_page" value="compare"/>
 			</link>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS" />
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<include name="COMMON"/>
 	</page>
@@ -1400,13 +1365,7 @@
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<include name="COMMON"/>
 	</page>

@@ -39,95 +39,107 @@
 	</xsl:template>
 
 
-	<xsl:template name="MAIN_CONTENT" />
-
-
-
-
-	<xsl:template name="INDEX_BLOCKS">
-
-
-
-		<!-- slider -->
-		<div class="slider">
-			<xsl:for-each select="page/main_page/main_slider_frame">
-				<div class="slider__item">
-					<div class="slider__content">
-						<div class="container slider__container">
-							<div class="slider__body">
-								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
-								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+	<xsl:template name="CONTENT" >
+		<div class="content__main">
+			<div class="slider-container">
+				<div class="slider">
+					<div class="slider__item">
+						<div class="slider__image">
+							<img src="img/slider.png" alt=""/>
+						</div>
+						<div class="slider__content">
+							<div class="slider__title">Свежие идеи для вашего творчества</div>
+							<div class="slider__text">Модуль Arduino Leonardo на ATMega32u4</div>
+						</div>
+					</div>
+					<div class="slider__item">
+						<div class="slider__image">
+							<img src="img/slider.png" alt=""/>
+						</div>
+						<div class="slider__content">
+							<div class="slider__title">Свежие идеи для вашего творчества 2</div>
+							<div class="slider__text">Модуль Arduino Leonardo на ATMega32u4</div>
+						</div>
+					</div>
+				</div>
+				<div class="slider-nav"></div>
+			</div>
+			<div class="partners">
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+			</div>
+			<div class="show-d">
+				<div class="title_1">Новые поступления</div>
+				<div class="devices">
+					<div class="devices__wrap">
+						<xsl:apply-templates select="page/new"/>
+					</div>
+				</div>
+			</div>
+			<div class="show-t">
+				<div class="title_1">Каталог товаров</div>
+				<div class="sections">
+					<div class="sections__wrap">
+						<xsl:for-each select="page/catalog/section">
+							<div class="section">
+								<a class="section__image" href="{show_section}">
+									<xsl:if test="not(pic_path !='')">
+										<img src="sitepics/{substring(code, string-length(code) - 4)}.jpg" alt="{name}" />
+									</xsl:if>
+									<xsl:if test="pic_path !=''">
+										<img src="sitepics/{pic_path}" alt="{name}" />
+									</xsl:if>
+								</a>
+								<a class="section__title" href="{show_section}"><xsl:value-of select="name"/></a>
+								<div class="section__description"></div>
 							</div>
-						</div>
-					</div>
-					<div class="slider__image">
-						<img src="{@path}{pic}" alt="" />
+						</xsl:for-each>
 					</div>
 				</div>
-			</xsl:for-each>
-		</div>
-		<div class="slider-nav"></div>
-		<!-- slider end -->
-
-
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
-
-		<!-- products carousel -->
-		<div class="block devices-block ptb">
-			<div class="container">
-				<div class="title title_2">Выгодные предложения</div>
-				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<div class="devices-block__column">
-							<xsl:apply-templates select="."/>
-						</div>
-					</xsl:for-each>
-				</div>
-				<div class="device-nav"></div>
 			</div>
 		</div>
 
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_digits']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_utp']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_gifts']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_map']"></xsl:apply-templates>
-
-		<!-- <section class="news pt">
-			<div class="container">
-				<div class="block__title block__title_left">
-					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
+		<div class="content__side-2">
+			<div class="best-price">
+				<div class="best-price__header">Лучшие цены<a class="best-price__link" href="catalog-section-special.html">Смотреть все</a>
 				</div>
-				<div class="grid">
-					<xsl:for-each select="page//news_item">
-						<div class="news__item">
-							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
-							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
-						</div>
-					</xsl:for-each>
+				<div class="best-price__slider">
+					<xsl:apply-templates select="page/hit"/>
 				</div>
+				<div class="best-price__nav"></div>
 			</div>
-		</section> -->
-
-
-
-		<section class="s-info">
-			<div class="container">
-				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
+			<div class="partners">
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
+				<a class="partners__item partner-banner" href="">
+					<img src="img/partner-logo-1.png" alt=""/>
+				</a>
 			</div>
-		</section>
-
+		</div>
 	</xsl:template>
 
-
-
-	<xsl:template name="EXTRA_SCRIPTS">
-		<script type="text/javascript" src="fotorama/fotorama.js"/>
-	</xsl:template>
 
 </xsl:stylesheet>
