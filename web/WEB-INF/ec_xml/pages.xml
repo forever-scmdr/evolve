@@ -65,6 +65,10 @@
 		</single>
 	</include-definition>
 
+	<page name="test_dupls" template="test_dupls">
+		<include name="COMMON"/>
+	</page>
+
 
 
 	<page name="index" template="index" cacheable="true">
@@ -302,7 +306,7 @@
 
 
 
-	<page name="product" template="product" cacheable="false">
+	<page name="product" template="product" cacheable="false" critical-item="prod">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
@@ -543,7 +547,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="shop@interpartner.by, bio@forever-ds.com"/>
+			<var name="email" value="shop@interpartner.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>

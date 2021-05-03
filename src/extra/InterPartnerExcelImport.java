@@ -400,8 +400,11 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				if (hasAuxParams(headers)) {
 					String auxTypeString = getValue(CreateExcelPriceList.AUX_TYPE_FILE.toLowerCase());
 					ItemType auxType = null;
-					Item paramsXML = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadFirstItem();
-					paramsXML = (paramsXML == null) ? Item.newChildItem(paramsXMLItemType, product) : paramsXML;
+					List<Item>paramsXMLs = new ItemQuery(paramsXMLItemType).setParentId(product.getId(), false).loadItems();
+					Item paramsXML = paramsXMLs.size() > 0? paramsXMLs.remove(0) : Item.newChildItem(paramsXMLItemType, product);
+					for(Item itm : paramsXMLs){
+						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(itm).ignoreUser(true).noFulltextIndex());
+					}
 					HashMap<String, String> auxParams = new HashMap<>();
 					Item aux = null;
 					if (StringUtils.isNotBlank(auxTypeString)) {
@@ -411,8 +414,16 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						auxType = auxType == null?  ItemTypeRegistry.getItemType("p" + currentSection.getId()) : auxType;
 					}
 					if (auxType != null) {
-						aux = new ItemQuery(auxType).setParentId(product.getId(), false).loadFirstItem();
-						aux = (aux == null) ? Item.newChildItem(auxType, product) : aux;
+						List<Item>auxes = new ItemQuery("params").setParentId(product.getId(), false).loadItems();
+						aux = auxes.size() == 1? auxes.remove(0) : Item.newChildItem(auxType, product);
+
+						if(auxes.size() > 1 || !aux.getItemType().equals(auxType)){
+							aux = Item.newChildItem(auxType, product);
+							for(Item a : auxes){
+								executeAndCommitCommandUnits(ItemStatusDBUnit.delete(a.getId()).ignoreUser(true).noFulltextIndex());
+							}
+						}
+
 						for (ParameterDescription pd : auxType.getParameterList()) {
 							auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
 						}
