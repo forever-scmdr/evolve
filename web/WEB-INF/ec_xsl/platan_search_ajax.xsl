@@ -88,7 +88,8 @@
 								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
 								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
 								<input type="hidden" value="{QUANTY}" name="max"/>
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" value="{MINZAKAZ}" name="min_qty"/>
+								<input type="number" class="text-input" name="qty" value="{MINZAKAZ}" min="{MINZAKAZ}"/>
 								<input type="hidden" name="delivery_time" value="7-10 дней"/>
 								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
@@ -103,7 +104,8 @@
 								<input type="hidden" value="{f:rur_to_byn(CENA_PACK)}" name="price_spec"/>
 								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
 								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" value="{MINZAKAZ}" name="min_qty"/>
+								<input type="number" class="text-input" name="qty" value="{MINZAKAZ}" min="{MINZAKAZ}"/>
 								<input type="hidden" name="delivery_time" value=" "/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
@@ -176,7 +178,8 @@
 								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
 								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
 								<input type="hidden" value="{QUANTY}" name="max"/>
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" value="{MINZAKAZ}" name="min_qty"/>
+								<input type="number" class="text-input" name="qty" value="{MINZAKAZ}" min="{MINZAKAZ}"/>
 								<input type="hidden" name="delivery_time" value="7-10 дней"/>
 								<input type="submit" class="button" value="В корзину"/>
 							</xsl:if>
@@ -191,7 +194,8 @@
 								<input type="hidden" value="{CENA_PACK}" name="price_original_spec"/>
 								<input type="hidden" value="{CENA_ROZ}" name="price_original"/>
 								<input type="hidden" value="{QUANTY}" name="max"/>
-								<input type="number" class="text-input" name="qty" value="1" min="0"/>
+								<input type="hidden" value="{MINZAKAZ}" name="min_qty"/>
+								<input type="number" class="text-input" name="qty" value="{MINZAKAZ}" min="{MINZAKAZ}"/>
 								<input type="hidden" name="delivery_time" value=""/>
 								<input type="submit" class="button not_available" value="Под заказ"/>
 							</xsl:if>
