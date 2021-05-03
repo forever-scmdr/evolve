@@ -101,6 +101,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
 					"Association parent and child must be compatible by type");
 		}
+
 		if (!isItemNew) {
 			if (assoc.isTransitive()) {
 				// У ассоциируемых айтемов не должно быть общих предков
@@ -146,6 +147,22 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 				}
 			}
 		}
+		// Новый родитель не должен быть помеченным на удаление айтемом
+		TemplateQuery checkParentExistence = new TemplateQuery("check parent existence");
+		checkParentExistence.SELECT(I_STATUS).FROM(ITEM_TBL).WHERE().col(I_ID).long_(parent.getId());
+		try (PreparedStatement pstmt = checkParentExistence.prepareQuery(getTransactionContext().getConnection())) {
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				if (rs.getByte(1) == Item.STATUS_DELETED) {
+					throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+							"Association parent is marked as DELETED and is to be deleted, so no children allowed");
+				}
+			} else {
+				throw new EcommanderException(ErrorCodes.ASSOC_NODES_ILLEGAL,
+						"Association parent does not exist");
+			}
+		}
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////
 		//                          Запрос записи в таблицу ItemParent                          //

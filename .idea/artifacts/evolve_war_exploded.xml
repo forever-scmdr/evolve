@@ -6,7 +6,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="evolve" />
         </element>
-        <element id="directory" name="lib" />
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+        </element>
       </element>
       <element id="javaee-facet-resources" facet="evolve/web/Web" />
     </root>
