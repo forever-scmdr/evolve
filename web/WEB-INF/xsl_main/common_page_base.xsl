@@ -143,7 +143,7 @@
 				<xsl:for-each select="$common/topper/block">
 					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<div class="top-info__location">
+						<!-- <div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
 								<xsl:if test="$has_many_cities">
@@ -152,7 +152,7 @@
 									</div>
 								</xsl:if>
 							</a>
-						</div>
+						</div> -->
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
@@ -342,7 +342,7 @@
 
 	<xsl:template name="INC_MOBILE_MENU">
 		<div class="menu-container mobile">
-			<div class="menu-overlay"></div>
+			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
 				<ul>
 					<li>

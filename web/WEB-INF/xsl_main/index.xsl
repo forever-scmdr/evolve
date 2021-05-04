@@ -61,6 +61,7 @@
 					<xsl:for-each select="page/product[tag = 'Акция']">
 						<xsl:apply-templates select="."/>
 					</xsl:for-each>
+
 				</div>
 			</div>
 		</div>
