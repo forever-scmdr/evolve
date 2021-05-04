@@ -272,7 +272,7 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="warranty" caption="Гарантия" ag-id="2238" ag-hash="501547260">
+	<item name="warranty" caption="Гарантия" ag-id="1836" ag-hash="501547260">
 		<parameter name="months" type="integer" caption="Срок гарантии" description="месяцы"/>
 		<parameter name="service_center" type="string" caption="Сервисный центр"/>
 	</item>
@@ -474,7 +474,7 @@
 		<child item="cart_and_feedback_settings" single="true" />
 	</item>
 
-	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1833" ag-hash="960890710">
+	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1828" ag-hash="960890710">
 		<child item="emails" single="true"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
