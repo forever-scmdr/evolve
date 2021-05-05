@@ -1,5 +1,6 @@
 package ecommander.fwk;
 
+import ecommander.controllers.PageController;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class ArticleFromFuture extends Command implements ItemEventCommandFactory {
+    //private DelayedTransaction sessionFreeTransaction = new DelayedTransaction(User.getDefaultUser());
+
     @Override
     public PersistenceCommandUnit createCommand(Item item) throws Exception {
         long date = item.getLongValue(ItemNames.news_item_.DATE,0);
@@ -42,18 +45,20 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
         q = new ItemQuery("featured", Item.STATUS_HIDDEN);
         articles.addAll(q.loadItems());
 
-       // boolean needReindex = false;
+        boolean needReindex = false;
         for(Item a : articles){
             long v = a.getLongValue(ItemNames.news_item_.DATE, 0);
             if(v < now){
                 executeAndCommitCommandUnits(ItemStatusDBUnit.restore(a).ignoreUser(true).noTriggerExtra());
-           //     needReindex = true;
+//                sessionFreeTransaction.addCommandUnit(ItemStatusDBUnit.restore(a).ignoreUser(true).noTriggerExtra());
+//                sessionFreeTransaction.execute();
+                needReindex = true;
             }
         }
-//        if(needReindex){
-//            LuceneIndexMapper.getSingleton().reindexAll();
-//            PageController.clearCache();
-//        }
+        if(needReindex){
+            //LuceneIndexMapper.getSingleton().reindexAll();
+            PageController.clearCache();
+        }
         return null;
     }
 }
