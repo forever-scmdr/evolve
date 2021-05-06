@@ -540,6 +540,8 @@ public abstract class BasicCartManageCommand extends Command {
 				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
 				if(StringUtils.isBlank(bought.getStringValue("aux"))){
 					productSum = productSum.divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d)));
+				}else {
+					getSessionMapper().saveTemporaryItem(product);
 				}
 				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);
