@@ -220,6 +220,7 @@
 						<input type="hidden" value="{@moq}" name="upack"/>
 
 						<input type="hidden" value="{@quant}" name="max"/>
+						<input type="hidden" value="{@moq}" name="min_qty"/>
 						<input type="number" class="text-input" name="qty" value="{@moq}" min="{@moq}"/>
 
 						<xsl:if test="f:num(@quant) != 0">

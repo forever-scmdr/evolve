@@ -349,6 +349,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 					break;
 			}
 		}
+		getSessionMapper().saveTemporaryItem(product);
 	}
 
 	private void loadCurrency() throws Exception {
