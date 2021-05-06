@@ -537,7 +537,10 @@ public abstract class BasicCartManageCommand extends Command {
 				extraActionWithBought(bought);
 				// Первоначальная сумма
 				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
-				BigDecimal productSum = price.multiply(new BigDecimal(availableQty).divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d))));
+				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
+				if(StringUtils.isBlank(bought.getStringValue("aux"))){
+					productSum = productSum.divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d)));
+				}
 				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
