@@ -1679,6 +1679,8 @@ img {
   display: flex;
   align-items: baseline;
   margin-top: 30px; }
+  .pagination_short .pagination__item_active:after {
+    content: none; }
 
 .pagination__label {
   margin-right: 10px; }

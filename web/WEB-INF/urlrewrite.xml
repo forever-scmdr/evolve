@@ -24,9 +24,14 @@
         <from>^.+\.(action|login|afilter|type|domain|user|htm)$</from>
         <to type="forward" last="true">$0</to>
     </rule>
-    <!--Обычные файлы-->
+    <!--Распространенные файлы (стили, скрипты и т.д.)-->
     <rule match-type="regex" enabled="true">
-        <from>^.*\..{2,4}$</from>
+        <from>^.+\.(css|js|jpg|jpeg|png|html)(\?.+$|$)</from>
+        <to type="forward" last="true">$0</to>
+    </rule>
+    <!--Другие файлы-->
+    <rule match-type="regex" enabled="true">
+        <from>^(?!\?).*\..{1,5}$</from>
         <to type="forward" last="true">$0</to>
     </rule>
     <!--Страницы сайта (основная работа CMS)-->
@@ -34,24 +39,4 @@
         <from>/**</from>
         <to type="forward" last="true">/eco/$1</to>
     </rule>
-    <!-- 
-    <rule match-type="wildcard" enabled="true">
-        <from>/**/</from>
-        <to type="forward" last="true">/eco/$1</to>
-    </rule>
-    
-    <rule match-type="regex" enabled="true">
-        <from>^/(.*)/$</from>
-        <to type="forward" last="true">/eco/$1</to>
-    </rule>
-
-    <rule match-type="regex" enabled="true">
-        <from>^/(.*)/\?(.*)$</from>
-        <to type="forward" last="true">/eco/$1?$2</to>
-    </rule>
-    <rule match-type="regex" enabled="true">
-        <from>^/(.*(?!\..{3,4}$))</from>
-        <to type="forward">/un/eco/$1</to>
-    </rule>
-     -->
 </urlrewrite>

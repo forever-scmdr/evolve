@@ -12,4 +12,7 @@ $(document).ready(function(){
 		appendDots: '.slider-nav',
 		fade: true,
   });
+  $('select[value]').each(function () {
+	  $(this).val($(this).attr('value'));
+  });
 });

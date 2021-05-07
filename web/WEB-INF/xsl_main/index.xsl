@@ -4,41 +4,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="MARKUP">
-		<script type="application/ld+json">
-			{
-				"@context":"http://schema.org",
-				"@type":"Organization",
-				"url":"<xsl:value-of select="$main_host"/>/",
-				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
-				"aggregateRating": {
-					"@type": "AggregateRating",
-					"ratingCount": "53",
-					"reviewCount": "53",
-					"bestRating": "5",
-					"ratingValue": "4,9",
-					"worstRating": "1",
-					"name": "TTD"
-				},
-				"contactPoint": [
-					<xsl:for-each select="page/common/phone" >
-						<xsl:if test="position() != 1">,</xsl:if>{
-						"@type":"ContactPoint",
-						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
-						"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
-						}
-					</xsl:for-each>
-				]
-				<xsl:if test="page/common/email != ''">
-				,"email":[<xsl:for-each select="page/common/email" >
-						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
-				</xsl:if>
-			}
-		</script>
-	</xsl:template>
-
-
 	<xsl:template name="CONTENT" >
 		<div class="content__main">
 			<div class="slider-container">

@@ -101,7 +101,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					}
 					// Установка преанализированного значения для поиска
 					String name = top.getStringValue(Product.NAME, "");
-					String mark = top.getStringValue(Product.MARK, "");
+					String mark = top.getStringValue(Product.NAME_EXTRA, "");
 					String code = top.getStringValue(Product.CODE, "");
 					String fullName = BelchipStrings.fromRtoE(name + ' ' + mark);
 					String fullNameAnalyzed = BelchipStrings.preanalyze(name) + ' ' + BelchipStrings.preanalyze(mark);

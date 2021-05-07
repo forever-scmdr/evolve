@@ -9,6 +9,15 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
+
+	<!-- **************************************************************************************************************************************** -->
+	<!-- ****************************                                   ************************************************************************* -->
+	<!-- ****************************    	ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ  		************************************************************************* -->
+	<!-- ****************************                                   ************************************************************************* -->
+	<!-- **************************************************************************************************************************************** -->
+
+
+
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
 	<xsl:variable name="common" select="page/common"/>
@@ -58,7 +67,171 @@
 	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
 
 
-	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
+
+
+
+	<!-- ****************************************************************************************************************************************** -->
+	<!-- ****************************                                		 ********************************************************************** -->
+	<!-- ****************************    ПЕРЕОПРЕДЕЛЯЕМЫЕ ЧАСТИ СТРАНИЦЫ     ********************************************************************** -->
+	<!-- ****************************                                  		 ********************************************************************** -->
+	<!-- ****************************************************************************************************************************************** -->
+
+
+
+
+
+
+	<xsl:template name="CONTENT" />
+	<xsl:template name="EXTRA_SCRIPTS"/>
+
+
+
+
+	<xsl:template name="MARKUP">
+		<script type="application/ld+json">
+			{
+			"@context":"http://schema.org",
+			"@type":"Organization",
+			"url":"<xsl:value-of select="$main_host"/>/",
+			"name":"<xsl:value-of select="$title"/>",
+			"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
+			"aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingCount": "53",
+			"reviewCount": "53",
+			"bestRating": "5",
+			"ratingValue": "4,9",
+			"worstRating": "1",
+			"name": "TTD"
+			},
+			"contactPoint": [
+			<xsl:for-each select="page/common/phone" >
+				<xsl:if test="position() != 1">,</xsl:if>{
+				"@type":"ContactPoint",
+				"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
+				"contactType":"<xsl:value-of select="tokenize(., '_')[2]"/>"
+				}
+			</xsl:for-each>
+			]
+			<xsl:if test="page/common/email != ''">
+				,"email":[<xsl:for-each select="page/common/email" >
+				<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
+			</xsl:if>
+			}
+		</script>
+	</xsl:template>
+
+
+
+
+	<!-- ****************************************************************************************************************************************** -->
+	<!-- ****************************                                		 ********************************************************************** -->
+	<!-- ****************************   	 ЗАГОТОВКИ ЧАСТЕЙ СТРАНИЦЫ       ********************************************************************** -->
+	<!-- ****************************                                  		 ********************************************************************** -->
+	<!-- ****************************************************************************************************************************************** -->
+
+
+
+
+	<xsl:template name="PAGE_HEADING">
+		<div class="title title_1">
+			<xsl:value-of select="$h1"/>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template name="PAGE_PATH">
+		<div class="path path_common">
+			<div class="path__item">
+				<a href="{$main_host}" class="path__link">Главная страница</a>
+				<div class="path__arrow"></div>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="CART_SCRIPT">
+		<script>
+			$(document).ready(function() {
+			$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+			event.preventDefault();
+			var qtyForm = $(this).closest('form');
+			var lockId = $(this).closest('.product_purchase_container').attr('id');
+			postForm(qtyForm, lockId, null);
+			});
+			});
+		</script>
+	</xsl:template>
+
+
+
+	<xsl:template name="USER_PAGE_H1">
+		<xsl:param name="page"/>
+		<xsl:if test="$page/header_pic != ''"><h1><img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
+		<xsl:if test="not($page/header_pic) or $page/header_pic = ''"><h1><xsl:value-of select="$page/header"/></h1></xsl:if>
+	</xsl:template>
+
+
+	<xsl:template name="number_option">
+		<xsl:param name="max"/>
+		<xsl:param name="current"/>
+		<xsl:if test="not($current)">
+			<xsl:call-template name="number_option">
+				<xsl:with-param name="max" select="$max"/>
+				<xsl:with-param name="current" select="number(1)"/>
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="number($current) &lt;= number($max)">
+			<option value="{$current}"><xsl:value-of select="$current"/></option>
+			<xsl:call-template name="number_option">
+				<xsl:with-param name="max" select="$max"/>
+				<xsl:with-param name="current" select="number($current) + number(1)"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+
+	<xsl:template name="SEO">
+		<xsl:variable name="quote">"</xsl:variable>
+		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		<xsl:if test="$seo">
+			<xsl:apply-templates select="$seo"/>
+		</xsl:if>
+		<xsl:if test="not($seo) or $seo = ''">
+			<title>
+				<xsl:value-of select="$title"/>
+			</title>
+			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
+		</xsl:if>
+		<xsl:if test="$common/google_verification">
+			<meta name="google-site-verification" content="{$common/google_verification}"/>
+		</xsl:if>
+		<xsl:if test="$common/yandex_verification">
+			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+		</xsl:if>
+		<xsl:call-template name="MARKUP" />
+	</xsl:template>
+
+
+
+	<xsl:template match="seo | url_seo">
+		<title>
+			<xsl:value-of select="title"/>
+		</title>
+		<meta name="description" content="{description}"/>
+		<meta name="keywords" content="{keywords}"/>
+		<xsl:value-of select="meta" disable-output-escaping="yes"/>
+	</xsl:template>
+
+
+
+
+	<!-- ****************************************************************************************************************************************** -->
+	<!-- ****************************                                		 ********************************************************************** -->
+	<!-- ****************************   ПРОСТО ШАБЛОНЫ (xsl:template match)  ********************************************************************** -->
+	<!-- ****************************                                  		 ********************************************************************** -->
+	<!-- ****************************************************************************************************************************************** -->
 
 
 
@@ -119,105 +292,6 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template name="INC_FOOTER">
-		<div class="footer">
-			<div class="container">
-				<div class="footer__wrap">
-					<xsl:variable name="footer" select="page/common/footer"/>
-					<div class="footer__column">
-						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
-						</xsl:if>
-						<a href="" class="forever">
-							<img src="img/forever.png" alt="" />
-							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
-						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div>
-					</div>
-					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
-				</div>
-			</div>
-		</div>
-	</xsl:template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<xsl:template name="PAGE_HEADING">
-		<div class="title title_1">
-			<xsl:value-of select="$h1"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template name="PAGE_PATH">
-		<div class="path path_common">
-			<div class="path__item">
-				<a href="{$main_host}" class="path__link">Главная страница</a>
-				<div class="path__arrow"></div>
-			</div>
-		</div>
-	</xsl:template>
-
-
-
-
-
-
-	<!-- ****************************    ЭЛЕМЕНТЫ НЕ ДЛЯ ВСЕХ СТРАНИЦ    ******************************** -->
-
-
-
-
-
-
-
-	<xsl:template name="CART_SCRIPT">
-		<script>
-			$(document).ready(function() {
-				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
-					event.preventDefault();
-					var qtyForm = $(this).closest('form');
-					var lockId = $(this).closest('.product_purchase_container').attr('id');
-					postForm(qtyForm, lockId, null);
-				});
-			});
-		</script>
-	</xsl:template>
-
-
-
-
-	<!-- ****************************    ПУСТЫЕ ЧАСТИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ    ******************************** -->
-
-
-
-
-	<xsl:template name="CONTENT" />
-	<xsl:template name="EXTRA_SCRIPTS"/>
-
-
-
-	<!-- ****************************    ШАБЛОНЫ ТОЛЬКО ДЛЯ ЭТОЙ СТРАНИЦЫ    ******************************** -->
-
 
 	<xsl:template match="section" mode="desktop">
 		<xsl:param name="level"/>
@@ -254,7 +328,131 @@
 
 
 
-	<!-- ****************************    СТРАНИЦА    ******************************** -->
+	<!-- ****************************    БЛОКИ С ПРОИЗВОЛЬНЫМ КОНТЕНТОМ    ******************************** -->
+
+
+	<xsl:template match="*" mode="content">
+		<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block | page_extra_code" mode="content"/>
+	</xsl:template>
+
+	<xsl:template match="page_text" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="page_extra_code" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="common_gallery" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}"  onclick="initNanoCommon{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<div id="nanogallery{@id}">
+				<script>
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+						initNanoCommon<xsl:value-of select="@id"/>();
+						});
+					</xsl:if>
+					function initNanoCommon<xsl:value-of select="@id"/>() {
+					<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+					</xsl:if>
+					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+					// ### gallery settings ###
+					thumbnailHeight:  <xsl:value-of select="height"/>,
+					thumbnailWidth:   <xsl:value-of select="width"/>,
+					thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+					thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+					thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+					thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+					viewerToolbar: { display: false },
+					galleryLastRowFull:  false,
+
+					// ### gallery content ###
+					items: [
+					<xsl:for-each select="picture">
+						{
+						src: '<xsl:value-of select="concat(@path, pic)"/>',
+						srct: '<xsl:value-of select="concat(@path, pic)"/>',
+						title: '<xsl:value-of select="header"/>'
+						},
+					</xsl:for-each>
+					]
+					});
+					<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+					</xsl:if>
+					}
+				</script>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="simple_gallery" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<a class="toggle" href="#spoiler-{@id}" onclick="initNano{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<div id="nanogallery{@id}">
+				<script>
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+						initNano<xsl:value-of select="@id"/>();
+						});
+					</xsl:if>
+					function initNano<xsl:value-of select="@id"/>(){
+					<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+					</xsl:if>
+					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+					// ### gallery settings ###
+					thumbnailHeight:  <xsl:value-of select="height"/>,
+					thumbnailWidth:   <xsl:value-of select="width"/>,
+					thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+					thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+					thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+					thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+					viewerToolbar: { display: false },
+					galleryLastRowFull:  false,
+
+					// ### gallery content ###
+					items: [
+					<xsl:for-each select="pic">
+						{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
+					</xsl:for-each>
+					]
+					});
+					<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+					</xsl:if>
+					}
+				</script>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+
+	<!-- ****************************************************************************************************************************************** -->
+	<!-- ****************************                                		 ********************************************************************** -->
+	<!-- ****************************  	  		  	СТРАНИЦА  	 	  	 	 ********************************************************************** -->
+	<!-- ****************************                                  		 ********************************************************************** -->
+	<!-- ****************************************************************************************************************************************** -->
 
 
 	<xsl:template match="/">
@@ -269,7 +467,7 @@
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
-				<script src="js/script.min.js"></script>
+				<script src="js/script.js"></script>
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -949,188 +1147,37 @@
 
 
 
-	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
 
 
 
 
-
-
-	<xsl:template match="*" mode="content">
-		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block | page_extra_code" mode="content"/>
-	</xsl:template>
-
-	<xsl:template match="page_text" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<xsl:value-of select="text" disable-output-escaping="yes"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="page_extra_code" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<xsl:value-of select="text" disable-output-escaping="yes"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="common_gallery" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}"  onclick="initNanoCommon{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<div id="nanogallery{@id}">
-				<script>
-					<xsl:if test="f:num(spoiler) = 0">
-						$(document).ready(function(){
-							initNanoCommon<xsl:value-of select="@id"/>();
-						});
-					</xsl:if>
-					function initNanoCommon<xsl:value-of select="@id"/>() {
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+	<xsl:template name="INC_FOOTER">
+		<div class="footer">
+			<div class="container">
+				<div class="footer__wrap">
+					<xsl:variable name="footer" select="page/common/footer"/>
+					<div class="footer__column">
+						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
+							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-								// ### gallery settings ###
-								thumbnailHeight:  <xsl:value-of select="height"/>,
-								thumbnailWidth:   <xsl:value-of select="width"/>,
-								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-								viewerToolbar: { display: false },
-								galleryLastRowFull:  false,
-
-								// ### gallery content ###
-								items: [
-								<xsl:for-each select="picture">
-									{
-										src: '<xsl:value-of select="concat(@path, pic)"/>',
-										srct: '<xsl:value-of select="concat(@path, pic)"/>',
-										title: '<xsl:value-of select="header"/>'
-									},
-								</xsl:for-each>
-								]
-							});
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						}
-						</xsl:if>
-					}
-				</script>
+						<a href="" class="forever">
+							<img src="img/forever.png" alt="" />
+							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
+						</a>
+						<div class="google-rating">
+							<div class="google-rating__stars">
+								<img src="img/icon-google-rating.png" alt="" />
+							</div>
+							<div class="google-rating__text">
+								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
+							</div>
+						</div>
+					</div>
+					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
+				</div>
 			</div>
 		</div>
 	</xsl:template>
 
 
-	<xsl:template match="simple_gallery" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<a class="toggle" href="#spoiler-{@id}" onclick="initNano{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<div id="nanogallery{@id}">
-				<script>
-					<xsl:if test="f:num(spoiler) = 0">
-						$(document).ready(function(){
-							initNano<xsl:value-of select="@id"/>();
-						});
-					</xsl:if>
-					function initNano<xsl:value-of select="@id"/>(){
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
-						</xsl:if>
-							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-								// ### gallery settings ###
-								thumbnailHeight:  <xsl:value-of select="height"/>,
-								thumbnailWidth:   <xsl:value-of select="width"/>,
-								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-								viewerToolbar: { display: false },
-								galleryLastRowFull:  false,
-
-								// ### gallery content ###
-								items: [
-								<xsl:for-each select="pic">
-								{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
-								</xsl:for-each>
-								]
-							});
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						}
-						</xsl:if>
-					}
-				</script>
-			</div>
-		</div>
-	</xsl:template>
-
-
-	<xsl:template name="PAGE_TITLE">
-		<xsl:param name="page"/>
-		<xsl:if test="$page/header_pic != ''"><h1><img src="{$page/@path}{$page/header_pic}" alt="{$page/header}"/></h1></xsl:if>
-		<xsl:if test="not($page/header_pic) or $page/header_pic = ''"><h1><xsl:value-of select="$page/header"/></h1></xsl:if>
-	</xsl:template>
-
-
-	<xsl:template name="number_option">
-		<xsl:param name="max"/>
-		<xsl:param name="current"/>
-		<xsl:if test="not($current)">
-			<xsl:call-template name="number_option">
-				<xsl:with-param name="max" select="$max"/>
-				<xsl:with-param name="current" select="number(1)"/>
-			</xsl:call-template>
-		</xsl:if>
-		<xsl:if test="number($current) &lt;= number($max)">
-			<option value="{$current}"><xsl:value-of select="$current"/></option>
-			<xsl:call-template name="number_option">
-				<xsl:with-param name="max" select="$max"/>
-				<xsl:with-param name="current" select="number($current) + number(1)"/>
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>
-
-
-	<xsl:template name="SEO">
-		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
-		<xsl:if test="$seo">
-			<xsl:apply-templates select="$seo"/>
-		</xsl:if>
-		<xsl:if test="not($seo) or $seo = ''">
-			<title>
-				<xsl:value-of select="$title"/>
-			</title>
-			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
-		</xsl:if>
-		<xsl:if test="$common/google_verification">
-			<meta name="google-site-verification" content="{$common/google_verification}"/>
-		</xsl:if>
-		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
-		</xsl:if>
-		<xsl:call-template name="MARKUP" />
-	</xsl:template>
-
-
-	<xsl:template name="MARKUP"/>
-
-
-	<xsl:template match="seo | url_seo">
-		<title>
-			<xsl:value-of select="title"/>
-		</title>
-		<meta name="description" content="{description}"/>
-		<meta name="keywords" content="{keywords}"/>
-		<xsl:value-of select="meta" disable-output-escaping="yes"/>
-	</xsl:template>
-
-	<xsl:template name="PRINT"/>
-	<xsl:template name="ACTIONS_MOBILE"/>
 </xsl:stylesheet>

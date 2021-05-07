@@ -38,16 +38,6 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
 				</link>
-				<list item="product" transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-						<sorting direction="DESC">
-							<var value="main_pic"/>
-						</sorting>
-					</filter>
-				</list>
 			</tree>
 		</single>
 
@@ -243,21 +233,26 @@
 
 
 
-	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
+
+	<page name="section" template="section" cacheable="false" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
-			<var name="limit" value="48" scope="cookie"/>
-			<var name="sort" scope="cookie"/>
-			<var name="direction" value="ASC" scope="cookie"/>
+			<var name="limit" value="24" scope="cookie"/>
+			<var name="sort1" value="available" scope="cookie" />
+			<var name="sort2" value="name" scope="cookie" />
+			<var name="sort3" value="name_extra" scope="cookie" />
+			<var name="dir1" value="DESC" scope="cookie" />
+			<var name="dir2" value="ASC" scope="cookie" />
+			<var name="dir3" value="ASC" scope="cookie" />
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 			<var name="mark"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
 				<var name="tag" var="tag"/>
@@ -268,8 +263,14 @@
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-					<sorting direction-var="direction">
-						<var var="sort"/>
+					<sorting direction-var="dir1">
+						<var var="sort1"/>
+					</sorting>
+					<sorting direction-var="dir2">
+						<var var="sort2"/>
+					</sorting>
+					<sorting direction-var="dir3">
+						<var var="sort3"/>
 					</sorting>
 					<limit>
 						<var var="limit"/>
@@ -280,30 +281,20 @@
 					<link name="filter_base_link" type="exclusive" target="section">
 						<var name="sec" var="sec" style="key"/>
 					</link>
-					<parameter name="tag" sign="=" compare="ANY">
+					<parameter name="vendor" sign="=" compare="ANY">
 						<var var="tag"/>
-					</parameter>
-					<parameter name="mark" sign="=" compare="ANY">
-						<var var="mark"/>
 					</parameter>
 				</filter>
 				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
-				<aggregation parameter="tag"/>
+				<aggregation parameter="vendor"/>
 				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">
 					<var name="tag" var="tag"/>
-					<var name="tag" parameter="tag" ref="tag"/>
+					<var name="tag" parameter="vendor" ref="tag"/>
 				</link>
 				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">
 					<var name="-tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
-			<list item="product" tag="mark" id="mark" assoc="* catalog_link">
-				<aggregation parameter="mark"/>
-				<link name="set_mark" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="key" var="sec"/>
-					<var name="mark" parameter="mark" ref="mark"/>
 				</link>
 			</list>
 			<list item="product" tag="min" assoc="* catalog_link">
@@ -351,20 +342,49 @@
 			<var name="minqty" value=""/>
 		</link>
 		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort" value="name"/>
-			<var name="direction" value="ASC"/>
+			<var name="sort1" value="name"/>
+			<var name="sort2" value="name_extra"/>
+			<var name="sort3" value="available"/>
+			<var name="dir1" value="ASC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="DESC"/>
+			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_name_desc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort" value="name"/>
-			<var name="direction" value="DESC"/>
+			<var name="sort1" value="name"/>
+			<var name="sort2" value="name_extra"/>
+			<var name="sort3" value="available"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="DESC"/>
+			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_price_asc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort" value="price"/>
-			<var name="direction" value="ASC"/>
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="price"/>
+			<var name="sort3" value="name"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_price_desc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort" value="price"/>
-			<var name="direction" value="DESC"/>
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="price"/>
+			<var name="sort3" value="name"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="DESC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_available" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="name"/>
+			<var name="sort3" value="name_extra"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
 		</link>
 		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="sort" value=""/>

@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<div class="device__name">
-				<a href="{show_product}"><xsl:value-of select="string-join((name, vendor_code), ' ')"/></a>
+				<a href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 				<div><xsl:value-of select="vendor"/></div>
 			</div>
 			<div class="device__icons">
@@ -146,7 +146,7 @@
 			</td>
 			<td class="device__info">
 				<div class="device__name">
-					<a href="{show_product}"><xsl:value-of select="string-join((name, vendor_code), ' ')"/></a>
+					<a href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 					<div><xsl:value-of select="vendor"/></div>
 				</div>
 				<div class="device__code">Код: <xsl:value-of select="code"/></div>
@@ -237,202 +237,6 @@
 				</div>
 			</td>
 		</tr>
-
-
-
-
-
-		<div class="device device_row">
-			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-
-			<div class="device__column">
-
-				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-				<div style="display: none">
-					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-						<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
-							<i class="fas fa-search-plus"></i>
-						</a>
-					</xsl:if>
-				</div>
-
-				<!-- quick view (not displayed, delete <div> with display: none to show) -->
-				<!-- TODO add display check -->
-				<div style="display: none">
-					<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
-				</div>
-
-				<!-- device image -->
-				<div class="device__image img">
-					<a href="{show_product}">
-						<img src="{$pic_path}" alt="" />
-					</a>
-				</div>
-
-				<!-- device tags -->
-				<div class="tags device__tags">
-					<!--
-					<xsl:for-each select="tag">
-						<div class="tag device__tag"><xsl:value-of select="." /></div>
-					</xsl:for-each>
-					<xsl:for-each select="mark">
-						<div class="tag device__tag"><xsl:value-of select="." /></div>
-					</xsl:for-each>
-					-->
-					<xsl:for-each select="label">
-						<div class="tag device__tag {f:translit(.)}">
-							<xsl:value-of select="." />
-						</div>
-					</xsl:for-each>
-				</div>
-
-			</div>
-
-			<div class="device__column">
-
-				<!-- device title -->
-				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
-
-				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
-
-				<!-- device description parameters -->
-				<div class="device__info">
-					<table class="params">
-						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
-						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
-						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
-						<xsl:variable name="p" select="current()"/>
-						<xsl:if test="//page/@name != 'fav'">
-							<xsl:for-each select="$captions">
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-								<tr class="tr">
-									<td><xsl:value-of select="$param/@caption"/></td>
-									<td><xsl:value-of select="$param"/></td>
-								</tr>
-							</xsl:for-each>
-						</xsl:if>
-						<xsl:if test="//page/@name = 'fav'">
-							<xsl:for-each select="$captions[position() &lt; 5]">
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-								<tr class="tr">
-									<td><xsl:value-of select="$param/@caption"/></td>
-									<td><xsl:value-of select="$param"/></td>
-								</tr>
-							</xsl:for-each>
-						</xsl:if>
-					</table>
-				</div>
-
-			</div>
-
-			<!-- device price -->
-			<div class="device__column">
-				<div class="price device__price">
-					<xsl:if test="$has_price">
-						<xsl:if test="price_old">
-							<div class="price__item_old">
-								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-							</div>
-						</xsl:if>
-						<div class="price__item_new">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
-						</div>
-					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<div></div>
-					</xsl:if>
-				</div>
-			</div>
-
-			<!-- stock status (not displayed, delete display: none to show) -->
-			<div class="device__column" style="display: none">
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="">в наличии</div>
-				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
-					<div class="">под заказ</div>
-				</xsl:if>
-			</div>
-
-			<div class="device__column">
-
-				<!-- device order -->
-				<xsl:if test="not($has_lines)">
-					<div class="order device-order" id="cart_list_{@id}">
-						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<xsl:if test="$has_price">
-								<input type="number" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
-							</xsl:if>
-							<xsl:if test="not($has_price)">
-								<input type="hidden" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-								<button class="button" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-							</xsl:if>
-						</form>
-					</div>
-				</xsl:if>
-				<xsl:if test="$has_lines">
-					<div class="order device-order">
-						<a class="button" href="{show_product}">Подробнее</a>
-					</div>
-				</xsl:if>
-
-				<!-- one click -->
-				<xsl:if test="$is_one_click">
-					<a href="{one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-				</xsl:if>
-
-				<!-- subscribe for update -->
-				<xsl:if test="$is_subscribe">
-					<a href="{subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-				</xsl:if>
-
-				<!-- propose my price -->
-				<xsl:if test="$is_my_price">
-					<a href="{my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
-				</xsl:if>
-
-				<!-- device actions (compare and favourites) -->
-				<div class="add">
-					<xsl:choose>
-						<xsl:when test="$is_fav">
-							<a href="{from_fav}" class="add__item icon-link">
-								<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-								<span><xsl:value-of select="$compare_remove_label"/></span>
-							</a>
-						</xsl:when>
-						<xsl:otherwise>
-							<div id="fav_list_{@id}">
-								<a href="{to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span><xsl:value-of select="$compare_add_label"/></span>
-								</a>
-							</div>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:if test="not($is_compare)">
-						<div id="compare_list_{@id}">
-							<a href="{to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-								<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-								<span><xsl:value-of select="$go_to_compare_label"/></span>
-							</a>
-						</div>
-					</xsl:if>
-					<xsl:if test="$is_compare">
-						<a href="{from_compare}" class="add__item icon-link">
-							<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-							<span><xsl:value-of select="$compare_remove_label"/></span>
-						</a>
-					</xsl:if>
-				</div>
-			</div>
-		</div>
-
-
 	</xsl:template>
 
 </xsl:stylesheet>
