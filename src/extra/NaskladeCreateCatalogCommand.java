@@ -4,7 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.fwk.integration.YMarketCatalogCreationHandler;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
@@ -33,7 +32,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		setOperation("Создание разделов");
 		pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
+		NaskladeSectionCreationHandler secHandler = new NaskladeSectionCreationHandler(catalog, info, getInitiator());
 
 		for (File xml : xmls) {
 			// Удалить DOCTYPE

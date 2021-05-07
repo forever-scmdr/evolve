@@ -207,6 +207,7 @@
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
+		<parameter name="group" type="string" caption="товарные группы" multiple="true"/>
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -256,25 +257,38 @@
 		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
-		<parameter name="net_weight" type="double" caption="Масса нетто" />
-		<parameter name="gross_weight" type="double" caption="Масса брутто" />
-		<parameter name="length" type="double" caption="Длина" />
-		<parameter name="width" type="double" caption="Ширина" />
-		<parameter name="height" type="double" caption="Высота" />
-		<parameter name="barcode" type="string" caption="Штрихкод" />
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 		<child item="warranty" single="true"/>
+		<child item="other_info" single="true"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="warranty" caption="Гарантия" ag-id="1836" ag-hash="501547260">
+	<item name="warranty" caption="Гарантия" ag-id="2238" ag-hash="501547260">
 		<parameter name="months" type="integer" caption="Срок гарантии" description="месяцы"/>
 		<parameter name="service_center" type="string" caption="Сервисный центр"/>
+	</item>
+
+	<item name="other_info" caption="Иная информация" ag-id="2239" ag-hash="-182548355" >
+		<parameter name="producer" type="string" caption="Производитель"/>
+		<parameter name="vendor_code" type="string" caption="Артикул" />
+
+		<parameter name="sert" type="string" caption="Сертификат соответствия"/>
+
+		<parameter name="net_weight" type="double" caption="Масса нетто" />
+		<parameter name="gross_weight" type="double" caption="Масса брутто" />
+		<parameter name="length" type="double" caption="Длина" />
+
+		<parameter name="width" type="double" caption="Ширина" />
+		<parameter name="height" type="double" caption="Высота" />
+
+
+		<parameter name="country" type="string" caption="Страна производства"/>
+		<parameter name="orig_country" type="string" caption="Страна, в которой зарегистрирован бренд"/>
 	</item>
 
 	<!--Товар, который вложен в другой товар-->
@@ -474,45 +488,45 @@
 		<child item="cart_and_feedback_settings" single="true" />
 	</item>
 
-	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1828" ag-hash="960890710">
+	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1833" ag-hash="960890710">
 		<child item="emails" single="true"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
 		<child item="order_texts" single="true"/>
 	</item>
 
-	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1829" ag-hash="-1299765161">
+	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1834" ag-hash="-1299765161">
 		<parameter name="order_email" type="plain-text" caption="Заказы слать на адреса:" format="height: 30px"/>
 		<parameter name="feedback" type="plain-text" caption="Сообщаения слать на адреса:" format="height: 30px"/>
 	</item>
 
-	<item name="order_texts" caption="Тексты в заказе" ag-id="1830" ag-hash="1973754037">
+	<item name="order_texts" caption="Тексты в заказе" ag-id="1835" ag-hash="1973754037">
 		<parameter name="cart_text" type="text" caption="Дополнительный текстовый блок под заказом"/>
 		<parameter name="confirm_text" type="text" caption="Подтверждение о том, что заказ отправлен"/>
 		<parameter name="email_text" type="text" caption="Текст в письме клиенту"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="extra_styles" caption="Стили и скрипты" ag-id="1831" ag-hash="1420120049">
+	<item name="extra_styles" caption="Стили и скрипты" ag-id="1828" ag-hash="1420120049">
 		<child item="style"/>
 	</item>
 
-	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1832" ag-hash="109780401">
+	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1829" ag-hash="109780401">
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="description" type="plain-text" caption="Описание" description="что делает этот скрипт или стиль?"/>
 		<parameter name="file" type="file" caption="Прикерпите файл"/>
 		<parameter name="code" type="plain-text" caption="Или введите код вручную"/>
 	</item>
 
-	<item name="slideshow" caption="Слайды" ag-id="1833" ag-hash="-795551698">
+	<item name="slideshow" caption="Слайды" ag-id="1830" ag-hash="-795551698">
 		<child item="main_slider_frame" inline="true"/>
 	</item>
 
-	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1834" ag-hash="225061716">
+	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1831" ag-hash="225061716">
 		<parameter name="code" type="plain-text" caption="код хедера"/>
 	</item>
 
-	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1835" ag-hash="177471074">
+	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1832" ag-hash="177471074">
 		<parameter name="code" type="plain-text" caption="код футера"/>
 	</item>
 

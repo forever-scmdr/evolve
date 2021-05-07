@@ -35,8 +35,6 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		add(VENDOR_ELEMENT);
 		add(VENDOR_CODE_ELEMENT);
 		add(CATEGORY_ID_ELEMENT);
-		//add(OLDOPTPRICE_ELEMENT);
-		//add(NEXT_DELIVERY_ELEMENT);
 		add(COUNTRY_OF_ORIGIN_ELEMENT);
 		add(DESCRIPTION_ELEMENT);
 		add(QUANTITY_ELEMENT);
@@ -44,17 +42,30 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		add("price_sd1_2");
 		add("price_sd2_2");
 		add("orig_country");
-		add("barcode");
-		add("net_weight");
-		add("gross_weight");
-		add("length");
-		add("width");
-		add("height");
+		add("desc_short");
 	}};
 	private static final Set<String> MULTIPLE_ELEMENTS = new HashSet() {{
 		add(STATUS_ELEMENT);
 		add(PICTURE_ELEMENT);
 	}};
+
+	private static final Set<String> ADDITIONAL_PARAMS = new HashSet(){{
+		add("net_weight");
+		add("gross_weight");
+
+		add("length");
+		add("width");
+		add("height");
+
+		add("sert");
+		add("importer");
+		add("orig_country");
+
+		add(COUNTRY_OF_ORIGIN_ELEMENT);
+		add(VENDOR_CODE_ELEMENT);
+		add("producer");
+	}};
+
 	private static final Set<String> EXTRA_PAGE_ELEMENTS = new HashSet() {{
 		add("tech");
 		add("package");
@@ -70,11 +81,11 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		put(URL_ELEMENT, URL_PARAM);
 		put(PRICE_ELEMENT, PRICE_PARAM);
 		put(VENDOR_ELEMENT, VENDOR_PARAM);
-		put(VENDOR_CODE_ELEMENT, VENDOR_PARAM);
+		put(VENDOR_CODE_ELEMENT, VENDOR_CODE_PARAM);
 		put(CATEGORY_ID_ELEMENT, CATEGORY_ID_PARAM);
 		put(COUNTRY_OF_ORIGIN_ELEMENT, COUNTRY_PARAM);
 		put(DESCRIPTION_ELEMENT, TEXT_PARAM);
-		put("desc", DESCRIPTION_PARAM);
+		//put("desc", DESCRIPTION_PARAM);
 		put(QUANTITY_ELEMENT, QTY_PARAM);
 		put("price_sd1_2", PRICE_OPT_PARAM);
 		put("price_sd2_2", "price_opt_2");
@@ -91,9 +102,13 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		put("video", "Видео");
 		put("warranty", "months");
 		put("service_center", "service_center");
+		put("producer", "producer");
+		put("sert", "sert");
+		put("importer", "importer");
+		put("desc_short", DESCRIPTION_PARAM);
 	}};
 
-	//private int picCounter = 0;
+	private int picCounter = 0;
 
 	private Map<String, Item> sections;
 	private IntegrateBase.Info info;
@@ -103,6 +118,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private HashMap<String, LinkedHashSet<String>> multipleParams;
 	private HashMap<String, String> extraPageParams;
 	private HashMap<String, String> warrantyParams;
+	private HashMap<String, String> additionalParams;
 	private LinkedHashMap<String, String> specialParams;
 
 	private Locator locator;
@@ -189,6 +205,9 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					product.setValueUI(TAG_PARAM, label);
 				}
 
+				product.removeEqualValue("mark", product.getValue(VENDOR_PARAM));
+				product.setValueUI("mark", product.getStringValue(VENDOR_PARAM, ""));
+
 				boolean isSaved = addPics(product);
 				if (!isSaved) {
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
@@ -199,7 +218,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				} else {
 					addWarrantyAndPagesQuick(product);
 				}
-
+				addAdditionalParams(product);
 				info.increaseProcessed();
 				isInsideOffer = false;
 			} else if (isInsideOffer && SINGLE_ELEMENTS.contains(qName) && parameterReady) {
@@ -213,7 +232,9 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
 			}
-
+			if(isInsideOffer && ADDITIONAL_PARAMS.contains(qName) && parameterReady){
+				additionalParams.put(ELEMENT_PARAM_DICTIONARY.get(paramName), StringUtils.trim(paramValue.toString()));
+			}
 			parameterReady = false;
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
@@ -221,6 +242,29 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			info.setLinePosition(locator.getColumnNumber());
 			info.addError(e);
 		}
+	}
+
+	private void addAdditionalParams(Item product) throws Exception {
+		Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};
+		ArrayList<Item> subs =  ItemQuery.loadByParentId(product.getId(), assId);
+		ItemType additionalType = ItemTypeRegistry.getItemType("other_info");
+		Item additional = null;
+		for(Item sub : subs){
+			if(!sub.getItemType().equals(additionalType)){continue;}
+			if(additional == null){
+				additional = sub;
+			}else{
+				DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(sub.getId()).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
+			}
+		}
+		additional = (additional == null)? Item.newChildItem(additionalType, product) : additional;
+		for (String paramName : additionalType.getParameterNames()){
+			if(additionalParams.get(paramName) == null){
+				additional.clearValue(paramName);
+			}
+			additional.setValueUI(paramName, additionalParams.get(paramName));
+		}
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(additional).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 	}
 
 	private void addWarrantyAndPages(Item product) throws Exception {
@@ -330,7 +374,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}
 
 	private boolean addPics(Item product) throws MalformedURLException {
-		//if(picCounter > 49) return false;
+		if(picCounter > 19) return false;
 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
 		if (picUrls == null) {
 			info.addLog("No pics for [" + product.getValue(CODE_PARAM) + "]", String.valueOf(productStartLineNumber));
@@ -353,6 +397,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
 						product.setValue(GALLERY_PARAM, new URL(picUrl));
 						needSave = true;
+						picCounter++;
 					}
 				} catch (Exception e) {
 					info.addError("Неверный формат картинки: " + picUrl, picUrl);
@@ -376,6 +421,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		if (needSave && picUrls.size() > 0) {
 			if (noMainPic && picUrls.size() > 0) {
 				product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+				picCounter++;
 			}
 			try {
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
@@ -388,7 +434,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			}
 		}
 
-		//picCounter++;
+
 		return isSaved;
 	}
 
@@ -403,12 +449,13 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			multipleParams = new LinkedHashMap<>();
 			extraPageParams = new LinkedHashMap<>();
 			warrantyParams = new LinkedHashMap<>();
+			additionalParams = new LinkedHashMap<>();
 			singleParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 			singleParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (SINGLE_ELEMENTS.contains(qName) || MULTIPLE_ELEMENTS.contains(qName)) || EXTRA_PAGE_ELEMENTS.contains(qName) || WARRANTY_ELEMENTS.contains(qName)) {
+		else if (isInsideOffer && (SINGLE_ELEMENTS.contains(qName) || MULTIPLE_ELEMENTS.contains(qName)) || EXTRA_PAGE_ELEMENTS.contains(qName) || WARRANTY_ELEMENTS.contains(qName) || ADDITIONAL_PARAMS.contains(qName)) {
 			paramName = qName;
 			parameterReady = true;
 		}
