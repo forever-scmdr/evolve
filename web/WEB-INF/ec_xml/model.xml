@@ -303,9 +303,14 @@
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
 	      default-page="product" super="described_product * seo_container">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
+		<child item="related_list" single="true"/>
 		<child item="line_product"/>
+		<child item="product" assoc="related"/>
 	</item>
 
+	<item name="related_list" caption="Список сопутствующих товаров">
+		<parameter name="code" type="string" caption="код"/>
+	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
 		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
@@ -635,6 +640,7 @@
 	<!--/////////////                                                                      ////////////-->
 
 	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
+	<assoc name="related" caption="Сопутствующий товар"/>
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>
