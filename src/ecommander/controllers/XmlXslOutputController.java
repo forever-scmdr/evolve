@@ -1,6 +1,7 @@
 package ecommander.controllers;
 
 import java.io.*;
+import java.util.HashMap;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
@@ -38,6 +39,29 @@ public class XmlXslOutputController {
 			errors += "\nWARNING " + exception.getMessageAndLocation();
 		}
 	}
+
+	private static TransformerFactory factory;
+	private static HashMap<String, Pair<Long, Transformer>> transformers;
+
+	private static TransformerFactory getTransformerFac() {
+		if (factory == null)
+			factory = TransformerFactoryImpl.newInstance();
+		return factory;
+	}
+
+	private static Transformer getTransformer(File xslFile, TransformerFactory fac) throws TransformerConfigurationException {
+		if (transformers == null)
+			transformers = new HashMap<>();
+		Pair<Long, Transformer> trans = transformers.get(xslFile.getAbsolutePath());
+		if (trans == null || trans.getLeft() != xslFile.lastModified()) {
+			Transformer transformer = fac.newTransformer(new StreamSource(xslFile));
+			trans = new Pair<>(xslFile.lastModified(), transformer);
+			transformers.put(xslFile.getAbsolutePath(), trans);
+		}
+		return trans.getRight();
+	}
+
+
 	/**
 	 * Вывести преобразованный документ, если преобразование требуется, либо просто XML документ
 	 * @param ostream - куда выводится результат
@@ -54,18 +78,25 @@ public class XmlXslOutputController {
 		if (!xslFile.exists()/* || ServerLogger.isDebugMode()*/) {
 			outputXml(ostream, xml);
 		} else {
-			Timer.getTimer().start(Timer.XSL_TRANSFORM);
-			TransformerFactory factory = TransformerFactoryImpl.newInstance();
 			Errors errors = new Errors();
-			Transformer transformer;
 			try {
+				Timer.getTimer().start(Timer.XSL_TRANSFORM);
+				TransformerFactory factory = getTransformerFac();
+				Transformer transformer;
 				factory.setErrorListener(errors);
-				transformer = factory.newTransformer(new StreamSource(xslFile));
+				transformer = getTransformer(xslFile, factory);
 				Reader reader = new StringReader(xml.toString());
 				transformer.transform(new StreamSource(reader), new StreamResult(ostream));
 			} catch (TransformerConfigurationException e) {
+				factory = null;
+				transformers = null;
 				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
-			} finally {
+			} catch (Exception ex) {
+				factory = null;
+				transformers = null;
+				throw ex;
+			}
+			finally {
 				Timer.getTimer().stop(Timer.XSL_TRANSFORM);
 			}
 		}

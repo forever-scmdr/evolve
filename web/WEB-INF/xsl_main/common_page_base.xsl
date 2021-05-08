@@ -499,81 +499,594 @@
 				</script>
 			</head>
 
-		</html>
-
-		<body>
-			<div class="wrapper">
-				<div class="top-info">
-					<div class="container">
-						<div class="top-info__wrap wrap">
-							<div class="top-info__location">
-								<p>Магазин «Белчип», ул. Л.Беды, 2Б</p>
-								<div>
-									<a href="mailto:info@belchip.by">info@belchip.by</a>
-									<a href="about.html">схема проезда</a>
+			<body>
+				<div class="wrapper">
+					<div class="top-info">
+						<div class="container">
+							<div class="top-info__wrap wrap">
+								<div class="top-info__location">
+									<p>Магазин «Белчип», ул. Л.Беды, 2Б</p>
+									<div>
+										<a href="mailto:info@belchip.by">info@belchip.by</a>
+										<a href="about.html">схема проезда</a>
+									</div>
 								</div>
-							</div>
-							<div class="top-info__phones phones">
-								<div class="phones__item">
-									<div class="phones__number">+375 (29) 126-14-13</div>
-									<div class="phones__description">розница</div>
-								</div>
-								<div class="phones__item">
-									<div class="phones__number">+375 (29) 126-14-13</div>
-									<div class="phones__description">розница</div>
-								</div>
-								<div class="phones__item">
-									<div class="phones__number">+375 (29) 126-14-13</div>
-									<div class="phones__description">розница</div>
-								</div>
-								<div class="phones__item">
-									<div class="phones__number">+375 (29) 126-14-13</div>
-									<div class="phones__description">розница</div>
-								</div>
-								<div class="phones__item">
-									<div class="phones__number">+375 (29) 126-14-13</div>
-									<div class="phones__description">розница</div>
+								<div class="top-info__phones phones">
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
+									<div class="phones__item">
+										<div class="phones__number">+375 (29) 126-14-13</div>
+										<div class="phones__description">розница</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="header">
-					<div class="container">
-						<div class="header__wrap wrap">
-							<div class="header__column logo">
-								<a href="index.html">
-									<img class="logo__image" src="img/logo.png" alt=""/>
-								</a>
-								<div class="work-hours logo__hours">
-									<p>пн.-пт.<span>9:00-20:00</span>
-									</p>
-									<p>сб.-вс.<span>10:00-17:00</span>
-									</p>
+					<div class="header">
+						<div class="container">
+							<div class="header__wrap wrap">
+								<div class="header__column logo">
+									<a href="index.html">
+										<img class="logo__image" src="img/logo.png" alt=""/>
+									</a>
+									<div class="work-hours logo__hours">
+										<p>пн.-пт.<span>9:00-20:00</span>
+										</p>
+										<p>сб.-вс.<span>10:00-17:00</span>
+										</p>
+									</div>
+								</div>
+								<div class="header__column header__search header-search">
+									<form action="search/" method="post">
+										<div>
+											<a class="useless-button" href="">
+												<img src="img/icon-search.png" alt=""/>
+											</a>
+											<input class="input header-search__input" id="q-ipt" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="" value="" autofocus=""/>
+											<a class="header-search__reset" href="">
+												<img src="img/icon-close.png" alt=""/>
+											</a>
+											<button class="button header-search__button" type="submit">Найти</button>
+										</div>
+										<div>
+											<div class="header-search__option">
+												<input type="checkbox"/>
+												<label for="">только по товарам в наличии</label>
+											</div>
+											<div class="header-search__option">
+												<input type="checkbox"/>
+												<label for="">строгое соответствие</label>
+											</div>
+										</div>
+										<div class="suggest">
+											<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
+											<div class="suggest__results">
+												<div class="suggest__result suggest-result">
+													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="suggest-result__info">
+														<div class="suggest-result__code">код 04434</div>
+														<div class="suggest-result__vendor">KLS</div>
+														<div class="suggest-result__price">1,46 руб./шт.</div>
+														<div class="suggest-result__status">на складе: 19 шт.</div>
+													</div>
+												</div>
+												<div class="suggest__result suggest-result">
+													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="suggest-result__info">
+														<div class="suggest-result__code">код 04434</div>
+														<div class="suggest-result__vendor">KLS</div>
+														<div class="suggest-result__price">1,46 руб./шт.</div>
+														<div class="suggest-result__status">на складе: 19 шт.</div>
+													</div>
+												</div>
+												<div class="suggest__result suggest-result">
+													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="suggest-result__info">
+														<div class="suggest-result__code">код 04434</div>
+														<div class="suggest-result__vendor">KLS</div>
+														<div class="suggest-result__price">1,46 руб./шт.</div>
+														<div class="suggest-result__status">на складе: 19 шт.</div>
+													</div>
+												</div>
+												<div class="suggest__result suggest-result">
+													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+													<div class="suggest-result__info">
+														<div class="suggest-result__code">код 04434</div>
+														<div class="suggest-result__vendor">KLS</div>
+														<div class="suggest-result__price">1,46 руб./шт.</div>
+														<div class="suggest-result__status">на складе: 19 шт.</div>
+													</div>
+												</div>
+											</div>
+											<a class="suggest__all" href="search.html">Показать все результаты</a>
+										</div>
+									</form>
+								</div>
+								<div class="header__column header__column_links header-icons">
+									<div class="header-icons__icon header-icon" id="some_ajax">
+										<div class="header-icon__icon">
+											<img src="img/icon-cart.png" alt=""/>
+											<div class="header-icon__counter">2</div>
+										</div>
+										<div class="header-icon__info">
+											<a href="">Корзина</a>
+											<span>58,25</span>
+											<a class="header-icon__dd">
+												<img src="img/icon-caret-down-small.png" alt=""/>
+											</a>
+										</div>
+										<div class="dd-cart">
+											<div class="dd-cart__scroll">
+												<div class="dd-cart__item">
+													<a class="dd-cart__image" href="">
+														<img src="img/image-device.jpg" alt=""/>
+													</a>
+													<div class="dd-cart__info">
+														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+														<div class="dd-cart__code">Кол-во: 6 шт.</div>
+														<div class="ddcart__price">21,17 руб.</div>
+													</div>
+													<a class="dd-cart__close" href="">
+														<img src="img/icon-close.png" alt=""/>
+													</a>
+												</div>
+												<div class="dd-cart__item">
+													<a class="dd-cart__image" href="">
+														<img src="img/image-device.jpg" alt=""/>
+													</a>
+													<div class="dd-cart__info">
+														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+														<div class="dd-cart__code">Кол-во: 6 шт.</div>
+														<div class="ddcart__price">21,17 руб.</div>
+													</div>
+													<a class="dd-cart__close" href="">
+														<img src="img/icon-close.png" alt=""/>
+													</a>
+												</div>
+												<div class="dd-cart__item">
+													<a class="dd-cart__image" href="">
+														<img src="img/image-device.jpg" alt=""/>
+													</a>
+													<div class="dd-cart__info">
+														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+														<div class="dd-cart__code">Кол-во: 6 шт.</div>
+														<div class="ddcart__price">21,17 руб.</div>
+													</div>
+													<a class="dd-cart__close" href="">
+														<img src="img/icon-close.png" alt=""/>
+													</a>
+												</div>
+												<div class="dd-cart__item">
+													<a class="dd-cart__image" href="">
+														<img src="img/image-device.jpg" alt=""/>
+													</a>
+													<div class="dd-cart__info">
+														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+														<div class="dd-cart__code">Кол-во: 6 шт.</div>
+														<div class="ddcart__price">21,17 руб.</div>
+													</div>
+													<a class="dd-cart__close" href="">
+														<img src="img/icon-close.png" alt=""/>
+													</a>
+												</div>
+												<div class="dd-cart__item">
+													<a class="dd-cart__image" href="">
+														<img src="img/image-device.jpg" alt=""/>
+													</a>
+													<div class="dd-cart__info">
+														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
+														<div class="dd-cart__code">Кол-во: 6 шт.</div>
+														<div class="ddcart__price">21,17 руб.</div>
+													</div>
+													<a class="dd-cart__close" href="">
+														<img src="img/icon-close.png" alt=""/>
+													</a>
+												</div>
+											</div>
+											<a class="dd-cart__button" href="cart.html">Перейти в корзину</a>
+										</div>
+									</div>
+									<div class="header-icons__icon header-icon" id="some_ajax">
+										<div class="header-icon__icon">
+											<img src="img/icon-currency.png" alt=""/>
+										</div>
+										<div class="header-icon__info">
+											<a href="">RUB</a>
+											<a class="header-icon__dd">
+												<img src="img/icon-caret-down-small.png" alt=""/>
+											</a>
+										</div>
+										<div class="dropdown header-icon__dropdown">
+											<a class="dropdown__item active" href="">RUB</a>
+											<a class="dropdown__item" href="">RUB</a>
+											<a class="dropdown__item" href="">RUB</a>
+										</div>
+									</div>
+									<div class="header-icons__icon header-icon" id="some_ajax">
+										<div class="header-icon__icon">
+											<img src="img/icon-star.png" alt=""/>
+											<div class="header-icon__counter">21</div>
+										</div>
+										<div class="header-icon__info">
+											<a href="">Избранное</a>
+										</div>
+									</div>
+									<div class="header-icons__icon header-icon" id="some_ajax">
+										<div class="header-icon__icon">
+											<img src="img/icon-truck.png" alt=""/>
+										</div>
+										<div class="header-icon__info">
+											<a href="">Где заказ</a>
+										</div>
+									</div>
+									<div class="header-icons__icon header-icon" id="some_ajax">
+										<div class="header-icon__icon">
+											<img src="img/icon-user.png" alt=""/>
+										</div>
+										<div class="header-icon__info">
+											<a href="">Вход</a>
+											<a class="header-icon__dd">
+												<img src="img/icon-caret-down-small.png" alt=""/>
+											</a>
+										</div>
+										<div class="dropdown dropdown_last header-icon__dropdown">
+											<a class="dropdown__item" href="">Вход</a>
+											<a class="dropdown__item" href="">Регистрация</a>
+											<a class="dropdown__item" href="">Кабинет</a>
+											<a class="dropdown__item" href="">История заказов</a>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="header__column header__search header-search">
-								<form action="search/" method="post">
-									<div>
-										<a class="useless-button" href="">
-											<img src="img/icon-search.png" alt=""/>
-										</a>
-										<input class="input header-search__input" id="q-ipt" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="" value="" autofocus=""/>
-										<a class="header-search__reset" href="">
-											<img src="img/icon-close.png" alt=""/>
-										</a>
-										<button class="button header-search__button" type="submit">Найти</button>
+						</div>
+					</div>
+					<div class="header-mobile">
+						<div class="header-mobile__top">
+							<a class="header-mobile__logo">
+								<img src="img/logo.png" alt=""/>
+							</a>
+							<div class="header-mobile__small-icons">
+								<div class="mobile-small-icon header-mobile__small-icon">
+									<div class="mobile-small-icon__icon">
+										<img src="img/icon-small-search.png" alt=""/>
 									</div>
-									<div>
-										<div class="header-search__option">
-											<input type="checkbox"/>
-											<label for="">только по товарам в наличии</label>
+									<a class="mobile-small-icon__link"></a>
+								</div>
+								<div class="mobile-small-icon header-mobile__small-icon">
+									<div class="mobile-small-icon__icon">
+										<img src="img/icon-small-phone.png" alt=""/>
+									</div>
+									<a class="mobile-small-icon__link"></a>
+								</div>
+								<div class="mobile-small-icon header-mobile__small-icon">
+									<div class="mobile-small-icon__icon">
+										<img src="img/icon-small-menu.png" alt=""/>
+									</div>
+									<a class="mobile-small-icon__link"></a>
+								</div>
+							</div>
+						</div>
+						<div class="header-mobile__nav">
+							<div class="header-mobile__menu">
+								<button class="button">Каталог</button>
+							</div>
+							<div class="header-mobile__icons">
+								<div class="header-mobile__icon mobile-icon">
+									<div class="mobile-icon__icon">
+										<img src="img/icon-cart.png" alt=""/>
+									</div>
+									<div class="mobile-icon__qty">2</div>
+									<div class="mobile-icon__label">58,25</div>
+									<a class="mobile-icon__link"></a>
+								</div>
+								<div class="header-mobile__icon mobile-icon">
+									<div class="mobile-icon__icon">
+										<img src="img/icon-star.png" alt=""/>
+									</div>
+									<div class="mobile-icon__qty">2</div>
+									<div class="mobile-icon__label">Избранное</div>
+									<a class="mobile-icon__link"></a>
+								</div>
+								<div class="header-mobile__icon mobile-icon">
+									<div class="mobile-icon__icon">
+										<img src="img/icon-currency.png" alt=""/>
+									</div>
+									<div class="mobile-icon__label">BYN</div>
+									<a class="mobile-icon__link"></a>
+								</div>
+								<div class="header-mobile__icon mobile-icon">
+									<div class="mobile-icon__icon">
+										<img src="img/icon-user.png" alt=""/>
+									</div>
+									<div class="mobile-icon__label">Конст...</div>
+									<a class="mobile-icon__link"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="main-menu">
+						<div class="container">
+							<div class="main-menu__wrap wrap">
+								<div class="main-menu__item active">
+									<a href="index.html">
+										<span>Главная</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="catalog.html">
+										<span>Каталог</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="about.html">
+										<span>О магазине</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="price.html">
+										<span>Прайс-лист</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="payments.html">
+										<span>Оплата и доставка</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="info.html">
+										<span>Полезная информация</span>
+									</a>
+								</div>
+								<div class="main-menu__item">
+									<a href="">
+										<span>Translate</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="content">
+						<div class="container">
+							<div class="content__wrap">
+								<div class="content__side">
+									<div class="side-menu">
+										<div class="side-menu__header">
+											<a class="side-menu__title" href="catalog.html">Каталог товаров</a>
+
+											<xsl:if test="not(/page/catalog/udate_in_progress = '1')">
+												<div class="side-menu__update">Обновлен
+													<xsl:value-of select="substring(/page/catalog/date, 0,11)" />
+													в <xsl:value-of select="substring(/page/catalog/date, 12, 5)" />
+												</div>
+											</xsl:if>
+											<xsl:if test="/page/catalog/udate_in_progress = '1'">
+												<div class="side-menu__update">
+													<b>Идет обновление каталога!</b><br/>
+													Заказ товаров и поиск могут работать некорректно, пожалуйста, подождите несколько минут.
+												</div>
+											</xsl:if>
 										</div>
-										<div class="header-search__option">
-											<input type="checkbox"/>
-											<label for="">строгое соответствие</label>
+										<div class="side-menu__links">
+											<xsl:apply-templates select="page/catalog/section" mode="desktop">
+												<xsl:with-param name="level" select="'1'"/>
+											</xsl:apply-templates>
 										</div>
 									</div>
+								</div>
+								<xsl:call-template name="CONTENT"/>
+							</div>
+						</div>
+					</div>
+					<div class="footer">
+						<div class="container">
+							<div class="footer__wrap">
+								<div class="footer__column">
+									<div class="footer__title">Частное производственно-торговое унитарное предприятие «БелЧип»</div>
+									<div class="footer__text">
+										<p> </p>Республика Беларусь, 220040,г.Минск,ул Л.Беды, 2Б, пом.317
+										<br/>УНП 191623250 Свидетельство №191623250
+										<br/>выдано 17.01.2012г Минским горисполкомом
+										<br/>Дата регистрации интернет-магазина в Торговом реестре Республики беларусь: 29.12.2016 г.
+									</div>
+								</div>
+								<div class="footer__column">
+									<div class="footer__phones phones">
+										<div class="phones__item">
+											<div class="phones__number">+375 (29) 126-14-13</div>
+											<div class="phones__description">розница</div>
+										</div>
+										<div class="phones__item">
+											<div class="phones__number">+375 (29) 126-14-13</div>
+											<div class="phones__description">розница</div>
+										</div>
+										<div class="phones__item">
+											<div class="phones__number">+375 (29) 126-14-13</div>
+											<div class="phones__description">розница</div>
+										</div>
+										<div class="phones__item">
+											<div class="phones__number">+375 (29) 126-14-13</div>
+											<div class="phones__description">розница</div>
+										</div>
+										<div class="phones__item">
+											<div class="phones__number">+375 (29) 126-14-13</div>
+											<div class="phones__description">розница</div>
+										</div>
+										<div class="footer__phones-jur">Работа с юридическими лицами пн.-пт. с 9:00 до 17:30</div>
+									</div>
+								</div>
+								<div class="footer__column">
+									<div class="footer__social footer-social">
+										<div class="footer-social__icons">
+											<a class="footer-social__icon">
+												<img src="img/icon-social-footer-01.png" alt=""/>
+											</a>
+											<a class="footer-social__icon">
+												<img src="img/icon-social-footer-01.png" alt=""/>
+											</a>
+											<a class="footer-social__icon">
+												<img src="img/icon-social-footer-01.png" alt=""/>
+											</a>
+										</div>
+										<a href="mailto:info@belchip.by">info@belchip.by</a>
+									</div>
+									<div class="footer__copyright copyright">© «Белчип», 2012–2020</div>
+									<a class="forever" href="">Разработка сайта
+										<br/>студия веб-дизайна Forever
+									</a>
+								</div>
+								<div class="footer__payments footer-payments">
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+									<div class="footer-payments__icon">
+										<img src="img/icon-payment-footer-01.png" alt=""/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- меню каталога-->
+					<div class="popup" style="display: none;" id="mobile_catalog">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title">Каталог продукции</div>
+									<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup-menu">
+									<xsl:apply-templates select="page/catalog/section" mode="mobile"/>
+								</div>
+							</div>
+							<xsl:for-each select="page/catalog//section[section]">
+								<div class="popup__content popup__content_next" id="mobile_sec_{@id}">
+									<div class="popup__header">
+										<a class="popup__back" href="#" onlick="$('#mobile_sec{@id}').css('transform', 'translateX(100%)'); return false;">
+											<img src="img/icon-menu-back.png" alt=""/>
+										</a>
+										<div class="popup__title"><xsl:value-of select="name"/></div>
+										<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
+											<img src="img/icon-menu-close.png" alt=""/>
+										</a>
+									</div>
+									<div class="popup-menu">
+										<xsl:apply-templates select="section" mode="mobile"/>
+									</div>
+								</div>
+							</xsl:for-each>
+						</div>
+					</div><!-- главное меню-->
+					<div class="popup" style="display: none;">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title">Меню</div>
+									<a class="popup__close">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup-menu">
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">Главная страница</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">Каталог товаров</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">О магазине</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">Прайс-лист</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">Оплата и доставка</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+									<div class="popup-menu__item">
+										<div class="popup-menu__link">Полезная информация</div>
+										<div class="popup-menu__arrow">
+											<img src="img/icon-menu-right.png" alt=""/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!-- поиск-->
+					<div class="popup" style="display: none;">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title">Поиск по каталогу</div>
+									<a class="popup__close">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="search-mobile">
+									<form>
+										<div>
+											<input type="text"/>
+											<div class="search-mobile__reset">
+												<img src="img/icon-close.png" alt=""/>
+											</div>
+											<button class="button">Найти</button>
+										</div>
+										<div class="search-mobile__options">
+											<div class="search-mobile__option search-option">
+												<input type="checkbox"/>
+												<label for="">только по товарам в наличии</label>
+											</div>
+											<div class="search-mobile__option search-option">
+												<input type="checkbox"/>
+												<label for="">строгое соответствие</label>
+											</div>
+										</div>
+									</form>
 									<div class="suggest">
 										<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
 										<div class="suggest__results">
@@ -616,532 +1129,18 @@
 										</div>
 										<a class="suggest__all" href="search.html">Показать все результаты</a>
 									</div>
-								</form>
-							</div>
-							<div class="header__column header__column_links header-icons">
-								<div class="header-icons__icon header-icon" id="some_ajax">
-									<div class="header-icon__icon">
-										<img src="img/icon-cart.png" alt=""/>
-										<div class="header-icon__counter">2</div>
-									</div>
-									<div class="header-icon__info">
-										<a href="">Корзина</a>
-										<span>58,25</span>
-										<a class="header-icon__dd">
-											<img src="img/icon-caret-down-small.png" alt=""/>
-										</a>
-									</div>
-									<div class="dd-cart">
-										<div class="dd-cart__scroll">
-											<div class="dd-cart__item">
-												<a class="dd-cart__image" href="">
-													<img src="img/image-device.jpg" alt=""/>
-												</a>
-												<div class="dd-cart__info">
-													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="dd-cart__code">Кол-во: 6 шт.</div>
-													<div class="ddcart__price">21,17 руб.</div>
-												</div>
-												<a class="dd-cart__close" href="">
-													<img src="img/icon-close.png" alt=""/>
-												</a>
-											</div>
-											<div class="dd-cart__item">
-												<a class="dd-cart__image" href="">
-													<img src="img/image-device.jpg" alt=""/>
-												</a>
-												<div class="dd-cart__info">
-													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="dd-cart__code">Кол-во: 6 шт.</div>
-													<div class="ddcart__price">21,17 руб.</div>
-												</div>
-												<a class="dd-cart__close" href="">
-													<img src="img/icon-close.png" alt=""/>
-												</a>
-											</div>
-											<div class="dd-cart__item">
-												<a class="dd-cart__image" href="">
-													<img src="img/image-device.jpg" alt=""/>
-												</a>
-												<div class="dd-cart__info">
-													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="dd-cart__code">Кол-во: 6 шт.</div>
-													<div class="ddcart__price">21,17 руб.</div>
-												</div>
-												<a class="dd-cart__close" href="">
-													<img src="img/icon-close.png" alt=""/>
-												</a>
-											</div>
-											<div class="dd-cart__item">
-												<a class="dd-cart__image" href="">
-													<img src="img/image-device.jpg" alt=""/>
-												</a>
-												<div class="dd-cart__info">
-													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="dd-cart__code">Кол-во: 6 шт.</div>
-													<div class="ddcart__price">21,17 руб.</div>
-												</div>
-												<a class="dd-cart__close" href="">
-													<img src="img/icon-close.png" alt=""/>
-												</a>
-											</div>
-											<div class="dd-cart__item">
-												<a class="dd-cart__image" href="">
-													<img src="img/image-device.jpg" alt=""/>
-												</a>
-												<div class="dd-cart__info">
-													<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="dd-cart__code">Кол-во: 6 шт.</div>
-													<div class="ddcart__price">21,17 руб.</div>
-												</div>
-												<a class="dd-cart__close" href="">
-													<img src="img/icon-close.png" alt=""/>
-												</a>
-											</div>
-										</div>
-										<a class="dd-cart__button" href="cart.html">Перейти в корзину</a>
-									</div>
-								</div>
-								<div class="header-icons__icon header-icon" id="some_ajax">
-									<div class="header-icon__icon">
-										<img src="img/icon-currency.png" alt=""/>
-									</div>
-									<div class="header-icon__info">
-										<a href="">RUB</a>
-										<a class="header-icon__dd">
-											<img src="img/icon-caret-down-small.png" alt=""/>
-										</a>
-									</div>
-									<div class="dropdown header-icon__dropdown">
-										<a class="dropdown__item active" href="">RUB</a>
-										<a class="dropdown__item" href="">RUB</a>
-										<a class="dropdown__item" href="">RUB</a>
-									</div>
-								</div>
-								<div class="header-icons__icon header-icon" id="some_ajax">
-									<div class="header-icon__icon">
-										<img src="img/icon-star.png" alt=""/>
-										<div class="header-icon__counter">21</div>
-									</div>
-									<div class="header-icon__info">
-										<a href="">Избранное</a>
-									</div>
-								</div>
-								<div class="header-icons__icon header-icon" id="some_ajax">
-									<div class="header-icon__icon">
-										<img src="img/icon-truck.png" alt=""/>
-									</div>
-									<div class="header-icon__info">
-										<a href="">Где заказ</a>
-									</div>
-								</div>
-								<div class="header-icons__icon header-icon" id="some_ajax">
-									<div class="header-icon__icon">
-										<img src="img/icon-user.png" alt=""/>
-									</div>
-									<div class="header-icon__info">
-										<a href="">Вход</a>
-										<a class="header-icon__dd">
-											<img src="img/icon-caret-down-small.png" alt=""/>
-										</a>
-									</div>
-									<div class="dropdown dropdown_last header-icon__dropdown">
-										<a class="dropdown__item" href="">Вход</a>
-										<a class="dropdown__item" href="">Регистрация</a>
-										<a class="dropdown__item" href="">Кабинет</a>
-										<a class="dropdown__item" href="">История заказов</a>
-									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="header-mobile">
-					<div class="header-mobile__top">
-						<a class="header-mobile__logo">
-							<img src="img/logo.png" alt=""/>
-						</a>
-						<div class="header-mobile__small-icons">
-							<div class="mobile-small-icon header-mobile__small-icon">
-								<div class="mobile-small-icon__icon">
-									<img src="img/icon-small-search.png" alt=""/>
-								</div>
-								<a class="mobile-small-icon__link"></a>
-							</div>
-							<div class="mobile-small-icon header-mobile__small-icon">
-								<div class="mobile-small-icon__icon">
-									<img src="img/icon-small-phone.png" alt=""/>
-								</div>
-								<a class="mobile-small-icon__link"></a>
-							</div>
-							<div class="mobile-small-icon header-mobile__small-icon">
-								<div class="mobile-small-icon__icon">
-									<img src="img/icon-small-menu.png" alt=""/>
-								</div>
-								<a class="mobile-small-icon__link"></a>
-							</div>
-						</div>
-					</div>
-					<div class="header-mobile__nav">
-						<div class="header-mobile__menu">
-							<button class="button">Каталог</button>
-						</div>
-						<div class="header-mobile__icons">
-							<div class="header-mobile__icon mobile-icon">
-								<div class="mobile-icon__icon">
-									<img src="img/icon-cart.png" alt=""/>
-								</div>
-								<div class="mobile-icon__qty">2</div>
-								<div class="mobile-icon__label">58,25</div>
-								<a class="mobile-icon__link"></a>
-							</div>
-							<div class="header-mobile__icon mobile-icon">
-								<div class="mobile-icon__icon">
-									<img src="img/icon-star.png" alt=""/>
-								</div>
-								<div class="mobile-icon__qty">2</div>
-								<div class="mobile-icon__label">Избранное</div>
-								<a class="mobile-icon__link"></a>
-							</div>
-							<div class="header-mobile__icon mobile-icon">
-								<div class="mobile-icon__icon">
-									<img src="img/icon-currency.png" alt=""/>
-								</div>
-								<div class="mobile-icon__label">BYN</div>
-								<a class="mobile-icon__link"></a>
-							</div>
-							<div class="header-mobile__icon mobile-icon">
-								<div class="mobile-icon__icon">
-									<img src="img/icon-user.png" alt=""/>
-								</div>
-								<div class="mobile-icon__label">Конст...</div>
-								<a class="mobile-icon__link"></a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="main-menu">
-					<div class="container">
-						<div class="main-menu__wrap wrap">
-							<div class="main-menu__item active">
-								<a href="index.html">
-									<span>Главная</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="catalog.html">
-									<span>Каталог</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="about.html">
-									<span>О магазине</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="price.html">
-									<span>Прайс-лист</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="payments.html">
-									<span>Оплата и доставка</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="info.html">
-									<span>Полезная информация</span>
-								</a>
-							</div>
-							<div class="main-menu__item">
-								<a href="">
-									<span>Translate</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="content">
-					<div class="container">
-						<div class="content__wrap">
-							<div class="content__side">
-								<div class="side-menu">
-									<div class="side-menu__header">
-										<a class="side-menu__title" href="catalog.html">Каталог товаров</a>
-
-										<xsl:if test="not(/page/catalog/udate_in_progress = '1')">
-											<div class="side-menu__update">Обновлен
-												<xsl:value-of select="substring(/page/catalog/date, 0,11)" />
-												в <xsl:value-of select="substring(/page/catalog/date, 12, 5)" />
-											</div>
-										</xsl:if>
-										<xsl:if test="/page/catalog/udate_in_progress = '1'">
-											<div class="side-menu__update">
-												<b>Идет обновление каталога!</b><br/>
-												Заказ товаров и поиск могут работать некорректно, пожалуйста, подождите несколько минут.
-											</div>
-										</xsl:if>
-									</div>
-									<div class="side-menu__links">
-										<xsl:apply-templates select="page/catalog/section" mode="desktop">
-                                            <xsl:with-param name="level" select="'1'"/>
-                                        </xsl:apply-templates>
-									</div>
-								</div>
-							</div>
-							<xsl:call-template name="CONTENT"/>
-						</div>
-					</div>
-				</div>
-				<div class="footer">
-					<div class="container">
-						<div class="footer__wrap">
-							<div class="footer__column">
-								<div class="footer__title">Частное производственно-торговое унитарное предприятие «БелЧип»</div>
-								<div class="footer__text">
-									<p> </p>Республика Беларусь, 220040,г.Минск,ул Л.Беды, 2Б, пом.317
-									<br/>УНП 191623250 Свидетельство №191623250
-									<br/>выдано 17.01.2012г Минским горисполкомом
-									<br/>Дата регистрации интернет-магазина в Торговом реестре Республики беларусь: 29.12.2016 г.
-								</div>
-							</div>
-							<div class="footer__column">
-								<div class="footer__phones phones">
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="footer__phones-jur">Работа с юридическими лицами пн.-пт. с 9:00 до 17:30</div>
-								</div>
-							</div>
-							<div class="footer__column">
-								<div class="footer__social footer-social">
-									<div class="footer-social__icons">
-										<a class="footer-social__icon">
-											<img src="img/icon-social-footer-01.png" alt=""/>
-										</a>
-										<a class="footer-social__icon">
-											<img src="img/icon-social-footer-01.png" alt=""/>
-										</a>
-										<a class="footer-social__icon">
-											<img src="img/icon-social-footer-01.png" alt=""/>
-										</a>
-									</div>
-									<a href="mailto:info@belchip.by">info@belchip.by</a>
-								</div>
-								<div class="footer__copyright copyright">© «Белчип», 2012–2020</div>
-								<a class="forever" href="">Разработка сайта
-									<br/>студия веб-дизайна Forever
-								</a>
-							</div>
-							<div class="footer__payments footer-payments">
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-								<div class="footer-payments__icon">
-									<img src="img/icon-payment-footer-01.png" alt=""/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!-- меню каталога-->
-				<div class="popup" style="display: none;" id="mobile_catalog">
-					<div class="popup__body">
-						<div class="popup__content">
-							<div class="popup__header">
-								<div class="popup__title">Каталог продукции</div>
-								<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
-									<img src="img/icon-menu-close.png" alt=""/>
-								</a>
-							</div>
-							<div class="popup-menu">
-								<xsl:apply-templates select="page/catalog/section" mode="mobile"/>
-							</div>
-						</div>
-						<xsl:for-each select="page/catalog//section[section]">
-							<div class="popup__content popup__content_next" id="mobile_sec_{@id}">
-								<div class="popup__header">
-									<a class="popup__back" href="#" onlick="$('#mobile_sec{@id}').css('transform', 'translateX(100%)'); return false;">
-										<img src="img/icon-menu-back.png" alt=""/>
-									</a>
-									<div class="popup__title"><xsl:value-of select="name"/></div>
-									<a class="popup__close" href="#" onclick="$('mobile_catalog').hide(); return false;">
-										<img src="img/icon-menu-close.png" alt=""/>
-									</a>
-								</div>
-								<div class="popup-menu">
-									<xsl:apply-templates select="section" mode="mobile"/>
-								</div>
-							</div>
-						</xsl:for-each>
-					</div>
-				</div><!-- главное меню-->
-				<div class="popup" style="display: none;">
-					<div class="popup__body">
-						<div class="popup__content">
-							<div class="popup__header">
-								<div class="popup__title">Меню</div>
-								<a class="popup__close">
-									<img src="img/icon-menu-close.png" alt=""/>
-								</a>
-							</div>
-							<div class="popup-menu">
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">Главная страница</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">Каталог товаров</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">О магазине</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">Прайс-лист</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">Оплата и доставка</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-								<div class="popup-menu__item">
-									<div class="popup-menu__link">Полезная информация</div>
-									<div class="popup-menu__arrow">
-										<img src="img/icon-menu-right.png" alt=""/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><!-- поиск-->
-				<div class="popup" style="display: none;">
-					<div class="popup__body">
-						<div class="popup__content">
-							<div class="popup__header">
-								<div class="popup__title">Поиск по каталогу</div>
-								<a class="popup__close">
-									<img src="img/icon-menu-close.png" alt=""/>
-								</a>
-							</div>
-							<div class="search-mobile">
-								<form>
-									<div>
-										<input type="text"/>
-										<div class="search-mobile__reset">
-											<img src="img/icon-close.png" alt=""/>
-										</div>
-										<button class="button">Найти</button>
-									</div>
-									<div class="search-mobile__options">
-										<div class="search-mobile__option search-option">
-											<input type="checkbox"/>
-											<label for="">только по товарам в наличии</label>
-										</div>
-										<div class="search-mobile__option search-option">
-											<input type="checkbox"/>
-											<label for="">строгое соответствие</label>
-										</div>
-									</div>
-								</form>
-								<div class="suggest">
-									<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
-									<div class="suggest__results">
-										<div class="suggest__result suggest-result">
-											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-											<div class="suggest-result__info">
-												<div class="suggest-result__code">код 04434</div>
-												<div class="suggest-result__vendor">KLS</div>
-												<div class="suggest-result__price">1,46 руб./шт.</div>
-												<div class="suggest-result__status">на складе: 19 шт.</div>
-											</div>
-										</div>
-										<div class="suggest__result suggest-result">
-											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-											<div class="suggest-result__info">
-												<div class="suggest-result__code">код 04434</div>
-												<div class="suggest-result__vendor">KLS</div>
-												<div class="suggest-result__price">1,46 руб./шт.</div>
-												<div class="suggest-result__status">на складе: 19 шт.</div>
-											</div>
-										</div>
-										<div class="suggest__result suggest-result">
-											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-											<div class="suggest-result__info">
-												<div class="suggest-result__code">код 04434</div>
-												<div class="suggest-result__vendor">KLS</div>
-												<div class="suggest-result__price">1,46 руб./шт.</div>
-												<div class="suggest-result__status">на складе: 19 шт.</div>
-											</div>
-										</div>
-										<div class="suggest__result suggest-result">
-											<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-											<div class="suggest-result__info">
-												<div class="suggest-result__code">код 04434</div>
-												<div class="suggest-result__vendor">KLS</div>
-												<div class="suggest-result__price">1,46 руб./шт.</div>
-												<div class="suggest-result__status">на складе: 19 шт.</div>
-											</div>
-										</div>
-									</div>
-									<a class="suggest__all" href="search.html">Показать все результаты</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<xsl:call-template name="EXTRA_SCRIPTS"/>
-			<xsl:for-each select="$body-end-modules">
-				<xsl:value-of select="code" disable-output-escaping="yes"/>
-			</xsl:for-each>
-			<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
-		</body>
+				<xsl:call-template name="EXTRA_SCRIPTS"/>
+				<xsl:for-each select="$body-end-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
+				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+			</body>
+		</html>
 	</xsl:template>
 
 

@@ -264,8 +264,8 @@
 					$('.filtered').find('a').click(function(e){
 						e.preventDefault();
 						var rel = $(this).attr('rel');
-						$('#filters_container').find('input[rel=' + rel + ']').prop("checked", false);
-						$('#filters_container').find('form').submit();
+						$('#filters_container').find('input[rel="' + rel + '"]').prop("checked", false);
+						$('#filters_container').closest('form').submit();
 					});
 				});
 			</script>
