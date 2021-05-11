@@ -98,6 +98,9 @@
 				</table>
 			</div>
 		</div>
+		<div class="text" style="margin-top: 2rem;">
+			<xsl:value-of select="$domain/cart_and_feedback_settings/order_texts/confirm_text" disable-output-escaping="yes"/>
+		</div>
 		<!-- <h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="checkout-cont1">
 

@@ -11,7 +11,9 @@
 
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
-	<xsl:variable name="common" select="page/common"/>
+	<xsl:variable name="domain" select="page/domain"/>
+
+	<xsl:variable name="common" select="$domain/common"/>
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
@@ -37,7 +39,9 @@
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
-	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+	<xsl:variable name="main_host" select="$base" />
+
+<!--	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />-->
 
 	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
@@ -50,7 +54,7 @@
 	<!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
 
 	<xsl:variable name="source_link" select="/page/source_link"/>
-	<xsl:variable name="modules" select="page/modules/named_code[not(url != '') or contains($source_link, url)]"/>
+	<xsl:variable name="modules" select="$domain/modules/named_code[not(url != '') or contains($source_link, url)]"/>
 
 	<xsl:variable name="head-start-modules" select="$modules[place = 'head_start']"/>
 	<xsl:variable name="head-end-modules" select="$modules[place = 'head_end']"/>
@@ -63,10 +67,10 @@
 
 
 	<!-- ссылка на информационные разделы -->
-	<xsl:template match="custom_page" mode="menu_first">
+	<xsl:template match="custom_page | news" mode="menu_first">
 		<xsl:variable name="key" select="@key"/>
 		<!-- без подразделов -->
-		<xsl:if test="not(custom_page)">
+		<xsl:if test="not(custom_page or page_link or news)">
 			<div class="main-menu__item {'active'[$active_menu_item = $key]}">
 				<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
@@ -74,14 +78,14 @@
 			</div>
 		</xsl:if>
 		<!-- с подразделами -->
-		<xsl:if test="custom_page or page_link">
+		<xsl:if test="custom_page or page_link or news">
 			<div class="main-menu__item" style="position: relative;">
 				<a href="#ts_{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
 				</a>
 				<div id="ts_{@id}" class="popup-text-menu" style="position: absolute; z-index: 2; display: none;">
 					<div class="sections">
-						<xsl:apply-templates select="custom_page | page_link" mode="menu"/>
+						<xsl:apply-templates select="custom_page | page_link | news" mode="menu"/>
 					</div>
 				</div>
 			</div>
@@ -89,7 +93,7 @@
 	</xsl:template>
 
 
-	<xsl:template match="custom_page" mode="menu">
+	<xsl:template match="custom_page | news" mode="menu">
 		<a href="{show_page}">
 			<xsl:value-of select="header"/>
 		</a>
@@ -112,16 +116,34 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
+
+		<!-- <div id="test-domain-switcher" style="top:0; right:0; position: fixed; z-index:2; border: 2px solid lime;">
+			<script>
+				function reloadPage(){setTimeout(function(){document.location.reload(true)}, 1000)}
+			</script>
+			<xsl:variable name="domains" select="('super.com', 'pooper.com', 'non exsisting domain')"/>
+			<xsl:variable name="cookie" select="page/variables/dom"/>
+			<select onchange="insertAjax('set_domain?dom='+$(this).val(), '', reloadPage())">
+				<xsl:for-each select="$domains">
+					<xsl:if test="current() = $cookie">
+						<option selected="selected"><xsl:value-of select="."/></option>
+					</xsl:if>
+					<xsl:if test="not(current() = $cookie)">
+						<option><xsl:value-of select="."/></option>
+					</xsl:if>
+				</xsl:for-each>
+			</select>
+		</div> -->
+
 		<div class="top-info">
 			<div class="container">
-				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
 				<!-- static -->
 				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
 				<xsl:variable name="has_many_cities" select="count($common/topper/block) &gt; 1"/>
 				<xsl:for-each select="$common/topper/block">
 					<xsl:variable name="active" select="($has_city and header = $city) or (not($has_city) and position() = 1)"/>
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
-						<!-- <div class="top-info__location">
+						<div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
 								<span><xsl:value-of select="header"/></span>
 								<xsl:if test="$has_many_cities">
@@ -130,7 +152,7 @@
 									</div>
 								</xsl:if>
 							</a>
-						</div> -->
+						</div>
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
@@ -162,7 +184,7 @@
 			<div class="container">
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+						<img src="{concat($domain/@path, $domain/logo)}" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
@@ -273,14 +295,7 @@
 							</xsl:for-each>
 						</div>
 					</div>
-					<xsl:for-each select="page/news[in_main_menu = 'да']">
-						<xsl:variable name="key" select="@key"/>
-						<xsl:variable name="sel" select="page/varibles/sel"/>
-						<div class="main-menu__item {'active'[$sel = $key]}">
-							<a href="{show_page}"><span><xsl:value-of select="name"/></span></a>
-						</div>
-					</xsl:for-each>
-					<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
+					<xsl:apply-templates select="$domain/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
 				</div>
 			</div>
 		</div>
@@ -298,7 +313,7 @@
 		<div class="footer">
 			<div class="container">
 				<div class="footer__wrap">
-					<xsl:variable name="footer" select="page/common/footer"/>
+					<xsl:variable name="footer" select="$domain/common/footer"/>
 					<div class="footer__column">
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
@@ -327,7 +342,7 @@
 
 	<xsl:template name="INC_MOBILE_MENU">
 		<div class="menu-container mobile">
-			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
+			<div class="menu-overlay"></div>
 			<div class="menu-content">
 				<ul>
 					<li>
@@ -376,12 +391,7 @@
 					</li>
 				</ul>
 				<ul>
-					<xsl:for-each select="page/news">
-						<li><a href="{show_page}">
-							<xsl:value-of select="name"/>
-						</a></li>
-					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page">
+					<xsl:for-each select="$domain/custom_pages/custom_page">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 				</ul>
@@ -500,7 +510,7 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_NEWS">
 		<div class="side-menu">
-			<xsl:for-each select="page/news">
+			<xsl:for-each select="$domain/custom_pages/news">
 				<xsl:variable name="id" select="@id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a class="side-menu__link{' side-menu__link_active'[$id = $sel_news_id]}" href="{show_page}">
@@ -637,7 +647,23 @@
 	<xsl:template name="EXTRA_SCRIPTS"/>
 
 
-
+	<xsl:template match="style">
+		<xsl:text disable-output-escaping="yes">
+			&lt;!--</xsl:text>
+		<xsl:value-of select="name"/>
+		<xsl:text disable-output-escaping="yes">--&gt;</xsl:text>
+		<xsl:if test="ends-with(file, 'css')">
+			<link rel="stylesheet" href="{concat(@path, file)}"/>
+		</xsl:if>
+		<xsl:if test="ends-with(file, 'js')">
+			<script type="text/javascript" src="{concat(@path, file)}"></script>
+		</xsl:if>
+		<xsl:value-of select="code" disable-output-escaping="yes"/>
+		<xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
+		<xsl:value-of select="concat('END_',name)"/>
+		<xsl:text disable-output-escaping="yes">--&gt;
+		</xsl:text>
+	</xsl:template>
 
 
 
@@ -673,7 +699,7 @@
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
-				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
+				<link rel="stylesheet" href="css/fixes.css?version=1.499"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
@@ -690,6 +716,8 @@
 						</xsl:for-each>
 					</style>
 				</xsl:if>
+
+				<xsl:apply-templates select="$domain/extra_styles/style"/>
 
 				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"/>
 				<xsl:if test="$seo/extra_style">
@@ -731,7 +759,8 @@
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/web.js"/>
-				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
+<!--				<script type="text/javascript" src="slick/slick.min.js"></script>-->
+
 				<script type="text/javascript">
 					$(document).ready(function(){
 						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
@@ -808,7 +837,7 @@
 				</xsl:for-each>
 
 
-				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+				<div class="popup" style="display: none;" id="modal_popup" > Loading... </div>
 
 			</body>
 		</html>

@@ -73,7 +73,7 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
+				<td><span><xsl:value-of select="$param/@caption"/></span></td>
 				<td><xsl:value-of select="$param"/></td>
 			</tr>
 		</xsl:if>
@@ -93,30 +93,11 @@
 					</xsl:for-each>
 				</div>
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+					<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
-					</xsl:if>
 				</div>
-				<script>
-					$('.fotorama')
-						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
-						if (e.type === 'fotorama:fullscreenenter') {
-							// Options for the fullscreen
-							fotorama.setOptions({
-								fit: 'scaledown'
-							});
-						} else {
-							// Back to normal settings
-							fotorama.setOptions({
-								fit: 'contain'
-							});
-						}
-						})
-						.fotorama();
-					</script>
 			</div>
 			<div class="device-basic__column">
 				<!-- <xsl:for-each select="$p/tag">
@@ -197,7 +178,7 @@
 					</table> -->
 				</xsl:if>
 				<div class="product-common">
-					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+					<xsl:value-of select="$common/catalog_texts/payment" disable-output-escaping="yes"/>
 				</div>
 
 				<!-- один клик и своя цена не сверстаны -->
@@ -266,9 +247,9 @@
 					</div>
 				</xsl:if>
 
-				<div class="product-lables">
-					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-				</div>
+<!--				<div class="product-lables">-->
+<!--					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>-->
+<!--				</div>-->
 
 
 			</div>
@@ -284,9 +265,14 @@
 					<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
 					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
+					<xsl:for-each select="$p/product_extra[text !='']">
+						<a href="#tab_{@id}" class="tab {'tab_active'[not($has_text) and position() = 1]}">
+							<xsl:value-of select="name"/>
+						</a>
 					</xsl:for-each>
+					<xsl:if test="$p/warranty">
+						<a href="#tab_warranty" class="tab">Гарантия</a>
+					</xsl:if>
 				</div>
 				<div class="tabs__content">
 					<xsl:if test="$has_text">
@@ -304,8 +290,15 @@
 							</table>
 						</div>
 					</xsl:if>
+					<xsl:if test="$p/warranty">
+						<div class="tab-container" id="tab_warranty" style="{'display: none'[$has_text]}">
+							<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
+							<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
+							<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>
+						</div>
+					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
-						<div class="tab-container" id="tab_{@id}" style="display: none">
+						<div class="tab-container" id="tab_{@id}" style="{if($has_text or position() != 1) then 'display: none' else 'display: block'}">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>

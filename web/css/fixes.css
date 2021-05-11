@@ -1,6 +1,11 @@
-.button {
-  min-height: 28px;
+.device__image {
+  margin: 0;
 }
-input[type="number"] {
-  padding: 4px;
+.slider{margin-bottom: 15px;}
+.device-nav li{
+	margin-bottom: 0;
+	list-style: none;
+}
+.index-slider{
+	margin-bottom: 50px;
 }

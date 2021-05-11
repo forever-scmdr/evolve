@@ -11,7 +11,7 @@
 				"@type":"Organization",
 				"url":"<xsl:value-of select="$main_host"/>/",
 				"name":"<xsl:value-of select="$title"/>",
-				"logo":"<xsl:value-of select="concat($main_host, '/img/logo_big.svg')"/>",
+				"logo":"<xsl:value-of select="concat($domain/@path, $domain/logo)"/>",
 				"aggregateRating": {
 					"@type": "AggregateRating",
 					"ratingCount": "53",
@@ -19,10 +19,10 @@
 					"bestRating": "5",
 					"ratingValue": "4,9",
 					"worstRating": "1",
-					"name": "TTD"
+					"name": "<xsl:value-of select="$domain/name"/>"
 				},
 				"contactPoint": [
-					<xsl:for-each select="page/common/phone" >
+					<xsl:for-each select="$common/phone" >
 						<xsl:if test="position() != 1">,</xsl:if>{
 						"@type":"ContactPoint",
 						"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
@@ -30,8 +30,8 @@
 						}
 					</xsl:for-each>
 				]
-				<xsl:if test="page/common/email != ''">
-				,"email":[<xsl:for-each select="page/common/email" >
+				<xsl:if test="$common/email != ''">
+				,"email":[<xsl:for-each select="$common/email" >
 						<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
 				</xsl:if>
 			}
@@ -41,40 +41,48 @@
 
 	<xsl:template name="MAIN_CONTENT" />
 
-
-
-
 	<xsl:template name="INDEX_BLOCKS">
 
-
-
 		<!-- slider -->
-		<div class="slider">
-			<div class="container">
-				<xsl:for-each select="page/main_page/main_slider_frame">
-					<img src="{@path}{pic}" alt="" />
-				</xsl:for-each>
-			</div>
-		</div>
+			<xsl:if test="$domain/slideshow/main_slider_frame">
+				<div class="container index-slider">
+					<div class="slider">
+						<xsl:for-each select="$domain/slideshow/main_slider_frame">
+							<div>
+								<a href="{link}">
+									<img src="{@path}{pic}" alt="" />
+								</a>
+							</div>
+						</xsl:for-each>
+					</div>
+					<xsl:if test="count($domain/slideshow/main_slider_frame) &gt; 1">
+						<div id="index-nav" class="device-nav"></div>
+					</xsl:if>
+				</div>
+			</xsl:if>
 		<!-- slider end -->
 
+		<!-- products carousel -->
 		<div class="devices-block">
 			<div class="container">
-				<div class="title title_block">Лучшие цены</div>
+				<div class="title_1">Лучшие цены</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<xsl:apply-templates select="."/>
+					<xsl:for-each select="page/product[tag = 'Акция']">
+						<div>
+							<xsl:apply-templates select="."/>
+						</div>
 					</xsl:for-each>
 				</div>
+				<div id="sale-nav" class="device-nav"></div>
 			</div>
 		</div>
 		<div class="devices-block">
 			<div class="container">
 				<div class="title title_block">Хиты продаж</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
+					<xsl:for-each-group select="page/product[tag = 'Хит продаж']" group-by="@id"> 
+						<xsl:apply-templates select="current-group()[1]"/>
+					</xsl:for-each-group>
 				</div>
 			</div>
 		</div>
@@ -82,16 +90,14 @@
 			<div class="container">
 				<div class="title title_block">Новинки</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
+					<xsl:for-each-group select="page/product[tag = 'Новый товар']" group-by="@id">
+						<xsl:apply-templates select="current-group()[1]"/>
+					</xsl:for-each-group>
 				</div>
 			</div>
 		</div>
 
 	</xsl:template>
-
-
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>

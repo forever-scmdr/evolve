@@ -152,7 +152,6 @@ $(document).on("click", "body", function(e){
 	}
 });
 
-
 function showDetails(link) {
 	$("#product-ajax-popup").show();
 	insertAjax(link, 'product-ajax-content', function(){

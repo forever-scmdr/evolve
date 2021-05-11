@@ -92,6 +92,9 @@
 							</div>
 						</div>
 					</form>
+					<div class="text" style="margin-top: 2rem;">
+						<xsl:value-of select="$domain/cart_and_feedback_settings/order_texts/cart_text" disable-output-escaping="yes"/>
+					</div>
 				</xsl:when>
 				<xsl:otherwise>
 					<h3>Корзина пуста</h3>
