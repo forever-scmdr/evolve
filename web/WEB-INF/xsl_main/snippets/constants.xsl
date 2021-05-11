@@ -10,9 +10,9 @@
     <xsl:variable name="to_cart_na_label" select="'Заказать'"/>
     <xsl:variable name="go_to_cart_label" select="'Оформить заказ'"/>
 
-    <xsl:variable name="compare_add_label" select="'Выбрать'"/>
-    <xsl:variable name="compare_remove_label" select="'Удалить'"/>
-    <xsl:variable name="go_to_compare_label" select="'Сравнить'"/>
+    <xsl:variable name="compare_add_label" select="'выбрать'"/>
+    <xsl:variable name="compare_remove_label" select="'удалить'"/>
+    <xsl:variable name="go_to_compare_label" select="'сравнить'"/>
 
 
 </xsl:stylesheet>

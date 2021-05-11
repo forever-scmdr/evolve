@@ -22,6 +22,7 @@
 						<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 						<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
 						<div class="catalog-item__info">
+							<div class="catalog-item__type">Раздел</div>
 							<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 							<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
 							<a href="{show_products}" class="catalog-item__link"></a>
