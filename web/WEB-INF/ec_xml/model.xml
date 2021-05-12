@@ -308,8 +308,8 @@
 		<child item="product" assoc="related"/>
 	</item>
 
-	<item name="related_list" caption="Список сопутствующих товаров">
-		<parameter name="code" type="string" caption="код"/>
+	<item name="related_list" caption="Список сопутствующих товаров" ag-id="2240" ag-hash="154120242">
+		<parameter name="code" type="string" caption="код" multiple="true"/>
 	</item>
 
 	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
@@ -640,7 +640,7 @@
 	<!--/////////////                                                                      ////////////-->
 
 	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
-	<assoc name="related" caption="Сопутствующий товар"/>
+	<assoc name="related" caption="Сопутствующий товар" ag-id="7" ag-hash="1090493483"/>
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>

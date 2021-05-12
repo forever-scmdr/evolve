@@ -28,6 +28,7 @@ import java.util.*;
 
 public class NaskladeProductCreationHandler extends DefaultHandler implements CatalogConst {
 
+	private static final String REALATED = "related";
 	private static final Set<String> SINGLE_ELEMENTS = new HashSet() {{
 		add(NAME_ELEMENT);
 		add(URL_ELEMENT);
@@ -109,6 +110,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}};
 
 	private int picCounter = 0;
+	private int picLimit = -1;
 
 	private Map<String, Item> sections;
 	private IntegrateBase.Info info;
@@ -134,6 +136,8 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		this.info = info;
 		this.initiator = initiator;
 	}
+
+	private LinkedHashSet<String> currentProductRelatedSet = new LinkedHashSet<>();
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -213,13 +217,18 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 				}
 
+				Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};
+				ArrayList<Item> subs = ItemQuery.loadByParentId(product.getId(), assId);
+
 				if (isExistingProduct) {
-					addWarrantyAndPages(product);
+					addWarrantyAndPages(product, subs);
 				} else {
 					addWarrantyAndPagesQuick(product);
 				}
-				addAdditionalParams(product);
+				addAdditionalParams(product, subs);
+				addRelated(product, subs);
 				info.increaseProcessed();
+				currentProductRelatedSet.clear();
 				isInsideOffer = false;
 			} else if (isInsideOffer && SINGLE_ELEMENTS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
@@ -231,6 +240,8 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
+			} else if(isInsideOffer && REALATED.equalsIgnoreCase(qName)){
+				currentProductRelatedSet.add( StringUtils.trim(paramValue.toString()));
 			}
 			if(isInsideOffer && ADDITIONAL_PARAMS.contains(qName) && parameterReady){
 				additionalParams.put(ELEMENT_PARAM_DICTIONARY.get(paramName), StringUtils.trim(paramValue.toString()));
@@ -244,9 +255,27 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		}
 	}
 
-	private void addAdditionalParams(Item product) throws Exception {
-		Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};
-		ArrayList<Item> subs =  ItemQuery.loadByParentId(product.getId(), assId);
+	private void addRelated(Item product, Collection<Item> subs) throws Exception {
+		ItemType relatedType = ItemTypeRegistry.getItemType("related_list");
+		Item related = null;
+		for(Item sub : subs){
+			if(!sub.getItemType().equals(relatedType)){continue;}
+			if(related == null){
+				related = sub;
+			}else{
+				DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(sub.getId()).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
+			}
+		}
+		related = (related == null)? Item.newChildItem(relatedType, product) : related;
+		related.clearValue(CODE_PARAM);
+		for(String code : currentProductRelatedSet){
+			if(product.getStringValue(CODE_PARAM).equals(code)) continue;
+			related.setValueUI(CODE_PARAM,code);
+		}
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(related).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
+	}
+
+	private void addAdditionalParams(Item product, Collection<Item> subs) throws Exception {
 		ItemType additionalType = ItemTypeRegistry.getItemType("other_info");
 		Item additional = null;
 		for(Item sub : subs){
@@ -267,9 +296,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(additional).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 	}
 
-	private void addWarrantyAndPages(Item product) throws Exception {
-		Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};
-		ArrayList<Item> subs = ItemQuery.loadByParentId(product.getId(), assId);
+	private void addWarrantyAndPages(Item product, Collection<Item> subs) throws Exception {
 		Item warranty = null;
 		Item tech = null;
 		Item video = null;
@@ -374,8 +401,8 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}
 
 	private boolean addPics(Item product) throws MalformedURLException {
-		if(picCounter > 19) return false;
-		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
+		if(picCounter > picLimit) return false;//for testing. set limit to Integer.MAX_VALUE for production
+ 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
 		if (picUrls == null) {
 			info.addLog("No pics for [" + product.getValue(CODE_PARAM) + "]", String.valueOf(productStartLineNumber));
 			return false;
@@ -455,7 +482,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (SINGLE_ELEMENTS.contains(qName) || MULTIPLE_ELEMENTS.contains(qName)) || EXTRA_PAGE_ELEMENTS.contains(qName) || WARRANTY_ELEMENTS.contains(qName) || ADDITIONAL_PARAMS.contains(qName)) {
+		else if (isInsideOffer && ((SINGLE_ELEMENTS.contains(qName) || MULTIPLE_ELEMENTS.contains(qName)) || EXTRA_PAGE_ELEMENTS.contains(qName) || WARRANTY_ELEMENTS.contains(qName) || ADDITIONAL_PARAMS.contains(qName) || REALATED.equals(qName))) {
 			paramName = qName;
 			parameterReady = true;
 		}

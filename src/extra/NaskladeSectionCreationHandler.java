@@ -101,6 +101,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 							}
 							try {
 								DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
+								info.increaseProcessed();
 								for (String group : section.getStringValues("group")){
 									groupMap.put(group, section);
 								}
@@ -131,6 +132,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 			else if(CATEGORY_ELEMENT.equalsIgnoreCase(qName)){
 				if(currentSection != null){
 					DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(currentSection).noTriggerExtra());
+					info.increaseProcessed();
 					currentSection = null;
 					currentSectionCode = null;
 				}

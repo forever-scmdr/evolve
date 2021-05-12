@@ -5,11 +5,16 @@ import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.DeleteAssocDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.helpers.DefaultHandler;
@@ -18,11 +23,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class NaskladeCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
 	private Collection<File> xmls;
+	Item catalog;
 
 	@Override
 	protected void integrate() throws Exception {
@@ -31,7 +38,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 
 		setOperation("Создание разделов");
 		pushLog("Создание разделов");
-		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		NaskladeSectionCreationHandler secHandler = new NaskladeSectionCreationHandler(catalog, info, getInitiator());
 
 		for (File xml : xmls) {
@@ -56,6 +63,14 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		}
 
 		info.pushLog("Создание товаров завершено");
+
+		info.pushLog("Прикрепление сопутствующих товаров");
+		info.setOperation("Прикрепление сопутствующих товаров");
+
+		addRelatedProducts();
+
+		info.pushLog("Прикрепление сопутствующих товаров завершено");
+
 		info.pushLog("Прикрепление картинок к разделам");
 		info.setOperation("Прикрепление картинок к разделам");
 
@@ -68,6 +83,66 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
+	}
+
+	private void addRelatedProducts() throws Exception {
+		info.setProcessed(0);
+		info.setToProcess(0);
+
+		long id = 0;
+		final int LIMIT = 500;
+		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, LIMIT, id);
+		while (products.size() > 0){
+			for (Item product : products){
+				id = product.getId();
+				resolveRelated(product);
+				info.increaseProcessed();
+			}
+			products =  ItemMapper.loadByName(ItemNames.PRODUCT, LIMIT, id);
+		}
+	}
+
+	private void resolveRelated(Item product) throws Exception{
+		ItemQuery q = new ItemQuery("related_list");
+		q.setParentId(product.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+		List<Item> relatedLists = q.loadItems();
+		if(relatedLists.size() > 1){
+			String em = (product.getStringValue(CODE_PARAM) + "has "+relatedLists.size()+" related lists!");
+			throw new Exception(em);
+		}else if(relatedLists.size() == 0){
+			List<Item> relatedProducts = ItemQuery.loadByParentId(product.getId(),  new Byte[]{ItemTypeRegistry.getAssocId("related")});
+			for(Item r : relatedProducts){
+				executeCommandUnit(new DeleteAssocDBUnit(r, product.getId(), ItemTypeRegistry.getAssoc("related").getId()));
+			}
+			commitCommandUnits();
+		}else {
+			List<String> codes = relatedLists.get(0).getStringValues(CODE_PARAM);
+			List<Item> relatedProducts = ItemQuery.loadByParentId(product.getId(),  new Byte[]{ItemTypeRegistry.getAssocId("related")});
+			for(String code : codes){
+				boolean isNewRelatedProduct = true;
+				//do nothing if in list and related
+				Iterator<Item> relatedProductIterator = relatedProducts.iterator();
+				while (relatedProductIterator.hasNext()){
+					Item r = relatedProductIterator.next();
+					if(r.getStringValue(CODE_PARAM).equals(code)){
+						relatedProductIterator.remove();
+						isNewRelatedProduct= false;
+					}
+				}
+				//add new related device
+				if(isNewRelatedProduct){
+					Item relatedProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+					if(relatedProduct != null) {
+						executeCommandUnit(CreateAssocDBUnit.childExistsSoft(relatedProduct, product.getId(), ItemTypeRegistry.getAssoc("related").getId()));
+					}
+				}
+			}
+			//remove if not in list
+			for(Item r : relatedProducts){
+				executeCommandUnit(new DeleteAssocDBUnit(r, product.getId(), ItemTypeRegistry.getAssoc("related").getId()));
+			}
+			commitCommandUnits();
+		}
 	}
 
 	@Override
