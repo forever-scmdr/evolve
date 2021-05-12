@@ -350,7 +350,7 @@
 			<div class="title title_2">Сопутствующие товары</div>
 			<ul>
 				<xsl:for-each select="$p/product">
-					<li><xsl:value-of select="name" /></li>
+					<li>[<xsl:value-of select="code"/>] <xsl:value-of select="name" /></li>
 				</xsl:for-each>
 			</ul>
 			<div class="block devices-block pt">

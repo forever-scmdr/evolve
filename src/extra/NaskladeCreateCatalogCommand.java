@@ -90,7 +90,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		info.setToProcess(0);
 
 		long id = 0;
-		final int LIMIT = 500;
+		final int LIMIT = 50;
 		List<Item> products = ItemMapper.loadByName(ItemNames.PRODUCT, LIMIT, id);
 		while (products.size() > 0){
 			for (Item product : products){

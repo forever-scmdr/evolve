@@ -110,7 +110,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}};
 
 	private int picCounter = 0;
-	private int picLimit = -1;
+	private int picLimit = Integer.MAX_VALUE;
 
 	private Map<String, Item> sections;
 	private IntegrateBase.Info info;
