@@ -154,7 +154,6 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					return;
 				}
 
-				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isExistingProduct = product != null;
 				String secCode = singleParams.getOrDefault(CATEGORY_ID_ELEMENT, "");
@@ -215,6 +214,13 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				boolean isSaved = addPics(product);
 				if (!isSaved) {
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+				}
+
+				boolean hide = product.getByteValue(AVAILABLE_PARAM, (byte)0) < 1;
+				if(hide){
+					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()));
+				}else if(!hide && product.isStatusHidden()){
+					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product.getId()));
 				}
 
 				Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};

@@ -177,12 +177,6 @@
 						</xsl:for-each>
 					</table> -->
 				</xsl:if>
-				<xsl:if test="$p/warranty">
-					<div style="margin-bottom: 2rem;">
-						<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
-						<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
-					</div>
-				</xsl:if>
 				<div class="product-common">
 					<xsl:value-of select="$common/catalog_texts/payment" disable-output-escaping="yes"/>
 				</div>
@@ -276,6 +270,9 @@
 							<xsl:value-of select="name"/>
 						</a>
 					</xsl:for-each>
+					<xsl:if test="$p/warranty">
+						<a href="#tab_warranty" class="tab">Гарантия</a>
+					</xsl:if>
 				</div>
 				<div class="tabs__content">
 					<xsl:if test="$has_text">
@@ -293,6 +290,13 @@
 							</table>
 						</div>
 					</xsl:if>
+					<xsl:if test="$p/warranty">
+						<div class="tab-container" id="tab_warranty" style="{'display: none'[$has_text]}">
+							<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
+							<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
+							<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>
+						</div>
+					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
 						<div class="tab-container" id="tab_{@id}" style="{if($has_text or position() != 1) then 'display: none' else 'display: block'}">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -300,7 +304,6 @@
 					</xsl:for-each>
 				</div>
 			</div>
-
 		</div>
 
 		<xsl:if test="page/grouped">
@@ -341,6 +344,28 @@
 				</div>
 				<div class="device-nav-similar device-nav"></div>
 			</div>
+		</xsl:if>
+
+		<xsl:if test="$p/product">
+			<div class="title title_2">Сопутствующие товары</div>
+			<ul>
+				<xsl:for-each select="$p/product">
+					<li><xsl:value-of select="name" /></li>
+				</xsl:for-each>
+			</ul>
+			<div class="block devices-block pt">
+				<div class="title title_2">Сопутствующие товары</div>
+				<div class="devices-block__wrap device-carousel-similar">
+					<xsl:for-each select="$p/product">
+						<div class="devices-block__column">
+							<!-- это обычный товар -->
+							<xsl:apply-templates select="."/>
+						</div>
+					</xsl:for-each>
+				</div>
+				<div class="device-nav-similar device-nav"></div>
+			</div>
+
 		</xsl:if>
 
 

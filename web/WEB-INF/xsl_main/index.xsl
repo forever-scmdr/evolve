@@ -44,13 +44,22 @@
 	<xsl:template name="INDEX_BLOCKS">
 
 		<!-- slider -->
-		<div class="slider">
-			<div class="container">
-				<xsl:for-each select="$domain/slideshow/main_slider_frame">
-					<img src="{@path}{pic}" alt="" />
-				</xsl:for-each>
-			</div>
-		</div>
+			<xsl:if test="$domain/slideshow/main_slider_frame">
+				<div class="container index-slider">
+					<div class="slider">
+						<xsl:for-each select="$domain/slideshow/main_slider_frame">
+							<div>
+								<a href="{link}">
+									<img src="{@path}{pic}" alt="" />
+								</a>
+							</div>
+						</xsl:for-each>
+					</div>
+					<xsl:if test="count($domain/slideshow/main_slider_frame) &gt; 1">
+						<div id="index-nav" class="device-nav"></div>
+					</xsl:if>
+				</div>
+			</xsl:if>
 		<!-- slider end -->
 
 		<!-- products carousel -->
@@ -61,15 +70,15 @@
 					<xsl:for-each select="page/product[tag = 'Акция']">
 						<xsl:apply-templates select="."/>
 					</xsl:for-each>
-
 				</div>
+				<div id="sale-nav" class="device-nav"></div>
 			</div>
 		</div>
 		<div class="devices-block">
 			<div class="container">
 				<div class="title title_block">Хиты продаж</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each-group select="page/product[tag = 'Хит продаж']" group-by="@id"> 
+					<xsl:for-each-group select="page/product[tag = 'Хит продаж']" group-by="@id">
 						<xsl:apply-templates select="current-group()[1]"/>
 					</xsl:for-each-group>
 				</div>

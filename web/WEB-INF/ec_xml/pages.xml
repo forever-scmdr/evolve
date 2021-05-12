@@ -296,6 +296,41 @@
 		<list item="params"/>
 	</include-definition>
 
+	<include-definition name="RELATED_PRODUCT_PARAMS_LINKS">
+		<link name="show_product" target="product" type="exclusive">
+			<var name="prod" ref="related" style="key"/>
+		</link>
+		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="related" style="key"/>
+		</link>
+		<link name="to_cart" target="cart_action">
+			<var name="action" value="addToCart"/>
+			<var name="prod" ref="related"/>
+		</link>
+		<link name="to_fav" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="favourites"/>
+			<var name="prod" ref="related"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="fav_ajax"/>
+		</link>
+		<link name="to_compare" target="cookie_list_action_redirect">
+			<var name="update_cookie_name" value="compare"/>
+			<var name="prod" ref="related"/>
+			<var name="action" value="add"/>
+			<var name="src_page" value="compare_ajax"/>
+		</link>
+		<link name="one_click_link" target="one_click_ajax">
+			<var name="prod" ref="related"/>
+		</link>
+		<link name="subscribe_link" target="subscribe_ajax">
+			<var name="prod" ref="related"/>
+		</link>
+		<link name="my_price_link" target="my_price_ajax">
+			<var name="prod" ref="related"/>
+		</link>
+		<list item="params"/>
+	</include-definition>
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
@@ -748,6 +783,9 @@
 				<link name="my_price_link" target="my_price_ajax">
 					<var name="prod" ref="lprod"/>
 				</link>
+			</list>
+			<list item="product" assoc="related" id="related">
+				<include name="RELATED_PRODUCT_PARAMS_LINKS"/>
 			</list>
 		</single>
 		<list item="product" tag="assoc" id="assoc">

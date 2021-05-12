@@ -93,7 +93,7 @@
 
 		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-			<div class="h3">Товары</div>
+			<!-- <div class="h3">Товары</div> -->
 		</xsl:if>
 		<xsl:call-template name="DISPLAY_CONTROL"/>
 
@@ -153,16 +153,16 @@
 				</div>
 			</xsl:if>
 			<xsl:if test="not($sel_sec/show_subs = '0')">
-				<xsl:if test="$subs and $sub_view = 'tags'">
-					<div class="labels labels_section">
-						<xsl:apply-templates select="$subs" mode="tag"/>
-					</div>
-				</xsl:if>
 				<xsl:if test="$subs and $sub_view = 'pics'">
 					<div class="catalog-items">
 						<div class="catalog-items__wrap">
 							<xsl:apply-templates select="$subs" mode="pic"/>
 						</div>
+					</div>
+				</xsl:if>
+				<xsl:if test="$subs and $sub_view = 'tags'">
+					<div class="labels labels_section">
+						<xsl:apply-templates select="$subs" mode="tag"/>
 					</div>
 				</xsl:if>
 			</xsl:if>
@@ -222,12 +222,10 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
-						<img src="img/icon-view-grid-active.png" alt="" />
-						<!-- <span class="icon-link__item">Плиткой</span> -->
+						<img src="img/icon-view-grid{'-active'[not($view = 'list')]}.png" alt="" />
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
-						<img src="img/icon-view-rows.png" alt="" />
-						<!-- <span class="icon-link__item">Строками</span> -->
+						<img src="img/icon-view-rows{'-active'[$view = 'list']}.png" alt="" />
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
@@ -308,6 +306,7 @@
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
 			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
 			<div class="catalog-item__info">
+				<div class="catalog-item__type">Раздел</div>
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
 				<a href="{show_products}" class="catalog-item__link"></a>
