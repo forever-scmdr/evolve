@@ -1,5 +1,11 @@
 var mceSettings = {
 	"mce_big" : {
+		cleanup_on_startup: false,
+		trim_span_elements: false,
+		verify_html: false,
+		cleanup: false,
+		convert_urls: false,
+		valid_children: "+a[div]",
 		selector : "textarea.mce_big",
 		language : 'ru',
 		//	theme : "modern",
@@ -55,7 +61,7 @@ var mceSettings = {
 		height : 300
 		,rel_list: [
 			 {title: '-', value: ''}
-			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
+			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
   		]
 	}

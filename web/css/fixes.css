@@ -18,3 +18,40 @@ input[type="number"] {
 .google-rating__text {
   font-size: 13px;
 }
+
+/* toggle_a */
+a.toggle_a {
+	background: #f2f2f2;
+	display: flex;
+	padding: 8px 16px;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.toggle__button {
+	border-radius: 100px;
+	width: 32px;
+	background: #acacac;
+	padding: 2px;
+	display: flex;
+	margin-right: 16px;
+  transition: all .5s;
+}
+.toggle__button:before {
+	display: block;
+	content: '';
+	border-radius: 100px;
+	height: 14px;
+	width: 14px;
+	background: #f3f1f3;
+}
+.toggle__text {
+	color: #acacac;
+	font-weight: 700;
+}
+a.toggle_a.active .toggle__button {
+  background-color: #31869B;
+  justify-content: flex-end;
+}
+a.toggle_a.active .toggle__text {
+  color: #31869B;
+}

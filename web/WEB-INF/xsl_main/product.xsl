@@ -385,16 +385,16 @@
 		</xsl:if>
 
 
-		<xsl:if test="page/assoc">
+		<xsl:if test="page/assoc[not(code = $p/code)]">
 			<div class="block devices-block pt">
 				<div class="title title_2">Вас также могут заинтересовать</div>
 				<div class="devices-block__wrap device-carousel-similar">
-					<xsl:for-each select="page/assoc">
+					<xsl:for-each-group select="page/assoc[not(code = $p/code)]" group-by="@id">
 						<div class="devices-block__column">
 							<!-- это обычный товар -->
-							<xsl:apply-templates select="."/>
+							<xsl:apply-templates select="current-group()[1]"/>
 						</div>
-					</xsl:for-each>
+					</xsl:for-each-group>
 				</div>
 				<div class="device-nav-similar device-nav"></div>
 			</div>

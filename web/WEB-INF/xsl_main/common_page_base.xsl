@@ -250,13 +250,13 @@
 						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
+								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+									<xsl:if test="section[f:num(hide) = 0]">
 										<a href="{show_products}" rel="#sub_{@id}">
 											<xsl:value-of select="name" />
 										</a>
 									</xsl:if>
-									<xsl:if test="not(section)">
+									<xsl:if test="not(section[f:num(hide) = 0])">
 										<a href="{show_products}">
 											<xsl:value-of select="name" />
 										</a>
@@ -264,9 +264,9 @@
 								</xsl:for-each>
 							</div>
 
-							<xsl:for-each select="page/catalog/section">
+							<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
+									<xsl:for-each select="section[f:num(hide) = 0]">
 										<a href="{show_products}"><xsl:value-of select="name" /></a>
 									</xsl:for-each>
 								</div>
@@ -303,7 +303,7 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="" class="forever">
+						<a href="http://forever.by" class="forever">
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
 						</a>
@@ -430,15 +430,15 @@
 					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
 				</div>
 				<ul>
-					<xsl:for-each select="page/catalog/section">
+					<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 						<li>
-							<xsl:if test="section">
+							<xsl:if test="section[f:num(hide) = 0]">
 								<a rel="{concat('#m_sub_', @id)}">
 									<xsl:value-of select="name"/>
 								</a>
 								<span>></span>
 							</xsl:if>
-							<xsl:if test="not(section)">
+							<xsl:if test="not(section[f:num(hide) = 0])">
 								<a href="{show_products}">
 									<xsl:value-of select="name"/>
 								</a>
@@ -447,7 +447,7 @@
 					</xsl:for-each>
 				</ul>
 			</div>
-			<xsl:for-each select="page/catalog/section[section]">
+			<xsl:for-each select="page/catalog/section[f:num(hide) = 0 and section[f:num(hide) = 0]]">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
@@ -455,15 +455,15 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-						<xsl:for-each select="section">
+						<xsl:for-each select="section[f:num(hide) = 0]">
 							<li>
-								<xsl:if test="section">
+								<xsl:if test="section[f:num(hide) = 0]">
 									<a rel="{concat('#m_sub_', @id)}">
 										<xsl:value-of select="name"/>
 									</a>
 									<i class="fas fa-chevron-right"></i>
 								</xsl:if>
-								<xsl:if test="not(section)">
+								<xsl:if test="not(section[f:num(hide) = 0])">
 									<a href="{show_products}" >
 										<xsl:value-of select="name"/>
 									</a>
@@ -473,7 +473,7 @@
 					</ul>
 				</div>
 			</xsl:for-each>
-			<xsl:for-each select="page/catalog/section/section[section]">
+			<xsl:for-each select="page/catalog/section[f:num(hide) = 0 and section[f:num(hide) = 0]]">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
@@ -481,7 +481,7 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-						<xsl:for-each select="section">
+						<xsl:for-each select="section[f:num(hide) = 0]">
 							<li>
 								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
@@ -513,25 +513,25 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
+			<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a class="side-menu__link{' side-menu__link_active'[$l1_active]}" href="{show_products}"><xsl:value-of select="name"/> </a>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
-					<xsl:for-each select="section">
+					<xsl:for-each select="section[f:num(hide) = 0]">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="side-menu__item side-menu__item_level_2">
 							<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="name"/></a>
 						</div>
 						<xsl:if test=".//@id = $sel_sec_id">
-							<xsl:for-each select="section">
+							<xsl:for-each select="section[f:num(hide) = 0]">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="side-menu__item side-menu__item_level_3">
 									<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="name"/></a>
 								</div>
 								<xsl:if test=".//@id = $sel_sec_id">
-									<xsl:for-each select="section">
+									<xsl:for-each select="section[f:num(hide) = 0]">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="side-menu__item side-menu__item_level_4">
 											<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l4_active]}"><xsl:value-of select="name"/></a>
@@ -983,7 +983,7 @@
 			<meta name="google-site-verification" content="{$common/google_verification}"/>
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
