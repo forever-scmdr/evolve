@@ -18,6 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class NaskladeSectionCreationHandler extends DefaultHandler implements CatalogConst {
@@ -28,7 +29,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 	private StringBuilder tagText = new StringBuilder();
 	private HashMap<String, Item> sectionMap = new HashMap<>();
 	private HashMap<String, SectionInfo> newSectionParent = new HashMap<>(); // код раздела => название раздела, код родителя
-	private HashMap<String, Item> groupMap = new HashMap<>();
+	private HashMap<String, LinkedHashSet<Item>> groupMap = new HashMap<>();
 
 	private Item catalog;
 	private IntegrateBase.Info info;
@@ -103,7 +104,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 								DelayedTransaction.executeSingle(owner, SaveItemDBUnit.get(section).noTriggerExtra());
 								info.increaseProcessed();
 								for (String group : section.getStringValues("group")){
-									groupMap.put(group, section);
+									addToGroupMap(group, section);
 								}
 							} catch (Exception e) {
 								ServerLogger.error("Integration error", e);
@@ -121,7 +122,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 				if (StringUtils.isNotBlank(g)) {
 					if (currentSection != null) {
 						currentSection.setValueUI("group", g);
-						groupMap.put(g, currentSection);
+						addToGroupMap(g, currentSection);
 					} else {
 						SectionInfo sectionInfo = newSectionParent.get(currentSectionCode);
 						sectionInfo.groups.add(g);
@@ -143,6 +144,17 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 		}
 	}
 
+	private void addToGroupMap(String group, Item section){
+		LinkedHashSet<Item> secs = groupMap.get(group);
+		if(secs == null){
+			secs = new LinkedHashSet<>();
+			secs.add(section);
+			groupMap.put(group, secs);
+		}else{
+			secs.add(section);
+		}
+	}
+
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		if(endOfSecs)return;
@@ -154,7 +166,7 @@ public class NaskladeSectionCreationHandler extends DefaultHandler implements Ca
 		this.locator = locator;
 	}
 
-	public HashMap<String, Item> getSections() {
+	public HashMap<String, LinkedHashSet<Item>> getSections() {
 		return groupMap;
 	}
 

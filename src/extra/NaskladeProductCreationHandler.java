@@ -10,12 +10,15 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -50,7 +53,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		add(PICTURE_ELEMENT);
 	}};
 
-	private static final Set<String> ADDITIONAL_PARAMS = new HashSet(){{
+	private static final Set<String> ADDITIONAL_PARAMS = new HashSet() {{
 		add("net_weight");
 		add("gross_weight");
 
@@ -110,9 +113,9 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}};
 
 	private int picCounter = 0;
-	private int picLimit = Integer.MAX_VALUE;
+	private int picLimit = -1;//Integer.MAX_VALUE;
 
-	private Map<String, Item> sections;
+	private Map<String, LinkedHashSet<Item>> sections;
 	private IntegrateBase.Info info;
 	private User initiator;
 
@@ -131,7 +134,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private ItemType productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
 	private int productStartLineNumber = 0;
 
-	public NaskladeProductCreationHandler(Map<String, Item> sections, IntegrateBase.Info info, User initiator) {
+	public NaskladeProductCreationHandler(Map<String, LinkedHashSet<Item>> sections, IntegrateBase.Info info, User initiator) {
 		this.sections = sections;
 		this.info = info;
 		this.initiator = initiator;
@@ -158,8 +161,9 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				boolean isExistingProduct = product != null;
 				String secCode = singleParams.getOrDefault(CATEGORY_ID_ELEMENT, "");
 				if (!isExistingProduct) {
-					Item section = sections.get(secCode);
-					if (section != null) {
+					LinkedHashSet<Item> secs = sections.get(secCode);
+					if (secs != null) {
+						Item section = secs.iterator().next();
 						product = Item.newChildItem(productType, section);
 						productContainers.add(secCode);
 					} else {
@@ -196,7 +200,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 								product.setValueUI(param, value);
 							}
 						}
-					}else if(ELEMENT_PARAM_DICTIONARY.containsKey(element)){
+					} else if (ELEMENT_PARAM_DICTIONARY.containsKey(element)) {
 						String param = ELEMENT_PARAM_DICTIONARY.get(element);
 						product.clearValue(param);
 					}
@@ -216,11 +220,23 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 				}
 
-				boolean hide = product.getByteValue(AVAILABLE_PARAM, (byte)0) < 1;
-				if(hide){
+				boolean hide = product.getByteValue(AVAILABLE_PARAM, (byte) 0) < 1;
+				if (hide) {
 					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.hide(product.getId()));
-				}else if(!hide && product.isStatusHidden()){
+				} else if (!hide && product.isStatusHidden()) {
 					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product.getId()));
+				}
+
+				//Add associations if needed
+				if (sections.get(secCode).size() > 0) {
+					int i = 0;
+					for (Item sec : sections.get(secCode)) {
+						if (i > 0) {
+							PersistenceCommandUnit addAssoc = CreateAssocDBUnit.childExistsSoft(product, sec.getId(), ItemTypeRegistry.getAssoc("catalog_link").getId());
+							DelayedTransaction.executeSingle(initiator, addAssoc);
+						}
+						i++;
+					}
 				}
 
 				Byte[] assId = new Byte[]{new Byte(ItemTypeRegistry.getPrimaryAssocId())};
@@ -246,10 +262,10 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
-			} else if(isInsideOffer && REALATED.equalsIgnoreCase(qName)){
-				currentProductRelatedSet.add( StringUtils.trim(paramValue.toString()));
+			} else if (isInsideOffer && REALATED.equalsIgnoreCase(qName)) {
+				currentProductRelatedSet.add(StringUtils.trim(paramValue.toString()));
 			}
-			if(isInsideOffer && ADDITIONAL_PARAMS.contains(qName) && parameterReady){
+			if (isInsideOffer && ADDITIONAL_PARAMS.contains(qName) && parameterReady) {
 				additionalParams.put(ELEMENT_PARAM_DICTIONARY.get(paramName), StringUtils.trim(paramValue.toString()));
 			}
 			parameterReady = false;
@@ -264,19 +280,21 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private void addRelated(Item product, Collection<Item> subs) throws Exception {
 		ItemType relatedType = ItemTypeRegistry.getItemType("related_list");
 		Item related = null;
-		for(Item sub : subs){
-			if(!sub.getItemType().equals(relatedType)){continue;}
-			if(related == null){
+		for (Item sub : subs) {
+			if (!sub.getItemType().equals(relatedType)) {
+				continue;
+			}
+			if (related == null) {
 				related = sub;
-			}else{
+			} else {
 				DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(sub.getId()).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 			}
 		}
-		related = (related == null)? Item.newChildItem(relatedType, product) : related;
+		related = (related == null) ? Item.newChildItem(relatedType, product) : related;
 		related.clearValue(CODE_PARAM);
-		for(String code : currentProductRelatedSet){
-			if(product.getStringValue(CODE_PARAM).equals(code)) continue;
-			related.setValueUI(CODE_PARAM,code);
+		for (String code : currentProductRelatedSet) {
+			if (product.getStringValue(CODE_PARAM).equals(code)) continue;
+			related.setValueUI(CODE_PARAM, code);
 		}
 		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(related).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 	}
@@ -284,17 +302,19 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	private void addAdditionalParams(Item product, Collection<Item> subs) throws Exception {
 		ItemType additionalType = ItemTypeRegistry.getItemType("other_info");
 		Item additional = null;
-		for(Item sub : subs){
-			if(!sub.getItemType().equals(additionalType)){continue;}
-			if(additional == null){
+		for (Item sub : subs) {
+			if (!sub.getItemType().equals(additionalType)) {
+				continue;
+			}
+			if (additional == null) {
 				additional = sub;
-			}else{
+			} else {
 				DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(sub.getId()).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 			}
 		}
-		additional = (additional == null)? Item.newChildItem(additionalType, product) : additional;
-		for (String paramName : additionalType.getParameterNames()){
-			if(additionalParams.get(paramName) == null){
+		additional = (additional == null) ? Item.newChildItem(additionalType, product) : additional;
+		for (String paramName : additionalType.getParameterNames()) {
+			if (additionalParams.get(paramName) == null) {
 				additional.clearValue(paramName);
 			}
 			additional.setValueUI(paramName, additionalParams.get(paramName));
@@ -407,8 +427,8 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 	}
 
 	private boolean addPics(Item product) throws MalformedURLException {
-		if(picCounter > picLimit) return false;//for testing. set limit to Integer.MAX_VALUE for production
- 		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
+		if (picCounter > picLimit) return false;//for testing. set limit to Integer.MAX_VALUE for production
+		Set<String> picUrls = multipleParams.get(PICTURE_ELEMENT);
 		if (picUrls == null) {
 			info.addLog("No pics for [" + product.getValue(CODE_PARAM) + "]", String.valueOf(productStartLineNumber));
 			return false;
@@ -463,11 +483,9 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				isSaved = true;
 			} catch (Exception e) {
 				e.printStackTrace();
-				info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+				info.addError(ExceptionUtils.getStackTrace(e), product.getStringValue(CODE_PARAM));
 			}
 		}
-
-
 		return isSaved;
 	}
 
