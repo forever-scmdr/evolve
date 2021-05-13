@@ -1384,3 +1384,6 @@ h2.title {
 .pale{
     opacity: .33;
 }
+/*hidden*/
+.edit li.visible.status-1{background-color: #c8c8c8;}
+.edit li.visible.status-2{background-color: rgba(255,0,0, 0.25);}
