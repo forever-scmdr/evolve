@@ -2030,6 +2030,9 @@
 		</usergroup>
 	</page>
 
+	<page name="rename_pack">
+		<command class="extra.ChangeParamValueCommand"></command>
+	</page>
 
 <!--	<page name="send_emails" schedule="0 */10 * ? * *">-->
 <!--		<request>-->

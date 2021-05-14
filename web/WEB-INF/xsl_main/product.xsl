@@ -294,7 +294,7 @@
 						<div class="tab-container" id="tab_warranty" style="{'display: none'[$has_text]}">
 							<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
 							<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
-							<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>
+<!--						<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>-->
 						</div>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
