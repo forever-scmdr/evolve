@@ -376,12 +376,12 @@
 					</li>
 				</ul>
 				<ul>
-					<xsl:for-each select="page/news">
+					<xsl:for-each select="page/news[in_main_menu = 'да']">
 						<li><a href="{show_page}">
 							<xsl:value-of select="name"/>
 						</a></li>
 					</xsl:for-each>
-					<xsl:for-each select="page/custom_pages/custom_page">
+					<xsl:for-each select="page/custom_pages/custom_page[in_main_menu = 'да']">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 				</ul>
@@ -661,7 +661,8 @@
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+				
+				<script defer="defer" src="js/font_awesome_all.js"></script>
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>

@@ -195,7 +195,9 @@
 							<xsl:if test="$input">
 								<xsl:variable name="name" select="$input/@id"/>
 								<div class="filter__item active checkgroup">
-									<div class="filter__title"><xsl:value-of select="$input/@caption"/></div>
+									<div class="filter__title">
+										<xsl:value-of select="if($input/@description != '') then concat($input/@caption, ', ', $input/@description) else $input/@caption"/>
+									</div>
 									<div class="filter__values">
 										<xsl:for-each select="$input/domain/value">
 											<div class="filter__value">

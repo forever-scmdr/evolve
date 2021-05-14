@@ -80,7 +80,14 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param  and not($banish = $param/@caption)">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
+				<td>
+					<xsl:if test="$param/@description != ''">
+						<xsl:value-of select="string-join(($param/@caption, $param/@description), ', ')"/>
+					</xsl:if>
+					<xsl:if test="not($param/@description != '')">
+						<xsl:value-of select="$param/@caption"/>
+					</xsl:if>
+				</td>
 				<td><xsl:value-of select="$param"/></td>
 			</tr>
 		</xsl:if>
@@ -205,7 +212,14 @@
 						<xsl:for-each select="$captions[position() &lt; 10]">
 							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 							<tr>
-								<td><xsl:value-of select="$param/@caption"/></td>
+								<td>
+									<xsl:if test="$param/@description != ''">
+										<xsl:value-of select="string-join(($param/@caption, $param/@description), ', ')"/>
+									</xsl:if>
+									<xsl:if test="not($param/@description != '')">
+										<xsl:value-of select="$param/@caption"/>
+									</xsl:if>
+								</td>
 								<td><xsl:value-of select="$param"/></td>
 							</tr>
 						</xsl:for-each>
