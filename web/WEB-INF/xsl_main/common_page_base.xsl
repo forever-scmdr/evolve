@@ -116,25 +116,6 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
-
-		<!-- <div id="test-domain-switcher" style="top:0; right:0; position: fixed; z-index:2; border: 2px solid lime;">
-			<script>
-				function reloadPage(){setTimeout(function(){document.location.reload(true)}, 1000)}
-			</script>
-			<xsl:variable name="domains" select="('super.com', 'pooper.com', 'non exsisting domain')"/>
-			<xsl:variable name="cookie" select="page/variables/dom"/>
-			<select onchange="insertAjax('set_domain?dom='+$(this).val(), '', reloadPage())">
-				<xsl:for-each select="$domains">
-					<xsl:if test="current() = $cookie">
-						<option selected="selected"><xsl:value-of select="."/></option>
-					</xsl:if>
-					<xsl:if test="not(current() = $cookie)">
-						<option><xsl:value-of select="."/></option>
-					</xsl:if>
-				</xsl:for-each>
-			</select>
-		</div> -->
-
 		<div class="top-info">
 			<div class="container">
 				<!-- static -->
@@ -318,18 +299,10 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="" class="forever">
+						<a href="http://forever.by" class="forever">
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
 						</a>
-						<!-- <div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div> -->
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				</div>
@@ -342,7 +315,7 @@
 
 	<xsl:template name="INC_MOBILE_MENU">
 		<div class="menu-container mobile">
-			<div class="menu-overlay"></div>
+			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
 				<ul>
 					<li>
@@ -391,7 +364,7 @@
 					</li>
 				</ul>
 				<ul>
-					<xsl:for-each select="$domain/custom_pages/custom_page">
+					<xsl:for-each select="$domain/custom_pages/*[in_main_menu = 'да']">
 						<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 					</xsl:for-each>
 				</ul>
@@ -446,7 +419,7 @@
 								<a rel="{concat('#m_sub_', @id)}">
 									<xsl:value-of select="name"/>
 								</a>
-								<span>></span>
+								<span style="padding-right: 6px;"><i class="fas fa-chevron-right"></i></span>
 							</xsl:if>
 							<xsl:if test="not(section)">
 								<a href="{show_products}">
@@ -471,7 +444,7 @@
 									<a rel="{concat('#m_sub_', @id)}">
 										<xsl:value-of select="name"/>
 									</a>
-									<i class="fas fa-chevron-right"></i>
+									<span style="padding-right: 6px;"><i class="fas fa-chevron-right"></i></span>
 								</xsl:if>
 								<xsl:if test="not(section)">
 									<a href="{show_products}" >
@@ -687,6 +660,7 @@
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+				<script defer="defer" src="js/font_awesome_all.js"></script>
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>

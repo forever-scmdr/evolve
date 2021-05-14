@@ -904,7 +904,7 @@
 <!--	</page>-->
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+    <page name="page" cacheable="true" template="page">
 		<request>
 			<var name="p" style="key"/>
 		</request>

@@ -102,7 +102,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 		put("height", "height");
 		put(STATUS_ELEMENT, "label");
 		put("tech", "Характеристики");
-		put("package", "Упаковка");
+		put("package", "Комплектация");
 		put("video", "Видео");
 		put("warranty", "months");
 		put("service_center", "service_center");

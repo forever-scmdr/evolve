@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -304,6 +304,7 @@
 					</xsl:for-each>
 				</div>
 			</div>
+
 		</div>
 
 		<xsl:if test="page/grouped">
@@ -346,7 +347,7 @@
 			</div>
 		</xsl:if>
 
-		<xsl:if test="$p/product">
+		<!-- <xsl:if test="$p/product">
 			<div class="title title_2">Сопутствующие товары</div>
 			<ul>
 				<xsl:for-each select="$p/product">
@@ -358,18 +359,17 @@
 				<div class="devices-block__wrap device-carousel-similar">
 					<xsl:for-each select="$p/product">
 						<div class="devices-block__column">
-							<!-- это обычный товар -->
+							
 							<xsl:apply-templates select="."/>
 						</div>
 					</xsl:for-each>
 				</div>
 				<div class="device-nav-similar device-nav"></div>
 			</div>
+		</xsl:if> -->
 
-		</xsl:if>
 
-
-	</xsl:template>
+	</xsl:template> 
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
