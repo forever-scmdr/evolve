@@ -5,6 +5,7 @@ import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.model.datatypes.DataType;
 import ecommander.persistence.commandunits.CopyItemDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.MoveItemDBUnit;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -193,19 +195,22 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			paramsXML.setValue(XML_PARAM, xml);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreUser());
 			if(!hasNewParams() && aux != null){
-				populateAuxItem(aux);
+				if(populateAuxItem(aux)) {
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex().ignoreUser());
+				}else {
+					sectionsWithNewItemTypes.add(currentSection.getId());
 			}
-			else{
+			} else {
 				sectionsWithNewItemTypes.add(currentSection.getId());
 			}
 		}
 
-		private void populateAuxItem(Item aux){
+		private boolean populateAuxItem(Item aux) {
 			HashMap<String, String> auxParams = new HashMap<>();
 			for (ParameterDescription pd : currentAuxItemType.getParameterList()) {
 				auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
 			}
+			AtomicBoolean paramTypeAndDescriptionOk = new AtomicBoolean(true);
 			paramGroups.forEach((k, v) -> {
 				for (String header : v) {
 					String cellValue = getValue(header);
@@ -214,12 +219,59 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					String paramCaption = m.matches() ? m.group("param").trim().toLowerCase() : header.toLowerCase();
 					String paramName = auxParams.get(paramCaption);
 					try {
+ 						if(checkParamType(aux, paramName, cellValue)) {
 						aux.setValueUI(paramName, cellValue);
+						}else{
+							paramTypeAndDescriptionOk.set(false);
+ 							return;
+						}
 					} catch (Exception e) {
 						info.addError(e);
 					}
 				}
 			});
+			return paramTypeAndDescriptionOk.get();
+		}
+
+		/**
+		 * Checks if parameter type or unit DID NOT change.
+		 * Returns false if parameter value type or it's unit does not match type or unit, specified int site model
+		 */
+		private boolean checkParamType(Item aux, String paramName, String cellValue){
+			//if value is blank assume all is ok
+			if(StringUtils.isBlank(cellValue)) return true;
+			ItemType auxItemType = aux.getItemType();
+			ParameterDescription parameterDescription = auxItemType.getParameter(paramName);
+			DataType.Type paramType = parameterDescription.getDataType().getType();
+
+			//if type is string any value will do
+			if(paramType == DataType.Type.STRING) return true;
+
+			//if type is integer check for ',', '.' or unit changes
+			if(paramType == DataType.Type.INTEGER){
+				String value = cellValue.replaceAll("\\s", "");
+				String number = cellValue.replaceAll("[^0-9\\-]", "");
+				String unit = StringUtils.substringAfter(value, number);
+				try {
+					Integer.parseInt(number);
+				}catch (NumberFormatException e){
+					return false;
+				}
+				if(!unit.equals(parameterDescription.getDescription())) return false;
+			}
+			//if type is double check for unit changes
+			else if(paramType == DataType.Type.DOUBLE){
+				String value = cellValue.replace(',', '.').replaceAll("\\s", "");
+				String number = cellValue.replaceAll("[^0-9\\.\\-]", "");
+				String unit = StringUtils.substringAfter(value, number);
+				try {
+					Double.parseDouble(number);
+				}catch (NumberFormatException e){
+					return false;
+				}
+				if(!unit.equals(parameterDescription.getDescription())) return false;
+			}
+			return true;
 		}
 
 		private boolean hasNewParams(){
