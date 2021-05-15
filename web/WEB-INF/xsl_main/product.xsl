@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -294,7 +294,7 @@
 						<div class="tab-container" id="tab_warranty" style="{'display: none'[$has_text]}">
 							<p>Гарантия: <xsl:value-of select="$p/warranty/months"/> мес.</p>
 							<p>Сервисный центр: <xsl:value-of select="$p/warranty/service_center"/></p>
-							<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>
+<!--						<p>Штрихкод: <xsl:value-of select="$p/barcode"/></p>-->
 						</div>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
@@ -347,8 +347,29 @@
 			</div>
 		</xsl:if>
 
+		<!-- <xsl:if test="$p/product">
+			<div class="title title_2">Сопутствующие товары</div>
+			<ul>
+				<xsl:for-each select="$p/product">
+					<li>[<xsl:value-of select="code"/>] <xsl:value-of select="name" /></li>
+				</xsl:for-each>
+			</ul>
+			<div class="block devices-block pt">
+				<div class="title title_2">Сопутствующие товары</div>
+				<div class="devices-block__wrap device-carousel-similar">
+					<xsl:for-each select="$p/product">
+						<div class="devices-block__column">
+							
+							<xsl:apply-templates select="."/>
+						</div>
+					</xsl:for-each>
+				</div>
+				<div class="device-nav-similar device-nav"></div>
+			</div>
+		</xsl:if> -->
 
-	</xsl:template>
+
+	</xsl:template> 
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
