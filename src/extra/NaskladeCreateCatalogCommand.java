@@ -124,6 +124,10 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 				Iterator<Item> relatedProductIterator = relatedProducts.iterator();
 				while (relatedProductIterator.hasNext()){
 					Item r = relatedProductIterator.next();
+					if(StringUtils.isBlank(r.getStringValue(CODE_PARAM))){
+						pushLog("no code for device "+ r.getStringValue(NAME));
+						continue;
+					}
 					if(r.getStringValue(CODE_PARAM).equals(code)){
 						relatedProductIterator.remove();
 						isNewRelatedProduct= false;

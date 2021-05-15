@@ -18,7 +18,6 @@ import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -483,7 +482,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				isSaved = true;
 			} catch (Exception e) {
 				e.printStackTrace();
-				info.addError(ExceptionUtils.getStackTrace(e), product.getStringValue(CODE_PARAM));
+				info.addError("Error adding img to " + product.getStringValue(CODE_PARAM) , "");
 			}
 		}
 		return isSaved;
