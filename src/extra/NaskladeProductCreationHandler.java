@@ -227,7 +227,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 				}
 
 				//Add associations if needed
-				if (sections.get(secCode).size() > 0) {
+				if (sections.containsKey(secCode) && sections.get(secCode).size() > 0) {
 					int i = 0;
 					for (Item sec : sections.get(secCode)) {
 						if (i > 0) {
