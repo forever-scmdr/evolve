@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,7 +41,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 	private boolean newItemTypes = false;
 	private long date;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
-	private HashSet<Long> memoryKillerAndDisgrace = new HashSet<>();
+	//private HashSet<Long> memoryKillerAndDisgrace = new HashSet<>();
 
 	private static HashMap<String, String> HEADER_PARAM = new HashMap() {{
 		put(CreateExcelPriceList.CODE_FILE.toLowerCase(), CODE_PARAM);
@@ -99,15 +98,6 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(currentStore).noTriggerExtra().ignoreUser().noFulltextIndex());
 		}
 		return currentHash != oldHash;
-	}
-
-	private boolean dateDiffers(File f) throws ParseException {
-		long now = f.lastModified();
-		long then = stores.getLongValue("date", 0L);
-		String nowS = DAY_FORMAT.format(new Date(now));
-		String thenS = DAY_FORMAT.format(new Date(then));
-		date = DAY_FORMAT.parse(nowS).getTime();
-		return !nowS.equals(thenS) && now > then;
 	}
 
 	@Override
@@ -321,7 +311,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 			else if (code.equals(CreateExcelPriceList.CODE_FILE)) {
 				reInit(CreateExcelPriceList.CODE_FILE, CreateExcelPriceList.NAME_FILE, CreateExcelPriceList.PRICE_FILE, CreateExcelPriceList.QTY_FILE, CreateExcelPriceList.AVAILABLE_FILE);
 			}
-			//productd
+			//product
 			else {
 				LinkedHashSet<String> headers = getHeaders();
 				boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
@@ -332,10 +322,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					Item parent = (isProduct) ? currentSection : currentProduct;
 					product = Item.newChildItem(itemType, parent);
 				}
-				//replacePriceAnyway = product.getLongValue("date", 0L) < date;
 
-				//very dumb fix
-				replacePriceAnyway = !memoryKillerAndDisgrace.contains(product.getId());
+				//fix
+				replacePriceAnyway = product.getLongValue(DATE_PARAM, 0L) < date;
+				product.setValue(DATE_PARAM, date);
 				if(replacePriceAnyway){
 					clearQtys(product);
 				}
@@ -389,12 +379,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 						}
 					}
 				}
-				product.setValue("date", date);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser(true).ignoreFileErrors(true).noFulltextIndex());
 
 				//very dumb fix
-				memoryKillerAndDisgrace.add(product.getId());
-
 				if (isProduct) currentProduct = product;
 				//AUX
 				if (hasAuxParams(headers)) {
@@ -478,7 +465,6 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				}
 				info.increaseProcessed();
 			}
-
 		}
 
 		private void clearQtys(Item product){
