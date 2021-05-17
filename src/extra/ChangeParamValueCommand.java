@@ -4,7 +4,7 @@ import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 
 import java.util.List;
@@ -28,8 +28,9 @@ public class ChangeParamValueCommand extends Command {
 		List<Item> items = q.loadItems();
 		while (items.size() > 0){
 			for(Item item : items){
-				item.setValue(PARAM_NAME, NEW);
-				executeCommandUnit(SaveItemDBUnit.get(item).ignoreFileErrors().noFulltextIndex().noTriggerExtra());
+				//item.setValue(PARAM_NAME, NEW);
+				//executeCommandUnit(SaveItemDBUnit.get(item).ignoreFileErrors().noFulltextIndex().noTriggerExtra());
+				executeCommandUnit(ItemStatusDBUnit.delete(item.getId()).ignoreUser(true));
 				counter++;
 				if(counter >= TRANSACTION_BATCH_SIZE){
 					commitCommandUnits();
