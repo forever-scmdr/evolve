@@ -335,7 +335,7 @@
 		<xsl:if test="page/assoc">
 			<div class="block devices-block pt">
 				<div class="title title_2">Вас также могут заинтересовать</div>
-				<div class="devices-block__wrap device-carousel-similar">
+				<div class="devices-block__wrap device-carousel">
 					<xsl:for-each select="page/assoc">
 						<div class="devices-block__column">
 							<!-- это обычный товар -->
@@ -343,33 +343,32 @@
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav-similar device-nav"></div>
+				<div class="device-nav"></div>
 			</div>
 		</xsl:if>
 
-		<!-- <xsl:if test="$p/product">
-			<div class="title title_2">Сопутствующие товары</div>
+		<xsl:if test="$p/product">
+			<!-- <div class="title title_2">Сопутствующие товары</div>
 			<ul>
 				<xsl:for-each select="$p/product">
 					<li>[<xsl:value-of select="code"/>] <xsl:value-of select="name" /></li>
 				</xsl:for-each>
-			</ul>
+			</ul> -->
 			<div class="block devices-block pt">
 				<div class="title title_2">Сопутствующие товары</div>
-				<div class="devices-block__wrap device-carousel-similar">
+				<div class="devices-block__wrapd device-carousel-similar">
 					<xsl:for-each select="$p/product">
 						<div class="devices-block__column">
-							
 							<xsl:apply-templates select="."/>
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav-similar device-nav"></div>
+				<div class="device-nav-similar"></div>
 			</div>
-		</xsl:if> -->
+		</xsl:if>
 
 
-	</xsl:template> 
+	</xsl:template>
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
