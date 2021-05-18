@@ -21,7 +21,10 @@
 			<div class="path__item">
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
+			</div>
+			<div class="path__item">
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+				<div class="path__arrow"></div>
 			</div>
 		</div>
 

@@ -32,6 +32,7 @@
 
 				<h3>Интеграция Yandex.Market</h3>
 				<ul class="no-drag">
+					<li><a style="background: yellow;" href="integrate_belchip?action=start">Импорт каталога Belchip.by YML</a></li>
 					<li><a href="integrate?action=start">Импорт каталога YML</a></li>
 					<li><a href="integrate?get_price=no&amp;action=start">Импорт каталога YML (без цен)</a></li>
 					<li><a href="create_yml_file">Экспорт каталога YML</a></li>
@@ -43,7 +44,8 @@
 
                 <ul class="no-drag">
                     <li><a href="parse_excel?action=start">Импорт каталога Excel</a></li>
-                    <li><a href="create_excel_pricelist/?action-start">Экспорт каталога Excel</a></li>
+                    <li><a href="section_list">Экспорт разделов Excel</a></li>
+                    <li><a href="create_excel_pricelist/?action=start">Экспорт каталога Excel</a></li>
                     <li><a href="update_prices_from_excel/?action=start">Импорт прайса Excel</a></li>
                     <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li>
                 </ul>

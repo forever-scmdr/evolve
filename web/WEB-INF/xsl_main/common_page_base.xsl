@@ -234,7 +234,7 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="" class="forever">Разработка сайта — <br />студия веб-дизайна Forever
+						<a href="http://forever.by" class="forever">Разработка сайта — <br />студия веб-дизайна Forever
 						</a>
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
@@ -594,7 +594,7 @@
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.50"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
-				<link  href="css/fotorama.css" rel="stylesheet" />
+				<link  href="fotorama/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
 

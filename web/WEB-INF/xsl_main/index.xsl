@@ -49,17 +49,17 @@
 
 		<!-- ads -->
 		<div class="ads">
-      <div class="container">
-        <div class="ads__wrap">
-          <div class="ads__slider">
-            <xsl:apply-templates select="page/main_page/custom_block[type='type_slider']"></xsl:apply-templates>
-          </div>
-          <div class="ads__banners">
-            <xsl:apply-templates select="page/main_page/custom_block[type='type_banners']"></xsl:apply-templates>
-          </div>
-        </div>
-      </div>
-    </div>
+	  <div class="container">
+		<div class="ads__wrap">
+		  <div class="ads__slider">
+			<xsl:apply-templates select="page/main_page/custom_block[type='type_slider']"></xsl:apply-templates>
+		  </div>
+		  <div class="ads__banners">
+			<xsl:apply-templates select="page/main_page/custom_block[type='type_banners']"></xsl:apply-templates>
+		  </div>
+		</div>
+	  </div>
+	</div>
 		<!-- ads end -->
 
 
@@ -68,10 +68,10 @@
 
 		<!-- products carousel -->
 		<div class="devices-block">
-      <div class="container">
-        <div class="title_1">Лучшие товары</div>
-        <div class="devices-block__wrap device-carousel">
-          <xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
+			<div class="container">
+				<div class="title_1">Лучшие товары</div>
+				<div class="devices-block__wrap device-carousel">
+					<xsl:for-each select="page/main_page/product">
 						<div class="devices-block__column">
 							<xsl:apply-templates select="."/>
 						</div>

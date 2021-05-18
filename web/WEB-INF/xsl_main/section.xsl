@@ -68,14 +68,19 @@
 			<div class="path__item">
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
-				<a class="path__link" href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
-					<div class="path__arrow"></div>
-					<a class="path__link" href="{show_products}">
-						<xsl:value-of select="name"/>
-					</a>
-				</xsl:for-each>
 			</div>
+			<div class="path__item">
+				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+				<div class="path__arrow"></div>
+			</div>
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
+					<div class="path__item">
+						<a class="path__link" href="{show_products}">
+							<xsl:value-of select="name"/>
+						</a>
+						<div class="path__arrow"></div>
+					</div>
+				</xsl:for-each>
 		</div>
 
 	</xsl:template>
@@ -220,12 +225,10 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<a href="{page/set_view_table}" class="icon-link">
-						<img src="img/icon-view-cards-active.png" alt="" />
-						<!-- <span class="icon-link__item">Плиткой</span> -->
+						<img src="img/icon-view-cards{'-active'[not($view = 'list')]}.png" alt="" />
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
-						<img src="img/icon-view-rows.png" alt="" />
-						<!-- <span class="icon-link__item">Строками</span> -->
+						<img src="img/icon-view-rows{'-active'[$view = 'list']}.png" alt="" />
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">

@@ -29,7 +29,7 @@
     <xsl:template match="section">
        <li>
            <a href="{create_link}">
-               <xsl:value-of select="name"/>(<xsl:value-of select="sum(.//f:num(product_count))"/>)
+               <xsl:value-of select="name"/><!-- (<xsl:value-of select="sum(.//f:num(product_count))"/>) -->
            </a>
            <xsl:if test="section">
                <ul>

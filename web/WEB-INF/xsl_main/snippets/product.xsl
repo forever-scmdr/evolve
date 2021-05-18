@@ -15,7 +15,7 @@
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="accessory | set | probe | product | assoc | analog">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -24,7 +24,7 @@
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+			<xsl:if test="main_pic and number(main_pic/@width) &gt; 500">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom" title="{name}" rel="nofollow">
 					<img src="img/icon-zoom.png" alt=""/>
 				</a>
@@ -141,10 +141,13 @@
 			<!-- device order -->
 			<xsl:if test="not($has_lines)">
 				<div class="order device-order" id="cart_list_{@id}">
+					
+					<xsl:variable name="cart_label" select="if(starts-with(code, 'b_')) then $to_cart_b_label else $to_cart_available_label"/>
+
 					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
-							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+							<button class="button button_device" type="submit"><xsl:value-of select="$cart_label"/></button>
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
@@ -160,19 +163,23 @@
 			</xsl:if>
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
-			<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-				<div class="status__a">в наличии</div>
+			<xsl:if test="not(starts-with(code, 'b_'))">
+				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+					<div class="status__a">в наличии</div>
+				</xsl:if>
+				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+					<div class="status__na">под заказ: 3-7 дней</div>
+				</xsl:if>
 			</xsl:if>
-			<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+			<xsl:if test="starts-with(code, 'b_')">
 				<div class="status__na">под заказ: 3-7 дней</div>
 			</xsl:if>
-
 
 		</div>
 	</xsl:template>
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="accessory | set | probe | product | assoc | analog" mode="lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -185,7 +192,7 @@
 			<div class="device__column">
 
 				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+				<xsl:if test="main_pic and number(main_pic/@width) &gt; 500">
 					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom" title="{name}">
 						<img src="img/icon-zoom.png" alt=""/>
 					</a>
@@ -309,13 +316,18 @@
 				<!-- device order -->
 				<xsl:if test="not($has_lines)">
 					<div class="order device-order" id="cart_list_{@id}">
+
+						<xsl:variable name="cart_label" select="if(starts-with(code, 'b_')) then $to_cart_b_label else $to_cart_available_label"/>
+
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
-								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
-								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
+								<button class="button button_device" type="submit"><xsl:value-of select="$cart_label"/></button>
 							</xsl:if>
+							<!-- правильн ли сделан блок для товара без цены -->
 							<xsl:if test="not($has_price)">
-								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="0.1" />
+								<input type="number" class="input input_qty" name="qty" value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="1" />
+								<!-- кнопка запросить цену в списке товаров -->
 								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 							</xsl:if>
 						</form>
@@ -327,11 +339,16 @@
 					</div>
 				</xsl:if>
 
-				<!-- stock status -->
-				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
-					<div class="status__a">в наличии</div>
+				<!-- stock status (not displayed, delete <div> with display: none to show) -->
+				<xsl:if test="not(starts-with(code, 'b_'))">
+					<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+						<div class="status__a">в наличии</div>
+					</xsl:if>
+					<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+						<div class="status__na">под заказ: 3-7 дней</div>
+					</xsl:if>
 				</xsl:if>
-				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+				<xsl:if test="starts-with(code, 'b_')">
 					<div class="status__na">под заказ: 3-7 дней</div>
 				</xsl:if>
 
