@@ -53,7 +53,7 @@ public class PromelecSearchCommand extends Command {
 		ResultPE res = getResult("complete");
 
 		XmlDocumentBuilder outputPage = XmlDocumentBuilder.newDoc();
-		outputPage.startElement("page", "name", "promelec_search");
+		outputPage.startElement("page", "name", getPageName());
 		outputPage.startElement("base").addText(getUrlBase()).endElement();
 		outputPage.startElement("variables")
 				.startElement("query").addText(getVarSingleValue("query")).endElement()
