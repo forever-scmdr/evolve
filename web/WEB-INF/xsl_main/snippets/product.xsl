@@ -109,13 +109,13 @@
 					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 						<xsl:if test="$has_price">
 							<input type="number" class="input input_type_number" name="qty"
-								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 							<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 						</xsl:if>
 						<!-- правильн ли сделан блок для товара без цены -->
 						<xsl:if test="not($has_price)">
 							<input type="number" class="input input_type_number" name="qty"
-								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 							<!-- кнопка запросить цену в списке товаров -->
 							<button class="button button_device button_na" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
@@ -298,12 +298,12 @@
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 								<button class="button button_device" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
 								<input type="number" class="input input_type_number" name="qty"
-									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+									   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 								<button class="button button_device button_na" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 							</xsl:if>
 						</form>
