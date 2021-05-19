@@ -85,6 +85,12 @@
 		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
+
+		<list item="currency"/>
+		<list item="shop">
+			<single item="currency" assoc="general"/>
+		</list>
+
 	</include-definition>
 
 
@@ -96,7 +102,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<page name="index" template="index" cacheable="true">
+	<page name="index" template="" cacheable="true">
 		<request>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
@@ -1762,9 +1768,9 @@
 		</command>
 	</page>
 
-	<page name="tme_search" template="">
+	<page name="tme_search" template="tme_search">
 		<request>
-			<var name="query" value="sex"/>
+			<var name="query"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>

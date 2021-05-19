@@ -156,23 +156,49 @@
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
 
 		<!-- RUB -->
-		<parameter name="currency_ratio" caption="Курс российского рубля" type="double" description="Курс НБРБ. за 100 рос. руб дают ... бел. руб."/>
-		<parameter name="q1" caption="Прибавка к курсу российского рубля"  type="double" description="0.03 = +3%" />
+<!--		<parameter name="currency_ratio" caption="Курс российского рубля" type="double" description="Курс НБРБ. за 100 рос. руб дают ... бел. руб."/>-->
+<!--		<parameter name="q1" caption="Прибавка к курсу российского рубля"  type="double" description="0.03 = +3%" />-->
 
 		<!-- USD -->
-		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>
-		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />
+<!--		<parameter name="currency_ratio_usd" caption="Курс доллара" type="double" description="Курс НБРБ. за 1$ дают ... бел. руб."/>-->
+<!--		<parameter name="q1_usd" caption="Прибавка к USD"  type="double" description="0.03 = +3%" />-->
 
 		<!-- EUR -->
-		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1€ дают ... бел. руб."/>
-		<parameter name="q1_eur" caption="Прибавка к Eur"  type="double" description="0.03 = +3%" />
+<!--		<parameter name="currency_ratio_eur" caption="Курс евро" type="double" description="Курс НБРБ. за 1€ дают ... бел. руб."/>-->
+<!--		<parameter name="q1_eur" caption="Прибавка к Eur"  type="double" description="0.03 = +3%" />-->
 
 		<!-- Надбавки -->
-		<parameter name="q2" caption="Прибавка к цене товараов с Платана"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_eur" caption="Прибавка к цене товараов с Farnell"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_prom" caption="Прибавка к цене товараов с Promelec"  type="double" description="0.03 = +3%" />
-		<parameter name="q2_arrow" caption="Прибавка к цене Verical" type="double" description="0.03 = +3%" />
+<!--		<parameter name="q2" caption="Прибавка к цене товараов с Платана"  type="double" description="0.03 = +3%" />-->
+<!--		<parameter name="q2_usd" caption="Прибавка к цене товараов с DigKey"  type="double" description="0.03 = +3%" />-->
+<!--		<parameter name="q2_eur" caption="Прибавка к цене товараов с Farnell"  type="double" description="0.03 = +3%" />-->
+<!--		<parameter name="q2_prom" caption="Прибавка к цене товараов с Promelec"  type="double" description="0.03 = +3%" />-->
+<!--		<parameter name="q2_arrow" caption="Прибавка к цене Verical" type="double" description="0.03 = +3%" />-->
+	</item>
+
+	<item name="currency_ratios" caption="Курсы валют" ag-id="1958" ag-hash="752859574">
+		<child item="currency"/>
+	</item>
+
+	<item name="currency" caption="Валюта" key="name title" ag-id="1959" ag-hash="575402001">
+		<parameter name="title" type="string" caption="Название"/>
+		<parameter name="name" type="string" caption="Код валюты" description="трехбуквенное обозначение ISO 4217"/>
+		<parameter name="ratio" type="currency_precise" caption="Курс НБРБ" />
+		<parameter name="scale" type="integer" caption="Множитель" default="1" />
+		<parameter name="q" type="currency_precise" caption="Надбавка" description="0.03 = +3%"/>
+	</item>
+
+	<item name="shop" caption="Поставщик" key="name" ag-id="1960" ag-hash="3529462">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="q" caption="Надбавка к ценам" type="double"/>
+		<parameter name="assembly_date" caption="Дата собра заказа" type="date" description="тоавры, заказанные до этой даты попадут в ближайшую поставку"/>
+		<parameter name="delivery_date" caption="Дата поставки" type="date" description="в этот день машинка привезет товары из этого магазина"/>
+		<parameter name="delivery_string" caption="Дней до поставки" type="string"/>
+		<child item="currency" assoc="general" single="true"/>
+	</item>
+
+	<item name="external_shops" caption="Внешние магазины" ag-id="1961" ag-hash="-120191287">
+		<child item="currency_ratios" single="true"/>
+		<child item="shop" />
 	</item>
 
 	<!--Является также и разделом для парсинга-->
@@ -331,7 +357,6 @@
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="delivery_time" type="string" caption="Сроки поставки"/>
@@ -707,6 +732,7 @@
 		<child item="modules" single="true"/>
 		<child item="url_seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
+		<child item="external_shops" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
