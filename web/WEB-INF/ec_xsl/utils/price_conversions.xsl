@@ -7,30 +7,19 @@
         xmlns:f="f:f"
         version="2.0">
     
-    <xsl:variable name="catalog" select="page/catalog"/>
-    <xsl:variable name="curr" select="page/variables/currency" />
     <!-- RUR RATIO -->
-    <xsl:variable name="ratio_rur" select="f:num($catalog/currency_ratio)"/>
-    <xsl:variable name="q1_rur" select="f:num($catalog/q1)"/>
-    <xsl:variable name="q2_rur" select="f:num($catalog/q2)"/>
+    <xsl:variable name="rur" select="page/currency[name = 'RUR']"/>
+    <xsl:variable name="ratio_rur" select="f:num($rur/ratio)"/>
+    <xsl:variable name="q_rur" select="f:num($rur/q)"/>
 
-    <!-- USD RATIO -->
-    <xsl:variable name="ratio_usd" select="f:num($catalog/currency_ratio_usd)"/>
-    <xsl:variable name="q1_usd" select="f:num($catalog/q1_usd)"/>
-    <xsl:variable name="q2_usd" select="f:num($catalog/q2_usd)"/>
-    <xsl:variable name="q2_arrow" select="f:num($catalog/q2_arrow)"/>
+    <xsl:variable name="curr" select="page/variables/currency" />
 
-    <!-- EUR RATIO -->
-    <xsl:variable name="ratio_eur" select="f:num($catalog/currency_ratio_eur)"/>
-    <xsl:variable name="q1_eur" select="f:num($catalog/q1_eur)"/>
-    <xsl:variable name="q2_eur" select="f:num($catalog/q2_eur)"/>
 
-    <xsl:variable name="qp" select="f:num($catalog/q2_prom)"/>
 
     <!-- AUTOCONVERSIONS -->
 
     <!-- Catalog -->
-    <xsl:function name="f:price_catalog">
+    <xsl:function name="f:price_ictrade">
         <xsl:param name="price" as="xs:string?" />
         <xsl:param name="unit" as="xs:string?" />
         <xsl:param name="min_q" as="xs:string?"/>
@@ -52,46 +41,20 @@
         <xsl:sequence select="if($curr = 'byn') then concat(f:currency_decimal($cart/sum), ' ', upper-case($curr))  else concat(f:number_decimal(sum($cart/bought/f:sum_s(.))),' ',upper-case($curr))"/>
     </xsl:function>
 
-    <!-- Platan -->
-    <xsl:function name="f:price_platan">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="concat((if($curr = 'byn') then f:rur_to_byn($price) else f:rur_to_rur($price)), ' ', upper-case($curr))"/>
-    </xsl:function>
 
-    <xsl:function name="f:cart_price_platan">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="if($curr = 'byn') then f:currency_decimal($price) else f:number_decimal((f:num($price)*100) div $ratio_rur)"/>
-    </xsl:function>
-
-    <!-- Digikey -->
-    <xsl:function name="f:price_digikey">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="concat((if($curr = 'byn') then f:usd_to_byn($price) else f:usd_to_rur($price)), ' ', upper-case($curr))"/>
-    </xsl:function>
-
-    <!-- Farnell -->
-    <xsl:function name="f:price_farnell">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="concat((if($curr = 'byn') then f:eur_to_byn($price) else f:eur_to_rur($price)), ' ', upper-case($curr))"/>
-    </xsl:function>
-
-    <!-- Promelec -->
-    <xsl:function name="f:price_promelec">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="concat((if($curr = 'byn') then f:rur_to_byn_promelec($price) else f:rur_to_rur_promelec($price)), ' ', upper-case($curr))"/>
-    </xsl:function>
-
-    <!-- Verical -->
-    <xsl:function name="f:price_arrow">
-        <xsl:param name="price" as="xs:string?" />
-        <xsl:sequence select="concat((if($curr = 'byn') then f:usd_to_byn_arrow($price) else f:usd_to_rur_arrow($price)), ' ', upper-case($curr))"/>
-    </xsl:function>
 
     <!-- TO RUR CONVERSIONS -->
     <xsl:function name="f:byn_to_rur">
        <xsl:param name="price" as="xs:string?" />
-       <xsl:variable name="price_rur" select="(f:num($price) * 100) div $ratio_rur * (1 + $q1_rur)" />
+       <xsl:variable name="price_rur" select="(f:num($price) * f:num($rur/scale)) div $ratio_rur * (1 + $q1_rur)" />
        <xsl:sequence select="f:number_decimal($price_rur)"/>
+    </xsl:function>
+
+    <xsl:function name="f:currency_to_byn" >
+        <xsl:param name="price" />
+        <xsl:param name="shop" as="xs:element"/>
+
+        <xsl:variable name=""
     </xsl:function>
 
     <xsl:function name="f:rur_to_rur">
