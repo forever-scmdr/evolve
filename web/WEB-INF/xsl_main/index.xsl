@@ -67,7 +67,7 @@
 			<div class="container">
 				<div class="title_1">Лучшие цены</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each select="page/product[tag = 'Акция']">
+					<xsl:for-each select="page/product[tag = 'Лучшая цена']">
 						<xsl:apply-templates select="."/>
 					</xsl:for-each>
 				</div>
@@ -88,7 +88,7 @@
 			<div class="container">
 				<div class="title title_block">Новинки</div>
 				<div class="devices-block__wrap">
-					<xsl:for-each-group select="page/product[tag = 'Новый товар']" group-by="@id">
+					<xsl:for-each-group select="page/product[tag = 'Новинка']" group-by="@id">
 						<xsl:apply-templates select="current-group()[1]"/>
 					</xsl:for-each-group>
 				</div>

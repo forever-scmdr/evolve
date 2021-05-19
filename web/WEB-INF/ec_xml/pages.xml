@@ -360,10 +360,10 @@
 		<list item="product" id="new">
 			<filter>
 				<parameter name="tag" sign="=" compare="SOME">
-					<var value="Новый товар"/>
+					<var value="Новинка"/>
 				</parameter>
 				<limit>
-					<var value="18"/>
+					<var value="30"/>
 				</limit>
 			</filter>
 			<include name="NEW_PRODUCT_PARAMS_LINKS"/>
@@ -372,10 +372,10 @@
 		<list item="product" id="sale">
 			<filter>
 				<parameter name="tag" sign="=" compare="SOME">
-					<var value="Акция"/>
+					<var value="Лучшая цена"/>
 				</parameter>
 				<limit>
-					<var value="18"/>
+					<var value="30"/>
 				</limit>
 			</filter>
 			<include name="SALE_PRODUCT_PARAMS_LINKS"/>
@@ -387,7 +387,7 @@
 					<var value="Хит продаж"/>
 				</parameter>
 				<limit>
-					<var value="18"/>
+					<var value="30"/>
 				</limit>
 			</filter>
 			<include name="HIT_PRODUCT_PARAMS_LINKS"/>
@@ -2033,6 +2033,7 @@
 	<page name="rename_pack">
 		<command class="extra.ChangeParamValueCommand"></command>
 	</page>
+
 
 <!--	<page name="send_emails" schedule="0 */10 * ? * *">-->
 <!--		<request>-->

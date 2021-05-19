@@ -30,9 +30,9 @@
 			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			"priceCurrency": "BYN"
+			<xsl:if test="f:num($price) &gt; 0">,"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+			<!-- <xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if> -->
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
@@ -130,7 +130,7 @@
 								<xsl:if test="$has_price">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
 										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<button class="button button_device button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<button class="button button_device button_size_lg" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="input input_size_lg input_type_number" name="qty"
@@ -335,7 +335,7 @@
 		<xsl:if test="page/assoc">
 			<div class="block devices-block pt">
 				<div class="title title_2">Вас также могут заинтересовать</div>
-				<div class="devices-block__wrap device-carousel-similar">
+				<div class="devices-block__wrap device-carousel">
 					<xsl:for-each select="page/assoc">
 						<div class="devices-block__column">
 							<!-- это обычный товар -->
@@ -343,33 +343,32 @@
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav-similar device-nav"></div>
+				<div class="device-nav"></div>
 			</div>
 		</xsl:if>
 
-		<!-- <xsl:if test="$p/product">
-			<div class="title title_2">Сопутствующие товары</div>
+		<xsl:if test="$p/product">
+			<!-- <div class="title title_2">Сопутствующие товары</div>
 			<ul>
 				<xsl:for-each select="$p/product">
 					<li>[<xsl:value-of select="code"/>] <xsl:value-of select="name" /></li>
 				</xsl:for-each>
-			</ul>
-			<div class="block devices-block pt">
+			</ul> -->
+			<!-- <div class="block devices-block pt">
 				<div class="title title_2">Сопутствующие товары</div>
-				<div class="devices-block__wrap device-carousel-similar">
+				<div class="devices-block__wrapd device-carousel-similar">
 					<xsl:for-each select="$p/product">
 						<div class="devices-block__column">
-							
 							<xsl:apply-templates select="."/>
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="device-nav-similar device-nav"></div>
-			</div>
-		</xsl:if> -->
+				<div class="device-nav-similar"></div>
+			</div> -->
+		</xsl:if>
 
 
-	</xsl:template> 
+	</xsl:template>
 
 
 	<xsl:template name="EXTRA_SCRIPTS">

@@ -9,3 +9,38 @@
 .index-slider{
 	margin-bottom: 50px;
 }
+
+
+
+.device-nav-similar {
+    padding-top: 14px;
+}
+.slick-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.slick-track {
+	display: flex;
+	height: 100%;
+}
+.slick-list {
+	overflow: hidden;
+}
+.device-nav-similar .slick-dots li {
+    margin: 0 10px 0 0;
+    font-size: 0;
+}
+.device-nav-similar .slick-dots li:last-child {
+  margin-right: 0;
+}
+.device-nav-similar .slick-dots li button {
+    font-size: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: #9E9E9E;
+}
+.device-nav-similar .slick-dots .slick-active button {
+  background-color: #1C60AB;
+}

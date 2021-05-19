@@ -35,14 +35,14 @@ $(document).ready(function(){
 	$('.device-carousel-similar').slick( {
 		arrows:false,
 		dots: true,
-		//appendDots:$('.device-nav-similar'),
+		appendDots:$('.device-nav-similar'),
 		// autoplay: false,
 		// autoplaySpeed: 3000
 		slidesToShow: 4,
 		slidesToScroll: 4,
 		responsive:[
 			{
-				breakpoint: 1024,
+				breakpoint: 1025,
 				settings: {
 					slidesToShow: 3,
 					slidesToScroll: 3
@@ -83,6 +83,3 @@ $(document).ready(function(){
 		]
 	});
 })
-
-
-

@@ -268,12 +268,12 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="warranty" caption="Гарантия" ag-id="2238" ag-hash="501547260">
+	<item name="warranty" caption="Гарантия" ag-id="1836" ag-hash="501547260">
 		<parameter name="months" type="integer" caption="Срок гарантии" description="месяцы"/>
 		<parameter name="service_center" type="string" caption="Сервисный центр"/>
 	</item>
 
-	<item name="other_info" caption="Иная информация" ag-id="2239" ag-hash="-182548355" >
+	<item name="other_info" caption="Иная информация" ag-id="2193" ag-hash="-182548355" >
 		<parameter name="producer" type="string" caption="Производитель"/>
 		<parameter name="vendor_code" type="string" caption="Артикул" />
 
@@ -308,7 +308,7 @@
 		<child item="product" assoc="related"/>
 	</item>
 
-	<item name="related_list" caption="Список сопутствующих товаров" ag-id="2240" ag-hash="154120242">
+	<item name="related_list" caption="Список сопутствующих товаров" ag-id="2194" ag-hash="154120242">
 		<parameter name="code" type="string" caption="код" multiple="true"/>
 	</item>
 
@@ -493,45 +493,45 @@
 		<child item="cart_and_feedback_settings" single="true" />
 	</item>
 
-	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1833" ag-hash="960890710">
+	<item name="cart_and_feedback_settings" caption="Настройки корзины и обратной связи" ag-id="1828" ag-hash="960890710">
 		<child item="emails" single="true"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
 		<child item="order_texts" single="true"/>
 	</item>
 
-	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1834" ag-hash="-1299765161">
+	<item name="emails" caption="Адреса на которые присылать заказы и сообщения" ag-id="1829" ag-hash="-1299765161">
 		<parameter name="order_email" type="plain-text" caption="Заказы слать на адреса:" format="height: 30px"/>
 		<parameter name="feedback" type="plain-text" caption="Сообщаения слать на адреса:" format="height: 30px"/>
 	</item>
 
-	<item name="order_texts" caption="Тексты в заказе" ag-id="1835" ag-hash="1973754037">
+	<item name="order_texts" caption="Тексты в заказе" ag-id="1830" ag-hash="1973754037">
 		<parameter name="cart_text" type="text" caption="Дополнительный текстовый блок под заказом"/>
 		<parameter name="confirm_text" type="text" caption="Подтверждение о том, что заказ отправлен"/>
 		<parameter name="email_text" type="text" caption="Текст в письме клиенту"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="extra_styles" caption="Стили и скрипты" ag-id="1828" ag-hash="1420120049">
+	<item name="extra_styles" caption="Стили и скрипты" ag-id="1831" ag-hash="1420120049">
 		<child item="style"/>
 	</item>
 
-	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1829" ag-hash="109780401">
+	<item name="style" caption="Стиль/скрипт" key="name" ag-id="1832" ag-hash="109780401">
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="description" type="plain-text" caption="Описание" description="что делает этот скрипт или стиль?"/>
 		<parameter name="file" type="file" caption="Прикерпите файл"/>
 		<parameter name="code" type="plain-text" caption="Или введите код вручную"/>
 	</item>
 
-	<item name="slideshow" caption="Слайды" ag-id="1830" ag-hash="-795551698">
+	<item name="slideshow" caption="Слайды" ag-id="1833" ag-hash="-795551698">
 		<child item="main_slider_frame" inline="true"/>
 	</item>
 
-	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1831" ag-hash="225061716">
+	<item name="hardcode_header" caption="Захардкодить хедер" ag-id="1834" ag-hash="225061716">
 		<parameter name="code" type="plain-text" caption="код хедера"/>
 	</item>
 
-	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1832" ag-hash="177471074">
+	<item name="hardcode_footer" caption="Захардкодить футер" ag-id="1835" ag-hash="177471074">
 		<parameter name="code" type="plain-text" caption="код футера"/>
 	</item>
 
@@ -640,7 +640,7 @@
 	<!--/////////////                                                                      ////////////-->
 
 	<assoc name="general" caption="Ассоциация общего назначения" description="для связи разных несвязанных напрямую айтемов" ag-id="5" ag-hash="-80148248"/>
-	<assoc name="related" caption="Сопутствующий товар" ag-id="7" ag-hash="1090493483"/>
+	<assoc name="related" caption="Сопутствующий товар" ag-id="7" ag-hash="1090493483" />
 
 	<item name="main_promo_bottom" caption="Промо-блок на главной" key="text_big" ag-id="14" ag-hash="1303283745">
 		<parameter name="text_big" type="string" caption="Текст крупным шрифтом"/>

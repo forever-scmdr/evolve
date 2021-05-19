@@ -858,7 +858,7 @@ ul {
       background-color: #fff; }
 
 .sections {
-  width: 200px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   padding: 8px 0; }
@@ -1657,8 +1657,12 @@ ul {
 
 .tabs__nav {
   display: flex;
+  flex-wrap: wrap;
   border-bottom: 1px solid #9E9E9E;
   margin-bottom: 16px; }
+  @media (max-width: 425px) {
+    .tabs__nav {
+      padding-bottom: 10px; } }
 
 .tab {
   display: flex;
@@ -1670,6 +1674,9 @@ ul {
   border: 1px solid #9E9E9E;
   border-bottom-color: #fff;
   color: #616161; }
+  @media (max-width: 425px) {
+    .tab_active {
+      border-bottom-color: #9E9E9E; } }
 
 .tab-container p {
   line-height: 1.3; }
