@@ -47,7 +47,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 
 	private String createQuery() {
 		StringBuilder sb = new StringBuilder();
-		String query = getVarSingleValue("query");
+		String query = getVarSingleValue("q");
 
 		sb
 				.append("{ \"Keywords\": \"")
@@ -166,7 +166,7 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 		doc.startElement("page");
 		doc.startElement("base").addText(getUrlBase()).endElement();
 		doc.startElement("variables")
-				.startElement("q").addText(getVarSingleValue("old_query")).endElement()
+				.startElement("q").addText(getVarSingleValue("q")).endElement()
 				.startElement("ratio").addText(currencyRatio).endElement()
 				.startElement("rur_ratio").addText(rurRatio).endElement()
 				.startElement("q1").addText(q1).endElement()

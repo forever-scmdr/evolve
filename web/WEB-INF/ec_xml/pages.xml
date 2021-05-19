@@ -102,7 +102,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<page name="index" template="" cacheable="true">
+	<page name="index" template="index" cacheable="true">
 		<request>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
@@ -275,8 +275,8 @@
 		<link name="set_currency_byn" target="section" copy-page-vars="yes">
 			<var name="currency" value="byn"/>
 		</link>
-		<link name="set_currency_rur" target="section" copy-page-vars="yes">
-			<var name="currency" value="rur"/>
+		<link name="set_currency_rub" target="section" copy-page-vars="yes">
+			<var name="currency" value="rub"/>
 		</link>
 
 		<link name="show_only_available" target="section" copy-page-vars="yes">
@@ -703,6 +703,7 @@
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<single item="catalog" id="catalog_main" cacheable="true"/>
+
 		<session>
 			<single item="cart">
 				<list item="bought">
@@ -716,6 +717,10 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
+		<list item="currency"/>
+		<list item="shop">
+			<single item="currency" assoc="general"/>
+		</list>
 	</page>
 
 
@@ -1532,10 +1537,10 @@
 
 	<!-- ICTRADE ONLY -->
 
-	<page name="platan_search" template="platan_search_ajax">
+	<page name="platan_search" template="external_search/platan_search">
 		<request>
 			<var name="platan_feed_url" value="https://shop.platan.ru/export/price.xml"/>
-			<var name="query"/>
+			<var name="q"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
@@ -1604,9 +1609,9 @@
 		</request>
 	</page>
 
-	<page name="digikey_search" template="digikey_search_ajax">
+	<page name="digikey_search" template="external_search/digikey_search">
 		<request>
-			<var name="query"/>
+			<var name="q"/>
 			<var name="qty" />
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="view" value="table" scope="cookie"/>
@@ -1639,7 +1644,7 @@
 		</link>
 	</page>
 
-	<page name="farnell_search" template="farnell_search_ajax">
+	<page name="farnell_search" template="external_search/farnell">
 		<request>
 			<var name="q"/>
 			<var name="page" value="1"/>
@@ -1744,9 +1749,9 @@
 	</page>
 
 
-	<page name="promelec_search" template="promelec_search_ajax">
+	<page name="promelec_search" template="external_search/promelec_search">
 		<request>
-			<var name="query" value="1234"/>
+			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>
@@ -1756,9 +1761,9 @@
 		</command>
 	</page>
 
-	<page name="arrow_search" template="arrow_search_ajax">
+	<page name="arrow_search" template="external_search/arrow_search">
 		<request>
-			<var name="query" value="1234"/>
+			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>
@@ -1770,7 +1775,7 @@
 
 	<page name="tme_search" template="tme_search">
 		<request>
-			<var name="query"/>
+			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>

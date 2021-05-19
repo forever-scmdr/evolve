@@ -468,45 +468,18 @@
 
 
 
-	<xsl:template name="COMMON_LEFT_COLOUMN">
-		<!-- <div class="actions">
-			<h3>Акции</h3>
-			<div class="actions-container">
-				<a href="{$common/link_link}"><xsl:value-of select="$common/link_text"/></a>
-			</div>
-		</div> -->
+	<xsl:template name="COMMON_LEFT_COLUMN">
 		<div class="contacts">
 			<div class="block-title block-title_normal">Заказ и консультация</div>
 			<xsl:value-of select="$common/left" disable-output-escaping="yes"/>
-			<!-- <strong>Принимаем к оплате</strong>
-			<div class="pay-cards">
-				<div class="pay-cards__item">
-					<img src="img/card1.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card2.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card3.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card4.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card5.jpg" />
-				</div>
-				<div class="pay-cards__item">
-					<img src="img/card6.jpg" />
-				</div>
-			</div> -->
 		</div>
 	</xsl:template>
 
 
 
-	<xsl:template name="CATALOG_LEFT_COLOUMN">
+	<xsl:template name="CATALOG_LEFT_COLUMN">
 		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
-		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLUMN"/>
 	</xsl:template>
 
 
@@ -524,10 +497,13 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
-	<xsl:template match="accessory | set | probe | product | assoc">
+	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>
-		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
+		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
+		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
 
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -545,10 +521,10 @@
 				<div class="device__price" style="flex-direction: column">
 					<xsl:if test="price_old">
 						<div class="price_old">
-							<span><xsl:value-of select="f:price_catalog(price_old ,'', min_qty)"/>.</span>
+							<span><xsl:value-of select="$display_price_old"/>.</span>
 						</div>
 					</xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/>.</div>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/>.</div>
 					<div class="nds">*цена включает НДС</div>
 				</div>
 			</xsl:if>
@@ -577,7 +553,7 @@
 				</xsl:if>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
+				<div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, $u,'.')"/></div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
@@ -614,10 +590,14 @@
 
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="*" mode="product-lines">
 		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>
-		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+
+		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
+		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
+		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
 
 
 		<div class="device device_row">
@@ -668,8 +648,8 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog(price_old, '','')"/></span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:price_catalog(price, unit, min_qty)"/></div>
+					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
+					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/></div>
 					<div class="nds">*цена c НДС</div>
 				</div>
 			</xsl:if>
@@ -697,7 +677,7 @@
 					<a class="button" href="{show_product}">Подробнее</a>
 				</xsl:if>
 				<xsl:if test="f:num(qty) != 0">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, unit,'.')"/></div>
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, $u,'.')"/></div>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>
@@ -731,15 +711,15 @@
 
 
 	<xsl:template name="MAIN_CONTENT">
-		<!-- MAIN COLOUMNS BEGIN -->
+		<!-- MAIN COLUMNS BEGIN -->
 		<div class="container columns">
-			<!-- LEFT COLOUMN BEGIN -->
+			<!-- LEFT COLUMN BEGIN -->
 			<div class="column-left desktop">
-				<xsl:call-template name="LEFT_COLOUMN"/>
+				<xsl:call-template name="LEFT_COLUMN"/>
 			</div>
-			<!-- LEFT COLOUMN END -->
+			<!-- LEFT COLUMN END -->
 			
-			<!-- RIGHT COLOUMN BEGIN -->
+			<!-- RIGHT COLUMN BEGIN -->
 			<div class="column-right main-content">
 				<div class="mc-container">
 					<xsl:call-template name="INC_MOBILE_HEADER"/>
@@ -751,23 +731,14 @@
 					</xsl:if>
 				</div>
 			</div>
-			<!-- RIGHT COLOUMN END -->
+			<!-- RIGHT COLUMN END -->
 		</div>
-		<!-- MAIN COLOUMNS END -->
+		<!-- MAIN COLUMNS END -->
 	</xsl:template>
 
 
-	<xsl:template name="LEFT_COLOUMN">
-		<!-- <div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
-				<div class="level-1">
-					<div class="capsule">
-						<a href="{show_products}"><xsl:value-of select="name"/></a>
-					</div>
-				</div>
-			</xsl:for-each>
-		</div> -->
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLUMN"/>
 	</xsl:template>
 	<xsl:template name="CONTENT"/>
 	<xsl:template name="BANNERS"/>
@@ -835,17 +806,11 @@
 				<!-- ALL CONTENT BEGIN -->
 				<div class="content-container">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
-
 					<xsl:call-template name="MAIN_CONTENT"/>
-
 					<xsl:call-template name="BANNERS"/>
-
 					<xsl:call-template name="INC_FOOTER"/>
-
 				</div>
 				<!-- ALL CONTENT END -->
-
-
 				<xsl:call-template name="INC_MOBILE_MENU"/>
 				<xsl:call-template name="INC_MOBILE_NAVIGATION"/>
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>

@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 public class PlatanSearchCommand extends Command {
 
 	private static final String URL_VAR = "platan_feed_url";
-	private static final String QUERY = "query";
+	private static final String QUERY = "q";
 
 	@Override
 	public ResultPE execute() throws Exception {

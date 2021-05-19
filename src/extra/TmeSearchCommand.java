@@ -37,7 +37,7 @@ public class TmeSearchCommand extends Command {
 
 	@Override
 	public ResultPE execute() throws Exception {
-		String query = getVarSingleValue("query");
+		String query = getVarSingleValue("q");
 		if(StringUtils.isBlank(query)){
 			ResultPE result = getResult("success");
 			XmlDocumentBuilder outputPage = XmlDocumentBuilder.newDoc();

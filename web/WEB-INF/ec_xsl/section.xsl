@@ -28,8 +28,8 @@
 
 	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLUMN"/>
 	</xsl:template>
 
 	<xsl:template name="MARKUP">
@@ -112,10 +112,10 @@
 			<xsl:if test="$show_devices">
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'table'">
-						<xsl:apply-templates select="$sel_sec/product"/>
+						<xsl:apply-templates select="$sel_sec/product" mode="product-table"/>
 					</xsl:if>
 					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="$sel_sec/product" mode="lines"/>
+						<xsl:apply-templates select="$sel_sec/product" mode="product-lines"/>
 					</xsl:if>
 					<xsl:if test="$not_found">
 						<h4>По заданным критериям товары не найдены</h4>
@@ -265,7 +265,7 @@
 				<div class="quantity currency">
 					Валюта:
 					<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
-					<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
+					<a href="{page/set_currency_rub}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rub']}">RUB</a>
 				</div>
 
 				<div class="quantity">

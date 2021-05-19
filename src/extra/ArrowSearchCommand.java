@@ -38,7 +38,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
 	@Override
 	public ResultPE execute() throws Exception {
-		String query = getVarSingleValue("query");
+		String query = getVarSingleValue("q");
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDoc();
 		xml.startElement("page", "name", getPageName());
 		addPageBasics(xml);

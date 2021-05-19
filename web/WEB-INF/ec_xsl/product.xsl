@@ -11,8 +11,8 @@
 	<xsl:variable name="meta_description" select="concat($p/name, ' в Минске от Чип Электроникс ✅. Оптом и в розницу! Звоните ☎ +375 (17) 269-92-36. Доступная цена! Доставка по Беларуси.')"/>
 	<xsl:variable name="meta_keywords" select="$p/name"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLUMN"/>
 	</xsl:template>
 
 
@@ -21,8 +21,17 @@
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
+	<xsl:variable name="price" select="$p/price"/>
+	<xsl:variable name="price_old" select="$p/price_old"/>
+	<xsl:variable name="u" select="if($p/unit != '') then $p/unit else 'шт'"/>
+	<xsl:variable name="unit" select="if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, $u) else $u"/>
+
+	<xsl:variable name="display_price" select="f:price_ictrade($price)"/>
+	<xsl:variable name="display_price_old" select="f:price_ictrade($price_old)"/>
+
+
 	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
+
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
 			{
@@ -105,9 +114,9 @@
 					<div class="device-page__actions">
 						<xsl:if test="f:num($p/price) &gt; 0">
 							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="f:price_catalog($p/price_old, '','')"/></span></div></xsl:if>
+								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
 								<div class="price_normal">
-									<xsl:value-of select="f:price_catalog($p/price, $p/unit, $p/min_qty)" />
+									<xsl:value-of select="concat($display_price, ' ', upper-case($curr), '/', $unit)" />
 									<div class="nds">*Цена включает НДС</div>
 								</div>
 
@@ -143,7 +152,7 @@
 							</div>
 						</div>
 						<xsl:choose>
-							<xsl:when test="$has_price"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/unit,'.')"/></div></xsl:when>
+							<xsl:when test="$has_price"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/u,'.')"/></div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 						<!-- <xsl:if test="$p/pdf != ''">
@@ -162,11 +171,15 @@
 
 						<xsl:for-each select="$p/line_product">
 							<xsl:variable name="has_price" select="f:num(price) &gt; 0 and f:num(qty) &gt; 0"/>
+
+							<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
+							<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
+
 							<div class="multi-device__name"><xsl:value-of select="name" /></div>
 							<div class="multi-device__price">
 								<xsl:if test="f:num($p/price) &gt; 0">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="price_old"/> руб.</div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="if (price) then price else '0'"/></div>
+									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="concat($display_price_old, ' ', upper-case($curr), '/', $unit)"/></div></xsl:if>
+									<div class="multi-device__price_new"><xsl:value-of select="concat($display_price, ' ', upper-case($curr), '/', $unit)"/></div>
 								</xsl:if>
 								<xsl:if test="not(f:num($p/price) = 0)">
 									<div class="multi-device__price_new">по запросу</div>
