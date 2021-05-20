@@ -2,11 +2,8 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +16,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class DigiKeySearch extends Command implements DigiKeyJSONConst{
+public class DigikeySearch extends Command implements DigiKeyJSONConst{
 	//Sandbox Manual login URL "https://sandbox-api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7&redirect_uri=http://localhost:8080/ictrade/digikey_manual_authorise";
 	//Manual login URL "https://api.digikey.com/v1/oauth2/authorize?response_type=code&client_id=SzCfaUwBSDFOOR7Sk0x6iywEoQxiApeD&redirect_uri=https://ictrade.by/digikey_manual_authorise";
 //	private static final String CLIENT_ID = "tdHyZqj8BxOXSXAW5pLO4yUqd8IDrIt7";
@@ -39,11 +36,9 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 	private long expiresIn;
 	private Properties props;
 
-	private long searchRequestTime;
-
 	private HashSet<String> existingProductCodes = new HashSet<>();
 
-	OkHttpClient client;
+	private OkHttpClient client;
 
 	private String createQuery() {
 		StringBuilder sb = new StringBuilder();
@@ -124,71 +119,39 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 
 		long reqStart = System.currentTimeMillis();
 		Response response = client.newCall(request).execute();
-		searchRequestTime = System.currentTimeMillis() - reqStart;
+		long searchRequestTime = System.currentTimeMillis() - reqStart;
+
+		setPageVariable("elapsed_time", String.valueOf(searchRequestTime));
 
 		// refresh if less then 10 seconds This should never actually happen
 		if (expiresIn < 10000 && expiresIn > 100) {
 			refreshAccessToken();
 		}
-		switch (response.code()) {
-			// ok
-			case 200:
-				return buildXML(response.body().string());
-			// bad request
-			case 400:
-				getResult("bad_requerst");
-				System.out.println(response.body().string());
-				// unauthorized
-			case 401:
-				getResult("unauthorized");
-			default:
-				ResultPE res = getResult("general_error");
-				res.addVariable("code", String.valueOf(response.code()));
-				return res;
+
+		ResultPE res = getResult("result");
+		if(response.body() != null){
+			res.setValue(buildXML(response.body().string()));
 		}
+		if(response.code() != 200){
+			setPageVariable("error_code", String.valueOf(response.code()));
+		}
+		return res;
 	}
 
-	private ResultPE buildXML(String jsonString) throws Exception {
+	private String buildXML(String jsonString){
 //		File out = Paths.get(AppContext.getContextPath(), "search_result.json").toFile();
 //		FileUtils.deleteQuietly(out);
 //		FileUtils.writeStringToFile(out, jsonString, Charset.forName("UTF-8"));
-		long start = System.currentTimeMillis();
-		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
-		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
-
-		double currencyRatio = catalog.getDoubleValue("currency_ratio_usd", 2.0494);
-		double rurRatio = catalog.getDoubleValue("currency_ratio", 100d);
-		double q1 = catalog.getDoubleValue("q1_usd", 0d);
-		double q2 = catalog.getDoubleValue("q2_usd", 0d);
-
+		XmlDocumentBuilder doc = XmlDocumentBuilder.newDocPart();
 		JSONObject json = new JSONObject(jsonString);
 
-		doc.startElement("page");
-		doc.startElement("base").addText(getUrlBase()).endElement();
-		doc.startElement("variables")
-				.startElement("q").addText(getVarSingleValue("q")).endElement()
-				.startElement("ratio").addText(currencyRatio).endElement()
-				.startElement("rur_ratio").addText(rurRatio).endElement()
-				.startElement("q1").addText(q1).endElement()
-				.startElement("q2").addText(q2).endElement()
-				.startElement("view").addText(getVarSingleValue("view")).endElement()
-				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
-				.startElement("request_time").addText(searchRequestTime).endElement()
-				.startElement("results").addText(json.get(JSON_PRODUCT_COUNT)).endElement()
-				//.startElement("exact").addText(json.get(JSON_EXACT)).endElement()
-				.endElement();
 		try {
 			JSONObject exactProduct = json.getJSONObject(JSON_EXACT);
 			convertProductJsonToXml(doc, exactProduct);
 		}catch (Exception e){}
-		//addJSONArrayToResults(doc, json, JSON_EXACT);
 		addJSONArrayToResults(doc, json, JSON_MANUFACTURER_PRODUCT);
 		addJSONArrayToResults(doc, json, JSON_RESULTS);
-		doc.startElement("elapsed_time").addText(System.currentTimeMillis() - start).endElement();
-		doc.endElement();
-		ResultPE result = getResult("complete");
-		result.setValue(doc.toString());
-		return result;
+		return doc.toString();
 	}
 
 	private void addJSONArrayToResults(XmlDocumentBuilder doc, JSONObject searchResults, String arrayKey) {
@@ -314,20 +277,17 @@ public class DigiKeySearch extends Command implements DigiKeyJSONConst{
 		return null;
 	}
 
-
 	private void saveProps() throws Exception {
 		if (props == null)
 			loadProps();
 		try (FileWriter writer = new FileWriter(Paths.get(AppContext.getContextPath(), "WEB-INF", "apiclient.properties").toFile());) {
 			props.store(writer, "API Client Configuration");
-			writer.close();
 		}
 	}
 
 	private void loadProps() throws Exception {
 		try (FileReader reader = new FileReader(Paths.get(AppContext.getContextPath(), "WEB-INF", "apiclient.properties").toFile());) {
 			props = new Properties();
-
 			props.load(reader);
 		} catch (Exception e) {
 			throw e;

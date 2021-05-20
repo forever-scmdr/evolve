@@ -7,6 +7,23 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
+	<include-definition name="SHOP_AND_CURRENCY">
+		<list item="currency" id="rub">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var value="RUB"/>
+				</parameter>
+			</filter>
+		</list>
+		<list item="shop" id="shop">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var var="shop"/>
+				</parameter>
+			</filter>
+			<list item="currency" assoc="general" id="shop_currency"/>
+		</list>
+	</include-definition>
 
 	<include-definition name="COMMON">
 		<personal>
@@ -1535,33 +1552,6 @@
 		</command>
 	</page>
 
-	<!-- ICTRADE ONLY -->
-
-	<page name="platan_search" template="external_search/platan_search">
-		<request>
-			<var name="platan_feed_url" value="https://shop.platan.ru/export/price.xml"/>
-			<var name="q"/>
-			<var name="currency" scope="cookie" value="byn"/>
-			<var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="-1" scope="cookie"/>
-		</request>
-		<command class="extra.PlatanSearchCommand">
-			<result name="result" type="xml" />
-		</command>
-	</page>
-
-	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
-		<link name="success" target="currency_ratio_success"/>
-		<link name="error" target="currency_ratio_success">
-			<var name="result" value="error"/>
-		</link>
-		<command class="extra.LoadCurrencyFromNBRB">
-			<result name="success" type="redirect"/>
-			<result name="error" type="redirect"/>
-		</command>
-	</page>
-	<page name="currency_ratio_success" ></page>
-
 	<page name="import_from_ancient" template="integration/import_from_ancient" authority-groups="common">
 		<request>
 			<var name="action"/>
@@ -1581,54 +1571,6 @@
 		</command>
 	</page>
 
-	<page name="digikey_manual_authorise">
-		<request>
-			<var name="code" />
-		</request>
-		<link name="success" target="digikey_result">
-			<var name="result" value="Код доступа успешно сохранен. Вход выполнен"/>
-		</link>
-		<link name="error" target="digikey_result">
-			<var name="result" value="Не удалось войти по коду доступа."/>
-			<var name="code" var="code" />
-		</link>
-		<command class="extra.DigiKeySearch" method="getAccessCodeAndAuthorise">
-			<result name="success" type="redirect"/>
-			<result name="error" type="redirect"/>
-		</command>
-	</page>
-
-	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
-		<command class="extra.DigiKeySearch" method="refreshAccessToken"/>
-	</page>
-
-	<page name="digikey_result">
-		<request>
-			<var name="result" />
-			<var name="code"/>
-		</request>
-	</page>
-
-	<page name="digikey_search" template="external_search/digikey_search">
-		<request>
-			<var name="q"/>
-			<var name="qty" />
-			<var name="currency" scope="cookie" value="byn"/>
-			<var name="view" value="table" scope="cookie"/>
-		</request>
-		<link name="bad_request" target="digikey_result" >
-			<var name="result" value="bad_request"/>
-		</link>
-		<link name="generel_error" target="digikey_result">
-			<var name="result" value="error"/>
-		</link>
-		<command class="extra.DigiKeySearch" >
-			<result name="complete" type="xml"/>
-			<result name="bad_request" type="redirect"/>
-			<result name="generel_error" type="redirect"/>
-		</command>
-	</page>
-
 	<page name="ajax_special_order" template="special_order_ajax">
 		<request>
 			<var name="result"/>
@@ -1642,21 +1584,6 @@
 			<var name="form_name" value="special_order_form"/>
 			<var name="source_page" value="ajax_special_order"/>
 		</link>
-	</page>
-
-	<page name="farnell_search" template="external_search/farnell">
-		<request>
-			<var name="q"/>
-			<var name="page" value="1"/>
-			<var name="limit" value="30"/>
-
-			<var name="minqty" value="-1" scope="cookie"/>
-			<var name="currency" scope="cookie" value="byn"/>
-			<var name="view" value="table" scope="cookie"/>
-		</request>
-		<command class="extra.FarnellSearchCommand">
-			<result name="complete" type="xml"/>
-		</command>
 	</page>
 
 	<page name="shop_email" template="shop_email">
@@ -1712,8 +1639,6 @@
 	</page>
 
 
-
-
 	<page name="search_test" template="search_test" >
 		<request>
 			<var name="q" value="fuse"/>
@@ -1749,17 +1674,29 @@
 	</page>
 
 
-	<page name="promelec_search" template="external_search/promelec_search">
-		<request>
-			<var name="q"/>
-			<var name="view" scope="cookie"/>
-			<var name="currency" scope="cookie" value="byn"/>
-			<var name="minqty" value="" scope="cookie"/>
-		</request>
-		<command class="extra.PromelecSearchCommand">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                    ПОИСК ПО ВНЕШНИМ САЙТАМ                           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+	<include-definition name="SHOP_AND_CURRENCY">
+		<list item="currency" id="rub">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var value="RUB"/>
+				</parameter>
+			</filter>
+		</list>
+		<list item="shop" id="shop">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var var="shop"/>
+				</parameter>
+			</filter>
+			<list item="currency" assoc="general" id="shop_currency"/>
+		</list>
+	</include-definition>
 
 	<page name="arrow_search" template="external_search/arrow_search">
 		<request>
@@ -1767,21 +1704,126 @@
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="shop" value="Verical"/>
 		</request>
-		<command class="extra.ArrowSearchCommand">
-			<result name="success" type="xml"/>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="extra.ArrowSearchCommand" tag="search">
+			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
 
-	<page name="tme_search" template="tme_search">
+	<page name="digikey_search" template="">
+		<request>
+			<var name="q"/>
+			<var name="qty" />
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="shop" value="Digikey"/>
+		</request>
+
+		<include name="SHOP_AND_CURRENCY" />
+
+		<link name="bad_request" target="digikey_result" >
+			<var name="result" value="bad_request"/>
+		</link>
+		<link name="generel_error" target="digikey_result">
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.DigikeySearch" tag="search">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
+	<page name="farnell_search" template="external_search/farnell_search">
+		<request>
+			<var name="q"/>
+			<var name="page" value="1"/>
+			<var name="limit" value="30"/>
+
+			<var name="minqty" value="-1" scope="cookie"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="shop" value="Farnell"/>
+		</request>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="extra.FarnellSearchCommand" tag="search">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
+	<page name="platan_search" template="external_search/platan_search">
+		<request>
+			<var name="platan_feed_url" value="https://shop.platan.ru/export/price.xml"/>
+			<var name="q"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="-1" scope="cookie"/>
+			<var name="shop" value="Platan"/>
+		</request>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="extra.PlatanSearchCommand" tag="search">
+			<result name="result" type="inline_xml" />
+		</command>
+	</page>
+
+	<page name="promelec_search" template="external_search/promelec_search">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
 			<var name="minqty" value="" scope="cookie"/>
+			<var name="shop" value="Promelec"/>
 		</request>
-		<command class="extra.TmeSearchCommand">
-			<result name="success" type="xml"/>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="extra.PromelecSearchCommand" tag="search">
+			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
+
+	<page name="tme_search" template="external_search/tme_search">
+		<request>
+			<var name="q"/>
+			<var name="view" scope="cookie"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="minqty" value="" scope="cookie"/>
+			<var name="shop" value="TME"/>
+		</request>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="extra.TmeSearchCommand" tag="search">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
+	<page name="digikey_manual_authorise">
+		<request>
+			<var name="code" />
+		</request>
+		<link name="success" target="digikey_result">
+			<var name="result" value="Код доступа успешно сохранен. Вход выполнен"/>
+		</link>
+		<link name="error" target="digikey_result">
+			<var name="result" value="Не удалось войти по коду доступа."/>
+			<var name="code" var="code" />
+		</link>
+		<command class="extra.DigikeySearch" method="getAccessCodeAndAuthorise">
+			<result name="success" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
+		<command class="extra.DigikeySearch" method="refreshAccessToken"/>
+	</page>
+
+	<page name="digikey_result">
+		<request>
+			<var name="result" />
+			<var name="code"/>
+		</request>
+	</page>
+
+	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
+		<command class="extra.LoadCurrencyFromNBRB"/>
+	</page>
+
 </site>

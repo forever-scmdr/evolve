@@ -14,15 +14,15 @@ public class CommandPEWriter implements PageElementWriter {
 		CommandPE command = (CommandPE) elementToWrite;
 		if (command.hasExecutionResult()) {
 			ResultPE result = command.getExecutionResult();
-			if (result.getType() == ResultPE.ResultType.plain_text) {
+			ResultPE.ResultType t = result.getType();
+			if (t == ResultPE.ResultType.plain_text || t == ResultPE.ResultType.inline_text) {
 				xml
 						.startElement(command.getTag())
 						.startElement(command.getExecutionResult().getName())
 						.addText(result.getValue())
 						.endElement()
 						.endElement();
-			}
-			else if (result.getType() == ResultPE.ResultType.xml) {
+			}else if(t == ResultPE.ResultType.xml || t == ResultPE.ResultType.inline_xml){
 				xml
 						.startElement(command.getTag())
 						.startElement(command.getExecutionResult().getName())

@@ -3,10 +3,8 @@ package extra;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.Base64;
 import org.jsoup.Jsoup;
@@ -43,14 +41,13 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 	private static final String OFFSET = "resultsSettings.offset";
 	private static final String NUMBER_OF_RESULTS = "resultsSettings.numberOfResults";
 	private static final String TERM = "term";
-	private static final String ENTITY_DECLARATION = "\n<!DOCTYPE farnell_products [<!ENTITY nbsp \"&#160;\">]>\n";
+	//private static final String ENTITY_DECLARATION = "\n<!DOCTYPE farnell_products [<!ENTITY nbsp \"&#160;\">]>\n";
 	private static final String SIGNATURE_VAR = "userInfo.signature";
 	private static final String TIMESTAMP_VAR = "userInfo.timestamp";
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 
 	private Document doc;
-	private Element variables;
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -93,27 +90,20 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 
 		doc = Jsoup.parse(new URL(urlBuilder.toString()), 5000);
 
-		addVarToResult("query", getVarSingleValue("q"));
-		addVarToResult("currency", getVarSingleValue("currency"));
-		addVarToResult("view", getVarSingleValue("view"));
+		Element root = doc.getElementsByTag("keywordSearchReturn").first();
 
-		Item catalog = ItemQuery.loadSingleItemByName(CATALOG_ITEM);
-		addVarToResult("rur_ratio", catalog.outputValue("currency_ratio"));
-		addVarToResult("eur_ratio", catalog.outputValue("currency_ratio_eur"));
-		addVarToResult("q1_eur", catalog.outputValue("q1_eur"));
-		addVarToResult("q2_eur", catalog.outputValue("q2_eur"));
-		addVarToResult("offset", String.valueOf(offset));
-		addVarToResult("limit", String.valueOf(limit));
+		setPageVariable("offset", String.valueOf(offset));
+		setPageVariable("limit", String.valueOf(limit));
 
 		ResultPE result;
 		try {
-			result = getResult("complete");
+			result = getResult("result");
 		} catch (EcommanderException e) {
-			ServerLogger.error("no result found", e);
+			ServerLogger.error("no result, named \"result\" found", e);
 			return null;
 		}
-		String output = doc.outerHtml();
-		output = output.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ENTITY_DECLARATION);
+		String output = root.outerHtml();
+		//output = output.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ENTITY_DECLARATION);
 		result.setValue(output);
 		return result;
 	}
@@ -125,20 +115,6 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 		mac.init(keySpec);
 		String hash = Base64.encodeBase64String(mac.doFinal(toEncode.getBytes()));
 		return URLEncoder.encode(hash, "UTF-8");
-	}
-
-	/**
-	 * Appends variables to document
-	 * @param name - variable name;
-	 * @param value - variable value;
-	 */
-	private void addVarToResult(String name, String value){
-		if(variables == null){
-			variables = doc.getElementsByTag("keywordSearchReturn").first().prependElement("variables");
-		}
-		if(StringUtils.isBlank(name)) return;
-		value = StringUtils.isBlank(value)? "" : value;
-		variables.appendElement(name).html(value);
 	}
 
 	public static void main(String[] args) {
@@ -155,4 +131,5 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 			e.printStackTrace();
 		}
 	}
+
 }

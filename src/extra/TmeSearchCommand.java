@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -31,22 +32,16 @@ public class TmeSearchCommand extends Command {
 	private static final String ENCRYPTION_METHOD = "HmacSHA1";
 	private static final String SEARCH_URL = "https://api.tme.eu/Products/Search.xml";
 	private static final String PRICING_URL = "https://api.tme.eu/Products/GetPricesAndStocks.xml";
-	private static final String LANGUAGES_URL = "https://api.tme.eu/Utils/GetLanguages.xml";
-	private static final String COUNTRIES_URL = "https://api.tme.eu/Utils/GetCountries.xml";
+	//private static final String LANGUAGES_URL = "https://api.tme.eu/Utils/GetLanguages.xml";
+	//private static final String COUNTRIES_URL = "https://api.tme.eu/Utils/GetCountries.xml";
 	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
 	@Override
 	public ResultPE execute() throws Exception {
 		String query = getVarSingleValue("q");
 		if(StringUtils.isBlank(query)){
-			ResultPE result = getResult("success");
-			XmlDocumentBuilder outputPage = XmlDocumentBuilder.newDoc();
-			outputPage.startElement("page", "name", getPageName());
-			outputPage.startElement("base").addText(getUrlBase()).endElement();
-			outputPage.addElement("error", "empty_query");
-			outputPage.endElement();
-			result.setValue(outputPage.toString());
-			return result;
+			setPageVariable("error", "empty_query");
+			return getResult("result");
 		}
 
 		query = StringUtils.normalizeSpace(query);
@@ -66,23 +61,9 @@ public class TmeSearchCommand extends Command {
 		String tmeResponse = loadFromTmeAPI(SEARCH_URL, params);
 		tmeResponse = StringUtils.substringAfter(tmeResponse, XML_DECLARATION);
 
-		XmlDocumentBuilder outputPage = XmlDocumentBuilder.newDoc();
-		outputPage.startElement("page", "name", getPageName());
-		outputPage.startElement("base").addText(getUrlBase()).endElement();
-
-		outputPage.startElement("variables")
-				.startElement("query").addText(getVarSingleValue("query")).endElement()
-				.startElement("view").addText(getVarSingleValue("view")).endElement()
-				.startElement("currency").addText(getVarSingleValue("currency")).endElement()
-				.startElement("minqty").addText(getVarSingleValue("minqty")).endElement()
-				.endElement();
-
-		addCurrencyRatios(outputPage);
-
+		XmlDocumentBuilder outputPage = XmlDocumentBuilder.newDocPart();
 		outputPage.addElements(tmeResponse);
-		outputPage.endElement();
-
-		params = new TreeMap<String, String>();
+		params = new TreeMap<>();
 		addGeneralParams(params);
 		Document searchResult = Jsoup.parse(outputPage.toString(), "", Parser.xmlParser());
 		HashMap<String, Element> productMap = new HashMap<>();
@@ -135,7 +116,7 @@ public class TmeSearchCommand extends Command {
 			}
 		}
 
-		ResultPE result = getResult("success");
+		ResultPE result = getResult("result");
 		result.setValue(searchResult.outerHtml());
 		return result;
 	}
@@ -158,7 +139,7 @@ public class TmeSearchCommand extends Command {
 	}
 
 	private String loadFromTmeAPI(String searchUrl, Map<String, String> params) throws IOException {
-		byte[] postedData = preparePostData(searchUrl, params);
+		byte[] postedData = preparePostData(params);
 
 		HttpURLConnection conn = (HttpURLConnection)new URL(searchUrl).openConnection();
 		conn.setRequestMethod("POST");
@@ -167,7 +148,7 @@ public class TmeSearchCommand extends Command {
 		conn.setDoOutput(true);
 		conn.getOutputStream().write(postedData);
 
-		Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
 		StringBuilder responseContent = new StringBuilder();
 
 		for (int item; (item = in.read()) >= 0;) {
@@ -176,9 +157,8 @@ public class TmeSearchCommand extends Command {
 		return responseContent.toString();
 	}
 
-	private byte[] preparePostData(String searchUrl, Map<String, String> params) throws UnsupportedEncodingException {
+	private byte[] preparePostData(Map<String, String> params) throws UnsupportedEncodingException {
 		StringBuilder postData = new StringBuilder();
-
 		for (Map.Entry<String, String> param : params.entrySet()) {
 			if (postData.length() != 0)
 				postData.append('&');
@@ -187,8 +167,7 @@ public class TmeSearchCommand extends Command {
 			postData.append('=');
 			postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
 		}
-
-		return postData.toString().getBytes("UTF-8");
+		return postData.toString().getBytes(StandardCharsets.UTF_8);
 	}
 
 	private String generateSignature(String url, TreeMap<String, String> params) throws Exception{

@@ -24,11 +24,16 @@ public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
 	public ResultPE execute() throws Exception {
 		List<Item> currencies = new ItemQuery("currency").loadItems();
 		if(currencies.size() == 0){
-			return getResult("success");
+			setPageVariable("result", "No currencies created. Nothing to fetch");
+			return null;
 		}
 		Document doc = Jsoup.parse(new URL(NBNB_URL + FORMAT.format(new Date())), 5000);
 		for (Item currency : currencies){
-			Elements infoFromBank = doc.getElementsContainingOwnText(currency.getStringValue(NAME));
+			Elements infoFromBank = doc.getElementsContainingOwnText(currency.getStringValue(NAME,""));
+			if(infoFromBank == null || infoFromBank.isEmpty()){
+				setPageVariable(currency.getStringValue(NAME), "currency not found");
+				continue;
+			}
 			Element curs = infoFromBank.first().parent();
 			String scale = curs.select("Scale").text();
 			String rate = curs.select("Rate").text();
@@ -38,6 +43,7 @@ public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
 			currency.setValueUI("title", title);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(currency).ignoreUser(true));
 		}
-		return getResult("success");
+		setPageVariable("result", "success");
+		return null;
 	}
 }

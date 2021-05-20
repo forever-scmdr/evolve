@@ -2,13 +2,8 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.Item;
-import ecommander.model.User;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.pages.var.Variable;
-import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -39,34 +34,19 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 	@Override
 	public ResultPE execute() throws Exception {
 		String query = getVarSingleValue("q");
-		XmlDocumentBuilder xml = XmlDocumentBuilder.newDoc();
-		xml.startElement("page", "name", getPageName());
-		addPageBasics(xml);
-		if(StringUtils.isNotBlank(query)) {
-			addCurrencyRatios(xml);
+		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+		if (StringUtils.isNotBlank(query)) {
 			JSONObject searchResult = loadFromArrowApi(query);
-			if(searchResult != null) {
+			if (searchResult != null) {
 				boolean hasProducts = addGeneralResponseInfo(xml, searchResult);
 				if (hasProducts) {
 					addProducts(xml, searchResult);
 				}
 			}
 		}
-		xml.endElement();
-
-		ResultPE result = getResult("success");
+		ResultPE result = getResult("result");
 		result.setValue(xml.toString());
 		return result;
-	}
-
-	private void addCurrencyRatios(XmlDocumentBuilder doc) throws Exception {
-		Item currencies = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
-		if(currencies != null){
-			doc.
-					startElement(ItemNames.CATALOG, "id", currencies.getId())
-					.addElements(currencies.outputValues())
-					.endElement();
-		}
 	}
 
 	private JSONObject loadFromArrowApi(String searchRequest) throws Exception {
@@ -74,10 +54,10 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		String query = URLEncoder.encode(searchRequest, "UTF-8");
 		URL ArrowAPIUrl = new URL(REQUEST_URL + "?login=" + login + "&apikey=" + KEY + "&search_token=" + query + "&rows=25");
 		InputStreamReader is = new InputStreamReader(ArrowAPIUrl.openStream(), Charset.forName("UTF-8"));
-		try(BufferedReader reader = new BufferedReader(is)){
+		try (BufferedReader reader = new BufferedReader(is)) {
 			StringBuilder sb = new StringBuilder();
 			String line;
-			while ((line = reader.readLine()) != null){
+			while ((line = reader.readLine()) != null) {
 				sb.append(line);
 			}
 			return new JSONObject(sb.toString());
@@ -93,9 +73,9 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 	private void addProducts(XmlDocumentBuilder xml, JSONObject searchResult) {
 		xml.startElement("products");
 		JSONArray data = searchResult.getJSONObject(ROOT).getJSONArray(RESULTS_ARR);
-		for(int i = 0; i<data.length(); i++){
+		for (int i = 0; i < data.length(); i++) {
 			JSONArray products = data.getJSONObject(i).getJSONArray(PRODUCTS_ARR);
-			for (int j = 0; j < products.length(); j++){
+			for (int j = 0; j < products.length(); j++) {
 				addProduct(xml, products.getJSONObject(j));
 			}
 		}
@@ -104,6 +84,7 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
 	/**
 	 * Переводит продукт из JSON в XML и добавляет его в документ
+	 *
 	 * @param xml
 	 * @param product
 	 */
@@ -113,7 +94,6 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		//product basics
 		String displayCode = product.getString(VENDOR_CODE);
 
-		//xml.addElement("code", code);
 		xml.addElement("code", displayCode);
 		xml.addElement("name", product.getString(NAME));
 		xml.addElement("main_pic", getUri(product, IMG_VAL));
@@ -128,29 +108,24 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
 		//prices and availability
 		JSONArray stores = product.getJSONObject(INVENTORY).getJSONArray(STORES_ARR);
-		//xml.startElement("offers");
 
-		for(int i = 0; i < stores.length(); i++){
+		for (int i = 0; i < stores.length(); i++) {
 			JSONObject store = stores.getJSONObject(i);
 			xml.addElement("site", store.getString("name"));
-			//if(store.getString("name").equals(VERICAL_VAL)){
-				JSONArray  priceSources = store.getJSONArray(SOURCES_ARR);
-				for(int j = 0; j < priceSources.length(); j++){
-					JSONArray offers = priceSources.getJSONObject(j).getJSONArray(OFFERS);
-					for(int k = 0; k < offers.length(); k++){
-						processOffer(xml, offers.getJSONObject(k));
-					}
+			JSONArray priceSources = store.getJSONArray(SOURCES_ARR);
+			for (int j = 0; j < priceSources.length(); j++) {
+				JSONArray offers = priceSources.getJSONObject(j).getJSONArray(OFFERS);
+				for (int k = 0; k < offers.length(); k++) {
+					processOffer(xml, offers.getJSONObject(k));
 				}
-			//}
+			}
 		}
-	//	xml.endElement();
 		xml.endElement();
 	}
 
 	/**
 	 * Добавляет цены и сведения о наличи товара. В одном товаре может быть несколько цен и наличий.
 	 */
-
 	private void processOffer(XmlDocumentBuilder xml, JSONObject offer) {
 		xml.startElement("offer");
 		String code = "vrc_" + offer.getString(CODE);
@@ -158,11 +133,12 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		String country = null;
 		try {
 			country = offer.getString(COUNTRY);
-		}catch (Exception e){}
+		} catch (Exception e) {
+		}
 		xml.addElement("country", country);
 		xml.addElement("shipment", getShipment(offer));
 		xml.addElement("step", offer.getInt(STEP));
-		if(offer.has(PRICE_LV1)) {
+		if (offer.has(PRICE_LV1)) {
 			JSONObject priceLv1 = offer.getJSONObject(PRICE_LV1);
 			JSONArray priceLv2 = priceLv1.getJSONArray(PRICE_LV2_ARR);
 			for (int i = 0; i < priceLv2.length(); i++) {
@@ -170,23 +146,23 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 				xml.addElement("price", price.getDouble(PRICE));
 				xml.addElement("min_qty", price.getInt(MIN_QTY));
 			}
-		}else {
+		} else {
 			xml.addElement("no_price", "");
 		}
 		JSONArray availability = offer.getJSONArray(AVAILABILITY_ARR);
-		for(int i = 0; i < availability.length(); i++){
+		for (int i = 0; i < availability.length(); i++) {
 			JSONObject av = availability.getJSONObject(i);
 			xml.addElement("qty", av.getInt(MAX_QTY));
-			xml.addElement("available", av.getString(IN_STOCK).equals("In Stock")? 1 : 0);
+			xml.addElement("available", av.getString(IN_STOCK).equals("In Stock") ? 1 : 0);
 		}
 		xml.endElement();
 	}
 
-	private int getShipment(JSONObject offer){
+	private int getShipment(JSONObject offer) {
 		int shipment = 0;
 		String s = offer.getString(SHIPMENT);
 		s = s.replaceAll("\\D", "");
-		if(StringUtils.isNotBlank(s)){
+		if (StringUtils.isNotBlank(s)) {
 			shipment += Integer.parseInt(s);
 		}
 		return shipment;
@@ -194,15 +170,16 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 
 	/**
 	 * Извленкает ссылку с нужным именем из массива "resources", вложенного в некоторый оъект.
+	 *
 	 * @param resourceContainer
 	 * @param key
 	 */
-	private String getUri(JSONObject resourceContainer, String key){
+	private String getUri(JSONObject resourceContainer, String key) {
 		JSONArray resources = resourceContainer.getJSONArray(URI_ARR);
-		if(resources != null){
-			for(int i = 0; i < resources.length(); i++){
+		if (resources != null) {
+			for (int i = 0; i < resources.length(); i++) {
 				JSONObject link = resources.getJSONObject(i);
-				if(link.getString(URI_TYPE).equals(key)){
+				if (link.getString(URI_TYPE).equals(key)) {
 					return link.getString(URI);
 				}
 			}
@@ -239,43 +216,8 @@ public class ArrowSearchCommand extends Command implements ArrowJSONConst {
 		return ok;
 	}
 
-
-	/**
-	 * Добавляет базовую информацию о странице (source_link, base, user, variables).
-	 *
-	 * @param xml
-	 */
-	private void addPageBasics(XmlDocumentBuilder xml) {
-		//source link
-		xml.addElement("source_link", getRequestLink().getOriginalUrl());
-
-		//user
-		User u = getInitiator();
-		xml.startElement("user", "id", u.getUserId(), "name", u.getName(), "visual", false);
-		for (User.Group group : u.getGroups()) {
-			xml.addEmptyElement("group", "name", group.name, "id", group.id, "role", group.role);
-		}
-		xml.endElement();
-
-		//base
-		xml.addElement("base", getUrlBase());
-
-		//variables
-		xml.startElement("variables");
-		for (Variable var : getAllVariables()) {
-			String varName = var.getName();
-			if(varName.startsWith("$")) continue;
-			for (String val : var.writeAllValues()) {
-				xml.addElement(varName, val);
-			}
-		}
-		xml.endElement();
-	}
-
-
 	private JSONObject loadJsonFromFile() throws IOException {
 		String fileContent = FileUtils.readFileToString(Paths.get(AppContext.getContextPath(), "arrow.json").toFile(), "UTF-8");
 		return new JSONObject(fileContent);
 	}
-
 }

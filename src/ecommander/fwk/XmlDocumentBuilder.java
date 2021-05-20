@@ -109,7 +109,27 @@ public class XmlDocumentBuilder {
 	}
 
 	/**
-	 * добавляет тэг без вложенных тегов и его атрибуты
+	 * возвращает количество символов в текущем фрагменте документа
+	 * теперь в буфере может храниться только часть документа
+	 */
+	public int length(){
+		return xml.length();
+	}
+
+	/**
+	 * Удаляет текущее содержимое документа и возвращает его,
+	 * при этом сохраняя стек открытых тегов.
+	 * Полезно для записи больших XML-документов.
+	 */
+	public String dump(){
+		String dump = xml.toString();
+		xml = new StringBuilder();
+		return dump;
+	}
+
+	/**
+	 * добавляет тэг без вложенных тегов, но с текстом и его атрибуты
+	 * если текста нет, создается пустой тэг (см. .addEmptyElement())
 	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
 	 * @param tagName
 	 * @param text
@@ -121,6 +141,22 @@ public class XmlDocumentBuilder {
 		}
 		String txt = StringEscapeUtils.escapeXml10(text.toString());
 		startElement(tagName, attributes).addText(txt);
+		return endElement();
+	}
+
+	/**
+	 * добавляет тэг без вложенных тегов, но с <![CDATA[...]]> и его атрибуты
+	 * если текста нет, создается пустой тэг (см. .addEmptyElement())
+	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 * @param tagName
+	 * @param text
+	 * @param attributes
+	 */
+	public final XmlDocumentBuilder addCdataElement(String tagName, Object text, Object... attributes){
+		if(text == null || StringUtils.isBlank(text.toString())){
+			return addEmptyElement(tagName, attributes);
+		}
+		startElement(tagName, attributes).addCData(text);
 		return endElement();
 	}
 
@@ -152,6 +188,27 @@ public class XmlDocumentBuilder {
 	 */
 	public XmlDocumentBuilder addText(String text) {
 		xml.append(StringEscapeUtils.escapeXml10(text));
+		return this;
+	}
+
+	/**
+	 * Добавляет текст, обернутый в <![CDATA[]]> к текущему элементу
+	 * @param data
+	 * @return
+	 */
+	public XmlDocumentBuilder addCData(Object data) {
+		if(data == null) return this;
+		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
+		xml.append('\n');
+		xml.append(prefix);
+		xml.append("<![CDATA[\n");
+		xml.append(StringUtils.rightPad("", openTags.size(), '\t'));
+		String d = data.toString().replaceAll("[\\r\\n]", "");
+		xml.append(d);
+		xml.append('\n');
+		xml.append(prefix);
+		xml.append("]]>\n");
+		xml.append(StringUtils.rightPad("",openTags.size() - 2, '\t'));
 		return this;
 	}
 	/**
