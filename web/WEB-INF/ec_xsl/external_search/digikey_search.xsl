@@ -139,7 +139,7 @@
 				</div>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-14 дней</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
@@ -261,7 +261,7 @@
 				</div>
 				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение 7-14 дней
+						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">

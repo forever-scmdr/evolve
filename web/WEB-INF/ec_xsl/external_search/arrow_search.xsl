@@ -232,7 +232,7 @@
 		</div>
 		<xsl:if test="f:num($offer/available) = 1">
 			<div class="device__in-stock">
-				<i class="fas fa-check"></i>поставка в течение 7-10 дней
+				<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="f:num($offer/available) != 1">

@@ -1759,7 +1759,7 @@
 		</command>
 	</page>
 
-	<page name="promelec_search" template="">
+	<page name="promelec_search" template="external_search/promelec_search">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>

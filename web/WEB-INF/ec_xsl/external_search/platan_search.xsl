@@ -77,7 +77,7 @@
 			</div>
 			<xsl:if test="f:num(QUANTY) != 0">
 				<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-					<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение 7-10 дней
+					<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/>
 				</div>
 			</xsl:if>
 			<xsl:if test="f:num(QUANTY) = 0">
@@ -128,7 +128,7 @@
 				</xsl:call-template>
 			</div>
 			<xsl:if test="f:num(QUANTY) != 0">
-				<div class="device__in-stock"><i class="fas fa-check"></i>поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение 7-10 дней</div>
+				<div class="device__in-stock"><i class="fas fa-check"></i>поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
 			</xsl:if>
 			<xsl:if test="f:num(QUANTY) = 0">
 				<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
@@ -163,14 +163,13 @@
 		<xsl:variable name="m1" select="if($price_roz &gt; 0) then concat($product/MINZAKAZ, ':', $price_roz) else $nothing"/>
 		<xsl:variable name="m2" select="if($price_pack &gt; 0) then concat($product/UPACK, ':', $price_pack) else $nothing"/>
 
-		<input type="hidden" value="{$product/EI_NAME}" name="unit"/>
 		<input type="hidden" value="{$shop/name}" name="aux"/>
 		<input type="hidden" value="{$product/NAME}" name="name"/>
 		<input type="hidden" value="{$product/MANUFAC}" name="vendor"/>
 		<input type="hidden" value="{$product/EI_NAME}" name="unit"/>
 		<input type="hidden" value="{$product/MINZAKAZ}" name="min_qty"/>
 		<input type="hidden" value="{string-join(($m1, $m2), ';')}" name="map"/>
-		<input type="number" class="text-input" name="qty" value="{MINZAKAZ}" min="{MINZAKAZ}"/>
+		<input type="number" class="text-input" name="qty" value="{$product/MINZAKAZ}" min="{$product/MINZAKAZ}"/>
 	</xsl:template>
 	<xsl:template name="CART_BUTTON_AVAILABLE">
 		<xsl:param name="product"/>

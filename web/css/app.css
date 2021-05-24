@@ -7728,7 +7728,7 @@ td .catalog-item {
 	left: -1px;
 }
 .device_row .zoom-icon {
-	top:6px;
+	top:0;
 	left:56px;
 	color: #999;
 }
