@@ -11,6 +11,7 @@
 	<xsl:variable name="rub" select="/page/currency[name = 'RUB']"/>
 	<xsl:variable name="ratio_rur" select="f:num($rub/ratio)"/>
 	<xsl:variable name="q_rur" select="1 + f:num($rub/q)"/>
+	<xsl:variable name="nothing"/>
 
 	<xsl:variable name="curr" select="page/variables/currency" />
 
@@ -37,21 +38,25 @@
 	<xsl:function name="f:byn_to_currency">
 		<xsl:param name="price" />
 		<xsl:param name="currency" />
-		<xsl:variable name="price_curr" select="(f:num(string($price)) div f:num($currency/ratio)) * f:num($currency/scale)" />
-		<xsl:sequence select="$price_curr"/>
+		<xsl:sequence select="(f:num(string($price)) div f:num($currency/ratio)) * f:num($currency/scale)"/>
 	</xsl:function>
 
-	<xsl:function name="f:shop_price_to_byn" >
+	<xsl:function name="f:currency_to_byn">
+		<xsl:param name="price" />
+		<xsl:param name="currency" />
+
+		<xsl:variable name="price_num" select="f:num(string($price))"/>
+		<xsl:sequence select="($price_num div f:num($currency/scale)) * f:num($currency/ratio)"/>
+	</xsl:function>
+
+	<xsl:function name="f:apply_quotients" >
 		<xsl:param name="price" />
 		<xsl:param name="shop"/>
 
-		<xsl:variable name="price_num" select="f:num(string($price))"/>
-		<xsl:variable name="shop_q" select="f:num($shop/q)"/>
 		<xsl:variable name="currency_q" select="f:num($shop/currency/q)"/>
-		<xsl:variable name="scale" select="f:num($shop/currency/scale)"/>
-		<xsl:variable name="ratio" select="f:num($shop/currency/ratio)"/>
+		<xsl:variable name="shop_q" select="f:num($shop/q)"/>
 
-		<xsl:sequence select="($price_num div $scale) * $ratio * (1 + $currency_q) * (1 + $shop_q)"/>
+		<xsl:sequence select="f:num(string($price)) * (1 + $currency_q) * (1 + $shop_q)"/>
 	</xsl:function>
 
 	<xsl:function name="f:price_output">
@@ -62,7 +67,7 @@
 			<xsl:sequence select="f:price_ictrade($price)"/>
 		</xsl:if>
 		<xsl:if test="$shop">
-			<xsl:variable name="byn_price" select="f:shop_price_to_byn($price, $shop)"/>
+			<xsl:variable name="byn_price" select="f:apply_quotients(f:currency_to_byn($price, $shop/currency), $shop)"/>
 			<xsl:sequence select="f:number_decimal(if($curr = 'byn') then $byn_price else f:byn_to_currency($byn_price, $rub))"/>
 		</xsl:if>
 	</xsl:function>

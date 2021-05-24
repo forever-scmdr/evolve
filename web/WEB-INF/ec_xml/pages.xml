@@ -1712,7 +1712,7 @@
 		</command>
 	</page>
 
-	<page name="digikey_search" template="">
+	<page name="digikey_search" template="external_search/digikey_search">
 		<request>
 			<var name="q"/>
 			<var name="qty" />
@@ -1722,13 +1722,6 @@
 		</request>
 
 		<include name="SHOP_AND_CURRENCY" />
-
-		<link name="bad_request" target="digikey_result" >
-			<var name="result" value="bad_request"/>
-		</link>
-		<link name="generel_error" target="digikey_result">
-			<var name="result" value="error"/>
-		</link>
 		<command class="extra.DigikeySearch" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
@@ -1766,7 +1759,7 @@
 		</command>
 	</page>
 
-	<page name="promelec_search" template="external_search/promelec_search">
+	<page name="promelec_search" template="">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>

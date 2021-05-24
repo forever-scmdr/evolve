@@ -4,20 +4,22 @@
 				xmlns:xs="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="../utils/price_conversions.xsl"/>
 
-	<xsl:variable name="curr" select="page/variables/currency"/>
 	<xsl:variable name="in_stock" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
 	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="mq" select="if(items/minq != '') then f:num(items/minq) else -1"/>
+	<xsl:variable name="shop" select="page/shop"/>
+	<xsl:variable name="result" select="/page/search/result"/>
 
 	<xsl:template match="/">
-		<xsl:if test="page/result/row">
+		<xsl:if test="$result/row">
 			<div id="extra_search_4" class="result">
 				<h2>Результат поиска по дополнительному каталогу №4</h2>
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="page/result/row" mode="lines"/>
+						<xsl:apply-templates select="$result/row" mode="lines"/>
 					</xsl:if>
 					<xsl:if test="not($view = 'list')">
-						<xsl:apply-templates select="page/result/row"/>
+						<xsl:apply-templates select="$result/row"/>
 					</xsl:if>
 				</div>
 				<div>
@@ -29,7 +31,7 @@
 				</div>
 			</div>
 		</xsl:if>
-		<xsl:if test="not(page/result/row)">
+		<xsl:if test="not($result/row)">
 			<div id="extra_search_4" class="result"></div>
 		</xsl:if>
 	</xsl:template>
@@ -204,16 +206,15 @@
 		<xsl:if test="$vendor/pricebreaks/break">
 
 			<xsl:variable name="code" select="if($vendor/@id) then concat($id, 'v',$vendor/@id) else $id"/>
-<!--		<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', f:rur_to_byn_promelec(@price)), ';')"/>-->
 			<xsl:variable name="map" select="string-join($vendor/pricebreaks/break/concat(@quant, ':', @price), ';')"/>
 			<xsl:variable name="days" select="concat(f:num(@delivery)+7 ,'-', f:num(@delivery)+14)"/>
 
 			<div class="device__order">
 				<div id="cart_list_{$code}">
-					<form action="cart_action/?action=addPromelecToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
+					<form action="cart_action/?action=addExternalToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 						<input type="hidden" value="{$name}" name="vendor_code"/>
 						<input type="hidden" value="{if(f:num(@qant) != 0) then 0 else 1}" name="not_available"/>
-						<input type="hidden" value="promelec" name="aux"/>
+						<input type="hidden" value="{$shop/name}" name="aux"/>
 
 						<input type="hidden" value="{$name}" name="name"/>
 						<input type="hidden" value="шт" name="unit"/>
@@ -224,7 +225,7 @@
 						<input type="number" class="text-input" name="qty" value="{@moq}" min="{@moq}"/>
 
 						<xsl:if test="f:num(@quant) != 0">
-							<input type="hidden" name="price_map" value="{$map}"/>
+							<input type="hidden" name="map" value="{$map}"/>
 						</xsl:if>
 						<input type="hidden" name="img" value="{$pic}"/>
 						<input type="hidden" name="delivery_time" value="{if(f:num(@quant) != 0) then concat($days, '  дней') else ' '}"/>

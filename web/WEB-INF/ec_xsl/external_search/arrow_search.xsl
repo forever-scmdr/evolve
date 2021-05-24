@@ -3,9 +3,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/price_conversions.xsl"/>
 
-	<xsl:variable name="curr" select="page/variables/currency"/>
+	<xsl:variable name="view" select="items/view"/>
 	<xsl:variable name="in_stock" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
-	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="shop" select="page/shop"/>
+	<xsl:variable name="result" select="/page/search/result"/>
 
 
 	<xsl:template match="product">
@@ -31,7 +32,8 @@
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
 					<xsl:if test="f:num($price) &gt; 0">
-						<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+						<xsl:variable name="output_price" select="if(count(offer) = 1) then f:price_output($price, $shop) else concat('от ', f:price_output($price, $shop))"/>
+						<xsl:value-of select="concat($output_price, ' ', upper-case($curr), '/шт.')" />
 					</xsl:if>
 					<xsl:if test="f:num($price) = 0">
 						Цена по запросу
@@ -84,7 +86,8 @@
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
 					<xsl:if test="f:num($price) &gt; 0">
-						<xsl:value-of select="if(count(offer) = 1) then f:price_arrow($price) else concat('от ', f:price_arrow($price))"/>/шт.
+						<xsl:variable name="output_price" select="if(count(offer) = 1) then f:price_output($price, $shop) else concat('от ', f:price_output($price, $shop))"/>
+						<xsl:value-of select="concat($output_price, ' ', upper-case($curr), '/шт.')" />
 					</xsl:if>
 					<xsl:if test="f:num($price) = 0">
 						Цена по запросу
@@ -99,7 +102,7 @@
 							<xsl:variable name="p" select="position()"/>
 							<div class="manyPrice__item">
 								<div class="manyPrice__qty"><xsl:value-of select="." />+</div>
-								<div class="manyPrice__price"><xsl:value-of select="f:price_arrow($prc[$p])" /></div>
+								<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output($prc[$p], $shop), ' ', upper-case($curr))" /></div>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -150,7 +153,7 @@
 					<xsl:variable name="p" select="position()"/>
 					<div class="pop-price__variant">
 						<div><xsl:value-of select="$min_qty[$p]"/>+</div>
-						<div><xsl:value-of select="f:price_arrow(.)"/></div>
+						<div><xsl:value-of select="concat(f:price_output(., $shop), ' ', upper-case($curr))"/></div>
 					</div>
 				</xsl:for-each>
 				<div class="pop-price__order" style="max-width: 150px; margin-top: 1rem;">
@@ -170,10 +173,10 @@
 
 		<div class="device__order">
 			<div id="cart_list_{$id}">
-				<form action="cart_action/?action=addArrowToCart&amp;code={$id}" method="post" ajax="true" ajax-loader-id="cart_list_{$id}">
+				<form action="cart_action/?action=addExternalToCart&amp;code={$id}" method="post" ajax="true" ajax-loader-id="cart_list_{$id}">
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
-					<input type="hidden" value="0" name="available"/>
-					<input type="hidden" value="arrow" name="aux"/>
+					<input type="hidden" value="1" name="not_available"/>
+					<input type="hidden" value="{$shop/name}" name="aux"/>
 					<input type="hidden" value="{$product/vendor}" name="vendor"/>
 
 					<input type="hidden" value="{$product/name}" name="name"/>
@@ -203,10 +206,10 @@
 
 		<div class="device__order">
 			<div id="cart_list_{$code}">
-				<form action="cart_action/?action=addArrowToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
+				<form action="cart_action/?action=addExternalToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
-					<input type="hidden" value="{$offer/available}" name="available"/>
-					<input type="hidden" value="arrow" name="aux"/>
+					<input type="hidden" value="0" name="not_available"/>
+					<input type="hidden" value="{$shop/name}" name="aux"/>
 
 					<input type="hidden" value="{$product/name}" name="name"/>
 					<input type="hidden" value="{$product/vendor}" name="vendor"/>
@@ -218,7 +221,7 @@
 					<input type="number" class="text-input" name="qty" value="{$offer/min_qty[1]}" min="{$offer/min_qty[1]}"/>
 
 					<xsl:if test="f:num($offer/qty) != 0">
-						<input type="hidden" name="price_map" value="{$map}"/>
+						<input type="hidden" name="map" value="{$map}"/>
 					</xsl:if>
 
 					<input type="hidden" name="img" value="{$product/main_pic}"/>
@@ -242,10 +245,10 @@
 
 	<xsl:template match="/">
 
-		<xsl:variable name="products" select="if(page/variables/minqty = '0') then page/products/product[offer != ''] else page/products/product"/>
+		<xsl:variable name="products" select="if(page/variables/minqty = '0') then $result/products/product[offer != ''] else $result/products/product"/>
 
 		<div class="result" id="arrow_search">
-			<xsl:if test="page/summery/response/success = 'true'">
+			<xsl:if test="$result/summery/response/success = 'true'">
 				<h2>Результат поиска по Arrow</h2>
 
 				<xsl:if test="page/variables/minqty = '0' and count($products) = 0">
@@ -261,13 +264,13 @@
 					</xsl:if>
 				</div>
 				<div>
-					<xsl:apply-templates select="page/products/product" mode="offers_popup"/>
+					<xsl:apply-templates select="$result/products/product" mode="offers_popup"/>
 				</div>
 			</xsl:if>
-			<xsl:if test="not(page/summery/response/success = 'true')">
+			<xsl:if test="not($result/summery/response/success = 'true')">
 				<h2>Результат поиска по Arrow</h2>
 				<p>Товары не найдены</p>
-				<xsl:if test="page/summery/response/error">
+				<xsl:if test="$result/summery/response/error">
 					<p>
 						<xsl:value-of select="page/summery/response/error"/>
 					</p>

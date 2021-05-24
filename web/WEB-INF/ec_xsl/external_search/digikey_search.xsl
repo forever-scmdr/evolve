@@ -3,25 +3,22 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/price_conversions.xsl"/>
 
-	<xsl:variable name="curr" select="page/variables/currency"/>
-	<xsl:variable name="ratio_rur" select="f:num(page/variables/rur_ratio)"/>
-	<xsl:variable name="ratio_usd" select="f:num(page/variables/ratio)"/>
-	<xsl:variable name="q1_usd" select="f:num(page/variables/q1)"/>
-	<xsl:variable name="q2_usd" select="f:num(page/variables/q2)"/>
 	<xsl:variable name="view" select="page/variables/view"/>
+	<xsl:variable name="shop" select="page/shop"/>
+	<xsl:variable name="result" select="page/search/result"/>
 
 	<xsl:template match="/">
 		<div>
-			<xsl:if test="page/product">
+			<xsl:if test="$result/product">
 				<div id="extra_search_2" class="result">
 					<h2>Результат поиска по Digikey</h2>			
 					
 						<div class="catalog-items{' lines'[$view = 'list']}">
 							<xsl:if test="$view = 'list'">
-								<xsl:apply-templates select="page/product" mode="lines"/>
+								<xsl:apply-templates select="$result/product" mode="lines"/>
 							</xsl:if>
 							<xsl:if test="not($view = 'list')">
-								<xsl:apply-templates select="page/product"/>
+								<xsl:apply-templates select="$result/product"/>
 							</xsl:if>
 						</div>
 						<script type="text/javascript">
@@ -46,7 +43,7 @@
 					
 				</div>
 			</xsl:if>
-			<xsl:if test="not(page/product)">
+			<xsl:if test="not($result/product)">
 				<div id="extra_search_2" class="result">
 					<h2>Результат поиска по Digikey</h2>
 					<p>Товары не найдены</p>
@@ -57,8 +54,8 @@
 
 	<xsl:template match="product">
 
-		<xsl:variable name="price" select="f:price_digikey(price)"/>
-		<xsl:variable name="price_pack" select="f:price_digikey(string(f:num(price)*f:num(min_qty)))"/>
+		<xsl:variable name="price" select="f:price_output(price, $shop)"/>
+		<xsl:variable name="price_pack" select="f:price_output(f:num(price)*f:num(min_qty), $shop)"/>
 
 		<div class="device items-catalog__device">
 			<xsl:if test="main_pic != ''">
@@ -87,24 +84,15 @@
 			</xsl:if>
 			<div class="device__price">
 				<div class="price_normal">
-					<xsl:value-of select="concat($price, '/', 'шт')"/>
+					<xsl:value-of select="concat($price, ' ', upper-case($curr), '/', 'шт')"/>
 				</div>
 				
 				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
-						<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/> -->
-						<xsl:value-of select="concat(@qty, '+ ', '&lt;strong&gt;', f:price_digikey(@price), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+						<xsl:value-of select="concat(@qty, '+ ', '&lt;strong&gt;', f:price_output(@price, $shop), upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
 				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
-				<!-- <a data-container="body">Цена зависит от количества</a> -->
-				<!-- <div>
-					<xsl:for-each select="spec_price_map">
-						<div>
-							<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)" />
-						</div>
-					</xsl:for-each>
-				</div> -->
 			</div>
 			<div class="nds" style="margin-top: -8px; margin-bottom: 10px;">*цена включает НДС</div>
 			<div class="device__order">
@@ -117,15 +105,14 @@
 								<xsl:value-of select="description"/>
 							</textarea>
 							<input type="hidden" value="0" name="not_available"/>
-							<input type="hidden" value="digikey" name="aux"/>
+							<input type="hidden" value="{$shop/name}" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="{qty}" name="upack"/>
 							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="map" value="{spec_price}"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="hidden" name="delivery_time" value="7-14 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
@@ -136,14 +123,13 @@
 								<xsl:value-of select="description"/>
 							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
-							<input type="hidden" value="digikey" name="aux"/>
+							<input type="hidden" value="{$shop/name}" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="0" name="upack"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
+							<input type="hidden" name="map" value="{spec_price}"/>
 							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" name="delivery_time" value=""/>
@@ -162,8 +148,8 @@
 
 	</xsl:template>
 	<xsl:template match="product" mode="lines">
-		<xsl:variable name="price" select="f:price_digikey(price)"/>
-		<xsl:variable name="price_pack" select="f:price_digikey(string(f:num(price)*f:num(min_qty)))"/>
+		<xsl:variable name="price" select="f:price_output(price, $shop)"/>
+		<xsl:variable name="price_pack" select="f:price_output(f:num(price)*f:num(min_qty), $shop)"/>
 
 		<div class="device device_row">
 			<a class="device__image device_row__image"
@@ -211,12 +197,12 @@
 			</div>
 			<div class="device__price device_row__price">
 				<div class="price_normal">
-					<xsl:value-of select="concat($price, '/', 'шт')"/>
+					<xsl:value-of select="concat($price, ' ', upper-case($curr), '/', 'шт')"/>
 				</div>
 				<div class="nds">*цена c НДС</div>
 				<xsl:variable name="x">
 					<xsl:for-each select="spec_price_map">
-						<xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty, '&lt;br/&gt;')"/>
+						<xsl:value-of select="concat(f:price_output(@price, $shop), ' от ', upper-case($curr), ' ', @qty, '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
 				<!-- <a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a> -->
@@ -226,7 +212,7 @@
 						<div class="manyPrice__item">
 							<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)" /> шт. -->
 							<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
-							<div class="manyPrice__price"><xsl:value-of select="f:price_digikey(@price)" /></div>
+							<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output(@price, $shop), upper-case($curr))" /></div>
 						</div>
 					</xsl:for-each>
 				</div>
@@ -241,16 +227,15 @@
 							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
 							<input type="hidden" value="0" name="not_available"/>
-							<input type="hidden" value="digikey" name="aux"/>
+							<input type="hidden" value="{$shop/name}" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="{qty}" name="upack"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
 							<input type="hidden" value="{qty}" name="max"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
 							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="map" value="{spec_price}"/>
 							<input type="hidden" name="delivery_time" value="7-14 дней"/>
 							<input type="submit" class="button" value="В корзину"/>
 						</xsl:if>
@@ -260,14 +245,12 @@
 								<xsl:value-of select="description"/>
 							</textarea>
 							<input type="hidden" value="{producer}" name="vendor"/>
-							<input type="hidden" value="digikey" name="aux"/>
+							<input type="hidden" value="{$shop/name}" name="aux"/>
 							<input type="hidden" value="{name}" name="name"/>
 							<input type="hidden" value="1" name="not_available"/>
 							<input type="hidden" value="шт" name="unit"/>
 							<input type="hidden" value="0" name="upack"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price"/>
-							<input type="hidden" value="{f:usd_to_byn(price)}" name="price_spec"/>
-							<input type="hidden" name="dgk_spec" value="{spec_price}"/>
+							<input type="hidden" name="map" value="{spec_price}"/>
 							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
 							<input type="hidden" name="img" value="{main_pic}"/>
 							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
