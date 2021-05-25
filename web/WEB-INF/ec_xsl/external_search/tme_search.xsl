@@ -22,7 +22,6 @@
 			<body>
 				<div id="tme_search" class="result">
 					<h2>Результат поиска по TME</h2>
-
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="$products" mode="lines"/>
@@ -31,28 +30,28 @@
 							<xsl:apply-templates select="$products"/>
 						</xsl:if>
 					</div>
+					<script type="text/javascript">
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+						type: 'image',
+						closeOnContentClick: true,
+						mainClass: 'mfp-img-mobile',
+						image: {
+						verticalFit: true
+						}
+						});
+						$(document).ready(function(){
+						//Инициализация всплывающей панели для
+						//элементов веб-страницы, имеющих атрибут
+						//data-toggle="popover"
+						$('[data-toggle="popover"]').popover({
+						//Установление направления отображения popover
+						placement : 'top'
+						});
+						});
+						//обновить корзину
+						insertAjax("cart_ajax");
+					</script>
 				</div>
-				<script type="text/javascript">
-					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-					type: 'image',
-					closeOnContentClick: true,
-					mainClass: 'mfp-img-mobile',
-					image: {
-					verticalFit: true
-					}
-					});
-					$(document).ready(function(){
-					//Инициализация всплывающей панели для
-					//элементов веб-страницы, имеющих атрибут
-					//data-toggle="popover"
-					$('[data-toggle="popover"]').popover({
-					//Установление направления отображения popover
-					placement : 'top'
-					});
-					});
-					//обновить корзину
-					insertAjax("cart_ajax");
-				</script>
 			</body>
 		</html>
 	</xsl:template>
@@ -193,6 +192,7 @@
 	<xsl:template name="CART_BUTTON_COMMON">
 		<xsl:param name="product"/>
 
+		<xsl:variable name="sbl" select="replace(normalize-space($product/Symbol), '\.', '_dot_')"/>
 		<xsl:variable name="price" select="$product/PriceList/Price"/>
 		<xsl:variable name="map" select="string-join($price/concat(normalize-space(Amount), ':', normalize-space(PriceValue)), ';')"/>
 		<xsl:variable name="unit" select="if(normalize-space($product/Unit) = 'pcs') then 'шт' else normalize-space(Unit)"/>
@@ -200,12 +200,13 @@
 
 		<input type="number" class="text-input" name="qty" value="{normalize-space($product/MinAmount)}" min="{normalize-space($product/MinAmount)}" step="{normalize-space($product/Multiples)}"/>
 		<input type="hidden" name="code" value="{normalize-space($product/Symbol)}"/>
+		<input type="hidden" name="id" value="{$sbl}"/>
 		<input type="hidden" name="aux" value="{normalize-space($shop/name)}"/>
 		<input type="hidden" value="{normalize-space($product/Symbol)}" name="name"/>
 		<input type="hidden" value="{normalize-space($product/Producer)}" name="vendor"/>
 		<input type="hidden" value="{$unit}" name="unit"/>
 		<input type="hidden" value="{normalize-space($product/MinAmount)}" name="min_qty"/>
-		<input type="hidden" value="{$map}" name="map"/>
+		<input type="hidden" value="{$map}" name="price_map"/>
 		<input type="hidden" name="img" value="{$pic}"/>
 		<input type="hidden" name="delivery_time" value="{$shop/delivery_string}"/>
 		<textarea style="display: none;" name="description">

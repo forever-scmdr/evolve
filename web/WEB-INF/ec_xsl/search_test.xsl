@@ -3,8 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLUMN"/>
 	</xsl:template>
 
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
@@ -74,8 +74,8 @@
 			<div id="extra_search_4">
 				<p>Поиск по PROMELEC  отключен.</p>
 			</div>
-			<div id="arrow_search">
-				<h2>Идет поиск по verical.com</h2>
+			<div id="tme_search">
+				<h2>Идет поиск по TME</h2>
 			</div>
 		</div>
 
@@ -90,7 +90,7 @@
 				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('arrow_search', '?query=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('tme_search', '?q=', page/variables/q)"/>');
 			});
 		</script>
 	</xsl:template>

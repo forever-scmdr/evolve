@@ -719,7 +719,6 @@
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
-		<single item="catalog" id="catalog_main" cacheable="true"/>
 
 		<session>
 			<single item="cart">
@@ -734,7 +733,13 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
-		<list item="currency"/>
+		<list item="currency">
+			<filter>
+				<parameter name="name" sign="=" compare="SOME">
+					<var value="RUB"/>
+				</parameter>
+			</filter>
+		</list>
 		<list item="shop">
 			<single item="currency" assoc="general"/>
 		</list>
