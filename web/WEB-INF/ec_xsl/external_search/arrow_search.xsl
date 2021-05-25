@@ -175,6 +175,7 @@
 			<div id="cart_list_{$id}">
 				<form action="cart_action/?action=addExternalToCart&amp;code={$id}" method="post" ajax="true" ajax-loader-id="cart_list_{$id}">
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
+					<input type="hidden" value="{$id}" name="id"/>
 					<input type="hidden" value="1" name="not_available"/>
 					<input type="hidden" value="{$shop/name}" name="aux"/>
 					<input type="hidden" value="{$product/vendor}" name="vendor"/>
@@ -184,8 +185,8 @@
 					<input type="hidden" value="1" name="upack"/>
 
 					<input type="hidden" value="0" name="max"/>
-					<input type="hidden" value="min_qty" name="min_qty"/>
-					<input type="number" class="text-input" name="qty" value="1" min="{min_qty}"/>
+					<input type="hidden" value="min_qty" name="min(min_qty/f:num(.))"/>
+					<input type="number" class="text-input" name="qty" value="{min(min_qty/f:num(.))}" min="{min(min_qty/f:num(.))}"/>
 
 					<input type="hidden" name="img" value="{$product/main_pic}"/>
 					<input type="submit" class="button not_available" value="Под заказ"/>
@@ -210,6 +211,7 @@
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
 					<input type="hidden" value="0" name="not_available"/>
 					<input type="hidden" value="{$shop/name}" name="aux"/>
+					<input type="hidden" value="{$code}" name="id"/>
 
 					<input type="hidden" value="{$product/name}" name="name"/>
 					<input type="hidden" value="{$product/vendor}" name="vendor"/>
@@ -217,29 +219,22 @@
 					<input type="hidden" value="{$offer/step}" name="upack"/>
 
 					<input type="hidden" value="{$offer/qty}" name="max"/>
-					<input type="hidden" value="{$offer/min_qty}" name="min_qty"/>
+					<input type="hidden" value="{f:num($offer/min_qty[1])}" name="min_qty"/>
 					<input type="number" class="text-input" name="qty" value="{$offer/min_qty[1]}" min="{$offer/min_qty[1]}"/>
 
 					<xsl:if test="f:num($offer/qty) != 0">
-						<input type="hidden" name="map" value="{$map}"/>
+						<input type="hidden" name="price_map" value="{$map}"/>
 					</xsl:if>
 
 					<input type="hidden" name="img" value="{$product/main_pic}"/>
-					<input type="hidden" name="delivery_time" value="7-10 дней"/>
+					<input type="hidden" name="delivery_time" value="{$shop/delivery_string}"/>
 					<input type="submit" class="button" value="В корзину"/>
 				</form>
 			</div>
 		</div>
-		<xsl:if test="f:num($offer/available) = 1">
-			<div class="device__in-stock">
-				<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
-			</div>
-		</xsl:if>
-		<xsl:if test="f:num($offer/available) != 1">
-			<div class="device__in-stock device__in-stock_no">
-				<i class="far fa-clock"></i>под заказ
-			</div>
-		</xsl:if>
+		<div class="device__in-stock">
+			<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
+		</div>
 	</xsl:template>
 
 

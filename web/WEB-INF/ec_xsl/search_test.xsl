@@ -74,8 +74,8 @@
 			<div id="extra_search_4">
 				<p>Поиск по PROMELEC  отключен.</p>
 			</div>
-			<div id="tme_search">
-				<h2>Идет поиск по TME</h2>
+			<div id="arrow_search">
+				<h2>Идет поиск по Verical</h2>
 			</div>
 		</div>
 
@@ -90,7 +90,7 @@
 				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('tme_search', '?q=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('arrow_search', '?q=', page/variables/q)"/>');
 			});
 		</script>
 	</xsl:template>
