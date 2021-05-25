@@ -22,13 +22,16 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
-import java.util.Collection;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 
 public class NaskladeCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
-	private Collection<File> xmls;
+	private static final String FILE_URL = "http://opt.nasklade.by/sitefiles/1/11/catalog_export.xml";
+	private File xml;
 	Item catalog;
 
 	@Override
@@ -41,7 +44,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		NaskladeSectionCreationHandler secHandler = new NaskladeSectionCreationHandler(catalog, info, getInitiator());
 
-		for (File xml : xmls) {
+		//for (File xml : xml) {
 			// Удалить DOCTYPE
 			if (removeDoctype(xml)) {
 				parser.parse(xml, secHandler);
@@ -49,7 +52,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 			} else {
 				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
 			}
-		}
+		//}
 		pushLog("Создание разделов завершено");
 
 		setOperation("Создание товаров");
@@ -58,9 +61,9 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 
 		DefaultHandler prodHandler = new NaskladeProductCreationHandler(secHandler.getSections(), info, getInitiator());
 
-		for (File xml : xmls) {
+		//for (File xml : xmls) {
 			parser.parse(xml, prodHandler);
-		}
+		//}
 
 		info.pushLog("Создание товаров завершено");
 
@@ -151,17 +154,24 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
-		if (!integrationDir.exists()) {
-			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
-			return false;
-		}
-		xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
-		if (xmls.size() == 0) {
-			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
-			return false;
-		}
-		info.setToProcess(xmls.size());
+		URL fileUrl = new URL(FILE_URL);
+		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "catalog_export.xml");
+		FileUtils.deleteQuietly(destPath.toFile());
+		info.setCurrentJob("Скачивание файла");
+		FileUtils.copyURLToFile(fileUrl, destPath.toFile());
+		info.pushLog("Файл скачан");
+		xml = destPath.toFile();
+//		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
+//		if (!integrationDir.exists()) {
+//			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
+//			return false;
+//		}
+//		xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
+//		if (xmls.size() == 0) {
+//			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
+//			return false;
+//		}
+//		info.setToProcess(xmls.size());
 		return true;
 	}
 
