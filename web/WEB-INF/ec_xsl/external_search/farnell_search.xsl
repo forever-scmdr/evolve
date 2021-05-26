@@ -21,7 +21,7 @@
 				<link rel="stylesheet" href="css/app.css"/>
 			</head>
 			<body>
-				<div id="extra_search_3" class="result">
+				<div id="farnell_search" class="result">
 					<h2>Результат поиска по Farnell</h2>
 					<xsl:if test="not($result/products)">
 						<p>Товары не найдены</p>
@@ -66,7 +66,6 @@
 		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
-		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
 		<xsl:variable name="vendor_code" select="normalize-space(translatedManufacturerPartNumber)" />
 
 		<div class="device device_row">
@@ -132,30 +131,9 @@
 				</div>
 			</div>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{normalize-space(sku)}">
-					<form action="cart_action/?action=addExternalToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
-						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
-						<input type="hidden" value="{$shop/name}" name="aux"/>
-						<input type="hidden" value="{displayName}" name="name"/>
-						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
-						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
-						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
-						<input type="hidden" value="{$min}" name="min_qty"/>
-						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
-						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
-<!--						<xsl:for-each select="prices">-->
-							<input type="hidden" name="map" value="{string-join((prices/concat(f:num(from), ':', f:num(cost))), ';')}"/>
-<!--						</xsl:for-each>-->
-						<input type="hidden" name="delivery_time" value="{if($available) then '7-14 дней' else ' '}"/>
-						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
-					</form>
-					<xsl:if test="$available">
-<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
-					</xsl:if>
-					<xsl:if test="not($available)">
-						<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
-					</xsl:if>
-				</div>
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="product" select="current()"/>
+				</xsl:call-template>
 			</div>
 		</div>
 	</xsl:template>
@@ -163,8 +141,6 @@
 		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))"/>
 		<xsl:variable name="min" select="f:num(translatedMinimumOrderQuality)"/>
 		<xsl:variable name="price_pack" select="$min * f:num(prices[f:num(from) = $min]/cost)"/>
-		<xsl:variable name="available" select="f:num(stock/status) = 1"/>
-		<xsl:variable name="vendor_code" select="normalize-space(translatedManufacturerPartNumber)" />
 
 		<div class="device items-catalog__device">
 			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{displayName}" rel="nofollow">
@@ -203,33 +179,42 @@
 				</xsl:if>
 			</div>
 			<div class="device__order">
-				<div id="cart_list_{normalize-space(sku)}">
-					<form action="cart_action/?action=addExternalToCart&amp;code={normalize-space(sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space(sku)}">
-
-						<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
-						<input type="hidden" value="{$shop/name}" name="aux"/>
-						<input type="hidden" value="{displayName}" name="name"/>
-						<input type="hidden" value="{normalize-space(vendorName)}" name="vendor"/>
-						<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
-						<input type="hidden" value="{f:num(stock/level)}" name="max"/>
-						<input type="hidden" value="{$min}" name="min_qty"/>
-						<input type="hidden" name="img" value="{concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space(image/baseName))}"/>
-						<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
-<!--						<xsl:for-each select="prices">-->
-<!--							<input type="hidden" name="price" value="{concat(f:num(from), ':', f:num(cost))}"/>-->
-<!--						</xsl:for-each>-->
-						<input type="hidden" name="map" value="{string-join((prices/concat(f:num(from), ':', f:num(cost))), ';')}"/>
-						<input type="hidden" name="delivery_time" value="{if($available) then '7-14 дней' else ' '}"/>
-						<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
-					</form>
-					<xsl:if test="$available">
-						<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(stock/level) &lt; 500000) then concat(' ',f:num(stock/level), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
-					</xsl:if>
-					<xsl:if test="not($available)">
-						<div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i>под заказ</div>
-					</xsl:if>
-				</div>
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="product" select="current()"/>
+				</xsl:call-template>
 			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="CART_BUTTON">
+		<xsl:param name="product"/>
+
+		<xsl:variable name="pic" select="concat('https://ru.farnell.com/productimages/standard/ru_RU',normalize-space($product/image/baseName))"/>
+		<xsl:variable name="min" select="f:num($product/translatedMinimumOrderQuality)"/>
+		<xsl:variable name="available" select="f:num($product/stock/status) = 1"/>
+		<xsl:variable name="vendor_code" select="normalize-space($product/translatedManufacturerPartNumber)" />
+
+		<div id="cart_list_{normalize-space($product/sku)}">
+			<form action="cart_action/?action=addExternalToCart&amp;code={normalize-space($product/sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space($product/sku)}">
+				<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
+				<input type="hidden" value="{$shop/name}" name="aux"/>
+				<input type="hidden" value="{displayName}" name="name"/>
+				<input type="hidden" value="{normalize-space($product/vendorName)}" name="vendor"/>
+				<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
+				<input type="hidden" value="{f:num($product/stock/level)}" name="max"/>
+				<input type="hidden" value="{$min}" name="min_qty"/>
+				<input type="hidden" name="img" value="{$pic}"/>
+				<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
+				<input type="hidden" name="price_map" value="{string-join(($product/prices/concat(f:num(from), ':', f:num(cost))), ';')}"/>
+				<input type="hidden" name="delivery_time" value="{if($available) then $shop/delivery_string else ''}"/>
+				<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
+			</form>
+			<xsl:if test="$available">
+				<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num($product/stock/level) &lt; 500000) then concat(' ',f:num($product/stock/level), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
+			</xsl:if>
+			<xsl:if test="not($available)">
+				<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
+			</xsl:if>
 		</div>
 	</xsl:template>
 </xsl:stylesheet>

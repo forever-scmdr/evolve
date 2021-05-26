@@ -4,8 +4,8 @@
 	<xsl:import href="../utils/price_conversions.xsl"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
-	<xsl:variable name="in_stock_only" select="items/minq = '0'"/>
-	<xsl:variable name="mq" select="if(items/minq != '') then f:num(items/minq) else -1"/>
+	<xsl:variable name="in_stock_only" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="mq" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
 	<xsl:variable name="shop" select="page/shop"/>
 	<xsl:variable name="result" select="/page/search/result"/>
 
@@ -14,8 +14,9 @@
 <!--	<xsl:call-template name="TEST_MATH" />-->
 
 		<xsl:if test="$result/items/item">
-			<div id="extra_search_1" class="result">
+			<div id="platan_search" class="result">
 				<h2>Результаты поиска по Platan</h2>
+				<xsl:value-of select="$mq" />
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$result/items/item[f:num(QUANTY) &gt; $mq]" mode="product-lines"/>
@@ -163,6 +164,7 @@
 		<xsl:variable name="m1" select="if($price_roz &gt; 0) then concat($product/MINZAKAZ, ':', $price_roz) else $nothing"/>
 		<xsl:variable name="m2" select="if($price_pack &gt; 0) then concat($product/UPACK, ':', $price_pack) else $nothing"/>
 
+		<input type="hidden" value="{$product/NOM_N}" name="id"/>
 		<input type="hidden" value="{$shop/name}" name="aux"/>
 		<input type="hidden" value="{$product/NAME}" name="name"/>
 		<input type="hidden" value="{$product/MANUFAC}" name="vendor"/>

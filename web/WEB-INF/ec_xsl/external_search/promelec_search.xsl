@@ -12,9 +12,9 @@
 
 	<xsl:template match="/">
 		<xsl:if test="$result/row">
-			<div id="extra_search_4" class="result">
+			<div id="promelec_search" class="result">
 				<h2>Результат поиска по дополнительному каталогу №4</h2>
-				<xsl:value-of select="$shop"/>
+
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$result/row" mode="lines"/>
@@ -24,12 +24,32 @@
 					</xsl:if>
 				</div>
 				<div>
-					<xsl:for-each select="page/result/row[vendors/vendor/pricebreaks/break]">
+					<xsl:for-each select="$result/row[vendors/vendor/pricebreaks/break]">
 						<xsl:call-template name="CART_POPUP">
 							<xsl:with-param name="row" select="." />
 						</xsl:call-template>
 					</xsl:for-each>
 				</div>
+				<script type="text/javascript">
+					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+					type: 'image',
+					closeOnContentClick: true,
+					mainClass: 'mfp-img-mobile',
+					image: {
+					verticalFit: true
+					}
+					});
+					$(document).ready(function(){
+					//Инициализация всплывающей панели для
+					//элементов веб-страницы, имеющих атрибут
+					//data-toggle="popover"
+					$('[data-toggle="popover"]').popover({
+					//Установление направления отображения popover
+					placement : 'top'
+					});
+					});
+					insertAjax('cart_ajax');
+				</script>
 			</div>
 		</xsl:if>
 	</xsl:template>
@@ -66,7 +86,7 @@
 			<xsl:if test="not(vendors/vendor)">
 				<xsl:variable name="prices">
 					<xsl:for-each select="$pricebreaks/break">
-						<xsl:value-of select="concat(@quant, '+ ', '&lt;strong&gt;', concat(f:price_output(@price, $shop), ' ', upper-case($curr)), ' ', upper-case($curr)), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+						<xsl:value-of select="concat(@quant, '+ ', '&lt;strong&gt;', concat(f:price_output(@price, $shop), ' ', upper-case($curr))), '&lt;/strong&gt;', '&lt;br/&gt;'"/>
 					</xsl:for-each>
 				</xsl:variable>
 				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$prices}">Цена зависит от количества</a>
@@ -178,7 +198,7 @@
 					<xsl:for-each select="$vendor/pricebreaks/break">
 						<div class="pop-price__variant">
 							<div><xsl:value-of select="@quant"/>+</div>
-							<div><xsl:value-of select="f:price_promelec(@price)"/></div>
+							<div><xsl:value-of select="concat(f:price_output(@price, $shop), ' ', upper-case($curr))"/></div>
 						</div>
 					</xsl:for-each>
 					<div class="pop-price__order" style="max-width: 150px; margin-top: 1rem;">
@@ -209,10 +229,12 @@
 
 			<div class="device__order">
 				<div id="cart_list_{$code}">
-					<form action="cart_action/?action=addExternalToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
+					<form action="cart_action/?action=addExternalToCart" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 						<input type="hidden" value="{$name}" name="vendor_code"/>
 						<input type="hidden" value="{if(f:num(@qant) != 0) then 0 else 1}" name="not_available"/>
 						<input type="hidden" value="{$shop/name}" name="aux"/>
+						<input type="hidden" value="{$code}" name="id"/>
+						<input type="hidden" value="{$code}" name="code"/>
 
 						<input type="hidden" value="{$name}" name="name"/>
 						<input type="hidden" value="шт" name="unit"/>
@@ -223,7 +245,7 @@
 						<input type="number" class="text-input" name="qty" value="{@moq}" min="{@moq}"/>
 
 						<xsl:if test="f:num(@quant) != 0">
-							<input type="hidden" name="map" value="{$map}"/>
+							<input type="hidden" name="price_map" value="{$map}"/>
 						</xsl:if>
 						<input type="hidden" name="img" value="{$pic}"/>
 						<input type="hidden" name="delivery_time" value="{if(f:num(@quant) != 0) then concat($days, '  дней') else ' '}"/>
@@ -232,7 +254,6 @@
 				</div>
 			</div>
 			<xsl:if test="f:num(@quant) != 0">
-
 				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(@quant) &lt; 500000) then concat(' ',f:num(@quant), ' шт.') else ''" /> в течение <xsl:value-of select="$days"/> дней</div>
 			</xsl:if>
 			<xsl:if test="f:num(@quant) = 0">

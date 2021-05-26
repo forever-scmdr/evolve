@@ -62,20 +62,23 @@
 <!--			<xsl:if test="not($products)">-->
 <!--				<h4>По заданным критериям товары не найдены</h4>-->
 <!--			</xsl:if>-->
-			<div id="extra_search_1">
+			<div id="platan_search">
 				<p>Поиск по каталогу PLATAN отключен.</p>
 			</div>
 			<div id="extra_search_2">
 				<p>Поиск по каталогу DIGIKEY отключен.</p>
 			</div>
-			<div id="extra_search_3">
+			<div id="farnell_search">
 				<p>Поиск по каталогу FARNELL отключен.</p>
 			</div>
-			<div id="extra_search_4">
+			<div id="promelec_search">
 				<p>Поиск по PROMELEC  отключен.</p>
 			</div>
 			<div id="arrow_search">
-				<h2>Идет поиск по Verical</h2>
+				<p>Идет поиск по Verical</p>
+			</div>
+			<div id="tme_search">
+				<p>Идет поиск по Verical</p>
 			</div>
 		</div>
 
@@ -90,7 +93,8 @@
 				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('arrow_search', '?q=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('platan_search', '?q=', page/variables/q)"/>');
+
 			});
 		</script>
 	</xsl:template>
