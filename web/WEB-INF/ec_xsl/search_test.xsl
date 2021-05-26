@@ -93,7 +93,7 @@
 				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
 				//postForm('dgk-form');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('platan_search', '?q=', page/variables/q)"/>');
+				insertAjax('<xsl:value-of select="concat('digikey_search', '?q=', page/variables/q)"/>');
 
 			});
 		</script>
