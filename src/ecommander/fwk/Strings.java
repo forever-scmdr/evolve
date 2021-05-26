@@ -220,10 +220,15 @@ public class Strings
 	 * @return
 	 */
 	public static String getFileName(String fileName) {
-		return createFileName(StringUtils.substring(fileName, StringUtils.lastIndexOf(fileName, '/') + 1));
+		fileName = StringUtils.substringAfterLast(fileName, "/");
+		fileName = StringUtils.substringBeforeLast(fileName,"?");
+		//return createFileName(StringUtils.substringBetween(fileName, StringUtils.lastIndexOf(fileName, '/') + 1, StringUtils.lastIndexOf(fileName, "?")));
+		return createFileName(fileName);
 	}
 
     public static void main(String[] args) {
-    	System.out.println(translit("подъёмник?"));
+		System.out.println(getFileName("https://opt-1370155.ssl.1c-bitrix-cdn.ru/upload/iblock/c91/c9119489c7f5ca8ea6a11a670b104e5d.jpg?160275748053111"));
+		System.out.println(getFileName("https://opt-1370155.ssl.1c-bitrix-cdn.ru/upload/iblock/c91/c9119489c7f5ca8ea6a11a670b104e5d.jpg"));
+		System.out.println(translit("подъёмник?"));
     }
 }
