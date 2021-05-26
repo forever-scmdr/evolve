@@ -135,7 +135,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
 				q.setLimit(50);
 				q.setParentId(section.getId(), true);
-				//q.addParameterCriteria(MAIN_PIC_PARAM, "-", "!=", null, Compare.SOME);
 				List<Item> products = q.loadItems();
 				for(Item prod : products){
 					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
