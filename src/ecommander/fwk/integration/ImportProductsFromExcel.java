@@ -229,8 +229,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					Matcher m = PARAM_WITH_GROUP.matcher(header);
 					String paramCaption = m.matches() ? m.group("param").trim().toLowerCase() : header.toLowerCase();
 					String paramName = auxParams.get(paramCaption);
+					ParameterDescription pd =  currentAuxItemType.getParameter(paramName);
+					DataType.Type paramType = pd.getDataType().getType();
+					String descriptionAttribute = pd.getDescription();
 					try {
  						if(checkParamType(aux, paramName, cellValue)) {
+ 							if(paramType != DataType.Type.STRING) {
+ 								cellValue = cellValue.replace(descriptionAttribute, "").trim();
+							}
 							aux.setValueUI(paramName, cellValue);
 						}else{
 							paramTypeAndDescriptionOk.set(false);
