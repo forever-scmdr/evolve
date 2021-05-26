@@ -65,7 +65,7 @@
 			<div id="platan_search">
 				<p>Поиск по каталогу PLATAN отключен.</p>
 			</div>
-			<div id="extra_search_2">
+			<div id="digikey_search">
 				<p>Поиск по каталогу DIGIKEY отключен.</p>
 			</div>
 			<div id="farnell_search">

@@ -10,7 +10,7 @@
 	<xsl:template match="/">
 		<div>
 			<xsl:if test="$result/product">
-				<div id="extra_search_2" class="result">
+				<div id="digikey_search" class="result">
 					<h2>Результат поиска по Digikey</h2>			
 					
 						<div class="catalog-items{' lines'[$view = 'list']}">
@@ -50,6 +50,12 @@
 				</div>
 			</xsl:if>
 		</div>
+	</xsl:template>
+
+	<xsl:template name="CART_BUTTON">
+		<xsl:param name="product" />
+
+
 	</xsl:template>
 
 	<xsl:template match="product">
