@@ -55,7 +55,26 @@
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="product" />
 
+		<xsl:variable name="id" select="$product/code"/>
 
+		<div id="cart_list_{code}">
+			<form action="cart_action/?action=addExternalToCart" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
+				<input type="hidden" name="id" value="{$id}"/>
+				<input type="hidden" name="code" value="{$id}"/>
+				<input type="hidden" value="{$product/producer_code}" name="vendor_code"/>
+				<input type="hidden" value="{$product/producer}" name="vendor"/>
+				<textarea style="display:none;" name="description">
+					<xsl:value-of select="description"/>
+				</textarea>
+				<input type="hidden" value="if(f:num($product/qty) &gt; 0) then 0 else 1" name="not_available"/>
+				<input type="hidden" value="{$product/qty}" name="max"/>
+				<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
+				<input type="hidden" name="map" value="{spec_price}"/>
+				<input type="hidden" name="img" value="{main_pic}"/>
+				<input type="hidden" name="delivery_time" value="{if(f:num($product/qty)&gt; 0) then $shop/delivery_string else ''}"/>
+				<input type="submit" class="button{if(f:num($product/qty) &gt; 0) then '' else ' not_available'}" value="{if(f:num($product/qty) &gt; 0) then 'В корзину' else 'Под заказ'}"/>
+			</form>
+		</div>
 	</xsl:template>
 
 	<xsl:template match="product">
@@ -102,47 +121,9 @@
 			</div>
 			<div class="nds" style="margin-top: -8px; margin-bottom: 10px;">*цена включает НДС</div>
 			<div class="device__order">
-				<div id="cart_list_{code}">
-					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
-						<xsl:if test="f:num(qty) != 0">
-							<input type="hidden" value="{producer_code}" name="vendor_code"/>
-							<input type="hidden" value="{producer}" name="vendor"/>
-							<textarea style="display:none;" name="description">
-								<xsl:value-of select="description"/>
-							</textarea>
-							<input type="hidden" value="0" name="not_available"/>
-							<input type="hidden" value="{$shop/name}" name="aux"/>
-							<input type="hidden" value="{name}" name="name"/>
-							<input type="hidden" value="шт" name="unit"/>
-							<input type="hidden" value="{qty}" name="upack"/>
-							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="hidden" value="{qty}" name="max"/>
-							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-							<input type="hidden" name="map" value="{spec_price}"/>
-							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="hidden" name="delivery_time" value="7-14 дней"/>
-							<input type="submit" class="button" value="В корзину"/>
-						</xsl:if>
-						<xsl:if test="f:num(qty) = 0">
-							<input type="hidden" value="{producer_code}" name="vendor_code"/>
-							<textarea style="display:none;" name="description">
-								<xsl:value-of select="description"/>
-							</textarea>
-							<input type="hidden" value="{producer}" name="vendor"/>
-							<input type="hidden" value="{$shop/name}" name="aux"/>
-							<input type="hidden" value="{name}" name="name"/>
-							<input type="hidden" value="1" name="not_available"/>
-							<input type="hidden" value="шт" name="unit"/>
-							<input type="hidden" value="0" name="upack"/>
-							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="hidden" name="map" value="{spec_price}"/>
-							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-							<input type="hidden" name="delivery_time" value=""/>
-							<input type="submit" class="button not_available" value="Под заказ"/>
-						</xsl:if>
-					</form>
-				</div>
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="product" select="current()" />
+				</xsl:call-template>
 			</div>
 			<xsl:if test="f:num(qty) != 0">
 				<div class="device__in-stock"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
@@ -224,47 +205,9 @@
 				</div>
 			</div>
 			<div class="device__order device_row__order">
-				<div id="cart_list_{code}">
-					<form action="cart_action/?action=addDgkToCart&amp;code={code}" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
-						<xsl:if test="f:num(qty) != 0">
-							<input type="hidden" value="{producer_code}" name="vendor_code"/>
-							<textarea style="display:none;" name="description">
-								<xsl:value-of select="description"/>
-							</textarea>
-							<input type="hidden" value="{producer}" name="vendor"/>
-							<input type="hidden" value="0" name="not_available"/>
-							<input type="hidden" value="{$shop/name}" name="aux"/>
-							<input type="hidden" value="{name}" name="name"/>
-							<input type="hidden" value="шт" name="unit"/>
-							<input type="hidden" value="{qty}" name="upack"/>
-							<input type="hidden" value="{qty}" name="max"/>
-							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="hidden" name="map" value="{spec_price}"/>
-							<input type="hidden" name="delivery_time" value="7-14 дней"/>
-							<input type="submit" class="button" value="В корзину"/>
-						</xsl:if>
-						<xsl:if test="f:num(qty) = 0">
-							<input type="hidden" value="{producer_code}" name="vendor_code"/>
-							<textarea style="display:none;" name="description">
-								<xsl:value-of select="description"/>
-							</textarea>
-							<input type="hidden" value="{producer}" name="vendor"/>
-							<input type="hidden" value="{$shop/name}" name="aux"/>
-							<input type="hidden" value="{name}" name="name"/>
-							<input type="hidden" value="1" name="not_available"/>
-							<input type="hidden" value="шт" name="unit"/>
-							<input type="hidden" value="0" name="upack"/>
-							<input type="hidden" name="map" value="{spec_price}"/>
-							<input type="hidden" value="{if(min_qty != '') then min_qty else 1}" name="min_qty"/>
-							<input type="hidden" name="img" value="{main_pic}"/>
-							<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-							<input type="hidden" name="delivery_time" value=" "/>
-							<input type="submit" class="button not_available" value="Под заказ"/>
-						</xsl:if>
-					</form>
-				</div>
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="product" select="current()" />
+				</xsl:call-template>
 				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
 						<i class="fas fa-check" />поставка<xsl:value-of select="if(f:num(qty) &lt; 500000) then concat(' ',f:num(qty), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/>
