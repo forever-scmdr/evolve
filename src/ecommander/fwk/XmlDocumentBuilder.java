@@ -59,9 +59,7 @@ public class XmlDocumentBuilder {
 		if (attributes.length > 1)
 			for (int i = 0; i < attributes.length; i += 2) {
 				if (attributes[i] != null && attributes[i + 1] != null) {
-					String attrValue = StringEscapeUtils.escapeXml10(attributes[i + 1].toString());
-					attrValue = attrValue.replaceAll(">", "&gt;").replaceAll("<", "&lt;");
-					xml.append(' ').append(attributes[i]).append("=\"").append(attrValue)
+					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString()))
 							.append("\"");
 				}
 			}
