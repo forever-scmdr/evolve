@@ -70,7 +70,7 @@ public class PromelecSearchCommand extends Command {
 		Elements el = searchResult.select("rowdata");
 		if(!el.isEmpty()){
 			outputPage.startElement("result");
-			outputPage.addElements(el.first().html());
+			outputPage.addElements(JsoupXmlFixer.fix(el.first().html()));
 			outputPage.endElement();
 		}
 		outputPage.endElement();
