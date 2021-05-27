@@ -112,7 +112,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					int lim = Math.min(strictSearch.length(), 80);
 					top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, lim));
 					if(strictSearch.length() > 80) {
-						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(strictSearch.length()/2));
+						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 79));
 					}
 					
 					//Ignore Analogs from XML file FIX 29.10.2018

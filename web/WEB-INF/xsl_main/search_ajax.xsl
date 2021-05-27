@@ -6,6 +6,7 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="f:f"
 	version="2.0">
+	<xsl:import href="utils/utils.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes" exclude-result-prefixes="#all"/>
 
 	<xsl:variable name="message" select="page/variables/message"/>
@@ -17,71 +18,65 @@
 	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
-	<xsl:template match="/">
-		<div class="result" id="search-result">
-			<xsl:if test="not(page/product)">
-				По Вашему запросу ничего не найдено.
-			</xsl:if>
-			<xsl:if test="page/product">
-				<xsl:if test="not($is_advanced)">
-					<ul>
-						<xsl:for-each select="page/product">
-							<li>
-								<a href="{show_product}">
-									<xsl:value-of select="name"/>
-								</a>
-							</li>
-						</xsl:for-each>
-					</ul>
-				</xsl:if>
-				<xsl:if test="$is_advanced">
-					<div class="cart-container">
-						<xsl:for-each select="page/product">
-							<div class="item">
-								<a href="{show_product}" class="image-container">
-									<img src="{@path}{main_pic}" alt=""/>
-								</a>
-								<a href="{show_product}" class="title">
-									<xsl:value-of select="name"/>
-									<span>
-										№ для заказа: <xsl:value-of select="code"/>
-									</span>
-								</a>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
-							</div>
-						</xsl:for-each>
-					</div>
-				</xsl:if>
-				<a class="show-all" href="{page/show_all}"><strong>Показать все результаты</strong></a>
-			</xsl:if>
-		</div>
 
-		<div class="result" id="search-result-mobile">
+	<xsl:template name="result">
+		<xsl:param name="result_id"/>
+		<div class="result" id="{$result_id}">
 			<xsl:if test="not(page/product)">
-				По Вашему запросу ничего не найдено.
+				<div class="suggest__text">По Вашему запросу ничего не найдено</div>
 			</xsl:if>
 			<xsl:if test="page/product">
-				<div class="cart-container">
-					<xsl:for-each select="page/product">
-						<div class="item">
-							<a href="{show_product}" class="image-container">
-								<img src="{@path}{main_pic}" alt=""/>
-							</a>
-							<a href="{show_product}" class="title">
-								<xsl:value-of select="name"/>
-								<br />
-								<span>
-									№ для заказа: <xsl:value-of select="code"/>
-								</span>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
-							</a>
-						</div>
-					</xsl:for-each>
+				<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
+				<div class="suggest__results">
+					<xsl:apply-templates select="page/product"/>
 				</div>
-				<a class="show-all" href="{//search_link}"><strong>Показать все результаты</strong></a>
+				<a class="suggest__all" href="{page/show_all}">Показать все результаты</a>
 			</xsl:if>
 		</div>
+	</xsl:template>
 
+
+	<xsl:template match="product">
+		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
+		<div class="suggest__result suggest-result">
+			<a class="suggest-result__link" href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
+			<div class="suggest-result__info">
+				<div class="suggest-result__code">код <xsl:value-of select="code"/></div>
+				<div class="suggest-result__vendor"><xsl:value-of select="vendor"/></div>
+				<div class="suggest-result__price">
+					<xsl:if test="not($zero)">
+						<xsl:value-of select="price"/> руб./<xsl:value-of select="unit"/>
+					</xsl:if>
+					<xsl:if test="$zero">
+						нет цены
+					</xsl:if>
+				</div>
+				<div class="suggest-result__status">
+					<xsl:if test="not($zero) and not(is_service = '1')">
+						на складе: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+					</xsl:if>
+					<xsl:if test="$zero">
+						<xsl:if test="soon != '0'">
+							ожидается: <xsl:value-of select="substring(soon, 1, 10)"/>
+						</xsl:if>
+						<xsl:if test="not(soon != '0')">
+							<div class="status__na">нет в наличии</div>
+						</xsl:if>
+					</xsl:if>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="/">
+		<xsl:call-template name="result">
+			<xsl:with-param name="result_id" select="'search-result'"/>
+		</xsl:call-template>
+
+		<xsl:call-template name="result">
+			<xsl:with-param name="result_id" select="'search-result-mobile'"/>
+		</xsl:call-template>
 	</xsl:template>
 
 </xsl:stylesheet>

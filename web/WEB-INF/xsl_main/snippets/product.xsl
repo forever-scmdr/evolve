@@ -15,6 +15,10 @@
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 
+
+
+
+
 	<xsl:template match="accessory | set | probe | product | assoc | hit | new">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
 		<xsl:variable name="has_price" select="price and price != '0'"/>
@@ -39,25 +43,65 @@
 				<div><xsl:value-of select="vendor"/></div>
 			</div>
 			<div class="device__icons">
-				<xsl:if test="param[not(@caption = 'Сертификат')]">
-					<a class="deivce-icon" href="#" rel="info_{code}">
-						<img src="img/icon-device-icon-01.png" alt=""/>
+				<xsl:if test="params/param[not(@caption = 'Сертификат')]">
+					<a class="deivce-icon" href="#" popup="tech_{code}">
+						<img src="img/icon-device-icon-04.png" alt=""/>
 					</a>
+					<div class="popup popup_basic" style="display: none;" id="tech_{code}">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> (Код: <xsl:value-of select="code"/>)</div>
+									<a class="popup__close">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup__info">
+									<table>
+										<xsl:for-each select="params/param">
+                                            <tr>
+                                                <td><xsl:value-of select="@caption" /></td>
+                                                <td><xsl:value-of select="." /></td>
+                                            </tr>
+                                        </xsl:for-each>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
 				</xsl:if>
 				<xsl:for-each select="file[. != '']">
 					<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
 						<img src="img/icon-device-icon-02.png" alt=""/>
 					</a>
 				</xsl:for-each>
-				<xsl:if test="name_extra != ''">
-					<a class="deivce-icon" href="#" rel="text_{code}">
-						<img src="img/icon-device-icon-03.png" alt=""  title="описание"/>
+				<xsl:if test="text != ''">
+					<a class="deivce-icon" href="" popup="text_{code}">
+						<img src="img/icon-device-icon-01.png" alt=""  title="описание"/>
 					</a>
+					<div class="popup popup_basic" style="display: none;" id="text_{code}">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> (Код: <xsl:value-of select="code"/>)</div>
+									<a class="popup__close" href="#">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup__info">
+									<xsl:value-of select="text" disable-output-escaping="yes"/>
+								</div>
+							</div>
+						</div>
+					</div>
 				</xsl:if>
 				<xsl:if test="analog_code != ''">
-					<a class="deivce-icon" href="#" link="{analog_ajax_link}" rel="analog_{code}" title="аналоги">
-						<img src="img/icon-device-icon-04.png" alt=""/>
+					<a class="deivce-icon" href="{analog_ajax_link}" popup="analog_{code}" title="аналоги">
+						<img src="img/icon-device-icon-03.png" alt=""/>
 					</a>
+					<div class="popup popup_basic" style="display: none;" id="analog_{code}">
+					-----
+					</div>
 				</xsl:if>
 			</div>
 			<div class="device__code">
@@ -124,12 +168,16 @@
 	</xsl:template>
 
 
+
+
+
+
+
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-
 
 		<tr class="device_row">
 			<td class="device__image">
@@ -151,24 +199,61 @@
 				</div>
 				<div class="device__code">Код: <xsl:value-of select="code"/></div>
 				<div class="device__icons">
-					<xsl:if test="param[not(@caption = 'Сертификат')]">
-						<a class="deivce-icon" href="#" rel="info_{code}">
-							<img src="img/icon-device-icon-01.png" alt=""/>
-						</a>
-					</xsl:if>
-					<xsl:for-each select="file[. != '']">
+                    <xsl:if test="params/param[not(@caption = 'Сертификат')]">
+                        <a class="deivce-icon" href="#" popup="tech_{code}">
+                            <img src="img/icon-device-icon-04.png" alt=""/>
+                        </a>
+                        <div class="popup popup_basic" style="display: none;" id="tech_{code}">
+                            <div class="popup__body">
+                                <div class="popup__content">
+                                    <div class="popup__header">
+                                        <div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> (Код: <xsl:value-of select="code"/>)</div>
+                                        <a class="popup__close">
+                                            <img src="img/icon-menu-close.png" alt=""/>
+                                        </a>
+                                    </div>
+                                    <div class="popup__info">
+                                        <table>
+                                            <xsl:for-each select="params/param">
+                                                <tr>
+                                                    <td><xsl:value-of select="@caption" /></td>
+                                                    <td><xsl:value-of select="." /></td>
+                                                </tr>
+                                            </xsl:for-each>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </xsl:if>
+ 					<xsl:for-each select="file[. != '']">
 						<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
 							<img src="img/icon-device-icon-02.png" alt=""/>
 						</a>
 					</xsl:for-each>
-					<xsl:if test="name_extra != ''">
-						<a class="deivce-icon" href="#" rel="text_{code}">
-							<img src="img/icon-device-icon-03.png" alt=""  title="описание"/>
+					<xsl:if test="text != ''">
+						<a class="deivce-icon" href="" popup="text_{code}">
+							<img src="img/icon-device-icon-01.png" alt=""  title="описание"/>
 						</a>
+						<div class="popup popup_basic" style="display: none;" id="text_{code}">
+							<div class="popup__body">
+								<div class="popup__content">
+									<div class="popup__header">
+										<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> (Код: <xsl:value-of select="code"/>)</div>
+										<a class="popup__close" href="#">
+											<img src="img/icon-menu-close.png" alt=""/>
+										</a>
+									</div>
+									<div class="popup__info">
+										<xsl:value-of select="text" disable-output-escaping="yes"/>
+									</div>
+								</div>
+							</div>
+						</div>
 					</xsl:if>
 					<xsl:if test="analog_code != ''">
 						<a class="deivce-icon" href="#" link="{analog_ajax_link}" rel="analog_{code}" title="аналоги">
-							<img src="img/icon-device-icon-04.png" alt=""/>
+							<img src="img/icon-device-icon-03.png" alt=""/>
 						</a>
 					</xsl:if>
 				</div>

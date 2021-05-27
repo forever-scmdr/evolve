@@ -29,6 +29,7 @@
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
+	<xsl:variable name="query" select="page/variables/q"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -154,12 +155,12 @@
 	<xsl:template name="CART_SCRIPT">
 		<script>
 			$(document).ready(function() {
-			$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
-			event.preventDefault();
-			var qtyForm = $(this).closest('form');
-			var lockId = $(this).closest('.product_purchase_container').attr('id');
-			postForm(qtyForm, lockId, null);
-			});
+				$('.product_purchase_container').find('input[type="submit"]').click(function(event) {
+					event.preventDefault();
+					var qtyForm = $(this).closest('form');
+					var lockId = $(this).closest('.product_purchase_container').attr('id');
+					postForm(qtyForm, lockId, null);
+				});
 			});
 		</script>
 	</xsl:template>
@@ -467,7 +468,6 @@
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
-				<script src="js/script.js"></script>
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -480,6 +480,7 @@
 				<link href="js/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
 				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"></script>
 				<script type="text/javascript" src="js/script.js"></script>
+				<script type="text/javascript" src="js/web.js"></script>
 				<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js"></script>
 				<script type="text/javascript" src="js/jquery-ui/jquery-ui.js"></script>
 				<link rel="stylesheet" type="text/css" href="fancybox/source/jquery.fancybox.css" media="screen" />
@@ -496,6 +497,9 @@
 						}
 						return false;
 					}
+					$(document).ready(function() {
+						initQuickSearch();
+					});
 				</script>
 			</head>
 
@@ -551,12 +555,16 @@
 									</div>
 								</div>
 								<div class="header__column header__search header-search">
-									<form action="search/" method="post">
+									<form action="{page/search_link}" method="post">
 										<div>
 											<a class="useless-button" href="">
 												<img src="img/icon-search.png" alt=""/>
 											</a>
-											<input class="input header-search__input" id="q-ipt" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="" value="" autofocus=""/>
+											<input class="input header-search__input"
+												   ajax-href="{page/search_ajax_link}" result="search-result"
+												   query="q" min-size="3" id="q-ipt" type="text"
+												   placeholder="Введите поисковый запрос" autocomplete="off"
+												   name="q" value="{$query}" autofocus=""/>
 											<a class="header-search__reset" href="">
 												<img src="img/icon-close.png" alt=""/>
 											</a>
@@ -572,47 +580,8 @@
 												<label for="">строгое соответствие</label>
 											</div>
 										</div>
-										<div class="suggest">
-											<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
-											<div class="suggest__results">
-												<div class="suggest__result suggest-result">
-													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="suggest-result__info">
-														<div class="suggest-result__code">код 04434</div>
-														<div class="suggest-result__vendor">KLS</div>
-														<div class="suggest-result__price">1,46 руб./шт.</div>
-														<div class="suggest-result__status">на складе: 19 шт.</div>
-													</div>
-												</div>
-												<div class="suggest__result suggest-result">
-													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="suggest-result__info">
-														<div class="suggest-result__code">код 04434</div>
-														<div class="suggest-result__vendor">KLS</div>
-														<div class="suggest-result__price">1,46 руб./шт.</div>
-														<div class="suggest-result__status">на складе: 19 шт.</div>
-													</div>
-												</div>
-												<div class="suggest__result suggest-result">
-													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="suggest-result__info">
-														<div class="suggest-result__code">код 04434</div>
-														<div class="suggest-result__vendor">KLS</div>
-														<div class="suggest-result__price">1,46 руб./шт.</div>
-														<div class="suggest-result__status">на складе: 19 шт.</div>
-													</div>
-												</div>
-												<div class="suggest__result suggest-result">
-													<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-													<div class="suggest-result__info">
-														<div class="suggest-result__code">код 04434</div>
-														<div class="suggest-result__vendor">KLS</div>
-														<div class="suggest-result__price">1,46 руб./шт.</div>
-														<div class="suggest-result__status">на складе: 19 шт.</div>
-													</div>
-												</div>
-											</div>
-											<a class="suggest__all" href="search.html">Показать все результаты</a>
+										<div class="suggest" id="search-result">
+											+++ SEARCH DESKTOP +++
 										</div>
 									</form>
 								</div>
@@ -1068,13 +1037,16 @@
 									</a>
 								</div>
 								<div class="search-mobile">
-									<form>
+									<form action="{page/search_link}" method="post">
 										<div>
-											<input type="text"/>
+											<input ajax-href="{page/search_ajax_link}" result="search-result-mobile"
+												   query="q" min-size="3" type="text"
+												   placeholder="Введите поисковый запрос" autocomplete="off"
+												   name="q" value="{$query}"/>
 											<div class="search-mobile__reset">
 												<img src="img/icon-close.png" alt=""/>
 											</div>
-											<button class="button">Найти</button>
+											<button class="button" type="submit">Найти</button>
 										</div>
 										<div class="search-mobile__options">
 											<div class="search-mobile__option search-option">
@@ -1087,47 +1059,8 @@
 											</div>
 										</div>
 									</form>
-									<div class="suggest">
-										<div class="suggest__text">Продолжайте вводить текст или выберите результат</div>
-										<div class="suggest__results">
-											<div class="suggest__result suggest-result">
-												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-												<div class="suggest-result__info">
-													<div class="suggest-result__code">код 04434</div>
-													<div class="suggest-result__vendor">KLS</div>
-													<div class="suggest-result__price">1,46 руб./шт.</div>
-													<div class="suggest-result__status">на складе: 19 шт.</div>
-												</div>
-											</div>
-											<div class="suggest__result suggest-result">
-												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-												<div class="suggest-result__info">
-													<div class="suggest-result__code">код 04434</div>
-													<div class="suggest-result__vendor">KLS</div>
-													<div class="suggest-result__price">1,46 руб./шт.</div>
-													<div class="suggest-result__status">на складе: 19 шт.</div>
-												</div>
-											</div>
-											<div class="suggest__result suggest-result">
-												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-												<div class="suggest-result__info">
-													<div class="suggest-result__code">код 04434</div>
-													<div class="suggest-result__vendor">KLS</div>
-													<div class="suggest-result__price">1,46 руб./шт.</div>
-													<div class="suggest-result__status">на складе: 19 шт.</div>
-												</div>
-											</div>
-											<div class="suggest__result suggest-result">
-												<a class="suggest-result__link" href="product.html">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-												<div class="suggest-result__info">
-													<div class="suggest-result__code">код 04434</div>
-													<div class="suggest-result__vendor">KLS</div>
-													<div class="suggest-result__price">1,46 руб./шт.</div>
-													<div class="suggest-result__status">на складе: 19 шт.</div>
-												</div>
-											</div>
-										</div>
-										<a class="suggest__all" href="search.html">Показать все результаты</a>
+									<div class="suggest" id="search-result-mobile">
+										+++ SEARCH_MOBILE +++
 									</div>
 								</div>
 							</div>
@@ -1139,6 +1072,7 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			</body>
 		</html>
 	</xsl:template>

@@ -279,15 +279,15 @@
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
 
 		<!-- SERVICE PARAMS AND FULLTEXT -->
-		<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description="для прикрепления к тексту" />
-		<parameter name="file" type="string" quantifier="multiple" caption="Название файла" description="документация" />
-		<parameter name="search" quantifier="multiple" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
-		<parameter name="strict_search" quantifier="multiple" type="string" caption="Ключевые слова для поиска по строгому соответствию"/>
-		<parameter name="analog_search" quantifier="multiple" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
-		<parameter name="analog_code" type="string" quantifier="multiple" caption="Коды аналогов" description="других товаров из каталога"/>
-		<parameter name="extra_pic" type="string" quantifier="multiple" caption="дополнительные картинки"/>
-		<parameter name="filevid" type="string" quantifier="multiple" caption="видео"/>
-		<parameter name="rel_code" type="string" quantifier="multiple" caption="Коды сопутствующих товаров"/>
+		<parameter name="picture" type="picture" multiple="true" caption="Изображение" description="для прикрепления к тексту" />
+		<parameter name="file" type="string" multiple="true" caption="Название файла" description="документация" />
+		<parameter name="search" multiple="true" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
+		<parameter name="strict_search" multiple="true" type="string" caption="Ключевые слова для поиска по строгому соответствию"/>
+		<parameter name="analog_search" multiple="true" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
+		<parameter name="analog_code" type="string" multiple="true" caption="Коды аналогов" description="других товаров из каталога"/>
+		<parameter name="extra_pic" type="string" multiple="true" caption="дополнительные картинки"/>
+		<parameter name="filevid" type="string" multiple="true" caption="видео"/>
+		<parameter name="rel_code" type="string" multiple="true" caption="Коды сопутствующих товаров"/>
 		<parameter name="analog" type="string" caption="Аналоги" description="перечисление аналогов устройства"/>
 		<parameter name="barcode" type="string" caption="Штрихкод" description="в виде строки"/>
 

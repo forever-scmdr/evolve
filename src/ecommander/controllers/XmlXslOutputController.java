@@ -1,6 +1,7 @@
 package ecommander.controllers;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.xml.transform.ErrorListener;
@@ -13,6 +14,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import ecommander.fwk.*;
 import net.sf.saxon.TransformerFactoryImpl;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Преобразует XML документ в html с помощью XSL файла
@@ -41,7 +43,9 @@ public class XmlXslOutputController {
 	}
 
 	private static TransformerFactory factory;
-	private static HashMap<String, Pair<Long, Transformer>> transformers;
+	private static HashMap<String, Transformer> transformers;
+	private static long lastModified = 0;
+	private static long lastChecked = 0;
 
 	private static TransformerFactory getTransformerFac() {
 		if (factory == null)
@@ -52,15 +56,33 @@ public class XmlXslOutputController {
 	private static Transformer getTransformer(File xslFile, TransformerFactory fac) throws TransformerConfigurationException {
 		if (transformers == null)
 			transformers = new HashMap<>();
-		Pair<Long, Transformer> trans = transformers.get(xslFile.getAbsolutePath());
-		if (trans == null || trans.getLeft() != xslFile.lastModified()) {
-			Transformer transformer = fac.newTransformer(new StreamSource(xslFile));
-			trans = new Pair<>(xslFile.lastModified(), transformer);
+		Transformer trans = transformers.get(xslFile.getAbsolutePath());
+		if (trans == null || checkIfModified()) {
+			trans = fac.newTransformer(new StreamSource(xslFile));
 			transformers.put(xslFile.getAbsolutePath(), trans);
 		}
-		return trans.getRight();
+		return trans;
 	}
 
+
+	private static boolean checkIfModified() {
+		if (Math.abs(System.currentTimeMillis() - lastChecked) > 5000) {
+			lastChecked = System.currentTimeMillis();
+			File xslDir = new File(AppContext.getStylesDirPath());
+			Collection<File> files = FileUtils.listFiles(xslDir, new String[]{"xsl"}, true);
+			boolean modified = false;
+			for (File file : files) {
+				if (file.lastModified() > lastModified) {
+					lastModified = file.lastModified();
+					modified = true;
+				}
+			}
+			if (modified)
+				transformers.clear();
+			return modified;
+		}
+		return false;
+	}
 
 	/**
 	 * Вывести преобразованный документ, если преобразование требуется, либо просто XML документ

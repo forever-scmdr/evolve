@@ -184,11 +184,11 @@ $("a.tab").click(function() {
 $(document).on("click", ".toggle", function(e){
 	e.preventDefault();
 	var $t = $($(this).attr("href"));
-	$t.toggle();
 	var rel = $(this).attr("rel");
 	if(rel != '' || rel != null || typeof rel != "undefined"){
 		var html = $(this).text();
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
+	$t.toggle('fade', 150);
 });

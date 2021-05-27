@@ -279,21 +279,11 @@
 		<div class="content__main">
 			<xsl:call-template name="PAGE_PATH"/>
 			<xsl:call-template name="PAGE_HEADING"/>
-			<div class="section-text" style="display: none;">
-				<p>Наиболее распространенный и многообразный вид раздвижных штор благодаря широкому <a href="https://google.com">выбору шторных лент</a>, образующих при стягивании по верхнему краю шторы различные формы шторных складок. Данный вид штор может навешиваться на любые типы карнизов, предназначенные для раздвижных штор, в том числе: потолочные шины, круглые и профильные карнизы как ручного действия, так и с электроприводом. Для крепления штор к карнизу используются специальные крючки, которые сначала фиксируются через петли на шторной ленте, а затем вставляются в прорези потолочной шины, бегунки профиля или надеваются на кольца круглого карниза.</p>
-			</div>
-			<div class="labels labels_section" style="display: none">
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-				<a class="labels__item label" href="">Гардина</a>
-			</div>
+			<xsl:if test="$seo[1]/text">
+				<div class="section-text">
+					<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
+				</div>
+			</xsl:if>
 			<xsl:call-template name="FILTER"/>
 			<div class="view view_section">
 				<div class="view__column toggle-view">
@@ -369,62 +359,12 @@
 
 			</div>
 			<xsl:call-template name="PAGINATION"/>
-		</div>
-	</xsl:template>
-
-
-	<xsl:template name="CONTENT__">
-		
-		<xsl:if test="$seo[1]/text">
-			<div class="section-text">
-				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
-			</div>
-		</xsl:if>
-		<xsl:call-template name="TAGS"/>
-		<xsl:call-template name="FILTER"/>
-
-		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
-		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
-			<div class="h3">Товары</div>
-		</xsl:if>
-		<xsl:call-template name="DISPLAY_CONTROL"/>
-		
-		<xsl:if test="$show_devices">
-			<div class="devices devices_section{' lines'[$view = 'list']}">
-				<xsl:if test="$view = 'table'">
-					<div class="devices__wrap">
-						<xsl:apply-templates select="$sel_sec/product"/>
-					</div>
-				</xsl:if>
-				<xsl:if test="$view = 'list'">
-					<div class="devices__wrap devices__wrap_rows">
-						<xsl:apply-templates select="$sel_sec/product" mode="lines"/>
-					</div>
-				</xsl:if>
-				<xsl:if test="$not_found">
-					<h4>По заданным критериям товары не найдены</h4>
-				</xsl:if>
-			</div>
-		</xsl:if>
-
-		<xsl:if test="$sel_sec/product_pages and $show_devices">
-			<div class="pagination">
-				<div class="pagination__label">Страницы:</div>
-				<div class="pagination__wrap">
-					<xsl:for-each select="$sel_sec/product_pages/page">
-						<a href="{link}" class="pagination__item{' pagination__item_active'[current()/@current]}">
-							<xsl:value-of select="number"/>
-						</a>
-					</xsl:for-each>
+			<xsl:if test="$seo[1]/bottom_text">
+				<div class="section-text" style="clear: both; margin-top: 30px;">
+					<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 				</div>
-			</div>
-		</xsl:if>
-
-		<xsl:if test="$seo[1]/bottom_text">
-			<div class="section-text" style="clear: both; margin-top: 30px;">
-				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
-			</div>
-		</xsl:if>
+			</xsl:if>
+		</div>
 	</xsl:template>
 
 
@@ -461,89 +401,6 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">
-			<div class="view view_section">
-				<div class="view__column">
-					<a href="{page/set_view_table}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-grid.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Плиткой</span>
-					</a>
-					<a href="{page/set_view_list}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Строками</span>
-					</a>
-				</div>
-				<xsl:if test="/page/@name != 'fav'">
-					<div class="view__column">
-						<select value="{page/variables/sort}{page/variables/direction}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-							<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-							<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-							<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-							<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-						</select>
-					</div>
-					<xsl:if test="$sel_sec/mark">
-						<div class="view__column">
-							<select value="{page/variables/mark}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option value="" link="{page/set_mark_default}">Все товары</option>
-								<xsl:for-each select="$sel_sec/mark">
-									<option value="{mark}" link="{set_mark}"><xsl:value-of select="mark"/></option>
-								</xsl:for-each>
-							</select>
-						</div>
-					</xsl:if>
-					<div class="view__column">
-						Кол-во на странице:
-						<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">					
-								<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
-									<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
-									<option value="{$nos}" link="{.}">
-										<xsl:value-of select="$nos"/>
-									</option>
-								</xsl:for-each>	
-						</select>
-					</div>
-				</xsl:if>
-				<xsl:if test="/page/@name = 'fav'">
-					<div class="view__column" style=""></div>
-					<div class="view__column" style=""></div>
-				</xsl:if>
-			</div>
-
-				<!-- <div class="view">
-					<span class="{'active'[not($view = 'list')]}">
-						
-						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
-					</span>
-					<span class="{'active'[$view = 'list']}">
-						
-						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
-					</span>
-				</div> -->
-
-
-				<!-- <div class="checkbox">
-					<label>
-						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии на складе
-					</label>
-				</div> -->
-				
-		</xsl:if>
-	</xsl:template>
 
 	<xsl:template match="section" mode="tag">
 		<a href="{show_products}" class="labels__item label"><xsl:value-of select="name"/></a>

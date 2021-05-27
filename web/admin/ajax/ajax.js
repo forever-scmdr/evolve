@@ -89,7 +89,7 @@ function initAjax(elementId) {
 			insertAjax(elem.attr("href"));
 		}
 	});
-    $(idPrefix + "a[popup], input[popup], button[popup]").click(function(event) {
+    $(idPrefix + "a[popup], " + idPrefix + "input[popup], " + idPrefix + "button[popup]").click(function(event) {
         event.preventDefault();
         var link = $(this);
         var loaderId = link.attr("ajax-loader-id");
@@ -97,28 +97,32 @@ function initAjax(elementId) {
 		var href = link.attr("href");
         var targetElem = $("#" + popupId);
         if (targetElem != null) {
-        	if (href != null && href.trim() != '') {
+        	if (href != null && href.trim() != '' && href != '#') {
 				insertAjax(href, loaderId, function (argData) {
-					targetElem.show('fade', 130);
+					targetElem.show('fade', 100);
 				});
 			} else {
-				targetElem.show('fade', 130);
+				targetElem.show('fade', 100);
 			}
         } else {
         	alert("AJAX popup: element '" + popupId + "' is not found or URL '" + href + "' is incorrect");
 		}
     });
+	$(".popup__body").click(function(e) {
+		if ($(e.target).find(".popup__content").length > 0) {
+			$(this).closest('.popup').hide('fade', 100);
+		}
+	});
+	$(document).on('click', '.popup__close', function(e){
+		e.preventDefault();
+		$(this).closest('.popup').hide('fade', 100);
+	});
 	$(idPrefix + "select[value]").each(function() {
 		$(this).val($(this).attr("value"));
 	});
 }
 
 $(document).ready(initAjax());
-
-$(document).on('click', '.popup__close', function(e){
-	e.preventDefault();
-	$(this).closest('.popup').hide('fade', 130);
-});
 
 function insertAjax(url, lockElementIds, additionalHandling) {
 	$.ajax({
@@ -298,3 +302,45 @@ $(".ajax-form").submit(function(e){
 	postFormView($(this).attr("id"));
 });
 
+
+/*******************************************************
+ * 				Подключение быстрого поиска
+ */
+var __resultSelector = "";
+var __minSize = 3;
+function initQuickSearch() {
+	$("input[ajax-href]").each(function () {
+		if ($(this).attr("result") !== undefined) {
+			if (__resultSelector.length > 0)
+				__resultSelector += ", ";
+			__resultSelector += "#" + $(this).attr("result");
+		}
+		if ($(this).attr("min-size") !== undefined)
+			__minSize = Number($(this).attr("min-size"));
+	});
+	$(document).click(function (event) {
+		var target = $(event.target);
+		if (target.closest(__resultSelector).length == 0 && target.closest("input[ajax-href]").length == 0) {
+			//$(__resultSelector).hide('fade', 130);
+			$(__resultSelector).css("visibility", "hidden");
+		}
+	});
+	$("input[ajax-href]").keyup(function (event) {
+		performQuickSearchRequest($(this));
+	});
+	$("input[ajax-href]").click(function (event) {
+		performQuickSearchRequest($(this));
+	});
+}
+
+function performQuickSearchRequest(input) {
+	if (input.val().trim().length >= __minSize) {
+		var href = input.attr("ajax-href") + "?" + input.attr("query") + "=" + input.val();
+		insertAjax(href, null, function (argData) {
+			//$("#" + input.attr("result")).show('fade', 130);
+			$("#" + input.attr("result")).css("visibility", "visible");
+		});
+	} else {
+		$("#" + input.attr("result")).css("visibility", "hidden");
+	}
+}

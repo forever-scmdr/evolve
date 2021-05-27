@@ -512,16 +512,16 @@ public class Product
         return containsValue("status", value);
     }
 
-    public void set_search(String value) {
+    public void add_search(String value) {
         setValue("search", value);
     }
 
-    public String get_search() {
-        return getStringValue("search");
+    public List<String> getAll_search() {
+        return getStringValues("search");
     }
 
-    public String getDefault_search(String defaultVal) {
-        return getStringValue("search", defaultVal);
+    public void remove_search(String value) {
+        removeEqualValue("search", value);
     }
 
     public boolean contains_search(String value) {
@@ -892,124 +892,128 @@ public class Product
         return containsValue("extra_input", value);
     }
 
-    public void set_picture(File value) {
+    public void add_picture(File value) {
         setValue("picture", value);
     }
 
-    public File get_picture() {
-        return getFileValue("picture", AppContext.getCommonFilesDirPath());
+    public List<File> getAll_picture() {
+        return getFileValues("picture", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_picture(File value) {
+        removeEqualValue("picture", value);
     }
 
     public boolean contains_picture(File value) {
         return containsValue("picture", value);
     }
 
-    public void set_file(String value) {
+    public void add_file(String value) {
         setValue("file", value);
     }
 
-    public String get_file() {
-        return getStringValue("file");
+    public List<String> getAll_file() {
+        return getStringValues("file");
     }
 
-    public String getDefault_file(String defaultVal) {
-        return getStringValue("file", defaultVal);
+    public void remove_file(String value) {
+        removeEqualValue("file", value);
     }
 
     public boolean contains_file(String value) {
         return containsValue("file", value);
     }
 
-    public void set_strict_search(String value) {
+    public void add_strict_search(String value) {
         setValue("strict_search", value);
     }
 
-    public String get_strict_search() {
-        return getStringValue("strict_search");
+    public List<String> getAll_strict_search() {
+        return getStringValues("strict_search");
     }
 
-    public String getDefault_strict_search(String defaultVal) {
-        return getStringValue("strict_search", defaultVal);
+    public void remove_strict_search(String value) {
+        removeEqualValue("strict_search", value);
     }
 
     public boolean contains_strict_search(String value) {
         return containsValue("strict_search", value);
     }
 
-    public void set_analog_search(String value) {
+    public void add_analog_search(String value) {
         setValue("analog_search", value);
     }
 
-    public String get_analog_search() {
-        return getStringValue("analog_search");
+    public List<String> getAll_analog_search() {
+        return getStringValues("analog_search");
     }
 
-    public String getDefault_analog_search(String defaultVal) {
-        return getStringValue("analog_search", defaultVal);
+    public void remove_analog_search(String value) {
+        removeEqualValue("analog_search", value);
     }
 
     public boolean contains_analog_search(String value) {
         return containsValue("analog_search", value);
     }
 
-    public void set_analog_code(String value) {
+    public void add_analog_code(String value) {
         setValue("analog_code", value);
     }
 
-    public String get_analog_code() {
-        return getStringValue("analog_code");
+    public List<String> getAll_analog_code() {
+        return getStringValues("analog_code");
     }
 
-    public String getDefault_analog_code(String defaultVal) {
-        return getStringValue("analog_code", defaultVal);
+    public void remove_analog_code(String value) {
+        removeEqualValue("analog_code", value);
     }
 
     public boolean contains_analog_code(String value) {
         return containsValue("analog_code", value);
     }
 
-    public void set_extra_pic(String value) {
+    public void add_extra_pic(String value) {
         setValue("extra_pic", value);
     }
 
-    public String get_extra_pic() {
-        return getStringValue("extra_pic");
+    public List<String> getAll_extra_pic() {
+        return getStringValues("extra_pic");
     }
 
-    public String getDefault_extra_pic(String defaultVal) {
-        return getStringValue("extra_pic", defaultVal);
+    public void remove_extra_pic(String value) {
+        removeEqualValue("extra_pic", value);
     }
 
     public boolean contains_extra_pic(String value) {
         return containsValue("extra_pic", value);
     }
 
-    public void set_filevid(String value) {
+    public void add_filevid(String value) {
         setValue("filevid", value);
     }
 
-    public String get_filevid() {
-        return getStringValue("filevid");
+    public List<String> getAll_filevid() {
+        return getStringValues("filevid");
     }
 
-    public String getDefault_filevid(String defaultVal) {
-        return getStringValue("filevid", defaultVal);
+    public void remove_filevid(String value) {
+        removeEqualValue("filevid", value);
     }
 
     public boolean contains_filevid(String value) {
         return containsValue("filevid", value);
     }
 
-    public void set_rel_code(String value) {
+    public void add_rel_code(String value) {
         setValue("rel_code", value);
     }
 
-    public String get_rel_code() {
-        return getStringValue("rel_code");
+    public List<String> getAll_rel_code() {
+        return getStringValues("rel_code");
     }
 
-    public String getDefault_rel_code(String defaultVal) {
-        return getStringValue("rel_code", defaultVal);
+    public void remove_rel_code(String value) {
+        removeEqualValue("rel_code", value);
     }
 
     public boolean contains_rel_code(String value) {

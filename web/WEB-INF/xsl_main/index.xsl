@@ -4,6 +4,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+
 	<xsl:template name="CONTENT" >
 		<div class="content__main">
 			<div class="slider-container">

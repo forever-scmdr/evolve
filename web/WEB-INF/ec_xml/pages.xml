@@ -99,12 +99,16 @@
 
 
 
+
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="show_product" target="product">
 			<var name="prod" ref="$prod" />
 		</link>
 		<link name="show_product_ajax" target="product_ajax">
 			<var name="prod" ref="$prod"/>
+		</link>
+		<link name="analog_ajax_link" target="analog_ajax">
+			<var name="code" ref="$prod" parameter="code" />
 		</link>
 		<link name="to_cart" target="cart_action">
 			<var name="action" value="addToCart"/>
@@ -132,10 +136,99 @@
 			<var name="prod" ref="$prod"/>
 		</link>
 		<list item="params"/>
-		<ancestor item="section" />
 	</include-definition>
 
 
+
+
+
+	<include-definition name="CATALOG_PAGE_LINKS">
+		<link name="set_view_table" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="list"/>
+		</link>
+		<link name="set_limit_24" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="24"/>
+		</link>
+		<link name="set_limit_48" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="48"/>
+		</link>
+		<link name="set_limit_72" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="72"/>
+		</link>
+		<link name="set_limit_96" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="96"/>
+		</link>
+
+		<link name="set_currency_byn" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="currency" value="byn"/>
+		</link>
+		<link name="set_currency_rur" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="currency" value="rur"/>
+		</link>
+
+		<link name="show_only_available" target="$page" type="exclusive" copy-page-vars="yes">
+			<var name="page" value="1"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="$page" type="exclusive" copy-page-vars="yes">
+			<var name="page" value="1"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="set_sort_name_asc" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="name"/>
+			<var name="sort2" value="name_extra"/>
+			<var name="sort3" value="available"/>
+			<var name="dir1" value="ASC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="DESC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_name_desc" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="name"/>
+			<var name="sort2" value="name_extra"/>
+			<var name="sort3" value="available"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="DESC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_price_asc" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="price"/>
+			<var name="sort3" value="name"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_price_desc" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="price"/>
+			<var name="sort3" value="name"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="DESC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_available" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available"/>
+			<var name="sort2" value="name"/>
+			<var name="sort3" value="name_extra"/>
+			<var name="dir1" value="DESC"/>
+			<var name="dir2" value="ASC"/>
+			<var name="dir3" value="ASC"/>
+			<var name="page" value="1"/>
+		</link>
+		<link name="set_sort_default" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort" value=""/>
+		</link>
+		<link name="set_mark_default" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="mark" value=""/>
+		</link>
+	</include-definition>
 
 
 
@@ -150,7 +243,7 @@
 
 
 
-	<page name="index" template="index" cacheable="true" cache-vars="cur">
+	<page name="index" template="index" cacheable="false" cache-vars="cur">
 		<request>
 			<!-- <var name="page" value="1" />
 			<var name="sorting" value="name"/> -->
@@ -286,6 +379,7 @@
 					</parameter>
 				</filter>
 				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+				<ancestor item="section"/>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="vendor"/>
@@ -304,96 +398,33 @@
 				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
-		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="view" value="list"/>
-		</link>
-		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
-		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="48"/>
-		</link>
-		<link name="set_limit_72" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
-		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="96"/>
-		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
 		</link>
-
-		<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="currency" value="byn"/>
-		</link>
-		<link name="set_currency_rur" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="currency" value="rur"/>
-		</link>
-
-		<link name="show_only_available" target="section" type="exclusive">
-			<var name="sec" var="sec" style="key"/>
-			<var name="minqty" value="0"/>
-		</link>
-		<link name="show_all" target="section" type="exclusive">
-			<var name="sec" var="sec" style="key"/>
-			<var name="minqty" value=""/>
-		</link>
-		<link name="set_sort_name_asc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="name"/>
-			<var name="sort2" value="name_extra"/>
-			<var name="sort3" value="available"/>
-			<var name="dir1" value="ASC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="DESC"/>
-			<var name="page" value="1"/>
-		</link>
-		<link name="set_sort_name_desc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="name"/>
-			<var name="sort2" value="name_extra"/>
-			<var name="sort3" value="available"/>
-			<var name="dir1" value="DESC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="DESC"/>
-			<var name="page" value="1"/>
-		</link>
-		<link name="set_sort_price_asc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="available"/>
-			<var name="sort2" value="price"/>
-			<var name="sort3" value="name"/>
-			<var name="dir1" value="DESC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="ASC"/>
-			<var name="page" value="1"/>
-		</link>
-		<link name="set_sort_price_desc" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="available"/>
-			<var name="sort2" value="price"/>
-			<var name="sort3" value="name"/>
-			<var name="dir1" value="DESC"/>
-			<var name="dir2" value="DESC"/>
-			<var name="dir3" value="ASC"/>
-			<var name="page" value="1"/>
-		</link>
-		<link name="set_sort_available" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort1" value="available"/>
-			<var name="sort2" value="name"/>
-			<var name="sort3" value="name_extra"/>
-			<var name="dir1" value="DESC"/>
-			<var name="dir2" value="ASC"/>
-			<var name="dir3" value="ASC"/>
-			<var name="page" value="1"/>
-		</link>
-		<link name="set_sort_default" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="sort" value=""/>
-		</link>
-		<link name="set_mark_default" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="mark" value=""/>
-		</link>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:section"/>
 		<include name="COMMON"/>
 	</page>
+
+
+
+
+	<page name="analog_ajax" template="analog_ajax">
+		<request>
+			<var name="code" />
+		</request>
+		<single item="product" id="src" tag="src" var="code" parameter="code" />
+		<list item="product" id="prod" tag="product">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="src" parameter="analog_code" />
+				</parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="prod" ref="prod" />
+			</link>
+		</list>
+	</page>
+
 
 
 
@@ -437,44 +468,9 @@
 				</parameter>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<ancestor item="section"/>
 		</list>
-		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
-			<var name="view" value="list"/>
-		</link>
-		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
-		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="48"/>
-		</link>
-		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
-		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="96"/>
-		</link>
-		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="name"/>
-			<var name="direction" value="ASC"/>
-		</link>
-		<link name="set_sort_name_desc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="name"/>
-			<var name="direction" value="DESC"/>
-		</link>
-		<link name="set_sort_price_asc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="price"/>
-			<var name="direction" value="ASC"/>
-		</link>
-		<link name="set_sort_price_desc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="price"/>
-			<var name="direction" value="DESC"/>
-		</link>
-		<link name="set_sort_default" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value=""/>
-		</link>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:tag_section"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -483,31 +479,13 @@
 	<page name="search_ajax" template="search_ajax">
 		<request>
 			<var name="q"/>
-			<var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
-			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<personal>
-			<list item="user" tag="registration">
-				<filter>
-					<parameter name="registered">
-						<var value="1"/>
-					</parameter>
-				</filter>
-			</list>
-		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY">
+				<fulltext limit="7" compare="EVERY" type="extra.belchip.PrefixBelchipFulltextQueryKey">
 					<var var="q"/>
 				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				<limit><var value="7" /></limit>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -515,44 +493,144 @@
 		</list>
 		<link name="show_all" target="search">
 			<var name="q" var="q"/>
-			<!-- <var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/> -->
 		</link>
 	</page>
 
+
+
 	<page name="search" template="search">
 		<request>
-			<var name="q"/>
-			<var name="old_query"/>
+			<var name="q" />
+			<var name="sec" />
+			<var name="search" value="strict" />
+
+			<var name="sort1" value="available" />
+			<var name="sort2" value="name" />
+			<var name="sort3" value="name_extra" />
+
+			<var name="dir1" value="DESC" />
+			<var name="dir2" value="ASC" />
+			<var name="dir3" value="ASC" />
+
+			<var name="minqty" value="" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<list item="product" id="product" tag="search_product">
+			<filter>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				<fulltext limit="60" name="search"
+						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
+						  compare="EVERY">
+					<var var="q" />
+				</fulltext>
+				<limit>
+					<var value="60"/>
+				</limit>
+			</filter>
+		</list>
+
+		<list item="product" id="display_product" tag="product">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="product" parameter="code" />
+				</parameter>
+				<sorting direction-var="dir1">
+					<var var="sort1" />
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sort2" />
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sort3" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_product"/>
+			<ancestor item="section" id="p_sec" tag="section">
+				<link name="show_sec" target="search">
+					<var name="q" var="q" />
+					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+			</ancestor>
+		</list>
+
+		<include name="COMMON"/>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:search"/>
+
+		<link name="base_search_link" target="search">
+			<var name="q" var="q"/>
+		</link>
+		<link name="fuzzy_search_link" target="search_fuzzy">
+			<var name="q" var="q" />
+		</link>
+	</page>
+
+
+
+
+	<page name="search_fuzzy" template="search">
+		<request>
+			<var name="q" />
+			<var name="sec" />
+			<var name="search" value="strict" />
+
+			<var name="sorting1" value="available" />
+			<var name="sorting2" value="name" />
+			<var name="sorting3" value="mark" />
+
+			<var name="dir1" value="DESC" />
+			<var name="dir2" value="ASC" />
+			<var name="dir3" value="ASC" />
+
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
-		<list item="product" id="prod">
+		<list item="product" id="product" tag="search_product">
 			<filter>
-				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
-					<var var="q"/>
-				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				<fulltext limit="60"
+						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.WildcardBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)(extra.belchip.WildcardBelchipFulltextQueryKey)"
+						  compare="SOME">
+					<var var="q" />
+				</fulltext>
+				<limit>
+					<var value="60"/>
+				</limit>
 			</filter>
-			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
-		<link name="set_view_table" target="search" copy-page-vars="yes">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="search" copy-page-vars="yes">
-			<var name="view" value="list"/>
-		</link>
-		<link name="show_only_available" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value="0"/>
-		</link>
-		<link name="show_all" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value=""/>
-		</link>
+
+		<list item="product" id="display_product" tag="product">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="product" parameter="code" />
+				</parameter>
+
+				<sorting direction-var="dir1">
+					<var var="sorting1" />
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sorting2" />
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sorting3" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_product"/>
+			<ancestor item="section" id="p_sec" tag="section">
+				<link name="show_sec" target="search">
+					<var name="q" var="q" />
+					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+			</ancestor>
+		</list>
+
 		<include name="COMMON"/>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:search_fuzzy"/>
+
+		<link name="base_search_link" target="search" />
+		<link name="fuzzy_search_link" target="search_fuzzy">
+			<var name="q" var="q" />
+		</link>
 	</page>
+
 
 
 
