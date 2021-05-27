@@ -58,9 +58,12 @@ public class XmlDocumentBuilder {
 		xml.append(prefix).append('<').append(tagName);
 		if (attributes.length > 1)
 			for (int i = 0; i < attributes.length; i += 2) {
-				if (attributes[i] != null && attributes[i + 1] != null)
-					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString()))
+				if (attributes[i] != null && attributes[i + 1] != null) {
+					String attrValue = StringEscapeUtils.escapeXml10(attributes[i + 1].toString());
+					attrValue = attrValue.replaceAll(">", "&gt;").replaceAll("<", "&lt;");
+					xml.append(' ').append(attributes[i]).append("=\"").append(attrValue)
 							.append("\"");
+				}
 			}
 		xml.append('>');
 		openTags.push(new TagDesc(tagName));
