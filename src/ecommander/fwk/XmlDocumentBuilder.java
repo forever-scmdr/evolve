@@ -56,12 +56,14 @@ public class XmlDocumentBuilder {
 		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
 		if (xml.length() > 0) xml.append('\n');
 		xml.append(prefix).append('<').append(tagName);
-		if (attributes.length > 1)
+		if (attributes.length > 1){
 			for (int i = 0; i < attributes.length; i += 2) {
-				if (attributes[i] != null && attributes[i + 1] != null)
+				if (attributes[i] != null && attributes[i + 1] != null) {
 					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString()))
 							.append("\"");
+				}
 			}
+		}
 		xml.append('>');
 		openTags.push(new TagDesc(tagName));
 		return this;
