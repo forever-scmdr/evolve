@@ -27,6 +27,6 @@ public class PlatanSearchCommand extends Command {
 
 		String result = doc.toString().replaceAll(">\\s+",">").replaceAll("\\s+<","<");
 		result = result.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
-		return getResult("result").setValue(result);
+		return getResult("result").setValue(JsoupXmlFixer.fix(result));
 	}
 }

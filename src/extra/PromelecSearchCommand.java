@@ -52,7 +52,7 @@ public class PromelecSearchCommand extends Command {
 			Document searchResult = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
 			searchResult.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml);
 			Elements el = searchResult.select("rowdata");
-			res.setValue(el.first().html());
+			res.setValue(JsoupXmlFixer.fix(el.first().html()));
 		}
 		return res;
 	}

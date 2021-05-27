@@ -102,7 +102,7 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 			ServerLogger.error("no result, named \"result\" found", e);
 			return null;
 		}
-		String output = root.outerHtml();
+		String output = JsoupXmlFixer.fix(root.outerHtml());
 		//output = output.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ENTITY_DECLARATION);
 		result.setValue(output);
 		return result;

@@ -117,7 +117,7 @@ public class TmeSearchCommand extends Command {
 		}
 
 		ResultPE result = getResult("result");
-		result.setValue(searchResult.outerHtml());
+		result.setValue(JsoupXmlFixer.fix(searchResult.outerHtml()));
 		return result;
 	}
 
