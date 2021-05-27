@@ -67,25 +67,14 @@
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<div id="extra_search_1">
+			<div id="platan_search">
 				Идет поиск по дополнительным каталогам...
 			</div>
-			<div id="extra_search_3">
-				<!-- <h2>Идет поиск по FARNELL</h2> -->
-			</div>
-			<div id="extra_search_4">
-				<!-- <h2>Идет поиск по PROMELEC</h2> -->
-			</div>
-
-			<div id="extra_search_2">подождите.
-				<form action="digikey_search" method="POST" id="dgk-form">
-					<input type="hidden" name="query" value="{page/variables/q}" />
-					<input type="hidden" name="qty" value="{page/variables/minqty}" />
-				</form>
-			</div>
-			<div id="arrow_search">
-				<!-- <h2>Идет поиск по arrow.com</h2> -->
-			</div>
+			<div id="farnell_search"></div>
+			<div id="promelec_search"></div>
+			<div id="digikey_search"></div>
+			<div id="arrow_search"></div>
+			<div id="tme_search"></div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -96,13 +85,13 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				insertAjax('<xsl:value-of select="concat('platan_search', '?query=', page/variables/q)"/>');
-				postForm('dgk-form');
-				insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>');
-				insertAjax('<xsl:value-of select="concat('arrow_search', '?query=', page/variables/q)"/>');
-			})
-
+			insertAjax('<xsl:value-of select="page/arrow_search_link"/>');
+			insertAjax('<xsl:value-of select="page/digikey_search_link"/>');
+			insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
+			insertAjax('<xsl:value-of select="page/platan_search_link"/>');
+			insertAjax('<xsl:value-of select="page/promelec_search_link"/>');
+			insertAjax('<xsl:value-of select="page/tme_search_link"/>');
+			});
 		</script>
 	</xsl:template>
 

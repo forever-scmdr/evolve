@@ -209,7 +209,7 @@
 			<div id="cart_list_{$code}">
 				<form action="cart_action/?action=addExternalToCart&amp;code={$code}" method="post" ajax="true" ajax-loader-id="cart_list_{$code}">
 					<input type="hidden" value="{$product/code}" name="vendor_code"/>
-					<input type="hidden" value="0" name="not_available"/>
+					<input type="hidden" value="{if(f:num($offer) = 0) then 1 else  0}" name="not_available"/>
 					<input type="hidden" value="{$shop/name}" name="aux"/>
 					<input type="hidden" value="{$code}" name="id"/>
 
@@ -228,19 +228,26 @@
 
 					<input type="hidden" name="img" value="{$product/main_pic}"/>
 					<input type="hidden" name="delivery_time" value="{$shop/delivery_string}"/>
-					<input type="submit" class="button" value="В корзину"/>
+					<input type="submit" class="button{' not_available'[f:num($offer/qty) = 0]}" value="{if(f:num($offer/qty) != 0) then 'В корзину' else 'Под заказ'}"/>
 				</form>
 			</div>
 		</div>
-		<div class="device__in-stock">
-			<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
-		</div>
+		<xsl:if test="f:num($offer/qty) != 0">
+			<div class="device__in-stock">
+				<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
+			</div>
+		</xsl:if>
+		<xsl:if test="f:num($offer/qty) = 0">
+			<div class="device__in-stock device__in-stock_no">
+				<i class="far fa-clock"></i>под заказ
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
 	<xsl:template match="/">
 
-		<xsl:variable name="products" select="if(page/variables/minqty = '0') then $result/products/product[offer != ''] else $result/products/product"/>
+		<xsl:variable name="products" select="if(page/variables/minqty = '0') then $result/products/product[offer/f:num(qty) != 0] else $result/products/product"/>
 
 		<div class="result" id="arrow_search">
 			<xsl:if test="$result/summery/response/success = 'true'">

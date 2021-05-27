@@ -60,16 +60,18 @@
 		<div id="cart_list_{code}">
 			<form action="cart_action/?action=addExternalToCart" method="post" ajax="true" ajax-loader-id="cart_list_{code}">
 				<input type="hidden" name="id" value="{$id}"/>
+				<input type="hidden" name="aux" value="{$shop/name}"/>
 				<input type="hidden" name="code" value="{$id}"/>
+				<input type="hidden" name="name" value="{$product/name}"/>
 				<input type="hidden" value="{$product/producer_code}" name="vendor_code"/>
 				<input type="hidden" value="{$product/producer}" name="vendor"/>
 				<textarea style="display:none;" name="description">
 					<xsl:value-of select="description"/>
 				</textarea>
-				<input type="hidden" value="if(f:num($product/qty) &gt; 0) then 0 else 1" name="not_available"/>
+				<input type="hidden" value="{if(f:num($product/qty) &gt; 0) then 0 else 1}" name="not_available"/>
 				<input type="hidden" value="{$product/qty}" name="max"/>
 				<input type="number" class="text-input" name="qty" value="{if(min_qty != '') then min_qty else 1}" min="{if(min_qty != '') then min_qty else 1}"/>
-				<input type="hidden" name="map" value="{spec_price}"/>
+				<input type="hidden" name="price_map" value="{spec_price}"/>
 				<input type="hidden" name="img" value="{main_pic}"/>
 				<input type="hidden" name="delivery_time" value="{if(f:num($product/qty)&gt; 0) then $shop/delivery_string else ''}"/>
 				<input type="submit" class="button{if(f:num($product/qty) &gt; 0) then '' else ' not_available'}" value="{if(f:num($product/qty) &gt; 0) then 'В корзину' else 'Под заказ'}"/>

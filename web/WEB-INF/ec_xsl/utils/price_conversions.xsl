@@ -22,17 +22,17 @@
 		<xsl:sequence select="(if($curr = 'byn') then f:currency_decimal($price) else f:number_decimal(f:byn_to_currency(f:num($price) * $q_rur, $rub)))"/>
 	</xsl:function>
 
-	<xsl:function name="f:sum_s" as="xs:double">
-		<xsl:param name="bought" />
-		<xsl:variable name="price" select="$bought/sum" />
-		<xsl:variable name="aux" select="$bought/aux" />
-		<xsl:variable name="q" select="if(not($aux != '')) then 1 + $q_rur else 1"/>
-		<xsl:sequence select="(f:num($price) * 100) div $ratio_rur * $q" />
-	</xsl:function>
+<!--	<xsl:function name="f:sum_s" as="xs:double">-->
+<!--		<xsl:param name="bought" />-->
+<!--		<xsl:variable name="price" select="$bought/sum" />-->
+<!--		<xsl:variable name="aux" select="$bought/aux" />-->
+<!--		<xsl:variable name="q" select="if(not($aux != '')) then 1 + $q_rur else 1"/>-->
+<!--		<xsl:sequence select="(f:num($price) * 100) div $ratio_rur * $q" />-->
+<!--	</xsl:function>-->
 
 	<xsl:function name="f:cart_sum">
-		<xsl:param name="cart"  />
-		<xsl:sequence select="if($curr = 'byn') then concat(f:currency_decimal($cart/sum), ' ', upper-case($curr))  else concat(f:number_decimal(sum($cart/bought/f:sum_s(.))),' ',upper-case($curr))"/>
+		<xsl:param name="sum"  />
+		<xsl:sequence select="if($curr = 'byn') then concat(f:currency_decimal($sum), ' ', upper-case($curr))  else concat(f:number_decimal(f:byn_to_currency($sum, $rub) * (1+f:num($rub/q))),' ',upper-case($curr))"/>
 	</xsl:function>
 
 	<xsl:function name="f:byn_to_currency">

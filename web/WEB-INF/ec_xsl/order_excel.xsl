@@ -56,8 +56,12 @@
 	<xsl:template match="bought">
 
 		<xsl:variable name="product" select="product"/>
-		<xsl:variable name="price" select="if(aux != '') then f:cart_price_platan($product/price) else f:price_catalog($product/price,'', $product/min_qty)"/>
-		<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '', '')"/>
+		<xsl:variable name="aux" select="aux"/>
+		<xsl:variable name="is_aux" select="aux != ''"/>
+		<xsl:variable name="shop" select="page/shop[name = $aux]"/>
+		<xsl:variable name="unit" select="if($is_aux) then $product/unit else if(f:num($product/min_qty) &gt; 1) then concat($product/min_qty, $product/unit) else $product/unit"/>
+		<xsl:variable name="price"  select="concat(f:price_output($product/price, $shop), ' ', upper-case($curr), '/', $unit)"/>
+		<xsl:variable name="sum"  select="concat(f:price_output(sum, $shop), ' ', upper-case($curr))"/>
 		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
 		<xsl:variable name="price_original" select="format-number(f:num($price_original_str), '# ### ##0,00000', 'exc')"/>
 		<xsl:variable name="vendor_code_for_name" select="('digikey', 'farnell', 'arrow')"/>

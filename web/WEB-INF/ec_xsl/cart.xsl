@@ -4,6 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="title" select="'Список товаров'" />
+	<xsl:variable name="cart" select="page/cart"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -17,16 +18,16 @@
 
 		<div class="cart-container">
 			<xsl:choose>
-				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
+				<xsl:when test="page/cart/bought and not($cart/processed = '1')">
 					<form method="post">
-						<xsl:apply-templates select="page/cart/bought" mode="avlb"/>
+						<xsl:apply-templates select="$cart/bought" mode="avlb"/>
 						<xsl:if test="page/cart/bought[f:num(product/price) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
 							<h2>Товары под заказ</h2>
-							<xsl:apply-templates select="page/cart/bought" mode="preorder"/>
+							<xsl:apply-templates select="$cart/bought" mode="preorder"/>
 						</xsl:if>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
-								<p>Итого: <xsl:value-of select="f:cart_sum(page/cart)"/></p>
+								<p>Итого: <xsl:value-of select="f:cart_sum($cart/sum)"/></p>
 							</xsl:if>
 							 <input type="submit" class="button inverted" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
 							<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
@@ -68,82 +69,89 @@
 
 
 	<xsl:template match="bought" mode="avlb">
-		<xsl:if test="f:num(qty_avail) != 0 and f:num(product/price) != 0">
-			<xsl:variable name="is_aux" select="aux != ''" />
-			<xsl:variable name="p" select="product" />
-			<xsl:variable name="price" select="if(aux != '') then concat(f:cart_price_platan($p/price),' ', upper-case($curr)) else f:price_catalog($p/price, $p/unit, $p/min_qty)"/>
-			<xsl:variable name="sum" select="if(aux != '') then concat(f:cart_price_platan(sum),' ', upper-case($curr)) else f:price_catalog(sum, '','')"/>
+
+		<xsl:variable name="aux" select="aux"/>
+		<xsl:variable name="is_aux" select="aux != ''"/>
+		<xsl:variable name="shop" select="page/shop[name = $aux]"/>
+		<xsl:variable name="p" select="product"/>
+		<xsl:variable name="unit" select="if($is_aux) then $p/unit else if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, $p/unit) else $p/unit"/>
+		<xsl:variable name="price"  select="concat(f:price_output($p/price, $shop), ' ', upper-case($curr), '/', $unit)"/>
+		<xsl:variable name="sum"  select="concat(f:price_output(sum, $shop), ' ', upper-case($curr))"/>
+		<xsl:variable name="img"  select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
 
 
+		<div class="item">
+			<xsl:if test="$is_aux">
+				<span class="image-container">
+					<img src="{$img}" alt="{$p/name}"/>
+				</span>
+				<span class="title">
+					<xsl:value-of select="$p/name"/>
+					<xsl:if test="$is_aux">
+						<br/>
+						<span style="color: #000;">поставка в течение <xsl:value-of select="$shop/delivery_string"/></span>
+					</xsl:if>
+				</span>
+			</xsl:if>
+			<xsl:if test="not($is_aux)">
+				<a href="{$p/show_product}" class="image-container">
+					<img src="{$img}" alt="{$p/name}"/>
+				</a>
+				<a href="{$p/show_product}" class="title">
+					<xsl:value-of select="$p/name"/>
+				</a>
+			</xsl:if>
 
-			<div class="item">
-				<xsl:if test="$is_aux">
-
-					<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
-
-					<a class="image-container">
-						<img src="{$img}" alt="{$p/name}"/>
-					</a>
-					<a class="title">
-						<xsl:value-of select="$p/name"/>
-						<xsl:if test="$is_aux">
-							<br/><span style="color: #000;">поставка в течение 7-10 дней</span>
-						</xsl:if>
-					</a>
-
-				</xsl:if>
-				<xsl:if test="not($is_aux)">
-					<a href="{$p/show_product}" class="image-container">
-						<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
-					</a>
-					<a href="{$p/show_product}" class="title">
-						<xsl:value-of select="$p/name"/>
-
-					</a>
-				</xsl:if>
-
-				<div class="price one">
-					<p>
-						<span>Цена</span>
-						<xsl:value-of select="$price"/>
-					</p>
-				</div>
-
-				<div class="quantity">
-					<span>Кол-во</span>
-					<input type="number" value="{qty}" name="{input/qty/@input}" min="{product/min_qty}" step="{product/min_qty}" class="qty-input" data-old="{qty}" />
-					<br/>
-					<span>Наличие</span>
-					доступно: <xsl:value-of select="f:num($p/qty)" />
-				</div>
-
-				<div class="price all"><p><span>Сумма позиц.</span><xsl:value-of select="$sum"/></p></div>
-				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
-
+			<div class="price one">
+				<p>
+					<span>Цена</span>
+					<xsl:value-of select="$price"/>
+				</p>
 			</div>
-		</xsl:if>
+
+			<div class="quantity">
+				<span>Кол-во</span>
+				<input type="number" value="{qty}" name="{input/qty/@input}" min="{product/min_qty}"
+					   step="{product/min_qty}" class="qty-input" data-old="{qty}"/>
+				<br/>
+				<span>Наличие</span>
+				доступно:
+				<xsl:value-of select="f:num($p/qty)"/>
+			</div>
+
+			<div class="price all">
+				<p>
+					<span>Сумма позиц.</span>
+					<xsl:value-of select="$sum"/>
+				</p>
+			</div>
+			<a href="{delete}" class="delete">
+				<i class="fas fa-times"/>
+			</a>
+
+		</div>
+
 	</xsl:template>
 
 	<xsl:template match="bought" mode="preorder">
 		<xsl:if test="f:num(product/price) = 0 or f:num(qty_avail) = 0">
 			<xsl:variable name="p" select="product" />
 			<xsl:variable name="is_aux" select="aux != ''" />
+			<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
 
 			<div class="item">
 				<xsl:if test="$is_aux">
 
-					<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
-
-					<a class="image-container">
+					<span class="image-container">
 						<img src="{$img}" alt="{$p/name}"/>
-					</a>
-					<a class="title">
+					</span>
+					<span class="title">
 						<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
-					</a>
+					</span>
 				</xsl:if>
 				<xsl:if test="not($is_aux)">
 					<a href="{$p/show_product}" class="image-container">
-						<img src="{if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}"/>
+						<img src="{$img}" alt="{$p/name}"/>
 					</a>
 					<a href="{$p/show_product}" class="title">
 						<xsl:value-of select="$p/name"/>

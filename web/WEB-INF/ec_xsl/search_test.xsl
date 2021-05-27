@@ -25,8 +25,10 @@
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<p>
-			<a href="order_email" target="_blank">Смотреть письмо покупателю</a><br/>
+			<a href="customer_email" target="_blank">Смотреть письмо покупателю</a><br/>
 			<a href="shop_email" target="_blank">Смотреть письмо магазаину</a><br/>
+			<a href="order_excel" target="_blank">Смотреть письмо Excel</a><br/>
+			<a href="order_pdf" target="_blank">Смотреть письмо PDF</a>
 		</p>
 
 		<div class="page-content m-t">
@@ -72,13 +74,13 @@
 				<p>Поиск по каталогу FARNELL отключен.</p>
 			</div>
 			<div id="promelec_search">
-				<p>Поиск по PROMELEC  отключен.</p>
+				<p>Поиск по PROMELEC отключен.</p>
 			</div>
 			<div id="arrow_search">
-				<p>Идет поиск по Verical</p>
+				<p>Поиск по Verical отключен.</p>
 			</div>
 			<div id="tme_search">
-				<p>Идет поиск по Verical</p>
+				<p>Идет поиск по TME</p>
 			</div>
 		</div>
 
@@ -90,11 +92,12 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				//insertAjax('<xsl:value-of select="concat('promelec_search', '?query=', page/variables/q)"/>','zzz', insertAjax('cart_ajax'));
-				//postForm('dgk-form');
+				//insertAjax('<xsl:value-of select="page/arrow_search_link"/>');
+				//insertAjax('<xsl:value-of select="page/digikey_search_link"/>');
 				//insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-				insertAjax('<xsl:value-of select="concat('digikey_search', '?q=', page/variables/q)"/>');
-
+				//insertAjax('<xsl:value-of select="page/platan_search_link"/>');
+				//insertAjax('<xsl:value-of select="page/promelec_search_link"/>');
+				insertAjax('<xsl:value-of select="page/tme_search_link"/>');
 			});
 		</script>
 	</xsl:template>

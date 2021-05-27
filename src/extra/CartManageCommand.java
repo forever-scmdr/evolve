@@ -108,7 +108,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	protected void extraActionWithBought(Item bought) throws Exception {
 		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 		String aux = bought.getStringValue("aux");
-		if(StringUtils.isNotBlank("aux")){
+		if(StringUtils.isNotBlank(aux)){
 			Item shop = ItemQuery.loadSingleItemByParamValue("shop", NAME_PARAM, aux, Item.STATUS_NORMAL);
 			Item currency = loadCurrency(shop);
 			double q1 = 1 + currency.getDoubleValue("q",0d);

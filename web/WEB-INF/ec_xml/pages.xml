@@ -511,7 +511,14 @@
 		<link name="set_currency_rur" target="search" copy-page-vars="yes">
 			<var name="currency" value="rur"/>
 		</link>
+
+		<!-- external search links -->
+		<link name="arrow_search_link" target="arrow_search" copy-page-vars="yes"/>
 		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
+		<link name="platan_search_link" target="platan_search" copy-page-vars="yes"/>
+		<link name="promelec_search_link" target="promelec_search" copy-page-vars="yes"/>
+		<link name="tme_search_link" target="tme_search" copy-page-vars="yes"/>
+
 		<include name="COMMON"/>
 	</page>
 
@@ -733,13 +740,7 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
-		<list item="currency">
-			<filter>
-				<parameter name="name" sign="=" compare="SOME">
-					<var value="RUB"/>
-				</parameter>
-			</filter>
-		</list>
+		<list item="currency"/>
 		<list item="shop">
 			<single item="currency" assoc="general"/>
 		</list>
@@ -898,6 +899,10 @@
 			</new>
 		</session>
 		<single item="common"/>
+		<list item="currency"/>
+		<list item="shop">
+			<single item="currency" assoc="general"/>
+		</list>
 	</page>
 
 
@@ -1674,7 +1679,15 @@
 		<link name="set_currency_rur" target="search_test" copy-page-vars="yes">
 			<var name="currency" value="rur"/>
 		</link>
+
+		<!-- external search links -->
+		<link name="arrow_search_link" target="arrow_search" copy-page-vars="yes"/>
+		<link name="digikey_search_link" target="digikey_search" copy-page-vars="yes"/>
 		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
+		<link name="platan_search_link" target="platan_search" copy-page-vars="yes"/>
+		<link name="promelec_search_link" target="promelec_search" copy-page-vars="yes"/>
+		<link name="tme_search_link" target="tme_search" copy-page-vars="yes"/>
+
 		<include name="COMMON"/>
 	</page>
 

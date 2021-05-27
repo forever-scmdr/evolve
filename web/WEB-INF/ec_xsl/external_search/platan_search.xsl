@@ -16,7 +16,6 @@
 		<xsl:if test="$result/items/item">
 			<div id="platan_search" class="result">
 				<h2>Результаты поиска по Platan</h2>
-				<xsl:value-of select="$mq" />
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$result/items/item[f:num(QUANTY) &gt; $mq]" mode="product-lines"/>
