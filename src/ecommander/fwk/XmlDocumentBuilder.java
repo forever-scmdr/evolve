@@ -267,7 +267,7 @@ public class XmlDocumentBuilder {
 		context.startElement("item", "id", "1");
 		context.insertAttributes("cool", "mega");
 		context.startElement("item");
-		context.startElement("filter", "direction", "desc");
+		context.startElement("filter", "direction", "desc<>");
 		context.endElement();
 		context.startElement("sorting");
 		context.addText("dddddddffffffffffgggggggggg");
