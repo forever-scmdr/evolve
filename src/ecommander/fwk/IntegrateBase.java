@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.utils.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -12,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -27,6 +29,20 @@ import java.util.Date;
  */
 public abstract class IntegrateBase extends Command {
 
+	/*******************************************
+	 *
+	 *          СТАТИЧЕСКИЕ ПОЛЯ
+	 *
+	 *******************************************/
+
+	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
+
+	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
+	static {
+		runningTasks = new ConcurrentHashMap<>();
+	}
+
+
 	/*********************************************************************************************************
 	 *********************************************************************************************************
 	 * 
@@ -35,12 +51,10 @@ public abstract class IntegrateBase extends Command {
 	 *********************************************************************************************************
 	 *********************************************************************************************************/
 
-	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-
 	private static final Object MUTEX = new Object();
-	private volatile static boolean isInProgress = false;
 	protected static Info info = null;
 	protected volatile boolean needTermination = false;
+	protected volatile boolean isFinished = false;
 
 	private static final class LogMessage {
 		private Date date;
@@ -278,47 +292,65 @@ public abstract class IntegrateBase extends Command {
 		String operation = getVarSingleValue("action");
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
+		final String CLASS_NAME = getClass().getName();
+		IntegrateBase runningTask = runningTasks.get(CLASS_NAME);
+		boolean isInProgress = runningTask != null && !runningTask.isFinished;
 		if (isInProgress && "terminate".equals(operation)) {
-			needTermination = true;
-			terminate();
-			return buildResult();
-		} else if (isInProgress || !"start".equals(operation)) {
-			return buildResult();
-		} else {
-			synchronized (MUTEX) {
-				if (isInProgress) {
-					return buildResult();
-				}
-				isInProgress = true;
-				newInfo().setInProgress(true);
-				setOperation("Инициализация");
-				// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
-				if (!makePreparations()) {
-					setOperation("Интеграция завершена с ошибками");
-					return buildResult();
-				}
-				setOperation("Выполнение интеграции");
-				// Поток выполнения интеграции
-				Thread thread = new Thread(() -> {
-					try {
-						integrate();
-						setOperation("Интеграция завершена успешно");
-					} catch (Exception se) {
-						setOperation("Интеграция завершена с ошибками");
-						ServerLogger.error("Integration error", se);
-						getInfo().addError(ExceptionUtils.getStackTrace(se), info.lineNumber, info.position);
-					} finally {
-						isInProgress = false;
-						getInfo().setInProgress(false);
-					}
-				});
-				thread.setDaemon(true);
-				if (async)
-					thread.start();
-				else
-					thread.run();
+			runningTask.needTermination = true;
+			runningTask.terminate();
+			return runningTask.buildResult();
+		} else if (isInProgress || !StringUtils.equalsIgnoreCase("start", operation)) {
+			if (runningTask == null) {
+				newInfo();
+				return buildResult();
+			} else {
+				return runningTask.buildResult();
 			}
+		} else if (StringUtils.equalsIgnoreCase("start", operation)) {
+			runningTask = this;
+			runningTasks.put(CLASS_NAME, this);
+			newInfo().setInProgress(true);
+			setOperation("Инициализация");
+			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
+
+			boolean readyToStart = false;
+			try {
+				readyToStart = makePreparations();
+			} catch (Exception e) {
+				ServerLogger.error(e.getMessage(), e);
+				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+			}
+
+			if (!readyToStart) {
+				setOperation("Ошибка подготовительного этапа. Интеграция не может быть начата");
+				runningTask.isFinished = true;
+				return buildResult();
+			}
+			setOperation("Выполнение интеграции");
+			// Поток выполнения интеграции
+			Thread thread = new Thread(() -> {
+				try {
+					integrate();
+					setOperation("Интеграция завершена успешно");
+				} catch (Exception se) {
+					setOperation("Интеграция завершена с ошибками");
+					ServerLogger.error("Integration error", se);
+					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+				} finally {
+					isFinished = true;
+					getInfo().setInProgress(false);
+					//runningTasks.remove(CLASS_NAME);
+				}
+			});
+			thread.setDaemon(true);
+			if (async)
+				thread.start();
+			else
+				thread.run();
+
 		}
+		if (runningTask != null)
+			return runningTask.buildResult();
 		return buildResult();
 	}
 	/**

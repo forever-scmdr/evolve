@@ -26,7 +26,7 @@ import java.util.List;
  * Created by E on 30/11/2018.
  */
 public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
-	private static final String INTEGRATION_DIR = "integrate";
+	private static final String INTEGRATION_DIR = "integrate_manual";
 
 	private static final String CODE_HEADER = "код";
 	private static final String NAME_HEADER = "название";
