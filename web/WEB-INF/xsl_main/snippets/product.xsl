@@ -258,9 +258,12 @@
 						<!-- <xsl:if test="//page/@name = 'fav'"> -->
 							<xsl:for-each select="$captions[position() &lt; 5]">
 								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+
+								<xsl:variable name="param_unit" select="$param/@description"/>
+
 								<tr class="tr">
 									<td><xsl:value-of select="$param/@caption"/></td>
-									<td><xsl:value-of select="$param"/></td>
+									<td><xsl:value-of select="normalize-space(concat($param, ' ', $param_unit))"/></td>
 								</tr>
 							</xsl:for-each>
 						<!-- </xsl:if> -->

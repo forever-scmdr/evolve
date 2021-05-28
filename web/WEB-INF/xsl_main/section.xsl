@@ -177,6 +177,7 @@
 
 	<xsl:template name="FILTER">
 		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
+		<!-- <xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 0]"/> -->
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
@@ -196,9 +197,12 @@
 								<xsl:variable name="name" select="$input/@id"/>
 								<div class="filter__item active checkgroup">
 									<div class="filter__title">
-										<xsl:value-of select="if($input/@description != '') then concat($input/@caption, ', ', $input/@description) else $input/@caption"/>
+
+										<xsl:value-of select="$input/@caption"/>
 									</div>
 									<div class="filter__values">
+										<xsl:variable name="unit" select="$input/@description"/>
+
 										<xsl:for-each select="$input/domain/value">
 											<div class="filter__value">
 												<label>
@@ -206,7 +210,7 @@
 														<xsl:if test=". = $user_filter/input[@id = $name]">
 															<xsl:attribute name="checked" select="'checked'"/>
 														</xsl:if>
-														&#160;<xsl:value-of select="."/>
+														&#160;<xsl:value-of select="normalize-space(concat(., ' ', $unit))"/>
 													</input>
 												</label>
 											</div>

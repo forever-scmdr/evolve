@@ -80,7 +80,7 @@
 			<tr>
 				<xsl:for-each select="$products">
 					<xsl:variable name="v" select="params/param[lower-case(normalize-space(@caption)) = $name]" />
-					<td class="compared__value"><xsl:value-of select="$v" /></td>
+					<td class="compared__value"><xsl:value-of select="normalize-space(concat($v, ' ', $v/@description))" /></td>
 				</xsl:for-each>
 			</tr>
 		</xsl:if>

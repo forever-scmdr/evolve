@@ -32,7 +32,7 @@
 			"@type": "Offer",
 			"priceCurrency": "BYN",
 			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			<!-- <xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if> -->
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
@@ -81,14 +81,9 @@
 		<xsl:if test="$param  and not($banish = $param/@caption)">
 			<tr>
 				<td>
-					<xsl:if test="$param/@description != ''">
-						<xsl:value-of select="string-join(($param/@caption, $param/@description), ', ')"/>
-					</xsl:if>
-					<xsl:if test="not($param/@description != '')">
-						<xsl:value-of select="$param/@caption"/>
-					</xsl:if>
+					<xsl:value-of select="$param/@caption"/>
 				</td>
-				<td><xsl:value-of select="$param"/></td>
+				<td><xsl:value-of select="normalize-space(concat($param, ' ', $param/@description))"/></td>
 			</tr>
 		</xsl:if>
 	</xsl:template>
@@ -213,14 +208,11 @@
 							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 							<tr>
 								<td>
-									<xsl:if test="$param/@description != ''">
-										<xsl:value-of select="string-join(($param/@caption, $param/@description), ', ')"/>
-									</xsl:if>
-									<xsl:if test="not($param/@description != '')">
-										<xsl:value-of select="$param/@caption"/>
-									</xsl:if>
+									<xsl:value-of select="$param/@caption"/>
 								</td>
-								<td><xsl:value-of select="$param"/></td>
+								<td>
+									<xsl:value-of select="normalize-space(concat($param, ' ', $param/@description))"/>
+								</td>
 							</tr>
 						</xsl:for-each>
 					</table>

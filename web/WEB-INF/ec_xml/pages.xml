@@ -590,6 +590,54 @@
 				<var name="prod" ref="grouped" style="key"/>
 			</link>
 		</list>
+		<list item="product" tag="assoc" id="as_grouped">
+			<filter>
+				<parameter name="assoc_group_code" compare="SOME"><var ref="prod" parameter="assoc_group_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="as_grouped" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="as_grouped" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="prod" ref="as_grouped"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="prod" ref="as_grouped"/>
+			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="prod" ref="as_grouped"/>
+			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="prod" ref="as_grouped"/>
+			</link>
+		</list>
+		<list item="product" tag="assoc" id="group">
+			<filter>
+				<parameter name="group_code" compare="SOME"><var ref="prod" parameter="group_code"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="group" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="group" style="key"/>
+			</link>
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="prod" ref="group"/>
+			</link>
+			<link name="one_click_link" target="one_click_ajax">
+				<var name="prod" ref="group"/>
+			</link>
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="prod" ref="group"/>
+			</link>
+			<link name="my_price_link" target="my_price_ajax">
+				<var name="prod" ref="group"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 
@@ -670,7 +718,7 @@
 	</page>
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+    <page name="page" cacheable="true" template="page" >
 		<request>
 			<var name="p" style="key"/>
 		</request>
@@ -1462,14 +1510,14 @@
 	<!--//                                                                          -->
 	<!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
 	<!--//                                                                          -->
-<!--	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">-->
-<!--		<request>-->
-<!--			<var name="action"/>-->
-<!--		</request>-->
-<!--		<command class="extra.DeployParsedSingleSameCatalog" clear-cache="yes">-->
-<!--			<result name="complete" type="xml"/>-->
-<!--		</command>-->
-<!--	</page>-->
+	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.DeployParsedSingleSameCatalog" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 
 	<!--//                                                                          -->
@@ -1483,6 +1531,17 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
+	<page name="import_from_ancient" template="integration" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ImportFromAncientXML" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
     <page name="crawl" template="integration/crawl">
         <request>
@@ -1504,14 +1563,14 @@
         </command>
     </page>
 
-<!--    <page name="integrate_parsed" template="integrate_parsed">-->
-<!--        <request>-->
-<!--            <var name="action"/>-->
-<!--        </request>-->
-<!--        <command class="extra.IntegrateParsedCommand" clear-cache="yes">-->
-<!--            <result name="complete" type="xml"/>-->
-<!--        </command>-->
-<!--    </page>-->
+    <page name="integrate_parsed" template="integrate_parsed">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
 
 
     <page name="create_filters" template="create_filters">
@@ -1536,6 +1595,12 @@
 		</command>
 	</page>
 
+
+	<page name="update_prices" template="update_prices">
+		<command class="extra.UpdatePrices" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
@@ -1719,6 +1784,7 @@
             <var name="action"/>
             <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>
             <var name="file_location" value="catalog:big_integration"/>
+            <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
             <result name="complete" type="xml"/>
