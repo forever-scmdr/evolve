@@ -229,6 +229,7 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 						ItemQuery q = new ItemQuery(PRODUCT_ITEM);
 						q.setParentId(sec.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
 						q.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
+						q.setLimit(1);
 						if(q.loadItems().isEmpty()){
 							PersistenceCommandUnit addAssoc = CreateAssocDBUnit.childExistsSoft(product, sec.getId(), ItemTypeRegistry.getAssoc("catalog_link").getId());
 							DelayedTransaction.executeSingle(initiator, addAssoc);
