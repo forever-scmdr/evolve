@@ -6,10 +6,7 @@ import ecommander.fwk.ResizeImagesFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.integration.CatalogConst;
-import ecommander.model.Item;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
+import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -228,13 +225,14 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 
 				//Add associations if needed
 				if (sections.containsKey(secCode) && sections.get(secCode).size() > 0) {
-					int i = 0;
 					for (Item sec : sections.get(secCode)) {
-						if (i > 0) {
+						ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+						q.setParentId(sec.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+						q.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
+						if(q.loadItems().isEmpty()){
 							PersistenceCommandUnit addAssoc = CreateAssocDBUnit.childExistsSoft(product, sec.getId(), ItemTypeRegistry.getAssoc("catalog_link").getId());
 							DelayedTransaction.executeSingle(initiator, addAssoc);
 						}
-						i++;
 					}
 				}
 
