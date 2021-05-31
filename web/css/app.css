@@ -6754,7 +6754,7 @@ table td p:last-child {
 	font-size:1rem;
 }
 .cart-container .item .quantity input[type="number"] {
-	width:6rem;
+	width:8rem;
 	text-align:center;
 }
 .cart-container .item .available {
@@ -7728,7 +7728,7 @@ td .catalog-item {
 	left: -1px;
 }
 .device_row .zoom-icon {
-	top:0;
+	top:6px;
 	left:56px;
 	color: #999;
 }

@@ -1822,7 +1822,7 @@
 		</command>
 	</page>
 
-	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
+	<page name="refresh_access" schedule="0 0/30 * ? * * *">
 		<command class="extra.DigikeySearch" method="refreshAccessToken"/>
 	</page>
 
