@@ -21,7 +21,7 @@ public class DecimalDataType extends FormatDataType {
 
 	public static final int DECIMAL = 6;
 	public static final int CURRENCY = 2;
-	public static final int CURRENCY_PRECISE = 4;
+	public static final int CURRENCY_PRECISE = 5;
 
 	public DecimalDataType(Type type, int scale) {
 		super(type);

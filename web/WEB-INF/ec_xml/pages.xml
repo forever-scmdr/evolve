@@ -1834,7 +1834,10 @@
 	</page>
 
 	<page name="update_currency_ratio" schedule="0 30 0,3 ? * * *">
-		<command class="extra.LoadCurrencyFromNBRB"/>
+		<command class="extra.LoadCurrencyFromNBRB">
+			<result name="fail" type="inline_xml"/>
+		</command>
+
 	</page>
 
 </site>
