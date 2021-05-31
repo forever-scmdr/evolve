@@ -197,6 +197,7 @@
 		<div id="cart_list_{normalize-space($product/sku)}">
 			<form action="cart_action/?action=addExternalToCart&amp;code={normalize-space($product/sku)}" method="post" ajax="true" ajax-loader-id="cart_list_{normalize-space($product/sku)}">
 				<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
+				<input type="hidden" value="{normalize-space($product/sku)}" name="id"/>
 				<input type="hidden" value="{$shop/name}" name="aux"/>
 				<input type="hidden" value="{displayName}" name="name"/>
 				<input type="hidden" value="{normalize-space($product/vendorName)}" name="vendor"/>

@@ -3,8 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	<xsl:template name="LEFT_COLUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLUMN"/>
 	</xsl:template>
 
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
@@ -58,23 +58,24 @@
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'table'">
-						<xsl:apply-templates select="$products"/>
+						<xsl:apply-templates select="$products" mode="product-table"/>
 					</xsl:if>
 					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="$products" mode="lines"/>
+						<xsl:apply-templates select="$products" mode="poduct-lines"/>
 					</xsl:if>
 			</div>
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<div id="platan_search">
+			<div id="tme_search">
 				Идет поиск по дополнительным каталогам...
 			</div>
+			<div id="platan_search"></div>
 			<div id="farnell_search"></div>
 			<div id="promelec_search"></div>
 			<div id="digikey_search"></div>
 			<div id="arrow_search"></div>
-			<div id="tme_search"></div>
+			<!-- <div id="tme_search"></div> -->
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>

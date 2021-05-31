@@ -169,7 +169,7 @@
 		<input type="hidden" value="{$product/MANUFAC}" name="vendor"/>
 		<input type="hidden" value="{$product/EI_NAME}" name="unit"/>
 		<input type="hidden" value="{$product/MINZAKAZ}" name="min_qty"/>
-		<input type="hidden" value="{string-join(($m1, $m2), ';')}" name="map"/>
+		<input type="hidden" value="{string-join(($m1, $m2), ';')}" name="price_map"/>
 		<input type="number" class="text-input" name="qty" value="{$product/MINZAKAZ}" min="{$product/MINZAKAZ}"/>
 	</xsl:template>
 	<xsl:template name="CART_BUTTON_AVAILABLE">

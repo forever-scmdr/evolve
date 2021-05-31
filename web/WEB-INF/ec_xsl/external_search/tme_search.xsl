@@ -169,7 +169,7 @@
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="product"/>
 
-		<xsl:variable name="sbl" select="replace(normalize-space($product/Symbol), '\.', '_dot_')"/>
+		<xsl:variable name="sbl" select="replace(replace(normalize-space($product/Symbol), '\.', '_dot_'), '/', '_sls_')"/>
 
 		<div id="cart_list_{$sbl}">
 			<form action="cart_action/?action=addExternalToCart" method="post" ajax="true" ajax-loader-id="cart_list_{$sbl}">
@@ -192,7 +192,7 @@
 	<xsl:template name="CART_BUTTON_COMMON">
 		<xsl:param name="product"/>
 
-		<xsl:variable name="sbl" select="replace(normalize-space($product/Symbol), '\.', '_dot_')"/>
+		<xsl:variable name="sbl" select="replace(replace(normalize-space($product/Symbol), '\.', '_dot_'), '/', '_sls_')"/>
 		<xsl:variable name="price" select="$product/PriceList/Price"/>
 		<xsl:variable name="map" select="string-join($price/concat(normalize-space(Amount), ':', normalize-space(PriceValue)), ';')"/>
 		<xsl:variable name="unit" select="if(normalize-space($product/Unit) = 'pcs') then 'шт' else normalize-space(Unit)"/>
