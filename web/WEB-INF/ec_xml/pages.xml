@@ -102,7 +102,7 @@
 
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="show_product" target="product">
-			<var name="prod" ref="$prod" />
+			<var name="selected_product" ref="$prod" parameter="code" />
 		</link>
 		<link name="show_product_ajax" target="product_ajax">
 			<var name="prod" ref="$prod"/>
@@ -636,9 +636,9 @@
 
 	<page name="product" template="product" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="selected_product"/>
 		</request>
-		<single item="product" id="prod" var="prod" tag="product">
+		<single item="product" id="prod" var="selected_product" parameter="code">
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
@@ -651,36 +651,28 @@
 				</link>
 			</ancestor>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
-			<list item="line_product" id="lprod">
-				<list item="params"/>
-				<link name="to_cart" target="cart_action">
-					<var name="action" value="addToCart"/>
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="one_click_link" target="one_click_ajax">
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="subscribe_link" target="subscribe_ajax">
-					<var name="prod" ref="lprod"/>
-				</link>
-				<link name="my_price_link" target="my_price_ajax">
-					<var name="prod" ref="lprod"/>
-				</link>
-			</list>
 		</single>
-		<list item="product" tag="assoc" id="assoc">
+		<list item="product" id="analog" tag="analog">
 			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="prod" parameter="analog_code" />
+				</parameter>
+				<sorting direction="DESC">
+					<var value="qty" />
+				</sorting>
 			</filter>
-			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:analog"/>
 		</list>
-		<list item="product" tag="grouped" id="grouped">
+		<list item="product" id="related" tag="related">
 			<filter>
-				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="prod" parameter="rel_code" />
+				</parameter>
+				<sorting direction="DESC">
+					<var value="qty" />
+				</sorting>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="grouped" style="key"/>
-			</link>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:related"/>
 		</list>
 		<include name="COMMON"/>
 	</page>

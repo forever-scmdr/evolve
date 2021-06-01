@@ -176,7 +176,7 @@ $("a.tab").click(function() {
 	$("div.tab-container").hide(0);
 	$("a.tab").removeClass("tab_active");
 	var showSelector = $(this).attr("href");
-	$(showSelector).show("fade", 150);
+	$(showSelector).show("fade", 100);
 	$(this).addClass("tab_active");
 	return false;
 });
@@ -190,5 +190,5 @@ $(document).on("click", ".toggle", function(e){
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
-	$t.toggle('fade', 150);
+	$t.toggle('fade', 100);
 });

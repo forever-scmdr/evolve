@@ -3,20 +3,18 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
-
-
-	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
+
+	<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
+	<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -48,15 +46,16 @@
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
-				<a href="{$main_host}" class="path__link">Главная страница</a>
+				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
-			</div>
-			<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
-				<div class="path__item">
-					<a href="{show_products}" class="path__link"><xsl:value-of select="name"/></a>
+				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 					<div class="path__arrow"></div>
-				</div>
-			</xsl:for-each>
+					<a class="path__link" href="{show_products}">
+						<xsl:value-of select="name"/>
+					</a>
+				</xsl:for-each>
+			</div>
 		</div>
 	</xsl:template>
 
@@ -80,304 +79,190 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
+		<div class="content__main">
+			<xsl:call-template name="PAGE_PATH"/>
+			<xsl:call-template name="PAGE_HEADING"/>
+			<xsl:if test="$seo[1]/text">
+				<div class="section-text">
+					<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
+				</div>
+			</xsl:if>
+			<div class="device-basic">
+				<div class="device-basic__column gallery">
+					<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+						<xsl:for-each select="('b', 'c', 'd')">
+							<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg';"/>
+						</xsl:for-each>
+						<xsl:for-each select="$p/filevid">
+							<xsl:variable name="id" select="if(contains(., 'embed')) then substring-after(., '/embed/') else substring-after(., '/youtu.be/')"/>
+							<a href="{concat('https://www.youtube.com/embed/', $id)}" class="fancy_vid fancybox.iframe" onclick="return false;"  rel="group_1">
 
-		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
-		<div class="device-basic">
-			<div class="gallery device-basic__column">
-				<div class="tags">
-					<xsl:for-each select="$p/label">
-						<div class="tag device__tag {f:translit(.)}">
-							<xsl:value-of select="." />
-						</div>
-					</xsl:for-each>
-				</div>
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
-					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{$p/name}"/>
-					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
-					</xsl:if>
-				</div>
-				<script>
-					$('.fotorama')
+								<img src="{concat('http://i3.ytimg.com/vi/', $id, '/hqdefault.jpg')}"/>
+								видео
+							</a>
+						</xsl:for-each>
+					</div>
+					<script>
+						$('.fotorama')
 						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
 						if (e.type === 'fotorama:fullscreenenter') {
-							// Options for the fullscreen
-							fotorama.setOptions({
-								fit: 'scaledown'
-							});
+						// Options for the fullscreen
+						fotorama.setOptions({
+						fit: 'scaledown'
+						});
 						} else {
-							// Back to normal settings
-							fotorama.setOptions({
-								fit: 'contain'
-							});
+						// Back to normal settings
+						fotorama.setOptions({
+						fit: 'contain'
+						});
 						}
 						})
 						.fotorama();
 					</script>
-			</div>
-			<div class="device-basic__column">
-				<!-- <xsl:for-each select="$p/tag">
-					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each> -->
-
-				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
-
-				<xsl:if test="not($has_lines)">
-					<!-- цена -->
-					<xsl:if test="$has_price">
-						<div class="price price_product">
-							<xsl:if test="$p/price_old">
-								<div class="price__item price__item_old">
-									<span class="price__label">Цена</span>
-									<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_old_param_name, 0)"/></span>
-								</div>
-							</xsl:if>
-							<div class="price__item price__item_new">
-								<span class="price__label">Цена<xsl:if test="$p/price_old"> со скидкой</xsl:if></span>
-								<span class="price__value"><xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/></span>
+				</div>
+				<div class="device-basic__column product">
+					<div class="product-info">
+						<div class="basic-params">
+							<div class="basic-params__item">
+								<div class="basic-params__param">Код товара:</div>
+								<div class="basic-params__value"><xsl:value-of select="$p/code"/></div>
+							</div>
+							<div class="basic-params__item">
+								<div class="basic-params__param">Производитель:</div>
+								<div class="basic-params__value"><xsl:value-of select="$p/vendor"/></div>
+							</div>
+							<div class="basic-params__item">
+								<div class="basic-params__param">Страна происхождения:</div>
+								<div class="basic-params__value"><xsl:value-of select="$p/country"/></div>
 							</div>
 						</div>
-					</xsl:if>
-
-					<!-- заказ и ссылки добавления -->
-					<div class="product-actions">
-						<div id="cart_list_{$p/@id}" class="order order_product">
+						<div class="full-params">
+							<div class="product-subtitle">
+								<img src="img/icon-device-icon-04.png" alt=""/>
+								<span>Технические характеристики</span>
+							</div>
+							<table>
+								<xsl:for-each select="$p/params/param">
+									<tr>
+										<td><xsl:value-of select="@caption" /></td>
+										<td><xsl:value-of select="." /></td>
+									</tr>
+								</xsl:for-each>
+							</table>
+						</div>
+						<div class="product-download">
+							<xsl:for-each select="$p/file[. != '']">
+								<div class="product-download__item">
+									<img src="img/icon-device-icon-02.png" alt=""/>
+									<a href="sitedocs/{.}" title="скачать документацию (datasheet) по {../name_extra} в формате pdf">
+										скачать документацию (datasheet) по <xsl:value-of select="../name_extra"/> в формате pdf
+									</a>
+								</div>
+							</xsl:for-each>
+						</div>
+						<xsl:if test="$p/text != ''">
+							<div class="product-description">
+								<div class="product-subtitle">
+									<img src="img/icon-device-icon-01.png" alt=""/>
+									<span>Описание товара</span>
+								</div>
+								<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
+					</div>
+					<div class="product-order">
+						<xsl:if test="$p/special_price = 'true' and not($zero)"><span>Спеццена</span></xsl:if>
+						<div class="product-order__price">
+							<xsl:if test="not($zero)">
+								<xsl:value-of select="$p/price"/> руб./<xsl:value-of select="$p/unit"/>
+							</xsl:if>
+							<xsl:if test="$zero">
+								<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>
+							</xsl:if>
+						</div>
+						<div class="product-order__status">
+							<xsl:if test="$zero">
+								<xsl:if test="$p/soon != '0'">
+									<div class="status__wait">Ожидается: <xsl:value-of select="substring($p/soon, 1, 10)"/></div>
+								</xsl:if>
+								<xsl:if test="not($p/soon != '0')">
+									<div class="status__na">Нет в наличии</div>
+								</xsl:if>
+							</xsl:if>
+							<xsl:if test="f:num($p/sec/discount_1) &gt; 0">
+								<div class="sale">от <xsl:value-of select="$p/sec/limit_1"/>&#160;<xsl:value-of select="$p/unit"/> -
+									<xsl:value-of select="$p/sec/discount_1"/>%<xsl:call-template name="BR"/>
+									от <xsl:value-of select="$p/sec/limit_2"/>&#160;<xsl:value-of select="$p/unit"/> -
+									<xsl:value-of select="$p/sec/discount_2"/>%
+								</div>
+							</xsl:if>
+							<xsl:if test="not($zero) and not($p/is_service = '1')">
+								В наличии: <strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
+							</xsl:if>
+						</div>
+						<div class="product-order__order">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<input type="number" class="input input_type_number" name="qty"
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
+									<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 								</xsl:if>
 								<xsl:if test="not($has_price)">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<!-- кнопка запросить цену на стрранице товара -->
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									<input type="hidden" class="input input_type_number" name="qty"
+										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
+									<button class="button button_secondary" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 								</xsl:if>
 							</form>
 						</div>
-						<div class="add add_product">
-							<div id="fav_list_{$p/@id}">
-								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span><xsl:value-of select="$compare_add_label"/></span>
+						<div class="product-order__add">
+							<xsl:choose>
+								<xsl:when test="$is_fav">
+									<div>
+										<a href="{$p/from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
+									</div>
+								</xsl:when>
+								<xsl:otherwise>
+									<div id="fav_list_{$p/@id}">
+										<a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}"><xsl:value-of select="$fav_add_label"/></a>
+									</div>
+								</xsl:otherwise>
+							</xsl:choose>
+						</div>
+					</div>
+					<div class="tabs tabs_product">
+						<div class="tabs__nav">
+							<xsl:if test="page/analog">
+								<a class="tab tab_active" href="#tab_analog">
+									<div class="tab__text">Аналогичные товары</div>
 								</a>
-							</div>
-							<div id="compare_list_{$p/@id}">
-								<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span><xsl:value-of select="$go_to_compare_label"/></span>
+							</xsl:if>
+							<xsl:variable name="has_analog" select="page/analog"/>
+							<xsl:if test="page/related">
+								<a class="tab{' tab_active'[not($has_analog)]}" href="#tab_related">
+									<div class="tab__text">Смежные товары</div>
 								</a>
+							</xsl:if>
+						</div>
+						<div class="tabs__content">
+							<div class="tab-container" id="tab_analog">
+								<div class="devices devices_product">
+									<div class="devices__wrap">
+										<xsl:apply-templates select="page/analog"/>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-
-					<!--
-					<xsl:choose>
-						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
-						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
-					</xsl:choose>
-					-->
-
-					<!-- параметры -->
-					<table class="params">
-						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
-						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
-						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
-						<xsl:for-each select="$captions">
-							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-							<tr>
-								<td><xsl:value-of select="$param/@caption"/></td>
-								<td><xsl:value-of select="$param"/></td>
-							</tr>
-						</xsl:for-each>
-					</table>
-				</xsl:if>
-
-				<!-- один клик и своя цена не сверстаны -->
-				<xsl:if test="$is_one_click or $is_my_price">
-					<div class="extra-buttons">
-						<xsl:if test="$is_one_click">
-							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-						</xsl:if>
-						<xsl:if test="$is_my_price">
-							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
-						</xsl:if>
-						<a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
-						<xsl:if test="$is_subscribe">
-							<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-						</xsl:if>
-					</div>
-				</xsl:if>
-
-				<!-- вложенные товары не сверстаны -->
-				<xsl:if test="$has_lines">
-					<div class="multi-device">
-						<div style="padding-left: 0;">Размер</div>
-						<div>Цена</div>
-						<div></div>
-
-						<xsl:for-each select="$p/line_product">
-							<xsl:variable name="has_price" select="price and price != '0'"/>
-							<div class="multi-device__name"><xsl:value-of select="name" /></div>
-							<div class="multi-device__price">
-								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="f:exchange(current(), $price_old_param_name, 0)"/></div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="f:exchange(current(), $price_param_name, 0)"/></div>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<div class="multi-device__price_new">по запросу</div>
-								</xsl:if>
-							</div>
-							<div class="multi-device__actions" id="cart_list_{@id}">
-								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-										<input type="submit" class="button" value="{$to_cart_available_label}" />
-									</xsl:if>
-									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-										<input type="submit" class="button" value="{$to_cart_na_label}" />
-									</xsl:if>
-								</form>
-							</div>
-						</xsl:for-each>
-
-					</div>
-					<div class="multi-device__links">
-						<div id="compare_list_{$p/@id}">
-							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-								<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
-							</a>
-						</div>
-						<div id="fav_list_{$p/@id}">
-							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-								<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
-							</a>
-						</div>
-					</div>
-				</xsl:if>
-
-				<div class="product-lables">
-					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
-				</div>
-
-				<div class="product-icons">
-					<xsl:if test="$p/files">
-						<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
-							<div class="icon icon_size_lg">
-								<img src="img/product-icon-02.png" alt="" />
-							</div>
-							<span class="icon-link__item">скачать</span>
-						</a>
-					</xsl:if>
-					<a href="" class="icon-link product-icons__item">
-						<div class="icon icon_size_lg">
-							<img src="img/product-icon-02.png" alt="" />
-						</div>
-						<span class="icon-link__item">поделиться</span>
-					</a>
-					<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" target="_blank">
-						<div class="icon icon_size_lg">
-							<img src="img/product-icon-02.png" alt="" />
-						</div>
-						<span class="icon-link__item">распечатать</span>
-					</a>
-				</div>
-
-			</div>
-		</div>
-
-		<div class="device-full">
-			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
-			<div class="tabs tabs_product">
-				<div class="tabs__nav">
-					<xsl:if test="$has_text">
-						<a href="#tab_text" class="tab tab_active">Описание</a>
-					</xsl:if>
-					<xsl:if test="$p/params">
-						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
-					</xsl:for-each>
-				</div>
-				<div class="tabs__content">
-					<xsl:if test="$has_text">
-						<div class="tab-container" id="tab_text">
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$p/params">
-						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
-							<table class="full-params">
-								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
-								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
-								<xsl:apply-templates select="$params_xml/params/group"/>
-								<xsl:apply-templates select="$params_xml/params/parameter"/>
-							</table>
-						</div>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<div class="tab-container" id="tab_{@id}" style="display: none">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-
-			<hr/>
-			<div class="extra-info extra-info_product">
-				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
-			</div>
-		</div>
-
-		<xsl:if test="page/grouped">
-			<div class="block devices-block pt">
-				<div class="title title_2">Другие цвета данной модели</div>
-				<div class="devices-block__wrap device-carousel-colors">
-					<xsl:for-each select="page/grouped[gallery[2] and not(code = $p/code)]">
-						<div class="devices-block__column">
-							<div class="card device">
-								<xsl:variable  name="main_pic" select="gallery[2]"/>
-								<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
-								<a href="{show_product}" class="device__image img">
-									<img src="{$pic_path}" alt="" />
-								</a>
-								<div class="text_size_sm">
-									<!-- <xsl:value-of select="code"/> -->
-									<xsl:value-of select="name_extra"/>
+							<div class="tab-container" id="tab_related" style="display: none;">
+								<div class="devices devices_product">
+									<div class="devices__wrap">
+										<xsl:apply-templates select="page/related"/>
+									</div>
 								</div>
 							</div>
 						</div>
-					</xsl:for-each>
+					</div>
 				</div>
-				<div class="device-nav-colors device-nav"></div>
 			</div>
-		</xsl:if>
-
-
-		<xsl:if test="page/assoc">
-			<div class="block devices-block pt">
-				<div class="title title_2">Вас также могут заинтересовать</div>
-				<div class="devices-block__wrap device-carousel-similar">
-					<xsl:for-each select="page/assoc">
-						<div class="devices-block__column">
-							<!-- это обычный товар -->
-							<xsl:apply-templates select="."/>
-						</div>
-					</xsl:for-each>
-				</div>
-				<div class="device-nav-similar device-nav"></div>
-			</div>
-		</xsl:if>
-
-
+		</div>
 	</xsl:template>
 
 

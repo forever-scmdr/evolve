@@ -19,7 +19,7 @@
 
 
 
-	<xsl:template match="accessory | set | probe | product | assoc | hit | new">
+	<xsl:template match="product | related | hit | new | analog">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -173,7 +173,7 @@
 
 
 
-	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
+	<xsl:template match="product | related | hit | new | analog" mode="lines">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>

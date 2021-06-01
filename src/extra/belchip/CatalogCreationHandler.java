@@ -109,12 +109,12 @@ public class CatalogCreationHandler extends DefaultHandler {
 					top.setValue(Product.SEARCH, fullNameAnalyzed);
 					top.setValue(Product.SEARCH, code);
 					String strictSearch = name + ' ' + mark + ' ' + code;
-					int lim = Math.min(strictSearch.length(), 80);
-					top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, lim));
-					if(strictSearch.length() > 80) {
+					if (strictSearch.length() > 80) {
 						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 79));
+					} else {
+						top.setValue(Product.STRICT_SEARCH, strictSearch);
 					}
-					
+
 					//Ignore Analogs from XML file FIX 29.10.2018
 					//top.removeValue(ItemNames.product.ANALOG_CODE);
 					
