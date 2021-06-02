@@ -160,7 +160,7 @@
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" assoc="general">
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
@@ -214,7 +214,7 @@
     <page name="catalog" template="catalog" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 		</single>
 	</page>
 
@@ -627,7 +627,7 @@
 			<var name="p" value="1"/>
 		</request>
 		<single item="news" var="sel" tag="selected_news">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="news_item" id="ni">
 				<filter>
 					<sorting direction="DESC">
@@ -654,7 +654,7 @@
 			<var name="ni" style="key"/>
 		</request>
         <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<ancestor item="news"/>
 		</single>
 		<include name="COMMON"/>
@@ -663,7 +663,7 @@
 
     <page name="contacts" template="contacts" cacheable="true">
         <single item="contacts" cacheable="true">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 		</single>
 		<include name="COMMON"/>
 	</page>
@@ -674,7 +674,7 @@
 			<var name="p" style="key"/>
 		</request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="page_extra">
 				<list item="page_extra_part"/>
 			</list>
@@ -1692,7 +1692,7 @@
     <page name="create_excel_pricelist" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-			<var name="prod_params" value="yes"/>
+            <var name="prod_params" value="yes"/>
             <var name="sec"/>
         </request>
         <command class="ecommander.fwk.integration.CreateExcelPriceList" clear-cache="yes">
@@ -1734,8 +1734,6 @@
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>
-			<var name="file_location" value="catalog:big_integration"/>
-<!--            <var name="with_pics" value="SEARCH_BY_MAIN_PIC"/>-->
             <!--<var name="with_existing_sections" value="copy"/>-->
         </request>
         <command class="ecommander.fwk.integration.ImportProductsFromExcel" clear-cache="yes">
