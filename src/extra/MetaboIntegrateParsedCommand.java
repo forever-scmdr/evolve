@@ -103,10 +103,9 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 			return;
 		Elements sectionEls = root.select("> section");
 		for (Element sectionEl : sectionEls) {
-			String[] path = StringUtils.split(sectionEl.attr(ID), '_');
-			if (path.length <= 0)
-				continue;
-			String secName = path[path.length - 1];
+			String secId = sectionEl.attr(ID);
+			Document sectionDoc = infoProvider.getItem(secId);
+			String secName = sectionDoc.getElementsByTag(NAME).first().ownText();
 			if("Инструменты".equals(secName)){
 				processSubsections(sectionEl, parent);
 				continue;
@@ -237,29 +236,17 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 		// Параметры XML
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 		if (StringUtils.isNotBlank(tech)) {
-			Element techEl = productEl.getElementsByTag(TECH).first().getElementById("attributes");
-			Elements childrenDivs = techEl.children();
-			for (Element div : childrenDivs) {
-				String divClass = div.attr("class");
-				if (StringUtils.equalsIgnoreCase(divClass, "attributesGroup")) {
-					xml.endElement();
-					xml.startElement("group").startElement("name").addText(div.ownText()).endElement();
-				} else if (StringUtils.equalsIgnoreCase(divClass, "attributes")) {
-					Elements rows = div.children();
-					for (Element row : rows) {
-						Elements nameValue = row.children();
-						if (nameValue.size() > 0) {
-							String paramName = nameValue.get(0).ownText();
-							xml.startElement("parameter").startElement("name").addText(paramName).endElement();
-							if (nameValue.size() > 1) {
-								String paramValue = nameValue.get(1).ownText();
-								xml.startElement("value").addText(paramValue).endElement();
-							}
-							xml.endElement(); // параметр закрывается
-						}
-					}
-					xml.endElement(); // группа закрывается
+			Elements rowDivs = productEl.getElementsByTag(TECH).first().getElementsByAttributeValue("class", "detail__characteristic-row");
+			for (Element row : rowDivs) {
+				if (row.children().size() == 0)
+					continue;
+				String paramName = row.child(0).ownText();
+				String paramValue = row.childNodeSize() > 1 ? row.child(1).ownText() : "";
+				xml.startElement("parameter").startElement("name").addText(paramName).endElement();
+				if (StringUtils.isNotBlank(paramValue)) {
+					xml.startElement("value").addText(paramValue).endElement();
 				}
+				xml.endElement(); // параметр закрывается
 			}
 
 			q = new ItemQuery(PARAMS_XML);
