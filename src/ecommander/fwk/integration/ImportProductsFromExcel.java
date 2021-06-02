@@ -519,7 +519,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private void initSection(String code, String name, String parentCode) throws Exception {
-			currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL);
+			currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 
 			//section not exists
 			if (currentSection == null) {
@@ -558,7 +558,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private void moveSection(String parentCode) throws Exception {
-			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL);
+			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			info.pushLog("Перемещение раздела \"" + currentSection.getStringValue(NAME_PARAM, "") + "\". Это долгий процесс.");
 			executeAndCommitCommandUnits(new MoveItemDBUnit(currentSection, declaredParent).ignoreUser());
 			info.pushLog("Перемещение завершено");
@@ -566,7 +566,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		}
 
 		private void copySection(String parentCode) throws Exception {
-			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL);
+			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			info.pushLog("Будет создана копия раздела \"" + currentSection.getStringValue(NAME_PARAM, "") + "\". Это долгий процесс.");
 			executeAndCommitCommandUnits(new CopyItemDBUnit(currentSection, declaredParent).ignoreUser());
 			info.pushLog("Копирование завершено");
@@ -579,14 +579,15 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private boolean isParentDifferent(String parentCode) throws Exception {
 			long parentId = currentSection.getContextParentId();
-			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL);
+			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			return declaredParent.getId() != parentId;
 		}
 
 		private void saveNewSection(String code, String name, String parentCode) throws Exception {
-			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL);
+			Item declaredParent = StringUtils.isBlank(parentCode) ? catalog : ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, parentCode, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			currentSection = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION_ITEM), declaredParent);
 			currentSection.setValue(CATEGORY_ID_PARAM, code);
+			currentSection.setValue(CODE_PARAM, code);
 			currentSection.setValue(NAME_PARAM, name);
 			currentSection.setValue(PARENT_ID_PARAM, parentCode);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noTriggerExtra().noFulltextIndex().ignoreUser());
