@@ -5,3 +5,5 @@
 /evolve.iml
 /.idea/
 /web/WEB-INF/_lucene/
+/web/WEB-INF/ec_xml/model_custom.xml
+/web/files/
