@@ -473,6 +473,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						query = boolQuery.build();
 					}
 					foundDocs = search.search(query, maxResults);
+					ServerLogger.debug("FULLTEXT\t-\tFOUND: " + foundDocs.totalHits + "\t-\tQUERY: \t" + query.toString());
 					float scoreQuotient = 1f;
 
 					// Инициализация максиального количества очков и коэффициента пересчета

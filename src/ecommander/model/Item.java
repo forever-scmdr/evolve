@@ -277,7 +277,11 @@ public class Item implements ItemBasics {
 	 * @throws Exception
 	 */
 	public final void setValueUI(String paramName, String value) throws Exception {
-		setValueUI(itemType.getParameter(paramName).getId(), value);
+		if (itemType.hasParameter(paramName)) {
+			setValueUI(itemType.getParameter(paramName).getId(), value);
+		} else {
+			throw new IllegalArgumentException("There is no parameter '" + paramName + "' in '" + itemType.getName() + "' item");
+		}
 	}
 	/**
 	 * Прямая установка параметра. Используется когда сразу есть значение параметра соответствующего типа

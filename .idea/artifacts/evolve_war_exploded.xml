@@ -8,7 +8,6 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib" />
-          <element id="file-copy" path="C:/tomcat/apache-tomcat-8.0.20-windows-x64/apache-tomcat-8.0.20/lib/catalina.jar" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="evolve/web/Web" />

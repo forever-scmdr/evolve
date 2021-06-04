@@ -162,22 +162,20 @@
 			<div class="container">
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo_baaz.png" alt="" class="logo__image" />
+						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
 							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 							<button class="button header-search__button" type="submit">Найти</button>
 							<!-- quick search -->
-							<div id="search-result"></div>
-							<xsl:if test="$has_quick_search"></xsl:if>
+							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
 							<!-- quick search end -->
 						</form>
 					</div>
 					<!-- need styles -->
-					<!--
-					<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
-						<div class="header__column other-container side-menu">
+					<xsl:if test="$has_currency_rates and $currencies">
+						<div class="other-container">
 							<div class="catalog-currency">
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
 								<ul class="currency-options">
@@ -198,7 +196,6 @@
 							</div>
 						</div>
 					</xsl:if>
-					-->
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -298,7 +295,7 @@
 	</xsl:template>
 
 	<xsl:template name="INC_FOOTER">
-		<div class="footer vl_blue2">
+		<div class="footer">
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
@@ -393,28 +390,6 @@
 						</xsl:if>
 					</xsl:for-each>
 				</ul>
-				<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
-					<ul>
-						<li class="catalog-currency">
-							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-							<ul class="currency-options">
-								<xsl:variable name="currency_link" select="page/set_currency"/>
-								<li class="{'active'[$currency = 'BYN']}">
-									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-									<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-								</li>
-								<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-									<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-									<xsl:variable name="active" select="$currency = $cur"/>
-									<li class="{'active'[$active]}">
-										<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
-										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
-									</li>
-								</xsl:for-each>
-							</ul>
-						</li>
-					</ul>
-				</xsl:if>
 			</div>
 		</div>
 		<script>
@@ -703,7 +678,7 @@
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.502"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.51"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
@@ -740,17 +715,14 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-			<div class="mitaba">
-					<div class="popup" style="display: none;" id="product-ajax-popup">
-				         <div class="popup__body">
-				            <div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
-				         </div>
-					 </div>
+                <div class="popup" style="display: none;" id="product-ajax-popup">
+                     <div class="popup__body">
+                        <div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
+                     </div>
+                 </div>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="wrapper">
-					<div class="vl_blue">
-						<xsl:call-template name="INC_DESKTOP_HEADER"/>
-					</div>
+					<xsl:call-template name="INC_DESKTOP_HEADER"/>
 					<xsl:call-template name="MAIN_CONTENT"/>
 					<xsl:call-template name="INDEX_BLOCKS"/>
 					<xsl:call-template name="INC_FOOTER"/>
@@ -780,7 +752,6 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
-				<script type="text/javascript" src="js/bootstrap.min.js"/>
 				<script type="text/javascript" src="js/web.js"/>
 				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
 				<script type="text/javascript">
@@ -875,7 +846,7 @@
 
 
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
-			</div>
+
 			</body>
 		</html>
 	</xsl:template>
