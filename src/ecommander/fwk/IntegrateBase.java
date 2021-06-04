@@ -237,6 +237,10 @@ public abstract class IntegrateBase extends Command {
 			ServerLogger.debug(doc.toString());
 		}
 
+		public int getErrorCount() {
+			return errors.size();
+		}
+
 		public synchronized void indexsationStarted() {
 			operation = _indexation;
 		}
@@ -436,6 +440,22 @@ public abstract class IntegrateBase extends Command {
 	 */
 	protected abstract void terminate() throws Exception;
 
+	/**
+	 * Вызвать другую команду интеграции
+	 * @param inner
+	 * @throws Exception
+	 */
+	protected void executeOtherIntegration(IntegrateBase inner) throws Exception {
+		try {
+			inner.info = this.info;
+			if (inner.makePreparations()) {
+				inner.integrate();
+			}
+		} catch (Exception e) {
+			inner.terminate();
+			throw e;
+		}
+	}
 	/**
 	 * Создать результат выполнения команды (xml документ)
 	 *

@@ -15,12 +15,12 @@
 
 	<xsl:template match="/">
 		<div>
-			<div class="popup result" id="product-ajax-popup">
+			<div class="popup result" style="display: block;" id="product-ajax-popup">
 				<div class="popup__body">
 					<div class="popup__content">
 						<a class="popup__close" onclick="clearProductAjax();">×</a>
-						<div class="popup__title title title_2">Товар: 
-							<xsl:value-of select="$p/name" />
+						<div class="popup__title title title_2">
+							<xsl:value-of select="$p/name"/>
 						</div>
 						<div class="device-preview">
 							<div class="device-preview__column">
@@ -39,7 +39,7 @@
 								<div class="device-actions">
 									<div class="device-actions__price price">
 										<xsl:if test="$has_price">
-											<div class="price__new">Цена: 
+											<div class="price__new">
 												<xsl:value-of select="$price"/> р.
 											</div>
 										</xsl:if>

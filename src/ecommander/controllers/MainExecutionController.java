@@ -55,6 +55,8 @@ public class MainExecutionController {
 			if (ve.getResults().getException() != null)
 				ServerLogger.error("Cause: ", ve.getResults().getException());
 			throw ve;
+		} finally {
+			Timer.getTimer().stop(Timer.INIT);
 		}
 	}
 
