@@ -82,7 +82,7 @@
 		<parameter name="meta" caption="meta" type="plain-text"/>
 		<parameter name="text" caption="текст сверху" type="text"/>
 		<parameter name="bottom_text" caption="текст снизу" type="text"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<!-- <parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/> -->
 		<parameter name="extra_style" type="plain-text" caption="Код дополнительных стилей" description="вставляется в head, тэг style писать не надо"/>
 		<parameter name="body_class" type="plain-text" caption="Класс для тега body" description="при наличии в body добавляется этот класс"/>
 	</item>
@@ -176,7 +176,6 @@
 	<item name="abstract_product" caption="Абстрактный товар" key="name" virtual="true" ag-id="1020" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
-
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
