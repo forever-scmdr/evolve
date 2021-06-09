@@ -706,7 +706,7 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
-	<item name="error_page" caption="Страница 404" ag-id="1826" ag-hash="1636060774">
+	<item name="error_page" caption="Страница 404" ag-id="1825" ag-hash="1636060774">
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_extra" inline="true"/>

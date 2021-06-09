@@ -1807,9 +1807,9 @@
 	</page>
 
 
-	<page name="page_404" template="error_page">
+	<page name="page_404" template="admin/error_page">
 		<include name="COMMON" />
-		<single item="error_page" tag="page">
+		<single item="error_page">
 			<list item="page_extra"/>
 		</single>
 	</page>
