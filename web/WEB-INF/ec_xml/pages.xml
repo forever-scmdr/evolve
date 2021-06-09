@@ -1773,7 +1773,7 @@
 		<command class="extra.SetOptional"/>
 	</page>
 
-	<page name="admin_extra" template="admin/extra" authority-groups="common">
+	<page name="admin_extra" template="admin/extra" authority-groups ="common">
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
@@ -1807,6 +1807,16 @@
 	</page>
 
 
+	<page name="page_404" template="error_page">
+		<include name="COMMON" />
+		<single item="error_page" tag="page">
+			<list item="page_extra"/>
+		</single>
+	</page>
+
+	<page name="update_error_page" >
+		<command class="ecommander.fwk.CreateErrorJspCommand"/>
+	</page>
 
 
 <!--	<page name="tuples">-->
