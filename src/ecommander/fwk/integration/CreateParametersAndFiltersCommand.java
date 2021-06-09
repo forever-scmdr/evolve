@@ -102,6 +102,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		protected static Pair<DataType.Type, String> testValueHasUnit(String value) {
 			try {
 				Integer.parseInt(value);
+				if (value.matches("0\\d+")) {
+					return new Pair<>(DataType.Type.STRING, null);
+				}
 				return new Pair<>(DataType.Type.INTEGER, null);
 			} catch (NumberFormatException nfe1) {
 				if (testDouble(value)) {
@@ -310,6 +313,16 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			}
 			info.increaseProcessed();
 		}
+	}
+
+	/**
+	 * Для вызова из внешней команды
+	 * @param info
+	 * @throws Exception
+	 */
+	public void doCreateParametersAndFilters(Info info) throws Exception {
+		this.info = info;
+		integrate();
 	}
 
 	@Override

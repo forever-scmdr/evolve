@@ -147,13 +147,13 @@ public class ResizeImagesFactory implements ItemEventCommandFactory, DBConstants
 							boolean resizeNeeded = (width > 0 && srcImg.getWidth() > width) || (height > 0 && srcImg.getHeight() > height);
 							//Если нужен ресайз - ресайзим.
 							if (resizeNeeded) {
-							String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
-							if (!selfResize)
-								fileName = param.getName() + "_" + fileName;
-							destFile = new File(createItemDirectoryName() + "/" + fileName);
-							resize(srcImg, destFile, width, height, format);
-							// Установка значения параметра
-							item.setValueUI(param.getId(), fileName);
+								String fileName = StringUtils.substringBeforeLast(srcFile.getName(), ".") + '.' + format;
+								if (!selfResize)
+									fileName = param.getName() + "_" + fileName;
+								destFile = new File(createItemDirectoryName() + "/" + fileName);
+								resize(srcImg, destFile, width, height, format);
+								// Установка значения параметра
+								item.setValueUI(param.getId(), fileName);
 							}
 						} catch (Exception e) {
 							ServerLogger.error("Error resizing image", e);

@@ -2,6 +2,7 @@ package ecommander.controllers;
 
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;
@@ -38,6 +39,7 @@ public class FilterFormServlet extends BasicServlet {
 	private void process(HttpServletRequest req, HttpServletResponse resp, boolean isPost) throws ServletException, IOException {
 		ServerLogger.debug("Post method: Page output started");
 		String targetUrl = getUserUrl(req);
+		Timer.getTimer().start(Timer.REQUEST_PROCESS, targetUrl);
 		targetUrl = targetUrl.substring(FILTER_PREFIX_LENGTH);
 		String sortingStr = Strings.EMPTY;
 		String pageStr = Strings.EMPTY;
@@ -96,6 +98,9 @@ public class FilterFormServlet extends BasicServlet {
 			processUserNotAllowed(req, resp, targetUrl);
 		} catch (Exception e) {
 			handleError(req, resp, e);
+		} finally {
+			Timer.getTimer().stop(Timer.REQUEST_PROCESS);
+			Timer.getTimer().flush();
 		}
 	}
 

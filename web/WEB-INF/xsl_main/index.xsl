@@ -45,92 +45,11 @@
 
 
 	<xsl:template name="INDEX_BLOCKS">
-		<!-- banner 1 -->
-		<div class="container content">
-			<div class="indexSlide">
-		    	<div class="dots">
-					<a class="dot" href="#" style="margin-left:290px; margin-top:300px;">
-						<span class="title"><span class="arrow"></span>
-		                  	Мы производим:
-							Cистема подвески
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:360px; margin-top:270px;">
-						<span class="title"><span class="arrow"></span>
-							Мы производим: 
-							Система рулевого управления
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:40px; margin-top:270px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Тормозная система
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:280px; margin-top:250px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Система сцепления
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:340px; margin-top:200px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Двигатель и трансмиссия
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:390px; margin-top:130px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Система электрооборудования
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:200px; margin-top:130px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Кузов и оборудование
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:60px; margin-top:210px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Шланги
-						</span>
-					</a>
-					<a class="dot" href="#" style="margin-left:120px; margin-top:270px;">
-						<span class="title">
-							<span class="arrow"></span>
-							Мы производим: 
-							Крепеж
-						</span>
-					</a>
-				</div>
-				<div class="text">
-					<img src="/img/text_main_page_big_title.png" alt="" />
-					<p>
-						Наше предприятие хорошо известно, как поставщик для 
-						сборочных конвейеров таких автомобильных гигантов, 
-						как МАЗ, МЗКТ, БелАЗ, ГАЗ, КамАЗ, Урал, ПАЗ, ЛАЗ, 
-						ООО «Ликинский автобус» и других.
-						
-					</p>
-					<div style="margin-top: 32px;">
-						<a class="big" href="/catalog/">Каталог продукции</a>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>
-		<!-- banner 1 end -->
+
+
+
 		<!-- slider -->
-		<div class="slider container">
+		<div class="slider">
 			<xsl:for-each select="page/main_page/main_slider_frame">
 				<div class="slider__item">
 					<div class="slider__content">
@@ -151,10 +70,9 @@
 		<div class="slider-nav"></div>
 		<!-- slider end -->
 
-		<!--
+
 		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
-		-->
-			
+
 		<!-- products carousel -->
 		<div class="block devices-block ptb">
 			<div class="container">

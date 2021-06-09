@@ -35,6 +35,8 @@ public class TransliterationServlet extends BasicServlet {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
 		String userUrl = "";
 		try {
+			Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
+
 			ServerLogger.debug("Get method: Page output started");
 
 			// проверка протокола с последующим редиректом если это надо
@@ -63,7 +65,6 @@ public class TransliterationServlet extends BasicServlet {
 					return;
 				}
 			}
-			Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
 
 			MainExecutionController mainController = new MainExecutionController(request, response, userUrl);
 			mainController.execute(getBaseUrl(request), getServletContext());

@@ -50,4 +50,8 @@ public class JsoupUtils {
 		Document doc = Jsoup.parse(unknownXml, "", Parser.xmlParser());
 		return JsoupUtils.outputXmlDoc(doc);
 	}
+
+	public static Document parseXml(String unknownXml) {
+		return Jsoup.parse(unknownXml, "", Parser.xmlParser());
+	}
 }
