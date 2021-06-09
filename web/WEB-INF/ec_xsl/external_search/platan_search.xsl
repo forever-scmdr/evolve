@@ -74,17 +74,17 @@
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="product" select="current()" />
 				</xsl:call-template>
+				<xsl:if test="f:num(QUANTY) != 0">
+					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
+						<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/>
+					</div>
+				</xsl:if>
+				<xsl:if test="f:num(QUANTY) = 0">
+					<div class="device__in-stock device_row__in-stock device__in-stock_no">
+						<i class="far fa-clock"/>под заказ
+					</div>
+				</xsl:if>
 			</div>
-			<xsl:if test="f:num(QUANTY) != 0">
-				<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-					<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(QUANTY), ' ', EI_NAME, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/>
-				</div>
-			</xsl:if>
-			<xsl:if test="f:num(QUANTY) = 0">
-				<div class="device__in-stock device_row__in-stock device__in-stock_no">
-					<i class="far fa-clock"/>под заказ
-				</div>
-			</xsl:if>
 		</div>
 	</xsl:template>
 

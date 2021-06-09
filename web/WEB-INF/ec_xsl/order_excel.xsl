@@ -64,7 +64,7 @@
 		<xsl:variable name="sum"  select="concat(f:price_output(sum, $shop), ' ', upper-case($curr))"/>
 		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
 		<xsl:variable name="price_original" select="format-number(f:num($price_original_str), '# ### ##0,00000', 'exc')"/>
-		<xsl:variable name="vendor_code_for_name" select="('digikey', 'farnell', 'arrow')"/>
+		<xsl:variable name="vendor_code_for_name" select="('digikey', 'farnell', 'arrow', 'tme')"/>
 
 		<tr>
 			<td>

@@ -3,7 +3,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/price_conversions.xsl"/>
 
-	<xsl:variable name="view" select="items/view"/>
+	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="in_stock" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
 	<xsl:variable name="shop" select="page/shop"/>
 	<xsl:variable name="result" select="/page/search/result"/>
@@ -73,7 +73,7 @@
 					<p class="basics">
 						<span><b>Код:</b>&#160;<xsl:value-of select="code"/></span><br/>
 						<span><b>Производитель:</b>&#160;<xsl:value-of select="vendor" /></span><br/>
-						<span><b>Страна производства:</b>&#160;<xsl:value-of select="country" /></span>
+						<span><b>Страна производства:</b>&#160;<xsl:value-of select="offer[1]/country" /></span>
 						<xsl:if test="doc != ''">
 							<br/><span><b>Документация:</b>&#160;<a href="{doc}" target="_blank">файл PDF</a></span>
 						</xsl:if>

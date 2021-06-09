@@ -72,7 +72,7 @@
 				<xsl:value-of select="normalize-space(Symbol)"/>
 			</a>
 			<div class="device__article-number">
-				<xsl:value-of select="normalize-space(Symbol)"/>
+				<xsl:value-of select="normalize-space(OriginalSymbol)"/>
 			</div>
 			<div class="device__article-number"></div>
 			<div class="device__price" style="display:block;">
@@ -124,7 +124,9 @@
 				</span>
 				<div class="device__description">
 					<p class="basics">
-						<span><b>Производитель:</b>&#160;<xsl:value-of select="Producer" /></span>
+						<br/><span><b>Арт.:</b>&#160;<xsl:value-of select="Symbol" /></span>
+						<br/><span><b>Производитель:</b>&#160;<xsl:value-of select="Producer" /></span>
+						<br/><span><b>Арт. производителя:</b>&#160;<xsl:value-of select="OriginalSymbol" /></span>
 						<xsl:if test="Description != ''">
 							<br/><span><b>Описание:</b>&#160;<xsl:value-of select="Description" disable-output-escaping="yes" /></span>
 						</xsl:if>
@@ -132,7 +134,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="Symbol"/></div>
+<!--			<div class="device__article-number"><xsl:value-of select="Symbol"/></div>-->
 			<div class="device__actions device_row__actions"></div>
 			<div class="device__price device_row__price">
 				<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />
@@ -151,17 +153,17 @@
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="product" select="current()" />
 				</xsl:call-template>
+				<xsl:if test="f:num(Amount) != 0">
+					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
+						<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(Amount), ' ', $unit, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/>
+					</div>
+				</xsl:if>
+				<xsl:if test="f:num(Amount) = 0">
+					<div class="device__in-stock device_row__in-stock device__in-stock_no">
+						<i class="far fa-clock"/>под заказ
+					</div>
+				</xsl:if>
 			</div>
-			<xsl:if test="f:num(Amount) != 0">
-				<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">
-					<i class="fas fa-check" />поставка <xsl:value-of select="concat(f:num(Amount), ' ', $unit, '.')" /> в течение <xsl:value-of select="$shop/delivery_string"/>
-				</div>
-			</xsl:if>
-			<xsl:if test="f:num(Amount) = 0">
-				<div class="device__in-stock device_row__in-stock device__in-stock_no">
-					<i class="far fa-clock"/>под заказ
-				</div>
-			</xsl:if>
 		</div>
 
 	</xsl:template>
@@ -200,6 +202,7 @@
 
 		<input type="number" class="text-input" name="qty" value="{normalize-space($product/MinAmount)}" min="{normalize-space($product/MinAmount)}" step="{normalize-space($product/Multiples)}"/>
 		<input type="hidden" name="code" value="{normalize-space($product/Symbol)}"/>
+		<input type="hidden" value="{$product/OriginalSymbol}" name="vendor_code"/>
 		<input type="hidden" name="id" value="{$sbl}"/>
 		<input type="hidden" name="aux" value="{normalize-space($shop/name)}"/>
 		<input type="hidden" value="{normalize-space($product/Symbol)}" name="name"/>
