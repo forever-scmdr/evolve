@@ -30,6 +30,10 @@
 			<div class="margin">
 				<h2 class="title">Дополнительные функции</h2>
 
+				<h3>SEO</h3>
+				<ul class="no-drag">
+					<li><a href="update_error_page">Обновить страницу 404</a></li>
+				</ul>
 				<h3>Интеграция Yandex.Market</h3>
 				<ul class="no-drag">
 					<li><a href="integrate?action=start">Импорт каталога YML</a></li>
