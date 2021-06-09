@@ -142,4 +142,15 @@
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
 	</resource-ref>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsp</location>
+		<!-- <location>/404.html</location> -->
+	</error-page>
+	<error-page>
+		<error-code>503</error-code>
+		<location>/404.jsp</location>
+		<!-- <location>/404.html</location> -->
+	</error-page>
 </web-app>
