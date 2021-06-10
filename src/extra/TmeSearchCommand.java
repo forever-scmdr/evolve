@@ -1,11 +1,8 @@
 package extra;
 
 import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.jsoup.Jsoup;
@@ -32,9 +29,12 @@ public class TmeSearchCommand extends Command {
 	private static final String ENCRYPTION_METHOD = "HmacSHA1";
 	private static final String SEARCH_URL = "https://api.tme.eu/Products/Search.xml";
 	private static final String PRICING_URL = "https://api.tme.eu/Products/GetPricesAndStocks.xml";
+	private static final String PARAMS_URL = "https://api.tme.eu/Products/GetParameters.xml";
 	//private static final String LANGUAGES_URL = "https://api.tme.eu/Utils/GetLanguages.xml";
 	//private static final String COUNTRIES_URL = "https://api.tme.eu/Utils/GetCountries.xml";
 	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+	HashMap<String, Element> productMap;
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -66,7 +66,7 @@ public class TmeSearchCommand extends Command {
 		params = new TreeMap<>();
 		addGeneralParams(params);
 		Document searchResult = Jsoup.parse(outputPage.toString(), "", Parser.xmlParser());
-		HashMap<String, Element> productMap = new HashMap<>();
+		productMap = new HashMap<>();
 		Elements products = searchResult.select("Product");
 		for (Element product : products){
 			String symbol = product.select("Symbol").text();
@@ -76,33 +76,7 @@ public class TmeSearchCommand extends Command {
 		params = new TreeMap<>();
 		addGeneralParams(params);
 
-		ArrayList<String> pricing = new ArrayList<>();
-
-		int i = 0;
-		for(String symbol : productMap.keySet()){
-			String key = "SymbolList["+i+"]";
-			params.put(key, symbol);
-			i++;
-			if(i > 9){
-				i = 0;
-				signature = generateSignature(PRICING_URL, params);
-				params.put("ApiSignature", signature);
-				String pricingResponse = loadFromTmeAPI(PRICING_URL, params);
-				pricing.add(pricingResponse);
-
-				params = new TreeMap<>();
-				addGeneralParams(params);
-			}
-		}
-
-		if(params.size() > 4){
-			signature = generateSignature(PRICING_URL, params);
-			params.put("ApiSignature", signature);
-
-			String pricingResponse = loadFromTmeAPI(PRICING_URL, params);
-			pricing.add(pricingResponse);
-		}
-
+		ArrayList<String> pricing = loadExtraInfo(PRICING_URL, productMap.keySet());
 		for(String priceList : pricing){
 			Document priceDoc = Jsoup.parse(priceList, "", Parser.xmlParser());
 			Elements priceMap = priceDoc.select("Product");
@@ -116,19 +90,55 @@ public class TmeSearchCommand extends Command {
 			}
 		}
 
+		ArrayList<String> techParams = loadExtraInfo(PARAMS_URL, productMap.keySet());
+
+		for(String tech : techParams){
+			Document techDoc = Jsoup.parse(tech, "", Parser.xmlParser());
+			Elements techList = techDoc.select("Product");
+			for(Element el : techList){
+				String symbol = el.select("Symbol").text();
+				Element paramsEl = el.select("ParameterList").first();
+				Element product = productMap.get(symbol);
+				product.appendChild(paramsEl);
+			}
+		}
+
 		ResultPE result = getResult("result");
 		result.setValue(JsoupXmlFixer.fix(searchResult.outerHtml()));
 		return result;
 	}
 
-	private void addCurrencyRatios(XmlDocumentBuilder doc) throws Exception {
-		Item currencies = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
-		if(currencies != null){
-			doc.
-					startElement(ItemNames.CATALOG, "id", currencies.getId())
-					.addElements(currencies.outputValues())
-					.endElement();
+	/**
+	 * Загрузить доллнительную информацию о неких товарах. Какую именно информацию, указано в параметре url.
+	 * Список артикулов - в параметре  productCodes. Возаращает массив XML документов с нужной информацией
+	 * @param url
+	 * @param productCodes
+	 */
+	private ArrayList<String> loadExtraInfo(String url, Collection<String> productCodes) throws Exception {
+		TreeMap<String, String> params = new TreeMap<>();
+		addGeneralParams(params);
+		ArrayList<String> pricing = new ArrayList<>();
+		int i = 0;
+		for(String code : productCodes){
+			String key = "SymbolList["+i+"]";
+			params.put(key, code);
+			i++;
+			if(i > 9){
+				pricing.add(signAndSubmit(url, params));
+				params = new TreeMap<>();
+				addGeneralParams(params);
+			}
 		}
+		if(params.size() > 4){
+			pricing.add(signAndSubmit(url, params));
+		}
+		return pricing;
+	}
+
+	private String signAndSubmit(String url, TreeMap<String, String> params) throws Exception {
+		String signature = generateSignature(url, params);
+		params.put("ApiSignature", signature);
+		return loadFromTmeAPI(url, params);
 	}
 
 	private void addGeneralParams(Map<String,String> params){

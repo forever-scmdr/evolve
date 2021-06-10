@@ -112,6 +112,7 @@
 		<xsl:variable name="min_price" select="min($price/f:num(PriceValue))"/>
 		<xsl:variable name="prefix" select="if(count($price) &gt; 1) then ' от ' else ''"/>
 		<xsl:variable name="unit" select="if(normalize-space(Unit) = 'pcs') then 'шт' else normalize-space(Unit)"/>
+		<xsl:variable name="params" select="ParameterList/Parameter[normalize-space(ParameterName) != 'Производитель']"/>
 
 		<div class="device device_row">
 			<a href="{$pic}" class="magnific_popup-image zoom-icon" title="{normalize-space(Symbol)}" rel="nofollow">
@@ -132,6 +133,20 @@
 						</xsl:if>
 						<br/><span><b>Вес:</b>&#160;<xsl:value-of select="concat(normalize-space(Weight), normalize-space(WeightUnit))"/></span>
 					</p>
+					<xsl:if test="$params">
+
+						<xsl:variable name="sbl" select="replace(replace(normalize-space(Symbol), '\.', '_dot_'), '/', '_sls_')"/>
+
+						<a style="color: #707070; text-decoration: underline;" class="javascript" onclick="$('{concat('#tech-', $sbl)}').toggle();">Показать технические характеристики</a>
+						<table class="features table-bordered" id="tech-{$sbl}" style="display:none; margin-top: 1rem;">
+							<xsl:for-each select="$params">
+								<tr>
+									<td style="color: #616161; "><xsl:value-of select="normalize-space(ParameterName)"/></td>
+									<td><xsl:value-of select="normalize-space(ParameterValue)"/></td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</xsl:if>
 				</div>
 			</div>
 <!--			<div class="device__article-number"><xsl:value-of select="Symbol"/></div>-->
