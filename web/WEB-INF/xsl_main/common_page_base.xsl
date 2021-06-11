@@ -393,6 +393,7 @@
 						</xsl:if>
 					</xsl:for-each>
 				</ul>
+				<!--
 				<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
 					<ul>
 						<li class="catalog-currency">
@@ -415,6 +416,7 @@
 						</li>
 					</ul>
 				</xsl:if>
+				-->
 			</div>
 		</div>
 		<script>

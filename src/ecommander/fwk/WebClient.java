@@ -288,6 +288,24 @@ public class WebClient implements Closeable {
 	}
 
 	/**
+	 * Сохранить файл без сохранения сеанса с сервером источником файла
+	 * @param url
+	 * @param dirName
+	 * @param saveAs
+	 * @param proxy
+	 * @throws IOException
+	 * @throws KeyStoreException
+	 * @throws NoSuchAlgorithmException
+	 * @throws KeyManagementException
+	 */
+	public static void saveFileQuick(String url, String dirName, String saveAs, String...proxy)
+			throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+		try (WebClient client = WebClient.newClient()) {
+			client.saveFileWithClient(url, dirName, saveAs, null, proxy);
+		}
+	}
+
+	/**
 	 * Сохранить файл с сохранением сеанса с сервером источником файла
 	 * @param url
 	 * @param dirName
@@ -311,7 +329,6 @@ public class WebClient implements Closeable {
 			else throw e;
 		}
 	}
-
 
 	private void saveFileWithClient(String url, String dirName, String saveAs, Charset encoding, String...proxy) throws IOException {
 		HttpGet get = new HttpGet(url);
