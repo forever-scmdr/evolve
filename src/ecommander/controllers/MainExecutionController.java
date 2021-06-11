@@ -1,14 +1,16 @@
 package ecommander.controllers;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.ValidationException;
-import ecommander.pages.*;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.MultipleHttpPostForm;
+import ecommander.pages.PageModelRegistry;
 import ecommander.pages.ValidationResults.StructureMessage;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Класс, который координирует все действия по обработке запроса пользователя
@@ -55,6 +57,8 @@ public class MainExecutionController {
 			if (ve.getResults().getException() != null)
 				ServerLogger.error("Cause: ", ve.getResults().getException());
 			throw ve;
+		} finally {
+			Timer.getTimer().stop(Timer.INIT);
 		}
 	}
 

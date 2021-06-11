@@ -55,11 +55,10 @@
 
 			<!-- quick view (not displayed, delete <div> with display: none to show) -->
 			<!-- TODO add display check -->
-			<!--
-			<div>
+			<div style="display: none">
 				<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
 			</div>
-			-->
+
 			<!-- device title -->
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 

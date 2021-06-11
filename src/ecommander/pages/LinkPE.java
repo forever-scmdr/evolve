@@ -203,8 +203,14 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 			else if (type == Type.itemform)
 				path.append(ITEM_FORM_PREFIX);
 		}
+		// Проверка, может ли ссылка помеченная как exclusive быть таковой (стоит ли key переменная на первом месте)
+		boolean isExclusive = type == Type.exclusive;
+		if (isExclusive) {
+			VariablePE first = variables.size() > 0 ? variables.values().iterator().next() : null;
+			isExclusive = first != null && (first.isStyleKey() || first.isStyleKeyPath());
+		}
 		// Название страницы (device/)
-		if (type != Type.exclusive)
+		if (!isExclusive)
 			path.append(getPageName());
 		// Все переменные по порядку
 		try {

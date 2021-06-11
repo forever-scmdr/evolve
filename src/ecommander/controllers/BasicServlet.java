@@ -1,5 +1,6 @@
 package ecommander.controllers;
 
+import ecommander.fwk.Timer;
 import ecommander.fwk.*;
 import ecommander.pages.LinkPE;
 import org.apache.catalina.connector.ClientAbortException;
@@ -190,6 +191,9 @@ public abstract class BasicServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
 		String url = getUserUrl(request);
+
+		Timer.getTimer().start(Timer.REQUEST_PROCESS, url);
+
 		LinkPE link = LinkPE.parseLink(url);
 		Map<String, List<String>> params = new HashMap<>();
 		if (ServletFileUpload.isMultipartContent(request)) {
@@ -237,6 +241,8 @@ public abstract class BasicServlet extends HttpServlet {
 		response.setHeader("Location", request.getContextPath() + "/" + link.serialize());
 		response.setContentType("text/html");*/
 		processUrl(request, response, link.serialize());
+		Timer.getTimer().stop(Timer.REQUEST_PROCESS);
+		Timer.getTimer().flush();
 	}
 	/*
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -192,7 +192,6 @@
 		<child item="product"/>
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
-		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка разделов"/>
@@ -707,6 +706,12 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
+	<item name="error_page" caption="Страница 404" ag-id="1825" ag-hash="1636060774">
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<child item="page_extra" inline="true"/>
+	</item>
+
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="menu_item"/>
 	</item>
@@ -966,6 +971,7 @@
 		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
+		<child item="error_page" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
