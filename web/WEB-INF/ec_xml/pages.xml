@@ -1404,7 +1404,7 @@
 		</single>
 	</page>
 
-	<page name="generate_sitemap">
+	<page name="generate_sitemap" template="integration/create_excel">
 		<command class="ecommander.fwk.CreateSiteMap">
 			<result name="complete" type="xml"/>
 		</command>
