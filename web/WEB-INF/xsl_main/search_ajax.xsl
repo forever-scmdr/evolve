@@ -6,6 +6,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="f:f"
 	version="2.0">
+	<xsl:import href="utils/utils.xsl"/>
+	<xsl:import href="snippets/constants.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes" exclude-result-prefixes="#all"/>
 
 	<xsl:variable name="message" select="page/variables/message"/>

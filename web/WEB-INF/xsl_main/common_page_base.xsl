@@ -9,6 +9,9 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
+
+
+
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
 	<xsl:variable name="common" select="page/common"/>
@@ -20,6 +23,7 @@
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
+	<xsl:variable name="query" select="page/variables/q"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -154,6 +158,11 @@
 						insertAjax('set_city?city=' + cityName);
 						return false;
 					}
+					<xsl:if test="$has_quick_search">
+					$(document).ready(function() {
+						initQuickSearch();
+					});
+					</xsl:if>
 				</script>
 			</div>
 		</div>
@@ -166,16 +175,20 @@
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
+							<input class="input header-search__input"
+								   ajax-href="{page/search_ajax_link}" result="search-result"
+								   query="q" min-size="3" id="q-ipt" type="text"
+								   placeholder="Введите поисковый запрос" autocomplete="off"
+								   name="q" value="{$query}" autofocus=""/>
 							<button class="button header-search__button" type="submit">Найти</button>
 							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result"></div></xsl:if>
+							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 							<!-- quick search end -->
 						</form>
 					</div>
 					<!-- need styles -->
 					<xsl:if test="$has_currency_rates and $currencies">
-						<div class="other-container">
+						<div class="header__column other-container side-menu">
 							<div class="catalog-currency">
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
 								<ul class="currency-options">
@@ -390,6 +403,28 @@
 						</xsl:if>
 					</xsl:for-each>
 				</ul>
+				<xsl:if test="$has_currency_rates and $currencies">
+					<ul>
+						<li class="catalog-currency">
+							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
+							<ul class="currency-options">
+								<xsl:variable name="currency_link" select="page/set_currency"/>
+								<li class="{'active'[$currency = 'BYN']}">
+									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
+									<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
+								</li>
+								<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+									<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+									<xsl:variable name="active" select="$currency = $cur"/>
+									<li class="{'active'[$active]}">
+										<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
+										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</li>
+					</ul>
+				</xsl:if>
 			</div>
 		</div>
 		<script>
@@ -645,7 +680,6 @@
 
 
 
-
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
@@ -715,11 +749,13 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-                <div class="popup" style="display: none;" id="product-ajax-popup">
-                     <div class="popup__body">
-                        <div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
-                     </div>
-                 </div>
+				<div class="mitaba">
+					<div class="popup" style="display: none;" id="product-ajax-popup">
+						 <div class="popup__body">
+							<div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
+						 </div>
+					</div>
+				</div>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="wrapper">
 					<xsl:call-template name="INC_DESKTOP_HEADER"/>
@@ -752,6 +788,7 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
+				<script type="text/javascript" src="js/bootstrap.min.js"/>
 				<script type="text/javascript" src="js/web.js"/>
 				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
 				<script type="text/javascript">
@@ -768,13 +805,14 @@
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
+						/*
 						<xsl:if test="$has_quick_search">
                         $("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
                         </xsl:if>
+						*/
 					});
-
 
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
@@ -784,7 +822,6 @@
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
-
 
 					function searchAjax(el){
 						var $el = $(el);
@@ -821,22 +858,6 @@
 					function showMobileMainMenu() {
 						$('.wrapper').toggleClass('visible-no');
 						$('.menu-container').toggleClass('visible-yes');
-					}
-					function showDetails(link){
-						$("#product-ajax-popup").show();
-						insertAjax(link, 'product-ajax-content', function(){
-							$("#fotorama-ajax").fotorama();
-							$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
-								e.preventDefault();
-								$("#product-ajax-popup").find('a[data-toggle="tab"]').removeClass("tabs__link_active");
-								$("#product-ajax-popup").find('.tabs__content').removeClass("active");
-								$("#product-ajax-popup").find('.tabs__content').hide();
-								$(this).addClass("tabs__link_active");
-								var href = $(this).attr("href");
-								$(href).show();
-								$(href).addClass("active");
-							});
-						});
 					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>

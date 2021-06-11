@@ -181,6 +181,24 @@
 						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 					</xsl:choose>
 					-->
+					<div class="extra-buttons product-actions mitaba">
+						<a class="button secondary button_size_lg" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a>
+						<a class="button_size_lg" href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+					</div>
+					<!-- один клик и своя цена не сверстаны -->
+					<xsl:if test="$is_one_click or $is_my_price">
+						<div class="extra-buttons">
+							<xsl:if test="$is_one_click">
+								<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+							</xsl:if>
+							<xsl:if test="$is_my_price">
+								<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
+							</xsl:if>
+							<xsl:if test="$is_subscribe">
+								<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+							</xsl:if>
+						</div>
+					</xsl:if>
 
 					<!-- параметры -->
 					<table class="params">
@@ -197,21 +215,7 @@
 					</table>
 				</xsl:if>
 
-				<!-- один клик и своя цена не сверстаны -->
-				<xsl:if test="$is_one_click or $is_my_price">
-					<div class="extra-buttons">
-						<xsl:if test="$is_one_click">
-							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
-						</xsl:if>
-						<xsl:if test="$is_my_price">
-							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
-						</xsl:if>
-						<a class="button secondary" data-toggle="modal" data-target="#warranty">XXL-гарантия</a>
-						<xsl:if test="$is_subscribe">
-							<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-						</xsl:if>
-					</div>
-				</xsl:if>
+
 
 				<!-- вложенные товары не сверстаны -->
 				<xsl:if test="$has_lines">

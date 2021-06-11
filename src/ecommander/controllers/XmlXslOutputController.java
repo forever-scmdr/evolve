@@ -75,10 +75,13 @@ public class XmlXslOutputController {
 				if (file.lastModified() > lastModified) {
 					lastModified = file.lastModified();
 					modified = true;
+					break;
 				}
 			}
-			if (modified)
+			if (modified) {
 				transformers.clear();
+				PageController.clearCache();
+			}
 			return modified;
 		}
 		return false;
