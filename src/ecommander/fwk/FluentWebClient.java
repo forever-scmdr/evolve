@@ -88,7 +88,7 @@ public class FluentWebClient {
 		String finalUrl = url;
 
 		try {
-		req.connectTimeout(1000).socketTimeout(3000)
+			req.connectTimeout(1000).socketTimeout(3000)
 				.execute()
 				.handleResponse(response -> {
 					StatusLine statusLine = response.getStatusLine();

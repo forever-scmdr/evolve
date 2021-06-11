@@ -330,7 +330,6 @@ public class WebClient implements Closeable {
 		}
 	}
 
-
 	private void saveFileWithClient(String url, String dirName, String saveAs, Charset encoding, String...proxy) throws IOException {
 		HttpGet get = new HttpGet(url);
 		prepareHeadersAndProxies(get, proxy);
