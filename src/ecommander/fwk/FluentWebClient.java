@@ -74,7 +74,7 @@ public class FluentWebClient {
 		return result;
 	}
 
-	public static void saveFile(String url, String dirName, String saveAs, String... proxy) throws IOException {
+	public static void saveFile(String url, String dirName, String saveAs, String... proxy) throws Exception {
 		String badPart = StringUtils.substringAfterLast(url, "/");
 		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8"));
 		String host = url.replaceAll("https?:\\/\\/(www.)?", "");
@@ -86,6 +86,8 @@ public class FluentWebClient {
 			req.viaProxy(proxy[0]);
 		}
 		String finalUrl = url;
+
+		try {
 		req.connectTimeout(1000).socketTimeout(3000)
 				.execute()
 				.handleResponse(response -> {
@@ -108,5 +110,8 @@ public class FluentWebClient {
 					FileUtils.copyInputStreamToFile(entity.getContent(), file);
 					return true;
 				});
+		}catch (Exception  e){
+			WebClient.saveFileQuick(finalUrl, dirName, saveAs, proxy);
+		}
 	}
 }
