@@ -17,6 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +31,7 @@ public class CreateSiteMap extends IntegrateBase {
 
 	private static final int URLS_PER_FILE = 49999;
 	private int urlCounter = 0;
-	private int fileCounter = 0;
+	private int fileCounter = 1;
 	private Path currentSitemap;
 
 	@Override
@@ -42,7 +44,7 @@ public class CreateSiteMap extends IntegrateBase {
 		doc.outputSettings().prettyPrint(true);
 		Elements urls = doc.select("url");
 
-		currentSitemap = startFile("sitemap.xml");
+		currentSitemap = startFile("sitemap"+fileCounter+".xml");
 
 		addUrlsToSiteMap(urls);
 
@@ -58,6 +60,23 @@ public class CreateSiteMap extends IntegrateBase {
 			endFile();
 		}
 
+		LocalDate now = LocalDate.now();
+		String modified = DateTimeFormatter.ofPattern("YYYY-MM-dd").format(now);
+
+		setOperation("Creating sitemap.xml");
+		XmlDocumentBuilder builder = XmlDocumentBuilder.newDoc();
+		builder.startElement("sitemapindex","xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+		for (int i = 1 ; i < fileCounter+1; i++){
+			builder.startElement("sitemap");
+			String base = getUrlBase();
+			base = base.endsWith("/")? base : base+"/";
+			builder.startElement("loc").addText(base + "sitemap"+i+".xml").endElement();
+			builder.startElement("lasmod").addText(modified).endElement();
+			builder.endElement();
+		}
+		builder.endElement();
+		Files.write(Paths.get(AppContext.getContextPath(), "sitemap.xml"), builder.toString().getBytes(StandardCharsets.UTF_8));
+		pushLog("sitemap.xml created");
 	}
 
 	private void processProductUrls(String url) throws Exception {

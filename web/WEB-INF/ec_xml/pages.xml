@@ -1406,13 +1406,6 @@
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
 			</list>
-<!--			<list item="product" tag="tag" id="tag">-->
-<!--				<aggregation parameter="tag"/>-->
-<!--				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">-->
-<!--					<var name="sec" style="translit" var="sec"/>-->
-<!--					<var name="tag" parameter="tag" ref="tag"/>-->
-<!--				</link>-->
-<!--			</list>-->
 		</single>
 	</page>
 
