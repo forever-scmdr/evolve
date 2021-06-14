@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.pages.ExecutablePagePE;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,6 +30,7 @@ public class CreateSiteMap extends IntegrateBase {
 	private static final int URLS_PER_FILE = 49999;
 	private int urlCounter = 0;
 	private int fileCounter = 0;
+	private Path currentSitemap;
 
 	@Override
 	protected void integrate() throws Exception {
@@ -36,11 +38,13 @@ public class CreateSiteMap extends IntegrateBase {
 		String sectionUrls = getPageContent(SECTION_ULS_PAGE);
 		Document doc = Jsoup.parse(sectionUrls, "", Parser.xmlParser());
 		doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+		doc.outputSettings().indentAmount(1);
+		doc.outputSettings().prettyPrint(true);
 		Elements urls = doc.select("url");
 
-		Path map = startFile("sitemap.xml");
+		currentSitemap = startFile("sitemap.xml");
 
-		map = addUrlsToSiteMap(map, urls);
+		addUrlsToSiteMap(urls);
 
 		Pattern pattern = Pattern.compile(COMMENT_PATTERN);
 		Matcher matcher = pattern.matcher(sectionUrls);
@@ -48,24 +52,39 @@ public class CreateSiteMap extends IntegrateBase {
 		while(matcher.find()){
 			String keyUnique = matcher.group("comment");
 			String url = PRODUCT_URLS_PAGE + '/' + keyUnique;
-			String content = getPageContent(url);
-			doc = Jsoup.parse(content, "", Parser.xmlParser());
-			doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-			urls = doc.select("url");
-			map = addUrlsToSiteMap(map, urls);
+			processProductUrls(url);
 		}
 		if(urlCounter > 0){
-			endFile(Paths.get(AppContext.getContextPath(), "sitemap"+fileCounter+".xml"));
+			endFile();
 		}
 
 	}
 
-	private void endFile(Path path) throws IOException {
-		Files.write(path, "</urlset>".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
-		info.pushLog(path.getFileName()+" created");
+	private void processProductUrls(String url) throws Exception {
+
+		String content = getPageContent(url);
+		Document doc = Jsoup.parse(content, "", Parser.xmlParser());
+		doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+		doc.outputSettings().indentAmount(1);
+		doc.outputSettings().prettyPrint(true);
+		Elements urls = doc.select("url");
+		addUrlsToSiteMap(urls);
+		Elements n = doc.select("next");
+		if(n != null && n.size() > 0) {
+			String next = n.first().text();
+			if (StringUtils.isNotBlank(next)) {
+				processProductUrls(next);
+			}
+		}
+	}
+
+	private void endFile() throws IOException {
+		Files.write(currentSitemap, "</urlset>".getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+		info.pushLog(currentSitemap.getFileName()+" created");
 	}
 
 	private Path startFile(String s) throws IOException {
+		setOperation("Creating " + s);
 		Path res = Paths.get(AppContext.getContextPath(), s);
 		String start = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 				"<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n" +
@@ -76,20 +95,20 @@ public class CreateSiteMap extends IntegrateBase {
 	}
 
 
-	private Path addUrlsToSiteMap(Path file, Elements urls) throws IOException {
+	private void addUrlsToSiteMap(Elements urls) throws IOException {
 		for(Element urlEl : urls){
 			String link = urlEl.outerHtml()+'\n';
-			Files.write(file, link.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+			link = link.replaceAll(" ", "\t");
+			Files.write(currentSitemap, link.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
 			urlCounter++;
 			info.increaseProcessed();
 			if(urlCounter >= URLS_PER_FILE){
 				urlCounter = 0;
-				endFile(file);
+				endFile();
 				fileCounter++;
-				file = startFile("sitemap"+fileCounter+".xml");
+				currentSitemap = startFile("sitemap"+fileCounter+".xml");
 			}
 		}
-		return file;
 	}
 
 	private String getPageContent(String url) throws Exception {

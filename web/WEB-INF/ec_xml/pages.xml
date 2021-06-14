@@ -1343,9 +1343,10 @@
 	</page>
 
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
-	<page name="sitemap" template="sitemap" cacheable="false">
+	<page name="sitemap" template="sitemap/sitemap" cacheable="false">
 		<headers content-type="xml"/>
 		<single item="url_seo_wrap"/>
+		<single item="sitemap_settings"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
@@ -1383,24 +1384,35 @@
 		</list>
 	</page>
 
-	<page name="sitemap_section" template="sitemap_section" cacheable="true">
+	<page name="sitemap_section" template="sitemap/sitemap_section" cacheable="true">
 		<request>
 			<var name="sec" style="translit"/>
+			<var name="limit" value="500"/>
+			<var name="page" value="1"/>
 		</request>
 		<single item="url_seo_wrap"/>
+		<single item="sitemap_settings"/>
 		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
 			<list item="product" id="prod">
+				<filter>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var name="page" var="page"/>
+					</pages>
+				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" ref="prod" style="translit"/>
 				</link>
 			</list>
-			<list item="product" tag="tag" id="tag">
-				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="translit" var="sec"/>
-					<var name="tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
+<!--			<list item="product" tag="tag" id="tag">-->
+<!--				<aggregation parameter="tag"/>-->
+<!--				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">-->
+<!--					<var name="sec" style="translit" var="sec"/>-->
+<!--					<var name="tag" parameter="tag" ref="tag"/>-->
+<!--				</link>-->
+<!--			</list>-->
 		</single>
 	</page>
 

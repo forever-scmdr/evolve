@@ -32,7 +32,17 @@
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
+		<child item="sitemap_settings" single="true"/>
 		<child item="url_seo" />
+	</item>
+
+	<item name="sitemap_settings" caption="Настройки карты сайта" ag-id="6190" ag-hash="-1911899027">
+		<parameter name="changefreq_index" type="string" caption="Частота обновления Главной страницы"/>
+		<parameter name="changefreq" type="string" caption="Частота обновления ТЕКСТОВЫХ СТРАНИЦ"/>
+		<parameter name="changefreq_news" type="string" caption="Частота обновления НОВОСТЕЙ"/>
+		<parameter name="changefreq_catalog" type="string" caption="Частота обновления Каталога"/>
+		<parameter name="changefreq_section" type="string" caption="Частота обновления РАЗДЕЛОВ"/>
+		<parameter name="changefreq_product" type="string" caption="Частота обновления ТОВАРОВ"/>
 	</item>
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

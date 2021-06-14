@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="f:f"
+		version="2.0">
 
 	<xsl:template name="DOCTYPE">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
@@ -7,6 +12,8 @@
 	</xsl:template>
 
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
+
+
 
 	<xsl:template match="/">
 		<xsl:call-template name="DOCTYPE"/>
@@ -37,16 +44,16 @@
 					<td class="error">
 						<span id="prcnt"></span>
 						<span id="progressBar"></span>
-						<xsl:value-of select="/page/line"/> / <xsl:value-of select="/page/total-line-number"/>
+						<xsl:value-of select="format-number(f:num(/page/line), '### ###', 'r')"/> / <xsl:value-of select="format-number(f:num(/page/total-line-number), '### ###', 'r')"/>
 					</td>
 				</tr>
 				<tr>
 					<td>Всего элементов для обработки:</td>
-					<td class="error"><xsl:value-of select="/page/to_process"/></td>
+					<td class="error"><xsl:value-of select="format-number(f:num(/page/to_process), '### ###', 'r')"/></td>
 				</tr>
 				<tr>
 					<td>Элементов обработано:</td>
-					<td class="error"><xsl:value-of select="/page/processed"/></td>
+					<td class="error"><xsl:value-of select="format-number(f:num(/page/processed), '### ###', 'r')"/></td>
 				</tr>
 				<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>
 				<xsl:for-each select="/page/message">
@@ -57,7 +64,7 @@
 				</xsl:for-each>
 				<xsl:for-each select="/page/error">
 					<tr>
-						<td class="string-no"><xsl:value-of select="@line"/></td>
+						<td class="string-no"><xsl:value-of select="format-number(f:num(@line), '### ###', 'r')"/></td>
 						<td class="error"><xsl:value-of select="."/></td>
 					</tr>
 				</xsl:for-each>
@@ -80,5 +87,12 @@
 		
 		</html>
 	</xsl:template>
+
+	<xsl:decimal-format name="r" grouping-separator=" "/>
+	<xsl:function name="f:num" as="xs:double">
+		<xsl:param name="str" as="xs:string?"/>
+		<xsl:sequence
+				select="if ($str and $str != '') then number(replace(replace($str, '[&#160;\s]', ''), ',', '.')) else number(0)"/>
+	</xsl:function>
 
 </xsl:stylesheet>
