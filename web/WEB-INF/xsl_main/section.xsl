@@ -9,10 +9,10 @@
 
 	<!-- ****************************    ПЕРЕМЕННЫЕ    ******************************** -->
 
-	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
+	<xsl:variable name="title" select="if ($is_catalog) then 'Каталог продукции' else if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
-	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
+	<xsl:variable name="main_menu_section" select="if ($is_catalog) then page/catalog else page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
 	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
@@ -145,7 +145,7 @@
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $valid_inputs/@caption"/>
-		<xsl:if test="not($subs) and $valid_inputs">
+		<xsl:if test="not($subs) and $valid_inputs and $show_devices">
 			<div class="filter filter_section">
 <!--				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">-->
 <!--					<div class="icon">-->
@@ -275,16 +275,10 @@
 
 
 
-	<xsl:template name="CONTENT">
-		<div class="content__main">
-			<xsl:call-template name="PAGE_PATH"/>
-			<xsl:call-template name="PAGE_HEADING"/>
-			<xsl:if test="$seo[1]/text">
-				<div class="section-text">
-					<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
-				</div>
-			</xsl:if>
-			<xsl:call-template name="FILTER"/>
+	<xsl:template name="CONTENT_INNER">
+		<xsl:call-template name="TAGS"/>
+		<xsl:call-template name="FILTER"/>
+		<xsl:if test="$show_devices">
 			<div class="view view_section">
 				<div class="view__column toggle-view">
 					<span>Вид:</span>
@@ -359,12 +353,12 @@
 
 			</div>
 			<xsl:call-template name="PAGINATION"/>
-			<xsl:if test="$seo[1]/bottom_text">
-				<div class="section-text" style="clear: both; margin-top: 30px;">
-					<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
-				</div>
-			</xsl:if>
-		</div>
+		</xsl:if>
+		<xsl:if test="$seo[1]/bottom_text">
+			<div class="section-text" style="clear: both; margin-top: 30px;">
+				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
@@ -380,17 +374,21 @@
 	<xsl:template name="TAGS">
 		<xsl:if test="$subs or $sel_sec/tag">
 			<xsl:if test="$show_devices">
-				<div class="labels labels_section">
+				<!--
+                <div class="labels labels_section">
 					<xsl:apply-templates select="$sel_sec/tag"/>
 				</div>
+				-->
 			</xsl:if>
 			<xsl:if test="not($sel_sec/show_subs = '0')">
-				<xsl:if test="$subs and $sub_view = 'tags'">
+				<!--
+                <xsl:if test="$subs and $sub_view = 'tags'">
 					<div class="labels labels_section">
 						<xsl:apply-templates select="$subs" mode="tag"/>
 					</div>
 				</xsl:if>
-				<xsl:if test="$subs and $sub_view = 'pics'">
+				-->
+				<xsl:if test="$subs and ($sub_view = 'pics' or $is_catalog)">
 					<div class="catalog-items">
 						<div class="catalog-items__wrap">
 							<xsl:apply-templates select="$subs" mode="pic"/>
@@ -408,9 +406,12 @@
 
 	<xsl:template match="section" mode="pic">
 		<div class="catalog-item">
+			<!--
 			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+			-->
+			<xsl:variable name="pic" select="concat('sitepics/', pic_path)"/>
 			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
 			<div class="catalog-item__info">
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>

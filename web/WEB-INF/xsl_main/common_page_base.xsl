@@ -30,6 +30,8 @@
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
 	<xsl:variable name="query" select="page/variables/q"/>
+	<xsl:variable name="is_index" select="page/@name = 'index'"/>
+	<xsl:variable name="is_catalog" select="page/@name = 'catalog'"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -49,7 +51,7 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
+	<xsl:variable name="default_canonical" select="if($is_index) then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
@@ -82,7 +84,22 @@
 
 
 
-	<xsl:template name="CONTENT" />
+	<xsl:template name="CONTENT">
+		<div class="content__main">
+			<xsl:call-template name="PAGE_PATH"/>
+			<xsl:call-template name="PAGE_HEADING"/>
+			<xsl:if test="$seo[1]/text">
+				<div class="section-text">
+					<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
+				</div>
+			</xsl:if>
+			<xsl:call-template name="CONTENT_INNER"/>
+		</div>
+	</xsl:template>
+
+
+
+	<xsl:template name="CONTENT_INNER"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
 
 
@@ -303,7 +320,7 @@
 				<img src="{if (section) then (if ($active_parent) then 'img/icon-toggle-minus.png' else 'img/icon-toggle-plus.png') else 'img/icon-toggle-dash.png'}"
 						alt="" id="cat_plus_{@id}"/>
 			</a>
-			<a class="side-menu__link" href="{if (section) then show_section else show_products}"><xsl:value-of select="name"/></a>
+			<a class="side-menu__link" href="{show_products}"><xsl:value-of select="name"/></a>
 		</div>
 		<xsl:if test="section">
 			<div id="subsec_{@id}" style="{'display:none'[not($active_parent)]}">
@@ -790,36 +807,17 @@
 					<div class="main-menu">
 						<div class="container">
 							<div class="main-menu__wrap wrap">
-								<div class="main-menu__item active">
-									<a href="index.html">
+								<div class="main-menu__item{' active'[$is_index]}">
+									<a href="{page/index_link}">
 										<span>Главная</span>
 									</a>
 								</div>
-								<div class="main-menu__item">
-									<a href="catalog.html">
+								<div class="main-menu__item{' active'[$is_catalog or $cur_sec]}">
+									<a href="{page/catalog_link}">
 										<span>Каталог</span>
 									</a>
 								</div>
-								<div class="main-menu__item">
-									<a href="about.html">
-										<span>О магазине</span>
-									</a>
-								</div>
-								<div class="main-menu__item">
-									<a href="price.html">
-										<span>Прайс-лист</span>
-									</a>
-								</div>
-								<div class="main-menu__item">
-									<a href="payments.html">
-										<span>Оплата и доставка</span>
-									</a>
-								</div>
-								<div class="main-menu__item">
-									<a href="info.html">
-										<span>Полезная информация</span>
-									</a>
-								</div>
+								<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
 								<div class="main-menu__item">
 									<a href="">
 										<span>Translate</span>

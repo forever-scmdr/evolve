@@ -317,9 +317,9 @@
 
 
 
-    <page name="catalog" template="catalog" cacheable="true">
+    <page name="catalog" template="section" cacheable="true">
 		<include name="COMMON"/>
-		<single item="catalog">
+		<single item="catalog" tag="current_section">
 			<single item="seo"/>
 		</single>
 	</page>

@@ -13,8 +13,10 @@
 	<xsl:variable name="canonical" select="concat('/', $active_menu_item, '/')"/>
 
 
-
-
+	<xsl:template name="LEFT_COLOUMN">
+		<xsl:call-template name="INC_SIDE_MENU_INTERNAL"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
+	</xsl:template>
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
@@ -28,10 +30,8 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template name="CONTENT">
 
-
-
-	<xsl:template name="CONTENT_INNER">
 		<div class="info-items info-items_section">
 			<div class="info-items__wrap">
 				<xsl:for-each select="$p/custom_page | $p/news">
@@ -70,7 +70,7 @@
 
 	</xsl:template>
 
-<!--
+
 	<xsl:template name="INC_SIDE_MENU_INTERNAL">
 		<xsl:choose>
 			<xsl:when test="$page_menu = 'catalog'"><xsl:call-template name="INC_SIDE_MENU_INTERNAL_CATALOG"/></xsl:when>
@@ -80,7 +80,7 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_PAGES">
 		<div class="side-menu">
-			- чтобы выводить все разделы надо удалить [.//@id = $p/@id] -
+			<!-- чтобы выводить все разделы надо удалить [.//@id = $p/@id] -->
 			<xsl:for-each select="page/custom_pages/custom_page[.//@id = $p/@id]/custom_page">
 				<xsl:variable name="l1_active" select="@id = $p/@id"/>
 				<div class="side-menu__item side-menu__item_level_1">
@@ -105,6 +105,6 @@
 			</xsl:for-each>
 		</div>
 	</xsl:template>
--->
+
 
 </xsl:stylesheet>
