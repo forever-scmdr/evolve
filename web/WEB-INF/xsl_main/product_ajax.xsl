@@ -15,12 +15,12 @@
 
 	<xsl:template match="/">
 		<div>
-			<div class="popup result" style="display: block;" id="product-ajax-popup">
+			<div class="popup result" id="product-ajax-popup">
 				<div class="popup__body">
 					<div class="popup__content">
 						<a class="popup__close" onclick="clearProductAjax();">×</a>
 						<div class="popup__title title title_2">
-							<xsl:value-of select="$p/name"/>
+							<xsl:value-of select="$p/name" />
 						</div>
 						<div class="device-preview">
 							<div class="device-preview__column">
@@ -30,9 +30,9 @@
 							</div>
 							<div class="device-preview__column">
 								<div class="device-preview__tags tags">
-									<xsl:for-each select="$p/tag">
-										<div class="tag">
-											<xsl:value-of select="."/>
+									<xsl:for-each select="$p/label">
+										<div class="tag device__tag {f:translit(.)}">
+											<xsl:value-of select="." />
 										</div>
 									</xsl:for-each>
 								</div>

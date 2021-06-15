@@ -153,7 +153,6 @@ $(document).on("click", "body", function(e){
 });
 
 function showDetails(link) {
-	$("#product-ajax-popup").show();
 	insertAjax(link, 'product-ajax-content', function(){
 		$("#fotorama-ajax").fotorama();
 		$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
@@ -166,6 +165,7 @@ function showDetails(link) {
 			$(href).show();
 			$(href).addClass("active");
 		});
+		$("#product-ajax-popup").show("fade", 130);
 	});
 }
 
@@ -183,7 +183,7 @@ $("a.tab").click(function() {
 	$("div.tab-container").hide(0);
 	$("a.tab").removeClass("tab_active");
 	var showSelector = $(this).attr("href");
-	$(showSelector).show("fade", 150);
+	$(showSelector).show("fade", 100);
 	$(this).addClass("tab_active");
 	return false;
 });
@@ -191,11 +191,11 @@ $("a.tab").click(function() {
 $(document).on("click", ".toggle", function(e){
 	e.preventDefault();
 	var $t = $($(this).attr("href"));
-	$t.toggle();
 	var rel = $(this).attr("rel");
 	if(rel != '' || rel != null || typeof rel != "undefined"){
 		var html = $(this).text();
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
+	$t.toggle('fade', 100);
 });
