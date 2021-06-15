@@ -468,10 +468,10 @@
 		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY" type="prefix">
+				<fulltext limit="5" compare="EVERY">
 					<var var="q"/>
 				</fulltext>
-<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -596,7 +596,7 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="prod" style="path"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra"/>
@@ -1773,7 +1773,7 @@
 		<command class="extra.SetOptional"/>
 	</page>
 
-	<page name="admin_extra" template="admin/extra" authority-groups ="common">
+	<page name="admin_extra" template="admin/extra" authority-groups="common">
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
@@ -1807,22 +1807,6 @@
 	</page>
 
 
-	<page name="page_404" template="admin/error_page">
-		<include name="COMMON" />
-		<single item="error_page">
-			<list item="page_extra"/>
-		</single>
-	</page>
-
-	<page name="update_error_page" >
-		<command class="ecommander.fwk.CreateErrorJspCommand"/>
-	</page>
-
-	<page name="clean_garbage_files" template="integration">
-		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">
-			<result name="complete" type="xml" />
-		</command>
-	</page>
 
 
 <!--	<page name="tuples">-->
