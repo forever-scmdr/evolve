@@ -318,13 +318,14 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				xml.startElement("group", "name", k);
 				for (String header : v) {
 					String cellValue = getValue(header);
+					String caption = getOriginalHeader(header);
 					cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
-					Matcher m = PARAM_WITH_GROUP.matcher(header);
-					String param = m.matches() ? m.group("param").trim() : header;
+					Matcher m = PARAM_WITH_GROUP.matcher(caption);
+					caption = m.matches() ? m.group("param").trim() : caption;
 
 					xml.startElement("parameter")
 							.startElement("name")
-							.addText(firstUpperCase(param))
+							.addText(caption)
 							.endElement()
 							.startElement("value")
 							.addText(cellValue)
@@ -341,11 +342,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			paramGroups.forEach((k, v) -> {
 				xml.startElement("group", "name", k);
 				for (String header : v) {
-					Matcher m = PARAM_WITH_GROUP.matcher(header);
-					String param = m.matches() ? m.group("param").trim() : header;
+					String caption = getOriginalHeader(header);
+					Matcher m = PARAM_WITH_GROUP.matcher(caption);
+					caption = m.matches() ? m.group("param").trim() : caption;
 					xml.startElement("parameter")
 							.startElement("name")
-							.addText(firstUpperCase(param))
+							.addText(caption)
 							.endElement()
 							.endElement();
 				}
