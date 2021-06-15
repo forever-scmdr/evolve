@@ -71,7 +71,7 @@ public class CreateSiteMap extends IntegrateBase {
 			String base = getUrlBase();
 			base = base.endsWith("/")? base : base+"/";
 			builder.startElement("loc").addText(base + "sitemap"+i+".xml").endElement();
-			builder.startElement("lasmod").addText(modified).endElement();
+			builder.startElement("lastmod").addText(modified).endElement();
 			builder.endElement();
 		}
 		builder.endElement();

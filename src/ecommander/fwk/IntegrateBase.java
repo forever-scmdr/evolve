@@ -318,7 +318,7 @@ public abstract class IntegrateBase extends Command {
 				readyToStart = makePreparations();
 			} catch (Exception e) {
 				ServerLogger.error(e.getMessage(), e);
-				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+				getInfo().addError(ExceptionUtils.getStackTrace(e), -1,-1);
 			}
 
 			if (!readyToStart) {
