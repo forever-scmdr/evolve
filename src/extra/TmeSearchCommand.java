@@ -30,6 +30,7 @@ public class TmeSearchCommand extends Command {
 	private static final String SEARCH_URL = "https://api.tme.eu/Products/Search.xml";
 	private static final String PRICING_URL = "https://api.tme.eu/Products/GetPricesAndStocks.xml";
 	private static final String PARAMS_URL = "https://api.tme.eu/Products/GetParameters.xml";
+	private static final String DOCUMENTATION_URL = "https://api.tme.eu/Products/GetProductsFiles.xml";
 	//private static final String LANGUAGES_URL = "https://api.tme.eu/Utils/GetLanguages.xml";
 	//private static final String COUNTRIES_URL = "https://api.tme.eu/Utils/GetCountries.xml";
 	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -98,6 +99,18 @@ public class TmeSearchCommand extends Command {
 			for(Element el : techList){
 				String symbol = el.select("Symbol").text();
 				Element paramsEl = el.select("ParameterList").first();
+				Element product = productMap.get(symbol);
+				product.appendChild(paramsEl);
+			}
+		}
+
+		ArrayList<String> documentations = loadExtraInfo(DOCUMENTATION_URL, productMap.keySet());
+		for(String documentation : documentations){
+			Document docDoc = Jsoup.parse(documentation,"",Parser.xmlParser());
+			Elements docList = docDoc.select("Product");
+			for(Element el : docList){
+				String symbol = el.select("Symbol").text();
+				Element paramsEl = el.select("DocumentList").first();
 				Element product = productMap.get(symbol);
 				product.appendChild(paramsEl);
 			}

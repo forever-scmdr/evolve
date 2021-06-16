@@ -80,7 +80,10 @@
 				<xsl:value-of select="if($product/unit != '') then $product/unit else 'шт'"/>
 			</td>
 			<td>
+				<xsl:if test="aux != '' or f:num(qty_avail) &gt; 0">
 				<xsl:value-of select="normalize-space(replace(replace($price, '\.', ','), upper-case($curr), ''))"/>
+				</xsl:if>
+				<xsl:if test="not(aux != '') and f:num(qty_avail) = 0">Цена по запросу</xsl:if>
 			</td>
 			<td>
 				<xsl:value-of select="upper-case($curr)"/>

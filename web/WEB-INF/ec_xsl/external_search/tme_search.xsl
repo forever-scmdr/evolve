@@ -133,6 +133,19 @@
 						</xsl:if>
 						<br/><span><b>Вес:</b>&#160;<xsl:value-of select="concat(normalize-space(Weight), normalize-space(WeightUnit))"/></span>
 					</p>
+
+					<xsl:if test="DocumentList/Document != ''">
+						<p>
+							<xsl:for-each select="DocumentList/Document">
+								<xsl:variable name="not_first" select="position() &gt; 1"/>
+								<xsl:if test="$not_first"><br/></xsl:if>
+								<a href="{normalize-space(DocumentUrl)}" target="_blank">
+									<xsl:value-of select="if($not_first) then concat('Документ PDF', position()) else 'Документ PDF'"/>
+								</a>
+							</xsl:for-each>
+						</p>
+					</xsl:if>
+
 					<xsl:if test="$params">
 
 						<xsl:variable name="sbl" select="replace(replace(normalize-space(Symbol), '\.', '_dot_'), '/', '_sls_')"/>

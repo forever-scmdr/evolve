@@ -229,6 +229,24 @@
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				<div class="footer__column">
+					<div class="title_3">Курсы валют</div>
+					<table style="min-width:0;">
+						<xsl:for-each select="page/currency">
+							<xsl:variable name="title" select="if(f:num(scale) &gt; 1) then concat(scale, ' ', name) else name"/>
+							<tr>
+								<td style="padding: .5rem 0;">
+									<b>
+										<xsl:value-of select="$title"/>:
+									</b>
+								</td>
+								<td style="padding: .5rem 0; padding-left: .5rem;">
+									<xsl:value-of select="concat(format-number(f:num(ratio) * (f:num(q)+1), '#0.0000'), ' BYN')"/>
+								</td>
+							</tr>
+						</xsl:for-each>					
+					</table>
+				</div>
+				<div class="footer__column">
 					<p>Электронные компоненты Чип Электроникс</p>
                   <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A
                      								<br />Ст. метро «Пролетарская»
@@ -916,7 +934,7 @@
 			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 			<input type="submit" class="button header__button" value="Поиск" />
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL
+				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL, TME
 			</div>
 		</form>
 	</xsl:template>

@@ -112,7 +112,7 @@
  
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
-						<xsl:if test="f:num($p/price) &gt; 0">
+						<xsl:if test="f:num($p/price) &gt; 0 and f:num($p/qty) &gt; 0">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
 								<div class="price_normal">
