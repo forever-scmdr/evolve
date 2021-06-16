@@ -93,6 +93,7 @@ public class ImportFerriteRu extends IntegrateBase implements ItemNames {
 		section = Item.newChildItem(sectionType, catalog);
 		section.setValue(ItemNames.plain_section_.NAME, FERRITE_RU);
 		section.setValue(ItemNames.plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
+		addDebug(section);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 		// Разбор прайс-листа
 		try {

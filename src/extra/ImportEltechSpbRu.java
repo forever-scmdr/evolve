@@ -124,6 +124,7 @@ public class ImportEltechSpbRu extends IntegrateBase implements ItemNames {
 		section = Item.newChildItem(sectionType, catalog);
 		section.setValue(plain_section_.NAME, ELTECH_RU);
 		section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
+		addDebug(section);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 
 		// Разбор прайс-листа

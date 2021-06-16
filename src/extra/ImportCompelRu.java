@@ -108,6 +108,7 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 		section = Item.newChildItem(sectionType, catalog);
 		section.setValue(plain_section_.NAME, COMPEL_RU);
 		section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
+		addDebug(section);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 		// Разбор прайс-листа
 		DBFReader reader = null;
