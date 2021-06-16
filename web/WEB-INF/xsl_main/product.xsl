@@ -192,7 +192,7 @@
 							В наличии: <strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
 						</xsl:if>
 					</div>
-					<div class="product-order__order">
+					<div class="product-order__order" id="cart_list_{$p/@id}">
 						<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 							<xsl:if test="$has_price">
 								<input type="number" class="input input_type_number" name="qty"

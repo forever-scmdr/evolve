@@ -493,6 +493,7 @@
 				<link href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
 				<link href="js/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
 				<script src="js/jquery-3.5.1.min.js"></script>
+				<script src="js/jquery.form.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
 				<script type="text/javascript" src="js/nanogallery/jquery.nanogallery2.js"></script>
@@ -561,7 +562,7 @@
 						<div class="container">
 							<div class="header__wrap wrap">
 								<div class="header__column logo">
-									<a href="index.html">
+									<a href="{page/index_link}">
 										<img class="logo__image" src="img/logo.png" alt=""/>
 									</a>
 									<div class="work-hours logo__hours">
@@ -603,87 +604,12 @@
 									</form>
 								</div>
 								<div class="header__column header__column_links header-icons">
-									<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icons__icon header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no" >
 										<div class="header-icon__icon">
 											<img src="img/icon-cart.png" alt=""/>
-											<div class="header-icon__counter">2</div>
 										</div>
 										<div class="header-icon__info">
-											<a href="">Корзина</a>
-											<span>58,25</span>
-											<a class="header-icon__dd">
-												<img src="img/icon-caret-down-small.png" alt=""/>
-											</a>
-										</div>
-										<div class="dd-cart">
-											<div class="dd-cart__scroll">
-												<div class="dd-cart__item">
-													<a class="dd-cart__image" href="">
-														<img src="img/image-device.jpg" alt=""/>
-													</a>
-													<div class="dd-cart__info">
-														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-														<div class="dd-cart__code">Кол-во: 6 шт.</div>
-														<div class="ddcart__price">21,17 руб.</div>
-													</div>
-													<a class="dd-cart__close" href="">
-														<img src="img/icon-close.png" alt=""/>
-													</a>
-												</div>
-												<div class="dd-cart__item">
-													<a class="dd-cart__image" href="">
-														<img src="img/image-device.jpg" alt=""/>
-													</a>
-													<div class="dd-cart__info">
-														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-														<div class="dd-cart__code">Кол-во: 6 шт.</div>
-														<div class="ddcart__price">21,17 руб.</div>
-													</div>
-													<a class="dd-cart__close" href="">
-														<img src="img/icon-close.png" alt=""/>
-													</a>
-												</div>
-												<div class="dd-cart__item">
-													<a class="dd-cart__image" href="">
-														<img src="img/image-device.jpg" alt=""/>
-													</a>
-													<div class="dd-cart__info">
-														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-														<div class="dd-cart__code">Кол-во: 6 шт.</div>
-														<div class="ddcart__price">21,17 руб.</div>
-													</div>
-													<a class="dd-cart__close" href="">
-														<img src="img/icon-close.png" alt=""/>
-													</a>
-												</div>
-												<div class="dd-cart__item">
-													<a class="dd-cart__image" href="">
-														<img src="img/image-device.jpg" alt=""/>
-													</a>
-													<div class="dd-cart__info">
-														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-														<div class="dd-cart__code">Кол-во: 6 шт.</div>
-														<div class="ddcart__price">21,17 руб.</div>
-													</div>
-													<a class="dd-cart__close" href="">
-														<img src="img/icon-close.png" alt=""/>
-													</a>
-												</div>
-												<div class="dd-cart__item">
-													<a class="dd-cart__image" href="">
-														<img src="img/image-device.jpg" alt=""/>
-													</a>
-													<div class="dd-cart__info">
-														<a class="dd-cart__name" href="">Резистор SMD 0402 11K 1% / RC0402FR-0711KL (10шт.)</a>
-														<div class="dd-cart__code">Кол-во: 6 шт.</div>
-														<div class="ddcart__price">21,17 руб.</div>
-													</div>
-													<a class="dd-cart__close" href="">
-														<img src="img/icon-close.png" alt=""/>
-													</a>
-												</div>
-											</div>
-											<a class="dd-cart__button" href="cart.html">Перейти в корзину</a>
+											<a>Корзина ..........</a>
 										</div>
 									</div>
 									<div class="header-icons__icon header-icon" id="some_ajax">

@@ -1003,13 +1003,18 @@
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
 			<single item="cart">
-				<list item="bought">
+				<list item="bought" id="bought">
 					<list item="abstract_product" id="product" tag="product">
 						<link name="to_cart" target="cart_action">
 							<var name="action" value="addToCart"/>
 							<var name="prod" ref="product"/>
 						</link>
 					</list>
+					<link name="delete" target="cart_action">
+						<var name="action" value="delete"/>
+						<var name="target" value="cart_ajax"/>
+						<var name="bought" ref="bought"/>
+					</link>
 				</list>
 			</single>
 		</session>
@@ -1025,9 +1030,10 @@
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="target" value="cart"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
-		<link name="cart" target="cart"/>
+		<link name="cart" target-var="target"/>
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
