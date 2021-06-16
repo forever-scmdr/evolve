@@ -23,8 +23,12 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -86,6 +90,8 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
+		Path log = Paths.get(AppContext.getContextPath(), getClass().getSimpleName()+"_log.txt");
+		Files.write(log, ("start: "+ new Date()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
 	}
 
 	private void addRelatedProducts() throws Exception {
@@ -154,6 +160,8 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 
 	@Override
 	protected boolean makePreparations() throws Exception {
+		Path log = Paths.get(AppContext.getContextPath(), getClass().getSimpleName()+"_log.txt");
+		Files.write(log, ("start: "+ new Date()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
 		URL fileUrl = new URL(FILE_URL);
 		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "catalog_export.xml");
 		FileUtils.deleteQuietly(destPath.toFile());
@@ -161,17 +169,6 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 		FileUtils.copyURLToFile(fileUrl, destPath.toFile());
 		info.pushLog("Файл скачан");
 		xml = destPath.toFile();
-//		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
-//		if (!integrationDir.exists()) {
-//			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
-//			return false;
-//		}
-//		xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
-//		if (xmls.size() == 0) {
-//			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
-//			return false;
-//		}
-//		info.setToProcess(xmls.size());
 		return true;
 	}
 
