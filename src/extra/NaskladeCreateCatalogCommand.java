@@ -161,6 +161,7 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 	@Override
 	protected boolean makePreparations() throws Exception {
 		Path log = Paths.get(AppContext.getContextPath(), getClass().getSimpleName()+"_log.txt");
+		if(Files.notExists(log)){Files.createFile(log);}
 		Files.write(log, ("\nstart: "+ new Date()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
 		URL fileUrl = new URL(FILE_URL);
 		Path destPath = Paths.get(AppContext.getRealPath(INTEGRATION_DIR), "catalog_export.xml");
