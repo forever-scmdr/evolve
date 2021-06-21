@@ -11,6 +11,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  * Created by E on 25/1/2019.
@@ -44,15 +45,18 @@ public class UpdateProductParamsXml implements ItemEventCommandFactory {
 					try {
 						Document doc = JsoupUtils.parseXml(paramsXml.getStringValue(XML));
 						for (ParameterDescription param : paramsItem.getItemType().getParameterList()) {
-							/*
 							if (paramsItem.isValueNotEmpty(param.getName())) {
-								xml.startElement(PARAMETER).startElement(NAME).addText(param.getCaption()).endElement();
-								for (String value : paramsItem.outputValues(param.getName())) {
-									xml.startElement(VALUE).addText(value).endElement();
+								Element nameEl = doc.select(NAME + ":containsOwn(" + param.getCaption() + ")").first();
+								if (nameEl == null) {
+									hasNoXml = true;
+									break;
 								}
-								xml.endElement();
+								Element paramEl = nameEl.parent();
+								paramEl.select(VALUE).remove();
+								for (String value : paramsItem.outputValues(param.getName())) {
+									paramEl.append("<" + VALUE + ">" + value + "</" + VALUE + ">");
+								}
 							}
-							*/
 						}
 					} catch (Exception e) {
 						hasNoXml = true;

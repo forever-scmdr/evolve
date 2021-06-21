@@ -8,6 +8,7 @@
 	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
 	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
 	<xsl:variable name="is_subscribe" select="page/optional_modules/product_subscribe/status = 'on'"/>
+	<xsl:variable name="is_quick_view" select="page/optional_modules/display_settings/product_quick_view = 'on'"/>
 	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
 	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
@@ -54,10 +55,11 @@
 			</div>
 
 			<!-- quick view (not displayed, delete <div> with display: none to show) -->
-			<!-- TODO add display check -->
-			<div style="display: none">
-				<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
-			</div>
+			<xsl:if test="$is_quick_view">
+				<div>
+					<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
+				</div>
+			</xsl:if>
 
 			<!-- device title -->
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
@@ -192,10 +194,11 @@
 				</div>
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
-				<!-- TODO add display check -->
-				<div style="display: none">
-					<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
-				</div>
+				<xsl:if test="$is_quick_view">
+					<div style="display: none">
+						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
+					</div>
+				</xsl:if>
 
 				<!-- device image -->
 				<div class="device__image img">
