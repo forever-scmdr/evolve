@@ -545,6 +545,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 	    checkStrategy();
 		loadCart();
+		if(cart == null) return false;
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal totalSum = new BigDecimal(0); // полная сумма
 		double totalQuantity = 0;

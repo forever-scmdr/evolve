@@ -224,7 +224,7 @@ function generateToCartButtons(id) {
 		var $id = $("<input>",{
 			 "name" : "id"
 			,"type" : "hidden"
-			,"value" : "cart_list_" + id + "-" + i
+			,"value" : id + "-" + i
 		});
 
 		var $button = "<button class=\"button button_request\" type=\"submit\">Заказать</button>";
