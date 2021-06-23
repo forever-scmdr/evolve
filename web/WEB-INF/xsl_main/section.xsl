@@ -82,7 +82,14 @@
 
 
 	<xsl:template name="CONTENT">
-		
+		<style>
+			.fotorama__nav{text-align: left;}
+		</style>
+		<script>
+			$(document).ready(function(){
+				$(".fotorama").removeAttr("data-auto").fotorama();
+			});
+		</script>
 		<xsl:if test="$seo[1]/text">
 			<div class="section-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -133,10 +140,18 @@
 				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
+
+
+
 	</xsl:template>
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				generateToCartButtons(<xsl:value-of select="$sel_sec/@id"/>);
+			});
+		</script>
 		<xsl:call-template name="CART_SCRIPT"/>
 	</xsl:template>
 

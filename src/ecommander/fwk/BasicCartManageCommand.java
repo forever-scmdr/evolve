@@ -395,7 +395,7 @@ public abstract class BasicCartManageCommand extends Command {
      * @param bought
      * @param qtyWanted
      */
-	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
+	protected void setBoughtQtys(Item product, Item bought, double qtyWanted) {
 		byte b = getInitiator().getRole("registered");
 		String qp = b > -1? "qty_opt" : QTY_PARAM;
         double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
@@ -455,7 +455,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {

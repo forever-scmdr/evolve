@@ -23,11 +23,11 @@
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
 										<a href="{$p/show_product}">
-											<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" />
+											<img src="{if($p/main_pic) then concat($p/path, $p/main_pic) else 'img/no_image.png'}" alt="{$p/name}" />
 										</a>
 									</div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a><br/>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
 									</div>
 								</xsl:if>
