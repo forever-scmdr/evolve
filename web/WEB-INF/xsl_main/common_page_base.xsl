@@ -293,7 +293,7 @@
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
 			<xsl:if test="header and not(header = '')"><div class="footer__title"><xsl:value-of select="header" /></div></xsl:if>
-			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+			<div class="footer__text"><xsl:value-of select="text|code" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 

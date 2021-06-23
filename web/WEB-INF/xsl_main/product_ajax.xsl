@@ -19,7 +19,7 @@
 				<div class="popup__body">
 					<div class="popup__content">
 						<a class="popup__close" onclick="clearProductAjax();">×</a>
-						<div class="popup__title title title_2">
+						<div class="popup__title title title_2">Товар: 
 							<xsl:value-of select="$p/name" />
 						</div>
 						<div class="device-preview">
@@ -30,16 +30,16 @@
 							</div>
 							<div class="device-preview__column">
 								<div class="device-preview__tags tags">
-									<xsl:for-each select="$p/label">
-										<div class="tag device__tag {f:translit(.)}">
-											<xsl:value-of select="." />
+									<xsl:for-each select="$p/tag">
+										<div class="tag">
+											<xsl:value-of select="."/>
 										</div>
 									</xsl:for-each>
 								</div>
 								<div class="device-actions">
 									<div class="device-actions__price price">
 										<xsl:if test="$has_price">
-											<div class="price__new">
+											<div class="price__new">Цена: 
 												<xsl:value-of select="$price"/> р.
 											</div>
 										</xsl:if>

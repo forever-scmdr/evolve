@@ -43,11 +43,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Объектов для обработки:</td>
+					<td>Создано разделов (классов):</td>
 					<td class="error"><xsl:value-of select="/page/to_process"/></td>
 				</tr>
 				<tr>
-					<td>Обработано объектов:</td>
+					<td>Обработано товаров:</td>
 					<td class="error"><xsl:value-of select="/page/processed"/></td>
 				</tr>
 				<tr>
@@ -55,7 +55,7 @@
 					<td class="error"><xsl:value-of select="/page/items-indexed"/></td>
 				</tr>
 				<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>
-				<xsl:for-each select="/page/log">
+				<xsl:for-each select="/page/message">
 					<tr>
 						<td class="string-no"><xsl:value-of select="@time"/></td>
 						<td class="error"><xsl:value-of select="."/></td>
