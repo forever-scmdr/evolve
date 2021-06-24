@@ -1807,6 +1807,14 @@
 	</page>
 
 
+	<page name="import_news_from_ancient" template="integration/create_excel">
+		<request>
+			<var name="link" value="http://www.baaz.by/news_export"/>
+		</request>
+		<command class="extra.ImportNewsFromAncient">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
 
 
 <!--	<page name="tuples">-->
