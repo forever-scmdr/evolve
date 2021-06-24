@@ -201,50 +201,61 @@ $(document).on("click", ".toggle", function(e){
 });
 
 function generateToCartButtons(id) {
-	$tr = $(".deviceList tr:gt(0)");
-	$("td",{"style" : "background: lime"}).insertAfter(".deviceList tr:eq(0) td:eq(1)");
-	$tr.each(function (i) {
-		var $td = $("<td>");
-		var $div = $("<div>",{
-			"id" : "cart_list_" + id +"-" + i,
-			"class" : "order device-order"
-		});
-		var $form = $("<form>", {
-			"action": "cart_action/?action=addCustomToCart"
-			, "method": "post"
-			, "ajax": true
-			, "ajax-loader-id": "cart_list_" + id + "-" + i
-		});
-		var $code = $("<input>", {
-			"name" : "prod"
-			,"value" : $(this).children("td:eq(0)").text()
-			,"type" : "hidden"
-		});
+	
 
-		var $id = $("<input>",{
-			 "name" : "id"
-			,"type" : "hidden"
-			,"value" : id + "-" + i
-		});
+	$(".deviceList").each(function(){
+		$tr = $(this).find("tr:gt(0)");
+		$("<td>").insertAfter($(this).find("tr:eq(0) td:eq(0)"));
 
-		var $button = "<button class=\"button button_request\" type=\"submit\">Заказать</button>";
+		$tr.each(function (i) {
+			var $td = $("<td>");
+			var $div = $("<div>",{
+				"id" : "cart_list_" + id +"-" + i,
+				"class" : "order device-order"
+			});
+			var $form = $("<form>", {
+				"action": "cart_action/?action=addCustomToCart"
+				, "method": "post"
+				, "ajax": true
+				, "ajax-loader-id": "cart_list_" + id + "-" + i
+			});
+			var $code = $("<input>", {
+				"name" : "prod"
+				,"value" : $(this).children("td:eq(0)").text()
+				,"type" : "hidden"
+			});
 
-		$form.append($code);
-		$form.append($id);
-		$form.append($button);
-		$div.append($form);
-		$td.append($div);
-		$td.insertAfter($(this).children("td:eq(1)"));
+			var $id = $("<input>",{
+				 "name" : "id"
+				,"type" : "hidden"
+				,"value" : id + "-" + i
+			});
 
-		$form.submit(function (event) {
-			event.preventDefault();
-			var elem = $(this);
-			var loaderId = elem.attr("ajax-loader-id");
-			if (loaderId) {
-				postForm(elem, loaderId);
-			} else {
-				postForm(elem);
+			var $button = "<button class=\"button button_request\" type=\"submit\">Заказать</button>";
+
+			$form.append($code);
+			$form.append($id);
+			$form.append($button);
+			$div.append($form);
+			$td.append($div);
+			$td.insertAfter($(this).children("td:eq(0)"));
+
+			var rowspan = $(this).children("td:eq(0)").attr("rowspan");
+			if(rowspan != undefined && rowspan != ""){
+				$td.attr("rowspan", rowspan);
 			}
+
+			$form.submit(function (event) {
+				event.preventDefault();
+				var elem = $(this);
+				var loaderId = elem.attr("ajax-loader-id");
+				if (loaderId) {
+					postForm(elem, loaderId);
+				} else {
+					postForm(elem);
+				}
+			});
 		});
+
 	});
 }
