@@ -9,8 +9,8 @@
                   select="'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'"/>
 
     <xsl:template match="/">
-        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="{$schema_location}">
+		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <xsl:text disable-output-escaping="yes">
    &lt;!--**********************************************************************************--&gt;
 </xsl:text>

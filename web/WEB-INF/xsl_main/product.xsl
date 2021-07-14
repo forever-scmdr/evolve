@@ -85,7 +85,7 @@
 		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
-				<div class="tags">
+				<div class="tags device__tags">
 					<xsl:for-each select="$p/label">
 						<div class="tag device__tag {f:translit(.)}">
 							<xsl:value-of select="." />
@@ -162,13 +162,13 @@
 						<div class="add add_product">
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+									<div class="icon"><img src="img/icon-star-1.svg" alt="" /></div>
 									<span><xsl:value-of select="$compare_add_label"/></span>
 								</a>
 							</div>
 							<div id="compare_list_{$p/@id}">
 								<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+									<div class="icon"><img src="img/icon-balance-1.svg" alt="" /></div>
 									<span><xsl:value-of select="$go_to_compare_label"/></span>
 								</a>
 							</div>
@@ -180,32 +180,28 @@
 						<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
 						<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 					</xsl:choose>
-					-->
-					<div class="extra-buttons product-actions mitaba">
-						<xsl:if test="$is_my_price">
-							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" class="button secondary button_size_lg"
-							   data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
-						</xsl:if>
-						<xsl:if test="$is_one_click">
-							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" class="button_size_lg"
-							   data-target="#modal-one_click">Купить в 1 клик</a>
-						</xsl:if>
-					</div>
-					<!-- один клик и своя цена не сверстаны -->
-					<xsl:if test="$is_one_click or $is_my_price">
-						<div class="extra-buttons">
-<!--							<xsl:if test="$is_one_click">-->
-<!--								<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>-->
-<!--							</xsl:if>-->
-<!--							<xsl:if test="$is_my_price">-->
-<!--								<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>-->
-<!--							</xsl:if>-->
-							<xsl:if test="$is_subscribe">
-								<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
-							</xsl:if>
+					--><!--
+						<div class="extra-buttons product-actions mitaba">
+							<a class="button secondary button_size_lg" data-toggle="modal" data-target="#cheaper">Нашли дешевле?</a>
+							<a class="button_size_lg" href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 						</div>
-					</xsl:if>
-
+						-->
+						<!-- один клик и своя цена не сверстаны -->
+						<!--
+						<xsl:if test="$is_one_click or $is_my_price">
+							<div class="extra-buttons">
+								<xsl:if test="$is_one_click">
+									<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
+								</xsl:if>
+								<xsl:if test="$is_my_price">
+									<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
+								</xsl:if>
+								<xsl:if test="$is_subscribe">
+									<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
+								</xsl:if>
+							</div>
+						</xsl:if>
+						-->
 					<!-- параметры -->
 					<table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
@@ -220,8 +216,8 @@
 						</xsl:for-each>
 					</table>
 				</xsl:if>
-
-
+				
+				
 
 				<!-- вложенные товары не сверстаны -->
 				<xsl:if test="$has_lines">

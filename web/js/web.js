@@ -21,14 +21,14 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
 		$(menuSelector).show('fade',150);
 	});
 	$(menuTriggerSelector).mouseleave(function(){
-			_hoverHideMenuTimeout = setTimeout(function(){
+		_hoverHideMenuTimeout = setTimeout(function(){
 			$(menuSelector).hide('fade',150);
 		},500);
 	});
 
 	$(menuSelector).mouseenter(function(){
 		clearTimeout(_hoverHideMenuTimeout);
-		
+
 	});
 	$(menuSelector).mouseleave(function(){
 		_hoverHideMenuTimeout = setTimeout(function(){
@@ -91,7 +91,7 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	$(l2MenuContainerSelector).hover(
 		function() {
 			clearTimeout(_hoverHideMenuTimeout);
-			console.log("l2MenuContainerSelector ENTER");			
+			console.log("l2MenuContainerSelector ENTER");
 			clearTimeout(_catalogPopupMenuHideTimeout);
 		},
 		function() {
@@ -153,6 +153,7 @@ $(document).on("click", "body", function(e){
 });
 
 function showDetails(link) {
+	$("#product-ajax-popup").show();
 	insertAjax(link, 'product-ajax-content', function(){
 		$("#fotorama-ajax").fotorama();
 		$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
@@ -165,7 +166,6 @@ function showDetails(link) {
 			$(href).show();
 			$(href).addClass("active");
 		});
-		$("#product-ajax-popup").show("fade", 130);
 	});
 }
 
@@ -183,7 +183,7 @@ $("a.tab").click(function() {
 	$("div.tab-container").hide(0);
 	$("a.tab").removeClass("tab_active");
 	var showSelector = $(this).attr("href");
-	$(showSelector).show("fade", 100);
+	$(showSelector).show("fade", 150);
 	$(this).addClass("tab_active");
 	return false;
 });
@@ -191,11 +191,71 @@ $("a.tab").click(function() {
 $(document).on("click", ".toggle", function(e){
 	e.preventDefault();
 	var $t = $($(this).attr("href"));
+	$t.toggle();
 	var rel = $(this).attr("rel");
 	if(rel != '' || rel != null || typeof rel != "undefined"){
 		var html = $(this).text();
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
-	$t.toggle('fade', 100);
 });
+
+function generateToCartButtons(id) {
+	
+
+	$(".deviceList").each(function(){
+		$tr = $(this).find("tr:gt(0)");
+		$("<td>").insertAfter($(this).find("tr:eq(0) td:eq(0)"));
+
+		$tr.each(function (i) {
+			var $td = $("<td>");
+			var $div = $("<div>",{
+				"id" : "cart_list_" + id +"-" + i,
+				"class" : "order device-order"
+			});
+			var $form = $("<form>", {
+				"action": "cart_action/?action=addCustomToCart"
+				, "method": "post"
+				, "ajax": true
+				, "ajax-loader-id": "cart_list_" + id + "-" + i
+			});
+			var $code = $("<input>", {
+				"name" : "prod"
+				,"value" : $(this).children("td:eq(0)").text()
+				,"type" : "hidden"
+			});
+
+			var $id = $("<input>",{
+				 "name" : "id"
+				,"type" : "hidden"
+				,"value" : id + "-" + i
+			});
+
+			var $button = "<button class=\"button button_request\" type=\"submit\">Заказать</button>";
+
+			$form.append($code);
+			$form.append($id);
+			$form.append($button);
+			$div.append($form);
+			$td.append($div);
+			$td.insertAfter($(this).children("td:eq(0)"));
+
+			var rowspan = $(this).children("td:eq(0)").attr("rowspan");
+			if(rowspan != undefined && rowspan != ""){
+				$td.attr("rowspan", rowspan);
+			}
+
+			$form.submit(function (event) {
+				event.preventDefault();
+				var elem = $(this);
+				var loaderId = elem.attr("ajax-loader-id");
+				if (loaderId) {
+					postForm(elem, loaderId);
+				} else {
+					postForm(elem);
+				}
+			});
+		});
+
+	});
+}

@@ -153,19 +153,19 @@
 	-->
 	<item name="currencies" caption="Курсы валют" ag-id="1781" ag-hash="-1089470353">
 		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
-		<parameter name="RUB_scale" type="currency-precise" default="100" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_scale" type="currency-precise" caption="Российский рубль (Scale)"/>
 		<parameter name="RUB_update" type="byte" default="1" caption="Российский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
 		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
-		<parameter name="USD_scale" type="currency-precise" default="1" caption="Доллар США (Scale)"/>
+		<parameter name="USD_scale" type="currency-precise" caption="Доллар США (Scale)"/>
 		<parameter name="USD_update" type="byte" default="1" caption="Доллар США - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
 		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
-		<parameter name="EUR_scale" type="currency-precise" default="1" caption="Евро (Scale)"/>
+		<parameter name="EUR_scale" type="currency-precise" caption="Евро (Scale)"/>
 		<parameter name="EUR_update" type="byte" default="1" caption="Евро - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
@@ -192,6 +192,7 @@
 		<child item="product"/>
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
+		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка разделов"/>
@@ -468,7 +469,8 @@
 
 	<item name="block" caption="Блок текста (кода)" key="header" ag-id="905" ag-hash="93832333">
 		<parameter name="header" type="string" caption="Заголовок"/>
-		<parameter name="text" type="short-text" caption="Текст (код)"/>
+		<parameter name="text" type="short-text" caption="Текст"/>
+		<parameter name="code" type="plain-text" caption="Код"/>
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
 	</item>
 
@@ -706,12 +708,6 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
-	<item name="error_page" caption="Страница 404" ag-id="1826" ag-hash="1636060774">
-		<parameter name="text" type="text" caption="Текст"/>
-		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
-		<child item="page_extra" inline="true"/>
-	</item>
-
 	<item name="custom_pages" caption="Информационные разделы" ag-id="26" ag-hash="727106934">
 		<child item="menu_item"/>
 	</item>
@@ -817,11 +813,11 @@
 			<value>off</value>
 			<value>on</value>
 		</parameter>
-		<parameter name="product_update_subscribe" type="string" caption="Подписка на появление товара в каталоге" default="off">
+		<parameter name="jur_price" type="string" caption="Отдельная оптовая цена для зарегистрированных оптовых клиентов" default="off">
 			<value>off</value>
 			<value>on</value>
 		</parameter>
-		<parameter name="product_quick_view" type="string" caption="Быстрый просмотр товара" default="off">
+		<parameter name="product_update_subscribe" type="string" caption="Подписка на появление товара в каталоге" default="off">
 			<value>off</value>
 			<value>on</value>
 		</parameter>
@@ -971,7 +967,6 @@
 		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
-		<child item="error_page" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

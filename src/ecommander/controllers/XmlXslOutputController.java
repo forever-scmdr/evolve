@@ -1,20 +1,18 @@
 package ecommander.controllers;
 
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.Timer;
+import ecommander.fwk.XmlDocumentBuilder;
+import net.sf.saxon.TransformerFactoryImpl;
+import org.apache.commons.io.FileUtils;
+
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Collection;
 import java.util.HashMap;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import ecommander.fwk.*;
-import net.sf.saxon.TransformerFactoryImpl;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Преобразует XML документ в html с помощью XSL файла
