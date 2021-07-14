@@ -2,25 +2,24 @@ var mceSettings = {
 	"mce_big" : {
 		selector : "textarea.mce_big",
 		language : 'ru',
-		//	theme : "modern",
 		skin : "lightgray"
 		,content_css : [
-			"css/text-style.css?v=2"]
+			"css/text-style.css?v=2.1"]
 		,plugins : [
 			'advlist autolink lists link image charmap print preview anchor textcolor',
 			'searchreplace visualblocks code fullscreen',
 			'insertdatetime media table contextmenu paste code'
-			// ,"fontawesome noneditable"
 			, "visualchars", "spoiler", "imagetools"],
 
 		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
-		extended_valid_elements: "figure,figcaption,a[*],button[*],input[*],div[*]",
+		extended_valid_elements: "figure,figcaption,a[*],div[*]",
 		image_caption: true,
 		style_formats : [
-			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
-			{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
+			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
+			{title : 'Желтый фон', selector : 'p', classes : 'yellow-bg', wrapper: false, merge_siblings : true},
+			{title : 'Автор цитаты', selector : 'blockquote p', classes : 'person', wrapper : true},
 			{
 			title : 'Теги HTML-5',
 			items : [ {
@@ -41,10 +40,6 @@ var mceSettings = {
 				title : 'aside',
 				block : 'aside',
 				wrapper : true
-			}, {
-				title : 'figure',
-				block : 'figure',
-				wrapper : true
 			}
 
 			 ]
@@ -57,13 +52,14 @@ var mceSettings = {
 			 {title: '-', value: ''}
 			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
-  		]
+			,{title: 'Подсказка', value: 'tip'}
+		],
 	}
 	,"mce_medium" : {
 		selector : "textarea.mce_medium",
 		language : 'ru',
 		content_css : [
-		"css/text-style.css?v=2"],
+		"css/text-style.css?v=2.1"],
 		skin : "lightgray"
 
 		,plugins : [
@@ -75,11 +71,12 @@ var mceSettings = {
 		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
-		extended_valid_elements: "figure,figcaption,a[*],button[*],input[*],div[*]",
+		extended_valid_elements: "figure,figcaption,a[*],div[*]",
 		image_caption: true,
 		style_formats : [
-		{title : 'Характеристики товара', selector : 'table', classes : 'features'},
-		{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
+			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
+			{title : 'Желтый фон', selector : 'div', classes : 'yellow-bg', wrapper : true},
+			{title : 'Автор цитаты', selector : 'blockquote p', classes : 'person', wrapper : true},
 		{
 			title : 'Теги HTML-5',
 			items : [ {
@@ -100,10 +97,6 @@ var mceSettings = {
 				title : 'aside',
 				block : 'aside',
 				wrapper : true
-			}, {
-				title : 'figure',
-				block : 'figure',
-				wrapper : true
 			} 
 			
 			]
@@ -113,8 +106,9 @@ var mceSettings = {
 		height : 200
 		,rel_list: [
 			 {title: '-', value: ''}
-			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
+			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
+			,{title: 'Подсказка', value: 'tip'}
   		]
 	}
 	,"mce_small" : {
@@ -128,7 +122,6 @@ var mceSettings = {
 				'advlist autolink lists link charmap print preview anchor textcolor',
 				'searchreplace visualblocks code fullscreen',
 				'insertdatetime media table contextmenu paste code'
-				// ,"fontawesome noneditable"
 				, "visualchars"],
 		toolbar : "undo redo  | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link",
 		style_formats_merge : true,
@@ -137,6 +130,7 @@ var mceSettings = {
 			 {title: 'Нет', value: ''}
 			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
+			,{title: 'Подсказка', value: 'tip'}
   		]
 	}
 };
@@ -213,7 +207,6 @@ $(document).ready(function(){
 			});
 
 		}
-		//console.log(mceSettings[setting]);
 		tinymce.init(mceSettings[setting]);
 	}
 });

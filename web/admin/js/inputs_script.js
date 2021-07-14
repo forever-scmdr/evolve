@@ -47,48 +47,20 @@ function isValidUrl(url)
 
 		$.datepicker.setDefaults($.datepicker.regional["ru"]);
 		$(".datepicker").datepicker();
-		var now = new Date().toLocaleString("ru").substring(0,17).replace(',', '');
-		$(".timeStamp").each(function() {
-			var targ = $(this).find(".whole");
-			var date = $(this).find(".datepicker");
-			var time = $(this).find(".time");
 		
-			var dv = $(targ).val();
-			var tls = (dv == "")? now : dv;
-			if(tls.indexOf(".") == -1){
-				nd =  new Date(tls*1);
-				tls = $.datepicker.formatDate("dd.mm.yy",nd);
-				time.val(nd.getHours()+":"+nd.getMinutes());
-			}
-			date.val(tls.substring(0,10));
-			if(dv == "") {
-				targ.val(tls);
-			}
-			if(time.val() == ""){
-				time.val("0:0");
-			}
-			date.change(function() {
-				makeVal(targ, date, time);
+		$('.date-time').on('change', function () {
+			var $cnt = $(this).closest('.timeStamp');
+			var $date = $cnt.find('.datepicker');
+			var $time = $cnt.find('.time');
+			var $whole = $cnt.find('.whole');
+			var arr = $time.val().split(':');
+			var d = $.datepicker.parseDate("dd.mm.yy", $date.val());
+			d.setHours(parseInt(arr[0]));
+			d.setMinutes(parseInt(arr[1]));
+			var wholeVal = d.toLocaleString("ru", {timeZone : "UTC" }).substring(0,17).replace(',', '');;
+			$whole.val(wholeVal);
 			});
-			time.change(function() {
-				validateTime(this);
-				makeVal(targ, date, time);
-			});
-		});
-		function validateTime(el) {
-			tv = $(el).val().substring(0,5);
-			arr = tv.split(':');
-			arr[0]=(arr[0]*1 > 23)? 23 : arr[0];
-			arr[1]=(arr[1]*1 > 59)? 59 : arr[1];
-			arr[0]=(arr[0]*1 < 0)? 0 : arr[0];
-			arr[1]=(arr[1]*1 > 0)? 0 : arr[1];
-	
-			$(el).val(arr.join(":"));
-		}
-		function makeVal(target, date, time) {
-			v = (time.val() == undefined)? $(date).val() : $(date).val()+' '+$(time).val();
-			$(target).val(v);
-		}
+
 		
 		// Открытие окна редактирования фильтра
 		function openFilter(filterId, itemId, paramId) {

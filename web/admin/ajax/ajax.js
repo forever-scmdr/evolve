@@ -124,6 +124,11 @@ function initAjax(elementId) {
 
 $(document).ready(initAjax());
 
+$(document).on('click', '.close-popup', function(e){
+	e.preventDefault();
+	$("#popup").hide();
+});
+
 function insertAjax(url, lockElementIds, additionalHandling) {
 	$.ajax({
 		url: url,

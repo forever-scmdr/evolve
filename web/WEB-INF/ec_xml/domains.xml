@@ -12,11 +12,35 @@
 		<value>tags</value>
 		<value>pics</value>
 	</domain>
+	<domain name="tags" view-type="combobox">
+		<value>Бизнес</value>
+		<value>Политика</value>
+		<value>Технологии</value>
+		<value>Инфографика</value>
+		<value>Менеджмент</value>
+	</domain>
 	<domain name="module_place" view-type="combobox">
 		<value>head_start</value>
 		<value>head_end</value>
 		<value>body_start</value>
 		<value>body_end</value>
 	</domain>
+	<domain name="complexity" view-type="combobox">
+		<value>просто</value>
+		<value>средне</value>
+		<value>сложно</value>
+		<value>для экспертов</value>
+		<value>вывих мозга</value>
+	</domain>
+	<domain name="szie" view-type="combobox">
+		<value>большой</value>
+		<value>средний</value>
+		<value>короткий</value>
+	</domain>
 
+	<domain name="author" view-type="combobox">
+		<value>Подготовил: Александр Болтрукевич alexbolt@tempting.pro</value>
+		<value>Подготовила: Алина Швецова shvetsova_alina@tempting.pro</value>
+		<value>Подготовил: Никита Смирнов nikita_smirnov@tempting.pro</value>
+	</domain>
 </domains>

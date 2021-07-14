@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="f:f"
+		version="2.0">
+
+	<!-- Перевод даты из CMS вида (23.11.2017 00:00) в XSL вид -->
+	<xsl:function name="f:xsl_date" as="xs:dateTime">
+		<xsl:param name="str_date"/>
+		<xsl:variable name="big_parts" select="tokenize($str_date, '\s+')" />
+		<xsl:variable name="parts" select="tokenize($big_parts[1], '\.')"/>
+		<xsl:sequence select="if ($parts[3]) then xs:dateTime(concat($parts[3], '-', $parts[2], '-', $parts[1], 'T', $big_parts[2], ':00Z')) else xs:dateTime('1970-01-01T00:00:00Z')"/>
+	</xsl:function>
+
+	<xsl:function name="f:date_to_millis">
+		<xsl:param name="date" as="xs:dateTime"/>
+		<xsl:sequence select="($date - xs:dateTime('1970-01-01T00:00:00Z')) div xs:dayTimeDuration('PT0.001S')"/>
+	</xsl:function>
+
+	<!-- Перевод миллисекунд в XSL дату -->
+	<xsl:function name="f:millis_to_date_time" as="xs:dateTime">
+		<xsl:param name="millis"/>
+		<xsl:sequence select="if ($millis) then xs:dateTime('1970-01-01T00:00:00Z') + $millis * xs:dayTimeDuration('PT0.001S') else xs:dateTime('1970-01-01T00:00:00Z')"/>
+	</xsl:function>
+
+	<!-- Перевод даты из XSL вида в CMS вид (23.11.2017) -->
+	<xsl:function name="f:format_date">
+		<xsl:param name="date" as="xs:dateTime"/>
+		<xsl:sequence select="format-dateTime($date, '[D01].[M01].[Y0001] [H01]:[m01]')"/>
+	</xsl:function>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
 
@@ -196,8 +226,17 @@
 
 	<!-- Дата -->
 	<xsl:template match="field[ @type='date']" mode="single">
+		<xsl:variable name="value" select="."/>
 		<!-- Дата и время -->
 		<div class="timeStamp" style="">
+
+			<xsl:variable name="date" select="if(. != '') then f:xsl_date(.) else current-dateTime()"/>
+			<xsl:variable name="ms" select="f:date_to_millis($date)"/>
+			<xsl:variable name="display_ms" select="$ms + (3*60*60*1000)"/>
+			<xsl:variable name="display_date" select="f:format_date(f:millis_to_date_time($display_ms))"/>
+			<xsl:variable name="utc_ms" select="f:date_to_millis(current-dateTime())"/>
+			<xsl:variable name="utc_date" select="f:format_date(f:millis_to_date_time($utc_ms))"/>
+
 			<p style="clear: both;">
 				<span class=""><xsl:value-of select="@caption" /></span>
 				<xsl:if test="@description != ''">
@@ -207,16 +246,16 @@
 				</xsl:if>
 			</p>
 			<label style="float:left;padding-right: 5px;">
-				<input type="text" class="datepicker" style="width: 80px; padding: 4px 0; text-align: center;"/>
+				<input type="text" class="datepicker date-time" style="width: 80px; padding: 4px 0; text-align: center;" value="{substring($display_date,1,10)}"/>
 			</label>
-			<xsl:if test="@format = '' or @format = 'dd.MM.YYYY hh:mm'">
+			<xsl:if test="@format = '' or @format = 'dd.MM.yyyy HH:mm'">
 				<label style="float:left;">
-					<input type="text" class="time" value="{substring(.,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
+					<input type="text" class="time date-time" value="{substring($display_date,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
 		
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
-			<input class="whole" type="hidden" name="{@input}" value="{.}" />
+			<input class="whole" type="hidden" name="{@input}" value="{if(. != '') then . else $utc_date}" />
 		</div>
 	</xsl:template>
 
@@ -265,7 +304,8 @@
 				</xsl:if>
 			</xsl:if>
 		</script>
-		<script type="text/javascript" src="admin/js/mce-setup.js"></script>
+
+		<script type="text/javascript" src="admin/js/mce-setup.js?v=1.27"></script>
 		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>
 		

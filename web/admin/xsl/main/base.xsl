@@ -298,37 +298,6 @@
 		<li class="context-menu__item">
 			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
 		</li>
-		<!--
-		<li class="context-menu__item">
-			<form method="post" action="set_user" id="chown">
-				<xsl:variable name="curr" select="''" />
-				<input type="hidden" name="id" value="" />
-				<label>
-					Назначить владельца
-					<select name="user_id" value="0">
-						<option value="0">Все</option>
-						<option value="12">User 1</option>
-						<option value="13">User 2</option>
-						<option value="13">User 3</option>
-					</select>
-				</label>
-			</form>
-		</li>
-		<li class="context-menu__item">
-			<form method="post" action="set_user" id="chgroup">
-				<input type="hidden" name="id" value="" />
-				<label>
-					Назначить группу
-					<select name="group_id" value="13">
-						<option value="0">Все</option>
-						<option value="12">group 1</option>
-						<option value="13">group 2</option>
-						<option value="14">group 3</option>
-					</select>
-				</label>
-			</form>
-		</li>
-		-->
 	</xsl:template>
 
 	<xsl:template name="DEFAULT_CONTEXT_LINKS" >
