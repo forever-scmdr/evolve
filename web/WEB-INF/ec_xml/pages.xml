@@ -779,6 +779,26 @@
 		</link>
 	</page>
 
+	<page name="feedback_jur_ajax" template="feedback_jur_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="generic_form" id="email_form">
+			<extra-input name="company" form="feedback"/>
+			<extra-input name="address" form="feedback"/>
+			<extra-input name="unp" form="feedback"/>
+			<extra-input name="okpo" form="feedback"/>
+			<extra-input name="message" form="feedback"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="feedback"/>
+			<var name="required" value="company, address, unp, okpo, message"/>
+			<var name="template" value="feedback_jur_email"/>
+			<var name="source_page" value="feedback_jur_ajax"/>
+		</link>
+	</page>
+
 	<page name="comment_ajax" template="comment_ajax">
 		<request>
 			<var name="result"/>
@@ -822,7 +842,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="bio@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
