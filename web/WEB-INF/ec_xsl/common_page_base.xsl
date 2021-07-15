@@ -376,23 +376,39 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 
 				<script>
-					setTimeout(function(){
-						httpGet("http://www.google.com/");
-					},500);
-					function httpGet(theUrl){
-						var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-						var xhr = new XHR();
-						// (2) запрос на другой домен :)
-						xhr.open('GET', theUrl, true);
-						xhr.onload = function() {
-							alert( this.responseText );
+					var timeoutCounter = 0;
+					var googleTimeout = setTimeout(checkAds ,500);
+					function checkAds(){
+						if(typeof googleTimeout != "undefined"){
+							clearTimeout(googleTimeout);
 						}
-						xhr.onerror = function() {
-							alert( 'Ошибка ' + this.status );
+						var $iframe = $("#aswift_0");
+						timeoutCounter++;
+						if(timeoutCounter &lt; 40 &amp;&amp; $iframe.length == 0){
+							googleTimeout = setTimeout(checkAds ,500);
+						}else if($iframe.length != 0){
+							var src = $iframe.attr("src");
+							var $input = $("&lt;input&gt;", {"type": "hidden", "name" : "url", value : src});
+							var $form = $("&lt;form&gt;", {"method": "post", "action" : "check_google_ads"});
+							$form.append($input);
+							$form.ajaxSubmit({
+								success: function(data, status, arg3) {
+									var res = $(data).find("result");
+									console.log(res.text());
+									var exception = $(data).find("excaption");
+									console.log(exception.text());
+								}
+								,error: function() {
+									console.log("error checking ads");
+								}
+							});
+						}else{
+							showDefaultAd();
 						}
-						console.log("logged");
-						xhr.send();
-					};
+					}
+					function showDefaultAd(){
+						alert("BOO!");
+					}
 				</script>
 
 				<xsl:for-each select="$body-end-modules">

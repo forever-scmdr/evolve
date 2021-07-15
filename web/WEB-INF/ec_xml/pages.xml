@@ -954,4 +954,11 @@
 			<list item="page_part"/>
 		</list>
 	</page>
+
+	<page name="check_google_ads">
+		<command class="extra.CheckAds" tag="search">
+			<result name="result" type="xml"/>
+		</command>
+	</page>
+
 </site>
