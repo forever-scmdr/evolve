@@ -6,7 +6,10 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
-import ecommander.persistence.commandunits.*;
+import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 
@@ -32,6 +35,7 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 		@Override
 		public void execute() throws Exception {
 			Item parent = ItemQuery.loadById(seo.getContextParentId(), getTransactionContext().getConnection());
+			if(!parent.getItemType().isKeyUnique()) return;
 			// Проверка, есть ли сео для айтема
 			List<Item> seos = new ItemQuery(SEO).setParentId(parent.getId(), false, SEO).loadItems();
 			long newSeoId = -1;
