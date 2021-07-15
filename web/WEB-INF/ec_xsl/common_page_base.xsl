@@ -395,8 +395,11 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 								success: function(data, status, arg3) {
 									var res = $(data).find("result");
 									console.log(res.text());
-									var exception = $(data).find("excaption");
+									var exception = $(data).find("exception");
 									console.log(exception.text());
+									if(res.text != "true"){
+										showDefaultAd();
+									}
 								}
 								,error: function() {
 									console.log("error checking ads");
