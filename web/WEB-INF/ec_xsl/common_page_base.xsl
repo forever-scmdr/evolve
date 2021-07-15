@@ -374,9 +374,31 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<xsl:call-template name="INC_FOOTER"/>
 				<xsl:call-template name="COMMON_SCRIPTS" />
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
+
+				<script>
+					setTimeout(function(){
+						httpGet("http://www.google.com/");
+					},500);
+					function httpGet(theUrl){
+						var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+						var xhr = new XHR();
+						// (2) запрос на другой домен :)
+						xhr.open('GET', theUrl, true);
+						xhr.onload = function() {
+							alert( this.responseText );
+						}
+						xhr.onerror = function() {
+							alert( 'Ошибка ' + this.status );
+						}
+						console.log("logged");
+						xhr.send();
+					};
+				</script>
+
 				<xsl:for-each select="$body-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
+
 			</body>
 		</html>
 	</xsl:template>
