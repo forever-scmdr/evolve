@@ -28,8 +28,10 @@ public interface ItemNames {
     String BOUGHT = "bought";
     String CUSTOM_BOUGHT = "custom_bought";
     String CART = "cart";
-    String PREORDERS = "preorders";
+    String ORDER_CATALOG = "order_catalog";
+    String PREORDER_CATALOG = "preorder_catalog";
     String PREORDER = "preorder";
+    String PURCHASE_CATALOG = "purchase_catalog";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -798,6 +800,12 @@ public interface ItemNames {
 
     }
 
+    public interface order_catalog_ {
+
+        String _ITEM_NAME = "order_catalog";
+
+    }
+
     public interface order_emails_ {
 
         String _ITEM_NAME = "order_emails";
@@ -936,9 +944,9 @@ public interface ItemNames {
 
     }
 
-    public interface preorders_ {
+    public interface preorder_catalog_ {
 
-        String _ITEM_NAME = "preorders";
+        String _ITEM_NAME = "preorder_catalog";
 
     }
 
@@ -1052,6 +1060,12 @@ public interface ItemNames {
         String REGION = "region";
         String ADDRESS = "address";
         String IF_ABSENT = "if_absent";
+
+    }
+
+    public interface purchase_catalog_ {
+
+        String _ITEM_NAME = "purchase_catalog";
 
     }
 

@@ -13,20 +13,23 @@ public interface CartConstants {
 	int CUSTOM_BOUGHT_COUNT = 10;
 	SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-	String REGISTERED_GROUP = "registered";
-	String BOUGHT_ITEM = "bought";
+	String ASSOC_GENERAL = "general";
+
+
+	//String REGISTERED_GROUP = "registered";
+	//String BOUGHT_ITEM = "bought";
 	String CUSTOM_BOUGHT_ITEM = "custom_bought";
-	String CART_ITEM = "cart";
-	String PRODUCT_ITEM = "product";
+	//String CART_ITEM = "cart";
+	//String PRODUCT_ITEM = "product";
 	String COUNTER_ITEM = "counter";
 	String QUANTITY_PARAM = "quantity";
 	String ZERO_QUANTITY_PARAM = "zero_quantity";
 	String CUSTOM_QUANTITY_PARAM = "custom_quantity";
-	String PRICE_PARAM = "price";
-	String QTY_PARAM = "qty";
+	//String PRICE_PARAM = "price";
+	//String QTY_PARAM = "qty";
 	String MIN_QTY_PARAM = "min_qty";
 	String NEW_QUANTITY_PARAM = "new_quantity";
-	String SUM_PARAM = "sum";
+	//String SUM_PARAM = "sum";
 	String COUNT_PARAM = "count";
 	String CODE_PARAM = "code";
 
@@ -39,7 +42,6 @@ public interface CartConstants {
 
 	String MESSAGE_PARAM = "user_message";
 
-	String CART_CONTACTS = "cart_contacts";
 	String SECOND_NAME_PARAM = "second_name";
 	String NAME_PARAM = "name";
 	String PHONE_PARAM = "phone";
@@ -76,8 +78,6 @@ public interface CartConstants {
 	String JUR_FUND_PARAM = "jur_fund";
 
 	String LOGIN_PARAM = "login";
-	String JUR_ITEM = "register_jur";
-	String PHYS_ITEM = "register_phys";
 
 	String BARCODE_DIR = "barcodes/";
 	String PNG_EXT = ".png";
@@ -91,7 +91,6 @@ public interface CartConstants {
 	String EMAIL_S = "email_skrig";
 	String EMAIL_P = "email_post";
 	String EMAIL_CUSTOM = "email_custom";
-	String LATEST_ORDER_ID_PARAM = "current_order";
 
 	String JUR_LTM = "Извините, минимальная сумма заказа для юридических лиц - %.2f руб. Заказ не отправлен.";
 	String PHYS_LTM = "Извините, минимальная сумма заказа для физических лиц - %.2f руб. Заказ не отправлен.";

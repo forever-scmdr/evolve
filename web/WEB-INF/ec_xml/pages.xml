@@ -14,6 +14,7 @@
 		<request>
 			<var name="cur" value="BYN" scope="cookie"/>
 			<var name="city" scope="cookie"/>
+			<var name="search" scope="cookie"/>
 		</request>
 
 		<personal>
@@ -32,7 +33,7 @@
 			</list>
 		</usergroup>
 
-		<single item="catalog" id="catalog_main" cacheable="true">
+		<single item="catalog" id="catalog_main" cacheable="false">
 			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
@@ -67,13 +68,26 @@
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
-		<link name="search_link" target="search"/>
+		<link name="search_link" target="search">
+			<var name="search" value="normal"/>
+		</link>
+		<link name="search_strict_link" target="search_strict">
+			<var name="search" value="strict"/>
+		</link>
 		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
+		<link name="show_only_available" target-var="$pagename" type="exclusive" copy-page-vars="yes">
+			<var name="page" value="1"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target-var="$pagename" type="exclusive" copy-page-vars="yes">
+			<var name="page" value="1"/>
+			<var name="minqty" value=""/>
+		</link>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
@@ -161,6 +175,9 @@
 		<link name="set_limit_96" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
 		</link>
+		<link name="set_limit_120" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="120"/>
+		</link>
 
 		<link name="set_currency_byn" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="currency" value="byn"/>
@@ -169,14 +186,6 @@
 			<var name="currency" value="rur"/>
 		</link>
 
-		<link name="show_only_available" target="$page" type="exclusive" copy-page-vars="yes">
-			<var name="page" value="1"/>
-			<var name="minqty" value="0"/>
-		</link>
-		<link name="show_all" target="$page" type="exclusive" copy-page-vars="yes">
-			<var name="page" value="1"/>
-			<var name="minqty" value=""/>
-		</link>
 		<link name="set_sort_name_asc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
 			<var name="sort2" value="name_extra"/>
@@ -284,6 +293,11 @@
 				<limit><var value="20"/></limit>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:hit"/>
+			<ancestor item="section" id="h_sec" tag="main_section">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="h_sec" style="keypath"/>
+				</link>
+			</ancestor>
 		</list>
 		<list item="product" id="new" tag="new" cacheable="true">
 			<filter>
@@ -293,6 +307,11 @@
 				<pages><var name="page" var="page"/></pages>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
+			<ancestor item="section" id="n_sec" tag="main_section">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="n_sec" style="keypath"/>
+				</link>
+			</ancestor>
 		</list>
 
 		<include name="COMMON"/>
@@ -502,7 +521,6 @@
 		<request>
 			<var name="q" />
 			<var name="sec" />
-			<var name="search" value="strict" />
 
 			<var name="sort1" value="available" />
 			<var name="sort2" value="name" />
@@ -566,12 +584,76 @@
 
 
 
+	<page name="search_strict" template="search">
+		<request>
+			<var name="q" />
+			<var name="sec" />
+
+			<var name="sort1" value="available" />
+			<var name="sort2" value="name" />
+			<var name="sort3" value="name_extra" />
+
+			<var name="dir1" value="DESC" />
+			<var name="dir2" value="ASC" />
+			<var name="dir3" value="ASC" />
+
+			<var name="minqty" value="" scope="cookie"/>
+			<var name="view" value="table" scope="cookie"/>
+		</request>
+		<list item="product" id="product" tag="search_product">
+			<filter>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				<fulltext limit="60" name="search" type="(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
+					<var var="q" />
+				</fulltext>
+				<limit>
+					<var value="60"/>
+				</limit>
+			</filter>
+		</list>
+
+		<list item="product" id="display_product" tag="product">
+			<filter>
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="product" parameter="code" />
+				</parameter>
+				<sorting direction-var="dir1">
+					<var var="sort1" />
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sort2" />
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sort3" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_product"/>
+			<ancestor item="section" id="p_sec" tag="section">
+				<link name="show_sec" target="search">
+					<var name="q" var="q" />
+					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+			</ancestor>
+		</list>
+
+		<include name="COMMON"/>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:search"/>
+
+		<link name="base_search_link" target="search_strict">
+			<var name="q" var="q"/>
+		</link>
+		<link name="fuzzy_search_link" target="search_fuzzy">
+			<var name="q" var="q" />
+		</link>
+	</page>
+
+
+
 
 	<page name="search_fuzzy" template="search">
 		<request>
 			<var name="q" />
 			<var name="sec" />
-			<var name="search" value="strict" />
 
 			<var name="sorting1" value="available" />
 			<var name="sorting2" value="name" />
@@ -998,6 +1080,7 @@
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="cur" value="BYN" scope="cookie"/>
+			<var name="code"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -1009,15 +1092,25 @@
 							<var name="action" value="addToCart"/>
 							<var name="prod" ref="product"/>
 						</link>
+						<link name="delete" target="cart_action">
+							<var name="action" value="delete"/>
+							<var name="target" value="cart_ajax"/>
+							<var name="bought" ref="bought"/>
+							<var name="code" ref="product" parameter="code"/>
+						</link>
 					</list>
-					<link name="delete" target="cart_action">
-						<var name="action" value="delete"/>
-						<var name="target" value="cart_ajax"/>
-						<var name="bought" ref="bought"/>
-					</link>
 				</list>
 			</single>
 		</session>
+		<single item="product" var="code" parameter="code" id="deleted">
+			<link name="to_cart" target="cart_action">
+				<var name="action" value="addToCart"/>
+				<var name="prod" ref="deleted"/>
+			</link>
+		</single>
+		<single item="catalog" id="catalog_main" cacheable="true">
+			<single item="currencies"/>
+		</single>
 		<link name="show_cart" target="cart"/>
 	</page>
 
@@ -1033,7 +1126,9 @@
 			<var name="target" value="cart"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
-		<link name="cart" target-var="target"/>
+		<link name="cart" target-var="target">
+			<var name="code" var="code"/>
+		</link>
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
@@ -1078,6 +1173,9 @@
 					<parameter-input ref="bought" name="qty"/>
 					<extra-input ref="bought" name="extra1"/>
 					<extra-input ref="bought" name="extra2"/>
+				</list>
+				<list item="custom_bought" id="custom">
+					<parameter-input ref="custom" form="custom"/>
 				</list>
 			</single>
 		</session>

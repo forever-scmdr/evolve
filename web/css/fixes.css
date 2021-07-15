@@ -1,6 +1,34 @@
-.button {
-  min-height: 28px;
+.side-menu__header {
+	margin: 28px 0 24px;
+	margin-left: 22px;
 }
-input[type="number"] {
-  padding: 4px;
+.slider__content {
+	padding: 22px 0 35px 50px;
+}
+.top-info {
+	padding: 15px 0 0;
+}
+.header{
+	padding: 15px 0 14px;
+}
+.pagination__item_active a{
+	color:  #fff;
+}
+.pag-dd__container a{
+	color: #333;
+}
+.fotorama__fullscreen-icon{
+	background: transparent !important;
+	width: 100% !important;
+	height: 100% !important;
+	top: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+}
+.text ol li {
+	list-style: inherit;
+}
+.text ol {
+	margin-left: 16px;
 }

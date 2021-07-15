@@ -1465,10 +1465,16 @@ img {
   padding-top: 2px; }
 
 .side-menu__link {
-  font-size: 13px;
+  /*font-size: 13px;*/
+  font-size: 12px;
   line-height: 1.2;
   color: #333;
-  text-decoration: none; }
+  text-decoration: none; 
+
+  display: block;
+  margin-bottom: 6px;
+
+}
   .side-menu__link:hover {
     text-decoration: underline; }
   .side-menu__link_active {
@@ -2213,12 +2219,14 @@ table.full-params th {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(4, auto);
-    grid-template: "i n n n" "i q p s";
+    grid-template: "i n n n"
+ "i q p s";
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 20px;
     margin-bottom: 20px; }
     .cart-item_past {
-      grid-template: "i n n n" "q q p s"; }
+      grid-template: "i n n n"
+ "q q p s"; }
     .cart-item:first-child {
       padding-top: 0; }
     .cart-item > * {

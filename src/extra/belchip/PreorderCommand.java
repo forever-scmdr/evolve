@@ -207,7 +207,8 @@ public class PreorderCommand extends Command {
 
 			Item order = ItemQuery.loadSingleItemByParamValue(ItemNames.PREORDER, Preorder.EMAIL, email);
 			if (order == null) {
-				Item orders = ItemUtils.ensureSingleRootItem(ItemNames.PREORDERS, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.getDefaultUser().getUserId());
+				Item orderCatalog = ItemUtils.ensureSingleRootItem(ItemNames.ORDER_CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.getDefaultUser().getUserId());
+				Item orders = ItemUtils.ensureSingleChild(ItemNames.PREORDER_CATALOG, getInitiator(), orderCatalog);
 				order = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PREORDER), orders);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(order).ignoreUser(true).noFulltextIndex());
 			}

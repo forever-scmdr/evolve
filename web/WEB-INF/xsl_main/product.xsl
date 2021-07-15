@@ -81,7 +81,7 @@
 	<xsl:template name="CONTENT_INNER">
 		<div class="device-basic">
 			<div class="device-basic__column gallery">
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+				<div class="fotorama" data-width="100%" data-nav="thumbs" data-arrows="false" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="('b', 'c', 'd')">
 						<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg';"/>
 					</xsl:for-each>
@@ -128,10 +128,10 @@
 							<div class="basic-params__value"><xsl:value-of select="$p/country"/></div>
 						</div>
 					</div>
-					<div class="full-params">
+					<div class="full-params" style="margin-top:120px">
 						<div class="product-subtitle">
 							<img src="img/icon-device-icon-04.png" alt=""/>
-							<span>Технические характеристики</span>
+							<span style="font-weight: normal;" >Технические характеристики</span>
 						</div>
 						<table>
 							<xsl:for-each select="$p/params/param">
@@ -163,10 +163,10 @@
 					</xsl:if>
 				</div>
 				<div class="product-order">
-					<xsl:if test="$p/special_price = 'true' and not($zero)"><span>Спеццена</span></xsl:if>
+					<xsl:if test="$p/special_price = 'true' and not($zero)"><span style="color:red">Спеццена</span></xsl:if>
 					<div class="product-order__price">
 						<xsl:if test="not($zero)">
-							<xsl:value-of select="$p/price"/> руб./<xsl:value-of select="$p/unit"/>
+							<xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/>/<xsl:value-of select="$p/unit"/>
 						</xsl:if>
 						<xsl:if test="$zero">
 							<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>

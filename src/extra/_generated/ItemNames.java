@@ -28,8 +28,10 @@ public interface ItemNames {
     String BOUGHT = "bought";
     String CUSTOM_BOUGHT = "custom_bought";
     String CART = "cart";
-    String PREORDERS = "preorders";
+    String ORDER_CATALOG = "order_catalog";
+    String PREORDER_CATALOG = "preorder_catalog";
     String PREORDER = "preorder";
+    String PURCHASE_CATALOG = "purchase_catalog";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -430,6 +432,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -589,6 +592,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -796,6 +800,12 @@ public interface ItemNames {
 
     }
 
+    public interface order_catalog_ {
+
+        String _ITEM_NAME = "order_catalog";
+
+    }
+
     public interface order_emails_ {
 
         String _ITEM_NAME = "order_emails";
@@ -934,9 +944,9 @@ public interface ItemNames {
 
     }
 
-    public interface preorders_ {
+    public interface preorder_catalog_ {
 
-        String _ITEM_NAME = "preorders";
+        String _ITEM_NAME = "preorder_catalog";
 
     }
 
@@ -953,6 +963,7 @@ public interface ItemNames {
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
+        String IS_SERVICE = "is_service";
         String OFFER_ID = "offer_id";
         String AVAILABLE = "available";
         String GROUP_ID = "group_id";
@@ -1032,6 +1043,8 @@ public interface ItemNames {
         String INT_NUMBER = "int_number";
         String STATUS = "status";
         String PAYED = "payed";
+        String STATUS_LOG = "status_log";
+        String STATUS_DATE = "status_date";
         String CLIENT_ID = "client_id";
         String LOGIN = "login";
         String EMAIL = "email";
@@ -1047,6 +1060,12 @@ public interface ItemNames {
         String REGION = "region";
         String ADDRESS = "address";
         String IF_ABSENT = "if_absent";
+
+    }
+
+    public interface purchase_catalog_ {
+
+        String _ITEM_NAME = "purchase_catalog";
 
     }
 

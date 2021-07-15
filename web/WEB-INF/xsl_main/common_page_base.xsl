@@ -20,6 +20,7 @@
 
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
+	<xsl:variable name="pv" select="page/variables"/>
 	<xsl:variable name="common" select="page/common"/>
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="cur_sec" select="page//current_section"/>
@@ -28,10 +29,12 @@
 	<xsl:variable name="currencies" select="page/catalog/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
-	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
-	<xsl:variable name="query" select="page/variables/q"/>
+	<xsl:variable name="city" select="f:value_or_default($pv/city, 'Минск')"/>
+	<xsl:variable name="query" select="$pv/q"/>
 	<xsl:variable name="is_index" select="page/@name = 'index'"/>
 	<xsl:variable name="is_catalog" select="page/@name = 'catalog'"/>
+	<xsl:variable name="only_available" select="$pv/minqty = '0'"/>
+	<xsl:variable name="search_strict" select="$pv/search = 'strict'"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -40,7 +43,6 @@
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
     <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
-	<xsl:variable name="has_currency_rates" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -101,6 +103,31 @@
 
 	<xsl:template name="CONTENT_INNER"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
+	<xsl:template name="SCRIPTS">
+		<script>
+			$(document).ready(function(){
+				$(".device__zoom, .example1").fancybox({
+					padding: 0,
+					helpers: {
+						overlay: {
+							locked: false
+						}
+					}
+				});
+			});
+
+			$("#full_match_only").change(function(e){
+				var checked = $(this).find("input[type=checkbox]").is(":checked");
+				if(checked){
+					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_strict_link" />");
+					$(this).css("background", "rgb(173, 203, 53) none repeat scroll 0% 0%");
+				} else {
+					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_link" />");
+					$(this).css("background", "");
+				}
+			});
+		</script>
+	</xsl:template>
 
 
 
@@ -488,6 +515,7 @@
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="http://main.must.by/magnific_popup/magnific-popup.css"/>
 				<link rel="stylesheet" href="css/styles.css?version=1.0"/>
+				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link href="css/fotorama.css" rel="stylesheet"/>
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
@@ -573,9 +601,9 @@
 									</div>
 								</div>
 								<div class="header__column header__search header-search">
-									<form action="{page/search_link}" method="post">
+									<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post">
 										<div>
-											<a class="useless-button" href="">
+											<a class="useless-button" href="#" onclick="$(this).closest('form').submit(); return false;">
 												<img src="img/icon-search.png" alt=""/>
 											</a>
 											<input class="input header-search__input"
@@ -590,12 +618,26 @@
 										</div>
 										<div>
 											<div class="header-search__option">
-												<input type="checkbox"/>
-												<label for="">только по товарам в наличии</label>
+												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
+													<input style="display: inline-block; vertical-align: middle;"
+                                                           type="checkbox"
+                                                           onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
+                                                        <xsl:if test="$only_available">
+                                                            <xsl:attribute name="checked">checked</xsl:attribute>
+                                                        </xsl:if>
+                                                    </input>
+													только по товарам в наличии
+												</label>
 											</div>
 											<div class="header-search__option">
-												<input type="checkbox"/>
-												<label for="">строгое соответствие</label>
+												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" id="full_match_only">
+													<input style="display: inline-block; vertical-align: middle;" type="checkbox">
+														<xsl:if test="$search_strict">
+															<xsl:attribute name="checked">checked</xsl:attribute>
+														</xsl:if>
+													</input>
+													строгое соответствие
+												</label>
 											</div>
 										</div>
 										<div class="suggest" id="search-result">
@@ -612,22 +654,28 @@
 											<a>Корзина ..........</a>
 										</div>
 									</div>
-									<div class="header-icons__icon header-icon" id="some_ajax">
-										<div class="header-icon__icon">
-											<img src="img/icon-currency.png" alt=""/>
-										</div>
-										<div class="header-icon__info">
-											<a href="">RUB</a>
-											<a class="header-icon__dd">
-												<img src="img/icon-caret-down-small.png" alt=""/>
-											</a>
-										</div>
-										<div class="dropdown header-icon__dropdown">
-											<a class="dropdown__item active" href="">RUB</a>
-											<a class="dropdown__item" href="">RUB</a>
-											<a class="dropdown__item" href="">RUB</a>
-										</div>
-									</div>
+                                    <xsl:if test="$currencies">
+                                        <xsl:variable name="currency_link" select="page/set_currency"/>
+                                        <div class="header-icons__icon header-icon">
+                                            <div class="header-icon__icon">
+                                                <img src="img/icon-currency.png" alt=""/>
+                                            </div>
+                                            <div class="header-icon__info">
+                                                <a><xsl:value-of select="if ($currency) then $currency else 'BYN'" /></a>
+                                                <a class="header-icon__dd">
+                                                    <img src="img/icon-caret-down-small.png" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="dropdown header-icon__dropdown">
+												<a class="dropdown__item{' active'[$currency = 'BYN']}" href="{concat($currency_link, 'BYN')}">BYN</a>
+												<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+													<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+													<a class="dropdown__item{' active'[$currency = $cur]}"
+													   href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a>
+												</xsl:for-each>
+                                            </div>
+                                        </div>
+                                    </xsl:if>
 									<div class="header-icons__icon header-icon" id="some_ajax">
 										<div class="header-icon__icon">
 											<img src="img/icon-star.png" alt=""/>
@@ -758,7 +806,7 @@
 								<div class="content__side">
 									<div class="side-menu">
 										<div class="side-menu__header">
-											<a class="side-menu__title" href="catalog.html">Каталог товаров</a>
+											<a class="side-menu__title" href="{page/catalog_link}">Каталог товаров</a>
 
 											<xsl:if test="not(/page/catalog/udate_in_progress = '1')">
 												<div class="side-menu__update">Обновлен
@@ -991,6 +1039,9 @@
 						</div>
 					</div>
 				</div>
+
+				<xsl:call-template name="SCRIPTS"/>
+
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>

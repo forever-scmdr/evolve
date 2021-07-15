@@ -66,7 +66,7 @@
 	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
-	<xsl:variable name="show_filter" select="$user_filter or $tag"/>
+	<xsl:variable name="show_filter" select="true()"/><!--$user_filter or $tag-->
 
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
@@ -217,7 +217,7 @@
 					</div><!-- фильтры (выбраны, но не применены)-->
 					<div class="filter__actions filter_visible" style="{'display: none'[not($show_filter)]}">
 						<button class="button button_disabled apply_filter" type="submit" disabled="disabled">Применить фильтры</button>
-						<button class="button{' button_disabled'[not($show_filter)]}" onclick="location.href = '{page/reset_filter_link}'; return false;" type="button">
+						<button class="button{' button_disabled'[not($user_filter)]}" onclick="location.href = '{page/reset_filter_link}'; return false;" type="button">
 							Очистить фильтры
 						</button>
 						<button class="button button_secondary" type="button" onclick="hideSectionFilter()">Скрыть фильтры</button>
@@ -325,16 +325,31 @@
 						</div>
 					</xsl:for-each>
 					<xsl:variable name="fil" select="$sel_sec/params_filter/filter"/>
-					<xsl:for-each select="$user_filter/input">
-						<xsl:variable name="id" select="@id"/>
-						<xsl:variable name="input" select="$fil/input[@id = $id]"/>
-						<xsl:variable name="tokens" select="tokenize($input/@caption, ',')"/>
-						<xsl:variable name="unit" select="if (count($tokens) &gt; 1) then normalize-space($tokens[2]) else ''"/>
-						<div class="filtered__item filtered-item">
-							<div class="filtered-item__label"><xsl:value-of select="."/>&#160;<xsl:value-of select="$unit"/></div>
-							<a class="filtered-item__close" href="#" rel="inp{$id}{.}">×</a>
-						</div>
+					<xsl:for-each select="$fil/input">
+						<xsl:variable name="input" select="."/>
+						<xsl:variable name="filled" select="$user_filter/input[@id = $input/@id]"/>
+						<xsl:if test="$filled">
+							<xsl:variable name="tokens" select="tokenize($input/@caption, ',')"/>
+							<xsl:variable name="unit" select="if (count($tokens) &gt; 1) then normalize-space($tokens[2]) else ''"/>
+							<span style="font-size: 13px; padding-top: 5px; padding-right: 3px; padding-left: 5px; color: gray;"><xsl:value-of select="@caption" />:</span>
+							<xsl:for-each select="$filled">
+								<div class="filtered__item filtered-item">
+									<div class="filtered-item__label"><xsl:value-of select="."/>&#160;<xsl:value-of select="$unit"/></div>
+									<a class="filtered-item__close" href="#" rel="inp{$input/@id}{.}">×</a>
+								</div>
+							</xsl:for-each>
+						</xsl:if>
 					</xsl:for-each>
+<!--					<xsl:for-each select="$user_filter/input">-->
+<!--						<xsl:variable name="id" select="@id"/>-->
+<!--						<xsl:variable name="input" select="$fil/input[@id = $id]"/>-->
+<!--						<xsl:variable name="tokens" select="tokenize($input/@caption, ',')"/>-->
+<!--						<xsl:variable name="unit" select="if (count($tokens) &gt; 1) then normalize-space($tokens[2]) else ''"/>-->
+<!--						<div class="filtered__item filtered-item">-->
+<!--							<div class="filtered-item__label"><xsl:value-of select="."/>&#160;<xsl:value-of select="$unit"/></div>-->
+<!--							<a class="filtered-item__close" href="#" rel="inp{$id}{.}">×</a>-->
+<!--						</div>-->
+<!--					</xsl:for-each>-->
 				</div>
 			</div>
 			<div class="devices">

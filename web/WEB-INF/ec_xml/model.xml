@@ -153,7 +153,7 @@
 	-->
 	<item name="currencies" caption="Курсы валют" ag-id="1781" ag-hash="-1089470353">
 		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
-		<parameter name="RUB_scale" type="currency-precise" default="1" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_scale" type="currency-precise" default="100" caption="Российский рубль (Scale)"/>
 		<parameter name="RUB_update" type="byte" default="1" caption="Российский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
@@ -415,18 +415,8 @@
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="margin"  type="currency" caption="Сумма скидки" format="###,##0.00" />
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
-		<parameter name="order_id" type="long" caption="ID заказа"/>
 		<child item="bought"/>
 		<child item="custom_bought"/>
-	</item>
-
-	<item name="preorders" caption="Предзаказы" ag-id="1896" ag-hash="-1024766136">
-		<child item="preorder"/>
-	</item>
-
-	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="1897" ag-hash="-1279982965">
-		<parameter name="email" type="string" caption="email" />
-		<parameter name="code" type="string" caption="артикул товара" quantifier="multiple"/>
 	</item>
 
 
@@ -443,6 +433,30 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             РЕГИСТРАЦИЯ                              ////////////-->
 	<!--/////////////                                                                      ////////////-->
+
+
+
+	<item name="order_catalog" caption="Заказы клиентов" ag-id="4831" ag-hash="375611432">
+		<child item="purchase_catalog" single="true"/>
+		<child item="preorder_catalog" single="true"/>
+	</item>
+
+
+	<item name="preorder_catalog" caption="Каталог предзаказов" ag-id="4832" ag-hash="-429240731">
+		<child item="preorder"/>
+	</item>
+
+
+	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="1897" ag-hash="-1279982965">
+		<parameter name="email" type="string" caption="email" />
+		<parameter name="code" type="string" caption="артикул товара" quantifier="multiple"/>
+	</item>
+
+
+	<item name="purchase_catalog" caption="Каталог заказов" ag-id="4833" ag-hash="117930715">
+		<child item="purchase"/>
+	</item>
+
 
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
@@ -488,7 +502,7 @@
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
-		<child item="purchase"/>
+		<child item="purchase" assoc="general"/>
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
 		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
@@ -1100,7 +1114,7 @@
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
 		<child item="order_emails" single="true" />
-		<child item="preorders" single="true" />
+		<child item="order_catalog" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

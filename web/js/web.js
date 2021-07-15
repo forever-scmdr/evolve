@@ -176,7 +176,7 @@ $("a.tab").click(function() {
 	$("div.tab-container").hide(0);
 	$("a.tab").removeClass("tab_active");
 	var showSelector = $(this).attr("href");
-	$(showSelector).show("fade", 100);
+	$(showSelector).show("fade", 150);
 	$(this).addClass("tab_active");
 	return false;
 });
@@ -190,5 +190,27 @@ $(document).on("click", ".toggle", function(e){
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
-	$t.toggle('fade', 100);
+	$t.toggle('fade', 150);
+});
+
+$(document).on("scroll", function(){
+	var lim = $(".top-info:eq(0)").outerHeight();
+	var $trg = $(".header:eq(0)");
+	var currentScroll = $(document).scrollTop();
+
+	if(currentScroll > lim){
+		$trg.css({
+			"position": "fixed",
+			"z-index": 1100,
+			"border-bottom": "1px solid #55a948",
+			"width": "100%"
+		});
+	}else{
+		$trg.css({
+			"position": "",
+			"z-index": "",
+			"border-bottom": "",
+			"width": ""
+		});
+	}
 });

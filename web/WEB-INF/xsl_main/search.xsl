@@ -9,8 +9,6 @@
 
 	<!-- ****************************    ПЕРЕМЕННЫЕ    ******************************** -->
 
-	<xsl:variable name="pv" select="page/variables"/>
-
 	<xsl:variable name="query" select="$pv/q"/>
 	<xsl:variable name="sec" select="$pv/sec"/>
 	<xsl:variable name="query_sec" select="page/catalog//section[code = /page/variables/sec]"/>
@@ -66,7 +64,6 @@
 	<xsl:variable name="tag2" select="$pv/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="$pv/minqty = '0'"/>
 	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
 
 	<xsl:variable name="user_filter" select="$pv/fil[input]"/>
@@ -162,7 +159,6 @@
 					<div class="title title_1">По запросу "<xsl:value-of select="$query"/>" ничего не найдено</div>
 				</xsl:if>
 			</xsl:if>
-			<span class="refreshed_info">Информация обновлена <xsl:value-of select="replace(page/catalog/date,' ',' в ')"/></span>
 			<xsl:if test="$seo[1]/text">
 				<div class="section-text">
 					<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -170,7 +166,7 @@
 			</xsl:if>
 			<xsl:if test="/page/product">
 				<div class="search-links">
-					<div class="search-links__item search-link{' search-link_active'[$query_sec]}">
+					<div class="search-links__item search-link{' search-link_active'[not($query_sec)]}">
 						<a href="{page/base_search_link}">Найдено товаров</a>
 						<span><xsl:value-of select="count(page/product)"/></span>
 					</div>
@@ -178,7 +174,7 @@
 						<xsl:sort select="count(current-group())" order="descending"/>
 						<xsl:variable name="cur_sec" select="current-group()[1]"/>
 						<xsl:variable name="selected" select="$query_sec/code = $cur_sec/code"/>
-						<div class="search-links__item search-link{' search-link_active'[not($selected)]}">
+						<div class="search-links__item search-link{' search-link_active'[$selected]}">
 							<a href="{$cur_sec/show_sec}"><xsl:value-of select="$cur_sec/name"/></a>
 							<a href="{$cur_sec/show_sec}-{$cur_sec/name}">
 								<img src="img/icon-goto.png" alt=""/>
