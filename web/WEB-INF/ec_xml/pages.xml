@@ -9,6 +9,9 @@
 
 
 	<include-definition name="COMMON">
+		<request>
+			<var name="fixed_banner_updated" scope="cookie"/>
+		</request>
 		<link name="feedback_link" target="feedback_ajax"/>
 		<link name="news_link" target="news"/>
 

@@ -54,6 +54,7 @@
 	<xsl:variable name="adv_top" select="$adv/top_728x90"/>
 	<xsl:variable name="adv_side" select="$adv/side_240x400"/>
 	<xsl:variable name="adv_bottom" select="$adv/bottom_900x600"/>
+	<xsl:variable name="adv_fixed" select="$adv/bottom_fixed"/>
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
@@ -312,6 +313,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 	<xsl:template name="EXTRA_HEADER_CONTENT"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
 	<xsl:template name="COMMON_SCRIPTS">
+		<script src="js/cookies.js"></script>
 		<script src="js/plugins.js"></script>
 		<!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
 		<script src="js/main.js?version=1"></script>
@@ -350,7 +352,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.515"/>
+				<link rel="stylesheet" href="css/main.css?version=1.525"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -372,6 +374,9 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<xsl:call-template name="HEADER"/>
 				<xsl:call-template name="CONTENT"/>
 				<xsl:call-template name="INC_FOOTER"/>
+
+				<xsl:call-template name="BANNER_FIXED" />
+
 				<xsl:call-template name="COMMON_SCRIPTS" />
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 
@@ -394,9 +399,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 							$form.ajaxSubmit({
 								success: function(data, status, arg3) {
 									var res = $(data).find("result");
-									console.log(res.text());
 									var exception = $(data).find("exception");
-									console.log(exception.text());
 									if(res.text != "true"){
 										showDefaultAd();
 									}
@@ -765,6 +768,23 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 <!--							</xsl:if>-->
 							<xsl:value-of select="$adv_top/code" disable-output-escaping="yes"/>
 						</div>
+					</div>
+				</div>
+			</section>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="BANNER_FIXED">
+		<xsl:if test="$adv_fixed and not(page/variables/fixed_banner_updated = $adv_fixed/@last-modified)">
+			<section id="banner-fixed-bottom">
+				<div class="row" style="padding-left:0; padding-right:0;">
+					<a class="close" style="cursor: pointer; padding: 1rem;" onclick="hideFixedBanner({$adv_fixed/@last-modified})">×</a>
+					<div class="col-full">
+						<xsl:if test="$adv_fixed/pic !=''">
+							<a href="{$adv_fixed/link}" target="_blank">
+								<img src="{concat($adv_fixed/@path, $adv_fixed/pic)}"/>
+							</a>
+						</xsl:if>
 					</div>
 				</div>
 			</section>

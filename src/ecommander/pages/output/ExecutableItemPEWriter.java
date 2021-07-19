@@ -23,6 +23,7 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 	public static final String PATH_ATTRIBUTE = "path";
 	public static final String KEY_ATTRIBUTE = "key";
 	public static final String KEYPATH_ATTRIBUTE = "keypath";
+	public static final String LAST_MODIFIED_ATTRIBUTE = "last-modified";
 
 	public static final String ADMIN_PARAMETERS_ATTRIBUTE = "adm-params";
 	public static final String ADMIN_FULL_ATTRIBUTE = "adm-full";
@@ -68,7 +69,9 @@ public class ExecutableItemPEWriter implements PageElementWriter {
 				ID_ATTRIBUTE, item.getId(),
 				PATH_ATTRIBUTE,	FileDataType.getItemFileUrl(item),
 				KEY_ATTRIBUTE, item.getKeyUnique(),
-				KEYPATH_ATTRIBUTE, StringUtils.join(keyPath, VariablePE.COMMON_DELIMITER));
+				KEYPATH_ATTRIBUTE, StringUtils.join(keyPath, VariablePE.COMMON_DELIMITER),
+				LAST_MODIFIED_ATTRIBUTE, item.getTimeUpdated()
+		);
 		// Если включен режим визуального редактирования
 		if (isVisualEditing)
 			addConentUpdateAttrs(xml, item);
