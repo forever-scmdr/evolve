@@ -350,7 +350,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.512"/>
+				<link rel="stylesheet" href="css/main.css?version=1.515"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -410,7 +410,12 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 						}
 					}
 					function showDefaultAd(){
-						alert("BOO!");
+						var href = '<xsl:value-of select="$adv_top/link"/>';
+						var src = '<xsl:value-of select="concat($adv_top/@path, $adv_top/pic)"/>';
+						var $a = $("&lt;a&gt;", {"href" : href, "target" : "_blank", });
+						var $img = $("&lt;img&gt;",{"src" : src});
+						$a.append($img);
+						$("#banner-top-700").html($a);
 					}
 				</script>
 
@@ -755,9 +760,9 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<div class="row" style="padding-left:0; padding-right:0;">
 					<div class="col-full">
 						<div class="banner-top-700" style="line-height: 1; margin:0 auto;">
-							<xsl:if test="$adv_top/pic != ''">
-							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>
-							</xsl:if>
+<!--							<xsl:if test="$adv_top/pic != ''">-->
+<!--							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>-->
+<!--							</xsl:if>-->
 							<xsl:value-of select="$adv_top/code" disable-output-escaping="yes"/>
 						</div>
 					</div>
