@@ -1,9 +1,9 @@
 package ecommander.model;
 
-import java.util.HashMap;
-
 import ecommander.model.datatypes.*;
 import ecommander.model.datatypes.DataType.Type;
+
+import java.util.HashMap;
 
 /**
  * Возвращает объекты-типы данных по названию типа даных
@@ -37,6 +37,7 @@ public class DataTypeRegistry {
 		dataTypes.put(Type.FILTER, new StringDataType(Type.FILTER));
 		dataTypes.put(Type.XML, new XmlDataType(Type.XML));
 		dataTypes.put(Type.TUPLE, new TupleDataType(Type.TUPLE));
+		dataTypes.put(Type.CHAR, new CharDataType(Type.CHAR));
 	}
 
 	private static DataTypeRegistry getRegistry() {

@@ -28,7 +28,8 @@ public abstract class DataType {
 		PICTURE("picture"),
 		FILTER("filter"),
 		XML("xml"),
-		TUPLE("tuple");
+		TUPLE("tuple"),
+		CHAR("char");
 
 		private final String text;
 
