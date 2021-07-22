@@ -352,6 +352,7 @@
 				</link>
 				<include name="PRODUCT_PARAMS_LINKS"/>
 			</list>
+
 			<list item="custom_block">
 				<list item="custom_block"/>
 			</list>
@@ -413,6 +414,7 @@
 		</single>
 		<include name="DOMAINS"/>
 		<include name="COMMON"/>
+		<command class="extra.GovnoQuartz"/>
 	</page>
 
 
