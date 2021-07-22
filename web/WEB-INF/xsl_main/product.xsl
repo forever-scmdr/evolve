@@ -100,23 +100,23 @@
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
-				<script>
-					$('.fotorama')
-						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
-						if (e.type === 'fotorama:fullscreenenter') {
-							// Options for the fullscreen
-							fotorama.setOptions({
-								fit: 'scaledown'
-							});
-						} else {
-							// Back to normal settings
-							fotorama.setOptions({
-								fit: 'contain'
-							});
-						}
-						})
-						.fotorama();
-					</script>
+<!--				<script>-->
+<!--					$('.fotorama')-->
+<!--						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {-->
+<!--						if (e.type === 'fotorama:fullscreenenter') {-->
+<!--							// Options for the fullscreen-->
+<!--							fotorama.setOptions({-->
+<!--								fit: 'scaledown'-->
+<!--							});-->
+<!--						} else {-->
+<!--							// Back to normal settings-->
+<!--							fotorama.setOptions({-->
+<!--								fit: 'contain'-->
+<!--							});-->
+<!--						}-->
+<!--						})-->
+<!--						.fotorama();-->
+<!--					</script>-->
 			</div>
 			<div class="device-basic__column">
 				<!-- <xsl:for-each select="$p/tag">
