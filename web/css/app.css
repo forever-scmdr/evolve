@@ -6122,11 +6122,20 @@ img {
     padding: unset;
     margin-bottom: 3rem; }
   .tags a {
-    text-decoration: none; }
+    text-decoration: none; display: inline-block;}
     .tags a span {
       font-weight: normal; }
     .tags a:hover span {
       box-shadow: 0 0 1rem 0 #5f5f5f; }
+    .tags a span{
+      margin-right: 5px;
+      color: #fff;
+      border-top-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+      display: inline-block;
+      padding: .5rem 1rem;
+      margin-bottom: 5px; 
+      }
 
 .filters {
   padding: 1rem;
@@ -7293,8 +7302,56 @@ svg {
 }
 .catalog-items .catalog-item .image-container {
   border-top-left-radius: 15px;
+  border: 1px solid #ddd;
 }
 
 .buttons > input[type='submit']:first-child {
 	margin-right: .5rem;
 }
+.tab-pane .links {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.catalog-items .inline-only{display: none;}
+.catalog-items.lines .inline-only{display: block;}
+.inline-only{height: auto;}
+.inline-only.oveflow-hidden{
+  height: 100px;
+}
+.oveflow-hidden{overflow: hidden;}
+
+
+
+.table-fix {
+  display: flex;
+  flex-wrap: wrap;
+}
+.table-fix > table {
+  flex-basis: 20%;
+  float: none !important;
+  height: unset !important;
+  width: unset !important;
+  min-width: unset !important;
+}
+
+
+
+/* catalog item info fix */
+.inline-only ul *,
+.info-block ul * {
+    padding: unset;
+    list-style: none;
+    /* margin: unset; */
+}
+
+.inline-only li *,
+.info-block li * {
+    display: inline-block;
+}
+
+.inline-only li li,
+.info-block li li {
+    margin-left: 8px;
+    font-weight: bold;
+}
+/* catalog item info fix end*/

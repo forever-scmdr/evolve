@@ -8,15 +8,34 @@
  * @param menuSelector
  */
 function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
-	$(menuTriggerSelector).click(function (event) {
-		event.preventDefault();
-		$(menuSelector).toggle('fade', 150);
+	// $(menuTriggerSelector).click(function (event) {
+	// 	event.preventDefault();
+	// 	$(menuSelector).toggle('fade', 150);
+	// });
+	// $(document).click(function (event) {
+	// 	var target = $(event.target);
+	// 	if (target.closest(menuSelector).length == 0 && target.closest(menuTriggerSelector).length == 0) {
+	// 		$(menuSelector).hide('fade', 150);
+	// 	}
+	// });
+
+	$(menuTriggerSelector+", "+ menuSelector).mouseenter(
+		function (e) {
+			if (typeof hideTimeout != "undefined") {
+				clearTimeout(hideTimeout);
+			}
+			$(menuSelector).show(150);
 	});
-	$(document).click(function (event) {
-		var target = $(event.target);
-		if (target.closest(menuSelector).length == 0 && target.closest(menuTriggerSelector).length == 0) {
-			$(menuSelector).hide('fade', 150);
+	$(menuTriggerSelector +", "+ menuSelector).mouseleave(function (e) {
+		if (typeof hideTimeout != "undefined") {
+			clearTimeout(hideTimeout);
 		}
+		//var target = e.target;
+		//if (target.closest(menuSelector).length == 0 && target.closest(menuTriggerSelector).length == 0) {
+			hideTimeout = setTimeout(function () {
+				$(menuSelector).hide('fade', 150);
+			}, 300);
+		//}
 	});
 }
 
@@ -24,6 +43,7 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
 var _catalogPopupMenuShowInterval = 0;
 var _catalogPopupMenuHideInterval = 0;
 var _catalogPopupMenuCurrentItem = 0;
+
 /**
  * Показывает второй уровень меню для главного меню
  * Главное меню (все пункты) содержится в контейнере l1MenuContainerSelector
@@ -35,7 +55,7 @@ var _catalogPopupMenuCurrentItem = 0;
  */
 function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2MenuContainerSelector) {
 	$(l1MenuItemSelector).hover(
-		function() {
+		function () {
 			clearInterval(_catalogPopupMenuHideInterval);
 			if (_menuMouseMovedVertically) {
 				$(l2MenuContainerSelector).hide();
@@ -43,30 +63,30 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 				$(submenuSelector).show();
 			} else {
 				_catalogPopupMenuCurrentItem = $(this);
-				_catalogPopupMenuShowInterval = setInterval(function() {
+				_catalogPopupMenuShowInterval = setInterval(function () {
 					$(l2MenuContainerSelector).hide();
 					var submenuSelector = _catalogPopupMenuCurrentItem.attr('rel');
 					$(submenuSelector).show();
 				}, 500);
 			}
 		},
-		function() {
+		function () {
 			clearInterval(_catalogPopupMenuShowInterval);
 			if (_menuMouseMovedVertically) {
 				$(l2MenuContainerSelector).hide();
 			} else {
-				_catalogPopupMenuHideInterval = setInterval(function() {
+				_catalogPopupMenuHideInterval = setInterval(function () {
 					$(l2MenuContainerSelector).hide();
 				}, 500);
 			}
 		}
 	);
 	$(l2MenuContainerSelector).hover(
-		function() {
+		function () {
 			clearInterval(_catalogPopupMenuHideInterval);
 		},
-		function() {
-			_catalogPopupMenuHideInterval = setInterval(function() {
+		function () {
+			_catalogPopupMenuHideInterval = setInterval(function () {
 				$(l2MenuContainerSelector).hide();
 			}, 500);
 		}
@@ -80,13 +100,13 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	var MENU_MAX_MOVES_COUNT = 5;
 	var Y_QUOTIENT = 0.8;
 	$(l1MenuContainerSelector).mousemove(
-		function(event) {
+		function (event) {
 			_menuDeltaX += Math.abs(event.pageX - _menuPrevX);
 			_menuDeltaY += Math.abs(event.pageY - _menuPrevY);
 			_menuMovesCount++;
 			if (_menuMovesCount >= MENU_MAX_MOVES_COUNT) {
 				_menuMouseMovedVertically = (Y_QUOTIENT * _menuDeltaY - _menuDeltaX) > 0;
-				console.log(_menuMouseMovedVertically + " Y:" + (Y_QUOTIENT * _menuDeltaY) + " X:" + _menuDeltaX);
+				//console.log(_menuMouseMovedVertically + " Y:" + (Y_QUOTIENT * _menuDeltaY) + " X:" + _menuDeltaX);
 				_menuMovesCount = 0;
 				_menuDeltaX = 0;
 				_menuDeltaY = 0;
@@ -97,7 +117,7 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 }
 
-$(document).on('click', '.show-sub',function(e){
+$(document).on('click', '.show-sub', function (e) {
 	e.preventDefault();
 	var href = $(this).attr("href");
 	var trg = $(href);
@@ -107,9 +127,9 @@ $(document).on('click', '.show-sub',function(e){
 	trg.toggle();
 });
 
-$(document).on("click", "body", function(e){
+$(document).on("click", "body", function (e) {
 	var trg = $(e.target);
-	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")){
+	if (trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub")) {
 		$(".popup-text-menu").hide();
 	}
 });
