@@ -12,6 +12,8 @@ class AssocRegistry {
 	private HashMap<Byte, Assoc> assocById = new HashMap<>(10);
 
 	static final String PRIMARY_NAME = "_default_";
+	static final String PRIMARY_ALIAS_1 = "*";
+	static final String PRIMARY_ALIAS_2 = "primary";
 	static final byte PRIMARY_ID = (byte)0;
 	static final String ROOT_NAME = "_default_";
 	static final byte ROOT_ID = Byte.MAX_VALUE;
@@ -23,6 +25,8 @@ class AssocRegistry {
 
 	AssocRegistry() {
 		assocByName.put(PRIMARY_NAME, PRIMARY);
+		assocByName.put(PRIMARY_ALIAS_1, PRIMARY);
+		assocByName.put(PRIMARY_ALIAS_2, PRIMARY);
 		assocById.put(PRIMARY_ID, PRIMARY);
 	}
 

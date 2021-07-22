@@ -10,11 +10,12 @@ import java.util.HashMap;
  */
 public class FulltextQueryCreatorRegistry {
 	public static final String PREFIX = "prefix"; // начала слов + полное совпадение для большей релевантности
-	public static final String DEFAULT = "default"; // простой поиск с учетом стемминга (полное совпадение)
+	public static final String TERM = "term"; // простой поиск с учетом стемминга (полное совпадение)
+	public static final String DEFAULT = "default"; // то же что и TERM, этот вариант по умолчанию
 	public static final String NEAR = "near"; // полное совпадение слов + взаимное расположение рядом
 	public static final String FIRST = "first"; // полное совпадение слов + взаимное расположение рядом + все слова находятся в начале документа
 	public static final String EQUAL = "equal"; // полное совпадение слов (возможна полько перестановка местами)
-	public static final String WILDCARD = "wildcard"; // полное совпадение слов (возможна полько перестановка местами)
+	public static final String WILDCARD = "wildcard"; // полное включение запроса в часть слова разультата
 	
 	private static FulltextQueryCreatorRegistry singleton;
 	
@@ -29,8 +30,10 @@ public class FulltextQueryCreatorRegistry {
 	
 	private FulltextQueryCreatorRegistry() {
 		creators = new HashMap<>();
+		TermFulltextQuery termQuery = new TermFulltextQuery();
 		creators.put(PREFIX, new TermPrefixFulltextQuery());
-		creators.put(DEFAULT, new TermFulltextQuery());
+		creators.put(TERM, termQuery);
+		creators.put(DEFAULT, termQuery);
 		creators.put(NEAR, new NearFulltextQuery());
 		creators.put(FIRST, new FirstFulltextQuery());
 		creators.put(EQUAL, new EqualsFulltextQuery());

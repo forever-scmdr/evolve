@@ -11,7 +11,7 @@
 	<xsl:template match="/">
 		<xsl:if test="admin-page/item">
 			<!-- Буфер обмена -->
-			<div id="pasteBuffer">
+			<div id="pasteBuffer" class="result">
 				<div class="list">
 					<h4>Буфер обмена (вставить)</h4>
 					<ul class="edit">
@@ -21,6 +21,7 @@
 
 							<li class="drop-zone"></li>
 							<li class="dragable visible multiple">
+								<div class="selection-overlay buffer" data-id="{@id}"></div>
 								<a href="{edit-link}" class="name" title="радактировать">
 									<span class="description">[<xsl:value-of select="@type-caption" />]</span>
 									<br />

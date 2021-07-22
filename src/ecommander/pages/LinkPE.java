@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * Для каждого айтема, который можно передавать и принимать по ссылке, должно быть спец имя (ID).
@@ -20,7 +22,7 @@ import java.util.*;
 	<var name="device" item="device" parameter="producer"/> // переменная с динамическим значением - Значение параметра айтема
 	<var name="filter_parameter_value_2" var="filter_parameter_value_1"/> // переменная с динамическим значением - Другая переменная
 	
-	<var ... style="translit"/> // Такая переменная может передаваться в формате транслита
+	<var ... style="key"/> // Такая переменная может передаваться в формате транслита
 	<var ... style="query"/> // Название и значение переменной передается в URL query (в формате page?name=value)
 </link>
 
@@ -69,6 +71,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	private LinkedHashMap<String, VariablePE> variables = new LinkedHashMap<>();
 	// счетчик для создания фиктивных названий переменных в случае если у переменной нет имени
 	private int counter = 0;
+	// Изначальный вид ссылки до приведения ее к нормальному виду (до парсинга, как она приходит из браузера)
+	private String originalUrl = null;
 	/**
 	 * Ссылка в модели страницы с неизвестными параметрами
 	 * @param linkName
@@ -85,11 +89,12 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	/**
 	 * Создание ссылки из строки. пришедшей от клиента в виде URL
 	 * Подразумевается, что у страницы есть название и
-	 * у каждой переменной path (включая translit) также есть название
+	 * у каждой переменной path (включая key) также есть название
 	 * @param urlString
 	 * @throws UnsupportedEncodingException
 	 */
 	private LinkPE(String urlString) throws UnsupportedEncodingException {
+		originalUrl = urlString;
 		if (StringUtils.isBlank(urlString)) {
 			return;
 		}
@@ -110,15 +115,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		if (units.length > 1) {
 			// Получаются все переменные по отдельности
 			// Первая часть уже взята, поэтому i = 1
-			Iterator<RequestVariablePE> initVariablesIter;
-			if (page != null)
-				initVariablesIter = page.getInitVariablesPEList().iterator();
-			else
-				initVariablesIter = Collections.<RequestVariablePE>emptyList().iterator();
 			for (int i = 1; i < units.length; i++) {
 				String varName = units[i];
-				// Если переменная, объявленная в странице, является style="translit", значит надо использовать только одно значение, а не пару
-				RequestVariablePE initVar = initVariablesIter.hasNext() ? initVariablesIter.next() : null;
 				i++; // Берем следующее значение после /
 				// Если выход за пределы массива, значит неправильный формат URL
 				if (i >= units.length) {
@@ -126,19 +124,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 					break;
 				}
 				String varValue = URLDecoder.decode(units[i], "UTF-8");
-				RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
-				if (varPE == null) {
-					initVar = page == null ? null : page.getInitVariablePE(varName);
-					if (initVar != null) {
-						varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-						varPE.resetValue(varValue);
-					} else {
-						varPE = new RequestVariablePE(varName, varValue);
-					}
-					addVariablePE(varPE);
-				} else {
-					varPE.addValue(varValue);
-				}
+				addParsedVariableValue(page, varName, varValue);
 			}
 		}
 		// Разбор query части запроса
@@ -149,23 +135,29 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				if (eqIdx > 0) {
 					String varName = varStr.substring(0, eqIdx);
 					String varValue = URLDecoder.decode(varStr.substring(eqIdx + 1), "UTF-8");
-					RequestVariablePE initVar = page == null ? null : page.getInitVariablePE(varName);
-					RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
-					if (varPE == null) {
-						if (initVar != null) {
-							varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
-							varPE.resetValue(varValue);
-						} else {
-							varPE = new RequestVariablePE(varName, varValue);
-						}
-						addVariablePE(varPE);
-					} else {
-						varPE.addValue(varValue);
-					}
+					addParsedVariableValue(page, varName, varValue);
 				}
 			}
 		}
 	}
+
+
+	private void addParsedVariableValue(PagePE page, String varName, String varValue) {
+		RequestVariablePE varPE = (RequestVariablePE) getVariablePE(varName);
+		if (varPE == null) {
+			RequestVariablePE initVar = page == null ? null : page.getInitVariablePE(varName);
+			if (initVar != null) {
+				varPE = new RequestVariablePE(varName, initVar.getScope(), initVar.getStyle());
+				varPE.resetValue(varValue);
+			} else {
+				varPE = new RequestVariablePE(varName, varValue);
+			}
+			addVariablePE(varPE);
+		} else {
+			varPE.addValue(varValue);
+		}
+	}
+
 
 	/**
 	 * Создать ссылку на базе строки URL
@@ -217,9 +209,9 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		// Все переменные по порядку
 		try {
 			for (VariablePE var : variables.values()) {
-				if ((var.getStyle() == VariablePE.Style.path || var.getStyle() == VariablePE.Style.translit) && !var.isEmpty())
+				if ((var.isStylePath() || var.isStyleKey()) && !var.isEmpty())
 					path.append(VariablePE.COMMON_DELIMITER).append(var.writeInAnUrlFormat());
-				else if (var.getStyle() == VariablePE.Style.query/* && !var.isEmpty()*/)
+				else if (var.isStyleQuery()/* && !var.isEmpty()*/)
 					query.append(VariablePE.AMP_SIGN).append(var.writeInAnUrlFormat());
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -376,4 +368,11 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		return serialize();
 	}
 
+	public String getOriginalUrl() {
+		return originalUrl;
+	}
+
+	public void setOriginalUrl(String originalUrl) {
+		this.originalUrl = originalUrl;
+	}
 }

@@ -29,7 +29,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	private Item item;
 	private ItemBasics parent;
-	private boolean triggerExtra = true;
 
 	SaveNewItemDBUnit(Item item) {
 		this.item = item;
@@ -38,17 +37,6 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 	SaveNewItemDBUnit(Item item, ItemBasics parent) {
 		this.item = item;
 		this.parent = parent;
-	}
-
-	SaveNewItemDBUnit(Item item, boolean triggerExtra) {
-		this.item = item;
-		this.triggerExtra = triggerExtra;
-	}
-
-	SaveNewItemDBUnit(Item item, ItemBasics parent, boolean triggerExtra) {
-		this.item = item;
-		this.parent = parent;
-		this.triggerExtra = triggerExtra;
 	}
 
 	public void execute() throws Exception {
@@ -138,7 +126,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
 		//
 		if (item.hasParent()) {
-			executeCommandInherited(new CreateAssocDBUnit(item, parent, item.getContextAssoc().getId(), true));
+			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
 		} else {
 			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
 			rootQuery
@@ -180,7 +168,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
 		//
-		ItemMapper.insertItemParametersToIndex(item, true, getTransactionContext());
+		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка

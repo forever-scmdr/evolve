@@ -6,7 +6,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
-import ecommander.persistence.common.TemplateQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -39,8 +38,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 
 /**
@@ -137,7 +134,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private IndexReader reader = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
 	private volatile int concurrentWritersCount = 0;
-	private int countProcessed = 0; // Количество проиндексированных айтемов
+	private volatile int countProcessed = 0; // Количество проиндексированных айтемов
 	
 	private LuceneIndexMapper() throws IOException {
 		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
@@ -555,7 +552,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					ArrayList<Item> items;
 					long startFrom = 0;
 					do {
-						items = loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
+						try (Connection conn = MysqlConnector.getConnection()) {
+							items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom, conn);
+						}
 						for (Item item : items) {
 							updateItem(item);
 						}
@@ -572,30 +571,6 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			finishUpdate();
 		}
 		return true;
-	}
-	/**
-	 * Загрузить все айтемы определенного типа с ограничением по количеству и ID больше или равным определенному
-	 * @param itemId
-	 * @param limit
-	 * @param startFromId
-	 * @return
-	 * @throws Exception
-	 */
-	private ArrayList<Item> loadByTypeId(int itemId, int limit, long startFromId) throws Exception {
-		ArrayList<Item> result = new ArrayList<>();
-		// Полиморфная загрузка
-		TemplateQuery select = new TemplateQuery("Select items for indexing");
-		select.SELECT("*").FROM(ITEM_TBL).WHERE().col(I_TYPE_ID).int_(itemId).AND()
-				.col(I_ID, ">=").long_(startFromId).ORDER_BY(I_ID).LIMIT(limit);
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			// Создание айтемов
-			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), 0L));
-			}
-		}
-		return result;
 	}
 	/**
 	 * Удалить все документы из индекса

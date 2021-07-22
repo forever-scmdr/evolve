@@ -1,7 +1,10 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.fwk.ItemEventCommandFactory;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemBasics;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -21,30 +24,27 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 	private byte newStatus;
 	private long itemId;
 	private ItemBasics item;
-	private boolean triggerExtra = true;
 
-	public ItemStatusDBUnit(byte status, long itemId, ItemBasics item, boolean...triggerExtra) {
+	public ItemStatusDBUnit(byte status, long itemId, ItemBasics item) {
 		this.newStatus = status;
 		this.itemId = itemId;
 		this.item = item;
-		if (triggerExtra.length > 0)
-			this.triggerExtra = triggerExtra[0];
 	}
 
-	public static ItemStatusDBUnit delete(long itemId, boolean...triggerExtra) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, itemId, null, triggerExtra);
+	public static ItemStatusDBUnit delete(long itemId) {
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, itemId, null);
 	}
 
-	public static ItemStatusDBUnit delete(ItemBasics item, boolean...triggerExtra) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, item, triggerExtra);
+	public static ItemStatusDBUnit delete(ItemBasics item) {
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, item);
 	}
 
 	public static ItemStatusDBUnit hide(long itemId) {
-		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, itemId, null);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, itemId, null);
 	}
 
 	public static ItemStatusDBUnit hide(ItemBasics item) {
-		return new ItemStatusDBUnit(Item.STATUS_NIDDEN, -1, item);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, item);
 	}
 
 	public static ItemStatusDBUnit restore(long itemId) {
@@ -76,7 +76,7 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 		if (newStatus == STATUS_TOGGLE) {
 			if (item.getStatus() == Item.STATUS_DELETED)
 				return;
-			newStatus = item.getStatus() == Item.STATUS_NORMAL ? Item.STATUS_NIDDEN : Item.STATUS_NORMAL;
+			newStatus = item.getStatus() == Item.STATUS_NORMAL ? Item.STATUS_HIDDEN : Item.STATUS_NORMAL;
 		}
 
 		byte primaryAssoc = ItemTypeRegistry.getPrimaryAssoc().getId();

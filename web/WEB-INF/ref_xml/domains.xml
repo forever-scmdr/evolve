@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<domains>
-	<domain name="yes-no" view-type="combobox">
-		<value>нет</value>
-		<value>да</value>
-	</domain>
-</domains>

@@ -47,6 +47,7 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 	}
 	
 	public final void appendQuery(TemplateQuery query) {
+		if (isNotBlank()) {
 		if (needJoin) {
 			final String INDEX_DOT = INDEX_TABLE + ".";
 			final String GROUP_ITEM_TABLE = groupId + "I.";
@@ -69,8 +70,8 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 		}
 
 		// Добавление значения параметра
-		if (isNotBlank())
 			appendParameterValue(query);
+	}
 	}
 
 	protected abstract void appendParameterValue(TemplateQuery query);

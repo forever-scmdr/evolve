@@ -15,7 +15,7 @@ public class SingleParameter extends Parameter {
 	private ArrayList<Object> oldValues = null;
 	private HashMap<String, String> metas = null;
 	private int hash = 0;
-	
+
 	public SingleParameter(ParameterDescription desc, Item item) {
 		super(desc, item);
 	}
@@ -85,8 +85,11 @@ public class SingleParameter extends Parameter {
 	}
 
 	@Override
-	public void clear() {
+	public boolean clear() {
+		if (isEmpty())
+			return false;
 		setValue(null, true);
+		return true;
 	}
 
 	public String outputValue() {

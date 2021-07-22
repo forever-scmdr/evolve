@@ -1,6 +1,5 @@
 package ecommander.pages.filter;
 
-import ecommander.model.Assoc;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ExecutablePagePE;
@@ -19,15 +18,19 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 	private static final String CHILD = "child";
 
 	private String itemName;
-	private String assocName;
+	private String[] assocName;
 	private boolean isParent = false;
 	private boolean isUserFiltered = false;
 
-	public AssociatedItemCriteriaPE(String itemName, String assocName, boolean isParent, boolean isUserFiltered) {
+	public AssociatedItemCriteriaPE(String itemName, boolean isParent, boolean isUserFiltered, String... assocName) {
 		this.itemName = itemName;
 		this.assocName = assocName;
-		if (StringUtils.isBlank(assocName))
-			this.assocName = ItemTypeRegistry.getPrimaryAssoc().getName();
+		if (assocName == null || assocName.length == 0 || StringUtils.isBlank(assocName[0])) {
+			this.assocName = new String[1];
+			this.assocName[0] = ItemTypeRegistry.getPrimaryAssoc().getName();
+		} else {
+			this.assocName = assocName;
+		}
 		this.isParent = isParent;
 		this.isUserFiltered = isUserFiltered;
 	}
@@ -49,17 +52,18 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 
 	@Override
 	protected PageElementContainer createExecutableShallowClone(PageElementContainer container, ExecutablePagePE parentPage) {
-		return new AssociatedItemCriteriaPE(itemName, assocName, isParent, isUserFiltered);
+		return new AssociatedItemCriteriaPE(itemName, isParent, isUserFiltered, assocName);
 	}
 
 	@Override
 	protected boolean validateShallow(String elementPath, ValidationResults results) {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
-		Assoc assoc = ItemTypeRegistry.getAssoc(assocName);
 		if (itemDesc == null)
 			results.addError(elementPath + " > " + getKey(), "there is no '" + itemName + "' item in site model");
-		if (assoc == null)
-			results.addError(elementPath + " > " + getKey(), "there is no '" + assocName + "' assoc in site model");
+		for (String an : assocName) {
+			if (ItemTypeRegistry.getAssoc(an) == null)
+				results.addError(elementPath + " > " + getKey(), "there is no '" + an + "' assoc in site model");
+		}
 		// Установить данные для последующей валидации (ItemDescription страничного айтема)
 		results.pushBufferData(itemDesc);
 		return results.isSuccessful();
@@ -69,7 +73,7 @@ public class AssociatedItemCriteriaPE extends PageElementContainer implements Fi
 		return itemName;
 	}
 
-	public String getAssocName() {
+	public String[] getAssocName() {
 		return assocName;
 	}
 

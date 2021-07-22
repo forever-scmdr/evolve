@@ -69,8 +69,9 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, isOption(), compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
+			Compare localComp = compType == Compare.EVERY ? Compare.SOME : Compare.ANY;
 			for (String value : values) {
-				addOptimized(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), compType));
+				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), localComp));
 				tableName = groupId + "F" + criterias.size();
 			}
 		} else
@@ -104,7 +105,7 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 * @param type
 	 * @return
 	 */
-	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, byte assocId, AssociatedItemCriteriaGroup.Type type) {
+	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, Byte[] assocId, AssociatedItemCriteriaGroup.Type type) {
 		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
 		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, null, this.item);
 		assocCriterias.add(newCrit);

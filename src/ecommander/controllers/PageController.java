@@ -6,6 +6,7 @@ import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.*;
 import ecommander.pages.ResultPE.ResultType;
 import ecommander.pages.output.PageWriter;
+import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,8 @@ import java.util.Map;
  *
  */
 public class PageController {
-	
+	private static final String CONTENT_TYPE_HEADER = "Content-Type";
+
 	private String requestUrl; // для работы кеша
 	private final String domainName; // для работы кеша
 	private final boolean useCache; // надо ли использовать кеш
@@ -78,7 +80,11 @@ public class PageController {
 		// Дополнительные заголовки
 		Map<String, String> headers = this.page.getResponseHeaders();
 		for (String header : headers.keySet()) {
+			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)) {
+				contentType = headers.get(header);
+			} else {
 			resp.setHeader(header, headers.get(header));
+		}
 		}
 		// Переменные, хранящиеся в куки
 		page.getSessionContext().flushCookies(resp);
@@ -139,17 +145,9 @@ public class PageController {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		long timeStart = System.currentTimeMillis();
 		if (AppContext.isCacheEnabled() && page.isCacheable()) {
-			// Удалить часть, добавляемую аяксом (_=123456789123123)
-			if (StringUtils.contains(requestUrl, "_=")) {
-				int i = requestUrl.indexOf("_=");
-				requestUrl = requestUrl.substring(0, i);
-			}
-			String cacheFileName = requestUrl;
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '|', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '/', '_');
-			cacheFileName = StringUtils.replaceChars(cacheFileName, '?', '_');
+			String cacheFileName = page.getCacheableId();
 			cacheFileName = domainName + "/" + page.getSessionContext().getUser().getGroupRolesStr() + "/" + cacheFileName + ".html";
-			String fullFileName = AppContext.getCacheHtmlDirPath() + cacheFileName;
+			String fullFileName = AppContext.getCacheHtmlDirPath() + "/" + cacheFileName;
 			if (fullFileName.length() >= 255) {
 				int hash = fullFileName.hashCode();
 				fullFileName = StringUtils.substring(fullFileName, 0, 230);
@@ -173,10 +171,14 @@ public class PageController {
 				// Выполняем страницу
 				String redirectUrl = processSimplePage(true);
 				Timer.getTimer().start(Timer.GENERATE_CACHE);
-				FileOutputStream fos = new FileOutputStream(cachedFile);
+				try {
+					FileOutputStream fos = new FileOutputStream(cachedFile, false);
 				out.writeTo(fos);
 				fos.flush();
 				fos.close();
+				} catch (FileNotFoundException fnf) {
+					ServerLogger.error("File " + cachedFile + " can not be created", fnf);
+				}
 				Timer.getTimer().stop(Timer.GET_FROM_CACHE);
 				ServerLogger.debug("DYNAMIC: " + requestUrl + " GENERATED IN " + (System.currentTimeMillis() - timeStart) + " MILLIS");
 				// Редирект в случае если он нужен
@@ -253,11 +255,14 @@ public class PageController {
 				}
 				// Если результат выполнения - динамическая ссылка - установить дополнительные переменные в ссылку
 				if (result.hasVariables()) {
-					for (Variable var : result.getVariables()) {
-						if (var.isEmpty())
+					for (StaticVariable var : result.getVariables()) {
+						if (var.isEmpty()) {
 							baseLink.removeVariable(var.getName());
-						else
-							baseLink.addStaticVariable(var.getName(), var.writeSingleValue());
+						} else {
+							for (Object val : var.getAllValues()) {
+								baseLink.addStaticVariable(var.getName(), val.toString());
+							}
+						}
 					}
 				}
 				// Это надо для того, чтобы все переменные в ссылке сделать статическими

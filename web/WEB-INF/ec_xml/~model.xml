@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                             SEO                                  ////////////-->
+
+	<item name="seo" caption="SEO" ag-id="1" ag-hash="113757">
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="keywords" type="string" caption="keywords"/>
+		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="bottom_text" caption="текст снизу" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="url_seo" key="name" caption="SEO" ag-id="2" ag-hash="-169844339">
+		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
+		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
+		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
+		<parameter name="description" type="string" caption="description"/>
+		<parameter name="keywords" type="string" caption="keywords"/>
+		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="bottom_text" caption="текст снизу" type="text"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="3" ag-hash="843192252">
+		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
+		<parameter name="google_verification" type="string" caption="google verification code"/>
+		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
+		<child item="url_seo" />
+	</item>
+
+	<item name="comment" caption="Комметнарий" key="email date" ag-id="4" ag-hash="950398559">
+		<parameter name="name" type="String" caption="Имя"/>
+		<parameter name="email" type="String" caption="email"/>
+		<parameter name="date" type="date" caption="email"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="moderated" type="byte" domain="0-1" caption="одобрен?"/>
+		<child item="comment"/>
+	</item>
+
+	<item name="comments" caption="Комменатрии" ag-id="5" ag-hash="-602415628">
+		<child item="comment"/>
+	</item>
+
+	<item name="news_wrap" caption="Новостые разделы" ag-id="6" ag-hash="301189686">
+		<child item="news"/>
+	</item>
+
+	<item name="searchable" virtual="true" key="name" ag-id="7" ag-hash="-710088958">
+		<parameter name="name" caption="Название" type="string" text-index="fulltext"/>
+		<parameter name="text" caption="Текст" type="text" text-index="fulltext"/>
+	</item>
+
+	<item name="feedback_params" caption="Параметры обратной связи" ag-id="8" ag-hash="-1139606656">
+		<parameter name="server_from" type="string" caption="Адрес сервера" description="с которого отправлять обратную связь"/>
+		<parameter name="email_from" type="string" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь"/>
+		<parameter name="email_from_password" type="string" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь"/>
+		<!--<parameter name="encoding" type="string" caption="Кодировка" description="В большинстве случаев подходит UTF-8"/>-->
+	</item>
+
+	<item name="page_part" virtual="true" key="name" super="searchable" ag-id="9" ag-hash="883751843">
+	</item>
+
+	<item name="text_part" caption="Текстовый блок" super="page_part *" ag-id="10" ag-hash="-1037694011">
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="gal_part" caption="Галерея" super="page_part" ag-id="11" ag-hash="-1802501824">
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000" multiple="true"/>
+		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;" multiple="true"/>
+		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;" multiple="true"/>
+	</item>
+
+	<item name="code_part" caption="Код" super="page_part" ag-id="12" ag-hash="-1127146747">
+		<parameter name="code" type="plain-text" caption="код"/>
+	</item>
+
+	<item name="top_gal" caption="Галерея в загловке" ag-id="13" ag-hash="-1139553048">
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000" multiple="true"/>
+		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;" multiple="true"/>
+		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;" multiple="true"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="news_item" key="name" caption="Статья" key-unique="true" default-page="news_item" super="searchable" ag-id="14" ag-hash="300774655">
+		<child item="seo" single="true"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="source" type="string" caption="Источник"/>
+		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
+		<parameter name="author" type="string" caption="Автор"/>
+		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
+		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
+		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="size" type="string" caption="Размер" domain="size"/>
+		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
+		<parameter name="main_audio" type="file" caption="Аудио" description="в начале статьи"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
+		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
+		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
+		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
+		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
+		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+<!--		<parameter name="text_audio" type="file" caption="Аудио для вставки в текст" multiple="true"/>-->
+		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
+		<child item="page_part"/>
+		<child item="top_gal" single="true"/>
+		<child item="comments" single="true"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="news" caption="Новостной раздел" children-sorting="DESC" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
+		<parameter name="name" type="string" caption="Название"/>
+		<!--<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>-->
+		<child item="seo" single="true"/>
+		<child item="news_item"/>
+	</item>
+
+	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="16" ag-hash="-251149995">
+		<parameter name="padding" type="integer" caption="высота шапки сайта"/>
+		<child item="seo" single="true"/>
+		<child item="featured" multiple="true"/>
+		<child item="informer_wrap" multiple="true"/>
+	</item>
+
+	<item name="informer" caption="Котировка" key="name" ag-id="30" ag-hash="178836950">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="pro_name" type="string" caption="Котировка"/>
+	</item>
+
+	<item name="informer_wrap" key="name" caption="Тикер" ag-id="32" ag-hash="1228138771">
+		<parameter name="name" type="string" caption="Название"/>
+		<child item="informer" inline="true"/>
+	</item>
+
+	<item name="featured" caption="слайд" key="name" ag-id="17" ag-hash="-290659282">
+		<parameter name="name" type="string" caption="Заголовок"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="cat_link" type="string" caption="Ссылка на категорию"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="tag" type="string" caption="тег" domain="tags"/>
+		<parameter name="style" type="string" caption="доп. CSS" description="атрибут style"/>
+		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
+	</item>
+
+	<item name="contacts" caption="Контакты" ag-id="18" ag-hash="-567451565">
+		<child item="seo" single="true"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="map" type="plain-text" caption="Код карты" format="height: 50px"/>
+		<parameter name="address" type="tiny-text" caption="Адрес"/>
+		<parameter name="phones" type="tiny-text" caption="Контактные данные"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+	</item>
+
+	<item name="common" caption="На всех страницах" ag-id="19" ag-hash="-1354814997">
+		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
+		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
+		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
+		<parameter name="bottom" type="short-text" caption="Текст внизу"/>
+		<child item="soc_link"/>
+	</item>
+
+	<item name="soc_link" key="name" caption="соцсеть" ag-id="20" ag-hash="1213728690">
+		<parameter name="name" type="string" caption="название" description="свопадает с суфиксом font-awesome" />
+		<parameter name="link" type="string" caption="ссылка" />
+	</item>
+
+	<item name="feedback_form" caption="Форма обратной связи" virtual="true" ag-id="21" ag-hash="-1950071490" >
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="email" type="string" caption="E-mail"/>
+		<parameter name="message" type="string" caption="Сообщение" />
+	</item>
+
+	<item name="small_news" caption="Новости" children-sorting="DESC" description="без рисунков" ag-id="27" ag-hash="1229830923">
+		<child item="seo" single="true"/>
+		<child item="small_news_item"/>
+	</item>
+
+	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809">
+		<child item="seo" single="true"/>
+		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="audio" type="file" caption="аудио"/>
+		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
+		<parameter name="source" type="string" caption="Источник"/>
+		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
+		<parameter name="author" type="string" caption="Автор"/>
+		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
+		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
+		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
+		<parameter name="size" type="string" caption="Размер" domain="size"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
+	</item>
+
+	<!--<item name="custom_pages" caption="Информационные разделы" ag-id="22" ag-hash="727106934">-->
+		<!--<child item="custom_page"/>-->
+	<!--</item>-->
+
+	<item name="custom_page" caption="Одиночная страница" key="name" key-unique="true" default-page="page" ag-id="29" ag-hash="-1777660259">
+		<child item="seo" single="true"/>
+		<!--<child item="custom_page"/>-->
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
+		<child item="page_part"/>
+		<child item="top_gal" single="true"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="24" ag-hash="1227433863">
+		<child item="named_code"/>
+	</item>
+
+	<item name="named_code" key="name" caption="Модуль" ag-id="25" ag-hash="-281007309">
+		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="url" type="string" caption="адрес страницы содержит"/>
+		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
+		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
+		<parameter name="place" type="string" caption="место вставки" domain="modules_place"/>
+	</item>
+
+	<item name="robots_text_overrider" caption="Перезапись robots.txt" virtual="true" ag-id="26" ag-hash="995375434">
+		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
+		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
+		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
+	</item>
+
+	<item name="wiki_tip" caption="слово" key="name" key-unique="true" ag-id="33" ag-hash="-1197127796">
+		<parameter name="name" type="string" caption="Слово"/>
+		<parameter name="text" type="text" caption="пояснение"/>
+	</item>
+
+	<item name="dictionary" caption="Словарь" ag-id="34" ag-hash="447049878">
+		<child item="wiki_tip"/>
+	</item>
+
+	<root>
+		<child item="feedback_params" single="true" />
+		<child item="main_page" single="true"/>
+		<child item="news_wrap" single="true"/>
+		<child item="small_news" single="true"/>
+		<child item="contacts" single="true"/>
+		<child item="common" single="true"/>
+		<child item="custom_page"/>
+		<child item="modules" single="true"/>
+		<child item="url_seo_wrap" single="true"/>
+		<child item="dictionary" single="true"/>
+		<!--<child item="file_overriders" single="true" />-->
+	</root>
+
+
+<!--EXP-->
+</model>

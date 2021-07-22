@@ -1,13 +1,12 @@
 package ecommander.model.datatypes;
 
-import java.util.HashMap;
-
+import ecommander.fwk.Strings;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import ecommander.fwk.Strings;
+import java.util.HashMap;
 /**
  * Конструирование значения из строки:
  * 		1) предполагается, что значение вводится в виде строки даты определенного формата типа День.Месяц.Год 

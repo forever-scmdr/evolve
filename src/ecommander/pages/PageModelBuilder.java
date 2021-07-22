@@ -48,7 +48,7 @@ import java.util.*;
 
 	<request>
 		// Порядок следования переменных в этом блоке имеет значение при использовании транслитерации переменных
-		<var name="device" style="translit"/> // значит этот параметр передается как уникальный строковый идентификатор
+		<var name="device" style="key"/> // значит этот параметр передается как уникальный строковый идентификатор
 		<var name="list" value="100,101,102"/>
 		<var name="filter_parameter_value_1"/>
 		<var name="filter_parameter_value_2"/>
@@ -65,7 +65,7 @@ import java.util.*;
 									// не перегружать файл ненужным текстом. В таком случае айтем надо обозначить как виртуальный
 		>
 		
-		<item name="device" quantifier="single" id="device" reference-var="device"> // Значит, что ID этого айтема берется из переменной device
+		<item name="device" quantifier="single" id="device" var="device"> // Значит, что ID этого айтема берется из переменной device
 			
 			// Ссылка на другую страницу. copy-page-vars - необязательный параметр, означает, что в ссылку надо 
 			// скопировать все переменные текуще страницы (не надо переписывать по одной)
@@ -75,7 +75,7 @@ import java.util.*;
 				<var name="device" item="device"/> // переменная с динамическим значением - ID айтема
 				<var name="device" item="device" parameter="producer"/> // переменная с динамическим значением - Значение параметра айтема
 				<var name="filter_parameter_value_2" var="filter_parameter_value_1"/> // переменная с динамическим значением - Другая переменная
-				<var ... style="translit"/> // Такая переменная может передаваться в формате транслита
+				<var ... style="key"/> // Такая переменная может передаваться в формате транслита
 				<var ... style="query"/> // Название и значение переменной передается в URL query
 				
 				<var name="$now" value="yyyy.MM.dd HH.mm"/> // Переменная, которая всегда возвращает текущее время в заданном формате (имя - $now)
@@ -87,14 +87,14 @@ import java.util.*;
 		</item>
 		
 		// Значит, что у этого айтема есть параметр code, который его уникально идентифицирует, и значение которого берется из переменной search_code
-		<item name="device" quantifier="single" id="device" reference-var="search_code" reference-parameter="code"> 
+		<item name="device" quantifier="single" id="device" var="search_code" reference-parameter="code">
 			...
 		</item>
 		
 		// По ID могут загружаться и множественные айтемы, тогда в переменной передается список ID разделенных запятой
 		// в таком случае надо указывать quantifier="mulitple"
 		// Такой вид загрузки используестя в основном только в AJAX страницах
-		<item name="device" quantifier="mulitple" id="device" reference-var="list" reference-parameter="code"> 
+		<item name="device" quantifier="mulitple" id="device" var="list" reference-parameter="code">
 			...
 		</item>
 		
@@ -518,7 +518,7 @@ import java.util.*;
 	<item .../>
 	// cache-vars - список переменных с соблюдением порядка следования, который использвуется для уникальной идентификации кешируемого айтема
 	// из значений переменных из этого списка строится имя файла с кэшем айтема
-	<item reference-var="selected_section" name="section" id="section" cacheable="true" cache-vars="selected_section city">
+	<item var="selected_section" name="section" id="section" cacheable="true" cache-vars="selected_section city">
 		...
 		<item ...>
 			<filter>
@@ -892,7 +892,7 @@ public class PageModelBuilder {
 		// Считвание базовых параметров страничного айтема
 		String itemNodeName = itemNode.tagName();
 		String itemName = itemNode.attr(ITEM_ATTRIBUTE);
-		String assocName = itemNode.attr(ASSOC_ATTRIBUTE);
+		String[] assocName = StringUtils.split(itemNode.attr(ASSOC_ATTRIBUTE), ' ');
 		String pageItemId = itemNode.attr(ID_ATTRIBUTE);
 		String tagName = itemNode.attr(TAG_ATTRIBUTE);
 		String referenceVar = itemNode.attr(VAR_ATTRIBUTE);
@@ -1081,8 +1081,8 @@ public class PageModelBuilder {
 			boolean isUserFiltered = StringUtils.isNotBlank(userFilterItemId)
 					&& StringUtils.isNotBlank(userFilterParamName)
 					&& StringUtils.isNotBlank(userFilterVarName);
-			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE),
-					filterSubnode.attr(ASSOC_ATTRIBUTE), isParent, isUserFiltered);
+			AssociatedItemCriteriaPE assocCrit = new AssociatedItemCriteriaPE(filterSubnode.attr(ITEM_ATTRIBUTE), isParent, isUserFiltered,
+					StringUtils.split(filterSubnode.attr(ASSOC_ATTRIBUTE), ' '));
 			container.addElement(assocCrit);
 			if (isUserFiltered) {
 				filter.setUserFilter(userFilterItemId, userFilterParamName, userFilterVarName, preload, false);
@@ -1311,7 +1311,7 @@ public class PageModelBuilder {
 				String styleStr = linkSubnode.attr(STYLE_ATTRIBUTE);
 				try {
 					if (!StringUtils.isBlank(styleStr))
-						VariablePE.Style.valueOf(styleStr);
+						VariablePE.Style.getValue(styleStr);
 					// Проверка, правильно ли указан стиль переменной
 				} catch (Exception e) {
 					throw new PrimaryValidationException(page.getPageName() + " > link ", "'" + styleStr
@@ -1399,11 +1399,12 @@ public class PageModelBuilder {
 	private CommandPE readCommand(Element commandNode) throws PrimaryValidationException {
 		boolean clearCache = commandNode.attr(CLEAR_CACHE_ATTRIBUTE).equalsIgnoreCase(YES_VALUE);
 		String className = commandNode.attr(CLASS_ATTRIBUTE);
+		String tag = commandNode.attr(TAG_ATTRIBUTE);
 		String method = commandNode.attr(METHOD_ATTRIBUTE);
 		String methodVar = commandNode.attr(METHOD_VAR_ATTRIBUTE);
 		CommandPE command;
 		try {
-			command = new CommandPE(className, clearCache);
+			command = new CommandPE(className, tag, clearCache);
 			command.setMethod(method);
 			command.setMethodVar(methodVar);
 		} catch (ClassNotFoundException e) {

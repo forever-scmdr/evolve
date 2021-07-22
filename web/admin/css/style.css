@@ -1,1184 +1,1260 @@
 * {
-	font-family: Arial;
+    font-family: Arial;
 }
 
 b, strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 label, a, button {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .mainwrap {
-	max-width: 1660px;
-	margin: 0 auto;
+    max-width: 1660px;
+    margin: 0 auto;
 }
 
 .header {
-	padding: 10px 20px;
-	background: #4B4B4B;
+    padding: 10px 20px;
+    background: #4B4B4B;
 }
 
 .left-col, .right-col {
-	display: inline-block;
-	vertical-align: top;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .right-col {
-	width: 79%;
-	margin: 0;
+    width: 79%;
+    margin: 0;
 }
 
 .left-col {
-	width: 20%;
-	box-sizing: border-box;
-	margin: 0;
+    width: 20%;
+    box-sizing: border-box;
+    margin: 0;
 }
 
 .header a {
-	display: inline-block;
-	color: #fff;
-	text-decoration: underline;
-	text-decoration-color: #eee;
-	vertical-align: top;
-	height: 28px;
-	margin-right: 5px;
-	line-height: 28px;
+    display: inline-block;
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: #eee;
+    vertical-align: top;
+    height: 28px;
+    margin-right: 5px;
+    line-height: 28px;
 }
 
 a, button, *[type="submit"], label.file, input[type="file"] {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .header a.gray {
-	background: #646464;
-	text-align: center;
-	/*width: 180px;*/
-	padding: 0 5px;
-	overflow: hidden;
-	white-space: nowrap;
-	font-size: 12px;
-	text-align: right;
+    background: #646464;
+    text-align: center;
+    /*width: 180px;*/
+    padding: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    text-align: right;
 }
 
 .header a.logout {
-	padding-right: 21px;
-	background: #646464 url('../img/delete_icon.png') center right no-repeat;
-	border-right: 3px solid #646464;
-	padding-left: 5px;
-	float: right;
-	text-decoration: none;
+    padding-right: 21px;
+    background: #646464 url('../img/delete_icon.png') center right no-repeat;
+    border-right: 3px solid #646464;
+    padding-left: 5px;
+    float: right;
+    text-decoration: none;
 }
 
 .path {
-	background: #E8E8E8;
-	padding: 8px 20px;
-	padding-left: 16%;
-	font-size: 13px;
+    background: #E8E8E8;
+    padding: 8px 20px;
+    padding-left: 16%;
+    font-size: 13px;
 }
 
 .path .sep:before {
-	content: " > ";
-	color: #707070;
+    content: " > ";
+    color: #707070;
 }
 
 .path a {
-	color: #707070;
+    color: #707070;
 }
 
 .path .pad {
-	padding-left: 20px;
+    padding-left: 20px;
 }
 
 .mid {
-	padding-bottom: 60px;
-	margin-top: 28px;
-	font-size: 14px;
+    padding-bottom: 60px;
+    margin-top: 28px;
+    font-size: 14px;
 }
 
 .list {
-	margin: 0 16px;
-	margin-bottom: 28px;
+    margin: 0 16px;
+    margin-bottom: 28px;
 }
 
 .list h4 {
-	color: #fff;
-	text-align: center;
-	padding: 6px 0;
-	background: #4B4B4B;
+    color: #fff;
+    text-align: center;
+    padding: 6px 0;
+    background: #4B4B4B;
 }
 
 .list ul {
-	list-style-type: none;
-	padding: 0 6px;
-	padding-top: 0;
-	background: #E8E8E8;
-	border-bottom: 6px solid #4B4B4B;
+    list-style-type: none;
+    padding: 0 6px;
+    padding-top: 0;
+    background: #E8E8E8;
+    border-bottom: 6px solid #4B4B4B;
 }
 
 .list ul .visible {
-	border: 1px solid #ccc;
-	border-right: 0;
-	min-height: 27px;
+    border: 1px solid #ccc;
+    border-right: 0;
+    min-height: 27px;
 }
 
 .list ul.create .visible a {
-	padding-right: 27px;
-	background: #56C493 url('../img/add_icon.png') right center no-repeat;
+    padding-right: 27px;
+    background: #56C493 url('../img/add_icon.png') right center no-repeat;
 }
 
 .list ul .visible a.name {
-	display: block;
-	text-decoration: none;
-	color: #363636;
-	font-weight: bold;
-	font-size: 12px;
+    display: block;
+    text-decoration: none;
+    color: #363636;
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .list ul .drop-zone {
-	height: 8px;
-	margin-left: -12px;
-	width: 244px;
+    height: 8px;
+    margin-left: -12px;
+    width: 244px;
 }
 
 .list ul.create .visible a {
-	min-height: 27px;
-	display: table;
-	text-decoration: none;
-	padding: 5px 6px;
-	padding-right: 27px;
-	width: 100%;
-	box-sizing: border-box;
-	color: #363636;
-	background: #fff;
-	position: relative;
+    min-height: 27px;
+    display: table;
+    text-decoration: none;
+    padding: 5px 6px;
+    padding-right: 27px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #363636;
+    background: #fff;
+    position: relative;
 }
-.list ul.create .visible a::after{
-	position: absolute;
-	display: block;
-	top: -1px;
-	bottom: -1px;
-	right: 0;
-	width: 27px;
-	content:'';
-	background: #56C493 url('../img/add_icon.png') right center no-repeat;
-	border: 1px solid #56C493;
+
+.list ul.create .visible a::after {
+    position: absolute;
+    display: block;
+    top: -1px;
+    bottom: -1px;
+    right: 0;
+    width: 27px;
+    content: '';
+    background: #56C493 url('../img/add_icon.png') right center no-repeat;
+    border: 1px solid #56C493;
 }
+
 .list ul.create .visible a .name {
-	display: block;
-	background: #fff;
-	padding: 5px 6px;
-	min-height: 17px;
-	text-decoration: none;
+    display: block;
+    background: #fff;
+    padding: 5px 6px;
+    min-height: 17px;
+    text-decoration: none;
 }
 
-.list.additional{
-	line-height: 27px;
-	font-weight: bold;
+.list.additional {
+    line-height: 27px;
+    font-weight: bold;
 
 }
-.list.additional a{
-	color: #363636;
-	font-size: 12px;
+
+.list.additional a {
+    color: #363636;
+    font-size: 12px;
 }
+
 .list ul.no-drag {
-	padding-bottom: 11px;
-	padding-top: 9px;
+    padding-bottom: 11px;
+    padding-top: 9px;
 }
 
 .list ul.no-drag li {
-	margin-top: 9px;
-	border-right: 1px solid #ccc;
-	background: #fff;
+    margin-top: 9px;
+    border-right: 1px solid #ccc;
+    background: #fff;
 }
 
 .list ul.no-drag li:first-of-type {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 .list ul.no-drag li a {
-	padding: 5px 6px;
-	min-height: 17px;
-	text-decoration: none;
+    padding: 5px 6px;
+    min-height: 17px;
+    text-decoration: none;
 }
 
 .edit li.visible {
-	border-right: 1px solid #ccc;
-	position: relative;
-	background: #fff;
+    border-right: 1px solid #ccc;
+    position: relative;
+    background: #fff;
 }
 
-.edit li.visible.active .name
-, .edit li.visible.active .drag
-, .edit li.visible.active .controls{
-	background-color: #fffec5;
+.edit li.visible.active .name, .edit li.visible.active .drag, .edit li.visible.active .controls {
+    background-color: #fffec5;
 }
 
 .edit li a.name {
-	min-height: 17px;
-	padding: 5px 6px;
+    min-height: 17px;
+    padding: 5px 6px;
 }
 
 .edit li a.name .description {
-	color: #707070;
-	font-weight: normal;
+    color: #707070;
+    font-weight: normal;
 }
 
 .edit li.single a.name {
-	margin-right: 28px;
+    margin-right: 28px;
 }
 
-.edit .controls{
-	position: absolute;
-	top:-1px;
-	bottom:-1px;
-	background: #fff;
-	right:0;
-	width: 82px;
-	margin-right:-82px;
-	border: 1px solid #ccc;
-	border-left: 0;
-	display: none;
-	z-index: 1;
-}
-.edit .drag{
-	position: absolute;
-	top:-1px;
-	bottom:-1px;
-	background: #fff;
-	width: 20px;
-	text-align: center;
-	left:0;
-	margin-left: -20px;
-	border: 1px solid #ccc;
-	border-right: 0;
-	cursor: n-resize;
-	display: none;
-}
-.edit .drag.active{
-	background-color: #ffe45c;
-	display: block !important;
-}
-.edit .drag::after{
-	position: absolute;
-	width: 20px;
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-	content: '↕';
-	top: 50%;
-	font-size: 16px;
-	margin-top: -8px;
-	line-height: 16px;
-}
-.edit li:hover .controls, .edit li:hover .drag{
-	display: block;
-}
-.edit a.delete, .edit a.copy,  .edit a.hide_item, .edit a.show_item{
-	/*position: absolute;*/
-	display: inline-block;
-	width: 27px;
-	height: 27px;
-	text-indent: 10000px;
-	overflow: hidden;
-	top: 0;
+.edit .controls {
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    background: #fff;
+    right: 0;
+    width: 82px;
+    margin-right: -82px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    display: none;
+    z-index: 1;
 }
 
-.edit a.hide_item{
-	background: url("../img/eye-blocked.png") center no-repeat;
-	background-size: 18px auto;
-	right:52px;
-} .edit a.show_item{
-	  background: url("../img/eye-plus.png") center no-repeat;
-	  background-size: 18px auto;
-	  right:52px;
-  }
+.edit .drag {
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    background: #fff;
+    width: 20px;
+    text-align: center;
+    left: 0;
+    margin-left: -20px;
+    border: 1px solid #ccc;
+    border-right: 0;
+    cursor: n-resize;
+    display: none;
+}
+
+.edit .drag.active {
+    background-color: #ffe45c;
+    display: block !important;
+}
+
+.edit .drag::after {
+    position: absolute;
+    width: 20px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    content: '↕';
+    top: 50%;
+    font-size: 16px;
+    margin-top: -8px;
+    line-height: 16px;
+}
+
+.edit li:hover .controls, .edit li:hover .drag {
+    display: block;
+}
+
+.edit .controls a, .selection-actions.edit .actions a, #pasteBuffer .copy, #pasteBuffer .delete{
+    /*position: absolute;*/
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    text-indent: 10000px;
+    overflow: hidden;
+    top: 0;
+}
+
+.selection-actions.edit .actions .select-all{
+    background: url("../img/check-square-regular.svg") center no-repeat;
+    background-size: 18px auto;
+}
+.selection-actions.edit .actions .select-none{
+    background: url("../img/square-regular.svg") center no-repeat;
+    background-size: 18px auto;
+}
+.selection-actions.edit .actions .invert-selection{
+    background: url("../img/check-square-solid.svg") center no-repeat;
+    background-size: 18px auto;
+}
+
+.edit a.hide_item {
+    background: url("../img/eye-blocked.png") center no-repeat;
+    background-size: 18px auto;
+    right: 52px;
+}
+
+.edit a.show_item {
+    background: url("../img/eye-plus.png") center no-repeat;
+    background-size: 18px auto;
+    right: 52px;
+}
 
 .edit a.delete {
 
-	right: 0;
-	background: url('../img/delete_icon.png') center no-repeat;
+    right: 0;
+    background: url('../img/delete_icon.png') center no-repeat;
 }
 
 .edit a.copy {
 
-	right: 28px;
-	background: url('../img/copy-icon.gif') center no-repeat;
-	background-size: 18px auto;
+    right: 28px;
+    background: url('../img/copy-icon.gif') center no-repeat;
+    background-size: 18px auto;
 }
 
 .edit a.copy.paste {
-	background-image: url(../img/paste.png);
-	background-size: 20px auto;
+    background-image: url(../img/paste.png);
+    background-size: 20px auto;
 }
 
 .edit a.copy.move {
-	background-image: url(../img/move.png);
-	background-size: 20px auto;
+    background-image: url(../img/move.png);
+    background-size: 20px auto;
 }
 
 .footer {
-	position: fixed;
-	background: #E8E8E8;
-	bottom: 0;
-	height: 50px;
-	left: 0;
-	right: 0;
-	border-top: 1px solid #ccc;
-	z-index: 10000;
+    position: fixed;
+    background: #E8E8E8;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #ccc;
+    z-index: 10000;
 }
 
 .mid .right-col .inner {
-	padding-left: 20px;
+    padding-left: 20px;
 }
 
 h1 {
-	font-size: 24px;
-	color: #363636;
-	margin-bottom: 20px;
+    font-size: 24px;
+    color: #363636;
+    margin-bottom: 20px;
 }
 
 .edit-arena .wide, .edit-arena .narrow {
-	display: inline-block;
-	margin: 0;
-	vertical-align: top;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
 }
 
 .edit-arena .wide {
-	width: 83.5%;
+    width: 83.5%;
 }
 
 .edit-arena .wide .margin {
-	margin-right: 40px;
+    margin-right: 40px;
 }
 
 .edit-arena .narrow {
-	width: 16%;
+    width: 16%;
 }
 
 .wtf-list {
-	width: 100%;
-	text-align: center;
-	border-collapse: collapse;
-	background: #f2f2f2;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    background: #f2f2f2;
 }
 
 .wtf-list td {
-	border: 1px solid #ccc;
-	vertical-align: top;
+    border: 1px solid #ccc;
+    vertical-align: top;
 }
 
 .wtf-list a {
-	padding: 5px 8px;
-	display: block;
-	color: #363636;
-	text-decoration: none;
+    padding: 5px 8px;
+    display: block;
+    color: #363636;
+    text-decoration: none;
 }
 
 .wtf-list td.active {
-	background: #fff;
-	border-bottom: 0;
-	border-top: 2px solid #363636;
+    background: #fff;
+    border-bottom: 0;
+    border-top: 2px solid #363636;
 }
 
 .pics .pic {
-	border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 
 .pics img {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 .pics .pic {
-	padding: 9px;
-	padding-right: 29px;
-	background: #E8E8E8;
-	position: relative;
+    padding: 9px;
+    padding-right: 29px;
+    background: #E8E8E8;
+    position: relative;
 }
 
 .pics a.delete {
-	top: 4px;
-	right: 2px;
-	background: url('../img/delete_icon.png') center no-repeat;
-	display: block;
-	overflow: hidden;
-	width: 27px;
-	height: 27px;
-	position: absolute;
-	text-indent: 10000px;
+    top: 4px;
+    right: 2px;
+    background: url('../img/delete_icon.png') center no-repeat;
+    display: block;
+    overflow: hidden;
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    text-indent: 10000px;
 }
 
 .pics .file a.delete {
-	top: 24px;
+    top: 24px;
 }
 
 .pics input {
-	border: 1px solid #ccc;
-	margin-top: 2px;
-	padding: 2px 4px;
-	max-width: 96%;
-	padding-right: 0;
+    border: 1px solid #ccc;
+    margin-top: 2px;
+    padding: 2px 4px;
+    max-width: 96%;
+    padding-right: 0;
 }
 
 .save-links {
-	width: 272px;
-	margin: 12px auto 0;
+    width: 272px;
+    margin: 12px auto 0;
 }
 
 .save-links button {
-	display: inline-block;
-	padding: 6px 9px;
-	background: #56C493;
-	color: #fff;
-	text-decoration: none;
-	border-radius: 5px;
+    display: inline-block;
+    padding: 6px 9px;
+    background: #56C493;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
 .save-links button:first-of-type {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 
 .save-links button:nth-of-type(2) {
-	background: #1E9BF7;
+    background: #1E9BF7;
 }
 
 h2 {
-	margin: 20px 0 20px;
-	font-size: 20px;
+    margin: 20px 0 20px;
+    font-size: 20px;
 }
 
 .form-item {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 input[type="text"], input[type="password"] {
-	display: block;
-	border: 1px solid #ccc;
-	padding: 2px 4px;
-	margin-top: 3px;
-	width: 170px;
+    display: block;
+    border: 1px solid #ccc;
+    padding: 2px 4px;
+    margin-top: 3px;
+    width: 170px;
 }
 
 .form_comment {
-	color: #707070;
-	font-size: 12px;
-}
-/*.fileLoad{display: none;}*/
-.form-item.picture, .form-item.file {
-	display: inline-block;
-	vertical-align: top;
-	margin-right: 20px;
+    color: #707070;
+    font-size: 12px;
 }
 
-.form-item.picture  .file input, .form-item.file .file input {
-	/*background: lime none repeat scroll 0 0;*/
-	/*display: none;*/
-	left: 0;
-	margin-top: 1px;
-	opacity: 0;
-	position: absolute;
-	top: 0;
+/*.fileLoad{display: none;}*/
+.form-item.picture, .form-item.file {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
+
+.form-item.picture .file input, .form-item.file .file input {
+    /*background: lime none repeat scroll 0 0;*/
+    /*display: none;*/
+    left: 0;
+    margin-top: 1px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
 }
 
 .form-item.picture .file, .form-item.file .file {
-	display: block;
-	width: 158px;
-	height: 70px;
-	padding: 0 10px;
-	padding-top: 118px;
-	margin-top: 8px;
-	text-align: center;
-	font-size: 17px;
-	color: #bbb;
-	font-weight: bold;
-	background: #E8E8E8 url('../img/drop_item.png') 50% 25px no-repeat;
-	position: relative;
+    display: block;
+    width: 158px;
+    height: 70px;
+    padding: 0 10px;
+    padding-top: 118px;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 17px;
+    color: #bbb;
+    font-weight: bold;
+    background: #E8E8E8 url('../img/drop_item.png') 50% 25px no-repeat;
+    position: relative;
 }
 
-.form-item.picture a.delete, .form-item.file a.delete {
-	top: -10px;
-	right: -10px;
-	background: url('../img/delete_icon.png') center no-repeat;
-	display: block;
-	overflow: hidden;
-	width: 27px;
-	height: 27px;
-	position: absolute;
-	text-indent: 10000px;
+.form-item.picture a.delete, .form-item.file a.delete, .form-item.filter a.delete {
+    top: -10px;
+    right: -10px;
+    background: url('../img/delete_icon.png') center no-repeat;
+    display: block;
+    overflow: hidden;
+    width: 27px;
+    height: 27px;
+    position: absolute;
+    text-indent: 10000px;
 }
 
 textarea {
-	border: 1px solid #ccc;
-	display: block;
+    border: 1px solid #ccc;
+    display: block;
 }
 
 .form-item span.x {
-	padding-bottom: 4px;
-	display: block;
+    padding-bottom: 4px;
+    display: block;
 }
 
 .drop-zone.spacer_selected {
-	background: lime;
+    background: lime;
 }
 
 .create select, .create option {
-	display: block;
-	min-height: 27px;
-	width: 100%;
+    display: block;
+    min-height: 27px;
+    width: 100%;
 }
 
-.list ul.create .visible a.create-button, .create-button{
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 29px;
-	padding: 0;
-	width: 27px;
+.list ul.create .visible a.create-button, .create-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 29px;
+    padding: 0;
+    width: 27px;
 }
 
 #main_view {
-	width: 100%;
+    width: 100%;
 }
 
 h2.title {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .horizontal_separator {
-	border-bottom: 1px solid #ccc;
-	margin-top: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-top: 10px;
 }
 
 .multiple_param {
-	display: inline-block;
-	background: #E8E8E8;
-	margin-right: 12px;
-	margin-bottom: 12px;
-	vertical-align: top;
-	width: 294px;
-	position: relative;
+    display: inline-block;
+    background: #E8E8E8;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    vertical-align: top;
+    width: 294px;
+    position: relative;
 }
 
 .multiple_param input {
-	width: 270px;
-	display: block;
-	margin: 7px 0;
-	margin: 7px 12px;
+    width: 270px;
+    display: block;
+    margin: 7px 0;
+    margin: 7px 12px;
 }
 
 .multiple_param .form_title {
-	background: #4B4B4B;
-	text-align: center;
-	color: #fff;
-	padding: 7px;
-	margin-bottom: 6px;
+    background: #4B4B4B;
+    text-align: center;
+    color: #fff;
+    padding: 7px;
+    margin-bottom: 6px;
 }
 
 .multiple_param .form_comment {
-	margin-left: 12px;
-	color: #4B4B4B;
+    margin-left: 12px;
+    color: #4B4B4B;
 }
 
 .multiple_param input[type="submit"] {
-	margin: 8px 0 0 0;
-	background: #56C493;
-	color: #fff;
-	padding: 7px;
-	text-align: center;
-	width: 100%;
+    margin: 8px 0 0 0;
+    background: #56C493;
+    color: #fff;
+    padding: 7px;
+    text-align: center;
+    width: 100%;
 }
 
 #pasteBuffer h4 {
-	background: #EAA605;
+    background: #EAA605;
 }
 
 .timeStamp {
-	font-size: 14px;
-	width: 148px;
-	padding: 4px 0;
-	margin-bottom: 10px;
+    font-size: 14px;
+    width: 148px;
+    padding: 4px 0;
+    margin-bottom: 10px;
 }
 
 .timeStamp:after {
-	display: block;
-	content: " ";
-	clear: both;
-	font-size: 0;
+    display: block;
+    content: " ";
+    clear: both;
+    font-size: 0;
 }
+
 /* COMBOBOX */
 .combobox {
-	position: relative;
+    position: relative;
 }
 
 .combobox select {
-	height: 22px;
-	margin-top: 3px;
-	width: 289px;
+    height: 22px;
+    margin-top: 3px;
+    width: 289px;
 }
 
 .combobox option {
-	min-height: 22px;
-	line-height: 22px;
+    min-height: 22px;
+    line-height: 22px;
 }
 
 .combobox input[type="text"] {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 262px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 262px;
 }
 
 .create-domain li {
-	padding: 11px 0;
-	position: relative;
-	padding-bottom: 0;
-	margin-bottom: 0;
+    padding: 11px 0;
+    position: relative;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .create-domain label {
-	display: block;
-	margin-bottom: 8px;
+    display: block;
+    margin-bottom: 8px;
 }
 
 .create-domain input, .create-domain select {
-	display: block;
-	margin-top: 3px;
-	border: 1px solid #ccc;
-	width: 100%;
+    display: block;
+    margin-top: 3px;
+    border: 1px solid #ccc;
+    width: 100%;
 }
 
 .create-domain input {
-	width: 95%;
+    width: 95%;
 }
 
 .create-domain select {
-	height: 22px;
+    height: 22px;
 }
 
 .create-domain a {
-	display: block;
-	width: 100%;
-	background: #56c493;
-	text-align: center;
-	padding: 7px 6px;
-	margin-left: -6px;
-	color: #fff;
-	text-decoration: none;
-	margin-top: 11px;
+    display: block;
+    width: 100%;
+    background: #56c493;
+    text-align: center;
+    padding: 7px 6px;
+    margin-left: -6px;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 11px;
 }
 
 .domain-type {
-	border: 1px solid #ccc;
-	height: 22px;
-	display: block;
-	margin-top: 4px;
-	width: 180px;
+    border: 1px solid #ccc;
+    height: 22px;
+    display: block;
+    margin-top: 4px;
+    width: 180px;
 }
 
 .domain-values {
-	list-style-type: none;
+    list-style-type: none;
 }
 
 .domain-values li {
-	padding: 5px 7px;
-	border: 1px solid #ccc;
-	position: relative;
-	width: 200px;
-	margin-bottom: 5px;
-	position: relative;
-	padding-right: 27px;
+    padding: 5px 7px;
+    border: 1px solid #ccc;
+    position: relative;
+    width: 200px;
+    margin-bottom: 5px;
+    position: relative;
+    padding-right: 27px;
 }
 
 .domain-values a.delete {
-	position: absolute;
-	width: 27px;
-	right: 0;
-	top: 0;
-	background: rgba(0, 0, 0, 0) url("../img/delete_icon.png") no-repeat
-		scroll center center;
-	height: 27px;
-	text-indent: 500px;
-	overflow: hidden;
+    position: absolute;
+    width: 27px;
+    right: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0) url("../img/delete_icon.png") no-repeat scroll center center;
+    height: 27px;
+    text-indent: 500px;
+    overflow: hidden;
 }
 
 .add-domain-value {
-	text-aligin: center;
-	background: #56C493;
-	color: #fff;
-	padding: 2px 12px;
-	position: absolute;
-	top: 0;
-	left: 170px;
+    text-aligin: center;
+    background: #56C493;
+    color: #fff;
+    padding: 2px 12px;
+    position: absolute;
+    top: 0;
+    left: 170px;
 }
 
 .save-links a:first-of-type {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 
 .save-links a {
-	background: #56c493 none repeat scroll 0 0;
-	border-radius: 5px;
-	color: #fff;
-	display: inline-block;
-	padding: 6px 9px;
-	text-decoration: none;
+    background: #56c493 none repeat scroll 0 0;
+    border-radius: 5px;
+    color: #fff;
+    display: inline-block;
+    padding: 6px 9px;
+    text-decoration: none;
 }
 
 .save-links a:nth-of-type(2) {
-	background: #1e9bf7 none repeat scroll 0 0;
+    background: #1e9bf7 none repeat scroll 0 0;
 }
 
 .list .itemsMenu li {
-	margin-bottom: 9px;
+    margin-bottom: 9px;
 }
 
 .list ul.itemsMenu {
-	padding-top: 9px;
+    padding-top: 9px;
 }
 
 .list .itemsMenu li a {
-	min-height: 17px;
-	padding: 5px 6px;
-	margin-left: 12px;
-	text-decoration: none;
-	background: #fff;
-	border: 1px solid #ccc;
-	display: block;
-	color: #363636;
+    min-height: 17px;
+    padding: 5px 6px;
+    margin-left: 12px;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid #ccc;
+    display: block;
+    color: #363636;
 }
-.list .itemsMenu a.active{
-	color: #DA4453;
+
+.list .itemsMenu a.active {
+    color: #DA4453;
 }
+
 .itemsMenu li ul {
-	background: transparent;
-	border-bottom: 0;
-	display: none;
+    background: transparent;
+    border-bottom: 0;
+    display: none;
 }
 
 .list .itemsMenu li ul li, .list .itemsMenu li ul li a {
-	border: 0;
-	background: transparent;
-	text-decoration: underline;
-	
+    border: 0;
+    background: transparent;
+    text-decoration: underline;
+
 }
-.list .itemsMenu li ul li{
-	margin-bottom: 3px;
-	margin-top: 3px;
+
+.list .itemsMenu li ul li {
+    margin-bottom: 3px;
+    margin-top: 3px;
 }
-.list .itemsMenu li ul li a{
-	padding: 0 6px;
+
+.list .itemsMenu li ul li a {
+    padding: 0 6px;
 }
+
 .buttonBar a {
-	display: inline-block;
-	padding: 5px 10px;
-	margin-right: 8px;
-	color: #fff;
-	text-decoration: none;
-	margin-bottom: 20px;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 8px;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 20px;
 }
 
 .totalDelete {
-	background: #DA4453;
+    background: #DA4453;
 }
 
 .buttonBar .totalDelete {
-	background: #909090;
+    background: #909090;
 }
 
 .totalAdd {
-	background: #56C493;
+    background: #56C493;
 }
 
 .deleteOptions {
-	font-size: 12px;
-	padding: 9px;
+    font-size: 12px;
+    padding: 9px;
 }
 
 .deleteOptions table {
-	cellspacing: 0;
-	border-collapse: collapse;
+    cellspacing: 0;
+    border-collapse: collapse;
 }
 
 .deleteOptions td {
-	width: 250px;
-	padding: 6px 8px;
+    width: 250px;
+    padding: 6px 8px;
 }
 
 .deleteOptions select {
-	border: 1px solid #ccc;
-	border-right: 0;
-	display: block;
-	margin: 5px 0;
+    border: 1px solid #ccc;
+    border-right: 0;
+    display: block;
+    margin: 5px 0;
 }
 
 .deleteOptions .totalSave, #deleteOptions .totalDelete {
-	color: #fff;
-	display: block;
-	text-align: center;
-	background: #56C493;
-	padding: 5px 0;
-	font-size: 14px;
-	text-decoration: none;
+    color: #fff;
+    display: block;
+    text-align: center;
+    background: #56C493;
+    padding: 5px 0;
+    font-size: 14px;
+    text-decoration: none;
 }
 
 .deleteOptions .totalDelete {
-	background: #DA4453;
+    background: #DA4453;
 }
 
 .deleteOptions h3 {
-	font-size: 16px;
-	color: #000;
-	font-weight: bold;
-	margin-bottom: 8px;
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
 .deleteOptions td.delete {
-	background: #E8E8E8;
+    background: #E8E8E8;
 }
 
 .deleteOptions select {
-	width: 100%;
-	padding-top: 4px;
-	padding-bottom: 4px;
+    width: 100%;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .edit-class label {
-	margin-bottom: 18px;
-	display: block;
+    margin-bottom: 18px;
+    display: block;
 }
 
 .multiple_param.edit-class input {
-	margin-left: 0;
-	margin-top: 6px;
+    margin-left: 0;
+    margin-top: 6px;
 }
 
 .multiple_param.edit-class .form_title {
-	margin-bottom: 14px;
+    margin-bottom: 14px;
 }
 
 .edit-params li {
-	background: #fff none repeat scroll 0 0;
-	border: 1px solid #ccc;
-	position: relative;
-	margin: 0 12px 9px;
-	list-style-type: none;
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    position: relative;
+    margin: 0 12px 9px;
+    list-style-type: none;
 }
 
 .edit-params .param {
-	display: block;
-	width: 192px;
-	padding: 5px;
-	padding-right: 27px;
+    display: block;
+    width: 192px;
+    padding: 5px;
+    padding-right: 27px;
 }
 
 .edit-params a.delete {
-	height: 27px;
-	overflow: hidden;
-	position: absolute;
-	text-indent: 10000px;
-	width: 27px;
-	background: rgba(0, 0, 0, 0) url("../img/delete_icon.png") no-repeat
-		scroll center center;
-	right: 0;
-	top: 0;
+    height: 27px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 10000px;
+    width: 27px;
+    background: rgba(0, 0, 0, 0) url("../img/delete_icon.png") no-repeat scroll center center;
+    right: 0;
+    top: 0;
 }
 
 .setPosition {
-	height: 27px;
-	width: 27px;
-	display: block;
-	position: absolute;
-	right: 25px;
-	top: 0;
-	overflow: hidden;
-	border: 1px solid #ccc;
-	border-top: 0;
-	border-bottom: 0;
+    height: 27px;
+    width: 27px;
+    display: block;
+    position: absolute;
+    right: 25px;
+    top: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom: 0;
 }
 
 .setPosition .up, .setPosition .down {
-	height: 13px;
-	display: block;
-	text-decoration: none;
-	color: #000;
+    height: 13px;
+    display: block;
+    text-decoration: none;
+    color: #000;
 }
 
 .setPosition .up:before {
-	content: "↑";
-	display: block;
-	height: 13px;
-	text-align: center;
-	line-height: 11px;
-	background: #fff;
-	font-size: 11px;
-	font-weight: bold;
+    content: "↑";
+    display: block;
+    height: 13px;
+    text-align: center;
+    line-height: 11px;
+    background: #fff;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 .setPosition .down:before {
-	content: "↓";
-	display: block;
-	height: 13px;
-	text-align: center;
-	line-height: 11px;
-	background: #cfcfcf;
-	font-size: 11px;
-	font-weight: bold;
+    content: "↓";
+    display: block;
+    height: 13px;
+    text-align: center;
+    line-height: 11px;
+    background: #cfcfcf;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 .parameterOptions {
-	width: 278px;
-	border-top: 1px solid #ccc;
-	background: #FAF2C3;
+    width: 278px;
+    border-top: 1px solid #ccc;
+    background: #FAF2C3;
 }
 
 .parameterOptions label, .parameterOptions .label {
-	display: block;
-	width: 90%;
-	margin: 10px auto 0;
+    display: block;
+    width: 90%;
+    margin: 10px auto 0;
 }
 
 .parameterOptions label input {
-	display: block;
-	margin-bottom: 0;
-	width: 230px;
-	margin-top: 4px;
+    display: block;
+    margin-bottom: 0;
+    width: 230px;
+    margin-top: 4px;
 }
 
 .parameterOptions input[type='radio'] {
-	display: inline;
-	width: 20px;
-	margin-right: 7px;
-	margin-bottom: 5px;
+    display: inline;
+    width: 20px;
+    margin-right: 7px;
+    margin-bottom: 5px;
 }
 
-.parameterOptions  .label {
-	background: #fff;
-	width: 230px;
-	padding: 5px;
-	border: 1px solid #ccc;
-	margin-left: 12px;
+.parameterOptions .label {
+    background: #fff;
+    width: 230px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-left: 12px;
 }
 
 .parameterOptions select {
-	border: 1px solid #ccc;
-	border-right: 0;
-	width: 240px;
+    border: 1px solid #ccc;
+    border-right: 0;
+    width: 240px;
 }
 
 .partialSave {
-	display: block;
-	margin-top: 15px;
-	background: #56C493;
-	color: #fff;
-	text-align: center;
-	padding: 5px;
-	text-decoration: none;
+    display: block;
+    margin-top: 15px;
+    background: #56C493;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    text-decoration: none;
 }
 
 .edit-params li.base-param {
-	padding: 2px 5px;
-	margin-bottom: 5px;
+    padding: 2px 5px;
+    margin-bottom: 5px;
 }
 
 .ilb {
-	display: inline-block !important;
-	margin: 0;
-	vertical-align: top;
-	box-sizing: border-box;
+    display: inline-block !important;
+    margin: 0;
+    vertical-align: top;
+    box-sizing: border-box;
 }
 
 .multiple_param .radioblock input {
-	position: absolute;
-	width: 10px;
-	margin-left: -18px;
-	top: 0;
+    position: absolute;
+    width: 10px;
+    margin-left: -18px;
+    top: 0;
 }
 
 .radioblock {
-	/* 	width: 134px; */
-	margin-left: 12px;
-	background: #fff;
-	padding: 5px 10px;
-	border: 1px solid #ccc;
-	position: relative;
-	padding-left: 24px;
+    /* 	width: 134px; */
+    margin-left: 12px;
+    background: #fff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    position: relative;
+    padding-left: 24px;
 }
 
 .add-param select {
-	display: block;
-	border: 1px solid #ccc;
-	border-right: 0;
-	margin-top: 4px;
-	padding: 2px 5px;
-	width: 277px;
+    display: block;
+    border: 1px solid #ccc;
+    border-right: 0;
+    margin-top: 4px;
+    padding: 2px 5px;
+    width: 277px;
 }
-.voodoo_links a.button{
-	display: inline-block;
-	padding: 4px 10px;
-	color: #fff;
-	text-align: center;
-	background: #56C493;
-	margin-top: 6px;
-	text-decoration: none;
+
+.voodoo_links a.button {
+    display: inline-block;
+    padding: 4px 10px;
+    color: #fff;
+    text-align: center;
+    background: #56C493;
+    margin-top: 6px;
+    text-decoration: none;
 }
-.voodoo_links a.button.delete{background: #DA4453;}
-#search-form a{
-	display: block;
-	width: 27px;
-	height: 28px;
-	background: #56C493;
-	text-indent: 10000px;
-	overflow: hidden;
-	top:0;
-	right:0;
-	position: absolute;
-	background: #66BB5E url('../img/zoom-search-2-icon.png') right bottom no-repeat;
-	background-size: 25px 25px; 
+
+.voodoo_links a.button.delete {
+    background: #DA4453;
 }
-#search-form input{padding: 5px;width: 261px; margin-bottom: 5px; box-sizing: border-box; max-width: 100%;}
-.position-relative{position: relative;}
-.plain-text textarea{display: block; height: 200px; width: 100%;} 
-.deleted_items{
-	margin: 0 16px;
+
+#search-form a {
+    display: block;
+    width: 27px;
+    height: 29px;
+    background: #56C493;
+    text-indent: 10000px;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    position: absolute;
+    background: #66BB5E url('../img/zoom-search-2-icon.png') right bottom no-repeat;
+    background-size: 27px 27px;
 }
-.deleted_items a{
-	cursor : pointer;
+
+#search-form input {
+    padding: 5px;
+    width: 423px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-top: 0;
 }
-.deleted_items .item{
-	display: inline-block;
-	width: 250px;
-	vertical-align: top;
-	margin-right:30px;
-	margin-bottom: 30px;
+
+.position-relative {
+    position: relative;
 }
-.deleted_items .item .main{
-	padding: 15px;
-	background: #ebebeb;
-	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	border-bottom-right-radius: 6px;
-	border-top-left-radius: 6px;
+
+.plain-text textarea {
+    display: block;
+    height: 200px;
+    width: 100%;
 }
-.deleted_items .item .main a{
-	margin: 10px 0;
-	color: #000;
-	display: block;
-	font-size: 15px;
+
+.deleted_items {
+    margin: 0 16px;
+}
+
+.deleted_items a {
+    cursor: pointer;
+}
+
+.deleted_items .item {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.deleted_items .item .main {
+    padding: 15px;
+    background: #ebebeb;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
+.deleted_items .item .main a {
+    margin: 10px 0;
+    color: #000;
+    display: block;
+    font-size: 15px;
 
 }
-.deleted_items .item .main span{
-	color: #707070;
-}
-.deleted_items .item .control{
-	display: inline-block;
-	float: right;
-	overflow: hidden;
-	width: 18px;
-	height: 18px;
-	border-radius: 18px;
-	text-indent: 20px;
-	margin-left: 7px;
-	margin-bottom:5px;
-}
-.deleted_items .item .delete{
-	background: url(../img/delete_icon.png) center no-repeat;
-}
-.deleted_items .item .restore{
-	background: greenyellow;
-}
-.deleted_items .item .move{
-	background: gold;
-}
-#subitems .list .assoc-name{
-	margin-bottom: 10px;
-	/*font-weight: 600;*/
-	text-align: center;
 
-	letter-spacing: .5px;
-	/*text-transform: uppercase;*/
+.deleted_items .item .main span {
+    color: #707070;
 }
-#subitems .list .assoc-name a{
-	color: #363636;
-	display: block;
-}
-#subitems .pages{
-	position: relative;
-	margin-top: 15px;
-	background: #e8e8e8;
-	padding: 5px;
 
+.deleted_items .item .control {
+    display: inline-block;
+    float: right;
+    overflow: hidden;
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    text-indent: 20px;
+    margin-left: 7px;
+    margin-bottom: 5px;
 }
-#subitems .pages a{
-	display: inline-block;
-	margin-left: 10px;
-	margin-bottom: 10px;
+
+.deleted_items .item .delete {
+    background: url(../img/delete_icon.png) center no-repeat;
 }
-#subitems .pages .links-container{
-	position: absolute;
-	margin-left: 70px;
-	top: 5px;
-	height: 18px;
-	overflow: hidden;
+
+.deleted_items .item .restore {
+    background: greenyellow;
 }
-#subitems .pages:hover .links-container.big{
-	background: #fff;
-	overflow: visible;
-	height: auto;
-	width: 400px;
-	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	z-index: 2;
+
+.deleted_items .item .move {
+    background: gold;
 }
-#subitems .pages a.active{
-	color: #707070;
-	text-decoration: none;
+
+#subitems .list .assoc-name {
+    margin-bottom: 10px;
+    /*font-weight: 600;*/
+    text-align: center;
+
+    letter-spacing: .5px;
+    /*text-transform: uppercase;*/
 }
-.hidden-items h4 a{
-	color: #fff;
-	text-decoration: none;
+
+#subitems .list .assoc-name a {
+    color: #363636;
+    display: block;
+}
+
+#subitems .pages {
+    position: relative;
+    margin-top: 15px;
+    background: #e8e8e8;
+    padding: 5px;
 
 }
-.context-duplicate{
-	margin-bottom: 20px;
-	font-size: 12px;
-	margin-top: 5px;
-	margin-left: -40px;
+
+#subitems .pages a {
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
-.context-duplicate a, .context-duplicate label{
-	display: inline-block;
-	vertical-align: top;
-	margin-left: 40px;
-	min-height: 20px;
+
+#subitems .pages .links-container {
+    position: absolute;
+    margin-left: 70px;
+    top: 5px;
+    height: 18px;
+    overflow: hidden;
 }
-.context-duplicate .icon{
-	padding-left: 25px;
-	background-size: auto 20px;
-	background-position: left;
-	background-repeat: no-repeat;
+
+#subitems .pages:hover .links-container.big {
+    background: #fff;
+    overflow: visible;
+    height: auto;
+    width: 400px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    z-index: 2;
 }
-.context-duplicate .hide-link{
-	background-image: url("../img/eye-blocked.png");
+
+#subitems .pages a.active {
+    color: #707070;
+    text-decoration: none;
 }
-.context-duplicate .show-link{
-	background-image: url("../img/eye-plus.png");
+
+.hidden-items h4 a {
+    color: #fff;
+    text-decoration: none;
+
 }
-.context-duplicate .secure-link{
-	background-image: url("../img/icon-locked.png");
+
+.context-duplicate {
+    margin-bottom: 20px;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: -40px;
 }
-.context-duplicate .unlock-link{
-	background-image: url("../img/icon-unlocked.png");
+
+.context-duplicate a, .context-duplicate label {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 40px;
+    min-height: 20px;
 }
-.context-duplicate select{
-	border: 1px solid #ccc;
-	border-right: 0;
+
+.context-duplicate .icon {
+    padding-left: 25px;
+    background-size: auto 20px;
+    background-position: left;
+    background-repeat: no-repeat;
 }
-.context-duplicate option{
+
+.context-duplicate .hide-link {
+    background-image: url("../img/eye-blocked.png");
+}
+
+.context-duplicate .show-link {
+    background-image: url("../img/eye-plus.png");
+}
+
+.context-duplicate .secure-link {
+    background-image: url("../img/icon-locked.png");
+}
+
+.context-duplicate .unlock-link {
+    background-image: url("../img/icon-unlocked.png");
+}
+
+.context-duplicate select {
+    border: 1px solid #ccc;
+    border-right: 0;
+}
+
+.context-duplicate option {
     border: 0;
 }
-.dialog-tip{
+
+.dialog-tip {
     position: absolute;
     top: 0;
     left: 0;
@@ -1187,28 +1263,33 @@ h2.title {
     z-index: 2;
     font-size: 12px;
     border-radius: 5px;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
     text-align: center;
 }
-.dialog-tip::before, .dialog-tip::after{
+
+.dialog-tip::before, .dialog-tip::after {
     content: '';
     position: absolute;
-    left: 50%; bottom: -12px;
+    left: 50%;
+    bottom: -12px;
     border: 6px solid transparent;
     border-top: 6px solid #ccc;
     margin-left: -6px;
 }
+
 .dialog-tip::after {
     border-top: 6px solid #fff;
     bottom: -11px;
 }
-.dialog-tip .dialog-message{
+
+.dialog-tip .dialog-message {
     margin: 5px 0;
     margin-bottom: 10px;
 }
-.dialog-tip .button{
+
+.dialog-tip .button {
     display: inline-block;
     vertical-align: top;
     padding: 4px 8px;
@@ -1220,12 +1301,76 @@ h2.title {
     border-radius: 3px;
 
 }
-.dialog-tip .button.yes{
+
+.dialog-tip .button.yes {
     background-color: #56C493;
 }
-.dialog-tip .button.no{
+
+.dialog-tip .button.no {
     background-color: #DA4453;
 }
-.dialog-tip .button:last-of-type{
+
+.dialog-tip .button:last-of-type {
     margin-right: 0;
+}
+
+.search-container {
+    margin-left: 20px;
+    width: 450px;
+}
+
+.list h4.mass-selection-trigger {
+    background: #66bb5e;
+    cursor: pointer;
+}
+
+.selection-actions {
+    padding: 6px;
+    background: #e8e8e8;
+}
+
+.mass-select .actions {
+    padding: 0 5px;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+.mass-select .actions:last-of-type {
+    margin-bottom: 0;
+}
+
+.mass-select .actions span {
+    display: inline-block;
+    height: 27px;
+    line-height: 27px;
+    vertical-align: top;
+}
+
+.mass-select .sel-actions a {
+    font-size: 25px;
+    line-height: 27px;
+    margin-left: 5px;
+}
+
+.selection-overlay{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: .25;
+    display: none;
+    z-index: 2;
+}
+.selected.selection-overlay{
+    background: #ffff00;
+    display: block;
+}
+.selection-overlay:hover{
+    background: #ffff00;
+    opacity: .5;
+}
+.selection-actions{
+    display: none;
 }

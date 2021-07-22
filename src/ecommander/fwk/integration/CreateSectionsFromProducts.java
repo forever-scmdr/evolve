@@ -52,8 +52,8 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 			if(his.exists()){
 				FileUtils.deleteQuietly(his);
 			}
-			product.clearParameter("small_pic");
-			executeCommandUnit(SaveItemDBUnit.get(product, false).ignoreFileErrors().noFulltextIndex());
+			product.clearValue("small_pic");
+			executeCommandUnit(SaveItemDBUnit.get(product).ignoreFileErrors().noFulltextIndex().noTriggerExtra());
 			i++;
 			if(i>49) {
 				i= 0;
@@ -65,8 +65,7 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 		info.setOperation("Создаю новые картинки");
 		info.setProcessed(0);
 		for(Item product : loadedProducts){
-			product.forceInitialInconsistent();
-			executeCommandUnit(SaveItemDBUnit.get(product, true).noFulltextIndex());
+			executeCommandUnit(SaveItemDBUnit.forceUpdate(product).noFulltextIndex());
 			i++;
 			info.increaseProcessed();
 			if(i>49) {
@@ -125,12 +124,12 @@ public class CreateSectionsFromProducts extends IntegrateBase implements Catalog
 				long id = product.getId();
 				byte ass = ItemTypeRegistry.getAssocId("other_colors");
 				try {
-					transaction.executeCommandUnit(new CreateAssocDBUnit(other, id, ass, false));
-				}catch (EcommanderException e){}
+					executeCommandUnit(CreateAssocDBUnit.childExistsSoft(other, id, ass));
+				} catch (EcommanderException e){}
 			}
 			info.increaseProcessed();
 		}
-		transaction.commit();
+		commitCommandUnits();
 	}
 
 	@Override

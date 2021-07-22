@@ -21,6 +21,7 @@ public abstract class VariablePE implements PageElement {
 	public static final char COMMON_DELIMITER = '/';
 	public static final char EQ_SIGN = '=';
 	public static final char AMP_SIGN = '&';
+	public static final char NEGATIVE = '-';
 	public static final String AMP_SIGN_ENCODED = "%26";
 	public static final int AMP_SIGN_ENCODED_LENGTH = AMP_SIGN_ENCODED.length();
 	
@@ -29,19 +30,23 @@ public abstract class VariablePE implements PageElement {
 	/**
 	 * path - переменная и значение записываются path URLа (например, http://cool.com/devices/device/1001/)
 	 * query - переменная и значение записываются query URLа (например, http://cool.com/devices/?device=1001)
-	 * translit - транслитерация ключа (key) айтема в path URLа (например, http://cool.com/devices/televizor_1001/)
+	 * key - транслитерация ключа (key) айтема в path URLа (например, http://cool.com/devices/televizor_1001/)
+	 * keypath -    транслитерация ключа (key) айтема и всех ключей предыдущих по иерархии вложенности айтемов
+	 *              в path URLа (например, http://cool.com/devices/televizor_1001/)
 	 * @author E
 	 *
 	 */
 	public enum Style {
-		path, query, translit;
+		path, query, key, keypath;
 		public static Style getValue(String val) {
-			if (StringUtils.isBlank(val) || StringUtils.equalsIgnoreCase("query", val))
-				return query;
+			if (StringUtils.equalsAnyIgnoreCase(val, "keypath", "key-path", "key_path"))
+				return keypath;
 			if (StringUtils.equalsIgnoreCase("path", val))
 				return path;
-			if (StringUtils.equalsIgnoreCase("translit", val))
-				return translit;
+			if (StringUtils.equalsAnyIgnoreCase(val, "key", "translit", "key-unique"))
+				return key;
+			if (StringUtils.isBlank(val) || StringUtils.equalsIgnoreCase("query", val))
+				return query;
 			throw new IllegalArgumentException("there is no Link Style value for '" + val + "' string");
 		}
 	}
@@ -83,8 +88,20 @@ public abstract class VariablePE implements PageElement {
 		return style;
 	}
 
-	public final boolean isStyleTranslit() {
-		return style == Style.translit;
+	public final boolean isStyleKey() {
+		return style == Style.key || style == Style.keypath;
+	}
+
+	public final boolean isStyleKeyPath() {
+		return style == Style.keypath;
+	}
+
+	public final boolean isStyleQuery() {
+		return style == Style.query;
+	}
+
+	public final boolean isStylePath() {
+		return style == Style.path;
 	}
 	
 	public String getName() {
@@ -139,7 +156,7 @@ public abstract class VariablePE implements PageElement {
 					result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 				}
 			}
-		} else if (style == Style.translit) {
+		} else if (isStyleKey()) {
 			for (String value : getVariable().getLocalValues()) {
 				result.append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
 			}
@@ -158,10 +175,16 @@ public abstract class VariablePE implements PageElement {
 	}
 	
 	public void validate(String elementPath, ValidationResults results) {
-		if (StringUtils.isBlank(name) && name.startsWith("$"))
+		if (StringUtils.startsWith(name,"$"))
 			results.addError(elementPath + " > " + getKey(), "user defined variable can not start with $ sign. $ is reserved for predefined variables");
-		if (!StringUtils.equals(Strings.createXmlElementName(name), name))
+		if (!StringUtils.equals(Strings.createXmlElementName(name), name)) {
+			if (StringUtils.startsWith(name, NEGATIVE + "")) {
+				String posName = name.substring(1);
+				if (StringUtils.equals(Strings.createXmlElementName(posName), posName))
+					return;
+			}
 			results.addError(elementPath + " > " + getKey(), "variable name is not a valid XML element name");
+		}
 	}
 
 	@Override

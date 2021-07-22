@@ -72,7 +72,7 @@
 			<div class="list">
 				<h4>Создать</h4>
 				<ul class="create">
-					<xsl:for-each select="admin-page/assoc">
+					<xsl:for-each select="admin-page/assoc[item-to-add[@virtual = 'false']]">
 						<li class="drop-zone"></li>
 						<li class="assoc-name">
 							<a href=".ass_{@id}" class="toggle-hidden"><xsl:value-of select="@caption"/></a>
@@ -94,9 +94,9 @@
 		<xsl:if test="admin-page/assoc/item">
 
 			<xsl:variable name="differentSubitems" select="count(admin-page/assoc/item-to-add) &gt; 1 or admin-page/assoc/item-to-add/item or admin-page/assoc/item/@type-id != admin-page/assoc/item/@type-id"/>
-			<div class="list">
+			<div class="list result" id="primary-item-list">
 				<h4>Редактировать</h4>
-				<xsl:for-each select="admin-page/assoc">
+				<xsl:for-each select="admin-page/assoc[item]">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
 					<xsl:variable name="ass_id" select="@id"/>
 					<xsl:variable name="asc" select="if (count(item) &gt; 1 and number(item[1]/@weight) &gt; number(item[2]/@weight)) then false() else true()"/>
@@ -115,6 +115,7 @@
 							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string($dropPos)), ':assoc:', $ass_id)}"></li>
 							<li class="dragable visible multiple call-context-menu default {$ass}" data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
 								<xsl:if test="$hidden"><xsl:attribute name="style" select="'background-color: #c8c8c8'"/></xsl:if>
+								<div class="selection-overlay" data-id="{@id}"></div>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
 									<xsl:if test="$differentSubitems and @type-caption != @caption and @caption != ''">
@@ -170,7 +171,7 @@
 		</script>
 		<script type="text/javascript" src="admin/js/subitems.js"></script>
 		<script type="text/javascript">
-			insertAjaxView('<xsl:value-of select="admin-page/get-paste"/>', 'pasteBuffer');
+			insertAjaxView('<xsl:value-of select="admin-page/get-paste"/>', 'pasteBuffer', false, null, null, function(){highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");});
 		</script>
 		<!-- CONTEXT MENU -->
 		<script type="text/javascript" src="admin/js/context-menu.js"></script>

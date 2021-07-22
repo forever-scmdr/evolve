@@ -1,10 +1,5 @@
 package ecommander.persistence.commandunits;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.*;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -13,6 +8,10 @@ import ecommander.persistence.common.TransactionContext;
 import ecommander.persistence.mappers.DBConstants;
 
 import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Абстрактный класс для команд базы данных
@@ -26,6 +25,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	boolean ignoreFileErrors = false;
 	boolean insertIntoFulltextIndex = true;
 	boolean processComputed = true;
+	boolean triggerExtra = true;
 	private ArrayList<PersistenceCommandUnit> executedCommands;
 	
 	public TransactionContext getTransactionContext() {
@@ -92,6 +92,15 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	 */
 	public DBPersistenceCommandUnit noFulltextIndex() {
 		this.insertIntoFulltextIndex = false;
+		return this;
+	}
+
+	/**
+	 * Надо ли вызывать дополнительные команды обработки по событиям (создание, удаление, сохранение)
+	 * @return
+	 */
+	public DBPersistenceCommandUnit noTriggerExtra() {
+		this.triggerExtra = false;
 		return this;
 	}
 

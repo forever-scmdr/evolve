@@ -35,7 +35,7 @@ public class POIUtils {
 	public static class CellXY {
 		public int row;
 		public int column;
-		private CellXY(int row, int col) {
+		public CellXY(int row, int col) {
 			this.row = row;
 			this.column = col;
 		}
@@ -303,6 +303,35 @@ public class POIUtils {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Вернуть
+	 * @param sheet
+	 * @param evaluator
+	 * @param cellContent
+	 * @param prevCell
+	 * @return
+	 */
+	public static CellXY findNextContaining(Sheet sheet, FormulaEvaluator evaluator, String cellContent, CellXY prevCell) {
+		if (prevCell == null)
+			prevCell = new CellXY(-1, -1);
+		Iterator<Row> rowIter = sheet.iterator();
+		while (rowIter.hasNext()) {
+			Row row = rowIter.next();
+			if (row.getRowNum() < prevCell.row)
+				continue;
+			Iterator<Cell> cellIter = row.iterator();
+			while (cellIter.hasNext()) {
+				Cell cell = cellIter.next();
+				String cellValue = getCellAsString(cell, evaluator);
+				if (StringUtils.containsIgnoreCase(cellValue, cellContent)) {
+					if (row.getRowNum() > prevCell.row || cell.getColumnIndex() > prevCell.column)
+						return new CellXY(row.getRowNum(), cell.getColumnIndex());
+				}
+			}
+		}
+		return null;
 	}
 	/**
 	 * Найти первую ячейку с заданным текстом
