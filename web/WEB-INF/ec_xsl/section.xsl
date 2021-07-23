@@ -124,6 +124,12 @@
 		</xsl:if>
 
 			<xsl:if test="not($not_found) and $sel_sec/product">
+
+				<form method="post" action="{concat(page/base, '/', /page/reset_filter_link)}">
+					<input name="limit" value="150"/>
+					<input type="submit"/>
+				</form>
+
 				<div class="view-container desktop">
 					<div class="view">
 						<span>Показывать:</span>

@@ -135,6 +135,9 @@
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
+
+
+
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
 			<single item="seo"/>
 			<list item="product" id="prod" transit="true">
@@ -207,7 +210,7 @@
 		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="144"/>
 		</link>
-		<link name="reset_filter_link" target="section">
+		<link name="reset_filter_link" target="section" type="exclusive">
 			<var name="sec" var="sec" style="translit"/>
 		</link>
 		<link name="show_only_available" target="section" type="exclusive">
