@@ -3,40 +3,50 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="/page/selected_news/name" />
+	<xsl:variable name="title" select="page/selected_news/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
 
-	<xsl:variable name="pagination" select="/page/selected_news/news_item_pages"/>
-	<xsl:variable name="prev" select="$pagination/page[number(/page/variables/p)-1]"/>
-	<xsl:variable name="next" select="$pagination/page[number(/page/variables/p)+1]"/>
-	<xsl:variable name="sel" select="page/variables/sel"/>
-	<xsl:variable name="quote">"</xsl:variable>
+	<xsl:variable name="p" select="page/product"/>
+
 
 	<xsl:template name="CONTENT">
-		<section class="s-content">
-			<div class="row narrow">
-				<div class="col-full s-content__header" data-aos="fade-up">
-					<h1>
-						<xsl:value-of select="$h1"/>
-					</h1>
-					<div class="lead">
-						<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
+		<!-- CONTENT BEGIN -->
+		<div class="path-container">
+			<div class="path">
+				<a href="{$main_host}">Главная страница</a> &gt;
+			</div>
+			<xsl:call-template name="PRINT"/>
+		</div>
+		<h1><xsl:value-of select="$h1"/></h1>
+
+		<div class="page-content m-t">
+			<div class="catalog-items info">
+				<xsl:for-each select="page/selected_news/news_item">
+					<div class="catalog-item">
+						<a href="{show_news_item}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
+						<div class="text">
+							<div class="date"><xsl:value-of select="date"/></div>
+							<a href="{show_news_item}"><xsl:value-of select="header"/></a>
+							<xsl:value-of select="short" disable-output-escaping="yes"/>
+						</div>
 					</div>
+				</xsl:for-each>
+			</div>
+		</div>
+
+		<xsl:if test="page//news_item_pages">
+			<div class="pagination">
+				<span>Странциы:</span>
+				<div class="pagination-container">
+					<xsl:for-each select="page//news_item_pages/page">
+						<a href="{link}" class="{'active'[current()/@current]}"><xsl:value-of select="number"/></a>
+					</xsl:for-each>
 				</div>
 			</div>
-			<div class="row masonry-wrap">
-				<div class="masonry" id="add-content">
-					<div class="grid-sizer"></div>
-					<xsl:apply-templates select="/page/selected_news/news_item" mode="masonry"/>
-				</div>
-			</div>
-			<xsl:if test="$pagination">
-				<script>
-					window.pagination = <xsl:value-of select="concat('[',string-join($pagination/page[position() &gt; 1]/concat($quote, 'news_page_ajax/',$sel,'/?p=', number, $quote), ','),']')" />;
-				</script>
-			</xsl:if>
-		</section>
+		</xsl:if>
+
+		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
 </xsl:stylesheet>

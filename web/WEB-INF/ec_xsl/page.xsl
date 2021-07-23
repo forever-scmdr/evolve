@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
+	<xsl:variable name="title" select="$p/header"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="p" select="page/custom_page"/>
 
@@ -13,29 +13,35 @@
 
 
 	<xsl:template name="CONTENT">
-		<section class="s-content s-content--narrow s-content--no-padding-bottom">
-			<div class="row">
-				<div class="s-content__header col-full">
-					<h1 class="s-content__header-title">
-						<xsl:value-of select="$h1"/>
-					</h1>
-				</div>
-				<div class="col-full s-content__main">
-					<div class="content-text">
-						<xsl:apply-templates select="$p" mode="content"/>
-					</div>
-					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
-					<div style="height: 3rem;"></div>
-				</div>
-
+		<!-- CONTENT BEGIN -->
+		<div class="path-container">
+			<div class="path">
+				<a href="{$main_host}">Главная страница</a> >
+				<xsl:for-each select="$p/parent">
+					<a href="{show_page}"><xsl:value-of select="header"/></a> >
+				</xsl:for-each>
 			</div>
-		</section>
-	</xsl:template>
+			<xsl:call-template name="PRINT"/>
+		</div>
+		<h1><xsl:value-of select="$h1"/></h1>
 
-	<xsl:template name="EXTRA_SCRIPTS">
-	<!-- 	<script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
-		<script src="//yastatic.net/share2/share.js"></script> -->
-		
+		<div class="page-content m-t">
+			<div class="catalog-items info">
+				<xsl:for-each select="$p/custom_page">
+					<div class="catalog-item">
+						<a href="{show_page}" class="image-container" style="background-image: url('{@path}{main_pic}');"><!-- <img src="{@path}{main_pic}" alt=""/> --></a>
+						<div class="text">
+							<div class="date"><xsl:value-of select="date"/></div>
+							<a href="{show_page}"><xsl:value-of select="header"/></a>
+							<xsl:value-of select="short" disable-output-escaping="yes"/>
+						</div>
+					</div>
+				</xsl:for-each>
+			</div>
+			<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+		</div>
+
+		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
 </xsl:stylesheet>
