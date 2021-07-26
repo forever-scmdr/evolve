@@ -83,7 +83,13 @@ public abstract class BasicServlet extends HttpServlet {
 					request.setAttribute(EXCEPTION_NAME, printException(errors.getResults().getException()));
 			} else if (e instanceof ClientAbortException) {
 				return;
-			} else {
+			} else if(e instanceof EmptyPathVariableException){
+				String url = e.getMessage();
+				response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+				response.setHeader("Location",  getContextPath(request) + url);
+				response.setContentType("text/html");
+			}
+			else {
 				request.setAttribute(EXCEPTION_NAME, printException(e));
 			}
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(ERROR_PAGE_NAME);
@@ -91,7 +97,7 @@ public abstract class BasicServlet extends HttpServlet {
 		} catch (Exception e1) {
 			ServerLogger.error("unable to send error page", e1);
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.setHeader("Location",  AppContext.getProtocolScheme() + "://" + getContextPath(request) + ERROR_PAGE_NAME);
+			response.setHeader("Location",  getContextPath(request) + ERROR_PAGE_NAME);
 			response.setContentType("text/html");
 		}
 	}
@@ -174,10 +180,15 @@ public abstract class BasicServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@SuppressWarnings("unchecked")
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
 		String url = getUserUrl(request);
-		LinkPE link = LinkPE.parseLink(url);
+		LinkPE link = null;
+		try {
+			link = LinkPE.parseLink(url);
+		} catch (EmptyPathVariableException e) {
+			throw new ServletException(e);
+		}
 		Map<String, List<String>> params = new HashMap<>();
 		if (ServletFileUpload.isMultipartContent(request)) {
 			DiskFileItemFactory filesFactory = new DiskFileItemFactory();

@@ -1,12 +1,12 @@
 package ecommander.pages;
 
 import ecommander.fwk.EcommanderException;
+import ecommander.fwk.EmptyPathVariableException;
 import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.pages.var.CookieStaticVariable;
-import ecommander.pages.var.SessionStaticVariable;
 import ecommander.pages.var.StaticVariable;
 import ecommander.pages.var.Variable;
 import ecommander.persistence.common.PersistenceCommandUnit;
@@ -141,7 +141,7 @@ public abstract class Command implements AutoCloseable {
 	 * @throws UserNotAllowedException
 	 */
 	protected final ExecutablePagePE getExecutablePage(String url) throws PageNotFoundException, UnsupportedEncodingException,
-			UserNotAllowedException {
+			UserNotAllowedException, EmptyPathVariableException {
 		return PageModelRegistry.getRegistry().getExecutablePage(url, page.getUrlBase(), page.getSessionContext());
 	}
 	/**

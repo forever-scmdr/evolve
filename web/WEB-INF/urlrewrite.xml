@@ -9,10 +9,6 @@
 
 -->
 <urlrewrite>
-    <rule match-type="regex" enabled="true">
-        <from>(product|section|news_item|page)/(.+)</from>
-        <to type="permanent-redirect" last="true">/$1</to>
-    </rule>
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>

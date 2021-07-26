@@ -27,6 +27,10 @@
 	<welcome-file-list>
 		<welcome-file>eco/</welcome-file>
 	</welcome-file-list>
+	
+	<error-page>
+		<location>/error.jsp</location>
+	</error-page>
 
 	<servlet>
 		<servlet-name>ItemFormController</servlet-name>
@@ -64,14 +68,14 @@
 		<url-pattern>/eco/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>UrlMappingServletController</servlet-name>
-		<servlet-class>ecommander.controllers.UrlMappingServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UrlMappingServletController</servlet-name>
-		<url-pattern>*.htm</url-pattern>
-	</servlet-mapping>
+<!--	<servlet>-->
+<!--		<servlet-name>UrlMappingServletController</servlet-name>-->
+<!--		<servlet-class>ecommander.controllers.UrlMappingServlet</servlet-class>-->
+<!--	</servlet>-->
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>UrlMappingServletController</servlet-name>-->
+<!--		<url-pattern>*.htm</url-pattern>-->
+<!--	</servlet-mapping>-->
 
 	<servlet>
 		<servlet-name>MainAdminController</servlet-name>

@@ -2,10 +2,7 @@ package ecommander.pages;
 
 import ecommander.controllers.ScheduledJob;
 import ecommander.controllers.SessionContext;
-import ecommander.fwk.PageNotFoundException;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.fwk.ValidationException;
+import ecommander.fwk.*;
 import ecommander.model.DomainBuilder;
 import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
@@ -123,7 +120,7 @@ public class PageModelRegistry {
 	 * @throws UnsupportedEncodingException 
 	 */
 	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
-			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
+			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException, EmptyPathVariableException {
 		LinkPE link = normalizeAndCreateLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
 		// Если не найдена страница - выбросить исключение
@@ -142,7 +139,7 @@ public class PageModelRegistry {
 	 * @param urlString
 	 * @return
 	 */
-	public LinkPE normalizeAndCreateLink(String urlString) throws UnsupportedEncodingException {
+	public LinkPE normalizeAndCreateLink(String urlString) throws UnsupportedEncodingException, EmptyPathVariableException {
 		if (StringUtils.isBlank(urlString)) {
 			return LinkPE.parseLink(urlString);
 		}
@@ -211,7 +208,7 @@ public class PageModelRegistry {
 		normalUrl.insert(0, pageName);
 		if (StringUtils.isNotBlank(query))
 			normalUrl.append(LinkPE.QUESTION_SIGN).append(query);
-		LinkPE result = LinkPE.parseLink(normalUrl.toString());
+		LinkPE	result = LinkPE.parseLink(normalUrl.toString());
 		if (urlString.length() == 0 || urlString.charAt(0) != '/')
 			urlString = '/' + urlString;
 		result.setOriginalUrl(urlString);

@@ -1,11 +1,13 @@
 package ecommander.pages;
 
+import ecommander.fwk.EmptyPathVariableException;
 import ecommander.fwk.ServerLogger;
 import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -93,7 +95,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @param urlString
 	 * @throws UnsupportedEncodingException
 	 */
-	private LinkPE(String urlString) throws UnsupportedEncodingException {
+	private LinkPE(String urlString) throws UnsupportedEncodingException, EmptyPathVariableException {
 		originalUrl = urlString;
 		if (StringUtils.isBlank(urlString)) {
 			return;
@@ -115,16 +117,35 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 		if (units.length > 1) {
 			// Получаются все переменные по отдельности
 			// Первая часть уже взята, поэтому i = 1
+
+			ArrayList<String> emptyPathVars = new ArrayList<>();
 			for (int i = 1; i < units.length; i++) {
 				String varName = units[i];
 				i++; // Берем следующее значение после /
 				// Если выход за пределы массива, значит неправильный формат URL
 				if (i >= units.length) {
 					ServerLogger.warn("Incorrect URL format in: " + urlString);
-					break;
+					String url = urlString.replace(pageName,"");
+					for(int j = 0; j < units.length; j++) {
+						if(j % 2 == 0) continue;
+						String bad = units[j];
+						url = url.replace(VariablePE.COMMON_DELIMITER + bad, "");
+					}
+					throw new EmptyPathVariableException(url);
 				}
 				String varValue = URLDecoder.decode(units[i], "UTF-8");
-				addParsedVariableValue(page, varName, varValue);
+				if(StringUtils.isNotBlank((varValue))) {
+					addParsedVariableValue(page, varName, varValue);
+				}else{
+					emptyPathVars.add(varName);
+				}
+				if(emptyPathVars.size() > 0){
+					String url = urlString;
+					for(String var : emptyPathVars){
+						url = url.replace(VariablePE.COMMON_DELIMITER + var, "");
+					}
+					throw new EmptyPathVariableException(url);
+				}
 			}
 		}
 		// Разбор query части запроса
@@ -165,7 +186,7 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static LinkPE parseLink(String url) throws UnsupportedEncodingException {
+	public static LinkPE parseLink(String url) throws UnsupportedEncodingException, EmptyPathVariableException {
 		return new LinkPE(url);
 	}
 	/**

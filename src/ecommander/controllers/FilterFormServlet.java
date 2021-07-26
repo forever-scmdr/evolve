@@ -1,5 +1,6 @@
 package ecommander.controllers;
 
+import ecommander.fwk.EmptyPathVariableException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.UserNotAllowedException;
@@ -94,7 +95,11 @@ public class FilterFormServlet extends BasicServlet {
 		} catch (UserNotAllowedException e) {
 			// Редирект на страницу логина
 			processUserNotAllowed(req, resp, targetUrl);
-		} catch (Exception e) {
+		}
+		catch (EmptyPathVariableException e){
+
+		}
+		catch (Exception e) {
 			handleError(req, resp, e);
 		}
 	}
