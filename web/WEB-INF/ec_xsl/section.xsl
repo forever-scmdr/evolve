@@ -125,50 +125,45 @@
 
 			<xsl:if test="not($not_found) and $sel_sec/product">
 
-				<form method="post" action="{concat(page/base, '/', /page/reset_filter_link)}">
-					<input name="limit" value="150"/>
-					<input type="submit"/>
+				<form id="view-control-form" method="post" action="{concat(page/base, '/', /page/reset_filter_link)}">
+					<div class="view-container desktop">
+
+						<!-- VIEW -->
+						<input name="view" value="{page/variables/view}" type="hidden" id="view-inp"/>
+						<div class="view">
+							<span><i class="fas fa-th-large"></i> <a rel="nofollow" onclick="$('#view-inp').val('table'); $('#view-control-form').submit();">Плиткой</a></span>
+							<span><i class="fas fa-th-list"></i> <a rel="nofollow" onclick="$('#view-inp').val('list'); $('#view-control-form').submit();">Строками</a></span>
+
+
+							<!-- SORTING -->
+							<input name="direction" value="{page/variables/direction}" type="hidden" id="direction"/>
+							<input name="sort" value="{page/variables/sort}" type="hidden" id="sort"/>
+							<span>
+								<select class="form-control" onchange="$('#sort').val($(this).val()); $('#direction').val($(this).find(':selected').attr('dir')); $('#view-control-form').submit();">
+									<option dir="" value="">Без сортировки</option>
+									<option value="price" dir="ASC">Сначала дешевые</option>
+									<option value="price" dir="DESC">Сначала дорогие</option>
+									<option value="name" dir="ASC">По алфавиту А→Я</option>
+									<option value="name" dir="DESC">По алфавиту Я→А</option>
+								</select>
+							</span>
+						</div>
+
+						<!-- LIMIT -->
+						<div class="quantity">
+							<span>Кол-во на странице:</span>
+							<span>
+								<select class="form-control" value="{page/variables/limit}" name="limit"
+										onchange="$('#view-control-form').submit();">
+									<option value="48">48</option>
+									<option value="96" >96</option>
+									<option value="144" >144</option>
+								</select>
+							</span>
+						</div>
+					</div>
 				</form>
 
-				<div class="view-container desktop">
-					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a rel="nofollow" href="{page/set_view_table}">Плиткой</a></span>
-						<span><i class="fas fa-th-list"></i> <a rel="nofollow" href="{page/set_view_list}">Строками</a></span>
-						<!--<div class="checkbox">-->
-							<!--<label>-->
-								<!--<xsl:if test="not($only_available)">-->
-									<!--<input type="checkbox" onclick="window.location.href = '{page/show_only_available}'"/>-->
-								<!--</xsl:if>-->
-								<!--<xsl:if test="$only_available">-->
-									<!--<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>-->
-								<!--</xsl:if>-->
-								<!--в наличии-->
-							<!--</label>-->
-						<!--</div>-->
-						<span>
-							<select class="form-control" value="{page/variables/sort}{page/variables/direction}"
-									onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-								<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-								<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
-								<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
-								<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
-							</select>
-						</span>
-					</div>
-					<div class="quantity">
-						<span>Кол-во на странице:</span>
-						<span>
-							<select class="form-control" value="{page/variables/limit}"
-									onchange="window.location.href = $(this).find(':selected').attr('link')">
-								<option value="48" link="{page/set_limit_48}">48</option>
-								<option value="96" link="{page/set_limit_96}">96</option>
-								<option value="144" link="{page/set_limit_144}">144</option>
-							</select>
-						</span>
-					</div>
-				</div>
 			</xsl:if>
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
