@@ -539,6 +539,24 @@
 		<parameter name="text" type="plain-text" caption="Код"/>
 	</item>
 
+	<item name="map_part" caption="Карта" super="page_extra region" ag-id="1828" ag-hash="178942198">
+		<child item="region"/>
+	</item>
+
+	<item name="region" caption="Регион" key="name" ag-id="1829" ag-hash="-934795532">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="center" type="string" caption="Координаты"/>
+		<parameter name="zoom" type="byte" caption="Масштаб"/>
+		<child item="point" inline="true"/>
+	</item>
+
+	<item name="point" caption="Метка" key="name" ag-id="1830" ag-hash="106845584">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="address" type="string" caption="Адрес"/>
+		<parameter name="coords" type="string" caption="Координаты"/>
+		<parameter name="text" type="tiny-text" caption="Описание"/>
+	</item>
+
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                     END ОБЩЕЕ ДЛЯ ВСЕХ СТРАНИЦ                       ////////////-->
 	<!--/////////////                                                                      ////////////-->
