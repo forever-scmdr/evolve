@@ -677,6 +677,10 @@
 			<single item="seo" assoc="seo"/>
 			<list item="page_extra">
 				<list item="page_extra_part"/>
+				<list item="point"/>
+				<list item="region">
+					<list item="point"/>
+				</list>
 			</list>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">

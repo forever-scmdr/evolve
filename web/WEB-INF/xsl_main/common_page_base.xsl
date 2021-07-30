@@ -5,6 +5,7 @@
 	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="subscribe_ajax.xsl"/>
 	<xsl:import href="snippets/product.xsl"/>
+	<xsl:import href="snippets/page_extra.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
@@ -698,7 +699,14 @@
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
 				<script src="js/script.js"></script>
-
+				<xsl:if test="//map_part">
+					<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=da0c54ef-c061-454c-9069-536643a0d28a" type="text/javascript"></script>
+					<style type="text/css">
+						.region-link.active{
+							color: #000;
+						}
+					</style>
+				</xsl:if>
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
@@ -784,6 +792,7 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/bootstrap.min.js"/>
 				<script type="text/javascript" src="js/web.js"/>
+
 				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
 				<script type="text/javascript">
 					$(document).ready(function(){
@@ -881,131 +890,6 @@
 			</body>
 		</html>
 	</xsl:template>
-
-
-
-
-	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
-
-
-
-
-
-
-	<xsl:template match="*" mode="content">
-		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block | page_extra_code" mode="content"/>
-	</xsl:template>
-
-	<xsl:template match="page_text" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<xsl:value-of select="text" disable-output-escaping="yes"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="page_extra_code" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<xsl:value-of select="text" disable-output-escaping="yes"/>
-		</div>
-	</xsl:template>
-
-	<xsl:template match="common_gallery" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<div><a class="toggle" href="#spoiler-{@id}"  onclick="initNanoCommon{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a></div>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<div id="nanogallery{@id}">
-				<script>
-					<xsl:if test="f:num(spoiler) = 0">
-						$(document).ready(function(){
-							initNanoCommon<xsl:value-of select="@id"/>();
-						});
-					</xsl:if>
-					function initNanoCommon<xsl:value-of select="@id"/>() {
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
-						</xsl:if>
-							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-								// ### gallery settings ###
-								thumbnailHeight:  <xsl:value-of select="height"/>,
-								thumbnailWidth:   <xsl:value-of select="width"/>,
-								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-								viewerToolbar: { display: false },
-								galleryLastRowFull:  false,
-
-								// ### gallery content ###
-								items: [
-								<xsl:for-each select="picture">
-									{
-										src: '<xsl:value-of select="concat(@path, pic)"/>',
-										srct: '<xsl:value-of select="concat(@path, pic)"/>',
-										title: '<xsl:value-of select="header"/>'
-									},
-								</xsl:for-each>
-								]
-							});
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						}
-						</xsl:if>
-					}
-				</script>
-			</div>
-		</div>
-	</xsl:template>
-
-
-	<xsl:template match="simple_gallery" mode="content">
-		<xsl:if test="f:num(spoiler) &gt; 0">
-			<a class="toggle" href="#spoiler-{@id}" onclick="initNano{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a>
-		</xsl:if>
-		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
-			<div id="nanogallery{@id}">
-				<script>
-					<xsl:if test="f:num(spoiler) = 0">
-						$(document).ready(function(){
-							initNano<xsl:value-of select="@id"/>();
-						});
-					</xsl:if>
-					function initNano<xsl:value-of select="@id"/>(){
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
-						</xsl:if>
-							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-								// ### gallery settings ###
-								thumbnailHeight:  <xsl:value-of select="height"/>,
-								thumbnailWidth:   <xsl:value-of select="width"/>,
-								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-								viewerToolbar: { display: false },
-								galleryLastRowFull:  false,
-
-								// ### gallery content ###
-								items: [
-								<xsl:for-each select="pic">
-								{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
-								</xsl:for-each>
-								]
-							});
-						<xsl:if test="f:num(spoiler) &gt; 0">
-						}
-						</xsl:if>
-					}
-				</script>
-			</div>
-		</div>
-	</xsl:template>
-
 
 	<xsl:template name="PAGE_TITLE">
 		<xsl:param name="page"/>

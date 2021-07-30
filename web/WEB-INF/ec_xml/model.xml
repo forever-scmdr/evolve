@@ -539,7 +539,9 @@
 		<parameter name="text" type="plain-text" caption="Код"/>
 	</item>
 
-	<item name="map_part" caption="Карта" super="page_extra region" ag-id="1828" ag-hash="178942198">
+	<item name="map_part" caption="Карта" super="page_extra" ag-id="1828" ag-hash="178942198">
+		<parameter name="center" type="string" caption="Координаты"/>
+		<parameter name="zoom" type="byte" caption="Масштаб"/>
 		<child item="region"/>
 	</item>
 
