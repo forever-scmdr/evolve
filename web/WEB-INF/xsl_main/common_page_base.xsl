@@ -10,6 +10,9 @@
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
+
+
+
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
 	<xsl:variable name="common" select="page/common"/>
@@ -21,6 +24,7 @@
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
+	<xsl:variable name="query" select="page/variables/q"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -155,6 +159,11 @@
 						insertAjax('set_city?city=' + cityName);
 						return false;
 					}
+					<xsl:if test="$has_quick_search">
+					$(document).ready(function() {
+						initQuickSearch();
+					});
+					</xsl:if>
 				</script>
 			</div>
 		</div>
@@ -163,21 +172,23 @@
 			<div class="container">
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo_baaz.png" alt="" class="logo__image" />
+						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
+							<input class="input header-search__input"
+								   ajax-href="{page/search_ajax_link}" result="search-result"
+								   query="q" min-size="3" id="q-ipt" type="text"
+								   placeholder="Введите поисковый запрос" autocomplete="off"
+								   name="q" value="{$query}" autofocus=""/>
 							<button class="button header-search__button" type="submit">Найти</button>
 							<!-- quick search -->
-							<div id="search-result"></div>
-							<xsl:if test="$has_quick_search"></xsl:if>
+							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 							<!-- quick search end -->
 						</form>
 					</div>
 					<!-- need styles -->
-					<!--
-					<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
+					<xsl:if test="$has_currency_rates and $currencies">
 						<div class="header__column other-container side-menu">
 							<div class="catalog-currency">
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
@@ -199,7 +210,6 @@
 							</div>
 						</div>
 					</xsl:if>
-					-->
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -294,12 +304,12 @@
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
 			<xsl:if test="header and not(header = '')"><div class="footer__title"><xsl:value-of select="header" /></div></xsl:if>
-			<div class="footer__text"><xsl:value-of select="text|code" disable-output-escaping="yes"/></div>
+			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 
 	<xsl:template name="INC_FOOTER">
-		<div class="footer vl_blue2">
+		<div class="footer">
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
@@ -394,8 +404,7 @@
 						</xsl:if>
 					</xsl:for-each>
 				</ul>
-				<!--
-				<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
+				<xsl:if test="$has_currency_rates and $currencies">
 					<ul>
 						<li class="catalog-currency">
 							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
@@ -417,7 +426,6 @@
 						</li>
 					</ul>
 				</xsl:if>
-				-->
 			</div>
 		</div>
 		<script>
@@ -673,7 +681,6 @@
 
 
 
-
 	<!-- ****************************    СТРАНИЦА    ******************************** -->
 
 
@@ -699,21 +706,18 @@
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
 				<script src="js/script.js"></script>
+
 				<xsl:if test="//map_part">
-					<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=da0c54ef-c061-454c-9069-536643a0d28a" type="text/javascript"></script>
-					<style type="text/css">
-						.region-link.active{
-							color: #000;
-						}
-					</style>
+					<script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=da0c54ef-c061-454c-9069-536643a0d28a"></script>
 				</xsl:if>
+
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.502"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.55"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
@@ -750,17 +754,16 @@
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-			<div class="mitaba">
+				<div class="mitaba">
 					<div class="popup" style="display: none;" id="product-ajax-popup">
-				         <div class="popup__body">
-				            <div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
-				         </div>
-					 </div>
+						 <div class="popup__body">
+							<div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
+						 </div>
+					</div>
+				</div>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="wrapper">
-					<div class="vl_blue">
-						<xsl:call-template name="INC_DESKTOP_HEADER"/>
-					</div>
+					<xsl:call-template name="INC_DESKTOP_HEADER"/>
 					<xsl:call-template name="MAIN_CONTENT"/>
 					<xsl:call-template name="INDEX_BLOCKS"/>
 					<xsl:call-template name="INC_FOOTER"/>
@@ -792,7 +795,6 @@
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
 				<script type="text/javascript" src="js/bootstrap.min.js"/>
 				<script type="text/javascript" src="js/web.js"/>
-
 				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
 				<script type="text/javascript">
 					$(document).ready(function(){
@@ -808,13 +810,14 @@
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
+						/*
 						<xsl:if test="$has_quick_search">
                         $("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
                         </xsl:if>
+						*/
 					});
-
 
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
@@ -824,7 +827,6 @@
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
-
 
 					function searchAjax(el){
 						var $el = $(el);
@@ -862,22 +864,6 @@
 						$('.wrapper').toggleClass('visible-no');
 						$('.menu-container').toggleClass('visible-yes');
 					}
-					function showDetails(link){
-						$("#product-ajax-popup").show();
-						insertAjax(link, 'product-ajax-content', function(){
-							$("#fotorama-ajax").fotorama();
-							$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
-								e.preventDefault();
-								$("#product-ajax-popup").find('a[data-toggle="tab"]').removeClass("tabs__link_active");
-								$("#product-ajax-popup").find('.tabs__content').removeClass("active");
-								$("#product-ajax-popup").find('.tabs__content').hide();
-								$(this).addClass("tabs__link_active");
-								var href = $(this).attr("href");
-								$(href).show();
-								$(href).addClass("active");
-							});
-						});
-					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
@@ -886,10 +872,11 @@
 
 
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
-			</div>
+
 			</body>
 		</html>
 	</xsl:template>
+
 
 	<xsl:template name="PAGE_TITLE">
 		<xsl:param name="page"/>
