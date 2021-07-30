@@ -18,7 +18,7 @@
 
 	<xsl:template name="CONTENT">
 
-		<div class="news info-items info-items_section">
+		<div class="info-items info-items_section">
 			<div class="info-items__wrap">
 				<xsl:for-each select="page/selected_news/news_item">
 					<xsl:variable name="main_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat($news/@path, $news/main_pic)"/>

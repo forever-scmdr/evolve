@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/utils.xsl"/>
 
+	
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>
 		<xsl:apply-templates select="*[@type != '']" mode="content"/>
@@ -16,15 +17,17 @@
 
 		<h2><xsl:value-of select="name"/></h2>
 
-		<div class="region-links">
-			<a class="region-link active" data-center="{center}" data-zoom="{$zoom}">Все</a>
-			<xsl:for-each select="region">
-				<span style="padding: 0 0.7rem;">|</span>
-				<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
-					<xsl:value-of select="name" />
-				</a>
-			</xsl:for-each>
-		</div>
+		<xsl:if test="region">
+			<div class="region-links">
+				<a class="region-link active" data-center="{center}" data-zoom="{$zoom}">Все</a>
+				<xsl:for-each select="region">
+					<span style="padding: 0 0.7rem;">|</span>
+					<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
+						<xsl:value-of select="name" />
+					</a>
+				</xsl:for-each>
+			</div>
+		</xsl:if>
 		<div id="map-{@id}" style="width:100%; height:500px;">
 			<script type="text/javascript">
 
@@ -124,6 +127,16 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template match="advanced_spoiler" mode="content">
+		<div class="advanced-spoiler single">
+			<div class="spoiler__title"><strong><xsl:value-of select="header"/></strong></div>
+			<div class="spoiler__content" style="display: none;">
+				<xsl:value-of select="text" disable-output-escaping="yes"/>
+				<xsl:apply-templates select="*" mode="content"/>
+			</div>
+		</div>
+	</xsl:template>
+
 	<xsl:template match="page_text" mode="content">
 		<xsl:if test="f:num(spoiler) &gt; 0">
 			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
@@ -151,38 +164,38 @@
 				<script>
 					<xsl:if test="f:num(spoiler) = 0">
 						$(document).ready(function(){
-						initNanoCommon<xsl:value-of select="@id"/>();
+							initNanoCommon<xsl:value-of select="@id"/>();
 						});
 					</xsl:if>
 					function initNanoCommon<xsl:value-of select="@id"/>() {
-					<xsl:if test="f:num(spoiler) &gt; 0">
+						<xsl:if test="f:num(spoiler) &gt; 0">
 						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
-					</xsl:if>
-					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-					// ### gallery settings ###
-					thumbnailHeight:  <xsl:value-of select="height"/>,
-					thumbnailWidth:   <xsl:value-of select="width"/>,
-					thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-					thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-					thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-					thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-					viewerToolbar: { display: false },
-					galleryLastRowFull:  false,
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
 
-					// ### gallery content ###
-					items: [
-					<xsl:for-each select="picture">
-						{
-						src: '<xsl:value-of select="concat(@path, pic)"/>',
-						srct: '<xsl:value-of select="concat(@path, pic)"/>',
-						title: '<xsl:value-of select="header"/>'
-						},
-					</xsl:for-each>
-					]
-					});
-					<xsl:if test="f:num(spoiler) &gt; 0">
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="picture">
+									{
+										src: '<xsl:value-of select="concat(@path, pic)"/>',
+										srct: '<xsl:value-of select="concat(@path, pic)"/>',
+										title: '<xsl:value-of select="header"/>'
+									},
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
 						}
-					</xsl:if>
+						</xsl:if>
 					}
 				</script>
 			</div>
@@ -199,34 +212,34 @@
 				<script>
 					<xsl:if test="f:num(spoiler) = 0">
 						$(document).ready(function(){
-						initNano<xsl:value-of select="@id"/>();
+							initNano<xsl:value-of select="@id"/>();
 						});
 					</xsl:if>
 					function initNano<xsl:value-of select="@id"/>(){
-					<xsl:if test="f:num(spoiler) &gt; 0">
+						<xsl:if test="f:num(spoiler) &gt; 0">
 						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
-					</xsl:if>
-					$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
-					// ### gallery settings ###
-					thumbnailHeight:  <xsl:value-of select="height"/>,
-					thumbnailWidth:   <xsl:value-of select="width"/>,
-					thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
-					thumbnailBorderVertical :   <xsl:value-of select="border"/>,
-					thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
-					thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
-					viewerToolbar: { display: false },
-					galleryLastRowFull:  false,
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
 
-					// ### gallery content ###
-					items: [
-					<xsl:for-each select="pic">
-						{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
-					</xsl:for-each>
-					]
-					});
-					<xsl:if test="f:num(spoiler) &gt; 0">
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="pic">
+								{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
 						}
-					</xsl:if>
+						</xsl:if>
 					}
 				</script>
 			</div>
