@@ -77,6 +77,8 @@ public class PageModelRegistry {
 						.withSchedule(CronScheduleBuilder.cronSchedule(page.getSchedule()))
 						.forJob(jobName).build();
 				job.getJobDataMap().put(ScheduledJob.PAGE_NAME, page.name);
+				if (sched.checkExists(job.getKey()))
+					sched.deleteJob(job.getKey());
 				sched.scheduleJob(job, trigger);
 			}
 		}
