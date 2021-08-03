@@ -10,10 +10,20 @@ public class CharDataType extends IntegerDataType{
 	@Override
 	public Object createValue(String stringValue, Object formatter) {
 		if(StringUtils.isBlank(stringValue)){return null;}
+		if(stringValue.matches("\\d+")){
+			return Integer.parseInt(stringValue);
+		}
 		try{
 			if(stringValue.length() == 1){
 				return (int)stringValue.charAt(0);
-			}else if(StringUtils.startsWith(stringValue, "\\")){
+			}
+			else if(stringValue.length() == 2){
+				int one = (stringValue.charAt(0) - 0xD800) * 0x400;
+				int two = (stringValue.charAt(1) - 0xDC00) + 0x10000;
+				int res = one + two;
+				return res;
+			}
+			else if(StringUtils.startsWith(stringValue, "\\")){
 				return Integer.parseInt(stringValue.substring(1),16);
 			}else if(StringUtils.startsWith(stringValue, "&#")){
 				String s = stringValue.substring(2,stringValue.length() - 1);

@@ -11,15 +11,14 @@
 			</h3>
 			<div class="emoji">
 				<xsl:for-each select="$codes">
-					<div class="btn" title="{if($names != '') then $names[position()] else ''}">
+					<div class="btn" title="{if($names != '') then $names[position()] else ''}" data-val="{.}">
 						<xsl:if test="string-length(string(.)) &gt; 1">
-							<xsl:value-of select="concat('&amp;#', ., ';')"/>
+							<xsl:value-of select="concat('&amp;#', ., ';')" disable-output-escaping="yes"/>
 						</xsl:if>
 						<xsl:if test="string-length(string(.)) = 1">
-							<xsl:value-of select="."/>
+							<xsl:value-of select="." disable-output-escaping="yes"/>
 						</xsl:if>
-					</div>
-				</xsl:for-each>
+					</div></xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
@@ -35,6 +34,7 @@
 		<xsl:call-template name="EMOJI_CATEGORY">
 			<xsl:with-param name="name" select="'Флаги'"/>
 			<xsl:with-param name="codes" select="''"/>
+		</xsl:call-template>
 	</xsl:template>
 
 </xsl:stylesheet>

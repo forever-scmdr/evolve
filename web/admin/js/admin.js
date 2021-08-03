@@ -386,3 +386,51 @@ function highlightSelected(container, ipt) {
 		$ipt.val(clearedVal);
 	}
 }
+
+// $(document).on('click', '.char-param textarea, .char-param .btn', function () {
+// 	$div = $(this).closest(".char-param");
+// 	$emoji = $div.find(".emoji-toggle");
+// 	$emoji.show();
+// });
+//
+// $(document).on('blur', '.char-param textarea', function () {
+// 	$div = $(this).closest(".char-param");
+// 	$emoji = $div.find(".emoji-toggle");
+// 	$emoji.hide();
+// });
+
+$(document).on('click', '.char-param', function (e) {
+	var $div = $(this);
+	var $emoji = $div.find(".emoji-toggle");
+	$emoji.show();
+
+	if($(e.target).is(".btn")) {
+		var $btn = $(e.target);
+		var $inp = $div.find("textarea");
+		$inp.val($btn.text());
+	//	var dec = emojiCode($(this).text());
+	//	console.log(dec);
+	}
+});
+
+$(document).on('click', '*', function (e) {
+	var $t = $(e.target);
+	if(!$t.is(".char-param") && $t.closest(".char-param").length == 0){
+		$(".emoji-toggle").hide();
+	}
+});
+
+function emojiCode	(emoji) {
+		var comp;
+		if (emoji.length === 1) {
+			comp = emoji.charCodeAt(0);
+		}
+		comp = (
+			(emoji.charCodeAt(0) - 0xD800) * 0x400
+			+ (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+		);
+		if (comp < 0) {
+			comp = emoji.charCodeAt(0);
+		}
+		return comp.toString(10);
+}

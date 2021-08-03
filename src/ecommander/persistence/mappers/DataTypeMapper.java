@@ -415,6 +415,7 @@ public class DataTypeMapper {
 		typeMappers.put(Type.FILTER, stringMapper);
 		typeMappers.put(Type.XML, stringMapper);
 		typeMappers.put(Type.TUPLE, new TupleMapper());
+		typeMappers.put(Type.CHAR, new IntMapper());
 	}
 
 	/**

@@ -70,6 +70,7 @@ public abstract class DataType {
 		BIG_TEXT_TYPES.add(Type.PLAIN_TEXT);
 		BIG_TEXT_TYPES.add(Type.FILTER);
 		BIG_TEXT_TYPES.add(Type.XML);
+		BIG_TEXT_TYPES.add(Type.CHAR);
 	}
 	
 	private Type type = Type.STRING;

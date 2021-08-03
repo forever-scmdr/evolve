@@ -27,7 +27,7 @@
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<meta http-equiv="Pragma" content="no-cache" />
 			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
-			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
+			<link rel="stylesheet" type="text/css" href="admin/css/style.css?v=1" />
 			<link rel="stylesheet" type="text/css" href="admin/css/context.css" />
 			<link rel="stylesheet" type="text/css" href="admin/jquery-ui/jquery-ui.css" media="screen" />
 			<link rel="stylesheet" type="text/css" href="admin/js/jquery.fancybox.min.css" media="screen" />

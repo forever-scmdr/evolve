@@ -6,6 +6,8 @@
 		xmlns:f="f:f"
 		version="2.0">
 
+	<xsl:import href="_inc_emoji.xsl" />
+
 	<!-- Перевод даты из CMS вида (23.11.2017 00:00) в XSL вид -->
 	<xsl:function name="f:xsl_date" as="xs:dateTime">
 		<xsl:param name="str_date"/>
@@ -185,6 +187,27 @@
 				<xsl:value-of select="." disable-output-escaping="yes" />
 			</textarea>
 		</label>
+	</xsl:template>
+
+
+	<!-- Emoji -->
+	<xsl:template match="field[@type='char']" mode="single">
+
+		<div class="char-param">
+			<label>
+				<span class=""><xsl:value-of select="@caption" /></span>
+				<xsl:if test="@description != ''">
+					<p class="form_comment" style="padding: 4px 0 6px;">
+						[<xsl:value-of select="@description" />]
+					</p>
+				</xsl:if>
+				<textarea name="{@input}" style="width: 44px; height: 44px; font-size: 32px; padding: 5px; resize: none;" ><xsl:value-of select="concat('&amp;#', . ,';')" disable-output-escaping="yes"/></textarea>
+<!--				<input class="field" type="text" name="{@input}" value="{.}" style="width: 44px; font-size: 32px; padding: 5px;" />-->
+			</label>
+			<div class="emoji-toggle" style="display: none;">
+				<xsl:call-template name="FACES"/>
+			</div>
+		</div>
 	</xsl:template>
 	
 	<!-- Простое поле ввода -->
