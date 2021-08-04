@@ -1823,7 +1823,7 @@
 	</page>
 
 
-	<page name="get_rates" schedule="0 0 */2 ? * *">
+	<page name="get_rates" schedule="0 */5 * ? * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
