@@ -107,7 +107,7 @@
 		<script>
 			$(document).ready(function(){
 				$(".device__zoom, .example1").fancybox({
-					padding: 0,
+					padding: [15,15,15,15],
 					helpers: {
 						overlay: {
 							locked: false
@@ -514,8 +514,8 @@
 				</xsl:for-each>
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="http://main.must.by/magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.0"/>
-				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.01"/>
+				<link rel="stylesheet" href="css/fixes.css?version=1.10"/>
 				<link href="css/fotorama.css" rel="stylesheet"/>
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
@@ -610,7 +610,7 @@
 												   ajax-href="{page/search_ajax_link}" result="search-result"
 												   query="q" min-size="3" id="q-ipt" type="text"
 												   placeholder="Введите поисковый запрос" autocomplete="off"
-												   name="q" value="{$query}" autofocus=""/>
+												   name="q" value="{$query}" autofocus="autofocus" onfocus="this.selectionStart = this.selectionEnd = this.value.length"/>
 											<a class="header-search__reset" href="">
 												<img src="img/icon-close.png" alt=""/>
 											</a>

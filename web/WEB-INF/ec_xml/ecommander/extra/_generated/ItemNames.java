@@ -28,6 +28,11 @@ public interface ItemNames {
     String BOUGHT = "bought";
     String CUSTOM_BOUGHT = "custom_bought";
     String CART = "cart";
+    String DELIVERY_AND_PAYMENT = "delivery_and_payment";
+    String DELIVERY = "delivery";
+    String PAYMENT = "payment";
+    String ABSENT = "absent";
+    String STORE = "store";
     String ORDER_CATALOG = "order_catalog";
     String PREORDER_CATALOG = "preorder_catalog";
     String PREORDER = "preorder";
@@ -48,8 +53,6 @@ public interface ItemNames {
     String COMMON = "common";
     String BLOCK = "block";
     String BLOCK_ARRAY = "block_array";
-    String DELIVERY = "delivery";
-    String PAYMENT = "payment";
     String CATALOG_TEXTS = "catalog_texts";
     String FOOTER = "footer";
     String TOPPER = "topper";
@@ -106,6 +109,13 @@ public interface ItemNames {
     String COMMENT = "comment";
     String STYLES = "styles";
     String LABEL_STYLE = "label_style";
+
+    public interface absent_ {
+
+        String _ITEM_NAME = "absent";
+        String NAME = "name";
+
+    }
 
     public interface abstract_product_ {
 
@@ -237,7 +247,8 @@ public interface ItemNames {
         String SUM_DISCOUNT = "sum_discount";
         String MARGIN = "margin";
         String PROCESSED = "processed";
-        String ORDER_ID = "order_id";
+        String CURRENCY = "currency";
+        String SELECTED_CURRENCY = "selected_currency";
 
     }
 
@@ -295,6 +306,7 @@ public interface ItemNames {
         String LINK_LINK = "link_link";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
+        String BOSS = "boss";
 
     }
 
@@ -332,12 +344,18 @@ public interface ItemNames {
         String _ITEM_NAME = "currencies";
         String RUB_RATE = "RUB_rate";
         String RUB_SCALE = "RUB_scale";
+        String RUB_CEIL = "RUB_ceil";
+        String RUB_EXTRA_QUOTIENT = "RUB_extra_quotient";
         String RUB_UPDATE = "RUB_update";
         String USD_RATE = "USD_rate";
         String USD_SCALE = "USD_scale";
+        String USD_CEIL = "USD_ceil";
+        String USD_EXTRA_QUOTIENT = "USD_extra_quotient";
         String USD_UPDATE = "USD_update";
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
+        String EUR_CEIL = "EUR_ceil";
+        String EUR_EXTRA_QUOTIENT = "EUR_extra_quotient";
         String EUR_UPDATE = "EUR_update";
 
     }
@@ -415,7 +433,18 @@ public interface ItemNames {
     public interface delivery_ {
 
         String _ITEM_NAME = "delivery";
-        String OPTION = "option";
+        String NAME = "name";
+        String SUFFIX = "suffix";
+        String TEXT = "text";
+        String ASK_ADDRESS = "ask_address";
+        String SHOW_STORES = "show_stores";
+        String CURRENCY = "currency";
+
+    }
+
+    public interface delivery_and_payment_ {
+
+        String _ITEM_NAME = "delivery_and_payment";
 
     }
 
@@ -911,7 +940,10 @@ public interface ItemNames {
     public interface payment_ {
 
         String _ITEM_NAME = "payment";
-        String OPTION = "option";
+        String NAME = "name";
+        String SUFFIX = "suffix";
+        String TEXT = "text";
+        String CURRENCY = "currency";
 
     }
 
@@ -1053,11 +1085,13 @@ public interface ItemNames {
         String SECOND_NAME = "second_name";
         String PHYS = "phys";
         String COOKIE = "cookie";
+        String CURRENCY = "currency";
         String PAYMENT = "payment";
         String DELIVERY = "delivery";
         String INDEX = "index";
         String CITY = "city";
         String REGION = "region";
+        String COUNTRY = "country";
         String ADDRESS = "address";
         String IF_ABSENT = "if_absent";
 
@@ -1157,6 +1191,15 @@ public interface ItemNames {
 
     }
 
+    public interface store_ {
+
+        String _ITEM_NAME = "store";
+        String NAME = "name";
+        String ADDRESS = "address";
+        String TEXT = "text";
+
+    }
+
     public interface styles_ {
 
         String _ITEM_NAME = "styles";
@@ -1215,6 +1258,19 @@ public interface ItemNames {
         String PASSWORD = "password";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
+        String PAY_TYPE = "pay_type";
+        String IF_ABSENT = "if_absent";
+        String SHIP_TYPE = "ship_type";
+        String NEED_POST_ADDRESS = "need_post_address";
+        String GET_ORDER_FROM = "get_order_from";
+        String POST_ADDRESS = "post_address";
+        String POST_INDEX = "post_index";
+        String POST_CITY = "post_city";
+        String POST_REGION = "post_region";
+        String POST_COUNTRY = "post_country";
+        String COMMENT = "comment";
+        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String FAV_COOKIE = "fav_cookie";
 
     }
 
@@ -1226,13 +1282,24 @@ public interface ItemNames {
         String PASSWORD = "password";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
+        String PAY_TYPE = "pay_type";
+        String IF_ABSENT = "if_absent";
+        String SHIP_TYPE = "ship_type";
+        String NEED_POST_ADDRESS = "need_post_address";
+        String GET_ORDER_FROM = "get_order_from";
+        String POST_ADDRESS = "post_address";
+        String POST_INDEX = "post_index";
+        String POST_CITY = "post_city";
+        String POST_REGION = "post_region";
+        String POST_COUNTRY = "post_country";
+        String COMMENT = "comment";
+        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String FAV_COOKIE = "fav_cookie";
         String ORGANIZATION = "organization";
         String CONTRACT_NUMBER = "contract_number";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
         String ADDRESS = "address";
-        String SHIP_TYPE = "ship_type";
-        String PAY_TYPE = "pay_type";
         String NO_ACCOUNT = "no_account";
         String ACCOUNT = "account";
         String BANK = "bank";
@@ -1240,10 +1307,11 @@ public interface ItemNames {
         String BANK_CODE = "bank_code";
         String UNP = "unp";
         String DIRECTOR = "director";
+        String BOSS = "boss";
         String BASE = "base";
         String BASE_NUMBER = "base_number";
         String BASE_DATE = "base_date";
-        String COMMENT = "comment";
+        String FUND = "fund";
 
     }
 
@@ -1255,11 +1323,22 @@ public interface ItemNames {
         String PASSWORD = "password";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
-        String NAME = "name";
-        String ADDRESS = "address";
-        String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
+        String IF_ABSENT = "if_absent";
+        String SHIP_TYPE = "ship_type";
+        String NEED_POST_ADDRESS = "need_post_address";
+        String GET_ORDER_FROM = "get_order_from";
+        String POST_ADDRESS = "post_address";
+        String POST_INDEX = "post_index";
+        String POST_CITY = "post_city";
+        String POST_REGION = "post_region";
+        String POST_COUNTRY = "post_country";
         String COMMENT = "comment";
+        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String FAV_COOKIE = "fav_cookie";
+        String NAME = "name";
+        String SECOND_NAME = "second_name";
+        String ADDRESS = "address";
 
     }
 

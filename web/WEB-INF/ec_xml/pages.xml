@@ -1199,10 +1199,10 @@
 			<single item="cart"/>
 		</session>
 		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer_phys"/>
+			<parameter-input ref="user_phys" form="user_phys"/>
 		</new>
 		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" form="customer_jur"/>
+			<parameter-input ref="user_jur" form="user_jur"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>

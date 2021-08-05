@@ -50,6 +50,8 @@ public class Item implements ItemBasics {
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String KEY_PARAMETER = "@key";
+	private static final String VALUE_SEPARATOR = ":<v>:";
+	private static final String PARAM_SEPARATOR = ":<p>:";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -1408,6 +1410,42 @@ public class Item implements ItemBasics {
 			return Long.parseLong(idStr);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Сериализовать параметры айтема в строку, из которой потом можно восстановить параметры
+	 * @param item
+	 * @return
+	 */
+	public static String setializeParamValues(Item item) {
+		StringBuilder sb = new StringBuilder();
+		for (String paramName : item.getItemType().getParameterNames()) {
+			if (item.isValueNotEmpty(paramName)) {
+				sb.append(PARAM_SEPARATOR).append(paramName).append(VALUE_SEPARATOR);
+				ArrayList<String> values = item.outputValues(paramName);
+				sb.append(StringUtils.join(values, VALUE_SEPARATOR));
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Восстановить значения параметров айтема из строки
+	 * @param item
+	 * @param serializedParams
+	 * @throws Exception
+	 */
+	public static void restoreParamValues(Item item, String serializedParams) throws Exception {
+		String[] paramsAndValues = StringUtils.splitByWholeSeparator(serializedParams, PARAM_SEPARATOR);
+		for (String paramAndValues : paramsAndValues) {
+			String[] values = StringUtils.splitByWholeSeparator(paramAndValues, VALUE_SEPARATOR);
+			if (values.length < 2)
+				continue;
+			String paramName = values[0];
+			for (int i = 1; i < values.length; i++) {
+				item.setValueUI(paramName, values[i]);
+			}
 		}
 	}
 }

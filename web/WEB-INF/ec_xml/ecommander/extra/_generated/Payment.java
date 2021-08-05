@@ -1,7 +1,6 @@
 
 package ecommander.extra._generated;
 
-import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -10,7 +9,10 @@ public class Payment
 {
 
     public final static String _NAME = "payment";
-    public final static String OPTION = "option";
+    public final static String NAME = "name";
+    public final static String SUFFIX = "suffix";
+    public final static String TEXT = "text";
+    public final static String CURRENCY = "currency";
 
     private Payment(Item item) {
         super(item);
@@ -31,20 +33,68 @@ public class Payment
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
-    public void add_option(String value) {
-        setValue("option", value);
+    public void set_name(String value) {
+        setValue("name", value);
     }
 
-    public List<String> getAll_option() {
-        return getStringValues("option");
+    public String get_name() {
+        return getStringValue("name");
     }
 
-    public void remove_option(String value) {
-        removeEqualValue("option", value);
+    public String getDefault_name(String defaultVal) {
+        return getStringValue("name", defaultVal);
     }
 
-    public boolean contains_option(String value) {
-        return containsValue("option", value);
+    public boolean contains_name(String value) {
+        return containsValue("name", value);
+    }
+
+    public void set_suffix(String value) {
+        setValue("suffix", value);
+    }
+
+    public String get_suffix() {
+        return getStringValue("suffix");
+    }
+
+    public String getDefault_suffix(String defaultVal) {
+        return getStringValue("suffix", defaultVal);
+    }
+
+    public boolean contains_suffix(String value) {
+        return containsValue("suffix", value);
+    }
+
+    public void set_text(String value) {
+        setValue("text", value);
+    }
+
+    public String get_text() {
+        return getStringValue("text");
+    }
+
+    public String getDefault_text(String defaultVal) {
+        return getStringValue("text", defaultVal);
+    }
+
+    public boolean contains_text(String value) {
+        return containsValue("text", value);
+    }
+
+    public void set_currency(String value) {
+        setValue("currency", value);
+    }
+
+    public String get_currency() {
+        return getStringValue("currency");
+    }
+
+    public String getDefault_currency(String defaultVal) {
+        return getStringValue("currency", defaultVal);
+    }
+
+    public boolean contains_currency(String value) {
+        return containsValue("currency", value);
     }
 
 }

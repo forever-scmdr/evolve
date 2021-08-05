@@ -4,32 +4,31 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class Payment
+public class Store
     extends Item
 {
 
-    public final static String _NAME = "payment";
+    public final static String _NAME = "store";
     public final static String NAME = "name";
-    public final static String SUFFIX = "suffix";
+    public final static String ADDRESS = "address";
     public final static String TEXT = "text";
-    public final static String CURRENCY = "currency";
 
-    private Payment(Item item) {
+    private Store(Item item) {
         super(item);
     }
 
-    public static Payment get(Item item) {
+    public static Store get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'payment' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'store' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new Payment(item);
+        return new Store(item);
     }
 
-    public static Payment newChild(Item parent) {
+    public static Store newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
     }
 
@@ -49,20 +48,20 @@ public class Payment
         return containsValue("name", value);
     }
 
-    public void set_suffix(String value) {
-        setValue("suffix", value);
+    public void set_address(String value) {
+        setValue("address", value);
     }
 
-    public String get_suffix() {
-        return getStringValue("suffix");
+    public String get_address() {
+        return getStringValue("address");
     }
 
-    public String getDefault_suffix(String defaultVal) {
-        return getStringValue("suffix", defaultVal);
+    public String getDefault_address(String defaultVal) {
+        return getStringValue("address", defaultVal);
     }
 
-    public boolean contains_suffix(String value) {
-        return containsValue("suffix", value);
+    public boolean contains_address(String value) {
+        return containsValue("address", value);
     }
 
     public void set_text(String value) {
@@ -79,22 +78,6 @@ public class Payment
 
     public boolean contains_text(String value) {
         return containsValue("text", value);
-    }
-
-    public void set_currency(String value) {
-        setValue("currency", value);
-    }
-
-    public String get_currency() {
-        return getStringValue("currency");
-    }
-
-    public String getDefault_currency(String defaultVal) {
-        return getStringValue("currency", defaultVal);
-    }
-
-    public boolean contains_currency(String value) {
-        return containsValue("currency", value);
     }
 
 }

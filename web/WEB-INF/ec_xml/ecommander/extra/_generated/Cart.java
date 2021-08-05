@@ -19,7 +19,8 @@ public class Cart
     public final static String SUM_DISCOUNT = "sum_discount";
     public final static String MARGIN = "margin";
     public final static String PROCESSED = "processed";
-    public final static String ORDER_ID = "order_id";
+    public final static String CURRENCY = "currency";
+    public final static String SELECTED_CURRENCY = "selected_currency";
 
     private Cart(Item item) {
         super(item);
@@ -232,26 +233,36 @@ public class Cart
         return containsValue("processed", value);
     }
 
-    public void set_order_id(Long value) {
-        setValue("order_id", value);
+    public void set_currency(String value) {
+        setValue("currency", value);
     }
 
-    public void setUI_order_id(String value)
-        throws Exception
-    {
-        setValueUI("order_id", value);
+    public String get_currency() {
+        return getStringValue("currency");
     }
 
-    public Long get_order_id() {
-        return getLongValue("order_id");
+    public String getDefault_currency(String defaultVal) {
+        return getStringValue("currency", defaultVal);
     }
 
-    public Long getDefault_order_id(Long defaultVal) {
-        return getLongValue("order_id", defaultVal);
+    public boolean contains_currency(String value) {
+        return containsValue("currency", value);
     }
 
-    public boolean contains_order_id(Long value) {
-        return containsValue("order_id", value);
+    public void set_selected_currency(String value) {
+        setValue("selected_currency", value);
+    }
+
+    public String get_selected_currency() {
+        return getStringValue("selected_currency");
+    }
+
+    public String getDefault_selected_currency(String defaultVal) {
+        return getStringValue("selected_currency", defaultVal);
+    }
+
+    public boolean contains_selected_currency(String value) {
+        return containsValue("selected_currency", value);
     }
 
 }

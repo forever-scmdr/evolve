@@ -1,83 +1,46 @@
 package extra.belchip;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.ibm.icu.text.SimpleDateFormat;
+import extra._generated.ItemNames;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public interface CartConstants {
-	double SUM_1 = 150;
-	double SUM_2 = 550;
+	BigDecimal SUM_1 = BigDecimal.valueOf(150);
+	BigDecimal SUM_2 = BigDecimal.valueOf(550);
 	int DISCOUNT_1 = 5;
 	int DISCOUNT_2 = 10;
 	int CUSTOM_BOUGHT_COUNT = 10;
-	SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+	DateTimeFormatter DAY_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
 
 	String ASSOC_GENERAL = "general";
+	String DEFAULT_CURRENCY = "BYN";
 
+	String RATE_PART = "_rate";
+	String SCALE_PART = "_scale";
+	String EXTRA_QUOTIENT_PART = "_extra_quotient";
+	String CEIL_PART = "_ceil";
 
-	//String REGISTERED_GROUP = "registered";
-	//String BOUGHT_ITEM = "bought";
-	String CUSTOM_BOUGHT_ITEM = "custom_bought";
-	//String CART_ITEM = "cart";
-	//String PRODUCT_ITEM = "product";
-	String COUNTER_ITEM = "counter";
-	String QUANTITY_PARAM = "quantity";
-	String ZERO_QUANTITY_PARAM = "zero_quantity";
-	String CUSTOM_QUANTITY_PARAM = "custom_quantity";
-	//String PRICE_PARAM = "price";
-	//String QTY_PARAM = "qty";
-	String MIN_QTY_PARAM = "min_qty";
+	String QTY_REQ_PARAM = "qty";
 	String NEW_QUANTITY_PARAM = "new_quantity";
 	//String SUM_PARAM = "sum";
 	String COUNT_PARAM = "count";
-	String CODE_PARAM = "code";
 
 	String ACTION_PARAM = "action";
 	String PRODUCT_PARAM = "product";
 	String PROCESSED_PARAM = "processed";
-	String BARCODE_PARAM = "barcode";
-	String POSITTION_PARAM = "position";
-	String NONEMPTY_PARAM = "nonempty";
 
 	String MESSAGE_PARAM = "user_message";
 
-	String SECOND_NAME_PARAM = "second_name";
-	String NAME_PARAM = "name";
-	String PHONE_PARAM = "phone";
-	String EMAIL_PARAM = "email";
-	String POST_CITY_PARAM = "post_city";
-	String POST_REGION_PARAM = "post_region";
-	String IF_ABSENT_PARAM = "if_absent";
-	String GET_ORDER_FROM_PARAM = "get_order_from";
 	String IN_PROGRESS = "in_progress";
 
-	String ORGANIZATION_PARAM = "organization";
-	String ADDRESS_PARAM = "address";
-	String JUR_PHONE_PARAM = "jur_phone";
-	String JUR_EMAIL_PARAM = "jur_email";
-	String NO_ACCOUNT_PARAM = "no_account";
-	String ACCOUNT_PARAM = "account";
-	String BANK_PARAM = "bank";
-	String BANK_ADDRESS_PARAM = "bank_address";
-	String BANK_CODE_PARAM = "bank_code";
-	String UNP_PARAM = "unp";
-	String DIRECTOR_PARAM = "director";
-	String BASE_PARAM = "base";
-	String NEED_POST_ADDRESS_PARAM = "need_post_address";
-	String POST_ADDRESS_PARAM = "post_address";
-	String POST_INDEX_PARAM = "post_index";
-	String JUR_NEED_POST_ADDRESS_PARAM = "jur_need_post_address";
-	String JUR_POST_ADDRESS_PARAM = "jur_post_address";
-	String JUR_POST_INDEX_PARAM = "jur_post_index";
-	String JUR_POST_CITY_PARAM = "jur_post_city";
-	String CONTACT_NAME_PARAM = "contact_name";
-	String CONTACT_PHONE_PARAM = "contact_phone";
-	String BASE_NUMBER_PARAM = "base_number";
-	String BASE_DATE_PARAM = "base_date";
-	String JUR_FUND_PARAM = "jur_fund";
 
 	String LOGIN_PARAM = "login";
+	String PASSWORD_PARAM = "password";
 
 	String BARCODE_DIR = "barcodes/";
 	String PNG_EXT = ".png";
@@ -103,16 +66,16 @@ public interface CartConstants {
 		private static final long serialVersionUID = 6154731719400877513L;
 
 		{
-			add(ORGANIZATION_PARAM);
-			add(JUR_PHONE_PARAM);
-			add(JUR_EMAIL_PARAM);
-			add(CONTACT_NAME_PARAM);
-			add(CONTACT_PHONE_PARAM);
-			add(ADDRESS_PARAM);
-			add(UNP_PARAM);
-			add(DIRECTOR_PARAM);
-			add(BASE_PARAM);
-			add(JUR_FUND_PARAM);
+			add(ItemNames.user_jur_.ORGANIZATION);
+			add(ItemNames.user_jur_.PHONE);
+			add(ItemNames.user_jur_.EMAIL);
+			add(ItemNames.user_jur_.CONTACT_NAME);
+			add(ItemNames.user_jur_.CONTACT_PHONE);
+			add(ItemNames.user_jur_.ADDRESS);
+			add(ItemNames.user_jur_.UNP);
+			add(ItemNames.user_jur_.DIRECTOR);
+			add(ItemNames.user_jur_.BASE);
+			add(ItemNames.user_jur_.FUND);
 		}
 	};
 
@@ -123,8 +86,8 @@ public interface CartConstants {
 		private static final long serialVersionUID = -3973888116594652711L;
 
 		{
-			add(BASE_NUMBER_PARAM);
-			add(BASE_DATE_PARAM);
+			add(ItemNames.user_jur_.BASE_NUMBER);
+			add(ItemNames.user_jur_.BASE_DATE);
 		}
 	};
 
@@ -135,10 +98,10 @@ public interface CartConstants {
 		private static final long serialVersionUID = 6877987850929815731L;
 
 		{
-			add(ACCOUNT_PARAM);
-			add(BANK_PARAM);
-			add(BANK_CODE_PARAM);
-			add(BANK_ADDRESS_PARAM);
+			add(ItemNames.user_jur_.ACCOUNT);
+			add(ItemNames.user_jur_.BANK);
+			add(ItemNames.user_jur_.BANK_CODE);
+			add(ItemNames.user_jur_.BANK_ADDRESS);
 		}
 	};
 
@@ -149,10 +112,10 @@ public interface CartConstants {
 		private static final long serialVersionUID = -5275087566452782267L;
 
 		{
-			add(SECOND_NAME_PARAM);
-			add(PHONE_PARAM);
-			add(EMAIL_PARAM);
-			add(IF_ABSENT_PARAM);
+			add(ItemNames.user_phys_.SECOND_NAME);
+			add(ItemNames.user_phys_.PHONE);
+			add(ItemNames.user_phys_.EMAIL);
+			add(ItemNames.user_phys_.IF_ABSENT);
 		}
 	};
 	
@@ -162,11 +125,11 @@ public interface CartConstants {
 		private static final long serialVersionUID = 6397781611402904275L;
 
 	{
-		add(POST_ADDRESS_PARAM);
-		add(POST_INDEX_PARAM);
-		add(POST_CITY_PARAM);
-		add(POST_REGION_PARAM);
-		add(NAME_PARAM);
+		add(ItemNames.user_.POST_ADDRESS);
+		add(ItemNames.user_.POST_INDEX);
+		add(ItemNames.user_.POST_CITY);
+		add(ItemNames.user_.POST_REGION);
+		add(ItemNames.user_phys_.NAME);
 	}};
 	
 	Set<String> JUR_ADDRESS_MANDATORY = new HashSet<String>() {/**
@@ -175,9 +138,9 @@ public interface CartConstants {
 		private static final long serialVersionUID = 8517768710126188679L;
 
 	{
-		add(JUR_POST_ADDRESS_PARAM);
-		add(JUR_POST_INDEX_PARAM);
-		add(JUR_POST_CITY_PARAM);
+		add(ItemNames.user_.POST_ADDRESS);
+		add(ItemNames.user_.POST_INDEX);
+		add(ItemNames.user_.POST_CITY);
 	}};
 	
 	Set<String> CUSTOM_BOUGHT_PARAMS = new HashSet<String>() {/**
@@ -186,12 +149,12 @@ public interface CartConstants {
 		private static final long serialVersionUID = 3003185279225323811L;
 
 	{
-		add("mark");
-		add("type");
-		add("case");
-		add("qty");
-		add("link");
-		add("extra");
-		add(NONEMPTY_PARAM);
+		add(ItemNames.custom_bought_.MARK);
+		add(ItemNames.custom_bought_.TYPE);
+		add(ItemNames.custom_bought_.CASE);
+		add(ItemNames.custom_bought_.QTY);
+		add(ItemNames.custom_bought_.LINK);
+		add(ItemNames.custom_bought_.EXTRA);
+		add(ItemNames.custom_bought_.NONEMPTY );
 	}};
 }

@@ -66,7 +66,7 @@
 	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
-	<xsl:variable name="show_filter" select="true()"/><!--$user_filter or $tag-->
+	<xsl:variable name="show_filter" select="page/variables/show_filter = 'yes'"/><!--$user_filter or $tag-->
 
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
@@ -112,6 +112,11 @@
 			<div class="pagination{' pagination_short'[$total_pages &lt;= $MIN_PAGE_COUNT]}">
 				<div class="pagination__label">Страницы:</div>
 				<div class="pagination__wrap">
+					<xsl:if test="$sel_sec/product_pages/previous">
+						<div class="pagination__item">
+							<a href="{$sel_sec/product_pages/previous[1]/link}">&lt;</a>
+						</div>
+					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$total_pages &gt; $MIN_PAGE_COUNT">
 							<xsl:apply-templates select="$sel_sec/product_pages/page[1]" mode="pagination"/>
@@ -133,6 +138,11 @@
 							<xsl:apply-templates select="$sel_sec/product_pages/page" mode="pagination"/>
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:if test="$sel_sec/product_pages/next">
+						<div class="pagination__item">
+							<a href="{$sel_sec/product_pages/next[1]/link}">&gt;</a>
+						</div>
+					</xsl:if>
 				</div>
 			</div>
 		</xsl:if>
@@ -155,7 +165,7 @@
 <!--				</a>-->
 				<form method="post" action="{$sel_sec/filter_base_link}">
 					<div class="filter__wrap" style="{'display: none'[not($show_filter)]}" id="filters_container">
-						<xsl:for-each select="$captions">
+						<xsl:for-each select="$captions[. != 'Сертификат']">
 							<xsl:variable name="input" select="$valid_inputs[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 							<xsl:if test="$input">
 								<xsl:variable name="name" select="$input/@id"/>
@@ -229,12 +239,14 @@
 					$('.filter_hidden').hide();
 					$('.filter_visible').show();
 					$('#filters_container').show('blind', 200);
+					setCookie('show_filter', 'yes', 30);
 				}
 
 				function hideSectionFilter() {
 					$('.filter_hidden').show();
 					$('.filter_visible').hide();
 					$('#filters_container').hide('blind', 200);
+					setCookie('show_filter', 'no', 30);
 				}
 
 				$(document).ready(function() {
@@ -331,7 +343,9 @@
 						<xsl:if test="$filled">
 							<xsl:variable name="tokens" select="tokenize($input/@caption, ',')"/>
 							<xsl:variable name="unit" select="if (count($tokens) &gt; 1) then normalize-space($tokens[2]) else ''"/>
-							<span style="font-size: 13px; padding-top: 5px; padding-right: 3px; padding-left: 5px; color: gray;"><xsl:value-of select="@caption" />:</span>
+							<span style="font-size: 13px; padding-top: 5px; padding-right: 3px; padding-left: 5px; color: #438539;">
+								<xsl:value-of select="if ($unit) then substring-before(@caption, concat(', ', $unit)) else @caption" />:
+							</span>
 							<xsl:for-each select="$filled">
 								<div class="filtered__item filtered-item">
 									<div class="filtered-item__label"><xsl:value-of select="."/>&#160;<xsl:value-of select="$unit"/></div>

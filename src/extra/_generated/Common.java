@@ -14,6 +14,7 @@ public class Common
     public final static String LINK_LINK = "link_link";
     public final static String GOOGLE_VERIFICATION = "google_verification";
     public final static String YANDEX_VERIFICATION = "yandex_verification";
+    public final static String BOSS = "boss";
 
     private Common(Item item) {
         super(item);
@@ -112,6 +113,22 @@ public class Common
 
     public boolean contains_yandex_verification(String value) {
         return containsValue("yandex_verification", value);
+    }
+
+    public void set_boss(String value) {
+        setValue("boss", value);
+    }
+
+    public String get_boss() {
+        return getStringValue("boss");
+    }
+
+    public String getDefault_boss(String defaultVal) {
+        return getStringValue("boss", defaultVal);
+    }
+
+    public boolean contains_boss(String value) {
+        return containsValue("boss", value);
     }
 
 }

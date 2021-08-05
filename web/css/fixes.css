@@ -32,3 +32,20 @@
 .text ol {
 	margin-left: 16px;
 }
+
+/*THUMBS on product page*/
+.thumbs{
+	margin-bottom: 8px;
+	margin-top: 8px;
+	margin-left: -2px;
+}
+.thumbs .thumb{
+	height: 60px;
+	width: 60px;
+	display: inline-block;
+	margin: 2px;
+	border: 2px solid transparent;
+}
+.thumbs .thumb.active{
+	border-color: #0000ee;
+}

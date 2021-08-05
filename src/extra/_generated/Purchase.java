@@ -29,11 +29,13 @@ public class Purchase
     public final static String SECOND_NAME = "second_name";
     public final static String PHYS = "phys";
     public final static String COOKIE = "cookie";
+    public final static String CURRENCY = "currency";
     public final static String PAYMENT = "payment";
     public final static String DELIVERY = "delivery";
     public final static String INDEX = "index";
     public final static String CITY = "city";
     public final static String REGION = "region";
+    public final static String COUNTRY = "country";
     public final static String ADDRESS = "address";
     public final static String IF_ABSENT = "if_absent";
 
@@ -432,6 +434,22 @@ public class Purchase
         return containsValue("cookie", value);
     }
 
+    public void set_currency(String value) {
+        setValue("currency", value);
+    }
+
+    public String get_currency() {
+        return getStringValue("currency");
+    }
+
+    public String getDefault_currency(String defaultVal) {
+        return getStringValue("currency", defaultVal);
+    }
+
+    public boolean contains_currency(String value) {
+        return containsValue("currency", value);
+    }
+
     public void set_payment(String value) {
         setValue("payment", value);
     }
@@ -516,6 +534,22 @@ public class Purchase
 
     public boolean contains_region(String value) {
         return containsValue("region", value);
+    }
+
+    public void set_country(String value) {
+        setValue("country", value);
+    }
+
+    public String get_country() {
+        return getStringValue("country");
+    }
+
+    public String getDefault_country(String defaultVal) {
+        return getStringValue("country", defaultVal);
+    }
+
+    public boolean contains_country(String value) {
+        return containsValue("country", value);
     }
 
     public void set_address(String value) {

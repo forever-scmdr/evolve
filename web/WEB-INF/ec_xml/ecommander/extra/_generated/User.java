@@ -14,6 +14,19 @@ public class User
     public final static String PASSWORD = "password";
     public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
+    public final static String PAY_TYPE = "pay_type";
+    public final static String IF_ABSENT = "if_absent";
+    public final static String SHIP_TYPE = "ship_type";
+    public final static String NEED_POST_ADDRESS = "need_post_address";
+    public final static String GET_ORDER_FROM = "get_order_from";
+    public final static String POST_ADDRESS = "post_address";
+    public final static String POST_INDEX = "post_index";
+    public final static String POST_CITY = "post_city";
+    public final static String POST_REGION = "post_region";
+    public final static String POST_COUNTRY = "post_country";
+    public final static String COMMENT = "comment";
+    public final static String PURCHASE_SERIALIZED = "purchase_serialized";
+    public final static String FAV_COOKIE = "fav_cookie";
 
     private User(Item item) {
         super(item);
@@ -118,6 +131,214 @@ public class User
 
     public boolean contains_payment(String value) {
         return containsValue("payment", value);
+    }
+
+    public void set_pay_type(String value) {
+        setValue("pay_type", value);
+    }
+
+    public String get_pay_type() {
+        return getStringValue("pay_type");
+    }
+
+    public String getDefault_pay_type(String defaultVal) {
+        return getStringValue("pay_type", defaultVal);
+    }
+
+    public boolean contains_pay_type(String value) {
+        return containsValue("pay_type", value);
+    }
+
+    public void set_if_absent(String value) {
+        setValue("if_absent", value);
+    }
+
+    public String get_if_absent() {
+        return getStringValue("if_absent");
+    }
+
+    public String getDefault_if_absent(String defaultVal) {
+        return getStringValue("if_absent", defaultVal);
+    }
+
+    public boolean contains_if_absent(String value) {
+        return containsValue("if_absent", value);
+    }
+
+    public void set_ship_type(String value) {
+        setValue("ship_type", value);
+    }
+
+    public String get_ship_type() {
+        return getStringValue("ship_type");
+    }
+
+    public String getDefault_ship_type(String defaultVal) {
+        return getStringValue("ship_type", defaultVal);
+    }
+
+    public boolean contains_ship_type(String value) {
+        return containsValue("ship_type", value);
+    }
+
+    public void set_need_post_address(String value) {
+        setValue("need_post_address", value);
+    }
+
+    public String get_need_post_address() {
+        return getStringValue("need_post_address");
+    }
+
+    public String getDefault_need_post_address(String defaultVal) {
+        return getStringValue("need_post_address", defaultVal);
+    }
+
+    public boolean contains_need_post_address(String value) {
+        return containsValue("need_post_address", value);
+    }
+
+    public void set_get_order_from(String value) {
+        setValue("get_order_from", value);
+    }
+
+    public String get_get_order_from() {
+        return getStringValue("get_order_from");
+    }
+
+    public String getDefault_get_order_from(String defaultVal) {
+        return getStringValue("get_order_from", defaultVal);
+    }
+
+    public boolean contains_get_order_from(String value) {
+        return containsValue("get_order_from", value);
+    }
+
+    public void set_post_address(String value) {
+        setValue("post_address", value);
+    }
+
+    public String get_post_address() {
+        return getStringValue("post_address");
+    }
+
+    public String getDefault_post_address(String defaultVal) {
+        return getStringValue("post_address", defaultVal);
+    }
+
+    public boolean contains_post_address(String value) {
+        return containsValue("post_address", value);
+    }
+
+    public void set_post_index(String value) {
+        setValue("post_index", value);
+    }
+
+    public String get_post_index() {
+        return getStringValue("post_index");
+    }
+
+    public String getDefault_post_index(String defaultVal) {
+        return getStringValue("post_index", defaultVal);
+    }
+
+    public boolean contains_post_index(String value) {
+        return containsValue("post_index", value);
+    }
+
+    public void set_post_city(String value) {
+        setValue("post_city", value);
+    }
+
+    public String get_post_city() {
+        return getStringValue("post_city");
+    }
+
+    public String getDefault_post_city(String defaultVal) {
+        return getStringValue("post_city", defaultVal);
+    }
+
+    public boolean contains_post_city(String value) {
+        return containsValue("post_city", value);
+    }
+
+    public void set_post_region(String value) {
+        setValue("post_region", value);
+    }
+
+    public String get_post_region() {
+        return getStringValue("post_region");
+    }
+
+    public String getDefault_post_region(String defaultVal) {
+        return getStringValue("post_region", defaultVal);
+    }
+
+    public boolean contains_post_region(String value) {
+        return containsValue("post_region", value);
+    }
+
+    public void set_post_country(String value) {
+        setValue("post_country", value);
+    }
+
+    public String get_post_country() {
+        return getStringValue("post_country");
+    }
+
+    public String getDefault_post_country(String defaultVal) {
+        return getStringValue("post_country", defaultVal);
+    }
+
+    public boolean contains_post_country(String value) {
+        return containsValue("post_country", value);
+    }
+
+    public void set_comment(String value) {
+        setValue("comment", value);
+    }
+
+    public String get_comment() {
+        return getStringValue("comment");
+    }
+
+    public String getDefault_comment(String defaultVal) {
+        return getStringValue("comment", defaultVal);
+    }
+
+    public boolean contains_comment(String value) {
+        return containsValue("comment", value);
+    }
+
+    public void set_purchase_serialized(String value) {
+        setValue("purchase_serialized", value);
+    }
+
+    public String get_purchase_serialized() {
+        return getStringValue("purchase_serialized");
+    }
+
+    public String getDefault_purchase_serialized(String defaultVal) {
+        return getStringValue("purchase_serialized", defaultVal);
+    }
+
+    public boolean contains_purchase_serialized(String value) {
+        return containsValue("purchase_serialized", value);
+    }
+
+    public void set_fav_cookie(String value) {
+        setValue("fav_cookie", value);
+    }
+
+    public String get_fav_cookie() {
+        return getStringValue("fav_cookie");
+    }
+
+    public String getDefault_fav_cookie(String defaultVal) {
+        return getStringValue("fav_cookie", defaultVal);
+    }
+
+    public boolean contains_fav_cookie(String value) {
+        return containsValue("fav_cookie", value);
     }
 
 }

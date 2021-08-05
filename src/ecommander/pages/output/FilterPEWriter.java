@@ -77,7 +77,8 @@ public class FilterPEWriter implements PageElementWriter {
 					}
 					// Назад
 					if (currentPage > 1) {
-						LinkPE link = (LinkPE) linkBase.createExecutableClone(null, null);
+						LinkPE link = (LinkPE) linkBase.createExecutableClone(null, item.getPageModel());
+						link.removeVariable(pageVarBase.getName());
 						link.addStaticVariable(pageVarBase.getName(), (filter.getPage() - 1) + "");
 						xml
 							.startElement(PAGE_PREVIOUS_ELEMENT)
@@ -88,7 +89,8 @@ public class FilterPEWriter implements PageElementWriter {
 					}
 					// Вперед
 					if (currentPage < totalPages) {
-						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, filter.getPageModel());
+						LinkPE link = (LinkPE)linkBase.createExecutableClone(null, item.getPageModel());
+						link.removeVariable(pageVarBase.getName());
 						link.addStaticVariable(pageVarBase.getName(), (filter.getPage() + 1) + "");
 						xml
 							.startElement(PAGE_NEXT_ELEMENT)

@@ -154,18 +154,24 @@
 	<item name="currencies" caption="Курсы валют" ag-id="1781" ag-hash="-1089470353">
 		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
 		<parameter name="RUB_scale" type="currency-precise" default="100" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
+		<parameter name="RUB_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="RUB_update" type="byte" default="1" caption="Российский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
 		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
 		<parameter name="USD_scale" type="currency-precise" default="1" caption="Доллар США (Scale)"/>
+		<parameter name="USD_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
+		<parameter name="USD_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="USD_update" type="byte" default="1" caption="Доллар США - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
 		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
 		<parameter name="EUR_scale" type="currency-precise" default="1" caption="Евро (Scale)"/>
+		<parameter name="EUR_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
+		<parameter name="EUR_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="EUR_update" type="byte" default="1" caption="Евро - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
@@ -236,7 +242,7 @@
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" /><!-- textop -->
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" /><!-- producer -->
-		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" /><!-- mark -->
+		<parameter name="vendor_code" type="string" caption="Артикул производителя" description="продукта" text-index="fulltext" /><!-- mark -->
         <parameter name="is_service" type="byte" caption="Услуга" description="если да то 1" domain="0-1"/>
         <parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/><!-- avlb -->
@@ -393,7 +399,7 @@
 		<child item="product" single="true"/>
 	</item>
 
-	<item name="custom_bought" virtual="true" ag-id="1895" ag-hash="678018425">
+	<item name="custom_bought" caption="Персональнлый заказ" key="mark" ag-id="1895" ag-hash="678018425">
 		<parameter name="position" type="integer" caption="Порядковый номер"/>
 		<parameter name="mark" type="string" caption="Маркировка"/>
 		<parameter name="type" type="string" caption="Тип прибора"/>
@@ -415,9 +421,48 @@
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="margin"  type="currency" caption="Сумма скидки" format="###,##0.00" />
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
+		<parameter name="currency" type="string" />
+		<parameter name="selected_currency" type="string" caption="валюта" />
 		<child item="bought"/>
 		<child item="custom_bought"/>
 	</item>
+
+
+	<item name="delivery_and_payment" caption="Способы доставки и оплаты" ag-id="5257" ag-hash="-441403437">
+		<child item="delivery" />
+		<child item="payment" />
+		<child item="absent" />
+	</item>
+
+	<item name="delivery" caption="способ доставки" key="name" ag-id="827" ag-hash="823466996">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="suffix" type="string"	caption="буковки в номере заказа" />
+		<parameter name="text" type="text" caption="Описание" />
+		<parameter name="ask_address" type="byte" domain="0-1" caption="спросить адрес" />
+		<parameter name="show_stores" type="byte" domain="0-1" caption="показать список складов" />
+		<parameter name="currency" type="string" caption="Валюта" quantifier="multiple" />
+		<child item="store" />
+		<child item="payment" assoc="general" />
+		<child item="absent" assoc="general" />
+	</item>
+
+	<item name="payment" caption="способ оплаты" key="name" ag-id="1726" ag-hash="-786681338">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="suffix" type="string"	caption="буковки в номере заказа" />
+		<parameter name="text" type="text" caption="Описание" />
+		<parameter name="currency" type="string" caption="Валюта" quantifier="multiple" />
+	</item>
+
+	<item name="absent" caption="в случае отстутствия" key="name" ag-id="5258" ag-hash="-1423908039">
+		<parameter name="name" type="string" caption="Название" />
+	</item>
+
+	<item name="store" key="name" caption="Точка самовывоза" ag-id="5259" ag-hash="109770977">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="address" type="string" caption="Адрес" />
+		<parameter name="text" type="text" caption="Подробности" />
+	</item>
+
 
 
 	<!--/////////////                                                                      ////////////-->
@@ -485,16 +530,20 @@
 		<parameter name="cookie" type="string" caption="Печенька"/>
 
 		<!-- Дополнительные сведения -->
+		<parameter name="currency" type="string" caption="Валюта" />
 		<parameter name="payment" type="string" caption="Способ оплаты"/>
 		<parameter name="delivery" type="string" caption="Способ доставки"/>
 		<parameter name="index" type="integer" caption="Почтовый индекс" description="для доствки почтой"/>
 		<parameter name="city" type="string" caption="Насаленный пункт"/>
 		<parameter name="region" type="string" caption="Область"/>
+		<parameter name="country" type="string" caption="Область" />
 		<parameter name="address" type="string" caption="Адрес для доставки почтой"/>
 		<parameter name="if_absent" type="string" caption="В случае отсутствия некоторых позиций" />
 
 		<child item="bought"/>
+		<child item="custom_bought"/>
 	</item>
+
 
 	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="821" ag-hash="3599307">
 		<parameter name="email" type="string" caption="E-mail"/>
@@ -502,11 +551,28 @@
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
-		<child item="purchase" assoc="general"/>
+		<parameter name="pay_type" type="string" caption="Способ оплаты" />
+		<parameter name="if_absent" type="string" caption="В случае отсутствия некоторых позиций" />
+		<parameter name="ship_type" type="string" caption="Способ доставки" />
+		<parameter name="need_post_address" type="string" caption="Нужна отправка на почту" />
+		<parameter name="get_order_from" type="string" caption="Пункт самовывоза" />
+		<parameter name="post_address" type="string" caption="Адрес (улица, дом, квартира)" />
+		<parameter name="post_index" type="string" caption="Почтовый индекс" />
+		<parameter name="post_city" type="string" caption="Населенный пункт" />
+		<parameter name="post_region" type="string" caption="Область" />
+		<parameter name="post_country" type="string" caption="Страна" />
+		<parameter name="comment" type="string" caption="Дополнительно" virtual="true" />
+
+		<!-- Для временного заказа -->
+		<parameter name="purchase_serialized" type="plain-text" caption="Временный заказ" format="height: 100px"/>
+		<parameter name="fav_cookie" type="plain-text" caption="Избранное" format="height: 50px"/>
+<!--		<parameter name="user_serialized" type="plain-text" caption="Временные данные пользователя" format="height: 100px"/>-->
+
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
 		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
+
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
@@ -515,28 +581,26 @@
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
 		<parameter name="address" type="string" caption="Юридический адрес" />
-		<parameter name="ship_type" type="string" caption="Способ доставки" />
-		<parameter name="pay_type" type="string" caption="Способ оплаты" />
 		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
 		<parameter name="account" type="string" caption="Расчетный счет" />
 		<parameter name="bank" type="string" caption="Название банка" />
 		<parameter name="bank_address" type="string" caption="Адрес банка"/>
 		<parameter name="bank_code" type="string" caption="Код банка" />
 		<parameter name="unp" type="string" caption="УНП" />
-		<parameter name="director" type="string" caption="Ф.И.О директора" />
+		<parameter name="director" type="string" caption="Ф.И.О руководителя" />
+		<parameter name="boss" type="string" caption="Должность руководителя" />
 		<parameter name="base" type="string" caption="Действует на основании" />
 		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
 		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
-		<parameter name="comment" type="string" caption="Дополнительно" />
+		<parameter name="fund" type="string" caption="Источник финансирования" />
 	</item>
 
 	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
 		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="second_name" type="string" caption="фамилия клиента"/>
 		<!--<parameter name="phone" type="string" caption="Телефон"/>-->
 		<parameter name="address" type="string" caption="Адрес" />
-		<parameter name="ship_type" type="string" caption="Способ доставки" />
-		<parameter name="pay_type" type="string" caption="Способ оплаты" />
-		<parameter name="comment" type="string" caption="Дополнительно" />
+
 	</item>
 
 
@@ -607,8 +671,9 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
-		<child item="delivery" single="true"/>
-		<child item="payment" single="true"/>
+		<parameter name="boss" type="string" caption="Список должностей руководителя" quantifier="multiple"/>
+		<!--		<child item="delivery" single="true"/>-->
+<!--		<child item="payment" single="true"/>-->
 		<child item="catalog_texts" single="true"/>
 		<child item="topper" single="true"/>
 		<child item="footer" single="true"/>
@@ -624,13 +689,13 @@
 		<child item="block" inline="true"/>
 	</item>
 
-	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">
-		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
-	</item>
+<!--	<item name="delivery" caption="Доставка" ag-id="827" ag-hash="823466996">-->
+<!--		<parameter name="option" type="string" caption="Вариант" multiple="true"/>-->
+<!--	</item>-->
 
-	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">
-		<parameter name="option" type="string" caption="Вариант" multiple="true"/>
-	</item>
+<!--	<item name="payment" caption="Оплата" ag-id="1726" ag-hash="-786681338">-->
+<!--		<parameter name="option" type="string" caption="Вариант" multiple="true"/>-->
+<!--	</item>-->
 
 	<item name="catalog_texts" caption="Общие тексты в каталоге" ag-id="1432" ag-hash="-1220416192">
 		<parameter name="payment" type="text" caption="Оплата и доставка" description="выводится на странице товара в блоке справа"/>
@@ -1115,6 +1180,7 @@
 		<child item="styles" single="true"/>
 		<child item="order_emails" single="true" />
 		<child item="order_catalog" single="true" />
+		<child item="delivery_and_payment" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

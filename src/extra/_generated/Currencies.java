@@ -12,12 +12,18 @@ public class Currencies
     public final static String _NAME = "currencies";
     public final static String RUB_RATE = "RUB_rate";
     public final static String RUB_SCALE = "RUB_scale";
+    public final static String RUB_CEIL = "RUB_ceil";
+    public final static String RUB_EXTRA_QUOTIENT = "RUB_extra_quotient";
     public final static String RUB_UPDATE = "RUB_update";
     public final static String USD_RATE = "USD_rate";
     public final static String USD_SCALE = "USD_scale";
+    public final static String USD_CEIL = "USD_ceil";
+    public final static String USD_EXTRA_QUOTIENT = "USD_extra_quotient";
     public final static String USD_UPDATE = "USD_update";
     public final static String EUR_RATE = "EUR_rate";
     public final static String EUR_SCALE = "EUR_scale";
+    public final static String EUR_CEIL = "EUR_ceil";
+    public final static String EUR_EXTRA_QUOTIENT = "EUR_extra_quotient";
     public final static String EUR_UPDATE = "EUR_update";
 
     private Currencies(Item item) {
@@ -81,6 +87,50 @@ public class Currencies
 
     public boolean contains_RUB_scale(BigDecimal value) {
         return containsValue("RUB_scale", value);
+    }
+
+    public void set_RUB_ceil(Byte value) {
+        setValue("RUB_ceil", value);
+    }
+
+    public void setUI_RUB_ceil(String value)
+        throws Exception
+    {
+        setValueUI("RUB_ceil", value);
+    }
+
+    public Byte get_RUB_ceil() {
+        return getByteValue("RUB_ceil");
+    }
+
+    public Byte getDefault_RUB_ceil(Byte defaultVal) {
+        return getByteValue("RUB_ceil", defaultVal);
+    }
+
+    public boolean contains_RUB_ceil(Byte value) {
+        return containsValue("RUB_ceil", value);
+    }
+
+    public void set_RUB_extra_quotient(Double value) {
+        setValue("RUB_extra_quotient", value);
+    }
+
+    public void setUI_RUB_extra_quotient(String value)
+        throws Exception
+    {
+        setValueUI("RUB_extra_quotient", value);
+    }
+
+    public Double get_RUB_extra_quotient() {
+        return getDoubleValue("RUB_extra_quotient");
+    }
+
+    public Double getDefault_RUB_extra_quotient(Double defaultVal) {
+        return getDoubleValue("RUB_extra_quotient", defaultVal);
+    }
+
+    public boolean contains_RUB_extra_quotient(Double value) {
+        return containsValue("RUB_extra_quotient", value);
     }
 
     public void set_RUB_update(Byte value) {
@@ -149,6 +199,50 @@ public class Currencies
         return containsValue("USD_scale", value);
     }
 
+    public void set_USD_ceil(Byte value) {
+        setValue("USD_ceil", value);
+    }
+
+    public void setUI_USD_ceil(String value)
+        throws Exception
+    {
+        setValueUI("USD_ceil", value);
+    }
+
+    public Byte get_USD_ceil() {
+        return getByteValue("USD_ceil");
+    }
+
+    public Byte getDefault_USD_ceil(Byte defaultVal) {
+        return getByteValue("USD_ceil", defaultVal);
+    }
+
+    public boolean contains_USD_ceil(Byte value) {
+        return containsValue("USD_ceil", value);
+    }
+
+    public void set_USD_extra_quotient(Double value) {
+        setValue("USD_extra_quotient", value);
+    }
+
+    public void setUI_USD_extra_quotient(String value)
+        throws Exception
+    {
+        setValueUI("USD_extra_quotient", value);
+    }
+
+    public Double get_USD_extra_quotient() {
+        return getDoubleValue("USD_extra_quotient");
+    }
+
+    public Double getDefault_USD_extra_quotient(Double defaultVal) {
+        return getDoubleValue("USD_extra_quotient", defaultVal);
+    }
+
+    public boolean contains_USD_extra_quotient(Double value) {
+        return containsValue("USD_extra_quotient", value);
+    }
+
     public void set_USD_update(Byte value) {
         setValue("USD_update", value);
     }
@@ -213,6 +307,50 @@ public class Currencies
 
     public boolean contains_EUR_scale(BigDecimal value) {
         return containsValue("EUR_scale", value);
+    }
+
+    public void set_EUR_ceil(Byte value) {
+        setValue("EUR_ceil", value);
+    }
+
+    public void setUI_EUR_ceil(String value)
+        throws Exception
+    {
+        setValueUI("EUR_ceil", value);
+    }
+
+    public Byte get_EUR_ceil() {
+        return getByteValue("EUR_ceil");
+    }
+
+    public Byte getDefault_EUR_ceil(Byte defaultVal) {
+        return getByteValue("EUR_ceil", defaultVal);
+    }
+
+    public boolean contains_EUR_ceil(Byte value) {
+        return containsValue("EUR_ceil", value);
+    }
+
+    public void set_EUR_extra_quotient(Double value) {
+        setValue("EUR_extra_quotient", value);
+    }
+
+    public void setUI_EUR_extra_quotient(String value)
+        throws Exception
+    {
+        setValueUI("EUR_extra_quotient", value);
+    }
+
+    public Double get_EUR_extra_quotient() {
+        return getDoubleValue("EUR_extra_quotient");
+    }
+
+    public Double getDefault_EUR_extra_quotient(Double defaultVal) {
+        return getDoubleValue("EUR_extra_quotient", defaultVal);
+    }
+
+    public boolean contains_EUR_extra_quotient(Double value) {
+        return containsValue("EUR_extra_quotient", value);
     }
 
     public void set_EUR_update(Byte value) {

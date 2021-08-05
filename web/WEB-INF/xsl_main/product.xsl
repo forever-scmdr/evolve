@@ -81,7 +81,7 @@
 	<xsl:template name="CONTENT_INNER">
 		<div class="device-basic">
 			<div class="device-basic__column gallery">
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-arrows="false" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+				<!-- <div class="fotorama" data-width="100%" data-nav="thumbs" data-arrows="false" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="('b', 'c', 'd')">
 						<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg';"/>
 					</xsl:for-each>
@@ -110,7 +110,61 @@
 					}
 					})
 					.fotorama();
-				</script>
+				</script> -->
+
+				<div class="pseudorama">
+
+					<xsl:variable name="device-title" select="'Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.'" />
+
+					<xsl:for-each select="('b', 'c', 'd')">
+						<a href="sitepics/{$p/pic_path}{.}.jpg" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" title="{$device-title}">
+							<!-- <xsl:if test="position() = 1"> -->
+								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/>
+							<!-- </xsl:if> -->
+						</a>
+					</xsl:for-each>
+					<div class="thumbs">
+						<xsl:for-each select="('b', 'c', 'd')">
+							<a class="thumb{if(position() = 1) then ' active' else ''}" href="sitepics/{$p/pic_path}{.}.jpg" data-show="{concat('#example', position())}">
+								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="$(this).closest('a').remove(); $('#example{position()}').remove(); if($('.thumbs a').length &lt; 2) $('.thumbs').remove();"/>
+							</a>
+						</xsl:for-each>
+						<xsl:for-each select="$p/filevid">
+							<xsl:variable name="id" select="if(contains(., 'embed')) then substring-after(., '/embed/') else substring-after(., '/youtu.be/')"/>
+							<a href="{concat('https://www.youtube.com/embed/', $id)}" class="fancy_vid fancybox.iframe" onclick="return false;"  rel="group_1">
+								<img src="{concat('http://i3.ytimg.com/vi/', $id, '/hqdefault.jpg')}"/>
+								видео
+							</a>
+						</xsl:for-each>
+					</div>
+
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$(".example1").fancybox({
+								'titlePosition'	: 'over',
+								'transitionEffect' : false,
+								'titleFormat'	: function(title, currentArray, currentIndex, currentOpts) {
+								   return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? '   ' + title : '') + '</span>';
+								}
+							});
+							$(".zoom").fancybox();
+							$(".fancy_vid").fancybox({
+							  youtube:{}
+							});
+
+							$(".thumb").click(function(e){
+
+								e.preventDefault();
+								$(".example1").hide();
+								$($(this).attr("data-show")).show();
+								$(".thumb").removeClass("active");
+								$(this).addClass("active");
+							});
+
+						});
+					</script>
+				</div>
+
 			</div>
 			<div class="device-basic__column product">
 				<div class="product-info">
@@ -158,7 +212,9 @@
 								<img src="img/icon-device-icon-01.png" alt=""/>
 								<span>Описание товара</span>
 							</div>
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+							<div class="text">
+								<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+							</div>
 						</div>
 					</xsl:if>
 				</div>

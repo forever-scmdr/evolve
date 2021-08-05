@@ -27,14 +27,16 @@
 
 		<div class="device">
 			<div class="device__image">
-				<img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" />
-				<div class="device__hover">
+				<a href="{show_product}"><img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" /></a>
+				<div class="device__hover top-rigt">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
 					   title="Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.">
 						<img src="img/icon-device-zoom.png" alt="" />
 					</a>
+				</div>
+				<div class="device__hover bottom-left">
 					<xsl:if test="main_section">
-						<a class="device__parent-link" href="{main_section/show_products}">
+						<a class="device__parent-link" href="{main_section/show_products}" title="{main_section/name}">
 							<img src="img/icon-device-goto.png" alt=""/>
 						</a>
 					</xsl:if>
@@ -146,7 +148,7 @@
 						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<input type="hidden" class="input input_type_number" name="qty"
+						<input type="number" class="input input_type_number" name="qty"
 							   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 						<button class="button button_secondary" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 					</xsl:if>
@@ -183,7 +185,7 @@
 
 		<tr class="device_row">
 			<td class="device__image">
-				<img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/>
+				<a href="{show_product}"><img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/></a>
 				<div class="device__hover">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg" onclick="return false;"
 					   title="Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.">
@@ -304,7 +306,7 @@
 							</a>
 						</xsl:if>
 						<xsl:if test="not($has_price)">
-							<input type="hidden" class="input" name="qty"
+							<input type="number" class="input" name="qty"
 								   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 1}" />
 							<button class="button button_secondary" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 						</xsl:if>
