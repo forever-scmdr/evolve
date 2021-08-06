@@ -3,6 +3,7 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.tika.utils.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
@@ -11,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -334,7 +334,7 @@ public abstract class IntegrateBase extends Command {
 				} catch (Exception se) {
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
-					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+					getInfo().addError(ExceptionUtils.getStackTrace(se), info.lineNumber, info.position);
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);
