@@ -116,6 +116,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	 * @param baseLink
 	 */
 	final void setRequestLink(LinkPE link, String linkUrl, String baseLink) {
+		if(baseLink == null){baseLink = "";}
 		this.requestLink = link;
 		this.urlBase = baseLink;
 		HashSet<RequestVariablePE> initVars = new HashSet<>(getInitVariablesPEList());
