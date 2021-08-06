@@ -75,6 +75,11 @@
 	</include-definition>
 
 
+	<include-definition name="TICKERS">
+		<list item="informer"/>
+	</include-definition>
+
+
 	<page name="informers_ajax" template="informers_ajax" cacheable="true">
 		<request>
 			<var name="ticker"/>
@@ -278,6 +283,7 @@
 			</ancestor>
 		</list>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news_section" template="news" cacheable="true">
@@ -305,6 +311,7 @@
 			</list>
 		</single>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news_page_ajax" template="news_page_ajax" cacheable="true">
@@ -400,10 +407,12 @@
 			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="all_news" template="all_news">
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<!--<page name="all_news" template="all_news">
@@ -593,15 +602,10 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-<!--			<single item="top_gal"/>-->
+
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-<!--			<ancestor item="news" transit="false" id="pcat">-->
-<!--				<link name="show_page" target="news_section" type="exclusive">-->
-<!--					<var name="sel" ref="pcat" style="translit"/>-->
-<!--				</link>-->
-<!--			</ancestor>-->
 		</list>
 
 		<list item="news_item" id="latest" tag="latest">
@@ -622,6 +626,7 @@
 		</list>
 
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news" template="small_news" cacheable="true">
@@ -657,6 +662,7 @@
 			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="small_news_ajax" template="small_news_ajax" cacheable="true">
@@ -761,15 +767,10 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-<!--			<single item="top_gal"/>-->
+
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-<!--			<ancestor item="news" transit="false" id="pcat">-->
-<!--				<link name="show_page" target="news_section" type="exclusive">-->
-<!--					<var name="sel" ref="pcat" style="translit"/>-->
-<!--				</link>-->
-<!--			</ancestor>-->
 		</list>
 
 		<list item="small_news_item" id="latest" tag="latest">
@@ -790,6 +791,7 @@
 		</list>
 
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="page" template="page" cacheable="true">
@@ -800,6 +802,7 @@
 			<list item="page_part" />
 		</single>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="feedback_ajax" template="feedback_ajax">

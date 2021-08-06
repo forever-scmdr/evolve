@@ -78,6 +78,7 @@
 
 		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
+				<xsl:call-template name="INTERNAL_VIDGET_CODE"/>
 				<div class="header__content row">
 					<div class="header__logo">
 						<a class="logo" href="{$base}">
@@ -648,6 +649,42 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 
 	<xsl:template name="TWITTER_MARKUP"/>
 	<xsl:template name="FACEBOOK_MARKUP"/>
+
+	<xsl:template name="INTERNAL_VIDGET_CODE">
+		<xsl:if test="page/@name != 'index'">
+			<xsl:variable name="informers" select="/page/informer"/>
+			<xsl:if test="$informers">
+				<!-- <div class="header__content row"> -->
+					<div style="margin-bottom: 1rem;position: relative;">
+						<div class="tradingview-widget-container">
+							<div class="tradingview-widget-container__widget"></div>
+							<!-- <div class="tradingview-widget-copyright">
+								<a href="https://ru.tradingview.com" rel="noopener" target="_blank">
+									<span class="blue-text">Финансовые рынки</span>
+								</a> от TradingView
+							</div> -->
+							<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">{
+									"showSymbolLogo": true,
+									"colorTheme": "light",
+									"isTransparent": false,
+									"displayMode": "adaptive",
+									"locale": "ru",
+									"symbols": [
+										<xsl:for-each select="$informers">
+											<xsl:if test="position() &gt; 1">,</xsl:if>
+											{
+												"proName": <xsl:value-of select="concat('&#34;', pro_name, '&#34;')" disable-output-escaping="yes"/>,
+												"title": <xsl:value-of select="concat('&#34;', name, '&#34;')" disable-output-escaping="yes"/>
+											}
+										</xsl:for-each>
+									]
+								}</script>
+						</div>
+					<!-- </div> -->
+				</div>
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template name="VIDGET_CODE">
 		<xsl:variable name="inf" select="page/main_page/informer_wrap"/>
