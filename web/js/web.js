@@ -16,24 +16,24 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
 	// 	$(menuSelector).toggle('fade', 150);
 	// });
 
-	$(menuTriggerSelector).mouseenter(function(event){
+	$(menuTriggerSelector).mouseenter(function (event) {
 		clearTimeout(_hoverHideMenuTimeout);
-		$(menuSelector).show('fade',150);
+		$(menuSelector).show('fade', 150);
 	});
-	$(menuTriggerSelector).mouseleave(function(){
-			_hoverHideMenuTimeout = setTimeout(function(){
-			$(menuSelector).hide('fade',150);
-		},500);
+	$(menuTriggerSelector).mouseleave(function () {
+		_hoverHideMenuTimeout = setTimeout(function () {
+			$(menuSelector).hide('fade', 150);
+		}, 500);
 	});
 
-	$(menuSelector).mouseenter(function(){
+	$(menuSelector).mouseenter(function () {
 		clearTimeout(_hoverHideMenuTimeout);
-		
+
 	});
-	$(menuSelector).mouseleave(function(){
-		_hoverHideMenuTimeout = setTimeout(function(){
-			$(menuSelector).hide('fade',150);
-		},500);
+	$(menuSelector).mouseleave(function () {
+		_hoverHideMenuTimeout = setTimeout(function () {
+			$(menuSelector).hide('fade', 150);
+		}, 500);
 	});
 
 	$(document).click(function (event) {
@@ -45,10 +45,10 @@ function initCatalogPopupMenu(menuTriggerSelector, menuSelector) {
 }
 
 
-
 var _catalogPopupMenuShowTimeout = 0;
 var _catalogPopupMenuHideTimeout = 0;
 var _catalogPopupMenuCurrentItem = 0;
+
 /**
  * Показывает второй уровень меню для главного меню
  * Главное меню (все пункты) содержится в контейнере l1MenuContainerSelector
@@ -60,7 +60,7 @@ var _catalogPopupMenuCurrentItem = 0;
  */
 function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2MenuContainerSelector) {
 	$(l1MenuItemSelector).hover(
-		function() {
+		function () {
 			clearTimeout(_hoverHideMenuTimeout);
 			clearTimeout(_catalogPopupMenuHideTimeout);
 			if (_menuMouseMovedVertically) {
@@ -69,35 +69,35 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 				$(submenuSelector).show();
 			} else {
 				_catalogPopupMenuCurrentItem = $(this);
-				_catalogPopupMenuShowTimeout = setTimeout(function() {
+				_catalogPopupMenuShowTimeout = setTimeout(function () {
 					$(l2MenuContainerSelector).hide();
 					var submenuSelector = _catalogPopupMenuCurrentItem.attr('rel');
 					$(submenuSelector).show();
 				}, 500);
 			}
 		},
-		function() {
+		function () {
 			clearTimeout(_hoverHideMenuTimeout);
 			clearTimeout(_catalogPopupMenuShowTimeout);
 			if (_menuMouseMovedVertically) {
 				$(l2MenuContainerSelector).hide();
 			} else {
-				_catalogPopupMenuHideTimeout = setTimeout(function() {
+				_catalogPopupMenuHideTimeout = setTimeout(function () {
 					$(l2MenuContainerSelector).hide();
 				}, 500);
 			}
 		}
 	);
 	$(l2MenuContainerSelector).hover(
-		function() {
+		function () {
 			clearTimeout(_hoverHideMenuTimeout);
-			console.log("l2MenuContainerSelector ENTER");			
+			console.log("l2MenuContainerSelector ENTER");
 			clearTimeout(_catalogPopupMenuHideTimeout);
 		},
-		function() {
+		function () {
 			console.log("l2MenuContainerSelector LEAVE");
 			clearTimeout(_hoverHideMenuTimeout);
-			_catalogPopupMenuHideTimeout = setTimeout(function() {
+			_catalogPopupMenuHideTimeout = setTimeout(function () {
 				$(l2MenuContainerSelector).hide();
 			}, 500);
 		}
@@ -111,7 +111,7 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	var MENU_MAX_MOVES_COUNT = 5;
 	var Y_QUOTIENT = 0.8;
 	$(l1MenuContainerSelector).mousemove(
-		function(event) {
+		function (event) {
 			_menuDeltaX += Math.abs(event.pageX - _menuPrevX);
 			_menuDeltaY += Math.abs(event.pageY - _menuPrevY);
 			_menuMovesCount++;
@@ -128,9 +128,9 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	);
 }
 
-$(document).on('click', '.show-sub',function(e){
+$(document).on('click', '.show-sub', function (e) {
 	e.preventDefault();
-	var href = $(this).attr("href"); 
+	var href = $(this).attr("href");
 	var trg = $(href);
 	// $(".popup-text-menu").not(trg).hide();
 	// var l = $(this).position().left - 50;
@@ -138,18 +138,18 @@ $(document).on('click', '.show-sub',function(e){
 	trg.toggle();
 });
 
-$(document).on("click", "body", function(e){
+$(document).on("click", "body", function (e) {
 	var trg = $(e.target);
-	if(trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub") && trg.closest(".show-sub").length == 0){
+	if (trg.closest(".popup-text-menu").length == 0 && !trg.is(".show-sub") && trg.closest(".show-sub").length == 0) {
 		$(".popup-text-menu").hide();
 	}
 });
 
 function showDetails(link) {
 	$("#product-ajax-popup").show();
-	insertAjax(link, 'product-ajax-content', function(){
+	insertAjax(link, 'product-ajax-content', function () {
 		$("#fotorama-ajax").fotorama();
-		$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
+		$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function (e) {
 			e.preventDefault();
 			$("#product-ajax-popup").find('a[data-toggle="tab"]').removeClass("tabs__link_active");
 			$("#product-ajax-popup").find('.tabs__content').removeClass("active");
@@ -172,7 +172,7 @@ function clearProductAjax() {
 	$("#product-ajax-popup").hide();
 }
 
-$("a.tab").click(function() {
+$("a.tab").click(function () {
 	$("div.tab-container").hide(0);
 	$("a.tab").removeClass("tab_active");
 	var showSelector = $(this).attr("href");
@@ -181,14 +181,65 @@ $("a.tab").click(function() {
 	return false;
 });
 
-$(document).on("click", ".toggle", function(e){
+$(document).on("click", ".toggle", function (e) {
 	e.preventDefault();
 	var $t = $($(this).attr("href"));
 	$t.toggle();
 	var rel = $(this).attr("rel");
-	if(rel != '' || rel != null || typeof rel != "undefined"){
+	if (rel != '' || rel != null || typeof rel != "undefined") {
 		var html = $(this).text();
 		$(this).text(rel);
 		$(this).attr("rel", html);
 	}
 });
+
+//Add "to_cart" button to table
+$(document).ready(function () {
+	$(".table-to-cart").each(function (i) {
+		var $tr = $(this).find("tr");
+		$tr.each(function (j) {
+			var $codeTd = $(this).find("th, td").eq(0);
+			var $nameTd = $(this).find("th, td").eq(1);
+			var $priceTd = $(this).find("th, td").eq(2);
+
+			console.log($priceTd);
+
+			if (j == 0) {
+				var $td = $codeTd.is("td") ? $("<td>", {"text": ""}) : $("<th>", {"text": ""});
+				$td.insertAfter($priceTd);
+			} else {
+				var code = $codeTd.text().replace(/\s/g, "");
+				var name = $nameTd.text();
+				var price = $priceTd.text();
+
+				var $td = $("<td>", {"width" : 170});
+				var $div = $("<div>", {"class": "order device-order", "id": "cart_list_" + code});
+				var $form = $("<form>", {
+					"method": "post"
+					, "action": "cart_action/?action=addFromTable"
+					, "ajax": true
+					, "ajax-loader-id": "cart_list_" + code
+				});
+				var $codeIpt = createInput("code", code);
+				var $nameIpt = createInput("name", name);
+				var $priceIpt = createInput("price", price);
+				var $qtyIpt = createInput("qty", 1, "number", {"class": "input input_qty", "min": 1, "step": 1});
+				var $button = $("<button>", {"class": "button button_device", "type": "submit", "text": "Заказать"});
+
+				$form.append($codeIpt);
+				$form.append($nameIpt);
+				$form.append($priceIpt);
+				$form.append($qtyIpt);
+				$form.append($button);
+				$div.append($form);
+				$td.append($div);
+				$td.insertAfter($priceTd);
+			}
+		});
+	});
+});
+function createInput(name, value, type = "hidden", options = {}) {
+	var opts = {"type": type, "name": name, "value": value};
+	opts = $.extend(opts, options);
+	return $("<input>", opts);
+}

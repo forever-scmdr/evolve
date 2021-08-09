@@ -158,7 +158,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
 
-
 		// Загрузка и модификация счетчика
 		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
 		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
@@ -166,11 +165,6 @@ public abstract class BasicCartManageCommand extends Command {
 		if (count > 99999)
 			count = 1;
 		String orderNumber = String.format("%05d", count);
-//			String date = counter.getStringValue(DATE_PARAM);
-//			String newDate = DATE_FORMAT.format(new Date());
-//			if (!newDate.equals(date))
-//				count = 1;
-//			String orderNumber = count + "-" + newDate;
 		cart.setValue("order_num", orderNumber);
 		getSessionMapper().saveTemporaryItem(cart);
 

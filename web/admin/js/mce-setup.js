@@ -21,35 +21,36 @@ var mceSettings = {
 		style_formats : [
 			{title : 'Характеристики товара', selector : 'table', classes : 'features'},
 			{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
-			{
-			title : 'Теги HTML-5',
-			items : [ {
-				title : 'section',
-				block : 'section',
-				wrapper : true,
-				merge_siblings : false
-			}, {
-				title : 'article',
-				block : 'article',
-				wrapper : true,
-				merge_siblings : false
-			}, {
-				title : 'hgroup',
-				block : 'hgroup',
-				wrapper : true
-			}, {
-				title : 'aside',
-				block : 'aside',
-				wrapper : true
-			}, {
-				title : 'figure',
-				block : 'figure',
-				wrapper : true
-			}
+			{title : 'Таблица с кнопкой заказа', selector : 'table', classes : 'table-to-cart'}
+		// 	{
+		// 	title : 'Теги HTML-5',
+		// 	items : [ {
+		// 		title : 'section',
+		// 		block : 'section',
+		// 		wrapper : true,
+		// 		merge_siblings : false
+		// 	}, {
+		// 		title : 'article',
+		// 		block : 'article',
+		// 		wrapper : true,
+		// 		merge_siblings : false
+		// 	}, {
+		// 		title : 'hgroup',
+		// 		block : 'hgroup',
+		// 		wrapper : true
+		// 	}, {
+		// 		title : 'aside',
+		// 		block : 'aside',
+		// 		wrapper : true
+		// 	}, {
+		// 		title : 'figure',
+		// 		block : 'figure',
+		// 		wrapper : true
+		// 	}
 
-			 ]
+		// 	 ]
 			 
-		}
+		// }
 
 		],
 		height : 300
@@ -80,34 +81,35 @@ var mceSettings = {
 		style_formats : [
 		{title : 'Характеристики товара', selector : 'table', classes : 'features'},
 		{title : 'Таблица с границами', selector : 'table', classes : 'table-with-borders'},
-		{
-			title : 'Теги HTML-5',
-			items : [ {
-				title : 'section',
-				block : 'section',
-				wrapper : true,
-				merge_siblings : false
-			}, {
-				title : 'article',
-				block : 'article',
-				wrapper : true,
-				merge_siblings : false
-			}, {
-				title : 'hgroup',
-				block : 'hgroup',
-				wrapper : true
-			}, {
-				title : 'aside',
-				block : 'aside',
-				wrapper : true
-			}, {
-				title : 'figure',
-				block : 'figure',
-				wrapper : true
-			} 
+		{title : 'Таблица с кнопкой заказа', selector : 'table', classes : 'table-to-cart'}
+		// {
+		// 	title : 'Теги HTML-5',
+		// 	items : [ {
+		// 		title : 'section',
+		// 		block : 'section',
+		// 		wrapper : true,
+		// 		merge_siblings : false
+		// 	}, {
+		// 		title : 'article',
+		// 		block : 'article',
+		// 		wrapper : true,
+		// 		merge_siblings : false
+		// 	}, {
+		// 		title : 'hgroup',
+		// 		block : 'hgroup',
+		// 		wrapper : true
+		// 	}, {
+		// 		title : 'aside',
+		// 		block : 'aside',
+		// 		wrapper : true
+		// 	}, {
+		// 		title : 'figure',
+		// 		block : 'figure',
+		// 		wrapper : true
+		// 	} 
 			
-			]
-		}
+		// 	]
+		// }
 		
 		],
 		height : 200
