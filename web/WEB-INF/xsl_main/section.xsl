@@ -56,17 +56,17 @@
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-	<xsl:variable name="view" select="page/variables/view"/>
-	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="tag1" select="page/variables/tag1"/>
-	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
+	<xsl:variable name="view" select="$pv/view"/>
+	<xsl:variable name="tag" select="$pv/tag"/>
+	<xsl:variable name="tag1" select="$pv/tag1"/>
+	<xsl:variable name="tag2" select="$pv/*[starts-with(name(), 'tag2')]"/>
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+	<xsl:variable name="only_available" select="$pv/minqty = '0'"/>
 	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
 
-	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
-	<xsl:variable name="show_filter" select="page/variables/show_filter = 'yes'"/><!--$user_filter or $tag-->
+	<xsl:variable name="user_filter" select="$pv/fil[input]"/>
+	<xsl:variable name="show_filter" select="$pv/show_filter = 'yes'"/><!--$user_filter or $tag-->
 
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">

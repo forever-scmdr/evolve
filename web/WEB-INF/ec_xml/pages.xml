@@ -15,6 +15,8 @@
 			<var name="cur" value="BYN" scope="cookie"/>
 			<var name="city" scope="cookie"/>
 			<var name="search" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
+			<var name="favourites" scope="cookie"/>
 		</request>
 
 		<personal>
@@ -73,6 +75,12 @@
 		</link>
 		<link name="search_strict_link" target="search_strict">
 			<var name="search" value="strict"/>
+		</link>
+		<link name="set_search_strict_link" target-var="$pagename" type="exclusive" copy-page-vars="yes">
+			<var name="search" value="strict"/>
+		</link>
+		<link name="set_search_normal_link" target-var="$pagename" type="exclusive" copy-page-vars="yes">
+			<var name="search" value="normal"/>
 		</link>
 		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
@@ -254,12 +262,11 @@
 
 	<page name="index" template="index" cacheable="false" cache-vars="cur">
 		<request>
-			<!-- <var name="page" value="1" />
-			<var name="sorting" value="name"/> -->
 			<var name="page" />
 			<var name="sorting"/>
 			<var name="dir" value="ASC" />
 		</request>
+		<command class="extra.belchip.ShuffleProductsCommand" />
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -358,8 +365,8 @@
 			<var name="dir1" value="DESC" scope="cookie" />
 			<var name="dir2" value="ASC" scope="cookie" />
 			<var name="dir3" value="ASC" scope="cookie" />
-			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
+			<var name="show_filter" value="yes" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 			<var name="mark"/>
@@ -466,7 +473,6 @@
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
@@ -530,7 +536,6 @@
 			<var name="dir2" value="ASC" />
 			<var name="dir3" value="ASC" />
 
-			<var name="minqty" value="" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="product" tag="search_product">
@@ -597,7 +602,6 @@
 			<var name="dir2" value="ASC" />
 			<var name="dir3" value="ASC" />
 
-			<var name="minqty" value="" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="product" tag="search_product">
@@ -1075,7 +1079,6 @@
 
 
 
-
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
@@ -1083,7 +1086,7 @@
 			<var name="code"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.belchip.BelchipCartCommand" method="createOrLoadCart" />
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1111,7 +1114,7 @@
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<single item="currencies"/>
 		</single>
-		<link name="show_cart" target="cart"/>
+		<link name="cart_link" target="cart"/>
 	</page>
 
 
@@ -1119,15 +1122,17 @@
 		<request>
 			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
 			<var name="action"/>
+			<var name="tab"/>
 			<var name="code"/>
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="target" value="cart"/>
 		</request>
-		<link name="ajax" target="cart_ajax"/>
+		<link name="cart_ajax" target="cart_ajax"/>
 		<link name="cart" target-var="target">
 			<var name="code" var="code"/>
+			<var name="tab" var="tab"/>
 		</link>
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
@@ -1137,7 +1142,7 @@
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
 		</link>
-		<command class="extra.CartManageCommand" method-var="action">
+		<command class="extra.belchip.BelchipCartCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
 			<result name="proceed" type="redirect"/>
@@ -1148,27 +1153,42 @@
 	</page>
 
 
+	<page name="pdf_order">
+		<headers Content-Type="application/pdf; charset=utf-8" />
+		<command class="extra.belchip.OrderPDFCreator">
+			<result name="success" type="redirect" />
+		</command>
+	</page>
+
+
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="tab"/>
 		</request>
-		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.belchip.BelchipCartCommand" method="createOrLoadCart" />
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
 						<single item="product" id="parent">
-							<link name="show_product" target="product" type="exclusive">
+							<link name="show_product" target="product">
 								<var name="prod" ref="parent" style="key"/>
 							</link>
 						</single>
-						<link name="show_product" target="product" type="exclusive">
+						<link name="show_product" target="product">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
 					</list>
-					<link name="delete" target="cart_action">
+					<link name="delete_non_zero" target="cart_action">
 						<var name="action" value="delete"/>
 						<var name="bought" ref="bought"/>
+						<var name="tab" value="tab_cart"/>
+					</link>
+					<link name="delete_zero" target="cart_action">
+						<var name="action" value="delete"/>
+						<var name="bought" ref="bought"/>
+						<var name="tab" value="tab_order"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
 					<extra-input ref="bought" name="extra1"/>
@@ -1179,6 +1199,25 @@
 				</list>
 			</single>
 		</session>
+		<list item="product" id="fav">
+			<filter>
+				<parameter name="code" compare="SOME">
+					<var var="favourites"/>
+				</parameter>
+			</filter>
+			<link name="from_fav" target="cookie_list_action">
+				<var name="update_cookie_name" value="favourites"/>
+				<var name="update_cookie_value" ref="prod" parameter="code"/>
+				<var name="action" value="remove"/>
+				<var name="src_page" value="fav"/>
+			</link>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:fav"/>
+			<ancestor item="section" id="h_sec" tag="sec">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="h_sec" style="keypath"/>
+				</link>
+			</ancestor>
+		</list>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="recalculate"/>
 		</link>
@@ -1242,9 +1281,61 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
+		<command class="extra.belchip.BelchipCartCommand" method-var="method" />
 		<include name="COMMON"/>
 	</page>
 
+<!--
+	<page name="print_cart" template="print_cart">
+		<variables>
+			<var name="cart_cookie" scope="cookie" />
+			<var name="currency" scope="cookie" />
+		</variables>
+		<command class="ecommander.extra.CartManageCommandRefactored"	method="createOrLoadCart" />
+		<session>
+			<single item="cart" id="cart">
+				<isngle item="bought" id="bought">
+					<single item="product" id="product" tag="product" />
+				</isngle>
+				<single item="custom_bought" id="custom_bought" />
+			</single>
+		</session>
+		<single item="product" reference-item="product" tag="ref">
+			<ancestor item="section" tag="section" />
+		</single>
+		<link name="cart_link" target="cart" />
+		<link name="proceed_link" target="proceed" />
+		<single name="currency"/>
+	</page>
+
+
+	<page name="download_cart" template="download_cart">
+		<variables>
+			<var name="method" value="restoreFromCookie" />
+			<var name="cart_cookie" scope="cookie" />
+			<var name="currency" scope="cookie" />
+		</variables>
+		<command class="ecommander.extra.CartManageCommand"
+				 method-var="method" />
+		<command class="ecommander.extra.CartManageCommand"
+				 method="createOrLoadCart" />
+		<session>
+			<item name="cart" id="cart">
+				<item name="bought" id="bought">
+					<item name="product" id="product" tag="product">
+						<link name="show_product" target="product">
+							<var name="selected_product" item="product" parameter="code" />
+						</link>
+					</item>
+				</item>
+				<item name="custom_bought" id="custom_bought" />
+			</item>
+		</session>
+		<link name="cart_link" target="cart" />
+		<link name="proceed_link" target="proceed" />
+		<item name="currency"/>
+	</page>
+-->
 
 	<page name="order_email" template="order_email">
 		<session>
@@ -1354,7 +1445,6 @@
 
 	<page name="fav" template="fav">
 		<request>
-			<var name="favourites" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">

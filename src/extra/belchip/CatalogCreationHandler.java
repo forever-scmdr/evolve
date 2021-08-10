@@ -254,7 +254,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 				Date soonFlag = (StringUtils.isBlank(attributes.getValue(IConst.SOON_ATTRIBUTE))) ? null : SOON_FORMAT.parse(attributes.getValue(IConst.SOON_ATTRIBUTE));
 				product.setValue(Product.HIT, hitFlag);
 				product.setValue(Product.NEW, newFlag);
-				product.setValue("type", productDesc.getCaption());
+				product.setValue(Product.TYPE, parent.getStringValue(Section.NAME));
 				if (soonFlag != null) {
 					product.setValue(IConst.SOON_ATTRIBUTE, soonFlag.getTime()+3*60*60*1000);
 				}

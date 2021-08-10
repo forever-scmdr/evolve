@@ -246,26 +246,27 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT, bought.getId());
 			double maxQuantity = product.getDoubleValue(product_.QTY, 0d);
-			double totalQuantity = bought.getDoubleValue(bought_.QTY_TOTAL, 0d);
-			totalQuantity = round(totalQuantity, product.getDoubleValue(product_.MIN_QTY, 1));
-			double quantity = Math.min(totalQuantity, maxQuantity);
-			double delta = totalQuantity - maxQuantity;
-			delta = (delta < 0) ? 0d : delta;
-			zeroQuantity += delta;
-			total += totalQuantity;
+			double qtyTotal = bought.getDoubleValue(bought_.QTY_TOTAL, 0d);
+			qtyTotal = round(qtyTotal, product.getDoubleValue(product_.MIN_QTY, 1));
+			double qtyAvailable = Math.min(qtyTotal, maxQuantity);
+			double qtyZero = qtyTotal - maxQuantity;
+			qtyZero = (qtyZero < 0) ? 0d : qtyZero;
+			zeroQuantity += qtyZero;
+			total += qtyTotal;
 			if (product.getByteValue("is_service") == 1) {
-				//maxQuantity = totalQuantity;
-				quantity = totalQuantity;
-				delta = 0d;
+				//maxQuantity = qtyTotal;
+				qtyAvailable = qtyTotal;
+				qtyZero = 0d;
 				zeroQuantity = 0d;
 			}
-			bought.setValue(bought_.QTY_ZERO, delta);
-			if (quantity >= 0) {
+			bought.setValue(bought_.QTY_ZERO, qtyZero);
+			bought.setValue(bought_.QTY_AVAIL, qtyAvailable);
+			bought.setValue(bought_.QTY, qtyAvailable);
+			if (qtyAvailable >= 0) {
 				BigDecimal price = convert(product.getDecimalValue(product_.PRICE, BigDecimal.ZERO), currencies, currencyVar);
 				bought.setValue(product_.PRICE, price);
-				BigDecimal productSum = price.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_CEILING);
-				regularQuantity += quantity;
-				bought.setValue(bought_.QTY, quantity);
+				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_CEILING);
+				regularQuantity += qtyAvailable;
 				bought.setValue(bought_.SUM, productSum);
 				sum = sum.add(productSum);
 				if (product.getStringValue(product_.SPECIAL_PRICE, FALSE_VALUE).equals(FALSE_VALUE))
@@ -273,7 +274,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 				getSessionMapper().saveTemporaryItem(bought);
 			}
-			if (totalQuantity <= 0) {
+			if (qtyTotal <= 0) {
 				getSessionMapper().removeItems(bought.getId(), BOUGHT);
 				result = false;
 			}
@@ -287,15 +288,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 		}
 		BigDecimal simpleSum = sum;
-		int discount = 0;
+		BigDecimal discount = BigDecimal.ZERO;
 		double quotient = 0;
 		// Скидка с суммы (в случае если заказано более 1 товара)
 		if (regularQuantity > 1) {
 			if (simpleSum.compareTo(convert(SUM_1, currencies, currencyVar)) >= 0 && simpleSum.compareTo(convert(SUM_2, currencies, currencyVar)) < 0) {
-				discount = DISCOUNT_1;
+				discount = BigDecimal.valueOf(DISCOUNT_1);
 				quotient = (double) (DISCOUNT_1) / (double) 100;
 			} else if (simpleSum.compareTo(convert(SUM_2, currencies, currencyVar)) >= 0) {
-				discount = DISCOUNT_2;
+				discount = BigDecimal.valueOf(DISCOUNT_2);
 				quotient = (double) (DISCOUNT_2) / (double) 100;
 			}
 			sum = sum.subtract(discountSum.multiply(BigDecimal.valueOf(quotient)));
@@ -649,6 +650,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private boolean doRecalculate() throws Exception {
 		if (cart == null)
 			cart = getSessionMapper().getSingleRootItemByName(CART);
+		if (cart == null)
+			restoreFromCookie();
 		boolean result = true;
 		boolean hasCustom = false;
 		int customBoughtItemId = ItemTypeRegistry.getItemTypeId(CUSTOM_BOUGHT);
@@ -872,7 +875,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	/**
 	 * Заказ товара. Создает новую корзину если нужно.
 	 */
-	public ResultPE toCart() throws Exception {
+	public ResultPE addToCart() throws Exception {
 		createOrLoadCart();
 		if (cart.getByteValue(cart_.PROCESSED, (byte) 0) != 0) {
 			getSessionMapper().removeItems(cart.getId());
@@ -1024,17 +1027,32 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		}
 		restoreCartFromUserInfo();
 
-		getSessionMapper().removeItems("chosen");
+		//getSessionMapper().removeItems("chosen");
 		if (userInfo != null) {
-			String chosen = userInfo.getStringValue("chosen_cookie");
 			if (userInfo.isValueNotEmpty(user_.FAV_COOKIE)) {
-				setPageVariable("fav", userInfo.getStringValue(user_.FAV_COOKIE));
+				//setPageVariable("favourites", userInfo.getStringValue(user_.FAV_COOKIE));
+				setCookieVariable("favourites", userInfo.getStringValue(user_.FAV_COOKIE));
 			}
 		}
 
 		ResultPE res = getResult("login_ajax");
 		res.addVariable("refresh", "yes");
 		return res;
+	}
+
+	/**
+	 * Удалить товар
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultPE delete() throws Exception {
+		cart = getSessionMapper().getSingleRootItemByName(CART);
+		// В этом случае ID не самого продукта, а объекта bought
+		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
+		getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
+		recalculateCart();
+		saveCartChanges();
+		return getResult("cart");
 	}
 
 	/**

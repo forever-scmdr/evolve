@@ -145,7 +145,7 @@
 				<div class="title title_1">Найдено по запросу "<xsl:value-of select="$query"/>"</div>
 			</xsl:if>
 			<xsl:if test="not($is_search_strict)">
-				<div class="title title_1">Строгих соответствий запросу "<xsl:value-of select="$query"/>" не найдено. Похожие варианты</div>
+				<div class="title title_1">Найдено по запросу "<xsl:value-of select="$query"/>". Включая похожие варианты</div>
 			</xsl:if>
 			<xsl:if test="not(/page/product)">
 				<!--
@@ -166,9 +166,9 @@
 			</xsl:if>
 			<xsl:if test="/page/product">
 				<div class="search-links">
-					<div class="search-links__item search-link{' search-link_active'[not($query_sec)]}">
+					<div class="search-links__item search-link{' search-link_active'[not($query_sec)]}" style="{'font-weight: bold'[$query_sec]}">
 						<a href="{page/base_search_link}">Найдено товаров</a>
-						<span><xsl:value-of select="count(page/product)"/></span>
+						<span>(<xsl:value-of select="count(page/product)"/>)</span>
 					</div>
 					<xsl:for-each-group select="/page/product/section" group-by="code">
 						<xsl:sort select="count(current-group())" order="descending"/>
@@ -209,17 +209,17 @@
 				<div class="view__column">
 					<xsl:call-template name="PAGINATION"/>
 				</div>
-				<div class="view__column">
-					<span></span>
-					<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">
-						<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">
-							<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>
-							<option value="{$nos}" link="{.}">
-								<xsl:value-of select="$nos"/>
-							</option>
-						</xsl:for-each>
-					</select>
-				</div>
+<!--				<div class="view__column">-->
+<!--					<span></span>-->
+<!--					<select value="{page/variables/limit}" onchange="window.location.href = $(this).find(':selected').attr('link')">-->
+<!--						<xsl:for-each select="/page/*[starts-with(name(), 'set_limit_')]">-->
+<!--							<xsl:variable name="nos" select="tokenize(name(), '_')[3]"/>-->
+<!--							<option value="{$nos}" link="{.}">-->
+<!--								<xsl:value-of select="$nos"/>-->
+<!--							</option>-->
+<!--						</xsl:for-each>-->
+<!--					</select>-->
+<!--				</div>-->
 			</div>
 			<div class="devices">
 				<xsl:if test="$view = 'table'">

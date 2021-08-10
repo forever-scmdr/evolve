@@ -601,7 +601,31 @@
 									</div>
 								</div>
 								<div class="header__column header__search header-search">
-									<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post">
+                                    <script>
+                                        function strictRedirect() {
+                                            <xsl:choose>
+                                                <xsl:when test="page/@name = 'search'">
+                                                    var form = $('#search');
+                                                    form.attr('action', '<xsl:value-of select="page/search_strict_link" />');
+                                                    form.submit();
+                                                </xsl:when>
+                                                <xsl:when test="page/@name = 'search_strict'">
+                                                    var form = $('#search');
+                                                    form.attr('action', '<xsl:value-of select="page/search_link" />');
+                                                    form.submit();
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:if test="$search_strict">
+                                                        location.replace('<xsl:value-of select="concat(page/base, page/set_search_normal_link)"/>');
+                                                    </xsl:if>
+                                                    <xsl:if test="not($search_strict)">
+                                                        location.replace('<xsl:value-of select="concat(page/base, page/set_search_strict_link)"/>');
+                                                    </xsl:if>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        }
+                                    </script>
+                                    <form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post" id="search">
 										<div>
 											<a class="useless-button" href="#" onclick="$(this).closest('form').submit(); return false;">
 												<img src="img/icon-search.png" alt=""/>
@@ -630,8 +654,10 @@
 												</label>
 											</div>
 											<div class="header-search__option">
-												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" id="full_match_only">
-													<input style="display: inline-block; vertical-align: middle;" type="checkbox">
+                                                <label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" id="full_match_only">
+													<input style="display: inline-block; vertical-align: middle;"
+														   type="checkbox"
+														   onclick="strictRedirect()">
 														<xsl:if test="$search_strict">
 															<xsl:attribute name="checked">checked</xsl:attribute>
 														</xsl:if>

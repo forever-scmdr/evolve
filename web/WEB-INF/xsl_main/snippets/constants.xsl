@@ -10,6 +10,7 @@
     <xsl:variable name="to_cart_available_label" select="'В корзину'"/>
     <xsl:variable name="to_cart_na_label" select="'Запросить'"/>
     <xsl:variable name="go_to_cart_label" select="'Оформить'"/>
+    <xsl:variable name="to_cart_recalc_label" select="'Обновить'"/>
 
     <xsl:variable name="compare_add_label" select="'Выбрать'"/>
     <xsl:variable name="compare_remove_label" select="'Удалить'"/>

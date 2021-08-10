@@ -3,15 +3,19 @@
 	<xsl:import href="../utils/utils.xsl"/>
 	<xsl:import href="constants.xsl"/>
 
-	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
-	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
-	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
-	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
-	<xsl:variable name="is_subscribe" select="page/optional_modules/product_subscribe/status = 'on'"/>
-	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
+	<xsl:variable name="page_name" select="page/@name"/>
+	<xsl:variable name="opt_modules" select="page/optional_modules"/>
+
+	<xsl:variable name="is_fav" select="$page_name = 'fav' or $page_name = 'cart'"/>
+	<xsl:variable name="is_compare" select="$page_name = 'compare'"/>
+	<xsl:variable name="is_one_click" select="$opt_modules/one_click/status = 'on'"/>
+	<xsl:variable name="is_my_price" select="$opt_modules/my_price/status = 'on'"/>
+	<xsl:variable name="is_subscribe" select="$opt_modules/product_subscribe/status = 'on'"/>
+	<xsl:variable name="mp_link" select="if ($opt_modules/my_price/link_name) then $opt_modules/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
-	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
-	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
+	<xsl:variable name="jur_price_on" select="$opt_modules/display_settings/jur_price = 'on'"/>
+<!--	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>-->
+	<xsl:variable name="price_param_name" select="'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
 
@@ -264,9 +268,9 @@
 					</xsl:if>
 				</div>
 			</td>
-			<td class="device__param">4x15</td>
-			<td class="device__param">4x15</td>
-			<td class="device__param">4x15</td>
+<!--			<td class="device__param">4x15</td>-->
+<!--			<td class="device__param">4x15</td>-->
+<!--			<td class="device__param">4x15</td>-->
 			<td class="device__status status">
 				<xsl:if test="$zero">
 					<xsl:if test="not(soon != '0')">

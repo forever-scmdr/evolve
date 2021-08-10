@@ -31,7 +31,7 @@ public interface CartConstants {
 	String COUNT_PARAM = "count";
 
 	String ACTION_PARAM = "action";
-	String PRODUCT_PARAM = "product";
+	String PRODUCT_PARAM = "prod";
 	String PROCESSED_PARAM = "processed";
 
 	String MESSAGE_PARAM = "user_message";

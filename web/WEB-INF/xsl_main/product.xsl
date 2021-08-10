@@ -188,13 +188,14 @@
 							<span style="font-weight: normal;" >Технические характеристики</span>
 						</div>
 						<table>
-							<xsl:for-each select="$p/params/param">
+							<xsl:for-each select="$p/params/param[@caption != 'Сертификат']">
 								<tr>
 									<td><xsl:value-of select="@caption" /></td>
 									<td><xsl:value-of select="." /></td>
 								</tr>
 							</xsl:for-each>
 						</table>
+						<p style="padding-top: 10px"><b><xsl:value-of select="$p/params/param[@caption != 'Сертификат']" /></b></p>
 					</div>
 					<div class="product-download">
 						<xsl:for-each select="$p/file[. != '']">
