@@ -85,7 +85,9 @@
 		<link name="search_ajax_link" target="search_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
-		<link name="fav_link" target="fav"/>
+		<link name="fav_link" target="cart">
+			<var name="tab" value="tab_favourite"/>
+		</link>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
 		<link name="show_only_available" target-var="$pagename" type="exclusive" copy-page-vars="yes">
@@ -136,11 +138,10 @@
 			<var name="action" value="addToCart"/>
 			<var name="prod" ref="$prod"/>
 		</link>
-		<link name="to_fav" target="cookie_list_action_redirect">
-			<var name="update_cookie_name" value="favourites"/>
-			<var name="prod" ref="$prod"/>
-			<var name="action" value="add"/>
-			<var name="src_page" value="fav_ajax"/>
+		<link name="to_fav" target="cart_action">
+			<var name="prod" ref="$prod" parameter="code"/>
+			<var name="action" value="addFav"/>
+			<var name="target" value="fav_ajax"/>
 		</link>
 		<link name="to_compare" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="compare"/>
@@ -260,7 +261,7 @@
 
 
 
-	<page name="index" template="index" cacheable="false" cache-vars="cur">
+	<page name="index" template="index" cacheable="false">
 		<request>
 			<var name="page" />
 			<var name="sorting"/>
@@ -306,12 +307,12 @@
 				</link>
 			</ancestor>
 		</list>
-		<list item="product" id="new" tag="new" cacheable="true">
+		<list item="product" id="new" tag="new" cacheable="false">
 			<filter>
 				<parameter name="new" compare="SOME"><var value="1" /></parameter>
 				<limit><var value="20" /></limit>
 				<sorting direction-var="dir"><var var="sorting" /></sorting>
-				<pages><var name="page" var="page"/></pages>
+<!--				<pages><var name="page" var="page"/></pages>-->
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
 			<ancestor item="section" id="n_sec" tag="main_section">
@@ -773,7 +774,9 @@
 			<list item="product_extra"/>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</single>
-		<link name="fav_link" target="fav"/>
+		<link name="fav_link" target="cart">
+			<var name="tab" value="tab_favourite"/>
+		</link>
 		<link name="compare_link" target="compare"/>
 		<link name="show_cart" target="cart"/>
 	</page>
@@ -1124,6 +1127,7 @@
 			<var name="action"/>
 			<var name="tab"/>
 			<var name="code"/>
+			<var name="prod"/>
 			<var name="qty"/>
 			<var name="email" value="design@forever-ds.com"/>
 			<var name="cart_cookie" scope="cookie"/>
@@ -1132,6 +1136,11 @@
 		<link name="cart_ajax" target="cart_ajax"/>
 		<link name="cart" target-var="target">
 			<var name="code" var="code"/>
+			<var name="tab" var="tab"/>
+		</link>
+		<link name="cookie" target-var="target">
+			<var name="action" var="action"/>
+			<var name="code" var="prod"/>
 			<var name="tab" var="tab"/>
 		</link>
 		<link name="proceed" target="proceed"/>
@@ -1205,11 +1214,11 @@
 					<var var="favourites"/>
 				</parameter>
 			</filter>
-			<link name="from_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="remove"/>
-				<var name="src_page" value="fav"/>
+			<link name="from_fav" target="cart_action">
+				<var name="prod" ref="fav" parameter="code"/>
+				<var name="action" value="removeFav"/>
+				<var name="target" value="cart"/>
+				<var name="tab" value="tab_favourite"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:fav"/>
 			<ancestor item="section" id="h_sec" tag="sec">
@@ -1368,6 +1377,7 @@
 	<page name="fav_ajax" template="fav_ajax">
 		<request>
 			<var name="favourites" scope="cookie"/>
+			<var name="code"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<list item="product" id="prod">
@@ -1376,14 +1386,22 @@
 					<var var="favourites"/>
 				</parameter>
 			</filter>
-			<link name="from_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="remove"/>
-				<var name="src_page" value="fav_ajax"/>
+			<link name="from_fav" target="cart_action">
+				<var name="prod" ref="prod" parameter="code"/>
+				<var name="action" value="removeFav"/>
+				<var name="target" value="fav_ajax"/>
 			</link>
 		</list>
-		<link name="fav_link" target="fav"/>
+		<single item="product" var="code" parameter="code" id="deleted" tag="deleted">
+			<link name="to_fav" target="cart_action">
+				<var name="prod" ref="deleted" parameter="code"/>
+				<var name="action" value="addFav"/>
+				<var name="target" value="fav_ajax"/>
+			</link>
+		</single>
+		<link name="fav_link" target="cart">
+			<var name="tab" value="tab_favourite"/>
+		</link>
 	</page>
 
 
@@ -1453,11 +1471,10 @@
 					<var var="favourites"/>
 				</parameter>
 			</filter>
-			<link name="from_fav" target="cookie_list_action">
-				<var name="update_cookie_name" value="favourites"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="remove"/>
-				<var name="src_page" value="fav"/>
+			<link name="from_fav" target="cart_action">
+				<var name="prod" ref="prod" parameter="code"/>
+				<var name="action" value="removeFav"/>
+				<var name="target" value="fav"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>

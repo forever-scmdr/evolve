@@ -2,10 +2,7 @@ package extra.belchip;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.EmailUtils;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
@@ -29,6 +26,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class BelchipCartCommand extends CartManageCommand implements CartConstants, ItemNames {
@@ -43,6 +41,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 	private boolean needPost = false;
 	private Item userInfo = null;
+
+	private static final String FAV_COOKIE = "favourites";
 
 	/**
 	 * Восстанавливает корзину из сохраненной ранее в БД
@@ -864,6 +864,24 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	}
 
 
+	public void editFav(boolean add) throws Exception {
+		String varValue = getVarSingleValue(PRODUCT_PARAM);
+		HashSet<Object> values = new HashSet<>(getCookieVarValues(FAV_COOKIE));
+		if (add)
+			values.add(varValue);
+		else
+			values.remove(varValue);
+		setCookieVariable(FAV_COOKIE, values.toArray(new Object[0]));
+		if (isRegistered())	{
+			Item user = getUserInfo();
+			if (user != null) {
+				user.setValueUI(user_.FAV_COOKIE, getCookieVarPlainValue(FAV_COOKIE));
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(user));
+			}
+		}
+	}
+
+
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -969,7 +987,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE logout() throws Exception {
 		Item userInfo = loadUserInfo(getInitiator());
 		if(userInfo != null) {
-			String favCookie = getVarSingleValueDefault("fav", "");
+			String favCookie = getVarSingleValueDefault(FAV_COOKIE, "");
 			userInfo.setValue(user_.FAV_COOKIE, favCookie);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(userInfo));
 		}
@@ -1031,7 +1049,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if (userInfo != null) {
 			if (userInfo.isValueNotEmpty(user_.FAV_COOKIE)) {
 				//setPageVariable("favourites", userInfo.getStringValue(user_.FAV_COOKIE));
-				setCookieVariable("favourites", userInfo.getStringValue(user_.FAV_COOKIE));
+				setCookieVariable(FAV_COOKIE, userInfo.getStringValue(user_.FAV_COOKIE));
 			}
 		}
 
@@ -1277,5 +1295,25 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		cart.setValue(cart_.PROCESSED, (byte) 1);
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("success");
+	}
+
+	/**
+	 * Добавить значение к куки избранного и сохранить этот куки в айтеме пользователя
+	 * @return
+	 * @throws EcommanderException
+	 */
+	public ResultPE addFav() throws Exception {
+		editFav(true);
+		return getResult("cookie");
+	}
+
+	/**
+	 * Удалить значение из куки избранного и сохранить этот куки в айтеме пользователя
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultPE removeFav() throws Exception {
+		editFav(false);
+		return getResult("cookie");
 	}
 }

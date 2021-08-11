@@ -17,7 +17,7 @@
     <xsl:variable name="go_to_compare_label" select="'Сравнить'"/>
 
     <xsl:variable name="fav_add_label" select="'Добавить в избранное'"/>
-    <xsl:variable name="fav_remove_label" select="'Удалить'"/>
+    <xsl:variable name="fav_remove_label" select="'Убрать из избранного'"/>
     <xsl:variable name="go_to_fav_label" select="'Избранное'"/>
 
 </xsl:stylesheet>

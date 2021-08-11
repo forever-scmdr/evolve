@@ -702,14 +702,11 @@
                                             </div>
                                         </div>
                                     </xsl:if>
-									<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="result header-icons__icon header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no" >
 										<div class="header-icon__icon">
 											<img src="img/icon-star.png" alt=""/>
-											<div class="header-icon__counter">21</div>
 										</div>
-										<div class="header-icon__info">
-											<a href="">Избранное</a>
-										</div>
+										<div class="header-icon__info"><a>Избранное</a></div>
 									</div>
 									<div class="header-icons__icon header-icon" id="some_ajax">
 										<div class="header-icon__icon">

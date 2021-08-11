@@ -98,6 +98,21 @@ public abstract class Command implements AutoCloseable {
 		cookie.restore();
 		return cookie.getAllValues();
 	}
+
+	/**
+	 * Получить значение переменной куки
+	 * Переменная не обязательно должна присутствовать на странице.
+	 * Если переменная куки есть на странице, то предпочтительно использовать метод
+	 * getVarValues или getVarSingleValue или другие подобные
+	 * Значение возвращается в виде одной строки (если фактических значений несколько, то
+	 * они возвращаются через разделитель, в виде, как они хранятся у пользтвателя)
+	 * @param name
+	 * @return
+	 */
+	protected final String getCookieVarPlainValue(String name) {
+		CookieStaticVariable cookie = new CookieStaticVariable(page, name);
+		return cookie.getCookiePlain();
+	}
 	/**
 	 * Установить страничную переменную
 	 * Для того, чтобы удалить переменную, надо передать пустое значение

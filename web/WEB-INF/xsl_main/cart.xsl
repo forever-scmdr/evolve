@@ -20,6 +20,7 @@
 		<xsl:param name="is_available"/>
 		<xsl:variable name="p" select="product"/>
 		<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
+		<xsl:variable name="has_zero_qty" select="f:num(qty_zero) != 0"/>
 		<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'по запросу'"/>
 		<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
 		<tr class="cart-item">
@@ -34,10 +35,16 @@
 					<xsl:if test="$zero">
 						<xsl:if test="not($p/soon != '0')">Нет в наличии</xsl:if>
 						<xsl:if test="$p/soon != '0'">Ожидается: <xsl:value-of select="substring($p/soon, 1, 10)"/></xsl:if>
-						<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>
+<!--						<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>-->
 					</xsl:if>
 					<xsl:if test="not($zero) and not($p/is_service = '1')">
-						В наличии: <xsl:value-of select="concat($p/qty, ' ', $p/unit)"/>
+						<xsl:if test="$has_zero_qty">
+							Доступно: <span style="color: red;"><xsl:value-of select="concat(qty_avail, ' ', $p/unit)" /></span>.
+							Под заказ: <span style="color: red;"><xsl:value-of select="qty_zero" /></span>
+						</xsl:if>
+						<xsl:if test="not($has_zero_qty)">
+							В наличии: <xsl:value-of select="concat($p/qty, ' ', $p/unit)" />
+						</xsl:if>
 					</xsl:if>
 				</div>
 			</td>
@@ -53,10 +60,16 @@
 					<xsl:if test="$zero">
 						<xsl:if test="not($p/soon != '0')">Нет в наличии</xsl:if>
 						<xsl:if test="$p/soon != '0'">Ожидается: <xsl:value-of select="substring($p/soon, 1, 10)"/></xsl:if>
-						<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>
+<!--						<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>-->
 					</xsl:if>
 					<xsl:if test="not($zero) and not($p/is_service = '1')">
-						В наличии: <strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
+						<xsl:if test="$has_zero_qty">
+							<div>Доступно: <span style="color: red; font-weight: bold;"><xsl:value-of select="concat(qty_avail, ' ', $p/unit)" /></span>.</div>
+							<div>Под заказ: <span style="color: red;font-weight: bold;"><xsl:value-of select="qty_zero" /></span></div>
+						</xsl:if>
+						<xsl:if test="not($has_zero_qty)">
+							В наличии:<strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)" /></strong>
+						</xsl:if>
 					</xsl:if>
 				</div>
 			</td>
@@ -65,7 +78,7 @@
 					<xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/>/<xsl:value-of select="$p/unit"/>
 				</xsl:if>
 				<xsl:if test="$zero">нет цены</xsl:if>
-				<xsl:if test="$p/special_price = 'true' and not($zero)"><div>Спеццена</div></xsl:if>
+				<xsl:if test="$p/special_price = 'true' and not($zero)"><div style="color: red; font-weight: normal;">Спеццена</div></xsl:if>
 				<xsl:if test="f:num($p/sec/discount_1) &gt; 0">
 					<div class="sale">от <xsl:value-of select="$p/sec/limit_1"/>&#160;<xsl:value-of select="$p/unit"/> -
 						<xsl:value-of select="$p/sec/discount_1"/>%<xsl:call-template name="BR"/>
@@ -77,7 +90,7 @@
 			<td class="cart-item__sum">
 				<xsl:if test="not($zero)">
 					<xsl:value-of select="f:exchange(., 'sum', 0)"/>
-					<span class="hide_m">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur else $currency"/></span>
+					<span class="hide_m" style="display: inline">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur else $currency"/></span>
 				</xsl:if>
 				<xsl:if test="$zero">нет цены</xsl:if>
 			</td>
