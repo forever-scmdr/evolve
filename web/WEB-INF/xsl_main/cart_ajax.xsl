@@ -28,7 +28,11 @@
 				<a class="header-icon__link" href="{page/show_cart}"></a>
 			</div>
 			<xsl:for-each select="$cart/bought">
-				<div class="result" id="cart_list_{product/@id}">
+
+				<xsl:variable name="is_from_table" select="item_own_extras/from_table = 'true'"/>
+				<xsl:variable name="id" select="if($is_from_table) then code else product/@id"/>
+
+				<div class="result" id="cart_list_{$id}">
 					<form>
 						<button class="button button_checkout" type="submit" onclick="location.replace('{//page/show_cart}'); return false"><xsl:value-of select="$go_to_cart_label"/></button>
 <!--						<input type="submit" value="{$go_to_cart_label}" class="button to_cart" onclick="location.replace('{//page/show_cart}'); return false"/>-->

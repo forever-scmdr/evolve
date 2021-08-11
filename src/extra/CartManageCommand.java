@@ -150,7 +150,8 @@ public class CartManageCommand extends BasicCartManageCommand {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for(Item bought : boughts){
-			if (!(Boolean) bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE)) continue;
+			Object extra = bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE);
+			if (extra == null || !(Boolean) bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE)) continue;
 			StringBuilder s = new StringBuilder();
 			s.append(bought.getStringValue(CODE_PARAM))
 					.append(COOKIE_PARAMETER_SEPARATOR)

@@ -494,7 +494,8 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
 
-			if ((Boolean) bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE)) continue;
+			Object extra = bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE);
+			if (extra != null && (Boolean) bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE)) continue;
 
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);

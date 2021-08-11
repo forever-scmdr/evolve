@@ -19,15 +19,25 @@
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
+							<xsl:variable name="is_from_table" select="item_own_extras/from_table = 'true'"/>
+
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
-										<a href="{$p/show_product}">
-											<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" />
-										</a>
+										<xsl:if test="not($is_from_table)">
+											<a href="{$p/show_product}">
+												<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" />
+											</a>
+										</xsl:if>
+										<xsl:if test="$is_from_table">
+											<img src="img/no_image.png" alt="{$p/name}" />
+										</xsl:if>
 									</div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										<xsl:if test="not($is_from_table)">
+											<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										</xsl:if>
+										<xsl:if test="$is_from_table"><xsl:value-of select="$p/name"/></xsl:if>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
 									</div>
 								</xsl:if>
