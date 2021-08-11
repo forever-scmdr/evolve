@@ -6,6 +6,7 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra.CartManageCommand;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,6 +63,9 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String NUM_PARAM = "num";
 	protected static final String DATE_PARAM = "date";
 	protected static final String EMAIL_PARAM = "email";
+
+	protected static final char COOKIE_DEVICE_SEPARATOR = '♠';
+	protected static final char COOKIE_PARAMETER_SEPARATOR = '♦';
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -389,7 +393,7 @@ public abstract class BasicCartManageCommand extends Command {
      * @param bought
      * @param qtyWanted
      */
-	private void setBoughtQtys(Item product, Item bought, double qtyWanted) {
+	protected void setBoughtQtys(Item product, Item bought, double qtyWanted) {
 		byte b = getInitiator().getRole("registered");
 		String qp = b > -1? "qty_opt" : QTY_PARAM;
         double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
@@ -413,11 +417,6 @@ public abstract class BasicCartManageCommand extends Command {
 		res = res.setScale(6, RoundingMode.HALF_UP);
 
 		qtyWanted = res.doubleValue();
-
-//        qtyWanted = Math.max(product.getDoubleValue("min_qty", 0), qtyWanted);
-//       	double minQ = product.getDoubleValue("min_qty", 0);
-//       	double q = qtyWanted - minQ;
-//        qtyWanted = minQ + Math.ceil(q / step) * step;
 
         double qtyAvail = 0;
         double qtyTotal = 0;
@@ -449,7 +448,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * Загрузить корзину из сеанса или создать новую корзину
 	 * @throws Exception
 	 */
-	private void ensureCart() throws Exception {
+	protected void ensureCart() throws Exception {
 		if (cart == null) {
 			cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 			if (cart == null) {
@@ -494,12 +493,15 @@ public abstract class BasicCartManageCommand extends Command {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
+
+			if ((Boolean) bought.getExtra(CartManageCommand.TABLE_PRODUCT_COOKIE)) continue;
+
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
-			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
+			codeQtys.add(product.getStringValue(CODE_PARAM) + COOKIE_PARAMETER_SEPARATOR + quantity);
 		}
 		if (codeQtys.size() > 0) {
-			String cookie = StringUtils.join(codeQtys, '/');
+			String cookie = StringUtils.join(codeQtys, COOKIE_DEVICE_SEPARATOR);
 			setCookieVariable(CART_COOKIE, cookie);
 		} else {
 			setCookieVariable(CART_COOKIE, null);
@@ -519,9 +521,9 @@ public abstract class BasicCartManageCommand extends Command {
 		loadCart();
 		if (cart != null)
 			return null;
-		String[] codeQtys = StringUtils.split(cookie, '/');
+		String[] codeQtys = StringUtils.split(cookie, COOKIE_DEVICE_SEPARATOR);
 		for (String codeQty : codeQtys) {
-			String[] pair = StringUtils.split(codeQty, ':');
+			String[] pair = StringUtils.split(codeQty, COOKIE_PARAMETER_SEPARATOR);
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, pair[0]);
 			double qty = DoubleDataType.parse(pair[1]);
 			if (product != null) {

@@ -91,11 +91,11 @@ function initCatalogPopupSubmenu(l1MenuContainerSelector, l1MenuItemSelector, l2
 	$(l2MenuContainerSelector).hover(
 		function () {
 			clearTimeout(_hoverHideMenuTimeout);
-			console.log("l2MenuContainerSelector ENTER");
+			//console.log("l2MenuContainerSelector ENTER");
 			clearTimeout(_catalogPopupMenuHideTimeout);
 		},
 		function () {
-			console.log("l2MenuContainerSelector LEAVE");
+			//console.log("l2MenuContainerSelector LEAVE");
 			clearTimeout(_hoverHideMenuTimeout);
 			_catalogPopupMenuHideTimeout = setTimeout(function () {
 				$(l2MenuContainerSelector).hide();
@@ -202,8 +202,6 @@ $(document).ready(function () {
 			var $nameTd = $(this).find("th, td").eq(1);
 			var $priceTd = $(this).find("th, td").eq(2);
 
-			console.log($priceTd);
-
 			if (j == 0) {
 				var $td = $codeTd.is("td") ? $("<td>", {"text": ""}) : $("<th>", {"text": ""});
 				$td.insertAfter($priceTd);
@@ -236,6 +234,9 @@ $(document).ready(function () {
 				$td.insertAfter($priceTd);
 			}
 		});
+		if(i == $(".table-to-cart").length -1){
+			initAjax();
+		}
 	});
 });
 function createInput(name, value, type = "hidden", options = {}) {

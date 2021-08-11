@@ -964,6 +964,7 @@
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.CartManageCommand" method="restoreTableProductsFromCookie"/>
 		<session>
 			<single item="cart">
 				<list item="bought">
@@ -1015,6 +1016,7 @@
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<command class="extra.CartManageCommand" method="restoreTableProductsFromCookie"/>
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
