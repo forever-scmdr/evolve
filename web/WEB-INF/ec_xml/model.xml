@@ -354,7 +354,7 @@
 		<parameter name="style" type="string" caption="Стиль"/>
 	</item>
 
-	<item name="telegram_link" caption="Ссылка на телеграм" ag-id="48" ag-hash="40040568">
+	<item name="telegram_link" caption="Короткие сообщения" ag-id="48" ag-hash="40040568">
 		<parameter name="name" type="string" caption="Текст ссылки"/>
 		<parameter name="emoji" type="char" caption="Смайлик"/>
 		<parameter name="link" type="string" caption="Ссылка"/>

@@ -201,7 +201,8 @@
 						[<xsl:value-of select="@description" />]
 					</p>
 				</xsl:if>
-				<textarea name="{@input}" style="width: 44px; height: 44px; font-size: 32px; padding: 5px; resize: none;" ><xsl:value-of select="concat('&amp;#', . ,';')" disable-output-escaping="yes"/></textarea>
+				
+				<textarea name="{@input}" style="width: 44px; height: 44px; font-size: 32px; padding: 5px; resize: none;" ><xsl:value-of select="if(. != '') then concat('&amp;#', . ,';') else ''" disable-output-escaping="yes"/></textarea>
 <!--				<input class="field" type="text" name="{@input}" value="{.}" style="width: 44px; font-size: 32px; padding: 5px;" />-->
 			</label>
 			<div class="emoji-toggle" style="display: none;">

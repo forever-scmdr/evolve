@@ -59,16 +59,27 @@
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 	<xsl:template name="HEADER">
+		<xsl:variable name="emoji" select="if(page/telegram_link/emoji != '') then concat('&amp;#',page/telegram_link/emoji, ';') else ''"/>
 		<xsl:if test="page/telegram_link/name != ''">
 			<div class="telagram-link-top">
 				<xsl:if test="link != ''">
 					<a href="{page/telegram_link/link}" style="{page/telegram_link/style}">
 						<xsl:value-of select="page/telegram_link/name"/>
+						<xsl:if test="$emoji != ''">
+							<span class="emoji">
+								<xsl:value-of select="$emoji" disable-output-escaping="yes"/>
+							</span>
+						</xsl:if>
 					</a>
 				</xsl:if>
 				<xsl:if test="not(link != '')">
 					<a style="{page/telegram_link/style}">
 						<xsl:value-of select="page/telegram_link/name"/>
+						<xsl:if test="$emoji != ''">
+							<span class="emoji">
+								<xsl:value-of select="$emoji" disable-output-escaping="yes"/>
+							</span>
+						</xsl:if>
 					</a>
 				</xsl:if>
 			</div>
@@ -353,7 +364,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.525"/>
+				<link rel="stylesheet" href="css/main.css?version=1.6"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -401,9 +412,10 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 								success: function(data, status, arg3) {
 									var res = $(data).find("result");
 									var exception = $(data).find("exception");
-									if(res.text != "true"){
+									if(res.text() != "true"){
 										showDefaultAd();
 									}
+									console.log(res.text());
 								}
 								,error: function() {
 									console.log("error checking ads");
