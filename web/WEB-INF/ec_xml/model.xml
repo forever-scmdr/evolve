@@ -359,6 +359,8 @@
 		<parameter name="emoji" type="char" caption="Смайлик"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 		<parameter name="style" type="string" caption="Стиль"/>
+		<parameter name="start" type="date" caption="показывать с"/>
+		<parameter name="finish" type="date" caption="показывать по"/>
 	</item>
 
 	<root>

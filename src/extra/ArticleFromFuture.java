@@ -2,7 +2,6 @@ package extra;
 
 import ecommander.controllers.PageController;
 import ecommander.fwk.ItemEventCommandFactory;
-import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -34,7 +33,6 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
 
 	@Override
 	public ResultPE execute() throws Exception {
-		ServerLogger.error("CHECK FUTURE COMMAND LAUNCHED");
 		LinkedList<Item> articles = new LinkedList<Item>();
 		long now = new Date().getTime();
 		ItemQuery q = new ItemQuery("small_news_item", Item.STATUS_HIDDEN);
@@ -54,6 +52,20 @@ public class ArticleFromFuture extends Command implements ItemEventCommandFactor
 				needReindex = true;
 			}
 		}
+
+		q = new ItemQuery("telegram_link", Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
+		Item telegramLink = q.loadFirstItem();
+		if(telegramLink != null){
+			long from = telegramLink.getLongValue("start" ,0);
+			long to = telegramLink.getLongValue("finish", Long.MAX_VALUE);
+			boolean show = now >= from && now <= to;
+			if(show){
+				executeAndCommitCommandUnits(ItemStatusDBUnit.restore(telegramLink).ignoreUser(true).noTriggerExtra());
+			}else{
+				executeAndCommitCommandUnits(ItemStatusDBUnit.hide(telegramLink).ignoreUser(true).noTriggerExtra());
+			}
+		}
+
 		if(needReindex){
 			PageController.clearCache();
 		}
