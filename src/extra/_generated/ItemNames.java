@@ -244,6 +244,7 @@ public interface ItemNames {
         String CUSTOM_QTY = "custom_qty";
         String SUM = "sum";
         String SIMPLE_SUM = "simple_sum";
+        String DISCOUNT = "discount";
         String SUM_DISCOUNT = "sum_discount";
         String MARGIN = "margin";
         String PROCESSED = "processed";

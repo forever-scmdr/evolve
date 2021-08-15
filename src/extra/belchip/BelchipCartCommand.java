@@ -308,7 +308,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		cart.setValue(cart_.QTY, regularQuantity);
 		cart.setValue(cart_.ZERO_QTY, zeroQuantity);
 		cart.setValue(cart_.CUSTOM_QTY, customQuantity);
-		cart.setValue(cart_.SUM_DISCOUNT, discount);
+		cart.setValue(cart_.DISCOUNT, discount);
 		cart.setValue(cart_.MARGIN, simpleSum.subtract(sum));
 		cart.setValue(cart_.CURRENCY, currencyVar);
 		// Сохранить корзину

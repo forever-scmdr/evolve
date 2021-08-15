@@ -4,7 +4,7 @@
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="p" select="page/product"/>
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="concat($p/name, ' ', $p/name_extra)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -195,7 +195,7 @@
 								</tr>
 							</xsl:for-each>
 						</table>
-						<p style="padding-top: 10px"><b><xsl:value-of select="$p/params/param[@caption != 'Сертификат']" /></b></p>
+						<p style="padding-top: 10px"><b><xsl:value-of select="$p/params/param[@caption = 'Сертификат']" /></b></p>
 					</div>
 					<div class="product-download">
 						<xsl:for-each select="$p/file[. != '']">

@@ -418,6 +418,7 @@
 		<parameter name="custom_qty" type="double" />
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="simple_sum"  type="currency" caption="Сумма без учета скидок" format="###,##0.00" />
+		<parameter name="discount" type="integer" caption="Процент скидки" format="###,###"/>
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="margin"  type="currency" caption="Сумма скидки" format="###,##0.00" />
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>

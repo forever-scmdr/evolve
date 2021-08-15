@@ -141,10 +141,11 @@
 	<xsl:template name="CONTENT">
 		<div class="content__main">
 			<xsl:call-template name="PAGE_PATH"/>
-			<xsl:if test="$is_search_strict">
+			<xsl:variable name="has_result" select="not(not(/page/product))"/>
+			<xsl:if test="$is_search_strict and $has_result">
 				<div class="title title_1">Найдено по запросу "<xsl:value-of select="$query"/>"</div>
 			</xsl:if>
-			<xsl:if test="not($is_search_strict)">
+			<xsl:if test="not($is_search_strict) and $has_result">
 				<div class="title title_1">Найдено по запросу "<xsl:value-of select="$query"/>". Включая похожие варианты</div>
 			</xsl:if>
 			<xsl:if test="not(/page/product)">

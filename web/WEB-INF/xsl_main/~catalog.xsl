@@ -12,7 +12,7 @@
 	</xsl:template>
 
 	<!-- TODO исправить верстку -->
-	<xsl:template name="CONTENT">
+	<xsl:template name="CONTENT_INNER">
 		<div class="catalog-items">
 			<div class="catalog-items__wrap">
 				<xsl:for-each select="/page/catalog/section">
@@ -31,6 +31,8 @@
 			</div>
 		</div>
 	</xsl:template>
+
+	<xsl:template name="PAGE_PATH"></xsl:template>
 
 
 </xsl:stylesheet>

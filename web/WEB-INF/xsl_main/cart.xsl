@@ -228,24 +228,25 @@
 						<xsl:for-each select="$cart/custom_bought">
 							<xsl:sort select="position"/>
 							<xsl:if test="position &lt; 5">
+								<xsl:variable name="i" select="input"/>
 								<div class="personal-order__item personal">
 									<div class="personal__mark">
-										<input class="input" type="text" value="{mark}" name="{mark/@input}"/>
+										<input class="input" type="text" value="{mark}" name="{$i/mark/@input}"/>
 									</div>
 									<div class="personal__type">
-										<input class="input" type="text" value="{type}" name="{type/@input}"/>
+										<input class="input" type="text" value="{type}" name="{$i/type/@input}"/>
 									</div>
 									<div class="personal__case">
-										<input class="input" type="text" value="{case}" name="{case/@input}"/>
+										<input class="input" type="text" value="{case}" name="{$i/case/@input}"/>
 									</div>
 									<div class="personal__qty">
-										<input class="input" type="text" value="{qty}" name="{qty/@input}"/>
+										<input class="input" type="text" value="{qty}" name="{$i/qty/@input}"/>
 									</div>
 									<div class="personal__link">
-										<input class="input" type="text" value="{link}" name="{link/@input}"/>
+										<input class="input" type="text" value="{link}" name="{$i/link/@input}"/>
 									</div>
 									<div class="personal__more">
-										<input class="input" type="text" value="{extra}" name="{extra/@input}"/>
+										<input class="input" type="text" value="{extra}" name="{$i/extra/@input}"/>
 									</div>
 								</div>
 							</xsl:if>
@@ -256,7 +257,7 @@
 				<xsl:if test="$has_tab_fav">
 					<div class="tab-container" id="tab_favourite" style="{'display: none'[$tab_active != 'tab_favourite']}">
 						<xsl:if test="$view = 'table'">
-							<div class="devices show_m">
+							<div class="devices">
 								<div class="devices__wrap">
 									<xsl:apply-templates select="page/product"/>
 								</div>
@@ -275,7 +276,6 @@
 								</tbody>
 							</table>
 						</xsl:if>
-						<xsl:call-template name="CART_TOTAL"/>
 					</div>
 				</xsl:if>
 			</div>

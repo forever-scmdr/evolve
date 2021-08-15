@@ -910,12 +910,22 @@ img {
 		 
 		}
 
+		.device__image img.main-pic{
+			position: absolute;
+			margin: auto;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+		}
+
 		.device__image a{
 			width: 100%;
 			height: 100%;
-			display: table-cell;
-			text-align: center;
-			vertical-align: middle;
+			position: relative;
+			/*display: table-cell;*/
+			/*text-align: center;
+			vertical-align: middle;*/
 		}  
 		.device__image:hover .device__hover {
 			opacity: 1;
@@ -1496,13 +1506,18 @@ img {
 .side-menu__link {
 	/*font-size: 13px;*/
 	font-size: 12px;
-	line-height: 1;
+	line-height: 1.2;
 	color: #333;
 	text-decoration: none; 
-
+	/*color:  red;*/
 	display: block;
-	margin-bottom: 8px;
+	margin-bottom: -5px;
 
+}
+
+.side-menu__item.side-menu__item_level_2 .side-menu__link
+,.side-menu__item.side-menu__item_level_3 .side-menu__link{
+	margin-bottom: 5px;
 }
 	.side-menu__link:hover {
 		text-decoration: underline; }
@@ -1631,14 +1646,16 @@ img {
 .filter__title {
 	font-size: 12px;
 	padding-bottom: 10px;
-	line-height: 1; }
+	line-height: 1;
+	min-width: 138px;
+}
 
 .filter__values {
 	background-color: #fff;
 	padding: 10px;
 	overflow: hidden;
 	overflow-y: auto;
-	max-height: 120px;
+	max-height: 170px;
 	flex: 1; }
 
 .filter__control {
@@ -1655,8 +1672,8 @@ img {
 			margin-right: 0; }
 
 .filter__value {
-	font-size: 12px;
-	margin-bottom: 8px; }
+	font-size: 11px;
+	margin-bottom: 2px; }
 	.filter__value:last-child {
 		margin-bottom: 0; }
 	.filter__value label {
@@ -2433,7 +2450,7 @@ table.full-params th {
 
 .best-price {
 	background-color: #fff;
-	margin-top: 18px;
+	/*margin-top: 18px;*/
 }
 	.best-price__header {
 		display: flex;

@@ -69,7 +69,7 @@
 	<xsl:variable name="show_filter" select="$pv/show_filter = 'yes'"/><!--$user_filter or $tag-->
 
 	<xsl:template name="PAGE_PATH">
-		<div class="path path_common">
+		<div class="path path_common" style="{if(page/@name = 'catalog') then 'display: none;' else ''}">
 			<div class="path__item">
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
@@ -179,7 +179,7 @@
 														<xsl:if test=". = $user_filter/input[@id = $name]">
 															<xsl:attribute name="checked" select="'checked'"/>
 														</xsl:if>
-														&#160;<xsl:value-of select="."/>
+														&#160;<xsl:value-of select="replace(., '\s', '&#160;')"/>
 													</input>
 												</label>
 											</div>
@@ -418,8 +418,8 @@
 				</xsl:if>
 				-->
 				<xsl:if test="$subs and ($sub_view = 'pics' or $is_catalog)">
-					<div class="catalog-items">
-						<div class="catalog-items__wrap">
+					<div class="sections">
+						<div class="sections__wrap">
 							<xsl:apply-templates select="$subs" mode="pic"/>
 						</div>
 					</div>
@@ -434,19 +434,13 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="pic">
-		<div class="catalog-item">
-			<!--
-			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
-			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			-->
-			<xsl:variable name="pic" select="concat('sitepics/', pic_path)"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
-			<div class="catalog-item__info">
-				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
-				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
-				<a href="{show_products}" class="catalog-item__link"></a>
-			</div>
+		<xsl:variable name="pic" select="concat('sitepics/', pic_path)"/>
+		<div class="section">
+			<a class="section__image" href="{show_products}">
+				<img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" />
+			</a>
+			<a class="section__title" href="{show_products}"><xsl:value-of select="name"/></a>
+			<div class="section__description"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 

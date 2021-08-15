@@ -301,7 +301,7 @@
 				<limit><var value="20"/></limit>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:hit"/>
-			<ancestor item="section" id="h_sec" tag="main_section">
+			<ancestor item="section" id="h_sec" tag="section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="h_sec" style="keypath"/>
 				</link>
@@ -315,7 +315,7 @@
 <!--				<pages><var name="page" var="page"/></pages>-->
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
-			<ancestor item="section" id="n_sec" tag="main_section">
+			<ancestor item="section" id="n_sec" tag="section">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="n_sec" style="keypath"/>
 				</link>
@@ -513,8 +513,8 @@
 				</fulltext>
 				<limit><var value="7" /></limit>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
+			<link name="show_product" target="product">
+				<var name="selected_product" ref="prod" parameter="code"/>
 			</link>
 		</list>
 		<link name="show_all" target="search">
@@ -538,18 +538,22 @@
 			<var name="dir3" value="ASC" />
 
 			<var name="view" value="table" scope="cookie"/>
+			<var name="page" value="1"/>
 		</request>
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="60" name="search"
+				<fulltext limit="2000" name="search"
 						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
 						  compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="60"/>
+					<var value="120"/>
 				</limit>
+				<pages>
+					<var var="page"/>
+				</pages>
 			</filter>
 		</list>
 
@@ -573,6 +577,9 @@
 				<link name="show_sec" target="search">
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="p_sec" style="keypath"/>
 				</link>
 			</ancestor>
 		</list>
@@ -608,11 +615,11 @@
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="60" name="search" type="(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
+				<fulltext limit="2000" name="search" type="(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="60"/>
+					<var value="2000"/>
 				</limit>
 			</filter>
 		</list>
@@ -637,6 +644,9 @@
 				<link name="show_sec" target="search">
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="p_sec" style="keypath"/>
 				</link>
 			</ancestor>
 		</list>
@@ -673,13 +683,13 @@
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="60"
+				<fulltext limit="2000"
 						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.WildcardBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)(extra.belchip.WildcardBelchipFulltextQueryKey)"
 						  compare="SOME">
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="60"/>
+					<var value="2000"/>
 				</limit>
 			</filter>
 		</list>
@@ -1143,6 +1153,8 @@
 			<var name="code" var="prod"/>
 			<var name="tab" var="tab"/>
 		</link>
+		<link name="post" target="print_cart" />
+		<link name="not_set" target="proceed" />
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
@@ -1173,6 +1185,7 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="view" value="table" scope="cookie"/>
 			<var name="tab"/>
 		</request>
 		<command class="extra.belchip.BelchipCartCommand" method="createOrLoadCart" />
@@ -1294,57 +1307,58 @@
 		<include name="COMMON"/>
 	</page>
 
-<!--
+
 	<page name="print_cart" template="print_cart">
-		<variables>
-			<var name="cart_cookie" scope="cookie" />
-			<var name="currency" scope="cookie" />
-		</variables>
-		<command class="ecommander.extra.CartManageCommandRefactored"	method="createOrLoadCart" />
+		<request>
+			<var name="cart_cookie" scope="cookie"/>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
+		<command class="extra.belchip.BelchipCartCommand"	method="createOrLoadCart" />
 		<session>
 			<single item="cart" id="cart">
-				<isngle item="bought" id="bought">
-					<single item="product" id="product" tag="product" />
-				</isngle>
-				<single item="custom_bought" id="custom_bought" />
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product" />
+				</list>
+				<list item="custom_bought" id="custom_bought" />
 			</single>
 		</session>
 		<single item="product" reference-item="product" tag="ref">
 			<ancestor item="section" tag="section" />
 		</single>
+		<single item="currencies"/>
 		<link name="cart_link" target="cart" />
 		<link name="proceed_link" target="proceed" />
-		<single name="currency"/>
 	</page>
 
+	<!--
 
-	<page name="download_cart" template="download_cart">
-		<variables>
-			<var name="method" value="restoreFromCookie" />
-			<var name="cart_cookie" scope="cookie" />
-			<var name="currency" scope="cookie" />
-		</variables>
-		<command class="ecommander.extra.CartManageCommand"
-				 method-var="method" />
-		<command class="ecommander.extra.CartManageCommand"
-				 method="createOrLoadCart" />
-		<session>
-			<item name="cart" id="cart">
-				<item name="bought" id="bought">
-					<item name="product" id="product" tag="product">
-						<link name="show_product" target="product">
-							<var name="selected_product" item="product" parameter="code" />
-						</link>
-					</item>
-				</item>
-				<item name="custom_bought" id="custom_bought" />
-			</item>
-		</session>
-		<link name="cart_link" target="cart" />
-		<link name="proceed_link" target="proceed" />
-		<item name="currency"/>
-	</page>
--->
+        <page name="download_cart" template="download_cart">
+            <variables>
+                <var name="method" value="restoreFromCookie" />
+                <var name="cart_cookie" scope="cookie" />
+                <var name="currency" scope="cookie" />
+            </variables>
+            <command class="ecommander.extra.CartManageCommand"
+                     method-var="method" />
+            <command class="ecommander.extra.CartManageCommand"
+                     method="createOrLoadCart" />
+            <session>
+                <item name="cart" id="cart">
+                    <item name="bought" id="bought">
+                        <item name="product" id="product" tag="product">
+                            <link name="show_product" target="product">
+                                <var name="selected_product" item="product" parameter="code" />
+                            </link>
+                        </item>
+                    </item>
+                    <item name="custom_bought" id="custom_bought" />
+                </item>
+            </session>
+            <link name="cart_link" target="cart" />
+            <link name="proceed_link" target="proceed" />
+            <item name="currency"/>
+        </page>
+    -->
 
 	<page name="order_email" template="order_email">
 		<session>

@@ -16,6 +16,7 @@ public class Cart
     public final static String CUSTOM_QTY = "custom_qty";
     public final static String SUM = "sum";
     public final static String SIMPLE_SUM = "simple_sum";
+    public final static String DISCOUNT = "discount";
     public final static String SUM_DISCOUNT = "sum_discount";
     public final static String MARGIN = "margin";
     public final static String PROCESSED = "processed";
@@ -165,6 +166,28 @@ public class Cart
 
     public boolean contains_simple_sum(BigDecimal value) {
         return containsValue("simple_sum", value);
+    }
+
+    public void set_discount(Integer value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public Integer get_discount() {
+        return getIntValue("discount");
+    }
+
+    public Integer getDefault_discount(Integer defaultVal) {
+        return getIntValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(Integer value) {
+        return containsValue("discount", value);
     }
 
     public void set_sum_discount(BigDecimal value) {

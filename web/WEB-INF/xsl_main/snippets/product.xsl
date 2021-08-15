@@ -31,16 +31,16 @@
 
 		<div class="device">
 			<div class="device__image">
-				<a href="{show_product}"><img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" /></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" /></a>
 				<div class="device__hover top-rigt">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
-					   title="Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.">
+					   title="Увеличить изображение">
 						<img src="img/icon-device-zoom.png" alt="" />
 					</a>
 				</div>
 				<div class="device__hover bottom-left">
-					<xsl:if test="main_section">
-						<a class="device__parent-link" href="{main_section/show_products}" title="{main_section/name}">
+					<xsl:if test="section/show_products">
+						<a class="device__parent-link" href="{section/show_products}" title="Перейти в раздел этого товара">
 							<img src="img/icon-device-goto.png" alt=""/>
 						</a>
 					</xsl:if>
@@ -189,15 +189,15 @@
 
 		<tr class="device_row">
 			<td class="device__image">
-				<a href="{show_product}"><img src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/></a>
 				<div class="device__hover">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg" onclick="return false;"
-					   title="Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.">
+					   title="Увеличить изображение">
 						<img src="img/icon-device-zoom.png" alt=""/>
 					</a>
-					<xsl:if test="main_section">
-						<a class="device__parent-link" href="{main_section/show_products}">
-							<img src="img/icon-device-goto.png" alt=""/>
+					<xsl:if test="section/show_products">
+						<a class="device__parent-link" href="{section/show_products}">
+							<img src="img/icon-device-goto.png" alt="" title="Перейти в раздел этого товара"/>
 						</a>
 					</xsl:if>
 				</div>

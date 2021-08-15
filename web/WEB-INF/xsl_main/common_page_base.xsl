@@ -105,7 +105,7 @@
 	<xsl:template name="EXTRA_SCRIPTS"/>
 	<xsl:template name="SCRIPTS">
 		<script>
-			$(document).ready(function(){
+			$(document).ready(function() {
 				$(".device__zoom, .example1").fancybox({
 					padding: [15,15,15,15],
 					helpers: {
@@ -114,9 +114,17 @@
 						}
 					}
 				});
+				<xsl:text disable-output-escaping="yes">
+				/*
+				$('#search').submit(function(e) {
+					if ($(this).find('#q-ipt').val().length &lt; 3) {
+						e.preventDefault();
+					}
+				});*/
+				</xsl:text>
 			});
 
-			$("#full_match_only").change(function(e){
+			$("#full_match_only").change(function(e) {
 				var checked = $(this).find("input[type=checkbox]").is(":checked");
 				if(checked){
 					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_strict_link" />");
@@ -632,7 +640,7 @@
 											</a>
 											<input class="input header-search__input"
 												   ajax-href="{page/search_ajax_link}" result="search-result"
-												   query="q" min-size="3" id="q-ipt" type="text"
+												   query="q" min-size="3" id="q-ipt" type="text" minlength="3"
 												   placeholder="Введите поисковый запрос" autocomplete="off"
 												   name="q" value="{$query}" autofocus="autofocus" onfocus="this.selectionStart = this.selectionEnd = this.value.length"/>
 											<a class="header-search__reset" href="">
