@@ -24,18 +24,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand implements CatalogConst {
+	private static final long ABSENT_PRODUCT_LIFETIME = 24 * 30 * 60 * 60 * 60 * 1000;
 	Workbook priceWB;
 	Item catalog;
 	Item currentSection;
-	Item currentSubsection;
 	Item currentProduct;
-	private boolean newItemTypes = false;
 	private HashSet<Long> sectionsWithNewItemTypes = new HashSet<>();
-	private HashSet<String> duplicateCodes = new HashSet<>();
 	private FormulaEvaluator eval;
 	private HashMap<Integer, String> PARAM_INDEXES = new HashMap<>();
 	private HashMap<Integer, String> AUX_PARAMS =  new HashMap<>();
 	private static final String FILE_UPLOAD_FOLDER = "pdf";
+	private static final int LOAD_BATCH_SIZE = 1000;
+	private static final int HIDE_BATCH_SIZE = 500;
+	private static final int DELETE_BATCH_SIZE = 100;
 
 	//File constants
 	private final static HashMap<String, String> HEADER_PARAMS = new HashMap<>();
@@ -51,9 +52,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		HEADER_PARAMS.put("картинка", MAIN_PIC_PARAM);
 		HEADER_PARAMS.put("pdf", "pdf");
 	};
-
-
-
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -77,6 +75,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
+		hideAllProducts();
 		setOperation("Обновлние каталога");
 		setProcessed(0);
 		setLineNumber(0);
@@ -101,8 +100,59 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		if(shitSection != null){
 		//	executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
 		}
+
+		//delete products absent for 30+ days
+		deleteHidden();
+
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
+	}
+
+	private void hideAllProducts() throws Exception {
+		setOperation("Скрываем товары");
+		setProcessed(0);
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
+		int page = 1;
+		q.setLimit(LOAD_BATCH_SIZE, page);
+		List<Item> products;
+		int counter = 0;
+		while ((products = q.loadItems()).size() == LOAD_BATCH_SIZE){
+			for(Item product : products){
+				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+				counter++;
+				if(counter >= HIDE_BATCH_SIZE) commitCommandUnits();
+				info.increaseProcessed();
+			}
+			page++;
+			q.setLimit(LOAD_BATCH_SIZE, page);
+		}
+		commitCommandUnits();
+	}
+
+	private void deleteHidden() throws Exception {
+		setOperation("Удаляем долго отсутствующие товары");
+		setProcessed(0);
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN);
+		int page = 1;
+		q.setLimit(LOAD_BATCH_SIZE, page);
+		List<Item> products;
+		int counter = 0;
+		long now = new Date().getTime();
+		while ((products = q.loadItems()).size() == LOAD_BATCH_SIZE){
+			for(Item product : products){
+				if(now - product.getTimeUpdated() > ABSENT_PRODUCT_LIFETIME){
+					executeCommandUnit(ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
+					counter++;
+					info.increaseProcessed();
+				}
+				if(counter > DELETE_BATCH_SIZE){
+					commitCommandUnits();
+				}
+			}
+			page++;
+			q.setLimit(LOAD_BATCH_SIZE, page);
+		}
+		commitCommandUnits();
 	}
 
 	private void clearJunk() throws Exception {
@@ -204,10 +254,12 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement()
 									.endElement();
 						}else if(CODE_PARAM.equals(paramName)){
-							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue);
+							currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN);
 							if(currentProduct == null){
 								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
 								currentProduct.setValue(CODE_PARAM, cellValue);
+							}else{
+								executeCommandUnit(ItemStatusDBUnit.restore(currentProduct.getId()));
 							}
 						}else if (MAIN_PIC_PARAM.equals(paramName)){
 							String[] pics = StringUtils.split(cellValue, '|');
