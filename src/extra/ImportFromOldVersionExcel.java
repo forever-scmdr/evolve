@@ -160,16 +160,21 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		long startID = 0;
 		ArrayList<Item> products;
 		info.setProcessed(0);
+		int counter = 0;
+		int deletedCounter = 0;
 		while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID)).size() > 0) {
 			for (Item product : products) {
 				startID = product.getId();
 				if(StringUtils.isBlank(product.getStringValue(CODE_PARAM))){
 					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product.getId()));
 					info.increaseProcessed();
+					deletedCounter++;
 				}
+				counter++;
 			}
 		}
-
+		pushLog("Отсутсвующих товаров: " + counter);
+		pushLog("Удалено товаров" + deletedCounter);
 	}
 
 
