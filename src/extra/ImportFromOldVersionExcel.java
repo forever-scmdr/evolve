@@ -162,7 +162,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		info.setProcessed(0);
 		int counter = 0;
 		int deletedCounter = 0;
-		while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID)).size() > 0) {
+		while ((products = ItemMapper.loadByName(PRODUCT_ITEM, DELETE_BATCH_SIZE, startID)).size() > 0) {
 			for (Item product : products) {
 				startID = product.getId();
 				if(StringUtils.isBlank(product.getStringValue(CODE_PARAM))){
@@ -176,7 +176,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		pushLog("Отсутсвующих товаров: " + counter);
 		pushLog("Удалено товаров" + deletedCounter);
 	}
-
 
 	private void parse(Workbook priceWB) throws Exception {
 		eval =  priceWB.getCreationHelper().createFormulaEvaluator();

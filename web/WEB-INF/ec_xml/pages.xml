@@ -1840,4 +1840,13 @@
 
 	</page>
 
+	<page name="clear_duplicates" template="integration/create_excel">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ClearDuplicates">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 </site>
