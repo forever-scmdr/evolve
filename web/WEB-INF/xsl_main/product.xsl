@@ -16,6 +16,8 @@
 	<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
 	<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
+
+
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
 		<script type="application/ld+json">
@@ -43,21 +45,31 @@
 		</script>
 	</xsl:template>
 
+
+
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
-				<a class="path__link" href="{$main_host}">Главная страница</a>
-				<div class="path__arrow"></div>
-				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+<!--				<a class="path__link" href="{$main_host}">Главная страница</a>-->
+<!--				<div class="path__arrow"></div>-->
+<!--				<a class="path__link" href="{page/catalog_link}">Каталог</a>-->
 				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
-					<div class="path__arrow"></div>
 					<a class="path__link" href="{show_products}">
 						<xsl:value-of select="name"/>
 					</a>
+					<div class="path__arrow"></div>
 				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
+
+
+	<xsl:template name="PAGE_HEADING">
+		<div class="title title_1" style="font-size: 26px; margin-top: 15px">
+			<xsl:value-of select="$h1"/>
+		</div>
+	</xsl:template>
+
 
 	<xsl:template match="group">
 		<xsl:if test="parameter/value != ''">
@@ -77,6 +89,8 @@
 			</tr>
 		</xsl:if>
 	</xsl:template>
+
+
 
 	<xsl:template name="CONTENT_INNER">
 		<div class="device-basic">

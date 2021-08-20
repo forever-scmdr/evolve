@@ -533,7 +533,7 @@
 								Итого:
 								<b style="mso-bidi-font-weight:normal">
 									<xsl:if test="$cart/simple_sum">
-										<xsl:value-of select="concat(f:format($cart/simple_sum), ' ', $curr_out)" />
+										<xsl:value-of select="f:exchange_cur($cart, 'simple_sum', '0')" />
 									</xsl:if>
 								</b>
 								
@@ -541,8 +541,7 @@
 									<br />
 									Скидка:
 									<b style="mso-bidi-font-weight:normal">
-										<xsl:value-of select="$cart/discount" />
-										%
+										<xsl:value-of select="$cart/discount" />%
 									</b>
 									- на товар не участвующий
 									в спец. предложениях
@@ -550,7 +549,7 @@
 									Сумма скидки:
 									<b style="mso-bidi-font-weight:normal">
 										<xsl:if test="$cart/margin">
-											<xsl:value-of select="concat(f:format($cart/margin), ' ', $curr_out)" />
+											<xsl:value-of select="f:exchange_cur($cart, 'margin', '0')" />
 										</xsl:if>
 									</b>
 									
@@ -558,7 +557,7 @@
 									К оплате:
 									<b style="mso-bidi-font-weight:normal">
 										<xsl:if test="$cart/sum">
-											<xsl:value-of select="concat(f:format($cart/sum), ' ', $curr_out)" />
+											<xsl:value-of select="f:exchange_cur($cart, 'sum', '0')" />
 										</xsl:if>
 									</b>
 									<span style="mso-spacerun:yes">  </span>

@@ -1546,15 +1546,22 @@
 			<var name="success" />
 			<var name="login" />
 		</request>
+		<session>
+			<single item="user" tag="user"/>
+		</session>
 		<link name="submit_login" target="register_action">
 			<var name="action" value="login"/>
 			<var name="src" value="personal"/>
 		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
+			<extra-input ref="user_phys" form="register" name="pseudo"/>
+			<extra-input ref="user_phys" form="register" name="p1"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
+			<extra-input ref="user_jur" form="register" name="pseudo"/>
+			<extra-input ref="user_jur" form="register" name="p1"/>
 		</new>
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
@@ -1568,46 +1575,27 @@
 			<var name="action"/>
 			<var name="src" value="register"/>
 		</request>
-		<link name="not_set" target="register">
-			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		<link name="error" target-var="src">
+			<var name="success" value="no"/>
 		</link>
-		<link name="user_exists" target="register">
-			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+		<link name="success" target-var="src">
+			<var name="success" value="yes"/>
 		</link>
-		<link name="success" target="register">
-			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
-			<var name="success" value="true"/>
+		<link name="user_exists" target-var="src">
+			<var name="success" value="no"/>
 		</link>
-		<link name="login" target-var="src">
-			<var name="success" value="true"/>
+		<link name="mismatch" target-var="src">
+			<var name="success" value="no"/>
 		</link>
-		<link name="login_error" target="register">
-			<var name="message" value="Неверные логин/пароль"/>
-			<var name="success" value="false"/>
-			<var name="login" value="true"/>
+		<link name="update_success" target-var="src">
+			<var name="success" value="yes"/>
 		</link>
-		<link name="passwords_not_match_error" target="personal">
-			<var name="message" value="Пароль и подтверждение не совпадают"/>
-			<var name="success" value="false"/>
-		</link>
-		<link name="success_personal" target="personal">
-			<var name="message" value="Изменения учетной записи сохранены"/>
-			<var name="success" value="true"/>
-		</link>
-		<link name="not_set_personal" target="personal">
-			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
-		</link>
-		<link name="user_exists_personal" target="personal">
-			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
-		</link>
-		<command class="extra.JustEmailRegisterCommand" method-var="action">
-			<result name="not_set" type="redirect"/>
-			<result name="user_exists" type="redirect"/>
+		<command class="extra.belchip.RegisterCommand" method-var="action">
+			<result name="error" type="redirect"/>
 			<result name="success" type="redirect"/>
-			<result name="passwords_not_match_error" type="redirect"/>
-			<result name="success_personal" type="redirect"/>
-			<result name="not_set_personal" type="redirect"/>
-			<result name="user_exists_personal" type="redirect"/>
+			<result name="user_exists" type="redirect"/>
+			<result name="mismatch" type="redirect"/>
+			<result name="update_success" type="redirect"/>
 		</command>
 	</page>
 

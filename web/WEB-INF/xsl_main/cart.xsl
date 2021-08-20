@@ -121,24 +121,23 @@
 
 
 	<xsl:template name="CART_TOTAL">
-		<form>
-			<div class="cart-total">
+		<div class="cart-total">
+			<xsl:if test="f:num($cart/discount) &gt; 0">
 				<div class="cart-total__text">
-					<div>Итого: <span>187,72 руб.</span>
-					</div>
-					<div>Скидка: <span>5% - на товар не участвующий в спецпредложениях</span>
-					</div>
-					<div>Сумма скидки: <span>2,19 руб.</span>
-					</div>
+					<div>Итого: <span><xsl:value-of select="f:exchange_cur($cart, 'simple_sum', 0)" /></span></div>
+					<div>Скидка: <span><xsl:value-of select="$cart/discount"/>% - на товар не участвующий в спецпредложениях</span></div>
+					<div>Сумма скидки: <span><xsl:value-of select="f:exchange_cur($cart, 'margin', 0)"/></span></div>
 				</div>
-				<div class="cart-total__sum">К оплате: 185,53 руб.</div>
-				<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
-				<a class="cart-total__link" href="">Правила предоставления скидок</a>
-				<div class="cart-total__buttons">
-					<button class="button">К оформлению</button>
-				</div>
+			</xsl:if>
+			<xsl:if test="f:num($cart/sum) &gt; 0">
+				<div class="cart-total__sum">К оплате: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)" /></div>
+			</xsl:if>
+			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
+			<a class="cart-total__link" href="">Правила предоставления скидок</a>
+			<div class="cart-total__buttons">
+				<button class="button" type="submit">К оформлению</button>
 			</div>
-		</form>
+		</div>
 	</xsl:template>
 
 
@@ -170,9 +169,9 @@
 				</xsl:if>
 			</div>
 			<div class="tabs__content">
-				<xsl:if test="$has_tab_cart">
-					<div class="tab-container" id="tab_cart" style="{'display: none'[$tab_active != 'tab_cart']}">
-						<form>
+				<form action="{page/proceed_link}" method="post">
+					<xsl:if test="$has_tab_cart">
+						<div class="tab-container" id="tab_cart" style="{'display: none'[$tab_active != 'tab_cart']}">
 							<table class="cart-items">
 								<tbody>
 									<tr class="cart-items__head">
@@ -193,12 +192,10 @@
 								</tbody>
 							</table>
 							<xsl:call-template name="CART_TOTAL"/>
-						</form>
-					</div>
-				</xsl:if>
-				<xsl:if test="$has_tab_order">
-					<div class="tab-container" id="tab_order" style="{'display: none'[$tab_active != 'tab_order']}">
-						<form>
+						</div>
+					</xsl:if>
+					<xsl:if test="$has_tab_order">
+						<div class="tab-container" id="tab_order" style="{'display: none'[$tab_active != 'tab_order']}">
 							<table class="cart-items">
 								<tbody>
 									<tr class="cart-items__head">
@@ -219,41 +216,41 @@
 								</tbody>
 							</table>
 							<xsl:call-template name="CART_TOTAL"/>
-						</form>
-					</div>
-				</xsl:if>
-				<div class="tab-container" id="tab_personal" style="{'display: none'[$tab_active != 'tab_personal']}">
-					<div class="personal-order">
+						</div>
+					</xsl:if>
+					<div class="tab-container" id="tab_personal" style="{'display: none'[$tab_active != 'tab_personal']}">
+						<div class="personal-order">
 
-						<xsl:for-each select="$cart/custom_bought">
-							<xsl:sort select="position"/>
-							<xsl:if test="position &lt; 5">
-								<xsl:variable name="i" select="input"/>
-								<div class="personal-order__item personal">
-									<div class="personal__mark">
-										<input class="input" type="text" value="{mark}" name="{$i/mark/@input}"/>
+							<xsl:for-each select="$cart/custom_bought">
+								<xsl:sort select="position"/>
+								<xsl:if test="position &lt; 5">
+									<xsl:variable name="i" select="input"/>
+									<div class="personal-order__item personal">
+										<div class="personal__mark">
+											<input class="input" type="text" value="{mark}" name="{$i/mark/@input}"/>
+										</div>
+										<div class="personal__type">
+											<input class="input" type="text" value="{type}" name="{$i/type/@input}"/>
+										</div>
+										<div class="personal__case">
+											<input class="input" type="text" value="{case}" name="{$i/case/@input}"/>
+										</div>
+										<div class="personal__qty">
+											<input class="input" type="text" value="{qty}" name="{$i/qty/@input}"/>
+										</div>
+										<div class="personal__link">
+											<input class="input" type="text" value="{link}" name="{$i/link/@input}"/>
+										</div>
+										<div class="personal__more">
+											<input class="input" type="text" value="{extra}" name="{$i/extra/@input}"/>
+										</div>
 									</div>
-									<div class="personal__type">
-										<input class="input" type="text" value="{type}" name="{$i/type/@input}"/>
-									</div>
-									<div class="personal__case">
-										<input class="input" type="text" value="{case}" name="{$i/case/@input}"/>
-									</div>
-									<div class="personal__qty">
-										<input class="input" type="text" value="{qty}" name="{$i/qty/@input}"/>
-									</div>
-									<div class="personal__link">
-										<input class="input" type="text" value="{link}" name="{$i/link/@input}"/>
-									</div>
-									<div class="personal__more">
-										<input class="input" type="text" value="{extra}" name="{$i/extra/@input}"/>
-									</div>
-								</div>
-							</xsl:if>
-						</xsl:for-each>
+								</xsl:if>
+							</xsl:for-each>
+						</div>
+						<xsl:call-template name="CART_TOTAL"/>
 					</div>
-
-				</div>
+				</form>
 				<xsl:if test="$has_tab_fav">
 					<div class="tab-container" id="tab_favourite" style="{'display: none'[$tab_active != 'tab_favourite']}">
 						<xsl:if test="$view = 'table'">
@@ -285,18 +282,7 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
-		<script  type="text/javascript">
-		$(document).ready(function() {
-			$('.tab').click(function(e) {
-				e.preventDefault();
-				var a = $(this);
-				$('.tab-container').hide();
-				$('.tab-container' + a.attr('href')).show();
-				$('.tab').removeClass('tab_active');
-				a.addClass('tab_active');
-			});
-		});
-		</script>
+		<xsl:call-template name="TAB_SCRIPT"/>
 	</xsl:template>
 
 

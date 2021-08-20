@@ -218,6 +218,21 @@
 	</xsl:template>
 
 
+	<xsl:template name="TAB_SCRIPT">
+		<script  type="text/javascript">
+			$(document).ready(function() {
+				$('.tab').click(function(e) {
+					e.preventDefault();
+					var a = $(this);
+					$('.tab-container').hide();
+					$('.tab-container' + a.attr('href')).show();
+					$('.tab').removeClass('tab_active');
+					a.addClass('tab_active');
+				});
+			});
+		</script>
+	</xsl:template>
+
 
 	<xsl:template name="USER_PAGE_H1">
 		<xsl:param name="page"/>
@@ -736,7 +751,7 @@
 										</div>
 										<div class="dropdown dropdown_last header-icon__dropdown">
 											<a class="dropdown__item" href="">Вход</a>
-											<a class="dropdown__item" href="">Регистрация</a>
+											<a class="dropdown__item" href="{page/register_link}">Регистрация</a>
 											<a class="dropdown__item" href="">Кабинет</a>
 											<a class="dropdown__item" href="">История заказов</a>
 										</div>

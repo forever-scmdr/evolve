@@ -659,10 +659,10 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		ArrayList<Item> allBoughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 		for (Item bought : allBoughts) {
 			ItemInputValues boughtInput = getItemForm().getReadOnlyItemValues(bought.getId());
-			if (boughtInput.getExtra(NEW_QUANTITY_PARAM) != null) {
+			if (boughtInput.getStringParam(bought_.QTY) != null) {
 				double quantity = -1;
 				try {
-					quantity = DoubleDataType.parse(boughtInput.getStringExtra(NEW_QUANTITY_PARAM));
+					quantity = DoubleDataType.parse(boughtInput.getStringParam(bought_.QTY));
 				} catch (NumberFormatException e) {/* */}
 				if (quantity > 0) {
 					bought.setValue(bought_.QTY_TOTAL, quantity);
@@ -689,9 +689,13 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			Item sessionCustom = getSessionMapper().getItem(formCustom.getId(), CUSTOM_BOUGHT);
 			if (sessionCustom != null) {
 				Item.updateParamValues(formCustom, sessionCustom);
-				sessionCustom.setValue(custom_bought_.NONEMPTY, "true");
+				if (formCustom.isValueNotEmpty(custom_bought_.LINK) || formCustom.isValueNotEmpty(custom_bought_.MARK)) {
+					sessionCustom.setValue(custom_bought_.NONEMPTY, "true");
+					hasCustom = true;
+				} else {
+					sessionCustom.clearValue(custom_bought_.NONEMPTY);
+				}
 				getSessionMapper().saveTemporaryItem(sessionCustom);
-				hasCustom = true;
 			}
 		}
 		boolean recalc = recalculateCart();
