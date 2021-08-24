@@ -23,7 +23,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
     private static final String INTEGRATE_DIR = "integrate_xml/";
     private static final String REPORT_DIR = "report/";
 //    private static final String REPORT_PREFIX = "report_";
-    private static final String XML_FILE_NAME = INTEGRATE_DIR + "metabo_import.xml";
+    private static final String XML_FILE_NAME = INTEGRATE_DIR + "hikoki_import.xml";
 //    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
     public static final BigDecimal ZERO = new BigDecimal(0);
 
@@ -32,6 +32,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 	private File priceXmlFile;
 	private File reportFile;
 	private File backupFile;
+	private int inStockCount = 0;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -45,7 +46,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 		reportDir.mkdirs();
 		long date = System.currentTimeMillis();
 		reportFile = new File (AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "report.txt"));
-		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "metabo_import.xml"));
+		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "hikoki_import.xml"));
 		return true;
 	}
 
@@ -76,8 +77,12 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
                 BigDecimal qty = DecimalDataType.parse(qtyStr, 4);
                 product.setValueUI(PRICE_PARAM, priceStr);
                 product.setValueUI(QTY_PARAM, qtyStr);
-                if (qty.compareTo(ZERO) > 0)
-                    product.setValueUI(AVAILABLE_PARAM, "1");
+                if (qty.compareTo(ZERO) > 0) {
+					product.setValueUI(AVAILABLE_PARAM, "1");
+					inStockCount++;
+					info.pushLog(code);
+				}
+
                 executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
                 updatedCodes.add(code);
                 info.increaseProcessed();
@@ -85,6 +90,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 				info.addError(e.getLocalizedMessage(), code);
 			}
 		}
+        pushLog("Товаров в наличии в файле: " + inStockCount);
 		FileUtils.cleanDirectory(reportDir);
         FileUtils.write(reportFile, report, Charset.forName("Cp1251"));
 		priceFile.finishDocument();

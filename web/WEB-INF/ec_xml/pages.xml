@@ -10,6 +10,15 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
+	<page name="test">
+		<list item="product">
+			<filter>
+				<parameter name="available" sign="=" compare="SOME">
+					<var value="1"/>
+				</parameter>
+			</filter>
+		</list>
+	</page>
 
 	<include-definition name="COMMON">
 		<single item="catalog" id="catalog_main" cacheable="true">

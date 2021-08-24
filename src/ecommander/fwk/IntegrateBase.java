@@ -171,6 +171,7 @@ public abstract class IntegrateBase extends Command {
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
 			doc.startElement("operation").addText(operation).endElement();
 			doc.startElement("line").addText(lineNumber).endElement();
+			doc.startElement("refresh").addText(inProgress).endElement();
 			if (operation.equals(_indexation))
 				doc.startElement("processed").addText(LuceneIndexMapper.getSingleton().getCountProcessed()).endElement();
 			else {
