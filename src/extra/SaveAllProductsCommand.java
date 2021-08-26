@@ -1,14 +1,12 @@
 package extra;
 
 import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.mappers.ItemMapper;
+import ecommander.persistence.itemquery.ItemQuery;
 
-import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 15.04.2019.
@@ -24,17 +22,23 @@ public class SaveAllProductsCommand extends IntegrateBase implements CatalogCons
 	{
 		setOperation("Пересохранение товаров");
 		long startID = 0;
-		ArrayList<Item> products;
+		List<Item> products;
 		info.setProcessed(0);
-		try(Connection conn = MysqlConnector.getConnection()) {
-			while ((products = ItemMapper.loadByName(PRODUCT_ITEM, 500, startID, conn)).size() > 0) {
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
+		int p =1;
+		q.setLimit(500,p);
+
+			while ((products = q.loadItems()).size() > 0) {
 				for (Item product : products) {
 					startID = product.getId();
+					product.setValueUI("date", "31.12.2100 00:00");
 					executeAndCommitCommandUnits(SaveItemDBUnit.forceUpdate(product).noFulltextIndex().noTriggerExtra());
 					info.increaseProcessed();
 				}
+				p++;
+				q.setLimit(500,p);
 			}
-		}
+
 	}
 
 }
