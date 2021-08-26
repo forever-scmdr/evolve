@@ -1,10 +1,10 @@
 package ecommander.model.datatypes;
 
-import java.text.Format;
-import java.text.MessageFormat;
-
 import ecommander.fwk.Strings;
 import org.apache.commons.lang3.StringUtils;
+
+import java.text.Format;
+import java.text.MessageFormat;
 
 public class StringDataType extends FormatDataType {
 

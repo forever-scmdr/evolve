@@ -1,5 +1,7 @@
 package ecommander.pages;
 
+import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.Item;
@@ -223,6 +225,11 @@ public class MultipleHttpPostForm implements Serializable {
 	}
 
 	private void addItemInput(ItemInputName inputDesc, Object value) {
+		if(value instanceof String){
+			if(EmojiManager.containsEmoji((String)value)){
+				value = EmojiParser.parseToHtmlHexadecimal((String)value);
+			}
+		}
 		InputValues values = inputs.get(inputDesc.getItemId());
 		if (values == null) {
 			values = new InputValues();
