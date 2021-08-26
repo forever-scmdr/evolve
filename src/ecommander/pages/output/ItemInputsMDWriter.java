@@ -88,6 +88,7 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 	private static final String INPUT_ELEMENT = "input";
 	
 	private static final String NAME_ATTRIBUTE = "name";
+	private static final String DEFAULT_ATTRIBUTE = "default";
 	private static final String TYPE_ATTRIBUTE = "type";
 	private static final String ACTION_URL_ATTRIBUTE = "action-url";
 	private static final String INPUT_ATTRIBUTE = "input";
@@ -157,7 +158,8 @@ public class ItemInputsMDWriter extends MetaDataWriter {
 						CAPTION_ATTRIBUTE, paramDesc.getCaption(),
 						DESCRIPTION_ATTRIBUTE, paramDesc.getDescription(),
 						INPUT_ATTRIBUTE, inputKey.getInputName(),
-						QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE
+						QUANTIFIER_ATTRIBUTE, paramDesc.isMultiple() ? MULTIPLE_VALUE : SINGLE_VALUE,
+						DEFAULT_ATTRIBUTE, paramDesc.getDefaultValue()
 				};
 				List<String> attrs = new ArrayList<>(Arrays.asList(attrsArr));
 				if (paramDesc.hasDomain()) {

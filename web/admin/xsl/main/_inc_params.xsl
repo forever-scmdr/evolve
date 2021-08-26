@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text></xsl:template>
 
@@ -196,6 +196,7 @@
 
 	<!-- Дата -->
 	<xsl:template match="field[ @type='date']" mode="single">
+		<xsl:variable name="value" select="if(. != '') then . else @default"/>
 		<!-- Дата и время -->
 		<div class="timeStamp" style="">
 			<p style="clear: both;">
@@ -211,12 +212,12 @@
 			</label>
 			<xsl:if test="@format = '' or @format = 'dd.MM.YYYY hh:mm'">
 				<label style="float:left;">
-					<input type="text" class="time" value="{substring(.,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
+					<input type="text" class="time" value="{substring($value,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
 		
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
-			<input class="whole" type="hidden" name="{@input}" value="{.}" />
+			<input class="whole" type="hidden" name="{@input}" value="{$value}" />
 		</div>
 	</xsl:template>
 
