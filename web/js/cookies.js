@@ -2,7 +2,7 @@ function hideFixedBanner(lastModified) {
 	setCookie("fixed_banner_updated", lastModified, 30);
 	$("#banner-fixed-bottom").remove();
 }
-function hidуTeleramBanner(lastModified) {
+function hidуTelegramBanner(lastModified) {
 	setCookie("tg_updated", lastModified, 30);
 	$("#tg-link").remove();
 }

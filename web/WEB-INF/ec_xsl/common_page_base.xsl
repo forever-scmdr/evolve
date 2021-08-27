@@ -75,7 +75,7 @@ padding: 0;
 border: 1px solid #fff;
 width: 22px;
 margin-top: 2px;
-border-radius: 20px;" onclick="hidуTeleramBanner({/page/telegram_link/@last-modified})">×</a>
+border-radius: 20px;" onclick="hidуTelegramBanner({/page/telegram_link/@last-modified})">×</a>
 						<xsl:value-of select="/page/telegram_link/text" disable-output-escaping="yes"/>
 					</div>
 				</div>
