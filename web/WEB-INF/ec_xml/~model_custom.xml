@@ -9169,4 +9169,484 @@
 	<parameter name="emkost_akkumulyatora" caption="Емкость аккумулятора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="747181008" description="" owner-id="0" virtual="false" hidden="false"></parameter>
 </item>
 <!--END_p416558-->
+
+<!--START_p563778-->
+<item name="p563778" caption="Сетевые шуруповерты и гайковерты" key="" ag-id="0" ag-hash="-2110013738" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="bolty" caption="Болты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="93919364" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="krutyaschii_moment" caption="Крутящий момент" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="426736565" description="Нм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="patron_kvadrat" caption="Патрон (квадрат)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="334515622" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="* Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_udarov" caption="Частота ударов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1275455705" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_patrona" caption="Размер патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-917698205" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563778-->
+
+<!--START_p563847-->
+<item name="p563847" caption="Болгарки с диском Ø115 мм" key="" ag-id="0" ag-hash="-2110012871" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563847-->
+
+<!--START_p563848-->
+<item name="p563848" caption="Болгарки с диском Ø125 мм" key="" ag-id="0" ag-hash="-2110012870" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563848-->
+
+<!--START_p563849-->
+<item name="p563849" caption="Болгарки с диском Ø150 мм" key="" ag-id="0" ag-hash="-2110012869" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563849-->
+
+<!--START_p563850-->
+<item name="p563850" caption="Болгарки с диском Ø180 мм" key="" ag-id="0" ag-hash="-2110012847" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об./мин." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563850-->
+
+<!--START_p563851-->
+<item name="p563851" caption="Болгарки с диском Ø230 мм" key="" ag-id="0" ag-hash="-2110012846" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_diska" caption="Диаметр диска" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2007641993" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_moschnost" caption="Максимальная мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1509194207" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya" caption="Скорость вращения" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1029228373" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563851-->
+
+<!--START_p563944-->
+<item name="p563944" caption="Аккумуляторные болгарки (УШМ)" key="" ag-id="0" ag-hash="-2110011913" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_diska" caption="Диаметр диска" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-2007641993" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_akkumulyatora" caption="Напряжение аккумулятора" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1464126130" description="V" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_otreznogo_kruga" caption="Диаметр отрезного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1927546777" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_posadochnogo_otverstiya" caption="Диаметр посадочного отверстия" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-760734882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya" caption="Скорость вращения" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1029228373" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563944-->
+
+<!--START_p563953-->
+<item name="p563953" caption="Цепные пилы" key="" ag-id="0" ag-hash="-2110011883" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="maksimalnaya_moschnost" caption="Максимальная мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1509194207" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shag_tsepi" caption="Шаг цепи" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1181981243" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_shiny" caption="Длина шины" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1594007508" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_shiny" caption="Тип шины" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1749454629" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_zvena" caption="Толщина звена" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1274301262" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_d_h_sh_h_v" caption="Размеры (Д х Ш х В)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="588640636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="suhoi_ves" caption="Сухой вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1435367813" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="raspologenie_motora" caption="Расположение мотора" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1548243291" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_dvigeniya_tsepi" caption="Скорость движения цепи" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1551201966" description="м/сек" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_maslyanogo_kartera" caption="Объем масляного картера" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-71408481" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563953-->
+
+<!--START_p563963-->
+<item name="p563963" caption="Воздуходувки" key="" ag-id="0" ag-hash="-2110011852" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="maksimalnaya_moschnost" caption="Максимальная мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1509194207" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vyduvaemogo_vozduha" caption="Скорость выдуваемого воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-667272398" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="davlenie_vozduha" caption="Давление воздуха" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1276717668" description="кПа" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563963-->
+
+<!--START_p563969-->
+<item name="p563969" caption="Аккумуляторные шуруповерты и гайковерты" key="" ag-id="0" ag-hash="-2110011846" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="razmer_patrona" caption="Размер патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-917698205" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_sverleniya" caption="Диаметр сверления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-735609063" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="napryagenie_akkumulyatora" caption="Напряжение аккумулятора" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="1464126130" description="V" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tochnost_ustanovki_krutyaschego_momenta" caption="Точность установки крутящего момента" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="300040153" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina" caption="Длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="95673940" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="krutyaschii_moment" caption="Крутящий момент" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="426736565" description="Нм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="komplekt_postavki" caption="Комплект поставки" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1618526537" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_vrascheniya_na_holostom_hodu" caption="Скорость вращения на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1139030550" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_udarov" caption="Частота ударов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1275455705" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="samorezy_dlya_dereva" caption="Саморезы для дерева" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1024564719" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="samorezy_po_metallu" caption="Саморезы по металлу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1557258291" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_diametr_sverleniya" caption="Максимальный диаметр сверления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="357554949" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_patrona" caption="Тип патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-451361745" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks__krutyaschii_moment" caption="Макс. крутящий момент" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1396146287" description="Нм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnye_razmery_zatyagivaemyh_rezbovyh_soedinenii" caption="Максимальные размеры затягиваемых резьбовых соединений" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1959212972" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hvostovik" caption="Хвостовик" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-666915957" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnye_razmery_shurupov_boltov_" caption="Максимальные размеры шурупов/болтов:" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1201246883" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p563969-->
+
+<!--START_p564006-->
+<item name="p564006" caption="Дрели" key="" ag-id="0" ag-hash="-2109990893" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_sverleniya" caption="Диаметр сверления" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-735609063" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_patrona" caption="Размер патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-917698205" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_pilnoi_koronki" caption="Диаметр пильной коронки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-111906450" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_udarnaya_nagruzka" caption="Максимальная ударная нагрузка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1981217060" description="удар/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_udarov_pri_polnoi_nagruzke" caption="Число ударов при полной нагрузке" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1142369954" description="удар/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_aksessuary" caption="Стандартные аксессуары" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1173925727" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks__udarnaya_nagruzka" caption="Макс. ударная нагрузка" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2122735871" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564006-->
+
+<!--START_p564060-->
+<item name="p564060" caption="Перфораторы SDS-Plus" key="" ag-id="0" ag-hash="-2109990713" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_patrona" caption="Размер патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-917698205" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_sverleniya" caption="Диаметр сверления" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-735609063" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="energiya_udara" caption="Энергия удара" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-692063262" description="Дж" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_udarov" caption="Частота ударов" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1275455705" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_diametr_bureniya" caption="Максимальный диаметр бурения" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="343619778" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564060-->
+
+<!--START_p564061-->
+<item name="p564061" caption="Перфораторы SDS-Max" key="" ag-id="0" ag-hash="-2109990712" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_bureniya_betona" caption="Диаметр бурения бетона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="813312698" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_patrona" caption="Тип патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-451361745" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_udarov_pri_polnoi_nagruzke" caption="Число ударов при полной нагрузке" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1142369954" description="уд/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="energiya_udara" caption="Энергия удара" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-692063262" description="дж" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564061-->
+
+<!--START_p564101-->
+<item name="p564101" caption="Отбойные молотки SDS-Max" key="" ag-id="0" ag-hash="-2109989937" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_patrona" caption="Тип патрона" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-451361745" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_udarov_pri_nagruzke" caption="Количество ударов при нагрузке" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="888869831" description="/min" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="energiya_udara" caption="Энергия удара" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-692063262" description="Дж" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564101-->
+
+<!--START_p564102-->
+<item name="p564102" caption="Отбойные молотки с шестигранником" key="" ag-id="0" ag-hash="-2109989936" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tip_patrona" caption="Тип патрона" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-451361745" description="мм шестигранник" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="energiya_udara" caption="Энергия удара" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-692063262" description="Дж" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kolichestvo_udarov_pri_nagruzke" caption="Количество ударов при нагрузке" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="888869831" description="удар/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564102-->
+
+<!--START_p564130-->
+<item name="p564130" caption="Монтажные пилы" key="" ag-id="0" ag-hash="-2109989845" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_prutka" caption="Диаметр прутка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1755429500" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_truby" caption="Диаметр трубы" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1992595871" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fasonnaya_stal" caption="Фасонная сталь" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="386644729" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_d_h_sh_h_v" caption="Размеры (Д х Ш х В)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="588640636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564130-->
+
+<!--START_p564136-->
+<item name="p564136" caption="Полировальные машины" key="" ag-id="0" ag-hash="-2109989839" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="nagdachnyi_krug" caption="Наждачный круг" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1535766384" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="mehovaya_nasadka" caption="Меховая насадка" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="977925804" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564136-->
+
+<!--START_p564143-->
+<item name="p564143" caption="Прямошлифовальные машины" key="" ag-id="0" ag-hash="-2109989811" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин." owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="zagimnoi_patron" caption="Зажимной патрон" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="776002025" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks__diametr_nasadki" caption="Макс. диаметр насадки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-690777896" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564143-->
+
+<!--START_p564149-->
+<item name="p564149" caption="Эксцентриковые шлифмашины" key="" ag-id="0" ag-hash="-2109989805" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_ekstsentrika" caption="Ход эксцентрика" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-761388882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kolebanii_" caption="Частота колебаний:" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-249095379" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="diametr_abrazivnogo_kruga" caption="Диаметр абразивного круга" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1953891292" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_vysota" caption="Габаритная высота" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1584904556" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564149-->
+
+<!--START_p564155-->
+<item name="p564155" caption="Плоскошлифовальные машины" key="" ag-id="0" ag-hash="-2109989778" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="potreblyaemaya_moschnost" caption="Потребляемая мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-223891584" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_shlifovalnoi_bumagi" caption="Размер шлифовальной бумаги" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1680466410" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="hod_ekstsentrika" caption="Ход эксцентрика" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-761388882" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chastota_kolebanii_" caption="Частота колебаний:" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-249095379" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="treugolnik" caption="Треугольник" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1763535814" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564155-->
+
+<!--START_p564161-->
+<item name="p564161" caption="Ленточные шлифовальные машины" key="" ag-id="0" ag-hash="-2109989751" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmer_lenty" caption="Размер ленты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1769896726" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_lenty_na_holostom_hodu" caption="Скорость ленты на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-772552751" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564161-->
+
+<!--START_p564167-->
+<item name="p564167" caption="Ножницы по металлу" key="" ag-id="0" ag-hash="-2109989745" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="tolschina_stali" caption="Толщина стали" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1280829389" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="tolschina_nergaveyuschei_stali" caption="Толщина нержавеющей стали" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1266849340" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="min__radius_rezki" caption="Мин. радиус резки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-943047414" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_dvigatelya" caption="Мощность двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321181095" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564167-->
+
+<!--START_p564173-->
+<item name="p564173" caption="Циркулярные пилы" key="" ag-id="0" ag-hash="-2109989718" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_pilnogo_diska" caption="Диаметр пильного диска" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1628373492" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_glubina_propila" caption="Максимальная глубина пропила" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1592344333" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks__glubina_propila" caption="Макс. глубина пропила" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="528857130" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564173-->
+
+<!--START_p564199-->
+<item name="p564199" caption="Лобзики" key="" ag-id="0" ag-hash="-2109989650" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="proizvoditelnost" caption="Производительность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-549296031" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="min__radius_propila" caption="Мин. радиус пропила" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1443300128" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_rabochego_hoda" caption="Длина рабочего хода" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1984714462" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="chislo_hodov_na_holostom_hodu" caption="Число ходов на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="602203594" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ugol_naklona_platformy" caption="Угол наклона платформы" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-27306331" description="° вправо/влево" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564199-->
+
+<!--START_p564200-->
+<item name="p564200" caption="Рубанки" key="" ag-id="0" ag-hash="-2109988977" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="shirina_sreza" caption="Ширина среза" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1178492140" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnaya_glubina_sreza" caption="Максимальная глубина среза" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="174250431" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="glubina_faltsovki" caption="Глубина фальцовки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-415348416" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_dvigatelya" caption="Мощность двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321181095" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="samozatachivayuschiisya_nog" caption="Самозатачивающийся нож" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1522962289" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564200-->
+
+<!--START_p564201-->
+<item name="p564201" caption="Сабельные пилы" key="" ag-id="0" ag-hash="-2109988976" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="proizvoditelnost" caption="Производительность" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-549296031" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_hoda_polotna" caption="Длина хода полотна" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-935918411" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564201-->
+
+<!--START_p564202-->
+<item name="p564202" caption="Фрезеры" key="" ag-id="0" ag-hash="-2109988975" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_zagimnogo_patrona" caption="Диаметр зажимного патрона" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-380715308" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_hoda_polotna" caption="Длина хода полотна" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-935918411" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost_dvigatelya" caption="Мощность двигателя" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1321181095" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564202-->
+
+<!--START_p564203-->
+<item name="p564203" caption="Торцовочные пилы" key="" ag-id="0" ag-hash="-2109988974" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="diametr_pilnogo_diska" caption="Диаметр пильного диска" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1628373492" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vxsh_poperechnyi_propil__0" caption="(ВxШ) поперечный пропил: 0°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1458223723" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_povorote__45" caption="Пропил при повороте: 45°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="170170296" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_povorote__52" caption="Пропил при повороте: 52°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="170170324" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="srez_pod_naklonom__45" caption="Срез под наклоном: 45°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-595976329" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="kombinirovannyi__povorot_45_i_naklon_45" caption="Комбинированный: поворот 45° и наклон 45°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="663004668" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="об/мин" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ugol_povorota" caption="Угол поворота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-269824846" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ugol_naklona_" caption="Угол наклона:" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="681589985" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="fiksator_pologitelnogo_ugla_povorota" caption="Фиксатор положительного угла поворота" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="775086205" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="razmery_d_h_sh_h_v" caption="Размеры (Д х Ш х В)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="588640636" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_povorote__45_l_p" caption="Пропил при повороте: 45° (л/п)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1303458730" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_naklone_vlevo__45" caption="Пропил при наклоне влево: 45°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="4798987" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_naklone_vpravo__45" caption="Пропил при наклоне вправо: 45°" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1448096833" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="propil_pri_povorote_45_vlevo_" caption="Пропил при повороте 45° влево:" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1355308019" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564203-->
+
+<!--START_p564204-->
+<item name="p564204" caption="Строительные фены" key="" ag-id="0" ag-hash="-2109988973" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="vozdushnyi_potok" caption="Воздушный поток" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1933450167" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="temperatura" caption="Температура" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="321701232" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="podacha_holodnogo_vozduha" caption="Подача холодного воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1605114480" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="narugnyi__nasadki" caption="Наружный Ø насадки" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="797182516" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity" caption="Габариты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2086878955" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="насадок, пластиковый кейс" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564204-->
+
+<!--START_p564205-->
+<item name="p564205" caption="Строительные пылесосы" key="" ag-id="0" ag-hash="-2109988972" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="obem_potoka_vozduha" caption="Объем потока воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-429551872" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="davlenie_vozduha" caption="Давление воздуха" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="1276717668" description="кПа" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="obem_rezervuara" caption="Объем резервуара" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="2136241441" description="л" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="shlang_diametr_h_dlina" caption="Шланг (диаметр х длина)" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="1577984660" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabarity" caption="Габариты" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-2086878955" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maksimalnyi_potok_vozduha" caption="Максимальный поток воздуха" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1923272975" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="dlina_pitayuschego_provoda" caption="Длина питающего провода" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="51976486" description="м" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564205-->
+
+<!--START_p564247-->
+<item name="p564247" caption="Строительные миксеры" key="" ag-id="0" ag-hash="-2109988846" virtual="false" user-def="true" description="" super="params *">
+	<parameter name="moschnost" caption="Мощность" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1643161576" description="Вт" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="rezba_shpindelya" caption="Резьба шпинделя" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-491719700" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="ves" caption="Вес" type="double" multiple="false" domain="" format="" ag-id="0" ag-hash="116644" description="кг" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="skorost_na_holostom_hodu" caption="Скорость на холостом ходу" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="421147916" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="gabaritnaya_dlina" caption="Габаритная длина" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-1351367692" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="standartnye_prinadlegnosti" caption="Стандартные принадлежности" type="string" multiple="false" domain="" format="" ag-id="0" ag-hash="-1145065739" description="" owner-id="0" virtual="false" hidden="false"></parameter>
+	<parameter name="maks__diametr_nasadki" caption="Макс. диаметр насадки" type="integer" multiple="false" domain="" format="" ag-id="0" ag-hash="-690777896" description="мм" owner-id="0" virtual="false" hidden="false"></parameter>
+</item>
+<!--END_p564247-->
+
+<!--START_p564328-->
+<item name="p564328" caption="Набор сверл и буров" key="" ag-id="0" ag-hash="-2109987946" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564328-->
+
+<!--START_p564329-->
+<item name="p564329" caption="Сверла по дереву" key="" ag-id="0" ag-hash="-2109987945" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564329-->
+
+<!--START_p564332-->
+<item name="p564332" caption="Бурильные коронки и хвостовики" key="" ag-id="0" ag-hash="-2109987921" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564332-->
+
+<!--START_p564354-->
+<item name="p564354" caption="Сверлильные патроны" key="" ag-id="0" ag-hash="-2109987857" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564354-->
+
+<!--START_p564366-->
+<item name="p564366" caption="Буры SDS-Plus по бетону" key="" ag-id="0" ag-hash="-2109987824" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564366-->
+
+<!--START_p564367-->
+<item name="p564367" caption="Буры SDS-Max по бетону" key="" ag-id="0" ag-hash="-2109987823" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564367-->
+
+<!--START_p564368-->
+<item name="p564368" caption="Адаптеры, переходники" key="" ag-id="0" ag-hash="-2109987822" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564368-->
+
+<!--START_p564370-->
+<item name="p564370" caption="Зубила, долото, пики" key="" ag-id="0" ag-hash="-2109987799" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564370-->
+
+<!--START_p564403-->
+<item name="p564403" caption="Буры Vario" key="" ag-id="0" ag-hash="-2109987052" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564403-->
+
+<!--START_p564414-->
+<item name="p564414" caption="Пилки для лобзика" key="" ag-id="0" ag-hash="-2109987020" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564414-->
+
+<!--START_p564432-->
+<item name="p564432" caption="Пилки для сабельных пил" key="" ag-id="0" ag-hash="-2109986960" virtual="false" user-def="true" description="" super="params *"></item>
+<!--END_p564432-->
 <!--EXP--></model>

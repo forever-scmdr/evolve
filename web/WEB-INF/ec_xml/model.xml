@@ -241,11 +241,11 @@
 		<child item="line_product"/>
 	</item>
 
-	<item name="gifts" caption="Подарки" ag-id="2547" ag-hash="98352451">
+	<item name="gifts" caption="Подарки" ag-id="2633" ag-hash="98352451">
 		<child item="gift_section" />
 	</item>
 
-	<item name="gift_section" caption="Разадел" key="sum" ag-id="2548" ag-hash="-1333043498">
+	<item name="gift_section" caption="Разадел" key="sum" ag-id="2634" ag-hash="-1333043498">
 		<parameter name="sum" type="currency" caption="Минимальная сумма"/>
 		<child item="product" />
 	</item>
