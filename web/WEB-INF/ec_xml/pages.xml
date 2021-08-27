@@ -11,6 +11,7 @@
 	<include-definition name="COMMON">
 		<request>
 			<var name="fixed_banner_updated" scope="cookie"/>
+			<var name="tg_updated" scope="cookie"/>
 		</request>
 		<link name="feedback_link" target="feedback_ajax"/>
 		<link name="news_link" target="news"/>
@@ -602,10 +603,15 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-
+<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
+<!--			<ancestor item="news" transit="false" id="pcat">-->
+<!--				<link name="show_page" target="news_section" type="exclusive">-->
+<!--					<var name="sel" ref="pcat" style="translit"/>-->
+<!--				</link>-->
+<!--			</ancestor>-->
 		</list>
 
 		<list item="news_item" id="latest" tag="latest">
@@ -767,10 +773,15 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-
+<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
+<!--			<ancestor item="news" transit="false" id="pcat">-->
+<!--				<link name="show_page" target="news_section" type="exclusive">-->
+<!--					<var name="sel" ref="pcat" style="translit"/>-->
+<!--				</link>-->
+<!--			</ancestor>-->
 		</list>
 
 		<list item="small_news_item" id="latest" tag="latest">
@@ -804,6 +815,14 @@
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
+
+
+	<!-- <page name="contacts" template="contacts" cacheable="true">
+		<single item="contacts" cacheable="false">
+			<single item="seo"/>
+		</single>
+		<include name="COMMON"/>
+	</page> -->
 
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>

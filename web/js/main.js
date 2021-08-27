@@ -953,3 +953,4 @@ var hideTipTimeout;
 	})();
 
 })(jQuery);
+

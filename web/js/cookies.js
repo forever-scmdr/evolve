@@ -2,6 +2,10 @@ function hideFixedBanner(lastModified) {
 	setCookie("fixed_banner_updated", lastModified, 30);
 	$("#banner-fixed-bottom").remove();
 }
+function hidуTeleramBanner(lastModified) {
+	setCookie("tg_updated", lastModified, 30);
+	$("#tg-link").remove();
+}
 
 function setCookie(c_name, value, exdays) {
 	var exdate = new Date();

@@ -59,37 +59,34 @@
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 	<xsl:template name="HEADER">
-		<xsl:variable name="emoji" select="if(page/telegram_link/emoji != '') then concat('&amp;#',page/telegram_link/emoji, ';') else ''"/>
-		<xsl:if test="page/telegram_link/name != ''">
-			<div class="telagram-link-top">
-				<xsl:if test="link != ''">
-					<a href="{page/telegram_link/link}" style="{page/telegram_link/style}">
-						<xsl:value-of select="page/telegram_link/name"/>
-						<xsl:if test="$emoji != ''">
-							<span class="emoji">
-								<xsl:value-of select="$emoji" disable-output-escaping="yes"/>
-							</span>
-						</xsl:if>
-					</a>
-				</xsl:if>
-				<xsl:if test="not(link != '')">
-					<a style="{page/telegram_link/style}">
-						<xsl:value-of select="page/telegram_link/name"/>
-						<xsl:if test="$emoji != ''">
-							<span class="emoji">
-								<xsl:value-of select="$emoji" disable-output-escaping="yes"/>
-							</span>
-						</xsl:if>
-					</a>
-				</xsl:if>
+		<xsl:if test="/page/telegram_link/text != '' and not(/page/telegram_link/@last-modified = /page/variables/tg_updated)">
+			<div class="telagram-link-top" style="{/page/telegram_link/style}" id="tg-link">
+				<div class="row" style="padding-left:0; padding-right:0;">
+					<div class="col-full" style="position: relative">
+						<a class="close" style="cursor: pointer;
+line-height: 18px;
+position: absolute;
+top: 0;
+left: 0;
+display: block;
+height: 22px;
+font-size: 21px;
+padding: 0;
+border: 1px solid #fff;
+width: 22px;
+margin-top: 2px;
+border-radius: 20px;" onclick="hidуTeleramBanner({/page/telegram_link/@last-modified})">×</a>
+						<xsl:value-of select="/page/telegram_link/text" disable-output-escaping="yes"/>
+					</div>
+				</div>
 			</div>
 		</xsl:if>
 <!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
+		<xsl:call-template name="INTERNAL_VIDGET_CODE"/>
 		<xsl:call-template name="BANNER_TOP" />
 
 		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
-				<xsl:call-template name="INTERNAL_VIDGET_CODE"/>
 				<div class="header__content row">
 					<div class="header__logo">
 						<a class="logo" href="{$base}">
@@ -257,7 +254,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 								<li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
 							</xsl:for-each>
 							<!--  <li><a href="{page/contacts_link}">Контакты</a></li> -->
-                    </ul>
+					</ul>
 					</div>
 					<div class="col-two md-four mob-full s-footer__archives">
 						<h4>Статьи</h4>
@@ -364,7 +361,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.6"/>
+				<link rel="stylesheet" href="css/main.css?version=1.525"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -415,7 +412,6 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 									if(res.text() != "true"){
 										showDefaultAd();
 									}
-									console.log(res.text());
 								}
 								,error: function() {
 									console.log("error checking ads");
@@ -667,7 +663,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 			<xsl:variable name="informers" select="/page/informer"/>
 			<xsl:if test="$informers">
 				<!-- <div class="header__content row"> -->
-					<div style="margin-bottom: 1rem;position: relative;">
+					<div style="position: relative;">
 						<div class="tradingview-widget-container">
 							<div class="tradingview-widget-container__widget"></div>
 							<!-- <div class="tradingview-widget-copyright">
@@ -689,7 +685,7 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 												"title": <xsl:value-of select="concat('&#34;', name, '&#34;')" disable-output-escaping="yes"/>
 											}
 										</xsl:for-each>
-									]
+									]									
 								}</script>
 						</div>
 					<!-- </div> -->
@@ -824,10 +820,11 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 	</xsl:template>
 
 	<xsl:template name="BANNER_FIXED">
-		<xsl:if test="$adv_fixed and not(page/variables/fixed_banner_updated = $adv_fixed/@last-modified)">
+		<xsl:value-of select="page/variables/fixed_banner_updated"/>
+		<xsl:if test="$adv_fixed and not(page/variables/fixed_banner_updated = $adv_fixed/link)">
 			<section id="banner-fixed-bottom">
 				<div class="row" style="padding-left:0; padding-right:0;">
-					<a class="close" style="cursor: pointer; padding: 1rem;" onclick="hideFixedBanner({$adv_fixed/@last-modified})">×</a>
+					<a class="close" style="cursor: pointer; padding: 1rem;" onclick="hideFixedBanner('{$adv_fixed/link}')">×</a>
 					<div class="col-full">
 						<xsl:if test="$adv_fixed/pic !=''">
 							<a href="{$adv_fixed/link}" target="_blank">

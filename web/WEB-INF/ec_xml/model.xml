@@ -14,7 +14,6 @@
 		<child item="bottom_fixed" />
 	</item>
 
-
 	<item name="ad_banner" caption="Баннер" virtual="true" key="name" ag-id="43" ag-hash="270078664">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="link" type="string" caption="Рекламная ссылка"/>
@@ -27,7 +26,7 @@
 	<item name="top_728x90" caption="TOP 780x90" super="ad_banner" ag-id="44" ag-hash="1872585180" />
 	<item name="side_240x400" caption="SIDE 240x400" super="ad_banner" ag-id="45" ag-hash="-1352036862" />
 	<item name="bottom_900x600" caption="BOTTOM 900x600" super="ad_banner" ag-id="46" ag-hash="-1956021597"/>
-	<item name="bottom_fixed" caption="Баннер снизу (фиксированный)" super="ad_banner" ag-id="49" ag-hash="-1710663584"/>
+	<item name="bottom_fixed" caption="Баннер снизу (фиксированный)" super="ad_banner" ag-id="49" ag-hash="-1710663584" />
 
 
 
@@ -155,11 +154,11 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 
-		<on-create class="extra.NameHash"/>
-		<on-update class="extra.NameHash"/>
+		<on-create class="ecommander.fwk.NameHash"/>
+		<on-update class="ecommander.fwk.NameHash"/>
 
-		<on-create class="extra.ArticleFromFuture"/>
-		<on-update class="extra.ArticleFromFuture"/>
+		<on-create class="ecommander.fwk.ArticleFromFuture"/>
+		<on-update class="ecommander.fwk.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" children-per-page="30" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -355,9 +354,7 @@
 	</item>
 
 	<item name="telegram_link" caption="Короткие сообщения" ag-id="48" ag-hash="40040568">
-		<parameter name="name" type="string" caption="Текст ссылки"/>
-		<parameter name="emoji" type="char" caption="Смайлик"/>
-		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="text" type="text" caption="Текст ссылки"/>
 		<parameter name="style" type="string" caption="Стиль"/>
 		<parameter name="start" type="date" caption="показывать с"/>
 		<parameter name="finish" type="date" caption="показывать по"/>
