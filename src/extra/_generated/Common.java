@@ -1,6 +1,7 @@
 
 package extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -115,16 +116,16 @@ public class Common
         return containsValue("yandex_verification", value);
     }
 
-    public void set_boss(String value) {
+    public void add_boss(String value) {
         setValue("boss", value);
     }
 
-    public String get_boss() {
-        return getStringValue("boss");
+    public List<String> getAll_boss() {
+        return getStringValues("boss");
     }
 
-    public String getDefault_boss(String defaultVal) {
-        return getStringValue("boss", defaultVal);
+    public void remove_boss(String value) {
+        removeEqualValue("boss", value);
     }
 
     public boolean contains_boss(String value) {

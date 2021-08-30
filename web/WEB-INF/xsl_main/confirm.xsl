@@ -1,156 +1,109 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
+	<xsl:import href="templates.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="'Заявка оформлена'" />
+	<xsl:variable name="title" select="'Оформление завершено успешно'"/>
+	<xsl:variable name="p" select="page/custom_page"/>
 
-	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
-	<xsl:variable name="is_phys" select="not($is_jur)"/>
-	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
+	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
+	<xsl:variable name="canonical" select="concat('/', $active_menu_item, '/')"/>
 
-	<xsl:template name="PAGE_HEADING">
-		<div class="title title_1">Заявка оформлена</div>
-	</xsl:template>
 
-	<xsl:template name="PAGE_PATH">
-		<div class="path path_common">
-			<div class="path__item">
-				<a href="{$main_host}" class="path__link">Главная страница</a>
-				<div class="path__arrow"></div>
-			</div>
-		</div>
-	</xsl:template>
+	<xsl:variable name="f" select="page/user[@type = ('user_phys', 'user_jur')]"/>
+	<xsl:variable name="is_phys" select="$f/@type = 'user_phys'"/>
+	<xsl:variable name="c" select="page/cart[1]"/>
 
-	<xsl:template name="CONTENT">
-		<div class="cart-confirm">
-			<div class="cart-confirm__text">
-				<p>Заявка №<xsl:value-of select="$cart/order_num"/></p>
-				<p>Позиций: <xsl:value-of select="$cart/qty"/></p>
-				<p>Сумма: <xsl:value-of select="$cart/sum"/></p>
-				<xsl:if test="$is_phys">
-					<p>Покупатель: <xsl:value-of select="$contacts/name"/></p>
-					<p>Телефон: <xsl:value-of select="$contacts/phone"/></p>
-					<p>E-mail: <xsl:value-of select="$contacts/email"/></p>
-					<p>Адрес: <xsl:value-of select="$contacts/address"/></p>
-					<p>Дополнительно: <xsl:value-of select="$contacts/comment"/></p>
+	<!-- Есть товары -->
+	<xsl:variable name="has_non_zero" select="$c/qty != '0'"/>
+	<!-- Есть позиции под заказ -->
+	<xsl:variable name="has_zero" select="$c/zero_qty != '0'"/>
+	<!-- Есть индивидуальный заказ -->
+	<xsl:variable name="has_custom" select="$c/custom_bought[nonempty = 'true']"/>
+
+
+	<xsl:variable name="get_order_from" select="$f/get_order_from"/>
+	<xsl:variable name="POST" select="contains($get_order_from, 'почт')  or $f/post_address!= ''" />
+	<xsl:variable name="KUR" select="contains($get_order_from, 'курьер')" />
+	<xsl:variable name="SELF" select="contains($get_order_from, 'амовывоз')" />
+
+
+	<xsl:variable name="h1">
+		<xsl:choose>
+			<xsl:when test="$has_non_zero">Ваш заказ принят. Копия заказа отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:when>
+			<xsl:otherwise>Ваша заявка принята. Копия заявки отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+
+	<xsl:variable name="in_stock_text">
+		<xsl:choose>
+			<xsl:when test="$POST">
+				<xsl:value-of select="page/order_emails/post" disable-output-escaping="yes" />
+			</xsl:when>
+			<xsl:when test="$KUR">
+				<xsl:value-of select="page/order_emails/kur" disable-output-escaping="yes" />
+			</xsl:when>
+			<xsl:when test="$SELF">
+				<xsl:value-of select="page/order_emails/self" disable-output-escaping="yes" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="page/order_emails/self" disable-output-escaping="yes" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="out_of_stock_text" select="page/order_emails/custom"/>
+
+
+
+	<xsl:template name="CONTENT_INNER">
+		<div class="text">
+			<xsl:if test="not($is_phys)">
+				<p style="font-size: 20px">
+					Счёт на оплату будет отправлен на указанный e-mail/факс после обработки заявки специалистом.
+					Вопросы по обработке заявок и выставлению счёта: (017) 316-14-10<br/>
+					Вопросы по готовности оплаченного заказа: (017) 318-78-78 (Бухгалтерия)
+				</p>
+				<p>&#160;</p>
+				<p style="font-size: 20px">
+					Копия списка выбранных товаров отправлена на e-mail.
+				</p>
+				<p>&#160;</p>
+				<p style="font-size: 20px">
+					<i>Данная форма заказа не является основанием для оплаты или отпуска товара! Производите оплату только после подтверждения
+						заказа и заключения договора!</i>
+				</p>
+				<p style="font-size: 20px">
+					<i>В случае отказа или невозможности оплаты выставленного договора в течении 5 дней просьба сообщить об этом
+						по телефону (017) 318-78-78 (Бухгалтерия)</i>
+				</p>
+
+				<xsl:if test="$has_non_zero">
+					<xsl:value-of select="$in_stock_text" disable-output-escaping="yes"/>
 				</xsl:if>
-				<xsl:if test="not($is_phys)">
-					<p>Организация: <xsl:value-of select="$contacts/organization"/></p>
-					<p>Телефон/факс: <xsl:value-of select="$contacts/phone"/></p>
-					<p>Электнонный адрес: <xsl:value-of select="$contacts/email"/></p>
-					<p>Контактное лицо: <xsl:value-of select="$contacts/contact_name"/></p>
-					<p>Телефон контактного лица: <xsl:value-of select="$contacts/contact_phone"/></p>
-					<p>Юр. адрес: <xsl:value-of select="$contacts/address"/></p>
-					<xsl:if test="not($contacts/no_account = 'да')">
-						<p>Расчетный счет: <xsl:value-of select="$contacts/account"/></p>
-						<p>Название банка: <xsl:value-of select="$contacts/bank"/></p>
-						<p>Адрес банка: <xsl:value-of select="$contacts/bank_address"/></p>
-						<p>Код банка: <xsl:value-of select="$contacts/bank_code"/></p>
-					</xsl:if>
-					<xsl:if test="$contacts/no_account = 'да'">
-						<p>Нет расчетного счета</p>
-					</xsl:if>
-					<p>УНП: <xsl:value-of select="$contacts/unp"/></p>
-					<p>Ф.И.О директора (индивидуального предпринимателя): <xsl:value-of select="$contacts/director"/></p>
-					<p>
-						Действует на основании: <xsl:value-of select="$contacts/base"/>
-						<xsl:if test="$contacts/base != 'Устава'">
-							&#160;№ <xsl:value-of select="$contacts/base_number"/> от <xsl:value-of select="$contacts/base_date"/>
-						</xsl:if>
-					</p>
-					<p>Дополнительно: <xsl:value-of select="$contacts/comment"/></p>
+				<xsl:if test="$has_zero or $has_custom">
+					<xsl:value-of select="$out_of_stock_text" disable-output-escaping="yes"/>
 				</xsl:if>
-			</div>
-			<div class="cart-confirm__table">
-				<table>
-					<tr>
-						<td>Код</td>
-						<td>Наименование</td>
-						<td>Количество</td>
-						<td>Цена</td>
-						<td>Сумма</td>
-						<xsl:if test="$cart/bought/item_own_extras" ><td>Дополнительно</td></xsl:if>
-					</tr>
-					<xsl:for-each select="$cart/bought">
-						<xsl:sort select="type"/>
-						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
-						<tr>
-							<td><xsl:value-of select="$product/code"/></td>
-							<td><xsl:value-of select="$product/name"/></td>
-							<td><xsl:value-of select="qty"/></td>
-							<td><xsl:value-of select="$product/price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
-							<td><xsl:value-of select="sum"/></td>
-							<xsl:if test="$cart/bought/item_own_extras" >
-								<td>
-									<xsl:if test="item_own_extras/extra1"><p><xsl:value-of select="item_own_extras/extra1"/></p></xsl:if>
-									<xsl:if test="item_own_extras/extra2"><p><xsl:value-of select="item_own_extras/extra2"/></p></xsl:if>
-									<xsl:if test="item_own_extras/extra3"><p><xsl:value-of select="item_own_extras/extra3"/></p></xsl:if>
-								</td>
-							</xsl:if>
-						</tr>
-					</xsl:for-each>
-				</table>
-			</div>
+			</xsl:if>
+			<xsl:if test="$is_phys">
+				<xsl:if test="$has_non_zero">
+					<div  style="font-size:20px">
+						<xsl:value-of select="$in_stock_text" disable-output-escaping="yes"/>
+					</div>
+				</xsl:if>
+				<xsl:if test="$has_zero or $has_custom">
+					<div style="font-size: 20px;{' margin-top: 10px;'[$has_non_zero]}"><xsl:value-of select="$out_of_stock_text" disable-output-escaping="yes"/></div>
+				</xsl:if>
+			</xsl:if>
 		</div>
-		<!-- <h3>Заявка №<xsl:value-of select="$cart/order_num"/></h3>
-		<div class="checkout-cont1">
-
-			<div class="table-responsive">
-				<table>
-					<tr>
-						<th>
-							Код
-						</th>
-						<th>
-							Наименование
-						</th>
-						<th>
-							Кол
-						</th>
-						<th>
-							Цена
-						</th>
-						<th>
-							Стоимость
-						</th>
-						<th>
-		                                Наличие
-		                            </th>
-					</tr>
-					<xsl:for-each select="$cart/bought">
-						<xsl:sort select="type"/>
-						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
-						<tr>
-							<td>
-								<xsl:value-of select="$product/code"/>
-							</td>
-							<td valign="top">
-								<strong><xsl:value-of select="$product/name"/></strong>
-							</td>
-							<td valign="top">
-								<xsl:value-of select="qty"/>
-							</td>
-							<td>
-								<xsl:value-of select="$product/price"/>
-								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
-							</td>
-							<td>
-								<xsl:value-of select="sum"/>
-							</td>
-							<td>
-								<xsl:value-of select="$product/qty"/>
-							</td>
-						</tr>
-					</xsl:for-each>
-				</table>
+		<xsl:if test="$seo/bottom_text !=''">
+			<div class="text seo">
+				<xsl:value-of select="$seo/bottom_text" disable-output-escaping="yes"/>
 			</div>
-		</div> -->
+		</xsl:if>
+
 	</xsl:template>
 
 </xsl:stylesheet>

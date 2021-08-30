@@ -2,6 +2,7 @@
 package ecommander.extra._generated;
 
 import java.io.File;
+import java.util.List;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
@@ -172,12 +173,16 @@ public class Catalog
         return containsValue("text", value);
     }
 
-    public void set_picture(File value) {
+    public void add_picture(File value) {
         setValue("picture", value);
     }
 
-    public File get_picture() {
-        return getFileValue("picture", AppContext.getCommonFilesDirPath());
+    public List<File> getAll_picture() {
+        return getFileValues("picture", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_picture(File value) {
+        removeEqualValue("picture", value);
     }
 
     public boolean contains_picture(File value) {

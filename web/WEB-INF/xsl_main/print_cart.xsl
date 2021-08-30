@@ -158,7 +158,7 @@
 							</span>
 						</p>
 
-						<xsl:if test="$cart/bought[quantity != '0']">
+						<xsl:if test="$cart/bought[qty_avail != '0']">
 							<table class="MsoTableGrid" border="1" cellspacing="0"
 								cellpadding="0" width="100%" style="{$top_td_style}">
 								<tr style='mso-yfti-irow:1;height:15.1pt'>

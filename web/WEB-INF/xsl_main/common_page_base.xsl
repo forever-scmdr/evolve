@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="f:f" version="2.0">
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
@@ -37,6 +41,8 @@
 	<xsl:variable name="search_strict" select="$pv/search = 'strict'"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
+	<xsl:variable name="user" select="page/user"/>
+	<xsl:variable name="is_user_registered" select="$user/group/@name = 'registered'"/>
 
 
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
@@ -112,6 +118,9 @@
 						overlay: {
 							locked: false
 						}
+					},
+					beforeLoad: function() {
+						this.title = $(this.element).attr('caption');
 					}
 				});
 				<xsl:text disable-output-escaping="yes">
@@ -290,6 +299,24 @@
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
 		<xsl:value-of select="meta" disable-output-escaping="yes"/>
+	</xsl:template>
+
+
+
+	<xsl:variable name="message" select="$pv/message"/>
+	<xsl:variable name="success" select="$pv/success = ('true', 'yes')"/>
+
+	<xsl:template name="MESSAGE">
+		<xsl:if test="$message and not($success)">
+			<div class="alert alert-danger" style="background: #ffffcc; border: 1px solid #bb8; color: #bb0000;">
+				<p><xsl:value-of select="$message"/></p>
+			</div>
+		</xsl:if>
+		<xsl:if test="$message and $success">
+			<div class="alert alert-success" style="background: #eeffee; border: 1px solid #9c9; color: #007700;">
+				<p><xsl:value-of select="$message"/></p>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 
@@ -744,16 +771,26 @@
 											<img src="img/icon-user.png" alt=""/>
 										</div>
 										<div class="header-icon__info">
-											<a href="">Вход</a>
+											<xsl:if test="not($is_user_registered)">
+												<a href="{page/login_page_link}">Вход</a>
+											</xsl:if>
+											<xsl:if test="$is_user_registered">
+												<a href="{page/personal_link}"><xsl:value-of select="$user/@name"/></a>
+											</xsl:if>
 											<a class="header-icon__dd">
 												<img src="img/icon-caret-down-small.png" alt=""/>
 											</a>
 										</div>
 										<div class="dropdown dropdown_last header-icon__dropdown">
-											<a class="dropdown__item" href="">Вход</a>
-											<a class="dropdown__item" href="{page/register_link}">Регистрация</a>
-											<a class="dropdown__item" href="">Кабинет</a>
-											<a class="dropdown__item" href="">История заказов</a>
+											<xsl:if test="not($is_user_registered)">
+												<a class="dropdown__item" href="{page/login_page_link}">Вход</a>
+												<a class="dropdown__item" href="{page/register_link}">Регистрация</a>
+											</xsl:if>
+											<xsl:if test="$is_user_registered">
+												<a class="dropdown__item" href="{page/personal_link}">Кабинет</a>
+												<a class="dropdown__item" href="{page/purchase_history_link}">История заказов</a>
+												<a class="dropdown__item" href="{page/logout_link}">Выход</a>
+											</xsl:if>
 										</div>
 									</div>
 								</div>

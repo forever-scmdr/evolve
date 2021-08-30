@@ -2,6 +2,7 @@
 package ecommander.extra._generated;
 
 import java.math.BigDecimal;
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -250,44 +251,44 @@ public class Purchase
         return containsValue("payed", value);
     }
 
-    public void set_status_log(Byte value) {
+    public void add_status_log(Byte value) {
         setValue("status_log", value);
     }
 
-    public void setUI_status_log(String value)
+    public void addUI_status_log(String value)
         throws Exception
     {
         setValueUI("status_log", value);
     }
 
-    public Byte get_status_log() {
-        return getByteValue("status_log");
+    public List<Byte> getAll_status_log() {
+        return getByteValues("status_log");
     }
 
-    public Byte getDefault_status_log(Byte defaultVal) {
-        return getByteValue("status_log", defaultVal);
+    public void remove_status_log(Byte value) {
+        removeEqualValue("status_log", value);
     }
 
     public boolean contains_status_log(Byte value) {
         return containsValue("status_log", value);
     }
 
-    public void set_status_date(Long value) {
+    public void add_status_date(Long value) {
         setValue("status_date", value);
     }
 
-    public void setUI_status_date(String value)
+    public void addUI_status_date(String value)
         throws Exception
     {
         setValueUI("status_date", value);
     }
 
-    public Long get_status_date() {
-        return getLongValue("status_date");
+    public List<Long> getAll_status_date() {
+        return getLongValues("status_date");
     }
 
-    public Long getDefault_status_date(Long defaultVal) {
-        return getLongValue("status_date", defaultVal);
+    public void remove_status_date(Long value) {
+        removeEqualValue("status_date", value);
     }
 
     public boolean contains_status_date(Long value) {

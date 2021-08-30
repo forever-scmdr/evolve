@@ -897,7 +897,9 @@ img {
 .device {
 	display: flex;
 	flex-direction: column;
-	gap: 10px; }
+	gap: 10px;
+	margin-bottom: 40px;
+}
 	.device__image {
 		display: flex;
 		justify-content: center;
@@ -958,7 +960,9 @@ img {
 	.device__zoom {
 		align-self: flex-end; }
 	.device__name {
-		flex: 1; }
+		flex: 1;
+		margin-top: 10px;
+	}
 		.device__name a {
 			font-size: 12px;
 			line-height: 120%;

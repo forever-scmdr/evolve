@@ -1,6 +1,7 @@
 
 package extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -47,16 +48,16 @@ public class Preorder
         return containsValue("email", value);
     }
 
-    public void set_code(String value) {
+    public void add_code(String value) {
         setValue("code", value);
     }
 
-    public String get_code() {
-        return getStringValue("code");
+    public List<String> getAll_code() {
+        return getStringValues("code");
     }
 
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
+    public void remove_code(String value) {
+        removeEqualValue("code", value);
     }
 
     public boolean contains_code(String value) {

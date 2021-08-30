@@ -105,7 +105,14 @@
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
+        <link name="login_page_link" target="login_form"/>
+		<link name="logout_link" target="cart_action">
+			<var name="action" value="logout"/>
+			<var name="redirect_target" value="login_form"/>
+		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
+        <link name="personal_link" target="personal"/>
+        <link name="purchase_history_link" target="purchase_history"/>
 		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
 			<var name="cur" value=""/>
 		</link>
@@ -141,7 +148,7 @@
 		<link name="to_fav" target="cart_action">
 			<var name="prod" ref="$prod" parameter="code"/>
 			<var name="action" value="addFav"/>
-			<var name="target" value="fav_ajax"/>
+			<var name="redirect_target" value="fav_ajax"/>
 		</link>
 		<link name="to_compare" target="cookie_list_action_redirect">
 			<var name="update_cookie_name" value="compare"/>
@@ -549,7 +556,7 @@
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="120"/>
+					<var value="2000"/>
 				</limit>
 				<pages>
 					<var var="page"/>
@@ -1099,7 +1106,7 @@
 			<var name="code"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<command class="extra.belchip.BelchipCartCommand" method="createOrLoadCart" />
+		<command class="extra.belchip.BelchipCartCommand" method="preloadCart" />
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1110,7 +1117,7 @@
 						</link>
 						<link name="delete" target="cart_action">
 							<var name="action" value="delete"/>
-							<var name="target" value="cart_ajax"/>
+							<var name="redirect_target" value="cart_ajax"/>
 							<var name="bought" ref="bought"/>
 							<var name="code" ref="product" parameter="code"/>
 						</link>
@@ -1139,16 +1146,22 @@
 			<var name="code"/>
 			<var name="prod"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="min_phys_sum" value="2"/>
+			<var name="min_phys_post_sum" value="10"/>
+			<var name="min_jur_sum" value="20"/>
+			<var name="email_bedy" value="egor@forever-ds.com" />
+			<var name="email_skrig" value="egor@forever-ds.com" />
+			<var name="email_custom" value="egor@forever-ds.com" />
+			<var name="email_post" value="egor@forever-ds.com" />
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="target" value="cart"/>
+			<var name="redirect_target" value="cart"/>
 		</request>
 		<link name="cart_ajax" target="cart_ajax"/>
-		<link name="cart" target-var="target">
+		<link name="cart" target-var="redirect_target">
 			<var name="code" var="code"/>
 			<var name="tab" var="tab"/>
 		</link>
-		<link name="cookie" target-var="target">
+		<link name="cookie" target-var="redirect_target">
 			<var name="action" var="action"/>
 			<var name="code" var="prod"/>
 			<var name="tab" var="tab"/>
@@ -1163,6 +1176,18 @@
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
 		</link>
+		<link name="login_error" target-var="redirect_target">
+			<var name="message" value="Неверный логин/пароль"/>
+			<var name="success" value="no"/>
+		</link>
+		<link name="login_ajax" target-var="redirect_target">
+			<var name="message" value="Учетная запись активирована"/>
+			<var name="success" value="yes"/>
+		</link>
+		<link name="logout_ajax" target-var="redirect_target">
+			<var name="message" value="Учетная запись деактивирована"/>
+			<var name="success" value="yes"/>
+		</link>
 		<command class="extra.belchip.BelchipCartCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
 			<result name="cart" type="redirect"/>
@@ -1170,6 +1195,8 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
+			<result name="login_error" type="redirect"/>
+			<result name="login_ajax" type="redirect"/>
 		</command>
 	</page>
 
@@ -1188,7 +1215,8 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="tab"/>
 		</request>
-		<command class="extra.belchip.BelchipCartCommand" method="createOrLoadCart" />
+		<command class="extra.belchip.BelchipCartCommand" method="preloadCart" />
+		<command class="extra.belchip.BelchipCartCommand" method="createCustomBoughts" />
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
@@ -1230,7 +1258,7 @@
 			<link name="from_fav" target="cart_action">
 				<var name="prod" ref="fav" parameter="code"/>
 				<var name="action" value="removeFav"/>
-				<var name="target" value="cart"/>
+				<var name="redirect_target" value="cart"/>
 				<var name="tab" value="tab_favourite"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:fav"/>
@@ -1252,25 +1280,47 @@
 
 	<page name="proceed" template="proceed">
 		<request>
+			<var name="cur" value="BYN" scope="cookie"/>
 			<var name="message"/>
 		</request>
 		<session>
-			<single item="user_phys" id="phys" tag="phys"/>
-			<single item="user_jur" id="jur" tag="jur"/>
+			<single item="user" tag="user"/>
 			<single item="cart"/>
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="user_phys"/>
+			<extra-input ref="user_phys" form="user_phys" name="pseudo"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="user_jur"/>
+			<extra-input ref="user_jur" form="user_jur" name="pseudo"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>
 		</link>
-		<link name="confirm_link" target="cart_action" type="itemform">
-			<var name="action" value="customerForm"/>
+		<link name="confirm_phys_link" target="cart_action" type="itemform">
+			<var name="action" value="postPhys"/>
 		</link>
+		<link name="confirm_jut_link" target="cart_action" type="itemform">
+			<var name="action" value="postJur"/>
+		</link>
+		<list item="delivery" >
+			<filter>
+				<parameter name="currency" sign="=" compare="SOME">
+					<var var="cur"/>
+				</parameter>
+			</filter>
+			<list item="payment" assoc="general"/>
+			<list item="absent" assoc="general"/>
+		</list>
+		<list item="payment">
+			<filter>
+				<parameter name="currency" sign="=" compare="SOME">
+					<var var="cur"/>
+				</parameter>
+			</filter>
+		</list>
+		<list item="absent"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1279,15 +1329,11 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer_phys"/>
-		</new>
-		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" form="customer_jur"/>
-		</new>
 		<session>
+			<single item="user" tag="user"/>
 			<single item="cart">
 				<list item="bought" id="bought"/>
+				<list item="custom_bought" id="custom_bought" />
 			</single>
 		</session>
 		<list item="product" tag="product" id="prod">
@@ -1300,10 +1346,11 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
+		<list item="order_emails"/>
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
-		<command class="extra.belchip.BelchipCartCommand" method-var="method" />
+		<command class="extra.belchip.BelchipCartCommand" method="removeCart"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1313,7 +1360,7 @@
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
-		<command class="extra.belchip.BelchipCartCommand"	method="createOrLoadCart" />
+		<command class="extra.belchip.BelchipCartCommand"	method="preloadCart" />
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
@@ -1322,68 +1369,119 @@
 				<list item="custom_bought" id="custom_bought" />
 			</single>
 		</session>
-		<single item="product" reference-item="product" tag="ref">
+		<list item="product" ref="product" tag="ref">
 			<ancestor item="section" tag="section" />
-		</single>
+		</list>
 		<single item="currencies"/>
 		<link name="cart_link" target="cart" />
 		<link name="proceed_link" target="proceed" />
 	</page>
 
-	<!--
 
-        <page name="download_cart" template="download_cart">
-            <variables>
-                <var name="method" value="restoreFromCookie" />
-                <var name="cart_cookie" scope="cookie" />
-                <var name="currency" scope="cookie" />
-            </variables>
-            <command class="ecommander.extra.CartManageCommand"
-                     method-var="method" />
-            <command class="ecommander.extra.CartManageCommand"
-                     method="createOrLoadCart" />
-            <session>
-                <item name="cart" id="cart">
-                    <item name="bought" id="bought">
-                        <item name="product" id="product" tag="product">
-                            <link name="show_product" target="product">
-                                <var name="selected_product" item="product" parameter="code" />
-                            </link>
-                        </item>
-                    </item>
-                    <item name="custom_bought" id="custom_bought" />
-                </item>
-            </session>
-            <link name="cart_link" target="cart" />
-            <link name="proceed_link" target="proceed" />
-            <item name="currency"/>
-        </page>
-    -->
+
+	<page name="download_cart" template="download_cart">
+		<request>
+			<var name="currency" scope="cookie" />
+		</request>
+		<command class="extra.belchip.BelchipCartCommand" method="preloadCart" />
+		<session>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product">
+						<link name="show_product" target="product">
+							<var name="selected_product" ref="product" parameter="code" />
+						</link>
+					</list>
+				</list>
+				<list item="custom_bought" id="custom_bought" />
+			</single>
+		</session>
+		<link name="cart_link" target="cart" />
+		<link name="proceed_link" target="proceed" />
+		<single item="currencies"/>
+	</page>
+
+
 
 	<page name="order_email" template="order_email">
+		<request>
+			<var name="action" />
+			<var name="order_num" />
+			<var name="url_base" value="http://belchip.by" />
+			<var name="also" value="" />
+			<var name="currency"/>
+		</request>
+		<single item="phys">
+			<list item="bed" />
+			<list item="skr" />
+			<list item="post" />
+		</single>
+		<single item="jur">
+			<list item="bed" />
+			<list item="skr" />
+			<list item="post" />
+		</single>
 		<session>
-			<single item="cart">
-				<list item="bought" id="bought"/>
+			<single item="user" tag="user"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product" />
+				</list>
+				<list item="custom_bought" />
 			</single>
-			<list item="user" tag="registration"/>
-			<new item="user_phys" id="user_phys">
-				<parameter-input ref="user_phys" form="customer_phys"/>
-			</new>
-			<new item="user_jur" id="user_jur">
-				<parameter-input ref="user_jur" form="customer_jur"/>
-			</new>
 		</session>
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
-		<single item="common"/>
+		<single item="currencies"/>
+	</page>
+
+
+
+	<page name="request_email" template="request_email">
+		<request>
+			<var name="action" value="post_jur" />
+			<var name="order_num" />
+			<var name="also" value="" />
+			<var name="currency" />
+			<var name="url_base" value="http://belchip.by" />
+		</request>
+		<single item="phys">
+			<list item="custom" />
+		</single>
+		<single item="jur">
+			<list item="custom" />
+		</single>
+		<session>
+			<single item="user" tag="user"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product" />
+				</list>
+				<list item="custom_bought" />
+			</single>
+		</session>
+		<single item="currencies"/>
+	</page>
+
+
+
+	<page name="order_file" template="order_file">
+		<headers Content-Type="application/xml;charset=utf-8" />
+		<request>
+			<var name="action" value="post_jur" />
+			<var name="order_num" />
+			<var name="currency" />
+			<var name="url_base" value="https://belchip.by" />
+		</request>
+		<list item="payment"/>
+		<session>
+			<single item="user" tag="user"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product" />
+				</list>
+				<list item="custom_bought" />
+			</single>
+		</session>
+		<single item="currencies"/>
 	</page>
 
 
@@ -1403,14 +1501,14 @@
 			<link name="from_fav" target="cart_action">
 				<var name="prod" ref="prod" parameter="code"/>
 				<var name="action" value="removeFav"/>
-				<var name="target" value="fav_ajax"/>
+				<var name="redirect_target" value="fav_ajax"/>
 			</link>
 		</list>
 		<single item="product" var="code" parameter="code" id="deleted" tag="deleted">
 			<link name="to_fav" target="cart_action">
 				<var name="prod" ref="deleted" parameter="code"/>
 				<var name="action" value="addFav"/>
-				<var name="target" value="fav_ajax"/>
+				<var name="redirect_target" value="fav_ajax"/>
 			</link>
 		</single>
 		<link name="fav_link" target="cart">
@@ -1488,7 +1586,7 @@
 			<link name="from_fav" target="cart_action">
 				<var name="prod" ref="prod" parameter="code"/>
 				<var name="action" value="removeFav"/>
-				<var name="target" value="fav"/>
+				<var name="redirect_target" value="fav"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
@@ -1551,7 +1649,7 @@
 		</session>
 		<link name="submit_login" target="register_action">
 			<var name="action" value="login"/>
-			<var name="src" value="personal"/>
+			<var name="redirect_target" value="personal"/>
 		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
@@ -1573,21 +1671,22 @@
 	<page name="register_action">
 		<request>
 			<var name="action"/>
-			<var name="src" value="register"/>
+			<var name="redirect_target" value="register"/>
 		</request>
-		<link name="error" target-var="src">
+		<link name="error" target-var="redirect_target">
 			<var name="success" value="no"/>
 		</link>
-		<link name="success" target-var="src">
+		<link name="success" target-var="redirect_target">
 			<var name="success" value="yes"/>
 		</link>
-		<link name="user_exists" target-var="src">
+		<link name="user_exists" target-var="redirect_target">
 			<var name="success" value="no"/>
 		</link>
-		<link name="mismatch" target-var="src">
+		<link name="mismatch" target-var="redirect_target">
 			<var name="success" value="no"/>
 		</link>
-		<link name="update_success" target-var="src">
+		<link name="update_success" target-var="redirect_target">
+			<var name="message" value="Изменения успешно сохранены"/>
 			<var name="success" value="yes"/>
 		</link>
 		<command class="extra.belchip.RegisterCommand" method-var="action">
@@ -1622,9 +1721,9 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<link name="submit_form" target="register_action">
+		<link name="submit_form" target="cart_action">
 			<var name="action" value="login"/>
-			<var name="src" value="login_form"/>
+			<var name="redirect_target" value="personal"/>
 		</link>
 		<include name="COMMON"/>
 	</page>
@@ -1642,12 +1741,14 @@
 
 	<page name="personal" template="personal" authority-groups="registered">
 		<personal>
-			<single item="user" id="user">
+			<single item="user" id="user" tag="user">
 				<parameter-input ref="user"/>
-				<extra-input name="new-password-1" ref="user"/>
-				<extra-input name="new-password-2" ref="user"/>
+				<extra-input name="p1" ref="user"/>
+				<extra-input name="p2" ref="user"/>
+				<extra-input name="p3" ref="user"/>
 				<link name="confirm_link" target="register_action" type="itemform">
-					<var name="action" value="update"/>
+					<var name="action" value="edit"/>
+					<var name="redirect_target" value="personal"/>
 				</link>
 			</single>
 		</personal>

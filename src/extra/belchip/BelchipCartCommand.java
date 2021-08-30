@@ -13,7 +13,6 @@ import extra._generated.ItemNames;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
@@ -36,13 +35,14 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 	private static final String MARKER_SEPARATOR = ":=:";
 	private static final String ITEM_SEPARATOR = ":item:";
-	private static final String BOUGHT_SEPARATOR = BOUGHT + MARKER_SEPARATOR;
-	private static final String CUSTOM_BOUGHT_SEPARATOR = CUSTOM_BOUGHT + MARKER_SEPARATOR;
+
 
 	private boolean needPost = false;
 	private Item userInfo = null;
 
 	private static final String FAV_COOKIE = "favourites";
+	private static final String FORM_PHYS_FORM = "form_phys";
+	private static final String FORM_JUR_FORM = "form_jur";
 
 	/**
 	 * Восстанавливает корзину из сохраненной ранее в БД
@@ -58,38 +58,51 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	/**
 	 * Добавить в корзину заказы из временно сохраненной корзины (из пользовательского айтема)
 	 * @param userInfo
-	 * @throws Exception TODO
+	 * @throws Exception
 	 */
 	private void restoreBoughtsFromTemp(Item userInfo) throws Exception {
-		if (userInfo == null || userInfo.isValueEmpty(user_.PURCHASE_SERIALIZED))
+		if (userInfo == null || (userInfo.isValueEmpty(user_.BOUGHTS_SERIALIZED) && userInfo.isValueEmpty(user_.CUSTOM_BOUGHTS_SERIALIZED)))
 			return;
-		String serialized = userInfo.getStringValue(user_.PURCHASE_SERIALIZED);
+
+		boolean hasNoRegularBoughts = cart == null || getSessionMapper().getItemsByName(BOUGHT, cart.getId()).isEmpty();
+		boolean hasNoCustomBoughts = cart == null || getSessionMapper().getItemsByParamValue(CUSTOM_BOUGHT, custom_bought_.NONEMPTY, "true").isEmpty();
 
 		// Простые заказы (айтемы bought)
-		String boughtsString = StringUtils.substringBefore(serialized, CUSTOM_BOUGHT_SEPARATOR);
-		String boughts = StringUtils.substringAfter(boughtsString, BOUGHT_SEPARATOR);
-		String[] codeQtys = StringUtils.split(boughts, ";/");
-		for (String codeQty : codeQtys) {
-			String[] pair = StringUtils.split(codeQty, ':');
-			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, pair[0]);
-			double qty = DoubleDataType.parse(pair[1]);
-			if (product != null) {
-				addProduct(product, qty);
+		if (hasNoCustomBoughts) {
+			String boughts = userInfo.getStringValue(user_.BOUGHTS_SERIALIZED);
+			String[] codeQtys = StringUtils.split(boughts, ";/");
+			if (codeQtys.length > 0 && cart == null)
+				createNewSessionCart();
+			for (String codeQty : codeQtys) {
+				String[] pair = StringUtils.split(codeQty, ':');
+				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, pair[0]);
+				double qty = DoubleDataType.parse(pair[1]);
+				if (product != null) {
+					addProduct(product, qty);
+				}
 			}
 		}
 
 		// Персональный заказ (айтемы custom_bought)
-		String customBoughtsString = StringUtils.substringAfter(serialized, CUSTOM_BOUGHT_SEPARATOR);
-		String[] cbSerialized = StringUtils.splitByWholeSeparator(customBoughtsString, ITEM_SEPARATOR);
-		List<Item> customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
-		if (customBoughts.isEmpty()) {
-			createCustomBoughts();
-			customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
-		}
-		for (int i = 0; i < cbSerialized.length && i < customBoughts.size(); i++) {
-			Item cb = customBoughts.get(i);
-			Item.restoreParamValues(cb, cbSerialized[i]);
-			getSessionMapper().saveTemporaryItem(cb);
+		if (hasNoCustomBoughts) {
+			String customBoughtsString = userInfo.getStringValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
+			String[] cbSerialized = StringUtils.splitByWholeSeparator(customBoughtsString, ITEM_SEPARATOR);
+			if (cbSerialized.length > 0) {
+				if (cart == null)
+					cart = getSessionMapper().getSingleRootItemByName(CART);
+				if (cart == null)
+					createNewSessionCart();
+				List<Item> customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
+				if (customBoughts.isEmpty()) {
+					createCustomBoughts();
+					customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
+				}
+				for (int i = 0; i < cbSerialized.length && i < customBoughts.size(); i++) {
+					Item cb = customBoughts.get(i);
+					Item.restoreParamValues(cb, cbSerialized[i]);
+					getSessionMapper().saveTemporaryItem(cb);
+				}
+			}
 		}
 	}
 
@@ -145,23 +158,6 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	}
 
 	/**
-	 * Добавляет к корзине айтемы для товаров, которых нет на сайте и чел хочет чтобы они появились
-	 * (custom_bought). Добавляется 10 айтемов, показывается не сайте 5
-	 * @throws Exception
-	 */
-	private void createCustomBoughts() throws Exception {
-		if (getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId()).size() > 0)
-			return;
-		// Добавление айтемов для персонального заказа
-		for (int i = 0; i < CUSTOM_BOUGHT_COUNT; i++) {
-			Item custom = getSessionMapper().createSessionItem(CUSTOM_BOUGHT, cart.getId());
-			custom.setValue(custom_bought_.POSITION, i);
-			getSessionMapper().saveTemporaryItem(custom);
-		}
-		getSessionMapper().saveTemporaryItem(cart);
-	}
-
-	/**
 	 * Восстанавливает корзину из строки вида product_id_1:qty1;product_id_2:qty2;....
 	 * (обычно куки)
 	 * @param cookie
@@ -171,6 +167,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if (StringUtils.isBlank(cookie) || cookie.indexOf(':') == -1)
 			return;
 		String[] idQtys = StringUtils.split(cookie, ";/");
+		if (idQtys.length > 0 && cart == null)
+			createNewSessionCart();
 		for (String idQty : idQtys) {
 			String[] pair = StringUtils.split(idQty, ':');
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, pair[0]);
@@ -200,6 +198,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				Item section = new ItemQuery(SECTION).setChildId(product.getId(), false).loadFirstItem();
 				Item bought = getSessionMapper().createSessionItem(BOUGHT, cart.getId());
 				qty = round(qty, product.getDoubleValue(product_.MIN_QTY, 1));
+				bought.setValue(bought_.NAME, product.getStringValue(product_.NAME) + " " + product.getStringValue(product_.NAME_EXTRA));
 				bought.setValue(bought_.QTY_TOTAL, qty);
 				bought.setValue(bought_.LIMIT_1, section.getValue(bought_.LIMIT_1));
 				bought.setValue(bought_.LIMIT_2, section.getValue(bought_.LIMIT_2));
@@ -351,21 +350,21 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				this.minimalOrderSum = (float) min;
 				lessThenMinimalOrderMessage = PHYS_LTM;
 			}
-			return cart.getDoubleValue(cart_.SUM, 0d) >= min;
+			return cart.getDecimalValue(cart_.SUM, BigDecimal.ZERO).compareTo(BigDecimal.valueOf(min)) >= 0;
 		} else {
 			min = Double.parseDouble(getVarSingleValue("min_jur_sum"));
 			min = (orderVars == null) ? min : orderVars.getDoubleValue(order_emails_.MIN_JUR, min);
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
-			double sum = 0d;
+			BigDecimal sum = BigDecimal.ZERO;
 			for (Item bought : boughts) {
 				double q = bought.getDoubleValue(bought_.QTY_TOTAL, 0d);
 				Item product = getSessionMapper().getSingleItemByName(PRODUCT, bought.getId());
-				double price = product.getDoubleValue(product_.PRICE, 0d);
-				sum += q * price;
+				BigDecimal price = product.getDecimalValue(product_.PRICE, BigDecimal.ZERO);
+				sum = sum.add(price.multiply(BigDecimal.valueOf(q)));
 			}
 			this.minimalOrderSum = (float) min;
 			lessThenMinimalOrderMessage = JUR_LTM;
-			return sum >= min;
+			return sum.compareTo(BigDecimal.valueOf(min)) >= 0;
 		}
 	}
 
@@ -415,6 +414,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			result.addVariable("not_set", param);
 		}
 		cart.setExtra(MESSAGE_PARAM, "Заполните, пожалуйста, обязательные поля");
+
 		cart.setExtra(IN_PROGRESS, "false");
 		getSessionMapper().saveTemporaryItem(cart);
 		return result;
@@ -530,24 +530,23 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			if (StringUtils.equals("true", customBought.getStringValue(custom_bought_.NONEMPTY))) {
 				Item historyCustomBought = Item.newChildItem(ItemTypeRegistry.getItemType(CUSTOM_BOUGHT), purchase);
 				Item.updateParamValues(customBought, historyCustomBought);
-				executeCommandUnit(SaveItemDBUnit.get(historyCustomBought));
+				executeCommandUnit(SaveItemDBUnit.get(historyCustomBought).ignoreUser());
 			}
 		}
 		for (Item bought : boughts) {
 			Item historyBought = Item.newChildItem(ItemTypeRegistry.getItemType(BOUGHT), purchase);
 			Item.updateParamValues(bought, historyBought);
-			executeCommandUnit(SaveItemDBUnit.get(historyBought));
+			executeCommandUnit(SaveItemDBUnit.get(historyBought).ignoreUser());
 		}
 		commitCommandUnits();
 	}
 
 	/**
-	 * Сериализовать корзину в параметр айтема пользователя (без личных пользовательских данных)
+	 * Сериализовать обычные заказы корзины
 	 * @return
 	 * @throws Exception
 	 */
-	private String serializeCart() throws Exception {
-		StringBuilder sb = new StringBuilder();
+	private String serializeBoughts() throws Exception {
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 		ArrayList<String> codeQtys = new ArrayList<>();
 		for (Item bought : boughts) {
@@ -555,9 +554,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			double quantity = bought.getDoubleValue(bought_.QTY_TOTAL);
 			codeQtys.add(product.getStringValue(product_.CODE) + ":" + quantity);
 		}
-		if (codeQtys.size() > 0) {
-			sb.append(BOUGHT_SEPARATOR).append(StringUtils.join(codeQtys, '/'));
-		}
+		return StringUtils.join(codeQtys, '/');
+	}
+
+	/**
+	 * Сериализовать персональные заказы корзины
+	 * @return
+	 * @throws Exception
+	 */
+	private String serializeCustomBoughts() throws Exception {
 		ArrayList<Item> customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
 		StringBuilder customBoughtString = new StringBuilder();
 		for (Item bought : customBoughts) {
@@ -565,9 +570,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				customBoughtString.append(ITEM_SEPARATOR).append(Item.setializeParamValues(bought));
 			}
 		}
-		if (customBoughtString.length() > 0)
-			sb.append(CUSTOM_BOUGHT_SEPARATOR).append(customBoughtString);
-		return sb.toString();
+		return customBoughtString.toString();
 	}
 
 	/**
@@ -624,12 +627,17 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * Имеется в виду сохранение корзины в БД или в куки
 	 * @throws Exception
 	 */
-	private void saveCartChanges() throws Exception {
+	private void saveCartChangesInDBAndCookie() throws Exception {
 		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 		if (isRegistered()) {
 			Item userInfo = getUserInfo();
-			userInfo.setValue(user_.PURCHASE_SERIALIZED, serializeCart());
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(userInfo));
+			String regularBoughts = serializeBoughts();
+			if (StringUtils.isNotBlank(regularBoughts))
+				userInfo.setValue(user_.BOUGHTS_SERIALIZED, regularBoughts);
+			String customBoughts = serializeCustomBoughts();
+			if (StringUtils.isNotBlank(customBoughts))
+				userInfo.setValue(user_.CUSTOM_BOUGHTS_SERIALIZED, customBoughts);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(userInfo).ignoreUser());
 		} else {
 			StringBuilder sb = new StringBuilder();
 			for (Item bought : boughts) {
@@ -652,6 +660,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (cart == null)
 			restoreFromCookie();
+		if (cart == null)
+			return false;
 		boolean result = true;
 		boolean hasCustom = false;
 		int customBoughtItemId = ItemTypeRegistry.getItemTypeId(CUSTOM_BOUGHT);
@@ -688,7 +698,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			Item formCustom = customNode.getItem();
 			Item sessionCustom = getSessionMapper().getItem(formCustom.getId(), CUSTOM_BOUGHT);
 			if (sessionCustom != null) {
-				Item.updateParamValues(formCustom, sessionCustom);
+				Item.updateParamValues(formCustom, sessionCustom, custom_bought_.POSITION);
 				if (formCustom.isValueNotEmpty(custom_bought_.LINK) || formCustom.isValueNotEmpty(custom_bought_.MARK)) {
 					sessionCustom.setValue(custom_bought_.NONEMPTY, "true");
 					hasCustom = true;
@@ -699,7 +709,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 		}
 		boolean recalc = recalculateCart();
-		saveCartChanges();
+		saveCartChangesInDBAndCookie();
 		return (recalc || hasCustom) && result;
 	}
 
@@ -720,7 +730,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				sessionUser = getSessionMapper().createSessionRootItem(formUser.getTypeName());
 			}
 		}
-		Item.updateParamValues(formUser, sessionUser);
+		Item.updateParamValues(formUser, sessionUser, user_.PASSWORD, user_.EMAIL, user_.COMMENT);
 		//ItemHttpPostForm.editExistingItem(form, sessionUser, NEED_POST_ADDRESS_PARAM, JUR_NEED_POST_ADDRESS_PARAM, MESSAGE_PARAM);
 		for (Parameter param : sessionUser.getAllParameters()) {
 			String strValue = sessionUser.outputValue(param.getName());
@@ -780,7 +790,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @param currency
 	 * @throws Exception
 	 */
-	private void saveOrderToXMLFile(boolean isPhys, String displayOrderNumber, String currency) throws Exception {
+	private String saveOrderToXMLFile(boolean isPhys, String displayOrderNumber, String currency) throws Exception {
 		String folder = AppContext.getRealPath(
 				"WEB-INF/"
 						+ (isPhys ? getVarSingleValueDefault("phys_folder", "phys")
@@ -797,11 +807,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		orderFileLink.addStaticVariable("deivery", user.getStringValue("get_order_from"));
 		orderFileLink.addStaticVariable("payment", user.getStringValue("pay_by"));
 		orderFileLink.addStaticVariable("currency", currency);
+		/* TODO DEBUG
 		ExecutablePagePE orderFileTemplate = getExecutablePage(orderFileLink.serialize());
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(orderFileTemplate, out);
 		File file = new File(folder + "/" + displayOrderNumber + ".xml");
 		FileUtils.writeByteArrayToFile(file, out.toByteArray());
+
+		 */
+		return orderFileLink.serialize();
 	}
 
 	/**
@@ -885,6 +899,16 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		}
 	}
 
+	/**
+	 * Создать новую корзину в сеансе
+	 * @return
+	 */
+	private Item createNewSessionCart() {
+		cart = getSessionMapper().createSessionRootItem(CART);
+		getSessionMapper().saveTemporaryItem(cart);
+		return cart;
+	}
+
 
 
 
@@ -894,15 +918,39 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+	/**
+	 * Добавляет к корзине айтемы для товаров, которых нет на сайте и чел хочет чтобы они появились
+	 * (custom_bought). Добавляется 10 айтемов, показывается не сайте 5
+	 * @throws Exception
+	 */
+	public ResultPE createCustomBoughts() throws Exception {
+		if (cart == null)
+			cart = getSessionMapper().getSingleRootItemByName(CART);
+		if (cart == null)
+			createNewSessionCart();
+		if (getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId()).size() > 0)
+			return null;
+		// Добавление айтемов для персонального заказа
+		for (int i = 0; i < CUSTOM_BOUGHT_COUNT; i++) {
+			Item custom = getSessionMapper().createSessionItem(CUSTOM_BOUGHT, cart.getId());
+			custom.setValue(custom_bought_.POSITION, i);
+			getSessionMapper().saveTemporaryItem(custom);
+		}
+		getSessionMapper().saveTemporaryItem(cart);
+		return null;
+	}
+
 	/**
 	 * Заказ товара. Создает новую корзину если нужно.
 	 */
 	public ResultPE addToCart() throws Exception {
-		createOrLoadCart();
-		if (cart.getByteValue(cart_.PROCESSED, (byte) 0) != 0) {
+		preloadCart();
+		if (cart == null) {
+			createNewSessionCart();
+		} else if (cart.getByteValue(cart_.PROCESSED, (byte) 0) != 0) {
 			getSessionMapper().removeItems(cart.getId());
-			cart = getSessionMapper().createSessionRootItem(CART);
-			getSessionMapper().saveTemporaryItem(cart);
+			createNewSessionCart();
 		}
 		long productId = Long.parseLong(getVarSingleValue(PRODUCT_PARAM));
 		double quantity = 0;
@@ -912,7 +960,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		Item product = ItemQuery.loadById(productId);
 		addProduct(product, quantity);
 		recalculateCart();
-		saveCartChanges();
+		saveCartChangesInDBAndCookie();
 		return getResult("cart_ajax");
 	}
 
@@ -923,7 +971,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @return
 	 * @throws Exception
 	 */
-	public ResultPE createOrLoadCart() throws Exception {
+	public ResultPE preloadCart() throws Exception {
 		// если несколько корзин
 		try {
 			cart = getSessionMapper().getSingleRootItemByName(CART);
@@ -945,18 +993,18 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @throws Exception
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
-		cart = getSessionMapper().createSessionRootItem(CART);
-		getSessionMapper().saveTemporaryItem(cart);
-
 		if (isRegistered()) {
 			restoreCartFromUserInfo();
 		} else {
 			restoreCartFromCookieString(getVarSingleValue(CART_COOKIE));
 		}
-		recalculateCart();
-		createCustomBoughts();
+		if (cart != null) {
+			recalculateCart();
+			createCustomBoughts();
+		}
 		return null;
 	}
+
 
 	/**
 	 * Переход на стараницу ввода контактных данных
@@ -998,7 +1046,10 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		getSessionMapper().removeItems(USER);
 		getSessionMapper().removeItems(CART);
 		endUserSession();
-		return getResult("login_ajax");
+
+		ResultPE res = getResult("logout_ajax");
+		res.addVariable("refresh", "yes");
+		return res;
 	}
 
 	/**
@@ -1010,15 +1061,14 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE merge() throws Exception {
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (cart == null) {
-			getSessionMapper().createSessionRootItem(CART);
-			getSessionMapper().saveTemporaryItem(cart);
+			createNewSessionCart();
 		}
 		String purchaseId = getVarSingleValue("cookie");
 		if (StringUtils.isNotBlank(purchaseId)) {
 			Item purchase = ItemQuery.loadById(Long.parseLong(purchaseId));
 			addOldPurchaseToCart(purchase);
 			recalculateCart();
-			saveCartChanges();
+			saveCartChangesInDBAndCookie();
 		}
 		return getResult("cart_ajax");
 	}
@@ -1031,23 +1081,27 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @throws Exception
 	 */
 	public ResultPE login() throws Exception {
-		MultipleHttpPostForm form = getItemForm();
-		String pass = form.getSingleStringExtra(PASSWORD_PARAM);
-		User user = UserMapper.getUser(form.getSingleStringExtra(LOGIN_PARAM), pass);
+		String pass = getVarSingleValue(PASSWORD_PARAM);
+		User user = UserMapper.getUser(getVarSingleValue(LOGIN_PARAM), pass);
 		if (user == null) {
 			return getResult("login_error");
 		}
-		Item userInfo = loadUserInfo(user);
+		userInfo = loadUserInfo(user);
 		if (userInfo != null) {
 			getSessionMapper().saveTemporaryItem(userInfo, USER);
 		}
 		startUserSession(user);
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (cart == null) {
-			cart = getSessionMapper().createSessionRootItem(CART);
-			getSessionMapper().saveTemporaryItem(cart);
+			createNewSessionCart();
+			restoreCartFromUserInfo();
+			if (cart != null)
+				recalculateCart();
+		} else {
+			restoreCartFromUserInfo();
+			recalculateCart();
+			saveCartChangesInDBAndCookie();
 		}
-		restoreCartFromUserInfo();
 
 		//getSessionMapper().removeItems("chosen");
 		if (userInfo != null) {
@@ -1070,10 +1124,10 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE delete() throws Exception {
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		// В этом случае ID не самого продукта, а объекта bought
-		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
-		getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
+		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT));
+		getSessionMapper().removeItems(boughtId, BOUGHT);
 		recalculateCart();
-		saveCartChanges();
+		saveCartChangesInDBAndCookie();
 		return getResult("cart");
 	}
 
@@ -1085,7 +1139,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE postJur() throws Exception {
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), "true") || cart.getByteValue(cart_.PROCESSED, (byte) 0) == 1) {
-			return getResult("success");
+			return getResult("proceed");
 		}
 		cart.setExtra(IN_PROGRESS, "true");
 		getSessionMapper().saveTemporaryItem(cart);
@@ -1126,10 +1180,11 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		boolean hasCustomBougths = !getSessionMapper().getItemsByParamValue(CUSTOM_BOUGHT, custom_bought_.NONEMPTY, "true").isEmpty();
 
 		final String customerEmail = userForm.getStringValue(user_.EMAIL).trim();
+		LinkPE regularLink = LinkPE.parseLink("");
 		if (hasRegularBoughts) {
 			String regularTopic = "Заказ " + userForm.getStringValue(user_jur_.ORGANIZATION) + " №" + displayOrderNumber + " от "
 					+ DAY_FORMATTER.print(DateTime.now());
-			LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
+			regularLink = LinkPE.newDirectLink("link", "order_email", false);
 			regularLink.addStaticVariable("order_num", displayOrderNumber);
 			regularLink.addStaticVariable("action", "post_jur");
 			if (hasZeroBoughts || hasCustomBougths) {
@@ -1142,17 +1197,18 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			emails.add(getVarSingleValue(EMAIL_CUSTOM));
 
 			try {
-				sendEmail(emails, regularTopic, regularLink);
+				//sendEmail(emails, regularTopic, regularLink); TODO debug
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
 		}
 
+		LinkPE customLink = LinkPE.parseLink("");
 		if (hasZeroBoughts || hasCustomBougths) {
 			String customTopic = "Запрос " + userForm.getStringValue(user_jur_.ORGANIZATION) + " №" + String.format("%05d", orderNumber) + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
-			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
+			customLink = LinkPE.newDirectLink("link", "request_email", false);
 			customLink.addStaticVariable("order_num", orderNumber + "");
 			customLink.addStaticVariable("action", "post_jur");
 			if (hasRegularBoughts) {
@@ -1161,7 +1217,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink);
+				//sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink); TODO debug
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1171,15 +1227,18 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		generateBarcodes(boughts);
 
 		// save as XML
-		saveOrderToXMLFile(false, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
+		String link = saveOrderToXMLFile(false, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
 		savePurchaseToHisotry(boughts, date, orderNumber, displayOrderNumber);
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
+		cart.setExtra(IN_PROGRESS, "false");
 		cart.setValue(cart_.PROCESSED, (byte) 1);
 		getSessionMapper().saveTemporaryItem(cart);
-		return getResult("success");
+
+		return getResult("confirm").setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link);
+		//return getResult("confirm"); TODO DEBUG
 	}
 
 	/**
@@ -1190,7 +1249,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE postPhys() throws Exception {
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), "true") || cart.getByteValue(cart_.PROCESSED, (byte) 0) == 1) {
-			return getResult("success");
+			return getResult("proceed");
 		}
 		cart.setExtra(IN_PROGRESS, "true");
 		getSessionMapper().saveTemporaryItem(cart);
@@ -1231,11 +1290,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 		final String customerEmail = userSession.getStringValue(EMAIL_PARAM);
 
+		LinkPE regularLink = LinkPE.parseLink("");
 		if (hasRegularBoughts) {
 			String regularTopic = "Заказ " + userForm.getStringValue(user_phys_.SECOND_NAME) + " №" + displayOrderNumber + " от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
-			LinkPE regularLink = LinkPE.newDirectLink("link", "order_email", false);
+			regularLink = LinkPE.newDirectLink("link", "order_email", false);
 			regularLink.addStaticVariable("order_num", displayOrderNumber);
 			regularLink.addStaticVariable("action", "post_phys");
 			if (hasZeroBoughts || hasCustomBougths) {
@@ -1260,17 +1320,18 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			emails.add(regEmail);
 
 			try {
-				sendEmail(emails, regularTopic, regularLink);
+				//sendEmail(emails, regularTopic, regularLink); TODO DEBUG
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
 		}
 
+		LinkPE customLink = LinkPE.parseLink("");
 		if (hasZeroBoughts || hasCustomBougths) {
 			String customTopic = "Запрос " + userForm.getStringValue(user_phys_.SECOND_NAME) + " №" + String.format("%05d", orderNumber) + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
-			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
+			customLink = LinkPE.newDirectLink("link", "request_email", false);
 			customLink.addStaticVariable("order_num", orderNumber + "");
 			customLink.addStaticVariable("action", "post_phys");
 			if (hasRegularBoughts) {
@@ -1279,8 +1340,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic,
-						customLink);
+				//sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink); TODO DEBUG
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1290,15 +1350,35 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		generateBarcodes(boughts);
 
 		// Generate XML file
-		saveOrderToXMLFile(true, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
+		String link = saveOrderToXMLFile(true, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
 		savePurchaseToHisotry(boughts, date, orderNumber, displayOrderNumber);
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
+		cart.setExtra(IN_PROGRESS, "false");
 		cart.setValue(cart_.PROCESSED, (byte) 1);
 		getSessionMapper().saveTemporaryItem(cart);
-		return getResult("success");
+
+		return getResult("confirm").setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link);
+
+		//return getResult("confirm"); TODO DEBUG
+	}
+
+	/**
+	 * Удалить корзину
+	 * @return
+	 */
+	public ResultPE removeCart() throws Exception {
+		getSessionMapper().removeItems(CART);
+		Item user = getUserInfo();
+		if (user != null) {
+			user.clearValue(user_.BOUGHTS_SERIALIZED);
+			user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
+		}
+		setCookieVariable(CART_COOKIE, null);
+		return null;
 	}
 
 	/**

@@ -25,7 +25,8 @@ public class User_jur
     public final static String POST_REGION = "post_region";
     public final static String POST_COUNTRY = "post_country";
     public final static String COMMENT = "comment";
-    public final static String PURCHASE_SERIALIZED = "purchase_serialized";
+    public final static String BOUGHTS_SERIALIZED = "boughts_serialized";
+    public final static String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
     public final static String FAV_COOKIE = "fav_cookie";
     public final static String ORGANIZATION = "organization";
     public final static String CONTRACT_NUMBER = "contract_number";
@@ -44,6 +45,7 @@ public class User_jur
     public final static String BASE_NUMBER = "base_number";
     public final static String BASE_DATE = "base_date";
     public final static String FUND = "fund";
+    public final static String SEND_CONTRACT_TO = "send_contract_to";
 
     private User_jur(Item item) {
         super(item);
@@ -326,20 +328,36 @@ public class User_jur
         return containsValue("comment", value);
     }
 
-    public void set_purchase_serialized(String value) {
-        setValue("purchase_serialized", value);
+    public void set_boughts_serialized(String value) {
+        setValue("boughts_serialized", value);
     }
 
-    public String get_purchase_serialized() {
-        return getStringValue("purchase_serialized");
+    public String get_boughts_serialized() {
+        return getStringValue("boughts_serialized");
     }
 
-    public String getDefault_purchase_serialized(String defaultVal) {
-        return getStringValue("purchase_serialized", defaultVal);
+    public String getDefault_boughts_serialized(String defaultVal) {
+        return getStringValue("boughts_serialized", defaultVal);
     }
 
-    public boolean contains_purchase_serialized(String value) {
-        return containsValue("purchase_serialized", value);
+    public boolean contains_boughts_serialized(String value) {
+        return containsValue("boughts_serialized", value);
+    }
+
+    public void set_custom_boughts_serialized(String value) {
+        setValue("custom_boughts_serialized", value);
+    }
+
+    public String get_custom_boughts_serialized() {
+        return getStringValue("custom_boughts_serialized");
+    }
+
+    public String getDefault_custom_boughts_serialized(String defaultVal) {
+        return getStringValue("custom_boughts_serialized", defaultVal);
+    }
+
+    public boolean contains_custom_boughts_serialized(String value) {
+        return containsValue("custom_boughts_serialized", value);
     }
 
     public void set_fav_cookie(String value) {
@@ -628,6 +646,22 @@ public class User_jur
 
     public boolean contains_fund(String value) {
         return containsValue("fund", value);
+    }
+
+    public void set_send_contract_to(String value) {
+        setValue("send_contract_to", value);
+    }
+
+    public String get_send_contract_to() {
+        return getStringValue("send_contract_to");
+    }
+
+    public String getDefault_send_contract_to(String defaultVal) {
+        return getStringValue("send_contract_to", defaultVal);
+    }
+
+    public boolean contains_send_contract_to(String value) {
+        return containsValue("send_contract_to", value);
     }
 
 }

@@ -12,6 +12,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 
@@ -153,9 +154,8 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 	 * @throws Exception
 	 */
 	public ResultPE edit() throws Exception {
-		long id = Long.parseLong(getVarSingleValue("id"));
 		final Item formUser = getItemForm().getItemSingleTransient();
-		Item dbUser = ItemQuery.loadById(id);
+		Item dbUser = ItemQuery.loadById(formUser.getId());
 		if (dbUser == null)
 			return getResult("error");
 		String p1 = formUser.getStringExtra(P1_EXTRA);
@@ -178,8 +178,8 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 			currentUser.setNewPassword(p2);
 			executeAndCommitCommandUnits(new UpdateUserDBUnit(currentUser, false).ignoreUser(true));
 		}
-		Item.updateParamValues(formUser, dbUser);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(dbUser).ignoreUser(true));
+		Item.updateParamValues(formUser, dbUser, user_.PASSWORD);
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(dbUser).ignoreUser(true).noFulltextIndex());
 
 		getSessionMapper().removeItems(USER);
 		Item sessionUser = getSessionMapper().createSessionRootItem(dbUser.getTypeName());

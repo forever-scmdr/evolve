@@ -1,63 +1,37 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="user_data_inputs.xsl"/>
-	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
-	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="success" select="page/variables/success = 'true'"/>
-	<xsl:variable name="is_jur" select="page/user_jur//@validation-error"/>
-	<xsl:variable name="registered" select="page/user/group/@name = 'registered'"/>
+	<xsl:variable name="title" select="'Вход'"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
-	<xsl:template name="CONTENT">
-		<!-- CONTENT BEGIN -->
-		<div class="path-container">
-			<div class="path">
-				<a href="/">Главная страница</a> <i class="fas fa-angle-right"></i>
-			</div>
-			<!-- <xsl:call-template name="PRINT"/> -->
-		</div>
-		<xsl:if test="$registered">
-			<h1 class="page-title">Вход выполнен.</h1>
-			<p>Добро пожаловать!</p>
-		</xsl:if>
-		<xsl:if test="not($registered)">
-			<h1 class="page-title">Вход</h1>
 
-			<div class="page-content m-t">
-				<xsl:if test="$message and not($success)">
-					<div class="alert alert-danger">
-						<h4>Ошибка</h4>
-						<p><xsl:value-of select="$message"/></p>
-					</div>
-				</xsl:if>
-				<xsl:if test="$message and $success">
-					<div class="alert alert-success">
-						<p><xsl:value-of select="$message"/></p>
-					</div>
-				</xsl:if>
-			
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="tab_phys">
-						<p>Введите адрес электрнной почты и пароль.</p>
-						<form action="{page/submit_form}" method="post" onsubmit="lock('tab_phys')">
-							<div class="form-group">
-								<label>Электронная почта:</label>
-								<input type="text" class="form-control" name="email"/>
-							</div>
-							<div class="form-group">
-								<label>Пароль:</label>
-								<input type="password" class="form-control" name="password"/>
-							</div>
-							<input type="submit" value="Войти"/>
-						</form>
+
+	<xsl:template name="PAGE_PATH"></xsl:template>
+
+
+	<xsl:template name="CONTENT_INNER">
+		<xsl:call-template name="MESSAGE"/>
+		<form class="form" action="{page/submit_form}" method="post">
+			<div class="form__item form-item">
+				<div class="form-item__label">
+					<div>Электронная почта: <span>*</span>
 					</div>
 				</div>
+				<input class="input" type="text" name="login"/>
 			</div>
-		</xsl:if>
-
-		<xsl:call-template name="ACTIONS_MOBILE"/>
+			<div class="form__item form-item">
+				<div class="form-item__label">
+					<div>Пароль: <span>*</span>
+					</div>
+				</div>
+				<input class="input" type="password" name="password"/>
+			</div>
+			<button class="button button_big" type="submit">Войти</button>
+		</form>
 	</xsl:template>
+
 
 </xsl:stylesheet>

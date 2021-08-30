@@ -85,6 +85,19 @@
     <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
     <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then ' бел.р.' else ' pуб.'"/>
     <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur) else $currency"/>
+    <xsl:variable name="ceil" select="if ($rates) then f:num($rates/*[name() = concat($currency, '_ceil')]) &gt; 0 else true()"/>
+    <xsl:variable name="format" select="if($ceil) then '### ###' else '### ##0.00'"/>
+
+
+    <xsl:function name="f:format">
+        <xsl:param name="str" as="xs:string?"/>
+        <xsl:sequence select="f:format_n(f:num($str))" />
+    </xsl:function>
+
+    <xsl:function name="f:format_n">
+        <xsl:param name="n" as="xs:double?"/>
+        <xsl:sequence select="format-number($n, $format, 'r')" />
+    </xsl:function>
 
     <xsl:function name="f:exchange_param">
         <xsl:param name="item"/>
@@ -299,6 +312,21 @@
         <xsl:variable name="union" select="if (contains($url, '\?')) then '&amp;' else '?'"/>
         <xsl:value-of select="concat($url, $union, $name, '=', $value)"/>
     </xsl:function>
+
+
+    <xsl:template name="check_radio">
+        <xsl:param name="value"/>
+        <xsl:param name="check"/>
+        <xsl:param name="name"/>
+        <xsl:choose>
+            <xsl:when test="$value = $check">
+                <input name="{$name}" type="radio" checked="checked" value="{$value}" />
+            </xsl:when>
+            <xsl:otherwise>
+                <input name="{$name}" type="radio" value="{$value}" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
 
     <xsl:template match="/">

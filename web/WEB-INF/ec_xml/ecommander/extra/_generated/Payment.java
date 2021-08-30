@@ -1,6 +1,7 @@
 
 package ecommander.extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -81,16 +82,16 @@ public class Payment
         return containsValue("text", value);
     }
 
-    public void set_currency(String value) {
+    public void add_currency(String value) {
         setValue("currency", value);
     }
 
-    public String get_currency() {
-        return getStringValue("currency");
+    public List<String> getAll_currency() {
+        return getStringValues("currency");
     }
 
-    public String getDefault_currency(String defaultVal) {
-        return getStringValue("currency", defaultVal);
+    public void remove_currency(String value) {
+        removeEqualValue("currency", value);
     }
 
     public boolean contains_currency(String value) {

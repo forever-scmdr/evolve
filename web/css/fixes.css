@@ -1,5 +1,6 @@
 .side-menu__header {
-	margin: 28px 0 24px;
+	/*margin: 28px 0 24px;*/
+	margin: 0 0 24px;
 	margin-left: 22px;
 }
 .slider__content {

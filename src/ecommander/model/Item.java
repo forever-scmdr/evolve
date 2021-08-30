@@ -886,7 +886,7 @@ public class Item implements ItemBasics {
 	 * @param destination
 	 * @throws SQLException 
 	 */
-	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...paramNamesToUpdate) {
+	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...exceptParams) {
 		// Если тип айтемов не совпадает - ничего не делать
 		try {
 			Collection<ParameterDescription> paramsToCopy;
@@ -899,13 +899,13 @@ public class Item implements ItemBasics {
 			else
 				return;
 			source.populateMap();
-			HashSet<String> neededParams = null;
+			HashSet<String> excludeParams = null;
 			// Если переданы параметры для копирования, то создать из них множество
-			if (paramNamesToUpdate.length > 0)
-				neededParams = new HashSet<>(Arrays.asList(paramNamesToUpdate));
+			if (exceptParams.length > 0)
+				excludeParams = new HashSet<>(Arrays.asList(exceptParams));
 			for (ParameterDescription paramDesc : paramsToCopy) {
 				// Пропустить ненужные параметры
-				if (neededParams != null && !neededParams.contains(paramDesc.getName()))
+				if (excludeParams != null && excludeParams.contains(paramDesc.getName()))
 					continue;
 				Parameter param = source.paramMap.get(paramDesc.getId());
 				if (param != null) {
@@ -935,15 +935,15 @@ public class Item implements ItemBasics {
 	}
 
 	/**
-	 * Обновить все параметры айтема (если задан список, то параметры из списка)
+	 * Обновить все параметры айтема (кроме параметров из списка)
 	 * При этом, если в источнике значения параметров-файлов пустые, то значения этих файловых
 	 * параметров также удаляются и из редактируемого айтема
 	 * @param source
 	 * @param destination
-	 * @param paramNamesToUpdate
+	 * @param exceptParams
 	 */
-	public static void updateParamValues(Item source, Item destination, String...paramNamesToUpdate) {
-		updateParamValuesInner(source, destination, false, paramNamesToUpdate);
+	public static void updateParamValues(Item source, Item destination, String...exceptParams) {
+		updateParamValuesInner(source, destination, false, exceptParams);
 	}
 
 	/**
@@ -964,10 +964,23 @@ public class Item implements ItemBasics {
 	public final void setExtra(String name, Object value) {
 		if (extras == null)
 			extras = new InputValues();
-		if (value == null)
-			extras.remove(name);
 		else
+			extras.remove(name);
+		if (value != null)
 			extras.add(name, value);
+	}
+
+	/**
+	 * Добавить дополнительное значение в айтем (при этом не удаляя старое значение с таким именем)
+	 * @param name
+	 * @param value
+	 */
+	public final void addExtra(String name, Object value) {
+		if (value == null)
+			return;
+		if (extras == null)
+			extras = new InputValues();
+		extras.add(name, value);
 	}
 	/**
 	 * Извлечь дополнительное значение из айтема

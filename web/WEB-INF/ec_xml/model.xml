@@ -190,7 +190,7 @@
 		<parameter name="analogs" type="file" caption="списки аналогов и сопутсвтующих товаров" description="коды группы аналогов через запятую / коды сопутсвующих"/>
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="text" type="text" caption="Текст на главной старнице" description="текст с картинками" />
-		<parameter name="picture" type="picture" quantifier="multiple" caption="Изображение" description="для прикрепления к тексту" />
+		<parameter name="picture" type="picture" caption="Изображение" description="для прикрепления к тексту" multiple="true" />
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
 		<on-update class="ecommander.fwk.CopyToUpload"/>
@@ -441,7 +441,8 @@
 		<parameter name="text" type="text" caption="Описание" />
 		<parameter name="ask_address" type="byte" domain="0-1" caption="спросить адрес" />
 		<parameter name="show_stores" type="byte" domain="0-1" caption="показать список складов" />
-		<parameter name="currency" type="string" caption="Валюта" quantifier="multiple" />
+		<parameter name="currency" type="string" caption="Валюта" multiple="true"/>
+		<parameter name="country" type="string" caption="Страна" multiple="true"/>
 		<child item="store" />
 		<child item="payment" assoc="general" />
 		<child item="absent" assoc="general" />
@@ -451,7 +452,7 @@
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="suffix" type="string"	caption="буковки в номере заказа" />
 		<parameter name="text" type="text" caption="Описание" />
-		<parameter name="currency" type="string" caption="Валюта" quantifier="multiple" />
+		<parameter name="currency" type="string" caption="Валюта" multiple="true" />
 	</item>
 
 	<item name="absent" caption="в случае отстутствия" key="name" ag-id="5258" ag-hash="-1423908039">
@@ -495,7 +496,7 @@
 
 	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="1897" ag-hash="-1279982965">
 		<parameter name="email" type="string" caption="email" />
-		<parameter name="code" type="string" caption="артикул товара" quantifier="multiple"/>
+		<parameter name="code" type="string" caption="артикул товара" multiple="true"/>
 	</item>
 
 
@@ -516,8 +517,8 @@
 		<parameter name="int_number" type="integer" caption="Номер (число)"/>
 		<parameter name="status" type="byte" caption="Состояние"/>
 		<parameter name="payed" type="byte" caption="Оплачен" domain="0-1"/>
-		<parameter name="status_log" type="byte" caption="журнал стаутса" quantifier="multiple"/>
-		<parameter name="status_date" type="long" caption="дата изменения статуса" quantifier="multiple"/>
+		<parameter name="status_log" type="byte" caption="журнал стаутса" multiple="true"/>
+		<parameter name="status_date" type="long" caption="дата изменения статуса" multiple="true"/>
 
 		<parameter name="client_id" type="long" caption="id клиента"/>
 		<parameter name="login" type="string" caption="Логин клиента"/>
@@ -562,10 +563,11 @@
 		<parameter name="post_city" type="string" caption="Населенный пункт" />
 		<parameter name="post_region" type="string" caption="Область" />
 		<parameter name="post_country" type="string" caption="Страна" />
-		<parameter name="comment" type="string" caption="Дополнительно" virtual="true" />
+		<parameter name="comment" type="string" caption="Дополнительно" />
 
 		<!-- Для временного заказа -->
-		<parameter name="purchase_serialized" type="plain-text" caption="Временный заказ" format="height: 100px"/>
+		<parameter name="boughts_serialized" type="plain-text" caption="Временный заказ" format="height: 100px"/>
+		<parameter name="custom_boughts_serialized" type="plain-text" caption="Временный персональный заказ" format="height: 100px"/>
 		<parameter name="fav_cookie" type="plain-text" caption="Избранное" format="height: 50px"/>
 <!--		<parameter name="user_serialized" type="plain-text" caption="Временные данные пользователя" format="height: 100px"/>-->
 
@@ -594,6 +596,7 @@
 		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
 		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
 		<parameter name="fund" type="string" caption="Источник финансирования" />
+		<parameter name="send_contract_to" type="string" caption="Куда отправлять договор" />
 	</item>
 
 	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
@@ -610,7 +613,7 @@
 		<child item="user"/>
 	</item>
 
-	<item name="order_emails" caption="Варианты  письма клиенту" ag-id="1898" ag-hash="634088040">
+	<item name="order_emails" caption="Варианты письма клиенту" ag-id="1898" ag-hash="634088040">
 		<parameter name="min_jur" type="double" caption="Минимальная сумма заказа Юр. лиц" description="с учетом стоимости заказных позиций"/>
 		<parameter name="min_phys" type="double" caption="Минимальная сумма заказа Физ. лиц" description="без учета стоимости заказных позиций"/>
 		<parameter name="min_post" type="double" caption="Минимальная сумма заказа при отправке ПОЧТОЙ для Физ. лиц"/>
@@ -672,7 +675,7 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
-		<parameter name="boss" type="string" caption="Список должностей руководителя" quantifier="multiple"/>
+		<parameter name="boss" type="string" caption="Список должностей руководителя" multiple="true"/>
 		<!--		<child item="delivery" single="true"/>-->
 <!--		<child item="payment" single="true"/>-->
 		<child item="catalog_texts" single="true"/>

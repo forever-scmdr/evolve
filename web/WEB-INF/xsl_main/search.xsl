@@ -177,7 +177,7 @@
 						<xsl:variable name="selected" select="$query_sec/code = $cur_sec/code"/>
 						<div class="search-links__item search-link{' search-link_active'[$selected]}">
 							<a href="{$cur_sec/show_sec}"><xsl:value-of select="$cur_sec/name"/></a>
-							<a href="{$cur_sec/show_sec}-{$cur_sec/name}">
+							<a href="{$cur_sec/show_products}" title="Перейти в указанный раздел">
 								<img src="img/icon-goto.png" alt=""/>
 							</a>
 							<span>(<xsl:value-of select="count(current-group())"/>)</span>

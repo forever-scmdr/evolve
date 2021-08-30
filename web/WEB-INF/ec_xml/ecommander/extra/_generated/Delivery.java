@@ -1,6 +1,7 @@
 
 package ecommander.extra._generated;
 
+import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -15,6 +16,7 @@ public class Delivery
     public final static String ASK_ADDRESS = "ask_address";
     public final static String SHOW_STORES = "show_stores";
     public final static String CURRENCY = "currency";
+    public final static String COUNTRY = "country";
 
     private Delivery(Item item) {
         super(item);
@@ -127,20 +129,36 @@ public class Delivery
         return containsValue("show_stores", value);
     }
 
-    public void set_currency(String value) {
+    public void add_currency(String value) {
         setValue("currency", value);
     }
 
-    public String get_currency() {
-        return getStringValue("currency");
+    public List<String> getAll_currency() {
+        return getStringValues("currency");
     }
 
-    public String getDefault_currency(String defaultVal) {
-        return getStringValue("currency", defaultVal);
+    public void remove_currency(String value) {
+        removeEqualValue("currency", value);
     }
 
     public boolean contains_currency(String value) {
         return containsValue("currency", value);
+    }
+
+    public void add_country(String value) {
+        setValue("country", value);
+    }
+
+    public List<String> getAll_country() {
+        return getStringValues("country");
+    }
+
+    public void remove_country(String value) {
+        removeEqualValue("country", value);
+    }
+
+    public boolean contains_country(String value) {
+        return containsValue("country", value);
     }
 
 }

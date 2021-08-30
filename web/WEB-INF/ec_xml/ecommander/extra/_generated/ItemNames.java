@@ -440,6 +440,7 @@ public interface ItemNames {
         String ASK_ADDRESS = "ask_address";
         String SHOW_STORES = "show_stores";
         String CURRENCY = "currency";
+        String COUNTRY = "country";
 
     }
 
@@ -1270,7 +1271,8 @@ public interface ItemNames {
         String POST_REGION = "post_region";
         String POST_COUNTRY = "post_country";
         String COMMENT = "comment";
-        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String BOUGHTS_SERIALIZED = "boughts_serialized";
+        String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
 
     }
@@ -1294,7 +1296,8 @@ public interface ItemNames {
         String POST_REGION = "post_region";
         String POST_COUNTRY = "post_country";
         String COMMENT = "comment";
-        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String BOUGHTS_SERIALIZED = "boughts_serialized";
+        String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
         String ORGANIZATION = "organization";
         String CONTRACT_NUMBER = "contract_number";
@@ -1313,6 +1316,7 @@ public interface ItemNames {
         String BASE_NUMBER = "base_number";
         String BASE_DATE = "base_date";
         String FUND = "fund";
+        String SEND_CONTRACT_TO = "send_contract_to";
 
     }
 
@@ -1335,7 +1339,8 @@ public interface ItemNames {
         String POST_REGION = "post_region";
         String POST_COUNTRY = "post_country";
         String COMMENT = "comment";
-        String PURCHASE_SERIALIZED = "purchase_serialized";
+        String BOUGHTS_SERIALIZED = "boughts_serialized";
+        String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
         String NAME = "name";
         String SECOND_NAME = "second_name";

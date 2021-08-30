@@ -76,6 +76,7 @@ public interface CartConstants {
 			add(ItemNames.user_jur_.DIRECTOR);
 			add(ItemNames.user_jur_.BASE);
 			add(ItemNames.user_jur_.FUND);
+			add(ItemNames.user_jur_.SEND_CONTRACT_TO);
 		}
 	};
 
