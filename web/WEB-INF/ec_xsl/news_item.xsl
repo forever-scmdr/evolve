@@ -295,6 +295,8 @@
 			</div>
 		</section>
 
+		<div id="wikitip"></div>
+
 	</xsl:template>
 
 	<xsl:template name="COMMENTS">

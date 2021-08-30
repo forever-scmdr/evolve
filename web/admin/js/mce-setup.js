@@ -8,8 +8,7 @@ var mceSettings = {
 			'insertdatetime media table paste code'
 			, "visualchars", "imagetools", "emoticons"]
 		,external_plugins:{
-			//'spoiler': '/admin/tinymce/plugins/spoiler/plugin.js?v=5.01'
-			'spoiler': '/admin/tinymce/v5_plugins/test_plugin/plugin.js'
+			'spoiler': '/admin/tinymce/v5_plugins/spoiler/plugin.js?v=5'
 		}
 		,toolbar : "undo redo | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image | emoticons | spoiler-add spoiler-remove",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
@@ -190,7 +189,12 @@ $(document).ready(function(){
 
 						editor.on('NodeChange', function(e) {
 							if (e && e.element.nodeName.toLowerCase() == 'img') {
-								tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+								//tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+								var text = editor.getContent();
+								var newText = text.replace("<figcaption>Caption</figcaption>","<figcaption>Фото: </figcaption>");
+								if(text != newText) {
+									editor.setContent(newText);
+								}
 							}
 						});
 					});

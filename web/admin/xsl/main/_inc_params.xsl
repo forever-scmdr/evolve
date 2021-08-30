@@ -329,7 +329,7 @@
 			</xsl:if>
 		</script>
 
-		<script type="text/javascript" src="admin/js/mce-setup.js?v=1.01"></script>
+		<script type="text/javascript" src="admin/js/mce-setup.js?v=5.027"></script>
 		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>
 		
