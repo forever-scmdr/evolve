@@ -43,6 +43,7 @@
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 	<xsl:variable name="user" select="page/user"/>
 	<xsl:variable name="is_user_registered" select="$user/group/@name = 'registered'"/>
+	<xsl:variable name="reg" select="page/registration"/>
 
 
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
@@ -775,7 +776,9 @@
 												<a href="{page/login_page_link}">Вход</a>
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
-												<a href="{page/personal_link}"><xsl:value-of select="$user/@name"/></a>
+												<a href="{page/personal_link}">
+													<xsl:value-of select="if ($is_jur) then substring-before($reg/contact_name, ' ') else $reg/name"/>
+												</a>
 											</xsl:if>
 											<a class="header-icon__dd">
 												<img src="img/icon-caret-down-small.png" alt=""/>

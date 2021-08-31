@@ -131,9 +131,9 @@
 					<xsl:variable name="device-title" select="'Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.'" />
 
 					<xsl:for-each select="('b', 'c', 'd')">
-						<a href="sitepics/{$p/pic_path}{.}.jpg" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" title="{$device-title}">
+						<a href="sitepics/{$p/pic_path}{.}.jpg" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" caption="{$device-title}">
 							<!-- <xsl:if test="position() = 1"> -->
-								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/>
+								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" title="{$device-title}"/>
 							<!-- </xsl:if> -->
 						</a>
 					</xsl:for-each>

@@ -20,13 +20,7 @@
 		</request>
 
 		<personal>
-			<list item="user" tag="registration">
-				<filter>
-					<parameter name="registered">
-						<var value="1"/>
-					</parameter>
-				</filter>
-			</list>
+			<list item="user" tag="registration"/>
 		</personal>
 
 		<usergroup name="0dmin">
@@ -1170,6 +1164,7 @@
 		<link name="not_set" target="proceed" />
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
+		<link name="general_redirect" target-var="redirect_target"/>
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
@@ -1197,6 +1192,7 @@
 			<result name="email_send_failed" type="redirect"/>
 			<result name="login_error" type="redirect"/>
 			<result name="login_ajax" type="redirect"/>
+			<result name="general_redirect" type="redirect"/>
 		</command>
 	</page>
 
@@ -1757,13 +1753,53 @@
 
 
 	<page name="purchase_history" template="purchase_history" authority-groups="registered">
+		<request>
+			<var name="purchase"/>
+			<var name="message"/>
+			<var name="success"/>
+		</request>
 		<personal>
-			<list item="purchase">
+			<list item="purchase" id="purchase">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
 				</filter>
-				<list item="bought" id="bought"/>
+				<link name="to_cart_link" target="cart_action">
+					<var name="purchase" ref="purchase"/>
+					<var name="action" value="merge"/>
+					<var name="redirect_target" value="purchase_history"/>
+				</link>
+				<link name="show_purchase" target="purchase">
+					<var name="purchase" ref="purchase"/>
+				</link>
+				<link name="delete_purchase" target="cart_action">
+					<var name="purchase" ref="purchase"/>
+					<var name="action" value="deletePurchase"/>
+					<var name="redirect_target" value="purchase_history"/>
+				</link>
 			</list>
+		</personal>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<page name="purchase" template="purchase" authority-groups="registered">
+		<request>
+			<var name="purchase"/>
+			<var name="message"/>
+			<var name="success"/>
+		</request>
+		<personal>
+			<single item="purchase" id="purchase" var="purchase">
+				<list item="bought" id="bought">
+					<parameter-input name="qty" ref="bought"/>
+				</list>
+				<link name="to_cart_link" target="cart_action" type="itemform">
+					<var name="purchase" ref="purchase"/>
+					<var name="action" value="merge"/>
+					<var name="redirect_target" value="purchase_history"/>
+				</link>
+			</single>
 		</personal>
 		<list item="product" id="prod">
 			<filter>
@@ -1773,7 +1809,6 @@
 		</list>
 		<include name="COMMON"/>
 	</page>
-
 
 
 

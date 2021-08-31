@@ -1,18 +1,18 @@
 package extra.belchip;
 
 import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.UserExistsExcepion;
+import ecommander.fwk.UserNotAllowedException;
 import ecommander.model.*;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
 import ecommander.persistence.commandunits.UpdateUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 
@@ -116,31 +116,36 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 
 		Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG, User.getDefaultUser(),
 				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		User newUser = new User(formUser.getStringValue(user_.EMAIL), formUser.getStringValue(user_.PASSWORD), "registered user", User.ANONYMOUS_ID);
-		newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.SIMPLE);
-		try {
-			executeCommandUnit(new SaveNewUserDBUnit(newUser).ignoreUser());
-		} catch (UserExistsExcepion e) {
-			getSessionMapper().saveTemporaryItem(sessionUser, USER);
-			sessionUser.setExtra(MESSAGE_EXTRA, "Предоставленный email уже используется для учетной записи. Выберите другой email");
-			return getResult("user_exists");
-		}
 		try {
 			Item userItem = ItemQuery.loadSingleItemByParamValue(USER, user_.EMAIL, formUser.getStringValue(user_.EMAIL));
+			if (userItem != null && userItem.isPersonal())
+				throw new UserNotAllowedException("user exists");
 			if (userItem != null) {
-				Item.updateParamValues(userItem, formUser);
+				Item.updateParamValues(formUser, userItem);
 			} else {
 				userItem = formUser;
 				userItem.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
 			}
-			userItem.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), newUser.getUserId());
-			executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
-			startUserSession(newUser);
+			userItem.setValue(user_.REGISTERED, (byte)1);
+			executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser());
+			userItem = ItemQuery.loadById(userItem.getId(), getDBConnection()); // чтобы подргузился новый пользователь
+			if (userItem == null)
+				throw new Exception("some logic error");
 			commitCommandUnits();
+			User newUser = UserMapper.getUser(userItem.getOwnerUserId());
+			startUserSession(newUser);
+		} catch (UserNotAllowedException | UserExistsExcepion e) {
+			sessionUser.setExtra(MESSAGE_EXTRA, "Предоставленный email уже используется для учетной записи. Выберите другой email");
+			getSessionMapper().saveTemporaryItem(sessionUser, USER);
+			rollbackCommandUnits();
+			ServerLogger.error("Registration error", e);
+			return getResult("user_exists");
 		} catch (Exception e) {
 			//contacts.setValue(MESSAGE_PARAM, ExceptionUtils.getExceptionStackTrace(e));
 			sessionUser.setExtra(MESSAGE_EXTRA, "Ошибка сервера. Попробуйте позже.");
 			getSessionMapper().saveTemporaryItem(sessionUser, USER);
+			rollbackCommandUnits();
+			ServerLogger.error("Registration error", e);
 			return getResult("error");
 		}
 		getSessionMapper().saveTemporaryItem(sessionUser, USER);
@@ -178,7 +183,7 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 			currentUser.setNewPassword(p2);
 			executeAndCommitCommandUnits(new UpdateUserDBUnit(currentUser, false).ignoreUser(true));
 		}
-		Item.updateParamValues(formUser, dbUser, user_.PASSWORD);
+		Item.updateParamValues(formUser, dbUser, user_.PASSWORD, user_.REGISTERED);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(dbUser).ignoreUser(true).noFulltextIndex());
 
 		getSessionMapper().removeItems(USER);

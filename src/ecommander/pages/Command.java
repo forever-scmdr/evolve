@@ -14,6 +14,7 @@ import ecommander.persistence.mappers.SessionItemMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
 import java.util.*;
 /**
  * Базовый класс для всех команд
@@ -297,6 +298,18 @@ public abstract class Command implements AutoCloseable {
 			transaction.executeCommandUnit(unit);
 		}
 		transaction.commit();
+	}
+
+	/**
+	 * Получить текущее подключение
+	 * Его можно корректно получить, т.к. транзакция синхронная, т.е. можно выполнять команды прямо в потоке
+	 * выполнения этой транзакции, в том числе и внешние команды, которые не требуют записи в БД, но участвуют
+	 * в транзакции (операции чтения вновь измененных значений)
+	 * @return
+	 * @throws Exception
+	 */
+	protected final Connection getDBConnection() throws Exception {
+		return transaction.getConn();
 	}
 	/**
 	 * Добавить результат

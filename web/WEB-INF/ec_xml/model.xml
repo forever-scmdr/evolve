@@ -484,7 +484,6 @@
 
 
 	<item name="order_catalog" caption="Заказы клиентов" ag-id="4831" ag-hash="375611432">
-		<child item="purchase_catalog" single="true"/>
 		<child item="preorder_catalog" single="true"/>
 	</item>
 
@@ -500,14 +499,9 @@
 	</item>
 
 
-	<item name="purchase_catalog" caption="Каталог заказов" ag-id="4833" ag-hash="117930715">
-		<child item="purchase"/>
-	</item>
-
-
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417">
 		<parameter name="num" caption="Номер" type="string"/>
-		<parameter name="date" caption="Дата" type="date"/>
+		<parameter name="date" caption="Дата" type="date" format="dd.MM.YYYY HH:mm"/>
 		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
 		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
@@ -571,6 +565,8 @@
 		<parameter name="fav_cookie" type="plain-text" caption="Избранное" format="height: 50px"/>
 <!--		<parameter name="user_serialized" type="plain-text" caption="Временные данные пользователя" format="height: 100px"/>-->
 
+		<child item="purchase"/>
+
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
 		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
@@ -601,6 +597,7 @@
 
 	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
 		<parameter name="name" type="string" caption="Имя"/>
+		<parameter name="middle_name" type="string" caption="Отчество"/>
 		<parameter name="second_name" type="string" caption="фамилия клиента"/>
 		<!--<parameter name="phone" type="string" caption="Телефон"/>-->
 		<parameter name="address" type="string" caption="Адрес" />

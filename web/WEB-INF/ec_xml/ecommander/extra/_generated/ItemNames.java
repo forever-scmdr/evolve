@@ -36,7 +36,6 @@ public interface ItemNames {
     String ORDER_CATALOG = "order_catalog";
     String PREORDER_CATALOG = "preorder_catalog";
     String PREORDER = "preorder";
-    String PURCHASE_CATALOG = "purchase_catalog";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -1099,12 +1098,6 @@ public interface ItemNames {
 
     }
 
-    public interface purchase_catalog_ {
-
-        String _ITEM_NAME = "purchase_catalog";
-
-    }
-
     public interface registered_catalog_ {
 
         String _ITEM_NAME = "registered_catalog";
@@ -1343,6 +1336,7 @@ public interface ItemNames {
         String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
         String NAME = "name";
+        String MIDDLE_NAME = "middle_name";
         String SECOND_NAME = "second_name";
         String ADDRESS = "address";
 

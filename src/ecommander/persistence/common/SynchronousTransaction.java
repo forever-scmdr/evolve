@@ -97,6 +97,20 @@ public final class SynchronousTransaction implements AutoCloseable {
 				rollback();
 		}
 	}
+
+	/**
+	 * Получить текущее подключение
+	 * Его можно корректно получить, т.к. транзакция синхронная, т.е. можно выполнять команды прямо в потоке
+	 * выполнения этой транзакции, в том числе и внешние команды, которые не требуют записи в БД, но участвуют
+	 * в транзакции (операции чтения вновь измененных значений)
+	 * @return
+	 * @throws Exception
+	 */
+	public final Connection getConn() throws Exception {
+		if (conn == null)
+			startTransaction();
+		return conn;
+	}
 	/**
 	 * Откатывает выполненные успешно команды
 	 * @throws Exception 

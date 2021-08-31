@@ -6,6 +6,7 @@ import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra.CartManageCommand;
@@ -87,7 +88,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if (hasNoCustomBoughts) {
 			String customBoughtsString = userInfo.getStringValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
 			String[] cbSerialized = StringUtils.splitByWholeSeparator(customBoughtsString, ITEM_SEPARATOR);
-			if (cbSerialized.length > 0) {
+			if (cbSerialized != null && cbSerialized.length > 0) {
 				if (cart == null)
 					cart = getSessionMapper().getSingleRootItemByName(CART);
 				if (cart == null)
@@ -115,12 +116,22 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private void addOldPurchaseToCart(Item purchase) throws Exception {
 		if (purchase == null)
 			return;
+		MultipleHttpPostForm form = getItemForm();
 		List<Item> oldBoughts = new ItemQuery(BOUGHT).setParentId(purchase.getId(), false).loadItems();
 		for (Item bought : oldBoughts) {
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, bought.getStringValue(bought_.CODE));
 			if (product == null)
 				continue;
-			addProduct(product, bought.getDoubleValue(bought_.QTY_TOTAL));
+			double oldQty = bought.getDoubleValue(bought_.QTY_TOTAL);
+			Double newQty = oldQty;
+			if (form != null) {
+				ItemInputValues input = form.getReadOnlyItemValues(bought.getId());
+				if (input != null) {
+					newQty = DoubleDataType.parse(input.getStringParam(bought_.QTY));
+					newQty = newQty == null ? oldQty : newQty;
+				}
+			}
+			addProduct(product, newQty);
 		}
 	}
 
@@ -505,17 +516,28 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * Окончательно сохранить заказ в истории.
 	 * При этом создаются все сопутсвующие айтемы, такие как bought и custom_bought,
 	 * поторые хранятся как дочерние для заказа
-	 * @param boughts
+	 * @param userInfo
 	 * @param date
 	 * @param orderNumber
 	 * @param displayOrderNumber
 	 * @throws Exception
 	 */
-	private void savePurchaseToHisotry(List<Item> boughts, DateTime date, int orderNumber, String displayOrderNumber) throws Exception {
-		Item orderCatalog = ItemUtils.ensureSingleRootItem(ORDER_CATALOG, User.getDefaultUser(),
-				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		Item purchaseCatalog = ItemUtils.ensureSingleChild(PURCHASE_CATALOG, User.getDefaultUser(), orderCatalog);
-		Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE), purchaseCatalog);
+	private void savePurchaseToHisotry(Item userInfo, DateTime date, int orderNumber, String displayOrderNumber) throws Exception {
+		Item userDB = ItemQuery.loadSingleItemByParamValue(USER_ITEM, user_.EMAIL, userInfo.getStringValue(user_.EMAIL));
+		if (isRegistered()) {
+			userDB = userInfo;
+		} else if (userDB == null) {
+			Item registeredCatalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG, User.getDefaultUser(),
+					UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+			userInfo.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), registeredCatalog.getId());
+			userInfo.setValue(user_.REGISTERED, (byte)0);
+			executeCommandUnit(SaveItemDBUnit.get(userInfo).ignoreUser());
+			userDB = userInfo;
+		} else if (userDB.getOwnerUserId() == userInfo.getOwnerUserId() && !userDB.isPersonal()) {
+			Item.updateParamValues(userInfo, userDB, user_.PASSWORD, user_.REGISTERED);
+			executeCommandUnit(SaveItemDBUnit.get(userDB).ignoreUser());
+		}
+		Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE), userDB);
 		addContactsToPurchase(purchase);
 		purchase.setValue(purchase_.CURRENCY, cart.getStringValue(cart_.CURRENCY));
 		purchase.setValue(purchase_.NUM, displayOrderNumber);
@@ -524,6 +546,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		purchase.setValue(purchase_.STATUS, (byte) OrderManageCommand.orderStatus.WAITING.ordinal());
 		purchase.setValue(purchase_.STATUS_LOG, (byte) OrderManageCommand.orderStatus.WAITING.ordinal());
 		purchase.setValue(purchase_.STATUS_DATE, date.getMillis());
+		purchase.setValue(purchase_.SUM, cart.getDecimalValue(cart_.SUM));
+		purchase.setValue(purchase_.QTY, cart.getDoubleValue(cart_.QTY));
 		executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 		List<Item> customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
 		for (Item customBought : customBoughts) {
@@ -533,6 +557,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				executeCommandUnit(SaveItemDBUnit.get(historyCustomBought).ignoreUser());
 			}
 		}
+		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 		for (Item bought : boughts) {
 			Item historyBought = Item.newChildItem(ItemTypeRegistry.getItemType(BOUGHT), purchase);
 			Item.updateParamValues(bought, historyBought);
@@ -730,7 +755,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				sessionUser = getSessionMapper().createSessionRootItem(formUser.getTypeName());
 			}
 		}
-		Item.updateParamValues(formUser, sessionUser, user_.PASSWORD, user_.EMAIL, user_.COMMENT);
+		Item.updateParamValues(formUser, sessionUser, user_.PASSWORD, user_.REGISTERED);
 		//ItemHttpPostForm.editExistingItem(form, sessionUser, NEED_POST_ADDRESS_PARAM, JUR_NEED_POST_ADDRESS_PARAM, MESSAGE_PARAM);
 		for (Parameter param : sessionUser.getAllParameters()) {
 			String strValue = sessionUser.outputValue(param.getName());
@@ -1063,14 +1088,14 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if (cart == null) {
 			createNewSessionCart();
 		}
-		String purchaseId = getVarSingleValue("cookie");
+		String purchaseId = getVarSingleValue("purchase");
 		if (StringUtils.isNotBlank(purchaseId)) {
 			Item purchase = ItemQuery.loadById(Long.parseLong(purchaseId));
 			addOldPurchaseToCart(purchase);
 			recalculateCart();
 			saveCartChangesInDBAndCookie();
 		}
-		return getResult("cart_ajax");
+		return getResult("general_redirect").setVariable("message", "Заказ добавлен в корзину").setVariable("success", "true");
 	}
 
 	/**
@@ -1129,6 +1154,21 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		recalculateCart();
 		saveCartChangesInDBAndCookie();
 		return getResult("cart");
+	}
+
+	/**
+	 * Удалить заказ
+	 * @return
+	 * @throws Exception
+	 */
+	public ResultPE deletePurchase() throws Exception {
+		String purchaseId = getVarSingleValue("purchase");
+		if (StringUtils.isNotBlank(purchaseId)) {
+			Item purchase = ItemQuery.loadById(Long.parseLong(purchaseId));
+			if (purchase != null)
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(purchase));
+		}
+		return getResult("general_redirect").setVariable("message", "Заказ удален").setVariable("success", "true");
 	}
 
 	/**
@@ -1230,7 +1270,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		String link = saveOrderToXMLFile(false, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
-		savePurchaseToHisotry(boughts, date, orderNumber, displayOrderNumber);
+		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
 		cart.setExtra(IN_PROGRESS, "false");
@@ -1353,16 +1393,14 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		String link = saveOrderToXMLFile(true, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
-		savePurchaseToHisotry(boughts, date, orderNumber, displayOrderNumber);
+		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
 		cart.setExtra(IN_PROGRESS, "false");
 		cart.setValue(cart_.PROCESSED, (byte) 1);
 		getSessionMapper().saveTemporaryItem(cart);
 
-		return getResult("confirm").setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link);
-
-		//return getResult("confirm"); TODO DEBUG
+		return getResult("confirm");
 	}
 
 	/**
@@ -1371,11 +1409,13 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 */
 	public ResultPE removeCart() throws Exception {
 		getSessionMapper().removeItems(CART);
-		Item user = getUserInfo();
-		if (user != null) {
-			user.clearValue(user_.BOUGHTS_SERIALIZED);
-			user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
+		if (isRegistered()) {
+			Item user = getUserInfo();
+			if (user != null) {
+				user.clearValue(user_.BOUGHTS_SERIALIZED);
+				user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
+			}
 		}
 		setCookieVariable(CART_COOKIE, null);
 		return null;

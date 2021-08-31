@@ -1310,23 +1310,48 @@ img {
 		width: 100%;
 		height: 100%;
 		background-color: #fff;
-		overflow: auto;
+		/*overflow: auto;*/
 		padding: 20px;
 		transition: transform, 500ms; }
 		.popup__content_next {
 			transform: translateX(100%); }
 	.popup__header {
 		display: flex;
-		margin-bottom: 20px; }
+		margin-bottom: 20px;
+		position: relative;
+	}
 	.popup__title {
-		font-size: 24px;
-		font-weight: bold;
+		/*font-size: 24px;*/
+		/*font-weight: bold;*/
+		font-size: 1.45rem;
+		line-height: 1.2;
 		flex: 1; }
 	.popup__close {
-		display: flex;
+		/*display: flex;
 		flex: 0 0 24px;
 		align-items: flex-start;
-		justify-content: center; }
+		justify-content: center; */
+		display: block;
+		flex: 0 0 24px;
+		align-items: flex-start;
+		justify-content: center;
+		border-radius: 24px;
+		background: #555;
+		border: 1px solid #ebebeb;
+		position: absolute;
+		top: 0;
+		width: 24px;
+		height: 24px;
+		right: 0;
+		margin-top: -27px;
+		margin-right: -27px;
+		cursor: pointer;
+	}
+	.popup__close > img{
+		width: 12px;
+		margin-top: 5px;
+		margin-left: 5px;
+	}
 	.popup__back {
 		display: flex;
 		flex: 0 0 30px;
@@ -1336,10 +1361,14 @@ img {
 		position: static;
 		margin: auto; }
 	.popup table {
-		border-collapse: collapse; }
+		border-collapse: collapse;
+		margin-bottom: 0;
+	}
 		.popup table td {
 			border: 1px solid #e0e0e0;
-			padding: 5px 8px; }
+			padding: 5px 8px;
+			font-size: 13px;
+		}
 
 .popup-menu {
 	margin: 0 -20px; }

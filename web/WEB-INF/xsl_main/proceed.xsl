@@ -58,6 +58,13 @@
 						</div>
 						<div class="form__item form-item">
 							<div class="form-item__label">
+								<div>Отчество:</div>
+							</div>
+							<input class="input" type="text"
+								   name="{$inp/middle_name/@input}" value="{f:not_empty($inp/middle_name, $u/middle_name)}" error="{$inp/middle_name/@validation-error}"/>
+						</div>
+						<div class="form__item form-item">
+							<div class="form-item__label">
 								<div>Телефон (формат +375 29 1234567): <span>*</span></div>
 							</div>
 							<input class="input" type="text"
