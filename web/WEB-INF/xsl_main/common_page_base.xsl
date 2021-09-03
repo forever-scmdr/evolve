@@ -134,7 +134,7 @@
 				</xsl:text>
 			});
 
-			$("#full_match_only").change(function(e) {
+			$(".full_match_only").change(function(e) {
 				var checked = $(this).find("input[type=checkbox]").is(":checked");
 				if(checked){
 					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_strict_link" />");
@@ -168,7 +168,7 @@
 			"name": "TTD"
 			},
 			"contactPoint": [
-			<xsl:for-each select="page/common/phone" >
+			<xsl:for-each select="$common/phone" >
 				<xsl:if test="position() != 1">,</xsl:if>{
 				"@type":"ContactPoint",
 				"telephone":"<xsl:value-of select="tokenize(., '_')[1]"/>",
@@ -176,8 +176,8 @@
 				}
 			</xsl:for-each>
 			]
-			<xsl:if test="page/common/email != ''">
-				,"email":[<xsl:for-each select="page/common/email" >
+			<xsl:if test="$common/email != ''">
+				,"email":[<xsl:for-each select="$common/email" >
 				<xsl:if test="position() != 1">, </xsl:if>"<xsl:value-of select="."/>"</xsl:for-each>]
 			</xsl:if>
 			}
@@ -605,35 +605,8 @@
 					<div class="top-info">
 						<div class="container">
 							<div class="top-info__wrap wrap">
-								<div class="top-info__location">
-									<p>Магазин «Белчип», ул. Л.Беды, 2Б</p>
-									<div>
-										<a href="mailto:info@belchip.by">info@belchip.by</a>
-										<a href="about.html">схема проезда</a>
-									</div>
-								</div>
-								<div class="top-info__phones phones">
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-									<div class="phones__item">
-										<div class="phones__number">+375 (29) 126-14-13</div>
-										<div class="phones__description">розница</div>
-									</div>
-								</div>
+								<xsl:value-of select="$common/topper/block[1]/text" disable-output-escaping="yes"/>
+								<xsl:value-of select="$common/topper/block[2]/text" disable-output-escaping="yes"/>
 							</div>
 						</div>
 					</div>
@@ -644,12 +617,7 @@
 									<a href="{page/index_link}">
 										<img class="logo__image" src="img/logo.png" alt=""/>
 									</a>
-									<div class="work-hours logo__hours">
-										<p>пн.-пт.<span>9:00-20:00</span>
-										</p>
-										<p>сб.-вс.<span>10:00-17:00</span>
-										</p>
-									</div>
+									<xsl:value-of select="$common/topper/block[3]/text" disable-output-escaping="yes"/>
 								</div>
 								<div class="header__column header__search header-search">
                                     <script>
@@ -705,7 +673,7 @@
 												</label>
 											</div>
 											<div class="header-search__option">
-                                                <label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" id="full_match_only">
+                                                <label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
 													<input style="display: inline-block; vertical-align: middle;"
 														   type="checkbox"
 														   onclick="strictRedirect()">
@@ -764,10 +732,10 @@
 											<img src="img/icon-truck.png" alt=""/>
 										</div>
 										<div class="header-icon__info">
-											<a href="">Где заказ</a>
+											<a href="{page/order_search_link}">Где заказ</a>
 										</div>
 									</div>
-									<div class="header-icons__icon header-icon" id="some_ajax">
+									<div class="header-icons__icon header-icon">
 										<div class="header-icon__icon">
 											<img src="img/icon-user.png" alt=""/>
 										</div>
@@ -921,86 +889,10 @@
 					<div class="footer">
 						<div class="container">
 							<div class="footer__wrap">
-								<div class="footer__column">
-									<div class="footer__title">Частное производственно-торговое унитарное предприятие «БелЧип»</div>
-									<div class="footer__text">
-										<p> </p>Республика Беларусь, 220040,г.Минск,ул Л.Беды, 2Б, пом.317
-										<br/>УНП 191623250 Свидетельство №191623250
-										<br/>выдано 17.01.2012г Минским горисполкомом
-										<br/>Дата регистрации интернет-магазина в Торговом реестре Республики беларусь: 29.12.2016 г.
-									</div>
-								</div>
-								<div class="footer__column">
-									<div class="footer__phones phones">
-										<div class="phones__item">
-											<div class="phones__number">+375 (29) 126-14-13</div>
-											<div class="phones__description">розница</div>
-										</div>
-										<div class="phones__item">
-											<div class="phones__number">+375 (29) 126-14-13</div>
-											<div class="phones__description">розница</div>
-										</div>
-										<div class="phones__item">
-											<div class="phones__number">+375 (29) 126-14-13</div>
-											<div class="phones__description">розница</div>
-										</div>
-										<div class="phones__item">
-											<div class="phones__number">+375 (29) 126-14-13</div>
-											<div class="phones__description">розница</div>
-										</div>
-										<div class="phones__item">
-											<div class="phones__number">+375 (29) 126-14-13</div>
-											<div class="phones__description">розница</div>
-										</div>
-										<div class="footer__phones-jur">Работа с юридическими лицами пн.-пт. с 9:00 до 17:30</div>
-									</div>
-								</div>
-								<div class="footer__column">
-									<div class="footer__social footer-social">
-										<div class="footer-social__icons">
-											<a class="footer-social__icon">
-												<img src="img/icon-social-footer-01.png" alt=""/>
-											</a>
-											<a class="footer-social__icon">
-												<img src="img/icon-social-footer-01.png" alt=""/>
-											</a>
-											<a class="footer-social__icon">
-												<img src="img/icon-social-footer-01.png" alt=""/>
-											</a>
-										</div>
-										<a href="mailto:info@belchip.by">info@belchip.by</a>
-									</div>
-									<div class="footer__copyright copyright">© «Белчип», 2012–2020</div>
-									<a class="forever" href="">Разработка сайта
-										<br/>студия веб-дизайна Forever
-									</a>
-								</div>
-								<div class="footer__payments footer-payments">
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-									<div class="footer-payments__icon">
-										<img src="img/icon-payment-footer-01.png" alt=""/>
-									</div>
-								</div>
+								<xsl:value-of select="$common/footer/block[1]/text" disable-output-escaping="yes"/>
+								<xsl:value-of select="$common/footer/block[2]/text" disable-output-escaping="yes"/>
+								<xsl:value-of select="$common/footer/block[3]/text" disable-output-escaping="yes"/>
+								<xsl:value-of select="$common/footer/block[4]/text" disable-output-escaping="yes"/>
 							</div>
 						</div>
 					</div><!-- меню каталога-->
@@ -1095,10 +987,10 @@
 									</a>
 								</div>
 								<div class="search-mobile">
-									<form action="{page/search_link}" method="post">
+									<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post">
 										<div>
 											<input ajax-href="{page/search_ajax_link}" result="search-result-mobile"
-												   query="q" min-size="3" type="text"
+												   query="q" min-size="3" type="text" minlength="3"
 												   placeholder="Введите поисковый запрос" autocomplete="off"
 												   name="q" value="{$query}"/>
 											<div class="search-mobile__reset">
@@ -1108,12 +1000,29 @@
 										</div>
 										<div class="search-mobile__options">
 											<div class="search-mobile__option search-option">
-												<input type="checkbox"/>
-												<label for="">только по товарам в наличии</label>
+												<label style="{'background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
+													<input style="display: inline-block; vertical-align: middle;"
+														   type="checkbox"
+														   onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
+														<xsl:if test="$only_available">
+															<xsl:attribute name="checked">checked</xsl:attribute>
+														</xsl:if>
+													</input>
+													только по товарам в наличии
+												</label>
 											</div>
 											<div class="search-mobile__option search-option">
 												<input type="checkbox"/>
-												<label for="">строгое соответствие</label>
+												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
+													<input style="display: inline-block; vertical-align: middle;"
+														   type="checkbox"
+														   onclick="strictRedirect()">
+														<xsl:if test="$search_strict">
+															<xsl:attribute name="checked">checked</xsl:attribute>
+														</xsl:if>
+													</input>
+													строгое соответствие
+												</label>
 											</div>
 										</div>
 									</form>
@@ -1136,41 +1045,6 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 			</body>
 		</html>
-	</xsl:template>
-
-
-
-
-
-
-
-
-	<xsl:template name="INC_FOOTER">
-		<div class="footer">
-			<div class="container">
-				<div class="footer__wrap">
-					<xsl:variable name="footer" select="page/common/footer"/>
-					<div class="footer__column">
-						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
-						</xsl:if>
-						<a href="" class="forever">
-							<img src="img/forever.png" alt="" />
-							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
-						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div>
-					</div>
-					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
-				</div>
-			</div>
-		</div>
 	</xsl:template>
 
 

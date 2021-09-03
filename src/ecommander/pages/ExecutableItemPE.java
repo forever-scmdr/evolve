@@ -564,10 +564,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			// Установить дополнительные параметры (пользователь и группа, если они есть)
 			if (getRootType() == ItemRootType.GROUP)
 				query.setGroup(getRootGroupName());
-			else if (getRootType() == ItemRootType.PERSONAL)
+			else if (getRootType() == ItemRootType.PERSONAL) {
+				needLoading = !getSessionContext().getUser().isAnonimous();
 				query.setUser(getSessionContext().getUser());
+			}
 			// Если есть фильтр и ограничение - загрузка общего числа айтемов
-			if (query.hasLimit() && getFilter().hasPage()) {
+			if (needLoading && query.hasLimit() && getFilter().hasPage()) {
 				quantities.putAll(query.loadTotalQuantities());
 			}
 			// Выполнение запроса (если это нужно)

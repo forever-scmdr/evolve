@@ -506,7 +506,10 @@
 		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" caption="Общее количество"/>
+		<parameter name="simple_sum"  type="currency" caption="Сумма без учета скидок" format="###,##0.00" />
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="discount" type="integer" caption="Процент скидки" format="###,###"/>
+		<parameter name="margin"  type="currency" caption="Сумма скидки" format="###,##0.00" />
 
 		<parameter name="int_number" type="integer" caption="Номер (число)"/>
 		<parameter name="status" type="byte" caption="Состояние"/>
@@ -522,8 +525,6 @@
 		<parameter name="client_name" type="string" caption="имя клиента"/>
 		<parameter name="second_name" type="string" caption="фамилия клиента"/>
 		<parameter name="phys" type="byte" caption="физ. лицо" domain="0-1"/>
-
-		<parameter name="cookie" type="string" caption="Печенька"/>
 
 		<!-- Дополнительные сведения -->
 		<parameter name="currency" type="string" caption="Валюта" />
@@ -563,6 +564,7 @@
 		<parameter name="boughts_serialized" type="plain-text" caption="Временный заказ" format="height: 100px"/>
 		<parameter name="custom_boughts_serialized" type="plain-text" caption="Временный персональный заказ" format="height: 100px"/>
 		<parameter name="fav_cookie" type="plain-text" caption="Избранное" format="height: 50px"/>
+		<parameter name="old_login" type="string" caption="Старый логин" description="со старой версии сайта"/>
 <!--		<parameter name="user_serialized" type="plain-text" caption="Временные данные пользователя" format="height: 100px"/>-->
 
 		<child item="purchase"/>

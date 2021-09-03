@@ -28,6 +28,7 @@ public class User
     public final static String BOUGHTS_SERIALIZED = "boughts_serialized";
     public final static String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
     public final static String FAV_COOKIE = "fav_cookie";
+    public final static String OLD_LOGIN = "old_login";
 
     private User(Item item) {
         super(item);
@@ -356,6 +357,22 @@ public class User
 
     public boolean contains_fav_cookie(String value) {
         return containsValue("fav_cookie", value);
+    }
+
+    public void set_old_login(String value) {
+        setValue("old_login", value);
+    }
+
+    public String get_old_login() {
+        return getStringValue("old_login");
+    }
+
+    public String getDefault_old_login(String defaultVal) {
+        return getStringValue("old_login", defaultVal);
+    }
+
+    public boolean contains_old_login(String value) {
+        return containsValue("old_login", value);
     }
 
 }

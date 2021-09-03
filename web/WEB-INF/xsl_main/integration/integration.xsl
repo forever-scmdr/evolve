@@ -53,20 +53,6 @@
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
 			<h2>Процесс выполнения</h2>
-			<xsl:if test="/page/error">
-				<h2>ошибки выполнения интеграции</h2>
-				<table>
-					<xsl:for-each select="/page/error">
-						<tr>
-							<td class="string-no">
-								Строка: <span class="no"><xsl:value-of select="@line"/></span>
-								Позиция: <span class="no"><xsl:value-of select="@coloumn"/></span>
-							</td>
-							<td class="error"><xsl:value-of select="."/></td>
-						</tr>
-					</xsl:for-each>
-				</table>
-			</xsl:if>
 			<table>
 				<tr>
 					<td colspan="2">
@@ -93,6 +79,15 @@
 					<td>Проиндексировано товаров:</td>
 					<td class="error"><xsl:value-of select="/page/items-indexed"/></td>
 				</tr>
+				<xsl:if test="/page/error">
+					<tr><td colspan="2" align="center"><b>Ошибки выполнения интеграции</b></td></tr>
+					<xsl:for-each select="/page/error">
+						<tr>
+							<td class="string-no"><xsl:value-of select="@line"/></td>
+							<td class="error"><xsl:value-of select="."/></td>
+						</tr>
+					</xsl:for-each>
+				</xsl:if>
 				<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>
 				<xsl:for-each select="/page/message">
 					<tr>

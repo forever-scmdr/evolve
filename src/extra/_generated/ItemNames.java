@@ -36,7 +36,6 @@ public interface ItemNames {
     String ORDER_CATALOG = "order_catalog";
     String PREORDER_CATALOG = "preorder_catalog";
     String PREORDER = "preorder";
-    String PURCHASE_CATALOG = "purchase_catalog";
     String PURCHASE = "purchase";
     String USER = "user";
     String USER_JUR = "user_jur";
@@ -1073,7 +1072,10 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_AVAIL = "qty_avail";
         String QTY_TOTAL = "qty_total";
+        String SIMPLE_SUM = "simple_sum";
         String SUM = "sum";
+        String DISCOUNT = "discount";
+        String MARGIN = "margin";
         String INT_NUMBER = "int_number";
         String STATUS = "status";
         String PAYED = "payed";
@@ -1086,7 +1088,6 @@ public interface ItemNames {
         String CLIENT_NAME = "client_name";
         String SECOND_NAME = "second_name";
         String PHYS = "phys";
-        String COOKIE = "cookie";
         String CURRENCY = "currency";
         String PAYMENT = "payment";
         String DELIVERY = "delivery";
@@ -1096,12 +1097,6 @@ public interface ItemNames {
         String COUNTRY = "country";
         String ADDRESS = "address";
         String IF_ABSENT = "if_absent";
-
-    }
-
-    public interface purchase_catalog_ {
-
-        String _ITEM_NAME = "purchase_catalog";
 
     }
 
@@ -1274,6 +1269,7 @@ public interface ItemNames {
         String BOUGHTS_SERIALIZED = "boughts_serialized";
         String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
+        String OLD_LOGIN = "old_login";
 
     }
 
@@ -1299,6 +1295,7 @@ public interface ItemNames {
         String BOUGHTS_SERIALIZED = "boughts_serialized";
         String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
+        String OLD_LOGIN = "old_login";
         String ORGANIZATION = "organization";
         String CONTRACT_NUMBER = "contract_number";
         String CONTACT_NAME = "contact_name";
@@ -1342,7 +1339,9 @@ public interface ItemNames {
         String BOUGHTS_SERIALIZED = "boughts_serialized";
         String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
         String FAV_COOKIE = "fav_cookie";
+        String OLD_LOGIN = "old_login";
         String NAME = "name";
+        String MIDDLE_NAME = "middle_name";
         String SECOND_NAME = "second_name";
         String ADDRESS = "address";
 

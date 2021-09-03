@@ -28,7 +28,9 @@ public class User_phys
     public final static String BOUGHTS_SERIALIZED = "boughts_serialized";
     public final static String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
     public final static String FAV_COOKIE = "fav_cookie";
+    public final static String OLD_LOGIN = "old_login";
     public final static String NAME = "name";
+    public final static String MIDDLE_NAME = "middle_name";
     public final static String SECOND_NAME = "second_name";
     public final static String ADDRESS = "address";
 
@@ -361,6 +363,22 @@ public class User_phys
         return containsValue("fav_cookie", value);
     }
 
+    public void set_old_login(String value) {
+        setValue("old_login", value);
+    }
+
+    public String get_old_login() {
+        return getStringValue("old_login");
+    }
+
+    public String getDefault_old_login(String defaultVal) {
+        return getStringValue("old_login", defaultVal);
+    }
+
+    public boolean contains_old_login(String value) {
+        return containsValue("old_login", value);
+    }
+
     public void set_name(String value) {
         setValue("name", value);
     }
@@ -375,6 +393,22 @@ public class User_phys
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_middle_name(String value) {
+        setValue("middle_name", value);
+    }
+
+    public String get_middle_name() {
+        return getStringValue("middle_name");
+    }
+
+    public String getDefault_middle_name(String defaultVal) {
+        return getStringValue("middle_name", defaultVal);
+    }
+
+    public boolean contains_middle_name(String value) {
+        return containsValue("middle_name", value);
     }
 
     public void set_second_name(String value) {

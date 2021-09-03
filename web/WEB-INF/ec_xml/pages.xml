@@ -64,6 +64,7 @@
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
+		<link name="cart_print_link" target="print_cart" />
 		<link name="search_link" target="search">
 			<var name="search" value="normal"/>
 		</link>
@@ -84,6 +85,7 @@
 		</link>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
+		<link name="order_search_link" target="order_search"/>
 		<link name="show_only_available" target-var="$pagename" type="exclusive" copy-page-vars="yes">
 			<var name="page" value="1"/>
 			<var name="minqty" value="0"/>
@@ -121,7 +123,6 @@
 			<list item="label_style"/>
 		</single>
 	</include-definition>
-
 
 
 
@@ -1286,10 +1287,12 @@
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="user_phys"/>
 			<extra-input ref="user_phys" form="user_phys" name="pseudo"/>
+			<extra-input ref="user_phys" form="register" name="p1"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="user_jur"/>
 			<extra-input ref="user_jur" form="user_jur" name="pseudo"/>
+			<extra-input ref="user_jur" form="register" name="p1"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>
@@ -1299,6 +1302,10 @@
 		</link>
 		<link name="confirm_jut_link" target="cart_action" type="itemform">
 			<var name="action" value="postJur"/>
+		</link>
+		<link name="register_submit_link" target="register_action" type="itemform">
+			<var name="action" value="register"/>
+			<var name="redirect_target" value="proceed"/>
 		</link>
 		<list item="delivery" >
 			<filter>
@@ -1671,15 +1678,19 @@
 		</request>
 		<link name="error" target-var="redirect_target">
 			<var name="success" value="no"/>
+			<var name="register" value="register"/>
 		</link>
 		<link name="success" target-var="redirect_target">
 			<var name="success" value="yes"/>
+			<var name="register" value="register"/>
 		</link>
 		<link name="user_exists" target-var="redirect_target">
 			<var name="success" value="no"/>
+			<var name="register" value="register"/>
 		</link>
 		<link name="mismatch" target-var="redirect_target">
 			<var name="success" value="no"/>
+			<var name="register" value="register"/>
 		</link>
 		<link name="update_success" target-var="redirect_target">
 			<var name="message" value="Изменения успешно сохранены"/>
@@ -1810,6 +1821,42 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
+	<page name="order_search" template="order_search">
+		<request>
+			<var name="order_number" />
+			<var name="email" />
+		</request>
+		<personal>
+			<single item="user" id="user" tag="user">
+				<list item="purchase" id="purchase">
+					<filter>
+						<sorting direction="DESC"><var value="date" /></sorting>
+						<limit><var value="1" /></limit>
+					</filter>
+					<link name="one_c_restore" target="one_c_ajax">
+						<var name="order_number" ref="purchase" parameter="num"/>
+						<var name="email" ref="user" parameter="email"/>
+					</link>
+				</list>
+			</single>
+		</personal>
+		<link name="one_c_link" target="one_c_ajax"/>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<page name="one_c_ajax" template="one_c_ajax">
+		<request>
+			<var name="order_number"/>
+			<var name="email"/>
+		</request>
+		<command class="extra.belchip.OdinAssRequestCommand" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
 
 
 
@@ -2206,11 +2253,35 @@
 
 
 
+	<page name="import_users" template="integration/integration">
+		<request>
+			<var name="file" value="integrate/users_export.xml"/>
+		</request>
+		<command class="extra.belchip.UsersImportCommand">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<page name="import_orders" template="integration/integration">
+		<request>
+			<var name="file" value="integrate/orders_export.xml"/>
+		</request>
+		<command class="extra.belchip.PurchasesImportCommand">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                  ПЕРЕНЕСЕНО С BELCHIP (eclipse)                      ////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 
 
 	<page name="integration" template="integration">
@@ -2246,54 +2317,6 @@
 		<command class="extra.belchip.ClearXMLDirs" />
 	</page>
 
-	<page name="fixed_history">
-		<request>
-			<var name="limit" value="100" />
-			<var name="page" value="1" />
-		</request>
-		<command class="extra.CartManageCommand" method="fixHisotry" />
-		<list item="purchase">
-			<filter>
-				<limit>
-					<var var="limit" />
-				</limit>
-				<pages>
-					<var name="page" var="page" />
-				</pages>
-			</filter>
-		</list>
-	</page>
-
-	<page name="order_search" template="order_search">
-		<request>
-			<var name="order_number" />
-			<var name="email" />
-		</request>
-		<personal>
-			<list item="user_jur" id="j" />
-			<list item="user_phys" id="p" />
-		</personal>
-		<link name="one_c_link" target="one_c_ajax"/>
-		<link name="one_c_restore" target="one_c_ajax">
-			<var name="order_number" var="order_number"/>
-			<var name="email" var="email"/>
-		</link>
-		<list item="purchase" id="ord">
-			<filter>
-				<parameter name="email" compare="SOME">
-					<var ref="j" parameter="email" />
-					<var ref="p" parameter="email" />
-				</parameter>
-				<sorting direction="DESC">
-					<var value="date" />
-				</sorting>
-				<limit>
-					<var value="1" />
-				</limit>
-			</filter>
-		</list>
-		<include name="COMMON" />
-	</page>
 
 	<page name="orders_action">
 		<request>
@@ -2384,15 +2407,6 @@
 		</list>
 	</page>
 
-	<page name="one_c_ajax" template="one_c_ajax">
-		<request>
-			<var name="order_number" value="74131"/>
-			<var name="email" value="grishaw@mail.ru"/>
-		</request>
-		<command class="extra.belchip.OdinAssRequestCommand" clear-cache="yes">
-			<result name="complete" type="xml" />
-		</command>
-	</page>
 
 	<page name="clean_garbage_files" template="integration">
 		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">

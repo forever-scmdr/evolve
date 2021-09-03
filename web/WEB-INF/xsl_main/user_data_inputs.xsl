@@ -48,7 +48,12 @@
 		</div>
 		<div class="form__item form-item">
 			<div class="form-item__label">
-				<div>Email: <span>*</span></div>
+				<div>
+					Email: <span>*</span>
+					<span style="padding-left: 5px; color: silver; font-size:11px;">
+						будет использоваться в качестве логина при последующем входе
+					</span>
+				</div>
 			</div>
 			<input class="input" type="text"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $u/email)}" error="{$inp/email/@validation-error}"/>
@@ -128,8 +133,13 @@
 		<div class="form__item form-item">
 			<div class="form-item__label">
 				<div>Электронный адрес: <span>*</span>
-                    &#160;&#160;
+					<xsl:if test="not($is_proceed)">
+						<span style="padding-left: 5px; color: silver; font-size:11px;">
+							будет использоваться в качестве логина при последующем входе
+						</span>
+					</xsl:if>
                     <xsl:if test="$is_proceed">
+						&#160;&#160;
                         <xsl:call-template name="check_radio">
 							<xsl:with-param name="name" select="$inp/send_contract_to/@input"/>
                             <xsl:with-param name="value" select="'email'"/>

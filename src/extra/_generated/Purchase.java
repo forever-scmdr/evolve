@@ -16,7 +16,10 @@ public class Purchase
     public final static String QTY = "qty";
     public final static String QTY_AVAIL = "qty_avail";
     public final static String QTY_TOTAL = "qty_total";
+    public final static String SIMPLE_SUM = "simple_sum";
     public final static String SUM = "sum";
+    public final static String DISCOUNT = "discount";
+    public final static String MARGIN = "margin";
     public final static String INT_NUMBER = "int_number";
     public final static String STATUS = "status";
     public final static String PAYED = "payed";
@@ -29,7 +32,6 @@ public class Purchase
     public final static String CLIENT_NAME = "client_name";
     public final static String SECOND_NAME = "second_name";
     public final static String PHYS = "phys";
-    public final static String COOKIE = "cookie";
     public final static String CURRENCY = "currency";
     public final static String PAYMENT = "payment";
     public final static String DELIVERY = "delivery";
@@ -163,6 +165,28 @@ public class Purchase
         return containsValue("qty_total", value);
     }
 
+    public void set_simple_sum(BigDecimal value) {
+        setValue("simple_sum", value);
+    }
+
+    public void setUI_simple_sum(String value)
+        throws Exception
+    {
+        setValueUI("simple_sum", value);
+    }
+
+    public BigDecimal get_simple_sum() {
+        return getDecimalValue("simple_sum");
+    }
+
+    public BigDecimal getDefault_simple_sum(BigDecimal defaultVal) {
+        return getDecimalValue("simple_sum", defaultVal);
+    }
+
+    public boolean contains_simple_sum(BigDecimal value) {
+        return containsValue("simple_sum", value);
+    }
+
     public void set_sum(BigDecimal value) {
         setValue("sum", value);
     }
@@ -183,6 +207,50 @@ public class Purchase
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_discount(Integer value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public Integer get_discount() {
+        return getIntValue("discount");
+    }
+
+    public Integer getDefault_discount(Integer defaultVal) {
+        return getIntValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(Integer value) {
+        return containsValue("discount", value);
+    }
+
+    public void set_margin(BigDecimal value) {
+        setValue("margin", value);
+    }
+
+    public void setUI_margin(String value)
+        throws Exception
+    {
+        setValueUI("margin", value);
+    }
+
+    public BigDecimal get_margin() {
+        return getDecimalValue("margin");
+    }
+
+    public BigDecimal getDefault_margin(BigDecimal defaultVal) {
+        return getDecimalValue("margin", defaultVal);
+    }
+
+    public boolean contains_margin(BigDecimal value) {
+        return containsValue("margin", value);
     }
 
     public void set_int_number(Integer value) {
@@ -417,22 +485,6 @@ public class Purchase
 
     public boolean contains_phys(Byte value) {
         return containsValue("phys", value);
-    }
-
-    public void set_cookie(String value) {
-        setValue("cookie", value);
-    }
-
-    public String get_cookie() {
-        return getStringValue("cookie");
-    }
-
-    public String getDefault_cookie(String defaultVal) {
-        return getStringValue("cookie", defaultVal);
-    }
-
-    public boolean contains_cookie(String value) {
-        return containsValue("cookie", value);
     }
 
     public void set_currency(String value) {

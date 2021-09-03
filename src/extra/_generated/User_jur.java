@@ -28,6 +28,7 @@ public class User_jur
     public final static String BOUGHTS_SERIALIZED = "boughts_serialized";
     public final static String CUSTOM_BOUGHTS_SERIALIZED = "custom_boughts_serialized";
     public final static String FAV_COOKIE = "fav_cookie";
+    public final static String OLD_LOGIN = "old_login";
     public final static String ORGANIZATION = "organization";
     public final static String CONTRACT_NUMBER = "contract_number";
     public final static String CONTACT_NAME = "contact_name";
@@ -374,6 +375,22 @@ public class User_jur
 
     public boolean contains_fav_cookie(String value) {
         return containsValue("fav_cookie", value);
+    }
+
+    public void set_old_login(String value) {
+        setValue("old_login", value);
+    }
+
+    public String get_old_login() {
+        return getStringValue("old_login");
+    }
+
+    public String getDefault_old_login(String defaultVal) {
+        return getStringValue("old_login", defaultVal);
+    }
+
+    public boolean contains_old_login(String value) {
+        return containsValue("old_login", value);
     }
 
     public void set_organization(String value) {

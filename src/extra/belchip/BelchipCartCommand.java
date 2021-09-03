@@ -14,6 +14,7 @@ import extra._generated.ItemNames;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
@@ -547,6 +548,9 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		purchase.setValue(purchase_.STATUS_LOG, (byte) OrderManageCommand.orderStatus.WAITING.ordinal());
 		purchase.setValue(purchase_.STATUS_DATE, date.getMillis());
 		purchase.setValue(purchase_.SUM, cart.getDecimalValue(cart_.SUM));
+		purchase.setValue(purchase_.SIMPLE_SUM, cart.getDecimalValue(cart_.SIMPLE_SUM));
+		purchase.setValue(purchase_.DISCOUNT, cart.getIntValue(cart_.DISCOUNT));
+		purchase.setValue(purchase_.MARGIN, cart.getDecimalValue(cart_.MARGIN));
 		purchase.setValue(purchase_.QTY, cart.getDoubleValue(cart_.QTY));
 		executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 		List<Item> customBoughts = getSessionMapper().getItemsByName(CUSTOM_BOUGHT, cart.getId());
@@ -832,14 +836,13 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		orderFileLink.addStaticVariable("deivery", user.getStringValue("get_order_from"));
 		orderFileLink.addStaticVariable("payment", user.getStringValue("pay_by"));
 		orderFileLink.addStaticVariable("currency", currency);
-		/* TODO DEBUG
+
 		ExecutablePagePE orderFileTemplate = getExecutablePage(orderFileLink.serialize());
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(orderFileTemplate, out);
 		File file = new File(folder + "/" + displayOrderNumber + ".xml");
 		FileUtils.writeByteArrayToFile(file, out.toByteArray());
 
-		 */
 		return orderFileLink.serialize();
 	}
 
@@ -1237,7 +1240,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			emails.add(getVarSingleValue(EMAIL_CUSTOM));
 
 			try {
-				//sendEmail(emails, regularTopic, regularLink); TODO debug
+				sendEmail(emails, regularTopic, regularLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1257,7 +1260,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				//sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink); TODO debug
+				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1278,7 +1281,6 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		getSessionMapper().saveTemporaryItem(cart);
 
 		return getResult("confirm").setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link);
-		//return getResult("confirm"); TODO DEBUG
 	}
 
 	/**
@@ -1360,7 +1362,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			emails.add(regEmail);
 
 			try {
-				//sendEmail(emails, regularTopic, regularLink); TODO DEBUG
+				sendEmail(emails, regularTopic, regularLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1380,7 +1382,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				//sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink); TODO DEBUG
+				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}

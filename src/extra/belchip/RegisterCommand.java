@@ -133,6 +133,8 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 				throw new Exception("some logic error");
 			commitCommandUnits();
 			User newUser = UserMapper.getUser(userItem.getOwnerUserId());
+			getSessionMapper().removeItems(USER);
+			getSessionMapper().saveTemporaryItem(userItem, USER);
 			startUserSession(newUser);
 		} catch (UserNotAllowedException | UserExistsExcepion e) {
 			sessionUser.setExtra(MESSAGE_EXTRA, "Предоставленный email уже используется для учетной записи. Выберите другой email");

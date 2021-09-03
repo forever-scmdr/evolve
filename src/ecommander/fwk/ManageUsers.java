@@ -133,28 +133,30 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
 
 		// Отправка письма
-		try {
-			Multipart regularMP = new MimeMultipart();
-			MimeBodyPart regularTextPart = new MimeBodyPart();
-			regularMP.addBodyPart(regularTextPart);
-			LinkPE regularLink = LinkPE.newDirectLink("link", "register_email", false);
-			regularLink.addStaticVariable("user", userItem.getId() + "");
-			ExecutablePagePE regularTemplate =
-					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, null);
-			final String customerEmail = userItem.getStringValue("email");
+		if (false) {
+			try {
+				Multipart regularMP = new MimeMultipart();
+				MimeBodyPart regularTextPart = new MimeBodyPart();
+				regularMP.addBodyPart(regularTextPart);
+				LinkPE regularLink = LinkPE.newDirectLink("link", "register_email", false);
+				regularLink.addStaticVariable("user", userItem.getId() + "");
+				ExecutablePagePE regularTemplate =
+						PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, null);
+				final String customerEmail = userItem.getStringValue("email");
 
-			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(regularTemplate, regularBos);
-			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-					+ ";charset=UTF-8");
+				ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
+				PageController.newSimple().executePage(regularTemplate, regularBos);
+				regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+						+ ";charset=UTF-8");
 
-			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте belchip.by", regularMP);
+				if (StringUtils.isNotBlank(customerEmail))
+					EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте belchip.by", regularMP);
 
-		} catch (PageNotFoundException pnf) {
-			// ничего не делать (все нормально)
-		} catch (Exception e) {
-			ServerLogger.error("error while sinding email about registration", e);
+			} catch (PageNotFoundException pnf) {
+				// ничего не делать (все нормально)
+			} catch (Exception e) {
+				ServerLogger.error("error while sinding email about registration", e);
+			}
 		}
 	}
 }
