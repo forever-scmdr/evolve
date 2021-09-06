@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="_inc_message.xsl"/>
 	<xsl:import href="_inc_params.xsl"/>
 	<xsl:import href="_documentation.xsl"/>
@@ -167,6 +167,13 @@
 							<p class="form_comment">[для использования в качестве части URL]</p>
 							<input class="field" type="text" name="{$ukey/@input}" value="{$ukey}" />
 						</div>
+
+						<xsl:variable name="type" select="if($form/@caption = 'Статья') then 'news_item' else if($form/@caption = 'Новость') then 'small_news_item' else ''" />
+						<xsl:if test="$type != ''">
+							<p>
+								<a href="{concat('preview_', $type, '?id=', $form/@id)}" target="_blank">Предпросмотр</a>
+							</p>
+						</xsl:if>
 					</xsl:if>
 					<input type="hidden" name="goToParent" id="parent-url"/>
 					<xsl:if test="admin-page/inline-form">

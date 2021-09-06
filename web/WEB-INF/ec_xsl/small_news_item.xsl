@@ -3,6 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="ni" select="if(page/@name = 'small_news_item') then page/small_news_item else page/news/small_news_item"/>
+
 	<xsl:variable name="title" select="$ni/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="meta_description" select="$ni/twitter_description"/>
@@ -12,7 +14,6 @@
 	<xsl:variable name="soc_image" select="if($ni/soc_image != '') then $ni/soc_image else $ni/medium_pic"/>
 
 
-	<xsl:variable name="ni" select="page/small_news_item"/>
 	<xsl:variable name="parent" select="/page/news[@id = $ni/news/@id]"/>
 	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 	<xsl:variable name="format"

@@ -805,6 +805,33 @@
 		<include name="TICKERS"/>
 	</page>
 
+	<page name="preview_small_news_item" template="small_news_item" authority-groups="common">
+		<request>
+			<var name="id"/>
+		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
+		<session>
+			<single item="news">
+				<single item="small_news_item"/>
+			</single>
+		</session>
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+	<page name="preview_news_item" template="news_item" authority-groups="common">
+		<request>
+			<var name="id"/>
+		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
+		<session>
+			<single item="news">
+				<single item="news_item"/>
+			</single>
+		</session>
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+
 	<page name="page" template="page" cacheable="true">
 		<request>
 			<var name="p" style="translit"/>
