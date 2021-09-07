@@ -171,7 +171,7 @@
 						<xsl:variable name="type" select="if($form/@caption = 'Статья') then 'news_item' else if($form/@caption = 'Новость') then 'small_news_item' else ''" />
 						<xsl:if test="$type != ''">
 							<p>
-								<a href="{concat('preview_', $type, '?id=', $form/@id)}" target="_blank">Предпросмотр</a>
+								<a href="{$ukey}" target="_blank">Предпросмотр</a>
 							</p>
 						</xsl:if>
 					</xsl:if>

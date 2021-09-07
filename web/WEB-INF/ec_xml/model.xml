@@ -157,8 +157,8 @@
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>
 
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" children-per-page="30" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -197,9 +197,9 @@
 		<parameter name="hash" type="integer" caption="name_hash"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
 		<on-update class="ecommander.fwk.NameHash"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="18" ag-hash="-567451565">
@@ -271,8 +271,8 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>

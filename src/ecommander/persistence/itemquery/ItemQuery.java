@@ -1016,6 +1016,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws Exception
 	 */
 	public static ArrayList<Item> loadByUniqueKey(Collection<String> keys, Connection... conn) throws Exception {
+		return loadByUniqueKey(keys, new Byte[]{Item.STATUS_NORMAL}, conn);
+	}
+
+	public static ArrayList<Item> loadByUniqueKey(Collection<String> keys, Byte[] status, Connection... conn) throws Exception{
 		if (keys.size() == 0)
 			return new ArrayList<>(0);
 		TemplateQuery idsSelect = new TemplateQuery("ids select");
@@ -1037,7 +1041,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				ids.add(rs.getLong(1));
 			rs.close();
 			queryFinished(connection);
-			return loadByIdsLong(ids, new Byte[]{Item.STATUS_NORMAL}, connection);
+			return loadByIdsLong(ids, status, connection);
 		} finally {
 			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);

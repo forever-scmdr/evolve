@@ -531,7 +531,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
 				if (getReference().isUrlKeyUnique()) {
-					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
+					//return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
+					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique(), new Byte[]{Item.STATUS_NORMAL, Item.STATUS_HIDDEN});
 				} else {
 					List<String> values = getReference().getValuesArray();
 					if (getReference().isVarParamReference())

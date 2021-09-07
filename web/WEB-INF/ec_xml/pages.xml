@@ -949,7 +949,8 @@
 		</request>
 	</page>
 
-	<page name="check_future" schedule="0 0/5 * ? * * *">
+<!--	<page name="check_future" schedule="0 0/5 * ? * * *">-->
+	<page name="check_future">
 		<command class="extra.ArticleFromFuture" />
 	</page>
 
