@@ -51,6 +51,11 @@ public interface ItemNames {
     String PHYS = "phys";
     String COMMON = "common";
     String BLOCK = "block";
+    String LINK_BLOCK = "link_block";
+    String BLOCK_BLOCK = "block_block";
+    String LOCATION_BLOCK = "location_block";
+    String PHONE_BLOCK = "phone_block";
+    String LINK = "link";
     String BLOCK_ARRAY = "block_array";
     String CATALOG_TEXTS = "catalog_texts";
     String FOOTER = "footer";
@@ -211,6 +216,15 @@ public interface ItemNames {
     public interface block_array_ {
 
         String _ITEM_NAME = "block_array";
+
+    }
+
+    public interface block_block_ {
+
+        String _ITEM_NAME = "block_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
 
     }
 
@@ -671,6 +685,34 @@ public interface ItemNames {
 
     }
 
+    public interface link_ {
+
+        String _ITEM_NAME = "link";
+        String NAME = "name";
+        String LINK = "link";
+        String FA_CLASS = "fa_class";
+        String ICON = "icon";
+
+    }
+
+    public interface link_block_ {
+
+        String _ITEM_NAME = "link_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
+
+    }
+
+    public interface location_block_ {
+
+        String _ITEM_NAME = "location_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
+
+    }
+
     public interface mail_texts_ {
 
         String _ITEM_NAME = "mail_texts";
@@ -945,6 +987,15 @@ public interface ItemNames {
         String SUFFIX = "suffix";
         String TEXT = "text";
         String CURRENCY = "currency";
+
+    }
+
+    public interface phone_block_ {
+
+        String _ITEM_NAME = "phone_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
 
     }
 

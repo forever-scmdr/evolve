@@ -53,7 +53,9 @@
 		</list>
 		<single item="common" cacheable="true">
 			<list item="block_array">
-				<list item="block"/>
+				<tree item="block">
+					<list item="link"/>
+				</tree>
 			</list>
 			<single item="catalog_texts"/>
 			<single item="payment"/>
@@ -1270,6 +1272,9 @@
 		</link>
 		<link name="proceed_link" target="cart_action" type="itemform">
 			<var name="action" value="proceed"/>
+		</link>
+		<link name="delete_all_link" target="cart_action">
+			<var name="action" value="deleteAll"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

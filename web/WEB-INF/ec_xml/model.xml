@@ -399,7 +399,7 @@
 		<child item="product" single="true"/>
 	</item>
 
-	<item name="custom_bought" caption="Персональнлый заказ" key="mark" ag-id="1895" ag-hash="678018425">
+	<item name="custom_bought" caption="Персональнлый заказ" key="mark" ag-id="3926" ag-hash="678018425">
 		<parameter name="position" type="integer" caption="Порядковый номер"/>
 		<parameter name="mark" type="string" caption="Маркировка"/>
 		<parameter name="type" type="string" caption="Тип прибора"/>
@@ -429,7 +429,7 @@
 	</item>
 
 
-	<item name="delivery_and_payment" caption="Способы доставки и оплаты" ag-id="5257" ag-hash="-441403437">
+	<item name="delivery_and_payment" caption="Способы доставки и оплаты" ag-id="9798" ag-hash="-441403437">
 		<child item="delivery" />
 		<child item="payment" />
 		<child item="absent" />
@@ -455,11 +455,11 @@
 		<parameter name="currency" type="string" caption="Валюта" multiple="true" />
 	</item>
 
-	<item name="absent" caption="в случае отстутствия" key="name" ag-id="5258" ag-hash="-1423908039">
+	<item name="absent" caption="в случае отстутствия" key="name" ag-id="9799" ag-hash="-1423908039">
 		<parameter name="name" type="string" caption="Название" />
 	</item>
 
-	<item name="store" key="name" caption="Точка самовывоза" ag-id="5259" ag-hash="109770977">
+	<item name="store" key="name" caption="Точка самовывоза" ag-id="9800" ag-hash="109770977">
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="text" type="text" caption="Подробности" />
@@ -483,17 +483,17 @@
 
 
 
-	<item name="order_catalog" caption="Заказы клиентов" ag-id="4831" ag-hash="375611432">
+	<item name="order_catalog" caption="Заказы клиентов" ag-id="9795" ag-hash="375611432">
 		<child item="preorder_catalog" single="true"/>
 	</item>
 
 
-	<item name="preorder_catalog" caption="Каталог предзаказов" ag-id="4832" ag-hash="-429240731">
+	<item name="preorder_catalog" caption="Каталог предзаказов" ag-id="9796" ag-hash="-429240731">
 		<child item="preorder"/>
 	</item>
 
 
-	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="1897" ag-hash="-1279982965">
+	<item name="preorder" caption="Список ожидаемых товаров" key="email" ag-id="3928" ag-hash="-1279982965">
 		<parameter name="email" type="string" caption="email" />
 		<parameter name="code" type="string" caption="артикул товара" multiple="true"/>
 	</item>
@@ -612,7 +612,7 @@
 		<child item="user"/>
 	</item>
 
-	<item name="order_emails" caption="Варианты письма клиенту" ag-id="1898" ag-hash="634088040">
+	<item name="order_emails" caption="Варианты письма клиенту" ag-id="3929" ag-hash="634088040">
 		<parameter name="min_jur" type="double" caption="Минимальная сумма заказа Юр. лиц" description="с учетом стоимости заказных позиций"/>
 		<parameter name="min_phys" type="double" caption="Минимальная сумма заказа Физ. лиц" description="без учета стоимости заказных позиций"/>
 		<parameter name="min_post" type="double" caption="Минимальная сумма заказа при отправке ПОЧТОЙ для Физ. лиц"/>
@@ -626,25 +626,25 @@
 		<child item="phys" single="true"/>
 	</item>
 
-	<item name="mail_texts" caption="тексты письма" virtual="true" ag-id="1899" ag-hash="-966892450">
+	<item name="mail_texts" caption="тексты письма" virtual="true" ag-id="3930" ag-hash="-966892450">
 		<parameter name="top" type="short-text" caption="текст сверху"/>
 		<parameter name="bottom" type="short-text" caption="текст снизу"/>
 	</item>
 
-	<item name="bed" caption="Беды" extends="mail_texts" ag-id="1900" ag-hash="97409" />
-	<item name="skr" caption="Скрыганова" extends="mail_texts" ag-id="1901" ag-hash="113946" />
-	<item name="post" caption="Почтой (zakaz2@belchip.by)" extends="mail_texts" ag-id="1902" ag-hash="3446944" />
-	<item name="custom" caption="Индивиуальный заказ" extends="mail_texts" ag-id="1903" ag-hash="-1349088399" />
+	<item name="bed" caption="Беды" extends="mail_texts" ag-id="3931" ag-hash="97409" />
+	<item name="skr" caption="Скрыганова" extends="mail_texts" ag-id="3932" ag-hash="113946" />
+	<item name="post" caption="Почтой (zakaz2@belchip.by)" extends="mail_texts" ag-id="3933" ag-hash="3446944" />
+	<item name="custom" caption="Индивиуальный заказ" extends="mail_texts" ag-id="3934" ag-hash="-1349088399" />
 
 
-	<item name="jur" caption="для юр.лиц" ag-id="1904" ag-hash="105607">
+	<item name="jur" caption="для юр.лиц" ag-id="3935" ag-hash="105607">
 		<child item="bed" single="true"/>
 		<child item="skr" single="true"/>
 		<child item="post" single="true"/>
 		<child item="custom" single="true"/>
 	</item>
 
-	<item name="phys" caption="для физ.лиц" ag-id="1905" ag-hash="3440402">
+	<item name="phys" caption="для физ.лиц" ag-id="3936" ag-hash="3440402">
 		<child item="bed" single="true"/>
 		<child item="skr" single="true"/>
 		<child item="post" single="true"/>
@@ -686,6 +686,21 @@
 		<parameter name="header" type="string" caption="Заголовок"/>
 		<parameter name="text" type="short-text" caption="Текст (код)"/>
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
+	</item>
+
+	<item name="link_block" caption="Блок ссылок" super="block" ag-id="10647" ag-hash="1170043912">
+		<child item="link" inline="true"/>
+	</item>
+
+	<item name="block_block" caption="Составной блок" super="block block_array" ag-id="10646" ag-hash="1211600475"/>
+	<item name="location_block" caption="Место" super="block" ag-id="10644" ag-hash="123235203"/>
+	<item name="phone_block" caption="Телефон" super="block" ag-id="10645" ag-hash="-723838340"/>
+
+	<item name="link" caption="ссылка-значок" key="name" ag-id="10648" ag-hash="3321850">
+		<parameter name="name" type="string" caption="Текст" description="при наведении мыши, если есть картинка"/>
+		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
+		<parameter name="fa_class" type="string" caption="Класс font-awesome"/>
+		<parameter name="icon" type="picture" caption="Значок"/>
 	</item>
 
 	<item name="block_array" caption="Массив блоков" virtual="true" ag-id="906" ag-hash="1210858535">
@@ -740,7 +755,7 @@
 		<child item="video" inline="true"/>
 	</item>
 
-	<item name="video" caption="Видеоролик" key="name" ag-id="1867" ag-hash="112202875">
+	<item name="video" caption="Видеоролик" key="name" ag-id="1817" ag-hash="112202875">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 	</item>
@@ -902,7 +917,7 @@
 	Может быть много инпутов с одним названием, в качестве значений инпутов могут быть файлы.
 	"Физически" значения полей в айтеме формы хранятся в extra.
 	-->
-	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1841" ag-hash="-263108052">
+	<item name="generic_form" caption="Форма с произвольными полями" virtual="true" ag-id="1818" ag-hash="-263108052">
 	</item>
 
 	<item name="my_price_form" caption="Форма для предложения своей цены" virtual="true" ag-id="828" ag-hash="442678893">
@@ -1151,12 +1166,12 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="styles" caption="Cтили" ag-id="1868" ag-hash="-891774750">
+	<item name="styles" caption="Cтили" ag-id="1823" ag-hash="-891774750">
 		<parameter name="css" caption="дополнительный файл CSS" type="file"/>
 		<child item="label_style"/>
 	</item>
 
-	<item name="label_style" key="name" caption="Стиль ярлыка" ag-id="1869" ag-hash="404813990">
+	<item name="label_style" key="name" caption="Стиль ярлыка" ag-id="1824" ag-hash="404813990">
 		<parameter name="name" type="string" caption="Название"
 		 description="должно совпадать с ярлыком в товаре"/>
 		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>

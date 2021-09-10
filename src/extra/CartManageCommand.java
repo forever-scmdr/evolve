@@ -70,7 +70,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		return !hasError;
 	}
-/*
+	/*
 	@Override
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 //		if (discounts == null) {

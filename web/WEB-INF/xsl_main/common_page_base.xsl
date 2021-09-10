@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:xs="http://www.w3.org/2001/XMLSchema"
 		xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="f:f" version="2.0">
 	<xsl:import href="login_form_ajax.xsl"/>
@@ -387,6 +386,21 @@
 			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
+	<xsl:template match="block_block" mode="footer">
+		<div class="footer__column">
+			<div class="footer__phones phones">
+				<xsl:apply-templates select="phone_block"/>
+				<div class="footer__phones-jur">
+					<xsl:value-of select="block/header"/>
+				</div>
+				<xsl:if test="block/text != ''">
+					<div class="footer__text">
+						<xsl:value-of select="block/text" disable-output-escaping="yes"/>
+					</div>
+				</xsl:if>
+			</div>
+		</div>
+	</xsl:template>
 
 
 	<xsl:template match="section" mode="desktop">
@@ -541,6 +555,40 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template match="location_block">
+		<div class="top-info__location">
+			<p><xsl:value-of select="header"/></p>
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="phone_block">
+		<div class="phones__item">
+			<div class="phones__number"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+			<div class="phones__description"><xsl:value-of select="header" disable-output-escaping="yes"/></div>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="link_block" mode="footer"/>
+	<xsl:template match="link_block">
+		<xsl:apply-templates select="link"/>
+	</xsl:template>
+
+	<xsl:template match="link">
+		<xsl:variable name="fa" select="fa_class != ''"/>
+		<xsl:variable name="icon" select="icon != ''"/>
+		<a class="footer-social__icon" href="{link}" title="{if($icon or $fa) then name else ''}">
+			<xsl:if test="$fa">
+				<i class="{fa_class}"></i>
+			</xsl:if>
+			<xsl:if test="$icon">
+				<img src="{concat(@path, icon)}"/>
+			</xsl:if>
+			<xsl:if test="not($icon) and not($fa)">
+				<xsl:value-of select="name"/>
+			</xsl:if>
+		</a>
+	</xsl:template>
 
 
 
@@ -605,8 +653,12 @@
 					<div class="top-info">
 						<div class="container">
 							<div class="top-info__wrap wrap">
-								<xsl:value-of select="$common/topper/block[1]/text" disable-output-escaping="yes"/>
-								<xsl:value-of select="$common/topper/block[2]/text" disable-output-escaping="yes"/>
+									<xsl:apply-templates select="$common/topper/location_block"/>
+									<div class="top-info__phones phones">
+										<xsl:apply-templates select="$common/topper/phone_block"/>
+									</div>
+<!--								<xsl:value-of select="$common/topper/block[1]/text" disable-output-escaping="yes"/>-->
+<!--								<xsl:value-of select="$common/topper/block[2]/text" disable-output-escaping="yes"/>-->
 							</div>
 						</div>
 					</div>
@@ -889,10 +941,19 @@
 					<div class="footer">
 						<div class="container">
 							<div class="footer__wrap">
-								<xsl:value-of select="$common/footer/block[1]/text" disable-output-escaping="yes"/>
-								<xsl:value-of select="$common/footer/block[2]/text" disable-output-escaping="yes"/>
-								<xsl:value-of select="$common/footer/block[3]/text" disable-output-escaping="yes"/>
-								<xsl:value-of select="$common/footer/block[4]/text" disable-output-escaping="yes"/>
+								<xsl:apply-templates select="$common/footer/*[@id != '']" mode="footer"/>
+								<div class="footer__column">
+									<div class="footer__social footer-social">
+										<div class="footer-social__icons">
+											<xsl:apply-templates select="$common/footer/link_block"/>
+										</div>
+										<a href="mailto:info@belchip.by">info@belchip.by</a>
+									</div>
+									<div class="footer__copyright copyright">© «Белчип», 2012–<xsl:value-of select="substring(string(current-date()),1,4)"/></div>
+									<a class="forever" href="">Разработка сайта
+										<span style="display: block;">студия веб-дизайна Forever</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div><!-- меню каталога-->

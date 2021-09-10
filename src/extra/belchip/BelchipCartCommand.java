@@ -2,7 +2,10 @@ package extra.belchip;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.fwk.*;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.EmailUtils;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
@@ -47,6 +50,26 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private static final String FORM_JUR_FORM = "form_jur";
 
 	/**
+	 * Удаляет все из корзины
+	 * @throws Exception
+	 */
+	public ResultPE deleteAll() throws Exception {
+		cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
+		if(cart != null){
+			getSessionMapper().removeItems(cart.getId());
+			Item userInfo = getUserInfo();
+			if(userInfo != null){
+				userInfo.clearValue(user_.BOUGHTS_SERIALIZED);
+				userInfo.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(userInfo).ignoreUser(true));
+			}else{
+				setCookieVariable(CART_COOKIE, null);
+			}
+		}
+		return getResult("cart");
+	}
+
+	/**
 	 * Восстанавливает корзину из сохраненной ранее в БД
 	 * @throws Exception
 	 */
@@ -70,7 +93,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		boolean hasNoCustomBoughts = cart == null || getSessionMapper().getItemsByParamValue(CUSTOM_BOUGHT, custom_bought_.NONEMPTY, "true").isEmpty();
 
 		// Простые заказы (айтемы bought)
-		if (hasNoCustomBoughts) {
+		if (hasNoRegularBoughts) {
 			String boughts = userInfo.getStringValue(user_.BOUGHTS_SERIALIZED);
 			String[] codeQtys = StringUtils.split(boughts, ";/");
 			if (codeQtys.length > 0 && cart == null)

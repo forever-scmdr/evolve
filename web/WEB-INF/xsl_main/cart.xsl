@@ -50,7 +50,7 @@
 			</td>
 			<td class="cart-item__image">
 				<a href="{$p/show_product}">
-					<img src="sitepics/{$p/pic_path}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'"/>
+					<img src="sitepics/{$p/pic_path}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/>
 				</a>
 			</td>
 			<td class="cart-item__qty">
@@ -135,6 +135,7 @@
 			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
 			<a class="cart-total__link" href="">Правила предоставления скидок</a>
 			<div class="cart-total__buttons">
+				<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все из корзины?');" class="button">Удалить все</a>
 				<button class="button" type="submit">К оформлению</button>
 			</div>
 		</div>
