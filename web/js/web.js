@@ -214,3 +214,11 @@ $(document).on("scroll", function(){
 		});
 	}
 });
+
+$(document).on("click", ".popup", function(e){
+	$trg = $(e.target);
+	console.log($trg);
+	if($trg.is(".popup__body")){
+		$trg.find(".popup__close").trigger("click");
+	}
+});

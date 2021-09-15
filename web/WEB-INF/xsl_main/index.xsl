@@ -31,21 +31,11 @@
 				<div class="slider-nav"></div>
 			</div>
 			<div class="partners">
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
+				<xsl:for-each select="/page/main_page/link_block/link">
+					<a class="partners__item partner-banner" href="{link}">
+						<img src="{concat(@path, icon)}" alt="{name}"/>
+					</a>
+				</xsl:for-each>
 			</div>
 			<div class="show-d">
 				<div class="title_1">Новые поступления</div>
@@ -88,21 +78,11 @@
 				<div class="best-price__nav"></div>
 			</div>
 			<div class="partners">
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
-				<a class="partners__item partner-banner" href="">
-					<img src="img/partner-logo-1.png" alt=""/>
-				</a>
+				<xsl:for-each select="/page/main_page/link_block/link">
+					<a class="partners__item partner-banner" href="{link}" target="_blank">
+						<img src="{concat(@path, icon)}" alt="{name}"/>
+					</a>
+				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>

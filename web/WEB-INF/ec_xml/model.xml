@@ -688,15 +688,15 @@
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
 	</item>
 
-	<item name="link_block" caption="Блок ссылок" super="block" ag-id="10647" ag-hash="1170043912">
+	<item name="link_block" caption="Блок ссылок" super="block" ag-id="10644" ag-hash="1170043912" >
 		<child item="link" inline="true"/>
 	</item>
 
-	<item name="block_block" caption="Составной блок" super="block block_array" ag-id="10646" ag-hash="1211600475"/>
-	<item name="location_block" caption="Место" super="block" ag-id="10644" ag-hash="123235203"/>
-	<item name="phone_block" caption="Телефон" super="block" ag-id="10645" ag-hash="-723838340"/>
+	<item name="block_block" caption="Составной блок" super="block block_array" ag-id="10645" ag-hash="1211600475" />
+	<item name="location_block" caption="Место" super="block" ag-id="10646" ag-hash="123235203"/>
+	<item name="phone_block" caption="Телефон" super="block" ag-id="10647" ag-hash="-723838340"/>
 
-	<item name="link" caption="ссылка-значок" key="name" ag-id="10648" ag-hash="3321850">
+	<item name="link" caption="ссылка-значок" key="name" ag-id="10648" ag-hash="3321850" >
 		<parameter name="name" type="string" caption="Текст" description="при наведении мыши, если есть картинка"/>
 		<parameter name="link" type="string" caption="Ссылка" description="если внешняя, то начиная с http://"/>
 		<parameter name="fa_class" type="string" caption="Класс font-awesome"/>
@@ -839,6 +839,7 @@
 		<child item="main_slider_frame" inline="true"/>
 		<child item="banner_section"/>
 		<child item="custom_block" />
+		<child item="link_block"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->

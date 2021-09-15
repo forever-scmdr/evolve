@@ -188,11 +188,18 @@
 									<xsl:if test="$input/criteria/@type = ('double', 'integer')">
 										<div class="filter__control ltgt">
 											<label>
-												&lt;<input class="lt" type="radio"/>
+												↑<input class="lt" type="radio"/>
 											</label>
 											<label>
-												&gt;<input class="gt" type="radio"/>
+												↓<input class="gt" type="radio"/>
 											</label>
+											<label>×
+												<input class="x" type="radio"/>
+											</label>
+										</div>
+									</xsl:if>
+									<xsl:if test="not($input/criteria/@type = ('double', 'integer'))">
+										<div class="filter__control ltgt">
 											<label>×
 												<input class="x" type="radio"/>
 											</label>

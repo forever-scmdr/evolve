@@ -48,7 +48,7 @@
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
 
 	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
-    <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
+	<xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -405,7 +405,7 @@
 
 	<xsl:template match="section" mode="desktop">
 		<xsl:param name="level"/>
-        <xsl:variable name="active" select="@id = $sel_sec_id"/>
+		<xsl:variable name="active" select="@id = $sel_sec_id"/>
 		<xsl:variable name="active_parent" select=".//section/@id = $sel_sec_id"/>
 		<div class="side-menu__item side-menu__item_level_{$level}{' side-menu__item_active'[$active]}">
 			<a class="side-menu__toggle" href="#" onclick="return toggleDesktopCatalogSection('{@id}');">
@@ -669,34 +669,36 @@
 									<a href="{page/index_link}">
 										<img class="logo__image" src="img/logo.png" alt=""/>
 									</a>
-									<xsl:value-of select="$common/topper/block[3]/text" disable-output-escaping="yes"/>
+									<div class="work-hours logo__hours">
+									 <xsl:value-of select="$common/topper/block[header='Расписание работы']/text" disable-output-escaping="yes"/>
+									</div>
 								</div>
 								<div class="header__column header__search header-search">
-                                    <script>
-                                        function strictRedirect() {
-                                            <xsl:choose>
-                                                <xsl:when test="page/@name = 'search'">
-                                                    var form = $('#search');
-                                                    form.attr('action', '<xsl:value-of select="page/search_strict_link" />');
-                                                    form.submit();
-                                                </xsl:when>
-                                                <xsl:when test="page/@name = 'search_strict'">
-                                                    var form = $('#search');
-                                                    form.attr('action', '<xsl:value-of select="page/search_link" />');
-                                                    form.submit();
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <xsl:if test="$search_strict">
-                                                        location.replace('<xsl:value-of select="concat(page/base, page/set_search_normal_link)"/>');
-                                                    </xsl:if>
-                                                    <xsl:if test="not($search_strict)">
-                                                        location.replace('<xsl:value-of select="concat(page/base, page/set_search_strict_link)"/>');
-                                                    </xsl:if>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        }
-                                    </script>
-                                    <form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post" id="search">
+									<script>
+										function strictRedirect() {
+											<xsl:choose>
+												<xsl:when test="page/@name = 'search'">
+													var form = $('#search');
+													form.attr('action', '<xsl:value-of select="page/search_strict_link" />');
+													form.submit();
+												</xsl:when>
+												<xsl:when test="page/@name = 'search_strict'">
+													var form = $('#search');
+													form.attr('action', '<xsl:value-of select="page/search_link" />');
+													form.submit();
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:if test="$search_strict">
+														location.replace('<xsl:value-of select="concat(page/base, page/set_search_normal_link)"/>');
+													</xsl:if>
+													<xsl:if test="not($search_strict)">
+														location.replace('<xsl:value-of select="concat(page/base, page/set_search_strict_link)"/>');
+													</xsl:if>
+												</xsl:otherwise>
+											</xsl:choose>
+										}
+									</script>
+									<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post" id="search">
 										<div>
 											<a class="useless-button" href="#" onclick="$(this).closest('form').submit(); return false;">
 												<img src="img/icon-search.png" alt=""/>
@@ -715,17 +717,17 @@
 											<div class="header-search__option">
 												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
 													<input style="display: inline-block; vertical-align: middle;"
-                                                           type="checkbox"
-                                                           onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
-                                                        <xsl:if test="$only_available">
-                                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                                        </xsl:if>
-                                                    </input>
+														   type="checkbox"
+														   onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
+														<xsl:if test="$only_available">
+															<xsl:attribute name="checked">checked</xsl:attribute>
+														</xsl:if>
+													</input>
 													только по товарам в наличии
 												</label>
 											</div>
 											<div class="header-search__option">
-                                                <label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
+												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
 													<input style="display: inline-block; vertical-align: middle;"
 														   type="checkbox"
 														   onclick="strictRedirect()">
@@ -751,28 +753,28 @@
 											<a>Корзина ..........</a>
 										</div>
 									</div>
-                                    <xsl:if test="$currencies">
-                                        <xsl:variable name="currency_link" select="page/set_currency"/>
-                                        <div class="header-icons__icon header-icon">
-                                            <div class="header-icon__icon">
-                                                <img src="img/icon-currency.png" alt=""/>
-                                            </div>
-                                            <div class="header-icon__info">
-                                                <a><xsl:value-of select="if ($currency) then $currency else 'BYN'" /></a>
-                                                <a class="header-icon__dd">
-                                                    <img src="img/icon-caret-down-small.png" alt=""/>
-                                                </a>
-                                            </div>
-                                            <div class="dropdown header-icon__dropdown">
+									<xsl:if test="$currencies">
+										<xsl:variable name="currency_link" select="page/set_currency"/>
+										<div class="header-icons__icon header-icon">
+											<div class="header-icon__icon">
+												<img src="img/icon-currency.png" alt=""/>
+											</div>
+											<div class="header-icon__info">
+												<a><xsl:value-of select="if ($currency) then $currency else 'BYN'" /></a>
+												<a class="header-icon__dd">
+													<img src="img/icon-caret-down-small.png" alt=""/>
+												</a>
+											</div>
+											<div class="dropdown header-icon__dropdown">
 												<a class="dropdown__item{' active'[$currency = 'BYN']}" href="{concat($currency_link, 'BYN')}">BYN</a>
 												<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 													<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
 													<a class="dropdown__item{' active'[$currency = $cur]}"
 													   href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a>
 												</xsl:for-each>
-                                            </div>
-                                        </div>
-                                    </xsl:if>
+											</div>
+										</div>
+									</xsl:if>
 									<div class="result header-icons__icon header-icon" id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no" >
 										<div class="header-icon__icon">
 											<img src="img/icon-star.png" alt=""/>
@@ -793,7 +795,13 @@
 										</div>
 										<div class="header-icon__info">
 											<xsl:if test="not($is_user_registered)">
-												<a href="{page/login_page_link}">Вход</a>
+												<script type="text/javascript">
+													var ref = document.referrer;
+													if(ref.indexOf('refresh=yes') != -1){
+														document.loaction.reload();
+													}
+												</script>
+												<a href="{page/login_page_link}?redirect_target={replace(//source_link, page/base, '')}">Вход</a>
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
 												<a href="{page/personal_link}">
@@ -806,7 +814,7 @@
 										</div>
 										<div class="dropdown dropdown_last header-icon__dropdown">
 											<xsl:if test="not($is_user_registered)">
-												<a class="dropdown__item" href="{page/login_page_link}">Вход</a>
+												<a class="dropdown__item" href="{page/login_page_link}?redirect_target={replace(//source_link, page/base, '')}">Вход</a>
 												<a class="dropdown__item" href="{page/register_link}">Регистрация</a>
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
@@ -945,7 +953,7 @@
 								<div class="footer__column">
 									<div class="footer__social footer-social">
 										<div class="footer-social__icons">
-											<xsl:apply-templates select="$common/footer/link_block"/>
+											<xsl:apply-templates select="$common/footer/link_block[not(header = 'Платежные системы')]"/>
 										</div>
 										<a href="mailto:info@belchip.by">info@belchip.by</a>
 									</div>
@@ -954,6 +962,15 @@
 										<span style="display: block;">студия веб-дизайна Forever</span>
 									</a>
 								</div>
+								<xsl:if test="$common/footer/link_block[header = 'Платежные системы']">
+									<div class="footer__payments footer-payments">
+										<xsl:for-each select="$common/footer/link_block[header = 'Платежные системы']/link">
+											<div class="footer-payments__icon">
+											  <img src="{concat(@path, icon)}" alt="{name}" title="{name}"/>
+											</div>
+										</xsl:for-each>
+									</div>
+								</xsl:if>
 							</div>
 						</div>
 					</div><!-- меню каталога-->

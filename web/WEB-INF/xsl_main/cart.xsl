@@ -135,7 +135,8 @@
 			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
 			<a class="cart-total__link" href="">Правила предоставления скидок</a>
 			<div class="cart-total__buttons">
-				<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все из корзины?');" class="button">Удалить все</a>
+				<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все товары из корзины?');" class="button button_secondary" style="text-decoration: none;">Очистить корзину</a>
+				<span style="padding-left: 1rem;"></span>
 				<button class="button" type="submit">К оформлению</button>
 			</div>
 		</div>

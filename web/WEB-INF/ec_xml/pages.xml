@@ -279,6 +279,9 @@
 			<list item="custom_block">
 				<list item="custom_block"/>
 			</list>
+			<list item="link_block">
+				<list item="link"/>
+			</list>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
 			<list item="banner"/>
@@ -1273,7 +1276,7 @@
 		<link name="proceed_link" target="cart_action" type="itemform">
 			<var name="action" value="proceed"/>
 		</link>
-		<link name="delete_all_link" target="cart_action">
+		<link name="delete_all_link" target="cart_action" >
 			<var name="action" value="deleteAll"/>
 		</link>
 		<include name="COMMON"/>
@@ -1735,7 +1738,7 @@
 		</request>
 		<link name="submit_form" target="cart_action">
 			<var name="action" value="login"/>
-			<var name="redirect_target" value="personal"/>
+			<var name="redirect_target" value="login_form"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

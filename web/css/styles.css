@@ -1336,8 +1336,8 @@ img {
 		align-items: flex-start;
 		justify-content: center;
 		border-radius: 24px;
-		background: #555;
-		border: 1px solid #ebebeb;
+		background: #707070;
+		border: 1px solid #ccc;
 		position: absolute;
 		top: 0;
 		width: 24px;
@@ -1348,9 +1348,9 @@ img {
 		cursor: pointer;
 	}
 	.popup__close > img{
-		width: 12px;
-		margin-top: 5px;
-		margin-left: 5px;
+		width: 9px;
+		margin-top: 7px;
+		margin-left: 0px;
 	}
 	.popup__back {
 		display: flex;
@@ -2817,41 +2817,6 @@ table.full-params th {
 .device__parent-link{
 	bottom: 0;
 	left: 0;
-}
-
-.disclamer{
-	font-size: 14px;
-	margin-bottom: 1.5rem;
-}
-
-table.order-status {
-	font-size: 18px;
-	margin: 0 auto;
-	width: 100%;
-}
-table.order-status td {
-	padding: 6px 10px;
-	width: 50%;
-}
-table.order-status td:first-child {
-	text-align: right;
-}
-table.order-status td:last-child {
-	font-weight: 700;
-}
-.order-search-form {
-	font-size: 18px;
-}
-
-table.order-search-form {
-	width: 100%;
-}
-table.order-search-form td {
-	width: 50%;
-	padding: 5px 10px;
-}
-table.order-search-form td:first-child {
-	text-align: right;
 }
 
 .disclamer{

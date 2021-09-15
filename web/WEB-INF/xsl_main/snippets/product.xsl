@@ -31,7 +31,7 @@
 
 		<div class="device">
 			<div class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" /></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" /></a>
 
 				<div class="device__hover top-rigt" id="fancy-{code}">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
@@ -58,9 +58,11 @@
 					</a>
 					<div class="popup popup_basic" style="display: none;" id="tech_{code}">
 						<div class="popup__body">
-							<div class="popup__content">
+							<div class="popup__content" style="text-align: center;">
 								<div class="popup__header">
-									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> (Код: <xsl:value-of select="code"/>)</div>
+									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> 
+										<span style="font-size: 12px; padding-left: 10px;">(Код: <xsl:value-of select="code"/>)</span>
+									</div>
 									<a class="popup__close">
 										<img src="img/icon-menu-close.png" alt=""/>
 									</a>
@@ -190,7 +192,7 @@
 
 		<tr class="device_row">
 			<td class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/></a>
 				<div class="device__hover">
 					<a class="device__zoom" id="fancy-{code}" href="sitepics/{pic_path}b.jpg" onclick="return false;"
 					   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">

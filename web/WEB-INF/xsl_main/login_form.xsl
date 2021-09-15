@@ -13,6 +13,11 @@
 
 
 	<xsl:template name="CONTENT_INNER">
+		<xsl:if test="$is_user_registered">
+			<script type="text/javascript">
+				history.go(-2);
+			</script>
+		</xsl:if>
 		<xsl:call-template name="MESSAGE"/>
 		<form class="form" action="{page/submit_form}" method="post">
 			<div class="form__item form-item">
