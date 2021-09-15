@@ -16,7 +16,6 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 
 /**
  * Сохранение нового айтема в базоне
@@ -96,20 +95,35 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//          если заданный тектовый ключ неуникален и был сгенерирован другой
 		//
 		if (item.getItemType().isKeyUnique()) {
-			boolean isNotUnique;
+			long sameKeyItemId = -1;
+			byte sameKeyItemStatus = Item.STATUS_NORMAL;
+			boolean keyUpdated = false;
 			// Запрос на получение значения
 			TemplateQuery keySelect = new TemplateQuery("key select");
-			keySelect.SELECT(I_ID).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
-					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			keySelect.SELECT(I_ID, I_STATUS).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
+					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED);
 			startQuery(keySelect.getSimpleSql());
 			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
 				pstmt.setString(1, item.getKeyUnique());
 				ResultSet rs = pstmt.executeQuery();
-				isNotUnique = rs.next();
+				if (rs.next()) {
+					sameKeyItemId = rs.getLong(1);
+					sameKeyItemStatus = rs.getByte(2);
+				}
 			}
 			endQuery();
-			if (isNotUnique)
+			if (sameKeyItemId > 0) {
+				if (sameKeyItemStatus == Item.STATUS_DELETED) {
+					TemplateQuery delete = new TemplateQuery("delete key");
+					delete.DELETE_FROM_WHERE(UNIQUE_KEY_TBL).col(UK_ID).long_(sameKeyItemId);
+					try (PreparedStatement pstmt = delete.prepareQuery(conn)) {
+						pstmt.executeUpdate();
+					}
+				} else {
 				item.setKeyUnique(item.getKeyUnique() + item.getId());
+					keyUpdated = true;
+				}
+			}
 
 			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
 			uniqueKeyInsert
@@ -122,7 +136,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			}
 			endQuery();
 			// Обновление уникального ключа айтема (если это нужно)
-			if (isNotUnique) {
+			if (keyUpdated) {
 				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
 				keyUpdate.UPDATE(ITEM_TBL)
 						.SET().col(I_T_KEY).string(item.getKeyUnique())
