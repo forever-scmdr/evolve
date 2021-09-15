@@ -100,11 +100,15 @@
 	</item>
 
 	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
-		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
 
-	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="862" ag-hash="990975543">
+	<item name="seo_catalog" caption="SEO" ag-id="862" ag-hash="990975543">
+		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
+		<parameter name="google_verification" type="string" caption="google verification code" description="на всех страницах"/>
+		<parameter name="yandex_verification" type="string" caption="yandex verification code" description="на всех страницах"/>
+		<parameter name="custom_meta" type="plain-text" caption="Дополнительные мета-теги" description="на всех страницах"/>
+		<child item="url_seo_wrap" single="true"/>
 		<child item="seo"/>
 	</item>
 
@@ -160,24 +164,29 @@
 		<child item="currency"/>
 	</item>
 
-	<item name="currency" caption="Валюта" key="name title" ag-id="1959" ag-hash="575402001">
+	<item name="currency" caption="Валюта" key="name title" ag-id="1959" ag-hash="575402001" >
 		<parameter name="title" type="string" caption="Название"/>
 		<parameter name="name" type="string" caption="Код валюты" description="трехбуквенное обозначение ISO 4217"/>
-		<parameter name="ratio" type="currency_precise" caption="Курс НБРБ" />
+		<parameter name="ratio" type="double" caption="Курс НБРБ" />
 		<parameter name="scale" type="integer" caption="Множитель" default="1" />
-		<parameter name="q" type="currency_precise" caption="Надбавка" description="0.03 = +3%"/>
+		<parameter name="q" type="double" caption="Надбавка" description="0.03 = +3%"/>
 	</item>
 
-	<item name="shop" caption="Поставщик" key="name" ag-id="1960" ag-hash="3529462">
+	<item name="shop" caption="Поставщик" key="name" ag-id="1960" ag-hash="3529462" >
 		<parameter name="name" type="string" caption="Название" />
 		<parameter name="q" caption="Надбавка к ценам" type="double"/>
 		<parameter name="assembly_date" caption="Дата собра заказа" type="date" description="тоавры, заказанные до этой даты попадут в ближайшую поставку"/>
 		<parameter name="delivery_date" caption="Дата поставки" type="date" description="в этот день машинка привезет товары из этого магазина"/>
 		<parameter name="delivery_string" caption="Дней до поставки" type="string"/>
 		<child item="currency" assoc="general" single="true"/>
+		<child item="shop_catalog" single="true" />
 	</item>
 
-	<item name="external_shops" caption="Внешние магазины" ag-id="1961" ag-hash="-120191287">
+	<item name="shop_catalog" caption="Список товаров" children-per-page="50" ag-id="1986" ag-hash="1764592592">
+		<child item="product"/>
+	</item>
+
+	<item name="external_shops" caption="Внешние магазины" ag-id="1961" ag-hash="-120191287" >
 		<child item="currency_ratios" single="true"/>
 		<child item="shop" />
 	</item>
@@ -236,7 +245,8 @@
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
-		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
+		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены" multiple="true"/>
+		<parameter name="spec_price" type="currency" caption="Спец. цена" multiple="true"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 200; src: main_pic;" caption="Маленькая картинка"/>
@@ -512,8 +522,6 @@
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
-		<parameter name="google_verification" type="string" caption="google verification code"/>
-		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<child item="delivery" single="true"/>
 		<child item="payment" single="true"/>
 		<child item="catalog_texts" single="true"/>
@@ -711,7 +719,7 @@
 		<child item="registered_catalog" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
-		<child item="url_seo_wrap" single="true"/>
+		<!-- <child item="url_seo_wrap" single="true"/> -->
 		<child item="seo_catalog" single="true"/>
 		<child item="external_shops" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
