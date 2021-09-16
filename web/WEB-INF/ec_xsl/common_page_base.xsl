@@ -522,6 +522,7 @@
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
+		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru']"/>
 
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
@@ -600,7 +601,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
-			<xsl:for-each select="tag">
+			<xsl:for-each select="$tags">
 				<div class="device__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>
 		</div>
@@ -616,6 +617,7 @@
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
+		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru']"/>
 
 
 		<div class="device device_row">
@@ -701,7 +703,7 @@
 					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>
 				</xsl:if>
 			</div>
-			<xsl:for-each select="tag">
+			<xsl:for-each select="$tags">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>
 		</div>

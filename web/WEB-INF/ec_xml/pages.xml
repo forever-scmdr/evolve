@@ -518,7 +518,6 @@
 		<link name="platan_search_link" target="platan_search" copy-page-vars="yes"/>
 		<link name="promelec_search_link" target="promelec_search" copy-page-vars="yes"/>
 		<link name="tme_search_link" target="tme_search" copy-page-vars="yes"/>
-
 		<include name="COMMON"/>
 	</page>
 

@@ -137,6 +137,7 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		product.setValueUI(NAME_EXTRA_PARAM, nameExtra);
 		product.setValueUI("search", name+" "+nameExtra+" "+code);
 		product.setValueUI(VENDOR_PARAM, vendor);
+		product.setValueUI(UNIT_PARAM, "шт");
 		BigDecimal bynPrice = convertToByn(price);
 		if(bynPrice.compareTo(BigDecimal.ZERO) > 0){
 			product.setValue(PRICE_PARAM, bynPrice);
