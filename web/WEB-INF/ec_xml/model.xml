@@ -719,7 +719,6 @@
 		<child item="registered_catalog" single="true"/>
 		<child item="counter" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
-		<!-- <child item="url_seo_wrap" single="true"/> -->
 		<child item="seo_catalog" single="true"/>
 		<child item="external_shops" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->

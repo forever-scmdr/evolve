@@ -2,23 +2,26 @@
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/price_conversions.xsl"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="shop" select="page/shop"/>
 	<xsl:variable name="result" select="page/search/result"/>
+	<xsl:variable name="found" select="if(page/variables/minqty = '0') then $result/product[f:num(qty) &gt; 0] else $result/product"/>
 
 	<xsl:template match="/">
 		<div>
-			<xsl:if test="$result/product">
+			<xsl:if test="$found">
 				<div id="digikey_search" class="result">
 					<h2>Результат поиска по Digikey</h2>			
 					
 						<div class="catalog-items{' lines'[$view = 'list']}">
 							<xsl:if test="$view = 'list'">
-								<xsl:apply-templates select="$result/product" mode="lines"/>
+								<xsl:apply-templates select="$found" mode="lines"/>
 							</xsl:if>
 							<xsl:if test="not($view = 'list')">
-								<xsl:apply-templates select="$result/product"/>
+								<xsl:apply-templates select="$found"/>
 							</xsl:if>
 						</div>
 						<script type="text/javascript">
@@ -43,7 +46,7 @@
 					
 				</div>
 			</xsl:if>
-			<xsl:if test="not($result/product)">
+			<xsl:if test="not($found)">
 				<div id="extra_search_2" class="result">
 					<h2>Результат поиска по Digikey</h2>
 					<p>Товары не найдены</p>
@@ -140,7 +143,7 @@
 		<xsl:variable name="price" select="f:price_output(price, $shop)"/>
 		<xsl:variable name="price_pack" select="f:price_output(f:num(price)*f:num(min_qty), $shop)"/>
 
-		<div class="device device_row">
+		<div class="device device_row" >
 			<a class="device__image device_row__image"
 			   style="background-image: url('{if(main_pic != '') then main_pic else 'img/no_image.png'}');">&nbsp;
 			</a>
@@ -194,12 +197,9 @@
 						<xsl:value-of select="concat(f:price_output(@price, $shop), ' от ', upper-case($curr), ' ', @qty, '&lt;br/&gt;')"/>
 					</xsl:for-each>
 				</xsl:variable>
-				<!-- <a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a> -->
-				<!-- <a data-container="body" >Цена зависит от количества</a> -->
 				<div class="manyPrice">
 					<xsl:for-each select="spec_price_map">
 						<div class="manyPrice__item">
-							<!-- <xsl:value-of select="concat(f:price_digikey(@price), ' от ', @qty)" /> шт. -->
 							<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
 							<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output(@price, $shop), upper-case($curr))" /></div>
 						</div>
@@ -208,7 +208,7 @@
 			</div>
 			<div class="device__order device_row__order">
 				<xsl:call-template name="CART_BUTTON">
-					<xsl:with-param name="product" select="current()" />
+					<xsl:with-param name="product" select="." />
 				</xsl:call-template>
 				<xsl:if test="f:num(qty) != 0">
 					<div class="device__in-stock device_row__in-stock" style="max-width: 140px;">

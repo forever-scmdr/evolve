@@ -105,8 +105,10 @@
 
 		<list item="currency"/>
 		<list item="shop">
-			<single item="currency" assoc="general"/>
+			<list item="currency" assoc="general"/>
 		</list>
+
+		<single item="seo_catalog"/>
 
 	</include-definition>
 
@@ -514,10 +516,12 @@
 
 		<!-- external search links -->
 		<link name="arrow_search_link" target="arrow_search" copy-page-vars="yes"/>
+		<link name="digikey_search_link" target="digikey_search" copy-page-vars="yes"/>
 		<link name="farnell_search_link" target="farnell_search" copy-page-vars="yes"/>
 		<link name="platan_search_link" target="platan_search" copy-page-vars="yes"/>
 		<link name="promelec_search_link" target="promelec_search" copy-page-vars="yes"/>
 		<link name="tme_search_link" target="tme_search" copy-page-vars="yes"/>
+
 		<include name="COMMON"/>
 	</page>
 
@@ -903,6 +907,40 @@
 			<single item="currency" assoc="general"/>
 		</list>
 	</page>
+
+
+
+
+	<page name="order_email" template="order_email">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
+		<single item="catalog"/>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
+		<single item="common"/>
+		<list item="currency"/>
+		<list item="shop">
+			<single item="currency" assoc="general"/>
+		</list>
+	</page>
+
 
 
 
@@ -1830,7 +1868,7 @@
 		</command>
 	</page>
 
-	<page name="refresh_access" schedule="0 0/30 * ? * * *">
+	<page name="refresh_access" schedule="0 */15 * ? * *">
 		<command class="extra.DigikeySearch" method="refreshAccessToken"/>
 	</page>
 
@@ -1845,7 +1883,6 @@
 		<command class="extra.LoadCurrencyFromNBRB">
 			<result name="fail" type="inline_xml"/>
 		</command>
-
 	</page>
 
 	<page name="clear_duplicates" template="integration/create_excel">

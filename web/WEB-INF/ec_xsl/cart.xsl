@@ -20,8 +20,8 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not($cart/processed = '1')">
 					<form method="post">
-						<xsl:apply-templates select="$cart/bought" mode="avlb"/>
-						<xsl:if test="page/cart/bought[f:num(product/price) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
+						<xsl:apply-templates select="$cart/bought[f:num(sum) != 0]" mode="avlb"/>
+						<xsl:if test="page/cart/bought[f:num(sum) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
 							<h2>Товары под заказ</h2>
 							<xsl:apply-templates select="$cart/bought" mode="preorder"/>
 						</xsl:if>
@@ -72,11 +72,11 @@
 
 		<xsl:variable name="aux" select="aux"/>
 		<xsl:variable name="is_aux" select="aux != ''"/>
-		<xsl:variable name="shop" select="page/shop[name = $aux]"/>
+		<xsl:variable name="shop" select="/page/shop[name = $aux]"/>
 		<xsl:variable name="p" select="product"/>
 		<xsl:variable name="unit" select="if($is_aux) then $p/unit else if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, $p/unit) else $p/unit"/>
-		<xsl:variable name="price"  select="concat(f:price_output($p/price, $shop), ' ', upper-case($curr), '/', $unit)"/>
-		<xsl:variable name="sum"  select="concat(f:price_output(sum, $shop), ' ', upper-case($curr))"/>
+		<xsl:variable name="price"  select="f:cart_sum($p/price)"/>
+		<xsl:variable name="sum"  select="f:cart_sum(sum)"/><!-- concat(f:price_output(sum, $shop), ' ', upper-case($curr)) -->
 		<xsl:variable name="img"  select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
 
 

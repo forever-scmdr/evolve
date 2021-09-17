@@ -20,7 +20,7 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="meta_keywords" select="''" />
 	<xsl:variable name="base" select="page/base" />
-	<xsl:variable name="main_host_tmp" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
+	<xsl:variable name="main_host_tmp" select="if(page/seo_catalog/main_host != '') then page/seo_catalog/main_host else $base" />
 	<xsl:variable name="main_host" select="if(ends-with($main_host_tmp, '/')) then $main_host_tmp else concat($main_host_tmp, '/')" />
 
 	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
@@ -1023,6 +1023,9 @@
 
 
 	<xsl:template name="SEO">
+
+		<xsl:variable name="seo_catalog" select="/page/seo_catalog"/>
+
 		<xsl:variable name="quote">"</xsl:variable>
 		
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
@@ -1036,12 +1039,13 @@
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 			<meta name="keywords" content="{replace($meta_keywords, $quote, '')}"/>
 		</xsl:if>
-		<xsl:if test="$common/google_verification">
-			<meta name="google-site-verification" content="{$common/google_verification}"/>
+		<xsl:if test="$seo_catalog/google_verification">
+			<meta name="google-site-verification" content="{$seo_catalog/google_verification}"/>
 		</xsl:if>
-		<xsl:if test="$common/yandex_verification">
-			<meta name="google-site-verification" content="{$common/yandex_verification}"/>
+		<xsl:if test="$seo_catalog/yandex_verification">
+			<meta name="yandex-verification" content="{$seo_catalog/yandex_verification}"/>
 		</xsl:if>
+		<xsl:value-of select="$seo_catalog/custom_meta"/>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
 

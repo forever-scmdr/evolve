@@ -112,7 +112,8 @@
  
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
-						<xsl:if test="f:num($p/price) &gt; 0 and f:num($p/qty) &gt; 0">
+						<!-- <xsl:if test="f:num($p/price) &gt; 0"> -->
+						<xsl:if test="$has_price">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
 								<div class="price_normal">
@@ -122,7 +123,8 @@
 
 							</div>
 						</xsl:if>
-						<xsl:if test="f:num($p/price) = 0">
+						<!-- <xsl:if test="f:num($p/price) = 0"> -->
+						<xsl:if test="not($has_price)">
 							<div class="device__price device__price_device-page">
 								Цена по запросу
 							</div>
@@ -266,7 +268,13 @@
 											</p>
 										</td>
 										<td>
-											<a class="pdf" href="{concat('pdf/', $p/pdf)}" target="_blank">Документ PDF</a>
+											<xsl:for-each select="$p/pdf">
+												<p>
+													<a class="pdf" href="{concat('pdf/', .)}" target="_blank">
+														<xsl:value-of select="concat('Документ-', position(), ' PDF')"/>
+													</a>
+												</p>
+											</xsl:for-each>
 										</td>
 									</tr>									
 								</xsl:if>

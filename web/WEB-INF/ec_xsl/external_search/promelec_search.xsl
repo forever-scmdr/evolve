@@ -3,6 +3,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0"
 				xmlns:xs="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="../utils/price_conversions.xsl"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="in_stock" select="if(page/variables/minqty != '') then f:num(page/variables/minqty) else -1"/>
 	<xsl:variable name="view" select="page/variables/view"/>
@@ -13,7 +15,7 @@
 	<xsl:template match="/">
 		<xsl:if test="$result/row">
 			<div id="promelec_search" class="result">
-				<h2>Результат поиска по дополнительному каталогу №4</h2>
+				<h2>Результат поиска по Промэлектроника</h2>
 
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
