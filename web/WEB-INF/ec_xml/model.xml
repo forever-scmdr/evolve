@@ -182,7 +182,7 @@
 		<child item="shop_catalog" single="true" />
 	</item>
 
-	<item name="shop_catalog" caption="Список товаров" children-per-page="50" ag-id="1986" ag-hash="1764592592">
+	<item name="shop_catalog" caption="Список товаров" children-per-page="50" >
 		<child item="product"/>
 	</item>
 
