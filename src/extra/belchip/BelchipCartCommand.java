@@ -299,7 +299,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			if (qtyAvailable >= 0) {
 				BigDecimal price = convert(product.getDecimalValue(product_.PRICE, BigDecimal.ZERO), currencies, currencyVar);
 				bought.setValue(product_.PRICE, price);
-				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_CEILING);
+				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_HALF_EVEN);
 				regularQuantity += qtyAvailable;
 				bought.setValue(bought_.SUM, productSum);
 				sum = sum.add(productSum);
