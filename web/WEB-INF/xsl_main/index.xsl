@@ -1,4 +1,8 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:import href="templates.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
@@ -7,29 +11,32 @@
 
 	<xsl:template name="CONTENT" >
 		<div class="content__main">
-			<div class="slider-container">
-				<div class="slider">
-					<div class="slider__item">
-						<div class="slider__image">
-							<img src="img/slider.png" alt=""/>
-						</div>
-						<div class="slider__content">
-							<div class="slider__title">Свежие идеи для вашего творчества</div>
-							<div class="slider__text">Модуль Arduino Leonardo на ATMega32u4</div>
-						</div>
+			<xsl:if test="page/main_page/main_slider_frame">
+				<div class="slider-container">
+					<div class="slider" timeout="{page/main_page/timeout}">
+						<xsl:for-each select="page/main_page/main_slider_frame">
+							<div class="slider__item">
+								<div class="slider__image">
+									<a href="{link}">
+									<img src="{concat(@path, pic)}" alt="{name}"/>
+									</a>
+								</div>
+								<xsl:if test="f:num(hide_text) != 1">
+									<div class="slider__content">
+										<div class="slider__title">
+											<xsl:value-of select="name"/>
+										</div>
+										<div class="slider__text">
+											<xsl:value-of select="text" disable-output-escaping="yes"/>
+										</div>
+									</div>
+								</xsl:if>
+							</div>
+						</xsl:for-each>
 					</div>
-					<div class="slider__item">
-						<div class="slider__image">
-							<img src="img/slider.png" alt=""/>
-						</div>
-						<div class="slider__content">
-							<div class="slider__title">Свежие идеи для вашего творчества 2</div>
-							<div class="slider__text">Модуль Arduino Leonardo на ATMega32u4</div>
-						</div>
-					</div>
+					<div class="slider-nav"></div>
 				</div>
-				<div class="slider-nav"></div>
-			</div>
+			</xsl:if>
 			<div class="partners">
 				<xsl:for-each select="/page/main_page/link_block/link">
 					<a class="partners__item partner-banner" href="{link}">
@@ -70,7 +77,7 @@
 
 		<div class="content__side-2">
 			<div class="best-price">
-				<div class="best-price__header">Лучшие цены<a class="best-price__link" href="catalog-section-special.html">Смотреть все</a>
+				<div class="best-price__header">Лучшие цены<a class="best-price__link" href="/best_price">Смотреть все</a>
 				</div>
 				<div class="best-price__slider">
 					<xsl:apply-templates select="page/hit"/>

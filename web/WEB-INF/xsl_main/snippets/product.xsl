@@ -31,7 +31,7 @@
 
 		<div class="device">
 			<div class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'" /></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" /></a>
 
 				<div class="device__hover top-rigt" id="fancy-{code}">
 					<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
@@ -192,7 +192,7 @@
 
 		<tr class="device_row">
 			<td class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'"/></a>
+				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/></a>
 				<div class="device__hover">
 					<a class="device__zoom" id="fancy-{code}" href="sitepics/{pic_path}b.jpg" onclick="return false;"
 					   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">

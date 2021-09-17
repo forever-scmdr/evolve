@@ -299,7 +299,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			if (qtyAvailable >= 0) {
 				BigDecimal price = convert(product.getDecimalValue(product_.PRICE, BigDecimal.ZERO), currencies, currencyVar);
 				bought.setValue(product_.PRICE, price);
-				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_CEILING);
+				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_HALF_UP);
 				regularQuantity += qtyAvailable;
 				bought.setValue(bought_.SUM, productSum);
 				sum = sum.add(productSum);
@@ -669,7 +669,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		BigDecimal rate = currencies.getDecimalValue(convertToCurrencyCode + RATE_PART, BigDecimal.valueOf(1));
 		BigDecimal scale = currencies.getDecimalValue(convertToCurrencyCode + SCALE_PART, BigDecimal.valueOf(1));
 		BigDecimal extraQuotient = BigDecimal.valueOf(currencies.getDoubleValue(convertToCurrencyCode + EXTRA_QUOTIENT_PART, 1));
-		boolean ceil = currencies.getByteValue(convertToCurrencyCode + CEIL_PART, (byte) 1) == (byte) 1;
+		boolean ceil = currencies.getByteValue(convertToCurrencyCode + CEIL_PART, (byte) 0) == (byte) 1;
 		price = price.divide(rate, RoundingMode.HALF_EVEN).multiply(scale).multiply(extraQuotient);
 		return price.setScale(ceil ? 0 : 2, RoundingMode.CEILING);
 	}

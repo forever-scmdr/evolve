@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
-		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns="http://www.w3.org/1999/xhtml"
-		xmlns:f="f:f" version="2.0">
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="f:f" version="2.0">
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
@@ -136,10 +136,10 @@
 			$(".full_match_only").change(function(e) {
 				var checked = $(this).find("input[type=checkbox]").is(":checked");
 				if(checked){
-					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_strict_link" />");
+					$(this).closest('form').attr("action", "/<xsl:value-of select="page/search_strict_link" />");
 					$(this).css("background", "rgb(173, 203, 53) none repeat scroll 0% 0%");
 				} else {
-					$(this).closest('form').attr("action", "<xsl:value-of select="page/search_link" />");
+					$(this).closest('form').attr("action", "/<xsl:value-of select="page/search_link" disable-output-escaping="yes"/>");
 					$(this).css("background", "");
 				}
 			});

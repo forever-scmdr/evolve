@@ -179,7 +179,7 @@
 									<tr class="cart-items__head">
 										<td colspan="3">Описание</td>
 										<td>Количество</td>
-										<td>Цена, BYN</td>
+										<td>Цена, <xsl:value-of select="$currency"/></td>
 										<td>Стоимость</td>
 									</tr>
 									<xsl:for-each-group select="$cart/bought[qty != '0']" group-by="type">
@@ -203,7 +203,7 @@
 									<tr class="cart-items__head">
 										<td colspan="3">Описание</td>
 										<td>Количество</td>
-										<td>Цена, BYN</td>
+										<td>Цена, <xsl:value-of select="$currency"/></td>
 										<td>Стоимость</td>
 									</tr>
 									<xsl:for-each-group select="$cart/bought[qty_zero != '0']" group-by="type">
@@ -268,7 +268,7 @@
 									<tr class="cart-items__head">
 										<td colspan="2">Описание</td>
 										<td>Количество</td>
-										<td>Цена, BYN</td>
+										<td>Цена, <xsl:value-of select="$currency"/></td>
 										<td> </td>
 									</tr>
 									<xsl:apply-templates select="page/product" mode="lines"/>
