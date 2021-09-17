@@ -536,7 +536,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 				extraActionWithBought(bought);
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
+				BigDecimal price = getSpecialPrice(product, availableQty);
 				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
 				if(StringUtils.isBlank(bought.getStringValue("aux"))){
 					productSum = productSum.divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d)));
@@ -557,6 +557,23 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && totalQuantity > 0;
+	}
+
+	private BigDecimal getSpecialPrice(Item product, double availableQty) {
+		if(product.getDecimalValues("spec_price").size() == 0) {
+			return product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+		}
+		BigDecimal price =  product.getDecimalValue(PRICE_PARAM, new BigDecimal(0));
+		ArrayList<Double> quantities = product.getDoubleValues("spec_qty");
+		ArrayList<BigDecimal> prices = product.getDecimalValues("spec_price");
+		for(int i=0; i<quantities.size(); i++){
+			double q = quantities.get(i);
+			if(q - availableQty > 0.001){
+				break;
+			}
+			price = prices.get(i);
+		}
+		return price;
 	}
 
 	protected void extraActionWithBought(Item bought) throws Exception {}

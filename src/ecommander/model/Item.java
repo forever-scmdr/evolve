@@ -1141,6 +1141,41 @@ public class Item implements ItemBasics {
 		}
 		return result;
 	}
+
+
+	/**
+	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
+	 * Тип параметра - BigDecimal
+	 * @param paramName
+	 * @return
+	 */
+	public final ArrayList<BigDecimal> getDecimalValues(String paramName){
+		ArrayList<BigDecimal> result = new ArrayList<>();
+		Collection<SingleParameter> multipleValues = getParamValues(paramName);
+		for (SingleParameter sp : multipleValues) {
+			if (!sp.isEmpty())
+				result.add((BigDecimal) sp.getValue());
+		}
+		return result;
+	}
+
+
+	/**
+	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
+	 * Тип параметра - BigDecimal
+	 * @param paramName
+	 * @return
+	 */
+	public final ArrayList<Double> getDoubleValues(String paramName){
+		ArrayList<Double> result = new ArrayList<>();
+		Collection<SingleParameter> multipleValues = getParamValues(paramName);
+		for (SingleParameter sp : multipleValues) {
+			if (!sp.isEmpty())
+				result.add((Double) sp.getValue());
+		}
+		return result;
+	}
+
 	/**
 	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
 	 * Тип параметра - файл

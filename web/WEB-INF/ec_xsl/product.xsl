@@ -106,7 +106,7 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag">
+				<xsl:for-each select="$p/tag[text() != 'external_shop' and text() != 'compel.ru']">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>			
  

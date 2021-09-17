@@ -543,7 +543,26 @@
 							<span><xsl:value-of select="$display_price_old"/>.</span>
 						</div>
 					</xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/>.</div>
+					<xsl:if test="not(spec_price != '')">
+						<div class="price_normal">
+							<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/>.
+						</div>
+					</xsl:if>
+					<xsl:if test="spec_price != ''">
+						<xsl:variable name="sq" select="spec_qty"/>
+						<xsl:variable name="x">
+							<xsl:for-each select="spec_price">
+								<xsl:variable name="p" select="position()"/>
+								<xsl:variable name="q" select="$sq[$p]"/>
+								<xsl:variable name="display_spec" select="f:price_ictrade(.)"/>
+								<xsl:value-of select="concat($q, '+ ', '&lt;strong&gt;', $display_spec,' ', upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+							</xsl:for-each>
+						</xsl:variable>
+						<div class="price_normal">
+							<xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/>.
+						</div>
+						<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит от количества</a>
+					</xsl:if>
 					<div class="nds">*цена включает НДС</div>
 				</div>
 			</xsl:if>
@@ -669,7 +688,24 @@
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
-					<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/></div>
+					<xsl:if test="not(spec_price != '')">
+						<div class="price_normal"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/></div>
+					</xsl:if>
+					<xsl:if test="spec_price != ''">
+						<xsl:variable name="sq" select="spec_qty"/>
+						<xsl:variable name="x">
+							<xsl:for-each select="spec_price">
+								<xsl:variable name="p" select="position()"/>
+								<xsl:variable name="q" select="$sq[$p]"/>
+								<xsl:variable name="display_spec" select="f:price_ictrade(.)"/>
+								<xsl:value-of select="concat($q, '+ ', '&lt;strong&gt;', $display_spec,' ', upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+							</xsl:for-each>
+						</xsl:variable>
+						<div class="price_normal">
+							<xsl:value-of select="concat($display_price, ' ', upper-case($curr),'/', $unit)"/>.
+						</div>
+						<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}">Цена зависит<br/>от количества</a>
+					</xsl:if>
 					<div class="nds">*цена c НДС</div>
 				</div>
 			</xsl:if>

@@ -58,12 +58,27 @@
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'table'">
-						<xsl:apply-templates select="$products" mode="product-table"/>
+						<xsl:apply-templates select="$products[not(tag = 'compel.ru')]" mode="product-table"/>
 					</xsl:if>
 					<xsl:if test="$view = 'list'">
-						<xsl:apply-templates select="$products" mode="poduct-lines"/>
+						<xsl:apply-templates select="$products[not(tag = 'compel.ru')]" mode="product-lines"/>
 					</xsl:if>
 			</div>
+
+			<xsl:if test="$products[tag = 'compel.ru']">
+				<div id="compel_search">
+					<h2>Результат поиска по Compel.ru</h2>
+					<div class="catalog-items{' lines'[$view = 'list']}">
+						<xsl:if test="$view = 'table'">
+							<xsl:apply-templates select="$products[tag = 'compel.ru']" mode="product-table"/>
+						</xsl:if>
+						<xsl:if test="$view = 'list'">
+							<xsl:apply-templates select="$products[tag = 'compel.ru']" mode="product-lines"/>
+						</xsl:if>
+					</div>
+				</div>
+			</xsl:if>
+
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>

@@ -3,9 +3,8 @@ package ecommander.model;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 
 /**
@@ -16,12 +15,12 @@ import java.util.LinkedHashSet;
  */
 public final class MultipleParameter extends Parameter {
 	
-	private LinkedHashSet<SingleParameter> values;
-	private HashSet<SingleParameter> backupValues;
+	private LinkedList<SingleParameter> values;
+	private LinkedList<SingleParameter> backupValues;
 	
 	public MultipleParameter(ParameterDescription desc, Item item) {
 		super(desc, item);
-		values = new LinkedHashSet<>();
+		values = new LinkedList<>();
 	}
 	/**
 	 * Добавление значения
@@ -123,7 +122,7 @@ public final class MultipleParameter extends Parameter {
 	 */
 	private void backup() {
 		if (backupValues == null) {
-			backupValues = new HashSet<>();
+			backupValues = new LinkedList<>();
 			backupValues.addAll(values);
 		}
 	}
@@ -140,7 +139,7 @@ public final class MultipleParameter extends Parameter {
 		if (values.size() == 0)
 			return false;
 		backup();
-		values = new LinkedHashSet<>();
+		values = new LinkedList<>();
 		return true;
 	}
 
