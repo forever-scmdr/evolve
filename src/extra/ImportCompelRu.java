@@ -86,12 +86,17 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		}
 
 		if(catalog != null) {
+			Item newCatalog = ItemUtils.newChildItem("shop_catalog", shop);
+			Item.updateParamValues(catalog, newCatalog);
+
 			setOperation("Удаление старого каталога");
 			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog.getId()).ignoreUser(true).noFulltextIndex());
+
+			catalog = newCatalog;
 		}
 
 		setOperation("Создание нового каталога");
-		catalog = ItemUtils.newChildItem("shop_catalog", shop);
+
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser().noFulltextIndex());
 		info.setProcessed(0);
 
@@ -168,11 +173,15 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		BigDecimal originalPrice = DecimalDataType.parse(price, DecimalDataType.CURRENCY_PRECISE);
 
 		BigDecimal scale =  new BigDecimal(currency.getIntValue("scale",1));
-		BigDecimal currencyRatio = new BigDecimal(currency.getDoubleValue("ratio"));
 		BigDecimal currencyQ = new BigDecimal(1 + currency.getDoubleValue("q",0));
-		BigDecimal shopQ = new BigDecimal(1 + shop.getDoubleValue("q", 0));
+		BigDecimal currencyRatio = new BigDecimal(currency.getDoubleValue("ratio")).multiply(currencyQ);
 
-		BigDecimal bynPrice = originalPrice.multiply(currencyRatio).multiply(currencyQ).multiply(shopQ).divide(scale);
+		BigDecimal c1 = catalog.getDecimalValue("c1");
+		BigDecimal c2 = catalog.getDecimalValue("c2");
+		BigDecimal c3 = catalog.getDecimalValue("c3");
+		BigDecimal c4 = catalog.getDecimalValue("c4");
+
+		BigDecimal bynPrice = originalPrice.divide(c1, RoundingMode.HALF_EVEN).multiply(currencyRatio).multiply(c2).multiply(c3).multiply(c4).divide(scale);
 		bynPrice.setScale(DecimalDataType.CURRENCY, RoundingMode.HALF_EVEN);
 		return bynPrice;
 	}
