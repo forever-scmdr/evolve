@@ -792,7 +792,8 @@
 	</item>
 
 	<item name="main_slider_frame" caption="Кадр для слайдера" key="name" ag-id="807" ag-hash="-806170283">
-		<parameter name="name" type="string" caption="Название" description="для наглядности"/>
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="hide_text" type="byte" domain="0-1" caption="Скрыть текст и название"/>
 		<parameter name="text" type="tiny-text" caption="Текст" description="на слайде"/>
 		<parameter name="link_name" type="string" caption="Текст на ссылке" description="выводится как текст кнопки"/>
 		<parameter name="link" type="string" caption="Ссылка" description="в формате http://..."/>
@@ -833,6 +834,7 @@
 
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="15" ag-hash="-251149995">
+		<parameter name="timeout" type="integer" caption="Вермя показа слайда, сек"/>
 		<child item="product" assoc="general"/>
 		<child item="seo" single="true"/>
 		<child item="main_promo_bottom" inline="true"/>
@@ -1178,9 +1180,14 @@
 		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>
 	</item>
 
+	<item name="discount_rules" caption="Правила предоставления скидок" ag-id="10649" ag-hash="174812281">
+		<parameter name="text" type="text" caption="Текст"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
+		<child item="discount_rules" single="true" />
 		<child item="main_page" single="true"/>
 		<child item="news_wrap" single="true"/>
 		<child item="articles" single="true"/>

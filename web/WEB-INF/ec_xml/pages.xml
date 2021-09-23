@@ -472,9 +472,9 @@
 
 
 	<page name="tag_section" template="tag_section">
-		<request>
+		<!-- <request>
 			<var name="tag"/>
-		</request>
+		</request> -->
 		<request>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
@@ -507,6 +507,46 @@
 		<include name="COMMON"/>
 	</page>
 
+
+	<page name="best_price" template="tag_section">
+		<request>
+			<var name="page" value="1"/>
+			<var name="view" value="table" scope="cookie"/>
+			<var name="limit" value="48" scope="cookie"/>
+			<var name="sort1" value="available" scope="cookie" />
+			<var name="sort2" value="name" scope="cookie" />
+			<var name="sort3" value="name_extra" scope="cookie" />
+			<var name="dir1" value="DESC" scope="cookie" />
+			<var name="dir2" value="ASC" scope="cookie" />
+			<var name="dir3" value="ASC" scope="cookie" />
+			<var name="direction" value="ASC" scope="cookie"/>
+		</request>
+		<list item="product" id="prod" transit="true" assoc="* catalog_link">
+			<filter>
+				<parameter name="hit" compare="SOME"><var value="1" /></parameter>
+				<parameter name="qty" sign="&gt;" compare="SOME"><var value="0" /></parameter>
+				<sorting direction-var="dir1">
+					<var var="sort1"/>
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sort2"/>
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sort3"/>
+				</sorting>
+				<limit>
+					<var var="limit"/>
+				</limit>
+				<pages>
+					<var var="page"/>
+				</pages>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<ancestor item="section"/>
+		</list>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:best_price"/>
+		<include name="COMMON"/>
+	</page>
 
 
 	<page name="search_ajax" template="search_ajax">
@@ -1279,6 +1319,7 @@
 		<link name="delete_all_link" target="cart_action" >
 			<var name="action" value="deleteAll"/>
 		</link>
+		<single item="discount_rules"/>
 		<include name="COMMON"/>
 	</page>
 

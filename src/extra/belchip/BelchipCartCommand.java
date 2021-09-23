@@ -653,7 +653,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @return
 	 */
 	private boolean isRegistered() {
-		return getInitiator().inGroup(REGISTERED_GROUP);
+		return getInitiator().inGroup(REGISTERED_GROUP) && !getInitiator().isAdmin("common");
 	}
 
 	/**
@@ -681,6 +681,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 */
 	private void saveCartChangesInDBAndCookie() throws Exception {
 		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
+
 		if (isRegistered()) {
 			Item userInfo = getUserInfo();
 			String regularBoughts = serializeBoughts();

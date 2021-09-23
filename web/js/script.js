@@ -5,8 +5,8 @@ $(document).ready(function(){
 		arrows: false,
   });
   $('.slider').slick({
-		autoplay: false,
-		autoplaySpeed: 3000,
+		autoplay: true,
+		autoplaySpeed: $(".slider").attr("timeout") * 1000,
 		arrows: false,
 		dots: true,
 		appendDots: '.slider-nav',

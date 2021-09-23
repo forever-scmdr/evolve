@@ -679,20 +679,20 @@
 											<xsl:choose>
 												<xsl:when test="page/@name = 'search'">
 													var form = $('#search');
-													form.attr('action', '<xsl:value-of select="page/search_strict_link" />');
+													form.attr('action', '<xsl:value-of select="page/search_strict_link"  disable-output-escaping="yes" />');
 													form.submit();
 												</xsl:when>
 												<xsl:when test="page/@name = 'search_strict'">
 													var form = $('#search');
-													form.attr('action', '<xsl:value-of select="page/search_link" />');
+													form.attr('action', '<xsl:value-of select="page/search_link" disable-output-escaping="yes" />');
 													form.submit();
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:if test="$search_strict">
-														location.replace('<xsl:value-of select="concat(page/base, page/set_search_normal_link)"/>');
+														location.replace('<xsl:value-of select="concat(page/base,'/', page/set_search_normal_link)" disable-output-escaping="yes" />');
 													</xsl:if>
 													<xsl:if test="not($search_strict)">
-														location.replace('<xsl:value-of select="concat(page/base, page/set_search_strict_link)"/>');
+														location.replace('<xsl:value-of select="concat(page/base, '/', page/set_search_strict_link)" disable-output-escaping="yes" />');
 													</xsl:if>
 												</xsl:otherwise>
 											</xsl:choose>
@@ -760,7 +760,7 @@
 												<img src="img/icon-currency.png" alt=""/>
 											</div>
 											<div class="header-icon__info">
-												<a><xsl:value-of select="if ($currency) then $currency else 'BYN'" /></a>
+												<a><xsl:value-of select="if ($currency) then replace($currency, 'RUB', 'RUR') else 'BYN'" /></a>
 												<a class="header-icon__dd">
 													<img src="img/icon-caret-down-small.png" alt=""/>
 												</a>
@@ -770,7 +770,7 @@
 												<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 													<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
 													<a class="dropdown__item{' active'[$currency = $cur]}"
-													   href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a>
+													   href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
 												</xsl:for-each>
 											</div>
 										</div>

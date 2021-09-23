@@ -194,8 +194,13 @@ $(document).on("click", ".toggle", function(e){
 });
 
 $(document).on("scroll", function(){
+
+	var w = $(window).width();
+	if(w < 1023) return;
+
 	var lim = $(".top-info:eq(0)").outerHeight();
 	var $trg = $(".header:eq(0)");
+
 	var currentScroll = $(document).scrollTop();
 
 	if(currentScroll > lim){

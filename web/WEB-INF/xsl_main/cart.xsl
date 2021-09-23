@@ -54,7 +54,7 @@
 				</a>
 			</td>
 			<td class="cart-item__qty">
-				<input type="number" class="input" name="{input/qty/@input}" data-old="{qty}"
+				<input type="number" class="input qty-input" name="{input/qty/@input}" data-old="{qty}"
 					   value="{qty_total}" min="{if ($p/min_qty) then $p/min_qty else 1}" step="{if ($p/step) then f:num($p/step) else 1}"/>
 				<div class="hide_m">
 					<xsl:if test="$zero">
@@ -90,7 +90,7 @@
 			<td class="cart-item__sum">
 				<xsl:if test="not($zero)">
 					<xsl:value-of select="f:exchange(., 'sum', 0)"/>
-					<span class="hide_m" style="display: inline">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur else $currency"/></span>
+					<span class="hide_m" style="display: inline">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur else replace($currency, 'RUB', 'RUR')"/></span>
 				</xsl:if>
 				<xsl:if test="$zero">нет цены</xsl:if>
 			</td>
@@ -133,7 +133,15 @@
 				<div class="cart-total__sum">К оплате: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)" /></div>
 			</xsl:if>
 			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
-			<a class="cart-total__link" href="">Правила предоставления скидок</a>
+			<div id="discount_rules">
+				<a class="cart-total__link discount-link" href="#discount_rules">
+					Правила предоставления скидок
+				</a>
+				<div class="discount_rules">
+					<xsl:value-of select="page/discount_rules/text" disable-output-escaping="yes"/>
+				</div>
+			</div>
+			
 			<div class="cart-total__buttons">
 				<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все товары из корзины?');" class="button button_secondary" style="text-decoration: none;">Очистить корзину</a>
 				<span style="padding-left: 1rem;"></span>
@@ -170,7 +178,7 @@
 					</a>
 				</xsl:if>
 			</div>
-			<div class="tabs__content">
+			<div class="tabs__content result" id="cart-info">
 				<form action="{page/proceed_link}" method="post">
 					<xsl:if test="$has_tab_cart">
 						<div class="tab-container" id="tab_cart" style="{'display: none'[$tab_active != 'tab_cart']}">
@@ -179,7 +187,7 @@
 									<tr class="cart-items__head">
 										<td colspan="3">Описание</td>
 										<td>Количество</td>
-										<td>Цена, <xsl:value-of select="$currency"/></td>
+										<td>Цена, <xsl:value-of select="replace($currency, 'RUB', 'RUR')"/></td>
 										<td>Стоимость</td>
 									</tr>
 									<xsl:for-each-group select="$cart/bought[qty != '0']" group-by="type">
@@ -283,6 +291,38 @@
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript">
+			$(document).on("change", ".qty-input", function(){
+
+				if(typeof recalcTo != "undefined"){
+					clearTimeout(recalcTo);
+				}
+
+				$t = $(this);
+				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
+
+					var $form = $(this).closest('form');
+					var func = function(){
+					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
+						//$form.submit();
+						postForm($form,'v', function(){ /*$t.attr("data-old", $t.val());*/ insertAjax('cart_ajax')});
+					};
+
+					recalcTo = setTimeout(func, 500);
+
+				} else if(!validate($t.val())){
+					if(validate($t.attr("data-old"))){
+						$t.val($t.attr("data-old"));
+					}else{
+						$t.val("1");
+					}
+				}
+			});
+
+			function validate(val){
+				return parseFloat(val) &gt; 0;
+			}
+		</script>
 		<xsl:call-template name="CART_SCRIPT"/>
 		<xsl:call-template name="TAB_SCRIPT"/>
 	</xsl:template>
