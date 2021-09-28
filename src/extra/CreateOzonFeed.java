@@ -44,6 +44,8 @@ public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
             q.setLimit(limit,page);
         }
         doc.endElement().endElement().endElement();
+        pushLog(OUTPUT_FILE.toString());
+       // pushLog(doc.toString());
         Files.write(OUTPUT_FILE, doc.toString().getBytes(StandardCharsets.UTF_8));
         pushLog(getUrlBase()+"/files/ozon_feed.xml");
         setOperation("Complete");
