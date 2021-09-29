@@ -23,7 +23,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
     private static final String INTEGRATE_DIR = "integrate_xml/";
     private static final String REPORT_DIR = "report/";
 //    private static final String REPORT_PREFIX = "report_";
-    private static final String XML_FILE_NAME = INTEGRATE_DIR + "hikoki_import.xml";
+    private static final String XML_FILE_NAME = INTEGRATE_DIR + "metabo_import.xml";
 //    public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
     public static final BigDecimal ZERO = new BigDecimal(0);
 
