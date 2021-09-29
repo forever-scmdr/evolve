@@ -41,7 +41,7 @@
 		<div class="suggest__result suggest-result">
 			<a class="suggest-result__link" href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 			<div class="suggest-result__info">
-				<div class="suggest-result__code">код <xsl:value-of select="code"/></div>
+				<div class="suggest-result__code">(код <xsl:value-of select="code"/>)</div>
 				<div class="suggest-result__vendor"><xsl:value-of select="vendor"/></div>
 				<div class="suggest-result__price">
 					<xsl:if test="not($zero)">

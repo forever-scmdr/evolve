@@ -199,7 +199,7 @@
 										</div>
 									</xsl:if>
 									<xsl:if test="not($input/criteria/@type = ('double', 'integer'))">
-										<div class="filter__control ltgt">
+										<div class="filter__control ltgt justify-right">
 											<label>×
 												<input class="x" type="radio"/>
 											</label>
@@ -224,7 +224,7 @@
 									</div>
 								</xsl:for-each>
 							</div>
-							<div class="filter__control ltgt">
+							<div class="filter__control ltgt justify-right">
 								<label>×
 									<input class="x" type="radio"/>
 								</label>
@@ -342,6 +342,11 @@
 			</div>
 			<div class="filtered">
 				<div class="filtered__wrap">
+					<xsl:if test="$tag">
+						<span style="font-size: 13px; padding-top: 5px; padding-right: 3px; padding-left: 5px; color: #438539;">
+							Производитель:
+						</span>
+					</xsl:if>
 					<xsl:for-each select="$tag">
 						<div class="filtered__item filtered-item">
 							<div class="filtered-item__label"><xsl:value-of select="."/></div>
