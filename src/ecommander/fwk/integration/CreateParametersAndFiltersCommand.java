@@ -69,7 +69,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
-			Pair<DataType.Type, String> test = testValueHasUnit(value);
+			Pair<DataType.Type, String> test = (name.equalsIgnoreCase("Комплектация"))? new Pair<>(DataType.Type.STRING, null) : testValueHasUnit(value);
 			if (currentType.equals(DataType.Type.INTEGER) && test.getLeft() != DataType.Type.INTEGER) {
 				paramTypes.put(paramName, test.getLeft());
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
@@ -117,6 +117,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						for (; unitStart < value.length() && StringUtils.contains(DIGITS, value.charAt(unitStart)); unitStart++) { /* */ }
 						String numStr = value.substring(0, unitStart).trim();
 						String unit = value.substring(unitStart).trim();
+						//fix bug width dumb descriptions
+						if(unit.length() > 5){
+							return new Pair<>(DataType.Type.STRING, null);
+						}
 						try {
 							Integer.parseInt(numStr);
 							return new Pair<>(DataType.Type.INTEGER, unit);
