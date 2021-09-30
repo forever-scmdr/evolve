@@ -770,8 +770,11 @@
 												<a class="dropdown__item{' active'[$currency = 'BYN']}" href="{concat($currency_link, 'BYN')}">BYN</a>
 												<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 													<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-													<a class="dropdown__item{' active'[$currency = $cur]}"
-													   href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
+													<xsl:variable name="show" select="$currencies/*[name() = concat($cur, '_show')] = '1'"/>
+													<xsl:if test="$show">
+														<a class="dropdown__item{' active'[$currency = $cur]}"
+														   href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
+													</xsl:if>
 												</xsl:for-each>
 											</div>
 										</div>

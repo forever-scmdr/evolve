@@ -12,6 +12,7 @@ public class Main_slider_frame
 
     public final static String _NAME = "main_slider_frame";
     public final static String NAME = "name";
+    public final static String HIDE_TEXT = "hide_text";
     public final static String TEXT = "text";
     public final static String LINK_NAME = "link_name";
     public final static String LINK = "link";
@@ -50,6 +51,28 @@ public class Main_slider_frame
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_hide_text(Byte value) {
+        setValue("hide_text", value);
+    }
+
+    public void setUI_hide_text(String value)
+        throws Exception
+    {
+        setValueUI("hide_text", value);
+    }
+
+    public Byte get_hide_text() {
+        return getByteValue("hide_text");
+    }
+
+    public Byte getDefault_hide_text(Byte defaultVal) {
+        return getByteValue("hide_text", defaultVal);
+    }
+
+    public boolean contains_hide_text(Byte value) {
+        return containsValue("hide_text", value);
     }
 
     public void set_text(String value) {

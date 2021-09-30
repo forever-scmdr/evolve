@@ -140,10 +140,11 @@
 					</xsl:if>
                     <xsl:if test="$is_proceed">
 						&#160;&#160;
+						<xsl:variable name="value_or_default" select="if ($u/send_contract_to != '') then $u/send_contract_to else 'email'"/>
                         <xsl:call-template name="check_radio">
 							<xsl:with-param name="name" select="$inp/send_contract_to/@input"/>
                             <xsl:with-param name="value" select="'email'"/>
-                            <xsl:with-param name="check" select="$u/send_contract_to"/>
+                            <xsl:with-param name="check" select="$value_or_default"/>
                         </xsl:call-template>
                         Отправить договор на email
                     </xsl:if>

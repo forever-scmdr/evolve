@@ -90,7 +90,7 @@
 			<td class="cart-item__sum">
 				<xsl:if test="not($zero)">
 					<xsl:value-of select="f:exchange(., 'sum', 0)"/>
-					<span class="hide_m" style="display: inline">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur else replace($currency, 'RUB', 'RUR')"/></span>
+					<span class="hide_m" style="display: inline">&#160;<xsl:value-of select="if ($currency = 'BYN') then $BYN_cur_out else replace($currency, 'RUB', 'RUR')"/></span>
 				</xsl:if>
 				<xsl:if test="$zero">нет цены</xsl:if>
 			</td>

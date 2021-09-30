@@ -83,8 +83,8 @@
     <xsl:variable name="rates" select="page/catalog/currencies"/>
     <xsl:variable name="rates_on" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
     <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
-    <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then ' бел.р.' else ' pуб.'"/>
-    <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur) else $currency"/>
+    <xsl:variable name="BYN_cur_out" select="if ($rates/BYN_caption and not($rates/BYN_caption = '')) then $rates/BYN_caption else if ($rates and $rates_on) then 'бел.р.' else 'pуб.'"/>
+    <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur_out) else $currency"/>
     <xsl:variable name="ceil" select="if ($rates) then f:num($rates/*[name() = concat($currency, '_ceil')]) &gt; 0 else true()"/>
     <xsl:variable name="format" select="if($ceil) then '### ###' else '### ##0.00'"/>
 
@@ -111,7 +111,7 @@
         <xsl:param name="param_name"/>
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:variable name="sum" select="f:exchange_param($item, $param_name)"/>
-        <xsl:value-of select="if ($is_byn) then concat($sum, $BYN_cur) else concat($sum, ' ', $currency)"/>
+        <xsl:value-of select="if ($is_byn) then concat($sum, ' ', $BYN_cur_out) else concat($sum, ' ', $currency)"/>
     </xsl:function>
 
     <xsl:function name="f:exchange">
@@ -139,8 +139,10 @@
         <xsl:param name="default"/>
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:variable name="sum" select="f:exchange($item, $param_name, $default)"/>
+        <xsl:variable name="cur_caption" select="$rates/*[name() = concat($currency, '_caption')]"/>
+        <xsl:variable name="cur_out" select="if ($cur_caption) then $cur_caption else if ($is_byn) then $BYN_cur_out else $currency"/>
         <xsl:choose>
-            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat($sum, $BYN_cur) else concat($sum, ' ', replace($currency, 'RUB', 'RUR'))"/></xsl:when>
+            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="concat($sum, ' ', $cur_out)"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>

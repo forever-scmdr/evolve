@@ -9,7 +9,7 @@
 
 	<!-- ****************************    ПЕРЕМЕННЫЕ    ******************************** -->
 
-	<xsl:variable name="title" select="if ($is_catalog) then 'Каталог продукции' else if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
+	<xsl:variable name="title" select="if ($is_catalog) then 'Каталог продукции' else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="if ($is_catalog) then page/catalog else page/catalog//section[@id = $sel_sec_id]"/>
@@ -172,9 +172,11 @@
 								<div class="filter__item{' active'[$user_filter/input[@id = $name]]}">
 									<div class="filter__title"><xsl:value-of select="$input/@caption"/></div>
 									<div class="filter__values">
+										<xsl:variable name="has_scroll" select="count($input/domain/value) &gt; 10"/>
 										<xsl:for-each select="$input/domain/value">
 											<div class="filter__value">
 												<label>
+													<xsl:if test="$has_scroll"><xsl:attribute name="style" select="'margin-right: 8px'"/></xsl:if>
 													<input name="{$name}" type="checkbox" value="{.}" rel="inp{$name}{.}">
 														<xsl:if test=". = $user_filter/input[@id = $name]">
 															<xsl:attribute name="checked" select="'checked'"/>
@@ -211,9 +213,11 @@
 						<div class="filter__item{' active'[$tag]}">
 							<div class="filter__title">Производитель</div>
 							<div class="filter__values">
+								<xsl:variable name="has_scroll" select="count($sel_sec/tag) &gt; 10"/>
 								<xsl:for-each select="$sel_sec/tag">
 									<div class="filter__value">
 										<label>
+											<xsl:if test="$has_scroll"><xsl:attribute name="style" select="'margin-right: 8px'"/></xsl:if>
 											<input name="tag" type="checkbox" value="{vendor}" rel="prod{vendor}">
 												<xsl:if test="vendor = $tag">
 													<xsl:attribute name="checked" select="'checked'"/>
@@ -239,7 +243,7 @@
 					</div><!-- фильтры (выбраны, но не применены)-->
 					<div class="filter__actions filter_visible" style="{'display: none'[not($show_filter)]}">
 						<button class="button button_disabled apply_filter" type="submit" disabled="disabled">Применить фильтры</button>
-						<button class="button{' button_disabled'[not($user_filter)]}" onclick="location.href = '{page/reset_filter_link}'; return false;" type="button">
+						<button class="button{' button_disabled'[not($user_filter) and not($tag)]}" onclick="location.href = '{page/reset_filter_link}'; return false;" type="button">
 							Очистить фильтры
 						</button>
 						<button class="button button_secondary" type="button" onclick="hideSectionFilter()">Скрыть фильтры</button>

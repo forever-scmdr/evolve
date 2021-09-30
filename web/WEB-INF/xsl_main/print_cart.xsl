@@ -11,7 +11,10 @@
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
 		</xsl:text>
 	</xsl:template>
-	
+
+	<xsl:variable name="rates" select="page/currencies"/>
+
+
 	<xsl:variable name="top_td_style" >width:100.0%;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:4.25pt 5.4pt 4.25pt 5.4pt</xsl:variable>
 	<xsl:variable name="td_style" >border:solid windowtext 1.0pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:4.25pt 5.4pt 4.25pt 5.4pt;height:15.1pt</xsl:variable>
 	<xsl:variable name="td_style_2" >border:solid windowtext 1.0pt;border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;padding:4.25pt 5.4pt 4.25pt 5.4pt;height:15.1pt</xsl:variable>
@@ -295,10 +298,7 @@
 																							  normal">
 													<span style="font-size:12.0pt;">
 														<xsl:if test="product/price">
-															<xsl:call-template name="rub_kop_unit">
-																<xsl:with-param name="price" select="price" />
-																<xsl:with-param name="unit" select="$p_unit" />
-															</xsl:call-template>
+															<xsl:value-of select="f:exchange_cur(product, 'price', 0)"/>/<xsl:value-of select="product/unit"/>
 														</xsl:if>
 													</span>
 												</p>
@@ -310,9 +310,7 @@
 																							  normal">
 													<span style="font-size:12.0pt;">
 														<xsl:if test="sum">
-															<xsl:call-template name="rub_kop_unit">
-																<xsl:with-param name="price" select="sum" />
-															</xsl:call-template>
+															<xsl:value-of select="f:exchange_cur(., 'sum', 0)"/>
 														</xsl:if>
 													</span>
 												</p>

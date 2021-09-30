@@ -152,6 +152,8 @@
 		поэтому нужно называть параметры так - Код валюты и суффикс (_rate, _scale, _update)
 	-->
 	<item name="currencies" caption="Курсы валют" ag-id="1781" ag-hash="-1089470353">
+		<parameter name="BYN_caption" type="string" caption="Белорусский рубль - написание единицы" default="руб." description="руб."/>
+		<parameter name="RUB_caption" type="string" caption="Российский рубль - написание единицы" default="рос.руб." description="рос.руб."/>
 		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
 		<parameter name="RUB_scale" type="currency-precise" default="100" caption="Российский рубль (Scale)"/>
 		<parameter name="RUB_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
@@ -160,6 +162,11 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
+		<parameter name="RUB_show" type="byte" default="1" caption="Российский рубль - показывать на сайте" description="0 - не показывать, 1 - показывать">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+		<parameter name="USD_caption" type="string" caption="Доллар США - написание единицы" default="$" description="$"/>
 		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
 		<parameter name="USD_scale" type="currency-precise" default="1" caption="Доллар США (Scale)"/>
 		<parameter name="USD_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
@@ -168,11 +175,20 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
+		<parameter name="USD_show" type="byte" default="1" caption="Доллар США - показывать на сайте" description="0 - не показывать, 1 - показывать">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+		<parameter name="EUR_caption" type="string" caption="Евро - написание единицы" default="€" description="€"/>
 		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
 		<parameter name="EUR_scale" type="currency-precise" default="1" caption="Евро (Scale)"/>
 		<parameter name="EUR_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
 		<parameter name="EUR_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="EUR_update" type="byte" default="1" caption="Евро - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
+		<parameter name="EUR_show" type="byte" default="1" caption="Евро - показывать на сайте" description="0 - не показывать, 1 - показывать">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
@@ -513,7 +529,7 @@
 
 		<parameter name="int_number" type="integer" caption="Номер (число)"/>
 		<parameter name="status" type="byte" caption="Состояние"/>
-		<parameter name="payed" type="byte" caption="Оплачен" domain="0-1"/>
+		<parameter name="payed" type="byte" caption="Оплачен" domain="0-1"/>.
 		<parameter name="status_log" type="byte" caption="журнал стаутса" multiple="true"/>
 		<parameter name="status_date" type="long" caption="дата изменения статуса" multiple="true"/>
 

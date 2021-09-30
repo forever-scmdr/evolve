@@ -113,6 +113,7 @@ public interface ItemNames {
     String COMMENT = "comment";
     String STYLES = "styles";
     String LABEL_STYLE = "label_style";
+    String DISCOUNT_RULES = "discount_rules";
 
     public interface absent_ {
 
@@ -356,21 +357,28 @@ public interface ItemNames {
     public interface currencies_ {
 
         String _ITEM_NAME = "currencies";
+        String BYN_CAPTION = "BYN_caption";
+        String RUB_CAPTION = "RUB_caption";
         String RUB_RATE = "RUB_rate";
         String RUB_SCALE = "RUB_scale";
         String RUB_CEIL = "RUB_ceil";
         String RUB_EXTRA_QUOTIENT = "RUB_extra_quotient";
         String RUB_UPDATE = "RUB_update";
+        String RUB_SHOW = "RUB_show";
+        String USD_CAPTION = "USD_caption";
         String USD_RATE = "USD_rate";
         String USD_SCALE = "USD_scale";
         String USD_CEIL = "USD_ceil";
         String USD_EXTRA_QUOTIENT = "USD_extra_quotient";
         String USD_UPDATE = "USD_update";
+        String USD_SHOW = "USD_show";
+        String EUR_CAPTION = "EUR_caption";
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
         String EUR_CEIL = "EUR_ceil";
         String EUR_EXTRA_QUOTIENT = "EUR_extra_quotient";
         String EUR_UPDATE = "EUR_update";
+        String EUR_SHOW = "EUR_show";
 
     }
 
@@ -522,6 +530,13 @@ public interface ItemNames {
         String ANALOG = "analog";
         String BARCODE = "barcode";
         String GALLERY = "gallery";
+
+    }
+
+    public interface discount_rules_ {
+
+        String _ITEM_NAME = "discount_rules";
+        String TEXT = "text";
 
     }
 
@@ -724,6 +739,7 @@ public interface ItemNames {
     public interface main_page_ {
 
         String _ITEM_NAME = "main_page";
+        String TIMEOUT = "timeout";
 
     }
 
@@ -741,6 +757,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "main_slider_frame";
         String NAME = "name";
+        String HIDE_TEXT = "hide_text";
         String TEXT = "text";
         String LINK_NAME = "link_name";
         String LINK = "link";
