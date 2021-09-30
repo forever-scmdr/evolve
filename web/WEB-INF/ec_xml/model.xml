@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Model for https://metabo-belarus.by/ -->
-
-
 <model>
 
 
@@ -188,7 +184,7 @@
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
-		<parameter name="date" type="date" caption="дата актуальности" />
+		<parameter name="date" type="date" default="26.12.2099 21:00" caption="дата актуальности" />
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
@@ -241,11 +237,11 @@
 		<child item="line_product"/>
 	</item>
 
-	<item name="gifts" caption="Подарки" ag-id="2633" ag-hash="98352451">
+	<item name="gifts" caption="Подарки" ag-id="2633" ag-hash="98352451" >
 		<child item="gift_section" />
 	</item>
 
-	<item name="gift_section" caption="Разадел" key="sum" ag-id="2634" ag-hash="-1333043498">
+	<item name="gift_section" caption="Раздел" key="sum" ag-id="2634" ag-hash="-1333043498" >
 		<parameter name="sum" type="currency" caption="Минимальная сумма"/>
 		<child item="product" />
 	</item>
