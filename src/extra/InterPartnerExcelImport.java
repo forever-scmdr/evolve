@@ -128,6 +128,9 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 
 		hideProducts(ItemNames.PRODUCT);
 		hideProducts(ItemNames.LINE_PRODUCT);
+
+		setPricesForLineProductParents();
+
 		info.setCurrentJob("");
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -136,6 +139,33 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 		LuceneIndexMapper.getSingleton().reindexAll();
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		setOperation("Интеграция завершена");
+	}
+
+	private void setPricesForLineProductParents() throws Exception {
+		setOperation("переназначене цен множественных товаров");
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+		q.addParameterCriteria(HAS_LINE_PRODUCTS, "1", "=", null, Compare.SOME);
+		int page = 1;
+		q.setLimit(500, page);
+		List<Item> products;
+		info.setProcessed(0);
+		while ((products = q.loadItems()).size() > 0){
+			for(Item product : products){
+				info.setCurrentJob(product.getStringValue(CODE_PARAM));
+				ItemQuery lineProductQuery = new ItemQuery(LINE_PRODUCT_ITEM);
+				lineProductQuery.setParentId(product.getId(), false);
+				BigDecimal lowestPrice = new BigDecimal(Long.MAX_VALUE);
+				lowestPrice.setScale(2);
+				for(Item lineProduct : lineProductQuery.loadItems()){
+					lowestPrice = lowestPrice.min(lineProduct.getDecimalValue(PRICE_PARAM, lowestPrice));
+				}
+				product.setValue(PRICE_PARAM, lowestPrice);
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().ignoreUser().noFulltextIndex().noTriggerExtra());
+				info.increaseProcessed();
+			}
+			page++;
+			q.setLimit(500, page);
+		}
 	}
 
 	private void fixGallery() throws Exception {
