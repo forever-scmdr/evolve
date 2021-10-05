@@ -1,9 +1,10 @@
 
 package ecommander.extra._generated;
 
-import java.math.BigDecimal;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.math.BigDecimal;
 
 public class Bought
     extends Item

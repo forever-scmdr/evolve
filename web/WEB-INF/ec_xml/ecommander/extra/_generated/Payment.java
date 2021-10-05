@@ -1,9 +1,10 @@
 
 package ecommander.extra._generated;
 
-import java.util.List;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+
+import java.util.List;
 
 public class Payment
     extends Item
