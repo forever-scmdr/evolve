@@ -56,6 +56,8 @@ public class CreateSiteMap extends IntegrateBase {
 			String url = PRODUCT_URLS_PAGE + '/' + keyUnique;
 			processProductUrls(url);
 		}
+
+
 		if(urlCounter > 0){
 			endFile();
 		}
@@ -79,13 +81,18 @@ public class CreateSiteMap extends IntegrateBase {
 		pushLog("sitemap.xml created");
 	}
 
-	private void processProductUrls(String url) throws Exception {
-
-		String content = getPageContent(url);
+	private Document loadPage(String baseUrl) throws Exception {
+		String content = getPageContent(baseUrl);
 		Document doc = Jsoup.parse(content, "", Parser.xmlParser());
 		doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
 		doc.outputSettings().indentAmount(1);
 		doc.outputSettings().prettyPrint(true);
+		return doc;
+	}
+
+
+	private void processProductUrls(String url) throws Exception {
+		Document doc = loadPage(url);
 		Elements urls = doc.select("url");
 		addUrlsToSiteMap(urls);
 		Elements n = doc.select("next");

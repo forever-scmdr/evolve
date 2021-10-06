@@ -1409,6 +1409,28 @@
 		</single>
 	</page>
 
+	<page name="plain_catalog_map" template="sitemap/sitemap_section" cacheable="true">
+		<request>
+			<var name="limit" value="500"/>
+			<var name="page" value="1"/>
+		</request>
+		<single item="plain_catalog">
+			<list item="product" transit="true" id="prod">
+				<filter>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var name="page" var="page"/>
+					</pages>
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+			</list>
+		</single>
+	</page>
+
 	<page name="generate_sitemap" template="integration/create_excel">
 		<command class="ecommander.fwk.CreateSiteMap">
 			<result name="complete" type="xml"/>
