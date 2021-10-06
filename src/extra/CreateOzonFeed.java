@@ -7,16 +7,22 @@ import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
 
-    private static final Path OUTPUT_FILE = Paths.get(AppContext.getFilesDirPath(false), "ozon_feed.xml");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-YYYY_HH-mm-ss");
+    private static final String OUTPUT_FOLDER = AppContext.getFilesDirPath(false);
+    private static final String REGEX = "ozon_feed_\\d{2}-\\d{2}-\\d{4}_\\d{2}-\\d{2}-\\d{2}\\.xml";
     private XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 
     @Override
@@ -27,7 +33,14 @@ public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
     @Override
     protected void integrate() throws Exception {
         setOperation("Deleting old Ozon Feed");
-        Files.deleteIfExists(OUTPUT_FILE);
+        Files.walk(Paths.get(AppContext.getFilesDirPath(false))).filter(f->f.getFileName().toString().matches(REGEX)).forEach(path -> {
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                info.addError(ExceptionUtils.getStackTrace(e),-1,-1);
+            }
+        });
+        //Files.deleteIfExists(OUTPUT_FILE);
         info.setProcessed(0);
         setOperation("Creating feed");
         doc.startElement("yml_catalog").startElement("shop").startElement("offers");
@@ -44,10 +57,11 @@ public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
             q.setLimit(limit,page);
         }
         doc.endElement().endElement().endElement();
-        pushLog(OUTPUT_FILE.toString());
-       // pushLog(doc.toString());
-        Files.write(OUTPUT_FILE, doc.toString().getBytes(StandardCharsets.UTF_8));
-        pushLog(getUrlBase()+"/files/ozon_feed.xml");
+
+        String fileName = String.format("ozon_feed_%s.xml", DATE_FORMAT.format(new Date()));
+        Path outputFile = Paths.get(OUTPUT_FOLDER, fileName);
+        Files.write(outputFile, doc.toString().getBytes(StandardCharsets.UTF_8));
+        pushLog(getUrlBase()+"/files/"+fileName);
         setOperation("Complete");
     }
 
