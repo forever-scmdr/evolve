@@ -1414,7 +1414,7 @@
 			<var name="limit" value="500"/>
 			<var name="page" value="1"/>
 		</request>
-		<single item="plain_catalog">
+		<single item="plain_catalog" tag="section">
 			<list item="product" transit="true" id="prod">
 				<filter>
 					<limit>

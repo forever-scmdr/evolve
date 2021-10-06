@@ -57,6 +57,7 @@ public class CreateSiteMap extends IntegrateBase {
 			processProductUrls(url);
 		}
 
+		processProductUrls("plain_catalog_map");
 
 		if(urlCounter > 0){
 			endFile();
