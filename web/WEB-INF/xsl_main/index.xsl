@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:import href="templates.xsl"/>
+<!--	<xsl:import href="snippets/custom_blocks.xsl"/>-->
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -38,16 +38,9 @@
 		</script>
 	</xsl:template>
 
-
 	<xsl:template name="MAIN_CONTENT" />
 
-
-
-
 	<xsl:template name="INDEX_BLOCKS">
-
-
-
 		<!-- slider -->
 		<div class="slider">
 			<xsl:for-each select="page/main_page/main_slider_frame">
@@ -70,51 +63,7 @@
 		<div class="slider-nav"></div>
 		<!-- slider end -->
 
-
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_sections']"></xsl:apply-templates>
-
-		<!-- products carousel -->
-		<div class="block devices-block ptb">
-			<div class="container">
-				<div class="title title_2">Выгодные предложения</div>
-				<div class="devices-block__wrap device-carousel">
-					<xsl:for-each select="page/main_page/product"> <!-- [tag = ('Новинка', 'новинка', 'НОВИНКА')] -->
-						<div class="devices-block__column">
-							<xsl:apply-templates select="."/>
-						</div>
-					</xsl:for-each>
-				</div>
-				<div class="device-nav"></div>
-			</div>
-		</div>
-
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_digits']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_about']"></xsl:apply-templates>
-		<div class="divider"></div>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_utp']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_gifts']"></xsl:apply-templates>
-		<xsl:apply-templates select="page/main_page/custom_block[type='type_map']"></xsl:apply-templates>
-
-		<!-- <section class="news pt">
-			<div class="container">
-				<div class="block__title block__title_left">
-					<a href="/novosti" style="text-decoration: none; color: black">Events</a>
-				</div>
-				<div class="grid">
-					<xsl:for-each select="page//news_item">
-						<div class="news__item">
-							<a class="news__image-container" href="{show_news_item}"><img src="{@path}{main_pic}" alt="{name}" /></a>
-							<div class="date"><xsl:value-of select="tokenize(date, ' ')[1]" /></div>
-							<a class="news__title" href="{show_news_item}"><xsl:value-of select="header" /></a>
-							<xsl:value-of select="short" disable-output-escaping="yes"/>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
-		</section> -->
-
-
+		<xsl:apply-templates select="page/main_page/custom_block" />
 
 		<section class="s-info">
 			<div class="container">
@@ -123,8 +72,6 @@
 		</section>
 
 	</xsl:template>
-
-
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>

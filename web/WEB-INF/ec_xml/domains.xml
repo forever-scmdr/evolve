@@ -18,5 +18,15 @@
 		<value>body_start</value>
 		<value>body_end</value>
 	</domain>
+	<domain name="custom_block_type">
+		<value>в 2 колонки</value>
+		<value>в 4 колонки</value>
+		<value>карусель</value>
+		<value>яндекс-карта</value>
+		<value>подарки</value>
+		<value>в 2 колонки с текстом и заголовком</value>
+		<value>счетчик</value>
+		<value>УТП</value>
+	</domain>
 
 </domains>
