@@ -106,7 +106,7 @@
         <link name="login_page_link" target="login_form"/>
 		<link name="logout_link" target="cart_action">
 			<var name="action" value="logout"/>
-			<var name="redirect_target" value="login_form"/>
+			<var name="redirect_target" value="index"/>
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
         <link name="personal_link" target="personal"/>
@@ -1193,6 +1193,8 @@
 			<var name="email_skrig" value="egor@forever-ds.com" />
 			<var name="email_custom" value="egor@forever-ds.com" />
 			<var name="email_post" value="egor@forever-ds.com" />
+			<var name="email_jur" value="info1@belchip.by" />
+			<var name="email_phys" value="zakaz1@belchip.by" />
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="redirect_target" value="cart"/>
 		</request>
@@ -1768,8 +1770,9 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<link name="submit_form" target="register_action">
+		<link name="submit_form" target="cart_action">
 			<var name="action" value="login"/>
+			<var name="redirect_target" value="login_form_ajax"/>
 		</link>
 	</page>
 

@@ -54,6 +54,8 @@ public interface CartConstants {
 	String EMAIL_S = "email_skrig";
 	String EMAIL_P = "email_post";
 	String EMAIL_CUSTOM = "email_custom";
+	String EMAIL_JUR = "email_jur";
+	String EMAIL_PHYS = "email_phys";
 
 	String JUR_LTM = "Извините, минимальная сумма заказа для юридических лиц - %.2f руб. Заказ не отправлен.";
 	String PHYS_LTM = "Извините, минимальная сумма заказа для физических лиц - %.2f руб. Заказ не отправлен.";

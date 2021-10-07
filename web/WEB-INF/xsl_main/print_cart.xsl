@@ -194,7 +194,7 @@
 											<p class="MsoNormal"
 												style="margin-bottom:0cm;margin-bottom:.0001pt;line-height:
 																					  normal">
-												<span style="font-size:12.0pt;">цена, <xsl:value-of select="$curr_out"/></span>
+												<span style="font-size:12.0pt;">цена</span><!-- , <xsl:value-of select="$curr_out"/> -->
 											</p>
 										</td>
 										<td width="16%" valign="top"

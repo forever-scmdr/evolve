@@ -799,13 +799,7 @@
 										</div>
 										<div class="header-icon__info">
 											<xsl:if test="not($is_user_registered)">
-												<script type="text/javascript">
-													var ref = document.referrer;
-													if(ref.indexOf('refresh=yes') != -1){
-														document.loaction.reload();
-													}
-												</script>
-												<a href="{page/login_page_link}?redirect_target={replace(//source_link, page/base, '')}">Вход</a>
+												<a href="#" popup="login_form_popup">Вход</a>
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
 												<a href="{page/personal_link}">
@@ -818,7 +812,7 @@
 										</div>
 										<div class="dropdown dropdown_last header-icon__dropdown">
 											<xsl:if test="not($is_user_registered)">
-												<a class="dropdown__item" href="{page/login_page_link}?redirect_target={replace(//source_link, page/base, '')}">Вход</a>
+												<a class="dropdown__item" href="#" popup="login_form_popup">Вход</a>
 												<a class="dropdown__item" href="{page/register_link}">Регистрация</a>
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
@@ -1116,6 +1110,8 @@
 						</div>
 					</div>
 				</div>
+
+				<xsl:call-template name="LOGIN_FORM"/>
 
 				<xsl:call-template name="SCRIPTS"/>
 

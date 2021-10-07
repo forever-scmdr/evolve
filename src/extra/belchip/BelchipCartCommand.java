@@ -1099,9 +1099,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		getSessionMapper().removeItems(CART);
 		endUserSession();
 
-		ResultPE res = getResult("logout_ajax");
-		res.addVariable("refresh", "yes");
-		return res;
+		return getResult("logout_ajax");
 	}
 
 	/**
@@ -1140,6 +1138,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		}
 		userInfo = loadUserInfo(user);
 		if (userInfo != null) {
+			getSessionMapper().removeItems(USER);
 			getSessionMapper().saveTemporaryItem(userInfo, USER);
 		}
 		startUserSession(user);
@@ -1163,9 +1162,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 		}
 
-		ResultPE res = getResult("login_ajax");
-		res.addVariable("refresh", "yes");
-		return res;
+		return getResult("login_ajax");
 	}
 
 	/**
@@ -1261,7 +1258,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			List<String> emails = new ArrayList<String>() {{ add(customerEmail.trim()); }};
 
 			// shop email
-			emails.add(getVarSingleValue(EMAIL_CUSTOM));
+			//emails.add(getVarSingleValue(EMAIL_CUSTOM));
+			emails.add(getVarSingleValue(EMAIL_JUR));
 
 			try {
 				sendEmail(emails, regularTopic, regularLink);
@@ -1284,7 +1282,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink);
+				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_JUR).trim()), customTopic, customLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1374,6 +1372,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			needPost = StringUtils.contains(userSession.getStringValue(user_.GET_ORDER_FROM, ""), "почтой");
 			boolean isGetFromB = StringUtils.contains(userForm.getStringValue(user_.GET_ORDER_FROM), "Беды");
 
+			/*
 			final String ORDER_B_EMAIL = getVarSingleValue(EMAIL_B);
 			final String ORDER_S_EMAIL = getVarSingleValue(EMAIL_S);
 			final String ORDER_POST_EMAIL = getVarSingleValue(EMAIL_P);
@@ -1384,6 +1383,9 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			else if (needPost)
 				regEmail = ORDER_POST_EMAIL;
 			emails.add(regEmail);
+			 */
+			emails.add(getVarSingleValue(EMAIL_PHYS));
+
 
 			try {
 				sendEmail(emails, regularTopic, regularLink);
@@ -1406,7 +1408,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(EMAIL_CUSTOM).trim()), customTopic, customLink);
+				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_PHYS).trim()), customTopic, customLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
