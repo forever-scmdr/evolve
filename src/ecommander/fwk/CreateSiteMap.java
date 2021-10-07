@@ -2,7 +2,10 @@ package ecommander.fwk;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
+import ecommander.model.Item;
 import ecommander.pages.ExecutablePagePE;
+import ecommander.persistence.mappers.ItemMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,13 +20,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.LinkedList;
 
 public class CreateSiteMap extends IntegrateBase {
 
+	private static final int LOAD_BATCH_SIZE = 1000;
 	private static final String SECTION_ULS_PAGE = "sitemap";
 	private static final String PRODUCT_URLS_PAGE = "sitemap_section";
 	private static final String COMMENT_PATTERN = "<!--(?<comment>.*)-->";
@@ -45,19 +49,8 @@ public class CreateSiteMap extends IntegrateBase {
 		Elements urls = doc.select("url");
 
 		currentSitemap = startFile("sitemap"+fileCounter+".xml");
-
 		addUrlsToSiteMap(urls);
-
-		Pattern pattern = Pattern.compile(COMMENT_PATTERN);
-		Matcher matcher = pattern.matcher(sectionUrls);
-
-		while(matcher.find()){
-			String keyUnique = matcher.group("comment");
-			String url = PRODUCT_URLS_PAGE + '/' + keyUnique;
-			processProductUrls(url);
-		}
-
-		processProductUrls("plain_catalog_map");
+		addProducts();
 
 		if(urlCounter > 0){
 			endFile();
@@ -89,6 +82,53 @@ public class CreateSiteMap extends IntegrateBase {
 		doc.outputSettings().indentAmount(1);
 		doc.outputSettings().prettyPrint(true);
 		return doc;
+	}
+
+
+	private void addProducts() throws Exception {
+		String base = StringUtils.endsWith(getUrlBase(),"/")? getUrlBase() : getUrlBase()+'/';
+		try (Connection conn = MysqlConnector.getConnection()){
+			LinkedList<Item> products = new LinkedList<>();
+			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L, conn));
+			long id = 0;
+			XmlDocumentBuilder part = XmlDocumentBuilder.newDocPart();
+			while (products.size() > 0){
+				while (products.size() != 0){
+					Item product = products.poll();
+					id = product.getId();
+					part.startElement("url")
+							.startElement("loc")
+							.addText(base + product.getKeyUnique())
+							.endElement()
+							.startElement("changefreq")
+							.addText("daily")
+							.endElement()
+							.startElement("priority")
+							.addText("0.80")
+							.endElement()
+							.endElement();
+
+					urlCounter++;
+					info.increaseProcessed();
+					if(urlCounter >= URLS_PER_FILE){
+						Files.write(currentSitemap, part.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+						urlCounter = 0;
+						endFile();
+						fileCounter++;
+						currentSitemap = startFile("sitemap"+fileCounter+".xml");
+						part = XmlDocumentBuilder.newDocPart();
+					}
+				}
+				products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id, conn));
+			}
+			if(urlCounter != 0){
+				Files.write(currentSitemap, part.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+				urlCounter = 0;
+				endFile();
+			}
+		}catch (Exception e){
+			throw  e;
+		}
 	}
 
 
