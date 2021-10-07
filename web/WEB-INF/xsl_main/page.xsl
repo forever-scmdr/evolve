@@ -1,6 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:import href="templates.xsl"/>
+	<xsl:import href="snippets/custom_blocks.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -31,22 +31,23 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
-
-		<div class="info-items info-items_section">
-			<div class="info-items__wrap">
-				<xsl:for-each select="$p/custom_page | $p/news">
-					<div class="info-item card">
-						<div class="info-item__image img"><img src="{@path}{main_pic}" alt="" /></div>
-						<div class="info-item__info">
-							<div class="info-item__date"><xsl:value-of select="date"/></div>
-							<a href="{show_page}" class="info-item__title"><xsl:value-of select="header"/></a>
-							<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+		<xsl:if test="f:num($p/hide_subs) != 1 and ($p/custom_page | $p/news)">
+			<div class="info-items info-items_section">
+				<div class="info-items__wrap">
+					<xsl:for-each select="$p/custom_page | $p/news">
+						<div class="info-item card">
+							<div class="info-item__image img"><img src="{@path}{main_pic}" alt="" /></div>
+							<div class="info-item__info">
+								<div class="info-item__date"><xsl:value-of select="date"/></div>
+								<a href="{show_page}" class="info-item__title"><xsl:value-of select="header"/></a>
+								<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+							</div>
+							<a href="{show_page}" class="info-item__link"></a>
 						</div>
-						<a href="{show_page}" class="info-item__link"></a>
-					</div>
-				</xsl:for-each>
+					</xsl:for-each>
+				</div>
 			</div>
-		</div>
+		</xsl:if>
 		<!-- <div class="catalog-items info">
 			<xsl:for-each select="$p/custom_page">
 				<div class="catalog-item">

@@ -25,6 +25,7 @@
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
 	<xsl:variable name="query" select="page/variables/q"/>
+	<xsl:variable name="hide_side_menu" select="f:num(/page/custom_page/hide_side_menu) = 1"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -653,10 +654,12 @@
 		<div class="content">
 			<div class="container">
 				<div class="content__wrap">
-					<div class="content__side">
-						<xsl:call-template name="LEFT_COLOUMN"/>
-					</div>
-					<div class="content__main">
+					<xsl:if test="not($hide_side_menu)">
+						<div class="content__side">
+							<xsl:call-template name="LEFT_COLOUMN"/>
+						</div>
+					</xsl:if>
+					<div class="content__main{' no-left-col'[$hide_side_menu]}">
 						<xsl:call-template name="PAGE_PATH"/>
 						<xsl:call-template name="PAGE_HEADING"/>
 						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
@@ -717,7 +720,7 @@
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.55"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.65"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>

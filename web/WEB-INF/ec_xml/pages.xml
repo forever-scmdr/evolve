@@ -468,10 +468,10 @@
 		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY">
+				<fulltext limit="5" compare="EVERY" type="prefix">
 					<var var="q"/>
 				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -596,7 +596,7 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="path"/>
+			<var name="prod" style="keypath"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra"/>
@@ -669,19 +669,19 @@
 	</page>
 
 
-    <page name="page" cacheable="true" template="page" critical-item="sp">
+    <page name="page" cacheable="true" template="page">
 		<request>
 			<var name="p" style="key"/>
 		</request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo" assoc="seo"/>
-			<list item="page_extra">
+			<tree item="page_extra">
 				<list item="page_extra_part"/>
 				<list item="point"/>
 				<list item="region">
 					<list item="point"/>
 				</list>
-			</list>
+			</tree>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>
@@ -783,26 +783,6 @@
 		</link>
 	</page>
 
-	<page name="feedback_jur_ajax" template="feedback_jur_ajax">
-		<request>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<new item="generic_form" id="email_form">
-			<extra-input name="company" form="feedback"/>
-			<extra-input name="address" form="feedback"/>
-			<extra-input name="unp" form="feedback"/>
-			<extra-input name="okpo" form="feedback"/>
-			<extra-input name="message" form="feedback"/>
-		</new>
-		<link name="submit_link" target="feedback_command" type="itemform">
-			<var name="form_name" value="feedback"/>
-			<var name="required" value="company, address, unp, okpo, message"/>
-			<var name="template" value="feedback_jur_email"/>
-			<var name="source_page" value="feedback_jur_ajax"/>
-		</link>
-	</page>
-
 	<page name="comment_ajax" template="comment_ajax">
 		<request>
 			<var name="result"/>
@@ -846,7 +826,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="bio@forever-ds.com"/>
+			<var name="email" value="egor@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1797,7 +1777,7 @@
 		<command class="extra.SetOptional"/>
 	</page>
 
-	<page name="admin_extra" template="admin/extra" authority-groups="common">
+	<page name="admin_extra" template="admin/extra" authority-groups ="common">
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
@@ -1823,7 +1803,7 @@
 	</page>
 
 
-	<page name="get_rates" schedule="0 */5 * ? * *">
+	<page name="get_rates" schedule="0 0 */2 ? * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1831,30 +1811,21 @@
 	</page>
 
 
-	<page name="import_news_from_ancient" template="integration/create_excel">
-		<request>
-			<var name="link" value="http://www.baaz.by/news_export"/>
-		</request>
-		<command class="extra.ImportNewsFromAncient">
+	<page name="page_404" template="admin/error_page">
+		<include name="COMMON" />
+		<single item="error_page">
+			<list item="page_extra"/>
+		</single>
+	</page>
+
+	<page name="update_error_page" >
+		<command class="ecommander.fwk.CreateErrorJspCommand"/>
+	</page>
+
+	<page name="clean_garbage_files" template="integration">
+		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">
 			<result name="complete" type="xml" />
 		</command>
 	</page>
-
-
-<!--	<page name="tuples">-->
-<!--		<request>-->
-<!--			<var name="direct_search" value="тест ключ"/>-->
-<!--		</request>-->
-<!--		<single item="product" tag="direct" id="prod">-->
-<!--			<filter>-->
-<!--				<parameter name="tuple_test"><var var="direct_search" /></parameter>-->
-<!--			</filter>-->
-<!--		</single>-->
-<!--		<list item="product" tag="search">-->
-<!--			<filter>-->
-<!--				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>-->
-<!--			</filter>-->
-<!--		</list>-->
-<!--	</page>-->
 
 </site>

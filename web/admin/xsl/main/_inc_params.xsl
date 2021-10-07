@@ -172,10 +172,12 @@
 			<div class="combobox" >
 				<select onchange="this.nextElementSibling.value = this.value">
 					<option/>
-					<xsl:for-each select="//domain[@name=current()/@domain]/value">
+					<xsl:for-each-group select="//domain[@name=current()/@domain]/value" group-by="text()">
 						<xsl:sort select="."/>
-						<option><xsl:value-of select="."/></option>
-					</xsl:for-each>
+						<xsl:for-each select="current-group()[1]">
+							<option><xsl:value-of select="current-group()[1]"/></option>
+						</xsl:for-each>
+					</xsl:for-each-group>
 				</select>
 				<input id="{@input}" class="field" type="text" name="{@input}" value="{.}"/>
 			</div>
