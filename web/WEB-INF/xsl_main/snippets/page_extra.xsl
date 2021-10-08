@@ -6,7 +6,7 @@
 	
 	<xsl:template match="*" mode="content">
 		<xsl:value-of select="text" disable-output-escaping="yes"/>
-		<xsl:apply-templates select="*[@type != '']" mode="content"/>
+		<xsl:apply-templates select="*[@type != 'custom_page']" mode="content"/>
 	</xsl:template>
 
 	<xsl:template match="map_part" mode="content">
