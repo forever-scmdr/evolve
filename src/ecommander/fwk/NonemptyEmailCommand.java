@@ -5,7 +5,6 @@ import ecommander.model.*;
 import ecommander.pages.*;
 import ecommander.pages.var.StaticVariable;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
@@ -93,6 +92,7 @@ public class NonemptyEmailCommand extends Command {
 		for (String extraKey : message.getExtraKeys()) {
 			ArrayList<Object> extras = message.getListExtra(extraKey);
 			for (Object extra : extras) {
+				if(extraKey.equals(SPAM_PARAM) && StringUtils.isNotBlank(extra.toString())) return getResult(SUCCESS_RESULT);
 				messageInput.add(extraKey, extra);
 			}
 		}
