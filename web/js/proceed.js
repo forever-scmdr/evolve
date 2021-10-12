@@ -7,7 +7,7 @@ $(document).on("change", "#delivery input", function(e){
 	$hideable.each(function(){
 		if(!$(this).is(":visible")){
 			$(this).find(":checked").prop("checked", false);
-			$(this).find("input[type='text']").val("");
+			//$(this).find("input[type='text']").val("");
 		}
 	});
 

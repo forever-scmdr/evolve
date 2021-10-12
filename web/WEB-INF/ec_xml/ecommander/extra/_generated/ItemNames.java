@@ -202,6 +202,8 @@ public interface ItemNames {
     public interface bed_ {
 
         String _ITEM_NAME = "bed";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -385,6 +387,8 @@ public interface ItemNames {
     public interface custom_ {
 
         String _ITEM_NAME = "custom";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -1034,6 +1038,8 @@ public interface ItemNames {
     public interface post_ {
 
         String _ITEM_NAME = "post";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -1253,6 +1259,8 @@ public interface ItemNames {
     public interface skr_ {
 
         String _ITEM_NAME = "skr";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 

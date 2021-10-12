@@ -329,6 +329,7 @@
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
+		<xsl:call-template name="TAB_SCRIPT"/>
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>

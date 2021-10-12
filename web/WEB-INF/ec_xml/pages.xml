@@ -1404,7 +1404,7 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="confirm"/>
 		</link>
-		<command class="extra.belchip.BelchipCartCommand" method="removeCart"/>
+<!--		<command class="extra.belchip.BelchipCartCommand" method="removeCart"/>-->
 		<include name="COMMON"/>
 	</page>
 
@@ -1466,14 +1466,10 @@
 			<var name="currency"/>
 		</request>
 		<single item="phys">
-			<list item="bed" />
-			<list item="skr" />
-			<list item="post" />
+			<list item="mail_texts" />
 		</single>
 		<single item="jur">
-			<list item="bed" />
-			<list item="skr" />
-			<list item="post" />
+			<list item="mail_texts" />
 		</single>
 		<session>
 			<single item="user" tag="user"/>
@@ -1498,11 +1494,12 @@
 			<var name="url_base" value="http://belchip.by" />
 		</request>
 		<single item="phys">
-			<list item="custom" />
+			<list item="mail_texts" />
 		</single>
 		<single item="jur">
-			<list item="custom" />
+			<list item="mail_texts" />
 		</single>
+		<list item="order_emails"/>
 		<session>
 			<single item="user" tag="user"/>
 			<single item="cart" id="cart">
@@ -1718,6 +1715,7 @@
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
 		</link>
+		<list item="delivery" cacheable="true" id="delivery_register"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1811,6 +1809,7 @@
 				</link>
 			</single>
 		</personal>
+		<list item="delivery" cacheable="true" id="delivery_register"/>
 		<include name="COMMON"/>
 	</page>
 

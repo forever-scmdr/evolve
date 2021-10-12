@@ -189,9 +189,9 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(dbUser).ignoreUser(true).noFulltextIndex());
 
 		getSessionMapper().removeItems(USER);
-		Item sessionUser = getSessionMapper().createSessionRootItem(dbUser.getTypeName());
-		Item.updateParamValues(dbUser, sessionUser);
-		getSessionMapper().saveTemporaryItem(sessionUser, USER);
+//		Item sessionUser = getSessionMapper().createSessionRootItem(dbUser.getTypeName());
+//		Item.updateParamValues(dbUser, sessionUser);
+//		getSessionMapper().saveTemporaryItem(sessionUser, USER);
 
 		return getResult("update_success");
 	}

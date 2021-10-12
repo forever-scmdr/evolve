@@ -67,6 +67,16 @@
 		</div>
 		<div class="form__item form-item">
 			<div class="form-item__label">
+				<div>Страна:</div>
+			</div>
+			<select name="{$inp/post_country/@input}" value="{f:not_empty($inp/post_country, $u/post_country)}">
+				<xsl:for-each-group select="page/delivery/country" group-by=".">
+					<option value="{current-group()[1]}"><xsl:value-of select="current-group()[1]"/></option>
+				</xsl:for-each-group>
+			</select>
+		</div>
+		<div class="form__item form-item">
+			<div class="form-item__label">
 				<div>Область:</div>
 			</div>
 			<input class="input" type="text"

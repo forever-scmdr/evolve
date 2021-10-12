@@ -48,7 +48,7 @@
 			<div class="tabs__content">
 				<div class="tab-container" id="tab_phys" style="{'display: none;'[$is_jur]}">
 					<xsl:variable name="inp" select="page/user_phys/input"/>
-					<form class="form" action="{page/confirm_phys_link}" method="post" onsubmit="lock('tab_phys');">
+					<form class="form" action="{page/confirm_phys_link}" method="post" onsubmit="lock('tab_phys');$(this).find('.input:hidden').val('');$(this).find('select').val('');">
 						<input type="hidden" name="{$inp/pseudo/@input}" value="pseudo"/>
 						<xsl:variable name="u" select="page/user[@type='user_phys']"/>
 						<div class="form__item form-item">
@@ -245,7 +245,7 @@
 
 
 	<xsl:variable name="inp" select="page/user_phys/input"/>
-	<xsl:variable name="u" select="page/user[@type = 'user_phys']"/>
+	<xsl:variable name="u" select="page/user[@type='user_phys']"/>
 
 	<xsl:template match="delivery">
 		<xsl:variable name="show" select="concat('#', string-join((payment/@id, absent/@id),', #'), if(f:num(ask_address) = 1) then ', #postAddressPhys' else '')" />
@@ -253,7 +253,7 @@
 			<label data-show="{$show}" data-country="{string-join(country,',')}">
 				<xsl:call-template name="check_radio">
 					<xsl:with-param name="value" select="@id"/>
-					<xsl:with-param name="check" select="if ($u) then $u/get_order_from else $inp/get_order_from"/>
+					<xsl:with-param name="check" select="if ($inp) then $inp/get_order_from else $u/get_order_from"/>
 					<xsl:with-param name="name" select="$inp/get_order_from/@input"/>
 				</xsl:call-template>&#160;
 				<xsl:value-of select="name"/>
@@ -268,7 +268,7 @@
 				<xsl:call-template name="check_radio">
 					<xsl:with-param name="value" select="@id"/>
 					<xsl:with-param name="name" select="$inp/payment/@input"/>
-					<xsl:with-param name="check" select="if ($u) then $u/payment else $inp/payment"/>
+					<xsl:with-param name="check" select="if ($inp) then $inp/payment else $u/payment"/>
 				</xsl:call-template>&#160;
 				<xsl:value-of select="name" />
 			</label>

@@ -647,10 +647,10 @@
 		<parameter name="bottom" type="short-text" caption="текст снизу"/>
 	</item>
 
-	<item name="bed" caption="Беды" extends="mail_texts" ag-id="3931" ag-hash="97409" />
-	<item name="skr" caption="Скрыганова" extends="mail_texts" ag-id="3932" ag-hash="113946" />
-	<item name="post" caption="Почтой (zakaz2@belchip.by)" extends="mail_texts" ag-id="3933" ag-hash="3446944" />
-	<item name="custom" caption="Индивиуальный заказ" extends="mail_texts" ag-id="3934" ag-hash="-1349088399" />
+	<item name="bed" caption="Беды" super="mail_texts" ag-id="3931" ag-hash="97409" />
+	<item name="skr" caption="Скрыганова" super="mail_texts" ag-id="3932" ag-hash="113946" />
+	<item name="post" caption="Почтой (zakaz2@belchip.by)" super="mail_texts" ag-id="3933" ag-hash="3446944" />
+	<item name="custom" caption="Индивиуальный заказ" super="mail_texts" ag-id="3934" ag-hash="-1349088399" />
 
 
 	<item name="jur" caption="для юр.лиц" ag-id="3935" ag-hash="105607">
