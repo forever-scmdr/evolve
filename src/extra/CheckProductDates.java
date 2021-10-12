@@ -30,8 +30,8 @@ public class CheckProductDates extends IntegrateBase implements CatalogConst {
 		q.setIdSequential(0);
 		q.setLimit(1000);
 		List<Item> products = q.loadItems();
+		long id=0;
 		while (products != null && products.size() > 0){
-			long id = 0;
 			for(Item product : products){
 				id = product.getId();
 				long date = product.getLongValue(DATE_PARAM, defaultDate);
