@@ -21,16 +21,13 @@ public class SaveAllProductsCommand extends IntegrateBase implements CatalogCons
 	protected void integrate() throws Exception
 	{
 		setOperation("Пересохранение товаров");
-		long startID = 0;
 		List<Item> products;
 		info.setProcessed(0);
 		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 		int p =1;
 		q.setLimit(500,p);
-
 			while ((products = q.loadItems()).size() > 0) {
 				for (Item product : products) {
-					startID = product.getId();
 					product.setValueUI("date", "31.12.2100 00:00");
 					executeAndCommitCommandUnits(SaveItemDBUnit.forceUpdate(product).noFulltextIndex().noTriggerExtra());
 					info.increaseProcessed();

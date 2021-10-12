@@ -44,9 +44,8 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), StandardCharsets.UTF_8);
 		reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
 		reportDir.mkdirs();
-		long date = System.currentTimeMillis();
 		reportFile = new File (AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "report.txt"));
-		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "hikoki_import.xml"));
+		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "metabo_import.xml"));
 		return true;
 	}
 
@@ -80,10 +79,9 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
                 if (qty.compareTo(ZERO) > 0) {
 					product.setValueUI(AVAILABLE_PARAM, "1");
 					inStockCount++;
-					info.pushLog(code);
 				}
 
-                executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
+                executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
                 updatedCodes.add(code);
                 info.increaseProcessed();
 			} catch (Exception e) {
@@ -112,7 +110,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
                 if (!updatedCodes.contains(product.getStringValue(CODE_PARAM, ""))) {
                     product.setValueUI(QTY_PARAM, "0");
                     product.setValueUI(AVAILABLE_PARAM, "0");
-                    executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
+                    executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
                     info.increaseProcessed();
                 }
             }
