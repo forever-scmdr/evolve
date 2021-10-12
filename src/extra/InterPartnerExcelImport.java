@@ -159,8 +159,10 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 				for(Item lineProduct : lineProductQuery.loadItems()){
 					lowestPrice = lowestPrice.min(lineProduct.getDecimalValue(PRICE_PARAM, lowestPrice));
 				}
-				product.setValue(PRICE_PARAM, lowestPrice);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().ignoreUser().noFulltextIndex().noTriggerExtra());
+				if(lowestPrice.compareTo(new BigDecimal(Long.MAX_VALUE)) < 0) {
+					product.setValue(PRICE_PARAM, lowestPrice);
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().ignoreUser().noFulltextIndex().noTriggerExtra());
+				}
 				info.increaseProcessed();
 			}
 			page++;
