@@ -32,8 +32,8 @@
 
 	<xsl:variable name="h1">
 		<xsl:choose>
-			<xsl:when test="$has_non_zero">Ваш заказ принят. Копия заказа отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:when>
-			<xsl:otherwise>Ваша заявка принята. Копия заявки отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:otherwise>
+			<xsl:when test="$has_non_zero">Заказ №<xsl:value-of select="$c/order_num"/> принят. Копия заказа отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:when>
+			<xsl:otherwise>Заявка принята. Копия заявки отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 

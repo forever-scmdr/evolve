@@ -1302,7 +1302,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		cart.setValue(cart_.PROCESSED, (byte) 1);
 		getSessionMapper().saveTemporaryItem(cart);
 
-		return getResult("confirm").setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link);
+		return getResult("confirm")/*.setVariable("p1", regularLink.serialize()).setVariable("p2", customLink.serialize()).setVariable("p3", link)*/;
 	}
 
 	/**
