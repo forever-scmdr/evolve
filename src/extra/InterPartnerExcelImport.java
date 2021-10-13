@@ -163,7 +163,7 @@ public class InterPartnerExcelImport extends CreateParametersAndFiltersCommand i
 					product.setValue(PRICE_PARAM, lowestPrice);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().ignoreUser().noFulltextIndex().noTriggerExtra());
 				}
-				info.increaseProcessed();
+ 				info.increaseProcessed();
 			}
 			page++;
 			q.setLimit(500, page);
