@@ -479,7 +479,13 @@
 		<request>
 			<var name="q"/>
 		</request>
-		<list item="plain_section" id="ps"/>
+		<list item="plain_section" id="ps">
+			<filter>
+				<parameter name="name" sign="!=" compare="SOME">
+					<var value="compel.ru"/>
+				</parameter>
+			</filter>
+		</list>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext name="name" limit="200" threshold="0.02" type="prefix" compare="SOME">
