@@ -637,6 +637,7 @@
 		<parameter name="post" type="text" caption="текст почта"  description="на станице &#34;заказ отправлен&#34;"/>
 		<parameter name="kur" type="text" caption="текст курьер"  description="на станице &#34;заказ отправлен&#34;"/>
 		<parameter name="custom" type="text" caption="текст заказные товары"  description="на станице &#34;заказ отправлен&#34;"/>
+		<parameter name="jur_text" type="text" caption="текст для юрлиц"  description="на станице &#34;заказ отправлен&#34;"/>
 
 		<child item="jur" single="true"/>
 		<child item="phys" single="true"/>

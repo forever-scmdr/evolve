@@ -26,7 +26,7 @@
 
 	<xsl:variable name="get_order_from" select="$f/get_order_from"/>
 	<xsl:variable name="POST" select="contains($get_order_from, 'почт')  or $f/post_address!= ''" />
-	<xsl:variable name="KUR" select="contains($get_order_from, 'курьер')" />
+	<xsl:variable name="KUR" select="contains($get_order_from, 'урьер')" />
 	<xsl:variable name="SELF" select="contains($get_order_from, 'амовывоз')" />
 
 
@@ -61,25 +61,7 @@
 	<xsl:template name="CONTENT_INNER">
 		<div class="text">
 			<xsl:if test="not($is_phys)">
-				<p style="font-size: 20px">
-					Счёт на оплату будет отправлен на указанный e-mail/факс после обработки заявки специалистом.
-					Вопросы по обработке заявок и выставлению счёта: (017) 316-14-10<br/>
-					Вопросы по готовности оплаченного заказа: (017) 318-78-78 (Бухгалтерия)
-				</p>
-				<p>&#160;</p>
-				<p style="font-size: 20px">
-					Копия списка выбранных товаров отправлена на e-mail.
-				</p>
-				<p>&#160;</p>
-				<p style="font-size: 20px">
-					<i>Данная форма заказа не является основанием для оплаты или отпуска товара! Производите оплату только после подтверждения
-						заказа и заключения договора!</i>
-				</p>
-				<p style="font-size: 20px">
-					<i>В случае отказа или невозможности оплаты выставленного договора в течении 5 дней просьба сообщить об этом
-						по телефону (017) 318-78-78 (Бухгалтерия)</i>
-				</p>
-
+				<xsl:value-of select="page/order_emails/jur_text" disable-output-escaping="yes"/>
 				<xsl:if test="$has_non_zero">
 					<xsl:value-of select="$in_stock_text" disable-output-escaping="yes"/>
 				</xsl:if>

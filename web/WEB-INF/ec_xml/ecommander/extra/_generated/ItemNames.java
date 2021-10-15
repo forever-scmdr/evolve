@@ -909,6 +909,7 @@ public interface ItemNames {
         String POST = "post";
         String KUR = "kur";
         String CUSTOM = "custom";
+        String JUR_TEXT = "jur_text";
 
     }
 
