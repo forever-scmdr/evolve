@@ -9,8 +9,9 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="view" select="$pv/view"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="has_tab_cart" select="$cart/bought[qty != '0']"/>
-	<xsl:variable name="has_tab_order" select="$cart/bought[qty_zero != '0']"/>
+	<xsl:variable name="is_not_processed" select="not($cart/processed = '1')"/>
+	<xsl:variable name="has_tab_cart" select="$cart/bought[qty != '0'] and $is_not_processed"/>
+	<xsl:variable name="has_tab_order" select="$cart/bought[qty_zero != '0'] and $is_not_processed"/>
 	<xsl:variable name="has_tab_fav" select="page/product"/>
 	<xsl:variable name="tab_active" select="if ($pv/tab) then $pv/tab else if ($has_tab_cart) then 'tab_cart' else if ($has_tab_order) then 'tab_order' else 'tab_personal'"/>
 
@@ -123,14 +124,14 @@
 
 	<xsl:template name="CART_TOTAL">
 		<div class="cart-total">
-			<xsl:if test="f:num($cart/discount) &gt; 0">
+			<xsl:if test="f:num($cart/discount) &gt; 0 and $is_not_processed">
 				<div class="cart-total__text">
 					<div>Итого: <span><xsl:value-of select="f:exchange_cur($cart, 'simple_sum', 0)" /></span></div>
 					<div>Скидка: <span><xsl:value-of select="$cart/discount"/>% - на товар не участвующий в спецпредложениях</span></div>
 					<div>Сумма скидки: <span><xsl:value-of select="f:exchange_cur($cart, 'margin', 0)"/></span></div>
 				</div>
 			</xsl:if>
-			<xsl:if test="f:num($cart/sum) &gt; 0">
+			<xsl:if test="f:num($cart/sum) &gt; 0 and $is_not_processed">
 				<div class="cart-total__sum">К оплате: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)" /></div>
 			</xsl:if>
 			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>

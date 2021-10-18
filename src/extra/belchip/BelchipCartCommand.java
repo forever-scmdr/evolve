@@ -57,7 +57,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		cart = getSessionMapper().getSingleRootItemByName(CART_ITEM);
 		if(cart != null){
 			getSessionMapper().removeItems(cart.getId());
-			Item userInfo = getUserInfo();
+			Item userInfo = loadUserInfo(getInitiator());
 			if(userInfo != null){
 				userInfo.clearValue(user_.BOUGHTS_SERIALIZED);
 				userInfo.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
@@ -549,7 +549,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private void savePurchaseToHisotry(Item userInfo, DateTime date, int orderNumber, String displayOrderNumber) throws Exception {
 		Item userDB = ItemQuery.loadSingleItemByParamValue(USER_ITEM, user_.EMAIL, userInfo.getStringValue(user_.EMAIL));
 		if (isRegistered()) {
-			userDB = userInfo;
+			userDB = loadUserInfo(getInitiator());
 		} else if (userDB == null) {
 			Item registeredCatalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG, User.getDefaultUser(),
 					UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
@@ -681,9 +681,10 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 */
 	private void saveCartChangesInDBAndCookie() throws Exception {
 		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
-
-		if (isRegistered()) {
-			Item userInfo = getUserInfo();
+		Item userInfo = null;
+		if (isRegistered())
+			userInfo = loadUserInfo(getInitiator());
+		if (isRegistered() && userInfo != null) {
 			String regularBoughts = serializeBoughts();
 			if (StringUtils.isNotBlank(regularBoughts))
 				userInfo.setValue(user_.BOUGHTS_SERIALIZED, regularBoughts);
@@ -943,7 +944,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			values.remove(varValue);
 		setCookieVariable(FAV_COOKIE, values.toArray(new Object[0]));
 		if (isRegistered())	{
-			Item user = getUserInfo();
+			Item user = loadUserInfo(getInitiator());
 			if (user != null) {
 				user.setValueUI(user_.FAV_COOKIE, getCookieVarPlainValue(FAV_COOKIE));
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(user));
@@ -1438,7 +1439,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE removeCart() throws Exception {
 		getSessionMapper().removeItems(CART);
 		if (isRegistered()) {
-			Item user = getUserInfo();
+			Item user = loadUserInfo(getInitiator());
 			if (user != null) {
 				user.clearValue(user_.BOUGHTS_SERIALIZED);
 				user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
