@@ -22,7 +22,7 @@ public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-YYYY_HH-mm-ss");
     private static final String OUTPUT_FOLDER = AppContext.getFilesDirPath(false);
-    private static final String REGEX = "ozon_feed_\\d{2}-\\d{2}-\\d{4}_\\d{2}-\\d{2}-\\d{2}\\.yml";
+    private static final String REGEX = "ozon_feed_\\d{2}-\\d{2}-\\d{4}_\\d{2}-\\d{2}-\\d{2}\\.xml";
     private XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 
     @Override
