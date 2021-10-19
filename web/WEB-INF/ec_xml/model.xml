@@ -466,6 +466,7 @@
 
 	<item name="payment" caption="способ оплаты" key="name" ag-id="1726" ag-hash="-786681338">
 		<parameter name="name" type="string" caption="Название" />
+		<parameter name="xml_name" type="string" caption="Значение в заказе XML" />
 		<parameter name="suffix" type="string"	caption="буковки в номере заказа" />
 		<parameter name="text" type="text" caption="Описание" />
 		<parameter name="currency" type="string" caption="Валюта" multiple="true" />

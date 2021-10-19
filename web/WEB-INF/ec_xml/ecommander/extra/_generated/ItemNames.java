@@ -1006,6 +1006,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "payment";
         String NAME = "name";
+        String XML_NAME = "xml_name";
         String SUFFIX = "suffix";
         String TEXT = "text";
         String CURRENCY = "currency";
