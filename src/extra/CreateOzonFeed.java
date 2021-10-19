@@ -58,7 +58,7 @@ public class CreateOzonFeed extends IntegrateBase implements CatalogConst {
         }
         doc.endElement().endElement().endElement();
 
-        String fileName = String.format("ozon_feed_%s.yml", DATE_FORMAT.format(new Date()));
+        String fileName = String.format("ozon_feed_%s.xml", DATE_FORMAT.format(new Date()));
         Path outputFile = Paths.get(OUTPUT_FOLDER, fileName);
         Files.write(outputFile, doc.toString().getBytes(StandardCharsets.UTF_8));
         pushLog(getUrlBase()+"/files/"+fileName);
