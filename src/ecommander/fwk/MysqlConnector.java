@@ -6,41 +6,21 @@
 */
 package ecommander.fwk;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-
-import org.apache.commons.lang3.StringUtils;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -56,12 +36,12 @@ public class MysqlConnector
 	private static final int MAX_CONNECTIONS = 24;
 	private static final int LOG_OPEN_COUNT = 7;
 
-	private static AtomicInteger _open_count = new AtomicInteger(0);
-	private static HashMap<Integer, Integer> connectionNames = new HashMap<>();
+	private static volatile AtomicInteger _open_count = new AtomicInteger(0);
+	private static ConcurrentHashMap<Integer, Integer> connectionNames = new ConcurrentHashMap<>();
 	//private static final HashSet<Integer> openConnections = new HashSet<>();
-	private static final HashMap<Integer, String> openTraces = new HashMap<>();
+	private static final ConcurrentHashMap<Integer, String> openTraces = new ConcurrentHashMap<>();
 	private static final HashSet<Thread> openThreads = new HashSet<>();
-	private static AtomicInteger com_name_counter = new AtomicInteger(0);
+	private static volatile AtomicInteger com_name_counter = new AtomicInteger(0);
 	
 	//private static final Lock lock = new ReentrantLock();
 	//private static final Condition isNotFull = lock.newCondition();
