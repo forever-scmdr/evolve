@@ -11,10 +11,12 @@ public class SaveItemDBUnit {
 	private SaveItemDBUnit() {}
 
 	public static DBPersistenceCommandUnit get(Item item) {
-		if (item.isNew())
-			return new SaveNewItemDBUnit(item);
-		else
-			return new UpdateItemParamsDBUnit(item);
+		synchronized (item) {
+			if (item.isNew())
+				return new SaveNewItemDBUnit(item);
+			else
+				return new UpdateItemParamsDBUnit(item);
+		}
 	}
 
 	public static DBPersistenceCommandUnit forceUpdate(Item item) {
