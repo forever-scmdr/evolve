@@ -1,5 +1,6 @@
 package ecommander.fwk;
 
+import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -363,22 +364,21 @@ public abstract class IntegrateBase extends Command {
 		boolean async = getVarSingleValueDefault("mode", "async").equalsIgnoreCase("async");
 		// Если команда находитя в стадии выполнения - вернуть результат сразу (не запускать команду по новой)
 		final String CLASS_NAME = getClass().getName();
-		IntegrateBase runningTask = runningTasks.get(CLASS_NAME);
-		boolean isInProgress = runningTask != null && !runningTask.isFinished;
-		if (isInProgress && "terminate".equals(operation)) {
-			runningTask.needTermination = true;
-			runningTask.terminate();
-			return runningTask.buildResult();
-		} else if (isInProgress || !StringUtils.equalsIgnoreCase("start", operation)) {
-			if (runningTask == null) {
-				newInfo();
-				return buildResult();
-			} else {
-				return runningTask.buildResult();
+		boolean wantTerminate = StringUtils.equalsIgnoreCase("terminate", operation);
+		boolean wantToStart = StringUtils.equalsIgnoreCase("start", operation);
+		boolean isInProgress, mustTerminate, mustStart;
+		IntegrateBase runningTask;
+		synchronized (runningTasks) {
+			runningTask = runningTasks.get(CLASS_NAME);
+			isInProgress = runningTask != null && !runningTask.isFinished;
+			mustTerminate = isInProgress && wantTerminate;
+			mustStart = !isInProgress && wantToStart;
+			if (mustStart) {
+				runningTask = this;
+				runningTasks.put(CLASS_NAME, this);
 			}
-		} else if (StringUtils.equalsIgnoreCase("start", operation)) {
-			runningTask = this;
-			runningTasks.put(CLASS_NAME, this);
+		}
+		if (mustStart) {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
@@ -409,7 +409,7 @@ public abstract class IntegrateBase extends Command {
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);
-					//runningTasks.remove(CLASS_NAME);
+					runningTasks.remove(CLASS_NAME);
 				}
 			});
 			thread.setDaemon(true);
@@ -417,11 +417,18 @@ public abstract class IntegrateBase extends Command {
 				thread.start();
 			else
 				thread.run();
-
 		}
-		if (runningTask != null)
+		if (mustTerminate) {
+			runningTask.needTermination = true;
+			runningTask.terminate();
 			return runningTask.buildResult();
-		return buildResult();
+		} else if (isInProgress || !wantToStart || isFinished) {
+			if (runningTask == null) {
+				newInfo();
+				return buildResult();
+			}
+		}
+		return runningTask.buildResult();
 	}
 
 	/**
@@ -477,6 +484,18 @@ public abstract class IntegrateBase extends Command {
 		}
 		result.setValue(doc.toString());
 		return result;
+	}
+
+	protected void addDebug(Item item) throws Exception {
+		String thread = Thread.currentThread().getName() + " : " + Thread.currentThread().getId();
+		StringBuilder debug = new StringBuilder();
+		debug.append("Time: ").append(System.nanoTime()).append("\r\n");
+		debug.append("Page: ").append(getPageName()).append("\r\n\r\n");
+		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+			debug.append(element.toString()).append("\r\n");
+		}
+		item.setValueUI("thread", thread);
+		item.setValueUI("debug", debug.toString());
 	}
 
 }
