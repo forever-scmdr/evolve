@@ -240,7 +240,7 @@
 							<xsl:value-of select="f:exchange_cur($p, $price_param_name, 0)"/>/<xsl:value-of select="$p/unit"/>
 						</xsl:if>
 						<xsl:if test="$zero">
-							<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Уведомить о поступлении</a>
+							<a href="{$p/subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a>
 						</xsl:if>
 					</div>
 					<div class="product-order__status">

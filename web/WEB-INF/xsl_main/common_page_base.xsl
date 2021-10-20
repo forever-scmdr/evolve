@@ -1112,6 +1112,7 @@
 				</div>
 
 				<xsl:call-template name="LOGIN_FORM"/>
+				<xsl:call-template name="SUBSCRIBE_FORM"/>
 
 				<xsl:call-template name="SCRIPTS"/>
 

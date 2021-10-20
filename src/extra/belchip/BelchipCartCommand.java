@@ -58,11 +58,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if(cart != null){
 			getSessionMapper().removeItems(cart.getId());
 			Item userInfo = loadUserInfo(getInitiator());
-			if(userInfo != null){
+			if(userInfo != null) {
 				userInfo.clearValue(user_.BOUGHTS_SERIALIZED);
 				userInfo.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(userInfo).ignoreUser(true));
-			}else{
+				getSessionMapper().removeItems(USER);
+			} else {
 				setCookieVariable(CART_COOKIE, null);
 			}
 		}
@@ -1432,23 +1433,23 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		return getResult("confirm");
 	}
 
-	/**
-	 * Удалить корзину
-	 * @return
-	 */
-	public ResultPE removeCart() throws Exception {
-		getSessionMapper().removeItems(CART);
-		if (isRegistered()) {
-			Item user = loadUserInfo(getInitiator());
-			if (user != null) {
-				user.clearValue(user_.BOUGHTS_SERIALIZED);
-				user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
-			}
-		}
-		setCookieVariable(CART_COOKIE, null);
-		return null;
-	}
+//	/**
+//	 * Удалить корзину
+//	 * @return
+//	 */
+//	public ResultPE removeCart() throws Exception {
+//		getSessionMapper().removeItems(CART);
+//		if (isRegistered()) {
+//			Item user = loadUserInfo(getInitiator());
+//			if (user != null) {
+//				user.clearValue(user_.BOUGHTS_SERIALIZED);
+//				user.clearValue(user_.CUSTOM_BOUGHTS_SERIALIZED);
+//				executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
+//			}
+//		}
+//		setCookieVariable(CART_COOKIE, null);
+//		return null;
+//	}
 
 	/**
 	 * Добавить значение к куки избранного и сохранить этот куки в айтеме пользователя
