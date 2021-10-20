@@ -8,6 +8,7 @@ import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
 import ecommander.pages.output.UserParameterDescriptionMDWriter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -450,6 +451,7 @@ public class Item implements ItemBasics {
 				parser.parse(is, handler);
 			} catch (Exception e) {
 				ServerLogger.error("ITEM params population from XML failed", e);
+				ServerLogger.error(ExceptionUtils.getStackTrace(e));
 			}
 			state = State.consistent_WITH_map;
 		}
