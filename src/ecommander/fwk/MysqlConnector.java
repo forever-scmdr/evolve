@@ -149,11 +149,11 @@ public class MysqlConnector
 				logEntry += "\n" + queryTimes.get(i) + "\t" + queries.get(i);
 			}
 			long time = System.currentTimeMillis() - createTime;
-			ServerLogger.error(logEntry);
-			ServerLogger.error("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
+			ServerLogger.debug(logEntry);
+			ServerLogger.debug("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
 			ServerLogger
-					.error("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections.keySet(), ", ") + " ----------/////////////");
+					.debug("/////////////---------- REMAINS OPEN: " + StringUtils.join(openConnections.keySet(), ", ") + " ----------/////////////");
 		}
 
 		public void commit() throws SQLException {

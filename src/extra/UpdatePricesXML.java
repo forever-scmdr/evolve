@@ -116,7 +116,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
             }
         } while (products.size() > 0);
 		info.addLog("Завершено обновление отсутсвующих товаров");
-		FileUtils.moveFile(priceXmlFile, backupFile);
+		    FileUtils.moveFile(priceXmlFile, backupFile);
 
         info.setOperation("Интеграция завершена");
 	}
