@@ -126,7 +126,7 @@
 					<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>/<xsl:value-of select="unit"/>
 				</xsl:if>
 				<xsl:if test="$zero">
-					<a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a>
+					<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
 				</xsl:if>
 			</div>
 			<div class="device__status status">
@@ -289,7 +289,7 @@
 					<xsl:if test="soon != '0'">
 						<div class="status__wait">Ожидается: <xsl:value-of select="substring(soon, 1, 10)"/></div>
 					</xsl:if>
-					<a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a>
+					<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
 				</xsl:if>
 				<xsl:if test="not($zero) and not(is_service = '1')">
 					<strong class="qty"><xsl:value-of select="concat(qty, ' ', unit)"/></strong>

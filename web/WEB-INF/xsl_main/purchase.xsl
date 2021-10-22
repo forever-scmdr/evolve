@@ -32,11 +32,12 @@
 	<xsl:template name="CONTENT_INNER">
 		<xsl:call-template name="MESSAGE"/>
 		<form action="{$purchase/to_cart_link}" method="post">
+			<!--
 			<div class="past-order-info">
 				<div>Сумма: <xsl:value-of select="$purchase/sum"/>&#160;<xsl:value-of select="$purchase/currency"/></div>
 				<button type="submit" class="button"></button>
 			</div>
-
+			-->
 			<table class="cart-items">
 				<tbody><tr class="cart-items__head">
 					<td colspan="3">Описание</td>

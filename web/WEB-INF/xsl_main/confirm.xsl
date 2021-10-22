@@ -25,14 +25,14 @@
 
 
 	<xsl:variable name="get_order_from" select="$f/get_order_from"/>
-	<xsl:variable name="POST" select="contains($get_order_from, 'почт')  or $f/post_address!= ''" />
+	<xsl:variable name="POST" select="contains($get_order_from, 'почт')" />
 	<xsl:variable name="KUR" select="contains($get_order_from, 'урьер')" />
 	<xsl:variable name="SELF" select="contains($get_order_from, 'амовывоз')" />
 
 
 	<xsl:variable name="h1">
 		<xsl:choose>
-			<xsl:when test="$has_non_zero">Заказ №<xsl:value-of select="$c/order_num"/> принят. Копия заказа отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:when>
+			<xsl:when test="$has_non_zero">Заказ №<xsl:value-of select="$c/order_num"/> принят. Копия заказа отправлена на указанный email (<xsl:value-of select="$f/email"/>).|<xsl:value-of select="$is_phys" /></xsl:when>
 			<xsl:otherwise>Заявка принята. Копия заявки отправлена на указанный email (<xsl:value-of select="$f/email"/>).</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -62,9 +62,11 @@
 		<div class="text">
 			<xsl:if test="not($is_phys)">
 				<xsl:value-of select="page/order_emails/jur_text" disable-output-escaping="yes"/>
+				<!--
 				<xsl:if test="$has_non_zero">
 					<xsl:value-of select="$in_stock_text" disable-output-escaping="yes"/>
 				</xsl:if>
+				-->
 				<xsl:if test="$has_zero or $has_custom">
 					<xsl:value-of select="$out_of_stock_text" disable-output-escaping="yes"/>
 				</xsl:if>

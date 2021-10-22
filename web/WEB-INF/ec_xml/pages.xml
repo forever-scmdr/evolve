@@ -982,6 +982,9 @@
 			<var name="result"/>
 			<var name="message"/>
 		</request>
+		<personal>
+			<single item="user" tag="registration"/>
+		</personal>
 		<single item="product" var="prod" id="prod"/>
 		<new item="observer" id="form" tag="form">
 			<parameter-input ref="form" form="observer"/>
@@ -1053,7 +1056,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="info@belchip.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1086,7 +1089,7 @@
 		</request>
 		<link name="success" target="subscribe_ajax">
 			<var name="result" value="success"/>
-			<var name="message" value="Вы подписаны на обновление, спасибо"/>
+			<var name="message" value="Ожидайте уведомления о поступлении на email"/>
 		</link>
 		<link name="error_not_set" target="subscribe_ajax">
 			<var name="result" value="error"/>
@@ -1193,8 +1196,8 @@
 			<var name="email_skrig" value="egor@forever-ds.com" />
 			<var name="email_custom" value="egor@forever-ds.com" />
 			<var name="email_post" value="egor@forever-ds.com" />
-			<var name="email_jur" value="info1@belchip.by" />
-			<var name="email_phys" value="zakaz1@belchip.by" />
+			<var name="email_jur" value="info@belchip.by" />
+			<var name="email_phys" value="zakaz@belchip.by" />
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="redirect_target" value="cart"/>
 		</request>
@@ -2344,6 +2347,19 @@
 		</command>
 	</page>
 
+
+
+	<page name="integration_auto_start" template="integration" schedule="0 0 * ? * * *">
+		<request>
+			<var name="action" />
+		</request>
+		<command class="extra.belchip.Integrate_2" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
+
+
+
 	<page name="price_update" template="integration">
 		<request>
 			<var name="action" />
@@ -2354,6 +2370,20 @@
 		</command>
 	</page>
 
+
+
+	<page name="price_update_auto_start" template="integration" schedule="0 30 * ? * * *">
+		<request>
+			<var name="action" />
+			<var name="param" value="webfile1.xml" />
+		</request>
+		<command class="extra.belchip.MicroIntegrate" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
+
+
+
 	<page name="price_manual_update" template="integration">
 		<request>
 			<var name="action" />
@@ -2363,6 +2393,7 @@
 			<result name="complete" type="xml" />
 		</command>
 	</page>
+
 
 	<page name="clear_xml_dirs_morning" schedule="0 0 4 * * ?">
 		<command class="extra.belchip.ClearXMLDirs" />

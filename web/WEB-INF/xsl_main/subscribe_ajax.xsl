@@ -18,10 +18,9 @@
 
     <xsl:template match="/">
 		<div class="result popup__body" id="subscribe_form">
-
 			<div class="popup__content" style="text-align: center; width: 440px">
 				<div class="popup__header">
-					<div class="popup__title">Известить о наличии</div>
+					<div class="popup__title">Уведомить о поступлении<p/><xsl:value-of select="$pname" /></div>
 					<a class="popup__close">
 						<img src="img/icon-menu-close.png" alt=""/>
 					</a>
@@ -39,7 +38,7 @@
 					</xsl:if>
 					<xsl:if test="not($success)">
 						<form class="form" action="{page/submit_link}" method="post" ajax="true" ajax-loader-id="login_form">
-							<div class="form__item form-item">
+							<div class="form__item form-item" style="display: none">
 								<div class="form-item__label" style="margin-bottom: 0px">
 									<div>Товар:</div>
 								</div>
@@ -50,7 +49,7 @@
 								<div class="form-item__label" style="margin-bottom: 0px">
 									<div>Email: </div>
 								</div>
-								<input class="input" name="{$form/input/observer/@input}" value="{$form/input/observer}" placeholder="name@server.com"/>
+								<input class="input" name="{$form/input/observer/@input}" value="{page/registration/email}" placeholder="name@server.com"/>
 							</div>
 							<button class="button button_big" type="submit" style="display: inline-block; position: relative; left: 50%; margin-left: -41px;">OK</button>
 						</form>
@@ -58,6 +57,11 @@
 				</div>
 			</div>
 		</div>
+		<xsl:if test="$success">
+			<div class="result popup__body" id="subs_{$pcode}">
+				<a style="color: green">В списке уведомления</a>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="SUBSCRIBE_FORM">

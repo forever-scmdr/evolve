@@ -746,12 +746,12 @@
 									</form>
 								</div>
 								<div class="header__column header__column_links header-icons">
-									<div class="header-icons__icon header-icon" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no" >
+									<div class="header-icons__icon header-icon" id="cart_ajax" style="min-width: 85px;" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no" >
 										<div class="header-icon__icon">
 											<img src="img/icon-cart.png" alt=""/>
 										</div>
-										<div class="header-icon__info">
-											<a>Корзина ..........</a>
+										<div class="header-icon__info" style="align-content: center; display: block;">
+											<a>Корзина</a>
 										</div>
 									</div>
 									<xsl:if test="$currencies">

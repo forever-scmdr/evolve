@@ -93,6 +93,7 @@ public class UsersImportCommand extends IntegrateBase implements ItemNames {
 			user.setValue(user_.REGISTERED, (byte)1);
 			Item existingUser = ItemQuery.loadSingleItemByParamValue(USER, user_.EMAIL, user.getStringValue(user_.EMAIL));
 			if (existingUser != null) {
+				executeAndCommitCommandUnits(SaveItemDBUnit.forceUpdate(existingUser).ignoreUser()); // обновить ключ
 				info.addLog("Пользователь " + user.getStringValue(user_.EMAIL) + " существует, пропускаем");
 				info.increaseProcessed();
 				continue;

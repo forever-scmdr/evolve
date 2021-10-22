@@ -559,7 +559,7 @@
 	</item>
 
 
-	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="821" ag-hash="3599307">
+	<item name="user" caption="Зарегистрированный пользователь" key="email old_login" ag-id="821" ag-hash="3599307">
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
