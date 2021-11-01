@@ -217,14 +217,15 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, 
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId) throws Exception {
+	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId, Byte... status) throws Exception {
 		ArrayList<Item> result = new ArrayList<>();
 		// Полиморфная загрузка
 		TemplateQuery select = new TemplateQuery("Select items for indexing");
 		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
+		Byte[] statusArr = status.length == 0? new Byte[]{Item.STATUS_NORMAL} : status;
 		select.SELECT("*").FROM(ITEM_TBL)
 				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
-				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
+				.AND().col_IN(I_STATUS).byteIN(statusArr)
 				.AND().col(I_ID, ">").long_(moreThanId)
 				.ORDER_BY(I_ID).LIMIT(limit);
 		try (Connection conn = MysqlConnector.getConnection();
@@ -260,6 +261,8 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, 
 		return result;
 	}
 
+
+
 	/**
 	 * Загрузать определенное количесвто айтемов определенного типа.
 	 * Метод нужен для загрузки большого массива данных последовательно небольшими порциями, поэтому айтемы
@@ -270,8 +273,8 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, 
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId) throws Exception {
-		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId);
+	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId, Byte... status) throws Exception {
+		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId, status);
 	}
 
 	/**
