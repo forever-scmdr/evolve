@@ -91,6 +91,8 @@ public abstract class IntegrateBase extends Command {
 	}
 
 	public static class Info {
+		private Timer timer = new Timer();
+
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
@@ -235,6 +237,7 @@ public abstract class IntegrateBase extends Command {
 				}
 				doc.endElement();
 			}
+			doc.startElement("timers").addText(timer.writeTotals()).endElement();
 			ServerLogger.debug(doc.toString());
 		}
 
@@ -244,6 +247,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void indexsationStarted() {
 			operation = _indexation;
+		}
+
+		public Timer getTimer() {
+			return timer;
 		}
 	}
 

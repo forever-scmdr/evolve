@@ -10,6 +10,7 @@ public class Params_xml
 
     public final static String _NAME = "params_xml";
     public final static String XML = "xml";
+    public final static String CHANGED_FLAG = "changed_flag";
 
     private Params_xml(Item item) {
         super(item);
@@ -44,6 +45,28 @@ public class Params_xml
 
     public boolean contains_xml(String value) {
         return containsValue("xml", value);
+    }
+
+    public void set_changed_flag(Byte value) {
+        setValue("changed_flag", value);
+    }
+
+    public void setUI_changed_flag(String value)
+        throws Exception
+    {
+        setValueUI("changed_flag", value);
+    }
+
+    public Byte get_changed_flag() {
+        return getByteValue("changed_flag");
+    }
+
+    public Byte getDefault_changed_flag(Byte defaultVal) {
+        return getByteValue("changed_flag", defaultVal);
+    }
+
+    public boolean contains_changed_flag(Byte value) {
+        return containsValue("changed_flag", value);
     }
 
 }

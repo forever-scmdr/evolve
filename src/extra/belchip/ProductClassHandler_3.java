@@ -1,18 +1,24 @@
 package extra.belchip;
 
 import ecommander.fwk.ServerLogger;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemType;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.SynchronousTransaction;
+import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Section;
+import extra.belchip.IConst;
+import extra.belchip.Integrate_2;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
 
@@ -22,7 +28,7 @@ import java.util.Stack;
  * @author E
  *
  */
-public class ProductClassHandler extends DefaultHandler {
+public class ProductClassHandler_3 extends DefaultHandler {
 
 	public static final String ELEMENT_PROCESS_TIMER_NAME = "ProductClassHandler_element";
 	public static final String DB_TIMER_NAME = "ProductClassHandler_DB";
@@ -35,8 +41,9 @@ public class ProductClassHandler extends DefaultHandler {
 	private SynchronousTransaction transaction = new SynchronousTransaction(User.getDefaultUser());
 	private Integrate_2.Info info; // информация для пользователя
 	private int сreated = 0; // информация для пользователя
+	private HashSet<String> changedSectionCodes = new HashSet<>();
 
-	public ProductClassHandler(Item catalog, Integrate_2.Info info) {
+	public ProductClassHandler_3(Item catalog, Integrate_2.Info info) {
 		stack.push(catalog);
 		this.info = info;
 	}
@@ -51,7 +58,11 @@ public class ProductClassHandler extends DefaultHandler {
 		else if (IConst.SECTION_ELEMENT.equalsIgnoreCase(qName)) {
 			Item section = stack.pop();
 			try {
-				section.setValueUI(Section.EXTRA, StringUtils.join(allInFilter, ";"));
+				String filterParams = StringUtils.join(allInFilter, ";");
+				if (!StringUtils.equalsIgnoreCase(section.getStringValue(Section.EXTRA), filterParams))
+					changedSectionCodes.add(section.getStringValue(Section.CODE));
+				if (StringUtils.isNotBlank(filterParams))
+					section.setValueUI(Section.EXTRA, filterParams);
 				// Синхронное выполнение, чтобы создался ID раздела и можно было бы создавать подразделы и товары
 				info.getTimer().start(DB_TIMER_NAME);
 				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
@@ -94,7 +105,15 @@ public class ProductClassHandler extends DefaultHandler {
 				String discount_2 = attributes.getValue(IConst.DISCOUNT_2_PARAM);
 				String norm = attributes.getValue(IConst.NORM_PARAM);
 				ItemType itemDesc = ItemTypeRegistry.getItemType(ItemNames.SECTION);
-				Item section = Item.newChildItem(itemDesc, parent);
+				Item section;
+				ArrayList<Item> secs = ItemQuery.loadByParamValue(ItemNames.SECTION, Section.CODE, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+				if (secs.size() > 0) {
+					section = secs.get(0);
+					if (section.getStatus() == Item.STATUS_HIDDEN)
+						transaction.executeCommandUnit(ItemStatusDBUnit.restoreJustSelf(section));
+				} else {
+					section = Item.newChildItem(itemDesc, parent);
+				}
 				section.setValue(Section.NAME, name);
 				section.setValue(Section.CODE, code);
 				section.setValue(Section.PIC_PATH, picPath);
@@ -105,7 +124,7 @@ public class ProductClassHandler extends DefaultHandler {
 				section.setValueUI(Section.NORM, norm);
 				// Синхронное выполнение, чтобы создался ID раздела и можно было бы создавать подразделы и товары
 				info.getTimer().start(DB_TIMER_NAME);
-				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex());
+				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
 				// Раздел сохраняется сразу
 				transactionExecute();
 				info.getTimer().stop(DB_TIMER_NAME);
@@ -163,6 +182,10 @@ public class ProductClassHandler extends DefaultHandler {
 	private void transactionExecute() throws Exception {
 		if (transaction.getUncommitedCount() >= 100)
 			transaction.commit();
+	}
+
+	public HashSet<String> getChangedSectionCodes() {
+		return changedSectionCodes;
 	}
 
 }

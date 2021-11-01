@@ -6,7 +6,9 @@ import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.Currencies;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.lang3.EnumUtils;
@@ -37,7 +39,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 
 	private String price;
 	private String name;
-	private String mark;
+	private String nameExtra;
 	private String unit;
 	private String qty1;
 	private String picPath;
@@ -51,7 +53,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 	private boolean parameterReady = false;
 	private StringBuilder paramValue = new StringBuilder();
 
-	private DelayedTransaction transaction = new DelayedTransaction(User.getDefaultUser());
+	private SynchronousTransaction transaction = new SynchronousTransaction(User.getDefaultUser());
 	private boolean fatalError = false;
 
 	private int сreated = 0;
@@ -75,7 +77,6 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				if(product == null) return;
 				//Timer.getTimer().start("Сравнение", "Сравнение значений из файла со значениями из БД");
 				boolean needsSave = false;
-				double priceDouble = (StringUtils.isEmpty(price))? 0d :  Double.parseDouble(price.replaceAll("[^0-9,.-]", "").replace(',', '.'));
 				double q1 = (StringUtils.isBlank(qty1))? 0d: Double.parseDouble(qty1.replaceAll("[^0-9,.-]", "").replace(',', '.'));
 				//double q2 = (StringUtils.isBlank(qty2))? 0d: Double.parseDouble(qty2.replaceAll("[^0-9,.-]", "").replace(',', '.'));
 				
@@ -89,9 +90,9 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				byte inStock = (q > 0 && StringUtils.isNotBlank(price) || soon != null)? (byte)1:(byte)0;
 				
 				//double
-				if(StringUtils.isNotBlank(price) && product.getDoubleValue(Product.PRICE,0d) != priceDouble){
+				if (StringUtils.isNotBlank(price)) {
 					needsSave = true;
-					product.setValue(Product.PRICE, priceDouble);
+					product.setValueUI(Product.PRICE, price);
 				}
 				if((StringUtils.isNotBlank(qty1) || StringUtils.isNotBlank(qty1)) && product.getDoubleValue(Product.QTY,0d) != q){
 					needsSave = true;
@@ -133,9 +134,9 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					needsSave = true;
 					product.setValue(Product.NAME, name);
 				}
-				if(StringUtils.isNotBlank(mark) && !product.getStringValue(Product.MARK,"").equals(mark)){
+				if(StringUtils.isNotBlank(nameExtra) && !product.getStringValue(Product.NAME_EXTRA,"").equals(nameExtra)){
 					needsSave = true;
-					product.setValue(Product.MARK, mark);
+					product.setValue(Product.NAME_EXTRA, nameExtra);
 				}
 				if(StringUtils.isNotBlank(unit) && !product.getStringValue(Product.UNIT,"").equals(unit)){
 					needsSave = true;
@@ -151,15 +152,15 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				}
 				
 				if(needsSave){
-					transaction.addCommandUnit(SaveItemDBUnit.get(product).noTriggerExtra().noFulltextIndex().ignoreFileErrors(true));
-					transaction.execute();
+					transaction.executeCommandUnit(SaveItemDBUnit.get(product).noTriggerExtra().noFulltextIndex().ignoreFileErrors(true));
+					transactionExecute();
 					parentIntegration.setProcessed(++сreated);
 					
 				}
 				product = null;
 				price = null;
 				name = null;
-				mark = null;
+				nameExtra = null;
 				unit = null;
 				qty1 = null;
 				picPath = null;
@@ -185,7 +186,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 						qty1 = paramValue.toString();
 						break;
 					case mark:
-						mark = paramValue.toString().trim();
+						nameExtra = paramValue.toString().trim();
 						break;
 					case pic_path:
 						picPath = paramValue.toString().trim();
@@ -213,12 +214,12 @@ public class CatalogUpdateHandler extends DefaultHandler {
 						break;
 					}
 			}
-			else if("rub".equalsIgnoreCase(qName)) {
-				Item rub = ItemQuery.loadSingleItemByParamValue("currency", "name", "rub");
-				if(rub != null) {
-					rub.setValueUI("ratio", paramValue.toString().trim());
+			else if ("rub".equalsIgnoreCase(qName)) {
+				Currencies currencies = Currencies.get(ItemQuery.loadSingleItemByName(ItemNames.CURRENCIES));
+				if(currencies != null) {
+					currencies.setUI_RUB_rate(paramValue.toString().trim());
 					currencyReady = false;
-					transaction.addCommandUnit(SaveItemDBUnit.get(rub).ignoreUser(true).noFulltextIndex());
+					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).ignoreUser(true).noFulltextIndex());
 				}
 			}
 			
@@ -310,17 +311,17 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				}
 			});
 			int i = 0;
-			for(Item product : allProducts){
+			for(Item product : allProducts) {
 				
 				if(product.getDoubleValue(Product.QTY,0d) > 0){
 					product.setValue(Product.NEW, (byte)1);
-					transaction.addCommandUnit(SaveItemDBUnit.get(product).ignoreUser(true).noFulltextIndex());
+					transaction.executeCommandUnit(SaveItemDBUnit.get(product).ignoreUser(true).noFulltextIndex());
 					if(++i>19)break;
 
 				}
 				
 			}
-			transaction.execute();
+			transaction.commit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -336,5 +337,10 @@ public class CatalogUpdateHandler extends DefaultHandler {
 	public static void main (String[]args){
 		String test = "1 456,56";
 		System.out.println(test.replaceAll("\\s", "").replace(',', '.'));
+	}
+
+	private void transactionExecute() throws Exception {
+		if (transaction.getUncommitedCount() >= 100)
+			transaction.commit();
 	}
 }

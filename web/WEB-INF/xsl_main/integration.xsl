@@ -43,6 +43,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Таймеры:</td>
+					<td class="error">
+						<pre>
+							<xsl:value-of select="/page/timers"/>
+						</pre>
+					</td>
+				</tr>
+				<tr>
 					<td>Объектов для обработки:</td>
 					<td class="error"><xsl:value-of select="/page/to_process"/></td>
 				</tr>

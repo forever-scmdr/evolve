@@ -333,7 +333,7 @@
 	<!--Обычный товар или товар, который содержит другие товары-->
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
 	      default-page="product" super="described_product * seo_container">
-		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
+		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет"/>
 		<child item="line_product"/>
 	</item>
 
@@ -346,7 +346,7 @@
 
 	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="818" ag-hash="1373246656">
 		<parameter name="name" type="string" caption="Заголовок страницы"/>
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="text" type="text" caption="Полное описание" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 	<!--
@@ -370,7 +370,8 @@
 	</group>
 	-->
 	<item name="params_xml" caption="Параметры в виде XML" ag-id="819" ag-hash="471057886">
-		<parameter name="xml" type="xml" caption="Параметры" text-index="fulltext" text-index-item="product"/>
+		<parameter name="xml" type="xml" caption="Параметры" />
+		<parameter name="changed_flag" type="byte" caption="Поменялся ли XML" description="нужно ли пересоздавать айтем params"/>
 	</item>
 
 	<!--/////////////                                                                      ////////////-->

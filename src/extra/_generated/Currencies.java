@@ -10,21 +10,28 @@ public class Currencies
 {
 
     public final static String _NAME = "currencies";
+    public final static String BYN_CAPTION = "BYN_caption";
+    public final static String RUB_CAPTION = "RUB_caption";
     public final static String RUB_RATE = "RUB_rate";
     public final static String RUB_SCALE = "RUB_scale";
     public final static String RUB_CEIL = "RUB_ceil";
     public final static String RUB_EXTRA_QUOTIENT = "RUB_extra_quotient";
     public final static String RUB_UPDATE = "RUB_update";
+    public final static String RUB_SHOW = "RUB_show";
+    public final static String USD_CAPTION = "USD_caption";
     public final static String USD_RATE = "USD_rate";
     public final static String USD_SCALE = "USD_scale";
     public final static String USD_CEIL = "USD_ceil";
     public final static String USD_EXTRA_QUOTIENT = "USD_extra_quotient";
     public final static String USD_UPDATE = "USD_update";
+    public final static String USD_SHOW = "USD_show";
+    public final static String EUR_CAPTION = "EUR_caption";
     public final static String EUR_RATE = "EUR_rate";
     public final static String EUR_SCALE = "EUR_scale";
     public final static String EUR_CEIL = "EUR_ceil";
     public final static String EUR_EXTRA_QUOTIENT = "EUR_extra_quotient";
     public final static String EUR_UPDATE = "EUR_update";
+    public final static String EUR_SHOW = "EUR_show";
 
     private Currencies(Item item) {
         super(item);
@@ -43,6 +50,38 @@ public class Currencies
 
     public static Currencies newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_BYN_caption(String value) {
+        setValue("BYN_caption", value);
+    }
+
+    public String get_BYN_caption() {
+        return getStringValue("BYN_caption");
+    }
+
+    public String getDefault_BYN_caption(String defaultVal) {
+        return getStringValue("BYN_caption", defaultVal);
+    }
+
+    public boolean contains_BYN_caption(String value) {
+        return containsValue("BYN_caption", value);
+    }
+
+    public void set_RUB_caption(String value) {
+        setValue("RUB_caption", value);
+    }
+
+    public String get_RUB_caption() {
+        return getStringValue("RUB_caption");
+    }
+
+    public String getDefault_RUB_caption(String defaultVal) {
+        return getStringValue("RUB_caption", defaultVal);
+    }
+
+    public boolean contains_RUB_caption(String value) {
+        return containsValue("RUB_caption", value);
     }
 
     public void set_RUB_rate(BigDecimal value) {
@@ -155,6 +194,44 @@ public class Currencies
         return containsValue("RUB_update", value);
     }
 
+    public void set_RUB_show(Byte value) {
+        setValue("RUB_show", value);
+    }
+
+    public void setUI_RUB_show(String value)
+        throws Exception
+    {
+        setValueUI("RUB_show", value);
+    }
+
+    public Byte get_RUB_show() {
+        return getByteValue("RUB_show");
+    }
+
+    public Byte getDefault_RUB_show(Byte defaultVal) {
+        return getByteValue("RUB_show", defaultVal);
+    }
+
+    public boolean contains_RUB_show(Byte value) {
+        return containsValue("RUB_show", value);
+    }
+
+    public void set_USD_caption(String value) {
+        setValue("USD_caption", value);
+    }
+
+    public String get_USD_caption() {
+        return getStringValue("USD_caption");
+    }
+
+    public String getDefault_USD_caption(String defaultVal) {
+        return getStringValue("USD_caption", defaultVal);
+    }
+
+    public boolean contains_USD_caption(String value) {
+        return containsValue("USD_caption", value);
+    }
+
     public void set_USD_rate(BigDecimal value) {
         setValue("USD_rate", value);
     }
@@ -265,6 +342,44 @@ public class Currencies
         return containsValue("USD_update", value);
     }
 
+    public void set_USD_show(Byte value) {
+        setValue("USD_show", value);
+    }
+
+    public void setUI_USD_show(String value)
+        throws Exception
+    {
+        setValueUI("USD_show", value);
+    }
+
+    public Byte get_USD_show() {
+        return getByteValue("USD_show");
+    }
+
+    public Byte getDefault_USD_show(Byte defaultVal) {
+        return getByteValue("USD_show", defaultVal);
+    }
+
+    public boolean contains_USD_show(Byte value) {
+        return containsValue("USD_show", value);
+    }
+
+    public void set_EUR_caption(String value) {
+        setValue("EUR_caption", value);
+    }
+
+    public String get_EUR_caption() {
+        return getStringValue("EUR_caption");
+    }
+
+    public String getDefault_EUR_caption(String defaultVal) {
+        return getStringValue("EUR_caption", defaultVal);
+    }
+
+    public boolean contains_EUR_caption(String value) {
+        return containsValue("EUR_caption", value);
+    }
+
     public void set_EUR_rate(BigDecimal value) {
         setValue("EUR_rate", value);
     }
@@ -373,6 +488,28 @@ public class Currencies
 
     public boolean contains_EUR_update(Byte value) {
         return containsValue("EUR_update", value);
+    }
+
+    public void set_EUR_show(Byte value) {
+        setValue("EUR_show", value);
+    }
+
+    public void setUI_EUR_show(String value)
+        throws Exception
+    {
+        setValueUI("EUR_show", value);
+    }
+
+    public Byte get_EUR_show() {
+        return getByteValue("EUR_show");
+    }
+
+    public Byte getDefault_EUR_show(Byte defaultVal) {
+        return getByteValue("EUR_show", defaultVal);
+    }
+
+    public boolean contains_EUR_show(Byte value) {
+        return containsValue("EUR_show", value);
     }
 
 }

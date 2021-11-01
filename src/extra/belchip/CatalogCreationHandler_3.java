@@ -9,16 +9,16 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.*;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.unbescape.html.HtmlEscape;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
@@ -26,18 +26,23 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CatalogCreationHandler extends DefaultHandler {
+public class CatalogCreationHandler_3 extends DefaultHandler {
 
 	public static final String ELEMENT_PROCESS_TIMER_NAME = "CatalogCreationHandler_element";
-	public static final String DB_TIMER_NAME = "CatalogCreationHandler_DB";
+	public static final String DB_STATUS_TIMER_NAME = "CatalogCreationHandler_DB_status";
+	public static final String DB_SAVE_TIMER_NAME = "CatalogCreationHandler_DB_save";
+	public static final String DB_LOAD_TIMER_NAME = "CatalogCreationHandler_DB_load";
+	public static final String DB_XML_TIMER_NAME = "CatalogCreationHandler_DB_XML";
+	public static final String DB_SECTION_TIMER_NAME = "CatalogCreationHandler_DB_section";
 	public static final String FILE_TIMER_NAME = "CatalogCreationHandler_file";
 	public static final String POST_PROCESS_TIMER_NAME = "CatalogCreationHandler_post_process";
+
 
 	private static final SimpleDateFormat SOON_FORMAT = new SimpleDateFormat("ddMMyy");
 	private static final HashMap<String, String> PRODUCT_COMMON_PARAMS = new HashMap<>();
 	private static final HashMap<String, String> CURRENCIES_COMMON_PARAMS = new HashMap<>();
 	private static final char[] ETC = new char[] {'a','c','d','e','f'};
-	
+
 	static {
 		PRODUCT_COMMON_PARAMS.put(IConst.NAME_ELEMENT, Product.NAME);
 		PRODUCT_COMMON_PARAMS.put(IConst.MARK_ELEMENT, Product.NAME_EXTRA);
@@ -74,16 +79,16 @@ public class CatalogCreationHandler extends DefaultHandler {
 	private StringBuilder paramValue = new StringBuilder();
 	private XmlDocumentBuilder xmlParams = null;
 	private ArrayList<Integer> bigArts = new ArrayList<>();
-	
+
 	private SynchronousTransaction transaction = new SynchronousTransaction(User.getDefaultUser());
 	private String className = null;
 	private boolean fatalError = false;
 
 	private Integrate_2.Info info; // информация для пользователя
 	private Item currencies = null; // курсы валют
-	
-	
-	public CatalogCreationHandler(Item catalog, Integrate_2.Info info) {
+
+
+	public CatalogCreationHandler_3(Item catalog, Integrate_2.Info info) {
 		stack.push(catalog);
 		this.info = info;
 	}
@@ -97,84 +102,115 @@ public class CatalogCreationHandler extends DefaultHandler {
 				Item top = stack.pop();
 				// Товар может быть уже сохранен, поэтому нужна проверка top.getId() == 0
 				if (qName.equals(IConst.PRODUCT_ELEMENT) && top.getId() == 0) {
+					Item product = null;
+					String code = top.getStringValue(Product.CODE, "");
+					info.getTimer().start(DB_LOAD_TIMER_NAME);
+					ArrayList<Item> prods = ItemQuery.loadByParamValue(ItemNames.PRODUCT, Product.CODE, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+					info.getTimer().stop(DB_LOAD_TIMER_NAME);
+					if (prods.size() > 0) {
+						product = prods.get(0);
+						if (product.getStatus() == Item.STATUS_HIDDEN) {
+							info.getTimer().start(DB_STATUS_TIMER_NAME);
+							transaction.executeCommandUnit(ItemStatusDBUnit.restore(product));
+							info.getTimer().stop(DB_STATUS_TIMER_NAME);
+						}
+						Item.updateParamValues(top, product);
+					} else {
+						product = top;
+					}
 					// Установка значения нормы заказа (берется из раздела в случае если не установлена в товаре)
-					if (top.getDoubleValue(Product.MIN_QTY, 0d) == 0d) {
+					if (product.getDoubleValue(Product.MIN_QTY, 0d) == 0d) {
 						Item section = stack.peek();
 						if (section.getDoubleValue(Section.NORM, 0d) != 0d)
-							top.setValue(Product.MIN_QTY, section.getValue(Section.NORM));
+							product.setValue(Product.MIN_QTY, section.getValue(Section.NORM));
 						else
-							top.setValue(Product.MIN_QTY, 1d);
+							product.setValue(Product.MIN_QTY, 1d);
 					}
 					// Установка преанализированного значения для поиска
-					String name = top.getStringValue(Product.NAME, "");
-					String mark = top.getStringValue(Product.NAME_EXTRA, "");
-					String code = top.getStringValue(Product.CODE, "");
+					String name = product.getStringValue(Product.NAME, "");
+					String mark = product.getStringValue(Product.NAME_EXTRA, "");
 					String fullName = BelchipStrings.fromRtoE(name + ' ' + mark);
 					String fullNameAnalyzed = BelchipStrings.preanalyze(name) + ' ' + BelchipStrings.preanalyze(mark);
-					top.setValue(Product.SEARCH, fullName);
-					top.setValue(Product.SEARCH, fullNameAnalyzed);
-					top.setValue(Product.SEARCH, code);
+					product.clearValue(Product.SEARCH);
+					product.setValueUI(Product.SEARCH, fullName);
+					product.setValueUI(Product.SEARCH, fullNameAnalyzed);
+					product.setValueUI(Product.SEARCH, code);
 					String strictSearch = name + ' ' + mark + ' ' + code;
+					product.clearValue(Product.STRICT_SEARCH);
 					if (strictSearch.length() > 80) {
-						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 79));
+						product.setValueUI(Product.STRICT_SEARCH, strictSearch.substring(0, 79));
 					} else {
-						top.setValue(Product.STRICT_SEARCH, strictSearch);
+						product.setValueUI(Product.STRICT_SEARCH, strictSearch);
 					}
 
 					//Ignore Analogs from XML file FIX 29.10.2018
 					//top.removeValue(ItemNames.product.ANALOG_CODE);
 					
-					String analog = top.getStringValue(Product.ANALOG, "");
+					String analog = product.getStringValue(Product.ANALOG, "");
 					if (!StringUtils.isBlank(analog)) {
-						top.setValue(Product.ANALOG_SEARCH, BelchipStrings.fromRtoE(analog));
-						top.setValue(Product.ANALOG_SEARCH, BelchipStrings.preanalyze(analog));
+						product.clearValue(Product.ANALOG_SEARCH);
+						product.setValueUI(Product.ANALOG_SEARCH, BelchipStrings.fromRtoE(analog));
+						product.setValueUI(Product.ANALOG_SEARCH, BelchipStrings.preanalyze(analog));
 					}
 					// Установка количества товаров на складах					
-					Double qty = top.getDoubleValue(IConst.QTY_ELEMENT);
+					Double qty = product.getDoubleValue(IConst.QTY_ELEMENT);
 					if (qty == null) {
-						top.setValue(IConst.QTY_ELEMENT, 0d);
+						product.setValue(IConst.QTY_ELEMENT, 0d);
 					}
 					// Проверка наличия на складе
-					byte avlb = (top.getDoubleValue(Product.QTY) < top.getDoubleValue(Product.MIN_QTY, 1d) && top.getLongValue("soon",0L) < 1)? (byte) 0 : (byte) 1;
+					byte avlb = (product.getDoubleValue(Product.QTY) < product.getDoubleValue(Product.MIN_QTY, 1d) && product.getLongValue("soon",0L) < 1)? (byte) 0 : (byte) 1;
 					
 					//adding to new products
-					if(avlb > 0){		
+					if (avlb > 0) {
 						int codeInt = Integer.parseInt(code);
 						bigArts.add(codeInt);
-					}					
-					top.setValue(Product.AVAILABLE, avlb);
+					}
+					product.setValue(Product.AVAILABLE, avlb);
 					
 					if("Услуга".equalsIgnoreCase(name)) {
-						top.setValue("is_service", (byte)1);
-						top.setValue(IConst.QTY_ELEMENT, 100000d);
-						top.setValue(Product.AVAILABLE, (byte)1);
+						product.setValue("is_service", (byte)1);
+						product.setValue(IConst.QTY_ELEMENT, 100000d);
+						product.setValue(Product.AVAILABLE, (byte)1);
 					} else {
-						top.setValue("is_service", (byte)0);
+						product.setValue("is_service", (byte)0);
 					}
 					
 					
 					String contextPath = AppContext.getContextPath();
-					for(char c : ETC) {
-						String extra = "sitepics/"+top.getStringValue("pic_path")+c+".jpg";
+					for (char c : ETC) {
+						String extra = "sitepics/" + product.getStringValue("pic_path")+c+".jpg";
 						info.getTimer().start(FILE_TIMER_NAME);
 						File ep = Paths.get(contextPath, extra).toFile();
 						if (ep.isFile()) {
-							top.setValue("extra_pic", extra);
+							product.setValue("extra_pic", extra);
 						}
 						info.getTimer().stop(FILE_TIMER_NAME);
 					}
 					
 					// Добавление команды сохранения продукта
-					info.getTimer().start(DB_TIMER_NAME);
-					transaction.executeCommandUnit(SaveItemDBUnit.get(top).noFulltextIndex().noTriggerExtra());
-					transactionExecute();
-					info.getTimer().stop(DB_TIMER_NAME);
-					Item paramsXml = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PARAMS_XML), top);
+					if (product.hasChanged()) {
+						info.getTimer().start(DB_SAVE_TIMER_NAME);
+						transaction.executeCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
+						transactionExecute();
+						info.getTimer().stop(DB_SAVE_TIMER_NAME);
+					}
+
+					// Айтем параметров XML
+					info.getTimer().start(DB_LOAD_TIMER_NAME);
+					Item paramsXml = new ItemQuery(ItemNames.PARAMS_XML, Item.STATUS_NORMAL, Item.STATUS_HIDDEN).setParentId(product.getId(), false).loadFirstItem();
+					info.getTimer().stop(DB_LOAD_TIMER_NAME);
+					if (paramsXml == null)
+						paramsXml = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PARAMS_XML), product);
+					String oldXml = HtmlEscape.unescapeHtml(paramsXml.getStringValue(Params_xml.XML, "").replace("\n", "").replace("\r", "").replaceAll("\\s+",""));
 					paramsXml.setValueUI(Params_xml.XML, xmlParams.toString());
-					info.getTimer().start(DB_TIMER_NAME);
-					transaction.executeCommandUnit(SaveItemDBUnit.get(paramsXml).noFulltextIndex().noTriggerExtra());
+					String newXml = HtmlEscape.unescapeHtml(paramsXml.getStringValue(Params_xml.XML, "").replace("\n", "").replace("\r", "").replaceAll("\\s+",""));
+					if (!StringUtils.equals(oldXml, newXml)) {
+						info.getTimer().start(DB_XML_TIMER_NAME);
+						paramsXml.setValue(Params_xml.CHANGED_FLAG, (byte) 1);
+						transaction.executeCommandUnit(SaveItemDBUnit.get(paramsXml).noFulltextIndex().noTriggerExtra());
+						info.getTimer().stop(DB_XML_TIMER_NAME);
+					}
 					transactionExecute();
-					info.getTimer().stop(DB_TIMER_NAME);
 					info.increaseProcessed();
 					xmlParams = null;
 				} else if (qName.equals(IConst.SECTION_ELEMENT)) {
@@ -243,14 +279,14 @@ public class CatalogCreationHandler extends DefaultHandler {
 				String name = attributes.getValue(IConst.NAME_ATTRIBUTE);
 				String code = attributes.getValue(IConst.CODE_ATTRIBUTE);
 				String picPath = attributes.getValue(IConst.PIC_PATH_ATTRIBUTE);
-				info.getTimer().start(DB_TIMER_NAME);
+				info.getTimer().start(DB_SECTION_TIMER_NAME);
 				Item section = ItemQuery.loadByParamValue(Section._NAME, Section.CODE, code).get(0);
-				if(StringUtils.isNotBlank(picPath)){
+				if(StringUtils.isNotBlank(picPath)) {
 					section.setValue(Section.PIC_PATH, picPath);
 					transaction.executeCommandUnit(SaveItemDBUnit.get(section).ignoreUser(true).noFulltextIndex());
 					transactionExecute();
 				}
-				info.getTimer().stop(DB_TIMER_NAME);
+				info.getTimer().stop(DB_SECTION_TIMER_NAME);
 				
 				className = name;
 				if (stack.size() != 1) {

@@ -11,6 +11,7 @@ public class Payment
 
     public final static String _NAME = "payment";
     public final static String NAME = "name";
+    public final static String XML_NAME = "xml_name";
     public final static String SUFFIX = "suffix";
     public final static String TEXT = "text";
     public final static String CURRENCY = "currency";
@@ -48,6 +49,22 @@ public class Payment
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_xml_name(String value) {
+        setValue("xml_name", value);
+    }
+
+    public String get_xml_name() {
+        return getStringValue("xml_name");
+    }
+
+    public String getDefault_xml_name(String defaultVal) {
+        return getStringValue("xml_name", defaultVal);
+    }
+
+    public boolean contains_xml_name(String value) {
+        return containsValue("xml_name", value);
     }
 
     public void set_suffix(String value) {

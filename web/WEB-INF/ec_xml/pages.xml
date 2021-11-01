@@ -2348,12 +2348,22 @@
 	</page>
 
 
-
-	<page name="integration_auto_start" template="integration" schedule="0 0 * ? * * *">
+	<page name="integration_lite" template="integration">
 		<request>
 			<var name="action" />
 		</request>
-		<command class="extra.belchip.Integrate_2" clear-cache="yes">
+		<command class="extra.belchip.Integrate_3" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
+
+
+
+	<page name="integration_auto_start" template="integration" schedule="0 0 2 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.belchip.Integrate_3" clear-cache="yes">
 			<result name="complete" type="xml" />
 		</command>
 	</page>
@@ -2374,7 +2384,7 @@
 
 	<page name="price_update_auto_start" template="integration" schedule="0 30 * ? * * *">
 		<request>
-			<var name="action" />
+			<var name="action" value="start"/>
 			<var name="param" value="webfile1.xml" />
 		</request>
 		<command class="extra.belchip.MicroIntegrate" clear-cache="yes">

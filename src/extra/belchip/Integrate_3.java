@@ -1,5 +1,23 @@
 package extra.belchip;
 
+import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
+import ecommander.fwk.EcommanderException;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.integration.CreateParametersAndFiltersCommand_3;
+import ecommander.model.Item;
+import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.Catalog;
+import extra._generated.ItemNames;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,38 +28,8 @@ import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
-import ecommander.model.DataModelBuilder;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
-import extra._generated.Catalog;
-import extra._generated.ItemNames;
-import org.apache.commons.lang3.StringUtils;
-
-
-import ecommander.controllers.AppContext;
-import ecommander.controllers.PageController;
-import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -55,7 +43,7 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
  * @author EEEE
  * 
  */
-public class Integrate_2 extends IntegrateBase {
+public class Integrate_3 extends IntegrateBase {
 
 	private static final String INTEGRATION_FILE = "integrate/WebFile.xml";
 	private static final String ANALOGS_FILE = "integrate/analogs.txt";
@@ -86,7 +74,7 @@ public class Integrate_2 extends IntegrateBase {
 			return;
 		}
 
-		final Integrate_2 integrate = this;
+		final Integrate_3 integrate = this;
 
 		// Прасить документ
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -103,29 +91,29 @@ public class Integrate_2 extends IntegrateBase {
 		catalog.setValueUI(Catalog.INTEGRATION_PENDING, "1");
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser(true));
 
-		info.addLog("Валидация завершена. Удаление старого каталога");
-		info.setOperation("Удаление старого каталога");
+		info.addLog("Валидация завершена. Скрытие старого каталога");
+		info.setOperation("Скрытие старого каталога");
 		info.setProcessed(0);
 		// Удалить все разделы
-		List<Item> sections = new ItemQuery(ItemNames.SECTION)/*.setParentId(catalog.getId(), false)*/
-				.loadItems();
+		List<Item> sections = new ItemQuery(ItemNames.SECTION).setParentId(catalog.getId(), false).loadItems();
 		for (Item section : sections) {
 			integrate.deletedBase += integrate.deletedCount;
 			integrate.deletedCount = 0;
-			ItemStatusDBUnit delete = ItemStatusDBUnit.delete(section);
-			executeAndCommitCommandUnits(delete.ignoreUser(true).noFulltextIndex());
+			ItemStatusDBUnit hide = ItemStatusDBUnit.hide(section);
+			executeAndCommitCommandUnits(hide.ignoreUser(true).noFulltextIndex());
 		}
 		info.setProcessed(0);
-		info.addLog("Каталог удален. Начало создания  разделов каталога");
-		info.setOperation("Создание разделов каталога");
+		info.addLog("Каталог скрыт. Начало обновления разделов каталога");
+		info.setOperation("Обновление разделов каталога");
 		// Постороение списка разделов
+		ProductClassHandler_3 sectionCreationHandler = new ProductClassHandler_3(catalog, info);
 		if (info.getErrorCount() == 0)
-			parser.parse(integration, new ProductClassHandler(catalog, info));
-		info.addLog("Создание разделов и классов завершено. Начало создания продукции");
-		info.setOperation("Создание продукции каталога");
+			parser.parse(integration, sectionCreationHandler);
+		info.addLog("Обновление разделов и классов завершено. Начало создания продукции");
+		info.setOperation("Обновление продукции каталога");
 		// Запись товаров в каталог
 		if (info.getErrorCount() == 0)
-			parser.parse(integration, new CatalogCreationHandler(catalog, info));
+			parser.parse(integration, new CatalogCreationHandler_3(catalog, info));
 		info.setOperation("Заполнение аналогов и сопутствующих товаров");
 		//File analogList = catalog.getFileValue(Catalog.ANALOGS, AppContext.getFilesDirPath(catalog.isFileProtected()));
 		File analogList = new File(AppContext.getRealPath(ANALOGS_FILE));
@@ -135,9 +123,9 @@ public class Integrate_2 extends IntegrateBase {
 			info.addLog("Список аналогов не найден.");
 		}
 
-		info.addLog("Создание типов товаров и фильтров");
-		info.setOperation("Создание типов товаров и фильтров");
-		CreateParametersAndFiltersCommand filterCommand = new CreateParametersAndFiltersCommand(this);
+		info.addLog("Актуализация типов товаров и фильтров");
+		info.setOperation("Актуализация типов товаров и фильтров");
+		CreateParametersAndFiltersCommand_3 filterCommand = new CreateParametersAndFiltersCommand_3(this, sectionCreationHandler.getChangedSectionCodes());
 		filterCommand.doCreateParametersAndFilters(info);
 
 		info.setOperation("Текстовая индексация");

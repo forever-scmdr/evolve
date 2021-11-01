@@ -17,6 +17,8 @@ import java.util.List;
 
 public class AnalogHandler {
 
+	public static final String DB_TIMER_NAME = "AnalogHandler_DB";
+
 	private DelayedTransaction transaction = new DelayedTransaction(User.getDefaultUser());
 	private Integrate_2.Info info;
 	
@@ -42,16 +44,16 @@ public class AnalogHandler {
 			 }
 			 List<Item> products = ItemQuery.loadByParamValue(ItemNames.PRODUCT, Product.CODE, analogCodes);
 			 String[] relArr = related.split(",");
-			 for(Item product : products){
+			 for(Item product : products) {
 				 //product.removeValue(ItemNames.product.ANALOG_CODE);
 				 product.clearValue(Product.ANALOG_SEARCH);
 				 ArrayList<String> existingAnalogs = product.getStringValues(Product.ANALOG_CODE);
-				 for(String analogCode : analogCodes){
+				 for(String analogCode : analogCodes) {
 					 if(!product.getStringValue(Product.CODE).equals(analogCode) && !existingAnalogs.contains(analogCode)){
 						 product.setValue(Product.ANALOG_CODE, analogCode);
 						 for(Item a : products){
 							 if(a.getValue(Product.CODE).equals(analogCode)){
-								 String analogName = a.getStringValue(Product.NAME, "")+ " " +a.getStringValue(Product.MARK, "");
+								 String analogName = a.getStringValue(Product.NAME, "")+ " " +a.getStringValue(Product.NAME_EXTRA, "");
 								 product.setValue(Product.ANALOG_SEARCH, BelchipStrings.fromRtoE(analogName));
 								 product.setValue(Product.ANALOG_SEARCH, BelchipStrings.preanalyze(analogName));
 							 }
@@ -61,18 +63,13 @@ public class AnalogHandler {
 				 for(String rel : relArr){
 					 product.setValue(Product.REL_CODE, rel.trim());
 				 }
-				 transaction.addCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser(true).ignoreFileErrors(true));
-				
-				 if(transaction.getCommandCount() > 49){
-					 productsCreated += transaction.getCommandCount();
-					 transaction.execute();
-					 info.setProcessed(productsCreated);
-				 }
+				 info.getTimer().start(DB_TIMER_NAME);
+				 transaction.addCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser(true).ignoreFileErrors(true).noTriggerExtra());
+				 transaction.execute();
+				 info.getTimer().stop(DB_TIMER_NAME);
+				 info.increaseProcessed();
 			 }
 		 }
-		 productsCreated += transaction.getCommandCount();
-		 transaction.execute();
-		 info.setProcessed(productsCreated);
 	}
 
 }

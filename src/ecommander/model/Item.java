@@ -471,7 +471,7 @@ public class Item implements ItemBasics {
 					Parameter param = paramMap.get(paramDesc.getId());
 					// Установить значение по умолчанию если оно необходимо
 					if (paramDesc.hasDefaultValue() && (param == null || param.isEmpty())) {
-						setValueUI(paramDesc.getId(), paramDesc.getDefaultValue());
+						getParameterFromMap(paramDesc.getId()).createAndSetValue(paramDesc.getDefaultValue(), true);
 						param = paramMap.get(paramDesc.getId());
 					}
 					// Создать XML для непустых параметров

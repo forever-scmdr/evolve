@@ -975,6 +975,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "params_xml";
         String XML = "xml";
+        String CHANGED_FLAG = "changed_flag";
 
     }
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
 import ecommander.model.User;
 
 /**
@@ -62,7 +63,12 @@ public final class SynchronousTransaction implements AutoCloseable {
 			return;
 		Exception exception;
 		try {
+			Timer timer = new Timer();
+			timer.start("commit");
 			conn.commit();
+			Timer.TimeLogMessage message = timer.stop("commit");
+			ServerLogger.error("\n\n========= COMMIT SYNCHRONOUS : " + message.getExecTimeMillis() + " ms\n");
+			executedCommands = new ArrayList<>();
 			ServerLogger.debug("Transaction successfull");
 			return;
 		} catch (Exception e) {
@@ -90,6 +96,9 @@ public final class SynchronousTransaction implements AutoCloseable {
 		try {
 			command.setTransactionContext(context);
 			command.execute();
+			if (conn instanceof MysqlConnector.LoggedConnection) {
+				((MysqlConnector.LoggedConnection) conn).queryFinished();
+			}
 			executedCommands.add(command);
 			executed = true;
 		} finally {
@@ -124,6 +133,7 @@ public final class SynchronousTransaction implements AutoCloseable {
 					command.rollback();
 				}
 			}
+			executedCommands = new ArrayList<>();
 		} finally {
 			close();
 		}
@@ -141,5 +151,13 @@ public final class SynchronousTransaction implements AutoCloseable {
 	public void close() throws Exception {
 		MysqlConnector.closeConnection(conn);
 		conn = null;
+	}
+
+	/**
+	 * Сколько команд добавлено в транзакцию
+	 * @return
+	 */
+	public int getUncommitedCount() {
+		return executedCommands.size();
 	}
 }

@@ -70,6 +70,9 @@ public class DelayedTransaction {
 				context = new TransactionContext(conn, initiator);
 				executeCommands();
 				committer.commit();
+				if (conn instanceof MysqlConnector.LoggedConnection) {
+					((MysqlConnector.LoggedConnection) conn).queryFinished();
+				}
 				ServerLogger.debug("Transaction successfull at try #" + (i + 1));
 				finished = true;
 				// return not no make the exception
@@ -102,6 +105,9 @@ public class DelayedTransaction {
 				failedCommandIndex++;
 				command.setTransactionContext(context);
 				command.execute();
+				if (context.getConnection() instanceof MysqlConnector.LoggedConnection) {
+					((MysqlConnector.LoggedConnection) context.getConnection()).queryFinished();
+				}
 			}
 		} catch (Exception e) {
 			throw e;

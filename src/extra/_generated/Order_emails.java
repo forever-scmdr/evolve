@@ -16,6 +16,7 @@ public class Order_emails
     public final static String POST = "post";
     public final static String KUR = "kur";
     public final static String CUSTOM = "custom";
+    public final static String JUR_TEXT = "jur_text";
 
     private Order_emails(Item item) {
         super(item);
@@ -164,6 +165,22 @@ public class Order_emails
 
     public boolean contains_custom(String value) {
         return containsValue("custom", value);
+    }
+
+    public void set_jur_text(String value) {
+        setValue("jur_text", value);
+    }
+
+    public String get_jur_text() {
+        return getStringValue("jur_text");
+    }
+
+    public String getDefault_jur_text(String defaultVal) {
+        return getStringValue("jur_text", defaultVal);
+    }
+
+    public boolean contains_jur_text(String value) {
+        return containsValue("jur_text", value);
     }
 
 }

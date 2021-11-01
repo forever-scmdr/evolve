@@ -51,6 +51,11 @@ public interface ItemNames {
     String PHYS = "phys";
     String COMMON = "common";
     String BLOCK = "block";
+    String LINK_BLOCK = "link_block";
+    String BLOCK_BLOCK = "block_block";
+    String LOCATION_BLOCK = "location_block";
+    String PHONE_BLOCK = "phone_block";
+    String LINK = "link";
     String BLOCK_ARRAY = "block_array";
     String CATALOG_TEXTS = "catalog_texts";
     String FOOTER = "footer";
@@ -108,6 +113,7 @@ public interface ItemNames {
     String COMMENT = "comment";
     String STYLES = "styles";
     String LABEL_STYLE = "label_style";
+    String DISCOUNT_RULES = "discount_rules";
 
     public interface absent_ {
 
@@ -196,6 +202,8 @@ public interface ItemNames {
     public interface bed_ {
 
         String _ITEM_NAME = "bed";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -211,6 +219,15 @@ public interface ItemNames {
     public interface block_array_ {
 
         String _ITEM_NAME = "block_array";
+
+    }
+
+    public interface block_block_ {
+
+        String _ITEM_NAME = "block_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
 
     }
 
@@ -342,27 +359,36 @@ public interface ItemNames {
     public interface currencies_ {
 
         String _ITEM_NAME = "currencies";
+        String BYN_CAPTION = "BYN_caption";
+        String RUB_CAPTION = "RUB_caption";
         String RUB_RATE = "RUB_rate";
         String RUB_SCALE = "RUB_scale";
         String RUB_CEIL = "RUB_ceil";
         String RUB_EXTRA_QUOTIENT = "RUB_extra_quotient";
         String RUB_UPDATE = "RUB_update";
+        String RUB_SHOW = "RUB_show";
+        String USD_CAPTION = "USD_caption";
         String USD_RATE = "USD_rate";
         String USD_SCALE = "USD_scale";
         String USD_CEIL = "USD_ceil";
         String USD_EXTRA_QUOTIENT = "USD_extra_quotient";
         String USD_UPDATE = "USD_update";
+        String USD_SHOW = "USD_show";
+        String EUR_CAPTION = "EUR_caption";
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
         String EUR_CEIL = "EUR_ceil";
         String EUR_EXTRA_QUOTIENT = "EUR_extra_quotient";
         String EUR_UPDATE = "EUR_update";
+        String EUR_SHOW = "EUR_show";
 
     }
 
     public interface custom_ {
 
         String _ITEM_NAME = "custom";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -508,6 +534,13 @@ public interface ItemNames {
         String ANALOG = "analog";
         String BARCODE = "barcode";
         String GALLERY = "gallery";
+
+    }
+
+    public interface discount_rules_ {
+
+        String _ITEM_NAME = "discount_rules";
+        String TEXT = "text";
 
     }
 
@@ -671,6 +704,34 @@ public interface ItemNames {
 
     }
 
+    public interface link_ {
+
+        String _ITEM_NAME = "link";
+        String NAME = "name";
+        String LINK = "link";
+        String FA_CLASS = "fa_class";
+        String ICON = "icon";
+
+    }
+
+    public interface link_block_ {
+
+        String _ITEM_NAME = "link_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
+
+    }
+
+    public interface location_block_ {
+
+        String _ITEM_NAME = "location_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
+
+    }
+
     public interface mail_texts_ {
 
         String _ITEM_NAME = "mail_texts";
@@ -682,6 +743,7 @@ public interface ItemNames {
     public interface main_page_ {
 
         String _ITEM_NAME = "main_page";
+        String TIMEOUT = "timeout";
 
     }
 
@@ -699,6 +761,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "main_slider_frame";
         String NAME = "name";
+        String HIDE_TEXT = "hide_text";
         String TEXT = "text";
         String LINK_NAME = "link_name";
         String LINK = "link";
@@ -846,6 +909,7 @@ public interface ItemNames {
         String POST = "post";
         String KUR = "kur";
         String CUSTOM = "custom";
+        String JUR_TEXT = "jur_text";
 
     }
 
@@ -911,6 +975,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "params_xml";
         String XML = "xml";
+        String CHANGED_FLAG = "changed_flag";
 
     }
 
@@ -942,9 +1007,19 @@ public interface ItemNames {
 
         String _ITEM_NAME = "payment";
         String NAME = "name";
+        String XML_NAME = "xml_name";
         String SUFFIX = "suffix";
         String TEXT = "text";
         String CURRENCY = "currency";
+
+    }
+
+    public interface phone_block_ {
+
+        String _ITEM_NAME = "phone_block";
+        String HEADER = "header";
+        String TEXT = "text";
+        String LINK = "link";
 
     }
 
@@ -966,6 +1041,8 @@ public interface ItemNames {
     public interface post_ {
 
         String _ITEM_NAME = "post";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
@@ -1185,6 +1262,8 @@ public interface ItemNames {
     public interface skr_ {
 
         String _ITEM_NAME = "skr";
+        String TOP = "top";
+        String BOTTOM = "bottom";
 
     }
 
