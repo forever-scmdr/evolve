@@ -39,6 +39,7 @@
 	<xsl:variable name="is_catalog" select="page/@name = 'catalog'"/>
 	<xsl:variable name="only_available" select="$pv/minqty = '0'"/>
 	<xsl:variable name="search_strict" select="$pv/search = 'strict'"/>
+	<xsl:variable name="update_in_progress" select="page/catalog/integration_pending = '1'"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 	<xsl:variable name="user" select="page/user"/>
@@ -674,77 +675,7 @@
 									 <xsl:value-of select="$common/topper/block[header='Расписание работы']/text" disable-output-escaping="yes"/>
 									</div>
 								</div>
-								<div class="header__column header__search header-search">
-									<script>
-										function strictRedirect() {
-											<xsl:choose>
-												<xsl:when test="page/@name = 'search'">
-													var form = $('#search');
-													form.attr('action', '<xsl:value-of select="page/search_strict_link"  disable-output-escaping="yes" />');
-													form.submit();
-												</xsl:when>
-												<xsl:when test="page/@name = 'search_strict'">
-													var form = $('#search');
-													form.attr('action', '<xsl:value-of select="page/search_link" disable-output-escaping="yes" />');
-													form.submit();
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:if test="$search_strict">
-														location.replace('<xsl:value-of select="concat(page/base,'/', page/set_search_normal_link)" disable-output-escaping="yes" />');
-													</xsl:if>
-													<xsl:if test="not($search_strict)">
-														location.replace('<xsl:value-of select="concat(page/base, '/', page/set_search_strict_link)" disable-output-escaping="yes" />');
-													</xsl:if>
-												</xsl:otherwise>
-											</xsl:choose>
-										}
-									</script>
-									<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post" id="search">
-										<div>
-											<a class="useless-button" href="#" onclick="$(this).closest('form').submit(); return false;">
-												<img src="img/icon-search.png" alt=""/>
-											</a>
-											<input class="input header-search__input"
-												   ajax-href="{page/search_ajax_link}" result="search-result"
-												   query="q" min-size="3" id="q-ipt" type="text" minlength="3"
-												   placeholder="Введите поисковый запрос" autocomplete="off"
-												   name="q" value="{$query}" autofocus="autofocus" onfocus="this.selectionStart = this.selectionEnd = this.value.length"/>
-											<a class="header-search__reset" href="">
-												<img src="img/icon-close.png" alt=""/>
-											</a>
-											<button class="button header-search__button" type="submit">Найти</button>
-										</div>
-										<div>
-											<div class="header-search__option">
-												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
-													<input style="display: inline-block; vertical-align: middle;"
-														   type="checkbox"
-														   onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
-														<xsl:if test="$only_available">
-															<xsl:attribute name="checked">checked</xsl:attribute>
-														</xsl:if>
-													</input>
-													только по товарам в наличии
-												</label>
-											</div>
-											<div class="header-search__option">
-												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
-													<input style="display: inline-block; vertical-align: middle;"
-														   type="checkbox"
-														   onclick="strictRedirect()">
-														<xsl:if test="$search_strict">
-															<xsl:attribute name="checked">checked</xsl:attribute>
-														</xsl:if>
-													</input>
-													строгое соответствие
-												</label>
-											</div>
-										</div>
-										<div class="suggest" id="search-result">
-											+++ SEARCH DESKTOP +++
-										</div>
-									</form>
-								</div>
+								<xsl:call-template name="SEARC_DESCTOP" />
 								<div class="header__column header__column_links header-icons">
 									<div class="header-icons__icon header-icon" id="cart_ajax" style="min-width: 85px;" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no" >
 										<div class="header-icon__icon">
@@ -833,10 +764,12 @@
 							</a>
 							<div class="header-mobile__small-icons">
 								<div class="mobile-small-icon header-mobile__small-icon">
-									<div class="mobile-small-icon__icon">
-										<img src="img/icon-small-search.png" alt=""/>
-									</div>
-									<a class="mobile-small-icon__link"></a>
+									<xsl:if test="not($update_in_progress)">
+										<div class="mobile-small-icon__icon">
+											<img src="img/icon-small-search.png" alt=""/>
+										</div>
+										<a class="mobile-small-icon__link"></a>
+									</xsl:if>
 								</div>
 								<div class="mobile-small-icon header-mobile__small-icon">
 									<div class="mobile-small-icon__icon">
@@ -919,14 +852,13 @@
 									<div class="side-menu">
 										<div class="side-menu__header">
 											<a class="side-menu__title" href="{page/catalog_link}">Каталог товаров</a>
-
-											<xsl:if test="not(/page/catalog/udate_in_progress = '1')">
+											<xsl:if test="not($update_in_progress)">
 												<div class="side-menu__update">Обновлен
 													<xsl:value-of select="substring(/page/catalog/date, 0,11)" />
 													в <xsl:value-of select="substring(/page/catalog/date, 12, 5)" />
 												</div>
 											</xsl:if>
-											<xsl:if test="/page/catalog/udate_in_progress = '1'">
+											<xsl:if test="$update_in_progress">
 												<div class="side-menu__update">
 													<b>Идет обновление каталога!</b><br/>
 													Заказ товаров и поиск могут работать некорректно, пожалуйста, подождите несколько минут.
@@ -1126,5 +1058,87 @@
 		</html>
 	</xsl:template>
 
+	<xsl:template name="SEARC_DESCTOP">
+		<xsl:if test="$update_in_progress">
+			<div class="header__column header__search header-search">
+				<div class="search-stub" style="min-width: 500px; padding: 1rem 0;">
+					Обновление каталога. Поиск временно недоступен.
+				</div>
+			</div>
+		</xsl:if>
+		<xsl:if test="not($update_in_progress)">
+			<div class="header__column header__search header-search">
+				<script>
+					function strictRedirect() {
+						<xsl:choose>
+							<xsl:when test="page/@name = 'search'">
+								var form = $('#search');
+								form.attr('action', '<xsl:value-of select="page/search_strict_link"  disable-output-escaping="yes" />');
+								form.submit();
+							</xsl:when>
+							<xsl:when test="page/@name = 'search_strict'">
+								var form = $('#search');
+								form.attr('action', '<xsl:value-of select="page/search_link" disable-output-escaping="yes" />');
+								form.submit();
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:if test="$search_strict">
+									location.replace('<xsl:value-of select="concat(page/base,'/', page/set_search_normal_link)" disable-output-escaping="yes" />');
+								</xsl:if>
+								<xsl:if test="not($search_strict)">
+									location.replace('<xsl:value-of select="concat(page/base, '/', page/set_search_strict_link)" disable-output-escaping="yes" />');
+								</xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
+					}
+				</script>
+				<form action="{if ($search_strict) then page/search_strict_link else page/search_link}" method="post" id="search">
+					<div>
+						<a class="useless-button" href="#" onclick="$(this).closest('form').submit(); return false;">
+							<img src="img/icon-search.png" alt=""/>
+						</a>
+						<input class="input header-search__input"
+							   ajax-href="{page/search_ajax_link}" result="search-result"
+							   query="q" min-size="3" id="q-ipt" type="text" minlength="3"
+							   placeholder="Введите поисковый запрос" autocomplete="off"
+							   name="q" value="{$query}" autofocus="autofocus" onfocus="this.selectionStart = this.selectionEnd = this.value.length"/>
+						<a class="header-search__reset" href="">
+							<img src="img/icon-close.png" alt=""/>
+						</a>
+						<button class="button header-search__button" type="submit">Найти</button>
+					</div>
+					<div>
+						<div class="header-search__option">
+							<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
+								<input style="display: inline-block; vertical-align: middle;"
+									   type="checkbox"
+									   onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
+									<xsl:if test="$only_available">
+										<xsl:attribute name="checked">checked</xsl:attribute>
+									</xsl:if>
+								</input>
+								только по товарам в наличии
+							</label>
+						</div>
+						<div class="header-search__option">
+							<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
+								<input style="display: inline-block; vertical-align: middle;"
+									   type="checkbox"
+									   onclick="strictRedirect()">
+									<xsl:if test="$search_strict">
+										<xsl:attribute name="checked">checked</xsl:attribute>
+									</xsl:if>
+								</input>
+								строгое соответствие
+							</label>
+						</div>
+					</div>
+					<div class="suggest" id="search-result">
+						+++ SEARCH DESKTOP +++
+					</div>
+				</form>
+			</div>
+		</xsl:if>
+	</xsl:template>
 
 </xsl:stylesheet>
