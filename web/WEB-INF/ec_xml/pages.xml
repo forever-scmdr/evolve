@@ -577,8 +577,8 @@
 			<var name="sec" />
 
 			<var name="sort1" value="available" />
-			<var name="sort2" value="name" />
-			<var name="sort3" value="name_extra" />
+			<var name="sort2" value="" />
+			<var name="sort3" value="" />
 
 			<var name="dir1" value="DESC" />
 			<var name="dir2" value="ASC" />
@@ -590,13 +590,13 @@
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="2000" name="search"
+				<fulltext limit="500" name="search"
 						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
 						  compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="2000"/>
+					<var value="500"/>
 				</limit>
 				<pages>
 					<var var="page"/>
@@ -604,11 +604,13 @@
 			</filter>
 		</list>
 
-		<list item="product" id="display_product" tag="product">
+		<list item="product" id="display_product" tag="product" ref="product">
 			<filter>
+				<!--
 				<parameter name="code" sign="=" compare="SOME">
 					<var ref="product" parameter="code" />
 				</parameter>
+				-->
 				<sorting direction-var="dir1">
 					<var var="sort1" />
 				</sorting>
@@ -650,8 +652,8 @@
 			<var name="sec" />
 
 			<var name="sort1" value="available" />
-			<var name="sort2" value="name" />
-			<var name="sort3" value="name_extra" />
+			<var name="sort2" value="" />
+			<var name="sort3" value="" />
 
 			<var name="dir1" value="DESC" />
 			<var name="dir2" value="ASC" />
@@ -662,11 +664,11 @@
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="2000" name="search" type="(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
+				<fulltext limit="500" name="search" type="(term)(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
-					<var value="2000"/>
+					<var value="500"/>
 				</limit>
 			</filter>
 		</list>
@@ -1088,6 +1090,7 @@
 			<var name="prod"/>
 		</request>
 		<link name="success" target="subscribe_ajax">
+			<var name="prod" var="prod"/>
 			<var name="result" value="success"/>
 			<var name="message" value="Ожидайте уведомления о поступлении на email"/>
 		</link>
