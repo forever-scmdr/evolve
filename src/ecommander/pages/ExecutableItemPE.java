@@ -539,8 +539,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
 					if (getReference().isVarParamReference()) {
-						List<String> values = getReference().getValuesArray();
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values);
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), getReference().getValuesArray());
+					} else if (getReference().isUrlReference()) {
+						return ItemQuery.loadByIdsString(getReference().getValuesArray(), getItemName());
 					} else {
 						List<Long> refIds = getReference().getItemIds();
 						if (refIds.size() == 0)
