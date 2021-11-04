@@ -2935,3 +2935,63 @@ table.order-search-form td:first-child {
 .justify-right{
 	justify-content: right;
 }
+/*Fix popup on mobile devices*/
+.popup__info .button.button_big{
+	display: inline-block;
+	position: relative;
+	left: 50%;
+	margin-left: -41px;
+}
+
+@media(max-width: 800px) {
+	.popup__content {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		overflow: auto;
+		padding: 20px;
+		transition: transform, 500ms;
+	}
+	.popup__header {
+		display: flex;
+		margin-bottom: 20px;
+	}
+	.popup__title {
+		font-size: 24px;
+		font-weight: bold;
+		flex: 1;
+		text-align: left;
+	}
+	.popup__close {
+		display: flex;
+		flex: 0 0 24px;
+		align-items: flex-start;
+		justify-content: center;
+		background: none;
+		border: 0 none;
+		margin:0;
+		position: static;
+	}
+	.popup__close > img{
+		width: auto;
+	}
+	.suggest{
+		box-shadow: none;
+		border: 0 none;
+	}
+	.popup-menu__link a{
+		color: #363636;
+		text-decoration: none;
+	}
+    .popup__info .input{
+        width: 300px;
+    }
+	.popup__info .button.button_big{
+		width: 300px;
+		margin-left: 0;
+		left: 0;
+	}
+}
