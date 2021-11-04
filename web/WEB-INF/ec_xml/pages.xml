@@ -199,6 +199,11 @@
 			<var name="currency" value="rur"/>
 		</link>
 
+		<link name="set_sort_relevance" target="$page" copy-page-vars="yes" type="exclusive">
+			<var name="sort1" value="available"/>
+			<var name="dir1" value="DESC"/>
+			<var name="page" value="1"/>
+		</link>
 		<link name="set_sort_name_asc" target="$page" copy-page-vars="yes" type="exclusive">
 			<var name="sort1" value="name"/>
 			<var name="sort2" value="name_extra"/>
@@ -581,8 +586,8 @@
 			<var name="sort3" value="" />
 
 			<var name="dir1" value="DESC" />
-			<var name="dir2" value="ASC" />
-			<var name="dir3" value="ASC" />
+			<var name="dir2" value="" />
+			<var name="dir3" value="" />
 
 			<var name="view" value="table" scope="cookie"/>
 			<var name="page" value="1"/>
@@ -656,15 +661,15 @@
 			<var name="sort3" value="" />
 
 			<var name="dir1" value="DESC" />
-			<var name="dir2" value="ASC" />
-			<var name="dir3" value="ASC" />
+			<var name="dir2" value="" />
+			<var name="dir3" value="" />
 
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="500" name="search" type="(term)(extra.belchip.BelchipTermFulltextQuery)" compare="EVERY">
+				<fulltext limit="500" name="search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
@@ -673,11 +678,8 @@
 			</filter>
 		</list>
 
-		<list item="product" id="display_product" tag="product">
+		<list item="product" id="display_product" tag="product" ref="product">
 			<filter>
-				<parameter name="code" sign="=" compare="SOME">
-					<var ref="product" parameter="code" />
-				</parameter>
 				<sorting direction-var="dir1">
 					<var var="sort1" />
 				</sorting>
@@ -720,12 +722,12 @@
 			<var name="sec" />
 
 			<var name="sorting1" value="available" />
-			<var name="sorting2" value="name" />
-			<var name="sorting3" value="mark" />
+			<var name="sorting2" value="" />
+			<var name="sorting3" value="" />
 
 			<var name="dir1" value="DESC" />
-			<var name="dir2" value="ASC" />
-			<var name="dir3" value="ASC" />
+			<var name="dir2" value="" />
+			<var name="dir3" value="" />
 
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
@@ -743,12 +745,8 @@
 			</filter>
 		</list>
 
-		<list item="product" id="display_product" tag="product">
+		<list item="product" id="display_product" tag="product" ref="product">
 			<filter>
-				<parameter name="code" sign="=" compare="SOME">
-					<var ref="product" parameter="code" />
-				</parameter>
-
 				<sorting direction-var="dir1">
 					<var var="sorting1" />
 				</sorting>

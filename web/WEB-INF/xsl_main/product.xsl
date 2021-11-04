@@ -265,12 +265,12 @@
 					</div>
 					<div class="product-order__order" id="cart_list_{$p/@id}">
 						<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-							<xsl:if test="$has_price">
+							<xsl:if test="$has_price and not($zero)">
 								<input type="number" class="input input_type_number" name="qty"
 									   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
 								<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
 							</xsl:if>
-							<xsl:if test="not($has_price)">
+							<xsl:if test="not($has_price) or $zero">
 								<input type="hidden" class="input input_type_number" name="qty"
 									   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
 								<button class="button button_secondary" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
@@ -292,34 +292,34 @@
 						</xsl:choose>
 					</div>
 				</div>
-				<div class="tabs tabs_product">
-					<div class="tabs__nav">
-						<xsl:if test="page/analog">
-							<a class="tab tab_active" href="#tab_analog">
-								<div class="tab__text">Аналогичные товары</div>
-							</a>
-						</xsl:if>
-						<xsl:variable name="has_analog" select="page/analog"/>
-						<xsl:if test="page/related">
-							<a class="tab{' tab_active'[not($has_analog)]}" href="#tab_related">
-								<div class="tab__text">Смежные товары</div>
-							</a>
-						</xsl:if>
-					</div>
-					<div class="tabs__content">
-						<div class="tab-container" id="tab_analog">
-							<div class="devices devices_product">
-								<div class="devices__wrap">
-									<xsl:apply-templates select="page/analog"/>
-								</div>
-							</div>
+			</div>
+		</div>
+		<xsl:variable name="has_related" select="page/related"/>
+		<div class="tabs tabs_product">
+			<div class="tabs__nav">
+				<xsl:if test="page/related">
+					<a class="tab tab_active" href="#tab_related">
+						<div class="tab__text">Смежные товары</div>
+					</a>
+				</xsl:if>
+				<xsl:if test="page/analog">
+					<a class="tab{' tab_active'[not($has_related)]}" href="#tab_analog">
+						<div class="tab__text">Аналогичные товары</div>
+					</a>
+				</xsl:if>
+			</div>
+			<div class="tabs__content">
+				<div class="tab-container" id="tab_related" style="{'display: none;'[not($has_related)]}">
+					<div class="devices devices_product">
+						<div class="devices__wrap">
+							<xsl:apply-templates select="page/related"/>
 						</div>
-						<div class="tab-container" id="tab_related" style="display: none;">
-							<div class="devices devices_product">
-								<div class="devices__wrap">
-									<xsl:apply-templates select="page/related"/>
-								</div>
-							</div>
+					</div>
+				</div>
+				<div class="tab-container" id="tab_analog" style="{'display: none;'[$has_related]}">
+					<div class="devices devices_product">
+						<div class="devices__wrap">
+							<xsl:apply-templates select="page/analog"/>
 						</div>
 					</div>
 				</div>

@@ -38,7 +38,7 @@ public class BelchipStrings {
 	}
 	
 	/**
-	 * Разложить строку на составные части (заменив симвлоы с русских на английские)
+	 * Разложить строку на составные части (заменив символы с русских на английские)
 	 * @param value
 	 * @return
 	 */
@@ -53,7 +53,19 @@ public class BelchipStrings {
 		}
 		return sb.toString();
 	}
-	
+
+	/**
+	 * Заменяет символы с русских на английские не разбивая строку
+	 * @param value
+	 * @return
+	 */
+	public static String preanalyzeNoSplit(String value) {
+		Locale loc = AppContext.getCurrentLocale();
+		if (loc == null)
+			loc = new Locale("ru");
+		return fromRtoE(value).toLowerCase(loc);
+	}
+
 //	private static String tokenize(String arg) {
 //		StringBuilder sb = new StringBuilder();
 //		try {
