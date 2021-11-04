@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:xs="http://www.w3.org/2001/XMLSchema"
 		xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="f:f" version="2.0">
 	<xsl:import href="login_form_ajax.xsl"/>
@@ -1008,7 +1007,7 @@
 										</div>
 										<div class="search-mobile__options">
 											<div class="search-mobile__option search-option">
-												<label style="{'background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$only_available]}">
+												<label>
 													<input style="display: inline-block; vertical-align: middle;"
 														   type="checkbox"
 														   onclick="location.replace('{page/base}/{if ($only_available) then page/show_all else page/show_only_available}')">
@@ -1020,8 +1019,8 @@
 												</label>
 											</div>
 											<div class="search-mobile__option search-option">
-												<input type="checkbox"/>
-												<label style="padding: 4px;{' background: rgb(173, 203, 53) none repeat scroll 0% 0%;'[$search_strict]}" class="full_match_only">
+
+												<label class="full_match_only">
 													<input style="display: inline-block; vertical-align: middle;"
 														   type="checkbox"
 														   onclick="strictRedirect()">
