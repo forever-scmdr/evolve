@@ -59,7 +59,7 @@
 					<div class="sections__wrap">
 						<xsl:for-each select="page/catalog/section">
 							<div class="section">
-								<a class="section__image" href="{show_section}">
+								<a class="section__image" href="{show_products}">
 									<xsl:if test="not(pic_path !='')">
 										<img src="sitepics/{substring(code, string-length(code) - 4)}.jpg" alt="{name}" />
 									</xsl:if>
@@ -67,7 +67,7 @@
 										<img src="sitepics/{pic_path}" alt="{name}" />
 									</xsl:if>
 								</a>
-								<a class="section__title" href="{show_section}"><xsl:value-of select="name"/></a>
+								<a class="section__title" href="{show_products}"><xsl:value-of select="name"/></a>
 								<div class="section__description"></div>
 							</div>
 						</xsl:for-each>

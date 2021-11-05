@@ -380,6 +380,25 @@
 	</xsl:template>
 
 
+	<xsl:template match="custom_page" mode="mobile_menu">
+		<div class="popup-menu__item">
+			<div class="popup-menu__link"><a href="{show_page}"><xsl:value-of select="header"/></a></div>
+			<div class="popup-menu__arrow">
+				<a href="{show_page}"><img src="img/icon-menu-right.png" alt=""/></a>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="page_link" mode="mobile_menu">
+		<div class="popup-menu__item">
+			<div class="popup-menu__link"><a href="{link}"><xsl:value-of select="name"/></a></div>
+			<div class="popup-menu__arrow">
+				<a href="{link}"><img src="img/icon-menu-right.png" alt=""/></a>
+			</div>
+		</div>
+	</xsl:template>
+
 
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
@@ -429,11 +448,18 @@
 	<xsl:template match="section" mode="mobile">
 		<div class="popup-menu__item">
 			<div class="popup-menu__link">
-				<a onclick="$('#mobile_sec{@id}').css('transform', ''); return false;"><xsl:value-of select="name"/></a>
+				<xsl:if test="section">
+					<a href="#" onclick="$('#mobile_sec_{@id}').css('transform', 'translateX(0%)'); return false;"><xsl:value-of select="name"/></a>
+				</xsl:if>
+				<xsl:if test="not(section)">
+					<a href="{show_products}"><xsl:value-of select="name"/></a>
+				</xsl:if>
 			</div>
-			<div class="popup-menu__arrow">
-				<img src="img/icon-menu-right.png" alt=""/>
-			</div>
+			<xsl:if test="section">
+				<div class="popup-menu__arrow">
+					<a href="#" onclick="$('#mobile_sec_{@id}').css('transform', 'translateX(0%)'); return false;"><img src="img/icon-menu-right.png" alt=""/></a>
+				</div>
+			</xsl:if>
 		</div>
 	</xsl:template>
 
@@ -767,51 +793,51 @@
 										<div class="mobile-small-icon__icon">
 											<img src="img/icon-small-search.png" alt=""/>
 										</div>
-										<a class="mobile-small-icon__link"></a>
+										<a class="mobile-small-icon__link" href="#" onclick="$('#search_mobile').show(); return false;"></a>
 									</xsl:if>
 								</div>
 								<div class="mobile-small-icon header-mobile__small-icon">
 									<div class="mobile-small-icon__icon">
 										<img src="img/icon-small-phone.png" alt=""/>
 									</div>
-									<a class="mobile-small-icon__link"></a>
+									<a class="mobile-small-icon__link" href="o_nas"></a>
 								</div>
 								<div class="mobile-small-icon header-mobile__small-icon">
 									<div class="mobile-small-icon__icon">
 										<img src="img/icon-small-menu.png" alt=""/>
 									</div>
-									<a class="mobile-small-icon__link"></a>
+									<a class="mobile-small-icon__link" href="#" onclick="$('#mobile_main_menu').show(); return false;"></a>
 								</div>
 							</div>
 						</div>
 						<div class="header-mobile__nav">
 							<div class="header-mobile__menu">
-								<button class="button">Каталог</button>
+								<button class="button" onclick="$('#mobile_catalog').show(); return false;">Каталог</button>
 							</div>
 							<div class="header-mobile__icons">
-								<div class="header-mobile__icon mobile-icon">
+								<div class="header-mobile__icon mobile-icon" id="cart_mobile">
 									<div class="mobile-icon__icon">
 										<img src="img/icon-cart.png" alt=""/>
 									</div>
-									<div class="mobile-icon__qty">2</div>
-									<div class="mobile-icon__label">58,25</div>
+									<div class="mobile-icon__label">Корзина</div>
 									<a class="mobile-icon__link"></a>
 								</div>
-								<div class="header-mobile__icon mobile-icon">
+								<div class="header-mobile__icon mobile-icon" id="fav_mobile">
 									<div class="mobile-icon__icon">
 										<img src="img/icon-star.png" alt=""/>
 									</div>
-									<div class="mobile-icon__qty">2</div>
 									<div class="mobile-icon__label">Избранное</div>
 									<a class="mobile-icon__link"></a>
 								</div>
-								<div class="header-mobile__icon mobile-icon">
-									<div class="mobile-icon__icon">
-										<img src="img/icon-currency.png" alt=""/>
+								<xsl:if test="$currencies">
+									<div class="header-mobile__icon mobile-icon">
+										<div class="mobile-icon__icon">
+											<a href="#" onclick="$('#mobile_currency').show(); return false;"><img src="img/icon-currency.png" alt=""/></a>
+										</div>
+										<div class="mobile-icon__label"><xsl:value-of select="if ($currency) then replace($currency, 'RUB', 'RUR') else 'BYN'" /></div>
+										<a class="mobile-icon__link"></a>
 									</div>
-									<div class="mobile-icon__label">BYN</div>
-									<a class="mobile-icon__link"></a>
-								</div>
+								</xsl:if>
 								<div class="header-mobile__icon mobile-icon">
 									<div class="mobile-icon__icon">
 										<img src="img/icon-user.png" alt=""/>
@@ -902,7 +928,8 @@
 								</xsl:if>
 							</div>
 						</div>
-					</div><!-- меню каталога-->
+					</div>
+					<!-- меню каталога-->
 					<div class="popup" style="display: none;" id="mobile_catalog">
 						<div class="popup__body">
 							<div class="popup__content">
@@ -919,7 +946,7 @@
 							<xsl:for-each select="page/catalog//section[section]">
 								<div class="popup__content popup__content_next" id="mobile_sec_{@id}">
 									<div class="popup__header">
-										<a class="popup__back" href="#" onlick="$('#mobile_sec{@id}').css('transform', 'translateX(100%)'); return false;">
+										<a class="popup__back" href="#" onclick="$('#mobile_sec_{@id}').css('transform', 'translateX(100%)'); return false;">
 											<img src="img/icon-menu-back.png" alt=""/>
 										</a>
 										<div class="popup__title"><xsl:value-of select="name"/></div>
@@ -933,8 +960,9 @@
 								</div>
 							</xsl:for-each>
 						</div>
-					</div><!-- главное меню-->
-					<div class="popup" style="display: none;">
+					</div>
+					<!-- главное меню-->
+					<div class="popup" style="display: none;" id="mobile_main_menu">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
@@ -945,46 +973,56 @@
 								</div>
 								<div class="popup-menu">
 									<div class="popup-menu__item">
-										<div class="popup-menu__link">Главная страница</div>
+										<div class="popup-menu__link"><a href="{page/index_link}">Главная страница</a></div>
 										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
+											<a href="{page/index_link}"><img src="img/icon-menu-right.png" alt=""/></a>
 										</div>
 									</div>
 									<div class="popup-menu__item">
-										<div class="popup-menu__link">Каталог товаров</div>
+										<div class="popup-menu__link"><a href="{page/catalog_link}">Каталог товаров</a></div>
 										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
+											<a href="{page/catalog_link}"><img src="img/icon-menu-right.png" alt=""/></a>
 										</div>
 									</div>
-									<div class="popup-menu__item">
-										<div class="popup-menu__link">О магазине</div>
-										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
-										</div>
-									</div>
-									<div class="popup-menu__item">
-										<div class="popup-menu__link">Прайс-лист</div>
-										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
-										</div>
-									</div>
-									<div class="popup-menu__item">
-										<div class="popup-menu__link">Оплата и доставка</div>
-										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
-										</div>
-									</div>
-									<div class="popup-menu__item">
-										<div class="popup-menu__link">Полезная информация</div>
-										<div class="popup-menu__arrow">
-											<img src="img/icon-menu-right.png" alt=""/>
-										</div>
-									</div>
+									<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="mobile_menu"/>
 								</div>
 							</div>
 						</div>
-					</div><!-- поиск-->
-					<div class="popup" style="display: none;">
+					</div>
+					<!-- Валюта-->
+					<div class="popup" style="display: none;" id="mobile_currency">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title">Выбор валюты</div>
+									<a class="popup__close">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup-menu">
+									<xsl:variable name="currency_link" select="page/set_currency"/>
+									<div class="popup-menu__item{' active'[$currency = 'BYN']}">
+										<div class="popup-menu__link{' active'[$currency = 'BYN']}">
+											<a href="{concat($currency_link, 'BYN')}">BYN</a>
+										</div>
+									</div>
+									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+										<xsl:variable name="show" select="$currencies/*[name() = concat($cur, '_show')] = '1'"/>
+										<xsl:if test="$show">
+											<div class="popup-menu__item{' active'[$currency = $cur]}">
+												<div class="popup-menu__link{' active'[$currency = $cur]}">
+													<a href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
+												</div>
+											</div>
+										</xsl:if>
+									</xsl:for-each>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- поиск-->
+					<div class="popup" id="search_mobile" style="display: none;">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
@@ -1033,9 +1071,11 @@
 											</div>
 										</div>
 									</form>
+									<!--
 									<div class="suggest" id="search-result-mobile">
 										+++ SEARCH_MOBILE +++
 									</div>
+									-->
 								</div>
 							</div>
 						</div>
