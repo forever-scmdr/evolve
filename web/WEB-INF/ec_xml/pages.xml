@@ -32,8 +32,8 @@
 		<single item="catalog" id="catalog_main" cacheable="false">
 			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="sec" parameter="code"/>
 				</link>
 			</tree>
 		</single>
@@ -314,8 +314,8 @@
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:hit"/>
 			<ancestor item="section" id="h_sec" tag="section">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="h_sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="h_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>
@@ -328,8 +328,8 @@
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
 			<ancestor item="section" id="n_sec" tag="section">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="n_sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="n_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>
@@ -368,7 +368,7 @@
 
 	<page name="section" template="section" cacheable="false" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
-			<var name="sec" style="keypath"/>
+			<var name="selected_section"/>
 			<var name="page" value="1"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="24" scope="cookie"/>
@@ -384,9 +384,9 @@
 			<var name="tag"/>
 			<var name="mark"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
-			<link name="canonical_link" target="section" type="exclusive">
-				<var name="sec" ref="cur_sec" style="key"/>
+		<single item="section" var="selected_section" id="cur_sec" tag="current_section" cache-vars="selected_section" parameter="code">
+			<link name="canonical_link" target="section">
+				<var name="selected_section" ref="cur_sec" parameter="code"/>
 				<var name="tag" var="tag"/>
 			</link>
 			<single item="seo" assoc="seo"/>
@@ -410,8 +410,8 @@
 					<pages>
 						<var var="page"/>
 					</pages>
-					<link name="filter_base_link" type="exclusive" target="section">
-						<var name="sec" var="sec" style="key"/>
+					<link name="filter_base_link" target="section">
+						<var name="selected_section" var="selected_section"/>
 					</link>
 					<parameter name="vendor" sign="=" compare="ANY">
 						<var var="tag"/>
@@ -437,8 +437,8 @@
 				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
-		<link name="reset_filter_link" type="exclusive" target="section">
-			<var name="sec" var="sec" style="key"/>
+		<link name="reset_filter_link" target="section">
+			<var name="selected_section" var="selected_section"/>
 		</link>
 		<include name="CATALOG_PAGE_LINKS" replace="$page:section"/>
 		<include name="COMMON"/>
@@ -632,8 +632,8 @@
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
 				</link>
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="p_sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="p_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>
@@ -696,8 +696,8 @@
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
 				</link>
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="p_sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="p_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>
@@ -790,8 +790,8 @@
 			<list item="product_extra"/>
 			<list item="params_xml"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="cur_sec" style="key"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="cur_sec" parameter="code"/>
 				</link>
 			</ancestor>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
@@ -1311,8 +1311,8 @@
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:fav"/>
 			<ancestor item="section" id="h_sec" tag="sec">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="h_sec" style="keypath"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="h_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>
@@ -2059,8 +2059,8 @@
 		<single item="url_seo_wrap"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
-				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="key"/>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="sec" parameter="code"/>
 				</link>
 				<link name="map_products" target="sitemap_section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
@@ -2107,8 +2107,8 @@
 			</list>
 			<list item="product" tag="tag" id="tag">
 				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="key" var="sec"/>
+				<link name="canonical" target="section" copy-page-vars="no">
+					<var name="selected_section" ref="cur_sec" parameter="code"/>
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 			</list>
@@ -2383,7 +2383,7 @@
 
 
 
-	<page name="price_update_auto_start" template="integration" schedule="0 30 * ? * * *">
+	<page name="price_update_auto_start" template="integration" schedule="0 30 10-20 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 			<var name="param" value="webfile1.xml" />
@@ -2405,11 +2405,11 @@
 		</command>
 	</page>
 
-
+<!--
 	<page name="clear_xml_dirs_morning" schedule="0 0 4 * * ?">
 		<command class="extra.belchip.ClearXMLDirs" />
 	</page>
-
+-->
 
 	<page name="orders_action">
 		<request>

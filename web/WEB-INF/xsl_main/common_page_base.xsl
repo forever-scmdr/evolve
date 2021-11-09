@@ -840,10 +840,14 @@
 								</xsl:if>
 								<div class="header-mobile__icon mobile-icon">
 									<div class="mobile-icon__icon">
-										<img src="img/icon-user.png" alt=""/>
+										<a href="#" onclick="$('#mobile_user_menu').show(); return false;"><img src="img/icon-user.png" alt=""/></a>
 									</div>
-									<div class="mobile-icon__label">Конст...</div>
-									<a class="mobile-icon__link"></a>
+									<xsl:if test="$is_user_registered">
+										<div class="mobile-icon__label"><xsl:value-of select="if ($is_jur) then substring-before($reg/contact_name, ' ') else $reg/name"/></div>
+									</xsl:if>
+									<xsl:if test="not($is_user_registered)">
+										<div class="mobile-icon__label">Аноним</div>
+									</xsl:if>
 								</div>
 							</div>
 						</div>
@@ -913,7 +917,7 @@
 										<a href="mailto:info@belchip.by">info@belchip.by</a>
 									</div>
 									<div class="footer__copyright copyright">© «Белчип», 2012–<xsl:value-of select="substring(string(current-date()),1,4)"/></div>
-									<a class="forever" href="">Разработка сайта
+									<a class="forever" href="https://forever.by">Разработка сайта
 										<span style="display: block;">студия веб-дизайна Forever</span>
 									</a>
 								</div>
@@ -990,11 +994,55 @@
 						</div>
 					</div>
 					<!-- Валюта-->
-					<div class="popup" style="display: none;" id="mobile_currency">
+					<div class="popup" style="display: none;" id="mobile_user_menu">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
-									<div class="popup__title">Выбор валюты</div>
+									<div class="popup__title">Действия пользователя</div>
+									<a class="popup__close">
+										<img src="img/icon-menu-close.png" alt=""/>
+									</a>
+								</div>
+								<div class="popup-menu">
+									<xsl:if test="not($is_user_registered)">
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="#" popup="login_form_popup">Вход</a>
+											</div>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/register_link}">Регистрация</a>
+											</div>
+										</div>
+									</xsl:if>
+									<xsl:if test="$is_user_registered">
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/personal_link}">Кабинет</a>
+											</div>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/purchase_history_link}">История заказов</a>
+											</div>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/logout_link}">Выход</a>
+											</div>
+										</div>
+									</xsl:if>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Меню пользователя -->
+					<div class="popup" style="display: none;" id="mobile_user_menu">
+						<div class="popup__body">
+							<div class="popup__content">
+								<div class="popup__header">
+									<div class="popup__title">Меню пользователя</div>
 									<a class="popup__close">
 										<img src="img/icon-menu-close.png" alt=""/>
 									</a>
