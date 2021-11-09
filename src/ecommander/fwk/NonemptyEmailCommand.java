@@ -152,7 +152,7 @@ public class NonemptyEmailCommand extends Command {
 			}
 			// Простое письмо
 			else if (!StringUtils.isBlank(mailMessage)) {
-				textPart.setContent(mailMessage, "text/plain;charset=UTF-8");
+				textPart.setContent(mailMessage.toString(), "text/plain;charset=UTF-8");
 			}
 			// Отправка письма
 			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic"))? topic : postForm.getSingleStringExtra("topic");
