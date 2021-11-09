@@ -123,6 +123,7 @@ public class NonemptyEmailCommand extends Command {
 			for (Object key : messageInput.getKeys()) {
 				String paramName = key.toString();
 				ArrayList<Object> values = messageInput.getExtraList(paramName);
+				if (SPAM_PARAM.equals(key)) continue;
 				if (values.size() > 0 && values.get(0) instanceof FileItem) {
 					for (Object value : values) {
 						FileItem file = (FileItem) value;
@@ -138,7 +139,8 @@ public class NonemptyEmailCommand extends Command {
 					} else {
 						ParameterDescription paramDesc = postDesc.getParameter(paramName);
 						String caption = paramDesc != null ? paramDesc.getCaption() : paramName;
-						mailMessage.append(caption + ": " + StringUtils.joinWith(", ", values) + "\r\n");
+						String v = StringUtils.joinWith(", ", values);
+						mailMessage.append(caption + ": " + v.substring(1,v.length()-1) + "\r\n");
 					}
 				}
 			}
@@ -217,4 +219,5 @@ public class NonemptyEmailCommand extends Command {
 		result.addVariable("message", error);
 		return result;
 	}
+
 }
