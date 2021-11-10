@@ -150,7 +150,6 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 			ServerLogger.error("Registration error", e);
 			return getResult("error");
 		}
-		getSessionMapper().saveTemporaryItem(sessionUser, USER);
 		sessionUser.setExtra(MESSAGE_EXTRA, "Регистрация завершена успешно. Спасибо за регистрацию");
 		return getResult("success");
 	}
