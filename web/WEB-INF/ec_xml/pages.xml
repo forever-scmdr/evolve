@@ -572,19 +572,22 @@
 
 
 
-	<page name="product" template="product" cacheable="true" critical-item="prod">
+	<page name="product" template="" cacheable="true" >
 		<request>
 			<var name="prod" style="translit"/>
+			<var name="assoc_code"/>
+			<var name="name"/>
+			<var name="vendor_code"/>
 		</request>
+		<link name="canonical_link" target="product" type="exclusive">
+			<var name="prod" var="prod" style="translit"/>
+		</link>
 		<single item="product" id="prod" var="prod">
-			<link name="canonical_link" target="product" type="exclusive">
-				<var name="prod" item="prod" style="translit"/>
-			</link>
-			<single item="seo"/>
+			<single item="seo" id="seo"/>
 			<single item="params"/>
-			<single item="product_extra"/>
+			<single item="product_extra" />
 			<single item="manual"/>
-			<ancestor item="section" transit="false" tag="product_section"/>
+			<ancestor item="section" transit="false" tag="product_section" id="parent"/>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="code" ref="prod" parameter="code"/>
@@ -602,10 +605,13 @@
 				<var name="src_page" value="compare_ajax"/>
 			</link>
 		</single>
+		<command class="extra.EternalCacheCommand" >
+			<result name="loaded" type="inline_xml"/>
+		</command>
 		<list item="product" tag="price" id="price_1">
 			<filter>
 				<fulltext name="name" limit="30" compare="EVERY" threshold="0.3">
-					<var ref="prod" parameter="name"/>
+					<var var="name"/>
 				</fulltext>
 			</filter>
 			<link name="to_cart" target="cart_action">
@@ -617,7 +623,7 @@
 		<list item="product" tag="price" id="price_2">
 			<filter>
 				<fulltext name="name" limit="30" compare="EVERY" threshold="0.3">
-					<var ref="prod" parameter="vendor_code"/>
+					<var var="vendor_code"/>
 				</fulltext>
 			</filter>
 			<link name="to_cart" target="cart_action">
@@ -629,14 +635,14 @@
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
 				<parameter name="code" compare="SOME">
-					<var ref="prod" parameter="assoc_code"/>
+					<var var="assoc_code"/>
 				</parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="assoc" style="translit"/>
 			</link>
 		</list>
-		<include name="COMMON"/>
+<!--	<include name="COMMON"/>-->
 	</page>
 
 

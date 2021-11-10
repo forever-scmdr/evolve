@@ -11,6 +11,7 @@ import ecommander.model.Item;
 import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra.EternalCacheCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -173,6 +174,13 @@ public class PageModelRegistry {
 					Item lastItem = items.get(units[i]);
 					if (lastItem != null && lastItem.getItemType().hasDefaultPage()) {
 						pageName = lastItem.getItemType().getDefaultPage();
+						pageModel = getPageModel(pageName);
+						lastTranslitPartIndex = i;
+						isExclusive = true;
+					}
+					//Eternal cache fix 09.11.2021
+					else if(lastItem == null && EternalCacheCommand.cacheExists(units[i])){
+						pageName = "product";
 						pageModel = getPageModel(pageName);
 						lastTranslitPartIndex = i;
 						isExclusive = true;
