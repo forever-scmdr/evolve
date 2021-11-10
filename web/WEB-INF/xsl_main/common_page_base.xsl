@@ -428,14 +428,14 @@
 		<xsl:variable name="active" select="@id = $sel_sec_id"/>
 		<xsl:variable name="active_parent" select=".//section/@id = $sel_sec_id"/>
 		<div class="side-menu__item side-menu__item_level_{$level}{' side-menu__item_active'[$active]}">
-			<a class="side-menu__toggle" href="#" onclick="return toggleDesktopCatalogSection('{@id}');">
-				<img src="{if (section) then (if ($active_parent) then 'img/icon-toggle-minus.png' else 'img/icon-toggle-plus.png') else 'img/icon-toggle-dash.png'}"
+			<a class="side-menu__toggle" href="javascript:void(0);" onclick="{if (section) then 'return toggleDesktopCatalogSection' else 'return '}('{@id}');">
+				<img src="{if (section) then (if ($active_parent or $active) then 'images/minus.jpg' else 'images/plus.jpg') else 'img/icon-toggle-dash.png'}"
 						alt="" id="cat_plus_{@id}"/>
 			</a>
 			<a class="side-menu__link" href="{show_products}"><xsl:value-of select="name"/></a>
 		</div>
 		<xsl:if test="section">
-			<div id="subsec_{@id}" style="{'display:none'[not($active_parent)]}">
+			<div id="subsec_{@id}" class="side-menu__item_vl" style="{'display:none'[not($active_parent)][not($active)]}">
 				<xsl:apply-templates select="section" mode="desktop">
 					<xsl:with-param name="level" select="number($level) + 1"/>
 				</xsl:apply-templates>
@@ -662,10 +662,10 @@
 						var isHidden = subsec.css('display') == 'none';
 						if (isHidden) {
 							subsec.show();
-							$('#cat_plus_' + id).attr('src', 'img/icon-toggle-minus.png');
+							$('#cat_plus_' + id).attr('src', 'images/minus.jpg');
 						} else {
 							subsec.hide();
-							$('#cat_plus_' + id).attr('src', 'img/icon-toggle-plus.png');
+							$('#cat_plus_' + id).attr('src', 'images/plus.jpg');
 						}
 						return false;
 					}
