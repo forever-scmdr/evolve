@@ -100,6 +100,6 @@ public class EternalCacheCommand extends Command {
                 ExecutableItemPEWriter.ID_ATTRIBUTE, item.getId()
                 , ExecutableItemPEWriter.TYPE_ATTRIBUTE, item.getTypeName()
                 , ExecutableItemPEWriter.KEY_ATTRIBUTE, item.getKeyUnique()
-                , ExecutableItemPEWriter.PATH_ATTRIBUTE, item.getRelativeFilesPath());
+                , ExecutableItemPEWriter.PATH_ATTRIBUTE, "files/"+item.getRelativeFilesPath());
     }
 }
