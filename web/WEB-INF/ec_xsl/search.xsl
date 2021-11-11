@@ -94,7 +94,7 @@
 								<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
 								<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
 								<xsl:variable name="p" select="position()"/>
- 								<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q and plain_section]"/>
+								<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q and plain_section]"/>
 								<xsl:variable name="no_price_query_products" select="$products[item_own_extras/query = $q and not(plain_section)]"/>
 								<xsl:apply-templates select="$price_query_products[1]">
 									<xsl:with-param name="number" select="$n"/>
@@ -104,7 +104,7 @@
 									<xsl:with-param name="hidden" select="'hidden'"/>
 									<xsl:with-param name="number" select="$n"/>
 									<xsl:with-param name="position" select="$p"/>
- 								</xsl:apply-templates>
+								</xsl:apply-templates>
 								<xsl:apply-templates select="$no_price_query_products[1]">
 									<xsl:with-param name="number" select="$n"/>
 									<xsl:with-param name="position" select="$p"/>
@@ -123,12 +123,19 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
-							<tbody id="extra-search-ajax">
-								<tr>
+							<tbody id="extra-search-ajax-promelec">
+								<!-- <tr>
 									<td colspan="10" style="text-align: center;">
-										<h3>Идет поиск по дополнительному каталогу...</h3>
+										<h3>Идет поиск по каталогу promelec...</h3>
 									</td>
-								</tr>
+								</tr> -->
+							</tbody>
+							<tbody id="extra-search-ajax">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительным каталогам...</h3>
+									</td>
+								</tr> -->
 							</tbody>
 						</xsl:if>
 					</table>
@@ -152,23 +159,36 @@
 								<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
 								<th>Заказать</th>
 							</tr>
-							<tbody id="extra-search-ajax">
+							<tbody id="extra-search-ajax-promelec">
 								<tr>
 									<td colspan="10" style="text-align: center;">
 										<h3>Идет поиск по дополнительному каталогу...</h3>
 									</td>
 								</tr>
 							</tbody>
-							<tbody id="extra-search-ajax-promelec">
-								<tr>
-									<td colspan="10" style="text-align: center;">
-										<h3>Идет поиск по каталогу promelec...</h3>
-									</td>
-								</tr>
-							</tbody>
+							<tbody id="extra-search-ajax"></tbody>
 						</table>
 					</xsl:if>
 				</div>
+				<script>
+					if (!String.prototype.trim) {
+					  (function() {
+						// Вырезаем BOM и неразрывный пробел
+						String.prototype.trim = function() {
+						  return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+						};
+					  })();
+					}
+
+					var preq = "Идет поиск по дополнительному каталогу...";
+					setTimeout(function(){
+						console.log('"'+preq+'"');
+						if($("#extra-search-ajax").text().trim() == preq){
+							$("#extra-search-ajax").html("");
+						}
+					}, 15000);
+
+				</script>
 			</xsl:if>
 		</div>
 
@@ -183,7 +203,7 @@
 		<xsl:param name="price"/>
 		<xsl:param name="min_qty"/>
 		<xsl:param name="need_sum"/>
-        <xsl:param name="price_byn" select="$price"/>
+		<xsl:param name="price_byn" select="$price"/>
 		<xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
 		<xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
 		<xsl:variable name="quot" select="f:num($price_catalogs[name = $section_name]/quotient)"/>
@@ -191,13 +211,15 @@
 		<xsl:for-each select="$price_intervals">
 			<xsl:variable name="quotient" select="f:num(quotient)"/>
 			<xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
-            <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
+			<xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
 				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
 				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
 				<xsl:variable name="sum" select="$unit_price * $number"/>
 				<p>
 					<!--|<xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/>|-->
 					<!--|<xsl:value-of select="$min_number"/> div <xsl:value-of select="$min_qty"/> * <xsl:value-of select="$min_qty"/>|-->
+
+
 					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
 					<xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency_precise($unit_price)"/></xsl:if>
 				</p>
@@ -245,11 +267,16 @@
 			<td><xsl:value-of select="$min_qty"/></td>
 			<xsl:if test="$has_price">
 				<td>
+
+					<!-- <p>byn: <xsl:value-of select="current()/price"/></p>
+					<p>usd: <xsl:value-of select="current()/price_USD"/></p>
+					<p>rur: <xsl:value-of select="current()/price_RUB"/></p>
+					<p>_______</p> -->
 					<xsl:call-template name="ALL_PRICES">
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
-                        <xsl:with-param name="price_byn" select="f:num(price)"/>
+						<xsl:with-param name="price_byn" select="f:num(price)"/>
 						<xsl:with-param name="need_sum" select="false()"/>
 					</xsl:call-template>
 				</td>
@@ -258,7 +285,7 @@
 						<xsl:with-param name="section_name" select="plain_section/name"/>
 						<xsl:with-param name="min_qty" select="$min_qty"/>
 						<xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
-                        <xsl:with-param name="price_byn" select="f:num(price)"/>
+						<xsl:with-param name="price_byn" select="f:num(price)"/>
 						<xsl:with-param name="need_sum" select="true()"/>
 					</xsl:call-template>
 				</td>

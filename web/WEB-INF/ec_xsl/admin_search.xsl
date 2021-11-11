@@ -25,6 +25,8 @@
 	<xsl:variable name="l" 
 		select="concat('digikey_search?query=', page/variables/q[1], '&#38;','admin=true')"/>
 
+	<xsl:variable name="promelec_link" select="concat('promelec_search?query=', page/variables/q[1])"/>	
+
 
 	<xsl:template name="MAIN_CONTENT">
 		<!-- MAIN COLOUMNS BEGIN -->
@@ -133,7 +135,20 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
-
+							<tbody id="extra-search-ajax-promelec">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по каталогу promelec...</h3>
+									</td>
+								</tr> -->
+							</tbody>
+							<tbody id="extra-search-ajax">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительным каталогам...</h3>
+									</td>
+								</tr> -->
+							</tbody>
 						</xsl:if>
 					</table>
 					
@@ -142,16 +157,46 @@
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<xsl:if test="not($multiple)">
+			<xsl:if test="not($multiple) and not($products)">
 				<table class="srtable">
-					<tbody id="extra-search-ajax">
-						<tr>
-							<td colspan="10" style="text-align: center;">
-								<h3>Идет поиск по дополнительному каталогу...</h3>
-							</td>
-						</tr>
-					</tbody>
+					<tr>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Производитель</th>
+
+						<th>Количество</th>
+						<th>Срок поставки</th>
+						<th>Единица</th>
+						<th>Мин. заказ</th>
+						<th>Цена (<xsl:value-of select="$currency_out" />)</th>
+						<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
+						<th>Начальная цена</th>
+						<th>Склад</th>
+						<th>Обновлено</th>
+						<th>Заказать</th>
+					</tr>
+					<tbody id="extra-search-ajax-promelec">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по каталогу promelec...</h3>
+									</td>
+								</tr> -->
+							</tbody>
+							<tbody id="extra-search-ajax">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительным каталогам...</h3>
+									</td>
+								</tr> -->
+							</tbody>
 				</table>
+				<script>
+					setTimeout(function(){
+						if($("#extra-search-ajax").text() = 'Идет поиск по дополнительному каталогу...'){
+							$("#extra-search-ajax").html("");
+						}
+					}, 30000);
+				</script>
 			</xsl:if>
 		</div>
 
@@ -280,6 +325,7 @@
 			<script>
 				$(document).ready(function() {
 					insertAjax('<xsl:value-of select="$l" disable-output-escaping="yes"/>');
+					insertAjax('<xsl:value-of select="concat($promelec_link, '&#38;admin=true')"  disable-output-escaping="yes"/>');
 				});
 			</script>
 		</xsl:if>

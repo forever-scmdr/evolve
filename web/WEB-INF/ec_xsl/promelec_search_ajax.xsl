@@ -43,16 +43,16 @@
 					</tr>
 				</xsl:if> -->
 			<xsl:if test="not(page/result/row) and not(page/variables/admin = 'true')">
-				<xsl:if test="not(page/variables/admin = 'true')">
+				<!-- <xsl:if test="not(page/variables/admin = 'true')">
 					<tr>
 						<td colspan="10" style="text-align: center;">
 							<h2>В каталоге promelec.ru ничего не найдено</h2>
 						</td>
 					</tr>
-				</xsl:if>
+				</xsl:if> -->
 			</xsl:if>
 			<xsl:if test="page/result/row">
-				<xsl:if test="not(page/variables/admin = 'true')">
+				<!-- <xsl:if test="not(page/variables/admin = 'true')">
 					<tr>
 						<td colspan="10" style="text-align: center;">
 							<h2>Результат поиска по каталогу promelec.ru</h2>
@@ -75,8 +75,8 @@
 						</xsl:if>
 						<th>Заказать</th>
 					</tr>
-				</xsl:if>
-				<xsl:apply-templates select="page/result/row" />
+				</xsl:if> -->
+				<xsl:apply-templates select="page/result/row[f:num(@quant) != 0]" />
 			</xsl:if>
 			<script>
 				$(document).ready(function(){
@@ -104,7 +104,7 @@
 		<xsl:variable name="map" select="string-join($pricebreaks/break/concat(@quant,':', @price),';')"/>
 
 
-		<tr class="parent">
+		<tr class="parent" >
 			<td>
 					<b>
 						<xsl:if test="$main_pic != ''">
@@ -119,7 +119,7 @@
 			</td>
 			<td>
 				<xsl:value-of select="@name"/>
-				<p><xsl:value-of select="@description"/></p>
+				<p><xsl:value-of select="@description" disable-output-escaping="yes"/></p>
 			</td>
 			<td>
 				<xsl:value-of select="@producer_name"/>
@@ -248,7 +248,8 @@
 	<xsl:function name="f:byn_n" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>
 		<xsl:variable name="rub" select="f:num($str)"/>
-		<xsl:sequence select="$rub * (f:num($cur_list/RUB_rate) * 1) div f:num($cur_list/RUB_scale)"/>
+		<!-- Делим цену на 1.2 патч 05.02.2021 --> 
+		<xsl:sequence select="($rub * (f:num($cur_list/RUB_rate) * 1) div f:num($cur_list/RUB_scale)) div 1.2"/>
 	</xsl:function>
 	<xsl:function name="f:usd_n" as="xs:double">
 		<xsl:param name="str" as="xs:string?"/>

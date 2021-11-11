@@ -21,11 +21,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 8.0.20" level="application_server_libraries" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.41" level="application_server_libraries" />
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/tomcat/apache-tomcat-8.0.20-windows-x64/apache-tomcat-8.0.20/lib/catalina.jar!/" />
+          <root url="jar://C:/Program Files/Apache Software Foundation/Tomcat 8.5/lib/catalina.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

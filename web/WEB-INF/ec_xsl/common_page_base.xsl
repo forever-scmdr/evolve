@@ -14,10 +14,11 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="base" select="page/base" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
-	<xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/>
+	<!-- <xsl:variable name="canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''"/> -->
+	<xsl:variable name="canonical" select="if(page/@name != 'index') then tokenize(page/source_link, '\?')[1] else ''"/>
 
 	<xsl:variable name="cur_sec" select="page//current_section"/>
-	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
+	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else (page/product/product_section[1] | page/command/loaded/product/product_section[1])"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 	<xsl:variable name="sel_sec_link" select="f:substring-before-last(page/source_link, '/')"/>
 
@@ -29,7 +30,7 @@
 
 
 	<xsl:template name="SEARCH_FORM">
-		<form action="{page/search_link[1]}" method="post">
+		<form action="{page/search_link[1]}" method="post" id="search-form">
 			<input type="text" placeholder="Введите поисковый запрос" name="q" value="{page/variables/q}" autocomplete="off" id="q-ipt"/>
 			<input type="submit" value="Найти"/>
 			<div id="search-result"></div>
@@ -217,10 +218,11 @@
 					<div class="col-xs-12">
 						<div class="footer-container">
 							<div class="block">
-								<p><strong>Alfacomponent.com, 2018</strong></p>
+								<p><strong>Alfacomponent.com, 2021</strong></p>
 								<div class="forever">
 									<a href="http://forever.by">Разработка сайта -<xsl:call-template name="BR"/>студия веб-дизайна Forever</a>
 								</div>
+								<p><a href="plain_catalog">Радиокомпоненты по запросу</a></p>
 							</div>
 							<div class="block contacts">
 								<xsl:value-of select="page/common/bottom" disable-output-escaping="yes"/>
@@ -282,7 +284,7 @@
 						}
 					</script>
 					<div class="modal-body">
-						<p>Вы можете загрузить список необходимых товаров в формате Excel. Такой способ позволяет быстро находить большое количество товаров.</p>
+						<p>Вы можете загрузить список необходимых товаров в формате Excel  (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
 						<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 						<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
 						<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
@@ -530,7 +532,7 @@
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 
 	<xsl:template match="accessory | set | probe | product | assoc">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="price and price != '0' and /page/@name != 'plain_catalog'"/>
 		<xsl:variable name="prms" select="params/param"/>
 <!--		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>-->
 		<xsl:variable name="product_link" select="show_product"/>
@@ -558,7 +560,11 @@
 			<!-- <a href="{manual[1]/link}"><xsl:value-of select="manual[1]/name"/></a> -->
 			<xsl:if test="$has_price">
 				<div class="device__price">
-					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
+					<div class="price_old">
+						<xsl:if test="f:num(price_old) != 0">
+							<span><xsl:value-of select="price_old"/> руб.</span>
+						</xsl:if>
+					</div>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -618,7 +624,7 @@
 
 
 	<xsl:template match="accessory | set | probe | product | assoc" mode="lines">
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="price and price != '0' and /page/@name != 'plain_catalog'"/>
 		<xsl:variable name="prms" select="params/param"/>
 <!--		<xsl:variable name="product_link" select="concat($sel_sec_link, substring(show_product, 1))"/>-->
 		<xsl:variable name="product_link" select="show_product"/>
@@ -670,7 +676,11 @@
 			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
-					<div class="price_old"><span><xsl:value-of select="price_old"/> руб.</span></div>
+					<div class="price_old">
+						<xsl:if test="f:num(price_old) != 0">
+							<span><xsl:value-of select="price_old"/> руб.</span>
+						</xsl:if>
+					</div>
 					<div class="price_normal"><xsl:value-of select="price"/> руб.</div>
 				</div>
 			</xsl:if>
@@ -982,6 +992,8 @@
 
 		<xsl:variable name="quote">"</xsl:variable>
 
+		<!-- <xsl:text disable-output-escaping="yes">&lt;link rel="canonical" href="</xsl:text><xsl:value-of select="$canonical" disable-output-escaping="yes"/><xsl:text disable-output-escaping="yes">" /&gt;</xsl:text> -->
+
 		<link rel="canonical" href="{concat($main_host, $canonical)}" />
 
 		<xsl:if test="$seo">
@@ -993,10 +1005,6 @@
 			</title>
 			<meta name="description" content="{replace($meta_description, $quote, '')}"/>
 		</xsl:if>
-		<!-- <xsl:text disable-output-escaping="yes">
-			&lt;meta name="google-site-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-			&lt;meta name="yandex-verification" content="FkyUAft-zPm9sKeq8GN0VycDElZiL0XDgOyvz3rY19Q"&gt;
-		</xsl:text> -->
 
 		<xsl:call-template name="MARKUP" />
 

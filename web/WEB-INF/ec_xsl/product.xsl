@@ -215,7 +215,10 @@
 						</div>
 					</xsl:if>
 					<xsl:if test="not($price_items) and $is_deleted">
-						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p><p><b>Поставки товара прекращены.</b></p></div>
+						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p>
+						<span id="device-name" style="display: none;"><xsl:value-of select="$p/name"/></span>
+						<button class="button button-gray" onclick="$('#q-ipt').val($('#device-name').text()); $('#search-form').submit();">Проверить наличие</button> 
+					</div>
 					</xsl:if>
 					<!--
 					<xsl:choose>

@@ -129,6 +129,12 @@
 									<xsl:value-of select="$min_qty"/>
 								</div>
 								<div class="quantity">
+									<span>Поставка</span>
+									<xsl:if test="$p/available and not($p/available = '0') and f:num($p/available) &gt; 0"><xsl:value-of select="f:num($p/available) * 7"/> дней</xsl:if>
+									<xsl:if test="not($p/available) or $p/available = '0'">склад</xsl:if>
+									<xsl:if test="$p/available and f:num($p/available) &lt; 0">по запросу</xsl:if>
+								</div>
+								<div class="quantity">
 									<span>Кол-во</span>
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="0" step="{$min_qty}"/>
 								</div>

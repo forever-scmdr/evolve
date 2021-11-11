@@ -143,11 +143,97 @@
 		<request>
 			<var name="sec" style="translit"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cacheable="true"/>
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cacheable="true">
+			<single item="seo"/>
+		</single>
 		<include name="COMMON"/>
 	</page>
 	<!-- END_TMP FIX -->
 
+	<page name="plain_catalog" template="section" cacheable="true">
+		<request>
+			<var name="page" value="1"/>
+			<var name="view" value="list" scope="cookie"/>
+			<var name="limit" value="48" scope="cookie"/>
+			<var name="sort" scope="cookie"/>
+			<var name="direction" value="ASC" scope="cookie"/>
+		</request>
+		<single item="plain_catalog" tag="current_section" id="cur_sec">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<sorting direction-var="direction">
+						<var var="sort"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="translit"/>
+				</link>
+				<link name="to_cart" target="cart_action">
+					<var name="action" value="addToCart"/>
+					<var name="code" ref="prod" parameter="code"/>
+				</link>
+				<link name="to_fav" target="cookie_list_action">
+					<var name="update_cookie_name" value="favourites"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="fav_ajax"/>
+				</link>
+				<link name="to_compare" target="cookie_list_action">
+					<var name="update_cookie_name" value="compare"/>
+					<var name="update_cookie_value" ref="prod" parameter="code"/>
+					<var name="action" value="add"/>
+					<var name="src_page" value="compare_ajax"/>
+				</link>
+				<single item="manual"/>
+			</list>
+		</single>
+		<link name="set_view_table" target="plain_catalog" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="plain_catalog" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="set_limit_48" target="plain_catalog" copy-page-vars="yes">
+			<var name="limit" value="48"/>
+		</link>
+		<link name="set_limit_96" target="plain_catalog" copy-page-vars="yes">
+			<var name="limit" value="96"/>
+		</link>
+		<link name="set_limit_144" target="plain_catalog" copy-page-vars="yes">
+			<var name="limit" value="144"/>
+		</link>
+		<link name="show_only_available" target="plain_catalog"/>
+		
+		<link name="show_all" target="plain_catalog">
+			<var name="minqty" value=""/>
+		</link>
+		<link name="set_sort_name_asc" target="plain_catalog" copy-page-vars="yes">
+			<var name="sort" value="name"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_name_desc" target="plain_catalog" copy-page-vars="yes">
+			<var name="sort" value="name"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_price_asc" target="plain_catalog" copy-page-vars="yes">
+			<var name="sort" value="price"/>
+			<var name="direction" value="ASC"/>
+		</link>
+		<link name="set_sort_price_desc" target="plain_catalog" copy-page-vars="yes">
+			<var name="sort" value="price"/>
+			<var name="direction" value="DESC"/>
+		</link>
+		<link name="set_sort_default" target="plain_catalog" copy-page-vars="yes">
+			<var name="sort" value=""/>
+		</link>
+		<include name="COMMON"/>
+	</page>
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" >
 		<request>
@@ -270,7 +356,6 @@
 
 
 
-
 	<page name="search" template="search">
 		<request>
 			<var name="q"/>
@@ -281,7 +366,7 @@
 		<list item="plain_section" id="plain_section"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="200" threshold="0.02" name="name name_extra" type="parsed" compare="SOME"><!-- name name_extra (parsed extra.FirstQuery)(extra.SecondQuery) -->
+				<fulltext limit="200" threshold="0.02" name="name name_extra" type="(parsed extra.FirstQuery)(extra.SecondQuery)" compare="SOME">
 					<var var="q"/>
 				</fulltext>
 				<predecessor ref="plain_section" sign="IN"/>
@@ -328,6 +413,8 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
+
 
 	<page name="search_bom" template="search">
 		<request>
@@ -572,20 +659,20 @@
 
 
 
-	<page name="product" template="product" cacheable="false" >
+	<page name="product" template="product" cacheable="true" >
 		<request>
 			<var name="prod" style="translit"/>
 			<var name="assoc_code"/>
 			<var name="name"/>
 			<var name="vendor_code"/>
 		</request>
-		<link name="canonical_link" target="product" type="exclusive">
-			<var name="prod" var="prod" style="translit"/>
-		</link>
 		<single item="product" id="prod" var="prod">
+			<link name="canonical_link" target="product" type="exclusive">
+				<var name="prod" item="prod" style="translit"/>
+			</link>
 			<single item="seo" id="seo"/>
 			<single item="params" id="params"/>
-			<single item="product_extra" />
+			<single item="product_extra"/>
 			<single item="manual"/>
 			<ancestor item="section" transit="false" tag="product_section" id="parent"/>
 			<link name="to_cart" target="cart_action">
@@ -1615,7 +1702,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.UpdateCurrencyRates"/>
+		<!-- <command class="extra.UpdateCurrencyRates"/> -->
 		<command class="extra.ImportCompelRu">
 			<result name="complete" type="xml"/>
 		</command>
@@ -1728,7 +1815,7 @@
 	</page>
 
 
-	<page name="get_ebv_auto_start" template="integration" schedule="0 0 2 ? * * *">
+	<!-- <page name="get_ebv_auto_start" template="integration" schedule="0 0 2 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1736,7 +1823,7 @@
 		<command class="extra.ImportEbvCom">
 			<result name="complete" type="xml"/>
 		</command>
-	</page>
+	</page> -->
 
 
 	<page name="get_eltech_auto_start" template="integration" schedule="0 0 3 ? * * *">
@@ -1771,10 +1858,10 @@
 			<var name="code" />
 		</request>
 		<link name="success" target="digikey_result">
-			<var name="result" value="Код доступа успешно сохранен. Вход выполнен"/>
+			<var name="result" value="Код доступа успешно сохранен; Вход выполнен"/>
 		</link>
 		<link name="error" target="digikey_result">
-			<var name="result" value="Не удалось войти по коду доступа."/>
+			<var name="result" value="Не удалось войти по коду доступа"/>
 			<var name="code" var="code" />
 		</link>
 		<command class="extra.DigiKeySearch" method="getAccessCodeAndAuthorise">
@@ -1783,7 +1870,7 @@
 		</command>
 	</page>
 
-	<page name="refresh_access" schedule="0 0/30 0 ? * * *">
+	<page name="refresh_access" schedule="0 0/30 * ? * * *">
 		<command class="extra.DigiKeySearch" method="refreshAccessToken"/>
 	</page>
 
@@ -1813,6 +1900,7 @@
 			<result name="generel_error" type="redirect"/>
 		</command>
 	</page>
+
 
 	<page name="promelec_search" template="promelec_search_ajax">
 		<request>
@@ -1883,6 +1971,5 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
-
 
 </site>

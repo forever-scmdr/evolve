@@ -11,8 +11,13 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="main_menu_section" select="$current_section"/>
 
-	<xsl:variable name="title" select="$current_section/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="mask" select="'Реализуем -название- от ведущих производителей ✅ Компания ЧИПТРЭЙД - доступные цены, поставки по Беларуси и России ☎ Звоните и заказывайте!'"/>
+
+
+	<xsl:variable name="meta_description" select="replace($mask, '-название-', $current_section/name)" />
+
+	<xsl:variable name="title" select="concat($current_section/name, ' купить оптом и в розницу', ' Чиптрэйд')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else replace($title, ' купить оптом и в розницу Чиптрэйд','')"/>
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
