@@ -25,7 +25,8 @@ public class EternalCacheCommand extends Command {
     private static final String PARENT_SEC_ID = "parent";
     private static final String PARENT_SEC_TAG = "product_section";
     private static final String PRODUCT_TAG = "product";
-    private static final String DELETED_EL = "is_deleted";
+    private static final String PARAMS_ID = "params";
+
 
     public static boolean cacheExists(String key){
         return Files.isRegularFile(FOLDER.resolve(key + ".txt"));
@@ -35,7 +36,9 @@ public class EternalCacheCommand extends Command {
     public ResultPE execute() throws Exception {
         Item product = getSingleLoadedItem(PROD_ID);
         if (product != null) {
-            saveToCache(product);
+            if(!cacheExists(product.getKeyUnique())){
+                saveToCache(product);
+            }
             setPageVariable("name", product.getStringValue(ItemNames.product_.NAME));
             setPageVariable("vendor_code", product.getStringValue(ItemNames.product_.VENDOR_CODE));
             for(String v : product.getStringValues(ItemNames.product_.ASSOC_CODE)){
@@ -63,16 +66,22 @@ public class EternalCacheCommand extends Command {
         }
     }
 
+
     private void saveToCache(Item product) throws IOException {
         product.clearValue(ItemNames.product_.PRICE);
         product.clearValue(ItemNames.product_.QTY);
         product.setValue(ItemNames.product_.AVAILABLE, (byte) 0);
         Collection<Item> parentSecs = getLoadedChildItems(PARENT_SEC_ID, product.getId()).values();
+        Collection<Item> params = getLoadedChildItems(PARAMS_ID, product.getId()).values();
 
         XmlDocumentBuilder cacheXml = XmlDocumentBuilder.newDocPart();
         startItem(product, PRODUCT_TAG, cacheXml);
-        cacheXml.startElement(DELETED_EL).addText("yes").endElement();
         cacheXml.addElements(product.outputValues());
+        for(Item param : params){
+            startItem(param, "params", cacheXml);
+            cacheXml.addElements(param.outputValues());
+            cacheXml.endElement();
+        }
         for (Item parent : parentSecs) {
             parent.clearValue("params_filter");
             startItem(parent, PARENT_SEC_TAG, cacheXml);

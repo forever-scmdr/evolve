@@ -22,7 +22,7 @@ public class CommandPEWriter implements PageElementWriter {
 						.endElement()
 						.endElement();
 			}
-			else if (result.getType() == ResultPE.ResultType.xml) {
+			else if (result.getType() == ResultPE.ResultType.inline_xml) {
 				xml
 						.startElement(command.getTag())
 						.startElement(command.getExecutionResult().getName())

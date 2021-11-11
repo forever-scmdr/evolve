@@ -572,7 +572,7 @@
 
 
 
-	<page name="product" template="" cacheable="true" >
+	<page name="product" template="product" cacheable="false" >
 		<request>
 			<var name="prod" style="translit"/>
 			<var name="assoc_code"/>
@@ -584,7 +584,7 @@
 		</link>
 		<single item="product" id="prod" var="prod">
 			<single item="seo" id="seo"/>
-			<single item="params"/>
+			<single item="params" id="params"/>
 			<single item="product_extra" />
 			<single item="manual"/>
 			<ancestor item="section" transit="false" tag="product_section" id="parent"/>
@@ -642,7 +642,7 @@
 				<var name="prod" ref="assoc" style="translit"/>
 			</link>
 		</list>
-<!--	<include name="COMMON"/>-->
+		<include name="COMMON"/>
 	</page>
 
 

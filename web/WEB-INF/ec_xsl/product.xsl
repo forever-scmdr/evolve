@@ -3,11 +3,19 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="p" select="if (page/product[params]) then page/product[params] else page/product[1]"/>
+	<xsl:variable name="product" select="page/product | page/command/loaded/product"/>
+	<xsl:variable name="is_deleted" select="page/command/loaded != ''"/>
 
-	<xsl:variable name="title" select="if (starts-with($p[1]/name, $p[1]/vendor)) then $p/name else concat($p[1]/vendor, ' ', $p[1]/name)"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="p" select="if ($product[params]) then $product[params] else $product[1]"/>
+
+	<xsl:variable name="title" select="concat(//section[@id = $sel_sec_id]/name, ' ', $p/name, ' купить в розницу и оптом - Чиптрэйд')"/>
+
+	<xsl:variable name="meta_description" select="concat('Реализуем ', //section[@id = $sel_sec_id]/name, ' ', $p/name, ' от ', $p/vendor,  '. Характеристики: ', $p/name_extra,'. Более 800 000 товаров. Доступная цена. Звоните и заказывайте!')"/>
+
+
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else replace($title, ' купить в розницу и оптом - Чиптрэйд', '')"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<!-- <xsl:variable name="meta_description" select="$p/name_extra" />  -->
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -33,9 +41,9 @@
 			"brand": <xsl:value-of select="concat($quote, $p[1]/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			"priceCurrency": "BYN"
+			<xsl:if test="f:num($price) &gt; 0">,"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
+			<!-- <xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if> -->
 			}, "aggregateRating": {
 			"@type": "AggregateRating",
 			"ratingValue": "4.9",
@@ -137,8 +145,6 @@
 
 
 	<xsl:template name="CONTENT">
-
-
 		<!-- CONTENT BEGIN -->
 		<div class="path-container">
 			<div class="path">
@@ -193,7 +199,7 @@
 					-->
 				</xsl:if>
 				<div class="order">
-					<xsl:if test="not($price_items)">
+					<xsl:if test="not($price_items) and not($is_deleted)">
 						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p><p><b>Товар можно оформить под заказ.</b></p></div>
 						<div id="cart_list_{$p/@id}" class="product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true">
@@ -207,6 +213,9 @@
 								</xsl:if>
 							</form>
 						</div>
+					</xsl:if>
+					<xsl:if test="not($price_items) and $is_deleted">
+						<div style="width: 100%"><p><b>Товар отсутствует на складе.</b></p><p><b>Поставки товара прекращены.</b></p></div>
 					</xsl:if>
 					<!--
 					<xsl:choose>
@@ -272,19 +281,20 @@
 							</li>
 						</xsl:if>
 						<xsl:if test="$p/text">
-							<li role="presentation">
+							<li role="presentation" class="{'active'[not($p/params)]}">
 								<a href="#tab2" role="tab" data-toggle="tab">Описание</a>
 							</li>
 						</xsl:if>
 						<xsl:if test="$p/product">
-							<li role="presentation" class="{'active'[not($p/params)]}">
+							<li role="presentation" class="{'active'[not($p/params) and not($p/text)]}">
 								<a href="#tab2" role="tab" data-toggle="tab">
 									Другие расцветки
 								</a>
 							</li>
 						</xsl:if>
 						<xsl:for-each select="$p/product_extra">
-							<li role="presentation">
+							<xsl:variable name="active" select="position() = 1 and not($p/params) and not($p/text) and not($p/product)"/>
+							<li role="presentation" class="{'active'[$active]}">
 								<a href="#tab{@id}" role="tab" data-toggle="tab"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
@@ -313,7 +323,7 @@
 						</div>
 					</xsl:if>
 					<xsl:if test="$p/text">
-						<div role="tabpanel" class="tab-pane" id="tab2">
+						<div role="tabpanel" class="tab-pane{'active'[not($p/params)]}" id="tab2">
 							<h4>Описание</h4>
 							<div class="catalog-items">
 								<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
