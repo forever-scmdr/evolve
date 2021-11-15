@@ -128,19 +128,21 @@
 			<td>
 				<xsl:value-of select="concat(/page/price_catalog/default_ship_time, ' дней')"/>
 			</td>
-			<td>шт.</td>
+<!--			<td>1</td>-->
 			<td><xsl:value-of select="f:num(@moq)"/></td>
 			<td>
 <!--				<xsl:if test="pricebreaks">-->
 					<xsl:for-each select="$pricebreaks/break">
 						<p>
-							<xsl:value-of select="f:convert_curr(@price)"/>
+<!--							<xsl:value-of select="f:convert_curr(@price)"/>-->
+							<xsl:value-of select="concat(f:convert_curr(@price), '&nbsp;от&nbsp;', @quant)" />
 						</p>
 					</xsl:for-each>
 <!--				</xsl:if>-->
 			</td>
+			<!--
 			<td>
-<!--				<xsl:if test="pricebreaks">-->
+				<xsl:if test="pricebreaks">
 					<xsl:for-each select="$pricebreaks/break">
 						<p>
 							<xsl:variable name="p" select="f:convert_curr(@price)"/>
@@ -148,8 +150,9 @@
 							<xsl:value-of select="concat('x', @quant, ' = ', format-number($sum,'#0.0000'))" />
 						</p>
 					</xsl:for-each>
-<!--				</xsl:if>-->
+				</xsl:if>
 			</td>
+			-->
 			<xsl:if test="//page/variables/admin = 'true'">
 				<td>
 <!--					<xsl:if test="pricebreaks">-->

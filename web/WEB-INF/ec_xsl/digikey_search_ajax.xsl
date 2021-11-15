@@ -110,15 +110,16 @@
 			<td>
 				<xsl:value-of select="concat(/page/price_catalog/default_ship_time, ' дней')"/>
 			</td>
-			<td>шт.</td>
+<!--			<td>шт.</td>-->
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
 				<xsl:for-each select="spec_price_map" >
 					<p>
-						<xsl:value-of select="f:convert_curr(@price)"/>
+						<xsl:value-of select="concat(f:convert_curr(@price), '&nbsp;от&nbsp;', @qty)"/>
 					</p>
 				</xsl:for-each>
 			</td>
+			<!--
 			<td>
 				<xsl:for-each select="spec_price_map" >
 					<p>
@@ -126,7 +127,7 @@
 					</p>
 				</xsl:for-each>
 			</td>
-
+			-->
 			<xsl:if test="//page/variables/admin = 'true'">
 				<td>
 					<xsl:for-each select="spec_price_map" >

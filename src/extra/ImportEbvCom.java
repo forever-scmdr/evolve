@@ -138,14 +138,18 @@ public class ImportEbvCom extends IntegrateBase implements ItemNames {
 						prod.set_available(prod.get_qty().compareTo(new BigDecimal(0.1)) < 0 ? -1 : defaultDelay);
 						prod.set_vendor(removeQuotes(src.getValue(VENDOR_HEADER)));
 
-						BigDecimal price = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
-						BigDecimal minQty = src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1));
+						String priceStr = src.getValue(PRICE_HEADER);
+						priceStr = StringUtils.startsWith(priceStr, "=") ? StringUtils.substring(priceStr, 1) : priceStr;
+						priceStr = removeQuotes(priceStr);
+						priceStr = StringUtils.startsWith(priceStr, "\"") ? StringUtils.substring(priceStr, 1) : priceStr;
+						BigDecimal price = DecimalDataType.parse(removeQuotes(priceStr), 4);
+						//BigDecimal minQty = src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1));
 						BigDecimal quotient = getQtyQuotient(price);
-						price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
-						minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
-						String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
-						prod.set_min_qty(minQty);
-						prod.set_unit(unit);
+						//price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
+						//minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
+						//String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
+						prod.set_min_qty(quotient);
+						prod.set_unit("шт.");
 						currencyRates.setAllPrices(prod, price, "USD");
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 						info.increaseProcessed();

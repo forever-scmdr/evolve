@@ -67,21 +67,25 @@
         <xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
 		<xsl:variable name="quot" select="f:num($price_catalogs[name = $section_name]/quotient)"/>
 		<xsl:variable name="base_quotient" select="if ($quot  &gt; 0) then $quot else $Q"/>
-        <xsl:for-each select="$price_intervals">
-            <xsl:variable name="quotient" select="f:num(quotient)"/>
-            <xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
-            <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
-                <xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
-                <xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
-                <xsl:variable name="sum" select="$unit_price * $number"/>
-                <p>
-                    <!--|<xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/>|-->
-                    <!--|<xsl:value-of select="$min_number"/> div <xsl:value-of select="$min_qty"/> * <xsl:value-of select="$min_qty"/>|-->
-                    <xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
-                    <xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency_precise($unit_price)"/></xsl:if>
-                </p>
-            </xsl:if>
-        </xsl:for-each>
+		<xsl:for-each select="$price_intervals">
+			<xsl:variable name="quotient" select="f:num(quotient)"/>
+			<xsl:variable name="pack_price_original" select="$price * $min_qty"/>
+			<xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
+			<!--			<xsl:if test="$price_byn * $min_qty &lt; f:num(max)">-->
+			<xsl:if test="$pack_price_original &lt; f:num(max)">
+				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
+				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
+				<xsl:variable name="pack_number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) else 1"/>
+				<xsl:variable name="sum" select="$unit_price * $number"/>
+				<p>
+					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
+					<xsl:if test="not($need_sum)">
+						<xsl:value-of select="f:format_currency_precise($unit_price)"/> от
+						<xsl:value-of select="$pack_number"/><xsl:if test="$min_qty &gt; 1">&#160;x&#160;упк(<xsl:value-of select="$min_qty" />)</xsl:if><xsl:if test="$min_qty = 1">&#160;шт.</xsl:if>
+					</xsl:if>
+				</p>
+			</xsl:if>
+		</xsl:for-each>
     </xsl:template>
 
 
@@ -101,7 +105,7 @@
 					<xsl:if test="not(available) or available = '0'">склад</xsl:if>
 					<xsl:if test="available and f:num(available) &lt; 0">по запросу</xsl:if>
 			</td>
-			<td><xsl:value-of select="$unit"/></td>
+<!--			<td><xsl:value-of select="$unit"/></td>-->
 			<td><xsl:value-of select="$min_qty"/></td>
 			<xsl:if test="$has_price">
 				<td>
@@ -113,6 +117,7 @@
 						<xsl:with-param name="need_sum" select="false()"/>
 					</xsl:call-template>
 				</td>
+				<!--
 				<td>
 					<xsl:call-template name="ALL_PRICES">
 						<xsl:with-param name="section_name" select="plain_section/name"/>
@@ -122,6 +127,7 @@
 						<xsl:with-param name="need_sum" select="true()"/>
 					</xsl:call-template>
 				</td>
+				-->
 			</xsl:if>
 			<xsl:if test="not($has_price)">
 				<td colspan="2"><p>запрос цены</p></td>
@@ -263,10 +269,10 @@
 							<!--<th>Код производителя</th>-->
 							<th>Количество</th>
 							<th>Срок поставки</th>
-							<th>Единица</th>
-							<th>Мин. заказ</th>
+							<th>Кратность заказа</th>
+<!--							<th>Мин. заказ</th>-->
 							<th>Цена (<xsl:value-of select="$currency_out" />)</th>
-							<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
+<!--							<th>Сумма (<xsl:value-of select="$currency_out" />)</th>-->
 							<th>Заказать</th>
 						</tr>
 						<xsl:for-each-group select="$price_items" group-by="@id">
