@@ -43,7 +43,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
     private final static HashMap<String, String> HEADER_PARAMS = new HashMap<>();
 
     static {
-        HEADER_PARAMS.put("артикул", CODE_PARAM);
+        //HEADER_PARAMS.put("артикул", CODE_PARAM);
         HEADER_PARAMS.put("наименование", NAME_PARAM);
         HEADER_PARAMS.put("наличие", QTY_PARAM);
         HEADER_PARAMS.put("ед. изм", UNIT_PARAM);
@@ -94,22 +94,13 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
         //creating filters and item types
         createFiltersAndItemTypes();
         catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
-        //indexation
-        info.setOperation("Индексация названий товаров");
-        //Exclusive patch for Ictrade hide section "Прочее"
-        Item shitSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, "16");
-        if (shitSection != null) {
-            //	executeAndCommitCommandUnits(ItemStatusDBUnit.hide(shitSection.getId()));
-        }
-        LuceneIndexMapper.getSingleton().reindexAll();
-        if (shitSection != null) {
-            //	executeAndCommitCommandUnits(ItemStatusDBUnit.restore(shitSection.getId()));
-        }
 
-        //delete products absent for 30+ days
         deleteHidden();
 
         executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
+        //indexation
+        info.setOperation("Индексация названий товаров");
+        LuceneIndexMapper.getSingleton().reindexAll();
         setOperation("Интеграция завершена");
     }
 
@@ -196,6 +187,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
                 Row row = rows.next();
                 int rowIdx = row.getRowNum();
                 info.setLineNumber(rowIdx + 1);
+                if(getFilledCellsCount(row) < 1) continue;
 //				int pns = row.getPhysicalNumberOfCells();
 //				int lcn = row.getLastCellNum();
                 //SECTION
@@ -231,7 +223,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
                 }
 
                 //HEADERS
-                else if ("артикул".equalsIgnoreCase(getCellAsString(row.getCell(0))) && "наименование".equalsIgnoreCase(getCellAsString(row.getCell(1)))) {
+                else if (StringUtils.isBlank(getCellAsString(row.getCell(0))) && "наименование".equalsIgnoreCase(getCellAsString(row.getCell(1)))) {
                     initHeaders(row);
                 }
 
@@ -266,7 +258,14 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
                                     .endElement()
                                     .endElement();
                         } else if (CODE_PARAM.equals(paramName)) {
-                            currentProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN);
+                            List<Item> duplicates = ItemQuery.loadByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
+                            //Collections.sort(duplicates, (o1, o2) -> Long.compare(o1.getId(), o2.getId()));
+                            currentProduct = duplicates.size() == 0? null : duplicates.remove(0);
+
+                            for(Item duplicate : duplicates){
+                                executeAndCommitCommandUnits(ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex());
+                            }
+
                             if (currentProduct == null) {
                                 currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
                                 currentProduct.setValue(CODE_PARAM, cellValue);
@@ -424,6 +423,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
                 PARAM_INDEXES.put(cell.getColumnIndex(), paramName);
             }
         }
+        PARAM_INDEXES.put(0,CODE_PARAM);
     }
 
     private String getCellAsString(Cell cell) {
