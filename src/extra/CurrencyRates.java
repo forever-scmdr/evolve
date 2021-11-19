@@ -68,6 +68,10 @@ public class CurrencyRates implements ItemNames{
 		}
 	}
 
+	public BigDecimal getPrice(Item product, String currencyCode) {
+		return product.getDecimalValue(PRICE_PREFIX + currencyCode);
+	}
+
 	/**
 	 * Установить значения всех параметров товара с ценой во всех валютах
 	 * @param product

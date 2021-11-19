@@ -143,14 +143,14 @@ public class ImportEbvCom extends IntegrateBase implements ItemNames {
 						priceStr = removeQuotes(priceStr);
 						priceStr = StringUtils.startsWith(priceStr, "\"") ? StringUtils.substring(priceStr, 1) : priceStr;
 						BigDecimal price = DecimalDataType.parse(removeQuotes(priceStr), 4);
+						currencyRates.setAllPrices(prod, price, "USD");
 						//BigDecimal minQty = src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1));
-						BigDecimal quotient = getQtyQuotient(price);
+						BigDecimal quotient = getQtyQuotient(currencyRates.getPrice(prod, "USD"));
 						//price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
 						//minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
 						//String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
 						prod.set_min_qty(quotient);
 						prod.set_unit("шт.");
-						currencyRates.setAllPrices(prod, price, "USD");
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 						info.increaseProcessed();
 					}

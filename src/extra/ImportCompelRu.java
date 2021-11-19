@@ -133,14 +133,14 @@ public class ImportCompelRu extends IntegrateBase implements ItemNames {
 					prod.setUI_qty(row.getString(QTY_HEADER));
 					//prod.setUI_min_qty(row.getString(MIN_QTY_HEADER));
 					BigDecimal price = DecimalDataType.parse(row.getString(PRICE_HEADER), 2);
+					currencyRates.setAllPrices(prod, price, "USD");
 					//BigDecimal minQty = prod.get_min_qty();
-					BigDecimal quotient = getQtyQuotient(price);
+					BigDecimal quotient = getQtyQuotient(currencyRates.getPrice(prod, "USD"));
 					//price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
 					//minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
 					//String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
 					prod.set_min_qty(quotient);
 					prod.set_unit("шт.");
-					currencyRates.setAllPrices(prod, price, "USD");
 					prod.set_vendor(row.getString(VENDOR_HEADER));
 					prod.set_name_extra(row.getString(NAME_EXTRA_HEADER));
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
