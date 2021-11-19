@@ -190,8 +190,10 @@ public class CreateParametersAndFiltersCommand_3 extends IntegrateBase implement
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
+				/*
 				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				 */
 
 				// Анализ параметров продуктов
 				String className = createClassName(section);

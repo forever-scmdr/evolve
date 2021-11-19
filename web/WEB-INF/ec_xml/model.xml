@@ -304,7 +304,7 @@
 		<parameter name="picture" type="picture" multiple="true" caption="Изображение" description="для прикрепления к тексту" />
 		<parameter name="file" type="string" multiple="true" caption="Название файла" description="документация" />
 		<parameter name="search" multiple="true" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
-		<parameter name="strict_search" multiple="true" type="string" caption="Ключевые слова для поиска по строгому соответствию"/>
+		<parameter name="strict_search" multiple="true" type="string" caption="Ключевые слова для поиска по строгому соответствию" text-index="fulltext"/>
 		<parameter name="analog_search" multiple="true" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
 		<parameter name="analog_code" type="string" multiple="true" caption="Коды аналогов" description="других товаров из каталога"/>
 		<parameter name="extra_pic" type="string" multiple="true" caption="дополнительные картинки"/>

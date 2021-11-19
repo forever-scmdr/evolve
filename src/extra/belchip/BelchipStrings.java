@@ -63,7 +63,7 @@ public class BelchipStrings {
 		Locale loc = AppContext.getCurrentLocale();
 		if (loc == null)
 			loc = new Locale("ru");
-		return fromRtoE(value).toLowerCase(loc);
+		return /*fromRtoE(value)*/value.toLowerCase(loc);
 	}
 
 //	private static String tokenize(String arg) {

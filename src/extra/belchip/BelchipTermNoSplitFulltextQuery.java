@@ -9,7 +9,7 @@ public class BelchipTermNoSplitFulltextQuery extends LuceneQueryCreator {
 
 	@Override
 	protected Query createQuery(QueryParser parser, String param, String value, BooleanClause.Occur occur) {
-		return parser.createBooleanQuery(param, BelchipStrings.fromRtoE(value), occur);
+		return parser.createBooleanQuery(param, /*BelchipStrings.fromRtoE(value)*/value, occur);
 	}
 
 }

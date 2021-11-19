@@ -1270,13 +1270,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 		}
 
-		LinkPE customLink = LinkPE.parseLink("");
 		if (hasZeroBoughts || hasCustomBougths) {
 			String customTopic = "Запрос " + userForm.getStringValue(user_jur_.ORGANIZATION) + " №" + String.format("%05d", orderNumber) + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
-			customLink = LinkPE.newDirectLink("link", "request_email", false);
-			customLink.addStaticVariable("order_num", orderNumber + "");
+			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
+			customLink.addStaticVariable("order_num", displayOrderNumber);
 			customLink.addStaticVariable("action", "post_jur");
 			if (hasRegularBoughts) {
 				String also = (StringUtils.isBlank(displayOrderNumber)) ? "self" : displayOrderNumber.replaceAll("\\d", "");
@@ -1294,7 +1293,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		generateBarcodes(boughts);
 
 		// save as XML
-		String link = saveOrderToXMLFile(false, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
+		saveOrderToXMLFile(false, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
 		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);
@@ -1398,13 +1397,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 		}
 
-		LinkPE customLink = LinkPE.parseLink("");
 		if (hasZeroBoughts || hasCustomBougths) {
 			String customTopic = "Запрос " + userForm.getStringValue(user_phys_.SECOND_NAME) + " №" + String.format("%05d", orderNumber) + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
-			customLink = LinkPE.newDirectLink("link", "request_email", false);
-			customLink.addStaticVariable("order_num", orderNumber + "");
+			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
+			customLink.addStaticVariable("order_num", displayOrderNumber);
 			customLink.addStaticVariable("action", "post_phys");
 			if (hasRegularBoughts) {
 				String also = (StringUtils.isBlank(displayOrderNumber)) ? "self" : displayOrderNumber.replaceAll("\\d", "");
@@ -1412,7 +1410,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			}
 
 			try {
-				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_PHYS).trim()), customTopic, customLink);
+				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_JUR).trim()), customTopic, customLink);
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1422,7 +1420,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		generateBarcodes(boughts);
 
 		// Generate XML file
-		String link = saveOrderToXMLFile(true, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
+
+		saveOrderToXMLFile(true, displayOrderNumber, cart.getStringValue(cart_.CURRENCY));
 
 		// Finaly save order to history
 		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);

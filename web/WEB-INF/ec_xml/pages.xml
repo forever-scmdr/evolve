@@ -275,6 +275,7 @@
 			<var name="page" />
 			<var name="sorting"/>
 			<var name="dir" value="ASC" />
+			<var name="pos"/>
 		</request>
 		<command class="extra.belchip.ShuffleProductsCommand" />
 		<single item="main_page" id="main" cacheable="true">
@@ -321,10 +322,9 @@
 		</list>
 		<list item="product" id="new" tag="new" cacheable="false">
 			<filter>
-				<parameter name="new" compare="SOME"><var value="1" /></parameter>
-				<limit><var value="20" /></limit>
-				<sorting direction-var="dir"><var var="sorting" /></sorting>
-<!--				<pages><var name="page" var="page"/></pages>-->
+				<parameter name="qty" sign="&gt;" compare="SOME"><var value="0" /></parameter>
+				<sorting direction="DESC"><var value="code" /></sorting>
+				<limit><var value="100"/></limit>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:new"/>
 			<ancestor item="section" id="n_sec" tag="section">
@@ -459,7 +459,7 @@
 				</parameter>
 			</filter>
 			<link name="show_product" target="product">
-				<var name="prod" ref="prod" />
+				<var name="selected_product" ref="prod" parameter="code"/>
 			</link>
 		</list>
 	</page>
@@ -666,10 +666,11 @@
 
 			<var name="view" value="table" scope="cookie"/>
 		</request>
+
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="500" name="search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+				<fulltext limit="500" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery" compare="EVERY">
 					<var var="q" />
 				</fulltext>
 				<limit>
@@ -703,7 +704,7 @@
 		</list>
 
 		<include name="COMMON"/>
-		<include name="CATALOG_PAGE_LINKS" replace="$page:search"/>
+		<include name="CATALOG_PAGE_LINKS" replace="$page:search_strict"/>
 
 		<link name="base_search_link" target="search_strict">
 			<var name="q" var="q"/>
@@ -1165,6 +1166,9 @@
 							<var name="bought" ref="bought"/>
 							<var name="code" ref="product" parameter="code"/>
 						</link>
+						<link name="show_product" target="product">
+							<var name="selected_product" ref="product" parameter="code"/>
+						</link>
 					</list>
 				</list>
 			</single>
@@ -1271,11 +1275,11 @@
 					<list item="abstract_product" id="prod" tag="product">
 						<single item="product" id="parent">
 							<link name="show_product" target="product">
-								<var name="prod" ref="parent" style="key"/>
+								<var name="selected_product" ref="parent" parameter="code"/>
 							</link>
 						</single>
 						<link name="show_product" target="product">
-							<var name="prod" ref="prod" style="key"/>
+							<var name="selected_product" ref="prod" parameter="code"/>
 						</link>
 					</list>
 					<link name="delete_non_zero" target="cart_action">
@@ -1400,8 +1404,8 @@
 					<var ref="bought" parameter="code"/>
 				</parameter>
 			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
+			<link name="show_product" target="product">
+				<var name="selected_product" ref="prod" parameter="code"/>
 			</link>
 		</list>
 		<list item="order_emails"/>
@@ -2101,8 +2105,8 @@
 		<single item="url_seo_wrap" />
 		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
 			<list item="product" id="prod">
-				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" ref="prod" style="key"/>
+				<link name="show_product" target="product">
+					<var name="selected_product" ref="prod" parameter="code"/>
 				</link>
 			</list>
 			<list item="product" tag="tag" id="tag">
@@ -2121,15 +2125,6 @@
 		</command>
 	</page>
 
-
-	<page name="create_filters" template="create_filters">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
 
 	<page name="delete_seo">
 		<link name="success" target="delete_seo_complete">

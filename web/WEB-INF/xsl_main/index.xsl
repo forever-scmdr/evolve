@@ -49,7 +49,11 @@
 				<div class="title_1">Новые поступления</div>
 				<div class="devices">
 					<div class="devices__wrap">
-						<xsl:apply-templates select="page/new"/>
+						<xsl:variable name="new" select="page/new"/>
+						<xsl:for-each select="tokenize($pv/pos, ':')">
+							<xsl:variable name="pos" select="xs:int(.)"/>
+							<xsl:apply-templates select="$new[position() = $pos]"/>
+						</xsl:for-each>
 					</div>
 				</div>
 			</div>

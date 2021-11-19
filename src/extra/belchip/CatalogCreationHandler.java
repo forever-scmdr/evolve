@@ -120,6 +120,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					} else {
 						top.setValue(Product.STRICT_SEARCH, strictSearch);
 					}
+					top.setValue(Product.STRICT_SEARCH, code);
 
 					//Ignore Analogs from XML file FIX 29.10.2018
 					//top.removeValue(ItemNames.product.ANALOG_CODE);

@@ -75,6 +75,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
+			} else if (isMultiple) {
+				Pair<String, Boolean> cap = paramCaptions.get(paramName);
+				if (cap != null && !cap.getRight()) {
+					paramCaptions.put(paramName, new Pair<>(cap.getLeft(), true));
+				}
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Pair<DataType.Type, String> test = testValueHasUnit(value);
@@ -83,10 +88,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (test.getRight() != null && test.getLeft() != DataType.Type.STRING) {
-				paramUnits.put(paramName, test.getRight());
+			if (StringUtils.isNotBlank(test.getRight()) && test.getLeft() != DataType.Type.STRING) {
+				String newUnit = test.getRight();
+				String oldUnit = paramUnits.get(paramName);
+				if (oldUnit == null) {
+					paramUnits.put(paramName, test.getRight());
+				}
+				// Если разные размерности (единицы измерения) в одном параметре - хранить как строку
+				else if (StringUtils.isNotBlank(oldUnit) && !StringUtils.equalsIgnoreCase(newUnit, oldUnit)) {
+					paramTypes.put(paramName, DataType.Type.STRING);
+				}
 			}
-			if(test.getLeft() == DataType.Type.STRING){
+			if (paramTypes.get(paramName) == DataType.Type.STRING) {
 				paramUnits.remove(paramName);
 			}
 		}
@@ -185,24 +198,20 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
+				/*
 				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				*/
 
 				// Анализ параметров продуктов
 				String className = createClassName(section);
 				Params params = new Params(section.getStringValue(NAME_PARAM), className);
-				for (Item product : products) {
-					info.getTimer().start(DB_CLASSES_TIMER_NAME);
-					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
-					for (Item oldParam : oldParams) {
-						transaction.executeCommandUnit(ItemStatusDBUnit.delete(oldParam).noFulltextIndex().noTriggerExtra());
-						transactionExecute();
-						//executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam).noFulltextIndex().noTriggerExtra());
-					}
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					info.getTimer().stop(DB_CLASSES_TIMER_NAME);
-					if (paramsXml != null && StringUtils.isNotBlank(paramsXml.getStringValue(XML_PARAM))) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
+				info.getTimer().start(DB_CLASSES_TIMER_NAME);
+				List<Item> paramsXmlItems = new ItemQuery(PARAMS_XML_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0])).loadItems();
+				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
+				for (Item paramsXmlItem : paramsXmlItems) {
+					if (StringUtils.isNotBlank(paramsXmlItem.getStringValue(XML_PARAM))) {
+						String xml = "<params>" + paramsXmlItem.getStringValue(XML_PARAM) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 						for (Element paramEl : paramEls) {
@@ -251,7 +260,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING? params.paramUnits.get(paramName) : null;
+					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING ? params.paramUnits.get(paramName) : null;
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
@@ -291,6 +300,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			return;
 		}
 
+		info.setOperation("Удаление старых параметров");
+		info.setToProcess(sections.size());
+		info.setProcessed(0);
+		for (Item section : sections) {
+			List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0])).loadItems();
+			for (Item oldParam : oldParams) {
+				transaction.executeCommandUnit(ItemStatusDBUnit.delete(oldParam).noFulltextIndex().noTriggerExtra());
+				transactionExecute();
+			}
+			info.increaseProcessed();
+		}
+
 		info.setOperation("Заполнение параметров товаров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
@@ -303,8 +324,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
+				/*
 				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				 */
 
 				for (Item product : products) {
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();

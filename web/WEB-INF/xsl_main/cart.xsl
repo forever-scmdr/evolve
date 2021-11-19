@@ -31,6 +31,9 @@
 			</td>
 			<td class="cart-item__name">
 				<a href="{$p/show_product}"><xsl:value-of select="string-join(($p/name, $p/name_extra), ' ')"/></a>
+				<div class="cart-item__qty_mobile">
+					<div><xsl:value-of select="$p/code"/></div>
+				</div>
 				<div><xsl:value-of select="vendor"/></div>
 				<div class="cart-item__qty_mobile">
 					<xsl:if test="$zero">

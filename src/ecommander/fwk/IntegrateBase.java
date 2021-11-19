@@ -35,6 +35,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
 	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
+	private static volatile Info lastRunInfo;
 	static {
 		runningTasks = new ConcurrentHashMap<>();
 	}
@@ -275,15 +276,14 @@ public abstract class IntegrateBase extends Command {
 		super(outer);
 		if(IntegrateBase.class.isAssignableFrom(outer.getClass())){
 			this.info = ((IntegrateBase)outer).getInfo();
-		}else {
+		}
+		if (this.info == null) {
 			info = new Info();
 		}
 	}
 
 	protected Info getInfo() {
-		if (info != null)
-			return info;
-		return newInfo();
+		return info;
 	}
 
 	private Info newInfo() {
@@ -388,6 +388,7 @@ public abstract class IntegrateBase extends Command {
 		if (mustStart) {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
+			lastRunInfo = getInfo();
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 
 			boolean readyToStart = false;
@@ -431,7 +432,6 @@ public abstract class IntegrateBase extends Command {
 			return runningTask.buildResult();
 		} else if (isInProgress || !wantToStart || isFinished) {
 			if (runningTask == null) {
-				newInfo();
 				return buildResult();
 			}
 		}
@@ -480,7 +480,12 @@ public abstract class IntegrateBase extends Command {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
 		doc.startElement("base").addText(getUrlBase()).endElement();
-		getInfo().output(doc);
+		Info info = getInfo();
+		if (info == null)
+			info = lastRunInfo;
+		if (info == null)
+			newInfo();
+		info.output(doc);
 		doc.endElement();
 		ResultPE result;
 		try {

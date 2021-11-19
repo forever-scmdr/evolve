@@ -155,7 +155,7 @@
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $valid_inputs/@caption"/>
-		<xsl:if test="not($subs) and $valid_inputs and $show_devices">
+		<xsl:if test="not($subs) and $show_devices">
 			<div class="filter filter_section">
 <!--				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">-->
 <!--					<div class="icon">-->

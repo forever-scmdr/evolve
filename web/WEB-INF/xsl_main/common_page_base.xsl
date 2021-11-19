@@ -759,7 +759,7 @@
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
 												<a href="{page/personal_link}">
-													<xsl:value-of select="if ($is_jur) then substring-before($reg/contact_name, ' ') else $reg/name"/>
+													<xsl:value-of select="if ($is_jur and $reg/contact_name and $reg/contact_name != '') then substring-before($reg/contact_name, ' ') else $reg/name"/>
 												</a>
 											</xsl:if>
 											<a class="header-icon__dd">
