@@ -19,6 +19,7 @@ public interface CartConstants {
 
 	String ASSOC_GENERAL = "general";
 	String DEFAULT_CURRENCY = "BYN";
+	String RUB_CURRENCY = "RUB";
 
 	String RATE_PART = "_rate";
 	String SCALE_PART = "_scale";

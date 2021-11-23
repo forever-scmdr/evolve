@@ -1607,9 +1607,11 @@ img {
 }
 a.side-menu__link:hover{
 	text-decoration: none; 
-	color: #55a948;
+	/*color: #55a948;*/
 }
-
+.side-menu__item:hover{
+	background: #e0e0e0;
+}
 .side-menu__item.side-menu__item_level_2 .side-menu__link
 ,.side-menu__item.side-menu__item_level_3 .side-menu__link{
 	margin-bottom: 0px;
@@ -1629,14 +1631,14 @@ a.side-menu__link:hover{
 }
 .side-menu__item_level_2 {
 	margin-left: 0px; 
-	padding: 0px 0px 10px 0px;}
+	margin: 0px 0px 10px 0px;}
 
 .side-menu__item_level_3 {
 	margin-left: 0px;
-	padding: 0px 0px 10px 0px; }
+	margin: 0px 0px 10px 0px; }
 .side-menu__item_level_4 {
 		margin-left: 0px;
-		padding: 0px 0px 10px 0px; }
+		margin: 0px 0px 10px 0px; }
 .devices_section {
 	margin-bottom: 24px; }
 
@@ -1776,6 +1778,7 @@ a.side-menu__link:hover{
 
 .filter__value {
 	font-size: 11px;
+	line-height: 1.2;
 	margin-bottom: 2px; }
 	.filter__value:last-child {
 		margin-bottom: 0; }

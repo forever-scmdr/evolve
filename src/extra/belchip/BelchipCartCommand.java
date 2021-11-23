@@ -278,6 +278,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		currencyVar = StringUtils.isBlank(currencyVar) ? DEFAULT_CURRENCY : currencyVar;
 		Item currencies = ItemQuery.loadSingleItemByName(CURRENCIES);
 
+		int scale = StringUtils.equalsIgnoreCase(currencyVar, RUB_CURRENCY) ? 0 : 2;
+
 		for (Item bought : boughts) {
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT, bought.getId());
 			double maxQuantity = product.getDoubleValue(product_.QTY, 0d);
@@ -300,7 +302,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			if (qtyAvailable >= 0) {
 				BigDecimal price = convert(product.getDecimalValue(product_.PRICE, BigDecimal.ZERO), currencies, currencyVar);
 				bought.setValue(product_.PRICE, price);
-				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(2, BigDecimal.ROUND_HALF_UP);
+				BigDecimal productSum = price.multiply(BigDecimal.valueOf(qtyAvailable)).setScale(scale, BigDecimal.ROUND_UP);
 				regularQuantity += qtyAvailable;
 				bought.setValue(bought_.SUM, productSum);
 				sum = sum.add(productSum);
@@ -1114,6 +1116,9 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (cart == null) {
 			createNewSessionCart();
+		} else if (cart.getByteValue(cart_.PROCESSED, (byte) 0) != 0) {
+			getSessionMapper().removeItems(cart.getId());
+			createNewSessionCart();
 		}
 		String purchaseId = getVarSingleValue("purchase");
 		if (StringUtils.isNotBlank(purchaseId)) {
@@ -1297,6 +1302,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 		// Finaly save order to history
 		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);
+		removeTempCart();
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
 		cart.setExtra(IN_PROGRESS, "false");
@@ -1425,6 +1431,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 		// Finaly save order to history
 		savePurchaseToHisotry(userSession, date, orderNumber, displayOrderNumber);
+		removeTempCart();
 
 		cart.setValue(cart_.ORDER_NUM, displayOrderNumber);
 		cart.setExtra(IN_PROGRESS, "false");
@@ -1442,6 +1449,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 */
 	public ResultPE removeCart() throws Exception {
 		getSessionMapper().removeItems(CART);
+		removeTempCart();
+		return null;
+	}
+
+	/**
+	 * Удалить сохраненную корзину
+	 * @throws Exception
+	 */
+	public void removeTempCart() throws Exception {
 		if (isRegistered()) {
 			Item user = loadUserInfo(getInitiator());
 			if (user != null) {
@@ -1450,7 +1466,6 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(user).ignoreUser());
 			}
 		}
-		return null;
 	}
 
 	/**

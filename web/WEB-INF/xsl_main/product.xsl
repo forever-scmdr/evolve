@@ -145,9 +145,9 @@
 						</xsl:for-each>
 						<xsl:for-each select="$p/filevid">
 							<xsl:variable name="id" select="if(contains(., 'embed')) then substring-after(., '/embed/') else substring-after(., '/youtu.be/')"/>
-							<a href="{concat('https://www.youtube.com/embed/', $id)}" class="fancy_vid fancybox.iframe" onclick="return false;"  rel="group_1">
+							<a href="{concat('https://www.youtube.com/embed/', $id)}" class="thumb fancy_vid fancybox.iframe" onclick="return false;"  rel="group_1">
 								<img src="{concat('http://i3.ytimg.com/vi/', $id, '/hqdefault.jpg')}"/>
-								видео
+<!--								видео-->
 							</a>
 						</xsl:for-each>
 					</div>

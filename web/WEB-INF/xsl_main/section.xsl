@@ -190,10 +190,10 @@
 									<xsl:if test="$input/criteria/@type = ('double', 'integer')">
 										<div class="filter__control ltgt">
 											<label>
-												&#129121;<input class="lt" type="radio"/>
+												<img src="images/sup.png"/><input class="lt" type="radio"/>
 											</label>
 											<label>
-												&#129123;<input class="gt" type="radio"/>
+												<img src="images/sdown.png"/><input class="gt" type="radio"/>
 											</label>
 											<label>×
 												<input class="x" type="radio"/>

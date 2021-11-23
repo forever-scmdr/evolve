@@ -417,7 +417,7 @@ public abstract class IntegrateBase extends Command {
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);
-					runningTasks.remove(CLASS_NAME);
+					//runningTasks.remove(CLASS_NAME);
 				}
 			});
 			thread.setDaemon(true);
@@ -429,6 +429,7 @@ public abstract class IntegrateBase extends Command {
 		if (mustTerminate) {
 			runningTask.needTermination = true;
 			runningTask.terminate();
+			runningTask.isFinished = true;
 			return runningTask.buildResult();
 		} else if (isInProgress || !wantToStart || isFinished) {
 			if (runningTask == null) {

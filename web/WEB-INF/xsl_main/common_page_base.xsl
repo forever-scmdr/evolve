@@ -7,6 +7,7 @@
 	<xsl:import href="my_price_ajax.xsl"/>
 	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="subscribe_ajax.xsl"/>
+	<xsl:import href="personal_subscribe_ajax.xsl"/>
 	<xsl:import href="snippets/product.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
@@ -77,7 +78,7 @@
 	<xsl:variable name="head-end-modules" select="$modules[place = 'head_end']"/>
 	<xsl:variable name="body-start-modules" select="$modules[place = 'body_start']"/>
 	<xsl:variable name="body-end-modules" select="$modules[not(place != '') or place = 'body_end']"/>
-
+	<xsl:variable name="currency_link" select="page/set_currency"/>
 
 
 
@@ -711,7 +712,6 @@
 										</div>
 									</div>
 									<xsl:if test="$currencies">
-										<xsl:variable name="currency_link" select="page/set_currency"/>
 										<div class="header-icons__icon header-icon">
 											<div class="header-icon__icon">
 												<img src="img/icon-currency.png" alt=""/>
@@ -784,7 +784,7 @@
 					</div>
 					<div class="header-mobile">
 						<div class="header-mobile__top">
-							<a class="header-mobile__logo">
+							<a class="header-mobile__logo" href="{page/index_link}">
 								<img src="img/logo.png" alt=""/>
 							</a>
 							<div class="header-mobile__small-icons">
@@ -994,45 +994,32 @@
 						</div>
 					</div>
 					<!-- Валюта-->
-					<div class="popup" style="display: none;" id="mobile_user_menu">
+					<div class="popup" style="display: none;" id="mobile_currency">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
-									<div class="popup__title">Действия пользователя</div>
+									<div class="popup__title">Выбор валюты</div>
 									<a class="popup__close">
 										<img src="img/icon-menu-close.png" alt=""/>
 									</a>
 								</div>
 								<div class="popup-menu">
-									<xsl:if test="not($is_user_registered)">
-										<div class="popup-menu__item">
-											<div class="popup-menu__link">
-												<a href="#" popup="login_form_popup">Вход</a>
-											</div>
+									<div class="popup-menu__item{' active'[$currency = 'BYN']}">
+										<div class="popup-menu__link">
+											<a href="{concat($currency_link, 'BYN')}">BYN</a>
 										</div>
-										<div class="popup-menu__item">
-											<div class="popup-menu__link">
-												<a href="{page/register_link}">Регистрация</a>
+									</div>
+									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+										<xsl:variable name="show" select="$currencies/*[name() = concat($cur, '_show')] = '1'"/>
+										<xsl:if test="$show">
+											<div class="popup-menu__item{' active'[$currency = $cur]}">
+												<div class="popup-menu__link">
+													<a href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
+												</div>
 											</div>
-										</div>
-									</xsl:if>
-									<xsl:if test="$is_user_registered">
-										<div class="popup-menu__item">
-											<div class="popup-menu__link">
-												<a href="{page/personal_link}">Кабинет</a>
-											</div>
-										</div>
-										<div class="popup-menu__item">
-											<div class="popup-menu__link">
-												<a href="{page/purchase_history_link}">История заказов</a>
-											</div>
-										</div>
-										<div class="popup-menu__item">
-											<div class="popup-menu__link">
-												<a href="{page/logout_link}">Выход</a>
-											</div>
-										</div>
-									</xsl:if>
+										</xsl:if>
+									</xsl:for-each>
 								</div>
 							</div>
 						</div>
@@ -1141,6 +1128,9 @@
 				</xsl:for-each>
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
+				<xsl:if test="$is_user_registered">
+					<xsl:call-template name="PERSONAL_SUBSCRIBE_SCRIPT"/>
+				</xsl:if>
 			</body>
 		</html>
 	</xsl:template>

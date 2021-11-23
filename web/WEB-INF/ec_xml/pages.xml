@@ -114,7 +114,7 @@
 		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
 			<var name="cur" value=""/>
 		</link>
-
+		<link name="personal_subscribe_ajax_link" target="personal_subscribe_ajax"/>
 		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
@@ -995,6 +995,17 @@
 		</link>
 	</page>
 
+
+	<page name="personal_subscribe_ajax" template="personal_subscribe_ajax">
+		<personal>
+			<single item="user" tag="registration" id="user"/>
+		</personal>
+		<list item="observer">
+			<filter>
+				<parameter name="observer"><var ref="user" parameter="email"/></parameter>
+			</filter>
+		</list>
+	</page>
 
 
 	<page name="feedback_ajax" template="feedback_ajax">
