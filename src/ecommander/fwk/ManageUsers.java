@@ -90,7 +90,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 				user.setNewName(userItem.getStringValue(EMAIL_PARAM));
 				user.setNewPassword(userItem.getStringValue(PASSWORD_PARAM));
 				try {
-					executeCommand(new UpdateUserDBUnit(user, false));
+					executeCommand(new UpdateUserDBUnit(user, false).ignoreUser());
 				} catch (UserExistsExcepion e) {
 					throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 				}
@@ -99,7 +99,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			User user = UserMapper.getUser(userItem.getStringValue(EMAIL_PARAM), userItem.getStringValue(PASSWORD_PARAM),
 					getTransactionContext().getConnection());
 			if (user != null) {
-				executeCommand(new DeleteUserDBUnit(user.getUserId(), true));
+				executeCommand(new DeleteUserDBUnit(user.getUserId(), true).ignoreUser());
 			}
 		}
 	}

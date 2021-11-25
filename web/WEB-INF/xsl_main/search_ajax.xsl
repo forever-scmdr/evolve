@@ -38,16 +38,17 @@
 
 	<xsl:template match="product">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
+		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
 		<div class="suggest__result suggest-result">
 			<a class="suggest-result__link" href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 			<div class="suggest-result__info">
 				<div class="suggest-result__code">(код <xsl:value-of select="code"/>)</div>
 				<div class="suggest-result__vendor"><xsl:value-of select="vendor"/></div>
 				<div class="suggest-result__price">
-					<xsl:if test="not($zero)">
+					<xsl:if test="$has_price">
 						<xsl:value-of select="price"/> руб./<xsl:value-of select="unit"/>
 					</xsl:if>
-					<xsl:if test="$zero">
+					<xsl:if test="not($has_price)">
 						нет цены
 					</xsl:if>
 				</div>

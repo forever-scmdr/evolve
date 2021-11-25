@@ -1239,7 +1239,7 @@
 			<var name="message"/>
 		</link>
 		<link name="login_error" target-var="redirect_target">
-			<var name="message" value="Неверный логин/пароль"/>
+			<var name="message" value="Неверный email/пароль"/>
 			<var name="success" value="no"/>
 		</link>
 		<link name="login_ajax" target-var="redirect_target">
