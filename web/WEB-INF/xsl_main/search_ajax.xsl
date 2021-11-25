@@ -41,7 +41,7 @@
 		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
 		<div class="suggest__result suggest-result">
 			<a class="suggest-result__link" href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
-			<div class="suggest-result__info">
+<!-- 			<div class="suggest-result__info">
 				<div class="suggest-result__code">(код <xsl:value-of select="code"/>)</div>
 				<div class="suggest-result__vendor"><xsl:value-of select="vendor"/></div>
 				<div class="suggest-result__price">
@@ -65,7 +65,32 @@
 						</xsl:if>
 					</xsl:if>
 				</div>
-			</div>
+			</div> -->
+			<span class="suggest-result__info"> 
+				<span class="suggest-result__code">(код <xsl:value-of select="code"/>)</span>
+				<span class="suggest-result__vendor"><xsl:value-of select="vendor"/></span>
+				<span class="suggest-result__price">
+					<xsl:if test="$has_price">
+						<xsl:value-of select="price"/> руб./<xsl:value-of select="unit"/>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						нет цены
+					</xsl:if>
+				</span>
+				<span class="suggest-result__status">
+					<xsl:if test="not($zero) and not(is_service = '1')">
+						на складе: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+					</xsl:if>
+					<xsl:if test="$zero">
+						<xsl:if test="soon != '0'">
+							ожидается: <xsl:value-of select="substring(soon, 1, 10)"/>
+						</xsl:if>
+						<xsl:if test="not(soon != '0')">
+							<span class="status__na">нет в наличии</span>
+						</xsl:if>
+					</xsl:if>
+				</span>
+			</span>
 		</div>
 	</xsl:template>
 
