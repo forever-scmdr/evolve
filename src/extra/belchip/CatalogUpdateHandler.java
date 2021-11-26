@@ -146,9 +146,12 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					needsSave = true;
 					product.setValue(Product.PIC_PATH, picPath);
 				}
-				if(StringUtils.isNotBlank(spec) && !product.getStringValue(Product.SPECIAL_PRICE,"").equals(spec)){
+				if(!product.getStringValue(Product.SPECIAL_PRICE,"").equals(spec)){
 					needsSave = true;
-					product.setValue(Product.SPECIAL_PRICE, spec);
+					if (StringUtils.isBlank(spec))
+						product.clearValue(Product.SPECIAL_PRICE);
+					else
+						product.setValue(Product.SPECIAL_PRICE, spec);
 				}
 				
 				if(needsSave){
@@ -157,18 +160,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					parentIntegration.setProcessed(++сreated);
 					
 				}
-				product = null;
-				price = null;
-				name = null;
-				nameExtra = null;
-				unit = null;
-				qty1 = null;
-				picPath = null;
-				nw = false;
-				hit= false;
-				soon = null;
-				spec = null;
-			} else if(parameterReady){
+			} else if(parameterReady) {
 					if (!EnumUtils.isValidEnum(Qnames.class, qName))
 						return;
 					Qnames ordinal = Qnames.valueOf(qName);
@@ -253,11 +245,21 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				// paramName = qName;
 				parameterReady = true;
 				paramValue = new StringBuilder();
-			}else if(ItemNames.PRODUCT.equalsIgnoreCase(qName)){
+			} else if(ItemNames.PRODUCT.equalsIgnoreCase(qName)) {
+				product = null;
+				price = null;
+				name = null;
+				nameExtra = null;
+				unit = null;
+				qty1 = null;
+				picPath = null;
+				nw = false;
+				hit = false;
+				soon = null;
+				spec = null;
 				nw = Boolean.parseBoolean(attributes.getValue(IConst.NEW_ATTRIBUTE));
 				hit = Boolean.parseBoolean(attributes.getValue(IConst.HIT_ATTRIBUTE));
 				soon =(StringUtils.isBlank(attributes.getValue(IConst.SOON_ATTRIBUTE))) ? null : SOON_FORMAT.parse(attributes.getValue(IConst.SOON_ATTRIBUTE));
-
 			}
 			else if("rub".equalsIgnoreCase(qName)) {
 				currencyReady = true;
