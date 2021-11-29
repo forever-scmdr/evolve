@@ -35,7 +35,7 @@ public class InformSubscribersCommand extends Command {
 					LinkPE link = LinkPE.newDirectLink("email", "subscribe_inform_email", false);
 					link.addStaticVariable("prod", subscriber.getStringValue(OBSERVABLE_PARAM));
 					EmailQueueSender.addEmailToQueue(this, subscriber.getStringValue(OBSERVER_PARAM), link.serialize());
-					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(subscriber).ignoreUser());
+					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(subscriber).ignoreUser().noTriggerExtra().noFulltextIndex());
 				}
 			}
 		}

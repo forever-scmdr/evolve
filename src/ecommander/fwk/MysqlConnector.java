@@ -75,7 +75,8 @@ public class MysqlConnector
 		private long startQueryTime;
 		private long createTime;
 		private String currentQuery;
-		
+		private Timer timer = new Timer();
+
 		private LoggedConnection(Connection conn, HttpServletRequest request) {
 			this.conn = conn;
 			this.request = request;
@@ -123,7 +124,8 @@ public class MysqlConnector
 		}
 		
 		public void queryFinished() {
-			queryTimes.add(System.currentTimeMillis() - startQueryTime);
+			Timer.TimeLogMessage message = timer.stop("query");
+			queryTimes.add(message == null ? System.currentTimeMillis() - startQueryTime : message.getExecTimeMillis());
 			queries.add(currentQuery);
 		}
 		
@@ -300,6 +302,7 @@ public class MysqlConnector
 		}
 
 		private void rememberPrepare(String sql) {
+			timer.start("query");
 			startQueryTime = System.currentTimeMillis();
 			currentQuery = sql;
 		}

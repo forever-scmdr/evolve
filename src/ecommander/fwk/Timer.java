@@ -60,6 +60,10 @@ public class Timer {
 		public long getExecTime() {
 			return execTime;
 		}
+
+		public long getExecTimeMillis() {
+			return (long)(execTime / (double) 1000000);
+		}
 	}
 	
 	private static class SimpleMessage implements TimerMessage  {
@@ -81,7 +85,8 @@ public class Timer {
 	
 	private HashMap<String, TimeLogMessage> runningTasks = new HashMap<>();
 	private Queue<TimerMessage> log = new CircularFifoQueue<>(20);
-	
+	private HashMap<String, Pair<Long, Integer>> tasksTotal = new HashMap<>();
+
 	private static ThreadLocal<Timer> threadLocalInstance = ThreadLocal.withInitial(() -> new Timer());
 	/**
 	 * Получить экземпляр таймера
@@ -127,6 +132,12 @@ public class Timer {
 		stamp.execTime = System.nanoTime() - stamp.execTime;
 		log.add(stamp);
 		runningTasks.remove(name);
+		Pair<Long, Integer> timeQty = tasksTotal.get(name);
+		long totalNanos = timeQty != null ? timeQty.getLeft() : 0;
+		int totalQty = timeQty != null ? timeQty.getRight() : 0;
+		totalNanos += stamp.execTime;
+		totalQty++;
+		tasksTotal.put(name, new Pair<>(totalNanos, totalQty));
 		return stamp;
 	}
 
@@ -145,12 +156,54 @@ public class Timer {
 	}
 
 	/**
+	 * Получить общее время работы всех заданий с определенным названием
+	 * @param name
+	 * @return
+	 */
+	public long getTotalNanos(String name) {
+		if (!tasksTotal.containsKey(name)) {
+			return getNanos(name);
+		}
+		return tasksTotal.get(name).getLeft();
+	}
+
+	/**
 	 * Получить времы работы таймера в секундах
 	 * @param name
 	 * @return
 	 */
 	public double getSeconds(String name) {
 		return getNanos(name) / (double) 1000000000;
+	}
+
+	/**
+	 * Получить общее время работы всех заданий с определенным названием в секундах
+	 * @param name
+	 * @return
+	 */
+	public double getTotalSeconds(String name) {
+		return getTotalNanos(name) / (double) 1000000000;
+	}
+
+	/**
+	 * Получяить общее количество выполнений таймера
+	 * @param name
+	 * @return
+	 */
+	public int getTotalQty(String name) {
+		if (!tasksTotal.containsKey(name)) {
+			return 0;
+		}
+		return tasksTotal.get(name).getRight();
+	}
+
+	/**
+	 * Получить общее время работы всех заданий с определенным названием в милисекундах
+	 * @param name
+	 * @return
+	 */
+	public double getTotalMillis(String name) {
+		return getTotalNanos(name) / (double) 1000000;
 	}
 
 	/**
@@ -162,7 +215,22 @@ public class Timer {
 		}
 		log.clear();
 	}
-	
+
+	/**
+	 * Написать в виде строки все семмарные счетчики времени
+	 * @return
+	 */
+	public String writeTotals() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n\n\t\t\tTIMER TOTALS\n\n");
+		for (String timerName : tasksTotal.keySet()) {
+			sb.append("\t").append(timerName).append(":\t\t").append(getTotalSeconds(timerName)).append(" seconds; ")
+					.append(getTotalQty(timerName)).append(" times\n");
+		}
+		sb.append("\n=============================================\n\n");
+		return sb.toString();
+	}
+
 	public static void main(String[] args) throws InterruptedException {
 		Timer.getTimer().start("All procedure");
 		for (int i = 0; i < 10; i++) {

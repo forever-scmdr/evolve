@@ -43,6 +43,8 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 	}
 
 	public void execute() throws Exception {
+		if (!item.hasChanged())
+			return;
 		// Проверка прав пользователя
 		testPrivileges(item);
 		Connection conn = getTransactionContext().getConnection();

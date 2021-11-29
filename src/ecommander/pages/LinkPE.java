@@ -194,6 +194,8 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 	 * @return
 	 */
 	public String serialize() {
+		if (pageName == null)
+			return "";
 		StringBuilder path = new StringBuilder();
 		StringBuilder query = new StringBuilder();
 		// Если не обычная сслыка, начать с itemvars/ itemform/ или fil/

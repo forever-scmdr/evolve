@@ -14,6 +14,7 @@ import ecommander.pages.Command;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
+import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,15 @@ import java.util.*;
  */
 public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
 
+	public static final String ELEMENT_CLASSES_PROCESS_TIMER_NAME = "classes_element";
+	public static final String DB_CLASSES_TIMER_NAME = "classes_DB";
+	public static final String ELEMENT_PRODUCT_PROCESS_TIMER_NAME = "product_element";
+	public static final String DB_PRODUCT_TIMER_NAME = "product_DB";
+	public static final String MODEL_RELOAD_TIMER_NAME = "model_reload";
+
 	private static final String DIGITS = "0123456789.,";
+
+	private SynchronousTransaction transaction = new SynchronousTransaction(User.getDefaultUser());
 
 	/**
 	 * Типы и названия параметров
@@ -58,7 +67,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 		protected Params(String caption, String className) {
 			this.classCaption = caption;
-			this.className = Strings.createXmlElementName(StringUtils.lowerCase(className));
+			this.className = className;
 		}
 
 		protected void addParameter(String name, String value, boolean isMultiple) {
@@ -66,6 +75,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
+			} else if (isMultiple) {
+				Pair<String, Boolean> cap = paramCaptions.get(paramName);
+				if (cap != null && !cap.getRight()) {
+					paramCaptions.put(paramName, new Pair<>(cap.getLeft(), true));
+				}
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Pair<DataType.Type, String> test = testValueHasUnit(value);
@@ -74,10 +88,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (test.getRight() != null && test.getLeft() != DataType.Type.STRING) {
-				paramUnits.put(paramName, test.getRight());
+			if (StringUtils.isNotBlank(test.getRight()) && test.getLeft() != DataType.Type.STRING) {
+				String newUnit = test.getRight();
+				String oldUnit = paramUnits.get(paramName);
+				if (oldUnit == null) {
+					paramUnits.put(paramName, test.getRight());
+				}
+				// Если разные размерности (единицы измерения) в одном параметре - хранить как строку
+				else if (StringUtils.isNotBlank(oldUnit) && !StringUtils.equalsIgnoreCase(newUnit, oldUnit)) {
+					paramTypes.put(paramName, DataType.Type.STRING);
+				}
 			}
-			if(test.getLeft() == DataType.Type.STRING){
+			if (paramTypes.get(paramName) == DataType.Type.STRING) {
 				paramUnits.remove(paramName);
 			}
 		}
@@ -169,26 +191,27 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				assocNames.add(extraAssoc.getName());
 		}
 		for (Item section : sections) {
+			info.getTimer().start(ELEMENT_CLASSES_PROCESS_TIMER_NAME);
+			info.getTimer().start(DB_CLASSES_TIMER_NAME);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0])).loadItems();
+			info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
+				/*
 				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				*/
 
 				// Анализ параметров продуктов
-				String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
-				String className = StringUtils.lowerCase((StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId);
-				className = Strings.createXmlElementName(className);
+				String className = createClassName(section);
 				Params params = new Params(section.getStringValue(NAME_PARAM), className);
-				for (Item product : products) {
-					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
-					for (Item oldParam : oldParams) {
-						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
-					}
-					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
-					if (paramsXml != null && StringUtils.isNotBlank(paramsXml.getStringValue(XML_PARAM))) {
-						String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
+				info.getTimer().start(DB_CLASSES_TIMER_NAME);
+				List<Item> paramsXmlItems = new ItemQuery(PARAMS_XML_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0])).loadItems();
+				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
+				for (Item paramsXmlItem : paramsXmlItems) {
+					if (StringUtils.isNotBlank(paramsXmlItem.getStringValue(XML_PARAM))) {
+						String xml = "<params>" + paramsXmlItem.getStringValue(XML_PARAM) + "</params>";
 						Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 						Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 						for (Element paramEl : paramEls) {
@@ -222,7 +245,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
 				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				info.getTimer().start(DB_CLASSES_TIMER_NAME);
+				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				transactionExecute();
+				//executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
@@ -233,24 +260,34 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String type = params.paramTypes.get(paramName).toString();
 					String caption = params.paramCaptions.get(paramName).getLeft();
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
-					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING? params.paramUnits.get(paramName) : null;
+					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING ? params.paramUnits.get(paramName) : null;
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
-				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+				info.getTimer().start(DB_CLASSES_TIMER_NAME);
+				transaction.executeCommandUnit(new SaveNewItemTypeDBUnit(newClass));
+				transactionExecute();
+				//executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 				pushLog("class \""+newClass.getCaption()+"\" добавлен");
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				info.getTimer().start(DB_CLASSES_TIMER_NAME);
+				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				transactionExecute();
+				//executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 			}
 			info.increaseProcessed();
+			info.getTimer().stop(ELEMENT_CLASSES_PROCESS_TIMER_NAME);
 		}
+		transaction.commit();
 
 		try {
 			pushLog("Попытка обновить информационную модель");
 			DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
 			pushLog("Информационную модель обновлена");
-			if(SystemUtils.IS_OS_LINUX){
+			if (SystemUtils.IS_OS_LINUX){
 				pushLog("Попытка смены прав доступа к модели");
 				Path ecXml = Paths.get(AppContext.getContextPath(),"WEB-INF", "ec_xml");
 				Runtime.getRuntime().exec(new String[]{"chmod", "775", "-R", ecXml.toAbsolutePath().toString()});
@@ -263,20 +300,34 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			return;
 		}
 
+		info.setOperation("Удаление старых параметров");
+		info.setToProcess(sections.size());
+		info.setProcessed(0);
+		for (Item section : sections) {
+			List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0])).loadItems();
+			for (Item oldParam : oldParams) {
+				transaction.executeCommandUnit(ItemStatusDBUnit.delete(oldParam).noFulltextIndex().noTriggerExtra());
+				transactionExecute();
+			}
+			info.increaseProcessed();
+		}
+
 		info.setOperation("Заполнение параметров товаров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);
 		for (Item section : sections) {
-			String secId = section.getStringValue(ItemNames.section_.CATEGORY_ID,"");
-			String className = (StringUtils.isBlank(secId))? "p" + section.getId() : "p" + secId;
-			className = Strings.createXmlElementName(className);
+			String className = createClassName(section);
 			ItemType paramDesc = ItemTypeRegistry.getItemType(StringUtils.lowerCase(className));
+			info.getTimer().start(DB_PRODUCT_TIMER_NAME);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
+			info.getTimer().stop(DB_PRODUCT_TIMER_NAME);
 			if (products.size() > 0) {
 
 				// Загрузить и добавить все строковые товары
+				/*
 				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
 					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
+				 */
 
 				for (Item product : products) {
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
@@ -295,10 +346,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 									for (Element valueEl : values) {
 										String value = StringUtils.trim(valueEl.ownText());
 										if(paramDesc.getParameter(name).getDataType().getType() != DataType.Type.STRING) {
-										Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
-										if (StringUtils.isNotBlank(valuePair.getRight())) {
-											value = value.split("\\s*[^0-9\\.,]")[0];
-										}
+											Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
+											if (StringUtils.isNotBlank(valuePair.getRight())) {
+												value = value.split("\\s*[^0-9\\.,]")[0];
+											}
 										}
 										params.setValueUI(name, value);
 									}
@@ -307,13 +358,42 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 								}
 							}
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
+						info.getTimer().start(DB_PRODUCT_TIMER_NAME);
+						transaction.executeCommandUnit(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
+						transactionExecute();
+						//executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
+						info.getTimer().stop(DB_PRODUCT_TIMER_NAME);
 					}
 				}
 			}
 			info.increaseProcessed();
 		}
+		transaction.commit();
 	}
+
+
+	private Boolean hasCode = null;
+	private Boolean hasName = null;
+
+	/**
+	 * Создать уникальное название для класса
+	 * @param section
+	 * @return
+	 */
+	private String createClassName(Item section) {
+		if (hasCode == null) {
+			hasCode = section.getItemType().hasParameter("code");
+			hasName = section.getItemType().hasParameter("name");
+		}
+		if (hasCode && section.isValueNotEmpty("code")) {
+			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("code")));
+		}
+		if (hasName && section.isValueNotEmpty("name")) {
+			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name")));
+		}
+		return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getKey()));
+	}
+
 
 	/**
 	 * Для вызова из внешней команды
@@ -333,5 +413,10 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	public static void main(String[] args) {
 		System.out.println("0.5 - 5 Нм".matches("^-?[0-9]+[\\.,]?[0-9]*\\s+[^-\\s]+$"));
 		System.out.println("45,5cm".split("\\s*[^0-9\\.,]")[0]);
+	}
+
+	private void transactionExecute() throws Exception {
+		if (transaction.getUncommitedCount() >= 400)
+			transaction.commit();
 	}
 }
