@@ -35,6 +35,7 @@ public abstract class IntegrateBase extends Command {
 	private static final Format TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
 	private static final ConcurrentHashMap<String, IntegrateBase> runningTasks;
+	private static volatile Info lastRunInfo;
 	static {
 		runningTasks = new ConcurrentHashMap<>();
 	}
@@ -91,6 +92,8 @@ public abstract class IntegrateBase extends Command {
 	}
 
 	public static class Info {
+		private Timer timer = new Timer();
+
 		private static final String _indexation = "Индексация названий товаров";
 
 		private volatile String operation = "Инициализация";
@@ -235,6 +238,7 @@ public abstract class IntegrateBase extends Command {
 				}
 				doc.endElement();
 			}
+			doc.startElement("timers").addText(timer.writeTotals()).endElement();
 			ServerLogger.debug(doc.toString());
 		}
 
@@ -244,6 +248,10 @@ public abstract class IntegrateBase extends Command {
 
 		public synchronized void indexsationStarted() {
 			operation = _indexation;
+		}
+
+		public Timer getTimer() {
+			return timer;
 		}
 	}
 
@@ -268,15 +276,14 @@ public abstract class IntegrateBase extends Command {
 		super(outer);
 		if(IntegrateBase.class.isAssignableFrom(outer.getClass())){
 			this.info = ((IntegrateBase)outer).getInfo();
-		}else {
+		}
+		if (this.info == null) {
 			info = new Info();
 		}
 	}
 
 	protected Info getInfo() {
-		if (info != null)
-			return info;
-		return newInfo();
+		return info;
 	}
 
 	private Info newInfo() {
@@ -289,7 +296,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param opName
 	 */
-	protected void setOperation(String opName) {
+	public void setOperation(String opName) {
 		getInfo().setOperation(opName);
 	}
 
@@ -298,7 +305,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param lineNumber
 	 */
-	protected void setLineNumber(int lineNumber) {
+	public void setLineNumber(int lineNumber) {
 		getInfo().setLineNumber(lineNumber);
 	}
 
@@ -307,7 +314,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param processed
 	 */
-	protected void setProcessed(int processed) {
+	public void setProcessed(int processed) {
 		getInfo().setProcessed(processed);
 	}
 
@@ -316,7 +323,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param message
 	 */
-	protected void addLog(String message) {
+	public void addLog(String message) {
 		getInfo().addLog(message);
 	}
 
@@ -325,7 +332,7 @@ public abstract class IntegrateBase extends Command {
 	 *
 	 * @param message
 	 */
-	protected void pushLog(String message) {
+	public void pushLog(String message) {
 		getInfo().pushLog(message);
 	}
 
@@ -336,7 +343,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param lineNumber
 	 * @param position
 	 */
-	protected void addError(String message, int lineNumber, int position) {
+	public void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
 
@@ -346,7 +353,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param message
 	 * @param originator
 	 */
-	protected void addError(String message, String originator) {
+	public void addError(String message, String originator) {
 		getInfo().addError(message, originator);
 	}
 
@@ -381,6 +388,7 @@ public abstract class IntegrateBase extends Command {
 		if (mustStart) {
 			newInfo().setInProgress(true);
 			setOperation("Инициализация");
+			lastRunInfo = getInfo();
 			// Проверочные действия до начала разбора (проверка и загрузка файлов интеграции и т.д.)
 
 			boolean readyToStart = false;
@@ -409,7 +417,7 @@ public abstract class IntegrateBase extends Command {
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);
-					runningTasks.remove(CLASS_NAME);
+					//runningTasks.remove(CLASS_NAME);
 				}
 			});
 			thread.setDaemon(true);
@@ -421,10 +429,10 @@ public abstract class IntegrateBase extends Command {
 		if (mustTerminate) {
 			runningTask.needTermination = true;
 			runningTask.terminate();
+			runningTask.isFinished = true;
 			return runningTask.buildResult();
 		} else if (isInProgress || !wantToStart || isFinished) {
 			if (runningTask == null) {
-				newInfo();
 				return buildResult();
 			}
 		}
@@ -473,7 +481,12 @@ public abstract class IntegrateBase extends Command {
 		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
 		doc.startElement("page", "name", getPageName());
 		doc.startElement("base").addText(getUrlBase()).endElement();
-		getInfo().output(doc);
+		Info info = getInfo();
+		if (info == null)
+			info = lastRunInfo;
+		if (info == null)
+			newInfo();
+		info.output(doc);
 		doc.endElement();
 		ResultPE result;
 		try {

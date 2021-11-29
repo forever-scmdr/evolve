@@ -16,6 +16,10 @@ public class CookieArrayCommand extends Command {
 	public static final String VAR_NAME_VAR = "update_cookie_name";
 	public static final String VAR_VALUE_VAR = "update_cookie_value";
 
+	public CookieArrayCommand(Command outer) {
+		super(outer);
+	}
+
 	@Override
 	public ResultPE execute() throws Exception {
 		return null;

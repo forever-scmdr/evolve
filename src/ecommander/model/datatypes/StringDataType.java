@@ -14,7 +14,7 @@ public class StringDataType extends FormatDataType {
 
 	@Override
 	public Object createValue(String stringValue, Object formatter) {
-		return stringValue;
+		return StringUtils.trimToEmpty(stringValue);
 	}
 
 	@Override

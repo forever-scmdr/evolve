@@ -453,6 +453,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			return null;
 		}
 		// Если айтем - ссылка на другой страничный айтем, загрузка не требуется (нужно только скопировать найденные ранее айтемы)
+		/*
 		if (hasReference() && getReference().isPageReference()) {
 			getReference().getPageItem().execute();
 			AllFoundIterator iter = getReference().getPageItem().getAllFoundItemIterator();
@@ -461,6 +462,7 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			loaded = true;
 			loadedFromCache = true;
 		}
+		*/
 		// Загрузка
 		if (!loaded) {
 			HashMap<Long, Integer> quantities = new HashMap<>();
@@ -528,21 +530,27 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 
 		// Загрузка из БД
 		if (!isSession()) {
+			// Создание запроса
+			ItemQuery query = new ItemQuery(getItemName());
+			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Если есть ссылка, то нет нужды в конструировании запроса
 			if (hasReference()) {
 				if (getReference().isUrlKeyUnique()) {
 					return ItemQuery.loadByUniqueKey(getReference().getKeysUnique());
 				} else {
-					List<String> values = getReference().getValuesArray();
-					if (getReference().isVarParamReference())
-						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), values);
-					else
-						return ItemQuery.loadByIdsString(values, getItemName());
+					if (getReference().isVarParamReference()) {
+						return ItemQuery.loadByParamValue(getItemName(), getReference().getParamName(), getReference().getValuesArray());
+					} else if (getReference().isUrlReference()) {
+						return ItemQuery.loadByIdsString(getReference().getValuesArray(), getItemName());
+					} else {
+						List<Long> refIds = getReference().getItemIds();
+						if (refIds.size() == 0)
+							needLoading = false;
+						else
+							query.setReference(refIds);
+					}
 				}
 			}
-			// Создание запроса
-			ItemQuery query = new ItemQuery(getItemName());
-			boolean needLoading = !hasParent() || (loadedIds != null && loadedIds.size() > 0);
 			// Добавление критерия предка
 			if (needLoading && hasParent()) {
 				if (getQueryType() == Type.ANCESTOR) {
@@ -564,10 +572,12 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			// Установить дополнительные параметры (пользователь и группа, если они есть)
 			if (getRootType() == ItemRootType.GROUP)
 				query.setGroup(getRootGroupName());
-			else if (getRootType() == ItemRootType.PERSONAL)
+			else if (getRootType() == ItemRootType.PERSONAL) {
+				needLoading = !getSessionContext().getUser().isAnonimous();
 				query.setUser(getSessionContext().getUser());
+			}
 			// Если есть фильтр и ограничение - загрузка общего числа айтемов
-			if (query.hasLimit() && getFilter().hasPage()) {
+			if (needLoading && query.hasLimit() && getFilter().hasPage()) {
 				quantities.putAll(query.loadTotalQuantities());
 			}
 			// Выполнение запроса (если это нужно)

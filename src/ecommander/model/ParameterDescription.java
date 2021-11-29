@@ -5,6 +5,8 @@ import ecommander.model.datatypes.DataType;
 import ecommander.model.datatypes.FormatDataType;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.DecimalFormat;
+
 public final class ParameterDescription {
 
 	public enum TextIndex {
@@ -55,8 +57,11 @@ public final class ParameterDescription {
 			this.description = description;
 		if (format != null)
 			this.format = format;
-		if (!StringUtils.isBlank(format) && !this.type.isFile())
-			formatter = ((FormatDataType)this.type).createFormatter(format);
+		if (!StringUtils.isBlank(format) && !this.type.isFile()) {
+			formatter = ((FormatDataType) this.type).createFormatter(format);
+			if (this.type.getType() == DataType.Type.CURRENCY || this.type.getType() == DataType.Type.CURRENCY_PRECISE || this.type.getType() == DataType.Type.DECIMAL)
+				((DecimalFormat)formatter).setParseBigDecimal(true);
+		}
 		this.isVirtual = isVirtual;
 		this.isHidden = isHidden;
 		if (StringUtils.isNotBlank(defaultValue))
