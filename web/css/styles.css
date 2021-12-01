@@ -111,13 +111,13 @@ input[type=checkbox] {
 	white-space: nowrap;
 	line-height: 1;
 	padding: 8px 16px;
-	background-color: #E6D0B0;
+	background-color: #e52d2a;
 	color: #212121;
-	border: 1px solid #E6D0B0; }
+	border: 1px solid #e52d2a; }
 	.button_secondary {
 		background-color: #212121;
 		color: #212121;
-		border: 1px solid #E6D0B0; }
+		border: 1px solid #e52d2a; }
 
 .button_size_lg, .order_product button {
 	font-size: 16px;
@@ -131,22 +131,25 @@ input[type=checkbox] {
 	background-color: #31869B;
 	border-color: #31869B; }
 
-.button:hover {
+/*.button:hover {
 	background-color: #dab989;
 	border-color: #dab989; }
-
+*/
+.button:hover{
+	text-decoration: none;
+}
 .button_2 {
 	color: #fff;
 	background-color: #31869B;
 	border: 1px solid #31869B; }
 
-.button_2:hover {
+/*.button_2:hover {
 	background-color: #2d7c8f;
-	border-color: #2d7c8f; }
+	border-color: #2d7c8f; }*/
 
-.button_checkout:hover {
+/*.button_checkout:hover {
 	background-color: #256574;
-	border-color: #256574; }
+	border-color: #256574; }*/
 
 .button_request {
 	background-color: #fff; }
@@ -180,7 +183,12 @@ body {
 	font-size: 16px; }
 
 a {
-	color: #0072bc; }
+	/*color: #0072bc;*/
+	color: #5a5a5a;
+}
+a:hover{
+	text-decoration: underline;
+}
 
 table {
 	font-size: 13px;
@@ -236,8 +244,8 @@ table {
 .divider {
 	height: 4px;
 	width: 100px;
-	background-color: #E6D0B0;
-	margin: 0 auto; }
+	background-color: #e52d2a;
+	margin: 2rem auto; }
 
 .img {
 	position: relative; }
@@ -400,7 +408,7 @@ img {
 
 .orders__item_active {
 	padding: 16px;
-	border: 2px solid #E6D0B0 !important; }
+	border: 2px solid #e52d2a !important; }
 
 .past-order__title {
 	font-weight: 700;
@@ -596,8 +604,11 @@ img {
 			margin-right: 0; } }
 
 .logo {
-	height: 70px;
-	margin-right: 70px; }
+	/*height: 70px;
+	margin-right: 70px; */
+	height: 55px;
+	margin-right: 55px;
+}
 	@media (max-width: 768px) {
 		.logo {
 			height: 32px; } }
@@ -622,7 +633,7 @@ img {
 	flex: 1 1 auto;
 	margin-right: 8px;
 	padding: 10px;
-	border-color: #E6D0B0;
+	border-color: #e52d2a;
 	font-size: 15px; }
 
 .header-search__button {
@@ -726,7 +737,9 @@ img {
 .footer__text {
 	font-size: 14px;
 	line-height: 1.3;
-	color: #616161; }
+	/*color: #616161; */
+	color: #363636;
+}
 	.footer__text p {
 		margin-bottom: 8px; }
 		.footer__text p:last-child {
@@ -756,7 +769,9 @@ img {
 
 .main-menu {
 	border-top: 1px solid #9E9E9E;
-	background-color: #E6D0B0; }
+	/*background-color: #e52d2a; */
+	background-color: #5a5a5a;
+}
 	@media (max-width: 768px) {
 		.main-menu {
 			display: none; } }
@@ -790,11 +805,17 @@ img {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: #000; }
+		/*color: #000;*/
+		color: #fff;
+	}
+	.index .main-menu__item > a{
+		color: #000;
+	}
 
 .popup-catalog-menu, .popup-text-menu {
 	position: absolute;
-	background-color: #f5f1e5;
+	/*background-color: #f5f1e5;*/
+	background-color: #e5e5e5;
 	z-index: 2;
 	top: 50px;
 	left: 0;
@@ -1025,7 +1046,7 @@ img {
 			.device-nav .slick-dots li:last-child {
 				margin-right: 0; }
 		.device-nav .slick-dots .slick-active button {
-			background-color: #E6D0B0; }
+			background-color: #e52d2a; }
 
 .numbers-block__wrap {
 	display: grid;
@@ -1106,7 +1127,7 @@ img {
 	color: #616161; }
 
 .gifts-block {
-	background-color: #E6D0B0; }
+	background-color: #e52d2a; }
 
 .gifts-block__wrap {
 	display: grid;
@@ -1171,7 +1192,8 @@ img {
 	font-size: 21px; }
 
 .slider {
-	background-color: #80A9DD;
+	/*background-color: #80A9DD;*/
+	background-color: #5a5a5a;
 	height: 400px;
 	overflow: hidden; }
 
@@ -1261,8 +1283,8 @@ img {
 
 .slider__button {
 	font-size: 15px;
-	background-color: #FFCC66;
-	color: #333;
+	/*background-color: #FFCC66;*/
+	/*color: #333;*/
 	padding: 12px 28px; }
 
 .slick-track {
@@ -1289,7 +1311,7 @@ img {
 			.slider-nav .slick-dots li:last-child {
 				margin-right: 0; }
 		.slider-nav .slick-dots .slick-active button {
-			background-color: #E6D0B0; }
+			background-color: #e52d2a; }
 
 .popup {
 	position: fixed;
@@ -1423,7 +1445,10 @@ img {
 		top: 11px;
 		left: 0px;
 		border: 5px solid transparent;
-		border-left-color: #31869B; }
+		/*border-left-color: #31869B; */
+		border-left-color: #e52d2a;
+		/*border-left-color: #5a5a5a;*/
+	}
 
 .side-menu__item_level_1 {
 	border-top: 1px solid #9E9E9E; }
@@ -2425,6 +2450,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 a {cursor: pointer;}
 .button {
     height: auto;
+    color: #fff;
 }
 .fade {
 	opacity:0;

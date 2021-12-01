@@ -74,6 +74,7 @@
 	-->
 
 	<assoc name="seo" caption="SEO" description="Связь айтемов с seo" transitive="false" ag-id="4" ag-hash="113757"/>
+	<assoc name="option" caption="option" description="Связь товара с опцией" transitive="false" ag-id="7" ag-hash="-1010136971"/>
 
 	<item name="base_seo" caption="Информация для SEO" virtual="true" ag-id="1208" ag-hash="-1721163281">
 		<parameter name="title" type="string" caption="title"/>
@@ -192,6 +193,7 @@
 		<child item="product"/>
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
+		<child item="option" />
 		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
@@ -227,15 +229,15 @@
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
-		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>
-		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
+<!--		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>-->
+<!--		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>-->
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
-		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
-		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
-		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
-		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
-		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
+<!--		<parameter name="currency_id" type="string" caption="Код валюты цены"/>-->
+<!--		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>-->
+<!--		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>-->
+<!--		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
+<!--		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
+<!--		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>-->
 		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
@@ -274,10 +276,19 @@
 	</item>
 
 	<!--Обычный товар или товар, который содержит другие товары-->
-	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
+	<item name="product" caption="Товар из каталога" key-unique="true"
 	      default-page="product" super="described_product * seo_container">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
+		<child item="option" assoc="option"/>
+	</item>
+
+	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
+	<item name="option" caption="Опция" super="abstract_product *" ag-id="1831" ag-hash="-1010136971">
+		<parameter name="price_opt" type="currency" caption="Оптовая цена"/>
+		<parameter name="group" type="string" caption="код группы" description="опции одной группы являютя взаимоисключающими"/>
+		<parameter name="max" type="integer" caption="максимальное количество в комплектации"/>
+		<parameter name="mandatory" type="byte" domain="0-1" caption="обязательная опция" />
 	</item>
 
 
@@ -349,8 +360,9 @@
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
+		<parameter name="complecatation_name" type="string" caption="Название комплектации"/>
+		<parameter name="option" type="tuple" caption="Опции" format="=" multiple="true"/>
 		<child item="product" single="true"/>
 	</item>
 
@@ -503,7 +515,7 @@
 		<parameter name="name" type="string" caption="Название" text-index="fulltext" description="для CMS"/>
 	</item>
 
-	<item name="advanced_spoiler" caption="Спойлер" super="page_extra" ag-id="1831" ag-hash="1371455141" >
+	<item name="advanced_spoiler" caption="Спойлер" super="page_extra" ag-id="1827" ag-hash="1371455141" >
 		<parameter name="header" type="string" caption="Заголовок" />
 		<parameter name="text" type="text" caption="Текст" />
 		<parameter name="text_pic" type="picture" caption="Картинка" multiple="true"/>
@@ -740,7 +752,7 @@
 		<parameter name="product_name" type="string" caption="Название товара"/>
 	</item>
 
-	<item name="error_page" caption="Страница 404" ag-id="1832" ag-hash="1636060774">
+	<item name="error_page" caption="Страница 404" ag-id="1826" ag-hash="1636060774">
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_extra" inline="true"/>
