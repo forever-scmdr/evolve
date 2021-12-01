@@ -7,7 +7,6 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
@@ -144,21 +143,23 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<div id="cart_list_{$p/@id}" class="order order_product">
-							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
-									<!-- кнопка запросить цену на стрранице товара -->
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-							</form>
-						</div>
+						<xsl:if test="not($p/option)">
+							<div id="cart_list_{$p/@id}" class="order order_product">
+								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+									<xsl:if test="$has_price">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+									<xsl:if test="not($has_price)">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 0.1}"/>
+										<!-- кнопка запросить цену на стрранице товара -->
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+								</form>
+							</div>
+						</xsl:if>
 						<div class="add add_product">
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
@@ -303,6 +304,8 @@
 			</div>
 		</div>
 
+		<xsl:call-template name="PRODUCT_OPTIONS" />
+
 		<div class="device-full">
 			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
 			<div class="tabs tabs_product">
@@ -388,6 +391,67 @@
 		</xsl:if>
 
 
+	</xsl:template>
+
+	<xsl:template name="PRODUCT_OPTIONS">
+		<xsl:variable name="options" select="$p/option"/>
+		<xsl:if test="$options">
+
+			<xsl:variable name="need_qty" select="$options[f:num(max) &gt; 1]"/>
+
+			<div class="device-basic complectations">
+				<div class="complectation device-basic__column" style="flex: 0 0 50%;">
+					<h3>Опции</h3>
+					<form method="post" action="{$p/update_complecatation_link}">
+						<input type="hidden" name="qty" value="1"/>
+						<table>
+							<tr>
+								<th></th>
+								<th>Код</th>
+								<th>Наименование</th>
+								<xsl:if test="$need_qty">
+									<th>Кол-во</th>
+								</xsl:if>
+								<th>Цена</th>
+							</tr>
+							<xsl:for-each select="$options">
+								<xsl:variable name="inp_type" select="if(group != '') then 'radio' else 'checkbox'"/>
+								<tr class="{if(mandatory='1') then 'mandatory'else ''}">
+									<td>
+										<input id="inp-{@id}" type="{$inp_type}" name="option" value="{@id}"/>
+									</td>
+									<td>
+										<label for="inp-{@id}">
+											<b><xsl:value-of select="code"/></b>
+										</label>
+									</td>
+									<td>
+										<label for="inp-{@id}">
+											<xsl:value-of select="name"/>
+										</label>
+									</td>
+									<xsl:if test="$need_qty">
+										<td>
+											<xsl:if test="f:num(max) &gt; 1">
+												<input class="input_type_number" type="number" value="1" min="1" name="qty-{@id}" max="{max}"/>
+											</xsl:if>
+										</td>
+									</xsl:if>
+									<td>
+										<xsl:if test="f:num(price_opt) &gt; 0">
+											<b><xsl:value-of select="price_opt"/></b><br/>
+										</xsl:if>
+										<xsl:value-of select="price"/>
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+						<input type="submit" class="button" value="сохранить комплектацию" />
+					</form>
+				</div>
+				<div id="complectation_ajax-{@id}" class="complectation device-basic__column"></div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 

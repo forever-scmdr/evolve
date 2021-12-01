@@ -170,7 +170,7 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	// Вставка результатов (если это возможно)
 	var possibleJsonData = null;
 	var ajaxInitIds = null;
-	if (data.indexOf('<') == 0) {
+	if (data != null && data != undefined && data.toString().indexOf('<') == 0) {
 		try {
 			var parsedData = $("<div>" + data + "</div>");
 			parsedData.find('.result').each(function() {

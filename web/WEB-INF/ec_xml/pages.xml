@@ -138,7 +138,12 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="prod"/>
 		</link>
+		<link name="update_complecatation_link" target="cart_action">
+			<var name="prod" ref="prod"/>
+			<var name="action" value="createComplectation"/>
+		</link>
 		<list item="params"/>
+		<list item="option" assoc="option"/>
 	</include-definition>
 
 
@@ -556,6 +561,7 @@
 					<var name="prod" ref="lprod"/>
 				</link>
 			</list>
+
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -581,14 +587,14 @@
 				<var name="prod" ref="assoc"/>
 			</link>
 		</list>
-		<list item="product" tag="grouped" id="grouped">
-			<filter>
-				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="grouped" style="key"/>
-			</link>
-		</list>
+<!--		<list item="product" tag="grouped" id="grouped">-->
+<!--			<filter>-->
+<!--				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>-->
+<!--			</filter>-->
+<!--			<link name="show_product" target="product" type="exclusive">-->
+<!--				<var name="prod" ref="grouped" style="key"/>-->
+<!--			</link>-->
+<!--		</list>-->
 		<include name="COMMON"/>
 	</page>
 
@@ -936,6 +942,31 @@
 	</page>
 
 
+	<page name="complect_ajax">
+		<request>
+			<var name="message"/>
+			<var name="product" />
+			<var name="bought" />
+		</request>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="product" tag="product">
+						<link name="to_cart" target="cart_action">
+							<var name="action" value="addToCart"/>
+							<var name="prod" ref="product"/>
+						</link>
+						<list item="option"/>
+					</list>
+					<link name="update_complect_link" target="cart_action">
+						<var name="action" value="updateComplectation"/>
+						<var name="bought" ref="bought"/>
+					</link>
+				</list>
+			</single>
+		</session>
+	</page>
+
 	<page name="cart_action">
 		<request>
 			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
@@ -952,6 +983,10 @@
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
+		<link name="complect_ajax" target="complect_ajax"/>
+		<link name="invalid_option_list" target="complect_ajax">
+			<var name="message" value="Не выбраны необходимые компоненты или присутствуют некорректные комопонетны"/>
+		</link>
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
 		</link>
@@ -962,6 +997,8 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
+			<result name="complect_ajax" type="redirect"/>
+			<result name="invalid_option_list" type="redirect"/>
 		</command>
 	</page>
 
