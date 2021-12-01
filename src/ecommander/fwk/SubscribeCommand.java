@@ -38,7 +38,7 @@ public class SubscribeCommand extends Command {
 			Item observers = ItemUtils.ensureSingleAnonymousItem(OBSERVERS_ITEM, getInitiator(), system.getId());
 			Item obs = Item.newChildItem(ItemTypeRegistry.getItemType(OBSERVER_ITEM), observers);
 			Item.updateParamValues(getItemForm().getItemSingleTransient(), obs);
-			executeAndCommitCommandUnits(SaveItemDBUnit.get(obs));
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(obs).ignoreUser());
 		}
 		return getResult("success");
 	}

@@ -25,68 +25,78 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 	private long itemId;
 	private ItemBasics item;
 	private boolean justChildren;
+	private boolean justSelf;
 
-	private ItemStatusDBUnit(byte status, long itemId, ItemBasics item, boolean justChildren) {
+	private ItemStatusDBUnit(byte status, long itemId, ItemBasics item, boolean justChildren, boolean justSelf) {
 		this.newStatus = status;
 		this.itemId = itemId;
 		this.item = item;
 		this.justChildren = justChildren;
+		this.justSelf = justSelf;
 	}
 
 	public static ItemStatusDBUnit delete(long itemId) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, itemId, null, false);
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, itemId, null, false, false);
 	}
 
 	public static ItemStatusDBUnit deleteChildren(long parentId) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, parentId, null, true);
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, parentId, null, true, false);
 	}
 
 	public static ItemStatusDBUnit delete(ItemBasics item) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, item, false);
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, item, false, false);
 	}
 
 	public static ItemStatusDBUnit deleteChildren(ItemBasics parent) {
-		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, parent, true);
+		return new ItemStatusDBUnit(Item.STATUS_DELETED, -1, parent, true, false);
 	}
 
 	public static ItemStatusDBUnit hide(long itemId) {
-		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, itemId, null, false);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, itemId, null, false, false);
 	}
 
 	public static ItemStatusDBUnit hideChildren(long parentId) {
-		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, parentId, null, true);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, parentId, null, true, false);
 	}
 
 	public static ItemStatusDBUnit hide(ItemBasics item) {
-		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, item, false);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, item, false, false);
 	}
 
 	public static ItemStatusDBUnit hideChildren(ItemBasics parent) {
-		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, parent, true);
+		return new ItemStatusDBUnit(Item.STATUS_HIDDEN, -1, parent, true, false);
 	}
 
 	public static ItemStatusDBUnit restore(long itemId) {
-		return new ItemStatusDBUnit(Item.STATUS_NORMAL, itemId, null, false);
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, itemId, null, false, false);
 	}
 
 	public static ItemStatusDBUnit restoreParent(long parentId) {
-		return new ItemStatusDBUnit(Item.STATUS_NORMAL, parentId, null, true);
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, parentId, null, true, false);
+	}
+
+	public static ItemStatusDBUnit restoreJustSelf(long parentId) {
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, parentId, null, false, true);
 	}
 
 	public static ItemStatusDBUnit restore(ItemBasics item) {
-		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, item, false);
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, item, false, false);
 	}
 
 	public static ItemStatusDBUnit restoreParent(ItemBasics parent) {
-		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, parent, true);
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, parent, true, false);
+	}
+
+	public static ItemStatusDBUnit restoreJustSelf(ItemBasics item) {
+		return new ItemStatusDBUnit(Item.STATUS_NORMAL, -1, item, false, true);
 	}
 
 	public static ItemStatusDBUnit toggle(long itemId) {
-		return new ItemStatusDBUnit(STATUS_TOGGLE, itemId, null, false);
+		return new ItemStatusDBUnit(STATUS_TOGGLE, itemId, null, false, false);
 	}
 
 	public static ItemStatusDBUnit toggle(ItemBasics item) {
-		return new ItemStatusDBUnit(STATUS_TOGGLE, -1, item, false);
+		return new ItemStatusDBUnit(STATUS_TOGGLE, -1, item, false, false);
 	}
 
 	@Override
@@ -113,15 +123,18 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 					.WHERE().col(I_ID).long_(item.getId()).sql(";\r\n");
 		}
 		// Потом обновить все сабайтемы
-		updateItemStatus.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
-				.SET().col(I_STATUS).byte_(newStatus)
-				.WHERE().col(IP_PARENT_ID).long_(item.getId())
-				.AND().col(IP_ASSOC_ID).byte_(primaryAssoc);
+		if (!justSelf) {
+			updateItemStatus.UPDATE(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_CHILD_ID)
+					.SET().col(I_STATUS).byte_(newStatus)
+					.WHERE().col(IP_PARENT_ID).long_(item.getId())
+					.AND().col(IP_ASSOC_ID).byte_(primaryAssoc);
+		}
 		startQuery(updateItemStatus.getSimpleSql());
-		try(PreparedStatement pstmt = updateItemStatus.prepareQuery(getTransactionContext().getConnection())) {
+		try (PreparedStatement pstmt = updateItemStatus.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
 		endQuery();
+
 
 		// Дополнительная обработка для удаления
 		if (triggerExtra && newStatus == Item.STATUS_DELETED) {

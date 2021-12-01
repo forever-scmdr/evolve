@@ -80,7 +80,7 @@ public class EmailQueueSender extends IntegrateBase {
 			String url = message.getStringValue(EMAIL_URL);
 			if (StringUtils.isBlank(emailTo) || StringUtils.isBlank(url)) {
 				addError("Не заданы обязательные параметры письма. Задание удаляется", "sender");
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message));
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message).noFulltextIndex().noTriggerExtra().ignoreUser());
 
 				continue;
 			}
@@ -89,7 +89,7 @@ public class EmailQueueSender extends IntegrateBase {
 				template = getExecutablePage(url);
 			} catch (Exception e) {
 				addError("Неверный формат ссылки на шаблон письма " + url + ". Задание удаляется", e.getMessage());
-				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message));
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message).noFulltextIndex().noTriggerExtra().ignoreUser());
 				processed++;
 				continue;
 			}
@@ -117,7 +117,7 @@ public class EmailQueueSender extends IntegrateBase {
 				File imgFile = new File(AppContext.getRealPath(relPath));
 				if (!imgFile.exists()) {
 					addError("Не найден файл изображения " + relPath + ". Задание удаляется", "sender");
-					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message));
+					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message).noFulltextIndex().noTriggerExtra().ignoreUser());
 					processed++;
 					continue;
 				}
@@ -151,7 +151,7 @@ public class EmailQueueSender extends IntegrateBase {
 			
 			// Сообщение об отправке сообщения
 			pushLog("Сообщение для " + emailTo + " отправлено");
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message));
+			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(message).noFulltextIndex().noTriggerExtra().ignoreUser());
 			processed++;
 			
 			setProcessed(processed);

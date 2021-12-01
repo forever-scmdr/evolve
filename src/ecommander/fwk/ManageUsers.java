@@ -68,6 +68,8 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			if (userItem.isValueEmpty(EMAIL_PARAM)) {
 				throw new EcommanderException(VALIDATION_FAILED, "Не заполнены обязательные поля");
 			}
+			makeRegistered();
+			/*
 			String userName = userItem.getStringValue(EMAIL_PARAM);
 			String password = userItem.getStringValue(PASSWORD_PARAM);
 			User newUser = new User(userName, password, "manager", User.ANONYMOUS_ID);
@@ -77,6 +79,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			} catch (UserExistsExcepion e) {
 				throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 			}
+			 */
 		} else if (mode == UPDATE) {
 			makeRegistered();
 			String initialEmail = (String)((SingleParameter)userItem.getParameterByName(EMAIL_PARAM)).getInitialValue();
@@ -87,7 +90,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 				user.setNewName(userItem.getStringValue(EMAIL_PARAM));
 				user.setNewPassword(userItem.getStringValue(PASSWORD_PARAM));
 				try {
-					executeCommand(new UpdateUserDBUnit(user, false));
+					executeCommand(new UpdateUserDBUnit(user, false).ignoreUser());
 				} catch (UserExistsExcepion e) {
 					throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 				}
@@ -96,16 +99,20 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			User user = UserMapper.getUser(userItem.getStringValue(EMAIL_PARAM), userItem.getStringValue(PASSWORD_PARAM),
 					getTransactionContext().getConnection());
 			if (user != null) {
-				executeCommand(new DeleteUserDBUnit(user.getUserId(), true));
+				executeCommand(new DeleteUserDBUnit(user.getUserId(), true).ignoreUser());
 			}
 		}
 	}
 
 	private void makeRegistered() throws Exception {
 		Parameter regParam = userItem.getParameterByName(REGISTERED);
-		if (regParam != null && regParam.hasChanged() && userItem.getByteValue(REGISTERED) != (byte) 1) {
-			userItem.setValue(REGISTERED, (byte) 1);
-		} else if (regParam == null || !regParam.hasChanged()) {
+		if (userItem.isPersonal()) {
+			if (userItem.getByteValue(REGISTERED) != (byte) 1) {
+				userItem.setValue(REGISTERED, (byte) 1);
+				executeCommand(SaveItemDBUnit.get(userItem).noTriggerExtra().ignoreUser());
+			}
+			return;
+		} else if (userItem.getByteValue(REGISTERED) == (byte) 0) {
 			return;
 		}
 		String userName = userItem.getStringValue(EMAIL_PARAM);
@@ -121,9 +128,9 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			User owner = UserMapper.getUser(userItem.getOwnerUserId());
 			if (StringUtils.equalsIgnoreCase(newUser.getName(), owner.getName()))
 				return;
-			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "User name already exists");
+			throw e;
 		}
-		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)));
+		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
 
 		// Отправка письма
 		try {

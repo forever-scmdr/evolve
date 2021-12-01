@@ -38,6 +38,14 @@ public class CookieStaticVariable extends SessionStaticVariable {
 	}
 
 	/**
+	 * Вернуть значение куки в виде, в котором оно будет храниться у пользователя
+	 * @return
+	 */
+	public String getCookiePlain() {
+		return parentPage.getSessionContext().getCookie(name);
+	}
+
+	/**
 	 * Удалить значение из сеанса
 	 */
 	public void remove() {

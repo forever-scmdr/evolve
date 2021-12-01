@@ -50,6 +50,8 @@ public class Item implements ItemBasics {
 	private static final String PARAM_TAG = "param";
 	public static final String ID_ATTRIBUTE = "id";
 	public static final String KEY_PARAMETER = "@key";
+	private static final String VALUE_SEPARATOR = ":<v>:";
+	private static final String PARAM_SEPARATOR = ":<p>:";
 
 	private static final int DIR_NAME_LENGTH = 3;
 	private static final char FINAL_DIR_CHAR = 'f';
@@ -469,7 +471,7 @@ public class Item implements ItemBasics {
 					Parameter param = paramMap.get(paramDesc.getId());
 					// Установить значение по умолчанию если оно необходимо
 					if (paramDesc.hasDefaultValue() && (param == null || param.isEmpty())) {
-						setValueUI(paramDesc.getId(), paramDesc.getDefaultValue());
+						getParameterFromMap(paramDesc.getId()).createAndSetValue(paramDesc.getDefaultValue(), true);
 						param = paramMap.get(paramDesc.getId());
 					}
 					// Создать XML для непустых параметров
@@ -884,7 +886,7 @@ public class Item implements ItemBasics {
 	 * @param destination
 	 * @throws SQLException 
 	 */
-	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...paramNamesToUpdate) {
+	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...exceptParams) {
 		// Если тип айтемов не совпадает - ничего не делать
 		try {
 			Collection<ParameterDescription> paramsToCopy;
@@ -897,13 +899,13 @@ public class Item implements ItemBasics {
 			else
 				return;
 			source.populateMap();
-			HashSet<String> neededParams = null;
+			HashSet<String> excludeParams = null;
 			// Если переданы параметры для копирования, то создать из них множество
-			if (paramNamesToUpdate.length > 0)
-				neededParams = new HashSet<>(Arrays.asList(paramNamesToUpdate));
+			if (exceptParams.length > 0)
+				excludeParams = new HashSet<>(Arrays.asList(exceptParams));
 			for (ParameterDescription paramDesc : paramsToCopy) {
 				// Пропустить ненужные параметры
-				if (neededParams != null && !neededParams.contains(paramDesc.getName()))
+				if (excludeParams != null && excludeParams.contains(paramDesc.getName()))
 					continue;
 				Parameter param = source.paramMap.get(paramDesc.getId());
 				if (param != null) {
@@ -933,15 +935,15 @@ public class Item implements ItemBasics {
 	}
 
 	/**
-	 * Обновить все параметры айтема (если задан список, то параметры из списка)
+	 * Обновить все параметры айтема (кроме параметров из списка)
 	 * При этом, если в источнике значения параметров-файлов пустые, то значения этих файловых
 	 * параметров также удаляются и из редактируемого айтема
 	 * @param source
 	 * @param destination
-	 * @param paramNamesToUpdate
+	 * @param exceptParams
 	 */
-	public static void updateParamValues(Item source, Item destination, String...paramNamesToUpdate) {
-		updateParamValuesInner(source, destination, false, paramNamesToUpdate);
+	public static void updateParamValues(Item source, Item destination, String...exceptParams) {
+		updateParamValuesInner(source, destination, false, exceptParams);
 	}
 
 	/**
@@ -962,10 +964,23 @@ public class Item implements ItemBasics {
 	public final void setExtra(String name, Object value) {
 		if (extras == null)
 			extras = new InputValues();
-		if (value == null)
-			extras.remove(name);
 		else
+			extras.remove(name);
+		if (value != null)
 			extras.add(name, value);
+	}
+
+	/**
+	 * Добавить дополнительное значение в айтем (при этом не удаляя старое значение с таким именем)
+	 * @param name
+	 * @param value
+	 */
+	public final void addExtra(String name, Object value) {
+		if (value == null)
+			return;
+		if (extras == null)
+			extras = new InputValues();
+		extras.add(name, value);
 	}
 	/**
 	 * Извлечь дополнительное значение из айтема
@@ -1408,6 +1423,42 @@ public class Item implements ItemBasics {
 			return Long.parseLong(idStr);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Сериализовать параметры айтема в строку, из которой потом можно восстановить параметры
+	 * @param item
+	 * @return
+	 */
+	public static String setializeParamValues(Item item) {
+		StringBuilder sb = new StringBuilder();
+		for (String paramName : item.getItemType().getParameterNames()) {
+			if (item.isValueNotEmpty(paramName)) {
+				sb.append(PARAM_SEPARATOR).append(paramName).append(VALUE_SEPARATOR);
+				ArrayList<String> values = item.outputValues(paramName);
+				sb.append(StringUtils.join(values, VALUE_SEPARATOR));
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Восстановить значения параметров айтема из строки
+	 * @param item
+	 * @param serializedParams
+	 * @throws Exception
+	 */
+	public static void restoreParamValues(Item item, String serializedParams) throws Exception {
+		String[] paramsAndValues = StringUtils.splitByWholeSeparator(serializedParams, PARAM_SEPARATOR);
+		for (String paramAndValues : paramsAndValues) {
+			String[] values = StringUtils.splitByWholeSeparator(paramAndValues, VALUE_SEPARATOR);
+			if (values.length < 2)
+				continue;
+			String paramName = values[0];
+			for (int i = 1; i < values.length; i++) {
+				item.setValueUI(paramName, values[i]);
+			}
 		}
 	}
 }

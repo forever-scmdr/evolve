@@ -14,7 +14,7 @@ public class CommandPEWriter implements PageElementWriter {
 		CommandPE command = (CommandPE) elementToWrite;
 		if (command.hasExecutionResult()) {
 			ResultPE result = command.getExecutionResult();
-			if (result.getType() == ResultPE.ResultType.plain_text) {
+			if (result.getType() == ResultPE.ResultType.inline_text) {
 				xml
 						.startElement(command.getTag())
 						.startElement(command.getExecutionResult().getName())
@@ -22,7 +22,7 @@ public class CommandPEWriter implements PageElementWriter {
 						.endElement()
 						.endElement();
 			}
-			else if (result.getType() == ResultPE.ResultType.xml) {
+			else if (result.getType() == ResultPE.ResultType.inline_xml) {
 				xml
 						.startElement(command.getTag())
 						.startElement(command.getExecutionResult().getName())

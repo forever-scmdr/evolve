@@ -282,12 +282,16 @@ public class SessionContext implements AutoCloseable {
 	/**
 	 * Вернуть куки, переданный с запросом.
 	 * Если куки не найден, возвращается null
+	 * Если куки с искомым именем был установлен ранее при выполнении команды, то возвращается он,
+	 * а куки из request игнорируется
 	 * @param name
 	 * @return
 	 */
 	public String getCookie(String name) {
 		if (request == null)
 			return null;
+		if (cookies != null && cookies.containsKey(name))
+			return cookies.get(name);
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null)
 			return null;
