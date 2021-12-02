@@ -431,7 +431,7 @@ public abstract class BasicCartManageCommand extends Command {
         ResultPE success = getResult("complect_ajax");
         success.addVariable("product", String.valueOf(prodId));
         if(getVarSingleValueDefault("specific", "no").equals("yes")){
-            success.addVariable()
+            success.addVariable("bought", String.valueOf(bought.getId()));
         }
         return success;
     }
