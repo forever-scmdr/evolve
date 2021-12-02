@@ -38,8 +38,9 @@ public class UserMapper implements DBConstants.UsersTbl, DBConstants.UserGroups,
 			pstmt = query.prepareQuery(conn);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				if (user == null)
+				if (user == null) {
 					user = new User(rs.getString(U_LOGIN), rs.getString(U_PASSWORD), rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
+				}
 				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
 			}
 

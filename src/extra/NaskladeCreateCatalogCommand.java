@@ -10,6 +10,7 @@ import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.DeleteAssocDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
@@ -28,18 +29,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class NaskladeCreateCatalogCommand extends IntegrateBase implements CatalogConst {
+	private static final long LIFESPAN = 3600000 * 24 * 20; //20 days
 	private static final String INTEGRATION_DIR = "ym_integrate";
 	private static final String FILE_URL = "http://opt.nasklade.by/sitefiles/1/11/catalog_export.xml";
+	private static final int LOAD_BATCH_SIZE = 1000;
+	private static final int STATUS_BATCH_SIZE = 500;
 	private File xml;
 	Item catalog;
 
 	@Override
 	protected void integrate() throws Exception {
+
+		setOperation("Скрываем все товары");
+		hideAllProducts();
+		pushLog("Все товары скрыты");
+
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
 
@@ -69,29 +76,79 @@ public class NaskladeCreateCatalogCommand extends IntegrateBase implements Catal
 			parser.parse(xml, prodHandler);
 		//}
 
-		info.pushLog("Создание товаров завершено");
+		pushLog("Создание товаров завершено");
 
-		info.pushLog("Прикрепление сопутствующих товаров");
-		info.setOperation("Прикрепление сопутствующих товаров");
+		setOperation("Удаление долго осутствовавших товаров");
+		deleteLongAbsentProducts();
+		pushLog("Удаление долго осутствовавших товаров завершено");
+
+		pushLog("Прикрепление сопутствующих товаров");
+		setOperation("Прикрепление сопутствующих товаров");
 
 		addRelatedProducts();
 
-		info.pushLog("Прикрепление сопутствующих товаров завершено");
+		pushLog("Прикрепление сопутствующих товаров завершено");
 
-		info.pushLog("Прикрепление картинок к разделам");
-		info.setOperation("Прикрепление картинок к разделам");
+		pushLog("Прикрепление картинок к разделам");
+		setOperation("Прикрепление картинок к разделам");
 
 		attachImages();
 
-		info.pushLog("Прикрепление картинок к разделам завершено");
-		info.pushLog("Индексация");
-		info.setOperation("Индексация");
+		pushLog("Прикрепление картинок к разделам завершено");
+		pushLog("Индексация");
+		setOperation("Индексация");
 
 		LuceneIndexMapper.getSingleton().reindexAll();
 
-		info.pushLog("Индексация завершена");
+		pushLog("Индексация завершена");
 		Path log = Paths.get(AppContext.getContextPath(), getClass().getSimpleName()+"_log.txt");
 		Files.write(log, ("\nend: "+ new Date()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+	}
+
+	private void deleteLongAbsentProducts() throws Exception {
+		setProcessed(0);
+		Queue<Item> products = new LinkedList<>();
+
+		long now = new Date().getTime();
+		products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L, Item.STATUS_HIDDEN));
+		long id = 0;
+		int counter = 0;
+		while (products.size() > 0) {
+			while (products.size() != 0) {
+				Item product = products.poll();
+				id = product.getId();
+				if(now - product.getTimeUpdated() > LIFESPAN){
+					executeCommandUnit(ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
+					counter++;
+					info.increaseProcessed();
+					if(counter > STATUS_BATCH_SIZE){
+						commitCommandUnits();
+					}
+				}
+			}
+			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id));
+		}
+		commitCommandUnits();
+	}
+
+	private void hideAllProducts() throws Exception {
+		setProcessed(0);
+		Queue<Item> products = new LinkedList<>();
+		products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L));
+		long id = 0;
+		int counter = 0;
+		while (products.size() > 0) {
+			while (products.size() != 0) {
+				Item product = products.poll();
+				id = product.getId();
+				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+				counter++;
+				if (counter >= STATUS_BATCH_SIZE) commitCommandUnits();
+				info.increaseProcessed();
+			}
+			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id));
+		}
+		commitCommandUnits();
 	}
 
 	private void addRelatedProducts() throws Exception {

@@ -208,8 +208,11 @@ public class NaskladeProductCreationHandler extends DefaultHandler implements Ca
 					product.setValueUI(TAG_PARAM, label);
 				}
 
-				product.removeEqualValue("mark", product.getValue(VENDOR_PARAM));
-				product.setValueUI("mark", product.getStringValue(VENDOR_PARAM, ""));
+				String vendor = product.getStringValue(VENDOR_PARAM,"");
+				product.removeEqualValue("mark", vendor);
+				product.removeEqualValue("mark", vendor.toUpperCase());
+				product.removeEqualValue("mark", vendor.toLowerCase());
+				product.setValueUI("mark", vendor);
 
 				boolean isSaved = addPics(product);
 				if (!isSaved) {

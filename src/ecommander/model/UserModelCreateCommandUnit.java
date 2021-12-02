@@ -92,7 +92,7 @@ class UserModelCreateCommandUnit extends DBPersistenceCommandUnit implements Use
 		// Создание нового пользователя
 		User user = new User(login, password, description, 0);
 		if (UserMapper.userNameExists(login, getTransactionContext().getConnection())) {
-			user = UserMapper.getUser(login, password, getTransactionContext().getConnection());
+			user = UserMapper.getUser(login, getTransactionContext().getConnection());
 		}
 		Elements groupEls = userEl.getElementsByTag(GROUP);
 		if (groupEls.size() == 0)
