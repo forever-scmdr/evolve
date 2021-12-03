@@ -153,14 +153,14 @@ public class ImportEltechSpbRu extends IntegrateBase implements ItemNames {
 						BigDecimal price = price1 != null ? price1 : price2;
 						if (price == null)
 							return;
-						BigDecimal minQty = new BigDecimal(1);
-						BigDecimal quotient = getQtyQuotient(price);
-						price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
-						minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
-						String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
-						prod.set_min_qty(minQty);
-						prod.set_unit(unit);
+						//BigDecimal minQty = new BigDecimal(1);
 						currencyRates.setAllPrices(prod, price, "USD");
+						BigDecimal quotient = getQtyQuotient(currencyRates.getPrice(prod, "USD"));
+						//price = price.multiply(quotient).setScale(2, RoundingMode.CEILING);
+						//minQty = minQty.divide(quotient, RoundingMode.HALF_EVEN).setScale(0, RoundingMode.HALF_EVEN);
+						//String unit = quotient.compareTo(new BigDecimal(1.5)) > 0 ? "упк(" + quotient + ")" : "шт.";
+						prod.set_min_qty(quotient);
+						prod.set_unit("шт.");
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 						info.increaseProcessed();
 					}

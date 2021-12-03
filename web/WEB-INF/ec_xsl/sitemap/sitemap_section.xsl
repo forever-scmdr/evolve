@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-				version="2.0">
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
 
     <xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="no"/>
     <xsl:strip-space elements="*"/>
@@ -11,8 +11,8 @@
     <xsl:variable name="freq" select="page/sitemap_settings/changefreq_product"/>
 
     <xsl:template match="/">
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-		>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <xsl:text disable-output-escaping="yes">
    &lt;!--**********************************************************************************--&gt;
 </xsl:text>

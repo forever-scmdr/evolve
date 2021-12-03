@@ -107,9 +107,11 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_name(src.getValue(NAME_HEADER));
 							prod.set_available(NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) 0));
 							prod.set_qty(src.getCurrencyValue(QTY_HEADER, new BigDecimal(0)));
-							prod.set_min_qty(src.getCurrencyValue(MIN_QTY_HEADER, new BigDecimal(1)));
 							//prod.set_price(src.getCurrencyValue(PRICE_HEADER, new BigDecimal(0)));
 							currencyRates.setAllPrices(prod, src.getValue(PRICE_HEADER));
+							BigDecimal fileMinQty = src.getCurrencyValue(MIN_QTY_HEADER, BigDecimal.ZERO);
+							BigDecimal minQty = fileMinQty.equals(BigDecimal.ZERO) ? getQtyQuotient(currencyRates.getPrice(prod, "USD")) : fileMinQty;
+							prod.set_min_qty(minQty);
 							prod.set_vendor(src.getValue(VENDOR_HEADER));
 							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_unit(src.getValue(UNIT_HEADER));
@@ -143,5 +145,20 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+
+	private static final BigDecimal D_0003 = new BigDecimal(0.003);
+	private static final BigDecimal D_003 = new BigDecimal(0.03);
+	private static final BigDecimal D_10 = new BigDecimal(10);
+	private static final BigDecimal D_100 = new BigDecimal(100);
+
+	private static BigDecimal getQtyQuotient(BigDecimal price) {
+		if (price.compareTo(D_0003) < 0) {
+			return D_100;
+		} else if (price.compareTo(D_003) < 0) {
+			return D_10;
+		}
+		return new BigDecimal(1);
 	}
 }

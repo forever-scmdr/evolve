@@ -209,7 +209,7 @@
 			<var name="limit" value="144"/>
 		</link>
 		<link name="show_only_available" target="plain_catalog"/>
-		
+
 		<link name="show_all" target="plain_catalog">
 			<var name="minqty" value=""/>
 		</link>
@@ -353,6 +353,7 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
 
 
 
@@ -659,20 +660,20 @@
 
 
 
-	<page name="product" template="product" cacheable="true" >
+	<page name="product" template="" cacheable="false" >
 		<request>
 			<var name="prod" style="translit"/>
 			<var name="assoc_code"/>
 			<var name="name"/>
 			<var name="vendor_code"/>
 		</request>
+		<link name="canonical_link" target="product" type="exclusive">
+			<var name="prod" var="prod" style="translit"/>
+		</link>
 		<single item="product" id="prod" var="prod">
-			<link name="canonical_link" target="product" type="exclusive">
-				<var name="prod" item="prod" style="translit"/>
-			</link>
 			<single item="seo" id="seo"/>
 			<single item="params" id="params"/>
-			<single item="product_extra"/>
+			<single item="product_extra" />
 			<single item="manual"/>
 			<ancestor item="section" transit="false" tag="product_section" id="parent"/>
 			<link name="to_cart" target="cart_action">
@@ -1971,5 +1972,6 @@
 		</link>
 		<include name="COMMON"/>
 	</page>
+
 
 </site>
