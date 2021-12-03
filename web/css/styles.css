@@ -119,6 +119,11 @@ input[type=checkbox] {
 		color: #212121;
 		border: 1px solid #e52d2a; }
 
+.button.button_gray{
+		background-color: #5a5a5a;
+		border-color: #5a5a5a;
+	}
+
 .button_size_lg, .order_product button {
 	font-size: 16px;
 	padding: 10px 18px; }
@@ -2915,4 +2920,51 @@ div#search-result-mobile {
 .vl_flex {
 	display: flex;
 	flex: 1 1 auto;
+}
+.toggler{
+	display: block;
+	position: absolute;
+	right:0;
+	width: 24px;
+	height: 24px;
+	font-weight: bold;
+	line-height: 23px;
+	border: 1px solid #ccc;
+	top:0;
+	text-align: center;
+
+}
+/*config toggler*/
+.toggler:hover{
+	text-decoration: none;
+}
+.toggle-header{
+	position: relative;
+	font-weight: normal;
+	padding-right: 35px;
+	line-height: 23px;
+	padding-left: 5px;
+}
+.toggler-sum{
+	padding-left: 10px;
+	float: right;
+	text-transform: uppercase;
+	color: #707070;
+	border-left: 1px solid #ccc;
+}
+.bought-container{
+	margin-bottom: 14px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+.bought-container .delete{
+	display: inline-block;
+	margin-left: 20px;
+	font-size: 13.33px;
+}
+.bought-container .compl-name{
+	border-top:0;
+	border-left:0;
+	border-right:0;
+	border-color: #707070;
 }
