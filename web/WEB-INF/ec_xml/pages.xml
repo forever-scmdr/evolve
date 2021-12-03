@@ -138,7 +138,7 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="prod"/>
 		</link>
-		<link name="update_complecatation_link" target="cart_action">
+		<link name="create_complect_link" target="cart_action">
 			<var name="prod" ref="prod"/>
 			<var name="action" value="createComplectation"/>
 		</link>
@@ -942,7 +942,7 @@
 	</page>
 
 
-	<page name="complect_ajax">
+	<page name="complect_ajax" template="complect_ajax">
 		<request>
 			<var name="message"/>
 			<var name="product" />
@@ -952,14 +952,18 @@
 			<single item="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="product" tag="product">
-						<link name="to_cart" target="cart_action">
-							<var name="action" value="addToCart"/>
+						<link name="create_complect_link" target="cart_action">
+							<var name="action" value="createComplectation"/>
 							<var name="prod" ref="product"/>
 						</link>
 						<list item="option"/>
 					</list>
 					<link name="update_complect_link" target="cart_action">
 						<var name="action" value="updateComplectation"/>
+						<var name="bought" ref="bought"/>
+					</link>
+					<link name="delete_link" target="cart_action">
+						<var name="action" value="deleteComplect"/>
 						<var name="bought" ref="bought"/>
 					</link>
 				</list>

@@ -396,22 +396,61 @@ public abstract class BasicCartManageCommand extends Command {
         if (isValidOptionList(ids, allOptions) && isValidOptionQuantities(idQtys, allOptions)) {
             BigDecimal sum = ItemQuery.loadById(prodId).getDecimalValue(priceParam, BigDecimal.ZERO);
             Map<Long, Item> map = allOptions.stream().collect(Collectors.toMap(x -> x.getId(), x -> x));
-            for (long id : idQtys.keySet()) {
-                int qty = idQtys.get(id);
+            for (long id : map.keySet()) {
                 Item option = map.get(id);
-                bought.setValueUI("option", id + "=" + qty);
-                BigDecimal price = option.getDecimalValue(priceParam, BigDecimal.ZERO);
-                price = price.multiply(new BigDecimal(qty));
-                sum = sum.add(price);
+                if(idQtys.containsKey(id)) {
+                    int qty = idQtys.get(id);
+                    bought.setValueUI("option", id + "=" + qty);
+                    BigDecimal price = option.getDecimalValue(priceParam, BigDecimal.ZERO);
+                    price = price.multiply(new BigDecimal(qty));
+                    sum = sum.add(price);
+                }
                 Item product = getSessionMapper().getItemsByName(PRODUCT_ITEM, bought.getId()).get(0);
                 option.setContextPrimaryParentId(product.getId());
                 getSessionMapper().saveTemporaryItem(option, "option");
             }
-
+            bought.setValue(SUM_PARAM, sum);
+            String name = getVarSingleValueDefault("complecatation_name","");
+            bought.setValue("complecatation_name", name);
+            getSessionMapper().saveTemporaryItem(bought);
         } else {
             return false;
         }
         return true;
+    }
+
+    public ResultPE deleteComplect() throws Exception {
+        String boughtIdVar = getVarSingleValue(BOUGHT_ITEM);
+        long boughtId = Long.parseLong(boughtIdVar);
+        Item bought = getSessionMapper().getItem(boughtId, BOUGHT_ITEM);
+        Item product = getSessionMapper().getItemsByName(PRODUCT_ITEM, bought.getId()).get(0);
+        long prodId = product.getId();
+
+        ensureCart();
+
+        List<Item>boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+        List<Item> allOptions = getSessionMapper().getItemsByName("option", prodId);
+        Map<Long, Item> map = allOptions.stream().collect(Collectors.toMap(x -> x.getId(), x -> x));
+
+        getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
+
+        for(Item b : boughts){
+            if(b.getId() == boughtId) continue;
+            List<Item> prods = getSessionMapper().getItemsByName(PRODUCT_ITEM, b.getId());
+            if(prods.size() > 0 && prods.get(0).getId() == prodId){
+                product.setContextPrimaryParentId(b.getId());
+                getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
+                for (long id : map.keySet()) {
+                    Item option = map.get(id);
+                    option.setContextPrimaryParentId(product.getId());
+                    getSessionMapper().saveTemporaryItem(option, "option");
+                }
+                break;
+            }
+        }
+        ResultPE success = getResult("complect_ajax");
+        success.addVariable("product", String.valueOf(prodId));
+        return success;
     }
 
     public ResultPE updateComplectation() throws Exception {
@@ -419,7 +458,6 @@ public abstract class BasicCartManageCommand extends Command {
         long boughtId = Long.parseLong(boughtIdVar);
         Item bought = getSessionMapper().getItem(boughtId, BOUGHT_ITEM);
         bought.clearValue("option");
-        bought.setValue("complecatation_name", getVarSingleValue("name"));
         Item product = getSessionMapper().getItemsByName(PRODUCT_ITEM, bought.getId()).get(0);
         long prodId = product.getId();
 

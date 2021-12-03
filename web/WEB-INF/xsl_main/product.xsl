@@ -402,9 +402,15 @@
 			<div class="device-basic complectations">
 				<div class="complectation device-basic__column" style="flex: 0 0 50%;">
 					<h3>Опции</h3>
-					<form method="post" action="{$p/update_complecatation_link}">
+					<div style="margin-bottom:20px;"></div>
+					<form method="post" action="{$p/create_complect_link}" ajax="true" ajax-loader-id="complect_ajax-{@id}">
 						<input type="hidden" name="qty" value="1"/>
-						<table>
+						<table style="margin-bottom:14px;">
+							<tr>
+								<td colspan="{if($need_qty) then 5 else 4}" style="padding-left:0;">
+									<input type="text" name="complecatation_name" placeholder="Название комплектации" class="input" style="width:200px"/>
+								</td>
+							</tr>
 							<tr>
 								<th></th>
 								<th>Код</th>
@@ -445,11 +451,22 @@
 									</td>
 								</tr>
 							</xsl:for-each>
+							<tr>
+								<td colspan="{if($need_qty) then 5 else 4}" style="padding-left:0;">
+									Сумма: <span id="sum" data-base="$p/price"><xsl:value-of select="f:currency_decimal($p/price)"/></span> EUR
+								</td>
+							</tr>
 						</table>
-						<input type="submit" class="button" value="сохранить комплектацию" />
+						<input type="submit" class="button" value="Создать комплектацию" />
 					</form>
 				</div>
-				<div id="complectation_ajax-{@id}" class="complectation device-basic__column"></div>
+				<div id="complect_ajax-{$p/@id}" class="complectation device-basic__column">
+					<script>
+						$(document).ready(function(){
+							insertAjax('complect_ajax?product=<xsl:value-of select="$p/@id"/>');
+						});
+					</script>
+				</div>
 			</div>
 		</xsl:if>
 	</xsl:template>
