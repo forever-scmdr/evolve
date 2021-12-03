@@ -1276,14 +1276,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		}
 
 		if (hasZeroBoughts || hasCustomBougths) {
-			String customTopic = "Запрос " + userForm.getStringValue(user_jur_.ORGANIZATION) + " №" + String.format("%05d", orderNumber) + "-Z от "
+			String requestOrderNumber = String.format("%05d", orderNumber);
+			String customTopic = "Запрос " + userForm.getStringValue(user_jur_.ORGANIZATION) + " №" + requestOrderNumber + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
 			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
-			customLink.addStaticVariable("order_num", displayOrderNumber);
+			customLink.addStaticVariable("order_num", requestOrderNumber);
 			customLink.addStaticVariable("action", "post_jur");
 			if (hasRegularBoughts) {
-				String also = (StringUtils.isBlank(displayOrderNumber)) ? "self" : displayOrderNumber.replaceAll("\\d", "");
+				String also = (StringUtils.isBlank(requestOrderNumber)) ? "self" : requestOrderNumber.replaceAll("\\d", "");
 				customLink.addStaticVariable("also", also);
 			}
 
@@ -1404,14 +1405,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		}
 
 		if (hasZeroBoughts || hasCustomBougths) {
-			String customTopic = "Запрос " + userForm.getStringValue(user_phys_.SECOND_NAME) + " №" + String.format("%05d", orderNumber) + "-Z от "
+			String requestOrderNumber = String.format("%05d", orderNumber);
+			String customTopic = "Запрос " + userForm.getStringValue(user_phys_.SECOND_NAME) + " №" + requestOrderNumber + "-Z от "
 					+ DAY_FORMATTER.print(DateTime.now());
 
 			LinkPE customLink = LinkPE.newDirectLink("link", "request_email", false);
-			customLink.addStaticVariable("order_num", displayOrderNumber);
+			customLink.addStaticVariable("order_num", requestOrderNumber);
 			customLink.addStaticVariable("action", "post_phys");
 			if (hasRegularBoughts) {
-				String also = (StringUtils.isBlank(displayOrderNumber)) ? "self" : displayOrderNumber.replaceAll("\\d", "");
+				String also = (StringUtils.isBlank(requestOrderNumber)) ? "self" : requestOrderNumber.replaceAll("\\d", "");
 				customLink.addStaticVariable("also", also);
 			}
 

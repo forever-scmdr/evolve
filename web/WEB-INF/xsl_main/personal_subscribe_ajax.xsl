@@ -11,7 +11,12 @@
     <xsl:template match="/">
 		<xsl:for-each select="page/observer">
 			<div class="result popup__body" id="subs_{observable}">
-				<a style="color: green">В списке уведомления</a>
+				<span style="font-size: 12px; font-weight: 400">&#128276;</span>&#160;<a href="{delete_link}" style="color: grey" ajax="true">Снять уведомление</a>
+			</div>
+		</xsl:for-each>
+		<xsl:for-each select="page/deleted">
+			<div class="result popup__body" id="subs_{code}">
+				<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
 			</div>
 		</xsl:for-each>
 	</xsl:template>

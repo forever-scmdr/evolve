@@ -693,11 +693,11 @@
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_product"/>
 			<ancestor item="section" id="p_sec" tag="section">
-				<link name="show_sec" target="search">
+				<link name="show_sec" target="search_strict">
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
 				</link>
-				<link name="show_products" target="section">
+				<link name="show_products" target="search_strict">
 					<var name="selected_section" ref="p_sec" parameter="code"/>
 				</link>
 			</ancestor>
@@ -984,9 +984,15 @@
 			<var name="message"/>
 		</request>
 		<personal>
-			<single item="user" tag="registration"/>
+			<single item="user" tag="registration" id="user"/>
 		</personal>
-		<single item="product" var="prod" id="prod"/>
+		<single item="product" var="prod" id="prod">
+			<link name="delete_link" target="subscribe_command">
+				<var name="observer" ref="user" parameter="email"/>
+				<var name="observable" ref="prod" parameter="code"/>
+				<var name="action" value="delete"/>
+			</link>
+		</single>
 		<new item="observer" id="form" tag="form">
 			<parameter-input ref="form" form="observer"/>
 		</new>
@@ -997,15 +1003,61 @@
 
 
 	<page name="personal_subscribe_ajax" template="personal_subscribe_ajax">
+		<request>
+			<var name="code"/>
+		</request>
 		<personal>
 			<single item="user" tag="registration" id="user"/>
 		</personal>
-		<list item="observer">
+		<list item="observer" id="obs">
 			<filter>
 				<parameter name="observer"><var ref="user" parameter="email"/></parameter>
 			</filter>
+			<link name="delete_link" target="subscribe_command">
+				<var name="observer" ref="obs" parameter="observer"/>
+				<var name="observable" ref="obs" parameter="observable"/>
+				<var name="action" value="delete"/>
+			</link>
 		</list>
+		<single item="product" var="code" parameter="code" id="deleted" tag="deleted">
+			<link name="subscribe_link" target="subscribe_ajax">
+				<var name="prod" ref="deleted"/>
+			</link>
+		</single>
 	</page>
+
+
+
+	<page name="subscribe_command">
+		<request>
+			<var name="prod"/>
+			<var name="observable"/>
+		</request>
+		<link name="success" target="subscribe_ajax">
+			<var name="prod" var="prod"/>
+			<var name="result" value="success"/>
+			<var name="message" value="Ожидайте уведомления о поступлении на email"/>
+		</link>
+		<link name="deleted" target="personal_subscribe_ajax">
+			<var name="code" var="observable"/>
+		</link>
+		<link name="error_not_set" target="subscribe_ajax">
+			<var name="result" value="error"/>
+			<var name="prod" var="prod"/>
+			<var name="message" value="Заполните, пожалуйста, электронную почту"/>
+		</link>
+		<link name="general_error" target="subscribe_ajax">
+			<var name="result" value="error"/>
+			<var name="message"
+				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
+		</link>
+		<command class="ecommander.fwk.SubscribeCommand">
+			<result name="success" type="redirect"/>
+			<result name="error_not_set" type="redirect"/>
+			<result name="general_error" type="redirect"/>
+		</command>
+	</page>
+
 
 
 	<page name="feedback_ajax" template="feedback_ajax">
@@ -1088,33 +1140,6 @@
 				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
 		</link>
 		<command class="ecommander.fwk.NonemptyEmailCommand">
-			<result name="success" type="redirect"/>
-			<result name="error_not_set" type="redirect"/>
-			<result name="general_error" type="redirect"/>
-		</command>
-	</page>
-
-
-	<page name="subscribe_command">
-		<request>
-			<var name="prod"/>
-		</request>
-		<link name="success" target="subscribe_ajax">
-			<var name="prod" var="prod"/>
-			<var name="result" value="success"/>
-			<var name="message" value="Ожидайте уведомления о поступлении на email"/>
-		</link>
-		<link name="error_not_set" target="subscribe_ajax">
-			<var name="result" value="error"/>
-			<var name="prod" var="prod"/>
-			<var name="message" value="Заполните, пожалуйста, электронную почту"/>
-		</link>
-		<link name="general_error" target="subscribe_ajax">
-			<var name="result" value="error"/>
-			<var name="message"
-				 value="Сообщение не может быть отправлено сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
-		</link>
-		<command class="ecommander.fwk.SubscribeCommand">
 			<result name="success" type="redirect"/>
 			<result name="error_not_set" type="redirect"/>
 			<result name="general_error" type="redirect"/>

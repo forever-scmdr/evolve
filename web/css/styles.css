@@ -1010,7 +1010,8 @@ img {
 	color: #EB5757; }
 
 .status__wait {
-	color: #55A948; }
+	color: #EB5757/*#55A948*/;
+	font-weight: 700; }
 
 .device_row {
 	border-bottom: 1px solid #c4c4c4; }
@@ -1760,7 +1761,7 @@ a.side-menu__link:hover{
 	padding: 10px;
 	overflow: hidden;
 	overflow-y: auto;
-	max-height: 170px;
+	max-height: 180px;
 	flex: 1; }
 
 .filter__control {
@@ -1783,7 +1784,7 @@ a.side-menu__link:hover{
 	.filter__value:last-child {
 		margin-bottom: 0; }
 	.filter__value label {
-		display: flex; 
+		/*display: flex; */
 		white-space: nowrap;
 	}
 

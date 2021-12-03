@@ -59,7 +59,7 @@
 		</div>
 		<xsl:if test="$success">
 			<div class="result popup__body" id="subs_{$pcode}">
-				<a style="color: green">В списке уведомления</a>
+				<span style="font-size: 12px; font-weight: 400">&#128276;</span>&#160;<a href="{page/product/delete_link}" style="color: grey" ajax="true">Снять уведомление</a>
 			</div>
 		</xsl:if>
 	</xsl:template>

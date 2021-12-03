@@ -127,7 +127,8 @@
             <xsl:when test="$rates/*[name() = concat($currency, '_rate')]">
                 <xsl:variable name="rate" select="f:num($rates/*[name() = concat($currency, '_rate')])"/>
                 <xsl:variable name="scale" select="f:num($rates/*[name() = concat($currency, '_scale')])"/>
-                <xsl:value-of select="f:format_currency($sum div $rate * $scale)" />
+                <xsl:variable name="cur_price" select="$sum div $rate * $scale"/>
+                <xsl:value-of select="if ($currency = 'RUB') then f:format_currency(ceiling($cur_price)) else f:format_currency($cur_price)" />
             </xsl:when>
             <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
         </xsl:choose>

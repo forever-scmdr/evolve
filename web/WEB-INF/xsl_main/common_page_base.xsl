@@ -759,7 +759,11 @@
 											</xsl:if>
 											<xsl:if test="$is_user_registered">
 												<a href="{page/personal_link}">
-													<xsl:value-of select="if ($is_jur and $reg/contact_name and $reg/contact_name != '') then substring-before($reg/contact_name, ' ') else $reg/name"/>
+													<xsl:if test="$is_jur">
+														<xsl:variable name="first" select="substring-before($reg/contact_name, ' ')"/>
+														<xsl:value-of select="if ($first and not($first = '')) then $first else $reg/contact_name"/>
+													</xsl:if>
+													<xsl:if test="not($is_jur)"><xsl:value-of select="$reg/name"/></xsl:if>
 												</a>
 											</xsl:if>
 											<a class="header-icon__dd">
@@ -843,7 +847,13 @@
 										<a href="#" onclick="$('#mobile_user_menu').show(); return false;"><img src="img/icon-user.png" alt=""/></a>
 									</div>
 									<xsl:if test="$is_user_registered">
-										<div class="mobile-icon__label"><xsl:value-of select="if ($is_jur) then substring-before($reg/contact_name, ' ') else $reg/name"/></div>
+										<xsl:if test="$is_jur">
+											<xsl:variable name="first" select="substring-before($reg/contact_name, ' ')"/>
+											<div class="mobile-icon__label"><xsl:value-of select="if ($first and not($first = '')) then $first else $reg/contact_name"/></div>
+										</xsl:if>
+										<xsl:if test="not($is_jur)">
+											<div class="mobile-icon__label"><xsl:value-of select="$reg/name"/></div>
+										</xsl:if>
 									</xsl:if>
 									<xsl:if test="not($is_user_registered)">
 										<div class="mobile-icon__label">Аноним</div>

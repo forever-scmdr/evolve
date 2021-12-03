@@ -177,7 +177,7 @@
 											<div class="filter__value">
 												<label>
 													<xsl:if test="$has_scroll"><xsl:attribute name="style" select="'margin-right: 8px'"/></xsl:if>
-													<input name="{$name}" type="checkbox" value="{.}" rel="inp{$name}{.}">
+													<input name="{$name}" type="checkbox" value="{.}" rel="inp{$name}{.}" style="margin-right: 0px;">
 														<xsl:if test=". = $user_filter/input[@id = $name]">
 															<xsl:attribute name="checked" select="'checked'"/>
 														</xsl:if>
@@ -218,7 +218,7 @@
 									<div class="filter__value">
 										<label>
 											<xsl:if test="$has_scroll"><xsl:attribute name="style" select="'margin-right: 8px'"/></xsl:if>
-											<input name="tag" type="checkbox" value="{vendor}" rel="prod{vendor}">
+											<input name="tag" type="checkbox" value="{vendor}" rel="prod{vendor}" style="margin-right: 0px;">
 												<xsl:if test="vendor = $tag">
 													<xsl:attribute name="checked" select="'checked'"/>
 												</xsl:if>
