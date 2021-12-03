@@ -105,10 +105,13 @@
 				<table>
 					<tr>
 						<th>
-							Код
+							Наименование
 						</th>
 						<th>
-							Наименование
+							Описание
+						</th>
+						<th>
+							Срок поставки
 						</th>
 						<th>
 							Кол
@@ -133,10 +136,15 @@
 						<xsl:variable name="price" select="if (f:num(f:exchange(current(), 'sum')) != 0) then f:format_currency_precise(f:num(f:exchange(current(), 'sum')) div f:num(qty)) else 'по запросу'"/>
 						<tr>
 							<td>
-								<xsl:value-of select="product/name"/>
+								<xsl:value-of select="$p/name"/>
 							</td>
 							<td valign="top">
-								<strong><xsl:value-of select="product/name"/></strong>
+								<strong><xsl:value-of select="$p/name_extra"/></strong>
+							</td>
+							<td valign="top">
+								<xsl:if test="$p/available and not($p/available = '0') and f:num($p/available) &gt; 0"><xsl:value-of select="f:num($p/available) * 7"/> дней</xsl:if>
+								<xsl:if test="not($p/available) or $p/available = '0'">склад</xsl:if>
+								<xsl:if test="$p/available and f:num($p/available) &lt; 0">по запросу</xsl:if>
 							</td>
 							<td valign="top">
 								<xsl:value-of select="qty"/>

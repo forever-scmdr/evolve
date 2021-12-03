@@ -15,37 +15,41 @@
 	<xsl:template match="/">
 		<table>
 			<tbody id="extra-search-ajax" class="result">
-			<xsl:if test="not(page/product)">
-				<tr>
-					<td colspan="10" style="text-align: center;">
-						<h2>В дополнительном каталоге ничего не найдено</h2>
-					</td>
-				</tr>
+			<xsl:if test="not(page/product[f:num(qty) != 0])">
+				<!-- <xsl:if test="not(page/variables/admin = 'true')">
+					<tr>
+						<td colspan="10" style="text-align: center;">
+							<h2>В дополнительном каталоге ничего не найдено</h2>
+						</td>
+					</tr>
+				</xsl:if> -->
 			</xsl:if>
-			<xsl:if test="page/product">
-				<tr>
-					<td colspan="10" style="text-align: center;">
-						<h2>Результат поиска по дополнительному каталогу</h2>
-					</td>
-				</tr>
-				<tr>
-					<th>Название</th>
-					<th>Описание</th>
-					<th>Производитель</th>
-					<th>Количество</th>
-					<th>Срок поставки</th>
-					<th>Единица</th>
-					<th>Мин. заказ</th>
-					<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
-					<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
-					<xsl:if test="page/variables/admin = 'true'">
-						<th>Начальная цена</th>
-						<th>Склад</th>
-						<th>Обновлено</th>
-					</xsl:if>
-					<th>Заказать</th>
-				</tr>
-				<xsl:apply-templates select="page/product" />
+			<xsl:if test="page/product[f:num(qty) != 0]">
+				<!-- <xsl:if test="not(page/variables/admin = 'true')">
+					<tr>
+						<td colspan="10" style="text-align: center;">
+							<h2>Результат поиска по дополнительному каталогу</h2>
+						</td>
+					</tr>
+					<tr>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Производитель</th>
+						<th>Количество</th>
+						<th>Срок поставки</th>
+						<th>Единица</th>
+						<th>Мин. заказ</th>
+						<th>Цена (<xsl:value-of select="$currency_out"/>)</th>
+						<th>Сумма (<xsl:value-of select="$currency_out"/>)</th>
+						<xsl:if test="page/variables/admin = 'true'">
+							<th>Начальная цена</th>
+							<th>Склад</th>
+							<th>Обновлено</th>
+						</xsl:if>
+						<th>Заказать</th>
+					</tr>
+				</xsl:if> -->
+				<xsl:apply-templates select="page/product[f:num(qty) != 0]" />
 			</xsl:if>
 			<script>
 				$(document).ready(function(){
@@ -106,15 +110,16 @@
 			<td>
 				<xsl:value-of select="concat(/page/price_catalog/default_ship_time, ' дней')"/>
 			</td>
-			<td>шт.</td>
+<!--			<td>шт.</td>-->
 			<td><xsl:value-of select="min_qty"/></td>
 			<td>
 				<xsl:for-each select="spec_price_map" >
 					<p>
-						<xsl:value-of select="f:convert_curr(@price)"/>
+						<xsl:value-of select="concat(f:convert_curr(@price), '&nbsp;от&nbsp;', @qty)"/>
 					</p>
 				</xsl:for-each>
 			</td>
+			<!--
 			<td>
 				<xsl:for-each select="spec_price_map" >
 					<p>
@@ -122,7 +127,7 @@
 					</p>
 				</xsl:for-each>
 			</td>
-
+			-->
 			<xsl:if test="//page/variables/admin = 'true'">
 				<td>
 					<xsl:for-each select="spec_price_map" >

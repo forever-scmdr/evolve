@@ -38,7 +38,7 @@
 			<xsl:for-each select="page/news">
 				<url>
 					<loc>
-						<xsl:value-of select="concat($base, '/', show_page)"/>
+						<xsl:value-of select="concat($base, show_page)"/>
 					</loc>
 					<changefreq>
 						<xsl:value-of select="$news_freq"/>
@@ -46,24 +46,18 @@
 					<priority>0.70</priority>
 				</url>
 			</xsl:for-each>
-			<url>
-				<loc>
-					<xsl:value-of select="concat($base, '/', page/contacts_link)"/>
-				</loc>
-				<changefreq>
-					<xsl:value-of select="$text_freq"/>
-				</changefreq>
-				<priority>0.70</priority>
-			</url>
+			<xsl:if test="page/contacts_link">
+				<url>
+					<loc>
+						<xsl:value-of select="concat($base, '/', page/contacts_link)"/>
+					</loc>
+					<changefreq>
+						<xsl:value-of select="$text_freq"/>
+					</changefreq>
+					<priority>0.70</priority>
+				</url>
+			</xsl:if>
 			<xsl:apply-templates select="page/catalog/section"/>
-			<xsl:text disable-output-escaping="yes">&lt;!-- Plain Catalog; --&gt;</xsl:text>
-			<url>
-				<loc>
-					<xsl:value-of select="concat($base, 'plain_catalaog')"/>
-				</loc>
-				<changefreq><xsl:value-of select="$sec_freq"/></changefreq>
-				<priority>0.80</priority>
-			</url>
 			<xsl:for-each select="page/custom_page">
 				<url>
 					<loc>
@@ -75,7 +69,16 @@
 					<priority>0.70</priority>
 				</url>
 			</xsl:for-each>
-			<xsl:for-each select="page/news_item">
+			<xsl:text disable-output-escaping="yes">&lt;!-- Plain Catalog; --&gt;</xsl:text>
+			<url>
+				<loc>
+					<xsl:value-of select="concat($base, '/plain_catalaog')"/>
+				</loc>
+				<changefreq><xsl:value-of select="$sec_freq"/></changefreq>
+				<priority>0.80</priority>
+			</url>
+			<xsl:for-each select="/page/news_item">
+				<xsl:text disable-output-escaping="yes">&lt;!-- news item --&gt;</xsl:text>
 				<url>
 					<loc>
 						<xsl:value-of select="concat($base, show_news_item)"/>

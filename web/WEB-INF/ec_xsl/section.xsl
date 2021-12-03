@@ -3,9 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="tilte" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
-
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<!--<xsl:variable name="subs" select="$main_menu_section/section"/>-->
 	<xsl:variable name="show_devices" select="1 = 1"/>
@@ -54,14 +51,35 @@
 
 	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="tag" select="page/variables/tag"/>
-	<xsl:variable name="title" select="if($tag != '') then concat($sel_sec/name, ' - ', $tag) else $sel_sec/name"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
+
+	<xsl:variable name="cities" select="'Минске', 'Бресте', 'Гродно', 'Могилеве', 'Гомеле', 'Речице'"/>
+
+	<xsl:variable name="page_num" select="f:num(page/variables/page)"/>
+
+	<xsl:variable name="mask" select="'Реализуем -название- от ведущих производителей ✅ Компания ЧИПТРЭЙД - доступные цены, поставки по Беларуси и России ☎ Звоните и заказывайте!'"/>
+	<xsl:variable name="name" select="if(page/@name = 'section') then $sel_sec/name else 'Радиокомпоненты по запросу'"/>
+	<xsl:variable name="meta_description" select="replace($mask, '-название-', $name)" />
+
+	<xsl:variable name="rnd" select="$cities[($page_num mod count($cities))+1]"/>
+
+	<xsl:variable name="default_h1" select="if($tag != '') then concat($name, ' - ', $tag) else $name" />
+
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $default_h1"/>
+
+	<xsl:variable name="title" select="concat($default_h1, ' в ', $rnd, ' страница: ', $page_num, ' - Чиптрэйд')"/>
+	<!-- <xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else replace($title, ' купить оптом и в розницу','')"/> -->
+
+
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical"
-				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/>
+	<!-- <xsl:variable name="canonical"
+				  select="if($tag != '') then concat('/', $sel_sec/@key, '/', //tag[tag = $tag]/canonical) else concat('/', $sel_sec/@key, '/')"/> -->
+
+
+	<xsl:variable name="canonical" select="if(f:num(page/variables/page) = 1) then f:remove_var(page/source_link, 'page') else page/source_link"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 

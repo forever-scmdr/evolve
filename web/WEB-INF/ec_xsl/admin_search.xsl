@@ -25,6 +25,8 @@
 	<xsl:variable name="l" 
 		select="concat('digikey_search?query=', page/variables/q[1], '&#38;','admin=true')"/>
 
+	<xsl:variable name="promelec_link" select="concat('promelec_search?query=', page/variables/q[1])"/>	
+
 
 	<xsl:template name="MAIN_CONTENT">
 		<!-- MAIN COLOUMNS BEGIN -->
@@ -84,12 +86,12 @@
 							<th>Описание</th>
 							<th>Производитель</th>
 							<!--<th>Код производителя</th>-->
-							<th>Количество</th>
+							<th>Количество шт.</th>
 							<th>Срок поставки</th>
-							<th>Единица</th>
-							<th>Мин. заказ</th>
-							<th>Цена (<xsl:value-of select="$currency_out" />)</th>
-							<th>Сумма (<xsl:value-of select="$currency_out" />)</th>
+							<th>Кратность заказа</th>
+<!--							<th>Мин. заказ</th>-->
+							<th>Цена за шт. (<xsl:value-of select="$currency_out" />)</th>
+<!--							<th>Сумма (<xsl:value-of select="$currency_out" />)</th>-->
 							<th>Начальная цена</th>
 							<th>Склад</th>
 							<th>Обновлено</th>
@@ -133,7 +135,20 @@
 							<xsl:for-each select="$products[not(plain_section)]">
 								<xsl:apply-templates select="."/>
 							</xsl:for-each>
-
+							<tbody id="extra-search-ajax-promelec">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по каталогу promelec...</h3>
+									</td>
+								</tr> -->
+							</tbody>
+							<tbody id="extra-search-ajax">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительным каталогам...</h3>
+									</td>
+								</tr> -->
+							</tbody>
 						</xsl:if>
 					</table>
 					
@@ -142,16 +157,45 @@
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<xsl:if test="not($multiple)">
+			<xsl:if test="not($multiple) and not($products)">
 				<table class="srtable">
-					<tbody id="extra-search-ajax">
-						<tr>
-							<td colspan="10" style="text-align: center;">
-								<h3>Идет поиск по дополнительному каталогу...</h3>
-							</td>
-						</tr>
-					</tbody>
+					<tr>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Производитель</th>
+						<th>Количество</th>
+						<th>Срок поставки</th>
+						<th>Кратность заказа</th>
+<!--						<th>Мин. заказ</th>-->
+						<th>Цена (<xsl:value-of select="$currency_out" />)</th>
+<!--						<th>Сумма (<xsl:value-of select="$currency_out" />)</th>-->
+						<th>Начальная цена</th>
+						<th>Склад</th>
+						<th>Обновлено</th>
+						<th>Заказать</th>
+					</tr>
+					<tbody id="extra-search-ajax-promelec">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по каталогу promelec...</h3>
+									</td>
+								</tr> -->
+							</tbody>
+							<tbody id="extra-search-ajax">
+								<!-- <tr>
+									<td colspan="10" style="text-align: center;">
+										<h3>Идет поиск по дополнительным каталогам...</h3>
+									</td>
+								</tr> -->
+							</tbody>
 				</table>
+				<script>
+					setTimeout(function(){
+						if($("#extra-search-ajax").text() = 'Идет поиск по дополнительному каталогу...'){
+							$("#extra-search-ajax").html("");
+						}
+					}, 30000);
+				</script>
 			</xsl:if>
 		</div>
 
@@ -164,7 +208,7 @@
         <xsl:param name="section_name"/>
         <xsl:param name="price"/>
         <xsl:param name="min_qty"/>
-        <xsl:param name="need_sum"/>
+        <xsl:param name="need_sum" select="false()"/>
         <xsl:param name="price_byn" select="$price"/>
         <xsl:variable name="intervals" select="$price_catalogs[name = $section_name]/price_interval"/>
         <xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
@@ -172,16 +216,19 @@
 		<xsl:variable name="base_quotient" select="if ($quot  &gt; 0) then $quot else $Q"/>
         <xsl:for-each select="$price_intervals">
             <xsl:variable name="quotient" select="f:num(quotient)"/>
+			<xsl:variable name="pack_price_original" select="$price * $min_qty"/>
             <xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
-            <xsl:if test="$price_byn * $min_qty &lt; f:num(max)">
+<!--			<xsl:if test="$price_byn * $min_qty &lt; f:num(max)">-->
+            <xsl:if test="$pack_price_original &lt; f:num(max)">
                 <xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
                 <xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
+				<xsl:variable name="pack_number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) else 1"/>
                 <xsl:variable name="sum" select="$unit_price * $number"/>
                 <p>
-                    <!--|<xsl:value-of select="$Q"/> * <xsl:value-of select="$quotient"/> * <xsl:value-of select="$price"/>|-->
-                    <!--|<xsl:value-of select="$min_number"/> div <xsl:value-of select="$min_qty"/> * <xsl:value-of select="$min_qty"/>|-->
                     <xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
-                    <xsl:if test="not($need_sum)"><xsl:value-of select="f:format_currency_precise($unit_price)"/></xsl:if>
+                    <xsl:if test="not($need_sum)">
+						<xsl:value-of select="f:format_currency_precise($unit_price)"/>&#160;от&#160;<xsl:value-of select="$pack_number"/><xsl:if test="$min_qty &gt; 1">&#160;x&#160;упк(<xsl:value-of select="$min_qty" />)</xsl:if><xsl:if test="$min_qty = 1">&#160;шт.</xsl:if>
+					</xsl:if>
                 </p>
             </xsl:if>
         </xsl:for-each>
@@ -222,8 +269,8 @@
 					<xsl:if test="available and f:num(available) &lt; 0">по запросу</xsl:if>
 				</xsl:if>
 			</td>
-			<td><xsl:value-of select="$unit"/></td>
-			<td><xsl:value-of select="$min_qty"/></td>
+<!--			<td><xsl:value-of select="$unit"/></td>-->
+			<td><xsl:value-of select="$min_qty" /></td>
             <xsl:if test="$has_price">
                 <td>
                     <xsl:call-template name="ALL_PRICES">
@@ -231,10 +278,11 @@
                         <xsl:with-param name="min_qty" select="$min_qty"/>
                         <xsl:with-param name="price" select="f:num(f:exchange(current(), 'price'))"/>
                         <xsl:with-param name="price_byn" select="f:num(price)"/>
-                        <xsl:with-param name="need_sum" select="false()"/>
+<!--                        <xsl:with-param name="need_sum" select="false()"/>-->
                     </xsl:call-template>
                 </td>
-                <td>
+                <!--
+				<td>
                     <xsl:call-template name="ALL_PRICES">
                         <xsl:with-param name="section_name" select="plain_section/name"/>
                         <xsl:with-param name="min_qty" select="$min_qty"/>
@@ -243,6 +291,7 @@
                         <xsl:with-param name="need_sum" select="true()"/>
                     </xsl:call-template>
                 </td>
+                -->
             </xsl:if>
             <xsl:if test="not($has_price)">
                 <td colspan="2"><p>запрос цены</p></td>
@@ -280,6 +329,7 @@
 			<script>
 				$(document).ready(function() {
 					insertAjax('<xsl:value-of select="$l" disable-output-escaping="yes"/>');
+					insertAjax('<xsl:value-of select="concat($promelec_link, '&#38;admin=true')"  disable-output-escaping="yes"/>');
 				});
 			</script>
 		</xsl:if>
