@@ -2968,3 +2968,16 @@ div#search-result-mobile {
 	border-right:0;
 	border-color: #707070;
 }
+.extra-values.cart-options-container{
+	background: #fff;
+	padding:0;
+}
+.cart-item.option-item{
+	padding:0;
+	border:0 none;
+	margin-bottom:0;
+	border-bottom: 1px solid #ccc;
+}
+.option-item:last-child{
+	border-bottom: 0;
+}
