@@ -109,8 +109,15 @@ public abstract class BasicCartManageCommand extends Command {
     public ResultPE delete() throws Exception {
         // В этом случае ID не самого продукта, а объекта bought
         long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
-        getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
-        recalculateCart();
+        loadCart();
+        Item bought = getSessionMapper().getItem(boughtId, BOUGHT_ITEM);
+        List<Object> o = bought.getValues("option");
+        if(o.size() == 0) {
+            getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
+            recalculateCart();
+        }else{
+            deleteComplect();
+        }
         return getResult("cart");
     }
 
@@ -357,7 +364,7 @@ public abstract class BasicCartManageCommand extends Command {
         long prodId = 0;
         try {
             prodId = Long.parseLong(idStr);
-            quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
+            quantity = DoubleDataType.parse(getVarSingleValueDefault(QTY_PARAM,"1"));
         } catch (Exception e) {
             //return null;
             ServerLogger.error(e);
@@ -377,6 +384,14 @@ public abstract class BasicCartManageCommand extends Command {
         if (!complectationSaved) {
             return getResult("invalid_option_list");
         }
+        recalculateCart();
+
+        String result = getVarSingleValueDefault("result", "complect_ajax");
+
+        if("cart".equals(result)){
+            return getResult("cart");
+        }
+
         ResultPE success = getResult("complect_ajax");
         success.addVariable("product", String.valueOf(prodId));
         return success;
@@ -448,6 +463,9 @@ public abstract class BasicCartManageCommand extends Command {
                 break;
             }
         }
+
+        recalculateCart();
+
         ResultPE success = getResult("complect_ajax");
         success.addVariable("product", String.valueOf(prodId));
         return success;
@@ -466,11 +484,19 @@ public abstract class BasicCartManageCommand extends Command {
         if (!complectationSaved) {
             return getResult("invalid_option_list");
         }
+
+        String result = getVarSingleValueDefault("result", "complect_ajax");
+
+        if("cart".equals(result)){
+            return getResult("cart");
+        }
+
         ResultPE success = getResult("complect_ajax");
         success.addVariable("product", String.valueOf(prodId));
         if(getVarSingleValueDefault("specific", "no").equals("yes")){
             success.addVariable("bought", String.valueOf(bought.getId()));
         }
+        recalculateCart();
         return success;
     }
 
@@ -749,22 +775,30 @@ public abstract class BasicCartManageCommand extends Command {
 
         // Обычные заказы и заказы с нулевым количеством на складе
         for (Item bought : boughts) {
-            Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-            double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
-            double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
-            if (totalQty <= 0) {
-                getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
-                result = false;
-            } else {
-                // Первоначальная сумма
-                BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
-                BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
-                totalQuantity += totalQty;
-                bought.setValue(PRICE_PARAM, price);
-                bought.setValue(SUM_PARAM, productSum);
-                totalSum = totalSum.add(productSum);
-                // Сохранить bought
-                getSessionMapper().saveTemporaryItem(bought);
+
+            if(bought.getValues("option").size() > 0){
+                BigDecimal sum = bought.getDecimalValue(SUM_PARAM, BigDecimal.ZERO);
+                totalSum = totalSum.add(sum);
+                totalQuantity++;
+            }else {
+
+                Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+                double availableQty = bought.getDoubleValue(QTY_AVAIL_PARAM);
+                double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
+                if (totalQty <= 0) {
+                    getSessionMapper().removeItems(bought.getId(), BOUGHT_ITEM);
+                    result = false;
+                } else {
+                    // Первоначальная сумма
+                    BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
+                    BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
+                    totalQuantity += totalQty;
+                    bought.setValue(PRICE_PARAM, price);
+                    bought.setValue(SUM_PARAM, productSum);
+                    totalSum = totalSum.add(productSum);
+                    // Сохранить bought
+                    getSessionMapper().saveTemporaryItem(bought);
+                }
             }
         }
         cart.setValue(SUM_PARAM, totalSum);

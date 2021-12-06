@@ -962,6 +962,10 @@
 						<var name="action" value="updateComplectation"/>
 						<var name="bought" ref="bought"/>
 					</link>
+					<link name="create_complect_link" target="cart_action">
+						<var name="action" value="createComplectation"/>
+						<var name="prod" ref="product"/>
+					</link>
 					<link name="delete_link" target="cart_action">
 						<var name="action" value="deleteComplect"/>
 						<var name="bought" ref="bought"/>
@@ -1024,9 +1028,13 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
+						<list item="option"/>
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
+						<var name="bought" ref="bought"/>
+					</link>
+					<link name="complect_ajax_link" target="complect_ajax">
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
