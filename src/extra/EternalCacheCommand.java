@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 
-public class EternalCacheCommand extends Command {
+public class EternalCacheCommand extends Command{
     private static final Path FOLDER = Paths.get(AppContext.getContextPath(), "eternal_cache");
     private static final String PROD_ID = "prod";
     private static final String PARENT_SEC_ID = "parent";
