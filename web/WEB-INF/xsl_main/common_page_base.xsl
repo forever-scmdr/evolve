@@ -804,7 +804,7 @@
 									<div class="mobile-small-icon__icon">
 										<img src="img/icon-small-phone.png" alt=""/>
 									</div>
-									<a class="mobile-small-icon__link" href="o_nas"></a>
+									<a class="mobile-small-icon__link" href="kontakty"></a>
 								</div>
 								<div class="mobile-small-icon header-mobile__small-icon">
 									<div class="mobile-small-icon__icon">
@@ -1003,39 +1003,52 @@
 							</div>
 						</div>
 					</div>
-					<!-- Валюта-->
-					<div class="popup" style="display: none;" id="mobile_currency">
+					<!-- Меню пользователя -->
+					<div class="popup" style="display: none;" id="mobile_user_menu">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
-									<div class="popup__title">Выбор валюты</div>
+									<div class="popup__title">Действия пользователя</div>
 									<a class="popup__close">
 										<img src="img/icon-menu-close.png" alt=""/>
 									</a>
 								</div>
 								<div class="popup-menu">
-									<div class="popup-menu__item{' active'[$currency = 'BYN']}">
-										<div class="popup-menu__link">
-											<a href="{concat($currency_link, 'BYN')}">BYN</a>
-										</div>
-									</div>
-									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
-										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
-										<xsl:variable name="show" select="$currencies/*[name() = concat($cur, '_show')] = '1'"/>
-										<xsl:if test="$show">
-											<div class="popup-menu__item{' active'[$currency = $cur]}">
-												<div class="popup-menu__link">
-													<a href="{concat($currency_link, $cur)}"><xsl:value-of select="replace($cur, 'RUB', 'RUR')"/></a>
-												</div>
+									<xsl:if test="not($is_user_registered)">
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="#" popup="login_form_popup">Вход</a>
 											</div>
-										</xsl:if>
-									</xsl:for-each>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/register_link}">Регистрация</a>
+											</div>
+										</div>
+									</xsl:if>
+									<xsl:if test="$is_user_registered">
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/personal_link}">Кабинет</a>
+											</div>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/purchase_history_link}">История заказов</a>
+											</div>
+										</div>
+										<div class="popup-menu__item">
+											<div class="popup-menu__link">
+												<a href="{page/logout_link}">Выход</a>
+											</div>
+										</div>
+									</xsl:if>
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- Меню пользователя -->
-					<div class="popup" style="display: none;" id="mobile_user_menu">
+					<!-- Валюта-->
+					<div class="popup" style="display: none;" id="mobile_currency">
 						<div class="popup__body">
 							<div class="popup__content">
 								<div class="popup__header">
