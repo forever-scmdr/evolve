@@ -9,6 +9,25 @@
 
 -->
 <urlrewrite>
+
+
+<!--	<rule>-->
+<!--		<name>seo redirect</name>-->
+<!--		<condition name="host">^www.alfacomponent.com</condition>-->
+<!--		<from>^/(.*)</from>-->
+<!--		<to type="permanent-redirect" last="false">https://alfacomponent.com/$1</to>-->
+<!--	</rule>-->
+
+
+<!--		<rule>-->
+<!--        	<name>seo redirect 2</name>-->
+<!--        	<condition name="host" operator="notequal">^alfacomponent.com</condition>-->
+<!--        	<from>^/(.*)</from>-->
+<!--        	<to type="permanent-redirect" last="false">https://alfacomponent.com/$1</to>-->
+<!--    	</rule>-->
+
+
+
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
