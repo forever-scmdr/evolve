@@ -194,9 +194,9 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Дата -->
+	<!-- Дата
 	<xsl:template match="field[ @type='date']" mode="single">
-		<!-- Дата и время -->
+		- Дата и время -
 		<div class="timeStamp" style="">
 			<p style="clear: both;">
 				<span class=""><xsl:value-of select="@caption" /></span>
@@ -215,11 +215,11 @@
 				</label>
 			</xsl:if>
 		
-			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
+			- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -
 			<input class="whole" type="hidden" name="{@input}" value="{.}" />
 		</div>
 	</xsl:template>
-
+	-->
 
 
 	<!--********************************************************************************** 

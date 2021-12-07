@@ -79,7 +79,7 @@
 						</div>
 						<input class="input" type="text"/>
 					</div>
-					<div><b>Номинал скидочной карты: 0%</b></div>
+					<div><b>Номинал скидочной карты: <xsl:value-of select="if ($user/discount and not($user/discount = '')) then $user/discount else '0'"/>%</b></div>
 					<img src="/images/card0.jpg"/>
 				</div>
 				<xsl:call-template name="PASSWORD_3">

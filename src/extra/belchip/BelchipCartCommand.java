@@ -336,6 +336,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				discount = BigDecimal.valueOf(DISCOUNT_2);
 				quotient = (double) (DISCOUNT_2) / (double) 100;
 			}
+			/*
+			if (isRegistered()) {
+				BigDecimal personalDiscount = getUserInfo().getDecimalValue(user_.DISCOUNT, BigDecimal.ZERO);
+				if (personalDiscount.compareTo(discount) > 0) {
+					discount = personalDiscount;
+					quotient = personalDiscount.doubleValue() / (double) 100;
+				}
+			}
+			*/
 			sum = sum.subtract(discountSum.multiply(BigDecimal.valueOf(quotient)));
 		}
 		// Округление суммы
@@ -1284,8 +1293,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			customLink.addStaticVariable("order_num", requestOrderNumber);
 			customLink.addStaticVariable("action", "post_jur");
 			if (hasRegularBoughts) {
-				String also = (StringUtils.isBlank(requestOrderNumber)) ? "self" : requestOrderNumber.replaceAll("\\d", "");
-				customLink.addStaticVariable("also", also);
+				//String also = (StringUtils.isBlank(requestOrderNumber)) ? "self" : requestOrderNumber.replaceAll("\\d", "");
+				customLink.addStaticVariable("also", displayOrderNumber);
 			}
 
 			try {

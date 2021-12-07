@@ -304,7 +304,7 @@
 		<parameter name="picture" type="picture" multiple="true" caption="Изображение" description="для прикрепления к тексту" />
 		<parameter name="file" type="string" multiple="true" caption="Название файла" description="документация" />
 		<parameter name="search" multiple="true" type="plain-text" caption="Ключевые слова для поиска" description="все ключевые слова" text-index="fulltext" text-index-boost="2"/>
-		<parameter name="strict_search" multiple="true" type="string" caption="Ключевые слова для поиска по строгому соответствию" text-index="fulltext"/>
+		<parameter name="strict_search" multiple="true" type="string" caption="Ключевые слова для поиска по строгому соответствию" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="analog_search" multiple="true" type="plain-text" caption="Аналоги для поиска" description="только аналоги" text-index="fulltext"/>
 		<parameter name="analog_code" type="string" multiple="true" caption="Коды аналогов" description="других товаров из каталога"/>
 		<parameter name="extra_pic" type="string" multiple="true" caption="дополнительные картинки"/>
@@ -564,6 +564,7 @@
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
+		<parameter name="discount" type="currency" caption="Номинал скидочной карты" default="0"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />

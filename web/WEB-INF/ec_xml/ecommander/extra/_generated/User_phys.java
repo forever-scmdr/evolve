@@ -1,6 +1,7 @@
 
 package ecommander.extra._generated;
 
+import java.math.BigDecimal;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -12,6 +13,7 @@ public class User_phys
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
+    public final static String DISCOUNT = "discount";
     public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
     public final static String PAY_TYPE = "pay_type";
@@ -99,6 +101,28 @@ public class User_phys
 
     public boolean contains_password(String value) {
         return containsValue("password", value);
+    }
+
+    public void set_discount(BigDecimal value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public BigDecimal get_discount() {
+        return getDecimalValue("discount");
+    }
+
+    public BigDecimal getDefault_discount(BigDecimal defaultVal) {
+        return getDecimalValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(BigDecimal value) {
+        return containsValue("discount", value);
     }
 
     public void set_registered(Byte value) {
