@@ -55,7 +55,7 @@ public class NonemptyEmailCommand extends Command {
 	private static final String TEMPLATE_PARAM = "template";
 
 	private static final String ERROR_NOT_SET_RESULT = "error_not_set";
-	private static final String GENERAL_ERROR_RESULT = "general_error";
+	//private static final String GENERAL_ERROR_RESULT = "general_error";
 	private static final String SUCCESS_RESULT = "success";
 
 
