@@ -111,7 +111,9 @@ public class XmlXslOutputController {
 				factory.setErrorListener(errors);
 				transformer = getTransformer(xslFile, factory);
 				Reader reader = new StringReader(xml.toString());
-				transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+				synchronized (transformer) {
+					transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+				}
 			} catch (TransformerConfigurationException e) {
 				factory = null;
 				transformers = null;

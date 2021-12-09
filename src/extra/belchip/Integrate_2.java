@@ -172,7 +172,7 @@ public class Integrate_2 extends IntegrateBase {
 		ResultPE result = null;
 		try {
 			result = getResult("success");
-			ServerLogger.error(info.getTimer().writeTotals());
+			ServerLogger.warn(info.getTimer().writeTotals());
 		} catch (EcommanderException e) {
 			ServerLogger.error("no result found", e);
 			return null;

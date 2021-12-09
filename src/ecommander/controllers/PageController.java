@@ -113,9 +113,14 @@ public class PageController {
 		} else {
 			resp.setContentType(contentType);
 			resp.setCharacterEncoding("UTF-8");
-			out.writeTo(resp.getOutputStream());
-			resp.getOutputStream().flush();
-			resp.getOutputStream().close();
+			try {
+				out.writeTo(resp.getOutputStream());
+				resp.getOutputStream().flush();
+			} catch (Exception e) {
+				ServerLogger.warn(e);
+			} finally {
+				resp.getOutputStream().close();
+			}
 		}
 	}
 	
@@ -177,7 +182,7 @@ public class PageController {
 					fos.flush();
 					fos.close();
 				} catch (FileNotFoundException fnf) {
-					ServerLogger.error("File " + cachedFile + " can not be created", fnf);
+					ServerLogger.warn("File " + cachedFile + " can not be created", fnf);
 				}
 				Timer.getTimer().stop(Timer.GET_FROM_CACHE);
 				ServerLogger.debug("DYNAMIC: " + requestUrl + " GENERATED IN " + (System.currentTimeMillis() - timeStart) + " MILLIS");

@@ -184,7 +184,7 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 			currentUser.setNewPassword(p2);
 			executeAndCommitCommandUnits(new UpdateUserDBUnit(currentUser, false).ignoreUser(true));
 		}
-		Item.updateParamValues(formUser, dbUser, user_.PASSWORD, user_.REGISTERED);
+		Item.updateParamValues(formUser, dbUser, user_.PASSWORD, user_.REGISTERED, user_.DISCOUNT);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(dbUser).ignoreUser(true).noFulltextIndex());
 
 		getSessionMapper().removeItems(USER);
