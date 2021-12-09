@@ -214,11 +214,72 @@
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="code name" virtual="true" ag-id="864" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="code" type="string" caption="Уникальный артикул товара" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
-        <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
-		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="unit" type="string" default="шт." caption="Единица измерения"/>
+	</item>
+
+	<!-- Вынос разных групп свойст товара в разные "интерфейсы", чтобы их можно было подключать через наследование -->
+	<!-- Оптовый товар -->
+	<item name="dealer_product" caption="Товар для оптовой продажи" virtual="true" ag-id="1832" ag-hash="-256907063">
+		<parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+	</item>
+	<!-- Минимальное количество, щаг -->
+	<item name="qty_control" virtual="true" caption="Контроль количества" ag-id="1833" ag-hash="1138339028">
+		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
+		<parameter name="step" type="double" caption="Шаг заказа"/>
+	</item>
+	<!-- Товар для яндекс-маркета -->
+	<item name="yandex_product" virtual="true" caption="Контроль количества" ag-id="1834" ag-hash="-196099423">
+		<parameter name="y_offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
+		<parameter name="y_available" type="byte" caption="В наличии" description="в яндекс маркете"/>
+		<parameter name="y_group_id" type="string" caption="Номер группы" description="в яндекс маркете все товары одной группы выводятся на одной странице"/>
+		<parameter name="y_category_id" type="string" caption="Номер конечного раздела"/>
+
+	</item>
+	<!-- Скидки -->
+	<item name="discount_product" virtual="true" caption="Скидки" ag-id="1835" ag-hash="-1367271439">
+		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+	</item>
+	<!-- Группы -->
+	<item name="group_container" virtual="true" ag-id="1836" ag-hash="1574726337">
+		<parameter name="group" type="tuple" format="=" multiple="true" caption="Группы" description="варианты цвета=12355"/>
+	</item>
+
+	<!-- Варианты товара -->
+	<item name="line_product_container" virtual="true" caption="Варианты товара" ag-id="1837" ag-hash="2031155622">
+		<child item="line_product"/>
+	</item>
+
+	<!-- Опции -->
+	<item name="option_container" virtual="true" ag-id="1838" ag-hash="696811831">
+		<child item="option" assoc="option"/>
+	</item>
+
+	<!-- Импортированный товар -->
+	<item name="imported_product" virtual="true" ag-id="1839" ag-hash="-1381541196">
+		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
+		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
+		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
+	</item>
+
+	<!-- Товар с параметрами -->
+	<item name="generic_product" virtual="true" ag-id="1840" ag-hash="431404679">
+		<child item="params_xml" single="true"/>
+		<child item="params" single="true"/>
+	</item>
+
+	<!-- Список кодами других тваров -->
+	<item name="assoc_list" caption="Список товаров" key="name" virtual="true" ag-id="1841" ag-hash="1927922312">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
+	</item>
+
+	<item name="assoc_list_container" virtual="true" ag-id="1842" ag-hash="-1688174710">
+		<child item="assoc_list"/>
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
@@ -227,23 +288,9 @@
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
-		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
-<!--		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>-->
-<!--		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>-->
-		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
-<!--		<parameter name="currency_id" type="string" caption="Код валюты цены"/>-->
-<!--		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>-->
-<!--		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>-->
-<!--		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
-<!--		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
-<!--		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>-->
+<!--		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>-->
 		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
-		<parameter name="unit" type="string" caption="Единица измерения"/>
-		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
-		<parameter name="step" type="double" caption="Шаг заказа"/>
-		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
@@ -252,16 +299,14 @@
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="files" type="file" caption="Файлы" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
-		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
-		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
-		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
-		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
-		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
 
-<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
+<!--		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>-->
+<!--		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>-->
+<!--		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>-->
+		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
+<!--	<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/> -->
 		<child item="product_extra"/>
-		<child item="params_xml" single="true"/>
-		<child item="params" single="true"/>
+		<child item="product_extra" assoc="general"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
@@ -276,12 +321,7 @@
 	</item>
 
 	<!--Обычный товар или товар, который содержит другие товары-->
-	<item name="product" caption="Товар из каталога" key-unique="true"
-	      default-page="product" super="described_product * seo_container">
-		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
-		<child item="line_product"/>
-		<child item="option" assoc="option"/>
-	</item>
+	<item name="product" caption="Товар из каталога" key-unique="true" default-page="product" super="described_product * seo_container" ag-id="6" ag-hash="-309474065"></item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
 	<item name="option" caption="Опция" super="abstract_product *" ag-id="1831" ag-hash="-1010136971">
@@ -292,7 +332,7 @@
 	</item>
 
 
-	<item name="params" caption="Параметры товара" extendable="true" ag-id="30" ag-hash="-995427962">
+	<item name="params" caption="Параметры товара" extendable="true" virtual="true" ag-id="30" ag-hash="-995427962">
 		<on-update class="ecommander.fwk.integration.UpdateProductParamsXml"/><!-- Обновить параметр params_xml в продукте -->
 		<on-create class="ecommander.fwk.integration.UpdateProductParamsXml"/>
 	</item>
@@ -1000,6 +1040,17 @@
 		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>
 	</item>
 
+	<!-- Не выводятся на сайте, но могут испольоваться для прикрепления к другим айтемам -->
+	<item name="shared_items" caption="Общие айтемы" ag-id="2115" ag-hash="-706521242">
+		<child item="shared_item_section"/>
+	</item>
+
+	<item name="shared_item_section" key="name" caption="Раздел" ag-id="2116" ag-hash="-1769167021">
+		<parameter name="name" type="string" caption="Название"/>
+		<child item="product_extra"/>
+		<child item="shared_item_section"/>
+	</item>
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
@@ -1020,6 +1071,7 @@
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
 		<child item="error_page" single="true" />
+		<child item="shared_items" single="true"/>
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

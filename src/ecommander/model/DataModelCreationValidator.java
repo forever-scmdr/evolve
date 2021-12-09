@@ -393,7 +393,9 @@ public class DataModelCreationValidator extends ModelValidator implements DataMo
 		try {
 			SAXParser parser = factory.newSAXParser();
 			for (String modelFile : modelFiles) {
-				parser.parse(new InputSource(new StringReader(modelFile)), new DataModelHandler());
+				if(StringUtils.isNotBlank(modelFile)) {
+					parser.parse(new InputSource(new StringReader(modelFile)), new DataModelHandler());
+				}
 			}
 		} catch (Exception se) {
 			System.out.println(se.getMessage());

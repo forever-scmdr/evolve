@@ -249,7 +249,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+<!--					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -262,12 +262,12 @@
 					<link name="filter_base_link" type="exclusive" target="section">
 						<var name="sec" var="sec" style="key"/>
 					</link>
-					<parameter name="tag" sign="=" compare="ANY">
-						<var var="tag"/>
-					</parameter>
-					<parameter name="mark" sign="=" compare="ANY">
-						<var var="mark"/>
-					</parameter>
+<!--					<parameter name="tag" sign="=" compare="ANY">-->
+<!--						<var var="tag"/>-->
+<!--					</parameter>-->
+<!--					<parameter name="mark" sign="=" compare="ANY">-->
+<!--						<var var="mark"/>-->
+<!--					</parameter>-->
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" var="sec" style="keypath"/>
@@ -275,23 +275,23 @@
 				</link>
 				<include name="PRODUCT_PARAMS_LINKS"/>
 			</list>
-			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
-				<aggregation parameter="tag"/>
-				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">
-					<var name="tag" var="tag"/>
-					<var name="tag" parameter="tag" ref="tag"/>
-				</link>
-				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">
-					<var name="-tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
-			<list item="product" tag="mark" id="mark" assoc="* catalog_link">
-				<aggregation parameter="mark"/>
-				<link name="set_mark" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="key" var="sec"/>
-					<var name="mark" parameter="mark" ref="mark"/>
-				</link>
-			</list>
+<!--			<list item="product" tag="tag" id="tag" assoc="* catalog_link">-->
+<!--				<aggregation parameter="tag"/>-->
+<!--				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">-->
+<!--					<var name="tag" var="tag"/>-->
+<!--					<var name="tag" parameter="tag" ref="tag"/>-->
+<!--				</link>-->
+<!--				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">-->
+<!--					<var name="-tag" parameter="tag" ref="tag"/>-->
+<!--				</link>-->
+<!--			</list>-->
+<!--			<list item="product" tag="mark" id="mark" assoc="* catalog_link">-->
+<!--				<aggregation parameter="mark"/>-->
+<!--				<link name="set_mark" type="exclusive" target="section" copy-page-vars="no">-->
+<!--					<var name="sec" style="key" var="sec"/>-->
+<!--					<var name="mark" parameter="mark" ref="mark"/>-->
+<!--				</link>-->
+<!--			</list>-->
 			<list item="product" tag="min" assoc="* catalog_link">
 				<aggregation parameter="price" function="MIN"/>
 			</list>
@@ -372,80 +372,80 @@
 
 
 
-	<page name="tag_section" template="tag_section">
-		<request>
-			<var name="tag"/>
-		</request>
-		<request>
-			<var name="page" value="1"/>
-			<var name="view" value="table" scope="cookie"/>
-			<var name="limit" value="48" scope="cookie"/>
-			<var name="sort" scope="cookie"/>
-			<var name="direction" value="ASC" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
-			<var name="fil"/>
-			<var name="tag"/>
-		</request>
-		<list item="product" id="prod" transit="true" assoc="* catalog_link">
-			<filter>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<sorting direction-var="direction">
-					<var var="sort"/>
-				</sorting>
-				<limit>
-					<var var="limit"/>
-				</limit>
-				<pages>
-					<var var="page"/>
-				</pages>
-				<parameter name="tag" sign="=" compare="ANY">
-					<var var="tag"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
-		</list>
-		<link name="set_view_table" target="tag_section" copy-page-vars="yes">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
-			<var name="view" value="list"/>
-		</link>
-		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
-		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="48"/>
-		</link>
-		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
-		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="96"/>
-		</link>
-		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="name"/>
-			<var name="direction" value="ASC"/>
-		</link>
-		<link name="set_sort_name_desc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="name"/>
-			<var name="direction" value="DESC"/>
-		</link>
-		<link name="set_sort_price_asc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="price"/>
-			<var name="direction" value="ASC"/>
-		</link>
-		<link name="set_sort_price_desc" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value="price"/>
-			<var name="direction" value="DESC"/>
-		</link>
-		<link name="set_sort_default" target="tag_section" copy-page-vars="yes">
-			<var name="sort" value=""/>
-		</link>
-		<include name="COMMON"/>
-	</page>
+<!--	<page name="tag_section" template="tag_section">-->
+<!--		<request>-->
+<!--			<var name="tag"/>-->
+<!--		</request>-->
+<!--		<request>-->
+<!--			<var name="page" value="1"/>-->
+<!--			<var name="view" value="table" scope="cookie"/>-->
+<!--			<var name="limit" value="48" scope="cookie"/>-->
+<!--			<var name="sort" scope="cookie"/>-->
+<!--			<var name="direction" value="ASC" scope="cookie"/>-->
+<!--			<var name="minqty" value="" scope="cookie"/>-->
+<!--			<var name="fil"/>-->
+<!--			<var name="tag"/>-->
+<!--		</request>-->
+<!--		<list item="product" id="prod" transit="true" assoc="* catalog_link">-->
+<!--			<filter>-->
+<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+<!--				<sorting direction-var="direction">-->
+<!--					<var var="sort"/>-->
+<!--				</sorting>-->
+<!--				<limit>-->
+<!--					<var var="limit"/>-->
+<!--				</limit>-->
+<!--				<pages>-->
+<!--					<var var="page"/>-->
+<!--				</pages>-->
+<!--				<parameter name="tag" sign="=" compare="ANY">-->
+<!--					<var var="tag"/>-->
+<!--				</parameter>-->
+<!--			</filter>-->
+<!--			<link name="show_product" target="product" type="exclusive">-->
+<!--				<var name="prod" ref="prod" style="key"/>-->
+<!--			</link>-->
+<!--			<include name="PRODUCT_PARAMS_LINKS"/>-->
+<!--		</list>-->
+<!--		<link name="set_view_table" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="view" value="table"/>-->
+<!--		</link>-->
+<!--		<link name="set_view_list" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="view" value="list"/>-->
+<!--		</link>-->
+<!--		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">-->
+<!--			<var name="limit" value="24"/>-->
+<!--		</link>-->
+<!--		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">-->
+<!--			<var name="limit" value="48"/>-->
+<!--		</link>-->
+<!--		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">-->
+<!--			<var name="limit" value="72"/>-->
+<!--		</link>-->
+<!--		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">-->
+<!--			<var name="limit" value="96"/>-->
+<!--		</link>-->
+<!--		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="sort" value="name"/>-->
+<!--			<var name="direction" value="ASC"/>-->
+<!--		</link>-->
+<!--		<link name="set_sort_name_desc" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="sort" value="name"/>-->
+<!--			<var name="direction" value="DESC"/>-->
+<!--		</link>-->
+<!--		<link name="set_sort_price_asc" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="sort" value="price"/>-->
+<!--			<var name="direction" value="ASC"/>-->
+<!--		</link>-->
+<!--		<link name="set_sort_price_desc" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="sort" value="price"/>-->
+<!--			<var name="direction" value="DESC"/>-->
+<!--		</link>-->
+<!--		<link name="set_sort_default" target="tag_section" copy-page-vars="yes">-->
+<!--			<var name="sort" value=""/>-->
+<!--		</link>-->
+<!--		<include name="COMMON"/>-->
+<!--	</page>-->
 
 
 
@@ -502,7 +502,7 @@
 				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
 					<var var="q"/>
 				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -563,30 +563,30 @@
 			</list>
 
 		</single>
-		<list item="product" tag="assoc" id="assoc">
-			<filter>
-				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-			<link name="my_price_link" target="my_price_ajax">
-				<var name="prod" ref="assoc"/>
-			</link>
-		</list>
+<!--		<list item="product" tag="assoc" id="assoc">-->
+<!--			<filter>-->
+<!--				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>-->
+<!--			</filter>-->
+<!--			<link name="show_product" target="product" type="exclusive">-->
+<!--				<var name="prod" ref="assoc" style="key"/>-->
+<!--			</link>-->
+<!--			<link name="show_product_ajax" target="product_ajax">-->
+<!--				<var name="prod" ref="assoc" style="key"/>-->
+<!--			</link>-->
+<!--			<link name="to_cart" target="cart_action">-->
+<!--				<var name="action" value="addToCart"/>-->
+<!--				<var name="prod" ref="assoc"/>-->
+<!--			</link>-->
+<!--			<link name="one_click_link" target="one_click_ajax">-->
+<!--				<var name="prod" ref="assoc"/>-->
+<!--			</link>-->
+<!--			<link name="subscribe_link" target="subscribe_ajax">-->
+<!--				<var name="prod" ref="assoc"/>-->
+<!--			</link>-->
+<!--			<link name="my_price_link" target="my_price_ajax">-->
+<!--				<var name="prod" ref="assoc"/>-->
+<!--			</link>-->
+<!--		</list>-->
 <!--		<list item="product" tag="grouped" id="grouped">-->
 <!--			<filter>-->
 <!--				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>-->
@@ -1658,13 +1658,13 @@
 					<var name="prod" ref="prod" style="key"/>
 				</link>
 			</list>
-			<list item="product" tag="tag" id="tag">
-				<aggregation parameter="tag"/>
-				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">
-					<var name="sec" style="key" var="sec"/>
-					<var name="tag" parameter="tag" ref="tag"/>
-				</link>
-			</list>
+<!--			<list item="product" tag="tag" id="tag">-->
+<!--				<aggregation parameter="tag"/>-->
+<!--				<link name="canonical" type="exclusive" target="section" copy-page-vars="no">-->
+<!--					<var name="sec" style="key" var="sec"/>-->
+<!--					<var name="tag" parameter="tag" ref="tag"/>-->
+<!--				</link>-->
+<!--			</list>-->
 		</single>
 	</page>
 
@@ -1873,6 +1873,13 @@
 
 	<page name="clean_garbage_files" template="integration">
 		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
+
+
+	<page name="import_termobrest" template="integration/create_excel">
+		<command class="extra.TermobrestParseCommand">
 			<result name="complete" type="xml" />
 		</command>
 	</page>
