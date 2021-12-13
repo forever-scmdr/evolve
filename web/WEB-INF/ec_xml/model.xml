@@ -321,7 +321,7 @@
 	</item>
 
 	<!--Обычный товар или товар, который содержит другие товары-->
-	<item name="product" caption="Товар из каталога" key-unique="true" default-page="product" super="described_product * seo_container" ag-id="6" ag-hash="-309474065"></item>
+	<item name="product" caption="Товар из каталога" key-unique="true" default-page="product" super="described_product * seo_container generic_product" ag-id="6" ag-hash="-309474065"></item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
 	<item name="option" caption="Опция" super="abstract_product *" ag-id="1831" ag-hash="-1010136971">

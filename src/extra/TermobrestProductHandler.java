@@ -39,6 +39,8 @@ public class TermobrestProductHandler extends DefaultHandler implements CatalogC
 	private static final String EXTRA_PAGE = "product_extra";
 	private static final String MODS = "Модификации";
 	private static final String DOC_EL = "doc";
+	private static final String PARAMETER = "parameter";
+	private static final String VALUE = "value";
 
 	private IntegrateBase.Info info;
 	private User initiator;
@@ -100,11 +102,9 @@ public class TermobrestProductHandler extends DefaultHandler implements CatalogC
 					product.setValue(MAIN_PIC_PARAM, img.toFile());
 				}
 
-				for (String tag : tags) {
-					product.setValueUI(TAG_PARAM, tag);
-				}
-
 				product.setValueUI(DESCRIPTION_PARAM, buildDocuments());
+
+				processTags(product);
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 				info.increaseProcessed();
@@ -125,24 +125,75 @@ public class TermobrestProductHandler extends DefaultHandler implements CatalogC
 		}
 	}
 
+	private void processTags(Item product) throws Exception {
+		XmlDocumentBuilder paramsXml = XmlDocumentBuilder.newDocPart();
+		product.clearValue(TAG_PARAM);
+		for (String tag : tags) {
+			String[] nv = StringUtils.split(tag, ':');
+			if(nv.length == 2) {
+				String name = nv[0].substring(0, 1) + nv[0].substring(1).toLowerCase();
+				String value = nv[1];
+
+				paramsXml.startElement(PARAMETER)
+						.startElement(NAME).addText(name).endElement()
+						.startElement(VALUE).addText(value).endElement()
+						.endElement();
+				if (name.equalsIgnoreCase("МАТЕРИАЛ КОРПУСА")) {
+					product.setValueUI(TAG_PARAM, value);
+				}
+			}else{
+				product.setValueUI(TAG_PARAM, tag);
+			}
+		}
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+
+		ItemQuery q = new ItemQuery(PARAMS_XML_ITEM);
+		q.setParentId(product.getId(), false);
+		Item paramsItem = q.loadFirstItem();
+		paramsItem = paramsItem == null? ItemUtils.newChildItem(PARAMS_XML_ITEM, product) : paramsItem;
+		paramsItem.setValue(XML_PARAM, paramsXml.toString());
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsItem).noFulltextIndex().ignoreFileErrors());
+	}
+
 	private void createAssocExtraPage(Item product) throws Exception {
 		ItemQuery q = new ItemQuery(EXTRA_PAGE, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 		q.setParentId(product.getId(), false, "general");
 		q.addParameterCriteria(NAME, "Структура обозначения", "=", null, Compare.SOME);
-		if(q.loadFirstItem() == null){
-			Item section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, params.get(PARENT_EL));
+
+		Item structurePage = q.loadFirstItem();
+
+		q = new ItemQuery(EXTRA_PAGE, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+		q.setParentId(product.getId(), false, "general");
+		q.addParameterCriteria(NAME, "Предназначение", "=", null, Compare.SOME);
+
+		Item usePage = q.loadFirstItem();
+
+		Item section = null;
+		if(usePage == null || structurePage == null){
+			section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, params.get(PARENT_EL));
 			String name = section.getStringValue(NAME);
 			String code = section.getStringValue(CODE_PARAM);
 			q = new ItemQuery("shared_item_section", Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			q.addParameterCriteria(NAME, name+" "+code, "=", null, Compare.SOME);
 			section = q.loadFirstItem();
-			if(section != null){
-				q = new ItemQuery(EXTRA_PAGE, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
-				q.setParentId(section.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
-				q.addParameterCriteria(NAME, "Структура обозначения", "=", null, Compare.SOME);
-				Item page = q.loadFirstItem();
-				DelayedTransaction.executeSingle(initiator,CreateAssocDBUnit.childExistsSoft(page, product, ItemTypeRegistry.getAssocId("general")));
-			}
+		}
+
+		if(structurePage == null && section != null){
+			findAndAddAssocPage(product,section,"Структура обозначения");
+
+		}
+		if(usePage == null && section != null){
+			findAndAddAssocPage(product,section,"Предназначение");
+		}
+	}
+
+	private void findAndAddAssocPage(Item product, Item section, String name) throws Exception {
+		ItemQuery q = new ItemQuery(EXTRA_PAGE, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+		q.setParentId(section.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+		q.addParameterCriteria(NAME, name, "=", null, Compare.SOME);
+		Item page = q.loadFirstItem();
+		if(page != null) {
+			DelayedTransaction.executeSingle(initiator, CreateAssocDBUnit.childExistsSoft(page, product, ItemTypeRegistry.getAssocId("general")));
 		}
 	}
 

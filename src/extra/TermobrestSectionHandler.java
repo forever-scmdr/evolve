@@ -25,6 +25,8 @@ public class TermobrestSectionHandler extends DefaultHandler implements CatalogC
     private static final String PARENT_ATTR = "parent_id";
     private static final String END_EL = "sections";
     private static final String EXTRA_PAGE_NAME = "Структура обозначения";
+    private static final String USE_El = "use";
+    private static final String USE_CAPTION = "Предназначение";
     private Item catalog;
     private Item sharedSection;
     private IntegrateBase.Info info;
@@ -70,33 +72,20 @@ public class TermobrestSectionHandler extends DefaultHandler implements CatalogC
         if(NAME.equals(qName)){
             currentSec.setValue(NAME_PARAM, tagText.toString());
         }else if(TEXT_PARAM.equals(qName)){
-            String value = tagText.toString().trim();
             try {
-                String code = currentSec.getStringValue(CODE_PARAM);
-                String name = currentSec.getStringValue(NAME_PARAM);
-                Item sharedTextSection = ItemQuery.loadSingleItemByParamValue("shared_item_section", NAME_PARAM, name + " "+code);
-                if(sharedTextSection == null){
-                    sharedTextSection = Item.newChildItem(SHARED_DESC, sharedSection);
-                    sharedTextSection.setValue(NAME_PARAM, name + " "+code);
-                    DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(sharedTextSection).noFulltextIndex().ignoreFileErrors());
-                    Item text = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), sharedTextSection);
-                    text.setValue(NAME_PARAM, EXTRA_PAGE_NAME);
-                    text.setValue(TEXT_PARAM, value);
-                    DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(text).noFulltextIndex().ignoreFileErrors());
-                }else{
-                    ItemQuery q = new ItemQuery("product_extra");
-                    q.setParentId(sharedTextSection.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
-                    q.addParameterCriteria(NAME_PARAM, EXTRA_PAGE_NAME, "=", null, Compare.SOME);
-                    Item textItem = q.loadFirstItem();
-                    textItem = textItem == null? Item.newChildItem(TEXT_ITEM_DESC, sharedTextSection) : textItem;
-                    textItem.setValue(TEXT_PARAM, value);
-                    DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(textItem).noFulltextIndex().ignoreFileErrors());
-                }
+                createSharedExtraPage(EXTRA_PAGE_NAME);
             }catch (Exception e){
                 ServerLogger.error("Integration error", e);
                 info.addError(ExceptionUtils.getStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
             }
-        }else if(SEC_EL.equals(qName)){
+        }else if(USE_El.equals(qName)){
+            try {
+                createSharedExtraPage(USE_CAPTION);
+            }catch (Exception e){
+                ServerLogger.error("Integration error", e);
+                info.addError(ExceptionUtils.getStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
+            }
+        } else if(SEC_EL.equals(qName)){
             try {
                 DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(currentSec).noFulltextIndex().ignoreFileErrors());
                 info.increaseProcessed();
@@ -104,6 +93,31 @@ public class TermobrestSectionHandler extends DefaultHandler implements CatalogC
                 ServerLogger.error("Integration error", e);
                 info.addError(ExceptionUtils.getStackTrace(e), locator.getLineNumber(), locator.getColumnNumber());
             }
+        }
+    }
+
+    private void createSharedExtraPage(String pageName) throws Exception {
+        String code = currentSec.getStringValue(CODE_PARAM);
+        String name = currentSec.getStringValue(NAME_PARAM);
+        String value = tagText.toString().trim();
+        Item sharedTextSection = ItemQuery.loadSingleItemByParamValue("shared_item_section", NAME_PARAM, name + " "+code);
+        if(sharedTextSection == null){
+            sharedTextSection = Item.newChildItem(SHARED_DESC, sharedSection);
+            sharedTextSection.setValue(NAME_PARAM, name + " "+code);
+            DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(sharedTextSection).noFulltextIndex().ignoreFileErrors());
+            Item text = Item.newChildItem(ItemTypeRegistry.getItemType("product_extra"), sharedTextSection);
+            text.setValue(NAME_PARAM, pageName);
+            text.setValue(TEXT_PARAM, value);
+            DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(text).noFulltextIndex().ignoreFileErrors());
+        }else{
+            ItemQuery q = new ItemQuery("product_extra");
+            q.setParentId(sharedTextSection.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+            q.addParameterCriteria(NAME_PARAM, pageName, "=", null, Compare.SOME);
+            Item textItem = q.loadFirstItem();
+            textItem = textItem == null? Item.newChildItem(TEXT_ITEM_DESC, sharedTextSection) : textItem;
+            textItem.setValue(TEXT_PARAM, value);
+            textItem.setValue(NAME_PARAM, pageName);
+            DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(textItem).noFulltextIndex().ignoreFileErrors());
         }
     }
 

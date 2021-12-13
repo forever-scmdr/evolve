@@ -1,10 +1,10 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.integration.CatalogConst;
+import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class TermobrestParseCommand extends IntegrateBase implements CatalogConst {
+public class TermobrestParseCommand extends CreateParametersAndFiltersCommand implements CatalogConst {
 
     private static final long LIFESPAN = 3600000 * 24 * 20; //20 days
     private static final String INTEGRATION_DIR = "ym_integrate";
@@ -74,6 +74,10 @@ public class TermobrestParseCommand extends IntegrateBase implements CatalogCons
         TermobrestProductHandler productHandler = new TermobrestProductHandler(info, getInitiator());
         parser.parse(xml, productHandler);
         pushLog("Создание товаров завершено");
+
+        setOperation("Создание классов и фильтров");
+        super.integrate();
+        pushLog("Создание классов и фильтров завершено");
 
         info.setOperation("Индексация названий товаров");
         LuceneIndexMapper.getSingleton().reindexAll();
