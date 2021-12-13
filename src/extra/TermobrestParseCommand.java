@@ -13,6 +13,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
@@ -73,6 +74,9 @@ public class TermobrestParseCommand extends IntegrateBase implements CatalogCons
         TermobrestProductHandler productHandler = new TermobrestProductHandler(info, getInitiator());
         parser.parse(xml, productHandler);
         pushLog("Создание товаров завершено");
+
+        info.setOperation("Индексация названий товаров");
+        LuceneIndexMapper.getSingleton().reindexAll();
     }
 
     private Item ensureSharedSection() throws Exception {

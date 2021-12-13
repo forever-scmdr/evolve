@@ -300,7 +300,7 @@
 		<parameter name="files" type="file" caption="Файлы" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 
-<!--		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>-->
+		<parameter name="tag" type="string" caption="Тэг" multiple="true" />
 <!--		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>-->
 <!--		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>-->
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>

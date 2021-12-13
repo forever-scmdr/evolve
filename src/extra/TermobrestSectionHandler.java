@@ -123,6 +123,7 @@ public class TermobrestSectionHandler extends DefaultHandler implements CatalogC
         this.info = info;
         this.initiator = owner;
         this.sharedSection = sharedSection;
+        info.setProcessed(0);
     }
 
 }
