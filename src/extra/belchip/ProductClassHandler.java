@@ -161,7 +161,7 @@ public class ProductClassHandler extends DefaultHandler {
 	}
 
 	private void transactionExecute() throws Exception {
-		if (transaction.getUncommitedCount() >= 100)
+		if (transaction.getUncommitedCount() >= 2)
 			transaction.commit();
 	}
 

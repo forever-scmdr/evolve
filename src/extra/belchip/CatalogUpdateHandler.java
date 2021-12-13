@@ -154,12 +154,12 @@ public class CatalogUpdateHandler extends DefaultHandler {
 						product.setValue(Product.SPECIAL_PRICE, spec);
 				}
 				
-				if(needsSave){
+//				if(needsSave){
 					transaction.executeCommandUnit(SaveItemDBUnit.get(product).noTriggerExtra().noFulltextIndex().ignoreFileErrors(true));
 					transactionExecute();
 					parentIntegration.setProcessed(++сreated);
 					
-				}
+//				}
 			} else if(parameterReady) {
 					if (!EnumUtils.isValidEnum(Qnames.class, qName))
 						return;

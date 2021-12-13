@@ -117,7 +117,7 @@ public class XmlXslOutputController {
 			} catch (TransformerConfigurationException e) {
 				factory = null;
 				transformers = null;
-				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
+				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "XSL tranform error in " + xslFileName + "\tERRORS: " + errors.errors);
 			} catch (Exception ex) {
 				factory = null;
 				transformers = null;

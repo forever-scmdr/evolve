@@ -80,7 +80,10 @@
 						<input class="input" type="text"/>
 					</div>
 					<div><b>Номинал скидочной карты: <xsl:value-of select="if ($user/discount and not($user/discount = '')) then $user/discount else '0'"/>%</b></div>
-					<img src="/images/card0.jpg"/>
+					<xsl:choose>
+						<xsl:when test="$user/discount = ('0', '5', '10', '20', '30')"><img src="/images/card{$user/discount}.jpg"/></xsl:when>
+						<xsl:otherwise><img src="/images/card0.jpg"/></xsl:otherwise>
+					</xsl:choose>
 				</div>
 				<xsl:call-template name="PASSWORD_3">
 					<xsl:with-param name="inp" select="$inp"/>

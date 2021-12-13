@@ -96,15 +96,17 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		// Простые заказы (айтемы bought)
 		if (hasNoRegularBoughts) {
 			String boughts = userInfo.getStringValue(user_.BOUGHTS_SERIALIZED);
-			String[] codeQtys = StringUtils.split(boughts, ";/");
-			if (codeQtys.length > 0 && cart == null)
-				createNewSessionCart();
-			for (String codeQty : codeQtys) {
-				String[] pair = StringUtils.split(codeQty, ':');
-				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, pair[0]);
-				double qty = DoubleDataType.parse(pair[1]);
-				if (product != null) {
-					addProduct(product, qty);
+			if (StringUtils.isNotBlank(boughts)) {
+				String[] codeQtys = StringUtils.split(boughts, ";/");
+				if (codeQtys.length > 0 && cart == null)
+					createNewSessionCart();
+				for (String codeQty : codeQtys) {
+					String[] pair = StringUtils.split(codeQty, ':');
+					Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.CODE, pair[0]);
+					double qty = DoubleDataType.parse(pair[1]);
+					if (product != null) {
+						addProduct(product, qty);
+					}
 				}
 			}
 		}
@@ -336,15 +338,15 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				discount = BigDecimal.valueOf(DISCOUNT_2);
 				quotient = (double) (DISCOUNT_2) / (double) 100;
 			}
-			/*
-			if (isRegistered()) {
-				BigDecimal personalDiscount = getUserInfo().getDecimalValue(user_.DISCOUNT, BigDecimal.ZERO);
-				if (personalDiscount.compareTo(discount) > 0) {
-					discount = personalDiscount;
-					quotient = personalDiscount.doubleValue() / (double) 100;
-				}
+		}
+		if (isRegistered()) {
+			BigDecimal personalDiscount = getUserInfo().getDecimalValue(user_.DISCOUNT, BigDecimal.ZERO);
+			if (personalDiscount.compareTo(discount) > 0) {
+				discount = personalDiscount;
+				quotient = personalDiscount.doubleValue() / (double) 100;
 			}
-			*/
+		}
+		if (quotient > 0.001) {
 			sum = sum.subtract(discountSum.multiply(BigDecimal.valueOf(quotient)));
 		}
 		// Округление суммы
@@ -735,7 +737,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		ArrayList<Item> allBoughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 		for (Item bought : allBoughts) {
 			ItemInputValues boughtInput = getItemForm().getReadOnlyItemValues(bought.getId());
-			if (boughtInput.getStringParam(bought_.QTY) != null) {
+			if (boughtInput != null && boughtInput.getStringParam(bought_.QTY) != null) {
 				double quantity = -1;
 				try {
 					quantity = DoubleDataType.parse(boughtInput.getStringParam(bought_.QTY));
@@ -1187,6 +1189,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @throws Exception
 	 */
 	public ResultPE delete() throws Exception {
+		if (cart == null)
+			cart = getSessionMapper().getSingleRootItemByName(CART);
+		if (cart == null)
+			restoreFromCookie();
+		if (cart == null)
+			return getResult("cart");
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		// В этом случае ID не самого продукта, а объекта bought
 		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT));

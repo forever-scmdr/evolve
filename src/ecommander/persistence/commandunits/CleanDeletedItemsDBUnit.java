@@ -1,11 +1,13 @@
 package ecommander.persistence.commandunits;
 
 import ecommander.filesystem.DeleteItemsDirectoriesUnit;
+import ecommander.fwk.MysqlConnector;
 import ecommander.model.Item;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -31,7 +33,10 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 		selectToDeleteIds.SELECT(I_ID).FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED).
 				ORDER_BY(I_ID).LIMIT(toDeleteQty);
 		ArrayList<Long> deletedIds = new ArrayList<>();
-		try (PreparedStatement pstmt = selectToDeleteIds.prepareQuery(getTransactionContext().getConnection())) {
+		try (
+				Connection conn = MysqlConnector.getConnection();
+				PreparedStatement pstmt = selectToDeleteIds.prepareQuery(conn)
+		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				deletedIds.add(rs.getLong(1));
@@ -46,13 +51,15 @@ public class CleanDeletedItemsDBUnit extends DBPersistenceCommandUnit implements
 		TemplateQuery delete = new TemplateQuery("Delete items");
 		delete.DELETE(ITEM_TBL).WHERE().col_IN(I_ID).longIN(deletedArray).sql(";\r\n")
 				.DELETE(ITEM_PARENT_TBL).WHERE().col_IN(IP_CHILD_ID).longIN(deletedArray);
-		try (PreparedStatement pstmt = delete.prepareQuery(getTransactionContext().getConnection())) {
+		try (
+				Connection conn = MysqlConnector.getConnection();
+				PreparedStatement pstmt = delete.prepareQuery(conn))
+		{
 			pstmt.executeUpdate();
+			// Удаление из полнотекстового индекса
+			if (insertIntoFulltextIndex)
+				LuceneIndexMapper.getSingleton().deleteItem(deletedArray);
 		}
-
-		// Удаление из полнотекстового индекса
-		if (insertIntoFulltextIndex)
-			LuceneIndexMapper.getSingleton().deleteItem(deletedArray);
 
 		deletedQty = deletedArray.length;
 	}

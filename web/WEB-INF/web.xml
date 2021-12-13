@@ -65,15 +65,6 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>UrlMappingServletController</servlet-name>
-		<servlet-class>ecommander.controllers.UrlMappingServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UrlMappingServletController</servlet-name>
-		<url-pattern>*.htm</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>MainAdminController</servlet-name>
 		<servlet-class>ecommander.admin.MainAdminServlet</servlet-class>
 	</servlet>

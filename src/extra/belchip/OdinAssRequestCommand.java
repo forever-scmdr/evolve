@@ -3,6 +3,7 @@ package extra.belchip;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -32,9 +33,16 @@ public class OdinAssRequestCommand extends Command {
 			credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(CREDENTIAL));
 			HttpClientContext localContext = HttpClientContext.create();
 			localContext.setCredentialsProvider(credentialsProvider);
-		
-			String orderNumber = URLEncoder.encode(getVarSingleValue("order_number"), ENCODING);
-			String mail = URLEncoder.encode(getVarSingleValue("email"), ENCODING);
+
+			String orderNumber = getVarSingleValue("order_number");
+			String mail = getVarSingleValue("email");
+
+			if (StringUtils.isAnyBlank(orderNumber, mail)) {
+				return getResult("complete").setValue("NO SERVER 1C CONNECTION");
+			}
+
+			orderNumber = URLEncoder.encode(orderNumber, ENCODING);
+			mail = URLEncoder.encode(mail, ENCODING);
 			
 			HttpGet httpget = new HttpGet(String.format(URL, orderNumber, mail));
 			try(CloseableHttpResponse response = httpclient.execute(httpget, localContext)){
