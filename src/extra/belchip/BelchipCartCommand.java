@@ -740,7 +740,9 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			if (boughtInput != null && boughtInput.getStringParam(bought_.QTY) != null) {
 				double quantity = -1;
 				try {
-					quantity = DoubleDataType.parse(boughtInput.getStringParam(bought_.QTY));
+					Double qtyDouble = DoubleDataType.parse(boughtInput.getStringParam(bought_.QTY));
+					if (qtyDouble != null)
+						quantity = qtyDouble;
 				} catch (NumberFormatException e) {/* */}
 				if (quantity > 0) {
 					bought.setValue(bought_.QTY_TOTAL, quantity);

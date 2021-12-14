@@ -41,7 +41,7 @@
 	margin-left: -2px;
 }
 .thumbs .thumb{
-	height: 60px;
+	/*height: 60px;*/
 	width: 60px;
 	display: inline-block;
 	margin: 2px;
@@ -49,4 +49,24 @@
 }
 .thumbs .thumb.active{
 	border-color: #0000ee;
+}
+.fancy_vid{
+	position: relative;
+}
+
+.fancy_vid::before{
+	content: 'видео';
+	display: block;
+	font-size: 0;
+	width: 22px;
+	height: 22px;
+	background-image: url('../img/youtube.png');
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	margin-left: -11px;
+	margin-top: -11px;
 }

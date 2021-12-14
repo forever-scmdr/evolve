@@ -14,7 +14,6 @@
 			<div class="path">
 				<a href="{$main_host}">Главная страница</a> <i class="fas fa-angle-right"></i>
 			</div>
-			<xsl:call-template name="PRINT"/>
 		</div>
 		<h1 class="page-title"><xsl:value-of select="$h1"/></h1>
 
@@ -26,8 +25,6 @@
 			</div>
 			<xsl:value-of select="page/contacts/bottom_text" disable-output-escaping="yes"/>
 		</div>
-
-		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
 </xsl:stylesheet>

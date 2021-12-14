@@ -27,11 +27,6 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="INC_SIDE_MENU_INTERNAL_NEWS"/>
-		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
-	</xsl:template>
-
 
 	<xsl:template name="CONTENT">
 		<div class="text">

@@ -697,7 +697,7 @@
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
 				</link>
-				<link name="show_products" target="search_strict">
+				<link name="show_products" target="section">
 					<var name="selected_section" ref="p_sec" parameter="code"/>
 				</link>
 			</ancestor>
@@ -763,6 +763,9 @@
 				<link name="show_sec" target="search">
 					<var name="q" var="q" />
 					<var name="sec" ref="p_sec" parameter="code" />
+				</link>
+				<link name="show_products" target="section">
+					<var name="selected_section" ref="p_sec" parameter="code"/>
 				</link>
 			</ancestor>
 		</list>

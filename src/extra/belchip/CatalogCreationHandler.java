@@ -116,8 +116,8 @@ public class CatalogCreationHandler extends DefaultHandler {
 					top.setValue(Product.SEARCH, fullNameAnalyzed);
 					top.setValue(Product.SEARCH, code);
 					String strictSearch = name + ' ' + mark + ' ' + code;
-					if (strictSearch.length() > 80) {
-						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 79));
+					if (strictSearch.length() > 99) {
+						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 98));
 					} else {
 						top.setValue(Product.STRICT_SEARCH, strictSearch);
 					}
