@@ -572,7 +572,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 			executeCommandUnit(SaveItemDBUnit.get(userInfo).ignoreUser());
 			userDB = userInfo;
 		} else if (userDB.getOwnerUserId() == userInfo.getOwnerUserId() && !userDB.isPersonal()) {
-			Item.updateParamValues(userInfo, userDB, user_.PASSWORD, user_.REGISTERED, user_.DISCOUNT);
+			Item.updateParamValues(userInfo, userDB, user_.PASSWORD, user_.REGISTERED, user_.DISCOUNT, user_.DISCOUNT_NUMBER);
 			executeCommandUnit(SaveItemDBUnit.get(userDB).ignoreUser());
 		}
 		Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE), userDB);
@@ -800,7 +800,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				sessionUser = getSessionMapper().createSessionRootItem(formUser.getTypeName());
 			}
 		}
-		Item.updateParamValues(formUser, sessionUser, user_.PASSWORD, user_.REGISTERED, user_.DISCOUNT);
+		Item.updateParamValues(formUser, sessionUser, user_.PASSWORD, user_.REGISTERED, user_.DISCOUNT, user_.DISCOUNT_NUMBER);
 		//ItemHttpPostForm.editExistingItem(form, sessionUser, NEED_POST_ADDRESS_PARAM, JUR_NEED_POST_ADDRESS_PARAM, MESSAGE_PARAM);
 		for (Parameter param : sessionUser.getAllParameters()) {
 			String strValue = sessionUser.outputValue(param.getName());

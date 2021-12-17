@@ -14,6 +14,7 @@ public class User_jur
     public final static String PHONE = "phone";
     public final static String PASSWORD = "password";
     public final static String DISCOUNT = "discount";
+    public final static String DISCOUNT_NUMBER = "discount_number";
     public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
     public final static String PAY_TYPE = "pay_type";
@@ -137,6 +138,22 @@ public class User_jur
 
     public boolean contains_discount(BigDecimal value) {
         return containsValue("discount", value);
+    }
+
+    public void set_discount_number(String value) {
+        setValue("discount_number", value);
+    }
+
+    public String get_discount_number() {
+        return getStringValue("discount_number");
+    }
+
+    public String getDefault_discount_number(String defaultVal) {
+        return getStringValue("discount_number", defaultVal);
+    }
+
+    public boolean contains_discount_number(String value) {
+        return containsValue("discount_number", value);
     }
 
     public void set_registered(Byte value) {

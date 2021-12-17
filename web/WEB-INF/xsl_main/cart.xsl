@@ -18,7 +18,6 @@
 
 
 	<xsl:template match="bought">
-		<xsl:param name="is_available"/>
 		<xsl:variable name="p" select="product"/>
 		<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
 		<xsl:variable name="has_zero_qty" select="f:num(qty_zero) != 0"/>
@@ -100,7 +99,7 @@
 				<xsl:if test="$zero">нет цены</xsl:if>
 			</td>
 			<td class="cart-item__close">
-				<a href="{if ($is_available) then delete_non_zero else delete_zero}">
+				<a href="{if ($zero) then delete_zero else delete_non_zero}">
 					<img src="img/icon-close.png" alt=""/>
 				</a>
 			</td>

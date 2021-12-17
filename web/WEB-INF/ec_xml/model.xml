@@ -565,6 +565,7 @@
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="discount" type="currency" caption="Номинал скидочной карты" default="0"/>
+		<parameter name="discount_number" type="string" caption="Номер скидочной карты" default="0"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />

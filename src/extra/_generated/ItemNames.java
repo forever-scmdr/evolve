@@ -1333,6 +1333,7 @@ public interface ItemNames {
         String PHONE = "phone";
         String PASSWORD = "password";
         String DISCOUNT = "discount";
+        String DISCOUNT_NUMBER = "discount_number";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
         String PAY_TYPE = "pay_type";
@@ -1360,6 +1361,7 @@ public interface ItemNames {
         String PHONE = "phone";
         String PASSWORD = "password";
         String DISCOUNT = "discount";
+        String DISCOUNT_NUMBER = "discount_number";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
         String PAY_TYPE = "pay_type";
@@ -1405,6 +1407,7 @@ public interface ItemNames {
         String PHONE = "phone";
         String PASSWORD = "password";
         String DISCOUNT = "discount";
+        String DISCOUNT_NUMBER = "discount_number";
         String REGISTERED = "registered";
         String PAYMENT = "payment";
         String PAY_TYPE = "pay_type";

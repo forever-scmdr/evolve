@@ -43,7 +43,8 @@
 .thumbs .thumb{
 	/*height: 60px;*/
 	width: 60px;
-	display: inline-block;
+	/*display: inline-block;*/
+	display: inline-grid;
 	margin: 2px;
 	border: 2px solid transparent;
 }

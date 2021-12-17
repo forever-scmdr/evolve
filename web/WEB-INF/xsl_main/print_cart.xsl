@@ -301,6 +301,9 @@
 															<xsl:value-of select="f:exchange_cur(product, 'price', 0)"/>/<xsl:value-of select="product/unit"/>
 														</xsl:if>
 													</span>
+													<xsl:if test="product/special_price = 'true'">
+														<span style="font-size:12.0pt; color: red; margin-left: 15px;">Спеццена</span>
+													</xsl:if>
 												</p>
 											</td>
 											<td width="16%" valign="top"

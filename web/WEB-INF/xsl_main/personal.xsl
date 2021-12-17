@@ -77,7 +77,7 @@
 						<div class="form-item__label">
 							<div><b>Номер скидочной карты:</b></div>
 						</div>
-						<input class="input" type="text"/>
+						<input class="input" type="text" value="{$user/discount_number}" disabled="disabled"/>
 					</div>
 					<div><b>Номинал скидочной карты: <xsl:value-of select="if ($user/discount and not($user/discount = '')) then $user/discount else '0'"/>%</b></div>
 					<xsl:choose>
