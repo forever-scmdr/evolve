@@ -174,7 +174,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	}
 
 	public static LuceneIndexMapper getSingleton() throws IOException {
-		if (singleton == null)
+		if (singleton == null || singleton.writer == null)
 			singleton = new LuceneIndexMapper();
 		return singleton;
 	}

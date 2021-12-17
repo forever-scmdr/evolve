@@ -7,6 +7,7 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.pages.LinkPE;
 import ecommander.pages.PageModelRegistry;
 import ecommander.pages.var.FilterStaticVariable;
+import ecommander.pages.var.Variable;
 import ecommander.pages.var.VariablePE;
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +47,9 @@ public class FilterFormServlet extends BasicServlet {
 		req.getQueryString();
 		try {
 			LinkPE targetLink = PageModelRegistry.getRegistry().normalizeAndCreateLink(targetUrl);
-			String varName = targetLink.getVariable(LinkPE.VAR_VARIABLE).writeSingleValue(); // Название переменной для пользовательского фильтра
+			Variable filterNameVar = targetLink.getVariable(LinkPE.VAR_VARIABLE);
+			String varName = filterNameVar == null ? "fil" : filterNameVar.writeSingleValue(); // Название переменной для пользовательского фильтра
+			varName = StringUtils.isBlank(varName) ? "fil" : varName;
 			targetLink.removeVariable(LinkPE.VAR_VARIABLE); // чтобы не выводить лишнюю переменную, которая все равно добавится потом
 			Map<String, String[]> params = new HashMap<>(req.getParameterMap());
 			// Удалить все лишние пеерменные, которые содержатся в targetUrl

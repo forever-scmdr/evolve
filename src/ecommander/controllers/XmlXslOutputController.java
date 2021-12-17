@@ -111,11 +111,13 @@ public class XmlXslOutputController {
 				factory.setErrorListener(errors);
 				transformer = getTransformer(xslFile, factory);
 				Reader reader = new StringReader(xml.toString());
-				transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+				synchronized (transformer) {
+					transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+				}
 			} catch (TransformerConfigurationException e) {
 				factory = null;
 				transformers = null;
-				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, errors.errors);
+				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "XSL tranform error in " + xslFileName + "\tERRORS: " + errors.errors);
 			} catch (Exception ex) {
 				factory = null;
 				transformers = null;
