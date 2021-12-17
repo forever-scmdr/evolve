@@ -67,7 +67,7 @@ public final class SynchronousTransaction implements AutoCloseable {
 			timer.start("commit");
 			conn.commit();
 			Timer.TimeLogMessage message = timer.stop("commit");
-			ServerLogger.error("\n\n========= COMMIT SYNCHRONOUS : " + message.getExecTimeMillis() + " ms\n");
+			ServerLogger.warn("\n\n========= COMMIT SYNCHRONOUS : " + message.getExecTimeMillis() + " ms\n");
 			executedCommands = new ArrayList<>();
 			ServerLogger.debug("Transaction successfull");
 			return;

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.KeywordTokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -173,7 +174,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	}
 
 	public static LuceneIndexMapper getSingleton() throws IOException {
-		if (singleton == null)
+		if (singleton == null || singleton.writer == null)
 			singleton = new LuceneIndexMapper();
 		return singleton;
 	}

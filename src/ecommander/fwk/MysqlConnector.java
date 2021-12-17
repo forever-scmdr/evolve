@@ -103,12 +103,12 @@ public class MysqlConnector
 				synchronized (openTraces) {
 					openTraces.put(name, trace.toString());
 					if (openTraces.size() > 5) {
-						ServerLogger.error("\n\n\n/////////////---------- " + openTraces.size() + " CONNECTIONS ----------/////////////");
+						ServerLogger.warn("\n\n\n/////////////---------- " + openTraces.size() + " CONNECTIONS ----------/////////////");
 						StringBuilder message = new StringBuilder();
 						for (Integer connName : openTraces.keySet()) {
 							message.append("\n\n\tCONNECTION ").append(connName).append(":").append(openTraces.get(connName));
 						}
-						ServerLogger.error(message.toString());
+						ServerLogger.warn(message.toString());
 					}
 				}
 				synchronized (openThreads) {
@@ -172,8 +172,8 @@ public class MysqlConnector
 				logEntry += "\n" + queryTimes.get(i) + "\t" + queries.get(i);
 			}
 			long time = System.currentTimeMillis() - createTime;
-			ServerLogger.error(logEntry);
-			ServerLogger.error("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
+			ServerLogger.warn(logEntry);
+			ServerLogger.warn("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
 			synchronized (openTraces) {
 				openTraces.remove(name);
@@ -468,7 +468,7 @@ public class MysqlConnector
 					message.append(getThreadDump(openThread));
 				}
 			}
-			ServerLogger.error(message);
+			ServerLogger.warn(message);
 		}
 	}
 

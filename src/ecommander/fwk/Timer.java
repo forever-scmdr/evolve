@@ -54,7 +54,7 @@ public class Timer {
 					+ ": '" + taskName + "' time - " + FORMATTER.format(execTime / 1000) + " mks";
 			if (comment != null)
 				message += "  URL: " + comment;
-			ServerLogger.error(message);
+			ServerLogger.warn(message);
 		}
 
 		public long getExecTime() {

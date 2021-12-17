@@ -134,7 +134,13 @@ public class LinkPE implements VariablePE.VariableContainer, PageElement {
 				int eqIdx = varStr.indexOf(VariablePE.EQ_SIGN);
 				if (eqIdx > 0) {
 					String varName = varStr.substring(0, eqIdx);
-					String varValue = URLDecoder.decode(varStr.substring(eqIdx + 1), "UTF-8");
+					String varValue;
+					try {
+						varValue = URLDecoder.decode(varStr.substring(eqIdx + 1), "UTF-8");
+					} catch (Exception e) {
+						ServerLogger.warn("Illegal url characters", e);
+						varValue = varStr.substring(eqIdx + 1);
+					}
 					addParsedVariableValue(page, varName, varValue);
 				}
 			}
