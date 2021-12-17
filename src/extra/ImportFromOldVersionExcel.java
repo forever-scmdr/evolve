@@ -115,8 +115,11 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
             while (products.size() != 0) {
                 Item product = products.poll();
                 id = product.getId();
-                executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
-                counter++;
+                String code = product.getStringValue(CODE_PARAM);
+                if(!StringUtils.startsWith(code,"cmp-") && !StringUtils.startsWith(code,"rct-")) {
+                    executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+                    counter++;
+                }
                 if (counter >= HIDE_BATCH_SIZE) commitCommandUnits();
                 info.increaseProcessed();
             }

@@ -4,6 +4,7 @@ import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.fwk.external_shops.ExternalShopPriceCalculator;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
@@ -19,7 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -143,7 +143,7 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		product.setValueUI("search", name+" "+nameExtra+" "+code);
 		product.setValueUI(VENDOR_PARAM, vendor);
 		product.setValueUI(UNIT_PARAM, "шт");
-		BigDecimal bynPrice = convertToByn(price);
+		BigDecimal bynPrice = ExternalShopPriceCalculator.convertToByn(price, currency, catalog);
 		if(bynPrice.compareTo(BigDecimal.ZERO) > 0){
 			product.setValue(PRICE_PARAM, bynPrice);
 		}
@@ -161,31 +161,12 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 			String p = row.getString(String.format(PRICE_HEADER, i));
 			String q = row.getString(String.format(PRICE_QTY_HEADER, i));
 			if(isValidPriceAndQuantity(p, q)){
-				product.setValue("spec_price", convertToByn(p));
+				product.setValue("spec_price", ExternalShopPriceCalculator.convertToByn(p, currency, catalog));
 				product.setValueUI("spec_qty", q);
 			}
 		}
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 	}
-
-	private BigDecimal convertToByn(String price) {
-		if(StringUtils.isBlank(price)) return  BigDecimal.ZERO;
-		BigDecimal originalPrice = DecimalDataType.parse(price, DecimalDataType.CURRENCY_PRECISE);
-
-		BigDecimal scale =  new BigDecimal(currency.getIntValue("scale",1));
-		BigDecimal currencyQ = new BigDecimal(1 + currency.getDoubleValue("q",0));
-		BigDecimal currencyRatio = new BigDecimal(currency.getDoubleValue("ratio")).multiply(currencyQ);
-
-		BigDecimal c1 = catalog.getDecimalValue("c1");
-		BigDecimal c2 = catalog.getDecimalValue("c2");
-		BigDecimal c3 = catalog.getDecimalValue("c3");
-		BigDecimal c4 = catalog.getDecimalValue("c4");
-
-		BigDecimal bynPrice = originalPrice.divide(c1, RoundingMode.HALF_EVEN).multiply(currencyRatio).multiply(c2).multiply(c3).multiply(c4).divide(scale);
-		bynPrice.setScale(DecimalDataType.CURRENCY, RoundingMode.HALF_EVEN);
-		return bynPrice;
-	}
-
 
 
 	private boolean isValidPriceAndQuantity(String price, String quantity){

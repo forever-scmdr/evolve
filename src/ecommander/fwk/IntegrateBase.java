@@ -318,6 +318,15 @@ public abstract class IntegrateBase extends Command {
 	protected void addError(String message, int lineNumber, int position) {
 		getInfo().addError(message, lineNumber, position);
 	}
+
+	/**
+	 * Добавить ошибку с полным стеком исключения
+	 * @param error
+	 */
+	protected void addError(Throwable error) {
+		getInfo().addError(error);
+	}
+
 	/**
 	 * Добавить ошибку с неточным местом в файле интеграции
 	 * @param message
