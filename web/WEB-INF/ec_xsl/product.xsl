@@ -30,6 +30,7 @@
 	<xsl:variable name="display_price_old" select="f:price_ictrade($price_old)"/>
 
 
+
 	<xsl:template name="MARKUP">
 
 		<script type="application/ld+json">
@@ -132,7 +133,7 @@
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
-									<input type="number" class="text-input" name="qty" value="{$p/min_qty}" step="{$p/min_qty}" min="{$p/min_qty}" />
+									<input type="number" class="text-input" name="qty" value="{$p/min_qty}" step="{if(f:num($p/step)&gt; 0) then $p/step else $p/min_qty}" min="{$p/min_qty}" />
 									<input type="submit" class="button" value="В корзину" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">

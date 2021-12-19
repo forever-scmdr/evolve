@@ -75,7 +75,7 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 				catalog = ItemUtils.newChildItem("shop_catalog", shop);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser().noFulltextIndex());
 			}
-			priceWB = new RctPriceList(file, catalog, currency, info);
+			priceWB = new RctPriceList(file, catalog, currency);
 		} catch (Exception e) {
 			ServerLogger.error("Integeration error", e);
 			addError(e);
@@ -131,16 +131,16 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 	private final class RctPriceList extends ExcelPriceList implements CatalogConst {
 		private Item catalog;
 		private Item currency;
-		private Info info;
+		//private Info info;
 
 		private final HashMap<String, String> HEADER_PARAMS = new HashMap<>();
 
 
-		public RctPriceList(File file, Item catalog, Item currency, Info info) {
+		public RctPriceList(File file, Item catalog, Item currency) {
 			super(file, "Категории", "Номенклатура", "Код", "Норма отгрузки", "Опт", "Свободный остаток");
 			this.catalog = catalog;
 			this.currency = currency;
-			this.info = info;
+			//this.info = info;
 			HEADER_PARAMS.put("Номенклатура", NAME);
 			HEADER_PARAMS.put("Код", CODE_PARAM);
 			HEADER_PARAMS.put("Свободный остаток", QTY_PARAM);
@@ -148,12 +148,13 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 			HEADER_PARAMS.put("Норма отгрузки", STEP_PARAM);
 			HEADER_PARAMS.put("Описание", DESCRIPTION_PARAM);
 			HEADER_PARAMS.put("Производитель", VENDOR_PARAM);
+			//info.setProcessed(0);
 		}
 
 		@Override
 		protected void processRow() throws Exception {
 			info.setLineNumber(getRowNum() + 1);
-			info.setProcessed(0);
+
 			String code = getValue("Код");
 			if (StringUtils.isBlank(code) || "Код".equalsIgnoreCase(code)) return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, CODE_PTEFIX + code, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
@@ -186,13 +187,20 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 				product.setValue(PRICE_PARAM, bynPrice);
 			}
 
+			product.setValueUI(TAG_PARAM, "external_shop");
+			product.setValueUI(TAG_PARAM, SHOP_NAME);
+			String q =  getValue("Норма отгрузки");
+			q = StringUtils.isBlank(q)? "1" : q;
+			product.setValueUI(MIN_QTY_PARAM, q);
+
+
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser().noFulltextIndex());
 			info.increaseProcessed();
 		}
 
 		@Override
 		protected void processSheet() throws Exception {
-
+			info.setProcessed(0);
 		}
 
 	}
