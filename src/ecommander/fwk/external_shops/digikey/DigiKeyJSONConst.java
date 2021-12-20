@@ -1,4 +1,4 @@
-package extra;
+package ecommander.fwk.external_shops.digikey;
 
 public interface DigiKeyJSONConst {
 	String JSON_PRODUCT_COUNT = "ProductsCount";

@@ -1,4 +1,4 @@
-package extra;
+package ecommander.fwk.external_shops.arrow;
 
 /**
  * Тут хранятся названия полей JSON-бъекта который возвращает API arrow

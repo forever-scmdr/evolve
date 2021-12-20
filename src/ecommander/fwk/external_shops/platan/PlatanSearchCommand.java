@@ -1,7 +1,8 @@
-package extra;
+package ecommander.fwk.external_shops.platan;
 
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import extra.JsoupXmlFixer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

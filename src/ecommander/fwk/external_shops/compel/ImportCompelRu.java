@@ -1,18 +1,20 @@
-package extra;
+package ecommander.fwk.external_shops.compel;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.Compression;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.WebClient;
+import ecommander.fwk.external_shops.AbstractShopImport;
 import ecommander.fwk.external_shops.ExternalShopPriceCalculator;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,12 +23,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 
-public class ImportCompelRu extends IntegrateBase implements CatalogConst {
-	private Item shop;
-	private Item currency;
-	private Item catalog;
+public class ImportCompelRu extends AbstractShopImport implements CatalogConst {
 
 	private static final String CHARSET = "Cp866";
 	private static final String SHOP_NAME = "compel.ru";
@@ -46,60 +44,25 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 	private static final String NAME_EXTRA_HEADER = "CLASS_NAME";
 	//private static final String UNIT_HEADER = "единица измерения";
 	private static final String CODE_PREFIX = "cmp-";
+	private int counter = 0;
 
 
 	@Override
-	protected boolean makePreparations() throws Exception {
-		shop = ItemQuery.loadSingleItemByParamValue("shop", NAME, SHOP_NAME);
-		if(shop == null){
-			info.addError(new Exception("No shop \"compel.ru\""));
-			return false;
-		}
-		ArrayList<Item> currencies = ItemQuery.loadByParentId(shop.getId(), new Byte[]{ItemTypeRegistry.getAssocId("general")});
-		if(currencies.size() == 0){
-			info.addError(new Exception("No currency selected for shop \"compel.ru\""));
-			return false;
-		}
-		if(currencies.size() > 1){
-			info.addError(new Exception("More than one currency selected for shop \"compel.ru\""));
-			return false;
-		}
-		currency = currencies.get(0);
-		ArrayList<Item> catalogs = ItemQuery.loadByParentId(shop.getId(), new Byte[]{ItemTypeRegistry.getPrimaryAssoc().getId()});
-		for(Item c : catalogs){
-			if(c.getTypeId() == ItemTypeRegistry.getItemTypeId("shop_catalog") && c.getStatus() != Item.STATUS_DELETED) {
-				catalog = c;
-				break;
-			}
-		}
-		return true;
+	protected boolean downloadData() {
+		return downloadZip();
 	}
 
 	@Override
-	protected void integrate() throws Exception {
-		if(!downloadZip()) return;
-
+	protected void processData() throws Exception {
 		File compelFile = decompress();
 		if(compelFile == null || !compelFile.isFile()){
 			info.addError("Некорректный файл каталога", -1, -1);
 			return;
 		}
 
-		if(catalog != null) {
-			Item newCatalog = ItemUtils.newChildItem("shop_catalog", shop);
-			Item.updateParamValues(catalog, newCatalog);
-
-			setOperation("Удаление старого каталога");
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(catalog.getId()).ignoreUser(true).noFulltextIndex());
-
-			catalog = newCatalog;
-		}
-
 		setOperation("Создание нового каталога");
-
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser().noFulltextIndex());
 		info.setProcessed(0);
-
 		setOperation("Заполнение каталога");
 		Charset charset = Charset.forName(CHARSET);
 		try (DBFReader reader = new DBFReader(new FileInputStream(compelFile), charset)){
@@ -114,14 +77,48 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		}catch (Exception e){
 			throw e;
 		}
-		info.pushLog("Создание товаров завершено");
-		info.setOperation("Индексация названий товаров");
-		info.indexsationStarted();
-		LuceneIndexMapper.getSingleton().reindexAll();
 	}
 
+	@Override
+	protected String getShopName() {
+		return ImportCompelRu.SHOP_NAME;
+	}
+
+
 	private void processRow(DBFRow row) throws Exception {
-		Item product = ItemUtils.newChildItem(PRODUCT_ITEM, catalog);
+		String code = CODE_PREFIX + row.getString(CODE_HEADER);
+		Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM,CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+		if(product == null){
+			product = ItemUtils.newChildItem(PRODUCT_ITEM, catalog);
+		}
+		else{
+			executeAndCommitCommandUnits(ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
+		}
+
+		setProductParams(product, row);
+
+
+		for(int i=1; i<6; i++){
+			String p = row.getString(String.format(PRICE_HEADER, i));
+			String q = row.getString(String.format(PRICE_QTY_HEADER, i));
+			if(isValidPriceAndQuantity(p, q)){
+				product.setValue("spec_price", ExternalShopPriceCalculator.convertToByn(p, currency, catalog));
+				product.setValueUI("spec_qty", q);
+			}
+		}
+		try {
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra().ignoreUser());
+		}catch (Exception e){
+			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product).noTriggerExtra().ignoreUser());
+			product = ItemUtils.newChildItem(PRODUCT_ITEM, catalog);
+			setProductParams(product, row);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra().ignoreUser());
+			info.pushLog("index errors:" + (++counter));
+		}
+	}
+
+
+	private void setProductParams(Item product, DBFRow row) throws Exception {
 		String code = CODE_PREFIX + row.getString(CODE_HEADER);
 		String name = row.getString(NAME_HEADER);
 		String qty = row.getString(QTY_HEADER);
@@ -129,11 +126,6 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		String nameExtra = row.getString(NAME_EXTRA_HEADER);
 		String vendor = row.getString(VENDOR_HEADER);
 		String price = row.getString(String.format(PRICE_HEADER,1));
-
-		Item oldProduct = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM,CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
-		if(oldProduct != null){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldProduct.getId()).ignoreUser(true).noFulltextIndex());
-		}
 
 		product.setValueUI(CODE_PARAM, code);
 		product.setValueUI(NAME_PARAM, name);
@@ -153,21 +145,7 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		product.setValueUI(TAG_PARAM, "external_shop");
 		product.setValueUI(TAG_PARAM, SHOP_NAME);
 		product.setValueUI(PRICE_ORIGINAL_PARAM, price);
-		String keyUnique = Strings.translit(code+" "+name);
-		product.setKeyUnique(keyUnique);
-
-
-		for(int i=1; i<6; i++){
-			String p = row.getString(String.format(PRICE_HEADER, i));
-			String q = row.getString(String.format(PRICE_QTY_HEADER, i));
-			if(isValidPriceAndQuantity(p, q)){
-				product.setValue("spec_price", ExternalShopPriceCalculator.convertToByn(p, currency, catalog));
-				product.setValueUI("spec_qty", q);
-			}
-		}
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
 	}
-
 
 	private boolean isValidPriceAndQuantity(String price, String quantity){
 		if(StringUtils.isBlank(price) || StringUtils.isBlank(quantity)) return false;
@@ -178,8 +156,8 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 		try{
 			WebClient.saveFile(DOWNLOAD_URL, AppContext.getRealPath(INTEGRATION_DIR), ZIP_FILE_NAME);
 		} catch (Exception e){
-			ServerLogger.error("Не удлось скачать каталог compel.ru");
-			info.addError("Не удалось скачать каталог compel.ru", -1,-1);
+			ServerLogger.error("Не удлось скачать каталог "+SHOP_NAME);
+			info.addError("Не удалось скачать каталог "+SHOP_NAME, -1,-1);
 			info.setOperation("Фатальная ошибка");
 			return false;
 		}
@@ -194,8 +172,8 @@ public class ImportCompelRu extends IntegrateBase implements CatalogConst {
 				FileUtils.deleteQuietly(compelFile);
 			Compression.decompress(zipFile, new FileOutputStream(compelFile));
 		} catch (Exception e) {
-			ServerLogger.error("Не возмножно расархивировать файл", e);
-			info.addError("Не возмножно расархивировать файл " + DOWNLOAD_URL, 0, 0);
+			ServerLogger.error("Невозмножно разархивировать файл", e);
+			info.addError("Невозмножно разархивировать файл " + DOWNLOAD_URL, 0, 0);
 			info.setOperation("Фатальная ошибка, интеграция не возможна");
 			return null;
 		}

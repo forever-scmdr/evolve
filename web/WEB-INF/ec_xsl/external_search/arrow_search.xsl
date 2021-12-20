@@ -135,8 +135,12 @@
 			<div class="pop__body">
 				<div class="pop__title">
 					<a class="pop__close"><img src="{//page/base}/img/icon-close.png" alt=""/></a>
-					<xsl:value-of select="name"/>
+					<xsl:value-of select="name"/><br/>
+					<span style="color: gray; font-size: 20px;">
+						<xsl:value-of select="concat('Код: ', code)"/>
+					</span>
 				</div>
+				<div style="margin-bottom:15px;"></div>
 				<div class="pop-prices">
 					<xsl:apply-templates select="offer"/>
 				</div>
@@ -236,7 +240,7 @@
 		</div>
 		<xsl:if test="f:num($offer/qty) != 0">
 			<div class="device__in-stock">
-				<i class="fas fa-check"></i>поставка в течение <xsl:value-of select="$shop/delivery_string"/>
+				<i class="fas fa-check"></i>поставка <xsl:value-of select="concat(format-number($offer/qty, '# ###', 'r'), 'шт.')"/><br/>в течение <xsl:value-of select="$shop/delivery_string"/>
 			</div>
 		</xsl:if>
 		<xsl:if test="f:num($offer/qty) = 0">

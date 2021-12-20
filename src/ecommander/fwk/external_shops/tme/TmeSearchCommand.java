@@ -1,8 +1,9 @@
-package extra;
+package ecommander.fwk.external_shops.tme;
 
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import extra.JsoupXmlFixer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.jsoup.Jsoup;

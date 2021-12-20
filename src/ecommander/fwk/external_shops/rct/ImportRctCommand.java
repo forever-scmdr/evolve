@@ -1,131 +1,58 @@
-package extra;
+package ecommander.fwk.external_shops.rct;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.ExcelPriceList;
+import ecommander.fwk.ItemUtils;
+import ecommander.fwk.WebClient;
+import ecommander.fwk.external_shops.AbstractShopImport;
 import ecommander.fwk.external_shops.ExternalShopPriceCalculator;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-public class ImportRctCommand extends IntegrateBase implements CatalogConst {
+public class ImportRctCommand extends AbstractShopImport implements CatalogConst {
 	private static final String ENDPOINT = "http://www.rct.ru/price/all";
 	private static final String FILE_NAME = "rct.xlsx";
 	private static final String SHOP_NAME = "rct.ru";
-	private static final int LOAD_BATCH_SIZE = 1000;
-	private static final int STATUS_BATCH_SIZE = 500;
 	private static final String CODE_PREFIX = "rct-";
-	private Item catalog;
 
 	ExcelPriceList priceWB;
 
 
 	@Override
-	protected boolean makePreparations() throws Exception {
-		File file;
-		try {
-			file = Paths.get(AppContext.getFilesDirPath(false), FILE_NAME).toFile();
-			if (file.exists()) {
-				FileUtils.deleteQuietly(file);
-			}
-			WebClient.saveFile(ENDPOINT, AppContext.getCommonFilesDirPath(), FILE_NAME);
-		} catch (Exception e) {
-			ServerLogger.error("Integeration error", e);
-			addError(e);
-			return false;
+	protected boolean downloadData() throws Exception {
+		File file = Paths.get(AppContext.getFilesDirPath(false), FILE_NAME).toFile();
+		if (file.exists()) {
+			FileUtils.deleteQuietly(file);
 		}
-
-		try {
-			Item shop = ItemQuery.loadSingleItemByParamValue("shop", "name", SHOP_NAME);
-			if (shop == null) {
-				info.addError(new Exception("No shop \"" + SHOP_NAME + "\""));
-				return false;
-			}
-			ArrayList<Item> currencies = ItemQuery.loadByParentId(shop.getId(), new Byte[]{ItemTypeRegistry.getAssocId("general")});
-			if (currencies.size() == 0) {
-				info.addError(new Exception("No currency selected for shop \"" + SHOP_NAME + "\""));
-				return false;
-			}
-			if (currencies.size() > 1) {
-				info.addError(new Exception("More than one currency selected for shop \"" + SHOP_NAME + "\""));
-				return false;
-			}
-			Item currency = currencies.get(0);
-			ArrayList<Item> catalogs = ItemQuery.loadByParentId(shop.getId(), new Byte[]{ItemTypeRegistry.getPrimaryAssoc().getId()});
-			for (Item c : catalogs) {
-				if (c.getTypeId() == ItemTypeRegistry.getItemTypeId("shop_catalog") && c.getStatus() != Item.STATUS_DELETED) {
-					catalog = c;
-					break;
-				}
-			}
-			if (catalog == null) {
-				catalog = ItemUtils.newChildItem("shop_catalog", shop);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser().noFulltextIndex());
-			}
-			priceWB = new RctPriceList(file, catalog, currency);
-		} catch (Exception e) {
-			ServerLogger.error("Integeration error", e);
-			addError(e);
-			return false;
-		}
-
+		WebClient.saveFile(ENDPOINT, AppContext.getCommonFilesDirPath(), FILE_NAME);
+		priceWB = new RctPriceList(file, catalog, currency);
 		return true;
 	}
 
 	@Override
-	protected void integrate() throws Exception {
-		hideAllProducts();
-		setOperation("Разбор кталога " + SHOP_NAME);
+	protected void processData() throws Exception {
 		priceWB.iterate();
-		pushLog("Разбор кталога " + SHOP_NAME + " завершен");
-
-		info.setOperation("Индексация названий товаров");
-		info.indexsationStarted();
-		LuceneIndexMapper.getSingleton().reindexAll();
 	}
 
-	private void hideAllProducts() throws Exception {
-		setOperation("Скрываем товары с \"" + SHOP_NAME + "\"");
-		info.setProcessed(0);
-		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
-		q.setParentId(catalog.getId(), false);
-		int page = 1;
-		q.setLimit(LOAD_BATCH_SIZE, page);
-		List<Item> products = new LinkedList<>();
-		int counter = 0;
-		while ((products = q.loadItems()).size() >= LOAD_BATCH_SIZE) {
-			for (Item product : products) {
-				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser().noFulltextIndex());
-				counter++;
-				if (counter >= STATUS_BATCH_SIZE) {
-					counter = 0;
-					commitCommandUnits();
-				}
-				info.increaseProcessed();
-			}
-			q.setLimit(LOAD_BATCH_SIZE, ++page);
-		}
-		if (counter > 0) {
-			commitCommandUnits();
-		}
-	}
 
 	@Override
 	protected void terminate() throws Exception {
 
+	}
+
+	@Override
+	protected String getShopName() {
+		return ImportRctCommand.SHOP_NAME;
 	}
 
 	private final class RctPriceList extends ExcelPriceList implements CatalogConst {
@@ -159,7 +86,7 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 			if (StringUtils.isBlank(code) || "Код".equalsIgnoreCase(code)) return;
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, CODE_PREFIX + code, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 			if (product != null) {
-				executeCommandUnit(ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
+				executeAndCommitCommandUnits(ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
 			}
 			product = product == null ? ItemUtils.newChildItem(PRODUCT_ITEM, catalog) : product;
 			for (String header : HEADER_PARAMS.keySet()) {

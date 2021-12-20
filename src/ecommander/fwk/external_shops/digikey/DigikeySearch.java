@@ -1,4 +1,4 @@
-package extra;
+package ecommander.fwk.external_shops.digikey;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.XmlDocumentBuilder;

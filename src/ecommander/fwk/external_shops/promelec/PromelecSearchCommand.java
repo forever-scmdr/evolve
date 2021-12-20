@@ -1,8 +1,9 @@
-package extra;
+package ecommander.fwk.external_shops.promelec;
 
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import extra.JsoupXmlFixer;
 import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

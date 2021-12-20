@@ -164,15 +164,16 @@
 		<xsl:variable name="price_pack" select="f:num($product/CENA_PACK)"/>
 		<xsl:variable name="m1" select="if($price_roz &gt; 0) then concat($product/MINZAKAZ, ':', $price_roz) else $nothing"/>
 		<xsl:variable name="m2" select="if($price_pack &gt; 0) then concat($product/UPACK, ':', $price_pack) else $nothing"/>
+		<xsl:variable name="min" select="if(f:num($product/MINZAKAZ) &gt; 0) then $product/MINZAKAZ else 1"/>
 
 		<input type="hidden" value="{$product/NOM_N}" name="id"/>
 		<input type="hidden" value="{$shop/name}" name="aux"/>
 		<input type="hidden" value="{$product/NAME}" name="name"/>
 		<input type="hidden" value="{$product/MANUFAC}" name="vendor"/>
 		<input type="hidden" value="{$product/EI_NAME}" name="unit"/>
-		<input type="hidden" value="{$product/MINZAKAZ}" name="min_qty"/>
+		<input type="hidden" value="{$min}" name="min_qty"/>
 		<input type="hidden" value="{string-join(($m1, $m2), ';')}" name="price_map"/>
-		<input type="number" class="text-input" name="qty" value="{$product/MINZAKAZ}" min="{$product/MINZAKAZ}"/>
+		<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"/>
 	</xsl:template>
 	<xsl:template name="CART_BUTTON_AVAILABLE">
 		<xsl:param name="product"/>

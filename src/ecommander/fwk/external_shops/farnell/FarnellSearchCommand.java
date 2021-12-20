@@ -1,10 +1,11 @@
-package extra;
+package ecommander.fwk.external_shops.farnell;
 
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import extra.JsoupXmlFixer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.Base64;
 import org.jsoup.Jsoup;
@@ -115,21 +116,6 @@ public class FarnellSearchCommand extends Command implements CatalogConst {
 		mac.init(keySpec);
 		String hash = Base64.encodeBase64String(mac.doFinal(toEncode.getBytes()));
 		return URLEncoder.encode(hash, "UTF-8");
-	}
-
-	public static void main(String[] args) {
-		String encodedString = "The quick brown fox jumps over the lazy dog";
-		String secretKey = "key";
-		String alg = "HmacSHA1";
-		try {
-			SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes("UTF-8"), alg);
-			Mac mac = Mac.getInstance(alg);
-			mac.init(keySpec);
-			String hash = Base64.encodeBase64String(mac.doFinal(encodedString.getBytes()));
-			System.out.println(hash);
-		} catch (UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

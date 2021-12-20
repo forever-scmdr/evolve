@@ -64,7 +64,7 @@
 		<xsl:variable name="sum"  select="f:cart_sum(sum)"/>
 		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
 		<xsl:variable name="price_original" select="format-number(f:num($price_original_str), '# ### ##0,00000', 'exc')"/>
-		<xsl:variable name="vendor_code_for_name" select="('digikey', 'farnell', 'arrow', 'tme')"/>
+		<xsl:variable name="vendor_code_for_name" select="('Digikey', 'Farnell', 'Verical', 'TME')"/>
 
 		<tr>
 			<td>

@@ -1,4 +1,4 @@
-package extra;
+package ecommander.fwk.external_shops.gkel;
 
 import ecommander.fwk.Strings;
 import ecommander.pages.Command;

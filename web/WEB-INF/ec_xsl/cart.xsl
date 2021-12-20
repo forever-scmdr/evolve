@@ -74,9 +74,8 @@
 		<xsl:variable name="is_aux" select="aux != ''"/>
 		<xsl:variable name="shop" select="/page/shop[name = $aux]"/>
 		<xsl:variable name="p" select="product"/>
-		<xsl:variable name="unit" select="if($is_aux) then $p/unit else if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, $p/unit) else $p/unit"/>
-		<xsl:variable name="price"  select="f:cart_sum($p/price)"/>
-		<xsl:variable name="sum"  select="f:cart_sum(sum)"/><!-- concat(f:price_output(sum, $shop), ' ', upper-case($curr)) -->
+		<xsl:variable name="price"  select="f:cart_sum(price)"/>
+		<xsl:variable name="sum"  select="f:cart_sum(sum)"/>
 		<xsl:variable name="img"  select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
 
 
@@ -106,6 +105,19 @@
 				<p>
 					<span>Цена</span>
 					<xsl:value-of select="$price"/>
+					<xsl:if test="$p/spec_price">
+						<xsl:variable name="sq" select="$p/spec_qty"/>
+						<xsl:variable name="x">
+							<xsl:for-each select="$p/spec_price">
+								<xsl:variable name="pos" select="position()"/>
+								<xsl:variable name="q" select="$sq[$pos]"/>
+								<xsl:variable name="display_spec" select="f:price_ictrade(.)"/>
+								<xsl:value-of select="concat($q, '+ ', '&lt;strong&gt;', $display_spec,' ', upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+							</xsl:for-each>
+						</xsl:variable>
+						<br/>
+						<a data-container="body" data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}" style="font-size:12px;">подробнее</a>
+					</xsl:if>
 				</p>
 			</div>
 

@@ -1568,7 +1568,16 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.ImportCompelRu" clear-cache="yes">
+		<command class="ecommander.fwk.external_shops.compel.ImportCompelRu" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="parse_compel_auto" schedule="0 0 6 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="ecommander.fwk.external_shops.compel.ImportCompelRu" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
@@ -1577,7 +1586,7 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.ImportRctCommand" clear-cache="yes">
+		<command class="ecommander.fwk.external_shops.rct.ImportRctCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
@@ -1781,7 +1790,7 @@
 			<var name="shop" value="Verical"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.ArrowSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.arrow.ArrowSearchCommand" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
@@ -1796,7 +1805,7 @@
 		</request>
 
 		<include name="SHOP_AND_CURRENCY" />
-		<command class="extra.DigikeySearch" tag="search">
+		<command class="ecommander.fwk.external_shops.digikey.DigikeySearch" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
@@ -1813,7 +1822,7 @@
 			<var name="shop" value="Farnell"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.FarnellSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.farnell.FarnellSearchCommand" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
@@ -1828,7 +1837,7 @@
 			<var name="shop" value="Platan"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.PlatanSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.platan.PlatanSearchCommand" tag="search">
 			<result name="result" type="inline_xml" />
 		</command>
 	</page>
@@ -1842,7 +1851,7 @@
 			<var name="shop" value="Promelec"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.PromelecSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.promelec.PromelecSearchCommand" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
@@ -1856,7 +1865,7 @@
 			<var name="shop" value="TME"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.TmeSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.tme.TmeSearchCommand" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
@@ -1870,10 +1879,11 @@
 			<var name="shop" value="gkel.ru"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>
-		<command class="extra.GkelSearchCommand" tag="search">
+		<command class="ecommander.fwk.external_shops.gkel.GkelSearchCommand" tag="search">
 			<result name="result" type="inline_xml"/>
 		</command>
 	</page>
+
 
 	<page name="digikey_manual_authorise">
 		<request>
@@ -1886,14 +1896,14 @@
 			<var name="result" value="Не удалось войти по коду доступа."/>
 			<var name="code" var="code" />
 		</link>
-		<command class="extra.DigikeySearch" method="getAccessCodeAndAuthorise">
+		<command class="ecommander.fwk.external_shops.digikey.DigikeySearch" method="getAccessCodeAndAuthorise">
 			<result name="success" type="redirect"/>
 			<result name="error" type="redirect"/>
 		</command>
 	</page>
 
 	<page name="refresh_access" schedule="0 */15 * ? * *">
-		<command class="extra.DigikeySearch" method="refreshAccessToken"/>
+		<command class="ecommander.fwk.external_shops.digikey.DigikeySearch" method="refreshAccessToken"/>
 	</page>
 
 	<page name="digikey_result">

@@ -595,10 +595,10 @@
 			</div>
 			<xsl:if test="f:num(qty) != 0">
 				<xsl:if test="not($sel_shop)">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, $u,'.')"/></div>
+					<div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, $u,'.')"/></div>
 				</xsl:if>
 				<xsl:if test="$sel_shop">
-					<div class="device__in-stock device_row__in-stock"  style="max-width: 140px;"><i class="fas fa-check"></i> поставка <xsl:value-of select="concat(qty, $u,'.')"/> в течение <xsl:value-of select="$sel_shop/delivery_string"/></div>
+					<div class="device__in-stock"><i class="fas fa-check"></i> поставка <xsl:value-of select="concat(qty, $u,'.')"/> в течение <xsl:value-of select="$sel_shop/delivery_string"/></div>
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="f:num(qty) = 0">
@@ -730,7 +730,7 @@
 				<xsl:if test="not($has_lines)">
 					<div id="cart_list_{@id}">
 						<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-							<input type="hidden" class="text-input" name="qty" value="{$min}" step="{$step}" min="{$min}"/>
+							<input type="number" class="text-input" name="qty" value="{$min}" step="{$step}" min="{$min}"/>
 							<xsl:if test="$has_price">
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
@@ -854,7 +854,7 @@
 				<link rel="stylesheet" type="text/css" href="css/tmp_fix.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 				<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-				<link rel="stylesheet" href="fotorama/fotorama.css"/>
+				<link rel="stylesheet" href="fotorama/fotorama.css?v=1.1"/>
 				<link rel="stylesheet" href="admin/jquery-ui/jquery-ui.css"/>
 				<script defer="defer" src="js/font_awesome_all.js"/>
 				<script type="text/javascript" src="admin/js/jquery-3.2.1.min.js"/>
@@ -894,80 +894,91 @@
 				<script type="text/javascript" src="slick/slick.min.js"></script>
 				<script type="text/javascript">
 					$(document).ready(function(){
-					$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
-						type: 'image',
-						closeOnContentClick: true,
-						mainClass: 'mfp-img-mobile',
-						image: {
-							verticalFit: true
-						}
-					});
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
-					$(".footer").css("margin-top", -1*oh);
-					$('.slick-slider').slick({
-					infinite: true,
-					slidesToShow: 5,
-					slidesToScroll: 5,
-					dots: true,
-					arrows: false,
-					responsive: [
-						{
-							breakpoint: 1440,
-							settings: {
-								slidesToShow: 5,
-								slidesToScroll: 5,
-								infinite: true,
-								dots: true
+						$(".magnific_popup-image, a[rel=facebox]").magnificPopup({
+							type: 'image',
+							closeOnContentClick: true,
+							mainClass: 'mfp-img-mobile',
+							image: {
+								verticalFit: true
 							}
-						},
-						{
-							breakpoint: 1200,
-							settings: {
-								slidesToShow: 4,
-								slidesToScroll: 4,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 992,
-							settings: {
-								slidesToShow: 3,
-								slidesToScroll: 3,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 768,
-							settings: {
-								slidesToShow: 2,
-								slidesToScroll: 2,
-								infinite: true,
-								dots: true
-							}
-						},
-						{
-							breakpoint: 375,
-							settings: {
-								slidesToShow: 1,
-								slidesToScroll: 1,
-								infinite: true,
-								dots: true
-							}
-						}
-					]
-					});
+						});
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+40);
+						$(".footer").css("margin-top", -1*oh);
+						$('.slick-slider').slick({
+							infinite: true,
+							slidesToShow: 5,
+							slidesToScroll: 5,
+							dots: true,
+							arrows: false,
+							responsive: [
+								{
+									breakpoint: 1440,
+									settings: {
+										slidesToShow: 5,
+										slidesToScroll: 5,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 1200,
+									settings: {
+										slidesToShow: 4,
+										slidesToScroll: 4,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 992,
+									settings: {
+										slidesToShow: 3,
+										slidesToScroll: 3,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 768,
+									settings: {
+										slidesToShow: 2,
+										slidesToScroll: 2,
+										infinite: true,
+										dots: true
+									}
+								},
+								{
+									breakpoint: 375,
+									settings: {
+										slidesToShow: 1,
+										slidesToScroll: 1,
+										infinite: true,
+										dots: true
+									}
+								}
+							]
+						});
 
-					initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
-					initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
+						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 					});
 
 					$(window).resize(function(){
-					var oh = $(".footer").outerHeight();
-					$(".footer-placeholder").height(oh+40);
-					$(".footer").css("margin-top", -1*oh);
+						var oh = $(".footer").outerHeight();
+						$(".footer-placeholder").height(oh+40);
+						$(".footer").css("margin-top", -1*oh);
+					});
+
+
+					$(document).ready(function(){
+							//Инициализация всплывающей панели для
+							//элементов веб-страницы, имеющих атрибут
+							//data-toggle="popover"
+							$('[data-toggle="popover"]').popover({
+							//Установление направления отображения popover
+							placement : 'top'
+						});
 					});
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
@@ -988,7 +999,7 @@
 			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 			<input type="submit" class="button header__button" value="Поиск" />
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL, TME
+				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL, TME, Compel, Rct, Gkel
 			</div>
 		</form>
 	</xsl:template>

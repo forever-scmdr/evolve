@@ -115,8 +115,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
             while (products.size() != 0) {
                 Item product = products.poll();
                 id = product.getId();
-                String code = product.getStringValue(CODE_PARAM);
-                if(!StringUtils.startsWith(code,"cmp-") && !StringUtils.startsWith(code,"rct-")) {
+                List<String> tags = product.getStringValues(TAG_PARAM);
+                if(!tags.contains("external_shop")) {
                     executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
                     counter++;
                 }
