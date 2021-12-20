@@ -27,7 +27,7 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 	private static final String SHOP_NAME = "rct.ru";
 	private static final int LOAD_BATCH_SIZE = 1000;
 	private static final int STATUS_BATCH_SIZE = 500;
-	private static final String CODE_PTEFIX = "rct-";
+	private static final String CODE_PREFIX = "rct-";
 	private Item catalog;
 
 	ExcelPriceList priceWB;
@@ -157,7 +157,7 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 
 			String code = getValue("Код");
 			if (StringUtils.isBlank(code) || "Код".equalsIgnoreCase(code)) return;
-			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, CODE_PTEFIX + code, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
+			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, CODE_PREFIX + code, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 			if (product != null) {
 				executeCommandUnit(ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
 			}
@@ -167,7 +167,7 @@ public class ImportRctCommand extends IntegrateBase implements CatalogConst {
 			}
 
 			//Fix code param
-			product.setValueUI(CODE_PARAM, CODE_PTEFIX + product.getValue(CODE_PARAM));
+			product.setValueUI(CODE_PARAM, CODE_PREFIX + product.getValue(CODE_PARAM));
 
 			//Create search param value
 			String sec = getValue("Категории");
