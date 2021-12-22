@@ -23,7 +23,7 @@ public class ImportRctCommand extends AbstractShopImport implements CatalogConst
 	private static final String ENDPOINT = "http://www.rct.ru/price/all";
 	private static final String FILE_NAME = "rct.xlsx";
 	private static final String SHOP_NAME = "rct.ru";
-	private static final String CODE_PREFIX = "rct-";
+	private static final String CODE_PREFIX = "";
 
 	ExcelPriceList priceWB;
 
@@ -119,6 +119,7 @@ public class ImportRctCommand extends AbstractShopImport implements CatalogConst
 			String q =  getValue("Норма отгрузки");
 			q = StringUtils.isBlank(q)? "1" : q;
 			product.setValueUI(MIN_QTY_PARAM, q);
+			product.setValueUI(CURRENCY_ID_PARAM, currency.getStringValue(NAME_PARAM));
 
 
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser().noFulltextIndex());

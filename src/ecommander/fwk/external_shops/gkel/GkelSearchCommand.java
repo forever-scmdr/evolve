@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 
 public class GkelSearchCommand extends Command {
 	private static final String GKEL_URL = "https://gkel.ru/efind_full_db.php?zapros=";
+	private static final String ENCODING = "Cp1251";
+
 	@Override
 	public ResultPE execute() throws Exception {
 		String query = getVarSingleValue("q");
@@ -20,11 +22,11 @@ public class GkelSearchCommand extends Command {
 			setPageVariable("error", "empty_query");
 			return getResult("result");
 		}
-		query = URLEncoder.encode(query, "utf-8");
+		query = URLEncoder.encode(query, ENCODING);
 		URL url = new URL(GKEL_URL + query);
 
 		StringBuilder sb = new StringBuilder();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "Cp1251"))){
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), ENCODING))){
 			String line;
 			boolean useful = false;
 			while ((line = reader.readLine()) != null){
