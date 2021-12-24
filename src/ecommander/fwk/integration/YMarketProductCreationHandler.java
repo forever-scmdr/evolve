@@ -1,10 +1,12 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ResizeImagesFactory;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -153,8 +155,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					product.setValueUI(VENDOR_CODE_PARAM, singleParams.get(VENDOR_CODE_ELEMENT));
 				if (product.getItemType().hasParameter(VENDOR_PARAM))
 					product.setValueUI(VENDOR_PARAM, singleParams.get(VENDOR_ELEMENT));
-				if (product.getItemType().hasParameter(DESCRIPTION_PARAM))
-					product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
+				if (product.getItemType().hasParameter(DESCRIPTION_PARAM)) {
+						//product.setValueUI(DESCRIPTION_PARAM, singleParams.get(DESCRIPTION_ELEMENT));
+					}
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
 					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OPT_PARAM))
@@ -215,25 +218,25 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
 				if (isProductNotNew) {
-					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
-					for (Item paramsXml : paramsXmls) {
-						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
-					}
+//					List<Item> paramsXmls = new ItemQuery(paramsXmlType.getName()).setParentId(product.getId(), false).loadItems();
+//					for (Item paramsXml : paramsXmls) {
+//						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(paramsXml));
+//					}
 				}
 				// Создать айтем с параметрами продукта
 				if (specialParams.size() > 0) {
-					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-					for (String name : specialParams.keySet()) {
-						String value = specialParams.get(name);
-						xml.startElement(PARAMETER)
-								.startElement(NAME).addText(name).endElement()
-								.startElement(VALUE).addText(value).endElement()
-								.endElement();
-					}
-
-					Item paramsXml = Item.newChildItem(paramsXmlType, product);
-					paramsXml.setValue(XML_PARAM, xml.toString());
-					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
+//					XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+//					for (String name : specialParams.keySet()) {
+//						String value = specialParams.get(name);
+//						xml.startElement(PARAMETER)
+//								.startElement(NAME).addText(name).endElement()
+//								.startElement(VALUE).addText(value).endElement()
+//								.endElement();
+//					}
+//
+//					Item paramsXml = Item.newChildItem(paramsXmlType, product);
+//					paramsXml.setValue(XML_PARAM, xml.toString());
+//					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
 				if (isProductNotNew) {
@@ -287,7 +290,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							needSave = true;
 						}
 						if (gpn.equals(mainPicName)) {
-							product.clearValue(MAIN_PIC_PARAM);
+						//	product.clearValue(MAIN_PIC_PARAM);
 						}
 					}
 					LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
@@ -321,7 +324,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					if (!noMainPic) {
 						File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
 						if (!mainPic.isFile()) {
-							product.clearValue(MAIN_PIC_PARAM);
+						//	product.clearValue(MAIN_PIC_PARAM);
 							noMainPic = true;
 						}
 					}
@@ -332,24 +335,24 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							if(StringUtils.startsWith(url, host)) {
 								File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
 								if (pic.isFile()) {
-									product.setValue(MAIN_PIC_PARAM, new URL(url));
-									product.clearValue(SMALL_PIC_PARAM);
+								//	product.setValue(MAIN_PIC_PARAM, new URL(url));
+								//	product.clearValue(SMALL_PIC_PARAM);
 									save = true;
 								} else {
 									info.pushLog("файл для товара [" + product.getValue(CODE_PARAM) + "] не найден. Файл: " + url);
 								}
 
 							}else{
-								product.setValue(MAIN_PIC_PARAM, new URL(url));
-								product.clearValue(SMALL_PIC_PARAM);
+							//	product.setValue(MAIN_PIC_PARAM, new URL(url));
+							//	product.clearValue(SMALL_PIC_PARAM);
 								save = true;
 							}
 						} else if (!noMainPic && StringUtils.startsWith(url, host)) {
 							File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
 							if (pic.isFile()) {
 								if (pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()) {
-									product.setValue(MAIN_PIC_PARAM, pic);
-									product.clearValue(SMALL_PIC_PARAM);
+								//	product.setValue(MAIN_PIC_PARAM, pic);
+								//	product.clearValue(SMALL_PIC_PARAM);
 									save = true;
 									info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
 								}
