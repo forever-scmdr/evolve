@@ -677,6 +677,9 @@
 			</head>
 
 			<body>
+				<xsl:for-each select="$body-start-modules">
+					<xsl:value-of select="code" disable-output-escaping="yes"/>
+				</xsl:for-each>
 				<div class="wrapper">
 					<div class="top-info">
 						<div class="container">
@@ -787,6 +790,7 @@
 						</div>
 					</div>
 					<div class="header-mobile">
+						<div id="google_translate_element_mobile"></div>
 						<div class="header-mobile__top">
 							<a class="header-mobile__logo" href="{page/index_link}">
 								<img src="img/logo.png" alt=""/>
@@ -877,9 +881,10 @@
 								</div>
 								<xsl:apply-templates select="page/custom_pages/*[in_main_menu = 'да']" mode="menu_first"/>
 								<div class="main-menu__item">
-									<a href="">
+									<div id="google_translate_element" style="margin-left: 1rem;"></div>
+									<!-- <a href="">
 										<span>Translate</span>
-									</a>
+									</a> -->
 								</div>
 							</div>
 						</div>
