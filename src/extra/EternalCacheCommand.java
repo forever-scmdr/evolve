@@ -1,12 +1,14 @@
 package extra;
 
 import ecommander.controllers.AppContext;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.pages.output.ExecutableItemPEWriter;
 import extra._generated.ItemNames;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 
-public class EternalCacheCommand extends Command {
+public class EternalCacheCommand extends Command{
     private static final Path FOLDER = Paths.get(AppContext.getContextPath(), "eternal_cache");
     private static final String PROD_ID = "prod";
     private static final String PARENT_SEC_ID = "parent";
@@ -28,7 +30,7 @@ public class EternalCacheCommand extends Command {
     private static final String PARAMS_ID = "params";
 
 
-    public static boolean cacheExists(String key){
+    public static boolean cacheExists(String key) {
         return Files.isRegularFile(FOLDER.resolve(key + ".txt"));
     }
 
@@ -36,30 +38,46 @@ public class EternalCacheCommand extends Command {
     public ResultPE execute() throws Exception {
         Item product = getSingleLoadedItem(PROD_ID);
         if (product != null) {
-            if(!cacheExists(product.getKeyUnique())){
+            if (!cacheExists(product.getKeyUnique())) {
                 saveToCache(product);
             }
-            setPageVariable("name", product.getStringValue(ItemNames.product_.NAME));
-            setPageVariable("vendor_code", product.getStringValue(ItemNames.product_.VENDOR_CODE));
-            for(String v : product.getStringValues(ItemNames.product_.ASSOC_CODE)){
+            setPageVariable("name", product.getStringValue(ItemNames.product_.NAME,"-none-"));
+            setPageVariable("vendor_code", product.getStringValue(ItemNames.product_.VENDOR_CODE,"-none-"));
+            for (String v : product.getStringValues(ItemNames.product_.ASSOC_CODE)) {
                 setPageVariable("assoc_code", v);
             }
             return null;
-        }else{
-            String productCache  = new String(Files.readAllBytes(FOLDER.resolve(getVarSingleValue(PROD_ID) + ".txt")), StandardCharsets.UTF_8);
-            Document doc = Jsoup.parseBodyFragment(productCache);
-            String name = doc.select("product > name").text();
-            String vendorCode = doc.select("product > vendor_code").text();
+        } else {
+            String productCache = new String(Files.readAllBytes(FOLDER.resolve(getVarSingleValue(PROD_ID) + ".txt")), StandardCharsets.UTF_8);
+            if (StringUtils.isNotBlank(productCache)) {
+                try {
+                    Document doc = Jsoup.parseBodyFragment(productCache);
+                    String name = doc.select("product > name").text();
+                    String vendorCode = doc.select("product > vendor_code").text();
 
-            setPageVariable("name", name);
-            setPageVariable("vendor_code", vendorCode);
+                    if(StringUtils.isNotBlank(name)) {
+                        setPageVariable("name", name);
+                    }else{
+                        setPageVariable("name", "-none-");
+                    }
+                    if(StringUtils.isNotBlank(vendorCode)) {
+                        setPageVariable("vendor_code", vendorCode);
+                    }else{
+                        setPageVariable("vendor_code", "-none-");
+                    }
 
-            Elements ass = doc.select("product > assoc_code");
-            for(Element e : ass){
-                String v = e.ownText();
-                setPageVariable("assoc_code", v);
+                    Elements ass = doc.select("product > assoc_code");
+                    for (Element e : ass) {
+                        String v = e.ownText();
+                        setPageVariable("assoc_code", v);
+                    }
+                } catch (Exception e) {
+                    ServerLogger.error(e);
+                    setPageVariable("assoc_code", "-none-");
+                    setPageVariable("vendor_code", "-none-");
+
+                }
             }
-
             ResultPE res = getResult("loaded");
             res.setValue(productCache);
             return res;
@@ -77,7 +95,7 @@ public class EternalCacheCommand extends Command {
         XmlDocumentBuilder cacheXml = XmlDocumentBuilder.newDocPart();
         startItem(product, PRODUCT_TAG, cacheXml);
         cacheXml.addElements(product.outputValues());
-        for(Item param : params){
+        for (Item param : params) {
             startItem(param, "params", cacheXml);
             cacheXml.addElements(param.outputValues());
             cacheXml.endElement();
@@ -100,6 +118,6 @@ public class EternalCacheCommand extends Command {
                 ExecutableItemPEWriter.ID_ATTRIBUTE, item.getId()
                 , ExecutableItemPEWriter.TYPE_ATTRIBUTE, item.getTypeName()
                 , ExecutableItemPEWriter.KEY_ATTRIBUTE, item.getKeyUnique()
-                , ExecutableItemPEWriter.PATH_ATTRIBUTE, "files/"+item.getRelativeFilesPath());
+                , ExecutableItemPEWriter.PATH_ATTRIBUTE, "files/" + item.getRelativeFilesPath());
     }
 }

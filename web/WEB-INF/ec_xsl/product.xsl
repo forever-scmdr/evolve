@@ -186,7 +186,12 @@
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						<xsl:if test="$p/main_pic != ''">
+							<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						</xsl:if>
+						<xsl:if test="not($p/main_pic != '')">
+							<img src="img/no_image.png" alt="{$p/name}"/>
+						</xsl:if>
 					</xsl:if>
 				</div>
 			</div>

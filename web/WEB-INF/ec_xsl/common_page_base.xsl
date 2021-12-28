@@ -548,7 +548,7 @@
 
 			<a href="{$product_link}" class="device__image" style="background-image: {concat('url(',$pic_path,');')}"></a>
 			<a href="{$product_link}" class="device__title" title="{name}"><xsl:value-of select="name"/></a>
-			<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
+			<div class="small-text device__small-text" title=""><xsl:value-of select="name_extra" disable-output-escaping="yes"/></div>
 			<div class="device__small-text">
 				<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 			</div>
@@ -647,7 +647,7 @@
 					</xsl:if>
 				</div>
 				<div class="device__description">
-					<div class="small-text device__small-text" title="{name_extra}"><xsl:value-of select="name_extra"/></div>
+					<div class="small-text device__small-text" title=""><xsl:value-of select="name_extra" disable-output-escaping="yes"/></div>
 					<div class="device__small-text">
 						<a href="{$product_link}"><xsl:value-of select="vendor"/></a>
 					</div>
