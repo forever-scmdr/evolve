@@ -286,7 +286,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					for (File galleryPic : galleryPics) {
 						String gpn = galleryPic.getName();
 						if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
-							product.removeEqualValue(GALLERY_PARAM, gpn);
+							//product.removeEqualValue(GALLERY_PARAM, gpn);
 							needSave = true;
 						}
 						if (gpn.equals(mainPicName)) {
@@ -305,7 +305,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							try {
 								String fileName = Strings.getFileName(picUrl);
 								mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
-								boolean skipGal = fileName.equals(mainPicName);
+								boolean skipGal = true;
+								//boolean skipGal = fileName.equals(mainPicName);
 								skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
 
 								if (skipGal) continue;
