@@ -6,12 +6,12 @@
 # Initial urls
 #
 
-https://suzuki.ru
+https://www.meandr.ru
 
 
 #
 #  Pages to parse
 #
 
-https:\/\/suzuki\.ru\/.+\.html  product.xsl     https://suzuki.ru/motor-lodochnyy-suzuki-df4as-00136347.html
-https:\/\/suzuki\.ru\/.+        -               https://suzuki.ru/podvesnye-motory-suzuki
+https:\/\/www\.meandr\.ru.*  catalog.xsl     https://www.meandr.ru/avtomat-va-9
+
