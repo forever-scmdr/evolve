@@ -307,7 +307,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 								mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
 								boolean skipGal = true;
 								//boolean skipGal = fileName.equals(mainPicName);
-								skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
+								//skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
 
 								if (skipGal) continue;
 								if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
