@@ -320,17 +320,21 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					String cellValue = getValue(header);
 					String caption = getOriginalHeader(header);
 					cellValue = StringUtils.isAllBlank(cellValue) ? "" : cellValue;
+
 					Matcher m = PARAM_WITH_GROUP.matcher(caption);
 					caption = m.matches() ? m.group("param").trim() : caption;
 
-					xml.startElement("parameter")
-							.startElement("name")
-							.addText(caption)
-							.endElement()
-							.startElement("value")
-							.addText(cellValue)
-							.endElement()
-							.endElement();
+					String[] vals = StringUtils.split(cellValue, ';');
+					for(String val : vals) {
+						xml.startElement("parameter")
+								.startElement("name")
+								.addText(caption)
+								.endElement()
+								.startElement("value")
+								.addText(cellValue)
+								.endElement()
+								.endElement();
+					}
 				}
 				xml.endElement();
 			});
