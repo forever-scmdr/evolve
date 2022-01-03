@@ -18,18 +18,18 @@
 
 	<xsl:template name="CONTENT">
 
-		<div class="info-items info-items_section">
+		<div class="news info-items info-items_section">
 			<div class="info-items__wrap">
 				<xsl:for-each select="page/selected_news/news_item">
 					<xsl:variable name="main_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat($news/@path, $news/main_pic)"/>
-					<div class="info-item card">
-						<div class="info-item__image img"><img src="{$main_pic}" alt="" style="max-width:100%;" /></div>
+					<div class="info-items ">
+						<!--<div class="info-item__image img"><img src="{$main_pic}" alt="" style="max-width:100%;" /></div>-->
 						<div class="info-item__info">
-							<div class="info-item__date"><xsl:value-of select="date"/></div>
 							<a href="{show_news_item}" class="info-item__title"><xsl:value-of select="header"/></a>
+							<div class="info-item__date"><xsl:value-of select="date"/></div>
 							<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
 						</div>
-						<a href="{show_news_item}" class="info-item__link"></a>
+						
 					</div>
 				</xsl:for-each>
 			</div>

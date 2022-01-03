@@ -3,8 +3,11 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="sec_name" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
+	<xsl:variable name="title" select="concat('Запчасти для ', $sel_sec/name, ' купить в Минске и РБ на автомобили и автобусы – БААЗ')"/>
+	<xsl:variable name="meta_description" select="concat('Запчасти для ', $sel_sec/name, ' купить в Беларуси с доставкой по низким ценам. Огромный каталог продукции на все виды транспорта от завода «БААЗ» ☎ +375 (163) 42-11-49')"/>
+
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sec_name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section/section"/>
@@ -58,8 +61,6 @@
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
-
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 
@@ -82,7 +83,14 @@
 
 
 	<xsl:template name="CONTENT">
-		
+		<style>
+			.fotorama__nav{text-align: left;}
+		</style>
+		<script>
+			$(document).ready(function(){
+				$(".fotorama").removeAttr("data-auto").fotorama();
+			});
+		</script>
 		<xsl:if test="$seo[1]/text">
 			<div class="section-text">
 				<xsl:value-of select="$seo[1]/text" disable-output-escaping="yes"/>
@@ -133,10 +141,23 @@
 				<xsl:value-of select="$seo[1]/bottom_text" disable-output-escaping="yes"/>
 			</div>
 		</xsl:if>
+
+
+
 	</xsl:template>
 
 
 	<xsl:template name="EXTRA_SCRIPTS">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				<xsl:if test="page/@name != 'section_copy'">
+				generateToCartButtons(<xsl:value-of select="$sel_sec/@id"/>);
+				</xsl:if>
+				<xsl:if test="page/@name = 'section_copy'">
+				fixRowspan(<xsl:value-of select="$sel_sec/@id"/>);
+				</xsl:if>
+			});
+		</script>
 		<xsl:call-template name="CART_SCRIPT"/>
 	</xsl:template>
 

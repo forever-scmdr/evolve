@@ -35,7 +35,8 @@
 
 	<xsl:template name="CONTENT">
 		<div class="text">
-			<xsl:value-of select="$ni/text" disable-output-escaping="yes"/>
+			<!-- <xsl:value-of select="$ni/text" disable-output-escaping="yes"/> -->
+			<xsl:apply-templates select="$ni" mode="content"/>
 		</div>
 		<xsl:if test="$seo/bottom_text !=''">
 			<div class="text seo">

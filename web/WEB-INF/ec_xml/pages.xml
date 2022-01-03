@@ -138,12 +138,7 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="prod"/>
 		</link>
-		<link name="create_complect_link" target="cart_action">
-			<var name="prod" ref="prod"/>
-			<var name="action" value="createComplectation"/>
-		</link>
 		<list item="params"/>
-		<list item="option" assoc="option"/>
 	</include-definition>
 
 
@@ -165,7 +160,7 @@
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
-			<single item="seo" assoc="seo"/>
+			<single item="seo"/>
 			<list item="product" id="prod" assoc="general">
 				<link name="show_product" target="product">
 					<var name="prod" ref="prod" style="key"/>
@@ -186,7 +181,7 @@
 						<var value="date"/>
 					</sorting>
 					<limit>
-						<var value="4"/>
+						<var value="3"/>
 					</limit>
 				</filter>
 				<link name="show_news_item" target="news_item" type="exclusive">
@@ -239,10 +234,11 @@
 			<var name="tag"/>
 			<var name="mark"/>
 		</request>
+		
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
-				<var name="sec" ref="cur_sec" style="key"/>
-				<var name="tag" var="tag"/>
+				<var name="sec" var="sec" style="keypath"/>
+				<!-- <var name="tag" var="tag"/> -->
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
@@ -362,6 +358,16 @@
 	</page>
 
 
+	<page name="section_copy" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec" >
+		<request>
+			<var name="sec" style="keypath"/>
+		</request>
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec">
+			<single item="seo" assoc="seo"/>
+		</single>		
+		<include name="COMMON"/>
+	</page>
+
 
 	<page name="sub" template="sub" cacheable="false">
 		<request>
@@ -473,10 +479,10 @@
 		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY" type="prefix">
+				<fulltext limit="5" compare="EVERY">
 					<var var="q"/>
 				</fulltext>
-<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -534,7 +540,7 @@
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" var="prod" style="keypath"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product_extra"/>
@@ -561,7 +567,6 @@
 					<var name="prod" ref="lprod"/>
 				</link>
 			</list>
-
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -587,14 +592,14 @@
 				<var name="prod" ref="assoc"/>
 			</link>
 		</list>
-<!--		<list item="product" tag="grouped" id="grouped">-->
-<!--			<filter>-->
-<!--				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>-->
-<!--			</filter>-->
-<!--			<link name="show_product" target="product" type="exclusive">-->
-<!--				<var name="prod" ref="grouped" style="key"/>-->
-<!--			</link>-->
-<!--		</list>-->
+		<list item="product" tag="grouped" id="grouped">
+			<filter>
+				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="grouped" style="key"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 
@@ -602,7 +607,7 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="prod" style="path"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra"/>
@@ -661,6 +666,9 @@
 		</request>
         <single item="news_item" id="sni" var="ni" cacheable="true" cache-vars="ni">
 			<single item="seo" assoc="seo"/>
+			<list item="page_extra">
+				<list item="page_extra_part"/>
+			</list>
 			<ancestor item="news"/>
 		</single>
 		<include name="COMMON"/>
@@ -681,13 +689,9 @@
 		</request>
         <single item="custom_page" var="p" cacheable="true" cache-vars="p" id="sp">
 			<single item="seo" assoc="seo"/>
-			<tree item="page_extra">
+			<list item="page_extra">
 				<list item="page_extra_part"/>
-				<list item="point"/>
-				<list item="region">
-					<list item="point"/>
-				</list>
-			</tree>
+			</list>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>
@@ -770,8 +774,6 @@
 		</link>
 	</page>
 
-
-
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
 			<var name="result"/>
@@ -786,6 +788,26 @@
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
 			<var name="source_page" value="feedback_ajax"/>
+		</link>
+	</page>
+
+	<page name="feedback_jur_ajax" template="feedback_jur_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="generic_form" id="email_form">
+			<extra-input name="company" form="feedback"/>
+			<extra-input name="address" form="feedback"/>
+			<extra-input name="unp" form="feedback"/>
+			<extra-input name="okpo" form="feedback"/>
+			<extra-input name="message" form="feedback"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="feedback"/>
+			<var name="required" value="company, address, unp, okpo, message"/>
+			<var name="template" value="feedback_jur_email"/>
+			<var name="source_page" value="feedback_jur_ajax"/>
 		</link>
 	</page>
 
@@ -942,39 +964,6 @@
 	</page>
 
 
-	<page name="complect_ajax" template="complect_ajax">
-		<request>
-			<var name="message"/>
-			<var name="product" />
-			<var name="bought" />
-		</request>
-		<session>
-			<single item="cart">
-				<list item="bought" id="bought">
-					<list item="abstract_product" id="product" tag="product">
-						<link name="create_complect_link" target="cart_action">
-							<var name="action" value="createComplectation"/>
-							<var name="prod" ref="product"/>
-						</link>
-						<list item="option"/>
-					</list>
-					<link name="update_complect_link" target="cart_action">
-						<var name="action" value="updateComplectation"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="create_complect_link" target="cart_action">
-						<var name="action" value="createComplectation"/>
-						<var name="prod" ref="product"/>
-					</link>
-					<link name="delete_link" target="cart_action">
-						<var name="action" value="deleteComplect"/>
-						<var name="bought" ref="bought"/>
-					</link>
-				</list>
-			</single>
-		</session>
-	</page>
-
 	<page name="cart_action">
 		<request>
 			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
@@ -991,10 +980,6 @@
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
-		<link name="complect_ajax" target="complect_ajax"/>
-		<link name="invalid_option_list" target="complect_ajax">
-			<var name="message" value="Не выбраны необходимые компоненты или присутствуют некорректные комопонетны"/>
-		</link>
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
 		</link>
@@ -1005,8 +990,6 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
-			<result name="complect_ajax" type="redirect"/>
-			<result name="invalid_option_list" type="redirect"/>
 		</command>
 	</page>
 
@@ -1028,13 +1011,9 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
-						<list item="option"/>
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="complect_ajax_link" target="complect_ajax">
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
@@ -1478,9 +1457,7 @@
 
 
 
-	<!--//                                    						                                        -->
-	<!--//                                   ПАРСИНГ ОДИНОЧНЫХ УРЛОВ		                                -->
-	<!--//                                    						                                        -->
+	<!--//                                                                                                  -->
 	<!--// Команда для получения HTML, его преобразования и скачивания файлов (в зависимости от параметров) -->
 	<!--//                                                                                                  -->
 	<!--
@@ -1501,9 +1478,7 @@
 		</command>
 	</page>
 
-	<!--//                                    						                                        -->
-	<!--//                                   ПАРСИНГ ОДИНОЧНЫХ УРЛОВ		                                -->
-	<!--//                                    						                                        -->
+	<!--//                                                                                                  -->
 	<!--// Тестовая страница для проверки XSLT преобразования (ссылка берется из айтема parse_item в CMS)   -->
 	<!--//                                                                                                  -->
 	<page name="test_parse_item">
@@ -1515,9 +1490,7 @@
 		</command>
 	</page>
 
-	<!--//                                    						                                        -->
-	<!--//                                   ПАРСИНГ ОДИНОЧНЫХ УРЛОВ		                                -->
-	<!--//                                    						                                        -->
+	<!--//                                                                          -->
 	<!--// Интеграция полученных данных, хранящихся в айтемах parse_item на сайт    -->
 	<!--//                                                                          -->
 	<page name="deploy_parsed" template="deploy_parsed" authority-groups="common">
@@ -1553,9 +1526,6 @@
 	</page>
 
 
-	<!--//                             						                               -->
-	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
-	<!--//                             						                               -->
     <page name="crawl" template="integration/crawl">
         <request>
             <var name="action"/>
@@ -1566,9 +1536,7 @@
         </command>
     </page>
 
-	<!--//                             						                               -->
-	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
-	<!--//                             						                               -->
+
     <page name="test_xsl">
         <request>
             <var name="url"/>
@@ -1578,10 +1546,6 @@
         </command>
     </page>
 
-
-	<!--//                             						                               -->
-	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
-	<!--//                             						                               -->
     <page name="integrate_parsed" template="integrate_parsed">
         <request>
             <var name="action"/>
@@ -1592,6 +1556,14 @@
     </page>
 
 
+    <page name="create_filters" template="create_filters">
+        <request>
+            <var name="action"/>
+        </request>
+        <command class="ecommander.fwk.integration.CreateParametersAndFiltersCommand" clear-cache="yes">
+            <result name="complete" type="xml"/>
+        </command>
+    </page>
 
 
 	<!--<page name="create_prices" template="integration">-->
@@ -1653,7 +1625,6 @@
 			</link>
 		</list>
 	</page>
-
 
     <page name="sitemap_section" template="sitemap_section" cacheable="true">
 		<request>
@@ -1834,7 +1805,7 @@
 		<command class="extra.SetOptional"/>
 	</page>
 
-	<page name="admin_extra" template="admin/extra" authority-groups ="common">
+	<page name="admin_extra" template="admin/extra" authority-groups="common">
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
@@ -1868,21 +1839,30 @@
 	</page>
 
 
-	<page name="page_404" template="admin/error_page">
-		<include name="COMMON" />
-		<single item="error_page">
-			<list item="page_extra"/>
-		</single>
-	</page>
-
-	<page name="update_error_page" >
-		<command class="ecommander.fwk.CreateErrorJspCommand"/>
-	</page>
-
-	<page name="clean_garbage_files" template="integration">
-		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">
+	<page name="import_news_from_ancient" template="integration/create_excel">
+		<request>
+			<var name="link" value="http://www.baaz.by/news_export"/>
+		</request>
+		<command class="extra.ImportNewsFromAncient">
 			<result name="complete" type="xml" />
 		</command>
 	</page>
+
+
+<!--	<page name="tuples">-->
+<!--		<request>-->
+<!--			<var name="direct_search" value="тест ключ"/>-->
+<!--		</request>-->
+<!--		<single item="product" tag="direct" id="prod">-->
+<!--			<filter>-->
+<!--				<parameter name="tuple_test"><var var="direct_search" /></parameter>-->
+<!--			</filter>-->
+<!--		</single>-->
+<!--		<list item="product" tag="search">-->
+<!--			<filter>-->
+<!--				<parameter name="code"><var ref="prod" parameter="tuple_test" /></parameter>-->
+<!--			</filter>-->
+<!--		</list>-->
+<!--	</page>-->
 
 </site>

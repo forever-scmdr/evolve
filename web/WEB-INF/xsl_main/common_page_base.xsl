@@ -5,12 +5,8 @@
 	<xsl:import href="one_click_ajax.xsl"/>
 	<xsl:import href="subscribe_ajax.xsl"/>
 	<xsl:import href="snippets/product.xsl"/>
-	<xsl:import href="snippets/page_extra.xsl"/>
 
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
-
-
-
 
 
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
@@ -24,8 +20,6 @@
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
-	<xsl:variable name="query" select="page/variables/q"/>
-	<xsl:variable name="hide_side_menu" select="f:num(/page/custom_page/hide_side_menu) = 1"/>
 
 	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
 
@@ -45,7 +39,7 @@
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
+	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('', tokenize(page/source_link, '\?')[1]) else ''" />
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
@@ -160,36 +154,30 @@
 						insertAjax('set_city?city=' + cityName);
 						return false;
 					}
-					<xsl:if test="$has_quick_search">
-					$(document).ready(function() {
-						initQuickSearch();
-					});
-					</xsl:if>
 				</script>
 			</div>
 		</div>
 
 		<div class="header">
 			<div class="container">
+				<div id="google_translate_element"></div>
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+						<img src="img/logo_baaz.png" alt="" class="logo__image" />
 					</a>
-					<div class="header__column header__search header-search">
+					<div class="header__column header__search header-search" style="position:relative;">
 						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input"
-								   ajax-href="{page/search_ajax_link}" result="search-result"
-								   query="q" min-size="3" id="q-ipt" type="text"
-								   placeholder="Введите поисковый запрос" autocomplete="off"
-								   name="q" value="{$query}" autofocus=""/>
+							<input class="input header-search__input" type="text" placeholder="Введите поисковый запрос" autocomplete="off" name="q" value="{page/variables/q}" autofocus="autofocus" id="q-ipt" />
 							<button class="button header-search__button" type="submit">Найти</button>
 							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
+							<div id="search-result"></div>
+							<xsl:if test="$has_quick_search"></xsl:if>
 							<!-- quick search end -->
 						</form>
 					</div>
 					<!-- need styles -->
-					<xsl:if test="$has_currency_rates and $currencies">
+					<!--
+					<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
 						<div class="header__column other-container side-menu">
 							<div class="catalog-currency">
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
@@ -211,6 +199,7 @@
 							</div>
 						</div>
 					</xsl:if>
+					-->
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
 						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
@@ -305,12 +294,12 @@
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
 			<xsl:if test="header and not(header = '')"><div class="footer__title"><xsl:value-of select="header" /></div></xsl:if>
-			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+			<div class="footer__text"><xsl:value-of select="text|code" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 
 	<xsl:template name="INC_FOOTER">
-		<div class="footer">
+		<div class="footer vl_blue2">
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
@@ -405,7 +394,8 @@
 						</xsl:if>
 					</xsl:for-each>
 				</ul>
-				<xsl:if test="$has_currency_rates and $currencies">
+				<!--
+				<xsl:if test="$has_currency_rates and $currencies or 1 &lt; 2">
 					<ul>
 						<li class="catalog-currency">
 							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
@@ -427,6 +417,7 @@
 						</li>
 					</ul>
 				</xsl:if>
+				-->
 			</div>
 		</div>
 		<script>
@@ -654,15 +645,13 @@
 		<div class="content">
 			<div class="container">
 				<div class="content__wrap">
-					<xsl:if test="not($hide_side_menu)">
-						<div class="content__side">
-							<xsl:call-template name="LEFT_COLOUMN"/>
-						</div>
-					</xsl:if>
-					<div class="content__main{' no-left-col'[$hide_side_menu]}">
+					<div class="content__side">
+						<xsl:call-template name="LEFT_COLOUMN"/>
+					</div>
+					<div class="content__main">
 						<xsl:call-template name="PAGE_PATH"/>
 						<xsl:call-template name="PAGE_HEADING"/>
-						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'sub'">
+						<xsl:if test="$seo/text != '' and page/@name != 'section' and page/@name != 'section_copy'">
 							<div class="text">
 								<xsl:value-of select="$seo/text" disable-output-escaping="yes"/>
 							</div>
@@ -679,6 +668,7 @@
 	<xsl:template name="CONTENT" />
 	<xsl:template name="INDEX_BLOCKS"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
+
 
 
 
@@ -710,17 +700,13 @@
 				<script src="js/slick.min.js"></script>
 				<script src="js/script.js"></script>
 
-				<xsl:if test="//map_part">
-					<script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=da0c54ef-c061-454c-9069-536643a0d28a"></script>
-				</xsl:if>
-
 				<xsl:for-each select="$head-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.65"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.505"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
@@ -753,20 +739,22 @@
 				<xsl:if test="$seo/body_class">
 					<xsl:attribute name="class" select="$seo/body_class"/>
 				</xsl:if>
+				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="concat($seo/body_class, ' index')"/></xsl:if>
+
 				<xsl:for-each select="$body-start-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
-				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
-				<div class="mitaba">
+			<div class="mitaba">
 					<div class="popup" style="display: none;" id="product-ajax-popup">
-						 <div class="popup__body">
-							<div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
-						 </div>
-					</div>
-				</div>
+				         <div class="popup__body">
+				            <div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
+				         </div>
+					 </div>
 				<!-- ALL CONTENT BEGIN -->
 				<div class="wrapper">
-					<xsl:call-template name="INC_DESKTOP_HEADER"/>
+					<div class="vl_blue">
+						<xsl:call-template name="INC_DESKTOP_HEADER"/>
+					</div>
 					<xsl:call-template name="MAIN_CONTENT"/>
 					<xsl:call-template name="INDEX_BLOCKS"/>
 					<xsl:call-template name="INC_FOOTER"/>
@@ -813,14 +801,13 @@
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						initDropDownHeader();
-						/*
 						<xsl:if test="$has_quick_search">
                         $("#q-ipt").keyup(function(){
 							searchAjax(this);
 						});
                         </xsl:if>
-						*/
 					});
+
 
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
@@ -830,6 +817,7 @@
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
+
 
 					function searchAjax(el){
 						var $el = $(el);
@@ -867,6 +855,22 @@
 						$('.wrapper').toggleClass('visible-no');
 						$('.menu-container').toggleClass('visible-yes');
 					}
+					function showDetails(link){
+						$("#product-ajax-popup").show();
+						insertAjax(link, 'product-ajax-content', function(){
+							$("#fotorama-ajax").fotorama();
+							$("#product-ajax-popup").find('a[data-toggle="tab"]').on('click', function(e){
+								e.preventDefault();
+								$("#product-ajax-popup").find('a[data-toggle="tab"]').removeClass("tabs__link_active");
+								$("#product-ajax-popup").find('.tabs__content').removeClass("active");
+								$("#product-ajax-popup").find('.tabs__content').hide();
+								$(this).addClass("tabs__link_active");
+								var href = $(this).attr("href");
+								$(href).show();
+								$(href).addClass("active");
+							});
+						});
+					}
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
 				<xsl:for-each select="$body-end-modules">
@@ -875,9 +879,133 @@
 
 
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
-
+			</div>
 			</body>
 		</html>
+	</xsl:template>
+
+
+
+
+	<!-- ****************************    БЛОКИ НА СТРАНИЦЕ    ******************************** -->
+
+
+
+
+
+
+	<xsl:template match="*" mode="content">
+		<xsl:value-of select="text" disable-output-escaping="yes"/>
+		<xsl:apply-templates select="page_text | common_gallery | simple_gallery | custom_block | page_extra_code" mode="content"/>
+	</xsl:template>
+
+	<xsl:template match="page_text" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="page_extra_code" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}" rel="Свернуть ↑">Подробнее ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="common_gallery" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<div><a class="toggle" href="#spoiler-{@id}"  onclick="initNanoCommon{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a></div>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<div id="nanogallery{@id}">
+				<script>
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+							initNanoCommon<xsl:value-of select="@id"/>();
+						});
+					</xsl:if>
+					function initNanoCommon<xsl:value-of select="@id"/>() {
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
+
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="picture">
+									{
+										src: '<xsl:value-of select="concat(@path, pic)"/>',
+										srct: '<xsl:value-of select="concat(@path, pic)"/>',
+										title: '<xsl:value-of select="header"/>'
+									},
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+						</xsl:if>
+					}
+				</script>
+			</div>
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="simple_gallery" mode="content">
+		<xsl:if test="f:num(spoiler) &gt; 0">
+			<a class="toggle" href="#spoiler-{@id}" onclick="initNano{@id}(); return false;" rel="Скрыть галерею ↑">Галерея ↓</a>
+		</xsl:if>
+		<div id="spoiler-{@id}" style="{if(f:num(spoiler) &gt; 0) then 'display: none;' else ''}">
+			<div id="nanogallery{@id}">
+				<script>
+					<xsl:if test="f:num(spoiler) = 0">
+						$(document).ready(function(){
+							initNano<xsl:value-of select="@id"/>();
+						});
+					</xsl:if>
+					function initNano<xsl:value-of select="@id"/>(){
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						if(!$("<xsl:value-of select="concat('#nanogallery', @id)"/>").is(":visible")){
+						</xsl:if>
+							$("#nanogallery<xsl:value-of select="@id"/>").nanogallery2( {
+								// ### gallery settings ###
+								thumbnailHeight:  <xsl:value-of select="height"/>,
+								thumbnailWidth:   <xsl:value-of select="width"/>,
+								thumbnailBorderHorizontal :   <xsl:value-of select="border"/>,
+								thumbnailBorderVertical :   <xsl:value-of select="border"/>,
+								thumbnailGutterWidth :   <xsl:value-of select="gutter"/>,
+								thumbnailGutterHeight :   <xsl:value-of select="gutter"/>,
+								viewerToolbar: { display: false },
+								galleryLastRowFull:  false,
+
+								// ### gallery content ###
+								items: [
+								<xsl:for-each select="pic">
+								{ src: '<xsl:value-of select="concat(../@path, .)"/>', srct: '<xsl:value-of select="concat(../@path, .)"/>' },
+								</xsl:for-each>
+								]
+							});
+						<xsl:if test="f:num(spoiler) &gt; 0">
+						}
+						</xsl:if>
+					}
+				</script>
+			</div>
+		</div>
 	</xsl:template>
 
 
@@ -924,6 +1052,9 @@
 		</xsl:if>
 		<xsl:if test="$common/yandex_verification">
 			<meta name="yandex-verification" content="{$common/yandex_verification}"/>
+		</xsl:if>
+		<xsl:if test="$common/yandex_verification_2">
+			<meta name="yandex-verification" content="{$common/yandex_verification_2}"/>
 		</xsl:if>
 		<xsl:call-template name="MARKUP" />
 	</xsl:template>
