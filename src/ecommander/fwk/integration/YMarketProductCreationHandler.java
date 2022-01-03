@@ -258,22 +258,22 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
 				}
 
-				product.clearValue("pic_ref");
+				//product.clearValue("pic_ref");
 
 				File picInFolder = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "").replace('*', '-') + ".jpg").toFile();
 
 				if (picInFolder.isFile()) {
 
-					product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) + ".jpg");
+					//product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) + ".jpg");
 					String small = "small_" + product.getStringValue(CODE_PARAM) + ".jpg";
 
 					if (resize(picInFolder, small)) {
-						product.setValue("pic_ref", "device_pics/small_" + product.getStringValue(CODE_PARAM) + ".jpg");
+						//product.setValue("pic_ref", "device_pics/small_" + product.getStringValue(CODE_PARAM) + ".jpg");
 					}
 					for (int i = 1; i < 6; i++) {
 						File f = Paths.get(picFolder.toString(), product.getStringValue(CODE_PARAM, "") +"_"+ i +".jpg").toFile();
 						if(f.isFile()){
-							product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) +"_"+ i +".jpg");
+							//product.setValue("pic_ref", "device_pics/" + product.getStringValue(CODE_PARAM) +"_"+ i +".jpg");
 						}
 					}
 					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
