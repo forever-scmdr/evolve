@@ -141,7 +141,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				if (hasAuxParams) {
 					paramGroups = buildGroupMap();
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM_TYPE).setParentId(currentSection.getId(), false).loadFirstItem();
-					paramsXml = paramsXml == null? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
+					paramsXml = paramsXml == null ? Item.newChildItem(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM), currentSection) : paramsXml;
 					paramsXml.setValue(XML_PARAM, createEtalonXmlFromMap());
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXml).noTriggerExtra().ignoreFileErrors().noFulltextIndex().ignoreUser(true));
 					loadCurrentAuxItemType();
@@ -165,18 +165,19 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		private void createExtraPages(Item product) throws Exception {
 			ItemQuery extraPagesQuery = new ItemQuery("product_extra");
 			extraPagesQuery.setParentId(product.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
-			for(Item tab : extraPagesQuery.loadItems()){
+			for (Item tab : extraPagesQuery.loadItems()) {
 				executeCommandUnit(ItemStatusDBUnit.delete(tab.getId()).noFulltextIndex());
 			}
 			commitCommandUnits();
 			int extraCount = 0;
 			try {
 				extraCount = Integer.parseInt(getValue(CreateExcelPriceList.EXTRA_COLS));
-			}catch(Exception e){}
-			if(extraCount == 0) return;
-			for(int i = getHeaders().size(); i < getHeaders().size() + extraCount; i++){
+			} catch (Exception e) {
+			}
+			if (extraCount == 0) return;
+			for (int i = getHeaders().size(); i < getHeaders().size() + extraCount; i++) {
 				String cellValue = getValue(i);
-				if(StringUtils.isBlank(cellValue)) continue;
+				if (StringUtils.isBlank(cellValue)) continue;
 				cellValue = cellValue.trim();
 
 				String name = StringUtils.substringBetween(cellValue, "<h>", "</h>");
@@ -194,12 +195,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			String xml = createXmlFromMap();
 			paramsXML.setValue(XML_PARAM, xml);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreUser());
-			if(!hasNewParams() && aux != null){
-				if(populateAuxItem(aux)) {
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex().ignoreUser());
-				}else {
+			if (!hasNewParams() && aux != null) {
+				if (populateAuxItem(aux)) {
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(aux).noFulltextIndex().ignoreUser());
+				} else {
 					sectionsWithNewItemTypes.add(currentSection.getId());
-			}
+				}
 			} else {
 				sectionsWithNewItemTypes.add(currentSection.getId());
 			}
@@ -219,11 +220,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					String paramCaption = m.matches() ? m.group("param").trim().toLowerCase() : header.toLowerCase();
 					String paramName = auxParams.get(paramCaption);
 					try {
- 						if(checkParamType(aux, paramName, cellValue)) {
-						aux.setValueUI(paramName, cellValue);
-						}else{
+						if (checkParamType(aux, paramName, cellValue)) {
+							aux.setValueUI(paramName, cellValue);
+						} else {
 							paramTypeAndDescriptionOk.set(false);
- 							return;
+							return;
 						}
 					} catch (Exception e) {
 						info.addError(e);
@@ -237,55 +238,59 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		 * Checks if parameter type or unit DID NOT change.
 		 * Returns false if parameter value type or it's unit does not match type or unit, specified int site model
 		 */
-		private boolean checkParamType(Item aux, String paramName, String cellValue){
+		private boolean checkParamType(Item aux, String paramName, String cellValue) {
 			//if value is blank assume all is ok
-			if(StringUtils.isBlank(cellValue)) return true;
+			if (StringUtils.isBlank(cellValue)) return true;
 			ItemType auxItemType = aux.getItemType();
 			ParameterDescription parameterDescription = auxItemType.getParameter(paramName);
 			DataType.Type paramType = parameterDescription.getDataType().getType();
 
 			//if type is string any value will do
-			if(paramType == DataType.Type.STRING) return true;
+			if (paramType == DataType.Type.STRING) return true;
 
 			//if type is integer check for ',', '.' or unit changes
-			if(paramType == DataType.Type.INTEGER){
+			if (paramType == DataType.Type.INTEGER) {
 				String value = cellValue.replaceAll("\\s", "");
 				String number = cellValue.replaceAll("[^0-9\\-]", "");
 				String unit = StringUtils.substringAfter(value, number);
 				try {
 					Integer.parseInt(number);
-				}catch (NumberFormatException e){
+				} catch (NumberFormatException e) {
 					return false;
 				}
-				if(!unit.equals(parameterDescription.getDescription())) return false;
+				if (!unit.equals(parameterDescription.getDescription())) return false;
 			}
 			//if type is double check for unit changes
-			else if(paramType == DataType.Type.DOUBLE){
+			else if (paramType == DataType.Type.DOUBLE) {
 				String value = cellValue.replace(',', '.').replaceAll("\\s", "");
 				String number = cellValue.replaceAll("[^0-9\\.\\-]", "");
 				String unit = StringUtils.substringAfter(value, number);
 				try {
 					Double.parseDouble(number);
-				}catch (NumberFormatException e){
+				} catch (NumberFormatException e) {
 					return false;
 				}
-				if(!unit.equals(parameterDescription.getDescription())) return false;
+				if (!unit.equals(parameterDescription.getDescription())) return false;
 			}
 			return true;
 		}
 
-		private boolean hasNewParams(){
-			if(currentAuxItemType == null){ return true;}
+		private boolean hasNewParams() {
+			if (currentAuxItemType == null) {
+				return true;
+			}
 			HashMap<String, String> auxParams = new HashMap<>();
 			for (ParameterDescription pd : currentAuxItemType.getParameterList()) {
 				auxParams.put(pd.getCaption().toLowerCase(), pd.getName());
 			}
-			for (Map.Entry<String, ArrayList<String>> e : paramGroups.entrySet()){
-				for(String s : e.getValue()){
+			for (Map.Entry<String, ArrayList<String>> e : paramGroups.entrySet()) {
+				for (String s : e.getValue()) {
 					Matcher m = PARAM_WITH_GROUP.matcher(s);
-					String paramName = m.matches()? m.group("param") : s;
+					String paramName = m.matches() ? m.group("param") : s;
 					paramName = paramName.toLowerCase();
-					if(!auxParams.containsKey(paramName)){return true;}
+					if (!auxParams.containsKey(paramName)) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -298,8 +303,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 				String paramName = HEADER_PARAM.get(header);
 				if (PRODUCT_ITEM_TYPE.getParameterNames().contains(paramName) || CreateExcelPriceList.AUX_TYPE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.MANUAL.equalsIgnoreCase(header) || CreateExcelPriceList.IS_DEVICE_FILE.equalsIgnoreCase(header) || CreateExcelPriceList.EXTRA_COLS.equalsIgnoreCase(header))
 					continue;
-					String originalHeader = getOriginalHeader(header);
-					Matcher m = PARAM_WITH_GROUP.matcher(originalHeader);
+				String originalHeader = getOriginalHeader(header);
+				Matcher m = PARAM_WITH_GROUP.matcher(originalHeader);
 				boolean hasGroup = m.matches();
 				String group = hasGroup ? m.group("group").trim() : "";
 				boolean needAdd = map.get(group) == null;
@@ -325,16 +330,18 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					caption = m.matches() ? m.group("param").trim() : caption;
 
 					String[] vals = StringUtils.split(cellValue, ';');
-					for(String val : vals) {
-						xml.startElement("parameter")
-								.startElement("name")
-								.addText(caption)
-								.endElement()
-								.startElement("value")
-								.addText(cellValue)
-								.endElement()
+
+					xml.startElement("parameter")
+							.startElement("name")
+							.addText(caption)
+							.endElement();
+					for (String val : vals) {
+						xml.startElement("value")
+								.addText(StringUtils.normalizeSpace(val))
 								.endElement();
 					}
+					xml.endElement();
+
 				}
 				xml.endElement();
 			});
@@ -363,7 +370,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 		private Item ensureAuxItem(Item product) throws Exception {
 			if (currentAuxItemType != null) {
 				Item aux = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
-				return (aux == null)? Item.newChildItem(currentAuxItemType, product) : aux;
+				return (aux == null) ? Item.newChildItem(currentAuxItemType, product) : aux;
 			}
 			return null;
 		}
@@ -373,11 +380,11 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			return (paramsXML == null) ? Item.newChildItem(PARAMS_XML_ITEM_TYPE, product) : paramsXML;
 		}
 
-		private void postProcessProduct(Item product){
+		private void postProcessProduct(Item product) {
 			String code = product.getStringValue(CODE_PARAM);
 			product.setValue(OFFER_ID_PARAM, product.getStringValue(OFFER_ID_PARAM, code));
 			product.setValue(VENDOR_CODE_PARAM, product.getStringValue(VENDOR_CODE_PARAM, code));
-			if(settings.get(WITH_FILES_VAR) == varValues.SEARCH_BY_CODE){
+			if (settings.get(WITH_FILES_VAR) == varValues.SEARCH_BY_CODE) {
 				Path mainPicPath = picsFolder.resolve(code + ".jpg");
 				Path filesPath = picsFolder.resolve(code);
 				File mainPic = mainPicPath.toFile();
@@ -409,7 +416,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					continue;
 				} else if (StringUtils.isBlank(cellValue) && ifBlank == varValues.CLEAR) {
 					product.clearValue(paramName);
-					if(paramName.equals(MAIN_PIC_PARAM)){
+					if (paramName.equals(MAIN_PIC_PARAM)) {
 						product.clearValue(SMALL_PIC_PARAM);
 					}
 					continue;
@@ -446,7 +453,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			} else {
 				value = StringUtils.replaceChars(value, '\\', System.getProperty("file.separator").charAt(0));
 				String contextPath = AppContext.getContextPath();
-				Path picPath = (fromSameDomain)? Paths.get(contextPath, value) : picsFolder.resolve(value);
+				Path picPath = (fromSameDomain) ? Paths.get(contextPath, value) : picsFolder.resolve(value);
 
 				if (picPath.toFile().isFile()) {
 					boolean needsSet = !paramName.equals(MAIN_PIC_PARAM);
@@ -468,8 +475,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					if (needsSet) {
 						product.setValue(paramName, picPath.toFile());
 					}
-				}else{
-					pushLog("Продукт "+product.getValue(CODE_PARAM)+". Нет файла: " + value);
+				} else {
+					pushLog("Продукт " + product.getValue(CODE_PARAM) + ". Нет файла: " + value);
 				}
 			}
 		}
@@ -679,7 +686,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			priceWorkbook.close();
 		}
 		//creating filters and item types
-		//createFiltersAndItemTypesIfNeeded();
+		createFiltersAndItemTypesIfNeeded();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
 		info.setOperation("Индексация названий товаров");
