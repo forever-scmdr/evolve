@@ -679,7 +679,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			priceWorkbook.close();
 		}
 		//creating filters and item types
-		createFiltersAndItemTypesIfNeeded();
+		//createFiltersAndItemTypesIfNeeded();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 		//indexation
 		info.setOperation("Индексация названий товаров");
