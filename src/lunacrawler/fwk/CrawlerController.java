@@ -125,6 +125,9 @@ import net.sf.saxon.TransformerFactoryImpl;
 	 <xsl:for-each select="//ul[contains(@class, 'breadcrumb-navigation')]/li[position() &gt; 1]/a">
 		 <section id="{@href}">
 		    <name action="ignore"><xsl:value-of select="span"/></name>
+			<xsl:if test="$crumbs[position() = $pos - 1]">
+				<h_parent parent="{$crumbs[position() = $pos - 1]/a/@href}" element="section"/>
+			</xsl:if>
 		 </section>
 	 </xsl:for-each>
  </result>
