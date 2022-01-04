@@ -323,14 +323,19 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 					Matcher m = PARAM_WITH_GROUP.matcher(caption);
 					caption = m.matches() ? m.group("param").trim() : caption;
 
+					String[] vals = StringUtils.split(cellValue, ';');
+
 					xml.startElement("parameter")
 							.startElement("name")
 							.addText(caption)
-							.endElement()
-							.startElement("value")
-							.addText(cellValue)
-							.endElement()
 							.endElement();
+					for (String val : vals) {
+						xml.startElement("value")
+								.addText(StringUtils.normalizeSpace(val))
+								.endElement();
+					}
+					xml.endElement();
+
 				}
 				xml.endElement();
 			});

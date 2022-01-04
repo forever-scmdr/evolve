@@ -100,8 +100,16 @@ public class Strings
      */
     public static String createXmlElementName(String invalid) {
     	String halfValid = translit(invalid.trim());
-    	if (StringUtils.isBlank(halfValid))
-    		return null;
+    	if (StringUtils.isBlank(halfValid)){
+    		StringBuilder sb = new StringBuilder();
+    		sb.append("u");
+    		char[] chars = invalid.toCharArray();
+    		for(int i = 0; i< chars.length; i++){
+    			int ic = (int)chars[i];
+    			sb.append('-').append(Integer.toHexString(ic));
+			}
+    		return sb.toString();
+		}
     	if (StringUtils.contains(DIGITS, halfValid.charAt(0)) || halfValid.charAt(0) == '.')
     		return StringUtils.substring("_" + halfValid, 0, 254);
     	return StringUtils.substring(halfValid, 0, 254);

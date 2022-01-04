@@ -176,7 +176,9 @@ public class MysqlConnector
 			ServerLogger.warn("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
 			synchronized (openTraces) {
+				if(name != null) {
 				openTraces.remove(name);
+			}
 			}
 			synchronized (openThreads) {
 				openThreads.remove(Thread.currentThread());
