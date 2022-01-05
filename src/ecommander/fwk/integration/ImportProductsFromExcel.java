@@ -149,7 +149,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 			}
 			//product
 			else {
-				boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
+				boolean isProduct = !"-".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 				Item product = ensureProduct(code, isProduct);
 				populateProduct(product);
 				postProcessProduct(product);
