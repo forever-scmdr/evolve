@@ -11,6 +11,7 @@ public class Catalog
 {
 
     public final static String _NAME = "catalog";
+    public final static String SHIP_DATE = "ship_date";
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
     public final static String INTEGRATION_PENDING = "integration_pending";
@@ -33,6 +34,28 @@ public class Catalog
 
     public static Catalog newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_ship_date(Long value) {
+        setValue("ship_date", value);
+    }
+
+    public void setUI_ship_date(String value)
+        throws Exception
+    {
+        setValueUI("ship_date", value);
+    }
+
+    public Long get_ship_date() {
+        return getLongValue("ship_date");
+    }
+
+    public Long getDefault_ship_date(Long defaultVal) {
+        return getLongValue("ship_date", defaultVal);
+    }
+
+    public boolean contains_ship_date(Long value) {
+        return containsValue("ship_date", value);
     }
 
     public void set_integration(File value) {

@@ -13,6 +13,9 @@ public class Custom_page
 
     public final static String _NAME = "custom_page";
     public final static String HEADER = "header";
+    public final static String NAME = "name";
+    public final static String HIDE_SIDE_MENU = "hide_side_menu";
+    public final static String HIDE_SUBS = "hide_subs";
     public final static String MAIN_PIC = "main_pic";
     public final static String SHORT = "short";
     public final static String TEXT = "text";
@@ -52,6 +55,66 @@ public class Custom_page
 
     public boolean contains_header(String value) {
         return containsValue("header", value);
+    }
+
+    public void set_name(String value) {
+        setValue("name", value);
+    }
+
+    public String get_name() {
+        return getStringValue("name");
+    }
+
+    public String getDefault_name(String defaultVal) {
+        return getStringValue("name", defaultVal);
+    }
+
+    public boolean contains_name(String value) {
+        return containsValue("name", value);
+    }
+
+    public void set_hide_side_menu(Byte value) {
+        setValue("hide_side_menu", value);
+    }
+
+    public void setUI_hide_side_menu(String value)
+        throws Exception
+    {
+        setValueUI("hide_side_menu", value);
+    }
+
+    public Byte get_hide_side_menu() {
+        return getByteValue("hide_side_menu");
+    }
+
+    public Byte getDefault_hide_side_menu(Byte defaultVal) {
+        return getByteValue("hide_side_menu", defaultVal);
+    }
+
+    public boolean contains_hide_side_menu(Byte value) {
+        return containsValue("hide_side_menu", value);
+    }
+
+    public void set_hide_subs(Byte value) {
+        setValue("hide_subs", value);
+    }
+
+    public void setUI_hide_subs(String value)
+        throws Exception
+    {
+        setValueUI("hide_subs", value);
+    }
+
+    public Byte get_hide_subs() {
+        return getByteValue("hide_subs");
+    }
+
+    public Byte getDefault_hide_subs(Byte defaultVal) {
+        return getByteValue("hide_subs", defaultVal);
+    }
+
+    public boolean contains_hide_subs(Byte value) {
+        return containsValue("hide_subs", value);
     }
 
     public void set_main_pic(File value) {

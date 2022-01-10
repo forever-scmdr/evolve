@@ -550,6 +550,7 @@
 
 	<item name="page_text" caption="Текстовый блок" super="page_extra" ag-id="1771" ag-hash="883875037">
 		<parameter name="text" type="text" caption="Текст" text-index="fulltext"/>
+		<parameter name="text_pic" type="picture" caption="Картинка" multiple="true"/>
 	</item>
 
 	<item name="page_extra_code" caption="Произвольный код" super="page_extra" ag-id="1796" ag-hash="1379922028">
@@ -773,6 +774,7 @@
 
 	<item name="custom_page" caption="Одиночная страница" key="header" key-unique="true" super="* menu_item seo_container" default-page="page" ag-id="27" ag-hash="-1777660259">
 		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="name" type="string" caption="Название в меню"/>
 		<parameter name="hide_side_menu" type="byte" domain="0-1" caption="Скрыть боковое меню"/>
 		<parameter name="hide_subs" type="byte" domain="0-1" caption="Скрыть подразделы"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей"/>
