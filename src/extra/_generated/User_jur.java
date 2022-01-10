@@ -1,7 +1,6 @@
 
 package extra._generated;
 
-import java.math.BigDecimal;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
@@ -20,10 +19,6 @@ public class User_jur
     public final static String CONTACT_NAME = "contact_name";
     public final static String CONTACT_PHONE = "contact_phone";
     public final static String ADDRESS = "address";
-    public final static String CITY = "city";
-    public final static String ROUTE = "route";
-    public final static String DEBT = "debt";
-    public final static String DISCOUNT = "discount";
     public final static String SHIP_TYPE = "ship_type";
     public final static String PAY_TYPE = "pay_type";
     public final static String NO_ACCOUNT = "no_account";
@@ -221,82 +216,6 @@ public class User_jur
 
     public boolean contains_address(String value) {
         return containsValue("address", value);
-    }
-
-    public void set_city(String value) {
-        setValue("city", value);
-    }
-
-    public String get_city() {
-        return getStringValue("city");
-    }
-
-    public String getDefault_city(String defaultVal) {
-        return getStringValue("city", defaultVal);
-    }
-
-    public boolean contains_city(String value) {
-        return containsValue("city", value);
-    }
-
-    public void set_route(String value) {
-        setValue("route", value);
-    }
-
-    public String get_route() {
-        return getStringValue("route");
-    }
-
-    public String getDefault_route(String defaultVal) {
-        return getStringValue("route", defaultVal);
-    }
-
-    public boolean contains_route(String value) {
-        return containsValue("route", value);
-    }
-
-    public void set_debt(BigDecimal value) {
-        setValue("debt", value);
-    }
-
-    public void setUI_debt(String value)
-        throws Exception
-    {
-        setValueUI("debt", value);
-    }
-
-    public BigDecimal get_debt() {
-        return getDecimalValue("debt");
-    }
-
-    public BigDecimal getDefault_debt(BigDecimal defaultVal) {
-        return getDecimalValue("debt", defaultVal);
-    }
-
-    public boolean contains_debt(BigDecimal value) {
-        return containsValue("debt", value);
-    }
-
-    public void set_discount(Double value) {
-        setValue("discount", value);
-    }
-
-    public void setUI_discount(String value)
-        throws Exception
-    {
-        setValueUI("discount", value);
-    }
-
-    public Double get_discount() {
-        return getDoubleValue("discount");
-    }
-
-    public Double getDefault_discount(Double defaultVal) {
-        return getDoubleValue("discount", defaultVal);
-    }
-
-    public boolean contains_discount(Double value) {
-        return containsValue("discount", value);
     }
 
     public void set_ship_type(String value) {

@@ -11,6 +11,8 @@ public class Block
     public final static String _NAME = "block";
     public final static String HEADER = "header";
     public final static String TEXT = "text";
+    public final static String CODE = "code";
+    public final static String LINK = "link";
 
     private Block(Item item) {
         super(item);
@@ -61,6 +63,38 @@ public class Block
 
     public boolean contains_text(String value) {
         return containsValue("text", value);
+    }
+
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
+    public void set_link(String value) {
+        setValue("link", value);
+    }
+
+    public String get_link() {
+        return getStringValue("link");
+    }
+
+    public String getDefault_link(String defaultVal) {
+        return getStringValue("link", defaultVal);
+    }
+
+    public boolean contains_link(String value) {
+        return containsValue("link", value);
     }
 
 }

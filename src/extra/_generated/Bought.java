@@ -13,8 +13,14 @@ public class Bought
     public final static String NAME = "name";
     public final static String CODE = "code";
     public final static String QTY = "qty";
+    public final static String QTY_AVAIL = "qty_avail";
+    public final static String QTY_TOTAL = "qty_total";
     public final static String PRICE = "price";
+    public final static String NOT_AVAILABLE = "not_available";
     public final static String SUM = "sum";
+    public final static String AUX = "aux";
+    public final static String COMPLECATATION_NAME = "complecatation_name";
+    public final static String OPTION = "option";
 
     private Bought(Item item) {
         super(item);
@@ -89,6 +95,50 @@ public class Bought
         return containsValue("qty", value);
     }
 
+    public void set_qty_avail(Double value) {
+        setValue("qty_avail", value);
+    }
+
+    public void setUI_qty_avail(String value)
+        throws Exception
+    {
+        setValueUI("qty_avail", value);
+    }
+
+    public Double get_qty_avail() {
+        return getDoubleValue("qty_avail");
+    }
+
+    public Double getDefault_qty_avail(Double defaultVal) {
+        return getDoubleValue("qty_avail", defaultVal);
+    }
+
+    public boolean contains_qty_avail(Double value) {
+        return containsValue("qty_avail", value);
+    }
+
+    public void set_qty_total(Double value) {
+        setValue("qty_total", value);
+    }
+
+    public void setUI_qty_total(String value)
+        throws Exception
+    {
+        setValueUI("qty_total", value);
+    }
+
+    public Double get_qty_total() {
+        return getDoubleValue("qty_total");
+    }
+
+    public Double getDefault_qty_total(Double defaultVal) {
+        return getDoubleValue("qty_total", defaultVal);
+    }
+
+    public boolean contains_qty_total(Double value) {
+        return containsValue("qty_total", value);
+    }
+
     public void set_price(BigDecimal value) {
         setValue("price", value);
     }
@@ -111,6 +161,28 @@ public class Bought
         return containsValue("price", value);
     }
 
+    public void set_not_available(Byte value) {
+        setValue("not_available", value);
+    }
+
+    public void setUI_not_available(String value)
+        throws Exception
+    {
+        setValueUI("not_available", value);
+    }
+
+    public Byte get_not_available() {
+        return getByteValue("not_available");
+    }
+
+    public Byte getDefault_not_available(Byte defaultVal) {
+        return getByteValue("not_available", defaultVal);
+    }
+
+    public boolean contains_not_available(Byte value) {
+        return containsValue("not_available", value);
+    }
+
     public void set_sum(BigDecimal value) {
         setValue("sum", value);
     }
@@ -131,6 +203,38 @@ public class Bought
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_aux(String value) {
+        setValue("aux", value);
+    }
+
+    public String get_aux() {
+        return getStringValue("aux");
+    }
+
+    public String getDefault_aux(String defaultVal) {
+        return getStringValue("aux", defaultVal);
+    }
+
+    public boolean contains_aux(String value) {
+        return containsValue("aux", value);
+    }
+
+    public void set_complecatation_name(String value) {
+        setValue("complecatation_name", value);
+    }
+
+    public String get_complecatation_name() {
+        return getStringValue("complecatation_name");
+    }
+
+    public String getDefault_complecatation_name(String defaultVal) {
+        return getStringValue("complecatation_name", defaultVal);
+    }
+
+    public boolean contains_complecatation_name(String value) {
+        return containsValue("complecatation_name", value);
     }
 
 }

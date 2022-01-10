@@ -105,6 +105,7 @@ public interface CatalogConst {
 	String ASSOC_CODE_ELEMENT = "assoc_code";
 	String PARAMS_XML_ELEMENT = "params_xml";
 	String NEXT_DELIVERY_ELEMENT = "next_delivery";
+	String H1_ELEMENT = "h1";
 
 	String QUANTITY_ELEMENT = "quantity";
 	String QUANTITY_OPT_ELEMENT = "quantity_opt";

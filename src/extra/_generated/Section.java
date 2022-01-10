@@ -13,12 +13,17 @@ public class Section
     public final static String _NAME = "section";
     public final static String NAME = "name";
     public final static String ICON = "icon";
+    public final static String SHORT = "short";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
     public final static String CATEGORY_ID = "category_id";
+    public final static String CODE = "code";
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
+    public final static String EXTRA = "extra";
+    public final static String PARAMS_SHORT = "params_short";
+    public final static String PARAMS_LIST = "params_list";
     public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
@@ -66,6 +71,22 @@ public class Section
 
     public boolean contains_icon(File value) {
         return containsValue("icon", value);
+    }
+
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_show_subs(Byte value) {
@@ -144,6 +165,22 @@ public class Section
         return containsValue("category_id", value);
     }
 
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
     public void set_parent_id(String value) {
         setValue("parent_id", value);
     }
@@ -170,6 +207,54 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_extra(String value) {
+        setValue("extra", value);
+    }
+
+    public String get_extra() {
+        return getStringValue("extra");
+    }
+
+    public String getDefault_extra(String defaultVal) {
+        return getStringValue("extra", defaultVal);
+    }
+
+    public boolean contains_extra(String value) {
+        return containsValue("extra", value);
+    }
+
+    public void set_params_short(String value) {
+        setValue("params_short", value);
+    }
+
+    public String get_params_short() {
+        return getStringValue("params_short");
+    }
+
+    public String getDefault_params_short(String defaultVal) {
+        return getStringValue("params_short", defaultVal);
+    }
+
+    public boolean contains_params_short(String value) {
+        return containsValue("params_short", value);
+    }
+
+    public void set_params_list(String value) {
+        setValue("params_list", value);
+    }
+
+    public String get_params_list() {
+        return getStringValue("params_list");
+    }
+
+    public String getDefault_params_list(String defaultVal) {
+        return getStringValue("params_list", defaultVal);
+    }
+
+    public boolean contains_params_list(String value) {
+        return containsValue("params_list", value);
     }
 
 }

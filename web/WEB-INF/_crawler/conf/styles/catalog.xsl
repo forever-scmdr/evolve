@@ -16,33 +16,114 @@
 			<xsl:variable name="menuDiv" select="//div[@id = 'block-menu-menu-produckt']"/>
 			<xsl:variable name="activeLI" select="$menuDiv//li[a/@class = 'active-trail active']"/>
 			<xsl:variable name="crumbs" select="$menuDiv//li[.//a/@class = 'active-trail active']"/>
+			<xsl:variable name="content" select="//div[@id = 'block-system-main']//div[@class = 'field-item even']"/>
+			<xsl:variable name="firstTable" select="$content/table"/>
 			<xsl:variable name="isSection" select="$activeLI/ul"/>
 			<result>
+
+				<!-- Путь (родители) -->
+
 				<xsl:for-each select="$crumbs[position() != last()]">
 					<xsl:variable name="pos" select="position()"/>
-					<section id="{a/@href}">
+					<xsl:variable name="id" select="f:create_id(a/@href)"/>
+					<section id="{$id}">
 						<xsl:if test="$crumbs[position() = $pos - 1]">
-							<h_parent parent="{$crumbs[position() = $pos - 1]/a/@href}" element="section"/>
+							<xsl:variable name="parentId" select="f:create_id($crumbs[position() = $pos - 1]/a/@href)"/>
+							<xsl:if test="$id != $parentId">
+								<h_parent parent="{$parentId}" element="section"/>
+							</xsl:if>
 						</xsl:if>
-						<name><xsl:value-of select="a" /></name>
+						<name ><xsl:value-of select="a" /></name>
 					</section>
 				</xsl:for-each>
+
+				<!-- Страница раздела -->
+
 				<xsl:if test="$isSection">
-					<section id="{$activeLI/a/@href}">
-						<h_parent parent="{$crumbs[position() = last() - 1]/a/@href}" element="section"/>
+					<xsl:variable name="hasSubs" select="$firstTable//tr[position() mod 2 = 1 and .//a/@href]"/>
+					<section id="{f:create_id($activeLI/a/@href)}">
+						<h_parent parent="{f:create_id($crumbs[position() = last() - 1]/a/@href)}" element="section"/>
 						<h1><xsl:value-of select="//h1" /></h1>
 						<name><xsl:value-of select="$activeLI/a" /></name>
+						<xsl:if test="not($hasSubs)">
+							<text><xsl:copy-of select="$firstTable"/></text>
+							<text_pics>
+								<xsl:for-each select="$firstTable//img">
+									<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
+								</xsl:for-each>
+							</text_pics>
+						</xsl:if>
 					</section>
+					<xsl:if test="$hasSubs">
+						<xsl:for-each select="$firstTable//tr[position() mod 2 = 1]">
+							<xsl:variable name="position" select="position()"/>
+							<xsl:variable name="nameTr" select="current()"/>
+							<xsl:variable name="contentTr" select="$firstTable//tr[position() = 2 * $position]"/>
+							<xsl:variable name="as" select="$nameTr//a"/>
+							<xsl:variable name="sideMenuElement" select="$menuDiv//a[@href = $as[1]/@href]"/>
+							<xsl:variable name="isSubsection" select="$sideMenuElement/following-sibling::ul"/>
+							<xsl:if test="$sideMenuElement and $isSubsection">
+								<section id="{f:create_id($as[1]/@href)}" pos="{$position}">
+									<h_parent parent="{f:create_id($activeLI/a/@href)}" element="section"/>
+									<name><xsl:value-of select="$nameTr//a" /></name>
+									<main_pic download="https://www.meandr.ru{$contentTr/td[1]//img/@src}" link="{$contentTr/td[1]//img/@src}"/>
+									<short><xsl:copy-of select="$contentTr/td[2]/*[position() != last()]"/></short>
+								</section>
+							</xsl:if>
+							<xsl:if test="$sideMenuElement and not($isSubsection)">
+								<product id="{f:create_id($as[1]/@href)}" pos="{$position}">
+									<h_parent parent="{f:create_id($activeLI/a/@href)}" element="section"/>
+									<name><xsl:value-of select="$nameTr//a" /></name>
+									<main_pic download="https://www.meandr.ru{$contentTr/td[1]//img/@src}" link="{$contentTr/td[1]//img/@src}"/>
+									<short><xsl:copy-of select="$contentTr/td[2]/*[position() != last()]"/></short>
+								</product>
+							</xsl:if>
+							<xsl:if test="not($sideMenuElement)">
+								<section id="{f:create_id($activeLI/a/@href)}">
+									<text><xsl:copy-of select="$firstTable"/></text>
+									<text_pics>
+										<xsl:for-each select="$firstTable//img">
+											<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
+										</xsl:for-each>
+									</text_pics>
+								</section>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:if>
 				</xsl:if>
+
+				<!-- Страница товара -->
+
 				<xsl:if test="not($isSection)">
-					<product id="{$activeLI/a/@href}">
+					<product id="{f:create_id($activeLI/a/@href)}">
 						<xsl:if test="count($crumbs) &gt; 1">
-							<h_parent parent="{$crumbs[position() = last() - 1]/a/@href}" element="section"/>
+							<h_parent parent="{f:create_id($crumbs[position() = last() - 1]/a/@href)}" element="section"/>
 						</xsl:if>
 						<h1><xsl:value-of select="//h1" /></h1>
 						<name><xsl:value-of select="$activeLI/a" /></name>
+						<gallery>
+							<xsl:copy-of select="$firstTable"/>
+						</gallery>
+						<gallery_pics>
+							<xsl:for-each select="$firstTable//img">
+								<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
+							</xsl:for-each>
+						</gallery_pics>
+						<products>
+							<xsl:copy-of select="$content/div[table][1]/table"/>
+						</products>
+						<description>
+							<xsl:copy-of select="$content/div[table][1]/following-sibling::*"/>
+						</description>
+						<description_pics>
+							<xsl:for-each select="$content/div[table][1]/following-sibling::*//img">
+								<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
+							</xsl:for-each>
+						</description_pics>
 					</product>
 				</xsl:if>
+
+
 			</result>
 		</xsl:if>
 

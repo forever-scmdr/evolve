@@ -17,6 +17,7 @@ public class Described_product
     public final static String CODE = "code";
     public final static String PRICE = "price";
     public final static String QTY = "qty";
+    public final static String QTY_OPT = "qty_opt";
     public final static String UNIT = "unit";
     public final static String TYPE = "type";
     public final static String NAME_EXTRA = "name_extra";
@@ -24,29 +25,25 @@ public class Described_product
     public final static String VENDOR_CODE = "vendor_code";
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
-    public final static String GROUP_ID = "group_id";
-    public final static String URL = "url";
     public final static String CATEGORY_ID = "category_id";
-    public final static String CURRENCY_ID = "currency_id";
-    public final static String PRICE_ORIGINAL = "price_original";
-    public final static String PRICE_OLD = "price_old";
-    public final static String PRICE_OPT = "price_opt";
-    public final static String PRICE_OPT_OLD = "price_opt_old";
-    public final static String NEXT_DELIVERY = "next_delivery";
     public final static String STATUS = "status";
+    public final static String SEARCH = "search";
     public final static String MIN_QTY = "min_qty";
+    public final static String STEP = "step";
+    public final static String SPEC_QTY = "spec_qty";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
     public final static String EXTRA_XML = "extra_xml";
+    public final static String FILES = "files";
     public final static String TEXT_PICS = "text_pics";
     public final static String ASSOC_CODE = "assoc_code";
-    public final static String ANALOG_CODE = "analog_code";
-    public final static String SIMILAR_CODE = "similar_code";
-    public final static String SUPPORT_CODE = "support_code";
     public final static String TAG = "tag";
+    public final static String MARK = "mark";
+    public final static String LABEL = "label";
+    public final static String EXTRA_INPUT = "extra_input";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -142,6 +139,28 @@ public class Described_product
 
     public boolean contains_qty(Double value) {
         return containsValue("qty", value);
+    }
+
+    public void set_qty_opt(Double value) {
+        setValue("qty_opt", value);
+    }
+
+    public void setUI_qty_opt(String value)
+        throws Exception
+    {
+        setValueUI("qty_opt", value);
+    }
+
+    public Double get_qty_opt() {
+        return getDoubleValue("qty_opt");
+    }
+
+    public Double getDefault_qty_opt(Double defaultVal) {
+        return getDoubleValue("qty_opt", defaultVal);
+    }
+
+    public boolean contains_qty_opt(Double value) {
+        return containsValue("qty_opt", value);
     }
 
     public void set_unit(String value) {
@@ -262,38 +281,6 @@ public class Described_product
         return containsValue("available", value);
     }
 
-    public void set_group_id(String value) {
-        setValue("group_id", value);
-    }
-
-    public String get_group_id() {
-        return getStringValue("group_id");
-    }
-
-    public String getDefault_group_id(String defaultVal) {
-        return getStringValue("group_id", defaultVal);
-    }
-
-    public boolean contains_group_id(String value) {
-        return containsValue("group_id", value);
-    }
-
-    public void set_url(String value) {
-        setValue("url", value);
-    }
-
-    public String get_url() {
-        return getStringValue("url");
-    }
-
-    public String getDefault_url(String defaultVal) {
-        return getStringValue("url", defaultVal);
-    }
-
-    public boolean contains_url(String value) {
-        return containsValue("url", value);
-    }
-
     public void set_category_id(String value) {
         setValue("category_id", value);
     }
@@ -310,126 +297,6 @@ public class Described_product
         return containsValue("category_id", value);
     }
 
-    public void set_currency_id(String value) {
-        setValue("currency_id", value);
-    }
-
-    public String get_currency_id() {
-        return getStringValue("currency_id");
-    }
-
-    public String getDefault_currency_id(String defaultVal) {
-        return getStringValue("currency_id", defaultVal);
-    }
-
-    public boolean contains_currency_id(String value) {
-        return containsValue("currency_id", value);
-    }
-
-    public void set_price_original(BigDecimal value) {
-        setValue("price_original", value);
-    }
-
-    public void setUI_price_original(String value)
-        throws Exception
-    {
-        setValueUI("price_original", value);
-    }
-
-    public BigDecimal get_price_original() {
-        return getDecimalValue("price_original");
-    }
-
-    public BigDecimal getDefault_price_original(BigDecimal defaultVal) {
-        return getDecimalValue("price_original", defaultVal);
-    }
-
-    public boolean contains_price_original(BigDecimal value) {
-        return containsValue("price_original", value);
-    }
-
-    public void set_price_old(BigDecimal value) {
-        setValue("price_old", value);
-    }
-
-    public void setUI_price_old(String value)
-        throws Exception
-    {
-        setValueUI("price_old", value);
-    }
-
-    public BigDecimal get_price_old() {
-        return getDecimalValue("price_old");
-    }
-
-    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
-        return getDecimalValue("price_old", defaultVal);
-    }
-
-    public boolean contains_price_old(BigDecimal value) {
-        return containsValue("price_old", value);
-    }
-
-    public void set_price_opt(BigDecimal value) {
-        setValue("price_opt", value);
-    }
-
-    public void setUI_price_opt(String value)
-        throws Exception
-    {
-        setValueUI("price_opt", value);
-    }
-
-    public BigDecimal get_price_opt() {
-        return getDecimalValue("price_opt");
-    }
-
-    public BigDecimal getDefault_price_opt(BigDecimal defaultVal) {
-        return getDecimalValue("price_opt", defaultVal);
-    }
-
-    public boolean contains_price_opt(BigDecimal value) {
-        return containsValue("price_opt", value);
-    }
-
-    public void set_price_opt_old(BigDecimal value) {
-        setValue("price_opt_old", value);
-    }
-
-    public void setUI_price_opt_old(String value)
-        throws Exception
-    {
-        setValueUI("price_opt_old", value);
-    }
-
-    public BigDecimal get_price_opt_old() {
-        return getDecimalValue("price_opt_old");
-    }
-
-    public BigDecimal getDefault_price_opt_old(BigDecimal defaultVal) {
-        return getDecimalValue("price_opt_old", defaultVal);
-    }
-
-    public boolean contains_price_opt_old(BigDecimal value) {
-        return containsValue("price_opt_old", value);
-    }
-
-    public void set_next_delivery(String value) {
-        setValue("next_delivery", value);
-    }
-
-    public String get_next_delivery() {
-        return getStringValue("next_delivery");
-    }
-
-    public String getDefault_next_delivery(String defaultVal) {
-        return getStringValue("next_delivery", defaultVal);
-    }
-
-    public boolean contains_next_delivery(String value) {
-        return containsValue("next_delivery", value);
-    }
-
     public void set_status(String value) {
         setValue("status", value);
     }
@@ -444,6 +311,22 @@ public class Described_product
 
     public boolean contains_status(String value) {
         return containsValue("status", value);
+    }
+
+    public void set_search(String value) {
+        setValue("search", value);
+    }
+
+    public String get_search() {
+        return getStringValue("search");
+    }
+
+    public String getDefault_search(String defaultVal) {
+        return getStringValue("search", defaultVal);
+    }
+
+    public boolean contains_search(String value) {
+        return containsValue("search", value);
     }
 
     public void set_min_qty(Double value) {
@@ -466,6 +349,50 @@ public class Described_product
 
     public boolean contains_min_qty(Double value) {
         return containsValue("min_qty", value);
+    }
+
+    public void set_step(Double value) {
+        setValue("step", value);
+    }
+
+    public void setUI_step(String value)
+        throws Exception
+    {
+        setValueUI("step", value);
+    }
+
+    public Double get_step() {
+        return getDoubleValue("step");
+    }
+
+    public Double getDefault_step(Double defaultVal) {
+        return getDoubleValue("step", defaultVal);
+    }
+
+    public boolean contains_step(Double value) {
+        return containsValue("step", value);
+    }
+
+    public void set_spec_qty(Double value) {
+        setValue("spec_qty", value);
+    }
+
+    public void setUI_spec_qty(String value)
+        throws Exception
+    {
+        setValueUI("spec_qty", value);
+    }
+
+    public Double get_spec_qty() {
+        return getDoubleValue("spec_qty");
+    }
+
+    public Double getDefault_spec_qty(Double defaultVal) {
+        return getDoubleValue("spec_qty", defaultVal);
+    }
+
+    public boolean contains_spec_qty(Double value) {
+        return containsValue("spec_qty", value);
     }
 
     public void set_country(String value) {
@@ -556,6 +483,22 @@ public class Described_product
         return containsValue("extra_xml", value);
     }
 
+    public void add_files(File value) {
+        setValue("files", value);
+    }
+
+    public List<File> getAll_files() {
+        return getFileValues("files", AppContext.getCommonFilesDirPath());
+    }
+
+    public void remove_files(File value) {
+        removeEqualValue("files", value);
+    }
+
+    public boolean contains_files(File value) {
+        return containsValue("files", value);
+    }
+
     public void add_text_pics(File value) {
         setValue("text_pics", value);
     }
@@ -588,54 +531,6 @@ public class Described_product
         return containsValue("assoc_code", value);
     }
 
-    public void add_analog_code(String value) {
-        setValue("analog_code", value);
-    }
-
-    public List<String> getAll_analog_code() {
-        return getStringValues("analog_code");
-    }
-
-    public void remove_analog_code(String value) {
-        removeEqualValue("analog_code", value);
-    }
-
-    public boolean contains_analog_code(String value) {
-        return containsValue("analog_code", value);
-    }
-
-    public void add_similar_code(String value) {
-        setValue("similar_code", value);
-    }
-
-    public List<String> getAll_similar_code() {
-        return getStringValues("similar_code");
-    }
-
-    public void remove_similar_code(String value) {
-        removeEqualValue("similar_code", value);
-    }
-
-    public boolean contains_similar_code(String value) {
-        return containsValue("similar_code", value);
-    }
-
-    public void add_support_code(String value) {
-        setValue("support_code", value);
-    }
-
-    public List<String> getAll_support_code() {
-        return getStringValues("support_code");
-    }
-
-    public void remove_support_code(String value) {
-        removeEqualValue("support_code", value);
-    }
-
-    public boolean contains_support_code(String value) {
-        return containsValue("support_code", value);
-    }
-
     public void add_tag(String value) {
         setValue("tag", value);
     }
@@ -650,6 +545,54 @@ public class Described_product
 
     public boolean contains_tag(String value) {
         return containsValue("tag", value);
+    }
+
+    public void add_mark(String value) {
+        setValue("mark", value);
+    }
+
+    public List<String> getAll_mark() {
+        return getStringValues("mark");
+    }
+
+    public void remove_mark(String value) {
+        removeEqualValue("mark", value);
+    }
+
+    public boolean contains_mark(String value) {
+        return containsValue("mark", value);
+    }
+
+    public void add_label(String value) {
+        setValue("label", value);
+    }
+
+    public List<String> getAll_label() {
+        return getStringValues("label");
+    }
+
+    public void remove_label(String value) {
+        removeEqualValue("label", value);
+    }
+
+    public boolean contains_label(String value) {
+        return containsValue("label", value);
+    }
+
+    public void add_extra_input(String value) {
+        setValue("extra_input", value);
+    }
+
+    public List<String> getAll_extra_input() {
+        return getStringValues("extra_input");
+    }
+
+    public void remove_extra_input(String value) {
+        removeEqualValue("extra_input", value);
+    }
+
+    public boolean contains_extra_input(String value) {
+        return containsValue("extra_input", value);
     }
 
     public void add_gallery(File value) {
