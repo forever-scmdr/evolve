@@ -988,9 +988,11 @@ border-bottom: solid 1px;
 		margin-right: 0; }
 
 .device_row {
-	flex-direction: row;
-	text-align: left;
-	border-bottom: 1px solid #9E9E9E; }
+		flex-direction: row;
+		text-align: left;
+		border-bottom: 1px solid #9E9E9E;
+		line-height: 1.2;
+	}
 	.device_row:last-child {
 		border: none; }
 	.device_row > * {
@@ -1712,7 +1714,9 @@ border-bottom: solid 1px;
 
 .product-lables {
 	display: flex;
-	margin-bottom: 24px; }
+	margin-bottom: 24px;
+	line-height: 1.25;
+}
 
 .product-lables__label {
 	margin-right: 8px; }

@@ -8,7 +8,6 @@
 	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
 	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
 	<xsl:variable name="is_subscribe" select="page/optional_modules/product_subscribe/status = 'on'"/>
-	<xsl:variable name="is_quick_view" select="page/optional_modules/display_settings/product_quick_view = 'on'"/>
 	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
 	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
@@ -55,12 +54,12 @@
 			</div>
 
 			<!-- quick view (not displayed, delete <div> with display: none to show) -->
-			<xsl:if test="$is_quick_view">
+			<!-- TODO add display check -->
+			<!--
 			<div>
 				<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
 			</div>
-			</xsl:if>
-
+			-->
 			<!-- device title -->
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
@@ -235,31 +234,39 @@
 
 				<!-- device description parameters -->
 				<div class="device__info">
-					<table class="params">
-						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
-						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
-						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
-						<xsl:variable name="p" select="current()"/>
-						<xsl:if test="//page/@name != 'fav'">
-							<xsl:for-each select="$captions">
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-								<tr class="tr">
-									<td><xsl:value-of select="$param/@caption"/></td>
-									<td><xsl:value-of select="$param"/></td>
-								</tr>
-							</xsl:for-each>
-						</xsl:if>
-						<xsl:if test="//page/@name != 'fav'">
-							<xsl:for-each-group select="$captions" group-by=".">
-								<xsl:variable name="c" select="current-group()[1]"/>
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space($c))]"/>
-								<tr class="tr">
-									<td><xsl:value-of select="$c"/></td>
-									<td><xsl:value-of select="string-join($param, '; ')"/></td>
-								</tr>
-							</xsl:for-each-group>
-						</xsl:if>
-					</table>
+
+					<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
+					<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
+					<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
+
+					<xsl:if test="$captions">
+						<table class="params">						
+							<xsl:variable name="p" select="current()"/>
+							<xsl:if test="//page/@name != 'fav'">
+								<xsl:for-each-group select="$captions" group-by=".">
+									<xsl:variable name="c" select="current-group()[1]"/>
+									<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space($c))]"/>
+									<tr class="tr">
+										<td><xsl:value-of select="$c"/></td>
+										<td><xsl:value-of select="string-join($param, '; ')"/></td>
+									</tr>
+								</xsl:for-each-group>
+							</xsl:if>
+							<xsl:if test="//page/@name = 'fav'">
+								<xsl:for-each-group select="$captions[position() &lt; 5]" group-by=".">
+									<xsl:variable name="c" select="current-group()[1]"/>
+									<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space($c))]"/>
+									<tr class="tr">
+										<td><xsl:value-of select="$c"/></td>
+										<td><xsl:value-of select="string-join($param, '; ')"/></td>
+									</tr>
+								</xsl:for-each-group>
+							</xsl:if>
+						</table>
+					</xsl:if>
+					<xsl:if test="not($captions)">
+						<xsl:value-of select="description" disable-output-escaping="yes"/>
+					</xsl:if>
 				</div>
 
 			</div>

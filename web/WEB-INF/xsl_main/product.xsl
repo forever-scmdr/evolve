@@ -74,8 +74,8 @@
 		<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()/name))]"/>
 		<xsl:if test="$param">
 			<tr>
-				<td><xsl:value-of select="$param/@caption"/></td>
-				<td><xsl:value-of select="$param"/></td>
+				<td><xsl:value-of select="$param[1]/@caption"/></td>
+				<td><xsl:value-of select="string-join($param, '; ')"/></td>
 			</tr>
 		</xsl:if>
 	</xsl:template>
@@ -86,13 +86,13 @@
 		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
-				<div class="tags device__tags">
+				<!-- <div class="tags device__tags">
 					<xsl:for-each select="$p/label">
 						<div class="tag device__tag {f:translit(.)}">
 							<xsl:value-of select="." />
 						</div>
 					</xsl:for-each>
-				</div>
+				</div> -->
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
@@ -208,13 +208,14 @@
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
 						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
-						<xsl:for-each select="$captions">
-							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+						<xsl:for-each-group select="$captions" group-by=".">
+							<xsl:variable name="c" select="current-group()[1]"/>
+							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space($c))]"/>
 							<tr>
-								<td><xsl:value-of select="$param/@caption"/></td>
-								<td><xsl:value-of select="$param"/></td>
+								<td><xsl:value-of select="$c"/></td>
+								<td><xsl:value-of select="string-join($param, '; ')"/></td>
 							</tr>
-						</xsl:for-each>
+						</xsl:for-each-group>
 					</table>
 				</xsl:if>
 				
