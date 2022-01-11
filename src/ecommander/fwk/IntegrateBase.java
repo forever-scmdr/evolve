@@ -105,7 +105,7 @@ public abstract class IntegrateBase extends Command {
 		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
 		private ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
-		private volatile int logSize = 30;
+		private volatile int logSize = 300;
 		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
 		private String host;
 
