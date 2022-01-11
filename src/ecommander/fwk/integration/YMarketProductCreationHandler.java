@@ -7,6 +7,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -107,6 +108,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			picFolder = Paths.get(AppContext.getContextPath(), "device_pics");
 		}
 		host = info.getHost();
+		info.setProcessed(0);
 	}
 
 	@Override
@@ -214,6 +216,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				// Качать картинки только для новых товаров
 				//boolean wasNew = product.isNew();
 
+				if(isProductNotNew){
+					DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product).noFulltextIndex());
+				}
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал

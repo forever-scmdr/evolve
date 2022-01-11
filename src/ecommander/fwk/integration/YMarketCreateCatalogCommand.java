@@ -6,9 +6,12 @@ import ecommander.fwk.ItemUtils;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra._generated.ItemNames;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,6 +19,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,6 +29,8 @@ import java.util.List;
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
 	private static final String GET_PRICE_PARAM = "get_price";
+	private static final int LOAD_BATCH_SIZE = 1000;
+	private static final int HIDE_BATCH_SIZE = 1000;
 
 	private static boolean getPrice = false;
 
@@ -47,6 +53,9 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			return;
 		}
 		info.setToProcess(xmls.size());
+
+		//Скрыть все товары
+		hideAllProducts();
 
 		// Прасить документ
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -149,6 +158,29 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 	}
 
+	private void hideAllProducts() throws Exception {
+		setOperation("Скрываем товары");
+		setProcessed(0);
+		LinkedList<Item> products = new LinkedList<>();
+		products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L));
+		long id = 0;
+		int counter = 0;
+		while (products.size() > 0) {
+			while (products.size() != 0) {
+				Item product = products.poll();
+				id = product.getId();
+				List<String> tags = product.getStringValues(TAG_PARAM);
+				if(!tags.contains("external_shop")) {
+					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+					counter++;
+				}
+				if (counter >= HIDE_BATCH_SIZE) commitCommandUnits();
+				info.increaseProcessed();
+			}
+			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id));
+		}
+		commitCommandUnits();
+	}
 
 	private boolean removeDoctype(File file) {
 		File tempFile = new File("__temp__.xml");
