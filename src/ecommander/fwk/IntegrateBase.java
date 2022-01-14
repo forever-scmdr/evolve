@@ -485,7 +485,7 @@ public abstract class IntegrateBase extends Command {
 		if (info == null)
 			info = lastRunInfo;
 		if (info == null)
-			newInfo();
+			info = newInfo();
 		info.output(doc);
 		doc.endElement();
 		ResultPE result;

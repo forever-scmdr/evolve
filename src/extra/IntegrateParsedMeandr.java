@@ -19,6 +19,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 
@@ -58,8 +59,10 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(root).ignoreUser().noFulltextIndex().noTriggerExtra());
 			}
 		}
-		Item rootPage = ItemUtils.ensureSingleAnonymousItem(CUSTOM_PAGE, getInitiator(), pagesCatalog.getId());
+		Item rootPage = Item.newChildItem(customPageType, pagesCatalog);
 		rootPage.setValue(Custom_page.HEADER, CATALOG_HEADER);
+		rootPage.setValue(Custom_page.IN_MAIN_MENU, "да");
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(rootPage).ignoreUser().noFulltextIndex().noTriggerExtra());
 		Document tree = infoProvider.getTree();
 		Element root = tree.getElementsByTag("data").first();
 		processSubsections(root, rootPage);
@@ -77,9 +80,15 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				Custom_page section = Custom_page.get(Item.newChildItem(customPageType, parent));
 				section.set_name(secName);
 				section.set_header(doc.getNodeText(H1_ELEMENT));
+				section.setValue(Custom_page.IN_MAIN_MENU, "да");
+
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
+
 				Element mainPicEl = doc.getFirst(MAIN_PIC_PARAM);
 				if (mainPicEl != null) {
-					section.set_main_pic(infoProvider.getFile(secCode, mainPicEl.attr(LINK_PARAM)).toFile());
+					Path path = infoProvider.getFile(secCode, mainPicEl.attr(LINK_PARAM));
+					if (path != null)
+						section.set_main_pic(path.toFile());
 				}
 				String shortDesc = doc.getNodeHtml(SHORT_PARAM);
 				if (StringUtils.isNotBlank(shortDesc)) {
@@ -89,7 +98,11 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				setTextWithPics(section, secCode, doc, Custom_page.TEXT, Custom_page.TEXT_PIC, TEXT_PARAM);
 
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex());
+
+				info.increaseProcessed();
+
 				processSubsections(sectionEl, section);
+
 			} catch (Exception e) {
 				ServerLogger.error("Section save error", e);
 				info.addError("Section save error, ID = " + secCode + ", name = " + secName, parent.getStringValue(NAME_PARAM));
@@ -122,9 +135,15 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				Custom_page product = Custom_page.get(Item.newChildItem(customPageType, parent));
 				product.set_name(name);
 				product.set_header(header);
+				product.setValue(Custom_page.IN_MAIN_MENU, "да");
+
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+
 				Element mainPicEl = productDoc.getFirst(MAIN_PIC_PARAM);
 				if (mainPicEl != null) {
-					product.set_main_pic(infoProvider.getFile(code, mainPicEl.attr(LINK_PARAM)).toFile());
+					Path path = infoProvider.getFile(code, mainPicEl.attr(LINK_PARAM));
+					if (path != null)
+						product.set_main_pic(path.toFile());
 				}
 				String shortDesc = productDoc.getNodeHtml(SHORT_PARAM);
 				if (StringUtils.isNotBlank(shortDesc)) {
@@ -136,6 +155,7 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				if (StringUtils.isNotBlank(gallery)) {
 					Item galleryTxt = Item.newChildItem(textPartType, product);
 					galleryTxt.setValue(Page_text.NAME, "Фотогалерея");
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(galleryTxt).noFulltextIndex().ignoreFileErrors());
 					setTextWithPics(galleryTxt, code, productDoc, Page_text.TEXT, Page_text.TEXT_PIC, "gallery");
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(galleryTxt).noFulltextIndex().ignoreFileErrors());
 				}
@@ -143,13 +163,15 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				if (StringUtils.isNotBlank(products)) {
 					Item productsTxt = Item.newChildItem(textPartType, product);
 					productsTxt.setValue(Page_text.NAME, "Список товаров");
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(productsTxt).noFulltextIndex().ignoreFileErrors());
 					productsTxt.setValue(Page_text.TEXT, products);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(productsTxt).noFulltextIndex().ignoreFileErrors());
 				}
 
-				if (StringUtils.isNotBlank(products)) {
+				if (StringUtils.isNotBlank(description)) {
 					Item mainTxt = Item.newChildItem(textPartType, product);
 					mainTxt.setValue(Page_text.NAME, "Описание");
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(mainTxt).noFulltextIndex().ignoreFileErrors());
 					setTextWithPics(mainTxt, code, productDoc, Page_text.TEXT, Page_text.TEXT_PIC, "description");
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(mainTxt).noFulltextIndex().ignoreFileErrors());
 				}
@@ -189,7 +211,9 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 		if ((StringUtils.isNotBlank(text))) {
 			Elements textPics = accessor.getChildrenOfFirst(picsGalleryTag, picTag);
 			for (Element textPic : textPics) {
-				item.setValue(picParamName, infoProvider.getFile(code, textPic.attr(LINK_PARAM)).toFile());
+				Path path = infoProvider.getFile(code, textPic.attr(LINK_PARAM));
+				if (path != null)
+					item.setValue(picParamName, path.toFile());
 			}
 			item.setValue(textParamName, text);
 			updatePics(item, textParamName, picParamName);
