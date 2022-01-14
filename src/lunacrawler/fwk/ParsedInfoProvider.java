@@ -79,7 +79,7 @@ public class ParsedInfoProvider {
 		if (!Files.exists(compiledDir)) {
 			throw new IllegalStateException("parsing result is not found");
 		}
-		Path treeFile = compiledDir.resolve("_tree_.xml");
+		Path treeFile = compiledDir.resolve("!_tree_!.xml");
 		if (!Files.exists(treeFile)) {
 			throw new IllegalStateException("parsing tree is not found");
 		}

@@ -119,6 +119,9 @@
 							<xsl:for-each select="$content/div[table][1]/following-sibling::*//img">
 								<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
 							</xsl:for-each>
+							<xsl:for-each select="$content/div[table][1]/following-sibling::*//a[starts-with(@href, 'files') or starts-with(@href, '/files')]">
+								<pic download="https://www.meandr.ru{@href}" link="{@href}"/>
+							</xsl:for-each>
 						</description_pics>
 					</product>
 				</xsl:if>
