@@ -1,2 +1,2 @@
-Hell world!
-Test lorem ibsem 
+User-agent: *
+Disallow: /
