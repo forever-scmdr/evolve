@@ -250,15 +250,14 @@
 								</tr>
 							</xsl:for-each>
 						</xsl:if>
-						<xsl:if test="//page/@name != 'fav'">
-							<xsl:for-each-group select="$captions" group-by=".">
-								<xsl:variable name="c" select="current-group()[1]"/>
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space($c))]"/>
+						<xsl:if test="//page/@name = 'fav'">
+							<xsl:for-each select="$captions[position() &lt; 5]">
+								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 								<tr class="tr">
-									<td><xsl:value-of select="$c"/></td>
-									<td><xsl:value-of select="string-join($param, '; ')"/></td>
+									<td><xsl:value-of select="$param/@caption"/></td>
+									<td><xsl:value-of select="$param"/></td>
 								</tr>
-							</xsl:for-each-group>
+							</xsl:for-each>
 						</xsl:if>
 					</table>
 				</div>

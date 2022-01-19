@@ -214,6 +214,22 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	<xsl:template match="custom_block[type='Товары']">
+		<div class="block devices-block ptb">
+			<div class="container">
+				<div class="title title_2"><xsl:value-of select="header"/></div>
+				<div class="devices-block__wrap device-carousel">
+					<xsl:for-each select="product">
+						<!-- <div class="devices-block__column"> -->
+								<xsl:apply-templates select="."/>
+						<!-- </div> -->
+					</xsl:for-each>
+				</div>
+				<div class="device-nav"></div>
+			</div>
+		</div>
+	</xsl:template>	
+
 	<xsl:template match="custom_block[type='подарки']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
