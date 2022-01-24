@@ -97,6 +97,8 @@ public class ImportCompelRu extends AbstractShopImport implements CatalogConst {
 
 		setProductParams(product, row);
 
+		product.clearValue("spec_price");
+		product.clearValue("spec_qty");
 
 		for(int i=1; i<6; i++){
 			String p = row.getString(String.format(PRICE_HEADER, i));
