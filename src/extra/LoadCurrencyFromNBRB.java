@@ -15,11 +15,11 @@ import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
-	private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=";
+	//private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx?ondate=";
+	private static final String NBNB_URL = "http://www.nbrb.by/Services/XmlExRates.aspx";
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("YYYY-M-d");
 
 	@Override
@@ -29,7 +29,7 @@ public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
 			setPageVariable("result", "No currencies created. Nothing to fetch");
 			return null;
 		}
-		Document doc = Jsoup.parse(new URL(NBNB_URL + FORMAT.format(new Date())), 5000);
+		Document doc = Jsoup.parse(new URL(NBNB_URL /*+ FORMAT.format(new Date())*/), 5000);
 		for (Item currency : currencies){
 			Elements infoFromBank = doc.getElementsContainingOwnText(currency.getStringValue(NAME,""));
 			if(infoFromBank == null || infoFromBank.isEmpty()){

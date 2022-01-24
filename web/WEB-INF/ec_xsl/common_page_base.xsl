@@ -229,7 +229,7 @@
 				</div>
 				<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
 				<div class="footer__column">
-					<div class="title_3">Курсы валют</div>
+					<div class="title_3">Курсы валют НБРБ</div>
 					<table style="min-width:0;">
 						<xsl:for-each select="page/currency">
 							<xsl:variable name="title" select="if(f:num(scale) &gt; 1) then concat(scale, ' ', name) else name"/>
@@ -240,7 +240,7 @@
 									</b>
 								</td>
 								<td style="padding: .5rem 0; padding-left: .5rem;">
-									<xsl:value-of select="concat(format-number(f:num(ratio) * (f:num(q)+1), '#0.0000'), ' BYN')"/>
+									<xsl:value-of select="concat(format-number(f:num(ratio), '#0.0000'), ' BYN')"/>
 								</td>
 							</tr>
 						</xsl:for-each>					
@@ -521,10 +521,10 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
 		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, $u) else $u" />
 		<xsl:variable name="min" select="if(f:num(min_qty) &gt; 0) then min_qty else 1"/>
 		<xsl:variable name="step" select="if(f:num(step) &gt; 0) then step else $min"/>
 
@@ -584,7 +584,7 @@
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="f:num(qty) = 0">
-								<input type="submit" class="button not_available" value="Под заказ"/>
+								<input type="submit" class="button not_available" value="Запрос цены"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -643,10 +643,10 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1) then concat(min_qty, $u) else $u" />
 		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, $u) else $u" />
 		<xsl:variable name="min" select="if(f:num(min_qty) &gt; 0) then min_qty else 1"/>
 		<xsl:variable name="step" select="if(f:num(step) &gt; 0) then step else $min"/>
 
@@ -722,7 +722,7 @@
 				</div>
 			</xsl:if>
 			<xsl:if test="not($has_price)">
-				<div class="device__price device_row__price">
+				<div class="device__price device_row__price no_price">
 					Цена по запросу
 				</div>
 			</xsl:if>
@@ -735,7 +735,7 @@
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="submit" class="button not_available" value="Под заказ"/>
+								<input type="submit" class="button not_available" value="Запрос цены"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -975,10 +975,7 @@
 							//Инициализация всплывающей панели для
 							//элементов веб-страницы, имеющих атрибут
 							//data-toggle="popover"
-							$('[data-toggle="popover"]').popover({
-							//Установление направления отображения popover
-							placement : 'top'
-						});
+							$('[data-toggle="popover"]').popover({});
 					});
 				</script>
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
@@ -998,8 +995,17 @@
 		<form class="header__search header__column" action="{page/search_link}" method="get" style="flex-wrap: wrap">
 			<input type="text" class="text-input header__field" name="q" value="{page/variables/q}" autocomplete="off" />
 			<input type="submit" class="button header__button" value="Поиск" />
+			<xsl:variable name="partners">
+				&lt;div&gt;ПЛАТАНа&lt;/div&gt;
+				&lt;div&gt;DIGIKEY&lt;/div&gt;
+				&lt;div&gt;FARNELL&lt;/div&gt;
+				&lt;div&gt;VERICAL&lt;/div&gt;
+				&lt;div&gt;TME&lt;/div&gt;
+				&lt;div&gt;Compel&lt;/div&gt;
+				&lt;div&gt;Отечественные РЭК&lt;/div&gt;
+			</xsl:variable>
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
-				Поиск по складу в Минске и складам ПЛАТАНа, DIGIKEY, FARNELL, VERICAL, TME, Compel, Rct, Gkel
+				Поиск по складу в Минске и складам <a data-container="body"  data-html="true" data-toggle="popover" data-placement="bottom" data-content="{$partners}">партнеров</a>
 			</div>
 		</form>
 	</xsl:template>

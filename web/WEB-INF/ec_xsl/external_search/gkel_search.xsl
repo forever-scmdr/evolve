@@ -24,7 +24,7 @@
 			<body>
 				<xsl:if test="$products">
 					<div id="gkel_search" class="result">
-						<h2>Резальтаты поиска по <xsl:value-of select="$shop/name"/></h2>
+						<h2>Резальтаты поиска по каталогу "Отечественные РЭК"</h2>
 						<div class="catalog-items{' lines'[$view = 'list']}">
 							<xsl:if test="$view = 'list'">
 								<xsl:apply-templates select="$products" mode="lines"/>

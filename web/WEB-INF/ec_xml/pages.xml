@@ -1884,7 +1884,6 @@
 		</command>
 	</page>
 
-
 	<page name="digikey_manual_authorise">
 		<request>
 			<var name="code" />

@@ -106,7 +106,7 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag[text() != 'external_shop' and text() != 'compel.ru']">
+				<xsl:for-each select="$p/tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each>			
  
@@ -154,7 +154,23 @@
 							</div>
 						</div>
 						<xsl:choose>
-							<xsl:when test="$has_price"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/u,'.')"/></div></xsl:when>
+							<xsl:when test="$has_price">
+								<xsl:if test="not($p/tag = 'external_shop')">
+									<div class="device__in-stock">
+										<i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/u,'.')"/>
+									</div>
+								</xsl:if>
+								<xsl:if test="$p/tag = 'external_shop'">
+
+									<xsl:variable name="shop_name" select="$p/tag[text() = 'external_shop']/following-sibling::tag[1]"/>
+									<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
+
+									<div class="device__in-stock">
+										<div class="device__in-stock"><i class="fas fa-check"></i> поставка <xsl:value-of select="concat($p/qty, $u,'.')"/> в течение <xsl:value-of select="$sel_shop/delivery_string"/></div>
+									</div>
+								</xsl:if>
+
+							</xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 						<!-- <xsl:if test="$p/pdf != ''">
@@ -219,9 +235,16 @@
 					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 				</div>
 				<div class="extra-info">
+					<xsl:if test="$p/description != ''">
+						<p><b>Краткое описание</b></p>
+					</xsl:if>
 					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+					<xsl:if test="$p/description != ''">
+						<div style="margin-bottom: .75rem; padding-top: .75rem; border-bottom: 1px solid #707070;"></div>
+					</xsl:if>
 				</div> <p>Не нашли нужный компонент? <br></br><a href="http://ictrade.by/page/individualnyi_zakaz/" rel="nofollow" class="MSI_ext_nofollow">Сделайте индивидуальный заказ!</a></p>
 			</div>
+			<xsl:if test="$p/params | $p/text | $p/product_extra">
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
@@ -297,6 +320,7 @@
 					</xsl:for-each>
 				</div>
 			</div>
+			</xsl:if>
 		</div>
 		<xsl:if test="page/assoc">
 			<h3>Вас также может заинтересовать</h3>
