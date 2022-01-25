@@ -25,8 +25,6 @@
 		<h1 class="page-title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</h1>
 
 		<div class="page-content m-t">
-
-			<!-- <xsl:if test="$products"> -->
 				<div class="view-container desktop">
 					<div class="view">
 						<span class="{'active'[not($view = 'list')]}">
@@ -52,10 +50,9 @@
 						Валюта:
 						<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
 						<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
-						<a href="{page/set_currency_usd}" title="Показать цены в долларах США" class="{'active'[$curr = 'usd']}">USD</a>
+<!--						<a href="{page/set_currency_usd}" title="Показать цены в долларах США" class="{'active'[$curr = 'usd']}">USD</a>-->
 					</div>
 				</div>
-			<!-- </xsl:if> -->
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'table'">

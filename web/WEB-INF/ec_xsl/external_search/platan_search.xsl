@@ -17,7 +17,7 @@
 
 		<xsl:if test="$result/items/item">
 			<div id="platan_search" class="result">
-				<h2>Результаты поиска по Platan</h2>
+				<h2 class="search-header">Результаты поиска по Platan</h2>
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$result/items/item[f:num(QUANTY) &gt; $mq]" mode="product-lines"/>
@@ -30,7 +30,7 @@
 		</xsl:if>
 		<xsl:if test="not($result/items/item)">
 			<div id="extra_search_1" class="result">
-				<h2>Результат поиска по Platan</h2>
+				<h2 class="search-header">Результат поиска по Platan</h2>
 				<p>Товары не найдены</p>
 			</div>
 		</xsl:if>
@@ -45,11 +45,15 @@
 				<a class="device__title">
 					<xsl:value-of select="NAME"/>
 				</a>
-				<div class="device__description"></div>
+				<div class="device__description">
+					<p class="basics">
+						<span><b>Код:</b>&#160;<xsl:value-of select="NOM_N" /></span>
+					</p>
+				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="NOM_N"/></div>
 			<div class="device__actions device_row__actions">
-
+				<div id="compare_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-balance-scale"></i>&#160;сравнить</div>
+				<div id="fav_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-star"></i>сравнить</div>
 			</div>
 			<div class="device__price device_row__price">
 				<div class="price_normal">

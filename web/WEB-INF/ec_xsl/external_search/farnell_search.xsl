@@ -22,7 +22,7 @@
 			</head>
 			<body>
 				<div id="farnell_search" class="result">
-					<h2>Результат поиска по Farnell</h2>
+					<h2 class="search-header">Результат поиска по Farnell</h2>
 					<xsl:if test="not($result/products)">
 						<p>Товары не найдены</p>
 					</xsl:if>
@@ -107,8 +107,10 @@
 					</xsl:if>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="normalize-space(sku)"/></div>
-			<div class="device__actions device_row__actions"></div>
+			<div class="device__actions device_row__actions">
+				<div id="compare_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-balance-scale"></i>&#160;сравнить</div>
+				<div id="fav_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-star"></i>сравнить</div>
+			</div>
 			<div class="device__price device_row__price">
 				<xsl:if test="prices[f:num(from) = 1]">
 					<div class="price_normal">

@@ -7683,6 +7683,7 @@ td .catalog-item {
 }
 .device__info {
 	flex:1;
+	max-width: 250px;
 }
 .device_row__price {
 	flex-direction:column;
@@ -9147,3 +9148,4 @@ label input {
 	color: green;
 	margin-top: 20px;
 }
+

@@ -21,7 +21,7 @@
 			</head>
 			<body>
 				<div id="tme_search" class="result">
-					<h2>Результат поиска по TME</h2>
+					<h2 class="search-header">Результат поиска по TME</h2>
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="$products" mode="lines"/>
@@ -125,7 +125,7 @@
 				</span>
 				<div class="device__description">
 					<p class="basics">
-						<br/><span><b>Арт.:</b>&#160;<xsl:value-of select="Symbol" /></span>
+						<span><b>Код:</b>&#160;<xsl:value-of select="Symbol" /></span>
 						<br/><span><b>Производитель:</b>&#160;<xsl:value-of select="Producer" /></span>
 						<br/><span><b>Арт. производителя:</b>&#160;<xsl:value-of select="OriginalSymbol" /></span>
 						<xsl:if test="Description != ''">
@@ -162,8 +162,10 @@
 					</xsl:if>
 				</div>
 			</div>
-<!--			<div class="device__article-number"><xsl:value-of select="Symbol"/></div>-->
-			<div class="device__actions device_row__actions"></div>
+			<div class="device__actions device_row__actions">
+				<div id="compare_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-balance-scale"></i>&#160;сравнить</div>
+				<div id="fav_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-star"></i>сравнить</div>
+			</div>
 			<div class="device__price device_row__price">
 				<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />
 				<div class="nds">*цена c НДС</div>

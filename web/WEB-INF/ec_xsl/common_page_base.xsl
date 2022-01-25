@@ -665,13 +665,21 @@
 				<a href="{show_product}" class="device__title"><xsl:value-of select="name"/></a>
 				<div class="device__description">
 					<!-- <xsl:value-of select="description" disable-output-escaping="yes"/> -->
+					<p class="basics">
+						<br/><span><b>Код:</b>&#160;<xsl:value-of select="code" /></span>
+						<br/><span><b>Производитель:</b>&#160;<xsl:value-of select="vendor" /></span>
+						<br/><span><b>Арт. производителя:</b>&#160;<xsl:value-of select="vendor_code" /></span>
+						<xsl:if test="Description != ''">
+							<br/><span><b>Описание:</b>&#160;<xsl:value-of select="Description" disable-output-escaping="yes" /></span>
+						</xsl:if>
+					</p>
 					<xsl:for-each select="params/param">
 						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
 						<xsl:text>;</xsl:text><br/>
 					</xsl:for-each>
 				</div>
 			</div>
-			<div class="device__article-number"><xsl:value-of select="code"/></div>
+<!--			<div class="device__article-number"><xsl:value-of select="code"/></div>-->
 			<div class="device__actions device_row__actions">
 				<xsl:if test="not($is_compare)">
 					<div id="compare_list_{@id}">
