@@ -8,13 +8,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 	<include-definition name="SHOP_AND_CURRENCY">
-		<list item="currency" id="rub">
-			<filter>
-				<parameter name="name" sign="=" compare="SOME">
-					<var value="RUB"/>
-				</parameter>
-			</filter>
-		</list>
+		<list item="currency" id="rub" />
 		<list item="shop" id="shop">
 			<filter>
 				<parameter name="name" sign="=" compare="SOME">
@@ -297,6 +291,9 @@
 		<link name="set_currency_rub" target="section" copy-page-vars="yes">
 			<var name="currency" value="rub"/>
 		</link>
+		<link name="set_currency_usd" target="section" copy-page-vars="yes">
+			<var name="currency" value="usd"/>
+		</link>
 
 		<link name="show_only_available" target="section" copy-page-vars="yes">
 			<var name="sec" var="sec" style="key"/>
@@ -327,14 +324,6 @@
 		<link name="set_sort_default" target="section" copy-page-vars="yes">
 			<var name="sort" value=""/>
 		</link>
-		<include name="COMMON"/>
-	</page>
-
-
-	<page name="sub" template="sub" cacheable="false">
-		<request>
-			<var name="sec" style="key"/>
-		</request>
 		<include name="COMMON"/>
 	</page>
 
@@ -406,6 +395,30 @@
 		<link name="set_limit_144" target="tag_section" copy-page-vars="yes">
 			<var name="limit" value="144"/>
 		</link>
+		<link name="reset_filter_link" target="tag_section">
+			<var name="tag" var="tag"/>
+		</link>
+
+		<link name="set_currency_byn" target="tag_section" copy-page-vars="yes">
+			<var name="currency" value="byn"/>
+		</link>
+		<link name="set_currency_rub" target="tag_section" copy-page-vars="yes">
+			<var name="currency" value="rub"/>
+		</link>
+		<link name="set_currency_usd" target="tag_section" copy-page-vars="yes">
+			<var name="currency" value="usd"/>
+		</link>
+
+		<link name="show_only_available" target="tag_section" copy-page-vars="yes">
+			<var name="tag" var="tag"/>
+			<var name="page" value="1"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="tag_section" copy-page-vars="yes">
+			<var name="tag" var="tag"/>
+			<var name="page" value="1"/>
+			<var name="minqty" value=""/>
+		</link>
 		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
 			<var name="direction" value="ASC"/>
@@ -437,7 +450,6 @@
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
@@ -451,8 +463,6 @@
 		</list>
 		<link name="show_all" target="search">
 			<var name="q" var="q"/>
-			<!-- <var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/> -->
 		</link>
 	</page>
 
@@ -464,7 +474,6 @@
 			<var name="minqty" value="-1" scope="cookie"/>
 			<var name="currency" value="byn" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
@@ -512,6 +521,9 @@
 		</link>
 		<link name="set_currency_rur" target="search" copy-page-vars="yes">
 			<var name="currency" value="rur"/>
+		</link>
+		<link name="set_currency_usd" target="search" copy-page-vars="yes">
+			<var name="currency" value="usd"/>
 		</link>
 
 		<!-- external search links -->
@@ -1685,6 +1697,7 @@
 		</session>
 		<single item="catalog"/>
 		<single item="common"/>
+		<list item="currency"/>
 	</page>
 
 	<page name="order_excel" template="order_excel">
@@ -1711,6 +1724,7 @@
 		</session>
 		<single item="catalog"/>
 		<single item="common"/>
+		<list item="currency"/>
 	</page>
 
 
@@ -1764,13 +1778,7 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 	<include-definition name="SHOP_AND_CURRENCY">
-		<list item="currency" id="rub">
-			<filter>
-				<parameter name="name" sign="=" compare="SOME">
-					<var value="RUB"/>
-				</parameter>
-			</filter>
-		</list>
+		<list item="currency"/>
 		<list item="shop" id="shop">
 			<filter>
 				<parameter name="name" sign="=" compare="SOME">

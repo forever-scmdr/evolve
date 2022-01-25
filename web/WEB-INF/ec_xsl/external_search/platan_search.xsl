@@ -192,7 +192,7 @@
 
 		<p>test sum: <xsl:value-of select="$sum"/> RUB</p>
 		<p>to BYN: <xsl:value-of select="f:currency_to_byn($sum, $shop/currency)"/> BYN</p>
-		<p>to RUB: <xsl:value-of select="f:byn_to_currency(f:currency_to_byn($sum, $shop/currency), $rub)"/> RUB</p>
+		<p>to RUB: <xsl:value-of select="f:byn_to_currency(f:currency_to_byn($sum, $shop/currency), $sel_cur)"/> RUB</p>
 		<p>
 			q RUB: <xsl:value-of select="1 + f:num($shop/currency/q)"/><br/>
 			q <xsl:value-of select="$shop/name"/>: <xsl:value-of select="1+ f:num($shop/q)"/><br/>

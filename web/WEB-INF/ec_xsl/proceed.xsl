@@ -79,13 +79,13 @@
 
 	<xsl:template name="TOTAL">
 		<div class="total">
-			<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> р.</p>
-<!-- 			<xsl:if test="f:num(page/cart/sum) &gt; f:num(page/cart/sum_discount)">
-				<div class="discount-total">
-					Итоговая скидка: <xsl:value-of select="round((f:num(page/cart/sum) - f:num(page/cart/sum_discount)) * 100) div 100"/> руб.
-					Сумма без учета скидки: <xsl:value-of select="page/cart/sum"/> руб.
-				</div>
-			</xsl:if> -->
+			<xsl:if test="$curr = 'byn'">
+				<p>Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> BYN</p>
+			</xsl:if>
+			<xsl:if test="$curr != 'byn'">
+				<p>Итого: <xsl:value-of select="f:cart_sum(page/cart/sum)"/> (<xsl:value-of select="f:currency_decimal(page/cart/sum)"/> BYN)</p>
+			</xsl:if>
+
 			<input type="submit" class="button" value="Оформить заказ" onclick="$(this).closest('form').attr('action', '{page/confirm_link}')"/>
 		</div>
 	</xsl:template>
