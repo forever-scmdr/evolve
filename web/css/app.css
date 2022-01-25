@@ -7966,7 +7966,7 @@ td .catalog-item {
 	.hero .container {
 		flex-wrap:wrap;
 		margin-left: -15px;
-		margin-right: -15px;r
+		margin-right: -15px;
 	}
 	.hero__banners {
 		margin-left:unset;
@@ -9149,3 +9149,7 @@ label input {
 	margin-top: 20px;
 }
 
+.search-header{
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
