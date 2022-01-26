@@ -11,43 +11,46 @@ import java.util.Stack;
  * 1) Сам XML текст
  * 2) Текущий отступ первого символа строки
  * 3) Стек открытых тэгов и текущий открытый тэг
- * @author EEEE
  *
+ * @author EEEE
  */
 public class XmlDocumentBuilder {
 	//private static Pattern NL = Pattern.compile("\n");
-	
+
 	private static class TagDesc {
 		private String tag;
 		private boolean hasSubelements = false;
+
 		private TagDesc(String tag) {
 			this.tag = tag;
 		}
 	}
-	
+
 	private Stack<TagDesc> openTags;
 	private StringBuilder xml;
-	
+
 	private XmlDocumentBuilder(StringBuilder docBase) {
 		openTags = new Stack<>();
 		xml = docBase;
 		openTags.add(new TagDesc("root_fake"));
 	}
-	
+
 	public static XmlDocumentBuilder newDoc() {
 		return new XmlDocumentBuilder(new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
 	}
-	
+
 	public static XmlDocumentBuilder newDocPart() {
 		return new XmlDocumentBuilder(new StringBuilder());
 	}
-	
+
 	public static XmlDocumentBuilder newDocFull(CharSequence document) {
 		return new XmlDocumentBuilder(new StringBuilder(document));
 	}
+
 	/**
 	 * добавляет начальный тэг (открывающий) и его атрибуты
 	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 *
 	 * @param tagName
 	 * @param attributes
 	 */
@@ -66,22 +69,26 @@ public class XmlDocumentBuilder {
 		openTags.push(new TagDesc(tagName));
 		return this;
 	}
+
 	/**
 	 * Вставить дополнительные атрибуты в уже существующий последний добавленный тэг.
 	 * Тэг может быть как открытым, так и закрытым.
+	 *
 	 * @param attributes
 	 * @return
 	 */
 	public final XmlDocumentBuilder insertAttributes(String... attributes) {
-		if (attributes.length == 0)	return this;
+		if (attributes.length == 0) return this;
 		int lastSymbol = xml.length() - 1;
 		if (xml.charAt(lastSymbol) == '>' && attributes.length > 1) {
 			xml.deleteCharAt(lastSymbol);
 			boolean isClosed = xml.charAt(lastSymbol - 1) == '/';
 			if (isClosed)
-				xml.deleteCharAt(lastSymbol - 1); 
+				xml.deleteCharAt(lastSymbol - 1);
 			for (int i = 0; i < attributes.length; i += 2) {
-				xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1])).append("\"");
+				if (attributes[i] != null && attributes[i + 1] != null) {
+					xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1])).append("\"");
+				}
 			}
 			if (isClosed)
 				xml.append('/');
@@ -90,9 +97,11 @@ public class XmlDocumentBuilder {
 		}
 		throw new RuntimeException("Bad usage of XML document builder");
 	}
+
 	/**
 	 * добавляет пустой тэг и его атрибуты
 	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 *
 	 * @param tagName
 	 * @param attributes
 	 */
@@ -102,7 +111,9 @@ public class XmlDocumentBuilder {
 		if (xml.length() > 0) xml.append('\n');
 		xml.append(prefix).append('<').append(tagName);
 		for (int i = 0; i < attributes.length; i += 2) {
-			xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString())).append("\"");
+			if (attributes[i] != null && attributes[i + 1] != null) {
+				xml.append(' ').append(attributes[i]).append("=\"").append(StringEscapeUtils.escapeXml10(attributes[i + 1].toString())).append("\"");
+			}
 		}
 		xml.append("/>");
 		return this;
@@ -112,7 +123,7 @@ public class XmlDocumentBuilder {
 	 * возвращает количество символов в текущем фрагменте документа
 	 * теперь в буфере может храниться только часть документа
 	 */
-	public int length(){
+	public int length() {
 		return xml.length();
 	}
 
@@ -121,7 +132,7 @@ public class XmlDocumentBuilder {
 	 * при этом сохраняя стек открытых тегов.
 	 * Полезно для записи больших XML-документов.
 	 */
-	public String dump(){
+	public String dump() {
 		String dump = xml.toString();
 		xml = new StringBuilder();
 		return dump;
@@ -131,12 +142,13 @@ public class XmlDocumentBuilder {
 	 * добавляет тэг без вложенных тегов, но с текстом и его атрибуты
 	 * если текста нет, создается пустой тэг (см. .addEmptyElement())
 	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 *
 	 * @param tagName
 	 * @param text
 	 * @param attributes
 	 */
-	public final XmlDocumentBuilder addElement(String tagName, Object text, Object... attributes){
-		if(text == null || StringUtils.isBlank(text.toString())){
+	public final XmlDocumentBuilder addElement(String tagName, Object text, Object... attributes) {
+		if (text == null || StringUtils.isBlank(text.toString())) {
 			return addEmptyElement(tagName, attributes);
 		}
 		startElement(tagName, attributes).addText(text);
@@ -147,12 +159,13 @@ public class XmlDocumentBuilder {
 	 * добавляет тэг без вложенных тегов, но с <![CDATA[...]]> и его атрибуты
 	 * если текста нет, создается пустой тэг (см. .addEmptyElement())
 	 * Атрибуты представляют собой массив с порядом следования: название 1, значение 1, название 2, значение 2, ...
+	 *
 	 * @param tagName
 	 * @param text
 	 * @param attributes
 	 */
-	public final XmlDocumentBuilder addCdataElement(String tagName, Object text, Object... attributes){
-		if(text == null || StringUtils.isBlank(text.toString())){
+	public final XmlDocumentBuilder addCdataElement(String tagName, Object text, Object... attributes) {
+		if (text == null || StringUtils.isBlank(text.toString())) {
 			return addEmptyElement(tagName, attributes);
 		}
 		startElement(tagName, attributes).addCData(text);
@@ -162,6 +175,7 @@ public class XmlDocumentBuilder {
 	/**
 	 * Добавить комментарий, который расположен на отдельной строке
 	 * Знаки начала и конца комментария надо указвать явно
+	 *
 	 * @param comment
 	 * @return
 	 */
@@ -170,6 +184,7 @@ public class XmlDocumentBuilder {
 		xml.append(comment);
 		return this;
 	}
+
 	/**
 	 * Закрывает текущий открытый элемент
 	 */
@@ -181,8 +196,10 @@ public class XmlDocumentBuilder {
 		}
 		return this;
 	}
+
 	/**
 	 * Добавляет текст к текущему открытому элементу
+	 *
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(String text) {
@@ -192,11 +209,12 @@ public class XmlDocumentBuilder {
 
 	/**
 	 * Добавляет текст, обернутый в <![CDATA[]]> к текущему элементу
+	 *
 	 * @param data
 	 * @return
 	 */
 	public XmlDocumentBuilder addCData(Object data) {
-		if(data == null) return this;
+		if (data == null) return this;
 		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
 		xml.append('\n');
 		xml.append(prefix);
@@ -207,11 +225,13 @@ public class XmlDocumentBuilder {
 		xml.append('\n');
 		xml.append(prefix);
 		xml.append("]]>\n");
-		xml.append(StringUtils.rightPad("",openTags.size() - 2, '\t'));
+		xml.append(StringUtils.rightPad("", openTags.size() - 2, '\t'));
 		return this;
 	}
+
 	/**
 	 * Добавляет текст к текущему открытому элементу
+	 *
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(Object text) {
@@ -219,8 +239,10 @@ public class XmlDocumentBuilder {
 			xml.append(StringEscapeUtils.escapeXml10(text.toString()));
 		return this;
 	}
+
 	/**
 	 * Добавляет тэги к текущему открытому элементу (кусок XML)
+	 *
 	 * @param tags
 	 */
 	public XmlDocumentBuilder addElements(CharSequence tags) {
@@ -235,6 +257,7 @@ public class XmlDocumentBuilder {
 	/**
 	 * Добавляет тэги к текущему открытому элементу (кусок XML)
 	 * но делает это без перехода на новую строку
+	 *
 	 * @return
 	 */
 	public XmlDocumentBuilder addElementsInline(CharSequence tags) {
@@ -251,16 +274,17 @@ public class XmlDocumentBuilder {
 	public StringBuilder getXmlStringSB() {
 		return xml;
 	}
-	
+
+
 	public static void main(String[] args) {
-		String part = 
+		String part =
 				"<cool>\n" +
-				"	<eeee>\n" +
-				"		<vvvv></vvvv>\n" +
-				"	</eeee>\n" +
-				"	<eeee>rrrr</eeee>\n" +
-				"</cool>\n" +
-				"<cool>ffff</cool>";
+						"	<eeee>\n" +
+						"		<vvvv></vvvv>\n" +
+						"	</eeee>\n" +
+						"	<eeee>rrrr</eeee>\n" +
+						"</cool>\n" +
+						"<cool>ffff</cool>";
 		XmlDocumentBuilder context = XmlDocumentBuilder.newDoc();
 		context.startElement("item", "id", "1");
 		context.insertAttributes("cool", "mega");
@@ -279,4 +303,6 @@ public class XmlDocumentBuilder {
 		context.endElement();
 		System.out.println(context);
 	}
+
+
 }
