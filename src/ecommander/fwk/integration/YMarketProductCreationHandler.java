@@ -6,9 +6,7 @@ import ecommander.fwk.ResizeImagesFactory;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CreateAssocDBUnit;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
-import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.commandunits.*;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
@@ -116,9 +114,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		info.setLineNumber(locator.getLineNumber());
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
-				HashSet<String> productContainers = new HashSet<>();
+				//HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
-
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
@@ -128,11 +125,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					if (categoryIds.size() > 0) {
 						secCode = categoryIds.iterator().next();
 					}
-					Item section = sections.get(secCode);
+					Item declaredParent = sections.get(secCode);
 					isProductNotNew = false;
-					if (section != null) {
-						product = Item.newChildItem(productType, section);
-						productContainers.add(secCode);
+					if (declaredParent != null) {
+						product = Item.newChildItem(productType, declaredParent);
 					} else {
 						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
@@ -148,8 +144,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
 					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
-				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
-					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
+//				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
+//					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
 				product.setValueUI(NAME_PARAM, singleParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
 					product.setValueUI(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
@@ -244,24 +240,49 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 //					DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreFileErrors());
 				}
 
-				if (isProductNotNew) {
-					// Загрузить разделы, содержащие товар
-					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
-							ItemTypeRegistry.getPrimaryAssoc().getName(), catalogLinkAssoc.getName()).loadItems();
-					for (Item sec : secs) {
-						productContainers.add(sec.getStringValue(CATEGORY_ID_PARAM));
-					}
 
+				//FIX 01.02.2022
+				//Kill all existing "catalog link" associations
+				//Move product to new section if parent differs
+
+				Item parent = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false,
+						ItemTypeRegistry.getPrimaryAssoc().getName(), ItemTypeRegistry.getPrimaryAssoc().getName()).loadFirstItem();
+
+				String parentCode = parent.getStringValue(CATEGORY_ID_PARAM);
+
+				if(!categoryIds.isEmpty() && !categoryIds.contains(parentCode)){
+					String declaredParentCode = categoryIds.iterator().next();
+					Item declaredParent = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, declaredParentCode, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+					if(declaredParent != null){
+						DelayedTransaction.executeSingle(initiator, new MoveItemDBUnit(product, declaredParent).ignoreUser().noFulltextIndex().noTriggerExtra());
+						categoryIds.remove(declaredParentCode);
+					}
+				}
+
+				//Remove old associations
+				if (isProductNotNew) {
+					// Загрузить разделы, содержащие ссылку на товар
+					List<Item> secs = new ItemQuery(SECTION_ITEM).setChildId(product.getId(), false, catalogLinkAssoc.getName()).loadItems();
+					for (Item sec : secs) {
+						//productContainers.add(sec.getStringValue(CATEGORY_ID_PARAM));
+						DelayedTransaction.executeSingle(initiator, new DeleteAssocDBUnit(product, sec, catalogLinkAssoc.getId()));
+					}
 				}
 
 				// Создать ассоциацию товара с разделом, если ее еще не существует
-				categoryIds.removeAll(productContainers);
+				//categoryIds.removeAll(productContainers);
 				for (String categoryId : categoryIds) {
+
+					if(parentCode.equals(categoryId)) continue;
+
 					Item section = sections.get(categoryId);
 					if (section != null)
 						DelayedTransaction.executeSingle(initiator,
 								CreateAssocDBUnit.childExistsSoft(product, section, catalogLinkAssoc.getId()));
+
 				}
+
+
 
 				//product.clearValue("pic_ref");
 
