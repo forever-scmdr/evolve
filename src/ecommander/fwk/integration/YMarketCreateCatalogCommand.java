@@ -129,7 +129,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Создание фильтров");
 		info.pushLog("Создание фильтров");
 
-		new CreateParametersAndFiltersCommand(this).integrate();
+		//new CreateParametersAndFiltersCommand(this).integrate();
 
 		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
