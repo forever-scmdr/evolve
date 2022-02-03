@@ -108,6 +108,9 @@
 							<xsl:for-each select="$firstTable//img">
 								<pic download="https://www.meandr.ru{@src}" link="{@src}"/>
 							</xsl:for-each>
+							<xsl:for-each select="$firstTable//a[starts-with(@href, 'files') or starts-with(@href, '/files')]">
+								<pic download="https://www.meandr.ru{@href}" link="{@href}"/>
+							</xsl:for-each>
 						</gallery_pics>
 						<products>
 							<xsl:copy-of select="$content/div[table][1]/table"/>

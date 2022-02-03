@@ -24,6 +24,8 @@ public interface ItemNames {
     String OPTION = "option";
     String PARAMS = "params";
     String PRODUCT_EXTRA = "product_extra";
+    String PRODUCT_EXTRA_PAGE = "product_extra_page";
+    String PRODUCT_EXTRA_FILE = "product_extra_file";
     String PARAMS_XML = "params_xml";
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
@@ -235,6 +237,7 @@ public interface ItemNames {
     public interface catalog_ {
 
         String _ITEM_NAME = "catalog";
+        String IN_MAIN_MENU = "in_main_menu";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
@@ -902,6 +905,23 @@ public interface ItemNames {
     public interface product_extra_ {
 
         String _ITEM_NAME = "product_extra";
+        String NAME = "name";
+
+    }
+
+    public interface product_extra_file_ {
+
+        String _ITEM_NAME = "product_extra_file";
+        String NAME = "name";
+        String DESC = "desc";
+        String SIZE = "size";
+        String FILE = "file";
+
+    }
+
+    public interface product_extra_page_ {
+
+        String _ITEM_NAME = "product_extra_page";
         String NAME = "name";
         String TEXT = "text";
         String TEXT_PICS = "text_pics";
