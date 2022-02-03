@@ -22,7 +22,9 @@
 
 	<xsl:function name="f:create_id">
 		<xsl:param name="url"/>
-		<xsl:value-of select="if (contains($url, 'meandr')) then substring-after($url, 'meandr.ru') else $url"/>
+		<xsl:param name="after"/>
+		<xsl:value-of select="if (contains($url, $after)) then substring-after($url, $after) else $url"/>
 	</xsl:function>
+
 
 </xsl:stylesheet>

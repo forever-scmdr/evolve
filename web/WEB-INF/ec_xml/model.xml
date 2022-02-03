@@ -175,6 +175,10 @@
 
 
 	<item name="catalog" super="* seo_container" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+		<parameter name="in_main_menu" type="string" caption="Выводить в главном меню" default="да">
+			<value>да</value>
+			<value>нет</value>
+		</parameter>
 		<child item="currencies" single="true"/>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
@@ -296,11 +300,24 @@
 	</item>
 
 
-	<item name="product_extra" caption="Дополнительные страницы для товара" key="name" ag-id="818" ag-hash="1373246656">
-		<parameter name="name" type="string" caption="Заголовок страницы"/>
+	<item name="product_extra" caption="Дополнительно для товара" key="name" ag-id="818" ag-hash="1373246656">
+		<parameter name="name" type="string" caption="Название"/>
+	</item>
+
+
+	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="2238" ag-hash="878968494">
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
+
+
+	<item name="product_extra_file" super="product_extra" caption="Файл с описанием" ag-id="2239" ag-hash="878678427">
+		<parameter name="desc" type="string" caption="Описание"/>
+		<parameter name="size" type="string" caption="Рзамер"/>
+		<parameter name="file" type="file" caption="Файл"/>
+	</item>
+
+
 	<!--
 	Для хранения пользовательских параметров товара, список которых отличается в зависимости от раздела или типа товара
 	Хранить их в текстовом виде нужно чтобы можно было создавать заново айтем с параметрами товара params в случае

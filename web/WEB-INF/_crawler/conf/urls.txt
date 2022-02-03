@@ -6,12 +6,12 @@
 # Initial urls
 #
 
-https://www.meandr.ru
+https://meandr-shop.ru
 
 
 #
 #  Pages to parse
 #
 
-https:\/\/www\.meandr\.ru.*  catalog.xsl     https://www.meandr.ru/avtomat-va-9
+https:\/\/meandr-shop\.ru[^?]*$  product.xsl     https://meandr-shop.ru/avtomaticheskiy-vvod-rezerva-mavr-3-1m-uhl4/
 
