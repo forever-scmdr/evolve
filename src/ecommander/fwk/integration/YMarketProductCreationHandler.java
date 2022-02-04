@@ -16,15 +16,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
-	private static final String EMPTY_PICTURE = "http://titantools.must.by/photo/";
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
-	private static String host;
 
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
@@ -73,7 +70,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean getPrice = false;
 	private Assoc catalogLinkAssoc;
 
-	
+
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
@@ -81,7 +78,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		this.paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML_ITEM);
 		this.initiator = initiator;
 		this.catalogLinkAssoc = ItemTypeRegistry.getAssoc("catalog_link");
-		host = info.getHost();
 	}
 
 	@Override
@@ -114,8 +110,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
-				product.setValueUI(QTY_OPT_PARAM, singleParams.get(QUANTITY_OPT_ELEMENT));
-				product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
+				if (product.getItemType().hasParameter(GROUP_ID_PARAM))
+					product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
 				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
 					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
@@ -231,102 +227,61 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				boolean needSave = false;
 				ArrayList<File> galleryPics = product.getFileValues(GALLERY_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-				String mainPicName = product.getStringValue(MAIN_PIC_PARAM);
 				for (File galleryPic : galleryPics) {
-					String gpn = galleryPic.getName();
-					if (!galleryPic.exists() || gpn.equals(GALLERY_PARAM + "_" + mainPicName) || gpn.equals(mainPicName)) {
-						product.removeEqualValue(GALLERY_PARAM, gpn);
-						needSave = true;
-					}
-					if(gpn.equals(mainPicName)){
-						product.clearValue(MAIN_PIC_PARAM);
+					if (!galleryPic.exists()) {
+						product.removeEqualValue(GALLERY_PARAM, galleryPic.getName());
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
-				if(picUrls.size() > 1) {
-					for (String picUrl : picUrls) {
-						if (picUrl.intern() == EMPTY_PICTURE) continue;
-						try {
-							String fileName = Strings.getFileName(picUrl);
-							mainPicName = product.getStringValue(MAIN_PIC_PARAM, "");
-							boolean skipGal = fileName.equals(mainPicName);
-							skipGal = skipGal || fileName.replaceAll("-", "_").equals(mainPicName.replaceAll("-", "_"));
-
-							if (skipGal) continue;
-							if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-								product.setValue(GALLERY_PARAM, new URL(picUrl));
-								needSave = true;
-							}
-						} catch (Exception e) {
-							info.setLineNumber(locator.getLineNumber());
-							info.addError("Неверный формат картинки: " + picUrl, locator.getLineNumber(), 0);
+				for (String picUrl : picUrls) {
+					try {
+						String fileName = Strings.getFileName(picUrl);
+						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+							product.setValue(GALLERY_PARAM, new URL(picUrl));
+							needSave = true;
 						}
+					} catch (Exception e) {
+						info.addError("Неверный формат картинки: " + picUrl, picUrl);
 					}
 				}
+
 				// Генерация маленького изображения
-				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM) ;
+				boolean noMainPic = product.isValueEmpty(MAIN_PIC_PARAM);
 				if (!noMainPic) {
 					File mainPic = product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected()));
-					if (!mainPic.isFile()) {
+					if (!mainPic.exists()) {
 						product.clearValue(MAIN_PIC_PARAM);
 						noMainPic = true;
 					}
 				}
-				if (picUrls.size() > 0) {
-					boolean save = false;
-					String url = picUrls.iterator().next();
-					if ((picUrls.size() > 0 && noMainPic)) {
-						product.setValue(MAIN_PIC_PARAM, new URL(url));
-						product.clearValue(SMALL_PIC_PARAM);
-						save = true;
-					}else if(!noMainPic && StringUtils.startsWith(url, host)){
-						File pic = Paths.get(AppContext.getContextPath(), StringUtils.substringAfter(url, host)).toFile();
-						if(pic.isFile()){
-							if(pic.length() != product.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(product.isFileProtected())).length()){
-								product.setValue(MAIN_PIC_PARAM, pic);
-								product.clearValue(SMALL_PIC_PARAM);
-								save = true;
-								info.addLog("Overriding picture. Product:" + product.getStringValue(NAME_PARAM));
-							}
-						}
+				if (noMainPic && picUrls.size() > 0) {
+					if (picUrls.size() > 0) {
+						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
 					}
-					if(save) {
-						try {
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-							needSave = false;
-						} catch (Exception e) {
-							//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-							info.setLineNumber(locator.getLineNumber());
-							info.addError(e);
-						}
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+					} catch (Exception e) {
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
-					//needSave = false;
+					needSave = false;
 				}
 				if (needSave) {
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 					} catch (Exception e) {
-						//info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-						info.setLineNumber(locator.getLineNumber());
-						info.addError(e);
+						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
 				}
 
 				info.increaseProcessed();
 				isInsideOffer = false;
-			}
-
-			else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
@@ -343,7 +298,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(parameterReady)
+		if (parameterReady)
 			paramValue.append(ch, start, length);
 	}
 
