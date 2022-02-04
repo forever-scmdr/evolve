@@ -166,14 +166,15 @@
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo" assoc="seo"/>
-			<list item="product" id="prod" assoc="general">
-				<link name="show_product" target="product">
-					<var name="prod" ref="prod" style="key"/>
-				</link>
-				<include name="PRODUCT_PARAMS_LINKS"/>
-			</list>
+			<single item="seo"/>
 			<list item="custom_block">
 				<list item="custom_block"/>
+				<list item="product" id="prod" assoc="general">
+					<link name="show_product" target="product">
+						<var name="prod" ref="prod" style="key"/>
+					</link>
+					<include name="PRODUCT_PARAMS_LINKS"/>
+				</list>
 			</list>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
@@ -686,6 +687,12 @@
 				<list item="point"/>
 				<list item="region">
 					<list item="point"/>
+				</list>
+				<list item="product" id="prod" assoc="general">
+					<link name="show_product" target="product">
+						<var name="prod" ref="prod" style="key"/>
+					</link>
+					<include name="PRODUCT_PARAMS_LINKS"/>
 				</list>
 			</tree>
 			<list item="custom_page" id="child">
