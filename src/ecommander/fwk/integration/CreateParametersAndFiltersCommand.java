@@ -339,12 +339,12 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						for (Element paramEl : paramEls) {
 							Elements nameElements = paramEl.getElementsByTag(NAME);
 							if (!nameElements.isEmpty()) {
-								String name = nameElements.first().ownText();
+								String name = StringUtils.normalizeSpace(nameElements.first().ownText());
 								name = Strings.createXmlElementName(name);
 								if (paramDesc.hasParameter(name)) {
 									Elements values = paramEl.getElementsByTag("value");
 									for (Element valueEl : values) {
-										String value = StringUtils.trim(valueEl.ownText());
+										String value = StringUtils.normalizeSpace(valueEl.ownText());
 										if(paramDesc.getParameter(name).getDataType().getType() != DataType.Type.STRING) {
 											Pair<DataType.Type, String> valuePair = Params.testValueHasUnit(value);
 											if (StringUtils.isNotBlank(valuePair.getRight())) {
@@ -374,6 +374,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	private Boolean hasCode = null;
 	private Boolean hasName = null;
+	private Boolean hasCategoryId = null;
 
 	/**
 	 * Создать уникальное название для класса
@@ -384,12 +385,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		if (hasCode == null) {
 			hasCode = section.getItemType().hasParameter("code");
 			hasName = section.getItemType().hasParameter("name");
+			hasCategoryId = section.getItemType().hasParameter("category_id");
 		}
 		if (hasCode && section.isValueNotEmpty("code")) {
 			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("code")));
 		}
 		if (hasName && section.isValueNotEmpty("name")) {
-			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name")));
+			if (!hasCategoryId || section.isValueEmpty("category_id")) {
+				// в этом случае использовать ID айтема, т.к. могут быть разделы с одинаковым названием
+				return Strings.createXmlElementName(StringUtils.lowerCase("pid_" + section.getId()));
+			}
+			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name")))
+					+ "_" + section.getStringValue("category_id");
 		}
 		return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getKey()));
 	}
