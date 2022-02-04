@@ -78,7 +78,7 @@ public class Strings
 
 
 	public static String createFileName(String russian) {
-		return translit(StringUtils.lowerCase(russian), true);
+		return StringUtils.substring(translit(StringUtils.lowerCase(russian), true), 0, 200);
 	}
 
 	private static String translit(String russian, boolean isFile) {

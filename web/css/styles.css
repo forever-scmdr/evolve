@@ -111,18 +111,13 @@ input[type=checkbox] {
 	white-space: nowrap;
 	line-height: 1;
 	padding: 8px 16px;
-	background-color: #e52d2a;
+	background-color: #E6D0B0;
 	color: #212121;
-	border: 1px solid #e52d2a; }
+	border: 1px solid #E6D0B0; }
 	.button_secondary {
 		background-color: #212121;
 		color: #212121;
-		border: 1px solid #e52d2a; }
-
-.button.button_gray{
-		background-color: #5a5a5a;
-		border-color: #5a5a5a;
-	}
+		border: 1px solid #E6D0B0; }
 
 .button_size_lg, .order_product button {
 	font-size: 16px;
@@ -136,25 +131,22 @@ input[type=checkbox] {
 	background-color: #31869B;
 	border-color: #31869B; }
 
-/*.button:hover {
+.button:hover {
 	background-color: #dab989;
 	border-color: #dab989; }
-*/
-.button:hover{
-	text-decoration: none;
-}
+
 .button_2 {
 	color: #fff;
 	background-color: #31869B;
 	border: 1px solid #31869B; }
 
-/*.button_2:hover {
+.button_2:hover {
 	background-color: #2d7c8f;
-	border-color: #2d7c8f; }*/
+	border-color: #2d7c8f; }
 
-/*.button_checkout:hover {
+.button_checkout:hover {
 	background-color: #256574;
-	border-color: #256574; }*/
+	border-color: #256574; }
 
 .button_request {
 	background-color: #fff; }
@@ -188,12 +180,7 @@ body {
 	font-size: 16px; }
 
 a {
-	/*color: #0072bc;*/
-	color: #5a5a5a;
-}
-a:hover{
-	text-decoration: underline;
-}
+	color: #0072bc; }
 
 table {
 	font-size: 13px;
@@ -249,7 +236,7 @@ table {
 .divider {
 	height: 4px;
 	width: 100px;
-	background-color: #e52d2a;
+	background-color: #E6D0B0;
 	margin: 2rem auto; }
 
 .img {
@@ -279,6 +266,10 @@ table {
 	.device-carousel-colors .card .device__image {
 		margin: 0;
 		margin-bottom: 8px; }
+
+.device-carousel .device{
+	margin:  2px 5px;
+}
 
 .tag {
 	padding: 4px 8px;
@@ -413,7 +404,7 @@ img {
 
 .orders__item_active {
 	padding: 16px;
-	border: 2px solid #e52d2a !important; }
+	border: 2px solid #E6D0B0 !important; }
 
 .past-order__title {
 	font-weight: 700;
@@ -609,11 +600,8 @@ img {
 			margin-right: 0; } }
 
 .logo {
-	/*height: 70px;
-	margin-right: 70px; */
-	height: 55px;
-	margin-right: 55px;
-}
+	height: 70px;
+	margin-right: 70px; }
 	@media (max-width: 768px) {
 		.logo {
 			height: 32px; } }
@@ -638,7 +626,7 @@ img {
 	flex: 1 1 auto;
 	margin-right: 8px;
 	padding: 10px;
-	border-color: #e52d2a;
+	border-color: #E6D0B0;
 	font-size: 15px; }
 
 .header-search__button {
@@ -742,9 +730,7 @@ img {
 .footer__text {
 	font-size: 14px;
 	line-height: 1.3;
-	/*color: #616161; */
-	color: #363636;
-}
+	color: #616161; }
 	.footer__text p {
 		margin-bottom: 8px; }
 		.footer__text p:last-child {
@@ -774,9 +760,7 @@ img {
 
 .main-menu {
 	border-top: 1px solid #9E9E9E;
-	/*background-color: #e52d2a; */
-	background-color: #5a5a5a;
-}
+	background-color: #E6D0B0; }
 	@media (max-width: 768px) {
 		.main-menu {
 			display: none; } }
@@ -810,17 +794,11 @@ img {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		/*color: #000;*/
-		color: #fff;
-	}
-	.index .main-menu__item > a{
-		color: #000;
-	}
+		color: #000; }
 
 .popup-catalog-menu, .popup-text-menu {
 	position: absolute;
-	/*background-color: #f5f1e5;*/
-	background-color: #e5e5e5;
+	background-color: #f5f1e5;
 	z-index: 2;
 	top: 50px;
 	left: 0;
@@ -894,7 +872,9 @@ img {
 .devices-block__column {
 	padding: 0 8px;
 	min-width: 0px;
-	display: flex; }
+	display: flex; 
+	flex-direction: column;
+}
 
 .device {
 	font-size: 13px;
@@ -1051,7 +1031,7 @@ img {
 			.device-nav .slick-dots li:last-child {
 				margin-right: 0; }
 		.device-nav .slick-dots .slick-active button {
-			background-color: #e52d2a; }
+			background-color: #E6D0B0; }
 
 .numbers-block__wrap {
 	display: grid;
@@ -1132,7 +1112,7 @@ img {
 	color: #616161; }
 
 .gifts-block {
-	background-color: #e52d2a; }
+	background-color: #E6D0B0; }
 
 .gifts-block__wrap {
 	display: grid;
@@ -1197,8 +1177,7 @@ img {
 	font-size: 21px; }
 
 .slider {
-	/*background-color: #80A9DD;*/
-	background-color: #5a5a5a;
+	background-color: #80A9DD;
 	height: 400px;
 	overflow: hidden; }
 
@@ -1288,8 +1267,8 @@ img {
 
 .slider__button {
 	font-size: 15px;
-	/*background-color: #FFCC66;*/
-	/*color: #333;*/
+	background-color: #FFCC66;
+	color: #333;
 	padding: 12px 28px; }
 
 .slick-track {
@@ -1316,7 +1295,7 @@ img {
 			.slider-nav .slick-dots li:last-child {
 				margin-right: 0; }
 		.slider-nav .slick-dots .slick-active button {
-			background-color: #e52d2a; }
+			background-color: #E6D0B0; }
 
 .popup {
 	position: fixed;
@@ -1450,10 +1429,7 @@ img {
 		top: 11px;
 		left: 0px;
 		border: 5px solid transparent;
-		/*border-left-color: #31869B; */
-		border-left-color: #e52d2a;
-		/*border-left-color: #5a5a5a;*/
-	}
+		border-left-color: #31869B; }
 
 .side-menu__item_level_1 {
 	border-top: 1px solid #9E9E9E; }
@@ -2455,7 +2431,6 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 a {cursor: pointer;}
 .button {
     height: auto;
-    color: #fff;
 }
 .fade {
 	opacity:0;
@@ -2921,63 +2896,7 @@ div#search-result-mobile {
 	display: flex;
 	flex: 1 1 auto;
 }
-.toggler{
-	display: block;
-	position: absolute;
-	right:0;
-	width: 24px;
-	height: 24px;
-	font-weight: bold;
-	line-height: 23px;
-	border: 1px solid #ccc;
-	top:0;
-	text-align: center;
-
-}
-/*config toggler*/
-.toggler:hover{
-	text-decoration: none;
-}
-.toggle-header{
-	position: relative;
-	font-weight: normal;
-	padding-right: 35px;
-	line-height: 23px;
-	padding-left: 5px;
-}
-.toggler-sum{
-	padding-left: 10px;
-	float: right;
-	text-transform: uppercase;
-	color: #707070;
-	border-left: 1px solid #ccc;
-}
-.bought-container{
-	margin-bottom: 14px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #ccc;
-}
-.bought-container .delete{
+.inline_block{
 	display: inline-block;
-	margin-left: 20px;
-	font-size: 13.33px;
-}
-.bought-container .compl-name{
-	border-top:0;
-	border-left:0;
-	border-right:0;
-	border-color: #707070;
-}
-.extra-values.cart-options-container{
-	background: #fff;
-	padding:0;
-}
-.cart-item.option-item{
-	padding:0;
-	border:0 none;
-	margin-bottom:0;
-	border-bottom: 1px solid #ccc;
-}
-.option-item:last-child{
-	border-bottom: 0;
+	margin-left: 1.4rem;
 }

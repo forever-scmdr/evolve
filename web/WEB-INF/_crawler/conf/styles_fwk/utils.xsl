@@ -20,4 +20,11 @@
 		<xsl:value-of select="tokenize(tokenize($url, '/')[last()], '\.')[1]"/>
 	</xsl:function>
 
+	<xsl:function name="f:create_id">
+		<xsl:param name="url"/>
+		<xsl:param name="after"/>
+		<xsl:value-of select="if (contains($url, $after)) then substring-after($url, $after) else $url"/>
+	</xsl:function>
+
+
 </xsl:stylesheet>

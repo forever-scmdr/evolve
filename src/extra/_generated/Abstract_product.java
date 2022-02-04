@@ -14,6 +14,7 @@ public class Abstract_product
     public final static String CODE = "code";
     public final static String PRICE = "price";
     public final static String QTY = "qty";
+    public final static String QTY_OPT = "qty_opt";
     public final static String UNIT = "unit";
 
     private Abstract_product(Item item) {
@@ -109,6 +110,28 @@ public class Abstract_product
 
     public boolean contains_qty(Double value) {
         return containsValue("qty", value);
+    }
+
+    public void set_qty_opt(Double value) {
+        setValue("qty_opt", value);
+    }
+
+    public void setUI_qty_opt(String value)
+        throws Exception
+    {
+        setValueUI("qty_opt", value);
+    }
+
+    public Double get_qty_opt() {
+        return getDoubleValue("qty_opt");
+    }
+
+    public Double getDefault_qty_opt(Double defaultVal) {
+        return getDoubleValue("qty_opt", defaultVal);
+    }
+
+    public boolean contains_qty_opt(Double value) {
+        return containsValue("qty_opt", value);
     }
 
     public void set_unit(String value) {

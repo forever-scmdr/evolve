@@ -13,6 +13,8 @@ public class Purchase
     public final static String NUM = "num";
     public final static String DATE = "date";
     public final static String QTY = "qty";
+    public final static String QTY_AVAIL = "qty_avail";
+    public final static String QTY_TOTAL = "qty_total";
     public final static String SUM = "sum";
 
     private Purchase(Item item) {
@@ -92,6 +94,50 @@ public class Purchase
 
     public boolean contains_qty(Double value) {
         return containsValue("qty", value);
+    }
+
+    public void set_qty_avail(Double value) {
+        setValue("qty_avail", value);
+    }
+
+    public void setUI_qty_avail(String value)
+        throws Exception
+    {
+        setValueUI("qty_avail", value);
+    }
+
+    public Double get_qty_avail() {
+        return getDoubleValue("qty_avail");
+    }
+
+    public Double getDefault_qty_avail(Double defaultVal) {
+        return getDoubleValue("qty_avail", defaultVal);
+    }
+
+    public boolean contains_qty_avail(Double value) {
+        return containsValue("qty_avail", value);
+    }
+
+    public void set_qty_total(Double value) {
+        setValue("qty_total", value);
+    }
+
+    public void setUI_qty_total(String value)
+        throws Exception
+    {
+        setValueUI("qty_total", value);
+    }
+
+    public Double get_qty_total() {
+        return getDoubleValue("qty_total");
+    }
+
+    public Double getDefault_qty_total(Double defaultVal) {
+        return getDoubleValue("qty_total", defaultVal);
+    }
+
+    public boolean contains_qty_total(Double value) {
+        return containsValue("qty_total", value);
     }
 
     public void set_sum(BigDecimal value) {

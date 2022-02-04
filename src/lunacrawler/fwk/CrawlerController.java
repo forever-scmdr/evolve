@@ -549,8 +549,8 @@ public class CrawlerController {
 					public void run() {
 						Download download;
 						while ((download = downloadQueue.poll()) != null) {
-							Path itemDir = Paths.get(resultTempFilesDir + download.id);
 							try {
+								Path itemDir = Paths.get(resultTempFilesDir + download.id);
 								if (!Files.exists(itemDir))
 									Files.createDirectories(itemDir);
 								Path file = Paths.get(resultTempFilesDir + download.id + "/" + download.fileName);
@@ -909,7 +909,7 @@ public class CrawlerController {
 			insertItem(doc, parentChildren, root);
 		}
 		doc.endElement();
-		Path file = compiledDir.resolve("_tree_.xml");
+		Path file = compiledDir.resolve("!_tree_!.xml");
 		try {
 			Files.write(file, doc.toString().getBytes(UTF_8));
 		} catch (Exception e) {
@@ -929,6 +929,7 @@ public class CrawlerController {
 	 */
 	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
 		xml.startElement(parent.element, ID, parent.id, URL, parent.url);
+		ServerLogger.debug("el: " + parent.element + "   parent: " + parent.id + "   parent_url: " + parent.url);
 		// Добавить всех потомков
 		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
 		if (children != null) {

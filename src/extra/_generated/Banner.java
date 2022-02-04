@@ -12,6 +12,7 @@ public class Banner
 
     public final static String _NAME = "banner";
     public final static String BACKGROUND = "background";
+    public final static String BACKGROUND_PIC = "background_pic";
     public final static String HEADER = "header";
     public final static String TEXT = "text";
     public final static String IMAGE_PIC = "image_pic";
@@ -52,6 +53,18 @@ public class Banner
 
     public boolean contains_background(String value) {
         return containsValue("background", value);
+    }
+
+    public void set_background_pic(File value) {
+        setValue("background_pic", value);
+    }
+
+    public File get_background_pic() {
+        return getFileValue("background_pic", AppContext.getCommonFilesDirPath());
+    }
+
+    public boolean contains_background_pic(File value) {
+        return containsValue("background_pic", value);
     }
 
     public void set_header(String value) {
