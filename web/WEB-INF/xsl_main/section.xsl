@@ -310,7 +310,7 @@
 			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png')" alt="{name}" /></div>
+			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')" alt="{name}" /></div>
 			<div class="catalog-item__info">
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
