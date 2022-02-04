@@ -16,13 +16,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
+
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
 		SINGLE_PARAMS.add(PRICE_ELEMENT);
@@ -70,7 +70,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private boolean getPrice = false;
 	private Assoc catalogLinkAssoc;
 
-	
+
 	public YMarketProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
 		this.info = info;
 		this.sections = sections;
@@ -110,7 +110,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				product.setValue(OFFER_ID_PARAM, code);
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
-				product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
+				if (product.getItemType().hasParameter(GROUP_ID_PARAM))
+					product.setValueUI(GROUP_ID_PARAM, singleParams.get(GROUP_ID_ATTR));
 				product.setValueUI(URL_PARAM, singleParams.get(URL_ELEMENT));
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
 					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
@@ -276,17 +277,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				info.increaseProcessed();
 				isInsideOffer = false;
-			}
-
-			else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
+			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
-			}
-
-			else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && MULTIPLE_PARAMS.contains(qName) && parameterReady) {
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
@@ -303,7 +298,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(parameterReady)
+		if (parameterReady)
 			paramValue.append(ch, start, length);
 	}
 
