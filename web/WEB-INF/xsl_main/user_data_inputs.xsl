@@ -55,7 +55,7 @@
 					</span>
 				</div>
 			</div>
-			<input class="input" type="text"
+			<input class="input"  type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{{2,4}}$"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $u/email)}" error="{$inp/email/@validation-error}"/>
 		</div>
 		<div class="form__item form-item">
@@ -160,7 +160,7 @@
                     </xsl:if>
 				</div>
 			</div>
-			<input class="input" type="text"
+			<input class="input" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{{2,8}}$"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $u/email)}" error="{$inp/email/@validation-error}"/>
 		</div>
 		<div class="form__item form-item">

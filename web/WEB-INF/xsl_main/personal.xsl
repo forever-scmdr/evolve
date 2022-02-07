@@ -3,8 +3,10 @@
 	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="jur_name_first" select="substring-before($reg/contact_name, ' ')"/>
+	<xsl:variable name="user_name" select="if ($is_jur) then (if ($jur_name_first and not($jur_name_first = '')) then $jur_name_first else $reg/contact_name) else $reg/name"/>
 
-	<xsl:variable name="title" select="'Персональные данные'"/>
+	<xsl:variable name="title" select="concat('Персональные данные: ', $user_name)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="user" select="page/user"/>
 

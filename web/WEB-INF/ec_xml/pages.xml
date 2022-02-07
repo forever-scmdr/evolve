@@ -359,7 +359,7 @@
     <page name="catalog" template="section" cacheable="true">
 		<include name="COMMON"/>
 		<single item="catalog" tag="current_section">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 		</single>
 	</page>
 
@@ -670,9 +670,14 @@
 		<list item="product" id="product" tag="search_product">
 			<filter>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				<!--
 				<fulltext limit="500" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery" compare="EVERY">
 					<var var="q" />
 				</fulltext>
+				-->
+				<parameter name="strict_search" sign="like" pattern="%v%" compare="SOME">
+					<var var="q" />
+				</parameter>
 				<limit>
 					<var value="500"/>
 				</limit>
@@ -1776,9 +1781,10 @@
 			<var name="success" value="no"/>
 			<var name="register" value="register"/>
 		</link>
-		<link name="success" target-var="redirect_target">
+		<link name="success" target="personal">
 			<var name="success" value="yes"/>
 			<var name="register" value="register"/>
+			<var name="message" value="Регистрация завершена успешно"/>
 		</link>
 		<link name="user_exists" target-var="redirect_target">
 			<var name="success" value="no"/>
@@ -1844,6 +1850,10 @@
 
 
 	<page name="personal" template="personal" authority-groups="registered">
+		<request>
+			<var name="message"/>
+			<var name="greetings"/>
+		</request>
 		<personal>
 			<single item="user" id="user" tag="user">
 				<parameter-input ref="user"/>

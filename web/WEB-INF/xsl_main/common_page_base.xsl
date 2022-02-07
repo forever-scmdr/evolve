@@ -754,7 +754,7 @@
 									</div>
 									<div class="header-icons__icon header-icon">
 										<div class="header-icon__icon">
-											<img src="img/icon-user.png" alt=""/>
+											<img src="{if ($is_user_registered) then 'img/icons/icon-user.png' else 'img/icons/icon-none.png'}" alt=""/>
 										</div>
 										<div class="header-icon__info">
 											<xsl:if test="not($is_user_registered)">
