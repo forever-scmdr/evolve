@@ -7516,6 +7516,9 @@ td .catalog-item {
 	background-repeat:no-repeat;
 	padding-top:100%;
 }
+.device_row .device__image{
+	padding-top: 0;
+}
 .device__image_line {
 	border-bottom:1px solid #E0E0E0;
 }
@@ -8669,7 +8672,7 @@ td .catalog-item {
 	height: 26px;
 	margin-right: 8px;
 	display: inline-block;
-	background-color: #f2f2f2;
+	background-color: #fff;
 }
 @media (max-width: 768px) {
 	.catalog-index__cell:nth-child(3) {
@@ -8866,4 +8869,7 @@ table.parameters td:last-child {
 	background-color: #fff;
 	border: 1px solid #ED1C24;
 	color: #ED1C24;
+}
+.device_row .device__image{
+	max-height: 100px;
 }
