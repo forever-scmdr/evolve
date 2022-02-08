@@ -236,6 +236,7 @@
 
 				<!-- device description parameters -->
 				<div class="device__info">
+					<!--
 					<table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
@@ -260,6 +261,8 @@
 							</xsl:for-each>
 						</xsl:if>
 					</table>
+					-->
+					<xsl:value-of select="text" disable-output-escaping="yes"/>
 				</div>
 
 			</div>

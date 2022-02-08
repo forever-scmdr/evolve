@@ -74,6 +74,8 @@ public class IntegrateParsedMeandr2 extends IntegrateBase implements ItemNames, 
 		Elements sectionEls = root.select("> section");
 		for (Element sectionEl : sectionEls) {
 			String secCode = sectionEl.attr(ID_ATTR);
+			if (StringUtils.contains(secCode,"/page-"))
+				continue;
 			String secName = infoProvider.getItem(secCode).getElementsByTag(NAME_ELEMENT).first().ownText();
 			Item section = Item.newChildItem(sectionType, parent);
 			//section.setValue(CODE_PARAM, secCode);
@@ -130,8 +132,8 @@ public class IntegrateParsedMeandr2 extends IntegrateBase implements ItemNames, 
 				product.set_name(name);
 				product.set_code(code);
 				product.set_name_extra(header);
-				product.set_description(shortDesc);
-				product.set_text(fullDesc);
+				product.set_description(text);
+				product.set_text(shortDesc);
 
 				for (String assocCode : assocCodes) {
 					ParsedInfoProvider.InfoAccessor assocAcc = infoProvider.getAccessor(assocCode);
@@ -195,11 +197,13 @@ public class IntegrateParsedMeandr2 extends IntegrateBase implements ItemNames, 
 				}
 
 				// страница с описанием
+				/*
 				Item extraPage = Item.newChildItem(productExtraPageType, product);
 				extraPage.setValueUI(TEXT_PARAM, text);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(extraPage).noFulltextIndex());
 				setTextWithPics(extraPage, url, productDoc, Custom_page.TEXT, Product_extra_page.TEXT_PICS, TEXT_PARAM);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(extraPage).noFulltextIndex());
+				 */
 
 				// файлы мануалов
 				for (Element manual : manuals) {
