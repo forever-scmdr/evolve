@@ -63,7 +63,7 @@
 	<xsl:template match="group">
 		<xsl:if test="parameter/value != ''">
 			<tr>
-				<th colspan="2"><b><xsl:value-of select="@name"/></b></th>
+				<th colspan="2"><b><xsl:value-of select="name"/></b></th>
 			</tr>
 			<xsl:apply-templates select="parameter"/>
 		</xsl:if>
@@ -207,6 +207,7 @@
 					</xsl:if>
 
 					<!-- параметры -->
+					<!--
 					<table class="params">
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
@@ -219,6 +220,7 @@
 							</tr>
 						</xsl:for-each>
 					</table>
+					-->
 				</xsl:if>
 
 
@@ -274,7 +276,7 @@
 				</xsl:if>
 
 				<div class="product-lables">
-					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 				</div>
 
 				<div class="product-icons">
@@ -304,7 +306,7 @@
 		</div>
 
 		<div class="device-full">
-			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
+			<xsl:variable name="has_text" select="string-length($p/description) &gt; 15"/>
 			<div class="tabs tabs_product">
 				<div class="tabs__nav">
 					<xsl:if test="$has_text">
@@ -316,11 +318,14 @@
 					<xsl:for-each select="$p/product_extra">
 						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
 					</xsl:for-each>
+					<xsl:if test="$p/product_extra_file">
+						<a href="#tab_files" class="tab">Файлы</a>
+					</xsl:if>
 				</div>
 				<div class="tabs__content">
 					<xsl:if test="$has_text">
 						<div class="tab-container" id="tab_text">
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+							<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
 						</div>
 					</xsl:if>
 					<xsl:if test="$p/params">
@@ -328,8 +333,8 @@
 							<table class="full-params">
 								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
 								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
-								<xsl:apply-templates select="$params_xml/params/group"/>
 								<xsl:apply-templates select="$params_xml/params/parameter"/>
+								<xsl:apply-templates select="$params_xml/params/group"/>
 							</table>
 						</div>
 					</xsl:if>
@@ -338,6 +343,17 @@
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:for-each>
+					<xsl:if test="$p/product_extra_file">
+						<div class="tab-container" id="tab_files" style="display: none">
+							<table class="full-params">
+								<xsl:for-each select="$p/product_extra_file">
+									<tr>
+										<td><xsl:value-of select="desc"/></td><td><xsl:value-of select="size"/></td><td><a href="{@path}{file}" download="{name}"><xsl:value-of select="name"/></a></td>
+									</tr>
+								</xsl:for-each>
+							</table>
+						</div>
+					</xsl:if>
 				</div>
 			</div>
 
