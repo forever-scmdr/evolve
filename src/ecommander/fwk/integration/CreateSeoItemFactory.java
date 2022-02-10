@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class CreateSeoItemFactory implements ItemEventCommandFactory {
 	public static final String SEO_CATALOG = "seo_catalog";
+	public static final String SEO_WRAP = "seo_wrap";
 	public static final String KEY_UNIIQUE = "key_unique";
 	public static final String SEO = "seo";
 
@@ -40,7 +41,13 @@ public class CreateSeoItemFactory implements ItemEventCommandFactory {
 			List<Item> seos = new ItemQuery(SEO).setParentId(parent.getId(), false, SEO).loadItems();
 			long newSeoId = -1;
 			if (seos.size() == 0) {
-				Item seoCatalog = ItemUtils.ensureSingleRootItem(SEO_CATALOG, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+				//Item seoCatalog = ItemUtils.ensureSingleRootItem(SEO_CATALOG, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+				Item seoCatalog = ItemQuery.loadSingleItemByName(SEO_CATALOG);
+				if(seoCatalog == null){
+					Item wrap = ItemUtils.ensureSingleRootItem(SEO_WRAP, User.getDefaultUser(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+					seoCatalog = Item.newChildItem(ItemTypeRegistry.getItemType(SEO_CATALOG), wrap);
+					executeCommand(SaveItemDBUnit.get(seoCatalog).noTriggerExtra());
+				}
 				seo.setValueUI(KEY_UNIIQUE, parent.getKeyUnique());
 				Item newSeo = Item.newChildItem(ItemTypeRegistry.getItemType(SEO), seoCatalog);
 				Item.updateParamValues(seo, newSeo);
