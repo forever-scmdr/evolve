@@ -101,13 +101,22 @@
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="817" ag-hash="843192252">
+	<item name="seo_wrap" caption="Настройки SEO" ag-id="817" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
+		<parameter name="product_prefix" caption="Перед названием товара" description="на странице товара" type="string"/>
+		<parameter name="product_sufix" caption="После названия товара" description="на странице товара" type="string"/>
+
 		<child item="url_seo" />
+		<child item="seo_catalog" single="true"/>
+		<child item="transient_seo_catalog" single="true"/>
 	</item>
 
 	<item name="seo_catalog" caption="Каталог SEO" description="невидимый" ag-id="862" ag-hash="990975543">
 		<child item="seo"/>
+	</item>
+
+	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц">
+		<child item="url_seo" />
 	</item>
 
 	<item name="seo_container" caption="Контейнер для сео айтемов" virtual="true" key-unique="true" ag-id="863" ag-hash="1272836895">
