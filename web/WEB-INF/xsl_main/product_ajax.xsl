@@ -24,11 +24,6 @@
 						</div>
 						<div class="device-preview">
 							<div class="device-preview__column">
-								<div class="gallery">
-									<xsl:call-template name="FOTORAMA"/>
-								</div>
-							</div>
-							<div class="device-preview__column">
 								<div class="device-preview__tags tags">
 									<xsl:for-each select="$p/label">
 										<div class="tag device__tag {f:translit(.)}">
@@ -36,6 +31,12 @@
 										</div>
 									</xsl:for-each>
 								</div>
+								<div class="gallery">
+									<xsl:call-template name="FOTORAMA"/>
+								</div>
+							</div>
+							<div class="device-preview__column">
+
 								<div class="device-actions">
 									<div class="device-actions__price price">
 										<xsl:if test="$has_price">
@@ -106,8 +107,7 @@
 	</xsl:template>
 
 	<xsl:template name="FOTORAMA">
-		<div class="fotorama" data-ratio="287/400" data-nav="thumbs" data-maxwidth="287" data-maxheight="400"
-			 data-thumbheight="40" data-thumbwidth="40" id="fotorama-ajax">
+		<div class="fotorama" data-nav="thumbs" data-maxwidth="300" data-thumbheight="40" data-thumbwidth="40" id="fotorama-ajax">
 			<xsl:if test="$extra_xml/spin">
 				<div data-thumb="img/360.png" style="height: 100%">
 					<iframe width="100%" height="100%" data-autoplay="0" src="{tokenize($extra_xml/spin/@link, ' ')[1]}"
@@ -153,7 +153,7 @@
 	</xsl:template>
 
 	<xsl:template name="CART">
-		<span id="cart_list_a_{$p/@id}">
+		<span class="cart_list_{$p/@id}" id="cart_list_a_{$p/@id}" style="display: inline-block">
 			<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_a_{$p/@id}" style="display: inline;">
 				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty"
 					   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else 0.1}" />

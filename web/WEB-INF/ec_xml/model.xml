@@ -221,52 +221,100 @@
 		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
 		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
-        <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" caption="Абстрактный товар с описанием" super="abstract_product * gallery" virtual="true" ag-id="865" ag-hash="1523682729">
-		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
-		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
+	<item name="described_product" caption="Абстрактный товар с описанием" super="abstract_product * gallery product_with_params product_labels yandex_product" virtual="true" ag-id="865" ag-hash="1523682729">
+
+		<!-- basics -->
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
-		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
-		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
-		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)"/>
-		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
-		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
-		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
-<!--		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>-->
-<!--		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>-->
-<!--		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
-<!--		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>-->
-<!--		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>-->
-		<parameter name="status" type="string" caption="Статус"/>
-		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
-		<parameter name="unit" type="string" caption="Единица измерения"/>
-		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
-		<parameter name="step" type="double" caption="Шаг заказа"/>
-		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
+<!--		<parameter name="status" type="string" caption="Статус"/>-->
+		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="files" type="file" caption="Файлы" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
+		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
+		<child item="product_extra"/>
+
+		<!-- name extras extend item[name_extras]-->
+		<!-- yandex market extend item[yandex_product]-->
+
+		<!-- groups -->
+		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)" multiple="true"/>
+		<!-- associations -->
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
+
+		<!-- exported form other sites extend item [exported_product]-->
+		<!-- opt extend item [opt_product]-->
+
+		<!-- complex price/quantity logic -->
+		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
+		<parameter name="step" type="double" caption="Шаг заказа"/>
+		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
+
+		<!-- labels extend item[product_labels]-->
+
+<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
+
+		<!-- user-defined params extend item[product_with_params]-->
+
+		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="name_extras" virtual="true" ag-id="1841" ag-hash="-72511849">
+		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
+		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
+	</item>
+
+	<item name="yandex_product" virtual="true" ag-id="1834" ag-hash="-196099423">
+		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
+		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
+		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
+	</item>
+
+	<item name="opt_product" caption="товар для оптовой торговли" virtual="true" ag-id="1835" ag-hash="409648995">
+		<parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
+		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
+	</item>
+
+	<!-- TODO refactor to tuples -->
+	<item name="product_labels" caption="ярлыки товара" virtual="true" ag-id="1836" ag-hash="-200411825">
 		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
 		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
-		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
-<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
-		<child item="product_extra"/>
+	</item>
+
+
+	<item name="product_with_params" caption="товар с параметрами" virtual="true" ag-id="1837" ag-hash="595670991">
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
-		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
-		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="line_product_container" virtual="true" ag-id="1838" ag-hash="2031155622">
+		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
+		<child item="line_product"/>
+	</item>
+
+	<item name="option_container" virtual="true" ag-id="1839" ag-hash="696811831">
+		<child item="option" assoc="option"/>
+	</item>
+
+	<item name="exported_product" caption="товар с другого сайта" virtual="true" ag-id="1840" ag-hash="63796227">
+		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
+		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
+		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
 	</item>
 
 	<!--Товар, который вложен в другой товар-->
@@ -278,11 +326,8 @@
 	</item>
 
 	<!--Обычный товар или товар, который содержит другие товары-->
-	<item name="product" caption="Товар из каталога" key-unique="true"
-	      default-page="product" super="described_product * seo_container">
-		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
-		<child item="line_product"/>
-		<child item="option" assoc="option"/>
+	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
+	      default-page="product" super="described_product * seo_container line_product_container">
 	</item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->

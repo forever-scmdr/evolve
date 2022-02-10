@@ -264,7 +264,7 @@
 						<div class="contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 					</div>
 					<div class="map">
-						<iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A3bcb9da99b1b8c51f6dce673b4be2c8cfeee83c9362822124f6c3e28a3c5ebca&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>
+						<xsl:value-of select="code" disable-output-escaping="yes"/>
 					</div>
 				</div>
 			</div>

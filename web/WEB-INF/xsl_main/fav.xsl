@@ -14,12 +14,12 @@
 		<div class="devices devices_section{' lines'[$view = 'list']}">
 			<xsl:if test="$view = 'table'">
 				<div class="devices__wrap">
-					<xsl:apply-templates select="page/product"/>
+					<xsl:apply-templates select="page/product" mode="product-table"/>
 				</div>
 			</xsl:if>
 			<xsl:if test="$view = 'list'">
 				<div class="devices__wrap devices__wrap_rows">
-					<xsl:apply-templates select="page/product" mode="lines"/>
+					<xsl:apply-templates select="page/product" mode="product-lines"/>
 				</div>
 			</xsl:if>
 			<xsl:if test="$not_found">

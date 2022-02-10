@@ -41,7 +41,7 @@
 			</xsl:variable>
 			<a href="#" onclick="{$link}; return false;" >
 				<xsl:if test="@description != ''">
-					<span class="@description">[<xsl:value-of select="description"/>]</span>
+					<span class="description">[<xsl:value-of select="@description"/>]</span>
 				</xsl:if>
 				<span class="name"><xsl:value-of select="@caption"/></span>
 			</a>

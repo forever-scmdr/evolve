@@ -22,7 +22,7 @@
 				<tr>
 					<xsl:for-each select="$products">
 						<th>
-							<xsl:apply-templates select="." />
+							<xsl:apply-templates select="." mode="product-table"/>
 						</th>
 					</xsl:for-each>
 				</tr>

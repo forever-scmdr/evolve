@@ -982,7 +982,8 @@ img {
 	.device_row .add {
 		flex-direction: column;
 		justify-content: unset;
-		padding-left: 50px; }
+		/*padding-left: 50px;*/
+	}
 	.device_row .add__item {
 		margin-bottom: 8px;
 		margin-right: 0; }
@@ -1303,7 +1304,9 @@ img {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5); }
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 3;
+}
 	.popup__body {
 		height: 100%;
 		padding: 32px;
@@ -1635,11 +1638,19 @@ img {
 	flex: 0 0 40%;
 	margin-right: 24px;
 	position: relative; }
-	.device-basic__column:first-child .tags {
+	.device-preview__column:first-child{
+		position: relative;
+	}
+	.device-basic__column:first-child .tags, .device-preview__column:first-child .tags{
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 1; }
+
+	.device-preview__column .tag{
+		float: left;
+		clear: both;
+	}	
 	@media (max-width: 425px) {
 		.device-basic__column:first-child {
 			flex-basis: 100%;
@@ -2666,6 +2677,12 @@ input[type="search"] {
 }
 .form-group {
     margin-bottom: 15px;
+}
+
+.form-group label{
+	font-size: 1rem;
+	display: block;
+	margin-bottom: 5px;
 }
 
 .extra-buttons .button{
