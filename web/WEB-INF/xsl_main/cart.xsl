@@ -17,8 +17,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
+							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur($p, 'price', 0) else 'по запросу'"/>
+							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
@@ -49,7 +49,7 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 0.1}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
@@ -82,7 +82,7 @@
 						</xsl:for-each>
 						<div class="cart-total">
 							<xsl:if test="page/cart/sum != '0'">
-								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:currency_decimal(page/cart/sum)"/> руб.</div>
+								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:exchange_cur(page/cart, 'sum', 0)"/></div>
 							</xsl:if>
 							<div class="cart-total__buttons">
 								<button class="button button_2 cart-total__button" type="submit"

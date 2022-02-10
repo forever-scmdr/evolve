@@ -946,6 +946,7 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
+		<single item="currencies"/>
 	</page>
 
 
