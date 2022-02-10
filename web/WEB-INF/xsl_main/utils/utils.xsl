@@ -80,7 +80,7 @@
     <!--/////////////                                                                      ////////////-->
 
 
-    <xsl:variable name="rates" select="page//currencies"/>
+    <xsl:variable name="rates" select="page//currencies[1]"/>
     <xsl:variable name="rates_on" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
     <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
     <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then ' бел.р.' else ' pуб.'"/>
