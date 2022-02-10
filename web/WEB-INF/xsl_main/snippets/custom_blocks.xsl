@@ -221,7 +221,7 @@
 				<div class="devices-block__wrap device-carousel">
 					<xsl:for-each select="product">
 						<!-- <div class="devices-block__column"> -->
-								<xsl:apply-templates select="."/>
+								<xsl:apply-templates select="." mode="product-table"/>
 						<!-- </div> -->
 					</xsl:for-each>
 				</div>

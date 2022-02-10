@@ -281,7 +281,7 @@
 
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="p" />
-		<xsl:variable name="has_lines" select="$p/has_lines"/>
+		<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 		<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 		<!-- device order -->
