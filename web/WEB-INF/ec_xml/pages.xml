@@ -588,14 +588,14 @@
 				<var name="prod" ref="assoc"/>
 			</link>
 		</list>
-<!--		<list item="product" tag="grouped" id="grouped">-->
-<!--			<filter>-->
-<!--				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>-->
-<!--			</filter>-->
-<!--			<link name="show_product" target="product" type="exclusive">-->
-<!--				<var name="prod" ref="grouped" style="key"/>-->
-<!--			</link>-->
-<!--		</list>-->
+		<list item="product" tag="grouped" id="grouped">
+			<filter>
+				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="grouped" style="key"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 	</page>
 
@@ -1886,7 +1886,7 @@
 		<command class="ecommander.fwk.CreateErrorJspCommand"/>
 	</page>
 
-	<page name="clean_garbage_files" template="integration">
+	<page name="clean_garbage_files" template="integration/integration">
 		<command class="ecommander.fwk.integration.CleanFilesCommand" clear-cache="yes">
 			<result name="complete" type="xml" />
 		</command>

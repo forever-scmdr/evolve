@@ -86,11 +86,11 @@
 					<td class="error"><xsl:value-of select="/page/to_process"/></td>
 				</tr>
 				<tr>
-					<td>Обработано товаров:</td>
+					<td>Обработано объектов:</td>
 					<td class="error"><xsl:value-of select="/page/processed"/></td>
 				</tr>
 				<tr>
-					<td>Проиндексировано товаров:</td>
+					<td>Проиндексировано объектов:</td>
 					<td class="error"><xsl:value-of select="/page/items-indexed"/></td>
 				</tr>
 				<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>

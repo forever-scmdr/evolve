@@ -50,7 +50,7 @@
 							<div class="slider__body">
 								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
 								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href=""><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								<a class="slider__button button" href="{link}"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
 							</div>
 						</div>
 					</div>
