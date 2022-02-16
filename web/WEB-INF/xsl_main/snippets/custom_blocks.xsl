@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 
+	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')</xsl:variable>
+	<xsl:variable name="need_container" select="/page/@name = 'index' or $hide_side_menu"/>
+
+	<!-- в 2 колонки подблоки -->
 
 	<xsl:template match="custom_block[type='в 2 колонки']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block catalog-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="title title_2 ptb"><xsl:value-of select="header" /></div>
 				<div class="catalog-items">
 					<div class="catalog-items__wrap">
-						<xsl:for-each select="custom_block">
-							<a href="{link}" class="catalog-item">
-								<div class="catalog-item__image img">
-									<img src="{concat(@path, image)}" onerror="$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')" alt="{header}" />
-								</div>
-								<div class="catalog-item__info">
-									<div class="catalog-item__title">
-										<xsl:value-of select="header"/>
-									</div>
-									<div class="catalog-item__text">
-										<xsl:value-of select="text" disable-output-escaping="yes"/>
-									</div>
-								</div>
-							</a>
-						</xsl:for-each>
+						<xsl:apply-templates select="custom_block | section  | custom_page" mode="sub-2-cols"/>
 					</div>
 				</div>
 			</div>
@@ -35,6 +25,95 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	
+
+	<!-- custom_block -->
+	<xsl:template match="custom_block" mode="sub-2-cols">
+		<div class="catalog-item cover-link-wrap">
+			<xsl:if test="link != ''">
+				<a href="{link}" class="cover-link"></a>
+			</xsl:if>
+			<div class="catalog-item__image img">
+				<img src="{concat(@path, image)}" onerror="{$onerror}" alt="{header}" />
+			</div>
+			<div class="catalog-item__info">
+				<div class="catalog-item__title">
+					<xsl:value-of select="header"/>
+				</div>
+				<div class="catalog-item__text">
+					<xsl:value-of select="text" disable-output-escaping="yes"/>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<!-- product -->
+	<xsl:template match="product" mode="sub-2-cols">
+		
+		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+
+		<div class="catalog-item cover-link-wrap">
+			<a href="{show_product}" class="cover-link"></a>
+			<div class="catalog-item__image img">
+				<img src="{$pic_path}" onerror="{$onerror}" alt="{name}" />
+			</div>
+			<div class="catalog-item__info">
+				<div class="catalog-item__title">
+					<xsl:value-of select="name"/>
+				</div>
+				<div class="catalog-item__text">
+					<xsl:value-of select="description" disable-output-escaping="yes"/>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<!-- section -->
+	<xsl:template match="section" mode="sub-2-cols">
+		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+
+		<div class="catalog-item cover-link-wrap">
+			<a href="{show_products}" class="cover-link"></a>
+			<div class="catalog-item__image img">
+				<img src="{$pic_path}" onerror="{$onerror}" alt="{name}" />
+			</div>
+			<div class="catalog-item__info">
+				<div class="catalog-item__title">
+					<xsl:value-of select="name"/>
+				</div>
+				<div class="catalog-item__text">
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<!-- custom_page -->
+	<xsl:template match="custom_page" mode="sub-2-cols">
+		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+
+		<div class="catalog-item cover-link-wrap">
+			<a href="{show_page}" class="cover-link"></a>
+			<div class="catalog-item__image img">
+				<img src="{$pic_path}" onerror="{$onerror}" alt="{header}" />
+			</div>
+			<div class="catalog-item__info">
+				<div class="catalog-item__title">
+					<xsl:value-of select="header"/>
+				</div>
+				<div class="catalog-item__text">
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+	<!-- END в 2 колонки подблоки -->
+
+
+	<!-- карусель -->
+
 	<xsl:template match="custom_block[type='карусель']">
 
 		<xsl:variable name="type" select="type"/>
@@ -43,7 +122,7 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
-		<div class="container vl_pos_rel ptb">
+		<div class="{'container '[$need_container]}vl_pos_rel ptb">
 			<h2 class="ptb banner-numbers ">
 				<b class="color2"><xsl:value-of select="header"/></b>
 				<xsl:if test="subheader != ''">
@@ -51,22 +130,11 @@
 				</xsl:if>
 			</h2>
 			<div class="vl_c_carousel">
-        		<div class="vl_c_content">
-        			<xsl:for-each select="custom_block">
-        				<a href="{link}" class="vl_c_item" style="{if(image_bgr != '') then concat('background-image: url(',@path,'/', image_bgr,'); background-size: contain; background-position: center; background-repeat: no-repeat;') else ''}">
-						    <div class="vl_c_img"><img src="{concat(@path, image)}" alt=""/></div>
-						  	<p>
-								<b><xsl:value-of select="header" /></b>
-								<xsl:if test="subheader != ''">
-									&#160;<b class="color1"><xsl:value-of select="subheader"/></b>
-								</xsl:if>
-							</p>
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						  </a>
-        			</xsl:for-each>
-        		</div>
-        	</div>
-        	 <button class="vl_c_prev">
+				<div class="vl_c_content">
+					<xsl:apply-templates select="custom_block | section | custom_page" mode="carousel-1"/>
+				</div>
+			</div>
+			 <button class="vl_c_prev">
 				<svg
 				  xmlns="http://www.w3.org/2000/svg"
 				  width="24"
@@ -98,46 +166,150 @@
 	</xsl:template>
 
 
+	<!-- custom_block -->
+	<xsl:template match="custom_block" mode="carousel-1">
+		<div  class="vl_c_item" style="{if(image_bgr != '') then concat('background-image: url(',@path,'/', image_bgr,'); background-size: contain; background-position: center; background-repeat: no-repeat;') else ''}">
+			<xsl:if test="link != ''">
+				<a href="{link}" style="position:absolute; top:0; bottom:0; left:0; right:0;"></a>
+			</xsl:if>
+			<div class="vl_c_img">
+				<xsl:if test="image != ''">
+					<img src="{concat(@path, image)}" onerror="{$onerror}"/>
+				</xsl:if>
+			</div>
+			<p>
+			<b><xsl:value-of select="header" /></b>
+				<xsl:if test="subheader != ''">
+					&#160;<b class="color1"><xsl:value-of select="subheader"/></b>
+				</xsl:if>
+			</p>
+			<xsl:value-of select="text" disable-output-escaping="yes"/>
+			<xsl:value-of select="code" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
 
-	<xsl:template match="custom_block[type='в 2 колонки с текстом и заголовком']">
+	<xsl:template match="section" mode="carousel-1">
+		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+
+		<div class="vl_c_item">
+			<a href="{show_products}" style="position:absolute; top:0; bottom:0; left:0; right:0;"></a>
+			<div class="vl_c_img">
+				<img src="{$pic_path}" 
+					onerror="{$onerror}"
+					alt="{name}"
+				/>
+			</div>
+			<p>
+				<b>
+					<xsl:value-of select="name" disable-output-escaping="yes"/>
+				</b>
+			</p>
+			<xsl:value-of select="short" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="product" mode="carousel-1">
+		<div class="vl_c_item" style="padding:0;overflow:hidden;">
+			<xsl:apply-templates select="." mode="product-table"/>
+		</div>
+	</xsl:template>	
+
+
+	<xsl:template match="custom_page" mode="carousel-1">
+		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
+
+		<div class="vl_c_item">
+			<a href="{show_page}" style="position:absolute; top:0; bottom:0; left:0; right:0;"></a>
+			<div class="vl_c_img">
+				<img src="{$pic_path}" 
+					onerror="{$onerror}"
+					alt="{name}"
+				/>
+			</div>
+			<p>
+				<b>
+					<xsl:value-of select="header" disable-output-escaping="yes"/>
+				</b>
+			</p>
+			<xsl:value-of select="short" disable-output-escaping="yes"/>
+		</div>
+	</xsl:template>
+
+
+	<!-- END карусель -->
+
+
+	<!-- Цитата -->
+
+	<xsl:template match="custom_block[type='цитата']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 
-		<xsl:if test="f:num(odd_style) != 1">
+		<div class="{'container'[$need_container]}">
 			<div class="block blockquote-block ptb">
-				<div class="container">
-					<div class="blockquote-block__wrap">
-						<div class="blockquote-block__title title title_2"><xsl:value-of select="header" /></div>
-						<div class="blockquote-block__text">
-							<p><xsl:value-of select="text" disable-output-escaping="yes" /></p>
-						</div>
-					</div>
+				<div class="blockquote-block__title title title_2"><xsl:value-of select="header" /></div>
+					<div class="blockquote-block__text">
+					<p><xsl:value-of select="text" disable-output-escaping="yes" /></p>
 				</div>
 			</div>
-		</xsl:if>
+		</div>
 
-		<xsl:if test="f:num(odd_style) = 1">
-			<div class="block blockquote-block ptb">
-				<xsl:variable name="type" select="type"/>
-				<xsl:variable name="p" select="count(.|preceding-sibling::custom_block[type=$type])"/>
-				<xsl:variable name="odd" select="$p mod 2 = 1"/>
-				<div class="container">
-					<div class="blockquote-block__wrap">
-						<div class="blockquote-block__title title title_2"><xsl:value-of select="header" /></div>
-						<xsl:if test="$odd">
-							<img src="{@path}{image}" alt="" />
-						</xsl:if>
-						<div class="blockquote-block__text">
-							<xsl:value-of select="text" disable-output-escaping="yes" />
-						</div>
-						<xsl:if test="not($odd)">
-							<img src="{@path}{image}" alt="" style="margin-left: 15px; margin-rigt:0;" />
-						</xsl:if>
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_bottom" />
+		</xsl:call-template>
+	</xsl:template>
+
+	<!-- END Цитата -->
+
+
+	<!-- в одну колонку -->
+	<xsl:template match="custom_block[type='в одну колонку']">
+		
+		<xsl:variable name="children" select="custom_block | section | custom_page"/>
+
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_top" />
+		</xsl:call-template>
+
+		<xsl:variable name="odd_style" select="odd_style"/>
+
+		<div class="{'container'[$need_container]}">
+			<div class="block onecol-block">
+
+				<xsl:if test="(text | header) != ''">
+					<div class="text">
+						<h2>
+							<xsl:value-of select="header"/>
+						</h2>
+						<xsl:value-of select="text" disable-output-escaping="yes"/>
 					</div>
-				</div>
+				</xsl:if>
+
+				<xsl:for-each select="$children">
+					<xsl:variable name="name" select="name()"/>
+					<xsl:variable name="odd" select="if(f:num($odd_style) = 1) then position() mod 2 = 1 else 1=1"/>
+					<xsl:variable name="header" select="if($name != 'section') then header else name"/>
+					<xsl:variable name="pic" select="if($name = 'custom_block') then concat(@path, image) else concat(@path, main_pic)"/>
+					<xsl:variable name="text" select="if($name = 'custom_block') then text else short"/>
+					<xsl:variable name="link">
+						<xsl:choose>
+							<xsl:when test="$name = 'custom_block'"><xsl:value-of select="link"/></xsl:when>
+							<xsl:when test="$name = 'custom_page'"><xsl:value-of select="show_page"/></xsl:when>
+							<xsl:when test="$name = 'section'"><xsl:value-of select="show_products"/></xsl:when>
+						</xsl:choose>
+					</xsl:variable>
+
+					<xsl:call-template name="ONECOL_LINE">
+						<xsl:with-param name="odd" select="$odd"/>
+						<xsl:with-param name="link" select="$link"/>
+						<xsl:with-param name="text" select="$text"/>
+						<xsl:with-param name="header" select="$header"/>
+						<xsl:with-param name="pic" select="$pic"/>
+					</xsl:call-template>
+				</xsl:for-each>
 			</div>
-		</xsl:if>
+		</div>
 
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_bottom" />
@@ -145,21 +317,66 @@
 	</xsl:template>
 
 
+	<xsl:template name="ONECOL_LINE">
+		<xsl:param name="link"/>
+		<xsl:param name="odd"/>
+		<xsl:param name="header"/>
+		<xsl:param name="text"/>
+		<xsl:param name="pic"/>
+
+
+
+		<div class="onecol-block__wrap pb" style="{'justify-content: flex-start;'[$odd]}">
+			<xsl:if test="$odd">
+				<img src="{$pic}" onerror="{$onerror}" class="onecol-img"/>
+			</xsl:if>
+			<div class="onecol-block__text">
+				<h2>
+					<xsl:if test="not($link != '')">
+						<xsl:value-of select="$header" />
+					</xsl:if>
+					<xsl:if test="$link != ''">
+						<a href="{$link}"><xsl:value-of select="$header" /></a>
+					</xsl:if>
+				</h2>
+				<xsl:value-of select="$text" disable-output-escaping="yes" />
+			</div>
+			<xsl:if test="not($odd)">
+				<img src="{$pic}" class="onecol-img" onerror="{$onerror}" style="margin-left: 15px; margin-rigt:0;" />
+			</xsl:if>
+		</div>
+	</xsl:template>
+
+	<!-- END в одну колонку -->
+
+
 	<xsl:template match="custom_block[type='в 4 колонки']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block sections-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 					<div class="sections-block_wrap">
-						<xsl:for-each select="custom_block">
+						<xsl:for-each select="custom_block | section | custom_page">
+							
+							<xsl:variable name="name" select="name()"/>
+							<xsl:variable name="header" select="if($name != 'section') then header else name"/>
+							<xsl:variable name="pic" select="if($name = 'custom_block') then concat(@path, image) else concat(@path, main_pic)"/>
+							<xsl:variable name="link">
+								<xsl:choose>
+									<xsl:when test="$name = 'custom_block'"><xsl:value-of select="link"/></xsl:when>
+									<xsl:when test="$name = 'custom_page'"><xsl:value-of select="show_page"/></xsl:when>
+									<xsl:when test="$name = 'section'"><xsl:value-of select="show_products"/></xsl:when>
+								</xsl:choose>
+							</xsl:variable>
+
 							<div class="banner-sections">
 								<div class="banner-sections__image img">
-									<img src="{@path}{image}" alt="" />
+									<img src="{$pic}" onerror="{$onerror}" />
 								</div>
-								<div class="banner-sections__title"><xsl:value-of select="header" /></div>
-								<a href="{link}" class="banner-sections__link"></a>
+								<div class="banner-sections__title"><xsl:value-of select="$header" /></div>
+								<a href="{$link}" class="banner-sections__link"></a>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -175,7 +392,7 @@
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block numbers-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="numbers-block__wrap">
 					<xsl:for-each select="custom_block">
 						<div class="banner-numbers">
@@ -196,7 +413,7 @@
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block icons-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 				<div class="icons-block__wrap">
 					<xsl:for-each select="custom_block">
@@ -214,28 +431,30 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	<!-- carousel 2 -->
 	<xsl:template match="custom_block[type='Товары']">
 		<div class="block devices-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header"/></div>
 				<div class="devices-block__wrap device-carousel">
 					<xsl:for-each select="product">
-						<!-- <div class="devices-block__column"> -->
-								<xsl:apply-templates select="." mode="product-table"/>
-						<!-- </div> -->
+						<xsl:apply-templates select="." mode="product-table"/>
 					</xsl:for-each>
 				</div>
 				<div class="device-nav"></div>
 			</div>
 		</div>
-	</xsl:template>	
+	</xsl:template>
+
+
+	<!-- END carousel-2 -->
 
 	<xsl:template match="custom_block[type='подарки']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block gifts-block ptb">
-			<div class="container">
+			<div class="{'container'[$need_container]}">
 				<div class="gifts-block__wrap">
 					<xsl:for-each select="custom_block">
 						<div class="banner-gift">
@@ -257,7 +476,7 @@
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block contacts-block ptb">
-				<div class="container">
+				<div class="{'container'[$need_container]}">
 					<div class="contacts-block__wrap">
 						<div class="contacts-block_title title title_2"><xsl:value-of select="header" /></div>
 						<div class="contacts-block_subtitle"><xsl:value-of select="subheader" /></div>

@@ -99,7 +99,7 @@
 		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="url_seo_wrap" cacheable="true">
+		<single item="seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 		<single item="styles">
@@ -1624,7 +1624,7 @@
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
 		<headers content-type="xml"/>
-		<single item="url_seo_wrap"/>
+		<single item="seo_wrap"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
@@ -1667,7 +1667,7 @@
 		<request>
 			<var name="sec" style="key"/>
 		</request>
-		<single item="url_seo_wrap" />
+		<single item="seo_wrap" />
 		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
 			<list item="product" id="prod">
 				<link name="show_product" target="product" type="exclusive">
