@@ -101,7 +101,7 @@
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 	</item>
 
-	<item name="seo_wrap" caption="Настройки SEO" ag-id="817" ag-hash="843192252">
+	<item name="seo_wrap" caption="Настройки SEO" ag-id="817" ag-hash="1272512236">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<parameter name="product_prefix" caption="Перед названием товара" description="на странице товара" type="string"/>
 		<parameter name="product_sufix" caption="После названия товара" description="на странице товара" type="string"/>
@@ -115,7 +115,7 @@
 		<child item="seo"/>
 	</item>
 
-	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц">
+	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц" ag-id="1842" ag-hash="-1426352126">
 		<child item="url_seo" />
 	</item>
 
@@ -1086,7 +1086,7 @@
 		<child item="registered_catalog" single="true"/>
 		<child item="system" single="true" virtual="true"/>
 		<child item="modules" single="true"/>
-		<child item="url_seo_wrap" single="true"/>
+		<child item="seo_wrap" single="true"/>
 		<child item="seo_catalog" single="true"/>
 		<child item="comments" single="true"/>
 		<child item="optional_modules" single="true" virtual="true"/>

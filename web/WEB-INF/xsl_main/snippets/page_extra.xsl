@@ -246,4 +246,8 @@
 			</div>
 		</div>
 	</xsl:template>
+
+	<xsl:template match="custom_block" mode="content">
+		<xsl:apply-templates select="."/>
+	</xsl:template>
 </xsl:stylesheet>
