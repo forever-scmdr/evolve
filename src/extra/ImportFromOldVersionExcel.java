@@ -191,8 +191,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
                 int rowIdx = row.getRowNum();
                 info.setLineNumber(rowIdx + 1);
                 if(getFilledCellsCount(row) < 1) continue;
-//				int pns = row.getPhysicalNumberOfCells();
-//				int lcn = row.getLastCellNum();
+
                 //SECTION
                 String sectionCode = getCellAsString(row.getCell(0));
                 String sectionName = getCellAsString(row.getCell(1));
