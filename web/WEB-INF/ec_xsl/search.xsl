@@ -49,8 +49,8 @@
 					<div class="quantity currency">
 						Валюта:
 						<a href="{page/set_currency_byn}" title="Показать цены в белорусских рублях" class="{'active'[$curr = 'byn']}">BYN</a>
-						<a href="{page/set_currency_rur}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rur']}">RUR</a>
-<!--						<a href="{page/set_currency_usd}" title="Показать цены в долларах США" class="{'active'[$curr = 'usd']}">USD</a>-->
+						<a href="{page/set_currency_rub}" title="Показать цены в российских рублях" class="{'active'[$curr = 'rub']}">RUB</a>
+						<a href="{page/set_currency_usd}" title="Показать цены в долларах США" class="{'active'[$curr = 'usd']}">USD</a>
 					</div>
 				</div>
 

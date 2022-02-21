@@ -267,7 +267,7 @@
 					<xsl:variable name="currency_switch">
 						<xsl:value-of select="concat('&lt;a href=',$qot, page/set_currency_byn, $qot, 'title=',$qot,'Показать цены в белорусских рублях',$qot,'&gt;BYN&lt;/a&gt;&lt;br/&gt;')" />
 						<xsl:value-of select="concat('&lt;a href=',$qot, page/set_currency_rub, $qot, 'title=',$qot,'Показать цены в российских рублях',$qot,'&gt;RUB&lt;/a&gt;&lt;br/&gt;')" />
-<!--						<xsl:value-of select="concat('&lt;a href=',$qot, page/set_currency_usd, $qot, 'title=',$qot,'Показать цены в долларах США',$qot,'&gt;USD&lt;/a&gt;')" />-->
+						<xsl:value-of select="concat('&lt;a href=',$qot, page/set_currency_usd, $qot, 'title=',$qot,'Показать цены в долларах США',$qot,'&gt;USD&lt;/a&gt;')" />
 					</xsl:variable>
 
 					Валюта: <a data-container="body"  data-html="true" data-toggle="popover" data-placement="bottom" data-content="{$currency_switch}">

@@ -101,6 +101,16 @@
 				</a>
 			</xsl:if>
 
+			<div class="quantity">
+				<span>Кол-во</span>
+				<input type="number" value="{qty}" name="{input/qty/@input}" min="{product/min_qty}"
+					   step="{product/min_qty}" class="qty-input" data-old="{qty}"/>
+				<br/>
+				<span>Наличие</span>
+				доступно:
+				<xsl:value-of select="f:num($p/qty)"/>
+			</div>
+
 			<div class="price one">
 				<p>
 					<span>Цена</span>
@@ -119,16 +129,6 @@
 						<a data-container="body" data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}" style="font-size:12px;">подробнее</a>
 					</xsl:if>
 				</p>
-			</div>
-
-			<div class="quantity">
-				<span>Кол-во</span>
-				<input type="number" value="{qty}" name="{input/qty/@input}" min="{product/min_qty}"
-					   step="{product/min_qty}" class="qty-input" data-old="{qty}"/>
-				<br/>
-				<span>Наличие</span>
-				доступно:
-				<xsl:value-of select="f:num($p/qty)"/>
 			</div>
 
 			<div class="price all">
@@ -150,6 +150,7 @@
 			<xsl:variable name="p" select="product" />
 			<xsl:variable name="is_aux" select="aux != ''" />
 			<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic" select="if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'"/>
 
 			<div class="item">
 				<xsl:if test="$is_aux">
@@ -163,24 +164,25 @@
 				</xsl:if>
 				<xsl:if test="not($is_aux)">
 					<a href="{$p/show_product}" class="image-container">
-						<img src="{$img}" alt="{$p/name}"/>
+						<img src="{$main_pic}" alt="{$p/name}"/>
 					</a>
 					<a href="{$p/show_product}" class="title">
 						<xsl:value-of select="$p/name"/>
 					</a>
 				</xsl:if>
+
+				<div class="quantity">
+					<span>Кол-во</span>
+					<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
+				</div>
+
 				<div class="price one">
 					<p>
 						<span>Цена</span>
 						-
 					</p>
 				</div>
-				<xsl:if test="f:num($p/qty) = 0">
-					<div class="quantity">
-						<span>Кол-во</span>
-						<input type="number" value="{qty}" name="{input/qty/@input}" min="1" class="qty-input" data-old="{qty}" />
-					</div>
-				</xsl:if>
+
 				<div class="price all"><p><span>Сумма позиц.</span> - </p></div>
 				<a href="{delete}" class="delete"><i class="fas fa-times"/></a>
 			</div>

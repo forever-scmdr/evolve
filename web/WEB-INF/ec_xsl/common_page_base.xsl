@@ -524,7 +524,7 @@
 		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, $u) else $u" />
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
 		<xsl:variable name="min" select="if(f:num(min_qty) &gt; 0) then min_qty else 1"/>
 		<xsl:variable name="step" select="if(f:num(step) &gt; 0) then step else $min"/>
 
@@ -584,7 +584,7 @@
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="f:num(qty) = 0">
-								<input type="submit" class="button not_available" value="Запрос цены"/>
+								<input type="submit" class="button" value="Запрос цены"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -646,7 +646,7 @@
 		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
-		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, $u) else $u" />
+		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
 		<xsl:variable name="min" select="if(f:num(min_qty) &gt; 0) then min_qty else 1"/>
 		<xsl:variable name="step" select="if(f:num(step) &gt; 0) then step else $min"/>
 
@@ -743,7 +743,7 @@
 								<input type="submit" class="button" value="Заказать"/>
 							</xsl:if>
 							<xsl:if test="not($has_price)">
-								<input type="submit" class="button not_available" value="Запрос цены"/>
+								<input type="submit" class="button" value="Запрос цены"/>
 							</xsl:if>
 						</form>
 					</div>
@@ -753,14 +753,14 @@
 				</xsl:if>
 				<xsl:if test="f:num(qty) != 0">
 					<xsl:if test="not($sel_shop)">
-						<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty, $u,'.')"/></div>
+						<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i> в наличии <xsl:value-of select="concat(qty,' ', $u)"/></div>
 					</xsl:if>
 					<xsl:if test="$sel_shop">
 						<div class="device__in-stock device_row__in-stock" style="max-width: 140px;"><i class="fas fa-check"></i> поставка <xsl:value-of select="concat(qty, $u,'.')"/> в течение <xsl:value-of select="$sel_shop/delivery_string"/></div>
 					</xsl:if>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-check"></i>нет в наличии</div>
+					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-check"></i>нет в наличии</div>
 				</xsl:if>
 			</div>
 			<xsl:for-each select="$tags">

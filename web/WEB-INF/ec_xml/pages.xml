@@ -20,6 +20,9 @@
 	</include-definition>
 
 	<include-definition name="COMMON">
+		<request>
+			<var name="currency" value="byn" scope="cookie"/>
+		</request>
 		<personal>
 			<list item="user" tag="registration">
 				<filter>
@@ -35,16 +38,6 @@
 				<link name="show_products" target="section">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
-				<list item="product"  transit="true">
-					<filter>
-						<limit>
-							<var value="5"/>
-						</limit><!--
-						<sorting direction="ASC">
-							<var value="main_pic"/>
-						</sorting>-->
-					</filter>
-				</list>
 			</tree>
 		</single>
 
@@ -97,8 +90,8 @@
 			<list item="url_seo"/>
 		</single>
 
-		<list item="currency"/>
-		<list item="shop">
+		<list item="currency" cacheable="true"/>
+		<list item="shop" cacheable="true">
 			<list item="currency" assoc="general"/>
 		</list>
 
@@ -116,9 +109,9 @@
 
 
 	<page name="index" template="index" cacheable="true">
-		<request>
-			<var name="currency" value="byn" scope="cookie"/>
-		</request>
+<!--		<request>-->
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
+<!--		</request>-->
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -196,12 +189,12 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
 			<var name="fil"/>
-			<var name="tag"/>
+			<!-- <var name="tag"/> -->
 		</request>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section">
@@ -226,9 +219,9 @@
 					<link name="filter_base_link" target="section">
 						<var name="sec" var="sec" style="key"/>
 					</link>
-					<parameter name="tag" sign="=" compare="ANY">
+					<!-- <parameter name="tag" sign="=" compare="ANY">
 						<var var="tag"/>
-					</parameter>
+					</parameter> -->
 				</filter>
 				<link name="show_product" target="product">
 					<!-- <var name="prod" var="sec" style="key"/> -->
@@ -252,7 +245,7 @@
 				</link>
 				<list item="params"/>
 			</list>
-			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
+			<!-- <list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
 				<link name="canonical" target="section" copy-page-vars="no">
 					<var name="sec" style="key" var="sec"/>
@@ -264,7 +257,7 @@
 			</list>
 			<list item="product" tag="max" assoc="* catalog_link">
 				<aggregation parameter="price" function="MAX"/>
-			</list>
+			</list> -->
 		</single>
 		<link name="set_view_table" target="section" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -327,11 +320,10 @@
 		<include name="COMMON"/>
 	</page>
 
-
 	<page name="tag_section" template="tag_section">
 		<request>
 			<var name="tag"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<request>
 			<var name="page" value="1"/>
@@ -448,7 +440,7 @@
 			<var name="q" style="query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -472,7 +464,7 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -519,8 +511,8 @@
 		<link name="set_currency_byn" target="search" copy-page-vars="yes">
 			<var name="currency" value="byn"/>
 		</link>
-		<link name="set_currency_rur" target="search" copy-page-vars="yes">
-			<var name="currency" value="rur"/>
+		<link name="set_currency_rub" target="search" copy-page-vars="yes">
+			<var name="currency" value="rub"/>
 		</link>
 		<link name="set_currency_usd" target="search" copy-page-vars="yes">
 			<var name="currency" value="usd"/>
@@ -543,7 +535,7 @@
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product">
@@ -738,7 +730,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -796,7 +788,7 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -833,7 +825,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -1734,7 +1726,7 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
-			<var name="currency" value="byn" scope="cookie"/>
+<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<!--		<command class="extra.FixSearchQuery"/>-->
 
@@ -1755,8 +1747,8 @@
 		<link name="set_currency_byn" target="search_test" copy-page-vars="yes">
 			<var name="currency" value="byn"/>
 		</link>
-		<link name="set_currency_rur" target="search_test" copy-page-vars="yes">
-			<var name="currency" value="rur"/>
+		<link name="set_currency_rub" target="search_test" copy-page-vars="yes">
+			<var name="currency" value="rub"/>
 		</link>
 
 		<!-- external search links -->

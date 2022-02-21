@@ -21,7 +21,7 @@
 			</head>
 			<body>
 				<div id="tme_search" class="result">
-					<h2 class="search-header">Результат поиска по TME</h2>
+					<h2>Результат поиска по TME</h2>
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="$products" mode="lines"/>
@@ -125,7 +125,7 @@
 				</span>
 				<div class="device__description">
 					<p class="basics">
-						<span><b>Код:</b>&#160;<xsl:value-of select="Symbol" /></span>
+						<br/><span><b>Арт.:</b>&#160;<xsl:value-of select="Symbol" /></span>
 						<br/><span><b>Производитель:</b>&#160;<xsl:value-of select="Producer" /></span>
 						<br/><span><b>Арт. производителя:</b>&#160;<xsl:value-of select="OriginalSymbol" /></span>
 						<xsl:if test="Description != ''">

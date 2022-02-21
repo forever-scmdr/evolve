@@ -17,7 +17,7 @@
 
 		<xsl:if test="$result/items/item">
 			<div id="platan_search" class="result">
-				<h2 class="search-header">Результаты поиска по Platan</h2>
+				<h2>Результаты поиска по Platan</h2>
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">
 						<xsl:apply-templates select="$result/items/item[f:num(QUANTY) &gt; $mq]" mode="product-lines"/>
@@ -30,7 +30,7 @@
 		</xsl:if>
 		<xsl:if test="not($result/items/item)">
 			<div id="extra_search_1" class="result">
-				<h2 class="search-header">Результат поиска по Platan</h2>
+				<h2>Результат поиска по Platan</h2>
 				<p>Товары не найдены</p>
 			</div>
 		</xsl:if>

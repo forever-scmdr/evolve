@@ -24,7 +24,7 @@
 	<xsl:variable name="price" select="$p/price"/>
 	<xsl:variable name="price_old" select="$p/price_old"/>
 	<xsl:variable name="u" select="if($p/unit != '') then $p/unit else 'шт'"/>
-	<xsl:variable name="unit" select="if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, $u) else $u"/>
+	<xsl:variable name="unit" select="if(f:num($p/min_qty) &gt; 1) then concat($p/min_qty, 'шт') else $u"/>
 
 	<xsl:variable name="display_price" select="f:price_ictrade($price)"/>
 	<xsl:variable name="display_price_old" select="f:price_ictrade($price_old)"/>
@@ -133,11 +133,11 @@
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
 									<input type="number" class="text-input" name="qty" value="{if(f:num($p/min_qty) &gt; 1) then $p/min_qty else 1}" step="{if(f:num($p/step)&gt; 0) then $p/step else $p/min_qty}" min="{$p/min_qty}" />
-									<input type="submit" class="button" value="В корзину" />
+									<input type="submit" class="button" value="Заказать" />
 								</xsl:if>
 								<xsl:if test="not($has_price)">
 									<input type="number" class="text-input" name="qty" value="{if(f:num($p/min_qty) &gt; 1) then $p/min_qty else 1}" step="{if(f:num($p/step)&gt; 0) then $p/step else $p/min_qty}" min="{$p/min_qty}" />
-									<input type="submit" class="button  not_available" value="Под заказ" />
+									<input type="submit" class="button" value="Запрос цены" />
 								</xsl:if>
 							</form>
 						</div>
@@ -157,7 +157,7 @@
 							<xsl:when test="$has_price">
 								<xsl:if test="not($p/tag = 'external_shop')">
 									<div class="device__in-stock">
-										<i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $p/u,'.')"/>
+										<i class="fas fa-check"></i> в наличии <xsl:value-of select="concat($p/qty, $u,'.')"/>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/tag = 'external_shop'">

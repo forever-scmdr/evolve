@@ -22,7 +22,7 @@
 			</head>
 			<body>
 				<div id="farnell_search" class="result">
-					<h2 class="search-header">Результат поиска по Farnell</h2>
+					<h2>Результат поиска по Farnell</h2>
 					<xsl:if test="not($result/products)">
 						<p>Товары не найдены</p>
 					</xsl:if>
@@ -212,12 +212,12 @@
 				<input type="hidden" name="delivery_time" value="{if($available) then $shop/delivery_string else ''}"/>
 				<input type="submit" class="button{' not_available'[not($available)]}" value="{if($available) then 'В корзину' else 'Под заказ'}"/>
 			</form>
-			<xsl:if test="$available">
-				<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num($product/stock/level) &lt; 500000) then concat(' ',f:num($product/stock/level), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
-			</xsl:if>
-			<xsl:if test="not($available)">
-				<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
-			</xsl:if>
 		</div>
+		<xsl:if test="$available">
+			<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка<xsl:value-of select="if(f:num($product/stock/level) &lt; 500000) then concat(' ',f:num($product/stock/level), ' шт.') else ''" /> в течение <xsl:value-of select="$shop/delivery_string"/></div>
+		</xsl:if>
+		<xsl:if test="not($available)">
+			<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под заказ</div>
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

@@ -15,7 +15,7 @@
 	<xsl:template match="/">
 		<xsl:if test="$result/row">
 			<div id="promelec_search" class="result">
-				<h2 class="search-header">Результат поиска по Промэлектроника</h2>
+				<h2>Результат поиска по Промэлектроника</h2>
 
 				<div class="catalog-items{' lines'[$view = 'list']}">
 					<xsl:if test="$view = 'list'">

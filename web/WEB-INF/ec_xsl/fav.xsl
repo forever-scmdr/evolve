@@ -3,10 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
-
 	<xsl:variable name="title" select="'Избранное'" />
 
 	<xsl:variable name="view" select="page/variables/view"/>
@@ -36,10 +32,10 @@
 
 			<div class="catalog-items{' lines'[$view = 'list']}">
 				<xsl:if test="$view = 'table' or not($view) or $view = ''">
-					<xsl:apply-templates select="$products"/>
+					<xsl:apply-templates select="$products" mode="product-table"/>
 				</xsl:if>
 				<xsl:if test="$view = 'list'">
-					<xsl:apply-templates select="$products" mode="lines"/>
+					<xsl:apply-templates select="$products" mode="product-lines"/>
 				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>Нет товаров</h4>
