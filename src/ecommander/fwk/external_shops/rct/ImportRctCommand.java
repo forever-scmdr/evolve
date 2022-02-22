@@ -63,7 +63,7 @@ public class ImportRctCommand extends AbstractShopImport implements CatalogConst
 		private final HashMap<String, String> HEADER_PARAMS = new HashMap<>();
 
 
-		public RctPriceList(File file, Item catalog, Item currency) {
+		public RctPriceList(File file, Item catalog, Item currency) throws Exception {
 			super(file, "Категории", "Номенклатура", "Код", "Норма отгрузки", "Опт", "Свободный остаток");
 			this.catalog = catalog;
 			this.currency = currency;

@@ -9,6 +9,7 @@ import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
+import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
@@ -17,9 +18,11 @@ import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,14 +110,15 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private void hideAllProducts() throws Exception {
 		setOperation("Скрываем товары");
 		setProcessed(0);
+		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM);
+		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
+		productsQuery.setLimit(LOAD_BATCH_SIZE);
 		LinkedList<Item> products = new LinkedList<>();
-		products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L));
-		long id = 0;
+		products.addAll(productsQuery.loadItems());
 		int counter = 0;
 		while (products.size() > 0) {
 			while (products.size() != 0) {
 				Item product = products.poll();
-				id = product.getId();
 				List<String> tags = product.getStringValues(TAG_PARAM);
 				if (!tags.contains("external_shop")) {
 					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
@@ -123,7 +127,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				if (counter >= HIDE_BATCH_SIZE) commitCommandUnits();
 				info.increaseProcessed();
 			}
-			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id));
+			productsQuery.setLimit(LOAD_BATCH_SIZE);
+			products.addAll(productsQuery.loadItems());
 		}
 		commitCommandUnits();
 	}
@@ -261,9 +266,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 									.endElement();
 						} else if (CODE_PARAM.equals(paramName)) {
 							List<Item> duplicates = ItemQuery.loadByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
-							//Collections.sort(duplicates, (o1, o2) -> Long.compare(o1.getId(), o2.getId()));
 							currentProduct = duplicates.size() == 0 ? null : duplicates.remove(0);
-
 							for (Item duplicate : duplicates) {
 								executeAndCommitCommandUnits(ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex());
 							}
@@ -273,6 +276,9 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 								currentProduct.setValue(CODE_PARAM, cellValue);
 							} else {
 								executeCommandUnit(ItemStatusDBUnit.restore(currentProduct.getId()));
+								if(productNeedsMoving()){
+									executeAndCommitCommandUnits(new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra());
+								}
 							}
 						} else if (MAIN_PIC_PARAM.equals(paramName)) {
 							String[] pics = StringUtils.split(cellValue, '|');
@@ -354,6 +360,9 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		}
 	}
 
+	private boolean productNeedsMoving() throws SQLException, NamingException {
+		return !ItemQuery.isDirectParent(currentProduct.getId(), currentSection.getId());
+	}
 
 
 	private int getFilledCellsCount(Row row) {
@@ -445,7 +454,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private void createFiltersAndItemTypes() throws Exception {
 		if (sectionsWithNewItemTypes.size() == 0) return;
 		setOperation("Создание классов и фильтров");
-		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes);
+		List<Item> sections = ItemQuery.loadByIdsLong(sectionsWithNewItemTypes, new Byte[]{Item.STATUS_NORMAL});
 		doCreate(sections);
 	}
 

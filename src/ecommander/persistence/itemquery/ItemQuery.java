@@ -1435,6 +1435,28 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
 				.AND().col(IP_PARENT_ID).long_(parentId)
 				.AND().col(IP_ASSOC_ID).byte_(assocId);
+		return executeBooleanQuery(query, conn);
+	}
+
+	/**
+	 * Проверяет, является ли айтем непосредственным потомком другого айтема в первичной иерархии.
+	 * @param childId
+	 * @param parentId
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static boolean isDirectParent(long childId, long parentId, Connection... conn) throws SQLException, NamingException {
+		TemplateQuery query = new TemplateQuery("Direct Parent Check");
+		query.SELECT("*").FROM(ITEM_PARENT_TBL).WHERE().col(IP_CHILD_ID).long_(childId)
+				.AND().col(IP_PARENT_ID).long_(parentId)
+				.AND().col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getPrimaryAssocId())
+				.AND().col_IN(IP_PARENT_DIRECT).byteIN((byte)1);
+		return executeBooleanQuery(query, conn);
+	}
+
+	private static boolean executeBooleanQuery(TemplateQuery query, Connection... conn) throws SQLException, NamingException {
 		boolean isOwnConnection = false;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
@@ -1454,6 +1476,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				MysqlConnector.closeConnection(connection);
 		}
 	}
+
 
 	/**
 	 * Загрузить все значения одного параметра (для айтема одного типа)
