@@ -134,7 +134,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	private boolean isIdSequential = false; // последовательная пакетная загрузка в порядке возрастания ID айтема
 	private long idSequentialStart = -1; // начальный ID айтема для последовательной загрузки (не включен в результат)
 	private String sqlForLog = null; // SQL последнего выполненного запроса
-	
+	private Long[] referenceItemIds = null; // ID айтемов, на которые есть ссылка (reference)
+
 	public ItemQuery(ItemType itemDesc, Byte... status) {
 		this.itemDescStack.push(itemDesc);
 		if (status.length > 0) {
@@ -210,6 +211,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		this.isParent = true;
 		return setParentId(childId, isTransitive, assocName);
 	}
+
+	/**
+	 * Загруженные айтемы, на которые ссылается загружаемый айтем
+	 * Т.е. поиск будет происходить только среди заданных здесь айтемов
+	 * @param ids
+	 * @return
+	 */
+	public ItemQuery setReference(Collection<Long> ids) {
+		if (ids != null && ids.size() > 0)
+			this.referenceItemIds = ids.toArray(new Long[0]);
+		return this;
+	}
+
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
 	 * @param paramName
@@ -617,6 +631,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		return fulltext != null;
 	}
 
+	public final boolean hasRefernce() {
+		return referenceItemIds != null;
+	}
+
 	/**
 	 * Если запрос должен вернуть пустое множество, возвращается true
 	 * @return
@@ -654,16 +672,14 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 		} else {
 			query.add(new TermQuery(new Term(I_TYPE_ID, getItemDesc().getTypeId() + "")), Occur.MUST);
 		}
-		/*
 		// Родительский критерий (только для обычных айтемов и successor айтемов)
-		if (hasParent && (queryType != Type.PARENT_OF && queryType != Type.PREDECESSORS_OF)) {
-			BooleanQuery parentQuery = new BooleanQuery();
+		if (hasParent && !isParent) {
+			BooleanQuery.Builder parentQuery = new BooleanQuery.Builder();
 			for (Long parentId : ancestorIds) {
-				parentQuery.add(new TermQuery(new Term(DBConstants.Item.DIRECT_PARENT_ID, parentId.toString())), Occur.SHOULD);
+				parentQuery.add(new TermQuery(new Term(DBConstants.ItemTbl.I_SUPERTYPE, parentId.toString())), Occur.SHOULD);
 			}
-			query.add(parentQuery, Occur.MUST);
+			query.add(parentQuery.build(), Occur.MUST);
 		}
-		*/
 		// Добавить другие (неполнотектовые) критерии фильтра, если они есть
 		if (hasFilter()) {
 			filter.appendLuceneQuery(query, Occur.MUST);
@@ -837,6 +853,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			}
 		}
 
+		// Применение референса
+		if (hasRefernce()) {
+			TemplateQuery orderBy = query.getSubquery(Const.ORDER);
+			query.getSubquery(Const.WHERE).AND().col_IN(I_DOT + I_ID).longIN(referenceItemIds);
+			if (orderBy != null) {
+				if (orderBy.isEmpty())
+					orderBy.sql(" ORDER BY ");
+				else
+					orderBy.sql(", ");
+				orderBy.sql("FIELD (" + I_DOT + I_ID + ", ").longArray(referenceItemIds).sql(")");
+			}
+		}
+
 		// Применение количественных ограничений и критерия предка (если несколько предков - для каждого предка в отдельности)
 		if (hasLimit() && limit.getLimit() > 0 && hasParent && ancestorIds.length > 1) {
 			TemplateQuery union = new TemplateQuery("Union because of limit criteria");
@@ -953,8 +982,8 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception 
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Connection... conn) throws Exception {
-		return loadByIdsLong(ids, null, conn);
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Byte[] status, Connection... conn) throws Exception {
+		return loadByIdsLong(ids, null, status, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID и вернуть в заданном порядке
@@ -964,13 +993,13 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order, Connection... conn) throws Exception {
+	public static ArrayList<Item> loadByIdsLong(Collection<Long> ids, Long[] order, Byte[] status, Connection... conn) throws Exception {
 		if (ids.size() == 0)
 			return new ArrayList<>();
 		TemplateQuery query = new TemplateQuery("load by ids");
 		query.SELECT(ITEM_TBL + ".*", "0 AS PID")
 				.FROM(ITEM_TBL).WHERE().col_IN(I_ID).longIN(ids.toArray(new Long[ids.size()]))
-				.AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+				.AND().col_IN(I_STATUS).byteIN(status);
 		return loadByQuery(query, "PID", order, null, conn);
 	}
 	/**
@@ -989,7 +1018,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				idsLong.add(Long.parseLong(id));
 			} catch (Exception e) { }
 		}
-		return loadByIdsLong(idsLong, null, conn);
+		return loadByIdsLong(idsLong, null, new Byte[] {Item.STATUS_NORMAL}, conn);
 	}
 	/**
 	 * Загрузить айтемы по их ID с учетом типа айтема
@@ -1039,7 +1068,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 				ids.add(rs.getLong(1));
 			rs.close();
 			queryFinished(connection);
-			return loadByIdsLong(ids, connection);
+			return loadByIdsLong(ids, new Byte[]{Item.STATUS_NORMAL}, connection);
 		} finally {
 			MysqlConnector.closeStatement(pstmt);
 			if (isOwnConnection) MysqlConnector.closeConnection(connection);

@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
@@ -194,7 +195,7 @@ public class TabTxtTableData implements TableDataSource {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
+	public final Collection<String> getHeaders(){
 		TreeSet<String> a = new TreeSet<>();
 		a.addAll(header.keySet());
 		return a;

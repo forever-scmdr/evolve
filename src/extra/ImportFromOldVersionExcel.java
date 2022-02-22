@@ -354,6 +354,8 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		}
 	}
 
+
+
 	private int getFilledCellsCount(Row row) {
 		int c = 0;
 		Iterator<Cell> iterator = row.cellIterator();
