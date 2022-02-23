@@ -14,7 +14,6 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
@@ -92,8 +91,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		parse(priceWB);
 		info.setCurrentJob("");
 		priceWB.close();
-		//clear junk
-		clearJunk();
+		//clearJunk();
 		//creating filters and item types
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
@@ -110,7 +108,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private void hideAllProducts() throws Exception {
 		setOperation("Скрываем товары");
 		setProcessed(0);
-		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM);
+		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
 		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
 		productsQuery.setLimit(LOAD_BATCH_SIZE);
 		LinkedList<Item> products = new LinkedList<>();
@@ -127,10 +125,10 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				if (counter >= HIDE_BATCH_SIZE) commitCommandUnits();
 				info.increaseProcessed();
 			}
+			commitCommandUnits();
 			productsQuery.setLimit(LOAD_BATCH_SIZE);
 			products.addAll(productsQuery.loadItems());
 		}
-		commitCommandUnits();
 	}
 
 	private void deleteHidden() throws Exception {
@@ -139,14 +137,18 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		Queue<Item> products = new LinkedList<>();
 
 		long now = new Date().getTime();
-		products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, 0L, Item.STATUS_HIDDEN));
+		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN);
+		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
+		productsQuery.setLimit(LOAD_BATCH_SIZE);
+		products.addAll(productsQuery.loadItems());
 		long id = 0;
 		int counter = 0;
+		int page = 1;
 		while (products.size() > 0) {
 			while (products.size() != 0) {
 				Item product = products.poll();
 				id = product.getId();
-				if (now - product.getTimeUpdated() > ABSENT_PRODUCT_LIFETIME) {
+				if (now - product.getTimeUpdated() > ABSENT_PRODUCT_LIFETIME || StringUtils.isBlank(product.getStringValue(CODE_PARAM))) {
 					executeCommandUnit(ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
 					counter++;
 					info.increaseProcessed();
@@ -155,9 +157,11 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					}
 				}
 			}
-			products.addAll(ItemMapper.loadByName(ItemNames.PRODUCT, LOAD_BATCH_SIZE, id));
+			commitCommandUnits();
+			page++;
+			productsQuery.setLimit(LOAD_BATCH_SIZE, page);
+			products.addAll(productsQuery.loadItems());
 		}
-		commitCommandUnits();
 	}
 
 	private void clearJunk() throws Exception {

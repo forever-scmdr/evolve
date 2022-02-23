@@ -760,7 +760,7 @@
 					</xsl:if>
 				</xsl:if>
 				<xsl:if test="f:num(qty) = 0">
-					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-check"></i>нет в наличии</div>
+					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-clock"></i>нет в наличии</div>
 				</xsl:if>
 			</div>
 			<xsl:for-each select="$tags">

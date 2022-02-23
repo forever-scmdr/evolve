@@ -20,11 +20,13 @@
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not($cart/processed = '1')">
 					<form method="post">
-						<xsl:apply-templates select="$cart/bought[f:num(sum) != 0]" mode="avlb"/>
-						<xsl:if test="page/cart/bought[f:num(sum) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
-							<h2>Товары под заказ</h2>
-							<xsl:apply-templates select="$cart/bought" mode="preorder"/>
-						</xsl:if>
+						<div id="cart-bought-list">
+							<xsl:apply-templates select="$cart/bought[f:num(sum) != 0]" mode="avlb"/>
+							<xsl:if test="page/cart/bought[f:num(sum) = 0] or page/cart/bought[f:num(qty_avail) = 0]">
+								<h2>Товары под заказ</h2>
+								<xsl:apply-templates select="$cart/bought" mode="preorder"/>
+							</xsl:if>
+						</div>
 						<div class="total">
 							<xsl:if test="page/cart/sum != '0'">
 								<p>Итого: <xsl:value-of select="f:cart_sum($cart/sum)"/></p>
@@ -46,12 +48,15 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
-			$(".qty-input").change(function(){
+			$(document).on('change', ".qty-input", function(){
+
+				alert();
+
 				$t = $(this);
 				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
 					$form = $(this).closest('form');
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
-					$form.submit();
+					postForm($form);
 				}else if(!validate($t.val())){
 					if(validate($t.attr("data-old"))){
 						$t.val($t.attr("data-old"));

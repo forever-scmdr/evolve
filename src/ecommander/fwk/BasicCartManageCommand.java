@@ -110,7 +110,7 @@ public abstract class BasicCartManageCommand extends Command {
 	    checkStrategy();
 		updateQtys();
 		recalculateCart();
-		return getResult("cart");
+		return getResult("cart_ajax");
 	}
 
 
