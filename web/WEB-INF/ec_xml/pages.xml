@@ -736,14 +736,23 @@
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 
 		<session>
-			<single item="cart">
-				<list item="bought">
-					<list item="abstract_product" id="product" tag="product">
-						<link name="to_cart" target="cart_action">
-							<var name="action" value="addToCart"/>
-							<var name="code" ref="product" parameter="code"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product">
+						<single item="product" id="parent">
+							<link name="show_product" target="product">
+								<var name="prod" ref="parent" style="key"/>
+							</link>
+						</single>
+						<link name="show_product" target="product">
+							<var name="prod" ref="prod" style="key"/>
 						</link>
 					</list>
+					<link name="delete" target="cart_action">
+						<var name="action" value="delete"/>
+						<var name="bought" ref="bought"/>
+					</link>
+					<parameter-input ref="bought" name="qty"/>
 				</list>
 			</single>
 		</session>

@@ -102,7 +102,7 @@ public abstract class BasicCartManageCommand extends Command {
 		long boughtId = Long.parseLong(getVarSingleValue(BOUGHT_ITEM));
 		getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
 		recalculateCart();
-		return getResult("cart");
+		return getResult("ajax");
 	}
 
 
@@ -110,14 +110,12 @@ public abstract class BasicCartManageCommand extends Command {
 	    checkStrategy();
 		updateQtys();
 		recalculateCart();
-		return getResult("cart_ajax");
+		return getResult("ajax");
 	}
 
 
 	public ResultPE proceed() throws Exception {
-		checkStrategy();
-		updateQtys();
-		recalculateCart();
+		recalculate();
 		return getResult("proceed");
 	}
 
