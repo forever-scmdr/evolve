@@ -6549,7 +6549,7 @@ table.compare .catalog-items {
 }
 .pagination .pagination-container a.active,.pagination .pagination-container a:hover {
 	border-radius:2px;
-	background-color:#EC0000;
+	background-color:#ff5722;
 	border-color:transparent;
 	color:#fff;
 }
@@ -7683,18 +7683,22 @@ td .catalog-item {
 }
 .device__info {
 	flex:1;
-	max-width: 250px;
 }
 .device_row__price {
 	flex-direction:column;
 	font-size:unset;
-	min-width:70px;
-	text-align: right;
+	min-width:100px;
+	/*text-align: right;*/
+	max-width: 100px;
+}
+.no_price{
+	font-size: 12px;
 }
 .device_row__order {
 	align-items:flex-start;
 	justify-content:flex-start;
 	flex-direction:column;
+	width: 160px;
 }
 .device_row__in-stock {
 	align-self:auto;
@@ -7966,7 +7970,7 @@ td .catalog-item {
 	.hero .container {
 		flex-wrap:wrap;
 		margin-left: -15px;
-		margin-right: -15px;
+		margin-right: -15px;r
 	}
 	.hero__banners {
 		margin-left:unset;
@@ -9149,7 +9153,9 @@ label input {
 	margin-top: 20px;
 }
 
-.search-header{
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
+.cart-not-enough{
+	color: red;
+}
+.confirm-table td{
+	vertical-align: top;
 }

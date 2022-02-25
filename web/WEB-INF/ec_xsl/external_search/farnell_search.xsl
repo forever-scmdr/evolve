@@ -22,7 +22,7 @@
 			</head>
 			<body>
 				<div id="farnell_search" class="result">
-					<h2>Результат поиска по Farnell</h2>
+					<h2 class="search-header">Результат поиска по Farnell</h2>
 					<xsl:if test="not($result/products)">
 						<p>Товары не найдены</p>
 					</xsl:if>

@@ -53,7 +53,7 @@
 					<tr class="catalog-items">
 						<xsl:for-each select="page/product">
 							<td>
-								<xsl:apply-templates select="." />
+								<xsl:apply-templates select="." mode="product-table" />
 							</td>
 						</xsl:for-each>
 					</tr>

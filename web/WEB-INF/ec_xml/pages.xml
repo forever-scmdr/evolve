@@ -109,9 +109,6 @@
 
 
 	<page name="index" template="index" cacheable="true">
-<!--		<request>-->
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
-<!--		</request>-->
 		<single item="main_page" id="main" cacheable="true">
 			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
@@ -189,7 +186,6 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 			<var name="direction" value="ASC" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="minqty_opt" value="" scope="cookie"/>
@@ -323,7 +319,6 @@
 	<page name="tag_section" template="tag_section">
 		<request>
 			<var name="tag"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<request>
 			<var name="page" value="1"/>
@@ -440,7 +435,6 @@
 			<var name="q" style="query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -464,7 +458,6 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -535,7 +528,6 @@
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product">
@@ -730,7 +722,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
+			<var name="currency" value="byn" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
@@ -756,6 +748,12 @@
 				</list>
 			</single>
 		</session>
+		<link name="recalculate_link" target="cart_action" type="itemform">
+			<var name="action" value="recalculate"/>
+		</link>
+		<link name="proceed_link" target="cart_action" type="itemform">
+			<var name="action" value="proceed"/>
+		</link>
 		<link name="show_cart" target="cart"/>
 		<list item="currency"/>
 		<list item="shop">
@@ -797,7 +795,6 @@
 	<page name="cart" template="cart">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
 		<session>
@@ -834,7 +831,6 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -1604,10 +1600,18 @@
 		</command>
 	</page>
 
+	<page name="parse_rct_auto" schedule="0 0 7 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="ecommander.fwk.external_shops.rct.ImportRctCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 	<page name="reindex" template="integration/reindex" authority-groups="common">
 		<request>
 			<var name="action"/>
-			<!--<var name="with_existing_sections" value="copy"/>-->
 		</request>
 		<command class="ecommander.fwk.integration.ReindexCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
@@ -1735,7 +1739,6 @@
 			<var name="old_query"/>
 			<var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="-1" scope="cookie"/>
-<!--			<var name="currency" value="byn" scope="cookie"/>-->
 		</request>
 		<!--		<command class="extra.FixSearchQuery"/>-->
 

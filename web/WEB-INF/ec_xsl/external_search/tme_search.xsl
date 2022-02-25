@@ -21,7 +21,7 @@
 			</head>
 			<body>
 				<div id="tme_search" class="result">
-					<h2>Результат поиска по TME</h2>
+					<h2 class="search-header">Результат поиска по TME</h2>
 					<div class="catalog-items{' lines'[$view = 'list']}">
 						<xsl:if test="$view = 'list'">
 							<xsl:apply-templates select="$products" mode="lines"/>

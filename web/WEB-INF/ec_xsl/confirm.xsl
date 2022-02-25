@@ -110,7 +110,7 @@
 			</div>
 
 			<div class="table-responsive">
-				<table>
+				<table class="confirm-table">
 					<tr>
 						<th>
 							Код
@@ -138,18 +138,26 @@
 							<td>
 								<xsl:value-of select="code"/>
 							</td>
-							<td valign="top">
+							<td>
 								<strong><xsl:value-of select="$product/name"/></strong>
 							</td>
-							<td valign="top">
+							<td>
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="$product/price"/>
-								<xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if>
+								<xsl:value-of select="f:cart_sum($product/price)"/>
+								<xsl:if test="not_available = '1'">
+									<p>
+										доступно: <xsl:value-of select="$product/qty"/>
+										<br/>
+										<span class="cart-not-enough">
+											под заказ: <xsl:value-of select="f:num(qty_total) - f:num(qty_avail)"/>
+										</span>
+									</p>
+								</xsl:if>
 							</td>
 							<td>
-								<xsl:value-of select="sum"/>
+								<xsl:value-of select="f:cart_sum(sum)"/>
 							</td>
 							<!-- <td>
 								<xsl:value-of select="$product/qty"/>

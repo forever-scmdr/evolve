@@ -27,13 +27,7 @@
 								<xsl:apply-templates select="$cart/bought" mode="preorder"/>
 							</xsl:if>
 
-							<div class="total">
-								<xsl:if test="page/cart/sum != '0'">
-									<p>Итого: <xsl:value-of select="f:cart_sum($cart/sum)"/></p>
-								</xsl:if>
-								 <input type="submit" class="button inverted" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/>
-								<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
-							</div>
+							<xsl:call-template name="TOTAL_SUM_AND_BUTTONS"/>
 						</div>
 					</form>
 				</xsl:when>
@@ -46,9 +40,21 @@
 		<xsl:call-template name="ACTIONS_MOBILE"/>
 	</xsl:template>
 
+
+	<xsl:template name="TOTAL_SUM_AND_BUTTONS">
+		<div class="total">
+			<xsl:if test="page/cart/sum != '0'">
+				<p>Итого: <xsl:value-of select="f:cart_sum($cart/sum)"/></p>
+			</xsl:if>
+			<!-- <input type="submit" class="button inverted" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/> -->
+			<input type="submit" class="button" value="Продолжить" onclick="$(this).closest('form').attr('action', '{page/proceed_link}')"/>
+		</div>
+	</xsl:template>
+
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
-			$(document).on('change', ".qty-input", function(){				$t = $(this);
+			$(document).on('change', ".qty-input", function(){
+				$t = $(this);
 				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
 					$form = $(this).closest('form');
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
@@ -110,6 +116,9 @@
 				<span>Наличие</span>
 				доступно:
 				<xsl:value-of select="f:num($p/qty)"/>
+				<xsl:if test="not_available = '1'">
+					<p class="cart-not-enough">под заказ: <xsl:value-of select="f:num(qty_total) - f:num(qty_avail)"/></p>
+				</xsl:if>
 			</div>
 
 			<div class="price one">

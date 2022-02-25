@@ -14,7 +14,7 @@
 		<div>
 			<xsl:if test="$found">
 				<div id="digikey_search" class="result">
-					<h2>Результат поиска по Digikey</h2>
+					<h2 class="search-header">Результат поиска по Digikey</h2>
 					
 						<div class="catalog-items{' lines'[$view = 'list']}">
 							<xsl:if test="$view = 'list'">
