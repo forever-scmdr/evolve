@@ -1541,7 +1541,7 @@
 	<!--//                                                                          -->
 	<!--//                      Разбор файлов Yandex Market                         -->
 	<!--//                                                                          -->
-	<page name="integrate" template="integrate" authority-groups="common">
+	<page name="integrate" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>
