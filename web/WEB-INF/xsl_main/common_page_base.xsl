@@ -49,6 +49,7 @@
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
+	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror');</xsl:variable>
 
 
 
@@ -265,8 +266,8 @@
 						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
-								<xsl:for-each select="page/catalog/section">
-									<xsl:if test="section">
+								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+									<xsl:if test="section[f:num(hide) = 0]">
 										<a href="{show_products}" rel="#sub_{@id}">
 											<xsl:value-of select="name" />
 										</a>
@@ -279,9 +280,9 @@
 								</xsl:for-each>
 							</div>
 
-							<xsl:for-each select="page/catalog/section">
+							<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section">
+									<xsl:for-each select="section[f:num(hide) = 0]">
 										<a href="{show_products}"><xsl:value-of select="name" /></a>
 									</xsl:for-each>
 								</div>
@@ -305,7 +306,7 @@
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
 			<xsl:if test="header and not(header = '')"><div class="footer__title"><xsl:value-of select="header" /></div></xsl:if>
-			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+			<div class="footer__text"><xsl:value-of select="text|code" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 
@@ -472,15 +473,15 @@
 					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
 				</div>
 				<ul>
-					<xsl:for-each select="page/catalog/section">
+					<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 						<li>
-							<xsl:if test="section">
+							<xsl:if test="section[f:num(hide) = 0]">
 								<a rel="{concat('#m_sub_', @id)}">
 									<xsl:value-of select="name"/>
 								</a>
 								<span>></span>
 							</xsl:if>
-							<xsl:if test="not(section)">
+							<xsl:if test="not(section[f:num(hide) = 0])">
 								<a href="{show_products}">
 									<xsl:value-of select="name"/>
 								</a>
@@ -490,6 +491,7 @@
 				</ul>
 			</div>
 			<xsl:for-each select="page/catalog/section[section]">
+				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
@@ -497,7 +499,7 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-						<xsl:for-each select="section">
+							<xsl:for-each select="section[f:num(hide) = 0]">
 							<li>
 								<xsl:if test="section">
 									<a rel="{concat('#m_sub_', @id)}">
@@ -514,8 +516,10 @@
 						</xsl:for-each>
 					</ul>
 				</div>
+				</xsl:if>
 			</xsl:for-each>
 			<xsl:for-each select="page/catalog/section/section[section]">
+				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
@@ -523,13 +527,14 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-						<xsl:for-each select="section">
+							<xsl:for-each select="section[f:num(hide) = 0]">
 							<li>
 								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
 				</div>
+				</xsl:if>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
@@ -555,25 +560,25 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section">
+			<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a class="side-menu__link{' side-menu__link_active'[$l1_active]}" href="{show_products}"><xsl:value-of select="name"/> </a>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
-					<xsl:for-each select="section">
+					<xsl:for-each select="section[f:num(hide) = 0]">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="side-menu__item side-menu__item_level_2">
 							<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="name"/></a>
 						</div>
 						<xsl:if test=".//@id = $sel_sec_id">
-							<xsl:for-each select="section">
+							<xsl:for-each select="section[f:num(hide) = 0]">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="side-menu__item side-menu__item_level_3">
 									<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="name"/></a>
 								</div>
 								<xsl:if test=".//@id = $sel_sec_id">
-									<xsl:for-each select="section">
+									<xsl:for-each select="section[f:num(hide) = 0]">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="side-menu__item side-menu__item_level_4">
 											<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l4_active]}"><xsl:value-of select="name"/></a>
