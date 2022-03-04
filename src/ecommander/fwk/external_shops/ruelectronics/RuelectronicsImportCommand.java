@@ -3,7 +3,6 @@ package ecommander.fwk.external_shops.ruelectronics;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.WebClient;
 import ecommander.fwk.external_shops.AbstractShopImport;
-import ecommander.fwk.integration.CatalogConst;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -12,7 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.nio.file.Paths;
 
-public class RuelectronicsImportCommand extends AbstractShopImport implements CatalogConst {
+public class RuelectronicsImportCommand extends AbstractShopImport {
 	private static final String SHOP_NAME = "ruelectronics.com";
 	private static final String INTEGRATION_DIR = "upload/ruelectronics";
 	private static final String DOWNLOAD_URL = "http://zip-2002.ru/vip/price/zipstock.xml";
