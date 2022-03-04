@@ -42,7 +42,7 @@
 		<!-- FANCYBOX -->
 		<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"/>
 		<!-- AJAX -->
-		<script type="text/javascript" src="admin/js/ajax.js"/>
+		<script type="text/javascript" src="admin/ajax/ajax.js"/>
 		<!-- ADMIN -->
 		<script type="text/javascript" src="admin/js/admin.js"/>
 	</xsl:template>

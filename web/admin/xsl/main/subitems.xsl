@@ -100,7 +100,6 @@
 				<h4>Редактировать</h4>
 				<xsl:for-each select="admin-page/assoc[item]">
 					<xsl:variable name="ass" select="concat('ass_', @id)"/>
-					<xsl:variable name="hidden" select="@status = '1'"/>
 					<xsl:variable name="ass_id" select="@id"/>
 					<xsl:variable name="asc" select="if (count(item) &gt; 1 and number(item[1]/@weight) &gt; number(item[2]/@weight)) then false() else true()"/>
 					<ul class="edit drag_area">
@@ -112,12 +111,12 @@
 
 						<xsl:for-each select="item">
 							<xsl:variable name="caption" select="@caption | @type-caption[current()/@caption = '']"/>
-
+							<xsl:variable name="hidden" select="@status = '1'"/>
 							<xsl:variable name="dropPos" select="if ($asc) then position() - 1 else $itemCount - position() + 1"/>
 							<xsl:variable name="owner" select="$users[@id = current()/@user-id]"/>
 							<li class="drop-zone {$ass}" href="{replace(replace($reorder_link, ':pos:', string($dropPos)), ':assoc:', $ass_id)}"></li>
 							<li class="status-{@status} dragable visible multiple call-context-menu default {$ass} " data-link="{edit-link}" data-del="{delete-link}" id="{@id}">
-								
+
 								<div class="selection-overlay" data-id="{@id}"></div>
 								<div class="drag" title="нажмите, чтобы перемещать элемент"></div>
 								<a href="{edit-link}" class="name" title="редактировать">
