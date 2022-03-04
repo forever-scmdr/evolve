@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 
-	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')</xsl:variable>
 	<xsl:variable name="need_container" select="/page/@name = 'index' or $hide_side_menu"/>
 
 	<!-- в 2 колонки подблоки -->

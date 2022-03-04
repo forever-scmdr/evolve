@@ -7,7 +7,7 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section"/>
+	<xsl:variable name="subs" select="$main_menu_section/section[f:num(hide) = 0]"/>
 	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
@@ -310,7 +310,7 @@
 			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')" alt="{name}" /></div>
+			<div class="catalog-item__image img"><img src="{$pic}"  onerror="{$onerror}" alt="{name}" /></div>
 			<div class="catalog-item__info">
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
