@@ -15,7 +15,7 @@
 	<xsl:template name="CONTENT">
 		<div class="catalog-items">
 			<div class="catalog-items__wrap">
-				<xsl:for-each select="/page/catalog/section">
+				<xsl:for-each select="/page/catalog/section[f:num(hide) = 0]">
 					<div class="catalog-item">
 						<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 						<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>

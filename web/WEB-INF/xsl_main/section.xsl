@@ -10,7 +10,7 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sec_name"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section"/>
+	<xsl:variable name="subs" select="$main_menu_section/section[f:num(hide) = 0]"/>
 	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
@@ -70,7 +70,7 @@
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
+				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id and f:num(hide) = 0]">
 					<div class="path__arrow"></div>
 					<a class="path__link" href="{show_products}">
 						<xsl:value-of select="name"/>
@@ -259,8 +259,8 @@
 					<div class="view__column">
 						<select value="{page/variables/sort}{page/variables/direction}" onchange="window.location.href = $(this).find(':selected').attr('link')">
 							<option value="ASC" link="{page/set_sort_default}">Без сортировки</option>
-							<option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
-							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option>
+							<!-- <option value="priceASC" link="{page/set_sort_price_asc}">Сначала дешевые</option>
+							<option value="priceDESC" link="{page/set_sort_price_desc}">Сначала дорогие</option> -->
 							<option value="nameASC" link="{page/set_sort_name_asc}">По алфавиту А→Я</option>
 							<option value="nameDESC" link="{page/set_sort_name_desc}">По алфавиту Я→А</option>
 						</select>
@@ -331,7 +331,7 @@
 			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
 			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
 			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png'); $(this).removeAttr('onerror')" alt="{name}" /></div>
+			<div class="catalog-item__image img"><img src="{$pic}"  onerror="$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')" alt="{name}" /></div>
 			<div class="catalog-item__info">
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>

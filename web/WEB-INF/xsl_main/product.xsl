@@ -93,31 +93,37 @@
 						</div>
 					</xsl:for-each>
 				</div> -->
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
-					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{$p/name}"/>
-					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
-					</xsl:if>
-				</div>
-				<script>
-					$('.fotorama')
-						.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
-						if (e.type === 'fotorama:fullscreenenter') {
-							// Options for the fullscreen
-							fotorama.setOptions({
-								fit: 'scaledown'
-							});
-						} else {
-							// Back to normal settings
-							fotorama.setOptions({
-								fit: 'contain'
-							});
-						}
-						})
-						.fotorama();
+				<xsl:if test="$p/main_pic | $p/gallery">
+					<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+						<xsl:for-each select="$p/gallery">
+							<img src="{$p/@path}{.}" alt="{$p/name}"/>
+						</xsl:for-each>
+						<xsl:if test="not($p/gallery)">
+							<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+						</xsl:if>
+					</div>
+
+					<script>
+						$('.fotorama')
+							.on('fotorama:fullscreenenter fotorama:fullscreenexit', function (e, fotorama) {
+							if (e.type === 'fotorama:fullscreenenter') {
+								// Options for the fullscreen
+								fotorama.setOptions({
+									fit: 'scaledown'
+								});
+							} else {
+								// Back to normal settings
+								fotorama.setOptions({
+									fit: 'contain'
+								});
+							}
+							})
+							.fotorama();
 					</script>
+				</xsl:if>
+				<xsl:if test="not($p/main_pic | $p/gallery)">
+					<img src="img/no_image.png" alt="{$p/name}"/>
+				</xsl:if>
 			</div>
 			<div class="device-basic__column">
 				<!-- <xsl:for-each select="$p/tag">
@@ -301,49 +307,51 @@
 			</div>
 		</div>
 
-		<div class="device-full">
-			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
-			<div class="tabs tabs_product">
-				<div class="tabs__nav">
-					<xsl:if test="$has_text">
-						<a href="#tab_text" class="tab tab_active">Описание</a>
-					</xsl:if>
-					<xsl:if test="$p/params">
-						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
-					</xsl:for-each>
+		<xsl:if test="$p/text | $p/params | $p/product_extra">
+			<div class="device-full">
+				<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
+				<div class="tabs tabs_product">
+					<div class="tabs__nav">
+						<xsl:if test="$has_text">
+							<a href="#tab_text" class="tab tab_active">Описание</a>
+						</xsl:if>
+						<xsl:if test="$p/params">
+							<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
+						</xsl:if>
+						<xsl:for-each select="$p/product_extra">
+							<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
+						</xsl:for-each>
+					</div>
+					<div class="tabs__content">
+						<xsl:if test="$has_text">
+							<div class="tab-container" id="tab_text">
+								<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:if>
+						<xsl:if test="$p/params">
+							<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
+								<table class="full-params">
+									<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
+									<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
+									<xsl:apply-templates select="$params_xml/params/group"/>
+									<xsl:apply-templates select="$params_xml/params/parameter"/>
+								</table>
+							</div>
+						</xsl:if>
+						<xsl:for-each select="$p/product_extra">
+							<div class="tab-container" id="tab_{@id}" style="display: none">
+								<xsl:value-of select="text" disable-output-escaping="yes"/>
+							</div>
+						</xsl:for-each>
+					</div>
 				</div>
-				<div class="tabs__content">
-					<xsl:if test="$has_text">
-						<div class="tab-container" id="tab_text">
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$p/params">
-						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
-							<table class="full-params">
-								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
-								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
-								<xsl:apply-templates select="$params_xml/params/group"/>
-								<xsl:apply-templates select="$params_xml/params/parameter"/>
-							</table>
-						</div>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<div class="tab-container" id="tab_{@id}" style="display: none">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:for-each>
-				</div>
-			</div>
 
-			<hr/>
-			<div class="extra-info extra-info_product">
-				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+				<hr/>
+				<div class="extra-info extra-info_product">
+					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+				</div>
 			</div>
-		</div>
+		</xsl:if>
 
 		<xsl:if test="page/grouped">
 			<div class="block devices-block pt">
