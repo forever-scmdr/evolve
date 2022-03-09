@@ -94,10 +94,10 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					needsSave = true;
 					product.setValueUI(Product.PRICE, price);
 				}
-				if((StringUtils.isNotBlank(qty1) || StringUtils.isNotBlank(qty1)) && product.getDoubleValue(Product.QTY,0d) != q){
-					needsSave = true;
+//				if((StringUtils.isNotBlank(qty1) || StringUtils.isNotBlank(qty1)) && product.getDoubleValue(Product.QTY,0d) != q){
+//					needsSave = true;
 					product.setValue(Product.QTY, q);
-				}
+//				}
 
 				
 				//byte

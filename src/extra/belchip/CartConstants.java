@@ -10,7 +10,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public interface CartConstants {
-	BigDecimal SUM_1 = BigDecimal.valueOf(150);
+	BigDecimal SUM_1 = BigDecimal.valueOf(200);
 	BigDecimal SUM_2 = BigDecimal.valueOf(500);
 	int DISCOUNT_1 = 5;
 	int DISCOUNT_2 = 10;
