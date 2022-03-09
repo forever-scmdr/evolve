@@ -40,7 +40,9 @@ public class CreateSiteMap extends Command {
 			PageController.newSimple().executePage(siteMap, bos);
 			pageContent = bos.toString("UTF-8");
 			bos.close();
-			pageContent = StringUtils.substringAfter(pageContent, SCHEMA_LOCATION+">");
+			//pageContent = StringUtils.substringAfter(pageContent, SCHEMA_LOCATION+">");
+			pageContent = StringUtils.substringAfter(pageContent, "urlset");
+			pageContent = StringUtils.substringAfter(pageContent, ">");
 			pageContent = StringUtils.substringBefore(pageContent, "</urlset>");
 			sb.append(pageContent);
 		}
