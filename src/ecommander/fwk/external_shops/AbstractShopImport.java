@@ -12,6 +12,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public abstract class AbstractShopImport extends IntegrateBase implements CatalogConst {
@@ -94,15 +95,22 @@ public abstract class AbstractShopImport extends IntegrateBase implements Catalo
 	private void hideAllProducts() throws Exception {
 		setOperation("Скрываем товары с \"" + SHOP_NAME + "\"");
 		info.setProcessed(0);
-		ItemQuery q = new ItemQuery(PRODUCT_ITEM);
+		ItemQuery q = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
 		q.setParentId(catalog.getId(), false);
 		int page = 1;
 		q.setLimit(LOAD_BATCH_SIZE, page);
 		List<Item> products;
 		int counter = 0;
+		HashSet<String> codes = new HashSet<>();
 		while ((products = q.loadItems()).size() >= LOAD_BATCH_SIZE) {
 			for (Item product : products) {
-				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser().noFulltextIndex());
+				String code = product.getStringValue(CODE_PARAM);
+				if(!codes.contains(code)) {
+					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser().noFulltextIndex());
+					codes.add(code);
+				}else {
+					executeCommandUnit(ItemStatusDBUnit.delete(product).ignoreUser().noFulltextIndex());
+				}
 				counter++;
 				if (counter >= STATUS_BATCH_SIZE) {
 					counter = 0;
@@ -110,9 +118,6 @@ public abstract class AbstractShopImport extends IntegrateBase implements Catalo
 				}
 				info.increaseProcessed();
 			}
-			q.setLimit(LOAD_BATCH_SIZE, ++page);
-		}
-		if (counter > 0) {
 			commitCommandUnits();
 		}
 	}

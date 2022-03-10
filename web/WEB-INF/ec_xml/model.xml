@@ -182,7 +182,7 @@
 		<child item="shop_catalog" single="true" />
 	</item>
 
-	<item name="shop_catalog" caption="Список товаров" children-per-page="50" ag-id="1986" ag-hash="1764592592" >
+	<item name="shop_catalog" caption="Список товаров" children-per-page="50" ag-id="1961" ag-hash="1764592592" >
 		<parameter name="c1" caption="C1" description="цена BYN = цена$/C1 * (курс$*надбавка к курсу) * C2 * C3 * C4" type="currency" default="1.2"/>
 		<parameter name="c2" caption="C2" type="currency" default="1.4"/>
 		<parameter name="c3" caption="C3" type="currency" default="1.2"/>
@@ -190,7 +190,7 @@
 		<child item="product"/>
 	</item>
 
-	<item name="external_shops" caption="Внешние магазины" ag-id="1961" ag-hash="-120191287" >
+	<item name="external_shops" caption="Внешние магазины" ag-id="1962" ag-hash="-120191287" >
 		<child item="currency_ratios" single="true"/>
 		<child item="shop" />
 	</item>

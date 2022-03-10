@@ -31,7 +31,8 @@ public class LoadCurrencyFromNBRB extends Command implements CatalogConst {
 		}
 		Document doc = Jsoup.parse(new URL(NBNB_URL /*+ FORMAT.format(new Date())*/), 5000);
 		for (Item currency : currencies){
-			Elements infoFromBank = doc.getElementsContainingOwnText(currency.getStringValue(NAME,""));
+			String ISOCode = currency.getStringValue(NAME,"");
+			Elements infoFromBank = doc.getElementsContainingOwnText(ISOCode);
 			if(infoFromBank == null || infoFromBank.isEmpty()){
 				setPageVariable(currency.getStringValue(NAME), "currency not found");
 				continue;
