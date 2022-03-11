@@ -66,7 +66,6 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 	private int x = 0;
 
 
-
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		paramValue = new StringBuilder();
@@ -77,7 +76,7 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 			isInsideParams = true;
 		} else if (PARAM_EL.equalsIgnoreCase(qName)) {
 			isInsideParam = true;
-		} else if(isInsideParam && NAME.equalsIgnoreCase(qName)){
+		} else if (isInsideParam && NAME.equalsIgnoreCase(qName)) {
 			paramsXmlBuilder.startElement("strong");
 		}
 		if (PRODUCT_ITEM.equalsIgnoreCase(qName)) {
@@ -85,7 +84,7 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 			picSet = new LinkedHashSet<>();
 			paramsXmlBuilder = XmlDocumentBuilder.newDocPart();
 		}
-		if(PARAM_NAMES.containsKey(qName)){
+		if (PARAM_NAMES.containsKey(qName)) {
 			needSaveTagValue = true;
 		}
 	}
@@ -95,19 +94,20 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 		try {
 			if (PRODUCT_ITEM.equalsIgnoreCase(qName)) {
 				String code = singleParamsMap.get(CODE_PARAM);
-				ItemQuery   query = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
-				query.setParentId(catalog.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
-				query.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
-				List<Item> products = query.loadItems();
+				List<Item> products = loadByCode(code, Item.STATUS_HIDDEN);
+				products = products.size() > 0? products : loadByCode(code, Item.STATUS_NORMAL);
 				Item product = null;
 				if (products.size() > 0) {
 					product = products.remove(0);
-					DelayedTransaction.executeSingle(user, ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
+					if(product.getStatus() == Item.STATUS_HIDDEN) {
+						DelayedTransaction.executeSingle(user, ItemStatusDBUnit.restore(product).ignoreUser().noFulltextIndex());
+					}
 				}
-				for(Item p : products){
+				for (Item p : products) {
 					DelayedTransaction.executeSingle(user, ItemStatusDBUnit.delete(p).ignoreUser().noFulltextIndex());
 					info.setToProcess(++x);
 				}
+
 				product = product == null ? ItemUtils.newChildItem(PRODUCT_ITEM, catalog) : product;
 
 				for (Map.Entry<String, String> entry : singleParamsMap.entrySet()) {
@@ -122,30 +122,31 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 				product.setValueUI(TAG_PARAM, "external_shop");
 				product.setValueUI(TAG_PARAM, "ruelectronics.com");
-				if(!"<p></p>".equalsIgnoreCase(paramsXmlBuilder.toString())) {
+				if (!"<p></p>".equalsIgnoreCase(paramsXmlBuilder.toString())) {
 					product.setValueUI(DESCRIPTION_PARAM, paramsXmlBuilder.toString());
 				}
 
-
 				DelayedTransaction.executeSingle(user, SaveItemDBUnit.get(product).ignoreUser().noFulltextIndex());
 				info.increaseProcessed();
-			}else if(PARAMS_EL.equalsIgnoreCase(qName)){
+
+			} else if (PARAMS_EL.equalsIgnoreCase(qName)) {
 				paramsXmlBuilder.endElement();
 				isInsideParams = false;
-			}else if(PARAM_EL.equalsIgnoreCase(qName)){
+			} else if (PARAM_EL.equalsIgnoreCase(qName)) {
 				paramsXmlBuilder.addEmptyElement("br");
 				isInsideParam = false;
-			}else if(NAME_EL.equalsIgnoreCase(qName) && isInsideParam){
+			} else if (NAME_EL.equalsIgnoreCase(qName) && isInsideParam) {
 				paramsXmlBuilder.addText(StringUtils.normalizeSpace(paramValue.toString())).endElement();
- 			}else if(VALUE_EL.equalsIgnoreCase(qName)){
+			} else if (VALUE_EL.equalsIgnoreCase(qName)) {
 				paramsXmlBuilder.addText(StringUtils.normalizeSpace(paramValue.toString()));
-			}
-			else {
+			} else {
 				String paramName = PARAM_NAMES.get(qName);
-				if(StringUtils.isBlank(paramName)){return;}
-				if("pic_link".equalsIgnoreCase(paramName)){
+				if (StringUtils.isBlank(paramName)) {
+					return;
+				}
+				if ("pic_link".equalsIgnoreCase(paramName)) {
 					picSet.add(paramValue.toString());
-				}else{
+				} else {
 					singleParamsMap.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
 				}
 			}
@@ -157,11 +158,18 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 		}
 	}
 
+	private List<Item> loadByCode(String code, byte status) throws Exception {
+		ItemQuery query = new ItemQuery(PRODUCT_ITEM, status);
+		query.setParentId(catalog.getId(), false, ItemTypeRegistry.getPrimaryAssoc().getName());
+		query.addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME);
+		return query.loadItems();
+	}
+
 	private void setSearchString(Item product) throws Exception {
 		StringBuilder search = new StringBuilder();
 		search.append(product.getValue(NAME_EXTRA_PARAM)).append(' ');
 		search.append(product.getValue(NAME)).append(' ');
-		if(paramsXmlBuilder.length() > 0 && !"<p></p>".equalsIgnoreCase(paramsXmlBuilder.toString())){
+		if (paramsXmlBuilder.length() > 0 && !"<p></p>".equalsIgnoreCase(paramsXmlBuilder.toString())) {
 			String content = paramsXmlBuilder.toString();
 			content = content.replaceAll("<\\/strong>", " ");
 			content = content.replaceAll("<\\/?\\w+>", "");
@@ -173,7 +181,7 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if(needSaveTagValue)
+		if (needSaveTagValue)
 			paramValue.append(ch, start, length);
 	}
 

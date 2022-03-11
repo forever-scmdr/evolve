@@ -12,7 +12,6 @@ import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public abstract class AbstractShopImport extends IntegrateBase implements CatalogConst {
@@ -24,24 +23,28 @@ public abstract class AbstractShopImport extends IntegrateBase implements Catalo
 	private static final int STATUS_BATCH_SIZE = 500;
 
 	protected abstract boolean downloadData() throws Exception;
+
 	protected abstract void processData() throws Exception;
+
 	protected abstract String getShopName();
 
 	@Override
 	protected boolean makePreparations() throws Exception {
 		boolean shopLoaded;
-		try{
+		try {
 			shopLoaded = loadShop();
-		}catch (Exception e){
+		} catch (Exception e) {
 			ServerLogger.error("Integeration error", e);
 			addError(e);
 			return false;
 		}
-		if(!shopLoaded){ return false;}
+		if (!shopLoaded) {
+			return false;
+		}
 		boolean dataDownloaded;
 		try {
 			dataDownloaded = downloadData();
-		}catch (Exception e){
+		} catch (Exception e) {
 			ServerLogger.error("Integeration error", e);
 			addError(e);
 			return false;
@@ -101,16 +104,9 @@ public abstract class AbstractShopImport extends IntegrateBase implements Catalo
 		q.setLimit(LOAD_BATCH_SIZE, page);
 		List<Item> products;
 		int counter = 0;
-		HashSet<String> codes = new HashSet<>();
-		while ((products = q.loadItems()).size() >= LOAD_BATCH_SIZE) {
+		while ((products = q.loadItems()).size() > 0) {
 			for (Item product : products) {
-				String code = product.getStringValue(CODE_PARAM);
-				if(!codes.contains(code)) {
-					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser().noFulltextIndex());
-					codes.add(code);
-				}else {
-					executeCommandUnit(ItemStatusDBUnit.delete(product).ignoreUser().noFulltextIndex());
-				}
+				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser().noFulltextIndex());
 				counter++;
 				if (counter >= STATUS_BATCH_SIZE) {
 					counter = 0;
