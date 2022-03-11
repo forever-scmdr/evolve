@@ -99,28 +99,6 @@
 
 	</include-definition>
 
-	<page name="shop_test">
-		<request>
-			<var name="p" value="1" />
-		</request>
-		<list item="shop">
-			<list item="shop_catalog">
-				<list item="product">
-					<filter>
-						<limit>
-							<var value="500"/>
-						</limit>
-						<pages>
-							<var var="p"/>
-						</pages>
-					</filter>
-				</list>
-			</list>
-		</list>
-	</page>
-
-
-
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                                ИНДЕКС                                ////////////-->
