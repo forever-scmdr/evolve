@@ -142,7 +142,9 @@ public abstract class BasicCartManageCommand extends Command {
         // Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
         Item form = getItemForm().getItemSingleTransient();
         boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
-        recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
+        // TODO добавить логику выбора параметра цены (оптовая или розничная)
+        //recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);
+        recalculateCart();
 
         //getSessionMapper().saveTemporaryItem(form, "user");
 

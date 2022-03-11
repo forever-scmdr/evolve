@@ -15,14 +15,18 @@ import java.util.List;
 public class ResetPriceCommand extends Command {
 	@Override
 	public ResultPE execute() throws Exception {
-		ItemQuery prodQuery = new ItemQuery("product").addParameterCriteria("price", "0.001", ">", null, Compare.SOME).setLimit(10);
+		ItemQuery prodQuery = new ItemQuery("product").addParameterCriteria("price", "0.001", ">", null, Compare.SOME).setLimit(10).setIdSequential(0);
 		List<Item> prods = prodQuery.loadItems();
 		while (prods.size() > 0) {
+			long prodId = 0;
 			for (Item prod : prods) {
 				prod.setValueUI("price", "0");
 				executeCommandUnit(SaveItemDBUnit.get(prod).noFulltextIndex());
+				prodId = prod.getId();
 			}
 			commitCommandUnits();
+			prodQuery.setIdSequential(prodId);
+			prods = prodQuery.loadItems();
 		}
 		return null;
 	}
