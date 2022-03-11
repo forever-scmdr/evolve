@@ -1893,4 +1893,10 @@
 		</command>
 	</page>
 
+	<page name="reset_price_to_zero">
+		<command class="ecommander.fwk.integration.ResetPriceCommand" clear-cache="yes">
+			<result name="complete" type="xml" />
+		</command>
+	</page>
+
 </site>
