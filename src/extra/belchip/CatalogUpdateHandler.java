@@ -96,6 +96,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				}
 //				if((StringUtils.isNotBlank(qty1) || StringUtils.isNotBlank(qty1)) && product.getDoubleValue(Product.QTY,0d) != q){
 //					needsSave = true;
+					//product.clearValue(Product.QTY);
 					product.setValue(Product.QTY, q);
 //				}
 
@@ -185,6 +186,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 						break;
 					case special_price:
 						spec = paramValue.toString().trim();
+						break;
 					case code:
 						String code = paramValue.toString();
 						if(StringUtils.isBlank(code)) {
@@ -241,10 +243,10 @@ public class CatalogUpdateHandler extends DefaultHandler {
 		if (fatalError)
 			return;
 		try {
+			paramValue = new StringBuilder();
 			if (EnumUtils.isValidEnum(Qnames.class, qName)) {
 				// paramName = qName;
 				parameterReady = true;
-				paramValue = new StringBuilder();
 			} else if(ItemNames.PRODUCT.equalsIgnoreCase(qName)) {
 				product = null;
 				price = null;
