@@ -57,7 +57,6 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 	private Locator locator;
 	private boolean needSaveTagValue = false;
-	private boolean isInsideParams = false;
 	private boolean isInsideParam = false;
 	private StringBuilder paramValue = new StringBuilder();
 	private XmlDocumentBuilder paramsXmlBuilder = XmlDocumentBuilder.newDocPart();
@@ -73,7 +72,6 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 		if (qName.equalsIgnoreCase(PARAMS_EL)) {
 			paramsXmlBuilder.startElement("p");
-			isInsideParams = true;
 		} else if (PARAM_EL.equalsIgnoreCase(qName)) {
 			isInsideParam = true;
 		} else if (isInsideParam && NAME.equalsIgnoreCase(qName)) {
@@ -131,7 +129,6 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 			} else if (PARAMS_EL.equalsIgnoreCase(qName)) {
 				paramsXmlBuilder.endElement();
-				isInsideParams = false;
 			} else if (PARAM_EL.equalsIgnoreCase(qName)) {
 				paramsXmlBuilder.addEmptyElement("br");
 				isInsideParam = false;

@@ -31,6 +31,7 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
+	<xsl:variable name="shop" select="page/shop" />
 
 
 	<xsl:variable name="active_menu_item"/>
@@ -521,7 +522,7 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
+		<xsl:variable name="tags" select="tag[. != 'external_shop' and not($shop/name = .)]"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
@@ -530,7 +531,7 @@
 
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else if(pic_link != '') then pic_link[1] else 'img/no_image.png'"/>
 
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
@@ -643,7 +644,7 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
+		<xsl:variable name="tags" select="tag[. != 'external_shop' and not($shop/name = .)]"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
@@ -654,7 +655,7 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else if(pic_link != '') then pic_link[1] else 'img/no_image.png'"/>
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
