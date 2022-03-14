@@ -1920,9 +1920,9 @@
 		</command>
 	</page>
 
-	<page name="refresh_access" schedule="0 */15 * ? * *">
+	<!-- <page name="refresh_access" schedule="0 */15 * ? * *">
 		<command class="ecommander.fwk.external_shops.digikey.DigikeySearch" method="refreshAccessToken"/>
-	</page>
+	</page> -->
 
 	<page name="digikey_result">
 		<request>

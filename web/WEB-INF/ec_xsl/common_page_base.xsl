@@ -1014,10 +1014,10 @@
 			<input type="submit" class="button header__button" value="Поиск" />
 			<xsl:variable name="partners">
 				&lt;div&gt;ПЛАТАНа&lt;/div&gt;
-				&lt;div&gt;DIGIKEY&lt;/div&gt;
-				&lt;div&gt;FARNELL&lt;/div&gt;
-				&lt;div&gt;VERICAL&lt;/div&gt;
-				&lt;div&gt;TME&lt;/div&gt;
+				<!-- &lt;div&gt;DIGIKEY&lt;/div&gt; -->
+				<!-- &lt;div&gt;FARNELL&lt;/div&gt; -->
+				<!-- &lt;div&gt;VERICAL&lt;/div&gt; -->
+				<!-- &lt;div&gt;TME&lt;/div&gt; -->
 				&lt;div&gt;Compel&lt;/div&gt;
 				&lt;div&gt;Отечественные РЭК&lt;/div&gt;
 			</xsl:variable>
