@@ -37,6 +37,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	private HashMap<Integer, String> PARAM_INDEXES = new HashMap<>();
 	private HashMap<Integer, String> AUX_PARAMS = new HashMap<>();
 	private static final String FILE_UPLOAD_FOLDER = "pdf";
+	private static final String PIC_FOLDER = "pictures";
 	private static final int LOAD_BATCH_SIZE = 1000;
 	private static final int HIDE_BATCH_SIZE = 500;
 	private static final int DELETE_BATCH_SIZE = 100;
@@ -288,7 +289,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							String[] pics = StringUtils.split(cellValue, '|');
 							if (pics.length > 0) {
 								if (needNewFile(currentProduct, pics[0])) {
-									File f = Paths.get(AppContext.getContextPath(), FILE_UPLOAD_FOLDER, pics[0].trim()).toFile();
+									File f = Paths.get(AppContext.getContextPath(), PIC_FOLDER, pics[0].trim()).toFile();
 									if (f.isFile()) {
 										currentProduct.setValue(MAIN_PIC_PARAM, f);
 									}
@@ -296,7 +297,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 								if (pics.length > 1) {
 									boolean needClear = true;
 									for (int j = 1; j < pics.length; j++) {
-										File f = Paths.get(AppContext.getContextPath(), FILE_UPLOAD_FOLDER, pics[j].trim()).toFile();
+										File f = Paths.get(AppContext.getContextPath(), PIC_FOLDER, pics[j].trim()).toFile();
 										if (f.isFile()) {
 											if (needClear) {
 												currentProduct.clearValue(GALLERY_PARAM);
