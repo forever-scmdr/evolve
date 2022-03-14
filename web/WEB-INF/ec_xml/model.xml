@@ -11,6 +11,7 @@
 		<child item="top_728x90" />
 		<child item="side_240x400" />
 		<child item="bottom_900x600" />
+		<child item="bottom_fixed" />
 	</item>
 
 	<item name="ad_banner" caption="Баннер" virtual="true" key="name" ag-id="43" ag-hash="270078664">
@@ -25,6 +26,7 @@
 	<item name="top_728x90" caption="TOP 780x90" super="ad_banner" ag-id="44" ag-hash="1872585180" />
 	<item name="side_240x400" caption="SIDE 240x400" super="ad_banner" ag-id="45" ag-hash="-1352036862" />
 	<item name="bottom_900x600" caption="BOTTOM 900x600" super="ad_banner" ag-id="46" ag-hash="-1956021597"/>
+	<item name="bottom_fixed" caption="Баннер снизу (фиксированный)" super="ad_banner" ag-id="49" ag-hash="-1710663584" />
 
 
 
@@ -134,12 +136,12 @@
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="figcaption" type="string" caption="Подпись к главонй картинке"/>
 		<parameter name="size" type="string" caption="Размер" domain="size"/>
+		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_audio" type="file" caption="Аудио" description="в начале статьи"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
-		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
@@ -155,8 +157,8 @@
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>
 
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 	</item>
 
 	<item name="news" caption="Новостной раздел" children-sorting="DESC" children-per-page="30" key="name" key-unique="true" default-page="news_section" ag-id="15" ag-hash="3377875">
@@ -195,9 +197,9 @@
 		<parameter name="hash" type="integer" caption="name_hash"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
 		<on-update class="ecommander.fwk.NameHash"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 	</item>
 
 	<item name="contacts" caption="Контакты" ag-id="18" ag-hash="-567451565">
@@ -230,6 +232,7 @@
 
 	<item name="soc_link" key="name" caption="соцсеть" ag-id="20" ag-hash="1213728690">
 		<parameter name="name" type="string" caption="название" description="свопадает с суфиксом font-awesome" />
+		<parameter name="icon" type="picture" caption="значок" />
 		<parameter name="link" type="string" caption="ссылка" />
 	</item>
 
@@ -268,8 +271,8 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 
-		<on-create class="ecommander.fwk.ArticleFromFuture"/>
-		<on-update class="ecommander.fwk.ArticleFromFuture"/>
+		<on-create class="extra.ArticleFromFuture"/>
+		<on-update class="extra.ArticleFromFuture"/>
 
 		<on-create class="ecommander.fwk.NameHash"/>
 		<on-update class="ecommander.fwk.NameHash"/>
@@ -350,10 +353,11 @@
 		<parameter name="style" type="string" caption="Стиль"/>
 	</item>
 
-	<item name="telegram_link" caption="Ссылка на телеграм" ag-id="48" ag-hash="40040568">
-		<parameter name="name" type="string" caption="Текст ссылки"/>
-		<parameter name="link" type="string" caption="Ссылка"/>
+	<item name="telegram_link" caption="Короткие сообщения" ag-id="48" ag-hash="40040568">
+		<parameter name="text" type="text" caption="Текст ссылки"/>
 		<parameter name="style" type="string" caption="Стиль"/>
+		<parameter name="start" type="date" caption="показывать с"/>
+		<parameter name="finish" type="date" caption="показывать по"/>
 	</item>
 
 	<root>

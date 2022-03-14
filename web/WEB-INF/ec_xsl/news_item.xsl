@@ -3,6 +3,8 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="ni" select="if(page/@name = 'news_item') then page/news_item else page/news/news_item"/>
+
 	<xsl:variable name="title" select="$ni/name" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'news'"/>
@@ -10,7 +12,6 @@
 	<xsl:variable name="meta_keywords" select="string-join(($ni/tag), ', ')"/>
 
 
-	<xsl:variable name="ni" select="page/news_item"/>
 	<xsl:variable name="parent" select="/page/news[@id = $ni/news[1]/@id]" />
 	<xsl:variable name="canonical" select="concat('/', $ni/@key, '/')"/>
 	<xsl:variable name="format" select="if($ni/video_url != '') then 'video' else if($ni/top_gal/main_pic != '') then 'gallery' else 'standard'"/>
@@ -68,7 +69,7 @@
 						<noindex>
 							<div class="tags">
 								<xsl:if test="$ni/complexity != ''">
-									<span class="entry__category yellow" style="padding-left: .5rem;">
+									<span id="complexity" class="entry__category yellow" style="padding-left: .5rem;">
 									<span style="
 	display: inline-block;
 	margin-top:-1px;
@@ -85,16 +86,16 @@
 	font-style: italic;
 	" class="tip desctop-only" title="A1 - текст будет понятен для широкого круга читателей&#13;B2 - текст будет понятен тем, кто в какой-то степени уже знаком с данной тематикой и обладает какой-то информацией и знаниями&#13;C3 - сложный текст, в основном для людей, которые наверняка разбираются в данной сфере">i</span>
 									
-										<a style="padding-left: .5rem;">Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a>
+										<!-- <a style="padding-left: .5rem;">Сложность: <b><xsl:value-of select="$ni/complexity" /></b></a> -->
 									</span>
 								</xsl:if>
 								<xsl:if test="$ni/read_time != ''">
-									<span class="entry__category blue">
-										<a style="padding-left: .5rem;">Время прочтения: <b id="read-time-"><xsl:value-of select="$ni/read_time" /></b></a>
+									<span id="read-time-container" class="entry__category blue">
+										<!-- <a style="padding-left: .5rem;">Время прочтения: <b id="read-time"><xsl:value-of select="$ni/read_time" /></b></a> -->
 									</span>
 								</xsl:if>
 								<xsl:if test="$ni/size != ''">
-									<span class="entry__category red" style="padding-left: .5rem;">
+									<span id="article-size" class="entry__category red" style="padding-left: .5rem;">
 									<span style="display: inline-block;
 	margin-top:-1px;
 	height: 2rem;
@@ -109,7 +110,6 @@
 	 cursor: pointer;
 	font-style: italic;" class="tip desctop-only" title="Маленький - до 400 слов&#13;Средний - до 800 слов&#13;Большой - свыше 800 слов">i</span>
 									
-										<a >Размер статьи: <b><xsl:value-of select="$ni/size" /></b></a>
 									</span>
 								</xsl:if>
 								<xsl:text disable-output-escaping="yes">
@@ -117,6 +117,30 @@
 								</xsl:text>
 							</div>
 						</noindex>
+
+						<script>
+								<xsl:text disable-output-escaping="yes">
+								c = $("&lt;a&gt;",{"style" : "padding-left: .5rem;"}).text("Сложность: ");
+								cv = $("&lt;b&gt;").text('</xsl:text><xsl:value-of select="$ni/complexity"/><xsl:text disable-output-escaping="yes">');
+								c.append(cv);
+								$("#complexity").append(c);
+								</xsl:text>
+
+								<xsl:text disable-output-escaping="yes">
+								t = $("&lt;a&gt;",{"style" : "padding-left: .5rem;"}).text("Время прочтения: ");
+								tv = $("&lt;b&gt;",{"id": "read-time"}).text('</xsl:text><xsl:value-of select="$ni/read_time"/><xsl:text disable-output-escaping="yes">');
+								t.append(tv);
+								$("#read-time-container").append(t);
+								</xsl:text>
+
+								<xsl:text disable-output-escaping="yes">
+								s = $("&lt;a&gt;").text("Размер статьи: ");
+								sv = $("&lt;b&gt;").text('</xsl:text><xsl:value-of select="$ni/size"/><xsl:text disable-output-escaping="yes">');
+								s.append(sv);
+								$("#article-size").append(s);
+								</xsl:text>
+							</script>
+
 					</xsl:if>
 				</div>
 
@@ -129,23 +153,32 @@
 						<!-- Telegram -->
 						<p class="_article_paragraph article_paragraph"><strong>Подписывайтесь на наш <a href="https://t.me/temptingpro" target="_blank">Telegram-канал</a> и получайте актуальную информацию из мира новостей еще быстрее.</strong></p>
 						<xsl:if test="$ni/author != ''">
-							<xsl:variable name="author">
-								<xsl:choose>
-									<xsl:when test="starts-with($ni/author, 'Алина')">
-										<xsl:value-of select="concat('Подготовила: ', $ni/author)"/>
-									</xsl:when>
-									<xsl:when test="starts-with($ni/author, 'Подготовил')">
-										<xsl:value-of select="$ni/author"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="concat('Подготовил: ' , $ni/author)"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<p>
-								<em><xsl:value-of select="$author"/></em>
-							</p>
-						</xsl:if>
+								<xsl:variable name="prefix">
+									<xsl:choose>
+										<xsl:when test="starts-with($ni/author, 'Алина')">
+											<xsl:value-of select="'Подготовила: '"/>
+										</xsl:when>
+										<xsl:when test="starts-with($ni/author, 'Подготовил')">
+											<xsl:value-of select="''"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="'Подготовил: '"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<p>
+									<em>
+										<span><xsl:value-of select="$prefix"/></span>
+										<form method="post" action="/author">
+											<input type="hidden" name="author" value="{$ni/author}"/>
+											<a style="cursor:pointer" onclick="$(this).closest('form').submit()">
+												<xsl:value-of select="$ni/author"/>
+											</a>
+										</form>
+									</em>
+								</p>
+							</xsl:if>
+
 					</div>
 					<div>
 						 <xsl:call-template name="BANNER_FOLLOW"/>
@@ -271,6 +304,8 @@
 				</div>
 			</div>
 		</section>
+
+		<div id="wikitip"></div>
 
 	</xsl:template>
 

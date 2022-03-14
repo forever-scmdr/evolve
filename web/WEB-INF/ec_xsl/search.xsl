@@ -7,18 +7,44 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="qot">"</xsl:variable>
 
-	<xsl:variable name="view" select="page/variables/view"/>
-	<xsl:variable name="products" select="page/product"/>
-	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="title" select="if(page/@name = 'search') then concat('Поиск по запросу ', page/variables/q) else concat('Новости и статьи по тегу ', page/variables/tag)" />
+ 	<xsl:variable name="title" select="if(page/@name = 'search') then concat('Поиск по запросу ', page/variables/q) else concat('Новости и статьи по тегу ', page/variables/tag)" />
 
 	<xsl:variable name="news_items" select="/page/news_item | page/news_wrap/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 	<xsl:variable name="small_news_parts" select="/page/text_part[small_news_item]"/>
 
 	<xsl:variable name="small_news" select="page/small_news_item | page/small_news/small_news_item"/>
-	<xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" />
-	<xsl:variable name="h1_2" select="if(page/@name = 'search') then concat('Статьи по запросу: ',$qot,page/variables/q,$qot) else  concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)" />
+
+	<xsl:variable name="h1_1">
+		<xsl:choose>
+			<xsl:when test="page/@name = 'search'">
+				<xsl:value-of select="concat('Новости по запросу: ',$qot,page/variables/q,$qot)"/>
+			</xsl:when>
+			<xsl:when test="page/@name = 'tag'">
+				<xsl:value-of select="concat('Новости по тегу: ',$qot,page/variables/tag,$qot)"/>
+			</xsl:when>
+			<xsl:when test="page/@name = 'author'">
+				<xsl:value-of select="concat('Пубилкации автора: ',$qot,page/variables/author,$qot)"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+
+	<xsl:variable name="h1_2">
+		<xsl:choose>
+			<xsl:when test="page/@name = 'search'">
+				<xsl:value-of select="concat('Статьи по запросу: ',$qot,page/variables/q,$qot)"/>
+			</xsl:when>
+			<xsl:when test="page/@name = 'tag'">
+				<xsl:value-of select="concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)"/>
+			</xsl:when>
+			<xsl:when test="page/@name = 'author'">
+				<xsl:value-of select="concat('Статьи автора: ',$qot,page/variables/author,$qot)"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+
+	<!-- <xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" /> -->
+	<!-- <xsl:variable name="h1_2" select="if(page/@name = 'search') then concat('Статьи по запросу: ',$qot,page/variables/q,$qot) else  concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)" /> -->
 
 	<xsl:template name="CONTENT">
 		<section class="s-content">

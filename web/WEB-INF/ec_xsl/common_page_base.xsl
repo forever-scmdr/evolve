@@ -54,20 +54,36 @@
 	<xsl:variable name="adv_top" select="$adv/top_728x90"/>
 	<xsl:variable name="adv_side" select="$adv/side_240x400"/>
 	<xsl:variable name="adv_bottom" select="$adv/bottom_900x600"/>
+	<xsl:variable name="adv_fixed" select="$adv/bottom_fixed"/>
 
 
 	<!-- ****************************    ЛОГИЧЕСКИЕ ОБЩИЕ ЭЛЕМЕНТЫ    ******************************** -->
 	<xsl:template name="HEADER">
-<!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
-		<xsl:call-template name="BANNER_TOP" />
-
-		<xsl:if test="page/telegram_link/link != ''">
-			<div class="telagram-link-top">
-				<a href="{page/telegram_link/link}" style="{page/telegram_link/style}">
-					<xsl:value-of select="page/telegram_link/name"/>
-				</a>
+		<xsl:if test="/page/telegram_link/text != '' and not(/page/telegram_link/@last-modified = /page/variables/tg_updated)">
+			<div class="telagram-link-top" style="{/page/telegram_link/style}" id="tg-link">
+				<div class="row" style="padding-left:0; padding-right:0;">
+					<div class="col-full" style="position: relative">
+						<a class="close" style="cursor: pointer;
+line-height: 18px;
+position: absolute;
+top: 0;
+left: 0;
+display: block;
+height: 22px;
+font-size: 21px;
+padding: 0;
+border: 1px solid #fff;
+width: 22px;
+margin-top: 2px;
+border-radius: 20px;" onclick="hidуTelegramBanner({/page/telegram_link/@last-modified})">×</a>
+						<xsl:value-of select="/page/telegram_link/text" disable-output-escaping="yes"/>
+					</div>
+				</div>
 			</div>
 		</xsl:if>
+<!--		<section class="s-pageheader{$extra-header-class}" style="{if(page/main_page/padding != '') then concat('padding-top: ', page/main_page/padding, 'px') else ''}">-->
+		<xsl:call-template name="INTERNAL_VIDGET_CODE"/>
+		<xsl:call-template name="BANNER_TOP" />
 
 		<section class="s-pageheader{$extra-header-class}">
 			<header class="header">
@@ -93,16 +109,6 @@
 							English version
 						</a>
 					</div>
-					<a class="lang mobile-only" style="width: 0;
-height: 20px;
-overflow: hidden;
-padding-left: 28px;
-position: absolute;
-top: 10px;
-right: 50%;
-margin-right: -100px;" href="https://eng.tempting.pro/">
-							English version
-						</a>
 					<xsl:call-template name="SEARCH"/>
 					<xsl:call-template name="HEADER_NAV" />
 				</div>
@@ -119,7 +125,15 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 		</a>
 		<nav class="header__nav-wrap">
 			<h2 class="header__nav-heading h6">Главное меню</h2>
+								<a class="lang mobile-only" style="width: 0;
+height: 20px;
+overflow: hidden;
+padding-left: 28px;
+position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.pro/">
+							English version
+						</a>
 			<ul class="header__nav">
+
 				<li class="{'current'[$active_menu_item = 'index']}"><a href="{$main_host}">Главная</a></li>
 
 				<li class="has-children">
@@ -240,7 +254,7 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 								<li><a href="{show_page}"><xsl:value-of select="name"/></a></li>
 							</xsl:for-each>
 							<!--  <li><a href="{page/contacts_link}">Контакты</a></li> -->
-                    </ul>
+					</ul>
 					</div>
 					<div class="col-two md-four mob-full s-footer__archives">
 						<h4>Статьи</h4>
@@ -308,6 +322,7 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 	<xsl:template name="EXTRA_HEADER_CONTENT"/>
 	<xsl:template name="EXTRA_SCRIPTS"/>
 	<xsl:template name="COMMON_SCRIPTS">
+		<script src="js/cookies.js"></script>
 		<script src="js/plugins.js"></script>
 		<!--<script src="https://maps.googleapis.com/maps/api/js"></script>-->
 		<script src="js/main.js?version=1"></script>
@@ -346,7 +361,7 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 				<!-- CSS -->
 				<link rel="stylesheet" href="css/base.css?version=1.1"/>
 				<link rel="stylesheet" href="css/vendor.css?version=1"/>
-				<link rel="stylesheet" href="css/main.css?version=1.508"/>
+				<link rel="stylesheet" href="css/main.css?version=1.525"/>
 
 				<!-- SEO -->
 				<xsl:call-template name="SEO"/>
@@ -368,11 +383,63 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 				<xsl:call-template name="HEADER"/>
 				<xsl:call-template name="CONTENT"/>
 				<xsl:call-template name="INC_FOOTER"/>
+
+				<xsl:call-template name="BANNER_FIXED" />
+
 				<xsl:call-template name="COMMON_SCRIPTS" />
 				<xsl:call-template name="EXTRA_SCRIPTS"/>
+
+				<script>
+					var timeoutCounter = 0;
+					var googleTimeout = setTimeout(checkAds ,500);
+					function checkAds(){
+						if(typeof googleTimeout != "undefined"){
+							clearTimeout(googleTimeout);
+						}
+						var $iframe = $("#aswift_0");
+						timeoutCounter++;
+						if(timeoutCounter &lt; 40 &amp;&amp; $iframe.length == 0){
+							googleTimeout = setTimeout(checkAds ,500);
+						}else if($iframe.length != 0){
+							var src = $iframe.attr("src");
+							var $input = $("&lt;input&gt;", {"type": "hidden", "name" : "url", value : src});
+							var $form = $("&lt;form&gt;", {"method": "post", "action" : "check_google_ads"});
+							$form.append($input);
+							$form.ajaxSubmit({
+								success: function(data, status, arg3) {
+									var res = $(data).find("result");
+									var exception = $(data).find("exception");
+									if(res.text() != "true"){
+										showDefaultAd();
+									}
+								}
+								,error: function() {
+									console.log("error checking ads");
+								}
+							});
+						}else{
+							showDefaultAd();
+						}
+					}
+					function showDefaultAd(){
+						<xsl:if test="$adv_top/pic != ''">
+							var href = '<xsl:value-of select="$adv_top/link"/>';
+							var src = '<xsl:value-of select="concat($adv_top/@path, $adv_top/pic)"/>';
+							var $a = $("&lt;a&gt;", {"href" : href, "target" : "_blank", });
+							var $img = $("&lt;img&gt;",{"src" : src});
+							$a.append($img);
+							$("#banner-top-700").html($a);
+						</xsl:if>
+						<xsl:if test="not($adv_top/pic != '')">
+							$("#banner-top-700").remove();
+						</xsl:if>
+					}
+				</script>
+
 				<xsl:for-each select="$body-end-modules">
 					<xsl:value-of select="code" disable-output-escaping="yes"/>
 				</xsl:for-each>
+
 			</body>
 		</html>
 	</xsl:template>
@@ -596,6 +663,42 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 	<xsl:template name="TWITTER_MARKUP"/>
 	<xsl:template name="FACEBOOK_MARKUP"/>
 
+	<xsl:template name="INTERNAL_VIDGET_CODE">
+		<xsl:if test="page/@name != 'index'">
+			<xsl:variable name="informers" select="/page/informer"/>
+			<xsl:if test="$informers">
+				<!-- <div class="header__content row"> -->
+					<div style="position: relative;">
+						<div class="tradingview-widget-container">
+							<div class="tradingview-widget-container__widget"></div>
+							<!-- <div class="tradingview-widget-copyright">
+								<a href="https://ru.tradingview.com" rel="noopener" target="_blank">
+									<span class="blue-text">Финансовые рынки</span>
+								</a> от TradingView
+							</div> -->
+							<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">{
+									"showSymbolLogo": true,
+									"colorTheme": "light",
+									"isTransparent": false,
+									"displayMode": "adaptive",
+									"locale": "ru",
+									"symbols": [
+										<xsl:for-each select="$informers">
+											<xsl:if test="position() &gt; 1">,</xsl:if>
+											{
+												"proName": <xsl:value-of select="concat('&#34;', pro_name, '&#34;')" disable-output-escaping="yes"/>,
+												"title": <xsl:value-of select="concat('&#34;', name, '&#34;')" disable-output-escaping="yes"/>
+											}
+										</xsl:for-each>
+									]									
+								}</script>
+						</div>
+					<!-- </div> -->
+				</div>
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="VIDGET_CODE">
 		<xsl:variable name="inf" select="page/main_page/informer_wrap"/>
 		<xsl:if test="$inf">
@@ -710,11 +813,29 @@ margin-right: -100px;" href="https://eng.tempting.pro/">
 				<div class="row" style="padding-left:0; padding-right:0;">
 					<div class="col-full">
 						<div class="banner-top-700" style="line-height: 1; margin:0 auto;">
-							<xsl:if test="$adv_top/pic != ''">
-							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>
-							</xsl:if>
+<!--							<xsl:if test="$adv_top/pic != ''">-->
+<!--							<a href="{$adv_top/link}" target="_blank"><img src="{concat($adv_top/@path, $adv_top/pic)}"/></a>-->
+<!--							</xsl:if>-->
 							<xsl:value-of select="$adv_top/code" disable-output-escaping="yes"/>
 						</div>
+					</div>
+				</div>
+			</section>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="BANNER_FIXED">
+		<xsl:value-of select="page/variables/fixed_banner_updated"/>
+		<xsl:if test="$adv_fixed and not(page/variables/fixed_banner_updated = $adv_fixed/link)">
+			<section id="banner-fixed-bottom">
+				<div class="row" style="padding-left:0; padding-right:0;">
+					<a class="close" style="cursor: pointer; padding: 1rem;" onclick="hideFixedBanner('{$adv_fixed/link}')">×</a>
+					<div class="col-full">
+						<xsl:if test="$adv_fixed/pic !=''">
+							<a href="{$adv_fixed/link}" target="_blank">
+								<img src="{concat($adv_fixed/@path, $adv_fixed/pic)}"/>
+							</a>
+						</xsl:if>
 					</div>
 				</div>
 			</section>

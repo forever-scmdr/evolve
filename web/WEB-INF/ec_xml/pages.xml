@@ -9,6 +9,10 @@
 
 
 	<include-definition name="COMMON">
+		<request>
+			<var name="fixed_banner_updated" scope="cookie"/>
+			<var name="tg_updated" scope="cookie"/>
+		</request>
 		<link name="feedback_link" target="feedback_ajax"/>
 		<link name="news_link" target="news"/>
 
@@ -69,6 +73,11 @@
 			<list item="ad_banner"/>
 		</single>
 		<single item="telegram_link"/>
+	</include-definition>
+
+
+	<include-definition name="TICKERS">
+		<list item="informer"/>
 	</include-definition>
 
 
@@ -275,6 +284,7 @@
 			</ancestor>
 		</list>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news_section" template="news" cacheable="true">
@@ -302,6 +312,7 @@
 			</list>
 		</single>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news_page_ajax" template="news_page_ajax" cacheable="true">
@@ -397,76 +408,101 @@
 			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="all_news" template="all_news">
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
-	<!--<page name="all_news" template="all_news">
+
+	<page name="author" template="search">
 		<request>
+			<var name="author"/>
+			<var name="limit" value="18"/>
 			<var name="page" value="1"/>
-			<var name="limit" value="24"/>
-			<var name="tag"/>
+			<var name="s_page" value="1"/>
 		</request>
-		<single item="news_wrap">
-			<list item="news_item" id="ni" transit="true">
+		<single item="small_news">
+			<list item="small_news_item" id="sni">
 				<filter>
-					<parameter name="tag" sign="=">
-						<var var="tag"/>
+					<parameter name="author" sign="=">
+						<var var="author"/>
 					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
-					<limit>
+					<!-- <limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="s_page"/>
+					</pages> -->
+				</filter>
+				<link name="show_small_news_item" target="small_news_item" type="exclusive">
+					<var name="sel" ref="sni" style="translit"/>
+				</link>
+			</list>
+		</single>
+		<single item="news_wrap"  cache-vars="tag limit" cacheable="true">
+			<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="author" sign="=">
+						<var var="author"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<!-- <limit>
 						<var var="limit"/>
 					</limit>
 					<pages>
 						<var var="page"/>
-					</pages>
+					</pages> -->
 				</filter>
 				<single item="top_gal"/>
-				<link name="show_page" target="news_item" type="exclusive">
+				<link name="show_news_item" target="news_item" type="exclusive">
 					<var name="sel" ref="ni" style="translit"/>
 				</link>
 				<ancestor item="news" transit="false" id="cat">
-					<link name="show_page" target="news_section" type="exclusive">
+					<link name="show__page" target="news_section" type="exclusive">
 						<var name="sel" ref="cat" style="translit"/>
 					</link>
 				</ancestor>
 			</list>
 		</single>
-		<list item="news_item" id="tag" tag="tag">
-			<aggregation parameter="tag"/>
-			<filter>
-				<parameter name="tag" sign="=">
-				   <var var="tag"/>
-				</parameter>
-			</filter>
-			<link name="show_tag" target="all_news">
-				<var name="tag" ref="tag" parameter="tag"/>
-			</link>
-		</list>
-		<include name="COMMON"/>
 		<link name="page_link" target="all_news_ajax">
-			<var name="limit" value="24"/>
-			<var name="tag"/>
-			<var name="min_date"/>
-			<var name="max_date"/>
+			<var name="limit" var="limit"/>
+			<var name="author" var="author"/>
 		</link>
-	</page> -->
+		<link name="small_page_link" target="small_news_ajax">
+			<var name="limit" var="limit"/>
+			<var name="author" var="author"/>
+		</link>
+		<link name="page_link" target="news_ajax">
+			<var name="limit" var="limit"/>
+			<var name="author" var="author"/>
+		</link>
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
 
 	<page name="all_news_ajax" template="news_page_ajax" cacheable="true">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
+			<var name="author"/>
 		</request>
 		<single item="news_wrap" cacheable="true" cache-vars="page tag">
 			<list item="news_item" id="ni" transit="true" >
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
+					</parameter>
+					<parameter name="author" sign="=">
+						<var var="author"/>
 					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -500,13 +536,11 @@
 		<single item="news_item" var="ni" id="ni" >
 			<single item="seo"/>
 			<single item="top_gal"/>
-			<!-- <single item="comments" id="comment">
-				<tree item="comment"/>
-				<link name="comment_link" target="comment_ajax">
-					<var name="id" ref="comment"/>
-					<var name="big_id" ref="comment"/>
-				</link>
-			</single> -->
+
+			<link name="author_link" target="author">
+				<var name="author" ref="ni" parameter="author" />
+			</link>
+
 			<list item="page_part">
 				<list item="news_item" id="rec_ni" assoc="news">
 					<link name="show_page" target="news_item" type="exclusive">
@@ -590,15 +624,9 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-<!--			<ancestor item="news" transit="false" id="pcat">-->
-<!--				<link name="show_page" target="news_section" type="exclusive">-->
-<!--					<var name="sel" ref="pcat" style="translit"/>-->
-<!--				</link>-->
-<!--			</ancestor>-->
 		</list>
 
 		<list item="news_item" id="latest" tag="latest">
@@ -619,6 +647,7 @@
 		</list>
 
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="news" template="small_news" cacheable="true">
@@ -654,6 +683,7 @@
 			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="small_news_ajax" template="small_news_ajax" cacheable="true">
@@ -661,12 +691,16 @@
 			<var name="page" value="2"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
+			<var name="author"/>
 		</request>
 		<single item="small_news" cacheable="true" cache-vars="page tag">
 			<list item="small_news_item" id="ni">
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
+					</parameter>
+					<parameter name="author" sign="=">
+						<var var="author"/>
 					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -693,6 +727,9 @@
 		<single item="small_news_item" var="sni" id="ni" >
 			<single item="seo"/>
 			<list item="page_part" />
+			<link name="author_link" target="author">
+				<var name="author" ref="ni" parameter="author" />
+			</link>
 		</single>
 		<list item="small_news_item" tag="prev" id="prev" >
 			<filter>
@@ -758,15 +795,9 @@
 					<var value="1"/>
 				</parameter>
 			</filter>
-<!--			<single item="top_gal"/>-->
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sel" ref="pni" style="translit"/>
 			</link>
-<!--			<ancestor item="news" transit="false" id="pcat">-->
-<!--				<link name="show_page" target="news_section" type="exclusive">-->
-<!--					<var name="sel" ref="pcat" style="translit"/>-->
-<!--				</link>-->
-<!--			</ancestor>-->
 		</list>
 
 		<list item="small_news_item" id="latest" tag="latest">
@@ -787,6 +818,34 @@
 		</list>
 
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+
+	<page name="preview_small_news_item" template="small_news_item" authority-groups="common">
+		<request>
+			<var name="id"/>
+		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
+		<session>
+			<single item="news">
+				<single item="small_news_item"/>
+			</single>
+		</session>
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+	<page name="preview_news_item" template="news_item" authority-groups="common">
+		<request>
+			<var name="id"/>
+		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
+		<session>
+			<single item="news">
+				<single item="news_item"/>
+			</single>
+		</session>
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
 	<page name="page" template="page" cacheable="true">
@@ -797,15 +856,8 @@
 			<list item="page_part" />
 		</single>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
-
-
-	<!-- <page name="contacts" template="contacts" cacheable="true">
-		<single item="contacts" cacheable="false">
-			<single item="seo"/>
-		</single>
-		<include name="COMMON"/>
-	</page> -->
 
 	<page name="feedback_ajax" template="feedback_ajax">
 		<request>
@@ -820,33 +872,6 @@
 			<var name="source_page" value="feedback_ajax"/>
 		</link>
 	</page>
-
-	<page name="comment_ajax" template="comment_ajax">
-		<request>
-			<var name="id"/>
-			<var name="big_id"/>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-
-		<single item="comments" var="big_id" id="comments">
-			<tree item="comment"/>
-			<link name="comment_link" target="comment_ajax">
-				<var name="id" ref="comments"/>
-				<var name="big_id" var="big_id"/>
-			</link>
-		</single>
-
-		<new item="comment" id="form" tag="comment_form">
-			<parameter-input ref="form" form="feedback"/>
-		</new>
-		<link name="submit_link" target="comments_command" type="itemform">
-			<var name="big_id" var="big_id"/>
-			<var name="form_name" value="feedback"/>
-			<var name="source_page" value="comment_ajax"/>
-		</link>
-	</page>
-
 
 	<page name="feedback_command">
 		<request>
@@ -876,34 +901,6 @@
 		</command>
 	</page>
 
-	<page name="comments_command">
-		<request>
-			<var name="big_id"/>
-			<var name="id"/>
-			<var name="source_page"/>
-		</request>
-		<link name="success" target-var="source_page">
-			<var name="big_id" var="big_id"/>
-			<var name="result" value="success"/>
-			<var name="message" value="Комментарий отправлен, спасибо"/>
-		</link>
-		<link name="error_not_set" target-var="source_page">
-			<var name="big_id" var="big_id"/>
-			<var name="result" value="error"/>
-			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
-		</link>
-		<link name="general_error" target-var="source_page">
-			<var name="big_id" var="big_id"/>
-			<var name="result" value="error"/>
-			<var name="message"
-				 value="Комментарий не может быть отправлен сейчас из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
-		</link>
-		<command class="extra.CommentCommand">
-			<result name="success" type="redirect"/>
-			<result name="error_not_set" type="redirect"/>
-			<result name="general_error" type="redirect"/>
-		</command>
-	</page>
 
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
@@ -961,7 +958,7 @@
 	</page>
 
 	<page name="check_future" schedule="0 0/5 * ? * * *">
-		<command class="ecommander.fwk.ArticleFromFuture" />
+		<command class="extra.ArticleFromFuture" />
 	</page>
 
 	<page name="word" template="word" cacheable="true">
@@ -1017,4 +1014,11 @@
 			<list item="page_part"/>
 		</list>
 	</page>
+
+	<page name="check_google_ads">
+		<command class="extra.CheckAds" tag="search">
+			<result name="result" type="xml"/>
+		</command>
+	</page>
+
 </site>
