@@ -678,34 +678,16 @@
 						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
 						<xsl:text>;</xsl:text><br/>
 					</xsl:for-each>
+					<xsl:if test="not(params/param) and extra_xml != ''">
+						<xsl:variable name="params" select="parse-xml(concat('&lt;params&gt;', extra_xml, '&lt;/params&gt;'))" />
+						<xsl:for-each select="$params//parameter">
+							<span style="color: #616161;"><xsl:value-of select="name"/></span>&#160;-&#160;<xsl:value-of select="value"/>
+							<xsl:text>;</xsl:text><br/>
+						</xsl:for-each>
+					</xsl:if>
 				</div>
 			</div>
 <!--			<div class="device__article-number"><xsl:value-of select="code"/></div>-->
-			<div class="device__actions device_row__actions">
-				<xsl:if test="not($is_compare)">
-					<div id="compare_list_{@id}">
-						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-							<i class="fas fa-balance-scale"></i>сравнить
-
-						</a>
-					</div>
-				</xsl:if>
-				<xsl:if test="$is_compare">
-					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
-				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="$is_fav">
-						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
-					</xsl:when>
-					<xsl:otherwise>
-						<div id="fav_list_{@id}">
-							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-								<i class="fas fa-star"></i>отложить
-							</a>
-						</div>
-					</xsl:otherwise>
-				</xsl:choose>
-			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
@@ -763,6 +745,32 @@
 				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
 				</xsl:if>
+
+				<div class="device__actions">
+					<xsl:if test="not($is_compare)">
+						<div id="compare_list_{@id}">
+							<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+								<i class="fas fa-balance-scale"></i>сравнить
+							</a>
+						</div>
+					</xsl:if>&#160;
+					<xsl:if test="$is_compare">
+						<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$is_fav">
+							<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+						</xsl:when>
+						<xsl:otherwise>
+							<div id="fav_list_{@id}">
+								<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+									<i class="fas fa-star"></i>отложить
+								</a>
+							</div>
+						</xsl:otherwise>
+					</xsl:choose>
+				</div>
+
 			</div>
 			<xsl:for-each select="$tags">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>

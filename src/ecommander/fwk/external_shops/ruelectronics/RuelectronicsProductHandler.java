@@ -71,11 +71,14 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 		needSaveTagValue = false;
 
 		if (qName.equalsIgnoreCase(PARAMS_EL)) {
-			paramsXmlBuilder.startElement("p");
+			//paramsXmlBuilder.startElement("params");
 		} else if (PARAM_EL.equalsIgnoreCase(qName)) {
 			isInsideParam = true;
+			paramsXmlBuilder.startElement("parameter");
 		} else if (isInsideParam && NAME.equalsIgnoreCase(qName)) {
-			paramsXmlBuilder.startElement("strong");
+			paramsXmlBuilder.startElement("name");
+		} else if (isInsideParam && VALUE_EL.equalsIgnoreCase(qName)) {
+			paramsXmlBuilder.startElement("value");
 		}
 		if (PRODUCT_ITEM.equalsIgnoreCase(qName)) {
 			singleParamsMap = new HashMap<>();
@@ -120,22 +123,22 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 
 				product.setValueUI(TAG_PARAM, "external_shop");
 				product.setValueUI(TAG_PARAM, "ruelectronics.com");
-				if (!"<p></p>".equalsIgnoreCase(paramsXmlBuilder.toString())) {
-					product.setValueUI(DESCRIPTION_PARAM, paramsXmlBuilder.toString());
+				if (paramsXmlBuilder.length() != 0) {
+					product.setValueUI("extra_xml", paramsXmlBuilder.toString());
 				}
 
 				DelayedTransaction.executeSingle(user, SaveItemDBUnit.get(product).ignoreUser().noFulltextIndex());
 				info.increaseProcessed();
 
 			} else if (PARAMS_EL.equalsIgnoreCase(qName)) {
-				paramsXmlBuilder.endElement();
+				//paramsXmlBuilder.endElement();
 			} else if (PARAM_EL.equalsIgnoreCase(qName)) {
-				paramsXmlBuilder.addEmptyElement("br");
+				paramsXmlBuilder.endElement();
 				isInsideParam = false;
 			} else if (NAME_EL.equalsIgnoreCase(qName) && isInsideParam) {
 				paramsXmlBuilder.addText(StringUtils.normalizeSpace(paramValue.toString())).endElement();
 			} else if (VALUE_EL.equalsIgnoreCase(qName)) {
-				paramsXmlBuilder.addText(StringUtils.normalizeSpace(paramValue.toString()));
+				paramsXmlBuilder.addText(StringUtils.normalizeSpace(paramValue.toString())).endElement();
 			} else {
 				String paramName = PARAM_NAMES.get(qName);
 				if (StringUtils.isBlank(paramName)) {

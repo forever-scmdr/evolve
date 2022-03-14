@@ -111,7 +111,7 @@ public class ImportCompelRu extends AbstractShopImport implements CatalogConst {
 		try {
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra().ignoreUser());
 		}catch (Exception e){
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product).noTriggerExtra().ignoreUser());
+			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product).noFulltextIndex().noTriggerExtra().ignoreUser());
 			product = ItemUtils.newChildItem(PRODUCT_ITEM, catalog);
 			setProductParams(product, row);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra().ignoreUser());

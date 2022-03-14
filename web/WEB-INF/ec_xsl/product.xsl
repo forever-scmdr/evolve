@@ -85,6 +85,9 @@
 					<xsl:if test="not($p/gallery)">
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
+					<xsl:for-each select="$p/pic_link">
+						<img src="{.}" alt="{$p/name}"/>
+					</xsl:for-each>
 				</div>
 				<script>
 					$('.fotorama')
@@ -244,12 +247,12 @@
 					</xsl:if>
 				</div> <p>Не нашли нужный компонент? <br></br><a href="http://ictrade.by/page/individualnyi_zakaz/" rel="nofollow" class="MSI_ext_nofollow">Сделайте индивидуальный заказ!</a></p>
 			</div>
-			<xsl:if test="$p/params | $p/text | $p/product_extra">
+			<xsl:if test="$p/params | $p/text | $p/product_extra | $p/extra_xml">
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<xsl:if test="$p/params">
+						<xsl:if test="$p/params | $p/extra_xml">
 							<li role="presentation" class="active">
 								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 							</li>
@@ -266,7 +269,7 @@
 						</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params">
+					<xsl:if test="$p/params | $p/extra_xml">
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
@@ -280,6 +283,16 @@
 										</td>
 										<td>
 											<p><xsl:value-of select="."/></p>
+										</td>
+									</tr>
+								</xsl:for-each>
+								<xsl:for-each select="parse-xml(concat('&lt;params&gt;',$p/extra_xml, '&lt;/params&gt;'))//parameter">
+									<tr>
+										<td>
+											<p><strong><xsl:value-of select="name"/></strong></p>
+										</td>
+										<td>
+											<p><xsl:value-of select="value"/></p>
 										</td>
 									</tr>
 								</xsl:for-each>
@@ -302,7 +315,6 @@
 									</tr>									
 								</xsl:if>
 							</table>
-
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_big">

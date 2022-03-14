@@ -110,44 +110,33 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		setProcessed(0);
 		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
 		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
-		productsQuery.setLimit(LOAD_BATCH_SIZE);
-		LinkedList<Item> products = new LinkedList<>();
-		products.addAll(productsQuery.loadItems());
+		List<Item> products;
 		int counter = 0;
-		while (products.size() > 0) {
-			while (products.size() != 0) {
-				Item product = products.poll();
-				List<String> tags = product.getStringValues(TAG_PARAM);
-				if (!tags.contains("external_shop")) {
-					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
-					counter++;
-				}
-				if (counter >= HIDE_BATCH_SIZE) commitCommandUnits();
+		while ((products = productsQuery.loadItems()).size() > 0) {
+			for (Item product : products) {
+				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+				counter++;
+				if (counter >= HIDE_BATCH_SIZE) {commitCommandUnits();}
 				info.increaseProcessed();
 			}
 			commitCommandUnits();
-			productsQuery.setLimit(LOAD_BATCH_SIZE);
-			products.addAll(productsQuery.loadItems());
 		}
 	}
 
 	private void deleteHidden() throws Exception {
 		setOperation("Удаляем долго отсутствующие товары");
 		setProcessed(0);
-		Queue<Item> products = new LinkedList<>();
+
 
 		long now = new Date().getTime();
 		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_HIDDEN);
 		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
 		productsQuery.setLimit(LOAD_BATCH_SIZE);
-		products.addAll(productsQuery.loadItems());
-		long id = 0;
+
 		int counter = 0;
-		int page = 1;
-		while (products.size() > 0) {
-			while (products.size() != 0) {
-				Item product = products.poll();
-				id = product.getId();
+		List<Item> products;
+		while ((products = productsQuery.loadItems()).size() > 0) {
+			for (Item product : products) {
 				if (now - product.getTimeUpdated() > ABSENT_PRODUCT_LIFETIME || StringUtils.isBlank(product.getStringValue(CODE_PARAM))) {
 					executeCommandUnit(ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
 					counter++;
@@ -158,9 +147,6 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				}
 			}
 			commitCommandUnits();
-			page++;
-			productsQuery.setLimit(LOAD_BATCH_SIZE, page);
-			products.addAll(productsQuery.loadItems());
 		}
 	}
 
@@ -280,7 +266,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 								currentProduct.setValue(CODE_PARAM, cellValue);
 							} else {
 								executeCommandUnit(ItemStatusDBUnit.restore(currentProduct.getId()));
-								if(productNeedsMoving()){
+								if (productNeedsMoving()) {
 									executeAndCommitCommandUnits(new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra());
 								}
 							}
