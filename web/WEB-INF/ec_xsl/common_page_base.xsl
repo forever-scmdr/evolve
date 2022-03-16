@@ -598,13 +598,16 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 
 	<xsl:template match="news_item" mode="masonry">
 
+		<xsl:param name="link" select="show_page"/>
 		<xsl:variable name="category" select="if(../name() = 'text_part') then ../news else news" />
 		<xsl:variable name="format" select="if(video_url != '') then 'video' else if(top_gal/main_pic != '') then 'gallery' else 'standard'"/>
+
+
 		<article class="masonry__brick entry format-{$format}" data-aos="fade-up">
 			<!-- STANDARD -->
 			<xsl:if test="$format = 'standard'">
 				<div class="entry__thumb">
-					<a href="{show_page}" class="entry__thumb-link">
+					<a href="{$link}" class="entry__thumb-link">
 						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
 					</a>
 				</div>
@@ -637,12 +640,12 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 			<div class="entry__text">
 				<div class="entry__header">
 					<div class="entry__date">
-						<a href="{show_page}" data-utc="{date/@millis}">
+						<a href="{$link}" data-utc="{date/@millis}">
 							<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
 							<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
 						</a>
 					</div>
-					<div class="h1 entry__title"><a href="{show_page}"><xsl:value-of select="name"/></a></div>
+					<div class="h1 entry__title"><a href="{$link}"><xsl:value-of select="name"/></a></div>
 				</div>
 				<div class="entry__excerpt">
 					<xsl:value-of select="short" disable-output-escaping="yes"/>
@@ -659,6 +662,30 @@ position: absolute;left:4.2rem; margin-top: -3rem;" href="https://eng.tempting.p
 		</article>
 	</xsl:template>
 
+	<xsl:template match="small_news_item" mode="masonry">
+		<xsl:param name="link" select="show_page"/>
+		<article class="masonry__brick entry format-standard" data-aos="fade-up">
+			<div class="entry__thumb">
+				<a href="{$link}" class="entry__thumb-link">
+					<img src="img/no_img.png" alt=""/>
+				</a>
+			</div>
+			<div class="entry__text">
+				<div class="entry__header">
+					<div class="entry__date">
+						<a href="{$link}" data-utc="{date/@millis}">
+							<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
+							<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
+						</a>
+					</div>
+					<div class="h1 entry__title"><a href="{$link}"><xsl:value-of select="name"/></a></div>
+				</div>
+				<div class="entry__excerpt">
+					<xsl:value-of select="short" disable-output-escaping="yes"/>
+				</div>
+			</div>
+		</article>
+	</xsl:template>
 
 	<xsl:template name="TWITTER_MARKUP"/>
 	<xsl:template name="FACEBOOK_MARKUP"/>

@@ -9,7 +9,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 
 import java.util.List;
 
-public class NewsItemPreviewCommand extends Command {
+public class FuturePreviewCommand extends Command {
 
 	private static final Byte[] ASSOC_IDS = new Byte[]{ItemTypeRegistry.getPrimaryAssocId(), ItemTypeRegistry.getAssocId("news")};
 
@@ -19,6 +19,22 @@ public class NewsItemPreviewCommand extends Command {
 		XmlDocumentBuilder content = loadItemContent(id);
 		ResultPE result = getResult("success");
 		result.setValue(content.toString());
+		return result;
+	}
+
+	public ResultPE loadFutureNews() throws Exception{
+
+		List<Item> news = new ItemQuery("news_item", Item.STATUS_HIDDEN).loadItems();
+		news.addAll(new ItemQuery("small_news_item", Item.STATUS_HIDDEN).loadItems());
+
+		XmlDocumentBuilder doc = XmlDocumentBuilder.newDocPart();
+		for(Item newsItem : news){
+			startItem(newsItem, doc);
+			doc.endElement();
+		}
+
+		ResultPE result = getResult("success");
+		result.setValue(doc.toString());
 		return result;
 	}
 
