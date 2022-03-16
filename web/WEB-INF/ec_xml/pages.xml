@@ -825,7 +825,6 @@
 		<request>
 			<var name="id"/>
 		</request>
-		<command class="extra.PreviewFromFutureCommand"/>
 		<session>
 			<single item="news">
 				<single item="small_news_item"/>
@@ -838,7 +837,6 @@
 		<request>
 			<var name="id"/>
 		</request>
-		<command class="extra.PreviewFromFutureCommand"/>
 		<session>
 			<single item="news">
 				<single item="news_item"/>
@@ -1021,4 +1019,14 @@
 		</command>
 	</page>
 
+
+	<page name="news_item_preview">
+		<request>
+			<var name="id" />
+		</request>
+		<command class="extra.NewsItemPreviewCommand" tag="search">
+			<result name="success" type="inline_xml"/>
+		</command>
+		<include name="COMMON"/>
+	</page>
 </site>
