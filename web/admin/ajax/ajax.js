@@ -89,6 +89,34 @@ function initAjax(elementId) {
 			insertAjax(elem.attr("href"));
 		}
 	});
+    $(idPrefix + "a[popup], " + idPrefix + "input[popup], " + idPrefix + "button[popup]").click(function(event) {
+        event.preventDefault();
+        var link = $(this);
+        var loaderId = link.attr("ajax-loader-id");
+        var popupId = link.attr("popup");
+		var href = link.attr("href");
+        var targetElem = $("#" + popupId);
+        if (targetElem != null) {
+        	if (href != null && href.trim() != '' && href != '#') {
+				insertAjax(href, loaderId, function (argData) {
+					targetElem.show('fade', 100);
+				});
+			} else {
+				targetElem.show('fade', 100);
+			}
+        } else {
+        	alert("AJAX popup: element '" + popupId + "' is not found or URL '" + href + "' is incorrect");
+		}
+    });
+	$(".popup__body").click(function(e) {
+		if ($(e.target).find(".popup__content").length > 0) {
+			$(this).closest('.popup').hide('fade', 100);
+		}
+	});
+	$(document).on('click', '.popup__close', function(e){
+		e.preventDefault();
+		$(this).closest('.popup').hide('fade', 100);
+	});
 	$(idPrefix + "select[value]").each(function() {
 		$(this).val($(this).attr("value"));
 	});
@@ -252,9 +280,83 @@ function _default(variable, defaultValue) {
 	return variable;
 }
 
+function postFormView(form, lockElementIds) {
+	//console.log('postFormView called');
+	// console.log('lockElementIds: '+lockElementIds);
+	if (typeof form == 'string')
+		form = $('#' + form);
+	form.ajaxSubmit({
+		error: function() {
+			alert('Ошибка отправки формы');
+			// Разблокировка частей
+			unlock(lockElementIds);
+		},
+		success: function(data, status, arg3) {
+			$("#subitems").html(data);
+			//console.log(data);
+			unlock(lockElementIds);
+		}
+	});
+	// Блокировка частей
+	lock(lockElementIds);
+}
+
 
 $(".ajax-form").submit(function(e){
 	e.preventDefault();
 	postFormView($(this).attr("id"));
 });
 
+
+/*******************************************************
+ * 				Подключение быстрого поиска
+ *
+ *  Использование быстрого поиска на сайте:
+ *  1.	Должна быть страница результатов быстрого поиска
+ *  2.	В инпуте задать атрибуты
+ *  	-	result (id элемета, в котором показывать результаты)
+ *  	-	ajax-href (урл страницы результатов поиска)
+ *  	-	min-size (минимальный размер запроса, по умолчанию 3)
+ *  	-	query (переменная для запроса на странице результатов поиска, по умлчанию q)
+ * 	3.	Вызвать метод initQuickSearch() на странице, где есть нужный инпут
+ */
+var __resultSelector = "";
+var __minSize = 3;
+function initQuickSearch() {
+	$("input[ajax-href]").each(function () {
+		if ($(this).attr("result") !== undefined) {
+			if (__resultSelector.length > 0)
+				__resultSelector += ", ";
+			__resultSelector += "#" + $(this).attr("result");
+		}
+		if ($(this).attr("min-size") !== undefined)
+			__minSize = Number($(this).attr("min-size"));
+	});
+	$(document).click(function (event) {
+		var target = $(event.target);
+		if (target.closest(__resultSelector).length == 0 && target.closest("input[ajax-href]").length == 0) {
+			$(__resultSelector).hide('fade', 100);
+			//$(__resultSelector).css("visibility", "hidden");
+		}
+	});
+	$("input[ajax-href]").keyup(function (event) {
+		performQuickSearchRequest($(this));
+	});
+	$("input[ajax-href]").click(function (event) {
+		performQuickSearchRequest($(this));
+	});
+}
+
+function performQuickSearchRequest(input) {
+	if (input.val().trim().length >= __minSize) {
+		var queryVar = input.attr("query") ? input.attr("query") : "q";
+		var href = input.attr("ajax-href") + "?" + queryVar + "=" + input.val();
+		insertAjax(href, null, function (argData) {
+			$("#" + input.attr("result")).show('fade', 100);
+			//$("#" + input.attr("result")).css("visibility", "visible");
+		});
+	} else {
+		$(__resultSelector).hide('fade', 100);
+		//$("#" + input.attr("result")).css("visibility", "hidden");
+	}
+}

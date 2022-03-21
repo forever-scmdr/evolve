@@ -86,7 +86,7 @@ function confirmAjaxView(link, viewId, postProcess, el) {
  * @param el - элемент по которому позиционируется диалоговое окно
  * @param function - функция, которая вызывается при клике на кнопку "да"
  * */
-function confirmAjaxViewCustom(el,title, onConfirm) {
+function confirmAjaxViewCustom(el, title, onConfirm) {
     destroyDialog();
     buildDialog(title);
     positionDialog(el);
@@ -111,17 +111,16 @@ function confirmAjaxViewCustom(el,title, onConfirm) {
  * */
 function postFormViewWithAction(el, action, lockElementIds, totalRefresh){
 	$("#"+el).attr({"action" : action});
-	console.log(lockElementIds);
-
-        postForm(el, lockElementIds, function () {
-            if(!totalRefresh == true) {
-                highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");
-                highlightSelected("#primary-item-list", "#multi-item-action-form-ids");
-            }else{
-                //TODO make normal ajax block replacement
-            	document.location.reload();
-			}
-        });
+	lock(lockElementIds);
+    postForm(el, lockElementIds, function () {
+        if (!totalRefresh == true) {
+            highlightSelected("#pasteBuffer", "#multi-item-action-form-ids-buffer");
+            highlightSelected("#primary-item-list", "#multi-item-action-form-ids");
+        } else {
+            //TODO make normal ajax block replacement
+            document.location.reload();
+		}
+    });
 
 }
 
@@ -322,6 +321,16 @@ $(document).on("click", ".selection-overlay", function (e) {
 	}else if(typeof v != "undefined"){
 		deselect();
 	}
+	if($("#multi-item-action-form-ids-buffer").val() != ''){
+   		$("#buffer-actions").removeClass("pale");
+	}else{
+        $("#buffer-actions").addClass("pale");
+	}
+    if($("#multi-item-action-form-ids").val() != ''){
+        $("#item-actions").removeClass("pale");
+    }else{
+        $("#item-actions").addClass("pale");
+    }
 
 	function select() {
         if(typeof v == "undefined" || v == ""){
@@ -340,9 +349,11 @@ $(document).on("click", ".selection-overlay", function (e) {
 
 function selectAll() {
 	$("#primary-item-list").find(".selection-overlay").not(".selected").trigger("click");
+    $("#item-actions").removeClass("pale");
 }
 function selectNone() {
     $("#primary-item-list").find(".selection-overlay.selected").trigger("click");
+    $("#item-actions").addClass("pale");
 }
 function invertSelection() {
     $("#primary-item-list").find(".selection-overlay").trigger("click");
@@ -351,23 +362,75 @@ function invertSelection() {
 //Highlights selected. Removes not found by id from inputs
 function highlightSelected(container, ipt) {
 	var $ipt = $(ipt);
-	if(typeof $ipt.val() != "undefined"){
+	var hId = ($ipt.attr("id") == "multi-item-action-form-ids")? "#item-actions" : "#buffer-actions";
+	if($ipt.val() != '') {
+        $(hId).removeClass("pale");
+    }
+	if (typeof $ipt.val() != "undefined") {
 		var arr1 = $ipt.val().split(",");
 		var clearedVal = $ipt.val();
-		if(arr1.length > 0 && arr1[0] != ""){
+		if (arr1.length > 0 && arr1[0] != "") {
 			$(".selection-actions, .selection-overlay").show();
 		}
-		for(i=0; i<arr1.length; i++){
-            if(arr1[i] == "")continue;
+		for (i = 0; i < arr1.length; i++) {
+            if (arr1[i] == "") continue;
 			var $el = $(container).find(".selection-overlay[data-id="+arr1[i]+"]");
-			if($el.length == 0){
-				var regex = new RegExp(arr1[i]+',?');
+			if ($el.length == 0) {
+				var regex = new RegExp(arr1[i] + ',?');
 				clearedVal = clearedVal.replace(regex, '');
 			}
 			else {
-                $el.addClass("selected");
-            }
+				$el.addClass("selected");
+			}
 		}
 		$ipt.val(clearedVal);
 	}
+}
+
+// $(document).on('click', '.char-param textarea, .char-param .btn', function () {
+// 	$div = $(this).closest(".char-param");
+// 	$emoji = $div.find(".emoji-toggle");
+// 	$emoji.show();
+// });
+//
+// $(document).on('blur', '.char-param textarea', function () {
+// 	$div = $(this).closest(".char-param");
+// 	$emoji = $div.find(".emoji-toggle");
+// 	$emoji.hide();
+// });
+
+$(document).on('click', '.char-param', function (e) {
+	var $div = $(this);
+	var $emoji = $div.find(".emoji-toggle");
+	$emoji.show();
+
+	if($(e.target).is(".btn")) {
+		var $btn = $(e.target);
+		var $inp = $div.find("textarea");
+		$inp.val($btn.text());
+	//	var dec = emojiCode($(this).text());
+	//	console.log(dec);
+	}
+});
+
+$(document).on('click', '*', function (e) {
+	var $t = $(e.target);
+	if(!$t.is(".char-param") && $t.closest(".char-param").length == 0){
+		$(".emoji-toggle").hide();
+	}
+});
+
+function emojiCode	(emoji) {
+		var comp;
+		if (emoji.length === 1) {
+			comp = emoji.charCodeAt(0);
+		}
+		comp = (
+			(emoji.charCodeAt(0) - 0xD800) * 0x400
+			+ (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+		);
+		if (comp < 0) {
+			comp = emoji.charCodeAt(0);
+		}
+		return comp.toString(10);
 }

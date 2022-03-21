@@ -2,6 +2,7 @@
 **	URI: http://www.howtomake.com.ua/2012/stilizaciya-vsex-elementov-form-s-pomoshhyu-css-i-jquery.html 
 *	
 */
+
 $(document).on("click", ".text_ipt", function(){
 	$(this).hide();
 	$(this).closest(".file-load-block").find(".url").show();
@@ -42,9 +43,11 @@ function isValidUrl(url)
 {
   var objRE = /(^https?:\/\/)?[a-zA-Zа-яА-Я0-9~_\-\.]+\.[a-zA-Zа-яА-Я]{2,9}(\/|:|\?[!-~]*)?$/i;
   return objRE.test(url);
-}		$.datepicker.setDefaults($.datepicker.regional["ru"]);
-		$(".datepicker").datepicker();
+}
 
+		$.datepicker.setDefaults($.datepicker.regional["ru"]);
+		$(".datepicker").datepicker();
+		
 		$('.date-time').on('change', function () {
 			var $cnt = $(this).closest('.timeStamp');
 			var $date = $cnt.find('.datepicker');
@@ -56,9 +59,9 @@ function isValidUrl(url)
 			d.setMinutes(parseInt(arr[1]));
 			var wholeVal = d.toLocaleString("ru", {timeZone : "UTC" }).substring(0,17).replace(',', '');;
 			$whole.val(wholeVal);
-		});
+			});
 
-
+		
 		// Открытие окна редактирования фильтра
 		function openFilter(filterId, itemId, paramId) {
 			var url = "admin_filter_init.afilter?input=" + filterId + "&itemId=" + itemId + "&paramName=" + paramId;

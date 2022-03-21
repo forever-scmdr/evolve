@@ -1,22 +1,19 @@
 var mceSettings = {
 	"mce_big" : {
-		selector : "textarea.mce_big",
-		language : 'ru',
-		//	theme : "modern",
-		skin : "lightgray"
-		,content_css : [
-			"css/text-style.css?v=2.1"]
+		selector : "textarea.mce_big"
+		,language : 'ru'
 		,plugins : [
-			'advlist autolink lists link image charmap print preview anchor textcolor',
+			'advlist autolink lists link image charmap print preview anchor',
 			'searchreplace visualblocks code fullscreen',
-			'insertdatetime media table contextmenu paste code'
-			// ,"fontawesome noneditable"
-			, "visualchars", "spoiler", "imagetools"],
-
-		toolbar : "undo redo| spoiler-add spoiler-remove | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
+			'insertdatetime media table paste code'
+			, "visualchars", "imagetools", "emoticons"]
+		,external_plugins:{
+			'spoiler': '/admin/tinymce/v5_plugins/spoiler/plugin.js?v=5'
+		}
+		,toolbar : "undo redo | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image | emoticons | spoiler-add spoiler-remove",
 		fontsize_formats : 'inherit 12px 13px 14px 16px 18px 24px 36px',
 		style_formats_merge : true,
-		extended_valid_elements: "figure,figcaption",
+		extended_valid_elements: "figure,figcaption,a[*],div[*]",
 		image_caption: true,
 		style_formats : [
 			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
@@ -43,7 +40,8 @@ var mceSettings = {
 					block : 'aside',
 					wrapper : true
 				}
-			]
+
+				]
 
 			}
 
@@ -51,30 +49,23 @@ var mceSettings = {
 		height : 300
 		,rel_list: [
 			{title: '-', value: ''}
-			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
+			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
 			,{title: 'Подсказка', value: 'tip'}
 		],
-		// visualblocks_default_state: true,
-		// end_container_on_empty_block: true
 	}
 	,"mce_medium" : {
-		selector : "textarea.mce_medium",
-		language : 'ru',
-		content_css : [
-		"css/text-style.css?v=2.1"],
-		skin : "lightgray"
-
+		selector : "textarea.mce_medium"
+		,language : 'ru'
 		,plugins : [
-			'advlist autolink lists link image charmap print preview anchor textcolor',
+			'advlist autolink lists link image charmap print preview anchor',
 			'searchreplace visualblocks code fullscreen',
-			'insertdatetime media table contextmenu paste code'
-			// ,"fontawesome noneditable"
-			, "visualchars", "spoiler", "imagetools" ],
-		toolbar : "undo redo| spoiler-add spoiler-remove  | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image",
+			'insertdatetime media table paste code'
+			, "visualchars", "imagetools", "emoticons" ]
+		,toolbar : "undo redo | fontsizeselect | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link image | emoticons",
 		fontsize_formats : 'inherit 16px 18px 24px 36px',
 		style_formats_merge : true,
-		extended_valid_elements: "figure,figcaption",
+		extended_valid_elements: "figure,figcaption,a[*],div[*]",
 		image_caption: true,
 		style_formats : [
 			{title : 'Таблица с границами', selector : 'table', classes : 'features'},
@@ -101,6 +92,7 @@ var mceSettings = {
 					block : 'aside',
 					wrapper : true
 				}
+
 				]
 			}
 
@@ -108,25 +100,20 @@ var mceSettings = {
 		height : 200
 		,rel_list: [
 			{title: '-', value: ''}
-			,{title: 'Сыылка на внешний сайт', value: 'nofollow'}
+			,{title: 'Ссылка на внешний сайт', value: 'nofollow'}
 			,{title: 'Картинка с увеичением', value: 'fancybox'}
 			,{title: 'Подсказка', value: 'tip'}
 		]
 	}
 	,"mce_small" : {
-		selector : "textarea.mce_small",
-		language : 'ru',
-		//	theme : "modern",
-		skin : "lightgray"
-		,content_css : [ "css/text-style.css",
-			"font-awesome-4.6.3/css/font-awesome.min.css" ]
+		selector : "textarea.mce_small"
+		,language : 'ru'
 		,plugins : [
-			'advlist autolink lists link charmap print preview anchor textcolor',
+			'advlist autolink lists link charmap print preview anchor',
 			'searchreplace visualblocks code fullscreen',
-			'insertdatetime media table contextmenu paste code'
-			// ,"fontawesome noneditable"
-			, "visualchars"],
-		toolbar : "undo redo  | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link",
+			'insertdatetime media table paste code'
+			, "visualchars"]
+		,toolbar : "undo redo  | bold | italic | alignleft aligncenter alignright alignjustify  | forecolor backcolor | bullist numlist outdent indent | charmap | link | emoticons",
 		style_formats_merge : true,
 		height : 200
 		,rel_list: [
@@ -202,7 +189,12 @@ $(document).ready(function(){
 
 						editor.on('NodeChange', function(e) {
 							if (e && e.element.nodeName.toLowerCase() == 'img') {
-								tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+								//tinyMCE.DOM.setAttribs(e.element, {'width': null, 'height': null});
+								var text = editor.getContent();
+								var newText = text.replace("<figcaption>Caption</figcaption>","<figcaption>Фото: </figcaption>");
+								if(text != newText) {
+									editor.setContent(newText);
+								}
 							}
 						});
 					});
@@ -210,7 +202,6 @@ $(document).ready(function(){
 			});
 
 		}
-		//console.log(mceSettings[setting]);
 		tinymce.init(mceSettings[setting]);
 	}
 });

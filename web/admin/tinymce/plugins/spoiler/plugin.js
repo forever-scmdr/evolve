@@ -1,5 +1,5 @@
 /*
-Spoiler plugin for TinyMCE 4 editor
+Spoiler plugin for TinyMCE 5 editor
 
 It adds special markup that in combination with a site-side JS script
 can create spoiler effect (hidden text that is shown on clik) on a web-page.
@@ -10,7 +10,6 @@ License: LGPL <http://www.gnu.org/licenses/lgpl-3.0.en.html>
 */
 tinymce.PluginManager.add('spoiler', function(editor, url)
 {
-
   editor.contentCSS.push(url + '/css/spoiler.css');
   var spoilerCaption = editor.getParam('spoiler_caption', 'Spoiler!');
 
@@ -51,25 +50,25 @@ tinymce.PluginManager.add('spoiler', function(editor, url)
     }
   }
 
-  editor.addButton('spoiler-add',
+  editor.ui.registry.addButton('spoiler-add',
   {
     tooltip: 'Add spoiler',
     image: url + '/img/eye-blocked.png',
     onclick: addSpoiler
   });
-  editor.addMenuItem('spoiler-add',
+  editor.ui.registry.addMenuItem('spoiler-add',
   {
     text: 'Add spoiler',
     context: 'format',
     onclick: addSpoiler
   });
-  editor.addButton('spoiler-remove',
+  editor.ui.registry.addButton('spoiler-remove',
   {
     tooltip: 'Remove spoiler',
     image: url + '/img/eye-plus.png',
     onclick: removeSpoiler
   });
-  editor.addMenuItem('spoiler-remove',
+  editor.ui.registry.addMenuItem('spoiler-remove',
   {
     text: 'Remove spoiler',
     context: 'format',

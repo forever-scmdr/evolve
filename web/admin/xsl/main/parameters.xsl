@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 	<xsl:import href="_inc_message.xsl"/>
 	<xsl:import href="_inc_params.xsl"/>
 	<xsl:import href="_documentation.xsl"/>
@@ -41,6 +41,19 @@
 		<input 
 			style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;" 
 			class="field" type="text" name="multipleParamValue"/>
+	</xsl:template>
+
+
+	<!-- Множественное простое поле ввода -->
+	<xsl:template match="field[@type='tuple']" mode="multiple">
+		<input
+				style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;"
+				class="field tuple tuple_key" type="text"/>
+		<input
+				style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;"
+				class="field tuple tuple_value" type="text"/>
+		<input type="hidden" class="tuple_format" value="{if (@format and not(@format = '')) then @format else '$+$'}"/>
+		<input type="hidden" class="tuple_full" name="multipleParamValue"/>
 	</xsl:template>
 
 
@@ -95,14 +108,23 @@
 	</xsl:template>
 
 	<!-- Значение множественной строки -->
-	<xsl:template match="value">
+	<xsl:template match="value[../@type='tuple']">
 		<xsl:variable name="form" select="../.."/>
 		<div class="pic" id="param-{../@id}-{@index}">
-			<span><xsl:value-of select="."/></span>
+			<span><xsl:value-of select="@key"/>: <xsl:value-of select="@value"/></span>
 			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
+
+    <!-- Значение множественной строки -->
+    <xsl:template match="value">
+        <xsl:variable name="form" select="../.."/>
+        <div class="pic" id="param-{../@id}-{@index}">
+            <span><xsl:value-of select="."/></span>
+            <a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+        </div>
+    </xsl:template>
 
 
 	<!--**************************************************************************-->
@@ -145,6 +167,13 @@
 							<p class="form_comment">[для использования в качестве части URL]</p>
 							<input class="field" type="text" name="{$ukey/@input}" value="{$ukey}" />
 						</div>
+
+						<xsl:variable name="type" select="if($form/@caption = 'Статья') then 'news_item' else if($form/@caption = 'Новость') then 'small_news_item' else ''" />
+						<xsl:if test="$type != ''">
+							<p>
+								<a href="{concat('preview_', $type, '?id=', $form/@id)}" target="_blank">Предпросмотр</a>
+							</p>
+						</xsl:if>
 					</xsl:if>
 					<input type="hidden" name="goToParent" id="parent-url"/>
 					<xsl:if test="admin-page/inline-form">
@@ -209,7 +238,14 @@
 		</div>
 	<xsl:call-template name="TINY_MCE"/>
 	<script>
+		var form = null;
 	<xsl:for-each select="$form/field[@quantifier='multiple']">
+		form = $('#addParameter<xsl:value-of select="@id"/>');
+		form.find('.tuple').change(function() {
+			var frm = $(this).closest('form');
+			var val = frm.find('.tuple_key').val() + frm.find('.tuple_format').val() + frm.find('.tuple_value').val();
+			frm.find('.tuple_full').val(val);
+		});
 		prepareSimpleFormView('addParameter<xsl:value-of select="@id"/>');
 	</xsl:for-each>
 	</script>

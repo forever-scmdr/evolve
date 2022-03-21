@@ -6,7 +6,7 @@
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
 	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
-	
+
 
 	<xsl:template name="DOCTYPE">
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -27,7 +27,7 @@
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<meta http-equiv="Pragma" content="no-cache" />
 			<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
-			<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
+			<link rel="stylesheet" type="text/css" href="admin/css/style.css?v=1" />
 			<link rel="stylesheet" type="text/css" href="admin/css/context.css" />
 			<link rel="stylesheet" type="text/css" href="admin/jquery-ui/jquery-ui.css" media="screen" />
 			<link rel="stylesheet" type="text/css" href="admin/js/jquery.fancybox.min.css" media="screen" />
@@ -45,12 +45,13 @@
 		<!-- FORM -->
 		<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 		<!-- MCE -->
-		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"/>
+<!--		<script type="text/javascript" src="admin/tinymce/tinymce.min.js"/>-->
+		<script src="https://cdn.tiny.cloud/1/2xg5cg6upchgz8jk6znz4bek1xiq06tof8ip5mhmgmg92nxu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 		<script type="text/javascript" src="admin/js/regional-ru.js"/>
 		<!-- FANCYBOX -->
 		<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"/>
 		<!-- AJAX -->
-		<script type="text/javascript" src="admin/js/ajax.js"/>
+		<script type="text/javascript" src="admin/ajax/ajax.js"/>
 		<!-- ADMIN -->
 		<script type="text/javascript" src="admin/js/admin.js"/>
 		<script type="text/javascript">
@@ -83,6 +84,7 @@
 				$("#message_main").effect("highlight", 1000);
 				//highlightSelected();
 			});
+
 		</script>
 	</xsl:template>
 	
@@ -169,40 +171,18 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
-									</li>
-									<li class="visible" title="Загрузить товары из файла во временный раздел">
-										<a href="add_products/?action=start">Добваление товаров</a>
-									</li>
-									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
-										<a href="generate_sitemap">Обновить карту сайта</a>
-									</li>
-									<li class="visible" title="Это абсолютно безопасно. Я вас уверяю.">
-										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
-									</li>
-									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
-										<a href="admin_reindex.action">Переиндексация</a>
-									</li>
-									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
-										<!--<a href="admin_domains_initialize.domain">-->
-											<!--Управление доменами-->
-										<!--</a>-->
-									<!--</li>-->
-									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
-										<!--<a href="admin_users_initialize.user">-->
-											<!--Управление пользователями-->
-										<!--</a>-->
-									<!--</li>-->
-									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
-										<a href="admin_types_init.type">
-											Управление классами объектов
+									<li class="visible" title="Открыть index">
+										<a href="#" onclick="insertAjaxView('admin_extra', 'right_col'); window.scrollTo(0, 0); return false;">
+											Открыть дополнительные функции
 										</a>
+									</li>
+									<li class="visible" title="Предпросмотр скрытых статей">
+										<a href="news_preview">Новости будущего</a>
 									</li>
 								</ul>
 							</div>
 						</div>
-						<div class="right-col">
+						<div class="right-col" id="right_col">
 							<xsl:call-template name="SEARCH"/>
 							<div class="inner">
 								<h1 class="title">
@@ -322,37 +302,6 @@
 		<li class="context-menu__item">
 			<a href="#" data-action="modify_access" class="context-menu__link">Запретить доступ к файлам</a>
 		</li>
-		<!--
-		<li class="context-menu__item">
-			<form method="post" action="set_user" id="chown">
-				<xsl:variable name="curr" select="''" />
-				<input type="hidden" name="id" value="" />
-				<label>
-					Назначить владельца
-					<select name="user_id" value="0">
-						<option value="0">Все</option>
-						<option value="12">User 1</option>
-						<option value="13">User 2</option>
-						<option value="13">User 3</option>
-					</select>
-				</label>
-			</form>
-		</li>
-		<li class="context-menu__item">
-			<form method="post" action="set_user" id="chgroup">
-				<input type="hidden" name="id" value="" />
-				<label>
-					Назначить группу
-					<select name="group_id" value="13">
-						<option value="0">Все</option>
-						<option value="12">group 1</option>
-						<option value="13">group 2</option>
-						<option value="14">group 3</option>
-					</select>
-				</label>
-			</form>
-		</li>
-		-->
 	</xsl:template>
 
 	<xsl:template name="DEFAULT_CONTEXT_LINKS" >

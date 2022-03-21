@@ -1037,7 +1037,7 @@
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_item_preview">
+	<page name="news_item_preview" template="news_item_preview">
 		<request>
 			<var name="id" />
 		</request>

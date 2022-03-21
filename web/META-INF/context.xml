@@ -29,6 +29,7 @@
 		testWhileIdle="true"
 		timeBetweenEvictionRunsMillis="10000"
 		minEvictableIdleTimeMillis="60000"
+		allowMultiQueries="true"
 		username="root"
 		password="eeee"
 		driverClassName="com.mysql.jdbc.Driver"

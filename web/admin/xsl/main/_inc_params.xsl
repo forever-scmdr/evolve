@@ -6,6 +6,8 @@
 		xmlns:f="f:f"
 		version="2.0">
 
+	<xsl:import href="_inc_emoji.xsl" />
+
 	<!-- Перевод даты из CMS вида (23.11.2017 00:00) в XSL вид -->
 	<xsl:function name="f:xsl_date" as="xs:dateTime">
 		<xsl:param name="str_date"/>
@@ -186,6 +188,28 @@
 			</textarea>
 		</label>
 	</xsl:template>
+
+
+	<!-- Emoji -->
+	<xsl:template match="field[@type='char']" mode="single">
+
+		<div class="char-param">
+			<label>
+				<span class=""><xsl:value-of select="@caption" /></span>
+				<xsl:if test="@description != ''">
+					<p class="form_comment" style="padding: 4px 0 6px;">
+						[<xsl:value-of select="@description" />]
+					</p>
+				</xsl:if>
+				
+				<textarea name="{@input}" style="width: 44px; height: 44px; font-size: 32px; padding: 5px; resize: none;" ><xsl:value-of select="if(. != '') then concat('&amp;#', . ,';') else ''" disable-output-escaping="yes"/></textarea>
+<!--				<input class="field" type="text" name="{@input}" value="{.}" style="width: 44px; font-size: 32px; padding: 5px;" />-->
+			</label>
+			<div class="emoji-toggle" style="display: none;">
+				<xsl:call-template name="FACES"/>
+			</div>
+		</div>
+	</xsl:template>
 	
 	<!-- Простое поле ввода -->
 	<xsl:template match="field" mode="single">
@@ -225,7 +249,7 @@
 	</xsl:template>
 
 	<!-- Дата -->
-	<xsl:template match="field[@type='date']" mode="single">
+	<xsl:template match="field[ @type='date']" mode="single">
 		<xsl:variable name="value" select="."/>
 		<!-- Дата и время -->
 		<div class="timeStamp" style="">
@@ -253,6 +277,7 @@
 					<input type="text" class="time date-time" value="{substring($display_date,12)}" style="width: 42px;text-align:center; padding: 4px 0;"/>
 				</label>
 			</xsl:if>
+		
 			<!-- этот инпут отправляется. Дата в формате dd.mm.yy, hh:mm -->
 			<input class="whole" type="hidden" name="{@input}" value="{if(. != '') then . else $utc_date}" />
 		</div>
@@ -304,7 +329,7 @@
 			</xsl:if>
 		</script>
 
-		<script type="text/javascript" src="admin/js/mce-setup.js?v=1.27"></script>
+		<script type="text/javascript" src="admin/js/mce-setup.js?v=5.031"></script>
 		<script type="text/javascript" src="admin/js/inputs_script.js"></script>
 	</xsl:template>
 		
