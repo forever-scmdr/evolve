@@ -18,9 +18,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+import static ecommander.persistence.mappers.DBConstants.ItemIndexes.*;
+
 /**
  * @author EEEE
- *
  */
 class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants.UsersTbl, DBConstants.UserGroups {
 
@@ -34,7 +35,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	private static ArrayList<ItemAccessor> loadAccessorsByQuery(TemplateQuery query, boolean hasParentTableJoin) throws SQLException, NamingException {
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn);
+			 PreparedStatement pstmt = query.prepareQuery(conn);
 		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -59,12 +60,14 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		}
 		return result;
 	}
+
 	/**
 	 * Загружает всех сабайтемов определенного айтема (не сами айтемы, а их аксэсоры)
 	 * Загружаются следующие айтемы:
-	 * 		- неперсональные айтемы текущей группы (критерий - тип айтема и номер группы)
-	 * 		- персональные айтемы текущей группы (критерий - тип айтема и номер юзера)
-	 * 	    - загружаются потомки по всем ассоциациям
+	 * - неперсональные айтемы текущей группы (критерий - тип айтема и номер группы)
+	 * - персональные айтемы текущей группы (критерий - тип айтема и номер юзера)
+	 * - загружаются потомки по всем ассоциациям
+	 *
 	 * @param parentId
 	 * @param user
 	 * @param page
@@ -82,6 +85,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	/**
 	 * Загружает общее количество всех сабайтемов определенного айтема
 	 * Аналогично loadClosestSubitems, только загружаются не айтемы, а их количество
+	 *
 	 * @param parentId
 	 * @param user
 	 * @param assocIds - если нет параметра - все ассоциации
@@ -93,7 +97,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		if (query == null)
 			return 0;
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn);
+			 PreparedStatement pstmt = query.prepareQuery(conn);
 		) {
 			ResultSet rs = pstmt.executeQuery();
 			int count = 0;
@@ -106,6 +110,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить все инлайновые прямые потомки айтема для редактирования
+	 *
 	 * @param parentId
 	 * @param user
 	 * @param page
@@ -119,7 +124,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 			return new ArrayList<>(0);
 		ArrayList<Item> result = new ArrayList<>();
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			 PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
 				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID));
@@ -129,18 +134,19 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Подготовка запроса на загружку сабайтемов айтема или количества сабайтемов айтема
-	 * @param parentId      базовый айтем (родитель потомков)
-	 * @param user          пользователь (текущий администратор)
-	 * @param page          номер страницы при постраничном выводе
-	 * @param justCount     нужно ли загружить только количество сабайетмов
-	 * @param justInline    нужно ли загружить только инлайновые сабайтемы
-	 * @param assocIds      массив (или однин) ID ассоциаций
+	 *
+	 * @param parentId   базовый айтем (родитель потомков)
+	 * @param user       пользователь (текущий администратор)
+	 * @param page       номер страницы при постраничном выводе
+	 * @param justCount  нужно ли загружить только количество сабайетмов
+	 * @param justInline нужно ли загружить только инлайновые сабайтемы
+	 * @param assocIds   массив (или однин) ID ассоциаций
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
 	 */
 	private static TemplateQuery createSubitemsQuery(long parentId, User user, int page, boolean justCount,
-	                                                 boolean justInline, Byte... assocIds) throws SQLException, NamingException {
+													 boolean justInline, Byte... assocIds) throws SQLException, NamingException {
 		ItemBasics parent;
 		try (Connection conn = MysqlConnector.getConnection()) {
 			parent = ItemMapper.loadItemBasics(parentId, conn);
@@ -223,6 +229,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить корневые айтемы для админа (главного и любого другого)
+	 *
 	 * @param user
 	 * @return
 	 * @throws SQLException
@@ -274,7 +281,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		}
 		ArrayList<ItemAccessor> result = new ArrayList<>();
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = select.prepareQuery(conn);
+			 PreparedStatement pstmt = select.prepareQuery(conn);
 		) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -293,8 +300,10 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		}
 		return result;
 	}
+
 	/**
 	 * Загружает айтем и всех его предков
+	 *
 	 * @param baseId
 	 * @param assocId
 	 * @return
@@ -307,8 +316,10 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 				.ORDER_BY(IP_PARENT_DIRECT, IP_PARENT_ID);
 		return loadAccessorsByQuery(query, true);
 	}
+
 	/**
 	 * Загружает несколько айтемов по их ID
+	 *
 	 * @param itemId
 	 * @return
 	 */
@@ -324,6 +335,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	/**
 	 * Загружает айетмы по их ключу (Антоновский фикс)
 	 * TODO добавить проверку пользователя, чтобы не загружать недоступные айтемы
+	 *
 	 * @param key
 	 * @return
 	 * @throws Exception
@@ -336,8 +348,23 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 				.FROM(ITEM_TBL).WHERE().col(I_KEY, " LIKE ").string("%" + key + "%");
 		return loadAccessorsByQuery(query, false);
 	}
+
+	static ArrayList<ItemAccessor> loadItemAccessorsByTag(String tag) throws SQLException, NamingException {
+		if (StringUtils.isBlank(tag))
+			return new ArrayList<>(0);
+
+		TemplateQuery query = new TemplateQuery("Load accessors by tag");
+		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
+				.FROM(ITEM_TBL).INNER_JOIN("string_index", I_ID, II_ITEM_ID).WHERE().col(II_PARAM, " IN ").intIN(47, 53, 90).AND().col(II_VALUE, " LIKE ").string("%" + tag + "%");
+
+		query.ORDER_BY(I_UPDATED + " DESC ");
+
+		return loadAccessorsByQuery(query, false);
+	}
+
 	/**
 	 * Загружает один айтем по его ID
+	 *
 	 * @param itemId
 	 * @return
 	 * @throws Exception
@@ -351,6 +378,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить айтем (не аксэсор)
+	 *
 	 * @param itemId
 	 * @param user
 	 * @return
@@ -361,7 +389,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 		query.SELECT("*").FROM(ITEM_TBL).WHERE().col(I_ID).long_(itemId);
 		Item item = null;
 		try (Connection conn = MysqlConnector.getConnection();
-			PreparedStatement pstmt = query.prepareQuery(conn)) {
+			 PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 				item = ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssoc().getId(), Item.DEFAULT_ID);
@@ -373,6 +401,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить ID родительского айтема по ассоциации
+	 *
 	 * @param itemId
 	 * @param assocId
 	 * @return
@@ -385,7 +414,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 				.AND().col(DBConstants.ItemParent.IP_ASSOC_ID).byte_(assocId)
 				.AND().col(DBConstants.ItemParent.IP_PARENT_DIRECT).byte_((byte) 1);
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			 PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return rs.getLong(1);
@@ -394,8 +423,10 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 			}
 		}
 	}
+
 	/**
 	 * Загрузить все айтемы, которые хранят ссылки на данный айтем (все айтемы, к которым прицеплен данный айтем)
+	 *
 	 * @param itemId
 	 * @return
 	 * @throws Exception
@@ -434,6 +465,7 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 
 	/**
 	 * Загрузить всех пользователей, которыми может управлять другой определенный пользователь
+	 *
 	 * @param admin
 	 * @return
 	 * @throws Exception
@@ -453,12 +485,13 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	/**
 	 * Загрузить всех пользователей владельцев айтемов, список которых предоставляется
 	 * Загружаюются только те пользователи, в группе которых текущий админ является также админом
+	 *
 	 * @param admin
 	 * @param items
 	 * @return
 	 * @throws Exception
 	 */
-	static Collection<User> loadItemOwners(User admin, ItemBasics...items) throws Exception {
+	static Collection<User> loadItemOwners(User admin, ItemBasics... items) throws Exception {
 		HashSet<Integer> userIds = new HashSet<>();
 		for (ItemBasics item : items) {
 			userIds.add(item.getOwnerUserId());
@@ -474,14 +507,15 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 	private static Collection<User> loadUsersByQuery(TemplateQuery query) throws SQLException, NamingException {
 		LinkedHashMap<Integer, User> users = new LinkedHashMap<>();
 		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = query.prepareQuery(conn)) {
+			 PreparedStatement pstmt = query.prepareQuery(conn)) {
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				int id = rs.getInt(U_ID);
 				User user = users.get(id);
 				if (user == null) {
 					user = new User(rs.getString(U_LOGIN), null, rs.getString(U_DESCRIPTION), rs.getInt(U_ID));
-					users.put(id, user);				}
+					users.put(id, user);
+				}
 				user.addGroup(rs.getString(UG_GROUP_NAME), rs.getByte(UG_GROUP_ID), rs.getByte(UG_ROLE));
 			}
 		}

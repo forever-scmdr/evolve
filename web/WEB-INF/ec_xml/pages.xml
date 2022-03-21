@@ -1020,16 +1020,6 @@
 	</page>
 
 
-	<page name="news_item_preview">
-		<request>
-			<var name="id" />
-		</request>
-		<command class="extra.FuturePreviewCommand" tag="search">
-			<result name="success" type="inline_xml"/>
-		</command>
-		<include name="COMMON"/>
-	</page>
-
 	<page name="news_preview" template="news_preview">
 		<command class="extra.FuturePreviewCommand" tag="search" method="loadFutureNews">
 			<result name="success" type="inline_xml"/>

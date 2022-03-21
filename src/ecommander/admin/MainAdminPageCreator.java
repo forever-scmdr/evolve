@@ -437,6 +437,7 @@ public class MainAdminPageCreator implements AdminXML {
 		// Антоновский поиск по ключу
 		if (StringUtils.isNotBlank(searchQuery)) {
 			subitems = AdminLoader.loadItemAccessorsByKey(searchQuery);
+			subitems.addAll(AdminLoader.loadItemAccessorsByTag(searchQuery));
 		} else {
 			subitems = createSubitemsInfo(baseId, itemType, page, itemsToAdd);
 		}
