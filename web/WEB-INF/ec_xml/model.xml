@@ -1203,6 +1203,8 @@
 
 	<item name="discount_rules" caption="Правила предоставления скидок" ag-id="10649" ag-hash="174812281">
 		<parameter name="text" type="text" caption="Текст"/>
+		<parameter name="discount_1" type="integer" caption="Сумма для скидки 5%"/>
+		<parameter name="discount_2" type="integer" caption="Сумма для скидки 10%"/>
 	</item>
 
 	<root>

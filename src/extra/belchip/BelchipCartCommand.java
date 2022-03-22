@@ -35,6 +35,11 @@ import java.util.List;
 
 public class BelchipCartCommand extends CartManageCommand implements CartConstants, ItemNames {
 
+	private static BigDecimal SUM_1 = null;
+	private static BigDecimal SUM_2 = null;
+	private static long discountLastUpdated = 0;
+	private final static long DISCOUNT_UPDATE_FREQ = 1000 * 60 * 10;
+
 	private float minimalOrderSum = (float) 0;
 	private String lessThenMinimalOrderMessage = "";
 
@@ -48,6 +53,20 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private static final String FAV_COOKIE = "favourites";
 	private static final String FORM_PHYS_FORM = "form_phys";
 	private static final String FORM_JUR_FORM = "form_jur";
+
+	public BelchipCartCommand() {
+		try {
+			if (SUM_1 == null || SUM_2 == null || Math.abs(System.currentTimeMillis() - discountLastUpdated) > DISCOUNT_UPDATE_FREQ) {
+				Item discount = ItemQuery.loadSingleItemByName(DISCOUNT_RULES);
+				SUM_1 = BigDecimal.valueOf(discount.getIntValue(discount_rules_.DISCOUNT_1, SUM_1_DEFAULT));
+				SUM_2 = BigDecimal.valueOf(discount.getIntValue(discount_rules_.DISCOUNT_2, SUM_2_DEFAULT));
+				discountLastUpdated = System.currentTimeMillis();
+			}
+		} catch (Exception e) {
+			SUM_1 = BigDecimal.valueOf(SUM_1_DEFAULT);
+			SUM_2 = BigDecimal.valueOf(SUM_2_DEFAULT);
+		}
+	}
 
 	/**
 	 * Удаляет все из корзины

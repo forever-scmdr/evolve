@@ -541,6 +541,8 @@ public interface ItemNames {
 
         String _ITEM_NAME = "discount_rules";
         String TEXT = "text";
+        String DISCOUNT_1 = "discount_1";
+        String DISCOUNT_2 = "discount_2";
 
     }
 
