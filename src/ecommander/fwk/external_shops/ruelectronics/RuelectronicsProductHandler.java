@@ -122,7 +122,7 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 				setSearchString(product);
 
 				product.setValueUI(TAG_PARAM, "external_shop");
-				product.setValueUI(TAG_PARAM, "ruelectronics.com");
+				product.setValueUI(TAG_PARAM, "ZIP-2002.RU");
 				if (paramsXmlBuilder.length() != 0) {
 					product.setValueUI("extra_xml", paramsXmlBuilder.toString());
 				}
