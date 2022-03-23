@@ -12,7 +12,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 public class RuelectronicsImportCommand extends AbstractShopImport {
-	private static final String SHOP_NAME = "ruelectronics.com";
+	private static final String SHOP_NAME = "ZIP-2002.RU";
 	private static final String INTEGRATION_DIR = "upload/ruelectronics";
 	private static final String DOWNLOAD_URL = "http://zip-2002.ru/vip/price/zipstock.xml";
 	private static final String CATALOG_FILE_NAME = "ruelectronics.xml";
