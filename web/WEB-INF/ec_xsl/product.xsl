@@ -111,7 +111,7 @@
 				<!-- new html -->
 				<xsl:for-each select="$p/tag[. != 'external_shop' and not($shop/name = .)]">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each>			
+				</xsl:for-each>
  
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
