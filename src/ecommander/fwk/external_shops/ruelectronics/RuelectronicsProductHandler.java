@@ -121,6 +121,7 @@ public class RuelectronicsProductHandler extends DefaultHandler implements Catal
 				setBynPrice(product);
 				setSearchString(product);
 
+				product.removeEqualValue(TAG_PARAM, "ruelectronics.com");
 				product.setValueUI(TAG_PARAM, "external_shop");
 				product.setValueUI(TAG_PARAM, "ZIP-2002.RU");
 				if (paramsXmlBuilder.length() != 0) {
