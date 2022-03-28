@@ -289,6 +289,7 @@
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
+		<parameter name="url" type="string" caption="Код предложения" description="в яндекс маркете"/>
 	</item>
 
 	<item name="opt_product" caption="товар для оптовой торговли" virtual="true" ag-id="2386" ag-hash="409648995">

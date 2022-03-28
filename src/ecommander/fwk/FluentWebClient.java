@@ -76,7 +76,7 @@ public class FluentWebClient {
 
 	public static void saveFile(String url, String dirName, String saveAs, String... proxy) throws Exception {
 		String badPart = StringUtils.substringAfterLast(url, "/");
-		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8"));
+		url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8").replaceAll("\\+", "%20"));
 		String host = url.replaceAll("https?:\\/\\/(www.)?", "");
 		host = host.substring(0, host.indexOf('/'));
 		Request req = Request.Get(url)

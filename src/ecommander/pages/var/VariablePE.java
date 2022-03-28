@@ -146,19 +146,19 @@ public abstract class VariablePE implements PageElement {
 		StringBuilder result = new StringBuilder();
 		if (style == Style.path) {
 			for (String value : getVariable().getLocalValues()) {
-				result.append(COMMON_DELIMITER).append(name).append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
+				result.append(COMMON_DELIMITER).append(name).append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING).replaceAll("\\+", "%20"));
 			}
 		} else if (style == Style.query) {
 			if (isEmpty()) {
 				result.append(AMP_SIGN).append(name).append(EQ_SIGN);
 			} else {
 				for (String value : getVariable().getLocalValues()) {
-					result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
+					result.append(AMP_SIGN).append(name).append(EQ_SIGN).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING).replaceAll("\\+", "%20"));
 				}
 			}
 		} else if (isStyleKey()) {
 			for (String value : getVariable().getLocalValues()) {
-				result.append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING));
+				result.append(COMMON_DELIMITER).append(URLEncoder.encode(value, Strings.SYSTEM_ENCODING).replaceAll("\\+", "%20"));
 			}
 		}
 		if (StringUtils.isBlank(result))

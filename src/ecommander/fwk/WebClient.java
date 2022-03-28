@@ -318,7 +318,7 @@ public class WebClient implements Closeable {
 		String badPart = StringUtils.substringAfterLast(url,"/");
 		boolean urlChanged = false;
 		if (StringUtils.isNotBlank(badPart) && !URL_ENCODED_PATTERN.matcher(badPart).find()) {
-			url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8"));
+			url = url.replace(badPart, URLEncoder.encode(badPart, "UTF-8").replaceAll("\\+", "%20"));
 			urlChanged = true;
 		}
 		try {
