@@ -57,9 +57,9 @@
 
 		<xsl:variable name="product" select="product"/>
 		<xsl:variable name="aux" select="aux"/>
-		<xsl:variable name="is_aux" select="aux != ''"/>
-		<xsl:variable name="shop" select="page/shop[name = $aux]"/>
-		<xsl:variable name="unit" select="if($is_aux) then $product/unit else if(f:num($product/min_qty) &gt; 1) then concat($product/min_qty, $product/unit) else $product/unit"/>
+		<xsl:variable name="shop_name" select="$product/tag[text() = 'external_shop']/following-sibling::tag[1]" />
+		<xsl:variable name="site" select="if(aux != '') then aux else if($shop_name != '') then $shop_name else 'ictrade'"/>
+		<xsl:variable name="unit" select="if(aux != '') then $product/unit else if(f:num($product/min_qty) &gt; 1) then concat($product/min_qty, $product/unit) else $product/unit"/>
 		<xsl:variable name="price"  select="f:cart_sum(if(f:num(sum) != 0) then $product/price else sum)"/>
 		<xsl:variable name="sum"  select="f:cart_sum(sum)"/>
 		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
@@ -92,10 +92,10 @@
 				<xsl:value-of select="if(aux != '') then $product/currency_id else 'BYN'"/>
 			</td>
 			<td>
-				<xsl:value-of select="if(aux != '') then aux else 'ictrade'"/>
+				<xsl:value-of select="$site"/>
 			</td>
 			<td>
-				<xsl:value-of select="delivery_time"/>
+				<xsl:value-of select="if(delivery_time) then delivery_time else if(//shop[name = $site]) then //shop[name = $site]/delivery_string else ''"/>
 			</td>
 			<td style="width: 400px;">
 				<xsl:value-of select="if(aux != 'digikey' and aux = $vendor_code_for_name) then $product/name else $product/description"/>
