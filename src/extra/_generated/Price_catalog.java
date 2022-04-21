@@ -12,6 +12,7 @@ public class Price_catalog
     public final static String _NAME = "price_catalog";
     public final static String NAME = "name";
     public final static String QUOTIENT = "quotient";
+    public final static String SHIP_TIME = "ship_time";
     public final static String DEFAULT_SHIP_TIME = "default_ship_time";
 
     private Price_catalog(Item item) {

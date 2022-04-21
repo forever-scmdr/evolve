@@ -243,6 +243,38 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
 	</item>
 
+	<!-- Каталог дополнительных товаров -->
+	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="13686" ag-hash="-1742571868">
+		<child item="plain_section"/>
+	</item>
+
+	<!-- Раздел дополнительных товаров -->
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="13687" ag-hash="-328034960">
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="date" type="date" caption="Дата"/>
+		<!--
+		<parameter name="thread" type="string" caption="Поток"/>
+		<parameter name="debug" type="plain-text" caption="Отладка"/>
+		-->
+		<child item="product"/>
+	</item>
+
+	<!-- Настройки одного дополнительного каталога -->
+	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="13688" ag-hash="2102484771">
+		<parameter name="name" type="string" caption="Название поставщика" description="начало названия файла поставщика"/>
+		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
+		<parameter name="ship_time" type="tuple" multiple="true" caption="Срок поставки (текст)" description="значение столбца - текст срока поставки для пользователя"/>
+		<parameter name="ship_time_days" type="tuple" multiple="true" caption="Срок поставки (число дней)" description="значение столбца - срок поставки в днях для системы"/>
+		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию (текст)" default="14 дней"/>
+		<parameter name="default_ship_time_days" type="string" caption="Срок поставки по умолчанию в днях" default="14 дней"/>
+	</item>
+
+	<!-- Настройки дополнительных каталогов -->
+	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="13689" ag-hash="752518576">
+		<child item="price_catalog"/>
+	</item>
+
+
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="code name" virtual="true" ag-id="864" ag-hash="1636704722">
 		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
@@ -312,6 +344,7 @@
 		<parameter name="rel_code" type="string" multiple="true" caption="Коды сопутствующих товаров"/>
 		<parameter name="analog" type="string" caption="Аналоги" description="перечисление аналогов устройства"/>
 		<parameter name="barcode" type="string" caption="Штрихкод" description="в виде строки"/>
+		<parameter name="store" type="string" caption="Склад" description="для товаров сторонних каталогов"/>
 
 		<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
@@ -1230,6 +1263,8 @@
 		<child item="order_emails" single="true" />
 		<child item="order_catalog" single="true" />
 		<child item="delivery_and_payment" single="true" />
+		<child item="plain_catalog" single="true" />
+		<child item="price_catalogs" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 

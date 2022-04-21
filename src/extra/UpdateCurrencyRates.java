@@ -1,6 +1,7 @@
 package extra;
 
 import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.WebClient;
 import ecommander.model.Item;
 import ecommander.model.User;
@@ -32,7 +33,13 @@ public class UpdateCurrencyRates extends Command implements ItemNames {
 	public ResultPE execute() throws Exception {
 		if (!StringUtils.equalsIgnoreCase(getVarSingleValue("action"), "start"))
 			return null;
-		String xml = WebClient.getString(NBNB_URL);
+		String xml = null;
+		try {
+			xml = WebClient.getString(NBNB_URL);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to connect to nbrb.by", e);
+			return null;
+		}
 		if (StringUtils.isNotBlank(xml)) {
 			xml = xml.substring(xml.indexOf('<'));
 		}

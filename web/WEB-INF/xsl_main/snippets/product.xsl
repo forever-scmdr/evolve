@@ -17,7 +17,7 @@
 <!--	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>-->
 	<xsl:variable name="price_param_name" select="'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
-
+	<xsl:variable name="catalog_settings" select="page/price_catalogs/price_catalog"/>
 
 
 
@@ -28,24 +28,38 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="is_extra" select="available = '-1'"/>
+		<xsl:variable name="settings" select="$catalog_settings[name = current()/group_id]"/>
+		<xsl:variable name="ship_time_calculated" select="$settings/ship_time[@key = current()/store]/@value"/>
+		<xsl:variable name="ship_time" select="if ($ship_time_calculated) then $ship_time_calculated else $settings/default_ship_time"/>
 
 		<div class="device">
 			<div class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');" /></a>
-
-				<div class="device__hover top-rigt" id="fancy-{code}">
-					<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
-					   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
-						<img src="img/icon-device-zoom.png" alt="" />
-					</a>
-				</div>
-				<div class="device__hover bottom-left">
-					<xsl:if test="section/show_products">
-						<a class="device__parent-link" href="{section/show_products}" title="Перейти в раздел этого товара">
-							<img src="img/icon-device-goto.png" alt=""/>
+				<xsl:if test="not($is_extra)">
+					<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');" /></a>
+					<div class="device__hover top-rigt" id="fancy-{code}">
+						<a class="device__zoom" href="sitepics/{pic_path}b.jpg"
+						   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
+							<img src="img/icon-device-zoom.png" alt="" />
 						</a>
-					</xsl:if>
-				</div>
+					</div>
+					<div class="device__hover bottom-left">
+						<xsl:if test="section/show_products">
+							<a class="device__parent-link" href="{section/show_products}" title="Перейти в раздел этого товара">
+								<img src="img/icon-device-goto.png" alt=""/>
+							</a>
+						</xsl:if>
+					</div>
+				</xsl:if>
+				<xsl:if test="$is_extra">
+					<a href="{show_product}"><img class="main-pic" src="{extra_pic[1]}" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');" /></a>
+					<div class="device__hover top-rigt" id="fancy-{code}">
+						<a class="device__zoom" href="{extra_pic[1]}"
+						   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
+							<img src="img/icon-device-zoom.png" alt="" />
+						</a>
+					</div>
+				</xsl:if>
 			</div>
 			<div class="device__name">
 				<a href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
@@ -81,11 +95,20 @@
 						</div>
 					</div>
 				</xsl:if>
-				<xsl:for-each select="file[. != '']">
-					<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
-						<img src="img/icon-device-icon-02.png" alt=""/>
-					</a>
-				</xsl:for-each>
+				<xsl:if test="not($is_extra)">
+					<xsl:for-each select="file[. != '']">
+						<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
+							<img src="img/icon-device-icon-02.png" alt=""/>
+						</a>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:if test="$is_extra">
+					<xsl:for-each select="file[. != '']">
+						<a class="deivce-icon" href="{.}" title="скачать документацию (datasheet) по {../name} в формате pdf" download="{.}">
+							<img src="img/icon-device-icon-02.png" alt=""/>
+						</a>
+					</xsl:for-each>
+				</xsl:if>
 				<xsl:if test="text != ''">
 					<a class="deivce-icon" href="" popup="text_{code}">
 						<img src="img/icon-device-icon-01.png" alt=""  title="описание"/>
@@ -117,10 +140,18 @@
 					</div>
 				</xsl:if>
 			</div>
-			<div class="device__code">
-				Код: <xsl:value-of select="code"/>
-				<xsl:if test="special_price = 'true' and not($zero)"><span>Спеццена</span></xsl:if>
-			</div>
+			<xsl:if test="$is_extra">
+				<div class="device__code" style="color: #FF8C00">
+					<img src="img/clock.png" width="18" height="18"/>
+					<strong style="vertical-align: sub;">&#160;<xsl:value-of select="$ship_time"/></strong>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($is_extra)">
+				<div class="device__code">
+					Код: <xsl:value-of select="code"/>
+					<xsl:if test="special_price = 'true' and not($zero)"><span>Спеццена</span></xsl:if>
+				</div>
+			</xsl:if>
 			<div class="device__price">
 				<xsl:if test="not($zero)">
 					<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>/<xsl:value-of select="unit"/>
@@ -129,7 +160,7 @@
 					<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
 				</xsl:if>
 			</div>
-			<div class="device__status status">
+			<div class="device__status status" style="{if ($is_extra) then 'color: #FF8C00' else ''}">
 				<xsl:if test="$zero">
 					<xsl:if test="soon != '0'">
 						<div class="status__wait">Ожидается: <xsl:value-of select="substring(soon, 1, 10)"/></div>
@@ -146,7 +177,12 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="not($zero) and not(is_service = '1')">
+					<xsl:if test="not($is_extra)">
 					В наличии: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+					</xsl:if>
+					<xsl:if test="$is_extra">
+						Удаленный склад: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+					</xsl:if>
 				</xsl:if>
 			</div>
 			<div class="device__order" id="cart_list_{@id}">
@@ -165,6 +201,9 @@
 			</div>
 			<div class="device__add">
 				<xsl:choose>
+					<xsl:when test="$is_extra">
+						<div>&#160;</div>
+					</xsl:when>
 					<xsl:when test="$is_fav">
 						<div>
 							<a href="{from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
@@ -191,21 +230,36 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="is_extra" select="available = '-1'"/>
+		<xsl:variable name="settings" select="$catalog_settings[name = current()/group_id]"/>
+		<xsl:variable name="ship_time_calculated" select="$settings/ship_time[@key = current()/store]/@value"/>
+		<xsl:variable name="ship_time" select="if ($ship_time_calculated) then $ship_time_calculated else $settings/default_ship_time"/>
 
 		<tr class="device_row">
 			<td class="device__image">
-				<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');"/></a>
-				<div class="device__hover">
-					<a class="device__zoom" id="fancy-{code}" href="sitepics/{pic_path}b.jpg" onclick="return false;"
-					   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
-						<img src="img/icon-device-zoom.png" alt=""/>
-					</a>
-					<xsl:if test="section/show_products">
-						<a class="device__parent-link" href="{section/show_products}">
-							<img src="img/icon-device-goto.png" alt="" title="Перейти в раздел этого товара"/>
+				<xsl:if test="not($is_extra)">
+					<a href="{show_product}"><img class="main-pic" src="sitepics/{pic_path}.jpg" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');"/></a>
+					<div class="device__hover">
+						<a class="device__zoom" id="fancy-{code}" href="sitepics/{pic_path}b.jpg" onclick="return false;"
+						   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
+							<img src="img/icon-device-zoom.png" alt=""/>
 						</a>
-					</xsl:if>
-				</div>
+						<xsl:if test="section/show_products">
+							<a class="device__parent-link" href="{section/show_products}">
+								<img src="img/icon-device-goto.png" alt="" title="Перейти в раздел этого товара"/>
+							</a>
+						</xsl:if>
+					</div>
+				</xsl:if>
+				<xsl:if test="$is_extra">
+					<a href="{show_product}"><img class="main-pic" src="{extra_pic[1]}" alt="{name}" onerror="$('#fancy-{code}').remove(); this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror');" /></a>
+					<div class="device__hover">
+						<a class="device__zoom" id="fancy-{code}" href="{extra_pic[1]}" onclick="return false;"
+						   title="увеличить изображение" caption="Изображения товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики">
+							<img src="img/icon-device-zoom.png" alt=""/>
+						</a>
+					</div>
+				</xsl:if>
 			</td>
 			<td class="device__info">
 				<div class="device__name">
@@ -241,11 +295,20 @@
                             </div>
                         </div>
                     </xsl:if>
- 					<xsl:for-each select="file[. != '']">
-						<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
-							<img src="img/icon-device-icon-02.png" alt=""/>
-						</a>
-					</xsl:for-each>
+					<xsl:if test="not($is_extra)">
+						<xsl:for-each select="file[. != '']">
+							<a class="deivce-icon" href="sitedocs/{.}" title="скачать документацию (datasheet) по {../mark} в формате pdf" download="sitedocs/{.}">
+								<img src="img/icon-device-icon-02.png" alt=""/>
+							</a>
+						</xsl:for-each>
+					</xsl:if>
+					<xsl:if test="$is_extra">
+						<xsl:for-each select="file[. != '']">
+							<a class="deivce-icon" href="{.}" title="скачать документацию (datasheet) по {../name} в формате pdf" download="{.}">
+								<img src="img/icon-device-icon-02.png" alt=""/>
+							</a>
+						</xsl:for-each>
+					</xsl:if>
 					<xsl:if test="text != ''">
 						<a class="deivce-icon" href="" popup="text_{code}">
 							<img src="img/icon-device-icon-01.png" alt=""  title="описание"/>
@@ -281,20 +344,31 @@
 <!--			<td class="device__param">4x15</td>-->
 <!--			<td class="device__param">4x15</td>-->
 <!--			<td class="device__param">4x15</td>-->
-			<td class="device__status status">
-				<xsl:if test="$zero">
-					<xsl:if test="not(soon != '0')">
-						<div class="status__na">Нет в наличии</div>
+			<xsl:if test="not($is_extra)">
+				<td class="device__status status">
+					<xsl:if test="$zero">
+						<xsl:if test="not(soon != '0')">
+							<div class="status__na">Нет в наличии</div>
+						</xsl:if>
+						<xsl:if test="soon != '0'">
+							<div class="status__wait">Ожидается: <xsl:value-of select="substring(soon, 1, 10)"/></div>
+						</xsl:if>
+						<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
 					</xsl:if>
-					<xsl:if test="soon != '0'">
-						<div class="status__wait">Ожидается: <xsl:value-of select="substring(soon, 1, 10)"/></div>
+					<xsl:if test="not($zero) and not(is_service = '1')">
+						<strong class="qty"><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
 					</xsl:if>
-					<div id="subs_{code}"><a href="{subscribe_link}" rel="nofollow" popup="modal-subscribe">Уведомить о поступлении</a></div>
-				</xsl:if>
-				<xsl:if test="not($zero) and not(is_service = '1')">
-					<strong class="qty"><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
-				</xsl:if>
-			</td>
+				</td>
+			</xsl:if>
+			<xsl:if test="$is_extra">
+				<td class="device__status status">
+					<div class="device__code" style="color: #FF8C00; padding-bottom: 12px">
+						<img src="img/clock.png" width="18" height="18"/>
+						<strong style="vertical-align: sub;">&#160;<xsl:value-of select="$ship_time"/></strong>
+					</div>
+					<strong class="qty" style="color: #FF8C00;">Удаленный склад: <xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+				</td>
+			</xsl:if>
 			<td class="device__price">
 				<xsl:if test="not($zero)">
 					<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>/<xsl:value-of select="unit"/>
@@ -326,20 +400,22 @@
 						</xsl:if>
 					</form>
 				</div>
-				<div class="device__add">
-					<xsl:choose>
-						<xsl:when test="$is_fav">
-							<div>
-								<a href="{from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
-							</div>
-						</xsl:when>
-						<xsl:otherwise>
-							<div id="fav_list_{@id}">
-								<a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}"><xsl:value-of select="$fav_add_label"/></a>
-							</div>
-						</xsl:otherwise>
-					</xsl:choose>
-				</div>
+				<xsl:if test="not($is_extra)">
+					<div class="device__add">
+						<xsl:choose>
+							<xsl:when test="$is_fav">
+								<div>
+									<a href="{from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
+								</div>
+							</xsl:when>
+							<xsl:otherwise>
+								<div id="fav_list_{@id}">
+									<a href="{to_fav}" ajax="true" ajax-loader-id="fav_list_{@id}"><xsl:value-of select="$fav_add_label"/></a>
+								</div>
+							</xsl:otherwise>
+						</xsl:choose>
+					</div>
+				</xsl:if>
 			</td>
 		</tr>
 	</xsl:template>

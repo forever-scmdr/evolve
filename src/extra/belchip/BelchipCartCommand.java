@@ -257,10 +257,12 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				qty = round(qty, product.getDoubleValue(product_.MIN_QTY, 1));
 				bought.setValue(bought_.NAME, product.getStringValue(product_.NAME) + " " + product.getStringValue(product_.NAME_EXTRA));
 				bought.setValue(bought_.QTY_TOTAL, qty);
-				bought.setValue(bought_.LIMIT_1, section.getValue(bought_.LIMIT_1));
-				bought.setValue(bought_.LIMIT_2, section.getValue(bought_.LIMIT_2));
-				bought.setValue(bought_.DISCOUNT_1, section.getValue(section_.DISCOUNT_1));
-				bought.setValue(bought_.DISCOUNT_2, section.getValue(section_.DISCOUNT_2));
+				if (section != null) {
+					bought.setValue(bought_.LIMIT_1, section.getValue(bought_.LIMIT_1));
+					bought.setValue(bought_.LIMIT_2, section.getValue(bought_.LIMIT_2));
+					bought.setValue(bought_.DISCOUNT_1, section.getValue(section_.DISCOUNT_1));
+					bought.setValue(bought_.DISCOUNT_2, section.getValue(section_.DISCOUNT_2));
+				}
 				bought.setValue(bought_.TYPE, product.getItemType().getCaption());
 				bought.setValue(bought_.CODE, code);
 				getSessionMapper().saveTemporaryItem(bought);

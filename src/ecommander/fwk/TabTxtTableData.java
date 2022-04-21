@@ -49,6 +49,15 @@ public class TabTxtTableData implements TableDataSource {
 		init(mandatoryCols);
 	}
 
+	public TabTxtTableData(File file, Charset charset, boolean isCsv, String... mandatoryCols) {
+		this.file = file;
+		this.fileCharset = charset;
+		this.isCsv = isCsv;
+		if (isCsv)
+			SEPARATOR_CHAR = ';';
+		init(mandatoryCols);
+	}
+
 	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
 		this.file = file;
 		this.fileCharset = charset;

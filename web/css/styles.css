@@ -3014,3 +3014,7 @@ table.order-search-form td:first-child {
 		left: 0;
 	}
 }
+.goog-te-menu-frame{
+	max-width: 100% !important;
+	overflow-x: scroll;
+}

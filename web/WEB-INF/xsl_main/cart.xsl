@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -14,15 +14,25 @@
 	<xsl:variable name="has_tab_order" select="$cart/bought[qty_zero != '0'] and $is_not_processed"/>
 	<xsl:variable name="has_tab_fav" select="page/product"/>
 	<xsl:variable name="tab_active" select="if ($pv/tab) then $pv/tab else if ($has_tab_cart) then 'tab_cart' else if ($has_tab_order) then 'tab_order' else 'tab_personal'"/>
-
+	<xsl:variable name="catalog_settings" select="page/price_catalogs/price_catalog"/>
 
 
 	<xsl:template match="bought">
+		<xsl:param name="need_ship_time" select="true()"/>
+
 		<xsl:variable name="p" select="product"/>
 		<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
 		<xsl:variable name="has_zero_qty" select="f:num(qty_zero) != 0"/>
 		<xsl:variable name="price" select="if (f:num($p/price) != 0) then concat(f:currency_decimal($p/price), ' pуб.') else 'по запросу'"/>
 		<xsl:variable name="sum" select="if (f:num($p/price) != 0) then concat(f:currency_decimal(sum), ' pуб.') else ''"/>
+
+		<xsl:variable name="is_extra" select="$p/available = '-1'"/>
+		<xsl:variable name="settings" select="$catalog_settings[name = $p/group_id]"/>
+		<xsl:variable name="ship_time_calculated_text" select="$settings/ship_time[@key = current()/store]/@value"/>
+		<xsl:variable name="ship_time_calculated_days" select="$settings/ship_time_days[@key = current()/store]/@value"/>
+		<xsl:variable name="ship_time_text" select="if ($ship_time_calculated_text) then $ship_time_calculated_text else $settings/default_ship_time"/>
+		<xsl:variable name="ship_time_days" select="if ($ship_time_calculated_days) then $ship_time_calculated_days else $settings/default_ship_time_days"/>
+
 		<tr class="cart-item">
 			<td class="cart-item__code">
 				<div>Код:</div>
@@ -53,9 +63,23 @@
 			</td>
 			<td class="cart-item__image">
 				<a href="{$p/show_product}">
-					<img src="sitepics/{$p/pic_path}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/>
+					<xsl:if test="$is_extra"><img src="{$p/extra_pic[1]}" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/></xsl:if>
+					<xsl:if test="not($is_extra)"><img src="sitepics/{$p/pic_path}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')"/></xsl:if>
 				</a>
 			</td>
+			<xsl:if test="$need_ship_time">
+				<td class="cart-item__qty">
+					<xsl:if test="not($is_extra)">
+						<div><xsl:value-of select="f:day_month(current-date())"/></div>
+						<div>Склад магазина</div>
+					</xsl:if>
+					<xsl:if test="$is_extra and $ship_time_days">
+						<div><xsl:value-of select="f:day_month(current-date() + xs:dayTimeDuration(concat('P', $ship_time_days,'D')))"/></div>
+						<div>Удаленный склад</div>
+						<div>100% предоплата</div>
+					</xsl:if>
+				</td>
+			</xsl:if>
 			<td class="cart-item__qty">
 				<input type="number" class="input qty-input" name="{input/qty/@input}" data-old="{qty}"
 					   value="{qty_total}" min="{if ($p/min_qty) then $p/min_qty else 1}" step="{if ($p/step) then f:num($p/step) else 1}"/>
@@ -125,33 +149,47 @@
 
 
 	<xsl:template name="CART_TOTAL">
-		<div class="cart-total">
-			<xsl:if test="f:num($cart/discount) &gt; 0 and $is_not_processed">
-				<div class="cart-total__text">
-					<div>Итого: <span><xsl:value-of select="f:exchange_cur($cart, 'simple_sum', 0)" /></span></div>
-					<div>Скидка: <span><xsl:value-of select="$cart/discount"/>% - на товар не участвующий в спецпредложениях</span></div>
-					<div>Сумма скидки: <span><xsl:value-of select="f:exchange_cur($cart, 'margin', 0)"/></span></div>
-				</div>
-			</xsl:if>
-			<xsl:if test="f:num($cart/sum) &gt; 0 and $is_not_processed">
-				<div class="cart-total__sum">К оплате: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)" /></div>
-			</xsl:if>
-			<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
-			<div id="discount_rules">
-				<a class="cart-total__link discount-link" href="#discount_rules">
-					Правила предоставления скидок
-				</a>
-				<div class="discount_rules">
-					<xsl:value-of select="page/discount_rules/text" disable-output-escaping="yes"/>
-				</div>
-			</div>
-			
-			<div class="cart-total__buttons">
-				<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все товары из корзины?');" class="button button_secondary" style="text-decoration: none;">Очистить корзину</a>
-				<span style="padding-left: 1rem;"></span>
-				<button class="button" type="submit">К оформлению</button>
-			</div>
-		</div>
+		<table class="cart-items">
+			<tbody>
+				<tr class="cart-item">
+					<td style="vertical-align: top">
+						<div>
+							* Срок поставки в магазин для самовывоза
+						</div>
+					</td>
+					<td>
+						<div class="cart-total">
+							<xsl:if test="f:num($cart/discount) &gt; 0 and $is_not_processed">
+								<div class="cart-total__text">
+									<div>Итого: <span><xsl:value-of select="f:exchange_cur($cart, 'simple_sum', 0)" /></span></div>
+									<div>Скидка: <span><xsl:value-of select="$cart/discount"/>% - на товар не участвующий в спецпредложениях</span></div>
+									<div>Сумма скидки: <span><xsl:value-of select="f:exchange_cur($cart, 'margin', 0)"/></span></div>
+								</div>
+							</xsl:if>
+							<xsl:if test="f:num($cart/sum) &gt; 0 and $is_not_processed">
+								<div class="cart-total__sum">К оплате: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)" /></div>
+							</xsl:if>
+							<div class="cart-total__warning">Реальная стоимость заказа может незначительно отличаться из-за округления цены в системе.</div>
+							<div id="discount_rules">
+								<a class="cart-total__link discount-link" href="#discount_rules">
+									Правила предоставления скидок
+								</a>
+								<div class="discount_rules">
+									<xsl:value-of select="page/discount_rules/text" disable-output-escaping="yes"/>
+								</div>
+							</div>
+
+							<div class="cart-total__buttons">
+								<a href="{/page/delete_all_link}" onclick="return confirm('Вы действительно хотите удалить все товары из корзины?');"
+								   class="button button_secondary" style="text-decoration: none;">Очистить корзину</a>
+								<span style="padding-left: 1rem;"></span>
+								<button class="button" type="submit">К оформлению</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</xsl:template>
 
 
@@ -190,6 +228,7 @@
 								<tbody>
 									<tr class="cart-items__head">
 										<td colspan="3">Описание</td>
+										<td>Срок поставки *</td>
 										<td>Количество</td>
 										<td>Цена, <xsl:value-of select="replace($currency, 'RUB', 'RUR')"/></td>
 										<td>Стоимость</td>
@@ -224,7 +263,9 @@
 												<xsl:value-of select="current-grouping-key()"/>
 											</td>
 											<tr><td colspan="7" style="padding-bottom: 15px;"></td></tr>
-											<xsl:apply-templates select="current-group()"/>
+											<xsl:apply-templates select="current-group()">
+												<xsl:with-param name="need_ship_time" select="false()"/>
+											</xsl:apply-templates>
 										</tr>
 									</xsl:for-each-group>
 								</tbody>

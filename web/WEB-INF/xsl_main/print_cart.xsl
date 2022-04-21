@@ -13,6 +13,7 @@
 	</xsl:template>
 
 	<xsl:variable name="rates" select="page/currencies"/>
+	<xsl:variable name="catalog_settings" select="page/price_catalogs/price_catalog"/>
 
 
 	<xsl:variable name="top_td_style" >width:100.0%;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:4.25pt 5.4pt 4.25pt 5.4pt</xsl:variable>
@@ -173,12 +174,20 @@
 												<span style="font-size:12.0pt;">Арт.</span>
 											</p>
 										</td>
-										<td width="45%" valign="top"
+										<td width="35%" valign="top"
 											style="width:45.48%; {$td_style_3}">
 											<p class="MsoNormal"
 												style="margin-bottom:0cm;margin-bottom:.0001pt;line-height:
 																					  normal">
 												<span style="font-size:12.0pt;">Наименование</span>
+											</p>
+										</td>
+										<td width="10%" valign="top"
+											style="width:10.64%; {$td_style_3}">
+											<p class="MsoNormal"
+											   style="margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+																						  normal">
+												<span style="font-size:12.0pt;">Срок поставки *</span>
 											</p>
 										</td>
 										<td width="10%" valign="top"
@@ -227,6 +236,15 @@
 
 									<xsl:for-each select="current-group()">
 										<xsl:variable name="p_unit" select="if (not(product/unit) or product/unit = '') then 'шт.' else product/unit" />
+
+										<xsl:variable name="p" select="product"/>
+										<xsl:variable name="is_extra" select="$p/available = '-1'"/>
+										<xsl:variable name="settings" select="$catalog_settings[name = $p/group_id]"/>
+										<xsl:variable name="ship_time_calculated_text" select="$settings/ship_time[@key = current()/store]/@value"/>
+										<xsl:variable name="ship_time_calculated_days" select="$settings/ship_time_days[@key = current()/store]/@value"/>
+										<xsl:variable name="ship_time_text" select="if ($ship_time_calculated_text) then $ship_time_calculated_text else $settings/default_ship_time"/>
+										<xsl:variable name="ship_time_days" select="if ($ship_time_calculated_days) then $ship_time_calculated_days else $settings/default_ship_time_days"/>
+
 										<tr style='mso-yfti-irow:1;height:15.1pt'>
 											<td width="9%" valign="top"
 												style="width:9.06%;border:solid windowtext 1.0pt;
@@ -258,7 +276,7 @@
 														  mso-themeshade:128;mso-style-textfill-fill-color:#7F7F7F;mso-style-textfill-fill-themecolor:
 														  background1;mso-style-textfill-fill-alpha:100.0%;mso-style-textfill-fill-colortransforms:
 														  lumm=50000">
-																<xsl:value-of select="product/name" />
+																<xsl:value-of select="$p/name" />
 															</span>
 														</p>
 													</span>
@@ -267,10 +285,31 @@
 													  normal">
 														<u>
 															<span style="font-size:12.0pt;">
-																<xsl:value-of select="product/name_extra" />
+																<xsl:value-of select="$p/name_extra" />
 															</span>
 														</u>
 													</p>
+												</p>
+											</td>
+											<td width="10%" valign="top"
+												style="width:10.64%;border-top:none;border-left:
+																							  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+																							  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+																							  mso-border-alt:solid windowtext .5pt;padding:4.25pt 5.4pt 4.25pt 5.4pt;
+																							  height:15.1pt">
+												<p class="MsoNormal"
+												   style="margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+																							  normal">
+													<xsl:if test="not($is_extra)">
+														<span style="font-size:12.0pt;"><xsl:value-of select="f:day_month(current-date())"/><br/>Склад магазина</span>
+													</xsl:if>
+													<xsl:if test="$is_extra and $ship_time_days">
+														<span style="font-size:12.0pt;">
+															<xsl:value-of select="f:day_month(current-date() + xs:dayTimeDuration(concat('P', $ship_time_days,'D')))"/><br/>
+															Удаленный склад<br/>
+															100% предоплата
+														</span>
+													</xsl:if>
 												</p>
 											</td>
 											<td width="10%" valign="top"

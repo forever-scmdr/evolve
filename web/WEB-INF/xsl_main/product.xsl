@@ -7,6 +7,7 @@
 	<xsl:variable name="title" select="concat($p/name, ' ', $p/name_extra)"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+	<xsl:variable name="catalog_settings" select="page/price_catalogs/price_catalog"/>
 
 
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
@@ -16,7 +17,10 @@
 	<xsl:variable name="zero" select="not($p/is_service = '1') and f:num($p/qty) &lt; 0.001"/>
 	<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
-
+	<xsl:variable name="is_extra" select="$p/available = '-1'"/>
+	<xsl:variable name="settings" select="$catalog_settings[name = $p/group_id]"/>
+	<xsl:variable name="ship_time_calculated" select="$settings/ship_time[@key = $p/store]/@value"/>
+	<xsl:variable name="ship_time" select="if ($ship_time_calculated) then $ship_time_calculated else $settings/default_ship_time"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -130,28 +134,47 @@
 
 					<xsl:variable name="device-title" select="'Фотографии товаров являются наглядными примерами и могут отличаться от реального вида товара. Это не влияет на технические характеристики.'" />
 
-					<xsl:for-each select="('b', 'c', 'd')">
-						<a href="sitepics/{$p/pic_path}{.}.jpg" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" caption="{$device-title}">
-							<!-- <xsl:if test="position() = 1"> -->
-								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" title="{$device-title}"/>
-							<!-- </xsl:if> -->
-						</a>
-					</xsl:for-each>
-					<div class="thumbs">
+					<xsl:if test="not($is_extra)">
 						<xsl:for-each select="('b', 'c', 'd')">
-							<a class="thumb{if(position() = 1) then ' active' else ''}" href="sitepics/{$p/pic_path}{.}.jpg" data-show="{concat('#example', position())}">
-								<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="$(this).closest('a').remove(); $('#example{position()}').remove(); if($('.thumbs a').length &lt; 2) $('.thumbs').remove();"/>
+							<a href="sitepics/{$p/pic_path}{.}.jpg" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" caption="{$device-title}">
+								<!-- <xsl:if test="position() = 1"> -->
+									<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" title="{$device-title}"/>
+								<!-- </xsl:if> -->
 							</a>
 						</xsl:for-each>
-						<xsl:for-each select="$p/filevid">
-							<xsl:variable name="id" select="if(contains(., 'embed')) then substring-after(., '/embed/') else substring-after(., '/youtu.be/')"/>
-							<a href="{concat('https://www.youtube.com/embed/', $id)}" class="thumb fancy_vid fancybox.iframe"
-							   onclick="return false;"  rel="group_1"  data-show="#example1" style="top: -13px; text-decoration: none; text-align: center; color: grey"><!-- -->
-								<img src="{concat('http://i3.ytimg.com/vi/', $id, '/hqdefault.jpg')}"/>
-								видео
+						<div class="thumbs">
+							<xsl:for-each select="('b', 'c', 'd')">
+								<a class="thumb{if(position() = 1) then ' active' else ''}" href="sitepics/{$p/pic_path}{.}.jpg" data-show="{concat('#example', position())}">
+									<img src="sitepics/{$p/pic_path}{.}.jpg" alt="{$p/name}" onerror="$(this).closest('a').remove(); $('#example{position()}').remove(); if($('.thumbs a').length &lt; 2) $('.thumbs').remove();"/>
+								</a>
+							</xsl:for-each>
+							<xsl:for-each select="$p/filevid">
+								<xsl:variable name="id" select="if(contains(., 'embed')) then substring-after(., '/embed/') else substring-after(., '/youtu.be/')"/>
+								<a href="{concat('https://www.youtube.com/embed/', $id)}" class="thumb fancy_vid fancybox.iframe"
+								   onclick="return false;"  rel="group_1"  data-show="#example1" style="top: -13px; text-decoration: none; text-align: center; color: grey"><!-- -->
+									<img src="{concat('http://i3.ytimg.com/vi/', $id, '/hqdefault.jpg')}"/>
+									видео
+								</a>
+							</xsl:for-each>
+						</div>
+					</xsl:if>
+
+					<xsl:if test="$is_extra">
+						<xsl:for-each select="$p/extra_pic">
+							<a href="{.}" class="example1" id="{concat('example', position())}" rel="group_1" style="{if(position() != 1) then 'display:none;' else ''}" caption="{$device-title}">
+								<!-- <xsl:if test="position() = 1"> -->
+								<img src="{.}" alt="{$p/name}" onerror="this.src = 'images/no-photo.jpg'; this.removeAttribute('onerror')" title="{$device-title}"/>
+								<!-- </xsl:if> -->
 							</a>
 						</xsl:for-each>
-					</div>
+						<div class="thumbs">
+							<xsl:for-each select="$p/extra_pic">
+								<a class="thumb{if(position() = 1) then ' active' else ''}" href="{.}" data-show="{concat('#example', position())}">
+									<img src="{.}" alt="{$p/name}" onerror="$(this).closest('a').remove(); $('#example{position()}').remove(); if($('.thumbs a').length &lt; 2) $('.thumbs').remove();"/>
+								</a>
+							</xsl:for-each>
+						</div>
+					</xsl:if>
 
 					<script type="text/javascript">
 						$(document).ready(function() {
@@ -186,7 +209,7 @@
 					<div class="basic-params">
 						<div class="basic-params__item">
 							<div class="basic-params__param">Код товара:</div>
-							<div class="basic-params__value"><xsl:value-of select="$p/code"/></div>
+							<div class="basic-params__value"><xsl:if test="not($is_extra)"><xsl:value-of select="$p/code"/></xsl:if></div>
 						</div>
 						<div class="basic-params__item">
 							<div class="basic-params__param">Производитель:</div>
@@ -196,29 +219,47 @@
 							<div class="basic-params__param">Страна происхождения:</div>
 							<div class="basic-params__value"><xsl:value-of select="$p/country"/></div>
 						</div>
+						<xsl:if test="$is_extra">
+							<div class="basic-params__item" style="color: #FF8C00; font-size: large;">
+								<strong>Удаленный склад</strong>
+							</div>
+							<div class="basic-params__item" style="color: #FF8C00; padding-bottom: 12px; font-size: large; display: inline;">
+								<img src="img/clock.png" width="24" height="24"/>
+								<strong style="vertical-align: sub;">&#160;&#160;<xsl:value-of select="$ship_time"/></strong>
+							</div>
+						</xsl:if>
 					</div>
-					<div class="full-params" style="margin-top:120px">
-						<div class="product-subtitle">
-							<img src="img/icon-device-icon-04.png" alt=""/>
-							<span style="font-weight: normal;" >Технические характеристики</span>
+					<xsl:if test="not($is_extra)">
+						<div class="full-params" style="margin-top:120px">
+							<div class="product-subtitle">
+								<img src="img/icon-device-icon-04.png" alt=""/>
+								<span style="font-weight: normal;" >Технические характеристики</span>
+							</div>
+							<table>
+								<xsl:for-each select="$p/params/param[@caption != 'Сертификат']">
+									<tr>
+										<td><xsl:value-of select="@caption" /></td>
+										<td><xsl:value-of select="." /></td>
+									</tr>
+								</xsl:for-each>
+							</table>
+							<p style="padding-top: 10px"><b><xsl:value-of select="$p/params/param[@caption = 'Сертификат']" /></b></p>
 						</div>
-						<table>
-							<xsl:for-each select="$p/params/param[@caption != 'Сертификат']">
-								<tr>
-									<td><xsl:value-of select="@caption" /></td>
-									<td><xsl:value-of select="." /></td>
-								</tr>
-							</xsl:for-each>
-						</table>
-						<p style="padding-top: 10px"><b><xsl:value-of select="$p/params/param[@caption = 'Сертификат']" /></b></p>
-					</div>
+					</xsl:if>
 					<div class="product-download">
 						<xsl:for-each select="$p/file[. != '']">
 							<div class="product-download__item">
 								<img src="img/icon-device-icon-02.png" alt=""/>
-								<a href="sitedocs/{.}" title="скачать документацию (datasheet) по {../name_extra} в формате pdf">
-									скачать документацию (datasheet) по <xsl:value-of select="../name_extra"/> в формате pdf
-								</a>
+								<xsl:if test="not($is_extra)">
+									<a href="sitedocs/{.}" title="скачать документацию (datasheet) по {$p/name_extra} в формате pdf">
+										скачать документацию (datasheet) по <xsl:value-of select="$p/name_extra"/> в формате pdf
+									</a>
+								</xsl:if>
+								<xsl:if test="$is_extra">
+									<a href="{.}" title="скачать документацию (datasheet) по {$p/name} в формате pdf">
+										скачать документацию (datasheet) по <xsl:value-of select="$p/name"/> в формате pdf
+									</a>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -245,23 +286,28 @@
 						</xsl:if>
 					</div>
 					<div class="product-order__status">
-						<xsl:if test="$zero">
-							<xsl:if test="$p/soon != '0'">
-								<div class="status__wait">Ожидается: <xsl:value-of select="substring($p/soon, 1, 10)"/></div>
+						<xsl:if test="not($is_extra)">
+							<xsl:if test="$zero">
+								<xsl:if test="$p/soon != '0'">
+									<div class="status__wait">Ожидается: <xsl:value-of select="substring($p/soon, 1, 10)"/></div>
+								</xsl:if>
+								<xsl:if test="not($p/soon != '0')">
+									<div class="status__na">Нет в наличии</div>
+								</xsl:if>
 							</xsl:if>
-							<xsl:if test="not($p/soon != '0')">
-								<div class="status__na">Нет в наличии</div>
+							<xsl:if test="f:num($p/sec/discount_1) &gt; 0">
+								<div class="sale">от <xsl:value-of select="$p/sec/limit_1"/>&#160;<xsl:value-of select="$p/unit"/> -
+									<xsl:value-of select="$p/sec/discount_1"/>%<xsl:call-template name="BR"/>
+									от <xsl:value-of select="$p/sec/limit_2"/>&#160;<xsl:value-of select="$p/unit"/> -
+									<xsl:value-of select="$p/sec/discount_2"/>%
+								</div>
+							</xsl:if>
+							<xsl:if test="not($zero) and not($p/is_service = '1')">
+								В наличии: <strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
 							</xsl:if>
 						</xsl:if>
-						<xsl:if test="f:num($p/sec/discount_1) &gt; 0">
-							<div class="sale">от <xsl:value-of select="$p/sec/limit_1"/>&#160;<xsl:value-of select="$p/unit"/> -
-								<xsl:value-of select="$p/sec/discount_1"/>%<xsl:call-template name="BR"/>
-								от <xsl:value-of select="$p/sec/limit_2"/>&#160;<xsl:value-of select="$p/unit"/> -
-								<xsl:value-of select="$p/sec/discount_2"/>%
-							</div>
-						</xsl:if>
-						<xsl:if test="not($zero) and not($p/is_service = '1')">
-							В наличии: <strong><xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
+						<xsl:if test="$is_extra">
+							<strong style="color: #FF8C00;">На складе: <xsl:value-of select="concat($p/qty, ' ', $p/unit)"/></strong>
 						</xsl:if>
 					</div>
 					<div class="product-order__order" id="cart_list_{$p/@id}">
@@ -278,20 +324,22 @@
 							</xsl:if>
 						</form>
 					</div>
-					<div class="product-order__add">
-						<xsl:choose>
-							<xsl:when test="$is_fav">
-								<div>
-									<a href="{$p/from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
-								</div>
-							</xsl:when>
-							<xsl:otherwise>
-								<div id="fav_list_{$p/@id}">
-									<a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}"><xsl:value-of select="$fav_add_label"/></a>
-								</div>
-							</xsl:otherwise>
-						</xsl:choose>
-					</div>
+					<xsl:if test="not($is_extra)">
+						<div class="product-order__add">
+							<xsl:choose>
+								<xsl:when test="$is_fav">
+									<div>
+										<a href="{$p/from_fav}"><xsl:value-of select="$fav_remove_label"/></a>
+									</div>
+								</xsl:when>
+								<xsl:otherwise>
+									<div id="fav_list_{$p/@id}">
+										<a href="{$p/to_fav}" ajax="true" ajax-loader-id="fav_list_{$p/@id}"><xsl:value-of select="$fav_add_label"/></a>
+									</div>
+								</xsl:otherwise>
+							</xsl:choose>
+						</div>
+					</xsl:if>
 				</div>
 			</div>
 		</div>

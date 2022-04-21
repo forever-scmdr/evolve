@@ -106,31 +106,12 @@ public class CatalogCreationHandler extends DefaultHandler {
 						else
 							top.setValue(Product.MIN_QTY, 1d);
 					}
-					// Установка преанализированного значения для поиска
+					// Установка преанализированного значения для поиска (и поиска по аналогам)
 					String name = top.getStringValue(Product.NAME, "");
 					String mark = top.getStringValue(Product.NAME_EXTRA, "");
 					String code = top.getStringValue(Product.CODE, "");
-					String fullName = BelchipStrings.fromRtoE(name + ' ' + mark);
-					String fullNameAnalyzed = BelchipStrings.preanalyze(name) + ' ' + BelchipStrings.preanalyze(mark);
-					top.setValue(Product.SEARCH, fullName);
-					top.setValue(Product.SEARCH, fullNameAnalyzed);
-					top.setValue(Product.SEARCH, code);
-					String strictSearch = name + ' ' + mark + ' ' + code;
-					if (strictSearch.length() > 99) {
-						top.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 98));
-					} else {
-						top.setValue(Product.STRICT_SEARCH, strictSearch);
-					}
-					top.setValue(Product.STRICT_SEARCH, code);
+					fillSearchParams(top);
 
-					//Ignore Analogs from XML file FIX 29.10.2018
-					//top.removeValue(ItemNames.product.ANALOG_CODE);
-					
-					String analog = top.getStringValue(Product.ANALOG, "");
-					if (!StringUtils.isBlank(analog)) {
-						top.setValue(Product.ANALOG_SEARCH, BelchipStrings.fromRtoE(analog));
-						top.setValue(Product.ANALOG_SEARCH, BelchipStrings.preanalyze(analog));
-					}
 					// Установка количества товаров на складах					
 					Double qty = top.getDoubleValue(IConst.QTY_ELEMENT);
 					if (qty == null) {
@@ -339,5 +320,37 @@ public class CatalogCreationHandler extends DefaultHandler {
 	private void transactionExecute() throws Exception {
 		if (transaction.getUncommitedCount() >= 200)
 			transaction.commit();
+	}
+
+	/**
+	 * Заполнить параметры поиска, которые не указаны напрямую в файле интеграции
+	 * (генерируются из установленных значений названия и кода товара, а также аналоги)
+	 * @param prod
+	 */
+	public static void fillSearchParams(Item prod) {
+		String name = prod.getStringValue(Product.NAME, "");
+		String mark = prod.getStringValue(Product.NAME_EXTRA, "");
+		String code = prod.getStringValue(Product.CODE, "");
+		String fullName = BelchipStrings.fromRtoE(name + ' ' + mark);
+		String fullNameAnalyzed = BelchipStrings.preanalyze(name) + ' ' + BelchipStrings.preanalyze(mark);
+		prod.setValue(Product.SEARCH, fullName);
+		prod.setValue(Product.SEARCH, fullNameAnalyzed);
+		prod.setValue(Product.SEARCH, code);
+		String strictSearch = name + ' ' + mark + ' ' + code;
+		if (strictSearch.length() > 99) {
+			prod.setValue(Product.STRICT_SEARCH, strictSearch.substring(0, 98));
+		} else {
+			prod.setValue(Product.STRICT_SEARCH, strictSearch);
+		}
+		prod.setValue(Product.STRICT_SEARCH, code);
+
+		//Ignore Analogs from XML file FIX 29.10.2018
+		//top.removeValue(ItemNames.product.ANALOG_CODE);
+
+		String analog = prod.getStringValue(Product.ANALOG, "");
+		if (!StringUtils.isBlank(analog)) {
+			prod.setValue(Product.ANALOG_SEARCH, BelchipStrings.fromRtoE(analog));
+			prod.setValue(Product.ANALOG_SEARCH, BelchipStrings.preanalyze(analog));
+		}
 	}
 }

@@ -239,12 +239,21 @@
     </xsl:function>
 
     <!-- Перевод даты из CMS формата в запись число-месяц вида 15 февраля -->
-    <xsl:function name="f:day_month_string" as="xs:string">
+    <xsl:function name="f:day_month_year_string" as="xs:string">
         <xsl:param name="date" as="xs:string" />
         <xsl:variable name="parts" select="tokenize(tokenize($date, '\s+')[1], '\.')"/>
         <xsl:variable name="month" select="number($parts[2])"/>
         <xsl:variable name="months" select="('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря')"/>
         <xsl:value-of select="concat(number($parts[1]), ' ', $months[$month], ' ', $parts[3])"/>
+    </xsl:function>
+
+    <!-- Перевод даты из CMS формата в запись число-месяц вида 15 февраля -->
+    <xsl:function name="f:day_month_string" as="xs:string">
+        <xsl:param name="date" as="xs:string" />
+        <xsl:variable name="parts" select="tokenize(tokenize($date, '\s+')[1], '\.')"/>
+        <xsl:variable name="month" select="number($parts[2])"/>
+        <xsl:variable name="months" select="('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря')"/>
+        <xsl:value-of select="concat(number($parts[1]), ' ', $months[$month])"/>
     </xsl:function>
 
 
@@ -253,6 +262,13 @@
         <xsl:param name="date" as="xs:date" />
         <xsl:variable name="months" select="('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря')"/>
         <xsl:value-of select="concat(day-from-date($date), ' ', $months[month-from-date($date)], ' ', year-from-date($date))"/>
+    </xsl:function>
+
+    <!-- Перевод даты из XSL формата в запись число-месяц-год вида 15 февраля -->
+    <xsl:function name="f:day_month" as="xs:string">
+        <xsl:param name="date" as="xs:date" />
+        <xsl:variable name="months" select="('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря')"/>
+        <xsl:value-of select="concat(day-from-date($date), ' ', $months[month-from-date($date)])"/>
     </xsl:function>
 
 

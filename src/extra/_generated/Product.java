@@ -68,6 +68,7 @@ public class Product
     public final static String REL_CODE = "rel_code";
     public final static String ANALOG = "analog";
     public final static String BARCODE = "barcode";
+    public final static String STORE = "store";
     public final static String GALLERY = "gallery";
     public final static String HAS_LINES = "has_lines";
 
@@ -1050,6 +1051,22 @@ public class Product
 
     public boolean contains_barcode(String value) {
         return containsValue("barcode", value);
+    }
+
+    public void set_store(String value) {
+        setValue("store", value);
+    }
+
+    public String get_store() {
+        return getStringValue("store");
+    }
+
+    public String getDefault_store(String defaultVal) {
+        return getStringValue("store", defaultVal);
+    }
+
+    public boolean contains_store(String value) {
+        return containsValue("store", value);
     }
 
     public void add_gallery(File value) {

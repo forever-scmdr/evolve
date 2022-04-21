@@ -17,6 +17,10 @@ public interface ItemNames {
     String CURRENCIES = "currencies";
     String CATALOG = "catalog";
     String SECTION = "section";
+    String PLAIN_CATALOG = "plain_catalog";
+    String PLAIN_SECTION = "plain_section";
+    String PRICE_CATALOG = "price_catalog";
+    String PRICE_CATALOGS = "price_catalogs";
     String ABSTRACT_PRODUCT = "abstract_product";
     String DESCRIBED_PRODUCT = "described_product";
     String LINE_PRODUCT = "line_product";
@@ -533,6 +537,7 @@ public interface ItemNames {
         String REL_CODE = "rel_code";
         String ANALOG = "analog";
         String BARCODE = "barcode";
+        String STORE = "store";
         String GALLERY = "gallery";
 
     }
@@ -702,6 +707,7 @@ public interface ItemNames {
         String REL_CODE = "rel_code";
         String ANALOG = "analog";
         String BARCODE = "barcode";
+        String STORE = "store";
         String GALLERY = "gallery";
 
     }
@@ -1040,6 +1046,20 @@ public interface ItemNames {
 
     }
 
+    public interface plain_catalog_ {
+
+        String _ITEM_NAME = "plain_catalog";
+
+    }
+
+    public interface plain_section_ {
+
+        String _ITEM_NAME = "plain_section";
+        String NAME = "name";
+        String DATE = "date";
+
+    }
+
     public interface post_ {
 
         String _ITEM_NAME = "post";
@@ -1059,6 +1079,24 @@ public interface ItemNames {
     public interface preorder_catalog_ {
 
         String _ITEM_NAME = "preorder_catalog";
+
+    }
+
+    public interface price_catalog_ {
+
+        String _ITEM_NAME = "price_catalog";
+        String NAME = "name";
+        String QUOTIENT = "quotient";
+        String SHIP_TIME = "ship_time";
+        String SHIP_TIME_DAYS = "ship_time_days";
+        String DEFAULT_SHIP_TIME = "default_ship_time";
+        String DEFAULT_SHIP_TIME_DAYS = "default_ship_time_days";
+
+    }
+
+    public interface price_catalogs_ {
+
+        String _ITEM_NAME = "price_catalogs";
 
     }
 
@@ -1120,6 +1158,7 @@ public interface ItemNames {
         String REL_CODE = "rel_code";
         String ANALOG = "analog";
         String BARCODE = "barcode";
+        String STORE = "store";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

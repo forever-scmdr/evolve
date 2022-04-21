@@ -12,6 +12,7 @@ public class Yandex_product
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
     public final static String CATEGORY_ID = "category_id";
+    public final static String URL = "url";
 
     private Yandex_product(Item item) {
         super(item);
@@ -84,6 +85,22 @@ public class Yandex_product
 
     public boolean contains_category_id(String value) {
         return containsValue("category_id", value);
+    }
+
+    public void set_url(String value) {
+        setValue("url", value);
+    }
+
+    public String get_url() {
+        return getStringValue("url");
+    }
+
+    public String getDefault_url(String defaultVal) {
+        return getStringValue("url", defaultVal);
+    }
+
+    public boolean contains_url(String value) {
+        return containsValue("url", value);
     }
 
 }

@@ -61,6 +61,10 @@
 			<single item="payment"/>
 			<single item="delivery"/>
 		</single>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
+
 		<link name="index_link" target="index"/>
 		<link name="catalog_link" target="catalog"/>
 		<link name="contacts_link" target="contacts"/>
@@ -323,6 +327,7 @@
 		<list item="product" id="new" tag="new" cacheable="false">
 			<filter>
 				<parameter name="qty" sign="&gt;" compare="SOME"><var value="0" /></parameter>
+				<parameter name="available" sign="&gt;" compare="SOME"><var value="-1" /></parameter>
 				<sorting direction="DESC"><var value="code" /></sorting>
 				<limit><var value="100"/></limit>
 			</filter>
@@ -460,6 +465,16 @@
 			</filter>
 			<link name="show_product" target="product">
 				<var name="selected_product" ref="prod" parameter="code"/>
+			</link>
+		</list>
+		<list item="product" id="prod_extra" tag="product">
+			<filter>
+				<parameter name="vendor_code" sign="=" compare="SOME">
+					<var ref="src" parameter="analog_code" />
+				</parameter>
+			</filter>
+			<link name="show_product" target="product">
+				<var name="selected_product" ref="prod_extra" parameter="code"/>
 			</link>
 		</list>
 	</page>
@@ -815,6 +830,17 @@
 				</sorting>
 			</filter>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:analog"/>
+		</list>
+		<list item="product" id="analog_extra" tag="analog">
+			<filter>
+				<parameter name="vendor_code" sign="=" compare="SOME">
+					<var ref="prod" parameter="analog_code" />
+				</parameter>
+				<sorting direction="DESC">
+					<var value="qty" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:analog_extra"/>
 		</list>
 		<list item="product" id="related" tag="related">
 			<filter>
@@ -1475,6 +1501,9 @@
 				<list item="custom_bought" id="custom_bought" />
 			</single>
 		</session>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<list item="product" ref="product" tag="ref">
 			<ancestor item="section" tag="section" />
 		</list>
@@ -1584,6 +1613,9 @@
 				<list item="custom_bought" />
 			</single>
 		</session>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<single item="currencies"/>
 	</page>
 
@@ -2446,6 +2478,18 @@
 		</request>
 		<command class="extra.belchip.MicroIntegrate" clear-cache="yes">
 			<result name="complete" type="xml" />
+		</command>
+	</page>
+
+
+	<!-- Разбор сторонних складов -->
+	<page name="integrate_excel" template="integration" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportPlainCatalog" clear-cache="yes">
+			<result name="complete" type="xml"/>
 		</command>
 	</page>
 
