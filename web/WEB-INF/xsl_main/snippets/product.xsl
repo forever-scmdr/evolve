@@ -103,11 +103,12 @@
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:if test="$is_extra">
-					<xsl:for-each select="file[. != '']">
-						<a class="deivce-icon" href="{.}" title="скачать документацию (datasheet) по {../name} в формате pdf" download="{.}">
-							<img src="img/icon-device-icon-02.png" alt=""/>
-						</a>
-					</xsl:for-each>
+					<div style="color: #FF8C00">Удаленный склад</div>
+<!--					<xsl:for-each select="file[. != '']">-->
+<!--						<a class="deivce-icon" href="{.}" title="скачать документацию (datasheet) по {../name} в формате pdf" download="{.}">-->
+<!--							<img src="img/icon-device-icon-02.png" alt=""/>-->
+<!--						</a>-->
+<!--					</xsl:for-each>-->
 				</xsl:if>
 				<xsl:if test="text != ''">
 					<a class="deivce-icon" href="" popup="text_{code}">
@@ -131,7 +132,7 @@
 						</div>
 					</div>
 				</xsl:if>
-				<xsl:if test="analog_code != ''">
+				<xsl:if test="not($is_extra) and analog_code != ''">
 					<a class="deivce-icon" href="{analog_ajax_link}" popup="analog_{code}" title="аналоги">
 						<img src="img/icon-device-icon-03.png" alt=""/>
 					</a>
@@ -181,7 +182,7 @@
 					В наличии: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
 					</xsl:if>
 					<xsl:if test="$is_extra">
-						Удаленный склад: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+						На складе: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
 					</xsl:if>
 				</xsl:if>
 			</div>
@@ -302,6 +303,7 @@
 							</a>
 						</xsl:for-each>
 					</xsl:if>
+					<!--
 					<xsl:if test="$is_extra">
 						<xsl:for-each select="file[. != '']">
 							<a class="deivce-icon" href="{.}" title="скачать документацию (datasheet) по {../name} в формате pdf" download="{.}">
@@ -309,6 +311,7 @@
 							</a>
 						</xsl:for-each>
 					</xsl:if>
+					-->
 					<xsl:if test="text != ''">
 						<a class="deivce-icon" href="" popup="text_{code}">
 							<img src="img/icon-device-icon-01.png" alt=""  title="описание"/>
@@ -331,7 +334,7 @@
 							</div>
 						</div>
 					</xsl:if>
-					<xsl:if test="analog_code != ''">
+					<xsl:if test="not($is_extra) and analog_code != ''">
 						<a class="deivce-icon" href="{analog_ajax_link}" popup="analog_{code}" title="аналоги">
 							<img src="img/icon-device-icon-03.png" alt=""/>
 						</a>
@@ -362,11 +365,12 @@
 			</xsl:if>
 			<xsl:if test="$is_extra">
 				<td class="device__status status">
+					<div style="color: #FF8C00; padding-bottom: 10px"><strong class="qty">Удаленный склад</strong></div>
 					<div class="device__code" style="color: #FF8C00; padding-bottom: 12px">
 						<img src="img/clock.png" width="18" height="18"/>
 						<strong style="vertical-align: sub;">&#160;<xsl:value-of select="$ship_time"/></strong>
 					</div>
-					<strong class="qty" style="color: #FF8C00;">Удаленный склад: <xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+					<strong class="qty" style="color: #FF8C00;">На складе: <xsl:value-of select="concat(qty, ' ', unit)"/></strong>
 				</td>
 			</xsl:if>
 			<td class="device__price">

@@ -259,14 +259,18 @@
 		<child item="product"/>
 	</item>
 
+
 	<!-- Настройки одного дополнительного каталога -->
 	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="13688" ag-hash="2102484771">
 		<parameter name="name" type="string" caption="Название поставщика" description="начало названия файла поставщика"/>
+		<parameter name="url" type="string" caption="Урл для скачивания"/>
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<parameter name="ship_time" type="tuple" multiple="true" caption="Срок поставки (текст)" description="значение столбца - текст срока поставки для пользователя"/>
 		<parameter name="ship_time_days" type="tuple" multiple="true" caption="Срок поставки (число дней)" description="значение столбца - срок поставки в днях для системы"/>
+		<parameter name="catalog_link" type="string" caption="Ссылка на файл с базой поставщика"/>
 		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию (текст)" default="14 дней"/>
 		<parameter name="default_ship_time_days" type="string" caption="Срок поставки по умолчанию в днях" default="14 дней"/>
+		<parameter name="last_updated" type="date" caption="Время последнего обновления"/>
 	</item>
 
 	<!-- Настройки дополнительных каталогов -->

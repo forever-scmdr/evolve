@@ -37,6 +37,7 @@
                     <li><a id="a1" href="javascript:confirmLink('integration_lite?action=start', $('#a1'))" title="Полное обновление каталога товаров">Разбор файла интеграции</a></li>
                     <li><a id="a2" href="javascript:confirmLink('price_update?action=start', $('#a2'))" title="Обновление цен и количества товаров">Разбор микрофайла интеграции</a></li>
                     <li><a id="a3" href="javascript:confirmLink('integration?action=start', $('#a3'))" title="Полное обновление каталога товаров">Удаление и создание заново всего каталога</a></li>
+                    <li><a id="a4" href="javascript:confirmLink('integrate_excel?action=start', $('#a4'))" title="Разбор сторонних складов">Разбор сторонних складов</a></li>
                 </ul>
 
 				<h2 class="title">Интеграция Yandex.Market</h2>

@@ -209,7 +209,12 @@
 					<div class="basic-params">
 						<div class="basic-params__item">
 							<div class="basic-params__param">Код товара:</div>
-							<div class="basic-params__value"><xsl:if test="not($is_extra)"><xsl:value-of select="$p/code"/></xsl:if></div>
+							<div class="basic-params__value">
+								<xsl:if test="not($is_extra)"><xsl:value-of select="$p/code"/></xsl:if>
+								<xsl:if test="$is_extra">
+									<span style="color: #FF8C00;"><xsl:value-of select="if (index-of($p/code, '_') &gt; 0) then substring-after($p/code, '_') else $p/code"/></span>
+								</xsl:if>
+							</div>
 						</div>
 						<div class="basic-params__item">
 							<div class="basic-params__param">Производитель:</div>

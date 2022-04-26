@@ -2,7 +2,6 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
-import ecommander.fwk.integration.ReindexCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -14,11 +13,11 @@ import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
+import extra._generated.Price_catalog;
 import extra._generated.Product;
 import extra.belchip.CatalogCreationHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -84,6 +83,34 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
+
+		// Загрузить файлы
+		info.pushLog("Скачивание каталогов");
+		info.setOperation("Скачивание каталогов");
+		for (String name : priceSettings.keySet()) {
+			Price_catalog settings = Price_catalog.get(priceSettings.get(name));
+			String url = settings.get_url();
+			try {
+				String ext = StringUtils.substringAfterLast(url, ".");
+				String fileName = StringUtils.endsWith(settings.get_name(), ext) ? settings.get_name() : settings.get_name() + '.' + ext;
+				File oldFile = FileUtils.getFile( integrationDir, fileName);
+				if (oldFile.exists()) {
+					boolean deleted = FileUtils.deleteQuietly(oldFile);
+					if (!deleted) {
+						info.addError("Can't delete file " + oldFile, url);
+						info.pushLog("Can't delete file " + oldFile + " Skipping");
+						continue;
+					}
+				}
+				WebClient.saveFile(url, integrationDir.getAbsolutePath(), fileName);
+				info.pushLog("Скачан файл " + url);
+			} catch (Exception e) {
+				ServerLogger.error("Can't download url " + url, e);
+				info.addError(e);
+			}
+		}
+
+		// Найти все файлы
 		Collection<File> excels = FileUtils.listFiles(integrationDir, null, true);
 		if (excels.size() == 0) {
 			info.addError("Не найдены файлы в директории " + INTEGRATION_DIR, "init");
@@ -119,22 +146,21 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				} else {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}
-				//String suffix = StringUtils.substringBeforeLast(excel.getName(), ".");
-				//final String codeSuffix = StringUtils.substring(suffix, 0, 5);
-				final String codeSuffix = "";
+				String suffix = StringUtils.substringBeforeLast(excel.getName(), ".");
+				final String codeSuffix = StringUtils.substring(suffix, 0, 5) + "_";
+				//final String codeSuffix = "";
 				TableDataRowProcessor proc = src -> {
 					String code = null;
 					try {
 						code = src.getValue(CODE_HEADER);
 						if (StringUtils.isNotBlank(code)) {
-							code += codeSuffix;
+							code = codeSuffix + code;
 
 							// Создание товара
 							//Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
 							Product prod = null;
 							if (prod == null) {
 								prod = Product.get(Item.newChildItem(productType, section));
-								prod.set_code(code);
 							}
 
 							// Основные прямые параметры
@@ -178,7 +204,10 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							}
 
 							// параметры для поиска
+							// Код не использовать для поиска (для этого он устанавливается после поисковых переметров)
 							CatalogCreationHandler.fillSearchParams(prod);
+							prod.set_code(code);
+
 
 							// Сохранение
 							transaction.executeCommandUnit(SaveItemDBUnit.get(prod).noTriggerExtra());
@@ -197,6 +226,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			} catch (Exception e) {
 				ServerLogger.error("File parse error", e);
 				info.addError("Ошибка формата файла", excel.getName());
+			}
+
+			// Сохранить время окончания разбора
+			if (priceSettings.containsKey(catalogName)) {
+				Price_catalog settingCatalog = Price_catalog.get(priceSettings.get(catalogName));
+				settingCatalog.set_last_updated(DateTime.now().getMillis());
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(settingCatalog));
 			}
 		}
 
