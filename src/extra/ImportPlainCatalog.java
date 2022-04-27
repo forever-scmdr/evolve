@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -199,7 +200,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							if (priceSettings.containsKey(catalogName)) {
 								BigDecimal extraQuotient = priceSettings.get(catalogName).getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
 								if (extraQuotient.compareTo(BigDecimal.ONE) != 0 && prod.isValueNotEmpty(described_product_.PRICE)) {
-									prod.set_price(prod.get_price().multiply(extraQuotient));
+									prod.set_price(prod.get_price().multiply(extraQuotient).setScale(2, BigDecimal.ROUND_CEILING));
 								}
 							}
 
@@ -231,7 +232,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			// Сохранить время окончания разбора
 			if (priceSettings.containsKey(catalogName)) {
 				Price_catalog settingCatalog = Price_catalog.get(priceSettings.get(catalogName));
-				settingCatalog.set_last_updated(DateTime.now().getMillis());
+				settingCatalog.set_last_updated(System.currentTimeMillis());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(settingCatalog));
 			}
 		}
