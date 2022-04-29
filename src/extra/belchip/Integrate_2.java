@@ -20,10 +20,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.DataModelBuilder;
 import ecommander.model.Item;
@@ -73,11 +70,11 @@ public class Integrate_2 extends IntegrateBase {
 	protected void integrate() throws Exception {
 		// Загрузить каталог продукции
 		List<Item> catalogs = new ItemQuery(ItemNames.CATALOG).loadItems();
-		if (catalogs.size() != 1) {
-			info.addError("Каталог должен быть создан и содрежать файл интеграции", "");
-			return;
-		}
-		catalog = catalogs.get(0);
+//		if (catalogs.size() != 1) {
+//			info.addError("Каталог должен быть создан и содрежать файл интеграции", "");
+//			return;
+//		}
+		//catalog = catalogs.get(0);
 		// Проверить, есть ли файл для интеграции
 		//integration = catalog.getFileValue("integration", AppContext.getFilesDirPath(catalog.isFileProtected()));
 		integration = new File(AppContext.getRealPath(INTEGRATION_FILE));
@@ -93,32 +90,42 @@ public class Integrate_2 extends IntegrateBase {
 		SAXParser parser = factory.newSAXParser();
 		// Подсчет строк
 		parser.parse(integration, new LineCounter(info));
+
+		// Удаление каталога и файла с классами
+		info.addLog("Удаление старого каталога");
+		info.setOperation("Удаление старого каталога");
+		info.setProcessed(0);
+		/*
+		// Удалить все разделы
+		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		for (Item section : sections) {
+			integrate.deletedBase += integrate.deletedCount;
+			integrate.deletedCount = 0;
+			ItemStatusDBUnit delete = ItemStatusDBUnit.delete(section);
+			executeAndCommitCommandUnits(delete.ignoreUser(true).noFulltextIndex().noTriggerExtra());
+		}
+		*/
+		for (Item cat : catalogs) {
+			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(cat).noFulltextIndex().noTriggerExtra());
+		}
+		catalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.CATALOG, getInitiator());
+		catalog.setValueUI(Catalog.INTEGRATION_PENDING, "1");
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser(true));
+
+		info.setProcessed(0);
+		info.addLog("Каталог удален. Начало валидации");
+
+
 		// Валидация
 		info.setOperation("Валидация файла интеграции");
 		info.addLog("Начало процесса валидации");
 		if (info.getErrorCount() == 0)
 			parser.parse(integration, new ValidationHandler(catalog, info));
-		// Удаление каталога и файла с классами
 
-		catalog.setValueUI(Catalog.INTEGRATION_PENDING, "1");
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).ignoreUser(true));
 
-		info.addLog("Валидация завершена. Удаление старого каталога");
-		info.setOperation("Удаление старого каталога");
-		info.setProcessed(0);
-		// Удалить все разделы
-		List<Item> sections = new ItemQuery(ItemNames.SECTION)/*.setParentId(catalog.getId(), false)*/
-				.loadItems();
-		for (Item section : sections) {
-			integrate.deletedBase += integrate.deletedCount;
-			integrate.deletedCount = 0;
-			ItemStatusDBUnit delete = ItemStatusDBUnit.delete(section);
-			executeAndCommitCommandUnits(delete.ignoreUser(true).noFulltextIndex());
-		}
-		info.setProcessed(0);
-		info.addLog("Каталог удален. Начало создания  разделов каталога");
-		info.setOperation("Создание разделов каталога");
 		// Постороение списка разделов
+		info.setOperation("Создание разделов каталога");
+		info.addLog("Валидация завершена. Начало создания разделов каталога");
 		if (info.getErrorCount() == 0)
 			parser.parse(integration, new ProductClassHandler(catalog, info));
 		info.addLog("Создание разделов и классов завершено. Начало создания продукции");

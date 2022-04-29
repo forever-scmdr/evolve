@@ -240,8 +240,8 @@
 										<xsl:variable name="p" select="product"/>
 										<xsl:variable name="is_extra" select="$p/available = '-1'"/>
 										<xsl:variable name="settings" select="$catalog_settings[name = $p/group_id]"/>
-										<xsl:variable name="ship_time_calculated_text" select="$settings/ship_time[@key = current()/store]/@value"/>
-										<xsl:variable name="ship_time_calculated_days" select="$settings/ship_time_days[@key = current()/store]/@value"/>
+										<xsl:variable name="ship_time_calculated_text" select="$settings/ship_time[@key = $p/store]/@value"/>
+										<xsl:variable name="ship_time_calculated_days" select="$settings/ship_time_days[@key = $p/store]/@value"/>
 										<xsl:variable name="ship_time_text" select="if ($ship_time_calculated_text) then $ship_time_calculated_text else $settings/default_ship_time"/>
 										<xsl:variable name="ship_time_days" select="if ($ship_time_calculated_days) then $ship_time_calculated_days else $settings/default_ship_time_days"/>
 

@@ -453,7 +453,7 @@ public class Item implements ItemBasics {
 				InputSource is = new InputSource(new StringReader(doc.toString()));
 				parser.parse(is, handler);
 			} catch (Exception e) {
-				ServerLogger.error("ITEM params population from XML failed", e);
+				//ServerLogger.error("ITEM params population from XML failed", e);
 			}
 			state = State.consistent_WITH_map;
 		}
