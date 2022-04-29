@@ -69,6 +69,7 @@ public class Line_product
     public final static String ANALOG = "analog";
     public final static String BARCODE = "barcode";
     public final static String STORE = "store";
+    public final static String EXTRA_CODE = "extra_code";
     public final static String GALLERY = "gallery";
 
     private Line_product(Item item) {
@@ -1066,6 +1067,22 @@ public class Line_product
 
     public boolean contains_store(String value) {
         return containsValue("store", value);
+    }
+
+    public void set_extra_code(String value) {
+        setValue("extra_code", value);
+    }
+
+    public String get_extra_code() {
+        return getStringValue("extra_code");
+    }
+
+    public String getDefault_extra_code(String defaultVal) {
+        return getStringValue("extra_code", defaultVal);
+    }
+
+    public boolean contains_extra_code(String value) {
+        return containsValue("extra_code", value);
     }
 
     public void add_gallery(File value) {

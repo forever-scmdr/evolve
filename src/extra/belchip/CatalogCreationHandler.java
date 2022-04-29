@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -164,6 +165,9 @@ public class CatalogCreationHandler extends DefaultHandler {
 					transactionExecute();
 					info.increaseProcessed();
 				} else if (StringUtils.equalsIgnoreCase(qName, IConst.KURS_ELEMENT)) {
+					currencies.setValue(Currencies.RUB_SCALE, BigDecimal.ONE);
+					currencies.setValue(Currencies.EUR_SCALE, BigDecimal.ONE);
+					currencies.setValue(Currencies.USD_SCALE, BigDecimal.ONE);
 					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).noFulltextIndex());
 					transactionExecute();
 				}

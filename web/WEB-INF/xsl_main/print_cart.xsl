@@ -254,7 +254,7 @@
 													style="margin-bottom:0cm;margin-bottom:.0001pt;line-height:
 																							  normal">
 													<span style="font-size:12.0pt;">
-														<xsl:value-of select="code" />
+														<xsl:value-of select="if ($is_extra) then $p/extra_code else code" />
 													</span>
 												</p>
 											</td>

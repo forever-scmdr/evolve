@@ -439,7 +439,7 @@ public class Item implements ItemBasics {
 										}
 									}
 								} catch (Exception e) {
-									ServerLogger.error("ITEM params population from XML failed", e);
+									//ServerLogger.error("ITEM params population from XML failed", e);
 									throw new SAXException("ITEM params population from XML failed", e);
 								}
 							}

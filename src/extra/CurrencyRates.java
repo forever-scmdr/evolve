@@ -50,7 +50,7 @@ public class CurrencyRates implements ItemNames{
 	 * @param price
 	 * @param currencyCode
 	 */
-	public void setPrice(Item product, BigDecimal price, String currencyCode) {
+	public void setPrice(Item product, BigDecimal price, String currencyCode, int digitsAfterDot, BigDecimal... extraQuotient) {
 		if (price == null || rates == null || rates.size() == 0)
 			return;
 		currencyCode = StringUtils.trim(StringUtils.upperCase(currencyCode));
@@ -58,8 +58,12 @@ public class CurrencyRates implements ItemNames{
 		// Если цена в одной из валют сайта кроме BYN
 		if (rates.containsKey(currencyCode)) {
 			BigDecimal[] rate = rates.get(currencyCode);
-			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, BigDecimal.ROUND_HALF_EVEN));
-			bynPrice = price.multiply(rate[0]).divide(rate[1], 6, BigDecimal.ROUND_HALF_EVEN).multiply(extraQuotient).setScale(2, BigDecimal.ROUND_CEILING);
+			//BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, BigDecimal.ROUND_HALF_EVEN));
+			BigDecimal totalExtraQuotient = BigDecimal.ONE;
+			for (BigDecimal quot : extraQuotient) {
+				totalExtraQuotient = totalExtraQuotient.multiply(quot);
+			}
+			bynPrice = price.multiply(rate[0]).divide(rate[1], BigDecimal.ROUND_HALF_EVEN).multiply(totalExtraQuotient).setScale(digitsAfterDot, BigDecimal.ROUND_CEILING);
 			if (bynPrice.compareTo(ONE_CENT) < 0)
 				bynPrice = ONE_CENT;
 		}
@@ -88,7 +92,7 @@ public class CurrencyRates implements ItemNames{
 	 */
 	public void setPrice(Item product, String priceStr, String currencyCode) {
 		BigDecimal price = DecimalDataType.parse(priceStr, 2);
-		setPrice(product, price, currencyCode);
+		setPrice(product, price, currencyCode, 2);
 	}
 
 	/**
@@ -108,7 +112,7 @@ public class CurrencyRates implements ItemNames{
 	 * @param price
 	 */
 	public void setPrice(Item product, BigDecimal price) {
-		setPrice(product, price, "BYN");
+		setPrice(product, price, "BYN", 2);
 	}
 
 }

@@ -538,6 +538,7 @@ public interface ItemNames {
         String ANALOG = "analog";
         String BARCODE = "barcode";
         String STORE = "store";
+        String EXTRA_CODE = "extra_code";
         String GALLERY = "gallery";
 
     }
@@ -708,6 +709,7 @@ public interface ItemNames {
         String ANALOG = "analog";
         String BARCODE = "barcode";
         String STORE = "store";
+        String EXTRA_CODE = "extra_code";
         String GALLERY = "gallery";
 
     }
@@ -1090,7 +1092,6 @@ public interface ItemNames {
         String QUOTIENT = "quotient";
         String SHIP_TIME = "ship_time";
         String SHIP_TIME_DAYS = "ship_time_days";
-        String CATALOG_LINK = "catalog_link";
         String DEFAULT_SHIP_TIME = "default_ship_time";
         String DEFAULT_SHIP_TIME_DAYS = "default_ship_time_days";
         String LAST_UPDATED = "last_updated";
@@ -1162,6 +1163,7 @@ public interface ItemNames {
         String ANALOG = "analog";
         String BARCODE = "barcode";
         String STORE = "store";
+        String EXTRA_CODE = "extra_code";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

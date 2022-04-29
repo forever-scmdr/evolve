@@ -154,8 +154,8 @@
 	<item name="currencies" caption="Курсы валют" ag-id="1781" ag-hash="-1089470353">
 		<parameter name="BYN_caption" type="string" caption="Белорусский рубль - написание единицы" default="руб." description="руб."/>
 		<parameter name="RUB_caption" type="string" caption="Российский рубль - написание единицы" default="рос.руб." description="рос.руб."/>
-		<parameter name="RUB_rate" type="currency-precise" caption="Российский рубль (Rate)"/>
-		<parameter name="RUB_scale" type="currency-precise" default="100" caption="Российский рубль (Scale)"/>
+		<parameter name="RUB_rate" type="decimal" caption="Российский рубль (Rate)"/>
+		<parameter name="RUB_scale" type="decimal" default="100" caption="Российский рубль (Scale)"/>
 		<parameter name="RUB_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
 		<parameter name="RUB_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="RUB_update" type="byte" default="1" caption="Российский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
@@ -167,8 +167,8 @@
 			<value>1</value>
 		</parameter>
 		<parameter name="USD_caption" type="string" caption="Доллар США - написание единицы" default="$" description="$"/>
-		<parameter name="USD_rate" type="currency-precise" caption="Доллар США (Rate)"/>
-		<parameter name="USD_scale" type="currency-precise" default="1" caption="Доллар США (Scale)"/>
+		<parameter name="USD_rate" type="decimal" caption="Доллар США (Rate)"/>
+		<parameter name="USD_scale" type="decimal" default="1" caption="Доллар США (Scale)"/>
 		<parameter name="USD_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
 		<parameter name="USD_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="USD_update" type="byte" default="1" caption="Доллар США - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
@@ -180,8 +180,8 @@
 			<value>1</value>
 		</parameter>
 		<parameter name="EUR_caption" type="string" caption="Евро - написание единицы" default="€" description="€"/>
-		<parameter name="EUR_rate" type="currency-precise" caption="Евро (Rate)"/>
-		<parameter name="EUR_scale" type="currency-precise" default="1" caption="Евро (Scale)"/>
+		<parameter name="EUR_rate" type="decimal" caption="Евро (Rate)"/>
+		<parameter name="EUR_scale" type="decimal" default="1" caption="Евро (Scale)"/>
 		<parameter name="EUR_ceil" type="byte" caption="округлять до целых" domain="0-1"/>
 		<parameter name="EUR_extra_quotient" type="double" caption="попарвка на риск" default="1" description="на сайте курс умножается на эту величину"/>
 		<parameter name="EUR_update" type="byte" default="1" caption="Евро - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
@@ -267,7 +267,6 @@
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<parameter name="ship_time" type="tuple" multiple="true" caption="Срок поставки (текст)" description="значение столбца - текст срока поставки для пользователя"/>
 		<parameter name="ship_time_days" type="tuple" multiple="true" caption="Срок поставки (число дней)" description="значение столбца - срок поставки в днях для системы"/>
-		<parameter name="catalog_link" type="string" caption="Ссылка на файл с базой поставщика"/>
 		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию (текст)" default="14 дней"/>
 		<parameter name="default_ship_time_days" type="string" caption="Срок поставки по умолчанию в днях" default="14 дней"/>
 		<parameter name="last_updated" type="date" caption="Время последнего обновления"/>
@@ -349,6 +348,7 @@
 		<parameter name="analog" type="string" caption="Аналоги" description="перечисление аналогов устройства"/>
 		<parameter name="barcode" type="string" caption="Штрихкод" description="в виде строки"/>
 		<parameter name="store" type="string" caption="Склад" description="для товаров сторонних каталогов"/>
+		<parameter name="extra_code" type="string" caption="Код для пользователей" description="код для товаров, у которых основной код не уникальный"/>
 
 		<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>

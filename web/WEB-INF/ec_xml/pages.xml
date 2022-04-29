@@ -2374,14 +2374,14 @@
 		</command>
 	</page>
 
-
+<!--
 	<page name="get_rates" schedule="0 0 */2 ? * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
 		<command class="extra.UpdateCurrencyRates"/>
 	</page>
-
+-->
 
 
 	<page name="import_users" template="integration/integration">
@@ -2487,7 +2487,6 @@
 		<request>
 			<var name="action"/>
 		</request>
-		<command class="extra.UpdateCurrencyRates"/>
 		<command class="extra.ImportPlainCatalog" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
@@ -2499,7 +2498,6 @@
 		<request>
 			<var name="action" value="start"/>
 		</request>
-		<command class="extra.UpdateCurrencyRates"/>
 		<command class="extra.ImportPlainCatalog" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>

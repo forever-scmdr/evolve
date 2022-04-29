@@ -75,7 +75,7 @@
 							<div class="popup__content" style="text-align: center;">
 								<div class="popup__header">
 									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> 
-										<span style="font-size: 12px; padding-left: 10px;">(Код: <xsl:value-of select="code"/>)</span>
+										<span style="font-size: 12px; padding-left: 10px;">(Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/>)</span>
 									</div>
 									<a class="popup__close">
 										<img src="img/icon-menu-close.png" alt=""/>
@@ -118,7 +118,7 @@
 						<div class="popup__body">
 							<div class="popup__content" style="text-align: center;">
 								<div class="popup__header">
-									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> <span style="font-size: 12px; padding-left: 10px;">(Код: <xsl:value-of select="code"/>)</span></div>
+									<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/> <span style="font-size: 12px; padding-left: 10px;">(Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/>)</span></div>
 									<a class="popup__close" href="#">
 										<img src="img/icon-menu-close.png" alt=""/>
 									</a>
@@ -149,7 +149,7 @@
 			</xsl:if>
 			<xsl:if test="not($is_extra)">
 				<div class="device__code">
-					Код: <xsl:value-of select="code"/>
+					Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/>
 					<xsl:if test="special_price = 'true' and not($zero)"><span>Спеццена</span></xsl:if>
 				</div>
 			</xsl:if>
@@ -267,7 +267,7 @@
 					<a href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 					<div><xsl:value-of select="vendor"/></div>
 				</div>
-				<div class="device__code">Код: <xsl:value-of select="code"/></div>
+				<div class="device__code">Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/></div>
 				<div class="device__icons">
                     <xsl:if test="params/param[not(@caption = 'Сертификат')]">
                         <a class="deivce-icon" href="#" popup="tech_{code}">
@@ -277,7 +277,7 @@
                             <div class="popup__body">
                                 <div class="popup__content" style="text-align: center">
                                     <div class="popup__header">
-                                        <div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/>&#160;<span style="font-size: 12px">(Код: <xsl:value-of select="code"/>)</span></div>
+                                        <div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/>&#160;<span style="font-size: 12px">(Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/>)</span></div>
                                         <a class="popup__close">
                                             <img src="img/icon-menu-close.png" alt=""/>
                                         </a>
@@ -320,7 +320,7 @@
 							<div class="popup__body">
 								<div class="popup__content">
 									<div class="popup__header">
-										<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/>&#160;<span style="font-size:12px;">(Код: <xsl:value-of select="code"/>)</span></div>
+										<div class="popup__title"><xsl:value-of select="string-join((name, name_extra), ' ')"/>&#160;<span style="font-size:12px;">(Код: <xsl:value-of select="if ($is_extra) then extra_code else code"/>)</span></div>
 										<a class="popup__close" href="#">
 											<img src="img/icon-menu-close.png" alt=""/>
 										</a>

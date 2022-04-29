@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -148,14 +149,23 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}
 				String suffix = StringUtils.substringBeforeLast(excel.getName(), ".");
-				final String codeSuffix = StringUtils.substring(suffix, 0, 5) + "_";
+				final String codeSuffix = StringUtils.substring(suffix, 0, 5);
 				//final String codeSuffix = "";
+				HashMap<String, Integer> codeMap = new HashMap<>();
 				TableDataRowProcessor proc = src -> {
 					String code = null;
+					String originalCode = null;
 					try {
-						code = src.getValue(CODE_HEADER);
+						code = originalCode = src.getValue(CODE_HEADER);
 						if (StringUtils.isNotBlank(code)) {
-							code = codeSuffix + code;
+							code = codeSuffix + "_" + originalCode;
+							Integer codeCount = codeMap.get(code);
+							if (codeCount == null) {
+								codeMap.put(code, 0);
+							} else {
+								codeMap.put(code, ++codeCount);
+								code = codeSuffix + codeCount + "_" + originalCode;
+							}
 
 							// Создание товара
 							//Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
@@ -196,18 +206,20 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_min_qty((double) 1);
 
 							// цена
-							currencyRates.setPrice(prod, src.getCurrencyValue(PRICE_HEADER, BigDecimal.ZERO), "USD");
+							BigDecimal extraQuotient = BigDecimal.ONE;
 							if (priceSettings.containsKey(catalogName)) {
-								BigDecimal extraQuotient = priceSettings.get(catalogName).getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
-								if (extraQuotient.compareTo(BigDecimal.ONE) != 0 && prod.isValueNotEmpty(described_product_.PRICE)) {
-									prod.set_price(prod.get_price().multiply(extraQuotient).setScale(2, BigDecimal.ROUND_CEILING));
-								}
+								extraQuotient = priceSettings.get(catalogName).getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
 							}
+							if (extraQuotient.compareTo(BigDecimal.ONE) != 0)
+								currencyRates.setPrice(prod, src.getCurrencyValue(PRICE_HEADER, BigDecimal.ZERO), "USD", 2, extraQuotient);
+							else
+								currencyRates.setPrice(prod, src.getCurrencyValue(PRICE_HEADER, BigDecimal.ZERO), "USD", 2);
 
 							// параметры для поиска
 							// Код не использовать для поиска (для этого он устанавливается после поисковых переметров)
 							CatalogCreationHandler.fillSearchParams(prod);
 							prod.set_code(code);
+							prod.set_extra_code(originalCode);
 
 
 							// Сохранение
@@ -232,7 +244,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			// Сохранить время окончания разбора
 			if (priceSettings.containsKey(catalogName)) {
 				Price_catalog settingCatalog = Price_catalog.get(priceSettings.get(catalogName));
-				settingCatalog.set_last_updated(System.currentTimeMillis());
+				settingCatalog.set_last_updated(LocalDateTime.now().toDateTime(DateTimeZone.forOffsetHours(3)).getMillis());
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(settingCatalog));
 			}
 		}

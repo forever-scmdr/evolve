@@ -15,7 +15,6 @@ public class Price_catalog
     public final static String QUOTIENT = "quotient";
     public final static String SHIP_TIME = "ship_time";
     public final static String SHIP_TIME_DAYS = "ship_time_days";
-    public final static String CATALOG_LINK = "catalog_link";
     public final static String DEFAULT_SHIP_TIME = "default_ship_time";
     public final static String DEFAULT_SHIP_TIME_DAYS = "default_ship_time_days";
     public final static String LAST_UPDATED = "last_updated";
@@ -91,22 +90,6 @@ public class Price_catalog
 
     public boolean contains_quotient(BigDecimal value) {
         return containsValue("quotient", value);
-    }
-
-    public void set_catalog_link(String value) {
-        setValue("catalog_link", value);
-    }
-
-    public String get_catalog_link() {
-        return getStringValue("catalog_link");
-    }
-
-    public String getDefault_catalog_link(String defaultVal) {
-        return getStringValue("catalog_link", defaultVal);
-    }
-
-    public boolean contains_catalog_link(String value) {
-        return containsValue("catalog_link", value);
     }
 
     public void set_default_ship_time(String value) {
