@@ -1,6 +1,7 @@
 package extra.belchip;
 
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.User;
@@ -21,6 +22,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,12 +60,16 @@ public class CatalogUpdateHandler extends DefaultHandler {
 
 	private int сreated = 0;
 	private IntegrateBase parentIntegration;
+	private Item catalog;
+	private Currencies currencies;
 
 	private boolean currencyReady;
 	//private FileWriter writer;
 
-	protected CatalogUpdateHandler(IntegrateBase parent) throws IOException {
+	protected CatalogUpdateHandler(IntegrateBase parent) throws Exception {
 		this.parentIntegration = parent;
+		catalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.CATALOG, User.getDefaultUser());
+		currencies = Currencies.get(ItemUtils.ensureSingleChild(ItemNames.CURRENCIES, User.getDefaultUser(), catalog));
 		//File f = Paths.get(AppContext.getContextPath(), "timer_log.txt").toFile();
 		//writer = new FileWriter(f);
 	}
@@ -209,9 +215,28 @@ public class CatalogUpdateHandler extends DefaultHandler {
 					}
 			}
 			else if ("rub".equalsIgnoreCase(qName)) {
-				Currencies currencies = Currencies.get(ItemQuery.loadSingleItemByName(ItemNames.CURRENCIES));
-				if(currencies != null) {
+				//Currencies currencies = Currencies.get(ItemQuery.loadSingleItemByName(ItemNames.CURRENCIES));
+				if (currencies != null) {
 					currencies.setUI_RUB_rate(paramValue.toString().trim());
+					currencies.set_RUB_scale(BigDecimal.valueOf(100));
+					currencyReady = false;
+					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).ignoreUser(true).noFulltextIndex());
+				}
+			}
+			else if ("usd".equalsIgnoreCase(qName)) {
+				//Currencies currencies = Currencies.get(ItemQuery.loadSingleItemByName(ItemNames.CURRENCIES));
+				if (currencies != null) {
+					currencies.setUI_USD_rate(paramValue.toString().trim());
+					currencies.set_USD_scale(BigDecimal.ONE);
+					currencyReady = false;
+					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).ignoreUser(true).noFulltextIndex());
+				}
+			}
+			else if ("eur".equalsIgnoreCase(qName)) {
+				//Currencies currencies = Currencies.get(ItemQuery.loadSingleItemByName(ItemNames.CURRENCIES));
+				if (currencies != null) {
+					currencies.setUI_EUR_rate(paramValue.toString().trim());
+					currencies.set_EUR_scale(BigDecimal.ONE);
 					currencyReady = false;
 					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).ignoreUser(true).noFulltextIndex());
 				}
@@ -263,7 +288,7 @@ public class CatalogUpdateHandler extends DefaultHandler {
 				hit = Boolean.parseBoolean(attributes.getValue(IConst.HIT_ATTRIBUTE));
 				soon =(StringUtils.isBlank(attributes.getValue(IConst.SOON_ATTRIBUTE))) ? null : SOON_FORMAT.parse(attributes.getValue(IConst.SOON_ATTRIBUTE));
 			}
-			else if("rub".equalsIgnoreCase(qName)) {
+			else if("rub".equalsIgnoreCase(qName) || "usd".equalsIgnoreCase(qName) || "eur".equalsIgnoreCase(qName)) {
 				currencyReady = true;
 				paramValue = new StringBuilder();
 			}

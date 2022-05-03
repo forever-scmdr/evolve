@@ -3,6 +3,7 @@ package extra.belchip;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ItemUtils;
 import ecommander.model.Item;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -27,7 +28,7 @@ public class MicroIntegrate extends IntegrateBase {
 	
 	@Override
 	protected boolean makePreparations() throws Exception {
-		catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
+		catalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.CATALOG, User.getDefaultUser());
 		String fileName = getVarSingleValue("param");
 		//integration = catalog.getFileValue(paramName, AppContext.getFilesDirPath(catalog.isFileProtected()));
 		integration = new File(AppContext.getRealPath(INTEGRATION_DIR + fileName));

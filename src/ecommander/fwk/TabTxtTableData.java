@@ -145,9 +145,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
+	public final BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
-		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
@@ -166,9 +166,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
+	public final BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal...defaultVal) {
 		String val = getValue(colName);
-		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}

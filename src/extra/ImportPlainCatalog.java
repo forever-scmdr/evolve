@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -46,6 +45,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String VENDOR_HEADER = "Производитель";        // +
 	private static final String UNIT_HEADER = "Ед. изм.";               // +
 	private static final String UNIT_EXTRA_HEADER = "Норма упаковки";   // +
+	private static final String INTERVAL_HEADER = "Интервал1";        // +
 	private static final String PRICE_HEADER = "Цена1($ с НДС)";        // +
 	private static final String STORE_HEADER = "Склад";                 // +
 	private static final String DELAY_MOSCOW_HEADER = "Срок доставки при отгрузке из Москвы (дн.)";     // +
@@ -207,13 +207,17 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 
 							// цена
 							BigDecimal extraQuotient = BigDecimal.ONE;
+							BigDecimal rawPrice = src.getDecimalValue(PRICE_HEADER, 6, BigDecimal.valueOf(-1));
+							if (rawPrice.compareTo(BigDecimal.ZERO) < 0) {
+								rawPrice = src.getDecimalValue(INTERVAL_HEADER, 6, BigDecimal.ZERO);
+							}
 							if (priceSettings.containsKey(catalogName)) {
 								extraQuotient = priceSettings.get(catalogName).getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
 							}
 							if (extraQuotient.compareTo(BigDecimal.ONE) != 0)
-								currencyRates.setPrice(prod, src.getCurrencyValue(PRICE_HEADER, BigDecimal.ZERO), "USD", 2, extraQuotient);
+								currencyRates.setPrice(prod, rawPrice, "USD", 2, extraQuotient);
 							else
-								currencyRates.setPrice(prod, src.getCurrencyValue(PRICE_HEADER, BigDecimal.ZERO), "USD", 2);
+								currencyRates.setPrice(prod, rawPrice, "USD", 2);
 
 							// параметры для поиска
 							// Код не использовать для поиска (для этого он устанавливается после поисковых переметров)

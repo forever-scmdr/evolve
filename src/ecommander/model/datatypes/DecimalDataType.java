@@ -15,6 +15,8 @@ public class DecimalDataType extends FormatDataType {
 	static {
 		dotDelimFormat.setParseBigDecimal(true);
 		commaDelimformat.setParseBigDecimal(true);
+		dotDelimFormat.setMaximumFractionDigits(10);
+		commaDelimformat.setMaximumFractionDigits(10);
 	}
 
 	private int scale;
@@ -30,8 +32,9 @@ public class DecimalDataType extends FormatDataType {
 
 	@Override
 	public String outputValue(Object value, Object formatter) {
-		if (formatter == null)
+		if (formatter == null) {
 			formatter = commaDelimformat;
+		}
 		else
 			((DecimalFormat) formatter).setParseBigDecimal(true);
 		if (value != null)

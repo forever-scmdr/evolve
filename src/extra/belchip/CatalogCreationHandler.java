@@ -165,7 +165,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 					transactionExecute();
 					info.increaseProcessed();
 				} else if (StringUtils.equalsIgnoreCase(qName, IConst.KURS_ELEMENT)) {
-					currencies.setValue(Currencies.RUB_SCALE, BigDecimal.ONE);
+					currencies.setValue(Currencies.RUB_SCALE, BigDecimal.valueOf(100));
 					currencies.setValue(Currencies.EUR_SCALE, BigDecimal.ONE);
 					currencies.setValue(Currencies.USD_SCALE, BigDecimal.ONE);
 					transaction.executeCommandUnit(SaveItemDBUnit.get(currencies).noFulltextIndex());
