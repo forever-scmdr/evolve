@@ -414,7 +414,6 @@
 										</td>
 									</tr>
 								<xsl:for-each-group select="$cart/bought[qty_zero != '0']" group-by="type">
-									<xsl:variable name="code" select="code" />
 <!-- 									<tr> -->
 <!-- 										<td width="100%" colspan="5" -->
 <!-- 											style="width:100.0%; -->

@@ -223,7 +223,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							// Код не использовать для поиска (для этого он устанавливается после поисковых переметров)
 							CatalogCreationHandler.fillSearchParams(prod);
 							prod.set_code(code);
-							prod.set_extra_code(originalCode);
+							prod.set_extra_code(codeSuffix + '_' + originalCode);
 
 
 							// Сохранение

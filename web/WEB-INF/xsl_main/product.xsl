@@ -212,7 +212,7 @@
 							<div class="basic-params__value">
 								<xsl:if test="not($is_extra)"><xsl:value-of select="$p/code"/></xsl:if>
 								<xsl:if test="$is_extra">
-									<span style="color: #FF8C00;"><xsl:value-of select="concat(substring-before($p/store, '.'), $p/code)"/></span>
+									<span style="color: #FF8C00;"><xsl:value-of select="$p/extra_code"/></span>
 								</xsl:if>
 							</div>
 						</div>
