@@ -42,7 +42,7 @@ public class UpdatePrices extends IntegrateBase implements CatalogConst{
 							if (qty == null)
 								qty = 0d;
 							prod.set_qty(qty);
-							prod.set_price(getCurrencyValue(PRICE_HEADER));
+							prod.set_price(getDecimalValue(PRICE_HEADER, 2));
 							DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 							info.increaseProcessed();
 						} else {

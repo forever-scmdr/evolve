@@ -49,6 +49,15 @@ public class TabTxtTableData implements TableDataSource {
 		init(mandatoryCols);
 	}
 
+	public TabTxtTableData(File file, Charset charset, boolean isCsv, String... mandatoryCols) {
+		this.file = file;
+		this.fileCharset = charset;
+		this.isCsv = isCsv;
+		if (isCsv)
+			SEPARATOR_CHAR = ';';
+		init(mandatoryCols);
+	}
+
 	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
 		this.file = file;
 		this.fileCharset = charset;
@@ -136,9 +145,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
+	public final BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
-		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
@@ -157,9 +166,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
+	public final BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal...defaultVal) {
 		String val = getValue(colName);
-		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
+		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
