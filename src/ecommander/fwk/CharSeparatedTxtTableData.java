@@ -42,7 +42,7 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	public CharSeparatedTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
 		File f = new File(fileName);
 		char sep = isCsv? ';' : '\t';
-		populateAndInit(f,charset,'\t', mandatoryCols);
+		populateAndInit(f,charset,sep, mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(String fileName, Charset charset, char separator, String... mandatoryCols){
