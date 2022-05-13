@@ -35,36 +35,42 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	private char SEPARATOR_CHAR = '\t';
 
 	public CharSeparatedTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
-		this.file = new File(fileName);
-		this.fileCharset = charset;
-		init(mandatoryCols);
+		File f = new File(fileName);
+		populateAndInit(f,charset,'\t', mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
-		this.file = new File(fileName);
-		this.fileCharset = charset;
-		this.isCsv = isCsv;
-		if (isCsv)
-			SEPARATOR_CHAR = ';';
-		init(mandatoryCols);
+		File f = new File(fileName);
+		char sep = isCsv? ';' : '\t';
+		populateAndInit(f,charset,'\t', mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(String fileName, Charset charset, char separator, String... mandatoryCols){
-		this.file = new File(fileName);
-		this.fileCharset = charset;
-		init(mandatoryCols);
-		SEPARATOR_CHAR = separator;
+		File f = new File(fileName);
+		populateAndInit(f,charset,separator, mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(File file, Charset charset, String... mandatoryCols) {
-		this.file = file;
-		this.fileCharset = charset;
-		init(mandatoryCols);
+		populateAndInit(file,charset,'\t', mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
-		this.file = path.toFile();
+		File f = path.toFile();
+		populateAndInit(file,charset,'\t', mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(Path path, Charset charset, char separator, String... mandatoryCols) {
+		File f = path.toFile();
+		populateAndInit(file,charset,separator, mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(File file, Charset charset, char separator, String... mandatoryCols){
+		populateAndInit(file, charset, separator, mandatoryCols);
+	}
+	private void populateAndInit(File file, Charset charset, char separator, String... mandatoryCols){
+		this.file = file;
 		this.fileCharset = charset;
+		SEPARATOR_CHAR = separator;
 		init(mandatoryCols);
 	}
 
@@ -209,7 +215,7 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 
 	@Override
 	public int getRowNum() {
-		return 0;
+		return currentRowNum;
 	}
 
 	@Override
