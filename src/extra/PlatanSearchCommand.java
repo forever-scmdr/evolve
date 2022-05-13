@@ -22,7 +22,7 @@ public class PlatanSearchCommand extends Command {
 		String url = getVarSingleValue(URL_VAR);
 		String query = getVarSingleValue(QUERY);
 
-		Document doc = Jsoup.parse(new URL(url + "?search=" + URLEncoder.encode(getVarSingleValue("query"), "UTF-8")), 5000);
+		Document doc = Jsoup.parse(new URL(url + "?search=" + URLEncoder.encode(getVarSingleValue("query"), "UTF-8").replaceAll("\\+", "%20")), 5000);
 		Item catalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 		Element root = doc.child(0);
 		root.prepend("<currency_ratio>"+catalog.getDoubleValue("currency_ratio", 100d)+"</currency_ratio>");

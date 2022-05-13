@@ -1,6 +1,6 @@
 package ecommander.controllers;
 
-import ecommander.fwk.MysqlConnector;
+import com.google.common.base.Splitter;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.User;
@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 /**
@@ -50,6 +49,9 @@ public class SessionContext implements AutoCloseable {
 
 	private static final int COOKIE_EXPIRE = 10 * 24 * 60 * 60;
 	private static final long INITIAL_GENERATED_ID = -100L;
+
+	private static final String COOKIE_SPLIT_DELIMITER = "~$~";
+	private static final int COOKIE_MAX_LENGTH = 2500;
 
 	@Override
 	public void close() throws Exception {
@@ -295,15 +297,40 @@ public class SessionContext implements AutoCloseable {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null)
 			return null;
+		// Куки может состоять из нескольких частей
+		final int MAX_PARTS = 20;
+		String[] values = new String[MAX_PARTS];
+		boolean hasValue = false;
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(name))
+			if (cookie.getName().equals(name)) {
 				try {
-					return URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
+					values[0] = URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
+					hasValue = true;
 				} catch (UnsupportedEncodingException e) {
 					ServerLogger.error("Unable to decode cookie", e);
 					return null;
 				}
+			} else if (StringUtils.startsWith(cookie.getName(), name + COOKIE_SPLIT_DELIMITER)) {
+				try {
+					String decoded = URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
+					String[] parts = StringUtils.splitByWholeSeparator(cookie.getName(), COOKIE_SPLIT_DELIMITER);
+					if (parts != null && parts.length == 2) {
+						int index = Integer.parseInt(parts[1]);
+						if (index > 0 && index < MAX_PARTS) {
+							values[index] = decoded;
+							hasValue = true;
+						}
+					}
+				} catch (UnsupportedEncodingException e) {
+					ServerLogger.error("Unable to decode cookie", e);
+					return null;
+				} catch (Exception e) {
+					// just continue loop
+				}
+			}
 		}
+		if (hasValue)
+			return StringUtils.join(values, null);
 		return null;
 	}
 	/**
@@ -342,16 +369,30 @@ public class SessionContext implements AutoCloseable {
 		if (cookies != null) {
 			for (Entry<String, String> vals : cookies.entrySet()) {
 				try {
-					Cookie cookie;
 					if (StringUtils.isBlank(vals.getValue())) {
+						Cookie cookie;
 						cookie = new Cookie(vals.getKey(), "");
 						cookie.setMaxAge(0); // удаление куки
+						cookie.setPath("/");
+						resp.addCookie(cookie);
 					} else {
-						cookie = new Cookie(vals.getKey(), URLEncoder.encode(vals.getValue(), Strings.SYSTEM_ENCODING));
-						cookie.setMaxAge(COOKIE_EXPIRE);
+						if (vals.getValue().length() <= COOKIE_MAX_LENGTH) {
+							Cookie cookie = new Cookie(vals.getKey(), URLEncoder.encode(vals.getValue(), Strings.SYSTEM_ENCODING));
+							cookie.setMaxAge(COOKIE_EXPIRE);
+							cookie.setPath("/");
+							resp.addCookie(cookie);
+						} else {
+							int i = 0;
+							for(final String part : Splitter.fixedLength(COOKIE_MAX_LENGTH).split(vals.getValue())) {
+								String name = i == 0 ? vals.getKey() : vals.getKey() + COOKIE_SPLIT_DELIMITER + i;
+								Cookie cookie = new Cookie(name, URLEncoder.encode(part, Strings.SYSTEM_ENCODING));
+								cookie.setMaxAge(COOKIE_EXPIRE);
+								cookie.setPath("/");
+								resp.addCookie(cookie);
+								i++;
+							}
+						}
 					}
-					cookie.setPath("/");
-					resp.addCookie(cookie);
 				} catch (Exception e) {
 					ServerLogger.error("Unable to encode cookie", e);
 				}

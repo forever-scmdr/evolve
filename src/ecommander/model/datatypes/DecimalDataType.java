@@ -15,6 +15,8 @@ public class DecimalDataType extends FormatDataType {
 	static {
 		dotDelimFormat.setParseBigDecimal(true);
 		commaDelimformat.setParseBigDecimal(true);
+		dotDelimFormat.setMaximumFractionDigits(10);
+		commaDelimformat.setMaximumFractionDigits(10);
 	}
 
 	private int scale;
