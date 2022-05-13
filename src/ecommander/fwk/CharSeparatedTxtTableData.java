@@ -149,6 +149,11 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
+	@Override
+	public BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal... defaultVal) {
+		return null;
+	}
+
 	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
 		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
@@ -168,6 +173,11 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	public final Double getDoubleValue(String colName) {
 		String val = getValue(colName);
 		return DoubleDataType.parse(val);
+	}
+
+	@Override
+	public BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal... defaultVal) {
+		return null;
 	}
 
 	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
