@@ -19,7 +19,7 @@ import java.util.TreeSet;
 /**
  * Created by E on 14/1/2019.
  */
-public class TabTxtTableData implements TableDataSource {
+public class CharSeparatedTxtTableData implements TableDataSource {
 
 	public static final String UTF8_BOM = "\uFEFF";
 
@@ -34,13 +34,13 @@ public class TabTxtTableData implements TableDataSource {
 	private boolean isCsv = false;
 	private char SEPARATOR_CHAR = '\t';
 
-	public TabTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
 		this.file = new File(fileName);
 		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
 		this.file = new File(fileName);
 		this.fileCharset = charset;
 		this.isCsv = isCsv;
@@ -49,13 +49,20 @@ public class TabTxtTableData implements TableDataSource {
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, char separator, String... mandatoryCols){
+		this.file = new File(fileName);
+		this.fileCharset = charset;
+		init(mandatoryCols);
+		SEPARATOR_CHAR = separator;
+	}
+
+	public CharSeparatedTxtTableData(File file, Charset charset, String... mandatoryCols) {
 		this.file = file;
 		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(Path path, Charset charset, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
 		this.file = path.toFile();
 		this.fileCharset = charset;
 		init(mandatoryCols);
