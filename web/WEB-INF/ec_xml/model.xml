@@ -265,6 +265,7 @@
 		<!-- opt extend item [opt_product]-->
 
 		<!-- complex price/quantity logic -->
+
 		<parameter name="unit" type="string" caption="Единица измерения"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="step" type="double" caption="Шаг заказа"/>
@@ -297,6 +298,10 @@
 		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
+	</item>
+
+	<item name="discount_product" caption="товар для оптовой торговли" virtual="true" ag-id="1846" ag-hash="-1367271439" >
+		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 	</item>
 
 	<!-- TODO refactor to tuples -->
@@ -337,7 +342,7 @@
 
 	<!--Обычный товар или товар, который содержит другие товары-->
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
-	      default-page="product" super="described_product * seo_container line_product_container">
+	      default-page="product" super="described_product discount_product product_labels * seo_container line_product_container">
 	</item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
