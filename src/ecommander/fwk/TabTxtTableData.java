@@ -19,7 +19,7 @@ import java.util.TreeSet;
 /**
  * Created by E on 14/1/2019.
  */
-public class TabTxtTableData implements TableDataSource {
+public class CharSeparatedTxtTableData implements TableDataSource {
 
 	public static final String UTF8_BOM = "\uFEFF";
 
@@ -34,13 +34,13 @@ public class TabTxtTableData implements TableDataSource {
 	private boolean isCsv = false;
 	private char SEPARATOR_CHAR = '\t';
 
-	public TabTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
 		this.file = new File(fileName);
 		this.fileCharset = charset;
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
 		this.file = new File(fileName);
 		this.fileCharset = charset;
 		this.isCsv = isCsv;
@@ -49,22 +49,20 @@ public class TabTxtTableData implements TableDataSource {
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(File file, Charset charset, boolean isCsv, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, char separator, String... mandatoryCols){
+		this.file = new File(fileName);
+		this.fileCharset = charset;
+		init(mandatoryCols);
+		SEPARATOR_CHAR = separator;
+	}
+
+	public CharSeparatedTxtTableData(File file, Charset charset, String... mandatoryCols) {
 		this.file = file;
 		this.fileCharset = charset;
-		this.isCsv = isCsv;
-		if (isCsv)
-			SEPARATOR_CHAR = ';';
 		init(mandatoryCols);
 	}
 
-	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
-		this.file = file;
-		this.fileCharset = charset;
-		init(mandatoryCols);
-	}
-
-	public TabTxtTableData(Path path, Charset charset, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
 		this.file = path.toFile();
 		this.fileCharset = charset;
 		init(mandatoryCols);
@@ -145,9 +143,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal...defaultVal) {
+	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
-		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
@@ -166,9 +164,9 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal...defaultVal) {
+	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
 		String val = getValue(colName);
-		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
@@ -211,7 +209,7 @@ public class TabTxtTableData implements TableDataSource {
 
 	@Override
 	public int getRowNum() {
-		return currentRowNum;
+		return 0;
 	}
 
 	@Override
