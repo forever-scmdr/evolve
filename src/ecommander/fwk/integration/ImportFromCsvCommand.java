@@ -118,10 +118,11 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			//create and put section into cache if not exists
 			section = ItemUtils.newChildItem(SECTION_ITEM, catalog);
 			section.setValueUI(NAME, name);
-			if (ORPHANS_SECTION.equals(name)) {
-				executeCommandUnit(ItemStatusDBUnit.hide(section).ignoreUser().noFulltextIndex());
-			}
+
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().ignoreUser());
+			if (ORPHANS_SECTION.equals(name)) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section).ignoreUser().noFulltextIndex());
+			}
 			cacheForSecs.put(processedName, section);
 			return section;
 		}
