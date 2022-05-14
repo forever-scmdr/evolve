@@ -119,12 +119,21 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			section = ItemUtils.newChildItem(SECTION_ITEM, catalog);
 			section.setValueUI(NAME, name);
 
+			section.setValueUI(CODE_PARAM, generateCode(name));
+
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().ignoreUser());
 			if (ORPHANS_SECTION.equals(name)) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section).ignoreUser().noFulltextIndex());
 			}
 			cacheForSecs.put(processedName, section);
 			return section;
+		}
+
+		private String generateCode(String name) {
+			StringBuilder sb = new StringBuilder();
+			sb.append('s').append('e').append('c').append('-');
+			sb.append(name.hashCode());
+			return sb.toString();
 		}
 
 		private void processLabelsAndTags(Item product, TableDataSource source) throws Exception {
