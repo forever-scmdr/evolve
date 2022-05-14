@@ -170,7 +170,7 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			for (String k : HEADER_PARAMS.keySet()) {
 				product.setValueUI(k, getValueByParamName(k, source));
 			}
-			if(product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO).compareTo(BigDecimal.ZERO) == 0){
+			if(BigDecimal.ZERO.compareTo(product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO)) == 0){
 				product.clearValue(PRICE_OLD_PARAM);
 			}
 		}
