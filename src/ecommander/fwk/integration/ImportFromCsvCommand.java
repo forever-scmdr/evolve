@@ -12,6 +12,7 @@ import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst {
@@ -79,7 +80,7 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 			if (product == null) {
 				String parentSectionName = src.getValue(SECTION_HEADER);
-				product = createProduct(code, parentSectionName);
+				product = createProduct(parentSectionName);
 			}
 
 			populateProduct(product, src);
@@ -131,7 +132,7 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 
 		private String generateCode(String name) {
 			StringBuilder sb = new StringBuilder();
-			sb.append('s').append('e').append('c').append('-');
+			sb.append('s').append('e').append('c');
 			sb.append(name.hashCode());
 			return sb.toString();
 		}
@@ -159,7 +160,7 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			}
 		}
 
-		private Item createProduct(String code, String parentSectionName) throws Exception {
+		private Item createProduct(String parentSectionName) throws Exception {
 			Item parentSection = StringUtils.isBlank(parentSectionName) ? getSection(ORPHANS_SECTION) : getSection(parentSectionName);
 			Item product = ItemUtils.newChildItem(PRODUCT_ITEM, parentSection);
 			return product;
@@ -168,6 +169,9 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 		private void populateProduct(Item product, TableDataSource source) throws Exception {
 			for (String k : HEADER_PARAMS.keySet()) {
 				product.setValueUI(k, getValueByParamName(k, source));
+			}
+			if(product.getDecimalValue(PRICE_OLD_PARAM, BigDecimal.ZERO).compareTo(BigDecimal.ZERO) == 0){
+				product.clearValue(PRICE_OLD_PARAM);
 			}
 		}
 
