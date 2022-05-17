@@ -23,7 +23,12 @@
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
 										<a href="{$p/show_product}">
-											<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" />
+											<xsl:if test="$p/url">
+												<img src="storepics/{$p/url}" alt="{$p/name}" />
+											</xsl:if>
+											<xsl:if test="not($p/gallery) and not($p/url)">
+												<img src="img/no_image.png" alt="{$p/name}"/>
+											</xsl:if>
 										</a>
 									</div>
 									<div class="cart-item__info">
