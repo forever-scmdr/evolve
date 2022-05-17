@@ -191,7 +191,7 @@
 		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
 
 		<div class="vl_c_item">
-			<a href="{show_products}" style="position:absolute; top:0; bottom:0; left:0; right:0;"></a>
+			<a href="{show_products}" class="cover-link"></a>
 			<div class="vl_c_img">
 				<img src="{$pic_path}" 
 					onerror="{$onerror}"

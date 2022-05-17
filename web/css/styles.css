@@ -224,27 +224,29 @@ table {
 	margin: 0 0 0 4px; }
 
 .ptb {
-	padding-top: 48px;
-	padding-bottom: 48px; }
+	padding-top: 45px;
+	padding-bottom: 45px; }
 
 .pt {
-	padding-top: 48px; }
+	padding-top: 45px; }
 
 .pb {
-	padding-bottom: 48px; }
+	padding-bottom: 45px;}
 
 .divider {
 	height: 4px;
 	width: 100px;
 	background-color: #E6D0B0;
-	margin: 2rem auto; }
+	margin: 0 auto; 
+}
 
 .img {
 	position: relative; }
 	.img:before {
 		content: "";
 		display: block;
-		padding-top: 100%; }
+		padding-top: 100%; 
+	}
 	.img img {
 		position: absolute;
 		left: 0;
@@ -824,16 +826,25 @@ img {
 	background-color: #fff;
 	padding: 8px 0; }
 
-.sections-block_wrap {
+.sections-block_wrap-4 {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 24px; }
+.sections-block_wrap-5 {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 24px; }	
 	@media (max-width: 425px) {
-		.sections-block_wrap {
+		.sections-block_wrap-4 {
 			grid-template-columns: repeat(2, 1fr);
-			grid-gap: 16px; } }
+			grid-gap: 16px; } 
+		.sections-block_wrap-5 {
+			grid-template-columns: repeat(2, 1fr);
+			grid-gap: 16px; }	
+
+		}
 	@media (max-width: 320px) {
-		.sections-block_wrap {
+		.sections-block_wrap-4 {
 			grid-template-columns: repeat(1, 1fr);
 			grid-gap: 16px; } }
 
@@ -1057,7 +1068,9 @@ img {
 	font-weight: 700; }
 
 .blockquote-block {
-	font-family: "Times New Roman", serif; }
+	font-family: "Times New Roman", serif; 
+	text-align: center;
+}
 
 .blockquote-block__wrap {
 	text-align: center;
@@ -1386,7 +1399,9 @@ img {
 		top: 5px;
 		width: 16px;
 		height: 4px;
-		background-color: #31869B; }
+		background-color: #31869B; 
+		display: none;
+	}
 
 .catalog-item__text {
 	font-size: 13px;
@@ -2847,6 +2862,7 @@ div#search-result-mobile {
 	cursor: pointer;
 	position: absolute;
 	box-shadow: 0 0 15px 0 rgb(0 0 0 / 18%);
+	z-index: 3;
 }
 
 .vl_c_prev {
@@ -2887,6 +2903,7 @@ div#search-result-mobile {
 	padding: 10px;
 	border-radius: 2rem;
 	box-shadow: 0 0 15px 0 rgb(0 0 0 / 18%);
+	position: relative;
 }
 .vl_c_item:hover {
 	box-shadow: 0 0 15px 0 rgb(0 0 0 / 58%);
@@ -2904,6 +2921,18 @@ div#search-result-mobile {
 	margin-bottom:1rem;
 	color: #363636;
 }
+
+
+.vl_c_item  .img::before{
+	padding-top: 68%;
+}
+
+.vl_c_item .card{
+	padding: 0;
+	background: transparent;
+	border: 0 none;
+}
+
 .vl_pos_rel{position: relative;}
 .vl_jc {justify-content: center;}
 .vl_jc .order img {
@@ -2916,4 +2945,112 @@ div#search-result-mobile {
 .inline_block{
 	display: inline-block;
 	margin-left: 1.4rem;
+}
+
+.cover-link{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+}
+.cover-link-wrap{
+	position: relative;
+}
+
+.onecol-block__wrap{
+	text-align: justify;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+.onecol-img{
+	width: 550px;
+}
+@media(max-width: 425px){
+	.onecol-block__wrap{
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		grid-gap: 16px;
+	}
+	.onecol-img{
+		width: 100%;
+	}
+}
+@media (max-width: 320px) {
+	.onecol-img{
+		width: 100%;
+	}
+}
+.onecol-block__text{
+	padding: 0 10px;
+	font-size: 14px;
+	line-height: 1.6;
+}
+.onecol-block__text h2{
+	line-height: 20px;
+	margin-top: 0;
+}
+.map-points-list{
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 24px;
+}
+
+.map-points-list .point{
+	border: 1px solid #ccc;
+	padding: 15px;
+}
+.map-points-list .point .text{
+	font-size: 1rem;
+	margin-top: 16px;
+}
+.chess-row{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 0;
+}
+.chess-pic{
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: right top;
+}
+.chess-text{
+	padding: 16px;
+	
+}
+.odd .chess-text{
+	padding-right: 0;
+}
+.even .chess-text{
+	padding-left: 0;
+}
+@media(max-width: 425px){
+	.chess-row{
+		display: flex;
+		 flex-direction: column;
+	}
+	.chess-pic{
+		padding-top: 75%;
+		width: 100%;
+		margin-bottom: 16px;
+	}
+	.chess-row.even{
+		flex-direction: column-reverse;
+	}
+}
+img[alt="left"] {
+	float: left;
+	clear: left;
+	margin: 0 24px 16px 0;
+}
+}
+img[alt="right"] {
+	float: right;
+	clear: right;
+	margin: 0 16px 24px 0;
 }
