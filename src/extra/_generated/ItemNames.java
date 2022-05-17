@@ -9,8 +9,9 @@ public interface ItemNames {
     String BASE_SEO = "base_seo";
     String SEO = "seo";
     String URL_SEO = "url_seo";
-    String URL_SEO_WRAP = "url_seo_wrap";
+    String SEO_WRAP = "seo_wrap";
     String SEO_CATALOG = "seo_catalog";
+    String TRANSIENT_SEO_CATALOG = "transient_seo_catalog";
     String SEO_CONTAINER = "seo_container";
     String ORIGINAL_GALLERY = "original_gallery";
     String GALLERY = "gallery";
@@ -19,6 +20,15 @@ public interface ItemNames {
     String SECTION = "section";
     String ABSTRACT_PRODUCT = "abstract_product";
     String DESCRIBED_PRODUCT = "described_product";
+    String NAME_EXTRAS = "name_extras";
+    String YANDEX_PRODUCT = "yandex_product";
+    String OPT_PRODUCT = "opt_product";
+    String CURRENCIES_PRODUCT = "currencies_product";
+    String PRODUCT_LABELS = "product_labels";
+    String PRODUCT_WITH_PARAMS = "product_with_params";
+    String LINE_PRODUCT_CONTAINER = "line_product_container";
+    String OPTION_CONTAINER = "option_container";
+    String EXPORTED_PRODUCT = "exported_product";
     String LINE_PRODUCT = "line_product";
     String PRODUCT = "product";
     String OPTION = "option";
@@ -109,7 +119,6 @@ public interface ItemNames {
         String CODE = "code";
         String PRICE = "price";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
         String UNIT = "unit";
 
     }
@@ -330,6 +339,18 @@ public interface ItemNames {
 
     }
 
+    public interface currencies_product_ {
+
+        String _ITEM_NAME = "currencies_product";
+        String PRICE_RUB = "price_RUB";
+        String PRICE_RUB_OLD = "price_RUB_old";
+        String PRICE_USD = "price_USD";
+        String PRICE_USD_OLD = "price_USD_old";
+        String PRICE_EUR = "price_EUR";
+        String PRICE_EUR_OLD = "price_EUR_old";
+
+    }
+
     public interface custom_block_ {
 
         String _ITEM_NAME = "custom_block";
@@ -400,34 +421,33 @@ public interface ItemNames {
         String CODE = "code";
         String PRICE = "price";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
         String UNIT = "unit";
-        String TYPE = "type";
-        String NAME_EXTRA = "name_extra";
+        String PRICE_OLD = "price_old";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
-        String OFFER_ID = "offer_id";
-        String AVAILABLE = "available";
-        String CATEGORY_ID = "category_id";
-        String STATUS = "status";
-        String SEARCH = "search";
-        String MIN_QTY = "min_qty";
-        String STEP = "step";
-        String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
-        String EXTRA_XML = "extra_xml";
+        String SEARCH = "search";
         String FILES = "files";
         String TEXT_PICS = "text_pics";
+        String EXTRA_XML = "extra_xml";
+        String EXTRA_INPUT = "extra_input";
+        String GROUP_ID = "group_id";
         String ASSOC_CODE = "assoc_code";
+        String MIN_QTY = "min_qty";
+        String STEP = "step";
+        String SPEC_QTY = "spec_qty";
+        String GALLERY = "gallery";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";
-        String EXTRA_INPUT = "extra_input";
-        String GALLERY = "gallery";
+        String OFFER_ID = "offer_id";
+        String AVAILABLE = "available";
+        String CATEGORY_ID = "category_id";
+        String URL = "url";
 
     }
 
@@ -473,6 +493,15 @@ public interface ItemNames {
         String _ITEM_NAME = "error_page";
         String TEXT = "text";
         String TEXT_PIC = "text_pic";
+
+    }
+
+    public interface exported_product_ {
+
+        String _ITEM_NAME = "exported_product";
+        String URL = "url";
+        String CURRENCY_ID = "currency_id";
+        String PRICE_ORIGINAL = "price_original";
 
     }
 
@@ -539,34 +568,40 @@ public interface ItemNames {
         String CODE = "code";
         String PRICE = "price";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
         String UNIT = "unit";
-        String TYPE = "type";
-        String NAME_EXTRA = "name_extra";
+        String PRICE_OLD = "price_old";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
-        String OFFER_ID = "offer_id";
-        String AVAILABLE = "available";
-        String CATEGORY_ID = "category_id";
-        String STATUS = "status";
-        String SEARCH = "search";
-        String MIN_QTY = "min_qty";
-        String STEP = "step";
-        String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
-        String EXTRA_XML = "extra_xml";
+        String SEARCH = "search";
         String FILES = "files";
         String TEXT_PICS = "text_pics";
+        String EXTRA_XML = "extra_xml";
+        String EXTRA_INPUT = "extra_input";
+        String GROUP_ID = "group_id";
         String ASSOC_CODE = "assoc_code";
+        String MIN_QTY = "min_qty";
+        String STEP = "step";
+        String SPEC_QTY = "spec_qty";
+        String GALLERY = "gallery";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";
-        String EXTRA_INPUT = "extra_input";
-        String GALLERY = "gallery";
+        String OFFER_ID = "offer_id";
+        String AVAILABLE = "available";
+        String CATEGORY_ID = "category_id";
+        String URL = "url";
+
+    }
+
+    public interface line_product_container_ {
+
+        String _ITEM_NAME = "line_product_container";
+        String HAS_LINES = "has_lines";
 
     }
 
@@ -655,6 +690,14 @@ public interface ItemNames {
 
     }
 
+    public interface name_extras_ {
+
+        String _ITEM_NAME = "name_extras";
+        String TYPE = "type";
+        String NAME_EXTRA = "name_extra";
+
+    }
+
     public interface named_code_ {
 
         String _ITEM_NAME = "named_code";
@@ -725,6 +768,16 @@ public interface ItemNames {
 
     }
 
+    public interface opt_product_ {
+
+        String _ITEM_NAME = "opt_product";
+        String QTY_OPT = "qty_opt";
+        String PRICE_OPT = "price_opt";
+        String PRICE_OPT_OLD = "price_opt_old";
+        String NEXT_DELIVERY = "next_delivery";
+
+    }
+
     public interface option_ {
 
         String _ITEM_NAME = "option";
@@ -732,12 +785,17 @@ public interface ItemNames {
         String CODE = "code";
         String PRICE = "price";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
         String UNIT = "unit";
         String PRICE_OPT = "price_opt";
         String GROUP = "group";
         String MAX = "max";
         String MANDATORY = "mandatory";
+
+    }
+
+    public interface option_container_ {
+
+        String _ITEM_NAME = "option_container";
 
     }
 
@@ -870,35 +928,39 @@ public interface ItemNames {
         String CODE = "code";
         String PRICE = "price";
         String QTY = "qty";
-        String QTY_OPT = "qty_opt";
         String UNIT = "unit";
-        String TYPE = "type";
-        String NAME_EXTRA = "name_extra";
+        String PRICE_OLD = "price_old";
         String VENDOR = "vendor";
         String VENDOR_CODE = "vendor_code";
-        String OFFER_ID = "offer_id";
-        String AVAILABLE = "available";
-        String CATEGORY_ID = "category_id";
-        String STATUS = "status";
-        String SEARCH = "search";
-        String MIN_QTY = "min_qty";
-        String STEP = "step";
-        String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
-        String EXTRA_XML = "extra_xml";
+        String SEARCH = "search";
         String FILES = "files";
         String TEXT_PICS = "text_pics";
+        String EXTRA_XML = "extra_xml";
+        String EXTRA_INPUT = "extra_input";
+        String GROUP_ID = "group_id";
         String ASSOC_CODE = "assoc_code";
+        String MIN_QTY = "min_qty";
+        String STEP = "step";
+        String SPEC_QTY = "spec_qty";
+        String GALLERY = "gallery";
         String TAG = "tag";
         String MARK = "mark";
         String LABEL = "label";
-        String EXTRA_INPUT = "extra_input";
-        String GALLERY = "gallery";
-        String HAS_LINES = "has_lines";
+        String OFFER_ID = "offer_id";
+        String AVAILABLE = "available";
+        String CATEGORY_ID = "category_id";
+        String URL = "url";
+        String PRICE_RUB = "price_RUB";
+        String PRICE_RUB_OLD = "price_RUB_old";
+        String PRICE_USD = "price_USD";
+        String PRICE_USD_OLD = "price_USD_old";
+        String PRICE_EUR = "price_EUR";
+        String PRICE_EUR_OLD = "price_EUR_old";
 
     }
 
@@ -928,12 +990,27 @@ public interface ItemNames {
 
     }
 
+    public interface product_labels_ {
+
+        String _ITEM_NAME = "product_labels";
+        String TAG = "tag";
+        String MARK = "mark";
+        String LABEL = "label";
+
+    }
+
     public interface product_subscribe_ {
 
         String _ITEM_NAME = "product_subscribe";
         String NAME = "name";
         String STATUS = "status";
         String LINK_NAME = "link_name";
+
+    }
+
+    public interface product_with_params_ {
+
+        String _ITEM_NAME = "product_with_params";
 
     }
 
@@ -977,6 +1054,7 @@ public interface ItemNames {
         String _ITEM_NAME = "section";
         String NAME = "name";
         String ICON = "icon";
+        String HIDE = "hide";
         String SHORT = "short";
         String SHOW_SUBS = "show_subs";
         String SUB_VIEW = "sub_view";
@@ -1021,6 +1099,15 @@ public interface ItemNames {
 
     }
 
+    public interface seo_wrap_ {
+
+        String _ITEM_NAME = "seo_wrap";
+        String MAIN_HOST = "main_host";
+        String PRODUCT_PREFIX = "product_prefix";
+        String PRODUCT_SUFIX = "product_sufix";
+
+    }
+
     public interface simple_gallery_ {
 
         String _ITEM_NAME = "simple_gallery";
@@ -1053,6 +1140,12 @@ public interface ItemNames {
 
     }
 
+    public interface transient_seo_catalog_ {
+
+        String _ITEM_NAME = "transient_seo_catalog";
+
+    }
+
     public interface unmoderated_ {
 
         String _ITEM_NAME = "unmoderated";
@@ -1074,13 +1167,6 @@ public interface ItemNames {
         String TEXT_PIC = "text_pic";
         String EXTRA_STYLE = "extra_style";
         String BODY_CLASS = "body_class";
-
-    }
-
-    public interface url_seo_wrap_ {
-
-        String _ITEM_NAME = "url_seo_wrap";
-        String MAIN_HOST = "main_host";
 
     }
 
@@ -1145,6 +1231,16 @@ public interface ItemNames {
         String _ITEM_NAME = "video";
         String NAME = "name";
         String LINK = "link";
+
+    }
+
+    public interface yandex_product_ {
+
+        String _ITEM_NAME = "yandex_product";
+        String OFFER_ID = "offer_id";
+        String AVAILABLE = "available";
+        String CATEGORY_ID = "category_id";
+        String URL = "url";
 
     }
 

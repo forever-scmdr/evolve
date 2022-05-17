@@ -12,13 +12,13 @@ public interface TableDataSource extends Closeable {
 
 	Double getDoubleValue(int colIndex);
 
-	BigDecimal getCurrencyValue(int colIndex, BigDecimal... defaultVal);
+	BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal... defaultVal);
 
 	String getValue(String colName);
 
 	Double getDoubleValue(String colName);
 
-	BigDecimal getCurrencyValue(String colName, BigDecimal... defaultVal);
+	BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal... defaultVal);
 
 	void iterate(TableDataRowProcessor processor) throws Exception;
 

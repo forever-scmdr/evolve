@@ -9,7 +9,7 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
-		<div class="block catalog-block ptb">
+		<div class="block catalog-block pb">
 			<div class="{'container'[$need_container]}">
 				<div class="title title_2 ptb"><xsl:value-of select="header" /></div>
 				<div class="catalog-items">
@@ -121,7 +121,7 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
-		<div class="{'container '[$need_container]}vl_pos_rel ptb">
+		<div class="{'container '[$need_container]}vl_pos_rel pb">
 			<h2 class="ptb banner-numbers ">
 				<b class="color2"><xsl:value-of select="header"/></b>
 				<xsl:if test="subheader != ''">
@@ -169,7 +169,7 @@
 	<xsl:template match="custom_block" mode="carousel-1">
 		<div  class="vl_c_item" style="{if(image_bgr != '') then concat('background-image: url(',@path,'/', image_bgr,'); background-size: contain; background-position: center; background-repeat: no-repeat;') else ''}">
 			<xsl:if test="link != ''">
-				<a href="{link}" style="position:absolute; top:0; bottom:0; left:0; right:0;"></a>
+				<a href="{link}" class="cover-link"></a>
 			</xsl:if>
 			<div class="vl_c_img">
 				<xsl:if test="image != ''">

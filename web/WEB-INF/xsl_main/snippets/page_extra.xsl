@@ -15,6 +15,7 @@
 		<xsl:variable name="type_id" select="1828"/>
 		<xsl:variable name="center" select="concat('[',center,']')"/>
 		<xsl:variable name="zoom" select="zoom"/>
+		<xsl:variable name="map_id" select="concat('map-', @id)"/>
 
 		<h2><xsl:value-of select="name"/></h2>
 
@@ -23,13 +24,13 @@
 				<a class="region-link active" data-center="{center}" data-zoom="{$zoom}">Все</a>
 				<xsl:for-each select="region">
 					<span style="padding: 0 0.7rem;">|</span>
-					<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
+					<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}" id="region-link-{@id}">
 						<xsl:value-of select="name" />
 					</a>
 				</xsl:for-each>
 			</div>
 		</xsl:if>
-		<div id="map-{@id}" style="width:100%; height:500px;">
+		<div id="{$map_id}" style="width:100%; height:500px;">
 			<script type="text/javascript">
 
 				function parseCoordinates(c){

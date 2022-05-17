@@ -31,18 +31,18 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
-		<xsl:if test="f:num($p/hide_subs) != 1 and ($p/custom_page | $p/news)">
+		<xsl:if test="f:num($p/hide_subs) != 1 and ($p/custom_page | $p/news | $p/page_link)">
 			<div class="info-items info-items_section">
 				<div class="info-items__wrap">
-					<xsl:for-each select="$p/custom_page | $p/news">
+					<xsl:for-each select="$p/custom_page | $p/news |$p/page_link">
 						<div class="info-item card">
 							<div class="info-item__image img"><img src="{@path}{main_pic}" alt="" /></div>
 							<div class="info-item__info">
 								<div class="info-item__date"><xsl:value-of select="date"/></div>
-								<a href="{show_page}" class="info-item__title"><xsl:value-of select="header"/></a>
+								<span class="info-item__title"><xsl:value-of select="header | name"/></span>
 								<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
 							</div>
-							<a href="{show_page}" class="info-item__link"></a>
+							<a href="{if(name() != 'page_link') then show_page else link}" class="info-item__link"></a>
 						</div>
 					</xsl:for-each>
 				</div>
@@ -82,22 +82,22 @@
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_PAGES">
 		<div class="side-menu">
 			<!-- чтобы выводить все разделы надо удалить [.//@id = $p/@id] -->
-			<xsl:for-each select="page/custom_pages/custom_page[.//@id = $p/@id]/custom_page">
+			<xsl:for-each select="page/custom_pages/custom_page[.//@id = $p/@id]/custom_page | page/custom_pages/custom_page[.//@id = $p/@id]/page_link">
 				<xsl:variable name="l1_active" select="@id = $p/@id"/>
 				<div class="side-menu__item side-menu__item_level_1">
-					<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l1_active]}"><xsl:value-of select="header"/></a>
+					<a href="{if(name() != 'page_link') then show_page else link}" class="side-menu__link{' side-menu__link_active'[$l1_active]}"><xsl:value-of select="header | name"/></a>
 				</div>
 				<xsl:if test=".//@id = $p/@id">
-					<xsl:for-each select="custom_page | news">
+					<xsl:for-each select="custom_page | news | page_link">
 						<xsl:variable name="l2_active" select="@id = $p/@id"/>
 						<div class="side-menu__item side-menu__item_level_2">
-							<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="header"/></a>
+							<a href="{if(name() != 'page_link') then show_page else link}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="header | name"/></a>
 						</div>
 						<xsl:if test=".//@id = $p/@id">
-							<xsl:for-each select="custom_page | news">
+							<xsl:for-each select="custom_page | news | page_link">
 								<xsl:variable name="l3_active" select="@id = $p/@id"/>
 								<div class="side-menu__item side-menu__item_level_3">
-									<a href="{show_page}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="header"/></a>
+									<a href="{if(name() != 'page_link') then show_page else link}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="header | name"/></a>
 								</div>
 							</xsl:for-each>
 						</xsl:if>

@@ -22,16 +22,16 @@
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="card device">
-			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else url"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('storepics/', $main_pic) else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
-				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
+<!--				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">-->
+					<a href="{concat('storepics/', url)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
 						<i class="fas fa-search-plus"></i>
 					</a>
-				</xsl:if>
+<!--				</xsl:if>-->
 			</div>
 
 			<!-- device image -->
@@ -118,18 +118,18 @@
 
 
 		<div class="device device_row">
-			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else url"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('storepics/', $main_pic) else 'img/no_image.png'"/>
 
 			<div class="device__column">
 
 				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 				<div style="display: none">
-					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
-						<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+<!--					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">-->
+						<a href="{concat('storepics/', url)}" class="magnific_popup-image zoom-icon" title="{name}">
 							<i class="fas fa-search-plus"></i>
 						</a>
-					</xsl:if>
+<!--					</xsl:if>-->
 				</div>
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->

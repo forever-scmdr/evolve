@@ -13,6 +13,7 @@ public class Section
     public final static String _NAME = "section";
     public final static String NAME = "name";
     public final static String ICON = "icon";
+    public final static String HIDE = "hide";
     public final static String SHORT = "short";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
@@ -71,6 +72,28 @@ public class Section
 
     public boolean contains_icon(File value) {
         return containsValue("icon", value);
+    }
+
+    public void set_hide(Byte value) {
+        setValue("hide", value);
+    }
+
+    public void setUI_hide(String value)
+        throws Exception
+    {
+        setValueUI("hide", value);
+    }
+
+    public Byte get_hide() {
+        return getByteValue("hide");
+    }
+
+    public Byte getDefault_hide(Byte defaultVal) {
+        return getByteValue("hide", defaultVal);
+    }
+
+    public boolean contains_hide(Byte value) {
+        return containsValue("hide", value);
     }
 
     public void set_short(String value) {
