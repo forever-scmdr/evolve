@@ -10,6 +10,7 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
+
 	<xsl:template name="CONTENT">
 		<div class="cart-list">
 			<xsl:choose>
