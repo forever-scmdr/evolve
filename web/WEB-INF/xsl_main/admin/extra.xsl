@@ -61,6 +61,7 @@
 					<li><a href="create_excel_pricelist/?action=start&amp;aux_params=yes">Экспорт каталога Excel</a></li>
 					<li><a href="section_list">Экспорт разделов в Excel</a></li>
 					<li><a href="update_prices_from_excel/?action=start">Импорт прайса Excel</a></li>
+					<li><a href="import_excel/?action=start">Импорт файлов продукции ТермоБрест</a></li>
 					<!-- <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li> -->
 				</ul>
 

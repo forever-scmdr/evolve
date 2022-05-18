@@ -710,7 +710,7 @@
 	</item>
 
 
-	<item name="domain_dependent_display" virtual="true" ag-id="1831" ag-hash="1003778247">
+	<item name="domain_dependent_display" virtual="true" ag-id="2880" ag-hash="1003778247">
 		<parameter name="type" type="string" caption="Тип блока" domain="custom_block_type"/>
 	</item>
 

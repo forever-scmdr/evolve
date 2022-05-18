@@ -2,6 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -265,6 +266,11 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 				}
 			};
 			data.iterate(proc);
+
+			info.pushLog("Создание товаров завершено. Создание фильтров");
+			info.setOperation("Создание фильтров");
+			info.setProcessed(0);
+			executeOtherIntegration(new CreateParametersAndFiltersCommand(this));
 		}
 
 	}

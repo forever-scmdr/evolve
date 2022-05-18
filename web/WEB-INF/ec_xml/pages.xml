@@ -1594,7 +1594,7 @@
         <request>
             <var name="action"/>
         </request>
-        <command class="extra.IntegrateParsedMeandr2" clear-cache="yes">
+        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
             <result name="complete" type="xml"/>
         </command>
     </page>
