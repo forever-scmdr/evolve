@@ -167,15 +167,29 @@
 			<list item="main_slider_frame"/>
 			<single item="seo" assoc="seo"/>
 			<single item="seo"/>
-			<list item="custom_block">
-				<list item="custom_block"/>
+			<tree item="page_extra">
+				<list item="page_extra_part"/>
+				<list item="point"/>
+				<list item="region">
+					<list item="point"/>
+				</list>
 				<list item="product" id="prod" assoc="general">
 					<link name="show_product" target="product">
 						<var name="prod" ref="prod" style="key"/>
 					</link>
 					<include name="PRODUCT_PARAMS_LINKS"/>
 				</list>
-			</list>
+				<list item="section" assoc="general" id="block_sec">
+					<link name="show_products" target="section" type="exclusive">
+						<var name="sec" ref="block_sec" style="keypath"/>
+					</link>
+				</list>
+				<list item="custom_page" assoc="general" id="block_page">
+					<link name="show_page" target="page" type="exclusive">
+						<var name="p" ref="block_page" style="keypath"/>
+					</link>
+				</list>
+			</tree>
 		</single>
 		<list item="banner_section" id="banner_section" cacheable="true">
 			<list item="banner"/>
@@ -689,13 +703,18 @@
 					<list item="point"/>
 				</list>
 				<list item="product" id="prod" assoc="general">
-					<link name="show_product" target="product">
-						<var name="prod" ref="prod" style="key"/>
+					<link name="show_product" target="product" type="exclusive">
+						<var name="prod" ref="prod" style="keypath"/>
 					</link>
 					<include name="PRODUCT_PARAMS_LINKS"/>
 				</list>
+				<list item="section" id="ass_sec" assoc="general">
+					<link name="show_products" target="section" type="exclusive">
+						<var name="prod" ref="ass_sec" style="keypath"/>
+					</link>
+				</list>
 			</tree>
-			<list item="custom_page" id="child">
+			<list item="menu_item" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="key" name="p"/>
 				</link>
@@ -793,6 +812,24 @@
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
 			<var name="source_page" value="feedback_ajax"/>
+		</link>
+	</page>
+
+	<page name="callback_ajax" template="callback_ajax">
+		<request>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<new item="generic_form" id="email_form">
+			<extra-input name="name" form="feedback"/>
+			<extra-input name="phone" form="feedback"/>
+		</new>
+		<link name="submit_link" target="feedback_command" type="itemform">
+			<var name="form_name" value="callback"/>
+			<var name="source_page" value="callback_ajax"/>
+			<var name="required" value="phone, name"/>
+			<var name="template" value="callback_email"/>
+			<var name="topic" value="Заказ звонка"/>
 		</link>
 	</page>
 
@@ -912,6 +949,12 @@
 		</new>
 	</page>
 
+	<page name="callback_email" template="callback_email">
+		<new item="generic_form" id="email_form">
+			<extra-input name="name" form="callback"/>
+			<extra-input name="phone" form="callback"/>
+		</new>
+	</page>
 
 
 
