@@ -333,7 +333,8 @@ class AdminLoader implements DBConstants.ItemTbl, DBConstants.ItemParent, DBCons
 			return new ArrayList<>(0);
 		TemplateQuery query = new TemplateQuery("Load accessors by ids");
 		query.SELECT(I_ID, I_KEY, I_T_KEY, I_GROUP, I_USER, I_STATUS, I_TYPE_ID, I_PROTECTED)
-				.FROM(ITEM_TBL).WHERE().col(I_KEY, " LIKE ").string("%" + key + "%");
+				.FROM(ITEM_TBL).WHERE().col(I_KEY, " LIKE ").string("%" + key + "%")
+				.OR().col(I_T_KEY, " LIKE ").string("%" + key + "%");
 		return loadAccessorsByQuery(query, false);
 	}
 	/**

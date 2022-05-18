@@ -73,7 +73,7 @@
 	<xsl:template match="custom_page" mode="menu_first">
 		<xsl:variable name="key" select="@key"/>
 		<!-- без подразделов -->
-		<xsl:if test="not(custom_page)">
+		<xsl:if test="not(custom_page | page_link) or f:num(hide_popup_menu) = 1">
 			<div class="main-menu__item {'active'[$active_menu_item = $key]}">
 				<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
@@ -81,7 +81,7 @@
 			</div>
 		</xsl:if>
 		<!-- с подразделами -->
-		<xsl:if test="custom_page or page_link">
+		<xsl:if test="(custom_page | page_link) and f:num(hide_popup_menu) = 0">
 			<div class="main-menu__item" style="position: relative;">
 				<a href="#ts_{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>

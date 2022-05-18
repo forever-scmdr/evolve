@@ -18,12 +18,12 @@
 </head>
 <body>
 <div class="text-container">
-	<p style="font-style: italic;">Запрос прайса с сайта</p>
+	<p style="font-style: italic;">Сообщение с сайта</p>
 	<p></p>
 	<p>Имя: <xsl:value-of select="$inp/name"/></p>
+	<p>Телефон: <xsl:value-of select="$inp/phone"/></p>
 	<p>Email: <xsl:value-of select="$inp/email"/></p>
-	<p></p>
-	<p><b>Данные для входа</b></p>
+	<p><xsl:value-of select="$inp/message"/></p>
 </div>
 </body>
 </html>
