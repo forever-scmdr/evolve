@@ -105,6 +105,19 @@
 							}
 					});
 				}
+				<xsl:if test="f:num(show_places) = 1">
+
+				var pointLinks = document.getElementsByClassName('point-pointer');
+				for(i =0; i &lt; pointLinks.length; i++){
+					ymaps.domEvent.manager.group(pointLinks[i]).add(events, function (event){
+						var a = event.get("target");
+						var coordinates = parseCoordinates(a.getAttribute("data-coordinates"));
+						yMap.setZoom(13.5);
+						yMap.panTo(coordinates);
+
+					});
+				}
+				</xsl:if>
 				objectManager.add(placemarks);
 				yMap.geoObjects.add(objectManager);
 
@@ -126,6 +139,58 @@
 				}
 				};
 			</script>
+		</div>
+
+		<xsl:if test="f:num(show_places) = 1">
+			<xsl:if test="point">
+				<div class="map-points-list">
+					<xsl:for-each select="point">
+						<xsl:apply-templates select=".">
+							<xsl:with-param name="map_id" select="$map_id" />
+						</xsl:apply-templates>
+					</xsl:for-each>
+				</div>
+			</xsl:if>
+				<xsl:for-each select="region">
+					<div class="title title_2">
+						<a onclick="$(document).scrollTop($('#{$map_id}').offset().top - 100);" class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
+							<xsl:value-of select="name"/>
+						</a>
+					</div>
+					<div class="map-points-list">
+						<xsl:apply-templates select="point">
+							<xsl:with-param name="map_id" select="$map_id" />
+						</xsl:apply-templates>
+					</div>
+				</xsl:for-each>
+
+		</xsl:if>
+
+	</xsl:template>
+
+	<xsl:template match="point">
+
+		<xsl:param name="map_id"/>
+
+		<div class="point">
+			<xsl:if test="coords != ''">
+				<a class="point-pointer" data-coordinates="{coords}" onclick="$(document).scrollTop($('#{$map_id}').offset().top - 100);">
+					<xsl:value-of select="name"/>
+				</a>
+			</xsl:if>
+			<xsl:if test="not(coords != '')">
+				<a><xsl:value-of select="name"/></a>
+			</xsl:if>
+			<xsl:if test="info | address" >
+				<div class="text">
+					<xsl:if test="info" >
+						<p><xsl:value-of select="info"/></p>
+					</xsl:if>
+					<xsl:if test="address" >
+						<p><xsl:value-of select="address"/></p>
+					</xsl:if>
+				</div>
+			</xsl:if>
 		</div>
 	</xsl:template>
 

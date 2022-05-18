@@ -261,6 +261,63 @@
 
 	<!-- END Цитата -->
 
+	<!-- шахматный порядок -->
+	<xsl:template match="custom_block[type='шахматный порядок']">
+		<xsl:variable name="children" select="custom_block | section | custom_page"/>
+
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_top" />
+		</xsl:call-template>
+
+
+		<div class="{'container'[$need_container]}">
+			<div class="block chess-block ptb">
+				<xsl:if test="(text | header) != ''">
+					<div class="text">
+						<h2>
+							<xsl:value-of select="header"/>
+						</h2>
+						<xsl:value-of select="text" disable-output-escaping="yes"/>
+					</div>
+				</xsl:if>
+				<xsl:for-each select="$children">
+
+						<xsl:variable name="first" select="position() = 1"/>
+						<xsl:variable name="odd" select="position() mod 2 = 1"/>
+
+						<xsl:variable name="name" select="name()"/>
+						<xsl:variable name="header" select="if($name != 'section') then header else name"/>
+						<xsl:variable name="pic" select="if($name = 'custom_block') then concat(@path, image) else concat(@path, main_pic)"/>
+						<xsl:variable name="text" select="if($name = 'custom_block') then text else short"/>
+
+						<div class="chess-row{if($odd) then ' odd' else ' even'}">
+							<xsl:if test="$odd">
+								<div class="chess-pic" style="background-image: url('{$pic}');">
+									<!-- <img src="{$pic}"/> -->
+								</div>
+							</xsl:if>
+							<div class="text chess-text" style="{'padding-top:0'[$first]}">
+								<h2>
+									<xsl:value-of select="$header"/>
+								</h2>
+								<xsl:value-of select="text" disable-output-escaping="yes"/>
+							</div>
+							<xsl:if test="not($odd)">
+								<div class="chess-pic" style="background-image: url('{$pic}');">
+									<!-- <img src="{$pic}"/> -->
+								</div>
+							</xsl:if>
+						</div>
+				</xsl:for-each>
+			</div>
+		</div>
+
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_bottom" />
+		</xsl:call-template>
+
+	</xsl:template>
+	<!-- END шахматный порядок -->
 
 	<!-- в одну колонку -->
 	<xsl:template match="custom_block[type='в одну колонку']">
@@ -274,7 +331,7 @@
 		<xsl:variable name="odd_style" select="odd_style"/>
 
 		<div class="{'container'[$need_container]}">
-			<div class="block onecol-block">
+			<div class="block onecol-block pt">
 
 				<xsl:if test="(text | header) != ''">
 					<div class="text">
@@ -349,14 +406,14 @@
 	<!-- END в одну колонку -->
 
 
-	<xsl:template match="custom_block[type='в 4 колонки']">
+	<xsl:template match="custom_block[type='в 4 колонки' or type='в 5 колонок']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
 		<div class="block sections-block ptb">
 			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
-					<div class="sections-block_wrap">
+					<div class="sections-block_wrap{if(type='в 4 колонки') then '-4' else '-5'}">
 						<xsl:for-each select="custom_block | section | custom_page">
 							
 							<xsl:variable name="name" select="name()"/>
@@ -407,7 +464,7 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="custom_block[type='УТП']">
+	<xsl:template match="custom_block[type='Преимущества']">
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
@@ -452,6 +509,9 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
+		<xsl:if test="f:num(divider_top) = 1">
+			<div class="pb"></div>
+		</xsl:if>
 		<div class="block gifts-block ptb">
 			<div class="{'container'[$need_container]}">
 				<div class="gifts-block__wrap">
@@ -465,6 +525,9 @@
 				</div>
 			</div>
 		</div>
+		<xsl:if test="f:num(divider_bottom) = 1">
+			<div class="pb"></div>
+		</xsl:if>
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_bottom" />
 		</xsl:call-template>
