@@ -636,6 +636,7 @@
 
 
 	<item name="map_part" caption="Карта" super="page_extra" ag-id="1828" ag-hash="178942198" >
+		<parameter name="show_places" type="byte" domain="0-1" caption="Показать список объектов" />
 		<parameter name="center" type="string" caption="Координаты"/>
 		<parameter name="zoom" type="byte" caption="Масштаб"/>
 		<child item="point" inline="true"/>
@@ -730,7 +731,7 @@
 		<child item="main_promo_bottom" inline="true"/>
 		<child item="main_slider_frame" inline="true"/>
 		<child item="banner_section"/>
-		<child item="custom_block" />
+		<child item="page_extra" />
 	</item>
 
 	<!--/////////////                                                                      ////////////-->
