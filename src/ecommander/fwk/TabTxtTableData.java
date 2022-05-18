@@ -211,7 +211,7 @@ public class TabTxtTableData implements TableDataSource {
 
 	@Override
 	public int getRowNum() {
-		return 0;
+		return currentRowNum;
 	}
 
 	@Override
