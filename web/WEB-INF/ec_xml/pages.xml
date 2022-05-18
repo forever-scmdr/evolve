@@ -528,6 +528,18 @@
 	</page>
 
 
+	<page name="search_mobilife">
+		<request>
+			<var name="q"/>
+			<var name="dir" value="integrate"/>
+		</request>
+		<command class="extra.SearchInFileMobilife" tag="mobilife">
+			<result type="xml" name="xml"/>
+		</command>
+		<include name="COMMON"/>
+	</page>
+
+
 
 	<page name="product" template="product" cacheable="true">
 		<request>
