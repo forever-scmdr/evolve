@@ -19,7 +19,7 @@ import java.util.TreeSet;
 /**
  * Created by E on 14/1/2019.
  */
-public class TabTxtTableData implements TableDataSource {
+public class CharSeparatedTxtTableData implements TableDataSource {
 
 	public static final String UTF8_BOM = "\uFEFF";
 
@@ -34,39 +34,43 @@ public class TabTxtTableData implements TableDataSource {
 	private boolean isCsv = false;
 	private char SEPARATOR_CHAR = '\t';
 
-	public TabTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
-		this.file = new File(fileName);
-		this.fileCharset = charset;
-		init(mandatoryCols);
+	public CharSeparatedTxtTableData(String fileName, Charset charset, String... mandatoryCols) {
+		File f = new File(fileName);
+		populateAndInit(f,charset,'\t', mandatoryCols);
 	}
 
-	public TabTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
-		this.file = new File(fileName);
-		this.fileCharset = charset;
-		this.isCsv = isCsv;
-		if (isCsv)
-			SEPARATOR_CHAR = ';';
-		init(mandatoryCols);
+	public CharSeparatedTxtTableData(String fileName, Charset charset, boolean isCsv, String... mandatoryCols) {
+		File f = new File(fileName);
+		char sep = isCsv? ';' : '\t';
+		populateAndInit(f,charset,sep, mandatoryCols);
 	}
 
-	public TabTxtTableData(File file, Charset charset, boolean isCsv, String... mandatoryCols) {
+	public CharSeparatedTxtTableData(String fileName, Charset charset, char separator, String... mandatoryCols){
+		File f = new File(fileName);
+		populateAndInit(f,charset,separator, mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(File file, Charset charset, String... mandatoryCols) {
+		populateAndInit(file,charset,'\t', mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
+		File f = path.toFile();
+		populateAndInit(file,charset,'\t', mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(Path path, Charset charset, char separator, String... mandatoryCols) {
+		File f = path.toFile();
+		populateAndInit(file,charset,separator, mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(File file, Charset charset, char separator, String... mandatoryCols){
+		populateAndInit(file, charset, separator, mandatoryCols);
+	}
+	private void populateAndInit(File file, Charset charset, char separator, String... mandatoryCols){
 		this.file = file;
 		this.fileCharset = charset;
-		this.isCsv = isCsv;
-		if (isCsv)
-			SEPARATOR_CHAR = ';';
-		init(mandatoryCols);
-	}
-
-	public TabTxtTableData(File file, Charset charset, String... mandatoryCols) {
-		this.file = file;
-		this.fileCharset = charset;
-		init(mandatoryCols);
-	}
-
-	public TabTxtTableData(Path path, Charset charset, String... mandatoryCols) {
-		this.file = path.toFile();
-		this.fileCharset = charset;
+		SEPARATOR_CHAR = separator;
 		init(mandatoryCols);
 	}
 
@@ -145,9 +149,14 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal...defaultVal) {
+	@Override
+	public BigDecimal getDecimalValue(int colIndex, int digitsAfterDot, BigDecimal... defaultVal) {
+		return null;
+	}
+
+	public final BigDecimal getCurrencyValue(int colIndex, BigDecimal...defaultVal) {
 		String val = getValue(colIndex);
-		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
@@ -166,9 +175,14 @@ public class TabTxtTableData implements TableDataSource {
 		return DoubleDataType.parse(val);
 	}
 
-	public final BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal...defaultVal) {
+	@Override
+	public BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal... defaultVal) {
+		return null;
+	}
+
+	public final BigDecimal getCurrencyValue(String colName, BigDecimal...defaultVal) {
 		String val = getValue(colName);
-		BigDecimal bd = DecimalDataType.parse(val, digitsAfterDot);
+		BigDecimal bd = DecimalDataType.parse(val, DecimalDataType.CURRENCY);
 		if (bd == null) {
 			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
 		}
