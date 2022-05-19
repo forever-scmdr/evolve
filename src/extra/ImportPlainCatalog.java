@@ -44,8 +44,8 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String QTY_HEADER = "Свободное количество";    // +
 	private static final String VENDOR_HEADER = "Производитель";        // +
 	private static final String UNIT_HEADER = "Ед. изм.";               // +
-	private static final String UNIT_EXTRA_HEADER = "Норма упаковки";   // +
-	private static final String INTERVAL_HEADER = "Интервал1";        // +
+	private static final String MIN_QTY_HEADER = "Норма упаковки";   // +
+	private static final String STEP_HEADER = "Интервал1";        // +
 	private static final String PRICE_HEADER = "Цена1($ с НДС)";        // +
 	private static final String STORE_HEADER = "Склад";                 // +
 	private static final String DELAY_MOSCOW_HEADER = "Срок доставки при отгрузке из Москвы (дн.)";     // +
@@ -196,20 +196,24 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							if (StringUtils.equalsIgnoreCase(prod.get_store(), "Москва")) {
 								prod.set_next_delivery(src.getValue(DELAY_MOSCOW_HEADER));
 							}
-							String boxQty = src.getValue(UNIT_EXTRA_HEADER);
-							if (DoubleDataType.parse(boxQty) > 0.01) {
-								prod.set_unit(src.getValue("упк(" + boxQty + ")"));
+							String minQtyStr = src.getValue(MIN_QTY_HEADER);
+							double minQty = DoubleDataType.parse(minQtyStr);
+							if (minQty > 0.01) {
+								prod.set_unit(src.getValue("упк(" + minQty + ")"));
 							}
+							Double step = DoubleDataType.parse(src.getValue(STEP_HEADER));
 							prod.set_qty(src.getDoubleValue(QTY_HEADER));
 							prod.set_is_service((byte) 0);
 							prod.set_available((byte) -1);
-							prod.set_min_qty((double) 1);
+							prod.set_min_qty(minQty > 0.01 ? minQty : 1);
+							prod.set_step(step == null || step < 0.01 ? 1 : step);
 
 							// цена
 							BigDecimal extraQuotient = BigDecimal.ONE;
 							BigDecimal rawPrice = src.getDecimalValue(PRICE_HEADER, 6, BigDecimal.valueOf(-1));
+
 							if (rawPrice.compareTo(BigDecimal.ZERO) < 0) {
-								rawPrice = src.getDecimalValue(INTERVAL_HEADER, 6, BigDecimal.ZERO);
+								rawPrice = src.getDecimalValue(STEP_HEADER, 6, BigDecimal.ZERO);
 							}
 							if (priceSettings.containsKey(catalogName)) {
 								extraQuotient = priceSettings.get(catalogName).getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
