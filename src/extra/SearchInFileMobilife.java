@@ -21,13 +21,13 @@ public class SearchInFileMobilife extends Command {
 
 		final String query = getVarSingleValueDefault("q", "nonexisting");
 		if (StringUtils.isBlank(query) || query.length() < 7) {
-
+			return getNotFoundResult("incorrect_query");
 		}
 
 		String integrationDirName = getVarSingleValueDefault("dir", INTEGRATION_DIR);
 		File integrationDir = new File(AppContext.getRealPath(integrationDirName));
 		if (!integrationDir.exists()) {
-			return getNotFoundResult("incorrect_query");
+			return getNotFoundResult("not_found");
 		}
 
 		// Найти все файлы

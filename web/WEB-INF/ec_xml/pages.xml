@@ -77,8 +77,8 @@
 		<link name="contacts_link" target="contacts"/>
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
-		<link name="search_link" target="search"/>
-		<link name="search_ajax_link" target="search_ajax"/>
+		<link name="search_link" target="search_mobilife"/>
+		<link name="search_ajax_link" target="search_mobilife_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
@@ -542,7 +542,19 @@
 	</page>
 
 
-	<page name="search_mobilife">
+	<page name="search_mobilife" template="search_mobilife">
+		<request>
+			<var name="q"/>
+			<var name="dir" value="integrate"/>
+		</request>
+		<command class="extra.SearchInFileMobilife" tag="mobilife">
+			<result type="inline_xml" name="xml"/>
+		</command>
+		<include name="COMMON"/>
+	</page>
+
+
+	<page name="search_mobilife_ajax">
 		<request>
 			<var name="q"/>
 			<var name="dir" value="integrate"/>
@@ -552,7 +564,6 @@
 		</command>
 		<include name="COMMON"/>
 	</page>
-
 
 
 	<page name="product" template="product" cacheable="true">
