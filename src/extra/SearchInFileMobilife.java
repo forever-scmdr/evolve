@@ -31,7 +31,7 @@ public class SearchInFileMobilife extends Command {
 		}
 
 		// Найти все файлы
-		Collection<File> files = FileUtils.listFiles(integrationDir, null, true);
+		Collection<File> files = FileUtils.listFiles(integrationDir, new String[]{"txt"}, true);
 		if (files.isEmpty()) {
 			return getNotFoundResult("not_found");
 		}
