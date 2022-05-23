@@ -1310,6 +1310,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 			try {
 				sendEmail(emails, regularTopic, regularLink);
+				commitCommandUnits();
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1330,6 +1331,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 			try {
 				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_JUR).trim()), customTopic, customLink);
+				commitCommandUnits();
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1439,6 +1441,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 			try {
 				sendEmail(emails, regularTopic, regularLink);
+				commitCommandUnits();
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
@@ -1459,6 +1462,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 
 			try {
 				sendEmail(Arrays.asList(customerEmail.trim(), getVarSingleValue(/*EMAIL_CUSTOM*/EMAIL_JUR).trim()), customTopic, customLink);
+				commitCommandUnits();
 			} catch (Exception e) {
 				return getEmailSendingErrorResult(e);
 			}
