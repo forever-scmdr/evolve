@@ -36,6 +36,8 @@ public interface IConst {
 	String USD_ELEMENT = "usd";
 	String EUR_ELEMENT = "eur";
 	String RUB_ELEMENT = "rub";
+	String MIN_ORDER_ELEMENT = "min_order";
+	String STEP_ORDER_ELEMENT = "step_order";
 	
 	/**
 	 * Атрибуты элементов
