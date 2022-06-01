@@ -2,9 +2,11 @@ package ecommander.controllers;
 
 import ecommander.fwk.CodeGenerator;
 import ecommander.fwk.MessageError;
+import ecommander.fwk.WebClient;
 import ecommander.model.DataModelBuilder;
 import ecommander.pages.PageModelBuilder;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +24,8 @@ public class MetaServlet extends BasicServlet {
 	public static final String LINK_PARAMETER_NAME = "q";
 	public static final String ACTION_UPDATE_MODEL = "update_model";
 	public static final String ACTION_FORCE_MODEL = "force_model";
+	public static final String ACTION_PROXY = "proxy";
+	public static final String URL = "url";
 	public static final String REINDEX = "reindex";
 	//public static final String MIGRATE_ITEMS = "migrate_items";
 	//public static final String IMPORT_ITEMS = "import_items";
@@ -39,6 +43,7 @@ public class MetaServlet extends BasicServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter(LINK_PARAMETER_NAME);
+		String responseStr = SUCCESS;
 		try {
 			if (action.equalsIgnoreCase(REINDEX)) {
 				StartController.getSingleton().start(getServletContext());
@@ -64,9 +69,12 @@ public class MetaServlet extends BasicServlet {
 					throw new MessageError("Force create model not confirmed", "Not confirmed");
 				}
 				CodeGenerator.createJavaConstants();
+			} else if (StringUtils.equalsIgnoreCase(action, ACTION_PROXY)) {
+				String url = request.getParameter(URL);
+				responseStr = WebClient.getString(url);
 			}
 			response.setContentType("text/html");
-			response.getOutputStream().write(SUCCESS.getBytes(StandardCharsets.UTF_8));
+			response.getOutputStream().write(responseStr.getBytes(StandardCharsets.UTF_8));
 			response.getOutputStream().flush();
 		} catch (Exception e) {
 			handleError(request, response, e);

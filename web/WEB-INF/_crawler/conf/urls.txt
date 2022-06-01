@@ -6,12 +6,14 @@
 # Initial urls
 #
 
-https://meandr-shop.ru
+https://www.digikey.com
 
 
 #
 #  Pages to parse
 #
 
-https:\/\/meandr-shop\.ru[^?]*$  product.xsl     https://meandr-shop.ru/avtomaticheskiy-vvod-rezerva-mavr-3-1m-uhl4/
+https:\/\/www\.digikey\.com.*\/products\/filter\/.*$    -   https://www.digikey.com/en/products/filter/cable-and-hose-carriers-drag-chains/1014
+https:\/\/www\.digikey\.com.*\/products\/category\/.*$  -   https://www.digikey.com/en/products/category/boxes-enclosures-racks/27
+https:\/\/www\.digikey\.com.*\/products\/detail\/.*$  product.xsl    https://www.digikey.com/en/products/detail/vector-electronics/VME64E02P01/6819140
 

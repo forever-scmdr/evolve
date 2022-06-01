@@ -171,6 +171,7 @@ import net.sf.saxon.TransformerFactoryImpl;
  */
 public class CrawlerController {
 
+
 	public static final String ID = "id";
 	public static final String URL = "url";
 	public static final String H_PARENT = "h_parent"; // hierarchy parent
@@ -294,18 +295,7 @@ public class CrawlerController {
 		info = new IntegrateBase.Info();
 
 		// Список прокси серверов
-		proxies = new LinkedList<>();
-		String proxyFileName = AppContext.getRealPath(AppContext.getProperty(PROXIES, null));
-		if (new File(proxyFileName).exists()) {
-			try(BufferedReader br = new BufferedReader(new FileReader(new File(proxyFileName)))) {
-			    for(String line; (line = br.readLine()) != null; ) {
-			        if (!StringUtils.isBlank(line))
-			        	proxies.add(line);
-			    }
-			} catch (Exception e) {
-				throw new Exception("Can not read proxies list", e);
-			}
-		}
+		reloadProxyList();
 
 		// Начальные урлы и список стилей для урлов
 		urlStyles = new LinkedHashMap<>();
@@ -364,6 +354,58 @@ public class CrawlerController {
 		info.pushLog("Output directories created");
 		info.limitLog(1000);
 	}
+
+	/**
+	 * Загрузить список прокси серверов
+	 */
+	private void reloadProxyList() throws Exception {
+		proxies = new LinkedList<>();
+		String proxyFileName = AppContext.getRealPath(AppContext.getProperty(PROXIES, null));
+		if (new File(proxyFileName).exists()) {
+			try(BufferedReader br = new BufferedReader(new FileReader(new File(proxyFileName)))) {
+				for(String line; (line = br.readLine()) != null; ) {
+					if (!StringUtils.isBlank(line))
+						proxies.add(line);
+				}
+			} catch (Exception e) {
+				throw new Exception("Can not read proxies list", e);
+			}
+		} else {
+			// Загрузить список прокси с сайта https://openproxy.space/ru/list/http
+			String html = WebClient.getCleanHtml("http://test.must.by/meta?q=proxy&url=https://openproxy.space/ru/list/http");
+			if (StringUtils.isBlank(html))
+				return;
+			Document jsoupDoc = Jsoup.parse(html);
+			if (jsoupDoc == null)
+				return;
+			Elements ipRows = jsoupDoc.select("tr.Odd, tr.Even");
+			if (ipRows.isEmpty())
+				return;
+			for (Element ipRow : ipRows) {
+				Elements cells = ipRow.getElementsByTag("td");
+				if (cells.size() < 8)
+					continue;
+				Elements ipScriptEl = cells.get(0).getElementsByTag("script");
+				if (ipScriptEl.isEmpty())
+					continue;
+				String ipScript = ipScriptEl.first().ownText();
+				String ipEncoded = StringUtils.substringBefore(StringUtils.substringAfter(ipScript, "\""), "\"");
+				String ipString = URLDecoder.decode(ipEncoded, "utf-8");
+				String ip = StringUtils.substringBefore(StringUtils.substringAfter(ipString, ">"), "<");
+				if (StringUtils.isBlank(ip) || !ip.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))
+					continue;
+				String port = cells.get(1).ownText();
+				String protocol = cells.get(2).ownText();
+				String country = cells.get(4).text();
+				String onlinePercent = cells.get(7).ownText();
+				if (StringUtils.containsIgnoreCase(country, "Росси") || StringUtils.containsIgnoreCase(country, "Беларусь"))
+					continue;
+				proxies.add(ip + ":" + port);
+			}
+		}
+	}
+
+
 	/**
 	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
 	 * @param crawlerClass
@@ -469,30 +511,38 @@ public class CrawlerController {
 		currentProxyUrlsCount++;
 		// Проверка, нужно ли менять прокси
 		if (proxies.size() > 0 && urlsPerProxy > 0 && currentProxyUrlsCount >= urlsPerProxy) {
-			// Взять первый прокси из очереди и поместить его в конец
-			String proxy = proxies.pop();
-			proxies.add(proxy);
-			String actualProxy = StringUtils.split(proxy, ' ')[0];
-			String[] parts = StringUtils.split(actualProxy, ':');
-			if (parts.length > 1) {
-				// Изменение настроек контроллера ,создание нового объекта PageFetcher
-				String address = parts[0];
-				int port = Integer.parseInt(parts[1]);
-				CONTROLLER.getPageFetcher().shutDown();
-				CONFIG.setProxyHost(address);
-				CONFIG.setProxyPort(port);
-				if (parts.length == 4) {
-					CONFIG.setProxyUsername(parts[2]);
-					CONFIG.setProxyPassword(parts[3]);
-				}
-				currentProxyUrlsCount = 0;
-				PageFetcher newFetcher = new PageFetcher(CONFIG);
-				CONTROLLER.setPageFetcher(newFetcher);
-				// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
-				crawler.init(crawler.getMyId(), CONTROLLER);
-			}
+			reinitCrawler(crawler);
 		}
 	}
+
+	/**
+	 * Взять новый прокси адрес из списка и пересоздать краулер
+	 */
+	private void reinitCrawler(BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
+		// Взять первый прокси из очереди и поместить его в конец
+		String proxy = proxies.pop();
+		proxies.add(proxy);
+		String actualProxy = StringUtils.split(proxy, ' ')[0];
+		String[] parts = StringUtils.split(actualProxy, ':');
+		if (parts.length > 1) {
+			// Изменение настроек контроллера ,создание нового объекта PageFetcher
+			String address = parts[0];
+			int port = Integer.parseInt(parts[1]);
+			CONTROLLER.getPageFetcher().shutDown();
+			CONFIG.setProxyHost(address);
+			CONFIG.setProxyPort(port);
+			if (parts.length == 4) {
+				CONFIG.setProxyUsername(parts[2]);
+				CONFIG.setProxyPassword(parts[3]);
+			}
+			currentProxyUrlsCount = 0;
+			PageFetcher newFetcher = new PageFetcher(CONFIG);
+			CONTROLLER.setPageFetcher(newFetcher);
+			// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
+			crawler.init(crawler.getMyId(), CONTROLLER);
+		}
+	}
+
 	/**
 	 * Вернуть контроллер
 	 * @return
@@ -1004,6 +1054,21 @@ public class CrawlerController {
 		if (urlModifier != null)
 			urlModifier.modifyUrl(url);
 	}
+
+	/**
+	 * Обарботать ситуацию, когда не возможно подключиться к странице
+	 * @param url
+	 * @param crawler
+	 */
+	void handleNoConnectionError(WebURL url, BasicCrawler crawler) {
+		try {
+			reinitCrawler(crawler);
+		} catch (Exception e) {
+			ServerLogger.error("Can not switch proxy url: " + url.getURL(), e);
+		}
+	}
+
+
 
 	public static void main(String[] args) {
 		System.out.println("https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam="
