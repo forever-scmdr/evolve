@@ -81,7 +81,20 @@ public class WebClient implements Closeable {
 
 
 	private void prepareHeadersAndProxies(HttpRequestBase request, String...proxy) {
-		request.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+		request.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0");
+		request.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+		request.setHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3");
+		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+		request.setHeader("DNT", "1");
+		request.setHeader("Connection", "keep-alive");
+		request.setHeader("Upgrade-Insecure-Requests", "1");
+		request.setHeader("Sec-Fetch-Dest", "document");
+		request.setHeader("Sec-Fetch-Mode", "navigate");
+		request.setHeader("Sec-Fetch-Site", "none");
+		request.setHeader("Sec-Fetch-User", "?1");
+		request.setHeader("Pragma", "no-cache");
+		request.setHeader("Cache-Control", "no-cache");
+
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {
 			HttpHost proxyHost = new HttpHost(proxy[0]);
 			RequestConfig config = RequestConfig.custom().setProxy(proxyHost).build();

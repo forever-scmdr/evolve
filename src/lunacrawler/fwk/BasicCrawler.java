@@ -61,6 +61,18 @@ public abstract class BasicCrawler extends WebCrawler {
 		}
 		urlsToProcess--;
 	}
+
+	@Override
+	protected void onContentFetchError(Page page) {
+		CrawlerController.getSingleton().handleNoConnectionError(page.getWebURL(), this);
+	}
+
+	@Override
+	protected void onUnhandledException(WebURL webUrl, Throwable e) {
+		super.onUnhandledException(webUrl, e);
+		CrawlerController.getSingleton().handleNoConnectionError(webUrl, this);
+	}
+
 	/**
 	 * Обработать УРЛ и вернуть результат парсинга в виде строки
 	 * @param page
