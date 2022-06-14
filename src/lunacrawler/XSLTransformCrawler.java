@@ -1,6 +1,7 @@
 package lunacrawler;
 
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.Strings;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import lunacrawler.fwk.BasicCrawler;
@@ -25,6 +26,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 				url = URLDecoder.decode(url, "UTF-8");
 				HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 				String html = htmlParseData.getHtml();
+				/*
 				HtmlCleaner cleaner = new HtmlCleaner();
 				CleanerProperties props = cleaner.getProperties();
 				props.setTrimAttributeValues(true);
@@ -32,8 +34,8 @@ public class XSLTransformCrawler extends BasicCrawler {
 				props.setOmitComments(true);
 				props.setNamespacesAware(false);
 				props.setOmitDoctypeDeclaration(true);
-				TagNode node = cleaner.clean(html);
-	
+				 */
+				TagNode node = Strings.cleanHtmlNode(html);
 	//			Document doc = Jsoup.parse(html);
 	//			// Удалить все тэги с неймспейсом
 	//			for (Element el : doc.getAllElements()) {
@@ -51,7 +53,7 @@ public class XSLTransformCrawler extends BasicCrawler {
 				
 
 				node.findElementByName("body", false).addAttribute("source", url);
-				return new PrettyXmlSerializer(props).getAsString(node);
+				return new PrettyXmlSerializer(Strings.getHtmlCleanProperties()).getAsString(node);
 			} catch (Exception e) {
 				CrawlerController.getInfo().pushLog("Exception while parsing initial html of " + url, e);
 			}

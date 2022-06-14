@@ -6,14 +6,67 @@
 # Initial urls
 #
 
-https://www.digikey.com
+https://forever.by/digikey/110061361.html
+https://forever.by/digikey/110061362.html
+https://forever.by/digikey/110061363.html
+https://forever.by/digikey/131520-000.html
+https://forever.by/digikey/2302751.html
+
+https://forever.by/digikey/5.0SMDJ14A.html
+https://forever.by/digikey/6AG40210AA110AA0.html
+https://forever.by/digikey/6AG40210AA120BA0.html
+https://forever.by/digikey/6AG40220AA210BA1.html
+https://forever.by/digikey/6AG40220AA210CA1.html
+
+https://forever.by/digikey/6ES79548LE030AA0.html
+https://forever.by/digikey/6ES79548LL030AA0.html
+https://forever.by/digikey/AFPSGR7ENS.html
+https://forever.by/digikey/AFPX-A21.html
+https://forever.by/digikey/AHACABH0-5A.html
+
+https://forever.by/digikey/AHBP06M1-5A.html
+https://forever.by/digikey/ALR-M-480.html
+https://forever.by/digikey/AMI-SC-107-04-BL-SP545.html
+https://forever.by/digikey/APN17SD01.html
+https://forever.by/digikey/AQHV12-01LTG-C.html
+
+https://forever.by/digikey/CB15.html
+https://forever.by/digikey/CP1W-CIF01.html
+https://forever.by/digikey/CX082S082NS.html
+https://forever.by/digikey/CX082S083LM.html
+https://forever.by/digikey/CX082S083LM.html
+
+https://forever.by/digikey/E5DC-SCT1S.html
+https://forever.by/digikey/GMB63H3PC20.html
+https://forever.by/digikey/IL-RMCDE630-120.html
+https://forever.by/digikey/LCM-1C09-ZB.html
+https://forever.by/digikey/LJTICK-CURRENTSHUNT.html
+
+https://forever.by/digikey/LJTICK-DIGITALOUT5V.html
+https://forever.by/digikey/OMI6816B03M7B.html
+https://forever.by/digikey/PGB2010402KRHF.html
+https://forever.by/digikey/PS12DC.html
+https://forever.by/digikey/SMAJ12A.html
+
+https://forever.by/digikey/SMAJ40A.html
+https://forever.by/digikey/SMF16A.html
+https://forever.by/digikey/TPSMD33CA.html
+https://forever.by/digikey/W28-XQ1A-15.html
+https://forever.by/digikey/W51-A121B1-15.html
+
+https://forever.by/digikey/W51-A152A1-15.html
+https://forever.by/digikey/W57-XB7A4A10-10.html
+https://forever.by/digikey/W57-XB7A4A10-20.html
 
 
 #
 #  Pages to parse
 #
 
-https:\/\/www\.digikey\.com.*\/products\/filter\/.*$    -   https://www.digikey.com/en/products/filter/cable-and-hose-carriers-drag-chains/1014
-https:\/\/www\.digikey\.com.*\/products\/category\/.*$  -   https://www.digikey.com/en/products/category/boxes-enclosures-racks/27
-https:\/\/www\.digikey\.com.*\/products\/detail\/.*$  product.xsl    https://www.digikey.com/en/products/detail/vector-electronics/VME64E02P01/6819140
+#https:\/\/www\.digikey\.com.*\/products\/filter\/.*$    -   https://www.digikey.com/en/products/filter/cable-and-hose-carriers-drag-chains/1014
+#https:\/\/www\.digikey\.com.*\/products\/category\/.*$  -   https://www.digikey.com/en/products/category/boxes-enclosures-racks/27
+#https:\/\/www\.digikey\.com.*\/products\/detail\/.*$  product.xsl    https://www.digikey.com/en/products/detail/vector-electronics/VME64E02P01/6819140
 
+
+
+https:\/\/forever\.by.*\/digikey\/.*$   product.xsl    https://forever.by/digikey/CB15.html

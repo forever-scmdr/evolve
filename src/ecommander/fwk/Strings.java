@@ -192,32 +192,50 @@ public class Strings
 		return nf.format(number);
     }
 
-	/**
-	 * Очистить HTML от невалидных частей
-	 * @param html
-	 * @return
-	 */
-    public static String cleanHtml(String html) {
+    public static CleanerProperties getHtmlCleanProperties() {
 	    CleanerProperties props = new CleanerProperties();
 
-		// set some properties to non-default values
+	    // set some properties to non-default values
 	    props.setTranslateSpecialEntities(true);
 	    props.setTransResCharsToNCR(true);
 	    props.setOmitComments(true);
 	    props.setOmitDoctypeDeclaration(true);
 	    props.setOmitCdataOutsideScriptAndStyle(true);
-	    props.setPruneTags("script");
+	    props.setPruneTags("script,style");
 	    props.setNamespacesAware(false);
 	    //props.setDeserializeEntities(true);
 	    //props.setRecognizeUnicodeChars(true);
 	    //props.setTranslateSpecialEntities(true);
 	    //props.setTransSpecialEntitiesToNCR(true);
 	    props.setOmitXmlDeclaration(true);
+	    return props;
+    }
 
+	/**
+	 * Очистить HTML от невалидных частей и вернуть TagNode
+	 * @param html
+	 * @return
+	 */
+	public static TagNode cleanHtmlNode(String html, CleanerProperties... props) {
+		CleanerProperties localProps = null;
+		if (props.length > 0)
+			localProps = props[0];
+		else
+			localProps = getHtmlCleanProperties();
 		// do parsing
-	    TagNode tagNode = new HtmlCleaner(props).clean(html);
+	    return new HtmlCleaner(localProps).clean(html);
+    }
 
-		// serialize to xml file
+
+	/**
+	 * Очистить HTML от невалидных частей
+	 * @param html
+	 * @return
+	 */
+    public static String cleanHtml(String html) {
+	    CleanerProperties props = getHtmlCleanProperties();
+	    TagNode tagNode = cleanHtmlNode(html, props);
+	    // serialize to xml file
 	    return new PrettyXmlSerializer(props).getAsString(tagNode);
 	    //return new PrettyHtmlSerializer(props).getAsString(tagNode);
     }

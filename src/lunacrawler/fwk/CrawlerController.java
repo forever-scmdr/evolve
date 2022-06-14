@@ -1,35 +1,7 @@
 package lunacrawler.fwk;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import ecommander.fwk.*;
-import edu.uci.ics.crawler4j.url.WebURL;
-import lunacrawler.UrlModifier;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
-
 import ecommander.controllers.AppContext;
+import ecommander.fwk.*;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -37,7 +9,35 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
+import edu.uci.ics.crawler4j.url.WebURL;
+import lunacrawler.UrlModifier;
 import net.sf.saxon.TransformerFactoryImpl;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * В стилях самостоятельные сущности должны содержать атрибут ID. По этому ID они будут идентифицироваться на разных страницах
  * одного сайта. Поэтому ID должен получаться как часть URL, ведущего на страницу
@@ -370,39 +370,30 @@ public class CrawlerController {
 			} catch (Exception e) {
 				throw new Exception("Can not read proxies list", e);
 			}
-		} else {
+		}/* else {
 			// Загрузить список прокси с сайта https://openproxy.space/ru/list/http
-			String html = WebClient.getCleanHtml("http://test.must.by/meta?q=proxy&url=https://openproxy.space/ru/list/http");
-			if (StringUtils.isBlank(html))
-				return;
-			Document jsoupDoc = Jsoup.parse(html);
-			if (jsoupDoc == null)
-				return;
-			Elements ipRows = jsoupDoc.select("tr.Odd, tr.Even");
-			if (ipRows.isEmpty())
-				return;
-			for (Element ipRow : ipRows) {
-				Elements cells = ipRow.getElementsByTag("td");
-				if (cells.size() < 8)
-					continue;
-				Elements ipScriptEl = cells.get(0).getElementsByTag("script");
-				if (ipScriptEl.isEmpty())
-					continue;
-				String ipScript = ipScriptEl.first().ownText();
-				String ipEncoded = StringUtils.substringBefore(StringUtils.substringAfter(ipScript, "\""), "\"");
-				String ipString = URLDecoder.decode(ipEncoded, "utf-8");
-				String ip = StringUtils.substringBefore(StringUtils.substringAfter(ipString, ">"), "<");
-				if (StringUtils.isBlank(ip) || !ip.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))
-					continue;
-				String port = cells.get(1).ownText();
-				String protocol = cells.get(2).ownText();
-				String country = cells.get(4).text();
-				String onlinePercent = cells.get(7).ownText();
-				if (StringUtils.containsIgnoreCase(country, "Росси") || StringUtils.containsIgnoreCase(country, "Беларусь"))
-					continue;
-				proxies.add(ip + ":" + port);
+			String html = WebClient.getString("http://test.must.by/meta?q=proxy&url=https://openproxy.space/ru/list/http");
+			String jsonStr = StringUtils.substringAfter(html, "return ");
+			jsonStr = StringUtils.substringBefore(jsonStr, "(true");
+			JSONObject json = new JSONObject(jsonStr);
+			HashSet<String> skipCountries = new HashSet<>();
+			CollectionUtils.addAll(skipCountries, "RU", "BY");
+			try {
+				JSONArray ipObjArray = json.getJSONArray("data").getJSONObject(0).getJSONArray("data");
+				for (int i = 0; i < ipObjArray.length(); i++) {
+					JSONObject ipObject = ipObjArray.getJSONObject(i);
+					String country = ipObject.getString("code");
+					if (!skipCountries.contains(country)) {
+						JSONArray ipArray = ipObject.getJSONArray("items");
+						for (int j = 0; j < ipArray.length(); j++) {
+							proxies.add(ipArray.getString(j));
+						}
+					}
+				}
+			} catch (NullPointerException e) {
+				throw new Exception("IP JSON format is unexpected", e);
 			}
-		}
+		}*/
 	}
 
 
@@ -453,6 +444,8 @@ public class CrawlerController {
 		CONFIG.setConnectionTimeout(60000);
 		CONFIG.setSocketTimeout(60000);
 
+		resetConfigQueueProxy();
+
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
@@ -469,7 +462,7 @@ public class CrawlerController {
 		startTime = System.currentTimeMillis();
 		CONTROLLER.start(crawlerClass, numberOfCrawlers);
 		
-		info.pushLog("\n\n\n\n------------------  Finished crawling  -----------------------\n\n\n\n");
+		//info.pushLog("\n\n\n\n------------------  Finished crawling  -----------------------\n\n\n\n");
 	}
 	/**
 	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
@@ -519,16 +512,35 @@ public class CrawlerController {
 	 * Взять новый прокси адрес из списка и пересоздать краулер
 	 */
 	private void reinitCrawler(BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
+		if (resetConfigQueueProxy()) {
+			// Изменение настроек контроллера ,создание нового объекта PageFetcher
+			//CONTROLLER.getPageFetcher().shutDown();
+			CONTROLLER.shutdown();
+			PageFetcher newFetcher = new PageFetcher(CONFIG);
+			CONTROLLER.setPageFetcher(newFetcher);
+			// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
+			crawler.init(crawler.getMyId(), CONTROLLER);
+		}
+	}
+
+	/**
+	 * Поменять прокси в настройках краулера
+	 * @return
+	 */
+	private boolean resetConfigQueueProxy() {
 		// Взять первый прокси из очереди и поместить его в конец
-		String proxy = proxies.pop();
-		proxies.add(proxy);
+		//String proxy = proxies.pop();
+		//proxies.add(proxy);
+		if (proxies == null || proxies.isEmpty())
+			return true;
+		int index = (int) Math.floor(Math.random() * proxies.size());
+		String proxy = proxies.get(index);
 		String actualProxy = StringUtils.split(proxy, ' ')[0];
 		String[] parts = StringUtils.split(actualProxy, ':');
 		if (parts.length > 1) {
 			// Изменение настроек контроллера ,создание нового объекта PageFetcher
 			String address = parts[0];
 			int port = Integer.parseInt(parts[1]);
-			CONTROLLER.getPageFetcher().shutDown();
 			CONFIG.setProxyHost(address);
 			CONFIG.setProxyPort(port);
 			if (parts.length == 4) {
@@ -536,11 +548,24 @@ public class CrawlerController {
 				CONFIG.setProxyPassword(parts[3]);
 			}
 			currentProxyUrlsCount = 0;
-			PageFetcher newFetcher = new PageFetcher(CONFIG);
-			CONTROLLER.setPageFetcher(newFetcher);
-			// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
-			crawler.init(crawler.getMyId(), CONTROLLER);
+			// todo test
+			/*
+			String str = null;
+			try {
+				str = WebClient.getString("https://digikey.com", actualProxy);
+				ServerLogger.debug(str);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (KeyStoreException e) {
+				e.printStackTrace();
+			} catch (KeyManagementException e) {
+				e.printStackTrace();
+			}*/
+			return true;
 		}
+		return false;
 	}
 
 	/**
