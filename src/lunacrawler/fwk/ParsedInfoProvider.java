@@ -107,6 +107,18 @@ public class ParsedInfoProvider {
 		return new InfoAccessor(getItem(id));
 	}
 
+
+	public InfoAccessor getAccessorJsoup(Element element) {
+		String code = element.attr("id");
+		if (StringUtils.isBlank(code))
+			return null;
+		try {
+			return getAccessor(code);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	/**
 	 * Вернуть файл или null, если файл не найден
 	 * @param id

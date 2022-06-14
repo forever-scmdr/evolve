@@ -1618,7 +1618,7 @@
     </page>
 
 	<!--//                             						                               -->
-	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
+	<!--//                            Тест одной страницы 	                               -->
 	<!--//                             						                               -->
     <page name="test_xsl">
         <request>
@@ -1631,7 +1631,7 @@
 
 
 	<!--//                             						                               -->
-	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
+	<!--//                            Интеграция парсинга	                               -->
 	<!--//                             						                               -->
     <page name="integrate_parsed" template="integrate_parsed">
         <request>
@@ -1642,6 +1642,18 @@
         </command>
     </page>
 
+
+	<!--//                             						                               -->
+	<!--//                         Интеграция парсинга в CSV                               -->
+	<!--//                             						                               -->
+	<page name="integrate_parsed_csv" template="integrate_parsed">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.CreateDigikeyParsedCsv" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 
 
