@@ -27,7 +27,7 @@ import java.util.List;
 
 public class YandexMarketCommand extends IntegrateBase {
 
-	private static final String YANDEX_FILE_NAME = "yandex_market.xml";
+	private static final String YANDEX_FILE_NAME = "sitefiles/yandex_market.xml";
 	private static final String ORG = "ЧПТУП «БелЧип»";
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -36,7 +36,7 @@ public class YandexMarketCommand extends IntegrateBase {
 	private HashMap<Long, Item> sections = new HashMap<>();
 	private int processed = 0;
 	private Collection<ParameterDescription> productTypeParams = ItemTypeRegistry.getItemType("product").getParameterList();
-	private Path file = Paths.get(AppContext.getFilesDirPath(false) + YANDEX_FILE_NAME);
+	private Path file = Paths.get(AppContext.getRealPath(YANDEX_FILE_NAME));
 	private static final String BELCHIP_BASE = "https://belchip.by/";
 
 //	@Override
