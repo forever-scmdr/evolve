@@ -260,6 +260,7 @@
 				<var name="tag" var="tag"/>
 			</link>
 			<single item="seo" assoc="seo"/>
+			<list item="block"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
 				<filter>
 					<child item="params" transit="false"
@@ -319,6 +320,9 @@
 		</link>
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_params" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="params"/>
 		</link>
 		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
@@ -428,6 +432,9 @@
 		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
+		<link name="set_view_params" target="tag_section" copy-page-vars="yes">
+			<var name="view" value="params"/>
+		</link>
 		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
 		</link>
@@ -529,6 +536,9 @@
 		</link>
 		<link name="set_view_list" target="search" copy-page-vars="yes">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_params" target="search" copy-page-vars="yes">
+			<var name="view" value="params"/>
 		</link>
 		<link name="show_only_available" target="search">
 			<var name="q" var="q"/>
@@ -1318,6 +1328,9 @@
 		</link>
 		<link name="set_view_list" target="fav">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_params" target="fav">
+			<var name="view" value="params"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

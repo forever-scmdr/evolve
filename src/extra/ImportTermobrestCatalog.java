@@ -51,6 +51,7 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 	private Item catalog;
 	private ItemType productType;
 	private ItemType paramsXmlType;
+	private ItemType sectionType;
 	private HashMap<String, DeviceDefinition> defs = new HashMap<>();
 
 
@@ -82,6 +83,7 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 		catalog = ItemUtils.ensureSingleRootAnonymousItem(CATALOG, getInitiator());
 		productType = ItemTypeRegistry.getItemType(PRODUCT);
 		paramsXmlType = ItemTypeRegistry.getItemType(PARAMS_XML);
+		sectionType = ItemTypeRegistry.getItemType(SECTION);
 		return true;
 	}
 
@@ -104,10 +106,11 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 
 		// Удалить каталог и создать новый
 
-		Item oldCatalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
-		if (oldCatalog != null)
-			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldCatalog));
+//		Item oldCatalog = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
+//		if (oldCatalog != null)
+//			executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldCatalog));
 		Item catalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.CATALOG, getInitiator());
+
 
 		// Создание самих товаров
 
@@ -164,8 +167,13 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 
 			// Создадние раздела
 			String sectionName = wb.getSheetName(0);
-			final Section section = Section.get(ItemUtils.ensureSingleChild(ItemNames.SECTION, getInitiator(), catalog));
-			section.set_name(sectionName);
+			Section existingSection = Section.get(ItemQuery.loadSingleItemByParamValue(SECTION, section_.CODE, sectionName));
+			if (existingSection == null) {
+				existingSection = Section.get(Item.newChildItem(sectionType, catalog));
+				existingSection.set_name(sectionName);
+				existingSection.set_code(sectionName);
+			}
+			final Section section = existingSection;
 			ArrayList<String> paramsInShort = new ArrayList<>();
 			for (int i = 0; i < 20; i++) {
 				DeviceDefinition def = defs.get("ID_" + i);
@@ -266,13 +274,11 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 				}
 			};
 			data.iterate(proc);
-
-			info.pushLog("Создание товаров завершено. Создание фильтров");
-			info.setOperation("Создание фильтров");
-			info.setProcessed(0);
-			executeOtherIntegration(new CreateParametersAndFiltersCommand(this));
 		}
-
+		info.pushLog("Создание товаров завершено. Создание фильтров");
+		info.setOperation("Создание фильтров");
+		info.setProcessed(0);
+		executeOtherIntegration(new CreateParametersAndFiltersCommand(this));
 	}
 
 	@Override

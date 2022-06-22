@@ -63,6 +63,7 @@
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
 
+
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
@@ -77,8 +78,8 @@
 				</xsl:for-each>
 			</div>
 		</div>
-
 	</xsl:template>
+
 
 
 	<xsl:template name="CONTENT">
@@ -109,6 +110,30 @@
 						<xsl:apply-templates select="$sel_sec/product" mode="product-lines"/>
 					</div>
 				</xsl:if>
+				<xsl:if test="$view = 'params'">
+					<div class="view-table">
+						<xsl:variable name="param_names" select="tokenize($cur_sec/params_short, '\|')"/>
+						<table>
+							<thead>
+								<tr>
+									<th>Наименование</th>
+									<xsl:for-each select="$param_names">
+										<th><xsl:value-of select="if (contains(., ':')) then substring-before(., ':') else ." /></th>
+									</xsl:for-each>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:apply-templates select="$sel_sec/product" mode="product-params">
+									<xsl:with-param name="param_names" select="$param_names"/>
+								</xsl:apply-templates>
+							</tbody>
+						</table>
+					</div>
+<!--					<div class="devices__wrap devices__wrap_rows">-->
+<!--						<xsl:apply-templates select="$sel_sec/product" mode="product-lines"/>-->
+<!--					</div>-->
+				</xsl:if>
 				<xsl:if test="$not_found">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
@@ -136,17 +161,54 @@
 	</xsl:template>
 
 
+
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
 	</xsl:template>
+
+
 
 	<xsl:template match="tag">
 		<xsl:variable name="active" select="current()/tag = $tag"/>
 		<a href="{if ($active) then remove_tag else add_tag}" class="labels__item label{' labels__item_active'[$active]}"><xsl:value-of select="tag"/></a>
 	</xsl:template>
 
+
+
 	<xsl:template name="TAGS">
-		<xsl:if test="$subs or $sel_sec/tag">
+		<xsl:if test="$sel_sec/block">
+			<div class="block-cat-1">
+				<div class="bc-col-1">
+					<xsl:variable name="sec_pic" select="if ($sel_sec/main_pic != '') then concat($sel_sec/@path, $sel_sec/main_pic) else ''"/>
+					<xsl:variable name="product_pic" select="if ($sel_sec/product[1]/main_pic != '') then concat($sel_sec/product[1]/@path, $sel_sec/product[1]/main_pic) else ''"/>
+					<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
+					<img src="{$pic}" onerror="$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror')" alt="{$sel_sec/name}" />
+				</div>
+				<div class="bc-col-2">
+					<div class="tabs tabs_product">
+						<div class="tabs__nav">
+							<xsl:for-each select="$sel_sec/block">
+								<xsl:variable name="active" select="position() = 1"/>
+								<a style="height: 46px; width: 120px;" href="#tab_bc{@id}" class="tab{' tab_active'[$active]}"><xsl:value-of select="header" /></a>
+							</xsl:for-each>
+						</div>
+						<div class="tabs__content">
+							<xsl:for-each select="$sel_sec/block">
+								<xsl:variable name="active" select="position() != 1"/>
+								<div class="tab-container" id="tab_bc{@id}" style="{'display: none'[$active]}">
+									<xsl:value-of select="text" disable-output-escaping="yes"/>
+								</div>
+							</xsl:for-each>
+						</div>
+					</div>
+				</div>
+			</div>
+		</xsl:if>
+
+		<!-- view-table -->
+
+		<xsl:if test="$subs or ($sel_sec/tag and $sel_sec/tag/tag != '')">
+			<h1>!<xsl:value-of select="$sel_sec/tag" />!</h1>
 			<xsl:if test="$show_devices">
 				<div class="labels labels_section">
 					<xsl:apply-templates select="$sel_sec/tag"/>
@@ -168,6 +230,8 @@
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
+
+
 
 	<xsl:template name="FILTER">
 		<xsl:variable name="valid_inputs" select="$sel_sec/params_filter/filter/input[count(domain/value) &gt; 1]"/>
@@ -217,6 +281,8 @@
 		</xsl:if>
 	</xsl:template>
 
+
+
 	<xsl:template name="DISPLAY_CONTROL">
 		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">
 			<div class="view view_section">
@@ -229,9 +295,15 @@
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
 						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
+							<img src="img/icon-line.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Строками</span>
+					</a>
+					<a href="{page/set_view_params}" class="icon-link">
+						<div class="icon">
+							<img src="img/icon-lines.svg" alt="" />
+						</div>
+						<span class="icon-link__item">Таблица</span>
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
@@ -271,39 +343,16 @@
 					<div class="view__column" style=""></div>
 				</xsl:if>
 			</div>
-
-				<!-- <div class="view">
-					<span class="{'active'[not($view = 'list')]}">
-						
-						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
-					</span>
-					<span class="{'active'[$view = 'list']}">
-						
-						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
-					</span>
-				</div> -->
-
-
-				<!-- <div class="checkbox">
-					<label>
-						<xsl:if test="not($only_available)">
-							<input type="checkbox"
-								   onclick="window.location.href = '{page/show_only_available}'"/>
-						</xsl:if>
-						<xsl:if test="$only_available">
-							<input type="checkbox" checked="checked"
-								   onclick="window.location.href = '{page/show_all}'"/>
-						</xsl:if>
-						в наличии на складе
-					</label>
-				</div> -->
-				
 		</xsl:if>
 	</xsl:template>
+
+
 
 	<xsl:template match="section" mode="tag">
 		<a href="{show_products}" class="labels__item label"><xsl:value-of select="name"/></a>
 	</xsl:template>
+
+
 
 	<xsl:template match="section" mode="pic">
 		<div class="catalog-item">

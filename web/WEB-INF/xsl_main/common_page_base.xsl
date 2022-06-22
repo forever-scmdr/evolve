@@ -119,6 +119,7 @@
 
 
 	<xsl:template name="INC_DESKTOP_HEADER">
+	<div class="bg">
 		<div class="top-info">
 			<div class="container">
 				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
@@ -174,7 +175,7 @@
 			<div class="container">
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+						<img src="img/logo_termobrest.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search">
 						<form action="{page/search_link}" method="post">
@@ -183,7 +184,7 @@
 								   query="q" min-size="3" id="q-ipt" type="text"
 								   placeholder="Введите поисковый запрос" autocomplete="off"
 								   name="q" value="{$query}" autofocus=""/>
-							<button class="button header-search__button" type="submit">Найти</button>
+							<button class="button" type="submit"><img src="img/icon-search.svg" alt="" class="invert"/></button>
 							<!-- quick search -->
 							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 							<!-- quick search end -->
@@ -214,20 +215,28 @@
 					</xsl:if>
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
+						<div class="hiddem">
+							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
+								<a href="{page/cart_link}" class="icon-link">
+									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
+									<span class="icon-link__item">Загрузка...</span>
+								</a>
+							</div>
+							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
+								<a class="icon-link">
+									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+									<span class="icon-link__item">Сравнение</span>
+								</a>
+							</div>
 						</div>
 						<div class="links">
-							<a href="/kontakty" class="icon-link">
-								<div class="icon">
+							<a href="/kontakty" class="icon-link button">
+								<div class="icon invert">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
 							</a>
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
+							<a href="javascript:showMobileMainMenu()" class="icon-link button button_secondary">
+								<div class="icon invert">
 									<img src="img/icon-bars.svg" alt="" />
 								</div>
 							</a>
@@ -247,12 +256,7 @@
 									<span class="icon-link__item">Избранное</span>
 								</a>
 							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
+
 						</div>
 					</div>
 				</div>
@@ -300,6 +304,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</xsl:template>
 
 

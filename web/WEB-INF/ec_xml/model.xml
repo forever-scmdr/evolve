@@ -206,6 +206,7 @@
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
 		<child item="option" />
+		<child item="block"/>
 		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
@@ -215,7 +216,7 @@
 		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками"/>
 		<parameter name="show_devices" type="byte" domain="0-1" caption="Показать товары"/>
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
-		<parameter name="code" type="string" caption="Код раздела"/>
+		<parameter name="code" type="string" caption="Код раздела" description="для уникального обозначения"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
