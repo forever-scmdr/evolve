@@ -29,8 +29,8 @@
 			<xsl:if test="$products">
 				<div class="view-container desktop">
 					<div class="view">
-						<span>Показывать:</span>
-						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+						<span>Показывать:&#160;</span>
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a>&#160;</span>
 						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
 						<!-- <div class="checkbox">
 							<label>

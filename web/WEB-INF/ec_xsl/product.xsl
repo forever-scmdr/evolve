@@ -68,7 +68,7 @@
 		<p class="subtitle">арт. <xsl:value-of select="$p/code"/></p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="40" data-thumbwidth="40" data-allowfullscreen="native" data-maxwidth="400" data-maxheight="400" data-fit="contain">
 					<xsl:if test="not($p/pic_ref)">
 						<img src="{$p/@path}{$p/main_pic}" alt="{$p/name}"/>
 						<xsl:for-each select="$p/gallery">
@@ -149,6 +149,11 @@
 								<div class="device__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 							</xsl:otherwise>
 						</xsl:choose>
+						<xsl:if test="$p/extra_xml and $p/extra_xml != ''">
+							<xsl:variable name="parsed" select="parse-xml($p/extra_xml)"/>
+							<div class="device__in-stock"><i class="fas fa-signal"></i>склад 1: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; склад 2: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
+						</xsl:if>
+
 					</div>
 				</xsl:if>
 
@@ -251,6 +256,7 @@
 							</li>
 						</xsl:for-each>
 					</ul>
+
 				<div class="tab-content">
 					<xsl:if test="$p/params">
 						<div role="tabpanel" class="tab-pane active" id="tab1">
@@ -289,6 +295,7 @@
 				</div>
 			</div>
 		</div>
+		<xsl:call-template name="SOME_INFO"/>
 		<xsl:if test="page/analog">
 			<h3>Аналоги</h3>
 			<div class="catalog-items">
@@ -296,7 +303,8 @@
 			</div>
 		</xsl:if>
 		<xsl:if test="page/similar">
-			<h3>Похожие товары</h3>
+			<!-- <h3>Похожие товары</h3> -->
+			<h3>Смотрите также</h3>
 			<div class="catalog-items">
 				<xsl:apply-templates select="page/similar"/>
 			</div>
@@ -317,5 +325,38 @@
 	</xsl:template>
 
 
+	<xsl:template name="SOME_INFO">
+		<div class="someInfo">
+			<table style="vertical-align: top;" width="100%">
+				<tbody>
+					<tr>
+						<td style="vertical-align: top; width: 22.446%;">
+							<p><strong>Оформление заказа:</strong></p>
+							<ul>
+								<li>Через корзину на сайте</li>
+								<li>По телефонам:</li>
+							</ul>
+							<p style="padding-left: 30px;">+375 (17) 260-24-20; <br />+375 (29) 577-72-64;<br />+375 (29) 677-74-92;<br />+375 (29) 841-65-56;<br /> Пн-Пт: 09.00-17.00</p>
+						</td>
+						<td style="vertical-align: top; width: 34.554%;">
+							<p><strong>Доставка:</strong></p>
+							<ul>
+								<li>Бесплатная доставка товара, минимальная сумма заказа 500 рублей.</li>
+								<li>Стоимость доставки товаров на сумму до 500 рублей составляет 15 рублей.</li>
+								<li>Отправка заказов каждый день до 11.00, доставка заказов согласно расписанию транспортной компании DPD.</li>
+							</ul>
+						</td>
+						<td style="vertical-align: top; width: 40%;">
+							<p><strong>Оптовикам:</strong></p>
+							<ul>
+								<li>Клиенты из Минска получают заказ день в день</li>
+								<li>Клиенты не из Минска при заказе сегодня получают товар завтра(транспортной компаниие DPD)</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</xsl:template>
 
 </xsl:stylesheet>

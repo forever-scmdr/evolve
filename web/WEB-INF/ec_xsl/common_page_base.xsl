@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
-	<xsl:import href="feedback_ajax.xsl"/>
+	<!--<xsl:import href="feedback_ajax.xsl"/>-->
 	<xsl:import href="login_form_ajax.xsl"/>
 	<xsl:import href="personal_ajax.xsl"/>
 	<xsl:import href="utils/price_conversions.xsl"/>
@@ -156,7 +156,7 @@
 					<div class="title_3">ЧТУП «Фрезерпром», 2020</div>
 					<div class="forever">
 						<img src="img/forever.png" alt="" />
-						<a href="forever.by" target="_blank">Разработка сайта <br/>студия веб-дизайна Forever</a>
+						<a href="http://forever.by" target="_blank">Разработка сайта <br/>студия веб-дизайна Forever</a>
 					</div>
 				</div>
 				<div class="footer__column">
@@ -173,7 +173,7 @@
 		<!-- MODALS BEGIN -->
 
 		<!-- modal feedback -->
-		<xsl:call-template name="FEEDBACK_FORM"/>
+		<!-- <xsl:call-template name="FEEDBACK_FORM"/>-->
 		<!-- MODALS END -->
 	</xsl:template>
 
@@ -489,6 +489,10 @@
 					<div class="device__in-stock device__in-stock_no" ><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:if test="extra_xml and extra_xml != ''">
+				<xsl:variable name="parsed" select="parse-xml(extra_xml)"/>
+				<div class="device__in-stock"><i class="fas fa-signal"></i>склад 1: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; склад 2: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
+			</xsl:if>
 
 
 			<xsl:for-each select="tag">
@@ -530,7 +534,7 @@
 					<a href="/{$pic_ref[1]}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
 						<i class="fas fa-search-plus"></i>
 					</a>
-					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[2],');')}"></a>
+					<a href="{show_product}" class="device__image device_row__image" style="background-image: {concat('url(/',$pic_ref[2],');')}"></a>
 				</xsl:if>
 				<xsl:if test="not($pic_ref[starts-with(.,'device_pics/small_')])">
 					<a href="{show_product}" class="device__image" style="background-image: {concat('url(',$pic_ref[1],');')}"></a>
@@ -593,12 +597,17 @@
 						<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="fas fa-truck"></i>Наличие - уточняте у менеджера</div>
 					</xsl:otherwise>
 				</xsl:choose>
+				<xsl:if test="extra_xml and extra_xml != ''">
+					<xsl:variable name="parsed" select="parse-xml(extra_xml)"/>
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i>склад 1: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; склад 2: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
+				</xsl:if>
 			</div>
 			<xsl:for-each select="tag">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
+
 
 	<xsl:template match="accessory | set | probe | product | assoc | analog | support | similar" mode="special">
 		<xsl:variable name="has_price" select="if ($is_reg_jur) then (price_opt and price_opt != '0') else (price and price != '0')"/>

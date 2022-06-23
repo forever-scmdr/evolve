@@ -96,7 +96,7 @@
 
 	<xsl:template name="HERO">
 		<section class="hero">
-			<div class="fotorama" data-width="100%" data-height="80px" data-fit="cover" data-autoplay="true" data-nav="false" data-transition="crossfade">
+			<div class="fotorama" data-width="100%" data-height="80px" data-loop="true" data-fit="cover" data-autoplay="true" data-nav="false" data-transition="crossfade">
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider-item" data-img="img/desktop-placeholder.png" style="background-image: url({@path}{pic});">
 						<a href="{link}" style="display: block; position: absolute; top: 0; right: 0; bottom: 0; left: 0"></a>

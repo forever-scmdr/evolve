@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -54,6 +55,10 @@ public class XmlDataSource {
 			return lastFound;
 		}
 
+		public String getXml() {
+			return doc.toString();
+		}
+
 	}
 
 	private Node path;
@@ -61,9 +66,10 @@ public class XmlDataSource {
 	private String tagContent;
 
 	public XmlDataSource(String fileName, Charset charset) throws XMLStreamException, IOException {
-		Reader fileReader = Files.newBufferedReader(Paths.get(fileName), charset);
+//		Reader fileReader = Files.newBufferedReader(Paths.get(fileName), charset);
+		InputStream is = Files.newInputStream(Paths.get(fileName));
 		XMLInputFactory factory = XMLInputFactory.newInstance();
-		reader = factory.createXMLStreamReader(fileReader);
+		reader = factory.createXMLStreamReader(is, "UTF-8");
 	}
 
 	/**
