@@ -1963,4 +1963,14 @@
 		</command>
 	</page>
 
+
+	<page name="test_url">
+		<request>
+			<var name="url"/>
+		</request>
+		<command class="extra.TestGetUrl">
+			<result name="result" type="inline_text"/>
+		</command>
+	</page>
+
 </site>

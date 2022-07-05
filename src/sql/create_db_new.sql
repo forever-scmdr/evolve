@@ -175,3 +175,23 @@ CREATE TABLE IF NOT EXISTS `computed_log` (
   `l_item` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`l_item`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ************************************************************
+-- ***                    Парсинг                           ***
+-- ************************************************************
+
+CREATE TABLE `parse` (
+     `pr_serial` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+     `pr_url` VARCHAR(255) NOT NULL COLLATE 'utf8_general_ci',
+     `pr_filename` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+     `pr_status` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0 - not checked; 1 - success and saved (has file); 2 - success and not saved (no file); 10 - access error (tried but not saved)',
+     `pr_comment` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+     PRIMARY KEY (`pr_serial`) USING BTREE,
+     UNIQUE INDEX `url` (`pr_url`) USING BTREE,
+     INDEX `status` (`pr_status`) USING BTREE,
+     INDEX `filename` (`pr_filename`) USING BTREE
+)
+    COLLATE='utf8_general_ci'
+    ENGINE=InnoDB
+;
