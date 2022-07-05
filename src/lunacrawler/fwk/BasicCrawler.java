@@ -18,7 +18,7 @@ public abstract class BasicCrawler extends WebCrawler {
 
 	@Override
 	public final boolean shouldVisit(Page page, WebURL url) {
-		CrawlerController.getSingleton().modifyUrl(url);
+		//CrawlerController.getSingleton().modifyUrl(url);
 		String href = url.getURL();
 		try {
 			href = URLDecoder.decode(href, "UTF-8");
@@ -30,15 +30,16 @@ public abstract class BasicCrawler extends WebCrawler {
 		}
 		if (CrawlerController.getSingleton().getStyleForUrl(href) != null) {
 			urlsToProcess++;
-			//CrawlerController.getInfo().pushLog("Should visit: {}\tTo visit: {}", href, urlsToProcess);
+			CrawlerController.getInfo().pushLog("Should visit: {}\tTo visit: {}", href, urlsToProcess);
 			return true;
 		}
-		//CrawlerController.getInfo().pushLog("NOT VISITING: {}", href);
+		CrawlerController.getInfo().pushLog("NOT VISITING: {}", href);
 		return false;
 	}
 
 	@Override
 	public final void visit(Page page) {
+		CrawlerController.getInfo().pushLog("Visiting start: {}", page.getWebURL().getURL());
 		String href = page.getWebURL().getURL();
 		try {
 			href = URLDecoder.decode(href, "UTF-8");
@@ -64,11 +65,14 @@ public abstract class BasicCrawler extends WebCrawler {
 
 	@Override
 	protected void onContentFetchError(Page page) {
+		CrawlerController.getInfo().pushLog("Content fetch error {}", page.getWebURL().toString());
 		CrawlerController.getSingleton().handleNoConnectionError(page.getWebURL(), this);
 	}
 
 	@Override
 	protected void onUnhandledException(WebURL webUrl, Throwable e) {
+		CrawlerController.getInfo().pushLog("Unhandled exception", webUrl.toString());
+		ServerLogger.error("Crawling connection error", e);
 		super.onUnhandledException(webUrl, e);
 		CrawlerController.getSingleton().handleNoConnectionError(webUrl, this);
 	}

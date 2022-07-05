@@ -195,4 +195,19 @@ public interface DBConstants
 		String COMPUTED_LOG_TBL = "computed_log";
 		String L_ITEM = "l_item";
 	}
+
+	/**************************************************************************************************
+	 **                                     ПАРСИНГ
+	 **************************************************************************************************/
+
+	interface Parse {
+		String PARSE_TBL = "parse";
+		String PR_SERIAL = "pr_serial";
+		String PR_URL = "pr_url";
+		String PR_FILENAME = "pr_filename";
+		String PR_STATUS = "pr_status";
+		String PR_COMMENT = "pr_comment";
+	}
+
+
 }

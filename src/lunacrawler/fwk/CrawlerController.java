@@ -2,21 +2,19 @@ package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.mappers.DBConstants;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
 import net.sf.saxon.TransformerFactoryImpl;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.apache.http.message.BasicHeader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -24,17 +22,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import javax.naming.NamingException;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.*;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -169,7 +170,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author E
  *
  */
-public class CrawlerController {
+public class CrawlerController implements DBConstants.Parse {
 
 
 	public static final String ID = "id";
@@ -230,6 +231,12 @@ public class CrawlerController {
 	private static volatile IntegrateBase.Info info = null;
 
 	private volatile long startTime = 0;
+
+	private volatile int totalFoundUrls = 0;
+	private volatile int totalVisitedUrls = 0;
+	private volatile int minuteVisitedUrls = 0;
+	private volatile long minuteStarted = 0;
+	private volatile int visitsPerMinute = 0;
 
 	private static class Errors implements ErrorListener {
 
@@ -300,6 +307,7 @@ public class CrawlerController {
 		// Начальные урлы и список стилей для урлов
 		urlStyles = new LinkedHashMap<>();
 		seedUrls = new LinkedHashSet<>();
+		java.net.URL baseUrl = null;
 		String urlFileName = AppContext.getRealPath(AppContext.getProperty(URLS, null));
 		if (new File(urlFileName).exists()) {
 			try {
@@ -313,6 +321,9 @@ public class CrawlerController {
 			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
 			        		seedUrls.add(seed);
 			        		urlStyles.put(seed, NO_TEMPLATE);
+			        		if (baseUrl == null) {
+			        			baseUrl = new URL(seed);
+					        }
 			        	} else {
 					        // Проверка правильности регулярного выражения
 					        // Для этого используются все части, после второй (третяя и далее)
@@ -331,11 +342,16 @@ public class CrawlerController {
 				throw e;
 			}
 		}
+		if (baseUrl == null) {
+			throw new Exception("BASE URL is not specified");
+		}
+		this.base = new URI(baseUrl.getProtocol() + "://" + baseUrl.getHost());
 
 		// Другие настройки
 		info.pushLog("Start creating output directories");
 		urlsPerProxy = Integer.parseInt(AppContext.getProperty(URLS_PER_PROXY, "0"));
 		numberOfCrawlers = Integer.parseInt(AppContext.getProperty(NUMBER_OF_CRAWLERS, "1"));
+		politenessMs = Integer.parseInt(AppContext.getProperty(POLITENESS, "200"));
 		maxPages = Integer.parseInt(AppContext.getProperty(MAX_PAGES, "-1"));
 		maxDepth = Integer.parseInt(AppContext.getProperty(MAX_DEPTH, "-1"));
 		stylesDir = AppContext.getRealPath(AppContext.getProperty(STYLES_DIR, null));
@@ -434,13 +450,31 @@ public class CrawlerController {
 		int politeness = Integer.parseInt(AppContext.getProperty(POLITENESS, "none"));
 		String storageDir = AppContext.getRealPath(AppContext.getProperty(STORAGE_DIR, ""));
 		CONFIG = new CrawlConfig();
+		CONFIG.setSocketTimeout(10000);
+		CONFIG.setConnectionTimeout(10000);
+		CONFIG.setDbLockTimeout(10000);
 		CONFIG.setCrawlStorageFolder(storageDir);
 		CONFIG.setPolitenessDelay(politeness);
 		CONFIG.setIncludeBinaryContentInCrawling(false);
 		CONFIG.setResumableCrawling(true);
 		CONFIG.setMaxPagesToFetch(maxPages);
 		CONFIG.setMaxDepthOfCrawling(maxDepth);
-		CONFIG.setUserAgentString("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+		CONFIG.setUserAgentString("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0");
+		HashSet<BasicHeader> headers = new HashSet<>();
+		//headers.add(new BasicHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3192.0 Safari/537.36"));
+		headers.add(new BasicHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"));
+		headers.add(new BasicHeader("Accept-Encoding", "gzip, deflate, br"));
+		headers.add(new BasicHeader("Accept-Language", "en-US,en;q=0.9"));
+		headers.add(new BasicHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8"));
+		headers.add(new BasicHeader("Connection", "keep-alive"));
+		headers.add(new BasicHeader("Sec-Ch-Ua-Mobile", "?0"));
+		headers.add(new BasicHeader("Sec-Ch-Ua-Platform", "\"Windows\""));
+		headers.add(new BasicHeader("Sec-Fetch-Dest", "document"));
+		headers.add(new BasicHeader("Sec-Fetch-Mode", "navigate"));
+		headers.add(new BasicHeader("Sec-Fetch-User", "?1"));
+		headers.add(new BasicHeader("Connection", "keep-alive"));
+		CONFIG.setDefaultHeaders(headers);
+
 		CONFIG.setConnectionTimeout(60000);
 		CONFIG.setSocketTimeout(60000);
 
@@ -449,6 +483,33 @@ public class CrawlerController {
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
+		TemplateQuery insert = new TemplateQuery("insert url");
+		for (String seed : seedUrls) {
+			buildSaveUrlQuery(insert, new Url(seed));
+			info.pushLog("Seed {} added", seed);
+		}
+		insert.sql(" ON DUPLICATE KEY UPDATE " + PR_URL + " = VALUES(" + PR_URL + ")");
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement ps = insert.prepareQuery(conn)) {
+			ps.executeUpdate();
+		} catch (Exception e) {
+			ServerLogger.error("SQL error", e);
+			getInfo().addError(e);
+			return;
+		}
+
+		totalVisitedUrls = 0;
+		minuteVisitedUrls = 0;
+		minuteStarted = System.currentTimeMillis();
+
+		for (int i = 0; i < numberOfCrawlers; i++) {
+			Thread crawlThread = new Thread(new CrawlThread(i));
+			crawlThread.setDaemon(true);
+			crawlThread.start();
+			getInfo().pushLog("Starting Crawler #{}", i);
+			Thread.sleep(politeness + Math.round(Math.random() * politeness));
+		}
+		/*
 		PageFetcher pageFetcher = new PageFetcher(CONFIG);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 		robotstxtConfig.setEnabled(false);
@@ -456,12 +517,13 @@ public class CrawlerController {
 		CONTROLLER = new CrawlController(CONFIG, pageFetcher, robotstxtServer);
 
 		for (String seed : seedUrls) {
+			info.pushLog("Seed {} added", seed);
 			CONTROLLER.addSeed(seed);
 		}
 
 		startTime = System.currentTimeMillis();
 		CONTROLLER.start(crawlerClass, numberOfCrawlers);
-		
+		*/
 		//info.pushLog("\n\n\n\n------------------  Finished crawling  -----------------------\n\n\n\n");
 	}
 	/**
@@ -481,6 +543,7 @@ public class CrawlerController {
 		getSingleton().terminateInt();
 	}
 	/**
+	 * @deprecated
 	 * Добавить результат парсинга одного URL (вызывается из экземпляра WebCrawler)
 	 * Результат записывается в файл с названием, которое соответствует урлу
 	 * @param crawler - кролер, который вернул результат
@@ -1020,7 +1083,7 @@ public class CrawlerController {
 	 * @param url
 	 * @return
 	 */
-	String getStyleForUrl(String url) {
+	public String getStyleForUrl(String url) {
 		String style = null;
 		for (Entry<String, String> entry : urlStyles.entrySet()) {
 			if (StringUtils.equals(url, entry.getKey()) || url.matches(entry.getKey())) {
@@ -1099,4 +1162,306 @@ public class CrawlerController {
 		System.out.println("https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam="
 				.matches("https://www\\.metabo\\.com/ru/index\\.php\\?cl=search(&amp;)?&?&order=?(&amp;)?&?ldtype=infogrid(&amp;)?&?_artperpage=100(&amp;)?&?pgNr=.{0,2}(&amp;)?&?searchparam=?"));
 	}
+
+
+
+
+
+
+
+
+
+
+	public static final byte NOT_CHECKED = 0;
+	public static final byte SUCCESS_SAVED = 1;
+	public static final byte SUCCESS_NOT_SAVED = 2;
+	public static final byte ERROR = 10;
+
+	private static class Url {
+		private final long serial;
+		private final String url;
+		private String fileName;
+		private byte status;
+		private String comment;
+
+		public Url(long serial, String url, String fileName, byte status, String comment) {
+			this.serial = serial;
+			this.url = url;
+			this.fileName = fileName;
+			this.status = status;
+			this.comment = comment;
+		}
+
+		public Url(String url) {
+			this.url = url;
+			this.serial = 0;
+			this.status = (byte) 0;
+			this.fileName = "";
+			this.comment = "";
+		}
+
+		@Override
+		public String toString() {
+			return "{" + status + ", " + url + "}";
+		}
+	}
+
+
+	private class CrawlThread implements Runnable {
+
+		public final int id;
+
+		public CrawlThread(int id) {
+			this.id = id;
+		}
+
+		@Override
+		public void run() {
+			while (shouldContinue && hasMoreUrls) {
+				try {
+					long startMillis = System.currentTimeMillis();
+					Url nextUrl = loadNextUrl(NOT_CHECKED);
+					if (nextUrl == null) {
+						nextUrl = loadNextUrl(ERROR);
+					}
+					if (nextUrl != null) {
+						synchronized (urlsInProgress) {
+							if (urlsInProgress.contains(nextUrl.url))
+								continue;
+							urlsInProgress.add(nextUrl.url);
+						}
+						processUrl(nextUrl);
+						urlsInProgress.remove(nextUrl.url);
+						hasNewUrls(this, true);
+					} else {
+						hasNewUrls(this, false);
+					}
+					long millisForProcess = System.currentTimeMillis() - startMillis;
+					if (millisForProcess < politenessMs)
+						Thread.sleep(politenessMs - millisForProcess);
+				} catch (Exception e) {
+					ServerLogger.error("SQL exception", e);
+				}
+			}
+			getInfo().pushLog("Crawler thread {} finished crawling", id);
+		}
+
+	}
+
+
+	private final Set<String> urlsInProgress = Collections.synchronizedSet(new HashSet<>());
+	private int politenessMs;
+
+	private volatile boolean shouldContinue = true;
+	private volatile boolean hasMoreUrls = true;
+	private final URI base;
+	private final Map<Integer, Boolean> threadHadUrls = Collections.synchronizedMap(new HashMap<>());
+
+
+	public void stopCrawling() {
+		shouldContinue = false;
+	}
+
+	/**
+	 * Загрузить следующий по очереди урл нужного статуса
+	 * (сначала загружаются новые урлы, потом пробуются вновь неудачно загруженные)
+	 * @param status
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	private Url loadNextUrl(byte status) throws SQLException, NamingException {
+		TemplateQuery select = new TemplateQuery("select urls");
+		select.SELECT("*").FROM(PARSE_TBL).WHERE().col(PR_STATUS).byte_(status).ORDER_BY(PR_SERIAL).LIMIT(numberOfCrawlers);
+		ArrayList<Url> urls = new ArrayList<>();
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement ps = select.prepareQuery(conn)) {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				urls.add(new Url(rs.getLong(PR_SERIAL), rs.getString(PR_URL), rs.getString(PR_FILENAME), rs.getByte(PR_STATUS), rs.getString(PR_COMMENT)));
+			}
+		}
+		for (Url url : urls) {
+			if (!urlsInProgress.contains(url.url))
+				return url;
+		}
+		return null;
+	}
+
+	/**
+	 * Добавить к запросу новую строку для нового урла
+	 * @param query
+	 * @param url
+	 * @return
+	 */
+	private TemplateQuery buildSaveUrlQuery(TemplateQuery query, Url url) {
+		if (query.isEmpty()) {
+			query.INSERT_INTO(PARSE_TBL, PR_URL, PR_STATUS).sql(" VALUES ");
+		} else {
+			query.com();
+		}
+		query.sql("(").string(url.url).sql(", ").byte_(url.status).sql(")");
+		return query;
+	}
+
+	/**
+	 * Обновить статус, комментарий (ошибку) или файл
+	 * @param url
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	private void updateUrl(Url url) throws SQLException, NamingException {
+		TemplateQuery update = new TemplateQuery("update url");
+		update.UPDATE(PARSE_TBL).SET()
+				.col(PR_FILENAME).string(url.fileName)._col(PR_STATUS).byte_(url.status)._col(PR_COMMENT).string(url.comment)
+				.WHERE().col(PR_URL).string(url.url);
+		try (Connection conn = MysqlConnector.getConnection();
+		     PreparedStatement ps = update.prepareQuery(conn)) {
+			ps.executeUpdate();
+		}
+	}
+
+	/**
+	 * Обработать один урл
+	 * Сохранить файл, если надо
+	 * Сохранить в БД все урлы со страницы
+	 * @param url
+	 * @return - если найдены новые урлы, возвращается true
+	 */
+	private boolean processUrl(Url url) {
+		boolean urlsFound = false;
+		try {
+			org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
+			Document doc = con.get();
+			doc.setBaseUri(base.toString());
+			if (con.response().statusCode() == 200) {
+				String template = getStyleForUrl(url.url);
+
+				// Дальнейшая обработка только для урлов, соответсвующих шаблонам в файле urls.txt
+				if (template != null) {
+
+					// Если надо сохранять эту страницу, то сохранить ее файл
+					if (!StringUtils.equalsIgnoreCase(template, NO_TEMPLATE)) {
+						doc.body().attr("source", url.url);
+						String result = JsoupUtils.outputHtmlDoc(doc);
+						String fileName = url.url;
+						try {
+							String strUrl = URLDecoder.decode(url.url, "UTF-8");
+							fileName = Strings.createFileName(strUrl);
+							Files.createDirectories(Paths.get(resultTempSrcDir));
+							// Если результат парсинга урла не пустая строка - записать этот результат в файл
+							if (!StringUtils.isBlank(result)) {
+								Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
+							}
+						} catch (Exception e) {
+							throw new Exception("FILE SAVE ERROR: " + fileName);
+						}
+						url.status = SUCCESS_SAVED;
+					} else {
+						url.status = SUCCESS_NOT_SAVED;
+					}
+
+					// Далее берем все ссылки и добавляем их в БД
+					TemplateQuery insert = new TemplateQuery("insert url");
+					for (Element link : doc.select("a[href]")) {
+
+						// Преобразовать урл в нормальный формат (добавить base)
+						String linkUrlStr = link.attr("abs:href");
+
+						// Пропустить все ссылки на другие домены
+						if (isUrlAbsolute(linkUrlStr)) {
+							URL testUrl = new URL(linkUrlStr);
+							if (!StringUtils.equalsIgnoreCase(testUrl.getHost(), base.getHost()))
+								continue;
+						}
+
+						// Сохранить новый урл (только в том случае если он нужен)
+						if (getStyleForUrl(linkUrlStr) != null) {
+							urlsFound = true;
+							Url urlToSave = new Url(linkUrlStr);
+							buildSaveUrlQuery(insert, urlToSave);
+						}
+					}
+					// Сохранение в БД
+					if (urlsFound) {
+						insert.sql(" ON DUPLICATE KEY UPDATE " + PR_URL + " = VALUES(" + PR_URL + ")");
+						try (Connection conn = MysqlConnector.getConnection();
+						     PreparedStatement ps = insert.prepareQuery(conn)) {
+							ps.executeUpdate();
+						}
+					}
+					updateUrl(url);
+				}
+				countAndInformVisited(url.url);
+			} else {
+				throw new Exception("HTTP CONNECTIVITY ERROR: " + con.response().statusCode() + " " + con.response().statusMessage());
+			}
+		} catch (Exception e) {
+			StringWriter writer = new StringWriter();
+			PrintWriter out = new PrintWriter(writer);
+			e.printStackTrace(out);
+			url.comment = writer.toString();
+			url.status = ERROR;
+			try {
+				updateUrl(url);
+			} catch (Exception ex) {
+				ServerLogger.error("MYSQL error", ex);
+			}
+			ServerLogger.error("Connection error", e);
+			getInfo().pushLog("URL ERROR {} for {}", e.getLocalizedMessage(), url.url);
+		}
+		return urlsFound;
+	}
+
+	/**
+	 * Отметка, были ли новые урлы в процессе разбора страницы.
+	 * Если были, то продолжать разбор
+	 * Если во всех потоках закончились новые урлы, то завершать разбор
+	 * @param thread
+	 * @param hasUrls
+	 */
+	private void hasNewUrls(CrawlThread thread, boolean hasUrls) {
+		threadHadUrls.put(thread.id, hasUrls);
+		boolean allHadUrls = false;
+		for (Boolean hadUrls : threadHadUrls.values()) {
+			allHadUrls |= hadUrls;
+		}
+		if (!allHadUrls)
+			hasMoreUrls = false;
+		else
+			hasMoreUrls = true;
+	}
+
+
+	private boolean isUrlAbsolute(String url) {
+		return url.startsWith("http://") || url.startsWith("https://");
+	}
+
+	/**
+	 * Подсчитать посещенные урлы и вывести в лог
+	 * @param url
+	 */
+	private synchronized void countAndInformVisited(String url) {
+		totalVisitedUrls++;
+		minuteVisitedUrls++;
+		long now = System.currentTimeMillis();
+		if (Math.abs(now - minuteStarted) > 60000) {
+			visitsPerMinute = minuteVisitedUrls;
+			minuteStarted = now;
+			minuteVisitedUrls = 0;
+			TemplateQuery foundQuery = new TemplateQuery("found query");
+			foundQuery.SELECT("COUNT(" + PR_SERIAL + ")").FROM(PARSE_TBL);
+			try (Connection conn = MysqlConnector.getConnection();
+			     PreparedStatement ps = foundQuery.prepareQuery(conn)) {
+				ResultSet rs = ps.executeQuery();
+				if (rs.next())
+					totalFoundUrls = rs.getInt(1);
+			} catch (Exception e) {
+				ServerLogger.error("SQL error", e);
+				getInfo().addError(e);
+			}
+		}
+		getInfo().pushLog("Visited: {}; Found: {}; VPM: {};  URL: {}", totalVisitedUrls, totalFoundUrls, visitsPerMinute, url);
+	}
+
 }
