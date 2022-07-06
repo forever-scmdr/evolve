@@ -64,18 +64,29 @@
 			</div>
 
 			<xsl:if test="$products[tag = 'external_shop']">
-				<div id="external_shops_search">
-					<xsl:for-each-group select="$products[tag = 'external_shop']" group-by="tag[. = $shop/name]">
-						<h2><xsl:value-of select="concat('Результат поиска по ', current-grouping-key())"/></h2>
+				<div id="compel_search">
+					<xsl:if test="$products[tag = 'compel.ru']">
+						<h2>Результат поиска по Compel</h2>
 						<div class="catalog-items{' lines'[$view = 'list']}">
 							<xsl:if test="$view = 'table'">
-								<xsl:apply-templates select="current-group()" mode="product-table"/>
+								<xsl:apply-templates select="$products[tag = 'compel.ru']" mode="product-table"/>
 							</xsl:if>
 							<xsl:if test="$view = 'list'">
-								<xsl:apply-templates select="current-group()" mode="product-lines"/>
+								<xsl:apply-templates select="$products[tag = 'compel.ru']" mode="product-lines"/>
 							</xsl:if>
 						</div>
-					</xsl:for-each-group>
+					</xsl:if>
+					<xsl:if test="$products[tag = 'rct.ru']">
+						<h2>Результат поиска по Rct</h2>
+						<div class="catalog-items{' lines'[$view = 'list']}">
+							<xsl:if test="$view = 'table'">
+								<xsl:apply-templates select="$products[tag = 'rct.ru']" mode="product-table"/>
+							</xsl:if>
+							<xsl:if test="$view = 'list'">
+								<xsl:apply-templates select="$products[tag = 'rct.ru']" mode="product-lines"/>
+							</xsl:if>
+						</div>
+					</xsl:if>
 				</div>
 			</xsl:if>
 
@@ -85,10 +96,13 @@
 			<div id="tme_search">
 				Идет поиск по дополнительным каталогам...
 			</div>
-			<!-- <div id="farnell_search"></div> -->
+			<div id="platan_search">
+				<!-- Идет поиск по дополнительным каталогам... -->
+			</div>
+			<div id="farnell_search"></div>
 			<div id="promelec_search"></div>
-			<!-- <div id="digikey_search"></div> -->
-			<!-- <div id="arrow_search"></div> -->
+			<div id="digikey_search"></div>
+			<div id="arrow_search"></div>
 			<div id="gkel_search"></div>
 		</div>
 
@@ -100,12 +114,12 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-			<!-- insertAjax('<xsl:value-of select="page/arrow_search_link"/>'); -->
-			<!-- insertAjax('<xsl:value-of select="page/digikey_search_link"/>'); -->
-			<!-- insertAjax('<xsl:value-of select="page/farnell_search_link"/>'); -->
+			insertAjax('<xsl:value-of select="page/arrow_search_link"/>');
+			insertAjax('<xsl:value-of select="page/digikey_search_link"/>');
+			insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
 			insertAjax('<xsl:value-of select="page/platan_search_link"/>');
 			insertAjax('<xsl:value-of select="page/promelec_search_link"/>');
-			<!-- insertAjax('<xsl:value-of select="page/tme_search_link"/>'); -->
+			insertAjax('<xsl:value-of select="page/tme_search_link"/>');
 			insertAjax('<xsl:value-of select="page/gkel_search_link"/>');
 			});
 		</script>

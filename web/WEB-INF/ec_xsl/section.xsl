@@ -288,6 +288,31 @@
 				</div>
 			</div>
 		</xsl:if>
+
+		<xsl:if test="$show_devices and not(not($not_found) and $sel_sec/product)">
+			<div class="view-container desktop">
+				<div class="view">
+					<span class="{'active'[not($view = 'list')]}">
+						
+						<a href="{page/set_view_table}"><i class="fas fa-th-large"></i></a>
+					</span>
+					<span class="{'active'[$view = 'list']}">
+						
+						<a href="{page/set_view_list}"><i class="fas fa-th-list"></i></a>
+					</span>
+				</div>
+				<label title="Показать только товары в наличии">
+					<xsl:if test="not($only_available)">
+						<input type="checkbox"
+						   onclick="window.location.href = '{page/show_only_available}'"/>
+					</xsl:if>
+					<xsl:if test="$only_available">
+						<input type="checkbox" checked="checked" onclick="window.location.href = '{page/show_all}'"/>
+					</xsl:if>
+					в наличии
+				</label>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="section" mode="tag">

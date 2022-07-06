@@ -138,7 +138,7 @@
 					<div class="manyPrice">
 						<xsl:for-each select="$pricebreaks/break">
 							<div class="manyPrice__item">
-								<div class="manyPrice__qty"><xsl:value-of select="@qty" />+</div>
+								<div class="manyPrice__qty"><xsl:value-of select="@quant" />+</div>
 								<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output(@price, $shop), ' ', upper-case($curr))" /></div>
 							</div>
 						</xsl:for-each>

@@ -59,9 +59,9 @@
 		<xsl:variable name="shop_name" select="$product/tag[text() = 'external_shop']/following-sibling::tag[1]" />
 		<xsl:variable name="site" select="if(aux != '') then aux else if($shop_name != '') then $shop_name else 'ictrade'"/>
 		<xsl:variable name="unit" select="if(aux != '') then $product/unit else if(f:num($product/min_qty) &gt; 1) then concat($product/min_qty, $product/unit) else $product/unit"/>
-		<xsl:variable name="price"  select="f:cart_sum(if(f:num(sum) != 0) then $product/price else sum)"/>
+		<xsl:variable name="price"  select="f:cart_sum(if(f:num(sum) != 0) then price else sum)"/>
 		<xsl:variable name="sum"  select="f:cart_sum(sum)"/>
-		<xsl:variable name="price_original_str" select="if(aux != '') then $product/price_original else $product/price_opt"/>
+		<xsl:variable name="price_original_str" select="if(aux != '' or $product/tag = 'external_shop') then $product/price_original else $product/price_opt"/>
 		<xsl:variable name="price_original" select="format-number(f:num($price_original_str), '# ### ##0,00000', 'exc')"/>
 		<xsl:variable name="vendor_code_for_name" select="('Digikey', 'Farnell', 'Verical', 'TME')"/>
 

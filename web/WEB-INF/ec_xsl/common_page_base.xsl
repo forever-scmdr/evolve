@@ -31,7 +31,6 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/>
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
-	<xsl:variable name="shop" select="page/shop" />
 
 
 	<xsl:variable name="active_menu_item"/>
@@ -249,7 +248,7 @@
 				</div>
 				<div class="footer__column">
 					<p>Электронные компоненты Чип Электроникс</p>
-                  <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 514A
+                  <p>Адрес: г. Минск, 220070, пр-т Партизанский 14, к. 205A
                      								<br />Ст. метро «Пролетарская»
                   </p>
                   <div class="rating" style="font-weight: normal" itemscope="" itemtype="http://data-vocabulary.org/Review-aggregate">
@@ -522,7 +521,7 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="tags" select="tag[. != 'external_shop' and not($shop/name = .)]"/>
+		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
@@ -531,7 +530,7 @@
 
 		<div class="device items-catalog__device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else if(pic_link != '') then pic_link[1] else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}" rel="nofollow">
@@ -644,7 +643,7 @@
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
 		<xsl:variable name="u" select="if(unit != '') then unit else 'шт'"/>
-		<xsl:variable name="tags" select="tag[. != 'external_shop' and not($shop/name = .)]"/>
+		<xsl:variable name="tags" select="tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']"/>
 		<xsl:variable name="shop_name" select="tag[text() = 'external_shop']/following-sibling::tag[1]"/>
 		<xsl:variable name="sel_shop" select="//shop[name = $shop_name]"/>
 		<xsl:variable name="unit" select="if(f:num(min_qty) &gt; 1 and not($sel_shop != '')) then concat(min_qty, 'шт') else $u" />
@@ -655,7 +654,7 @@
 		<div class="device device_row">
 			<!-- <div class="tags"><span>Акция</span></div> -->
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else if(pic_link != '') then pic_link[1] else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 			<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
 				<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
 					<i class="fas fa-search-plus"></i>
@@ -678,16 +677,34 @@
 						<span style="color: #616161;"><xsl:value-of select="@caption"/></span>&#160;-&#160;<xsl:value-of select="."/>
 						<xsl:text>;</xsl:text><br/>
 					</xsl:for-each>
-					<xsl:if test="not(params/param) and extra_xml != ''">
-						<xsl:variable name="params" select="parse-xml(concat('&lt;params&gt;', extra_xml, '&lt;/params&gt;'))" />
-						<xsl:for-each select="$params//parameter">
-							<span style="color: #616161;"><xsl:value-of select="name"/></span>&#160;-&#160;<xsl:value-of select="value"/>
-							<xsl:text>;</xsl:text><br/>
-						</xsl:for-each>
-					</xsl:if>
 				</div>
 			</div>
 <!--			<div class="device__article-number"><xsl:value-of select="code"/></div>-->
+			<div class="device__actions device_row__actions">
+				<xsl:if test="not($is_compare)">
+					<div id="compare_list_{@id}">
+						<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
+							<i class="fas fa-balance-scale"></i>сравнить
+
+						</a>
+					</div>
+				</xsl:if>
+				<xsl:if test="$is_compare">
+					<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
+				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="$is_fav">
+						<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
+					</xsl:when>
+					<xsl:otherwise>
+						<div id="fav_list_{@id}">
+							<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
+								<i class="fas fa-star"></i>отложить
+							</a>
+						</div>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
 			<xsl:if test="$has_price">
 				<div class="device__price device_row__price">
 					<xsl:if test="price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
@@ -745,32 +762,6 @@
 				<xsl:if test="f:num(qty) = 0">
 					<div class="device__in-stock device_row__in-stock device__in-stock_no"><i class="far fa-clock"></i>нет в наличии</div>
 				</xsl:if>
-
-				<div class="device__actions">
-					<xsl:if test="not($is_compare)">
-						<div id="compare_list_{@id}">
-							<a href="{to_compare}" class="icon-link device__action-link" ajax="true" ajax-loader-id="compare_list_{@id}">
-								<i class="fas fa-balance-scale"></i>сравнить
-							</a>
-						</div>
-					</xsl:if>&#160;
-					<xsl:if test="$is_compare">
-						<span><i class="fas fa-balance-scale"></i>&#160;<a href="{from_compare}">убрать</a></span>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$is_fav">
-							<a href="{from_fav}" class="icon-link device__action-link"><i class="fas fa-star"></i>убрать</a>
-						</xsl:when>
-						<xsl:otherwise>
-							<div id="fav_list_{@id}">
-								<a href="{to_fav}" class="icon-link device__action-link" ajax="true" ajax-loader-id="fav_list_{@id}">
-									<i class="fas fa-star"></i>отложить
-								</a>
-							</div>
-						</xsl:otherwise>
-					</xsl:choose>
-				</div>
-
 			</div>
 			<xsl:for-each select="$tags">
 				<div class="device__tag device_row__tag"><xsl:value-of select="." /></div>
@@ -1014,10 +1005,10 @@
 			<input type="submit" class="button header__button" value="Поиск" />
 			<xsl:variable name="partners">
 				&lt;div&gt;ПЛАТАНа&lt;/div&gt;
-				<!-- &lt;div&gt;DIGIKEY&lt;/div&gt; -->
-				<!-- &lt;div&gt;FARNELL&lt;/div&gt; -->
-				<!-- &lt;div&gt;VERICAL&lt;/div&gt; -->
-				<!-- &lt;div&gt;TME&lt;/div&gt; -->
+				&lt;div&gt;DIGIKEY&lt;/div&gt;
+				&lt;div&gt;FARNELL&lt;/div&gt;
+				&lt;div&gt;VERICAL&lt;/div&gt;
+				&lt;div&gt;TME&lt;/div&gt;
 				&lt;div&gt;Compel&lt;/div&gt;
 				&lt;div&gt;Отечественные РЭК&lt;/div&gt;
 			</xsl:variable>

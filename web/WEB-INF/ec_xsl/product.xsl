@@ -39,7 +39,7 @@
 			"@type": "Product",
 			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
 			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/vendor, $quote)" />,
+			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
 			"offers": {
 			"@type": "Offer",
 			"priceCurrency": "BYN",
@@ -85,9 +85,6 @@
 					<xsl:if test="not($p/gallery)">
 						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 					</xsl:if>
-					<xsl:for-each select="$p/pic_link">
-						<img src="{.}" alt="{$p/name}"/>
-					</xsl:for-each>
 				</div>
 				<script>
 					$('.fotorama')
@@ -109,14 +106,14 @@
 			</div>
 			<div class="product-info">
 				<!-- new html -->
-				<xsl:for-each select="$p/tag[. != 'external_shop' and not($shop/name = .)]">
+				<xsl:for-each select="$p/tag[text() != 'external_shop' and text() != 'compel.ru' and text() != 'rct.ru']">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
-				</xsl:for-each>
+				</xsl:for-each>			
  
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<!-- <xsl:if test="f:num($p/price) &gt; 0"> -->
-						<xsl:if test="$has_price">
+						<xsl:if test="$has_price and f:num($p/price) &gt; 0">
 							<div class="device__price device__price_device-page">
 								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
 								<div class="price_normal">
@@ -127,7 +124,7 @@
 							</div>
 						</xsl:if>
 						<!-- <xsl:if test="f:num($p/price) = 0"> -->
-						<xsl:if test="not($has_price)">
+						<xsl:if test="not($has_price) or f:num($p/price) = 0">
 							<div class="device__price device__price_device-page">
 								Цена по запросу
 							</div>
@@ -178,7 +175,7 @@
 						</xsl:choose>
 						<!-- <xsl:if test="$p/pdf != ''">
 							<p>
-								<a href="{concat('pdf/', $p/pdf)}" target="_blank">Документ PDF</a>
+								<a href="{concat('pictures/', $p/pdf)}" target="_blank">Документ PDF</a>
 							</p>
 						</xsl:if> -->
 					</div>
@@ -247,12 +244,12 @@
 					</xsl:if>
 				</div> <p>Не нашли нужный компонент? <br></br><a href="http://ictrade.by/page/individualnyi_zakaz/" rel="nofollow" class="MSI_ext_nofollow">Сделайте индивидуальный заказ!</a></p>
 			</div>
-			<xsl:if test="$p/params | $p/text | $p/product_extra | $p/extra_xml">
+			<xsl:if test="$p/params | $p/text | $p/product_extra">
 			<div class="description">
 
 					<ul class="nav nav-tabs" role="tablist">
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-						<xsl:if test="$p/params | $p/extra_xml">
+						<xsl:if test="$p/params">
 							<li role="presentation" class="active">
 								<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 							</li>
@@ -269,7 +266,7 @@
 						</xsl:for-each>
 					</ul>
 				<div class="tab-content">
-					<xsl:if test="$p/params | $p/extra_xml">
+					<xsl:if test="$p/params">
 						<div role="tabpanel" class="tab-pane active" id="tab1">
 							<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
@@ -286,16 +283,6 @@
 										</td>
 									</tr>
 								</xsl:for-each>
-								<xsl:for-each select="parse-xml(concat('&lt;params&gt;',$p/extra_xml, '&lt;/params&gt;'))//parameter">
-									<tr>
-										<td>
-											<p><strong><xsl:value-of select="name"/></strong></p>
-										</td>
-										<td>
-											<p><xsl:value-of select="value"/></p>
-										</td>
-									</tr>
-								</xsl:for-each>
 								<xsl:if test="$p/pdf != ''">
 									<tr>
 										<td>
@@ -306,7 +293,7 @@
 										<td>
 											<xsl:for-each select="$p/pdf">
 												<p>
-													<a class="pdf" href="{concat('pdf/', .)}" target="_blank">
+													<a class="pdf" href="{concat('pictures/', .)}" target="_blank">
 														<xsl:value-of select="concat('Документ-', position(), ' PDF')"/>
 													</a>
 												</p>
@@ -315,6 +302,7 @@
 									</tr>									
 								</xsl:if>
 							</table>
+
 						</div>
 					</xsl:if>
 					<xsl:if test="$is_big">

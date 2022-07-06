@@ -101,7 +101,7 @@
 			</xsl:if>
 			<xsl:if test="not($is_aux)">
 				<a href="{$p/show_product}" class="image-container">
-					<img src="{if($p/main_pic) then concat($p/@path, $p/main_pic) else if($p/pic_link) then $p/pic_link[1] else 'img/no_image.png'}" alt="{$p/name}"/>
+					<img src="{$img}" alt="{$p/name}"/>
 				</a>
 				<a href="{$p/show_product}" class="title">
 					<xsl:value-of select="$p/name"/>
@@ -160,7 +160,7 @@
 			<xsl:variable name="p" select="product" />
 			<xsl:variable name="is_aux" select="aux != ''" />
 			<xsl:variable name="img" select="if(item_own_extras/img != '') then item_own_extras/img else 'img/no_image.png'"/>
-			<xsl:variable name="main_pic" select="if($p/main_pic != '') then concat($p/@path, $p/main_pic) else if($p/pic_link) then $p/pic_link[1] else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic" select="if($p/main_pic != '') then concat($p/@path, $p/main_pic) else 'img/no_image.png'"/>
 
 			<div class="item">
 				<xsl:if test="$is_aux">
