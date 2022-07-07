@@ -297,9 +297,10 @@ public class CrawlerController implements DBConstants.Parse {
 	}
 
 
-	private CrawlerController() throws Exception {
+	private CrawlerController(IntegrateBase.Info baseInfo) throws Exception {
 
-		info = new IntegrateBase.Info();
+		info = baseInfo;
+		info.limitLog(500);
 
 		// Список прокси серверов
 		reloadProxyList();
@@ -324,6 +325,7 @@ public class CrawlerController implements DBConstants.Parse {
 			        		if (baseUrl == null) {
 			        			baseUrl = new URL(seed);
 					        }
+					        info.pushLog("Seed added: {}", seed);
 			        	} else {
 					        // Проверка правильности регулярного выражения
 					        // Для этого используются все части, после второй (третяя и далее)
@@ -334,6 +336,7 @@ public class CrawlerController implements DBConstants.Parse {
 									info.pushLog("Testing regex: {} - OK", parts[0]);
 							}
 			        		urlStyles.put(parts[0], parts[1]);
+					        info.pushLog("Template added: {} for {}", parts[1], parts[0]);
 			        	}
 			        }
 			    }
@@ -368,7 +371,7 @@ public class CrawlerController implements DBConstants.Parse {
 			resultTempFilesDir = resultDir + "_files/";
 		}
 		info.pushLog("Output directories created");
-		info.limitLog(1000);
+		info.limitLog(300);
 	}
 
 	/**
@@ -415,13 +418,13 @@ public class CrawlerController implements DBConstants.Parse {
 
 	/**
 	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
-	 * @param crawlerClass
+	 * @param
 	 * @throws Exception
 	 */
-	private void start(Class<? extends BasicCrawler> crawlerClass,  Mode mode) throws Exception {
+	private void start(Mode mode) throws Exception {
 		info.pushLog("Current mode : {}", mode);
 		if (mode == Mode.get || mode == Mode.all) {
-			initAndStartCrawler(crawlerClass);
+			initAndStartCrawler();
 		}
 		if (mode == Mode.transform || mode == Mode.all || mode == Mode.all_but_get) {
 			transformSource();
@@ -438,14 +441,15 @@ public class CrawlerController implements DBConstants.Parse {
 	}
 
 	private void terminateInt() {
-		CONTROLLER.shutdown();
+		stopCrawling();
+		//CONTROLLER.shutdown();
 	}
 	/**
 	 * Создать объект crawler4j и начать скачку страниц
-	 * @param crawlerClass
+	 * @param
 	 * @throws Exception
 	 */
-	private void initAndStartCrawler(Class<? extends BasicCrawler> crawlerClass) throws Exception {
+	private void initAndStartCrawler() throws Exception {
 		// ������������ crawler4j
 		int politeness = Integer.parseInt(AppContext.getProperty(POLITENESS, "none"));
 		String storageDir = AppContext.getRealPath(AppContext.getProperty(STORAGE_DIR, ""));
@@ -494,7 +498,7 @@ public class CrawlerController implements DBConstants.Parse {
 			ps.executeUpdate();
 		} catch (Exception e) {
 			ServerLogger.error("SQL error", e);
-			getInfo().addError(e);
+			info.addError(e);
 			return;
 		}
 
@@ -506,7 +510,7 @@ public class CrawlerController implements DBConstants.Parse {
 			Thread crawlThread = new Thread(new CrawlThread(i));
 			crawlThread.setDaemon(true);
 			crawlThread.start();
-			getInfo().pushLog("Starting Crawler #{}", i);
+			info.pushLog("Starting Crawler #{}", i);
 			Thread.sleep(politeness + Math.round(Math.random() * politeness));
 		}
 		/*
@@ -528,62 +532,19 @@ public class CrawlerController implements DBConstants.Parse {
 	}
 	/**
 	 * Выполнить проход по всем доступным урлам согласно настройкам из файлов
-	 * @param crawlerClass
+	 * @param
 	 * @throws Exception
 	 */
-	public static void startCrawling(Class<? extends BasicCrawler> crawlerClass, IntegrateBase.Info info, Mode mode,
-	                                 UrlModifier... modifier) throws Exception {
-		getSingleton(true).info = info;
+	public static void startCrawling(IntegrateBase.Info info, Mode mode, UrlModifier... modifier) throws Exception {
+		singleton = new CrawlerController(info);
 		if (modifier != null && modifier.length > 0)
-			getSingleton().urlModifier = modifier[0];
-		getSingleton().start(crawlerClass, mode);
+			singleton.urlModifier = modifier[0];
+		singleton.start(mode);
 	}
 	
 	public static void terminate() {
-		getSingleton().terminateInt();
-	}
-	/**
-	 * @deprecated
-	 * Добавить результат парсинга одного URL (вызывается из экземпляра WebCrawler)
-	 * Результат записывается в файл с названием, которое соответствует урлу
-	 * @param crawler - кролер, который вернул результат
-	 * @param result - результат парсинга
-	 */
-	void pageProcessed(Page page, String result, BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
-		// Записать в файл изначальный полученный html
-		try {
-			String url = page.getWebURL().getURL();
-			url = URLDecoder.decode(url, "UTF-8");
-			String fileName = Strings.createFileName(url);
-			Files.createDirectories(Paths.get(resultTempSrcDir));
-			// Если результат парсинга урла не пустая строка - записать этот результат в файл
-			if (!StringUtils.isBlank(result)) {
-				Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
-			}
-		} catch (Exception e) {
-			ServerLogger.error("Error downloading html file", e);
-			info.pushLog("Can not write parsing results to a file", e);
-		}
-		currentProxyUrlsCount++;
-		// Проверка, нужно ли менять прокси
-		if (proxies.size() > 0 && urlsPerProxy > 0 && currentProxyUrlsCount >= urlsPerProxy) {
-			reinitCrawler(crawler);
-		}
-	}
-
-	/**
-	 * Взять новый прокси адрес из списка и пересоздать краулер
-	 */
-	private void reinitCrawler(BasicCrawler crawler) throws IllegalAccessException, InstantiationException {
-		if (resetConfigQueueProxy()) {
-			// Изменение настроек контроллера ,создание нового объекта PageFetcher
-			//CONTROLLER.getPageFetcher().shutDown();
-			CONTROLLER.shutdown();
-			PageFetcher newFetcher = new PageFetcher(CONFIG);
-			CONTROLLER.setPageFetcher(newFetcher);
-			// Установка нового PageFetcher в объект текущего кролера (WebCrawler)
-			crawler.init(crawler.getMyId(), CONTROLLER);
-		}
+		if (singleton != null)
+			singleton.terminateInt();
 	}
 
 	/**
@@ -631,21 +592,6 @@ public class CrawlerController implements DBConstants.Parse {
 		return false;
 	}
 
-	/**
-	 * Вернуть контроллер
-	 * @return
-	 */
-	static CrawlerController getSingleton(boolean...forceCreate) {
-		try {
-			if (singleton == null || (forceCreate.length > 0 && forceCreate[0]))
-				singleton = new CrawlerController();
-			return singleton;
-		} catch (Exception e) {
-			ServerLogger.error("Crawler not inited", e);
-			info.pushLog("Error", e);
-			throw new RuntimeException(e);
-		}
-	}
 	/**
 	 * Загрузить все файлы, которые упоминаются в результирующем документе
 	 */
@@ -837,13 +783,21 @@ public class CrawlerController implements DBConstants.Parse {
 
 
 
-	public static String transformUrl(String url) {
-		return getSingleton().transformUrlInt(url);
+	public static String transformUrl(String url) throws Exception {
+		if (singleton != null) {
+			return singleton.transformUrlInt(url);
+		} else {
+			return new CrawlerController(new IntegrateBase.Info()).transformUrlInt(url);
+		}
 	}
 
 
-	public static String transformString(String html, String url) {
-		return getSingleton().transformStringInt(html, url);
+	public static String transformString(String html, String url) throws Exception {
+		if (singleton != null) {
+			return singleton.transformStringInt(html, url);
+		} else {
+			return new CrawlerController(new IntegrateBase.Info()).transformStringInt(html, url);
+		}
 	}
 
 
@@ -1143,18 +1097,6 @@ public class CrawlerController implements DBConstants.Parse {
 			urlModifier.modifyUrl(url);
 	}
 
-	/**
-	 * Обарботать ситуацию, когда не возможно подключиться к странице
-	 * @param url
-	 * @param crawler
-	 */
-	void handleNoConnectionError(WebURL url, BasicCrawler crawler) {
-		try {
-			reinitCrawler(crawler);
-		} catch (Exception e) {
-			ServerLogger.error("Can not switch proxy url: " + url.getURL(), e);
-		}
-	}
 
 
 
@@ -1236,14 +1178,130 @@ public class CrawlerController implements DBConstants.Parse {
 					} else {
 						hasNewUrls(this, false);
 					}
-					long millisForProcess = System.currentTimeMillis() - startMillis;
+					long millisForProcess = Math.abs(System.currentTimeMillis() - startMillis);
+					/*
 					if (millisForProcess < politenessMs)
 						Thread.sleep(politenessMs - millisForProcess);
+
+					 */
+					Thread.sleep(politenessMs);
 				} catch (Exception e) {
 					ServerLogger.error("SQL exception", e);
 				}
 			}
-			getInfo().pushLog("Crawler thread {} finished crawling", id);
+			info.pushLog("Crawler thread {} finished crawling", id);
+		}
+
+		/**
+		 * Обработать один урл
+		 * Сохранить файл, если надо
+		 * Сохранить в БД все урлы со страницы
+		 * @param url
+		 * @return - если найдены новые урлы, возвращается true
+		 */
+		private boolean processUrl(Url url) {
+			boolean urlsFound = false;
+			try {
+				org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
+				Document doc = con.get();
+				doc.setBaseUri(base.toString());
+				if (con.response().statusCode() == 200) {
+					String template = getStyleForUrl(url.url);
+
+					// Дальнейшая обработка только для урлов, соответсвующих шаблонам в файле urls.txt
+					if (template != null) {
+
+						// Если надо сохранять эту страницу, то сохранить ее файл
+						if (!StringUtils.equalsIgnoreCase(template, NO_TEMPLATE)) {
+							doc.body().attr("source", url.url);
+							String result = JsoupUtils.outputHtmlDoc(doc);
+							String fileName = url.url;
+							try {
+								String strUrl = URLDecoder.decode(url.url, "UTF-8");
+								fileName = Strings.createFileName(strUrl);
+								Files.createDirectories(Paths.get(resultTempSrcDir));
+								// Если результат парсинга урла не пустая строка - записать этот результат в файл
+								if (!StringUtils.isBlank(result)) {
+									Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
+								}
+							} catch (Exception e) {
+								throw new Exception("FILE SAVE ERROR: " + fileName + " crawler #" + id);
+							}
+							url.status = SUCCESS_SAVED;
+						} else {
+							url.status = SUCCESS_NOT_SAVED;
+						}
+
+						ServerLogger.debug("CRAWL PROCESS URL " + url.url + " SIZE: " + doc.outerHtml().length());
+
+
+						// Далее берем все ссылки и добавляем их в БД
+						TemplateQuery insert = new TemplateQuery("insert url");
+						for (Element link : doc.select("a[href]")) {
+							ServerLogger.debug("CRAWL PROCESS HREF " + link.attr("href"));
+
+							// Преобразовать урл в нормальный формат (добавить base)
+							String linkUrlStr = link.attr("abs:href");
+
+							if (StringUtils.containsIgnoreCase(linkUrlStr, "detail"))
+								info.pushLog("CONTAINS {}", linkUrlStr);
+
+							// Пропустить все ссылки на другие домены
+							if (isUrlAbsolute(linkUrlStr)) {
+								URL testUrl = new URL(linkUrlStr);
+								if (!StringUtils.equalsIgnoreCase(testUrl.getHost(), base.getHost()))
+									continue;
+							} else {
+								continue;
+							}
+
+							ServerLogger.debug("CRAWL CHECK HREF " + link.attr("href"));
+
+							// Сохранить новый урл (только в том случае если он нужен)
+							if (getStyleForUrl(linkUrlStr) != null) {
+								if (StringUtils.containsIgnoreCase(linkUrlStr, "detail")) {
+									info.pushLog("ADDING PROD: {}", linkUrlStr);
+								}
+								urlsFound = true;
+								Url urlToSave = new Url(linkUrlStr);
+								buildSaveUrlQuery(insert, urlToSave);
+							} else if (StringUtils.containsIgnoreCase(linkUrlStr, "detail")) {
+								info.pushLog("IGNORING PROD: {}", linkUrlStr);
+							}
+							ServerLogger.debug("CRAWL FINISH HREF " + link.attr("href"));
+						}
+						// Сохранение в БД
+						if (urlsFound) {
+							insert.sql(" ON DUPLICATE KEY UPDATE " + PR_URL + " = VALUES(" + PR_URL + ")");
+							try (Connection conn = MysqlConnector.getConnection();
+							     PreparedStatement ps = insert.prepareQuery(conn)) {
+								ps.executeUpdate();
+							}
+						} else {
+							info.pushLog("NO URLS FOUND: {}", url.url);
+						}
+						updateUrl(url);
+						ServerLogger.debug("CRAWL UPDATE URL " + url.url);
+					}
+					countAndInformVisited("#" + id, url.url);
+				} else {
+					throw new Exception("HTTP CONNECTIVITY ERROR: " + con.response().statusCode() + " " + con.response().statusMessage());
+				}
+			} catch (Exception e) {
+				StringWriter writer = new StringWriter();
+				PrintWriter out = new PrintWriter(writer);
+				e.printStackTrace(out);
+				url.comment = writer.toString();
+				url.status = ERROR;
+				try {
+					updateUrl(url);
+				} catch (Exception ex) {
+					ServerLogger.error("MYSQL error", ex);
+				}
+				ServerLogger.error("Connection error", e);
+				info.pushLog("Crawler {} - URL ERROR {} for {}", "#" + id, e.getLocalizedMessage(), url.url);
+			}
+			return urlsFound;
 		}
 
 	}
@@ -1321,97 +1379,6 @@ public class CrawlerController implements DBConstants.Parse {
 		}
 	}
 
-	/**
-	 * Обработать один урл
-	 * Сохранить файл, если надо
-	 * Сохранить в БД все урлы со страницы
-	 * @param url
-	 * @return - если найдены новые урлы, возвращается true
-	 */
-	private boolean processUrl(Url url) {
-		boolean urlsFound = false;
-		try {
-			org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
-			Document doc = con.get();
-			doc.setBaseUri(base.toString());
-			if (con.response().statusCode() == 200) {
-				String template = getStyleForUrl(url.url);
-
-				// Дальнейшая обработка только для урлов, соответсвующих шаблонам в файле urls.txt
-				if (template != null) {
-
-					// Если надо сохранять эту страницу, то сохранить ее файл
-					if (!StringUtils.equalsIgnoreCase(template, NO_TEMPLATE)) {
-						doc.body().attr("source", url.url);
-						String result = JsoupUtils.outputHtmlDoc(doc);
-						String fileName = url.url;
-						try {
-							String strUrl = URLDecoder.decode(url.url, "UTF-8");
-							fileName = Strings.createFileName(strUrl);
-							Files.createDirectories(Paths.get(resultTempSrcDir));
-							// Если результат парсинга урла не пустая строка - записать этот результат в файл
-							if (!StringUtils.isBlank(result)) {
-								Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
-							}
-						} catch (Exception e) {
-							throw new Exception("FILE SAVE ERROR: " + fileName);
-						}
-						url.status = SUCCESS_SAVED;
-					} else {
-						url.status = SUCCESS_NOT_SAVED;
-					}
-
-					// Далее берем все ссылки и добавляем их в БД
-					TemplateQuery insert = new TemplateQuery("insert url");
-					for (Element link : doc.select("a[href]")) {
-
-						// Преобразовать урл в нормальный формат (добавить base)
-						String linkUrlStr = link.attr("abs:href");
-
-						// Пропустить все ссылки на другие домены
-						if (isUrlAbsolute(linkUrlStr)) {
-							URL testUrl = new URL(linkUrlStr);
-							if (!StringUtils.equalsIgnoreCase(testUrl.getHost(), base.getHost()))
-								continue;
-						}
-
-						// Сохранить новый урл (только в том случае если он нужен)
-						if (getStyleForUrl(linkUrlStr) != null) {
-							urlsFound = true;
-							Url urlToSave = new Url(linkUrlStr);
-							buildSaveUrlQuery(insert, urlToSave);
-						}
-					}
-					// Сохранение в БД
-					if (urlsFound) {
-						insert.sql(" ON DUPLICATE KEY UPDATE " + PR_URL + " = VALUES(" + PR_URL + ")");
-						try (Connection conn = MysqlConnector.getConnection();
-						     PreparedStatement ps = insert.prepareQuery(conn)) {
-							ps.executeUpdate();
-						}
-					}
-					updateUrl(url);
-				}
-				countAndInformVisited(url.url);
-			} else {
-				throw new Exception("HTTP CONNECTIVITY ERROR: " + con.response().statusCode() + " " + con.response().statusMessage());
-			}
-		} catch (Exception e) {
-			StringWriter writer = new StringWriter();
-			PrintWriter out = new PrintWriter(writer);
-			e.printStackTrace(out);
-			url.comment = writer.toString();
-			url.status = ERROR;
-			try {
-				updateUrl(url);
-			} catch (Exception ex) {
-				ServerLogger.error("MYSQL error", ex);
-			}
-			ServerLogger.error("Connection error", e);
-			getInfo().pushLog("URL ERROR {} for {}", e.getLocalizedMessage(), url.url);
-		}
-		return urlsFound;
-	}
 
 	/**
 	 * Отметка, были ли новые урлы в процессе разбора страницы.
@@ -1441,7 +1408,7 @@ public class CrawlerController implements DBConstants.Parse {
 	 * Подсчитать посещенные урлы и вывести в лог
 	 * @param url
 	 */
-	private synchronized void countAndInformVisited(String url) {
+	private synchronized void countAndInformVisited(String crawlerId, String url) {
 		totalVisitedUrls++;
 		minuteVisitedUrls++;
 		long now = System.currentTimeMillis();
@@ -1458,10 +1425,10 @@ public class CrawlerController implements DBConstants.Parse {
 					totalFoundUrls = rs.getInt(1);
 			} catch (Exception e) {
 				ServerLogger.error("SQL error", e);
-				getInfo().addError(e);
+				info.addError(e);
 			}
 		}
-		getInfo().pushLog("Visited: {}; Found: {}; VPM: {};  URL: {}", totalVisitedUrls, totalFoundUrls, visitsPerMinute, url);
+		info.pushLog("Crawler: {}; Visited: {}; Found: {}; VPM: {};  URL: {}", crawlerId, totalVisitedUrls, totalFoundUrls, visitsPerMinute, url);
 	}
 
 }

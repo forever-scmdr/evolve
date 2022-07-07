@@ -56,6 +56,11 @@ public abstract class IntegrateBase extends Command {
 			this.date = new Date();
 			this.message = MessageFormatter.arrayFormat(message, params).getMessage();
 		}
+
+		@Override
+		public String toString() {
+			return message;
+		}
 	}
 
 	private static class Error {
@@ -92,7 +97,7 @@ public abstract class IntegrateBase extends Command {
 	}
 
 	public static class Info {
-		private Timer timer = new Timer();
+		private volatile Timer timer = new Timer();
 
 		private static final String _indexation = "Индексация названий товаров";
 
@@ -102,12 +107,16 @@ public abstract class IntegrateBase extends Command {
 		private volatile int position = 0;
 		private volatile int processed = 0;
 		private volatile int toProcess = 0;
-		private ArrayDeque<LogMessage> log = new ArrayDeque<>();
-		private ArrayList<Error> errors = new ArrayList<>();
+		private volatile ArrayDeque<LogMessage> log = new ArrayDeque<>();
+		private volatile ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 300;
 		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
 		private String host;
+
+		public Info() {
+			ServerLogger.debug("IntegrateBase.Info instance created");
+		}
 
 		public synchronized void setOperation(String opName) {
 			operation = opName;

@@ -29,6 +29,10 @@
                     return str.indexOf(suffix, str.length - suffix.length) !== -1;
                 }
 
+                setTimeout(function(){
+                    document.location.replace("/crawl");
+                }, 5000);
+
                 refreshTimeout = setTimeout(
                         function () {
                             h = document.location.href;

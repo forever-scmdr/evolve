@@ -22,7 +22,7 @@ public class SingleCrawlerCommand extends IntegrateBase {
 	protected void integrate() throws Exception {
 		String stage = getVarSingleValueDefault(STAGE_PARAM, "PREPARE_URLS");
 		String resetToStage = getVarSingleValueDefault(RESET_TO_STAGE_PARAM, "INIT");
-		info.limitLog(30);
+		info.limitLog(300);
 		info.setOperation("Парсинг сайта");
 		SingleItemCrawlerController.State state;
 		try {
