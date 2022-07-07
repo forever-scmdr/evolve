@@ -8,6 +8,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.fwk.CrawlerController;
 import lunacrawler.fwk.Parse_item;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
  * Команда для парсинга сайта
@@ -22,12 +23,16 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 	@Override
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
-		XSLTransformCrawler.startCrawling(info, mode, this);
+		try {
+			CrawlerController.startCrawling(info, CrawlerController.Mode.valueOf(mode), null);
+		} catch (Exception e) {
+			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
+		}
 	}
 
 	@Override
 	protected void terminate() throws Exception {
-		XSLTransformCrawler.terminate();
+		CrawlerController.terminate();
 	}
 
 	public ResultPE test() throws Exception {
