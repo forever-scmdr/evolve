@@ -491,7 +491,7 @@
 			</xsl:choose>
 			<xsl:if test="extra_xml and extra_xml != ''">
 				<xsl:variable name="parsed" select="parse-xml(extra_xml)"/>
-				<div class="device__in-stock"><i class="fas fa-signal"></i>склад 1: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; склад 2: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
+				<div class="device__in-stock"><i class="fas fa-signal"></i>Шевченко 7: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; Гродно: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
 			</xsl:if>
 
 
@@ -599,7 +599,7 @@
 				</xsl:choose>
 				<xsl:if test="extra_xml and extra_xml != ''">
 					<xsl:variable name="parsed" select="parse-xml(extra_xml)"/>
-					<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i>склад 1: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; склад 2: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
+					<div class="device__in-stock device_row__in-stock"><i class="fas fa-signal"></i>Шевченко 7: <xsl:value-of select="normalize-space($parsed/offer/sklad1)" />; Гродно: <xsl:value-of select="normalize-space($parsed/offer/sklad2)" /></div>
 				</xsl:if>
 			</div>
 			<xsl:for-each select="tag">
