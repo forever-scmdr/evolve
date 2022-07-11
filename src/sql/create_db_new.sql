@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `model_xml` (
 -- **********      ID айтемов и параметров      ***************
 -- ************************************************************
 
+
 CREATE TABLE IF NOT EXISTS `assoc_ids` (
   `aid_id` int(4) NOT NULL AUTO_INCREMENT,
   `aid_name` varchar(100) NOT NULL,
