@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,6 +40,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 /**
  * В стилях самостоятельные сущности должны содержать атрибут ID. По этому ID они будут идентифицироваться на разных страницах
  * одного сайта. Поэтому ID должен получаться как часть URL, ведущего на страницу
@@ -1159,6 +1163,7 @@ public class CrawlerController implements DBConstants.Parse {
 
 		@Override
 		public void run() {
+			info.setOperation("Обход сайта, поиск ссылок и скачивание страниц");
 			while (shouldContinue && hasMoreUrls) {
 				try {
 					long startMillis = System.currentTimeMillis();
@@ -1214,6 +1219,14 @@ public class CrawlerController implements DBConstants.Parse {
 						// Если надо сохранять эту страницу, то сохранить ее файл
 						if (!StringUtils.equalsIgnoreCase(template, NO_TEMPLATE)) {
 							doc.body().attr("source", url.url);
+
+							// Удалить ненужные элементы
+							doc.select("script").remove();
+							doc.select("header").remove();
+							doc.select("div[id=header__storage]").remove();
+							doc.select("div[id=settingsModal]").remove();
+							doc.select("div[data-testid=footer-test]").remove();
+
 							String result = JsoupUtils.outputHtmlDoc(doc);
 							String fileName = url.url;
 							try {
@@ -1222,7 +1235,16 @@ public class CrawlerController implements DBConstants.Parse {
 								Files.createDirectories(Paths.get(resultTempSrcDir));
 								// Если результат парсинга урла не пустая строка - записать этот результат в файл
 								if (!StringUtils.isBlank(result)) {
-									Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
+									File compressedFile = Paths.get(resultTempSrcDir + fileName).toFile();
+									ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(compressedFile));
+									ZipEntry e = new ZipEntry(fileName + ".html");
+									zout.putNextEntry(e);
+									byte[] data = result.getBytes(StandardCharsets.UTF_8);
+									zout.write(data, 0, data.length);
+									zout.closeEntry();
+									zout.close();
+
+									//Files.write(Paths.get(resultTempSrcDir + fileName), result.getBytes(UTF_8));
 								}
 							} catch (Exception e) {
 								throw new Exception("FILE SAVE ERROR: " + fileName + " crawler #" + id);
@@ -1232,19 +1254,12 @@ public class CrawlerController implements DBConstants.Parse {
 							url.status = SUCCESS_NOT_SAVED;
 						}
 
-						ServerLogger.debug("CRAWL PROCESS URL " + url.url + " SIZE: " + doc.outerHtml().length());
-
-
 						// Далее берем все ссылки и добавляем их в БД
 						TemplateQuery insert = new TemplateQuery("insert url");
 						for (Element link : doc.select("a[href]")) {
-							ServerLogger.debug("CRAWL PROCESS HREF " + link.attr("href"));
 
 							// Преобразовать урл в нормальный формат (добавить base)
 							String linkUrlStr = link.attr("abs:href");
-
-							if (StringUtils.containsIgnoreCase(linkUrlStr, "detail"))
-								info.pushLog("CONTAINS {}", linkUrlStr);
 
 							// Пропустить все ссылки на другие домены
 							if (isUrlAbsolute(linkUrlStr)) {
@@ -1255,20 +1270,12 @@ public class CrawlerController implements DBConstants.Parse {
 								continue;
 							}
 
-							ServerLogger.debug("CRAWL CHECK HREF " + link.attr("href"));
-
 							// Сохранить новый урл (только в том случае если он нужен)
 							if (getStyleForUrl(linkUrlStr) != null) {
-								if (StringUtils.containsIgnoreCase(linkUrlStr, "detail")) {
-									info.pushLog("ADDING PROD: {}", linkUrlStr);
-								}
 								urlsFound = true;
 								Url urlToSave = new Url(linkUrlStr);
 								buildSaveUrlQuery(insert, urlToSave);
-							} else if (StringUtils.containsIgnoreCase(linkUrlStr, "detail")) {
-								info.pushLog("IGNORING PROD: {}", linkUrlStr);
 							}
-							ServerLogger.debug("CRAWL FINISH HREF " + link.attr("href"));
 						}
 						// Сохранение в БД
 						if (urlsFound) {
@@ -1428,6 +1435,9 @@ public class CrawlerController implements DBConstants.Parse {
 				info.addError(e);
 			}
 		}
+		info.setProcessed(totalVisitedUrls);
+		info.setToProcess(totalFoundUrls);
+		info.setLineNumber(visitsPerMinute);
 		info.pushLog("Crawler: {}; Visited: {}; Found: {}; VPM: {};  URL: {}", crawlerId, totalVisitedUrls, totalFoundUrls, visitsPerMinute, url);
 	}
 

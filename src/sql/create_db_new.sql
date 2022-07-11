@@ -187,6 +187,7 @@ CREATE TABLE `parse` (
      `pr_filename` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
      `pr_status` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0 - not checked; 1 - success and saved (has file); 2 - success and not saved (no file); 10 - access error (tried but not saved)',
      `pr_comment` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+     `pr_modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
      PRIMARY KEY (`pr_serial`) USING BTREE,
      UNIQUE INDEX `url` (`pr_url`) USING BTREE,
      INDEX `status` (`pr_status`) USING BTREE,
@@ -194,4 +195,6 @@ CREATE TABLE `parse` (
 )
     COLLATE='utf8_general_ci'
     ENGINE=InnoDB
+    AUTO_INCREMENT=207362
 ;
+

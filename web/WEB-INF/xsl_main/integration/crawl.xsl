@@ -78,16 +78,16 @@
 						</td>
 					</tr>
 					<tr>
-						<td>Создано разделов (классов):</td>
+						<td>Урлов найдено:</td>
 						<td class="error"><xsl:value-of select="/page/to_process"/></td>
 					</tr>
 					<tr>
-						<td>Обработано товаров:</td>
+						<td>Урлов обработано:</td>
 						<td class="error"><xsl:value-of select="/page/processed"/></td>
 					</tr>
 					<tr>
-						<td>Проиндексировано товаров:</td>
-						<td class="error"><xsl:value-of select="/page/items-indexed"/></td>
+						<td>Обработано за последнюю минуту:</td>
+						<td class="error"><xsl:value-of select="/page/total-line-number"/></td>
 					</tr>
 					<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>
 					<xsl:for-each select="/page/message">
