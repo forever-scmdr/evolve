@@ -30,7 +30,7 @@
 				}
 
 				refreshTimeout = setTimeout(function(){
-					document.location.replace("/crawl");
+					document.location.replace("/<xsl:value-of select="page/@name"/>");
 				}, 5000);
 
 				function toggleRefresh() {

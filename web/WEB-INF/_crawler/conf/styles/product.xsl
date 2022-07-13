@@ -7,9 +7,9 @@
 	<xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="crumbs" select="html//ol[contains(@class, 'MuiBreadcrumbs-ol')]//a"/>
-	<xsl:variable name="href_id" select="f:create_id(html/body/@source, 'digikey/')"/>
-	<xsl:variable name="tables" select="html//table[contains(@class, 'MuiTable-root')]"/>
+	<xsl:variable name="crumbs" select="body//ol[contains(@class, 'MuiBreadcrumbs-ol')]//a"/>
+	<xsl:variable name="href_id" select="f:create_id(body/@source, 'digikey/')"/>
+	<xsl:variable name="tables" select="body//table[contains(@class, 'MuiTable-root')]"/>
 	<xsl:variable name="table_1" select="$tables[1]"/>
 	<xsl:variable name="table_2" select="$tables[2]"/>
 
@@ -27,41 +27,41 @@
 				<h_parent parent="{f:create_id($crumbs[position() = last()]/@href, 'digikey/')}" element="section"/>
 				<parameter_1>
 					<name>Manufacturer</name>
-					<value><xsl:value-of select="$table_1//tr[@data-testid = 'overview-manufacturer']/td[2]//a" /></value>
+					<value><xsl:value-of select="normalize-space($table_1//tr[.//td[normalize-space(child::div) = 'Manufacturer']]/td[2]/div)" /></value>
 				</parameter_1>
 				<parameter_2>
 					<name>Manufacturer Product Number</name>
-					<value><xsl:value-of select="$table_1//td[@data-testid = 'mfr-number']/div" /></value>
+					<value><xsl:value-of select="normalize-space($table_1//td[@data-testid = 'mfr-number']/div)" /></value>
 				</parameter_2>
 				<parameter_3>
 					<name>Description</name>
-					<value><xsl:value-of select="$table_1//tr[.//div = 'Description']/td[2]/div" /></value>
+					<value><xsl:value-of select="normalize-space($table_1//tr[.//td[normalize-space(child::div) = 'Description']]/td[2]/div)" /></value>
 				</parameter_3>
 				<parameter_4>
 					<name>Digi-Key Part Number</name>
-					<value><xsl:value-of select="$table_1//tr[.//div = 'Digi-Key Part Number']/td[2]/div" /></value>
+					<value><xsl:value-of select="normalize-space($table_1//tr[.//td[normalize-space(child::div) = 'Digi-Key Part Number']]/td[2]/div)" /></value>
 				</parameter_4>
-				<xsl:variable name="cats" select="$table_2//tr[.//div = 'Category']/td[2]//a"/>
+				<xsl:variable name="cats" select="$table_2//tr[.//td[normalize-space(child::div) = 'Category']]/td[2]//a"/>
 				<parameter_5>
 					<name>First Category</name>
-					<value><xsl:value-of select="$cats[1]" /></value>
+					<value><xsl:value-of select="normalize-space($cats[1])" /></value>
 				</parameter_5>
 				<parameter_6>
 					<name>Second Category</name>
-					<value><xsl:value-of select="$cats[2]" /></value>
+					<value><xsl:value-of select="normalize-space($cats[2])" /></value>
 				</parameter_6>
 				<parameter_7>
 					<name>Package</name>
-					<value><xsl:for-each select="$table_2//tr[.//div = 'Package']/td[2]/div/div"><xsl:value-of select="normalize-space(.)" /><xsl:if test="position() != last()">, </xsl:if></xsl:for-each></value>
+					<value><xsl:for-each select="$table_2//tr[.//td[normalize-space(child::div) = 'Package']]/td[2]/div/div"><xsl:value-of select="normalize-space(.)" /><xsl:if test="position() != last()">, </xsl:if></xsl:for-each></value>
 				</parameter_7>
 				<parameter_8>
-					<xsl:variable name="param_trs" select="$table_2//tr[.//div = 'Product Status']/following-sibling::tr"/>
+					<xsl:variable name="param_trs" select="$table_2//tr[.//td[normalize-space(child::div) = 'Product Status']]/following-sibling::tr"/>
 					<name>Description</name>
-					<value><xsl:value-of select="string-join($param_trs/td[2]/div/div[. != '-'], 'ｦｸ')" /></value>
+					<value><xsl:value-of select="normalize-space(string-join($param_trs/td[2]/div/div[normalize-space(.) != '-'], 'ｦｸ'))" /></value>
 				</parameter_8>
 				<parameter_9>
 					<name>ECCN</name>
-					<value><xsl:value-of select="html//div[@data-testid = 'data-table-Environmental &amp; Export Classifications']//tr[.//td = 'ECCN']/td[2]" /></value>
+					<value><xsl:value-of select="normalize-space(body//div[@data-testid = 'data-table-Environmental &amp; Export Classifications']//tr[.//td[normalize-space(.) = 'ECCN']]/td[2])" /></value>
 				</parameter_9>
 			</product>
 		</result>

@@ -1646,7 +1646,7 @@
 	<!--//                             						                               -->
 	<!--//                         Интеграция парсинга в CSV                               -->
 	<!--//                             						                               -->
-	<page name="integrate_parsed_csv" template="integrate_parsed">
+	<page name="integrate_parsed_csv" template="integration/crawl">
 		<request>
 			<var name="action"/>
 		</request>
