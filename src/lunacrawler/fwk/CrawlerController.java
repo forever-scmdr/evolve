@@ -13,6 +13,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.UrlModifier;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.message.BasicHeader;
 import org.jsoup.Jsoup;
@@ -41,6 +42,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -687,7 +689,20 @@ public class CrawlerController implements DBConstants.Parse {
 			// Для каждого файла из временной директории
 			for (Path entry : stream) {
 				Path resultFile = Paths.get(resultTempTransformedDir + entry.getFileName().toString());
-				String html = Strings.cleanHtml(new String(Files.readAllBytes(entry), UTF_8));
+				String html = null;
+				try (FileInputStream fis = new FileInputStream(entry.toFile());
+				     ZipInputStream zis = new ZipInputStream(fis)) {
+					ZipEntry zipEntry = zis.getNextEntry();
+					if (zipEntry != null) {
+						html = IOUtils.toString(zis, StandardCharsets.UTF_8);
+						zis.closeEntry();
+					}
+				}
+				//String html = Strings.cleanHtml(new String(Files.readAllBytes(entry), UTF_8));
+				if (StringUtils.isBlank(html)) {
+					info.pushLog("URL file {} has not been transformed correctly. Archiving error", entry.toString());
+					continue;
+				}
 				Document pageDoc = Jsoup.parse(html);
 
 				String url = pageDoc.getElementsByTag("body").first().attr("source");
@@ -721,6 +736,7 @@ public class CrawlerController implements DBConstants.Parse {
 				info.increaseProcessed();
 			}
 		} catch (Exception e) {
+			ServerLogger.error("Error while transforming source html file", e);
 			info.pushLog("Error while transforming source html file", e);
 		}
 		info.pushLog("ЗАВЕРШЕНО: XSLT преобразование HTML в XML");
@@ -733,11 +749,19 @@ public class CrawlerController implements DBConstants.Parse {
 	 */
 	public String transformUrlInt(String url) {
 		// Записать в файл изначальный полученный html
-		try {
-			String fileName = Strings.createFileName(url);
-			Path file = Paths.get(resultTempSrcDir + fileName);
-			String content = new String(Files.readAllBytes(file), UTF_8);
-			return transformStringInt(content, url);
+		String fileName = Strings.createFileName(url);
+		Path file = Paths.get(resultTempSrcDir + fileName);
+		try (FileInputStream fis = new FileInputStream(file.toFile());
+		     ZipInputStream zis = new ZipInputStream(fis)) {
+			ZipEntry zipEntry = zis.getNextEntry();
+			if (zipEntry != null) {
+				String content = IOUtils.toString(zis, StandardCharsets.UTF_8);
+				//String content = new String(Files.readAllBytes(file), UTF_8);
+				zis.closeEntry();
+				return transformStringInt(content, url);
+			}
+			ServerLogger.error("ZIP entry not found in " + fileName);
+			return "ERROR";
 		} catch (Exception e) {
 			return handleTransformationException(e);
 		}

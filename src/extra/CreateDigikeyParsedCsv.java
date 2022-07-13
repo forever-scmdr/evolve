@@ -12,6 +12,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -21,7 +24,6 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 	private static final String INTEGRATE_DIR = "integrate";
 
 	private ParsedInfoProvider infoProvider;
-	private StringBuilder csv = new StringBuilder();
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -39,7 +41,13 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 		Element root = tree.getElementsByTag("data").first();
 		Elements products = root.select("product");
 
+		File csvFile = new File(AppContext.getRealPath(INTEGRATE_DIR), "result.csv");
+		//csvFile.mkdirs();
+		FileOutputStream fos = new FileOutputStream(csvFile);
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(fos, StandardCharsets.UTF_8));
+
 		// create header
+		StringBuilder line = new StringBuilder();
 		if (products.size() > 0) {
 			ParsedInfoProvider.InfoAccessor productDoc = infoProvider.getAccessorJsoup(products.first());
 			if (productDoc == null) {
@@ -50,17 +58,19 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 				Element param = productDoc.getFirst("parameter_" + i);
 				if (param != null) {
 					if (i > 1)
-						csv.append(',');
+						line.append(',');
 					String paramName = param.getElementsByTag("name").text();
-					csv.append(StringEscapeUtils.escapeCsv(paramName));
+					line.append(StringEscapeUtils.escapeCsv(paramName));
 				} else {
 					break;
 				}
 			}
 		}
+		writer.println(line.toString());
 
 		// create products
 		for (Element productElTree : products) {
+			line = new StringBuilder();
 			String code = null;
 			String name = null;
 			try {
@@ -75,28 +85,29 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 					continue;
 				}
-				csv.append("\r\n");
 				for (int i = 1; i < 100; i++) {
 					Element param = productDoc.getFirst("parameter_" + i);
 					if (param != null) {
 						if (i > 1)
-							csv.append(',');
+							line.append(',');
 						String value = param.getElementsByTag("value").text();
-						csv.append(StringEscapeUtils.escapeCsv(value));
+						line.append(StringEscapeUtils.escapeCsv(value));
 					} else {
 						break;
 					}
 				}
+				writer.println(line.toString());
+				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
 				info.addError("Product save error, ID = " + code + ", name = " + name, "catalog");
 			}
 		}
 
+		writer.flush();
+		writer.close();
 		// save file
-		File csvFile = new File(AppContext.getRealPath(INTEGRATE_DIR));
-		csvFile.mkdirs();
-		FileUtils.write(new File(csvFile, "result.csv"), csv, StandardCharsets.UTF_8);
+		//FileUtils.write(new File(csvFile, "result.csv"), csv, StandardCharsets.UTF_8);
 	}
 
 	@Override
