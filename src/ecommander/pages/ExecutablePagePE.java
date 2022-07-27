@@ -3,6 +3,7 @@ package ecommander.pages;
 import ecommander.controllers.SessionContext;
 import ecommander.fwk.Strings;
 import ecommander.model.User;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.CommandPE.CommandContainer;
 import ecommander.pages.var.*;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	/**
 	 * Предопределенные переменные страницы
 	 */
-	public static final String NOW_VALUE = "$now"; // текущая дата на сервере
+	public static final String NOW_VALUE = "$now"; // текущee время на сервере
+	public static final String DAY_VALUE = "$day"; // текущий день на сервере (dd.MM.yyyy) в виде строки
 	public static final String USERNAME_VALUE = "$username"; // текущий ползователь
 	public static final String PAGENAME_VALUE = "$pagename"; // название текущей страницы
 	public static final String PAGEURL_VALUE = "$pageurl"; // URL текущей страницы со всеми переменными
@@ -28,6 +30,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 	private static final HashSet<String> NON_CACHE_VARS = new HashSet<>();
 	static {
 		NON_CACHE_VARS.add(NOW_VALUE);
+		NON_CACHE_VARS.add(DAY_VALUE);
 		NON_CACHE_VARS.add(PAGENAME_VALUE);
 		NON_CACHE_VARS.add(PAGEURL_VALUE);
 	}
@@ -63,6 +66,8 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		else
 			user = User.getDefaultUser();
 		new RequestVariablePE(NOW_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, System.currentTimeMillis() + "")
+				.createExecutableClone(this,this);
+		new RequestVariablePE(DAY_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, DateDataType.DAY_FORMATTER.print(System.currentTimeMillis()) + "")
 				.createExecutableClone(this,this);
 		new RequestVariablePE(USERNAME_VALUE, RequestVariablePE.Scope.request, VariablePE.Style.path, user.getName())
 				.createExecutableClone(this,this);

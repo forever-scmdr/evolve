@@ -767,7 +767,7 @@
 	<item name="news_item" key="header date" caption="Новость или статья" key-unique="true" default-page="news_item" super="seo_container" ag-id="11" ag-hash="300774655">
 		<child item="seo" single="true"/>
 		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext"/>
-		<parameter name="date" type="date" caption="Дата публикации"/>
+		<parameter name="date" type="date" caption="Дата публикации" format="dd.MM.yyyy"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="для списка статей или новостей"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
 		<parameter name="text" type="text" caption="Текст" text-index="fulltext"/>
