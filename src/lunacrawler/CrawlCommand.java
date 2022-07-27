@@ -24,7 +24,7 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
 		try {
-			CrawlerController.startCrawling(info, CrawlerController.Mode.valueOf(mode), null);
+			CrawlerController.startJob(info, CrawlerController.Mode.valueOf(mode), null);
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}

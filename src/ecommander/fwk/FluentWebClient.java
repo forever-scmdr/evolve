@@ -26,7 +26,7 @@ public class FluentWebClient {
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {
 			req.viaProxy(proxy[0]);
 		}
-		return req.connectTimeout(1000).socketTimeout(3000)
+		return req.connectTimeout(10000).socketTimeout(30000)
 				.execute()
 				.handleResponse(response -> {
 					StatusLine statusLine = response.getStatusLine();
