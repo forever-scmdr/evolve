@@ -153,6 +153,8 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 						defs.put(id, def);
 						while (currentRowNum < sheet.getLastRowNum()) {
 							row = sheet.getRow(++currentRowNum);
+							if (row == null)
+								break;
 							String code = POIUtils.getCellAsString(row.getCell(0), eval);
 							if (StringUtils.isBlank(code) || StringUtils.startsWithIgnoreCase(code, "ID"))
 								break;
@@ -182,6 +184,7 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 			}
 			section.set_params_short(StringUtils.join(paramsInShort, "|"));
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+			executeAndCommitCommandUnits(ItemStatusDBUnit.deleteChildren(section));
 
 			// Закрыть файл
 			doc.close();
@@ -234,7 +237,8 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 										params.addElement("name", def.caption);
 										params.addElement("value", value);
 										params.endElement();
-										picName.append(idValue);
+										if (def.useForPic)
+											picName.append(idValue);
 									}
 								}
 							}
