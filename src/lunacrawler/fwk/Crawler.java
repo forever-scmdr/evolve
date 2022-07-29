@@ -29,6 +29,9 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Сам краулер, который создает потоки и фактически выполняет всю работу по поиску и скачиванию урлов
+ */
 public class Crawler implements DBConstants.Parse {
 	public static final byte NOT_CHECKED = 0;
 	public static final byte SUCCESS_SAVED = 1;
@@ -57,6 +60,14 @@ public class Crawler implements DBConstants.Parse {
 			this.url = url;
 			this.serial = 0;
 			this.status = (byte) 0;
+			this.fileName = "";
+			this.comment = "";
+		}
+
+		public Url(String url, byte status) {
+			this.url = url;
+			this.serial = 0;
+			this.status = status;
 			this.fileName = "";
 			this.comment = "";
 		}
@@ -141,6 +152,8 @@ public class Crawler implements DBConstants.Parse {
 		minuteStarted = System.currentTimeMillis();
 
 		// Если надо обрабатывать sitemap.xml
+		threadHadUrls.clear();
+		hasMoreUrls = true;
 		if (isSitemapCrawl) {
 			// Сначала запустить все потоки скачки сайтмапа
 			ArrayList<Thread> sitemapThreads = new ArrayList<>();
@@ -165,6 +178,8 @@ public class Crawler implements DBConstants.Parse {
 		}
 
 		// Если надо просто обходить сайт
+		threadHadUrls.clear();
+		hasMoreUrls = true;
 		for (int i = 0; i < threadCount; i++) {
 			threadHadUrls.put(i, true);
 			Thread crawlThread = new Thread(isSitemapCrawl ? new SitemapCrawlThread(i) : new DirectCrawlThread(i));
@@ -175,7 +190,18 @@ public class Crawler implements DBConstants.Parse {
 		}
 	}
 
-	/**
+
+
+	/**********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *                                    Класс DirectCrawlThread
+	 *
+	 **********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *
+	 *
 	 * Поток простого карулера.
 	 * Предназначен для прямого парсинга сайта путем перебора всех ссылок на всех страницах сайта начиная с сидов
 	 */
@@ -402,8 +428,18 @@ public class Crawler implements DBConstants.Parse {
 	}
 
 
-	/**
-	 * Поток для парсинга урлов из sitemap.xml
+
+	/**********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *                                    Класс SitemapCrawlThread
+	 *
+	 **********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *
+	 *
+	 * Поток для парсинга урлов, найденных в sitemap.xml, т.е. для парсинга фактических страниц сайта
 	 * Отличается тем, что просто не сохраняет ссылки со страницы в БД
 	 */
 	private class SitemapCrawlThread extends DirectCrawlThread {
@@ -413,14 +449,25 @@ public class Crawler implements DBConstants.Parse {
 		}
 
 		@Override
-		protected boolean saveAllUrlsToDB(Document doc, Url url) throws MalformedURLException, SQLException, NamingException {
+		protected boolean saveAllUrlsToDB(Document doc, Url url) {
 			return false;
 		}
 	}
 
 
-	/**
-	 * Поток для парсинга файлов вида sitemap.xml
+
+
+	/**********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *                                    Класс SitemapCrawlThread
+	 *
+	 **********************************************************************************************************
+	 **********************************************************************************************************
+	 *
+	 *
+	 *
+	 * Поток для парсинга файлов вида sitemap.xml (не самих страниц сайта)
 	 * Из них сохраняются ссылки на страницы и ссылки на другие файлы sitemap в БД
 	 * Ничего другого не происходит
 	 */
@@ -446,13 +493,12 @@ public class Crawler implements DBConstants.Parse {
 //				setProxyIfHadSome(con);
 //				Document doc = con.get();
 //				if (con.response().statusCode() == 200) {
-					url.status = SUCCESS_NOT_SAVED;
+					url.status = SITEMAP_SUCCESS;
 					TemplateQuery insert = new TemplateQuery("insert url");
 					for (Element link : doc.select("sitemap")) {
 						// Преобразовать урл в нормальный формат (добавить base)
 						String linkUrlStr = StringUtils.normalizeSpace(link.selectFirst("loc").ownText());
-						Url urlToSave = new Url(linkUrlStr);
-						urlToSave.status = SITEMAP_NOT_CHECKED;
+						Url urlToSave = new Url(linkUrlStr, SITEMAP_NOT_CHECKED);
 						buildSaveUrlQuery(insert, urlToSave);
 						urlsFound = true;
 					}
@@ -465,12 +511,14 @@ public class Crawler implements DBConstants.Parse {
 							buildSaveUrlQuery(insert, urlToSave);
 						}
 					}
-					try (Connection conn = MysqlConnector.getConnection();
-					     PreparedStatement ps = insert.prepareQuery(conn)) {
-						ps.executeUpdate();
-					} catch (Exception e) {
-						ServerLogger.error("SQL error", e);
-						getInfo().addError(e);
+					if (!insert.isEmpty()) {
+						try (Connection conn = MysqlConnector.getConnection();
+						     PreparedStatement ps = insert.prepareQuery(conn)) {
+							ps.executeUpdate();
+						} catch (Exception e) {
+							ServerLogger.error("SQL error", e);
+							getInfo().addError(e);
+						}
 					}
 					updateUrl(url);
 					countAndInformVisited("#" + id, url.url);
@@ -568,16 +616,13 @@ public class Crawler implements DBConstants.Parse {
 	 * @param thread
 	 * @param hasUrls
 	 */
-	private void hasNewUrls(DirectCrawlThread thread, boolean hasUrls) {
+	private synchronized void hasNewUrls(DirectCrawlThread thread, boolean hasUrls) {
 		threadHadUrls.put(thread.id, hasUrls);
-		boolean allHadUrls = false;
+		boolean anyHadUrls = false;
 		for (Boolean hadUrls : threadHadUrls.values()) {
-			allHadUrls |= hadUrls;
+			anyHadUrls |= hadUrls;
 		}
-		if (!allHadUrls)
-			hasMoreUrls = false;
-		else
-			hasMoreUrls = true;
+		hasMoreUrls = anyHadUrls;
 	}
 
 
