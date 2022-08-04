@@ -214,16 +214,19 @@
 			<xsl:variable name="unit_price" select="$price * $base_quotient * $quotient"/>
 			<!--			<xsl:if test="$price_byn * $min_qty &lt; f:num(max)">-->
 			<xsl:if test="$pack_price_original &lt; f:num(max)">
-				<xsl:variable name="min_number" select="ceiling(f:num(min) div $price_byn)"/>
+				<xsl:variable name="min_num_double" select="f:num(min) div $price_byn"/>
+				<xsl:variable name="min_number" select="ceiling($min_num_double)"/>
 				<xsl:variable name="number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) * $min_qty else $min_qty"/>
 				<xsl:variable name="pack_number" select="if ($min_number &gt; 0) then ceiling($min_number div $min_qty) else 1"/>
-				<xsl:variable name="sum" select="$unit_price * $number"/>
-				<p>
-					<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
-					<xsl:if test="not($need_sum)">
-						<xsl:value-of select="f:format_currency_precise($unit_price)"/>&#160;от&#160;<xsl:value-of select="$pack_number"/><xsl:if test="$min_qty &gt; 1">&#160;x&#160;упк(<xsl:value-of select="$min_qty" />)</xsl:if><xsl:if test="$min_qty = 1">&#160;шт.</xsl:if>
-					</xsl:if>
-				</p>
+				<xsl:if test="$pack_number &gt; 1 or $min_num_double &gt;= 0.5 * $pack_number">
+					<xsl:variable name="sum" select="$unit_price * $number"/>
+					<p>
+						<xsl:if test="$need_sum">x<xsl:value-of select="$number"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($sum)"/></xsl:if>
+						<xsl:if test="not($need_sum)">
+							<xsl:value-of select="f:format_currency_precise($unit_price)"/>&#160;от&#160;<xsl:value-of select="$pack_number"/><xsl:if test="$min_qty &gt; 1">&#160;x&#160;упк(<xsl:value-of select="$min_qty" />)</xsl:if><xsl:if test="$min_qty = 1">&#160;шт.</xsl:if>
+						</xsl:if>
+					</p>
+				</xsl:if>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>

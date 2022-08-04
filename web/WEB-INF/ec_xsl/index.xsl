@@ -184,6 +184,12 @@
 					</div>
 				</xsl:for-each>
 			</div>
+			<div class="title_2">Новинки</div>
+			<div class="tags">
+				<xsl:for-each select="page/product">
+					<a href="{show_product}"><label class="tag"><xsl:value-of select="name"/></label></a>
+				</xsl:for-each>
+			</div>
 		</div>
 		<!-- CATALOG ITEMS END -->
 
