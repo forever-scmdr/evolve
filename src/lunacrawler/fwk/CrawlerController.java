@@ -367,7 +367,7 @@ public class CrawlerController {
 		info.limitLog(300);
 
 		// Краулер создается здесь но не запускается (он нужен только для скачивания урлов - только первый этап)
-		crawler = new Crawler(politenessMs, base, numberOfCrawlers, seedUrls, resultDir, this);
+		crawler = new Crawler(politenessMs, base, numberOfCrawlers, seedUrls, resultTempSrcDir, this);
 	}
 
 	/**
