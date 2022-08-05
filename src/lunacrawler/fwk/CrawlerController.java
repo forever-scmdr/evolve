@@ -975,7 +975,8 @@ public class CrawlerController {
 	 */
 	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
 		xml.startElement(parent.element, ID, parent.id, URL, parent.url);
-		ServerLogger.debug("el: " + parent.element + "   parent: " + parent.id + "   parent_url: " + parent.url);
+		//ServerLogger.debug("el: " + parent.element + "   parent: " + parent.id + "   parent_url: " + parent.url);
+		info.increaseProcessed();
 		// Добавить всех потомков
 		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
 		if (children != null) {
