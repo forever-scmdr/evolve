@@ -20,6 +20,7 @@ public class CurrencyRates implements ItemNames{
 
 	private HashMap<String, BigDecimal[]> rates;
 	private static final BigDecimal ONE_CENT = BigDecimal.valueOf(1, 2);
+	private static final BigDecimal FOUR_CENT = BigDecimal.valueOf(4, 2);
 
 	public CurrencyRates() throws Exception {
 		load();
@@ -64,8 +65,10 @@ public class CurrencyRates implements ItemNames{
 				totalExtraQuotient = totalExtraQuotient.multiply(quot);
 			}
 			bynPrice = price.multiply(rate[0]).divide(rate[1], BigDecimal.ROUND_HALF_EVEN).multiply(totalExtraQuotient).setScale(digitsAfterDot, BigDecimal.ROUND_CEILING);
-			if (bynPrice.compareTo(ONE_CENT) < 0)
-				bynPrice = ONE_CENT;
+//			if (bynPrice.compareTo(ONE_CENT) < 0)
+//				bynPrice = ONE_CENT;
+			if (bynPrice.compareTo(FOUR_CENT) < 0)
+				bynPrice = FOUR_CENT;
 		}
 		product.setValue(Product.PRICE, bynPrice);
 		/*
