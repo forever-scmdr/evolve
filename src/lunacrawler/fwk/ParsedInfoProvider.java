@@ -98,7 +98,8 @@ public class ParsedInfoProvider {
 
 	public Document getItem(String id) throws IOException {
 		String fileName = Strings.createFileName(id) + ".xml";
-		Path file = compiledDir.resolve(fileName);
+		String divisionDirName = Crawler.getUrlDirName(id);
+		Path file = compiledDir.resolve(divisionDirName + fileName);
 		String xml = new String(Files.readAllBytes(file), UTF_8);
 		return Jsoup.parse(xml, "localhost", Parser.xmlParser());
 	}
