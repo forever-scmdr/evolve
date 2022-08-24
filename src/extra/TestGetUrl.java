@@ -1,9 +1,11 @@
 package extra;
 
+import ecommander.fwk.OkWebClient;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.WebClient;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,12 +23,13 @@ public class TestGetUrl extends Command {
 		String url = getVarSingleValue("url");
 		//String result = WebClient.getString(url);
 		try {
-			Connection con = Jsoup.connect(url).timeout(5000);
-			Document doc = con.get();
-			if (con.response().statusCode() == 200) {
-				return getResult("result").setValue(doc.outerHtml());
+			//Connection con = Jsoup.connect(url).timeout(5000);
+			//Document doc = con.get();
+			String html = OkWebClient.getInstance().getString(url);
+			if (StringUtils.isNotBlank(html)) {
+				return getResult("result").setValue(html);
 			}
-			return getResult("result").setValue("ERROR: " + con.response().statusCode() + " " + con.response().statusMessage());
+			return getResult("result").setValue("ERROR empty");
 		} catch (Exception e) {
 			StringWriter writer = new StringWriter();
 			PrintWriter out = new PrintWriter(writer);

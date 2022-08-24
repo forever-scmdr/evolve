@@ -263,11 +263,13 @@ public class Crawler implements DBConstants.Parse {
 		protected boolean processUrl(Url url) {
 			boolean urlsFound = false;
 			try {
-				org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
-				setProxyIfHadSome(con);
-				Document doc = con.get();
-				doc.setBaseUri(base.toString());
-				if (con.response().statusCode() == 200) {
+//				org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
+//				setProxyIfHadSome(con);
+//				Document doc = con.get();St
+				String html = OkWebClient.getInstance().getString(url.url);
+				if (StringUtils.isNotBlank(html)) {
+					Document doc = JsoupUtils.parseXml(html);
+					doc.setBaseUri(base.toString());
 					String template = controller.getStyleForUrl(url.url);
 
 					// Дальнейшая обработка только для урлов, соответсвующих шаблонам в файле urls.txt
@@ -296,7 +298,7 @@ public class Crawler implements DBConstants.Parse {
 					}
 					countAndInformVisited("#" + id, url.url);
 				} else {
-					throw new Exception("HTTP CONNECTIVITY ERROR: " + con.response().statusCode() + " " + con.response().statusMessage());
+					throw new Exception("HTTP CONNECTIVITY ERROR: " + "empty"/*con.response().statusCode() + " " + con.response().statusMessage()*/);
 				}
 			} catch (Exception e) {
 				StringWriter writer = new StringWriter();
@@ -342,7 +344,9 @@ public class Crawler implements DBConstants.Parse {
 				Files.createDirectories(Paths.get(filesSaveDir));
 				// Если результат парсинга урла не пустая строка - записать этот результат в файл
 				if (!StringUtils.isBlank(result)) {
-					File compressedFile = Paths.get(filesSaveDir + fileName).toFile();
+					String dirName = filesSaveDir + getUrlDirName(url.url);
+					Files.createDirectories(Paths.get(dirName));
+					File compressedFile = Paths.get(dirName + fileName).toFile();
 					ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(compressedFile));
 					ZipEntry e = new ZipEntry(fileName + ".html");
 					zout.putNextEntry(e);
@@ -663,5 +667,9 @@ public class Crawler implements DBConstants.Parse {
 
 	private IntegrateBase.Info getInfo() {
 		return controller.getInfo();
+	}
+
+	public static String getUrlDirName(String url) {
+		return (url.hashCode() % 1000) + "/";
 	}
 }
