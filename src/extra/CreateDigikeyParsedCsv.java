@@ -40,37 +40,57 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 		Document tree = infoProvider.getTree();
 		Element root = tree.getElementsByTag("data").first();
 		Elements products = root.select("product");
-
-		File csvFile = new File(AppContext.getRealPath(INTEGRATE_DIR), "result.csv");
-		//csvFile.mkdirs();
-		FileOutputStream fos = new FileOutputStream(csvFile);
-		PrintWriter writer = new PrintWriter(new OutputStreamWriter(fos, StandardCharsets.UTF_8));
-
-		// create header
-		StringBuilder line = new StringBuilder();
-		if (products.size() > 0) {
-			ParsedInfoProvider.InfoAccessor productDoc = infoProvider.getAccessorJsoup(products.first());
-			if (productDoc == null) {
-				info.addError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
-				return;
-			}
-			for (int i = 1; i < 100; i++) {
-				Element param = productDoc.getFirst("parameter_" + i);
-				if (param != null) {
-					if (i > 1)
-						line.append(',');
-					String paramName = param.getElementsByTag("name").text();
-					line.append(StringEscapeUtils.escapeCsv(paramName));
-				} else {
-					break;
-				}
-			}
-		}
-		writer.println(line.toString());
+		PrintWriter writer = null;
 
 		// create products
+		boolean hasHeader = false;
+		int prodPerFileCount = 0;
+		int fileCount = 0;
 		for (Element productElTree : products) {
-			line = new StringBuilder();
+
+			if (prodPerFileCount >= 1000000) {
+				if (writer != null) {
+					writer.flush();
+					writer.close();
+				}
+				hasHeader = false;
+				prodPerFileCount = 0;
+				fileCount++;
+			}
+
+
+			if (!hasHeader) {
+				File csvFile = new File(AppContext.getRealPath(INTEGRATE_DIR), "result" + fileCount + ".csv");
+				//csvFile.mkdirs();
+				FileOutputStream fos = new FileOutputStream(csvFile);
+				writer = new PrintWriter(new OutputStreamWriter(fos, StandardCharsets.UTF_8));
+
+				// create header
+				StringBuilder line = new StringBuilder();
+				if (products.size() > 0) {
+					ParsedInfoProvider.InfoAccessor productDoc = infoProvider.getAccessorJsoup(products.first());
+					if (productDoc == null) {
+						info.addError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
+						return;
+					}
+					for (int i = 1; i < 100; i++) {
+						Element param = productDoc.getFirst("parameter_" + i);
+						if (param != null) {
+							if (i > 1)
+								line.append(',');
+							String paramName = param.getElementsByTag("name").text();
+							line.append(StringEscapeUtils.escapeCsv(paramName));
+						} else {
+							break;
+						}
+					}
+				}
+				writer.println(line.toString());
+				hasHeader = true;
+			}
+
+
+			StringBuilder line = new StringBuilder();
 			String code = null;
 			String name = null;
 			try {
@@ -98,14 +118,17 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 				}
 				writer.println(line.toString());
 				info.increaseProcessed();
+				prodPerFileCount++;
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
 				info.addError("Product save error, ID = " + code + ", name = " + name, "catalog");
 			}
 		}
 
-		writer.flush();
-		writer.close();
+		if (writer != null) {
+			writer.flush();
+			writer.close();
+		}
 		// save file
 		//FileUtils.write(new File(csvFile, "result.csv"), csv, StandardCharsets.UTF_8);
 	}
