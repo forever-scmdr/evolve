@@ -37,8 +37,8 @@ import java.io.File;
 public class UserModelBuilder {
 
 	public static final long MODIFIED_TEST_INTERVAL = 30000; // время, через которое проводится проверка обновления users.xsl
-	private static long fileLastChecked = 0;
-	private static long fileLastModified = 0;
+	private static long fileLastChecked = Long.MIN_VALUE;
+	private static long fileLastModified = Long.MIN_VALUE;
 	
 	private static final Object SEMAPHORE = new Object();
 	
@@ -47,9 +47,9 @@ public class UserModelBuilder {
 	 * @throws Exception
 	 */
 	public static void testActuality() throws Exception {
-		if (System.currentTimeMillis() - fileLastChecked > MODIFIED_TEST_INTERVAL) {
+		if (Math.abs(System.currentTimeMillis() - fileLastChecked) > MODIFIED_TEST_INTERVAL) {
 			synchronized (SEMAPHORE) {
-				if (System.currentTimeMillis() - fileLastChecked > MODIFIED_TEST_INTERVAL) {
+				if (Math.abs(System.currentTimeMillis() - fileLastChecked) > MODIFIED_TEST_INTERVAL) {
 					File usersFile = new File(AppContext.getUsersPath());
 					if (!usersFile.exists()) {
 							fileLastChecked = Long.MAX_VALUE;

@@ -279,6 +279,11 @@ public class Crawler implements DBConstants.Parse {
 						if (!StringUtils.equalsIgnoreCase(template, CrawlerController.NO_TEMPLATE)) {
 							doc.body().attr("source", url.url);
 
+							// Проверить заблокировано или нет
+							if (StringUtils.equalsIgnoreCase(StringUtils.trim(doc.title()), "Blocked")) {
+								throw new Exception("BLOCKED");
+							}
+
 							// Удалить ненужное
 							deleteInsubstancialData(doc);
 
@@ -670,6 +675,6 @@ public class Crawler implements DBConstants.Parse {
 	}
 
 	public static String getUrlDirName(String url) {
-		return (url.hashCode() % 1000) + "/";
+		return (Math.abs(url.hashCode()) % 1000) + "/";
 	}
 }

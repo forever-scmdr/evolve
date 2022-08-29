@@ -4,6 +4,7 @@ import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.User;
+import ecommander.model.UserModelBuilder;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
@@ -35,6 +36,8 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 		@Override
 		public void run() {
 			try {
+				// Загружаются пользователи
+				UserModelBuilder.testActuality();
 				new PerformDeletedCleaningComplex(25, MAX_DELETE_SECONDS).execute();
 				TemplateQuery countQuery = new TemplateQuery("Count query");
 				countQuery.SELECT("count(*)").FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(Item.STATUS_DELETED);

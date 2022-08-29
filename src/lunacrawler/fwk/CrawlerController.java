@@ -179,7 +179,7 @@ public class CrawlerController {
 	public static final String APPEND_IF_DIFFERS = "append-if-differs";
 	public static final String DOWNLOAD = "download";
 
-	public enum Mode { get, transform, join, compile, files, all_but_get, all};
+	public enum Mode { get, transform, join, compile, tree, compile_tree, files, all_but_get, all};
 
 	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
 	public static final String STORAGE_DIR = "parsing.storage_dir"; // директория для хранения временных файлов программой crawler4j
@@ -416,8 +416,14 @@ public class CrawlerController {
 		if (mode == Mode.join || mode == Mode.all || mode == Mode.all_but_get) {
 			joinData();
 		}
-		if (mode == Mode.compile || mode == Mode.all || mode == Mode.all_but_get) {
+		if (mode == Mode.compile_tree || mode == Mode.all || mode == Mode.all_but_get) {
 			compileAndBuildResult();
+		}
+		if (mode == Mode.compile || mode == Mode.all || mode == Mode.all_but_get) {
+			compile();
+		}
+		if (mode == Mode.tree || mode == Mode.all || mode == Mode.all_but_get) {
+			buildTree();
 		}
 		if (mode == Mode.files || mode == Mode.all || mode == Mode.all_but_get) {
 			downloadFiles();
@@ -743,7 +749,7 @@ public class CrawlerController {
 							continue;
 						String fileName = Strings.createFileName(itemId) + ".xml";
 						String divisionDirName = Crawler.getUrlDirName(itemId);
-						Path joinedDivisionDir = Paths.get(resultTempFilesDir + divisionDirName);
+						Path joinedDivisionDir = Paths.get(resultTempJoinedDir + divisionDirName);
 						Files.createDirectories(joinedDivisionDir);
 						Path file = joinedDivisionDir.resolve(fileName);
 						Files.write(file, partItem.outerHtml().getBytes(UTF_8),
@@ -764,6 +770,17 @@ public class CrawlerController {
 	 * @throws IOException
 	 */
 	public void compileAndBuildResult() throws IOException {
+
+		compile();
+
+		buildTree();
+	}
+
+	/**
+	 * Скомпилировать данные в финальные файлы XML
+	 * @throws IOException
+	 */
+	public void compile() throws IOException {
 		Path compiledDir = Paths.get(resultTempCompiledDir);
 		if (Files.exists(compiledDir)) {
 			FileUtils.deleteDirectory(compiledDir.toFile());
@@ -776,61 +793,8 @@ public class CrawlerController {
 		compileDirectory(Paths.get(resultTempJoinedDir));
 
 		info.pushLog("ЗАВЕРШЕНО: Удаление дублирующихся данных");
-
-		// Теперь построить дерево иерархии по результатам компиляции
-
-		// 1. Первый проход по всем файлам - создание списка связности в виде
-		// хеш-отображения ID родителя -> список непосредственных потомков
-		// Выделение корневых элементов - элементов, которые не содержат родителя (или он пустой)
-
-		// 1.1. Проход по файлам и создание списка связности
-		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
-
-		HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren = new HashMap<>();
-		LinkedHashSet<ParsedItem> roots = new LinkedHashSet<>();
-
-		info.setOperation("Дерево иерархии (вложенности). Поиск предков и потомков");
-		info.setProcessed(0);
-		//info.setToProcess(Paths.get(resultTempCompiledDir).toFile().list().length);
-
-		buildTreeDirectory(Paths.get(resultTempCompiledDir), parentChildren, roots);
-
-		// 1.2. Удалить из списка потенциальных корневых айтемов те айтемы, которые присутствуют в списках
-		// потомков какого-либо родителя
-
-		for (ParsedItem parent : parentChildren.keySet()) {
-			UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
-			roots.removeAll(children);
-		}
-		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Поиск предков и потомков");
-
-
-		info.setOperation("Дерево иерархии (вложенности). Запись дерева в XML файл");
-		info.setProcessed(0);
-
-		// 2. Второй проход и формирование итогового XML
-
-		// 2.1. Проход по списку потомков рекурсивно вглубь начиная с корневых элементов с удалением
-		// пройденных элементов в списке
-		// Рекурсивный проход вглубь. После посещения элемент сразу удаляется
-		// По мере прохода постоянно формируется один сквозной XML файл в прямом порядке
-
-		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
-		doc.startElement("data");
-		for (ParsedItem root : roots) {
-			insertItem(doc, parentChildren, root);
-		}
-		doc.endElement();
-		Path file = compiledDir.resolve("!_tree_!.xml");
-		try {
-			Files.write(file, doc.toString().getBytes(UTF_8));
-		} catch (Exception e) {
-			ServerLogger.error("Error while creating result tree file", e);
-			info.pushLog("Error while creating result tree file", e);
-		}
-
-		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Запись дерева в XML файл");
 	}
+
 
 	/**
 	 * Для рекурсивного вызова для метода compileAndBuildResult() - удаление дублей
@@ -910,16 +874,77 @@ public class CrawlerController {
 	}
 
 	/**
+	 * Построение дерева иерархии вложенности айетмов при наличии всех финальный XML файлов
+	 */
+	public void buildTree() {
+		// Теперь построить дерево иерархии по результатам компиляции
+
+		// 1. Первый проход по всем файлам - создание списка связности в виде
+		// хеш-отображения ID родителя -> список непосредственных потомков
+		// Выделение корневых элементов - элементов, которые не содержат родителя (или он пустой)
+
+		// 1.1. Проход по файлам и создание списка связности
+		// (в дальнейшем возможно сохранение промежуточных результатов в БД)
+
+		HashMap<ParsedItem, LinkedHashSet<ParsedItem>> parentChildren = new HashMap<>();
+		LinkedHashSet<ParsedItem> roots = new LinkedHashSet<>();
+
+		info.setOperation("Дерево иерархии (вложенности). Поиск предков и потомков");
+		info.setProcessed(0);
+		//info.setToProcess(Paths.get(resultTempCompiledDir).toFile().list().length);
+
+		buildTreeDirectory(Paths.get(resultTempCompiledDir), parentChildren, roots);
+
+		// 1.2. Удалить из списка потенциальных корневых айтемов те айтемы, которые присутствуют в списках
+		// потомков какого-либо родителя
+
+		for (ParsedItem parent : parentChildren.keySet()) {
+			LinkedHashSet<ParsedItem> children = parentChildren.get(parent);
+			roots.removeAll(children);
+		}
+		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Поиск предков и потомков");
+
+
+		info.setOperation("Дерево иерархии (вложенности). Запись дерева в XML файл");
+		info.setProcessed(0);
+
+		// 2. Второй проход и формирование итогового XML
+
+		// 2.1. Проход по списку потомков рекурсивно вглубь начиная с корневых элементов с удалением
+		// пройденных элементов в списке
+		// Рекурсивный проход вглубь. После посещения элемент сразу удаляется
+		// По мере прохода постоянно формируется один сквозной XML файл в прямом порядке
+
+		// TODO сделать формирование файла не в памяти а на диске
+		XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
+		doc.startElement("data");
+		for (ParsedItem root : roots) {
+			insertItem(doc, parentChildren, root);
+		}
+		doc.endElement();
+		Path compiledDir = Paths.get(resultTempCompiledDir);
+		Path file = compiledDir.resolve("!_tree_!.xml");
+		try {
+			Files.write(file, doc.toString().getBytes(UTF_8));
+		} catch (Exception e) {
+			ServerLogger.error("Error while creating result tree file", e);
+			info.pushLog("Error while creating result tree file", e);
+		}
+
+		info.pushLog("ЗАВЕРШЕНО: Дерево иерархии (вложенности). Запись дерева в XML файл");
+	}
+
+	/**
 	 * Для рекурсивного вызова для метода compileAndBuildResult() - создание дерева иерархии
 	 * @param dir
 	 * @param parentChildren
 	 * @param roots
 	 */
-	private void buildTreeDirectory(Path dir, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, LinkedHashSet<ParsedItem> roots) {
+	private void buildTreeDirectory(Path dir, HashMap<ParsedItem, LinkedHashSet<ParsedItem>> parentChildren, LinkedHashSet<ParsedItem> roots) {
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (Path xmlFile : stream) {
 				if (Files.isDirectory(xmlFile)) {
-					buildTreeDirectory(dir, parentChildren, roots);
+					buildTreeDirectory(xmlFile, parentChildren, roots);
 				} else {
 					String xml = new String(Files.readAllBytes(xmlFile), UTF_8);
 					Document pageDoc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
@@ -943,7 +968,7 @@ public class CrawlerController {
 								if (parentChildren.containsKey(parent)) {
 									parentChildren.get(parent).add(item);
 								} else {
-									UniqueArrayList<ParsedItem> children = new UniqueArrayList<>();
+									LinkedHashSet<ParsedItem> children = new LinkedHashSet<>();
 									parentChildren.put(parent, children);
 									children.add(item);
 								}
@@ -972,12 +997,12 @@ public class CrawlerController {
 	 * @param parentChildren
 	 * @param parent
 	 */
-	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, UniqueArrayList<ParsedItem>> parentChildren, ParsedItem parent) {
+	private void insertItem(XmlDocumentBuilder xml, HashMap<ParsedItem, LinkedHashSet<ParsedItem>> parentChildren, ParsedItem parent) {
 		xml.startElement(parent.element, ID, parent.id, URL, parent.url);
 		//ServerLogger.debug("el: " + parent.element + "   parent: " + parent.id + "   parent_url: " + parent.url);
 		info.increaseProcessed();
 		// Добавить всех потомков
-		UniqueArrayList<ParsedItem> children = parentChildren.get(parent);
+		LinkedHashSet<ParsedItem> children = parentChildren.get(parent);
 		if (children != null) {
 			for (ParsedItem child : children) {
 				insertItem(xml, parentChildren, child);
