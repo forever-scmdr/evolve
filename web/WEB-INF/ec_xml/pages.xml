@@ -1114,7 +1114,7 @@
 	</page>
 
 
-	<page name="proceed" template="proceed">
+	<page name="proceed" template="">
 		<request>
 			<var name="message"/>
 		</request>
@@ -1125,9 +1125,19 @@
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
+			<extra-input ref="user_phys" name="buytype" form="customer_phys"/>
+			<extra-input ref="user_phys" name="paycurrency" form="customer_phys"/>
+			<extra-input ref="user_phys" name="region1" form="customer_phys"/>
+			<extra-input ref="user_phys" name="region2" form="customer_phys"/>
+			<extra-input ref="user_phys" name="dealer" form="customer_phys"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
+			<extra-input ref="user_jur" name="buytype" form="customer_jur"/>
+			<extra-input ref="user_jur" name="paycurrency" form="customer_jur"/>
+			<extra-input ref="user_jur" name="region1" form="customer_jur"/>
+			<extra-input ref="user_jur" name="region2" form="customer_jur"/>
+			<extra-input ref="user_jur" name="dealer" form="customer_jur"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>
@@ -1135,6 +1145,14 @@
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>
+		<single item="forms" cacheable="true">
+			<single item="buy_options"/>
+			<single item="dealer_regions">
+				<tree item="dealer_region" transit="true">
+					<list item="dealer"/>
+				</tree>
+			</single>
+		</single>
 		<include name="COMMON"/>
 	</page>
 

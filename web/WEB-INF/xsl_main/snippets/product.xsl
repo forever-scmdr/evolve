@@ -23,12 +23,12 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else url"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat('storepics/', $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat('storepics/small/', $main_pic) else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
 <!--				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">-->
-					<a href="{concat('storepics/', url)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
+					<a href="{concat('storepics/small/', url)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
 						<i class="fas fa-search-plus"></i>
 					</a>
 <!--				</xsl:if>-->

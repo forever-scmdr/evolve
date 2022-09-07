@@ -14,6 +14,7 @@
 	<xsl:template name="USER_PHYS_INPUTS">
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
+		<xsl:param name="has_extra" select="false()"/>
 		<div class="form__item">
 			<label class="form-label" for="form_name">Ваше имя:</label>
 			<input class="input form__element" type="text" id="form_name"
@@ -64,6 +65,7 @@
 	<xsl:template name="USER_JUR_INPUTS">
 		<xsl:param name="inp"/>
 		<xsl:param name="vals" select="$inp"/>
+		<xsl:param name="has_extra" select="false()"/>
 		<div class="form__item">
 			<label class="form-label" for="form_org">Наименование организации:</label>
 			<input class="input form__element" type="text" id="form_org"
@@ -89,6 +91,7 @@
 			<input class="input form__element" type="text" id="form_contact_phone"
 				   name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
 		</div>
+		<!--
 		<xsl:if test="page/@name != 'register'">
 			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки: <a href="dostavka">подробнее</a></label>
 				<select class="form__element" id="form_ship"
@@ -108,6 +111,61 @@
 					</xsl:for-each>
 				</select>
 			</div>
+		</xsl:if>
+		-->
+		<xsl:if test="$has_extra">
+			<xsl:variable name="forms" select="page/forms"/>
+			<div class="form__item">
+				<label class="form-label" for="form_ship">Способ покупки:</label>
+				<select class="form__element" id="buytype_select"
+						name="{$inp/buytype/@input}" value="{f:not_empty($inp/buytype, $vals/buytype)}" error="{$inp/buytype/@validation-error}">
+					<option value="">Выберите способ покупки</option>
+					<xsl:for-each select="$forms/buy_options/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			<div class="form__item" id="region1" style="display:none">
+				<label class="form-label" for="form_ship">Регион:</label>
+				<select class="form__element" id="region1_select"
+						name="{$inp/region1/@input}" value="{f:not_empty($inp/region1, $vals/region1)}" error="{$inp/region1/@validation-error}">
+					<option value="">Выберите регион</option>
+					<xsl:for-each select="page/forms/buy_options/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			<div class="form__item" id="region2" style="display:none">
+				<label class="form-label" for="form_ship">Округ:</label>
+				<select class="form__element" id="region2_select"
+						name="{$inp/region2/@input}" value="{f:not_empty($inp/region2, $vals/region2)}" error="{$inp/region2/@validation-error}">
+					<option value="">Выберите округ</option>
+					<xsl:for-each select="page/forms/buy_options/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			<div class="form__item" id="form_currency_list">
+				<label class="form-label" for="form_ship">Дилер/партнер:</label>
+				<select class="form__element" id="form_ship"
+						name="{$inp/dealer/@input}" value="{f:not_empty($inp/dealer, $vals/dealer)}" error="{$inp/dealer/@validation-error}">
+					<option value="">Выберите дилера</option>
+					<xsl:for-each select="page/forms/buy_options/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			<!--
+			<div class="form__item"><label class="form-label" for="form_pay">Способ оплаты:</label>
+				<select class="form__element" id="form_pay"
+						name="{$inp/pay_type/@input}" value="{f:not_empty($inp/pay_type, $vals/pay_type)}" error="{$inp/pay_type/@validation-error}">
+					<option value="">Выберите способ оплаты</option>
+					<xsl:for-each select="page/common/payment/option">
+						<option><xsl:value-of select="."/></option>
+					</xsl:for-each>
+				</select>
+			</div>
+			-->
 		</xsl:if>
 		<div class="form__item">
 			<label class="form-label" for="form_ja">Юридический адрес:</label>

@@ -60,6 +60,7 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
+							<xsl:with-param name="has_extra" select="true()"/>
 							<xsl:with-param name="inp" select="$inp"/>
 							<xsl:with-param name="vals" select="page/phys"/>
 						</xsl:call-template>
@@ -78,6 +79,7 @@
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
+							<xsl:with-param name="has_extra" select="true()"/>
 							<xsl:with-param name="inp" select="$inp"/>
 							<xsl:with-param name="vals" select="page/jur"/>
 						</xsl:call-template>

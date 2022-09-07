@@ -1093,6 +1093,33 @@
 		<parameter name="style" type="plain-text" caption="CSS-свойства" description="без фигурных скобок"/>
 	</item>
 
+
+	<item name="forms" caption="Настройки форм" ag-id="2893" ag-hash="97618991">
+		<child item="buy_options" single="true"/>
+		<child item="dealer_regions" single="true"/>
+	</item>
+
+	<item name="buy_options" caption="Способ покупки" ag-id="2894" ag-hash="-74725915">
+		<parameter name="option" type="string" caption="Опция" multiple="true"/>
+	</item>
+
+
+	<item name="dealer_regions" caption="Регионы и дилеры" ag-id="2895" ag-hash="1138676697">
+		<child item="dealer_region"/>
+	</item>
+
+
+	<item name="dealer_region" caption="Регион" key="name" ag-id="2896" ag-hash="-656005158">
+		<parameter name="name" type="string" caption="Название региона"/>
+		<child item="dealer_region"/>
+		<child item="dealer"/>
+	</item>
+
+	<item name="dealer" caption="Дилер/партнер" key="name" ag-id="2897" ag-hash="-1335779815">
+		<parameter name="name" type="string" caption="Название дилера или партнера"/>
+	</item>
+
+
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
@@ -1113,6 +1140,7 @@
 		<child item="optional_modules" single="true" virtual="true"/>
 		<child item="styles" single="true"/>
 		<child item="error_page" single="true" />
+		<child item="forms" single="true" />
 		<!--<child item="file_overriders" single="true" />-->
 	</root>
 
