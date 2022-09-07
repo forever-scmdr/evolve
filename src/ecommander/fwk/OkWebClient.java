@@ -90,19 +90,41 @@ public class OkWebClient {
 
 
 	private void prepareHeadersAndProxies(HttpRequestBase request, String...proxy) {
-		request.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0");
-		request.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
-		request.setHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3");
-		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+
+//		request.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0");
+//		request.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+//		request.setHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3");
+//		request.setHeader("Accept-Encoding", "gzip, deflate, br");
+//		request.setHeader("DNT", "1");
+//		request.setHeader("Connection", "keep-alive");
+//		request.setHeader("Upgrade-Insecure-Requests", "1");
+//		request.setHeader("Sec-Fetch-Dest", "document");
+//		request.setHeader("Sec-Fetch-Mode", "navigate");
+//		request.setHeader("Sec-Fetch-Site", "none");
+//		request.setHeader("Sec-Fetch-User", "?1");
+//		request.setHeader("Pragma", "no-cache");
+//		request.setHeader("Cache-Control", "no-cache");
+
+		request.setHeader("accept", "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01");
+		request.setHeader("accept-encoding", "gzip, deflate, br");
+		request.setHeader("accept-language", "en-US,en;q=0.9,ru;q=0.8");
 		request.setHeader("DNT", "1");
 		request.setHeader("Connection", "keep-alive");
-		request.setHeader("Upgrade-Insecure-Requests", "1");
-		request.setHeader("Sec-Fetch-Dest", "document");
-		request.setHeader("Sec-Fetch-Mode", "navigate");
-		request.setHeader("Sec-Fetch-Site", "none");
-		request.setHeader("Sec-Fetch-User", "?1");
-		request.setHeader("Pragma", "no-cache");
-		request.setHeader("Cache-Control", "no-cache");
+		request.setHeader("pragma", "no-cache");
+		request.setHeader("referer", "https://www.digikey.com/en/products/filter/accessories/800");
+		request.setHeader("cache-control", "no-cache");
+		request.setHeader("ym_uid", "1549020452972288896;");
+		request.setHeader("ga", "GA1.2.968796129.1549020453;");
+		request.setHeader("sec-ch-ua", "\"Chromium\";v=\"104\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"104\"");
+		request.setHeader("sec-ch-ua-mobile", "?0");
+		request.setHeader("sec-ch-ua-platform", "\"Windows\"");
+		request.setHeader("sec-fetch-dest", "empty");
+		request.setHeader("sec-fetch-mode", "cors");
+		request.setHeader("sec-fetch-site", "same-origin");
+		request.setHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36");
+		request.setHeader("x-requested-with", "XMLHttpRequest");
+
+
 
 		if (proxy.length > 0 && StringUtils.isNotBlank(proxy[0])) {
 			HttpHost proxyHost = new HttpHost(proxy[0]);
