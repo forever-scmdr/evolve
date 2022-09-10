@@ -24,7 +24,6 @@ public class MouserSearchCommand extends Command implements MouserJsonConst {
 		String keyword = getVarSingleValue("q");
 		boolean inStock = "0".equals(getVarSingleValue("qty"));
 		boolean isPartNumber = keyword.matches(PART_NUMBER_PATTERN);
-//		boolean isPartNumber = true;
 		String stock = inStock? ",\"searchOptions\":\"InStock\"":"";
 
 		String endpoint = isPartNumber? String.format(ENDPOINT, "partnumber") : String.format(ENDPOINT, "keyword");
