@@ -1889,6 +1889,27 @@
 		</command>
 	</page>
 
+	<page name="mouser_search">
+		<request>
+			<var name="q" value="482-DVKCONHALLCOREV1"/>
+			<var name="view" scope="cookie"/>
+			<var name="currency" scope="cookie" value="byn"/>
+			<var name="minqty" value="" scope="cookie"/>
+			<var name="shop" value="TME"/>
+		</request>
+		<include name="SHOP_AND_CURRENCY"/>
+		<command class="ecommander.fwk.external_shops.mouser.MouserSearchCommand" tag="search">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
+	<page name="mouser_search_manufacturers">
+		<command class="ecommander.fwk.external_shops.mouser.MouserSearchCommand" method="loadManufacturerList" tag="search">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
+
 	<page name="gkel_search" template="external_search/gkel_search">
 		<request>
 			<var name="q"/>
