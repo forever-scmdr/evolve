@@ -324,17 +324,17 @@
 		<link name="set_view_params" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="params"/>
 		</link>
-		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
 		<link name="set_limit_48" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_72" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
 		<link name="set_limit_96" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
+		</link>
+		<link name="set_limit_144" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="144"/>
+		</link>
+		<link name="set_limit_192" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="192"/>
 		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
@@ -435,17 +435,17 @@
 		<link name="set_view_params" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="params"/>
 		</link>
-		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="24"/>
-		</link>
 		<link name="set_limit_48" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="48"/>
 		</link>
-		<link name="set_limit_72" target="tag_section" copy-page-vars="yes" type="exclusive">
-			<var name="limit" value="72"/>
-		</link>
 		<link name="set_limit_96" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="96"/>
+		</link>
+		<link name="set_limit_144" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="144"/>
+		</link>
+		<link name="set_limit_192" target="tag_section" copy-page-vars="yes" type="exclusive">
+			<var name="limit" value="192"/>
 		</link>
 		<link name="set_sort_name_asc" target="tag_section" copy-page-vars="yes">
 			<var name="sort" value="name"/>
@@ -1114,7 +1114,7 @@
 	</page>
 
 
-	<page name="proceed" template="">
+	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
 		</request>
@@ -1197,9 +1197,19 @@
 			<list item="user" tag="registration"/>
 			<new item="user_phys" id="user_phys">
 				<parameter-input ref="user_phys" form="customer_phys"/>
+				<extra-input ref="user_phys" name="buytype" form="customer_phys"/>
+				<extra-input ref="user_phys" name="paycurrency" form="customer_phys"/>
+				<extra-input ref="user_phys" name="region1" form="customer_phys"/>
+				<extra-input ref="user_phys" name="region2" form="customer_phys"/>
+				<extra-input ref="user_phys" name="dealer" form="customer_phys"/>
 			</new>
 			<new item="user_jur" id="user_jur">
 				<parameter-input ref="user_jur" form="customer_jur"/>
+				<extra-input ref="user_jur" name="buytype" form="customer_jur"/>
+				<extra-input ref="user_jur" name="paycurrency" form="customer_jur"/>
+				<extra-input ref="user_jur" name="region1" form="customer_jur"/>
+				<extra-input ref="user_jur" name="region2" form="customer_jur"/>
+				<extra-input ref="user_jur" name="dealer" form="customer_jur"/>
 			</new>
 		</session>
 		<list item="product" tag="product" id="prod">

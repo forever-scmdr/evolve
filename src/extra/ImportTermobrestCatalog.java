@@ -168,7 +168,8 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 			}
 
 			// Создадние раздела
-			String sectionName = wb.getSheetName(0);
+			//String sectionName = wb.getSheetName(0);
+			String sectionName = StringUtils.substringBeforeLast(excel.getName(), ".");
 			Section existingSection = Section.get(ItemQuery.loadSingleItemByParamValue(SECTION, section_.CODE, sectionName));
 			if (existingSection == null) {
 				existingSection = Section.get(Item.newChildItem(sectionType, catalog));

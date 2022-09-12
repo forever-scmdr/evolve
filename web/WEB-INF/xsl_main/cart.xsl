@@ -19,16 +19,15 @@
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur($p, 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+
+							<xsl:variable  name="main_pic" select="if($p/small_pic != '') then $p/small_pic else $p/url"/>
+							<xsl:variable name="pic_path" select="if ($main_pic) then concat('storepics/small/', $main_pic) else 'img/no_image.png'"/>
+
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
 										<a href="{$p/show_product}">
-											<xsl:if test="$p/url">
-												<img src="storepics/{$p/url}" alt="{$p/name}" />
-											</xsl:if>
-											<xsl:if test="not($p/gallery) and not($p/url)">
-												<img src="img/no_image.png" alt="{$p/name}"/>
-											</xsl:if>
+											<img src="{$pic_path}" alt="{$p/name}" />
 										</a>
 									</div>
 									<div class="cart-item__info">
@@ -90,8 +89,10 @@
 								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:exchange_cur(page/cart, 'sum', 0)"/></div>
 							</xsl:if>
 							<div class="cart-total__buttons">
+								<!--
 								<button class="button button_2 cart-total__button" type="submit"
 										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
+								-->
 								<button class="button button_2 cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
 							</div>

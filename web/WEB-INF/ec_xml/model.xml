@@ -1101,6 +1101,7 @@
 
 	<item name="buy_options" caption="Способ покупки" ag-id="2894" ag-hash="-74725915">
 		<parameter name="option" type="string" caption="Опция" multiple="true"/>
+		<parameter name="currency" type="string" caption="Валюта" multiple="true"/>
 	</item>
 
 

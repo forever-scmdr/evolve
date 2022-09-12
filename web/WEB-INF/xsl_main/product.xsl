@@ -51,6 +51,10 @@
 				<a href="{$main_host}" class="path__link">Главная страница</a>
 				<div class="path__arrow"></div>
 			</div>
+			<div class="path__item">
+				<a href="{page/catalog_link}" class="path__link">Каталог</a>
+				<div class="path__arrow"></div>
+			</div>
 			<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id]">
 				<div class="path__item">
 					<a href="{show_products}" class="path__link"><xsl:value-of select="name"/></a>

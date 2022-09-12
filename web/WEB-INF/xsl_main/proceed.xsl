@@ -5,8 +5,8 @@
 
 	<xsl:variable name="title" select="'Оформление заявки'"/>
 	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="is_jur" select="page/user_jur/input/field[@name != 'registered'] != ''"/>
-	<xsl:variable name="is_phys" select="not($is_jur)"/>
+	<xsl:variable name="is_phys" select="page/user_phys/input/field[@name != 'registered'] != '' or page/user_phys/input/buytype != ''"/>
+	<xsl:variable name="is_jur" select="not($is_phys)"/>
 	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/input/organization != '' or page/jur or page/user_jur/input/field != ''"/>-->
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -48,8 +48,8 @@
 			</xsl:if>
 
 			<div class="tabs__nav">
-				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur)]}">Физическое лицо</a>
 				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Юридическое лицо</a>
+				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur)]}">Физическое лицо</a>
 			</div>
 			<div class="tabs__content">
 
@@ -57,7 +57,7 @@
 					<div class="text form__text">
 						<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					</div>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys'); $(this).find('input:hidden').remove();">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
 						<xsl:call-template name="USER_PHYS_INPUTS">
 							<xsl:with-param name="has_extra" select="true()"/>
@@ -76,7 +76,7 @@
 					<div class="text form__text">
 						<p>Заполните, пожалуйста, форму ниже. Эти данные нужны для правильного оформления заявки.</p>
 					</div>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur'); $(this).find('input:hidden').remove();">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="has_extra" select="true()"/>
@@ -90,10 +90,8 @@
 						<xsl:call-template name="TOTAL"/>
 					</form>
 				</div>
-
 			</div>
 		</div>
-
 	</xsl:template>
 
 
