@@ -15,6 +15,7 @@ public class Delivery
     public final static String TEXT = "text";
     public final static String ASK_ADDRESS = "ask_address";
     public final static String SHOW_STORES = "show_stores";
+    public final static String SHOW_WHEH_HAS_PLAIN = "show_wheh_has_plain";
     public final static String CURRENCY = "currency";
     public final static String COUNTRY = "country";
 
@@ -127,6 +128,28 @@ public class Delivery
 
     public boolean contains_show_stores(Byte value) {
         return containsValue("show_stores", value);
+    }
+
+    public void add_show_wheh_has_plain(Byte value) {
+        setValue("show_wheh_has_plain", value);
+    }
+
+    public void addUI_show_wheh_has_plain(String value)
+        throws Exception
+    {
+        setValueUI("show_wheh_has_plain", value);
+    }
+
+    public List<Byte> getAll_show_wheh_has_plain() {
+        return getByteValues("show_wheh_has_plain");
+    }
+
+    public void remove_show_wheh_has_plain(Byte value) {
+        removeEqualValue("show_wheh_has_plain", value);
+    }
+
+    public boolean contains_show_wheh_has_plain(Byte value) {
+        return containsValue("show_wheh_has_plain", value);
     }
 
     public void add_currency(String value) {

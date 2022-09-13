@@ -7,7 +7,7 @@
         xmlns:f="f:f"
         version="2.0">
 
-    <xsl:variable name="to_cart_available_label" select="'В корзину'"/>
+    <xsl:variable name="to_cart_available_label" select="'Купить'"/>
     <xsl:variable name="to_cart_na_label" select="'Запросить'"/>
     <xsl:variable name="go_to_cart_label" select="'Оформить'"/>
     <xsl:variable name="to_cart_recalc_label" select="'Обновить'"/>

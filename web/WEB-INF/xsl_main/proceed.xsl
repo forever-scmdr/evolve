@@ -11,6 +11,8 @@
 	<xsl:variable name="title" select="'Оформление заказа'"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="cart" select="page/cart"/>
+	<xsl:variable name="has_extra" select="page/cart//available = '-1'"/>
+	<xsl:variable name="show_when_has_plain" select="if ($has_extra) then '1' else '0'"/>
 
 	<xsl:variable name="message" select="$cart/item_own_extras/user_message | $user/item_own_extras/user_message"/>
 	<xsl:variable name="success" select="page/variables/success = ('true', 'yes')"/>
@@ -96,7 +98,7 @@
 								<div>Способ получения заказа: <span>*</span></div>
 							</div>
 							<ul style="margin-top: 8px;" id="delivery">
-								<xsl:apply-templates select="page/delivery"/>
+								<xsl:apply-templates select="page/delivery[show_wheh_has_plain = $show_when_has_plain or (not(show_wheh_has_plain) or show_wheh_has_plain = '')]"/>
 							</ul>
 						</div>
 						<div class="form__item form-item">

@@ -273,7 +273,7 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		<link rel="canonical" href="{concat($main_host[1], $canonical[1])}" />
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>

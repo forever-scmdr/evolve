@@ -468,6 +468,7 @@ public interface ItemNames {
         String TEXT = "text";
         String ASK_ADDRESS = "ask_address";
         String SHOW_STORES = "show_stores";
+        String SHOW_WHEH_HAS_PLAIN = "show_wheh_has_plain";
         String CURRENCY = "currency";
         String COUNTRY = "country";
 

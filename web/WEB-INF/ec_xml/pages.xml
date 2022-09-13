@@ -1411,7 +1411,11 @@
 		</request>
 		<session>
 			<single item="user" tag="user"/>
-			<single item="cart"/>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="abstract_product" id="prod" tag="product"/>
+				</list>
+			</single>
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="user_phys"/>
@@ -2358,7 +2362,7 @@
 	</page>
 
 
-	<page name="send_emails" schedule="0 */10 * ? * *">
+	<page name="send_emails" ><!-- schedule="0 */10 * ? * *" -->
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -2368,7 +2372,7 @@
 	</page>
 
 
-	<page name="inform_subscribers" schedule="0 5/10 * ? * *">
+	<page name="inform_subscribers"><!--  schedule="0 5/10 * ? * *" -->
 		<command class="ecommander.fwk.integration.InformSubscribersCommand">
 			<result name="complete" type="xml"/>
 		</command>
@@ -2459,7 +2463,7 @@
 
 
 
-	<page name="price_update_auto_start" template="integration" schedule="0 30 10-20 ? * * *">
+	<page name="price_update_auto_start" template="integration"><!--  schedule="0 30 10-20 ? * * *" -->
 		<request>
 			<var name="action" value="start"/>
 			<var name="param" value="webfile1.xml" />

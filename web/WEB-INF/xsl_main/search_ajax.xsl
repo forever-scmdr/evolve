@@ -39,8 +39,9 @@
 	<xsl:template match="product">
 		<xsl:variable name="zero" select="not(is_service = '1') and f:num(qty) &lt; 0.001"/>
 		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
+		<xsl:variable name="is_extra" select="available = '-1'"/>
 		<div class="suggest__result suggest-result">
-			<a class="suggest-result__link" href="{show_product}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
+			<a class="suggest-result__link" href="{show_product}" style="{'color: #FF8C00'[$is_extra]}"><xsl:value-of select="string-join((name, name_extra), ' ')"/></a>
 <!-- 			<div class="suggest-result__info">
 				<div class="suggest-result__code">(код <xsl:value-of select="code"/>)</div>
 				<div class="suggest-result__vendor"><xsl:value-of select="vendor"/></div>
@@ -77,9 +78,9 @@
 						нет цены
 					</xsl:if>
 				</span>
-				<span class="suggest-result__status">
+				<span class="suggest-result__status" style="{'color: #FF8C00'[$is_extra]}">
 					<xsl:if test="not($zero) and not(is_service = '1')">
-						на складе: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
+						на<xsl:if test="$is_extra"> удаленном</xsl:if> складе: <strong><xsl:value-of select="concat(qty, ' ', unit)"/></strong>
 					</xsl:if>
 					<xsl:if test="$zero">
 						<xsl:if test="soon != '0'">
