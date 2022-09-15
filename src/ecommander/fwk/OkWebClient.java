@@ -1,8 +1,9 @@
 package ecommander.fwk;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import okhttp3.internal.http.RealResponseBody;
+import okio.GzipSource;
+import okio.Okio;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +80,8 @@ public class OkWebClient {
 	}
 
 	private OkWebClient() {
-		client = new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
+		OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(new UnzippingInterceptor());
+		client = clientBuilder.readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
 	}
 
 	public static OkWebClient getInstance() {
@@ -105,24 +107,29 @@ public class OkWebClient {
 //		request.setHeader("Pragma", "no-cache");
 //		request.setHeader("Cache-Control", "no-cache");
 
-		request.setHeader("accept", "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01");
+		request.setHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8");
 		request.setHeader("accept-encoding", "gzip, deflate, br");
 		request.setHeader("accept-language", "en-US,en;q=0.9,ru;q=0.8");
-		request.setHeader("DNT", "1");
-		request.setHeader("Connection", "keep-alive");
-		request.setHeader("pragma", "no-cache");
-		request.setHeader("referer", "https://www.digikey.com/en/products/filter/accessories/800");
 		request.setHeader("cache-control", "no-cache");
-		request.setHeader("ym_uid", "1549020452972288896;");
-		request.setHeader("ga", "GA1.2.968796129.1549020453;");
-		request.setHeader("sec-ch-ua", "\"Chromium\";v=\"104\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"104\"");
+		request.setHeader("device-memory", "8");
+		request.setHeader("downlink", "5.55");
+		request.setHeader("dpr", "1");
+		request.setHeader("ect", "4g");
+		request.setHeader("pragma", "no-cache");
+		request.setHeader("rtt", "250");
+		request.setHeader("sec-ch-ua", "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"");
 		request.setHeader("sec-ch-ua-mobile", "?0");
 		request.setHeader("sec-ch-ua-platform", "\"Windows\"");
-		request.setHeader("sec-fetch-dest", "empty");
-		request.setHeader("sec-fetch-mode", "cors");
+		request.setHeader("sec-fetch-dest", "document");
+		request.setHeader("sec-fetch-mode", "navigate");
 		request.setHeader("sec-fetch-site", "same-origin");
 		request.setHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36");
-		request.setHeader("x-requested-with", "XMLHttpRequest");
+		request.setHeader("upgrade-insecure-requests", "1");
+		request.setHeader("viewport-width", "1280");
+		request.setHeader("Connection", "keep-alive");
+//		request.setHeader("referer", "https://www.digikey.com/en/products/filter/accessories/800");
+
+		//request.setHeader("x-requested-with", "XMLHttpRequest");
 
 
 
@@ -145,20 +152,42 @@ public class OkWebClient {
 
 	public String getString(String url) throws IOException {
 
+
+
 		Request request = new Request.Builder().url(url)
-				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+				.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+				.addHeader("accept-encoding", "gzip, deflate, br")
+				.addHeader("accept-language", "en-US,en;q=0.9,ru;q=0.8")
+				.addHeader("cache-control", "no-cache")
+				.addHeader("device-memory", "8")
+				.addHeader("downlink", "5.55")
+				.addHeader("dpr", "1")
+				.addHeader("ect", "4g")
+				.addHeader("pragma", "no-cache")
+				.addHeader("rtt", "250")
+				.addHeader("sec-ch-ua", "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"")
+				.addHeader("sec-ch-ua-mobile", "?0")
+				.addHeader("sec-ch-ua-platform", "\"Windows\"")
+				.addHeader("sec-fetch-dest", "document")
+				.addHeader("sec-fetch-mode", "navigate")
+				.addHeader("sec-fetch-site", "same-origin")
+				.addHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
+				.addHeader("upgrade-insecure-requests", "1")
+				.addHeader("viewport-width", "1280")
+
+//				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
 				//.header("Accept-Encoding", "gzip, deflate, br")
-				.header("Accept-Encoding", "dentity")
-				.header("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3")
-				.header("Cache-Control", "no-cache")
-				.header("Connection", "keep-alive")
-				.header("Pragma", "no-cache")
-				.header("Sec-Fetch-Dest", "document")
-				.header("Sec-Fetch-Mode", "navigate")
-				.header("Sec-Fetch-Site", "none")
-				.header("Sec-Fetch-User", "?1")
-				.header("Upgrade-Insecure-Requests", "1")
-				.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0")
+//				.header("Accept-Encoding", "dentity")
+//				.header("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3")
+//				.header("Cache-Control", "no-cache")
+//				.header("Connection", "keep-alive")
+//				.header("Pragma", "no-cache")
+//				.header("Sec-Fetch-Dest", "document")
+//				.header("Sec-Fetch-Mode", "navigate")
+//				.header("Sec-Fetch-Site", "none")
+//				.header("Sec-Fetch-User", "?1")
+//				.header("Upgrade-Insecure-Requests", "1")
+//				.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0")
 				//.header("Accept-Encoding", "dentity")
 				.build();
 
@@ -171,6 +200,42 @@ public class OkWebClient {
 //				.build();
 		try (Response response = client.newCall(request).execute()) {
 			return response.body().string();
+		}
+	}
+
+
+	private static class UnzippingInterceptor implements Interceptor {
+		@Override
+		public Response intercept(Chain chain) throws IOException {
+			Response response = chain.proceed(chain.request());
+			return unzip(response);
+		}
+
+
+		// copied from okhttp3.internal.http.HttpEngine (because is private)
+		private Response unzip(final Response response) throws IOException {
+			if (response.body() == null)
+			{
+				return response;
+			}
+
+			//check if we have gzip response
+			String contentEncoding = response.headers().get("Content-Encoding");
+
+			//this is used to decompress gzipped responses
+			if (contentEncoding != null && contentEncoding.equals("gzip"))
+			{
+				Long contentLength = response.body().contentLength();
+				GzipSource responseBody = new GzipSource(response.body().source());
+				Headers strippedHeaders = response.headers().newBuilder().build();
+				return response.newBuilder().headers(strippedHeaders)
+						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, Okio.buffer(responseBody)))
+						.build();
+			}
+			else
+			{
+				return response;
+			}
 		}
 	}
 

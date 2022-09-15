@@ -280,7 +280,8 @@ public class Crawler implements DBConstants.Parse {
 							doc.body().attr("source", url.url);
 
 							// Проверить заблокировано или нет
-							if (StringUtils.equalsIgnoreCase(StringUtils.trim(doc.title()), "Blocked")) {
+							String title = StringUtils.trim(doc.title());
+							if (StringUtils.equalsIgnoreCase(title, "Blocked") || StringUtils.containsIgnoreCase(title, "Site Connectivity Issues")) {
 								throw new Exception("BLOCKED");
 							}
 
