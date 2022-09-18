@@ -1011,6 +1011,7 @@
 				&lt;div&gt;TME&lt;/div&gt;
 				&lt;div&gt;Compel&lt;/div&gt;
 				&lt;div&gt;Отечественные РЭК&lt;/div&gt;
+				&lt;div&gt;Mouser&lt;/div&gt;
 			</xsl:variable>
 			<div style="color: #9f9e9e; display: block; flex-basis: 100%;">
 				Поиск по складу в Минске и складам <a data-container="body"  data-html="true" data-toggle="popover" data-placement="bottom" data-content="{$partners}">партнеров</a>
