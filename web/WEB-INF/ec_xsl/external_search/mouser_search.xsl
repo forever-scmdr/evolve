@@ -85,7 +85,7 @@
 				</div>
 			</xsl:if>
 			<div class="device__price" style="display:block;">
-				<div class="price_normal">
+				<div class="price_normal" style="{'visibility: hidden;'[f:num(price) = 0]}">
 					<xsl:value-of
 							select="concat(f:price_output($price, $shop), ' ', upper-case($curr), ' за ', $min, 'шт')"/>
 				</div>
