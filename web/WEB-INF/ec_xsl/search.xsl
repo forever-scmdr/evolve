@@ -93,17 +93,14 @@
 			<xsl:if test="not($products)">
 				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
-			<div id="tme_search">
-				Идет поиск по дополнительным каталогам...
-			</div>
-			<div id="platan_search">
-				<!-- Идет поиск по дополнительным каталогам... -->
-			</div>
+			<div id="tme_search"></div>
+			<div id="platan_search"></div>
 			<div id="farnell_search"></div>
 			<div id="promelec_search"></div>
 			<div id="digikey_search"></div>
 			<div id="arrow_search"></div>
 			<div id="gkel_search"></div>
+			<div id="mouser_search"></div>
 		</div>
 
 		<xsl:call-template name="ACTIONS_MOBILE"/>
@@ -114,13 +111,14 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<script type="text/javascript">
 			$(document).ready(function(){
-			insertAjax('<xsl:value-of select="page/arrow_search_link"/>');
-			insertAjax('<xsl:value-of select="page/digikey_search_link"/>');
-			insertAjax('<xsl:value-of select="page/farnell_search_link"/>');
-			insertAjax('<xsl:value-of select="page/platan_search_link"/>');
-			insertAjax('<xsl:value-of select="page/promelec_search_link"/>');
-			insertAjax('<xsl:value-of select="page/tme_search_link"/>');
-			insertAjax('<xsl:value-of select="page/gkel_search_link"/>');
+<!--			insertAjax('<xsl:value-of select="page/arrow_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/digikey_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/farnell_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/platan_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/promelec_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/tme_search_link"/>');-->
+<!--			insertAjax('<xsl:value-of select="page/gkel_search_link"/>');-->
+				insertAjax('<xsl:value-of select="page/mouser_search_link"/>');
 			});
 		</script>
 	</xsl:template>
