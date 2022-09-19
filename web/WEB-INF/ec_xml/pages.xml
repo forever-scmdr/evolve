@@ -1973,4 +1973,10 @@
 		</command>
 	</page>
 
+	<page name="change_ip">
+		<command class="extra.ChangeIPWireguard">
+			<result name="success" type="inline_text"/>
+		</command>
+	</page>
+
 </site>
