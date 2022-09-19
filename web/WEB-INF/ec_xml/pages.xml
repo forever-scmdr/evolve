@@ -1895,7 +1895,7 @@
 			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="currency" scope="cookie" value="byn"/>
-			<var name="minqty" value="0" scope="cookie"/>
+			<var name="minqty" scope="cookie"/>
 			<var name="shop" value="Mouser"/>
 		</request>
 		<include name="SHOP_AND_CURRENCY"/>

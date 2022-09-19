@@ -215,45 +215,52 @@
 		<xsl:param name="product"/>
 
 		<xsl:variable name="pic" select="$product/main_pic/@path"/>
-		<xsl:variable name="min" select="$product/min_qty"/>
+		<xsl:variable name="min" select="if(f:num($product/min_qty)&gt; 0) then $product/min_qty else 1"/>
 		<xsl:variable name="step" select="$product/step"/>
 		<xsl:variable name="vendor_code" select="$product/vendor_code"/>
 		<xsl:variable name="qty" select="f:num($product/qty)"/>
 		<xsl:variable name="available" select="$qty &gt; 0"/>
 		<xsl:variable name="c" select="translate($product/code, ' ', '')"/>
 
-		<div id="cart_list_{$c}">
-			<form action="cart_action/?action=addExternalToCart&amp;code={$c}" method="post" ajax="true"
-				  ajax-loader-id="cart_list_{$c}">
-				<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
-				<input type="hidden" value="{$c}" name="id"/>
-				<input type="hidden" value="{$shop/name}" name="aux"/>
-				<input type="hidden" value="{$product/name}" name="name"/>
-				<input type="hidden" value="{$product/vendor}" name="vendor"/>
-				<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
-				<input type="hidden" value="{$qty}" name="max"/>
-				<input type="hidden" value="{$min}" name="min_qty"/>
-				<input type="hidden" name="img" value="{$pic}"/>
-				<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"
-					   step="if(f:num($step) = 0) then 1 else $step"/>
-				<input type="hidden" name="price_map"
-					   value="{string-join(($product/price_break/concat(f:num(qty), ':', f:num(price))), ';')}"/>
-				<input type="hidden" name="delivery_time" value="{if($available) then $shop/delivery_string else ''}"/>
-				<input type="submit" class="button{' not_available'[not($available)]}"
-					   value="{if($available) then 'В корзину' else 'Под заказ'}"/>
-			</form>
-		</div>
-		<xsl:if test="$available">
-			<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка
-				<xsl:value-of
-						select="if($qty &lt; 500000) then concat(' ',$qty, ' шт.') else ''"/>
-				в течение
-				<xsl:value-of select="$shop/delivery_string"/>
+		<xsl:if test="code != 'N/A'">
+			<div id="cart_list_{$c}">
+				<form action="cart_action/?action=addExternalToCart&amp;code={$c}" method="post" ajax="true"
+					  ajax-loader-id="cart_list_{$c}">
+					<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
+					<input type="hidden" value="{$c}" name="id"/>
+					<input type="hidden" value="{$shop/name}" name="aux"/>
+					<input type="hidden" value="{$product/name}" name="name"/>
+					<input type="hidden" value="{$product/vendor}" name="vendor"/>
+					<input type="hidden" value="{$vendor_code}" name="vendor_code"/>
+					<input type="hidden" value="{$qty}" name="max"/>
+					<input type="hidden" value="{$min}" name="min_qty"/>
+					<input type="hidden" name="img" value="{$pic}"/>
+					<input type="number" class="text-input" name="qty" value="{$min}" min="{$min}"
+						   step="if(f:num($step) = 0) then 1 else $step"/>
+					<input type="hidden" name="price_map"
+						   value="{string-join(($product/price_break/concat(f:num(qty), ':', f:num(price))), ';')}"/>
+					<input type="hidden" name="delivery_time" value="{if($available) then $shop/delivery_string else ''}"/>
+					<input type="submit" class="button{' not_available'[not($available)]}"
+						   value="{if($available) then 'В корзину' else 'Под заказ'}" />
+				</form>
 			</div>
+			<xsl:if test="$available">
+				<div class="device__in-stock" style="max-width:140px;"><i class="fas fa-check"></i>поставка
+					<xsl:value-of
+							select="if($qty &lt; 500000) then concat(' ',$qty, ' шт.') else ''"/>
+					в течение
+					<xsl:value-of select="$shop/delivery_string"/>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($available)">
+				<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под
+					заказ
+				</div>
+			</xsl:if>
 		</xsl:if>
-		<xsl:if test="not($available)">
-			<div class="device__in-stock device__in-stock_no" style="max-width:140px;"><i class="far fa-clock"></i>под
-				заказ
+		<xsl:if test="code = 'N/A'">
+			<div id="cart_list_na" style="">
+				<form><input type="submit" value="Заказ недоступен"   class="button to_cart" style="background: #505050;"/></form>
 			</div>
 		</xsl:if>
 	</xsl:template>

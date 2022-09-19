@@ -9,7 +9,7 @@ public interface MouserJsonConst {
 	String QUANTITY = "Availability";
 	String NONE = "None";
 	String TIME = "LeadTime";
-	String LINK = "ProductDetailUrl";
+	String LINK = "DataSheetUrl";
 	String VENDOR_CODE = "ManufacturerPartNumber";
 	String VENDOR = "Manufacturer";
 	String MIN_Q = "Min";
