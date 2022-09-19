@@ -2,6 +2,7 @@
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="../utils/price_conversions.xsl"/>
+	<xsl:import href="../utils/string_cleaners.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -114,6 +115,7 @@
 		<xsl:variable name="pic" select="if(main_pic/@path != '') then main_pic/@path else 'img/no_image.png'"/>
 		<xsl:variable name="min" select="price_break[1]/qty"/>
 		<xsl:variable name="price" select="price_break[1]/price"/>
+		<xsl:variable name="cc" select="f:clean_id(code)"/>
 
 		<div class="device device_row">
 			<a class="device__image device_row__image" style="background-image: url('{$pic}');"></a>
@@ -148,9 +150,9 @@
 					</p>
 					<xsl:if test="params/parameter != '' or f:num(leadtime) &gt; 0">
 						<a style="color: #707070; text-decoration: underline;" class="javascript"
-						   onclick="$('#tech-{code}').toggle();">Показать технические характеристики
+						   onclick="$('#tech-{$cc}').toggle();">Показать технические характеристики
 						</a>
-						<table class="features table-bordered" id="tech-{code}" style="display:none;">
+						<table class="features table-bordered" id="tech-{$cc}" style="display:none;">
 							<xsl:for-each select="params/parameter">
 								<tr>
 									<td style="color: #616161; ">
@@ -221,11 +223,12 @@
 		<xsl:variable name="qty" select="f:num($product/qty)"/>
 		<xsl:variable name="available" select="$qty &gt; 0"/>
 		<xsl:variable name="c" select="translate($product/code, ' ', '')"/>
+		<xsl:variable name="cc" select="f:clean_id($c)"/>
 
 		<xsl:if test="code != 'N/A'">
-			<div id="cart_list_{$c}">
+			<div id="cart_list_{$cc}">
 				<form action="cart_action/?action=addExternalToCart&amp;code={$c}" method="post" ajax="true"
-					  ajax-loader-id="cart_list_{$c}">
+					  ajax-loader-id="cart_list_{$cc}">
 					<input type="hidden" value="{if($available) then 0 else 1}" name="not_available"/>
 					<input type="hidden" value="{$c}" name="id"/>
 					<input type="hidden" value="{$shop/name}" name="aux"/>
