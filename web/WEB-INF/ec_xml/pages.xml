@@ -436,7 +436,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
+				<fulltext type="prefix" limit="5" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -459,7 +459,7 @@
 		</request>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
+				<fulltext type="prefix" limit="48" compare="EVERY" name="code name search type name_extra vendor vendor_code xml">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -945,9 +945,7 @@
 		</session>
 		<single item="common"/>
 		<list item="currency"/>
-		<list item="shop">
-			<single item="currency" assoc="general"/>
-		</list>
+		<list item="shop" />
 	</page>
 
 
@@ -1711,6 +1709,7 @@
 		<single item="catalog"/>
 		<single item="common"/>
 		<list item="currency"/>
+		<list item="shop"/>
 	</page>
 
 	<page name="order_excel" template="order_excel">
@@ -1738,6 +1737,7 @@
 		<single item="catalog"/>
 		<single item="common"/>
 		<list item="currency"/>
+		<list item="shop"/>
 	</page>
 
 
