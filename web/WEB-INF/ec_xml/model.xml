@@ -190,6 +190,16 @@
 		<child item="product"/>
 	</item>
 
+	<!-- URLs for product details access -->
+	<item name="external_urls_container" virtual="true" caption="контейнер для пар код-URL">
+		<child item="external_url"/>
+	</item>
+
+	<item name="external_url" caption="пара артикул-URL" description="для загрузки характеристик товара с внешнего сайта">
+		<parameter name="code" type="string" caption="code"/>
+		<parameter name="url" caption="url" description="ссылка на страницу с товаром"/>
+	</item>
+
 	<item name="external_shops" caption="Внешние магазины" ag-id="1962" ag-hash="-120191287" >
 		<child item="currency_ratios" single="true"/>
 		<child item="shop" />
