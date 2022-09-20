@@ -1,7 +1,10 @@
 package ecommander.fwk.external_shops.mouser;
 
+import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +18,8 @@ public class MouserSearchCommand extends Command{
 	private static final String ENDPOINT = "https://api.mouser.com/api/v1/search/keyword?apiKey=80dc6a51-a23c-406f-ace3-1f3bfe4da4d5";
 	private static final String KEYWORD_REQUEST = "{\"%s\":{\"keyword\": \"%s\",\"records\":\"50\",\"startingRecord\":\"0\"%s}}";
 	private static final String PART_NUMBER_REQUEST = "{\"mouserPartNumber\":\"%s\"}";
-	private static final String PART_NUMBER_PATTERN = "\\d{5}";
+
+	private Item container;
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -30,7 +34,7 @@ public class MouserSearchCommand extends Command{
 
 		String listOfParts = loadFromExternalAPI(endpoint, requestBody);
 
-
+		rememberUrls(listOfParts);
 
 		String res = MouserJsonToXMLConverter.convert(listOfParts);
 
@@ -38,6 +42,32 @@ public class MouserSearchCommand extends Command{
 		result.setValue(res);
 
 		return result;
+	}
+
+	private void rememberUrls(String jsonString) throws Exception {
+		JSONObject responseBody = new JSONObject(jsonString);
+		JSONArray products = responseBody.getJSONObject(MouserJsonConst.RESULT).getJSONArray(MouserJsonConst.PRODUCTS_KEY);
+		if(products != null){
+			ensureContainer();
+			for (int i = 0; i < products.length(); i++){
+				JSONObject prodcut = products.getJSONObject(i);
+				Object code = prodcut.get(MouserJsonConst.CODE);
+				Object url = prodcut.get("ProductDetailUrl");
+				if("N/A".equals(code) || url == null || code == null) continue;
+
+				Item externalUrl = getSessionMapper().getSingleItemByParamValue("external_url", "code", code);
+				if(externalUrl == null){
+					externalUrl = getSessionMapper().createSessionItem("external_url", container.getId());
+					getSessionMapper().saveTemporaryItem(externalUrl);
+				}
+			}
+		}
+	}
+	private void ensureContainer() {
+		if(container == null){
+			container = getSessionMapper().createSessionRootItem("external_urls_container");
+			getSessionMapper().saveTemporaryItem(container);
+		}
 	}
 
 	private String loadFromExternalAPI(String endpoint, String requestBody) throws IOException {

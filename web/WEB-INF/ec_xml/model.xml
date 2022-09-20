@@ -191,13 +191,13 @@
 	</item>
 
 	<!-- URLs for product details access -->
-	<item name="external_urls_container" virtual="true" caption="контейнер для пар код-URL">
+	<item name="external_urls_container" virtual="true" caption="контейнер для пар код-URL" ag-id="2014" ag-hash="-1401815590">
 		<child item="external_url"/>
 	</item>
 
-	<item name="external_url" caption="пара артикул-URL" description="для загрузки характеристик товара с внешнего сайта">
-		<parameter name="code" type="string" caption="code"/>
-		<parameter name="url" caption="url" description="ссылка на страницу с товаром"/>
+	<item name="external_url" key="code" caption="пара артикул-URL" description="для загрузки характеристик товара с внешнего сайта" virtual="true" ag-id="2015" ag-hash="-1385596165">
+		<parameter name="code" type="string" caption="Артикул товара"/>
+		<parameter name="url" type="string" caption="url" description="Ссылка на страницу с товаром"/>
 	</item>
 
 	<item name="external_shops" caption="Внешние магазины" ag-id="1962" ag-hash="-120191287" >
