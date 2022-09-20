@@ -50,9 +50,9 @@ public class MouserSearchCommand extends Command{
 		if(products != null){
 			ensureContainer();
 			for (int i = 0; i < products.length(); i++){
-				JSONObject prodcut = products.getJSONObject(i);
-				Object code = prodcut.get(MouserJsonConst.CODE);
-				Object url = prodcut.get("ProductDetailUrl");
+				JSONObject produсt = products.getJSONObject(i);
+				Object code = produсt.get(MouserJsonConst.CODE);
+				Object url = produсt.get("ProductDetailUrl");
 				if("N/A".equals(code) || url == null || code == null) continue;
 
 				Item externalUrl = getSessionMapper().getSingleItemByParamValue("external_url", "code", code);
