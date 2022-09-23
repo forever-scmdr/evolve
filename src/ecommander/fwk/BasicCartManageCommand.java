@@ -188,6 +188,12 @@ public abstract class BasicCartManageCommand extends Command {
                 = "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
         final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
+        String dealerName = getItemForm().getItemSingleTransient().getStringExtra("dealer");
+        Item dealer = ItemQuery.loadSingleItemByParamValue("dealer", "name", dealerName);
+        String dealerEmail = null;
+        if (dealer != null) {
+            dealerEmail = dealer.getStringValue("email", null);
+        }
         final String shopEmail = getVarSingleValue("email");
 
         // Письмо для продавца
@@ -247,6 +253,17 @@ public abstract class BasicCartManageCommand extends Command {
             cart.setExtra(IN_PROGRESS, null);
             getSessionMapper().saveTemporaryItem(cart);
             return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
+        }
+        // Отправка на ящик дилера
+        if (StringUtils.isNotBlank(dealerEmail)) {
+            try {
+                EmailUtils.sendGmailDefault(dealerEmail, regularTopic, shopMultipart);
+            } catch (Exception e) {
+                ServerLogger.error("Unable to send email", e);
+                cart.setExtra(IN_PROGRESS, null);
+                getSessionMapper().saveTemporaryItem(cart);
+                return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
+            }
         }
 
         // Сохранение нового значения счетчика, если все отправлено удачно

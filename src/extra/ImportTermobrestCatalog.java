@@ -1,5 +1,6 @@
 package extra;
 
+import com.sun.tools.javac.jvm.Items;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Импорт экселевский файлов для термобреста
@@ -52,7 +54,6 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 	private ItemType productType;
 	private ItemType paramsXmlType;
 	private ItemType sectionType;
-	private HashMap<String, DeviceDefinition> defs = new HashMap<>();
 
 
 	private static final String ID_PREFIX = "ID_";
@@ -118,6 +119,7 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 		for (File excel : excels) {
+
 			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt", "csv"))
 				continue;
 
@@ -134,6 +136,7 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 				continue;
 			}
 			POIUtils.CellXY idCell = new POIUtils.CellXY(-1, -1);
+			HashMap<String, DeviceDefinition> defs = new HashMap<>();
 			boolean idScanNotFinished = true;
 			while (idScanNotFinished) {
 				idCell = POIUtils.findNextContaining(sheet, eval, "ID_", idCell);
@@ -185,7 +188,11 @@ public class ImportTermobrestCatalog extends IntegrateBase implements ItemNames 
 			}
 			section.set_params_short(StringUtils.join(paramsInShort, "|"));
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
-			executeAndCommitCommandUnits(ItemStatusDBUnit.deleteChildren(section));
+			// удалить старые товары
+			List<Item> oldProds = new ItemQuery(PRODUCT).setParentId(section.getId(), true).loadItems();
+			for (Item oldProd : oldProds) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldProd));
+			}
 
 			// Закрыть файл
 			doc.close();

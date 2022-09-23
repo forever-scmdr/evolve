@@ -1118,6 +1118,7 @@
 
 	<item name="dealer" caption="Дилер/партнер" key="name" ag-id="2897" ag-hash="-1335779815">
 		<parameter name="name" type="string" caption="Название дилера или партнера"/>
+		<parameter name="email" type="string" caption="Email" description="для отправки почты, если не заполнен, не отправляется"/>
 	</item>
 
 
