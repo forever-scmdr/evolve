@@ -1910,6 +1910,15 @@
 		</command>
 	</page>
 
+	<page name="mouser_load_details">
+		<request>
+			<var name="code"/>
+		</request>
+		<command class="ecommander.fwk.external_shops.mouser.LoadDetailsCommand" method="loadManufacturerList" tag="details">
+			<result name="result" type="inline_xml"/>
+		</command>
+	</page>
+
 
 	<page name="gkel_search" template="external_search/gkel_search">
 		<request>

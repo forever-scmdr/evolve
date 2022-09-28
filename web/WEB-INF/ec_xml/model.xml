@@ -198,6 +198,7 @@
 	<item name="external_url" key="code" caption="пара артикул-URL" description="для загрузки характеристик товара с внешнего сайта" virtual="true" ag-id="2015" ag-hash="-1385596165">
 		<parameter name="code" type="string" caption="Артикул товара"/>
 		<parameter name="url" type="string" caption="url" description="Ссылка на страницу с товаром"/>
+		<parameter name="content" type="plain-text" caption="Контент"/>
 	</item>
 
 	<item name="external_shops" caption="Внешние магазины" ag-id="1962" ag-hash="-120191287" >

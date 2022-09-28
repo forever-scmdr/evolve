@@ -58,6 +58,8 @@ public class MouserSearchCommand extends Command{
 				Item externalUrl = getSessionMapper().getSingleItemByParamValue("external_url", "code", code);
 				if(externalUrl == null){
 					externalUrl = getSessionMapper().createSessionItem("external_url", container.getId());
+					externalUrl.setValue("code", code);
+					externalUrl.setValue("url", url);
 					getSessionMapper().saveTemporaryItem(externalUrl);
 				}
 			}
