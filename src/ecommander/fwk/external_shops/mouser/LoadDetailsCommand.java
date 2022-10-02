@@ -3,6 +3,7 @@ package ecommander.fwk.external_shops.mouser;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.external_shops.AbstractLoadAdditionalContentCommand;
 import ecommander.pages.ResultPE;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -24,11 +25,13 @@ public class LoadDetailsCommand extends AbstractLoadAdditionalContentCommand {
 				tr.removeAttr("class").removeAttr("id");
 				Elements tds = tr.select("td");
 				tds.removeAttr("class").removeAttr("id");
-				Elements k = tds.eq(0);
 				tds.select("input").remove();
+				tds.select("*").removeAttr("onclick");
+				tds.select("a").remove();
+				Elements k = tds.eq(0);
 				k.html(k.text());
 			}
-			return trs.outerHtml();
+			return StringEscapeUtils.escapeXml10(trs.outerHtml());
 		}
 		return "";
 	}
