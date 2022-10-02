@@ -17,14 +17,15 @@ public class LoadDetailsCommand extends AbstractLoadAdditionalContentCommand {
 		Elements tables  = html.select(TABLE_SELECTOR);
 		for (Element table : tables){
 			table.removeClass(TABLE_SELECTOR);
+			table.select("tr:eq(0)").remove();
 			Elements trs = table.select("tr");
-			trs.eq(0).remove();
 			for(Element tr : trs){
 				tr.children().eq(2).remove();
 				tr.removeAttr("class").removeAttr("id");
 				Elements tds = tr.select("td");
 				tds.removeAttr("class").removeAttr("id");
 				Elements k = tds.eq(0);
+				tds.select("input").remove();
 				k.html(k.text());
 			}
 			return trs.outerHtml();
@@ -34,7 +35,7 @@ public class LoadDetailsCommand extends AbstractLoadAdditionalContentCommand {
 
 	@Override
 	protected ResultPE defineResult(String content) throws EcommanderException {
-		ResultPE result = getResult("success");
+		ResultPE result = getResult("result");
 		result.setValue(content);
 		return result;
 	}
