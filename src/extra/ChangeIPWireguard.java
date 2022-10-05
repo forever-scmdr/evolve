@@ -42,4 +42,8 @@ public class ChangeIPWireguard extends Command {
 		future.get(); // waits for streamGobbler to finish
 		return getResult("success").setValue(StringUtils.join(streamGobbler.out, "\r\n"));
 	}
+
+	public static void main(String[] args) {
+		System.out.println("https://www.digikey.com/en/products/detail/jst-sales-america-inc/SM24B-ZPDSS-TF-LF-SN/2472591".hashCode());
+	}
 }
