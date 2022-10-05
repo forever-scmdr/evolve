@@ -105,7 +105,7 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
 					continue;
 				}
-				for (int i = 1; i < 100; i++) {
+				for (int i = 1; i < 20; i++) {
 					Element param = productDoc.getFirst("parameter_" + i);
 					if (param != null) {
 						if (i > 1)
@@ -116,6 +116,71 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 						break;
 					}
 				}
+				Element attributes = productDoc.getFirst("attributes");
+				if (attributes != null) {
+					line.append(", [").append(StringEscapeUtils.escapeCsv(attributes.getElementsByTag("name").text())).append(']');
+					Element value = attributes.getElementsByTag("value").first();
+					if (value != null) {
+						Elements params = value.getElementsByTag("param");
+						for (Element param : params) {
+							String attrName = StringEscapeUtils.escapeCsv(param.select("name").first().ownText());
+							String attrValue = StringEscapeUtils.escapeCsv(param.select("value").first().ownText());
+							line.append(", {").append(attrName).append("ｦｸ").append(attrValue).append("}");
+						}
+					}
+				}
+				Element docs = productDoc.getFirst("docs");
+				if (docs != null) {
+					line.append(", [").append(StringEscapeUtils.escapeCsv(docs.getElementsByTag("name").text())).append(']');
+					Element value = attributes.getElementsByTag("value").first();
+					if (value != null) {
+						Elements params = value.getElementsByTag("param");
+						for (Element param : params) {
+							String docName = StringEscapeUtils.escapeCsv(param.select("name").first().ownText());
+							Elements docVals = param.select("value");
+							StringBuilder allDocs = new StringBuilder();
+							for (Element docVal : docVals) {
+								allDocs.append(docVal.ownText());
+							}
+							String docsValue = StringEscapeUtils.escapeCsv(allDocs.toString());
+							line.append(", {").append(docName).append("ｦｸ").append(docsValue).append("}");
+						}
+					}
+				}
+				Element env = productDoc.getFirst("environmental");
+				if (env != null) {
+					line.append(", [").append(StringEscapeUtils.escapeCsv(env.getElementsByTag("name").text())).append(']');
+					Element value = env.getElementsByTag("value").first();
+					if (value != null) {
+						Elements params = value.getElementsByTag("param");
+						for (Element param : params) {
+							String attrName = StringEscapeUtils.escapeCsv(param.select("name").first().ownText());
+							String attrValue = StringEscapeUtils.escapeCsv(param.select("value").first().ownText());
+							line.append(", {").append(attrName).append("ｦｸ").append(attrValue).append("}");
+						}
+					}
+				}
+				Element additional = productDoc.getFirst("additional");
+				if (additional != null) {
+					line.append(", [").append(StringEscapeUtils.escapeCsv(additional.getElementsByTag("name").text())).append(']');
+					Element value = additional.getElementsByTag("value").first();
+					if (value != null) {
+						Elements params = value.getElementsByTag("param");
+						for (Element param : params) {
+							String attrName = StringEscapeUtils.escapeCsv(param.select("name").first().ownText());
+							Elements addVals = param.select("value");
+							StringBuilder allAdds = new StringBuilder();
+							for (Element add : addVals) {
+								if (!allAdds.isEmpty())
+									allAdds.append(';');
+								allAdds.append(add.ownText());
+							}
+							String addValue = StringEscapeUtils.escapeCsv(allAdds.toString());
+							line.append(", {").append(attrName).append("ｦｸ").append(addValue).append("}");
+						}
+					}
+				}
+
 				writer.println(line.toString());
 				info.increaseProcessed();
 				prodPerFileCount++;
