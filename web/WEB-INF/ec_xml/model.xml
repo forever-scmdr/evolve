@@ -153,6 +153,7 @@
 
 	<item name="gallery" caption="Галерея" ag-id="1210" ag-hash="-196315310">
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
+		<parameter name="gallery_path" type="string" caption="Путь к файлу" multiple="true"/>
 		<child item="original_gallery" single="true" virtual="true"/>
 	</item>
 
@@ -219,6 +220,7 @@
 		<parameter name="code" type="string" caption="Код раздела"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
+		<parameter name="main_pic_path" type="picture" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
@@ -242,7 +244,8 @@
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="country" type="string" caption="Страна производства"/>
-		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
+		<parameter name="main_pic" type="picture" caption="Главная картинка" description="прямое прикрепление картинки"/>
+		<parameter name="main_pic_path" type="picture" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />

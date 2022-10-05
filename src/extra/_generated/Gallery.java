@@ -13,6 +13,7 @@ public class Gallery
 
     public final static String _NAME = "gallery";
     public final static String GALLERY = "gallery";
+    public final static String GALLERY_PATH = "gallery_path";
 
     private Gallery(Item item) {
         super(item);
@@ -47,6 +48,22 @@ public class Gallery
 
     public boolean contains_gallery(File value) {
         return containsValue("gallery", value);
+    }
+
+    public void add_gallery_path(String value) {
+        setValue("gallery_path", value);
+    }
+
+    public List<String> getAll_gallery_path() {
+        return getStringValues("gallery_path");
+    }
+
+    public void remove_gallery_path(String value) {
+        removeEqualValue("gallery_path", value);
+    }
+
+    public boolean contains_gallery_path(String value) {
+        return containsValue("gallery_path", value);
     }
 
 }

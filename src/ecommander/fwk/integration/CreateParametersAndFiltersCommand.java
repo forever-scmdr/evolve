@@ -395,8 +395,8 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				// в этом случае использовать ID айтема, т.к. могут быть разделы с одинаковым названием
 				return Strings.createXmlElementName(StringUtils.lowerCase("pid_" + section.getId()));
 			}
-			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name")))
-					+ "_" + section.getStringValue("category_id");
+			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name"))
+					+ "_" + section.getStringValue("category_id"));
 		}
 		return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getKey()));
 	}

@@ -48,13 +48,13 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		chars = new StringBuilder();
-		if (StringUtils.equalsIgnoreCase(CATEGORIES_ELEMENT, qName)) {
+		if (StringUtils.equalsIgnoreCase(SECTIONS_ELEMENT, qName)) {
 			categoryReady = true;
 			return;
 		}
 		try {
 			// Раздел
-			if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName) && categoryReady) {
+			if (StringUtils.equalsIgnoreCase(SECTION_ELEMENT, qName) && categoryReady) {
 				code = attributes.getValue(ID_ATTR);
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
 				currentSection = categories.get(code);
@@ -94,7 +94,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if (StringUtils.equalsIgnoreCase(CATEGORIES_ELEMENT, qName)) {
+		if (StringUtils.equalsIgnoreCase(SECTIONS_ELEMENT, qName)) {
 			categoryReady = false;
 			// Теперь сохранить все новые разделы
 			while (!newSectionParent.isEmpty()) {
@@ -118,7 +118,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				}
 			}
 
-		} else if (StringUtils.equalsIgnoreCase(CATEGORY_ELEMENT, qName)) {
+		} else if (StringUtils.equalsIgnoreCase(SECTION_ELEMENT, qName)) {
 			try {
 				if (currentSection != null) {
 					currentSection.setValue(NAME_PARAM, StringUtils.trimToEmpty(chars.toString()));

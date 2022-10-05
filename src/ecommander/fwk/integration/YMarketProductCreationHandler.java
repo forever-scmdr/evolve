@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -37,14 +38,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(QUANTITY_OPT_ELEMENT);
 		SINGLE_PARAMS.add(VENDOR_ELEMENT);
 		SINGLE_PARAMS.add(OLDPRICE_ELEMENT);
-		SINGLE_PARAMS.add(OPTPRICE_ELEMENT);
+		SINGLE_PARAMS.add(PRICE_OPT_ELEMENT);
 		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
 		SINGLE_PARAMS.add(MIN_QTY_PARAM);
 		SINGLE_PARAMS.add(STATUS_ELEMENT);
 		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
 
-		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
+		MULTIPLE_PARAMS.add(SECTION_ID_ELEMENT);
 		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
 		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
 		MULTIPLE_PARAMS.add(SIMILAR_ITEMS_ELEMENT);
@@ -83,13 +84,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
-			if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
+			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
-				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
+				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(SECTION_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
 					String secCode = "-000-";
 					if (categoryIds.size() > 0) {
@@ -116,7 +117,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (product.getItemType().hasParameter(CURRENCY_ID_PARAM))
 					product.setValueUI(CURRENCY_ID_PARAM, singleParams.get(CURRENCY_ID_ELEMENT));
 				if (product.getItemType().hasParameter(CATEGORY_ID_PARAM))
-					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(CATEGORY_ID_ELEMENT));
+					product.setValueUI(CATEGORY_ID_PARAM, singleParams.get(SECTION_ID_ELEMENT));
 				product.setValueUI(NAME_PARAM, singleParams.get(NAME_ELEMENT));
 				if (product.isValueEmpty(NAME_PARAM))
 					product.setValueUI(NAME_PARAM, singleParams.get(MODEL_ELEMENT));
@@ -129,7 +130,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (product.getItemType().hasParameter(COUNTRY_PARAM))
 					product.setValueUI(COUNTRY_PARAM, singleParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OPT_PARAM))
-					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(OPTPRICE_ELEMENT));
+					product.setValueUI(PRICE_OPT_PARAM, singleParams.get(PRICE_OPT_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OLD_PARAM))
 					product.setValueUI(PRICE_OLD_PARAM, singleParams.get(OLDPRICE_ELEMENT));
 				if (product.getItemType().hasParameter(PRICE_OPT_OLD_PARAM))
@@ -233,11 +234,25 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					}
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
+				boolean hasGallery = false;
+				boolean hasPicUrl = false;
 				for (String picUrl : picUrls) {
 					try {
 						String fileName = Strings.getFileName(picUrl);
+						URL newPicUrl = null;
+						try {
+							newPicUrl = new URL(picUrl);
+							hasPicUrl = true;
+						} catch (MalformedURLException e) {
+							newPicUrl = null;
+						}
 						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							product.setValue(GALLERY_PARAM, new URL(picUrl));
+							if (newPicUrl != null) {
+								product.setValue(GALLERY_PARAM, new URL(picUrl));
+							} else {
+								product.setValue(GALLERY_PATH_PARAM, fileName);
+							}
+							hasGallery = true;
 							needSave = true;
 						}
 					} catch (Exception e) {
@@ -254,9 +269,11 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						noMainPic = true;
 					}
 				}
-				if (noMainPic && picUrls.size() > 0) {
-					if (picUrls.size() > 0) {
+				if (noMainPic && picUrls.size() > 0 && hasGallery) {
+					if (picUrls.size() > 0 && hasPicUrl) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+					} else {
+						product.setValue(MAIN_PIC_PATH_PARAM,  Strings.getFileName(picUrls.iterator().next()));
 					}
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
@@ -312,7 +329,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		parameterReady = false;
 		paramValue = new StringBuilder();
 		// Продукт
-		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
+		if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
 			singleParams = new HashMap<>();
 			specialParams = new LinkedHashMap<>();
 			multipleParams = new LinkedHashMap<>();

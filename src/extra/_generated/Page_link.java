@@ -14,6 +14,7 @@ public class Page_link
     public final static String NAME = "name";
     public final static String LINK = "link";
     public final static String MAIN_PIC = "main_pic";
+    public final static String SHORT = "short";
     public final static String IN_MAIN_MENU = "in_main_menu";
 
     private Page_link(Item item) {
@@ -77,6 +78,22 @@ public class Page_link
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_short(String value) {
+        setValue("short", value);
+    }
+
+    public String get_short() {
+        return getStringValue("short");
+    }
+
+    public String getDefault_short(String defaultVal) {
+        return getStringValue("short", defaultVal);
+    }
+
+    public boolean contains_short(String value) {
+        return containsValue("short", value);
     }
 
     public void set_in_main_menu(String value) {

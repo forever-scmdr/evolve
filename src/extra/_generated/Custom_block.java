@@ -11,17 +11,18 @@ public class Custom_block
 {
 
     public final static String _NAME = "custom_block";
+    public final static String TYPE = "type";
     public final static String NAME = "name";
     public final static String SPOILER = "spoiler";
     public final static String HEADER = "header";
     public final static String SUBHEADER = "subheader";
     public final static String TEXT = "text";
+    public final static String CODE = "code";
     public final static String IMAGE = "image";
     public final static String IMAGE_BGR = "image_bgr";
     public final static String YOUTUBE = "youtube";
     public final static String LINK = "link";
     public final static String CLASS = "class";
-    public final static String TYPE = "type";
     public final static String DIVIDER_TOP = "divider_top";
     public final static String DIVIDER_BOTTOM = "divider_bottom";
     public final static String ODD_STYLE = "odd_style";
@@ -43,6 +44,22 @@ public class Custom_block
 
     public static Custom_block newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_type(String value) {
+        setValue("type", value);
+    }
+
+    public String get_type() {
+        return getStringValue("type");
+    }
+
+    public String getDefault_type(String defaultVal) {
+        return getStringValue("type", defaultVal);
+    }
+
+    public boolean contains_type(String value) {
+        return containsValue("type", value);
     }
 
     public void set_name(String value) {
@@ -131,6 +148,22 @@ public class Custom_block
         return containsValue("text", value);
     }
 
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
     public void set_image(File value) {
         setValue("image", value);
     }
@@ -201,22 +234,6 @@ public class Custom_block
 
     public boolean contains_class(String value) {
         return containsValue("class", value);
-    }
-
-    public void set_type(String value) {
-        setValue("type", value);
-    }
-
-    public String get_type() {
-        return getStringValue("type");
-    }
-
-    public String getDefault_type(String defaultVal) {
-        return getStringValue("type", defaultVal);
-    }
-
-    public boolean contains_type(String value) {
-        return containsValue("type", value);
     }
 
     public void set_divider_top(Byte value) {

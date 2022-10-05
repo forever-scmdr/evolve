@@ -4,6 +4,7 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -16,6 +17,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,16 +58,50 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
+		HashMap<String, YMarketCatalogCreationHandler> secHandlers = new HashMap<>();
 		for (File xml : xmls) {
-			// Удалить DOCTYPE
-			if (removeDoctype(xml)) {
-				parser.parse(xml, secHandler);
-				info.increaseProcessed();
-			} else {
-				addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+			if (StringUtils.containsIgnoreCase(xml.getName(), "products")) {
+				Item productsSection = new ItemQuery("section").setParentId(catalog.getId(), false)
+						.addParameterEqualsCriteria("code", "products").loadFirstItem();
+				if (productsSection == null) {
+					productsSection = Item.newChildItem(ItemTypeRegistry.getItemType("section"), catalog);
+					productsSection.setValue("name", "Товары");
+					productsSection.setValue("code", "products");
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(productsSection));
+				}
+				YMarketCatalogCreationHandler prodSecHandler = new YMarketCatalogCreationHandler(productsSection, info, getInitiator());
+				secHandlers.put(xml.getName(), prodSecHandler);
+				// Удалить DOCTYPE
+				if (removeDoctype(xml)) {
+					parser.parse(xml, prodSecHandler);
+					info.increaseProcessed();
+				} else {
+					addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+				}
+
+			} else if (StringUtils.containsIgnoreCase(xml.getName(), "parts")) {
+				Item partsSection = new ItemQuery("section").setParentId(catalog.getId(), false)
+						.addParameterEqualsCriteria("code", "parts").loadFirstItem();
+				if (partsSection == null) {
+					partsSection = Item.newChildItem(ItemTypeRegistry.getItemType("section"), catalog);
+					partsSection.setValue("name", "Запчасти");
+					partsSection.setValue("code", "parts");
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(partsSection));
+				}
+				new YMarketCatalogCreationHandler(partsSection, info, getInitiator());
+				YMarketCatalogCreationHandler partsSecHandler = new YMarketCatalogCreationHandler(partsSection, info, getInitiator());
+				secHandlers.put(xml.getName(), partsSecHandler);
+				// Удалить DOCTYPE
+				if (removeDoctype(xml)) {
+					parser.parse(xml, partsSecHandler);
+					info.increaseProcessed();
+				} else {
+					addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
+				}
 			}
+
+
 		}
 
 		// Удаление всех пользовательских параметров товаров (айтемов и типов)
@@ -98,9 +134,10 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
-		YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
-		prodHandler.getPrice(getPrice);
 		for (File xml : xmls) {
+			YMarketCatalogCreationHandler secHandler = secHandlers.get(xml.getName());
+			YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
+			prodHandler.getPrice(getPrice);
 			parser.parse(xml, prodHandler);
 		}
 

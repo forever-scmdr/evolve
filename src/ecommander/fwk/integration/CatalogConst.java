@@ -23,6 +23,7 @@ public interface CatalogConst {
 	String CATEGORY_ID_PARAM = "category_id";
 	String PARENT_ID_PARAM = "parent_id";
 	String MAIN_PIC_PARAM = "main_pic";
+	String MAIN_PIC_PATH_PARAM = "main_pic_path";
 	String SMALL_PIC_PARAM = "small_pic";
 	String PARAMS_FILTER_PARAM = "params_filter";
 	String VENDOR_PARAM = "vendor";
@@ -50,6 +51,7 @@ public interface CatalogConst {
 	String TEXT_PICS_PARAM = "text_pics";
 	String FILES_PARAM = "files";
 	String GALLERY_PARAM = "gallery";
+	String GALLERY_PATH_PARAM = "gallery_path";
 	String XML_PARAM = "xml";
 	String SHORT_PARAM = "short";
 	String EXTRA_PARAM = "extra";
@@ -87,12 +89,17 @@ public interface CatalogConst {
 	String CURRENCIES_ELEMENT = "currencies";
 	String CURRENCY_ELEMENT = "currency";
 	String CATEGORIES_ELEMENT = "categories";
+	String SECTIONS_ELEMENT = "sections";
 	String CATEGORY_ELEMENT = "category";
+	String SECTION_ELEMENT = "section";
 	String OFFERS_ELEMENT = "offers";
+	String PRODUCTS_ELEMENT = "products";
 	String OFFER_ELEMENT = "offer";
+	String PRODUCT_ELEMENT = "product";
 	String PRICE_ELEMENT = "price";
 	String CURRENCY_ID_ELEMENT = "currencyId";
 	String CATEGORY_ID_ELEMENT = "categoryId";
+	String SECTION_ID_ELEMENT = "section_id";
 	String PICTURE_ELEMENT = "picture";
 	String VENDOR_ELEMENT = "vendor";
 	String MODEL_ELEMENT = "model";
@@ -111,6 +118,7 @@ public interface CatalogConst {
 	String QUANTITY_OPT_ELEMENT = "quantity_opt";
 	String OLDPRICE_ELEMENT = "oldprice";
 	String OPTPRICE_ELEMENT = "optprice";
+	String PRICE_OPT_ELEMENT = "price_opt";
 	String OLDOPTPRICE_ELEMENT = "oldoptprice";
 	String MIN_QUANTITY_ELEMENT = "min-quantity";
 	String ANALOG_ELEMENT = "analog";

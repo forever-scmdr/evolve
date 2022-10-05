@@ -106,7 +106,7 @@ public class Strings
     		char[] chars = invalid.toCharArray();
     		for(int i = 0; i< chars.length; i++){
     			int ic = (int)chars[i];
-    			sb.append('-').append(Integer.toHexString(ic));
+    			sb.append('_').append(Integer.toHexString(ic));
 			}
     		return sb.toString();
 		}
