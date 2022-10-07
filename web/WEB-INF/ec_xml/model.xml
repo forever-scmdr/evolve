@@ -220,7 +220,7 @@
 		<parameter name="code" type="string" caption="Код раздела"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
-		<parameter name="main_pic_path" type="picture" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
+		<parameter name="main_pic_path" type="string" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->

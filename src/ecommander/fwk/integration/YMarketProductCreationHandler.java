@@ -245,15 +245,14 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							hasPicUrl = true;
 						} catch (MalformedURLException e) {
 							newPicUrl = null;
+							hasPicUrl = false;
 						}
-						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
-							if (newPicUrl != null) {
-								product.setValue(GALLERY_PARAM, new URL(picUrl));
-							} else {
-								product.setValue(GALLERY_PATH_PARAM, fileName);
-							}
+						if (newPicUrl != null && !product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
+							product.setValue(GALLERY_PARAM, new URL(picUrl));
 							hasGallery = true;
 							needSave = true;
+						} else if (newPicUrl == null && !product.containsValue(GALLERY_PATH_PARAM, picUrl)) {
+							product.setValue(GALLERY_PATH_PARAM, picUrl);
 						}
 					} catch (Exception e) {
 						info.addError("Неверный формат картинки: " + picUrl, picUrl);
@@ -270,7 +269,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					}
 				}
 				if (noMainPic && picUrls.size() > 0 && hasGallery) {
-					if (picUrls.size() > 0 && hasPicUrl) {
+					if (hasPicUrl) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
 					} else {
 						product.setValue(MAIN_PIC_PATH_PARAM,  Strings.getFileName(picUrls.iterator().next()));
