@@ -38,6 +38,7 @@ public interface IConst {
 	String RUB_ELEMENT = "rub";
 	String MIN_ORDER_ELEMENT = "min_order";
 	String STEP_ORDER_ELEMENT = "step_order";
+	String USLUGA_ELEMENT = "usluga";
 	
 	/**
 	 * Атрибуты элементов

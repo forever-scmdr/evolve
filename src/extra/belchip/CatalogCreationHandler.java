@@ -62,6 +62,7 @@ public class CatalogCreationHandler extends DefaultHandler {
 		PRODUCT_COMMON_PARAMS.put(IConst.TEXT_TOP_ELEMENT, Product.TEXT);
 		PRODUCT_COMMON_PARAMS.put(IConst.MIN_ORDER_ELEMENT, Product.MIN_QTY);
 		PRODUCT_COMMON_PARAMS.put(IConst.STEP_ORDER_ELEMENT, Product.STEP);
+		PRODUCT_COMMON_PARAMS.put(IConst.USLUGA_ELEMENT, Product.IS_SERVICE);
 
 		CURRENCIES_COMMON_PARAMS.put(IConst.EUR_ELEMENT, Currencies.EUR_RATE);
 		CURRENCIES_COMMON_PARAMS.put(IConst.USD_ELEMENT, Currencies.USD_RATE);
@@ -129,7 +130,8 @@ public class CatalogCreationHandler extends DefaultHandler {
 						bigArts.add(codeInt);
 					}					
 					top.setValue(Product.AVAILABLE, avlb);
-					
+
+					/*
 					if("Услуга".equalsIgnoreCase(name)) {
 						top.setValue("is_service", (byte)1);
 						top.setValue(IConst.QTY_ELEMENT, 100000d);
@@ -137,7 +139,16 @@ public class CatalogCreationHandler extends DefaultHandler {
 					} else {
 						top.setValue("is_service", (byte)0);
 					}
-					
+					*/
+					if("Услуга".equalsIgnoreCase(name)) {
+						top.setValue(Product.IS_SERVICE, (byte) 1);
+					}
+					if (top.getByteValue(Product.IS_SERVICE, (byte) 0) == (byte) 1) {
+						top.setValue(Product.QTY, 100000d);
+						top.setValue(Product.AVAILABLE, (byte) 1);
+					} else {
+						top.setValue(Product.IS_SERVICE, (byte) 0);
+					}
 					
 					String contextPath = AppContext.getContextPath();
 					for(char c : ETC) {
