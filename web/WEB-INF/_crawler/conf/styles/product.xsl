@@ -112,7 +112,7 @@
 									</xsl:for-each>
 								</xsl:if>
 								<xsl:if test="not(td[2]/div/div)">
-									<value><xsl:value-of select="normalize-space(td[2]/div)" /></value>
+									<value><xsl:value-of select="normalize-space(td[2])" /></value>
 								</xsl:if>
 							</param>
 						</xsl:for-each>
