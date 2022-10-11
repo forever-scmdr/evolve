@@ -101,7 +101,7 @@
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 	</item>
 
-	<item name="seo_wrap" caption="Настройки SEO" ag-id="2382" ag-hash="1272512236">
+	<item name="seo_wrap" caption="Настройки SEO" ag-id="1832" ag-hash="1272512236">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<parameter name="product_prefix" caption="Перед названием товара" description="на странице товара" type="string"/>
 		<parameter name="product_sufix" caption="После названия товара" description="на странице товара" type="string"/>
@@ -115,7 +115,7 @@
 		<child item="seo"/>
 	</item>
 
-	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц" ag-id="2383" ag-hash="-1426352126">
+	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц" ag-id="1833" ag-hash="-1426352126">
 		<child item="url_seo" />
 	</item>
 
@@ -281,19 +281,19 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
-	<item name="name_extras" virtual="true" ag-id="2384" ag-hash="-72511849">
+	<item name="name_extras" virtual="true" ag-id="1834" ag-hash="-72511849">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 	</item>
 
-	<item name="yandex_product" virtual="true" ag-id="2385" ag-hash="-196099423">
+	<item name="yandex_product" virtual="true" ag-id="1835" ag-hash="-196099423">
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="url" type="string" caption="Код предложения" description="в яндекс маркете"/>
 	</item>
 
-	<item name="opt_product" caption="товар для оптовой торговли" virtual="true" ag-id="2386" ag-hash="409648995">
+	<item name="opt_product" caption="товар для оптовой торговли" virtual="true" ag-id="1836" ag-hash="409648995">
 		<parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
@@ -301,7 +301,7 @@
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 	</item>
 
-	<item name="currencies_product" caption="товар с ценами в разных валютах" virtual="true" ag-id="2876" ag-hash="1926862111">
+	<item name="currencies_product" caption="товар с ценами в разных валютах" virtual="true" ag-id="1837" ag-hash="1926862111">
 		<parameter name="price_RUB" type="currency-precise" caption="Цена RUB"/>
 		<parameter name="price_RUB_old" type="currency-precise" caption="Цена RUB"/>
 		<parameter name="price_USD" type="currency-precise" caption="Цена USD"/>
@@ -312,28 +312,28 @@
 
 
 	<!-- TODO refactor to tuples -->
-	<item name="product_labels" caption="ярлыки товара" virtual="true" ag-id="2387" ag-hash="-200411825">
+	<item name="product_labels" caption="ярлыки товара" virtual="true" ag-id="1838" ag-hash="-200411825">
 		<parameter name="tag" type="string" caption="Тэг" multiple="true" description="для группировки и для SEO"/>
 		<parameter name="mark" type="string" caption="Метка" multiple="true" description="для собирания товаров в группы"/>
 		<parameter name="label" type="string" caption="Ярлык" multiple="true" description="для отображения на карточке товара"/>
 	</item>
 
 
-	<item name="product_with_params" caption="товар с параметрами" virtual="true" ag-id="2388" ag-hash="595670991">
+	<item name="product_with_params" caption="товар с параметрами" virtual="true" ag-id="1839" ag-hash="595670991">
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 	</item>
 
-	<item name="line_product_container" virtual="true" ag-id="2389" ag-hash="2031155622">
+	<item name="line_product_container" virtual="true" ag-id="1840" ag-hash="2031155622">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
 	</item>
 
-	<item name="option_container" virtual="true" ag-id="2390" ag-hash="696811831">
+	<item name="option_container" virtual="true" ag-id="1841" ag-hash="696811831">
 		<child item="option" assoc="option"/>
 	</item>
 
-	<item name="exported_product" caption="товар с другого сайта" virtual="true" ag-id="2391" ag-hash="63796227">
+	<item name="exported_product" caption="товар с другого сайта" virtual="true" ag-id="1842" ag-hash="63796227">
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
@@ -353,7 +353,7 @@
 	</item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
-	<item name="option" caption="Опция" super="abstract_product *" ag-id="1831" ag-hash="-1010136971">
+	<item name="option" caption="Опция" super="abstract_product *" ag-id="1843" ag-hash="-1010136971">
 		<parameter name="price_opt" type="currency" caption="Оптовая цена"/>
 		<parameter name="group" type="string" caption="код группы" description="опции одной группы являютя взаимоисключающими"/>
 		<parameter name="max" type="integer" caption="максимальное количество в комплектации"/>
@@ -372,13 +372,13 @@
 	</item>
 
 
-	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1832" ag-hash="878968494">
+	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1844" ag-hash="878968494">
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
 
-	<item name="product_extra_file" super="product_extra" caption="Файл с описанием" ag-id="1833" ag-hash="878678427">
+	<item name="product_extra_file" super="product_extra" caption="Файл с описанием" ag-id="1845" ag-hash="878678427">
 		<parameter name="desc" type="string" caption="Описание"/>
 		<parameter name="size" type="string" caption="Рзамер"/>
 		<parameter name="file" type="file" caption="Файл"/>
@@ -443,7 +443,7 @@
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
-		<parameter name="complecatation_name" type="string" caption="Название комплектации"/>
+		<parameter name="complectation_name" type="string" caption="Название комплектации"/>
 		<parameter name="option" type="tuple" caption="Опции" format="=" multiple="true"/>
 		<child item="product" single="true"/>
 	</item>
@@ -713,7 +713,7 @@
 	</item>
 
 
-	<item name="domain_dependent_display" virtual="true" ag-id="2880" ag-hash="1003778247">
+	<item name="domain_dependent_display" virtual="true" ag-id="1831" ag-hash="1003778247">
 		<parameter name="type" type="string" caption="Тип блока" domain="custom_block_type"/>
 	</item>
 
