@@ -176,7 +176,7 @@
 					<a href="{$main_host}" class="header__column logo">
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
-					<div class="header__column header__search header-search">
+					<div class="header__column header__search header-search search">
 						<form action="{page/search_link}" method="post">
 							<input class="input header-search__input"
 								   ajax-href="{page/search_ajax_link}" result="search-result"
@@ -188,6 +188,7 @@
 							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 							<!-- quick search end -->
 						</form>
+						<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
 					</div>
 					<!-- need styles -->
 					<xsl:if test="$has_currency_rates and $currencies">
@@ -796,6 +797,27 @@
 					   </div>
 	            </div>
 				<!-- cheaper END -->
+				<!-- modal-excel -->
+	            <div class="modal fade" tabindex="-1" role="dialog" id="modal-excel" show-loader="yes">
+					<div class="modal-dialog" role="document">
+					      <div class="modal-content">
+					         <div class="modal-header">
+							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+							 	<div class="modal-title h4">Загрузка BOM</div>
+					         </div>
+					         <div class="modal-body">
+							 	<p class="mb-3">Вы можете загрузить список необходимых товаров в формате Excel (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
+					         	<p class="mb-3"><a href="#">Скачать образец файла</a></p>
+								<form action="" method="post" enctype="multipart/form-data" class="d-flex">
+									<input type="file" name="file" id="file" class="get-file" />
+									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
+									<input type="submit" value="Найти" />
+								</form>
+							 </div>
+					      </div>
+					   </div>
+	            </div>
+				<!-- modal-excel END -->
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<!-- <script type="text/javascript" src="js/bootstrap.js"/> -->
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>

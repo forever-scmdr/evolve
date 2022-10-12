@@ -99,7 +99,7 @@
 		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
-		<single item="seo_wrap" cacheable="true">
+		<single item="url_seo_wrap" cacheable="true">
 			<list item="url_seo"/>
 		</single>
 		<single item="styles">
@@ -138,12 +138,7 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="prod"/>
 		</link>
-		<link name="create_complect_link" target="cart_action">
-			<var name="prod" ref="prod"/>
-			<var name="action" value="createComplectation"/>
-		</link>
 		<list item="params"/>
-		<list item="option" assoc="option"/>
 	</include-definition>
 
 
@@ -293,7 +288,7 @@
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
 				<link name="add_tag" type="exclusive" target="section" copy-page-vars="yes">
-					<var name="tag" var="tag"/>
+					<!-- <var name="tag" var="tag"/> -->
 					<var name="tag" parameter="tag" ref="tag"/>
 				</link>
 				<link name="remove_tag" type="exclusive" target="section" copy-page-vars="yes">
@@ -576,7 +571,6 @@
 					<var name="prod" ref="lprod"/>
 				</link>
 			</list>
-
 		</single>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
@@ -876,7 +870,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -993,46 +987,13 @@
 	</page>
 
 
-	<page name="complect_ajax" template="complect_ajax">
-		<request>
-			<var name="message"/>
-			<var name="product" />
-			<var name="bought" />
-		</request>
-		<session>
-			<single item="cart">
-				<list item="bought" id="bought">
-					<list item="abstract_product" id="product" tag="product">
-						<link name="create_complect_link" target="cart_action">
-							<var name="action" value="createComplectation"/>
-							<var name="prod" ref="product"/>
-						</link>
-						<list item="option"/>
-					</list>
-					<link name="update_complect_link" target="cart_action">
-						<var name="action" value="updateComplectation"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="create_complect_link" target="cart_action">
-						<var name="action" value="createComplectation"/>
-						<var name="prod" ref="product"/>
-					</link>
-					<link name="delete_link" target="cart_action">
-						<var name="action" value="deleteComplect"/>
-						<var name="bought" ref="bought"/>
-					</link>
-				</list>
-			</single>
-		</session>
-	</page>
-
 	<page name="cart_action">
 		<request>
 			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="design@forever-ds.com"/>
+			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -1041,10 +1002,6 @@
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
-		</link>
-		<link name="complect_ajax" target="complect_ajax"/>
-		<link name="invalid_option_list" target="complect_ajax">
-			<var name="message" value="Не выбраны необходимые компоненты или присутствуют некорректные комопонетны"/>
 		</link>
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
@@ -1056,8 +1013,6 @@
 			<result name="confirm" type="redirect"/>
 			<result name="validation_failed" type="redirect"/>
 			<result name="email_send_failed" type="redirect"/>
-			<result name="complect_ajax" type="redirect"/>
-			<result name="invalid_option_list" type="redirect"/>
 		</command>
 	</page>
 
@@ -1079,13 +1034,9 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
-						<list item="option"/>
 					</list>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="complect_ajax_link" target="complect_ajax">
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
@@ -1584,7 +1535,7 @@
 	<!--//                                                                          -->
 	<!--//                      Разбор файлов Yandex Market                         -->
 	<!--//                                                                          -->
-	<page name="integrate" template="integration/create_excel" authority-groups="common">
+	<page name="integrate" template="integration/integrate" authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1637,7 +1588,7 @@
         <request>
             <var name="action"/>
         </request>
-        <command class="extra.IntegrateParsedMeandr2" clear-cache="yes">
+        <command class="extra.IntegrateParsedCommand" clear-cache="yes">
             <result name="complete" type="xml"/>
         </command>
     </page>
@@ -1679,7 +1630,7 @@
 	<!-- ГЕНЕРАЦИЯ КАРТЫ САЙТА -->
 	<page name="sitemap" template="sitemap" cacheable="false">
 		<headers content-type="xml"/>
-		<single item="seo_wrap"/>
+		<single item="url_seo_wrap"/>
 		<single item="catalog" id="catalog_main">
 			<tree item="section" id="sec">
 				<link name="show_products" target="section" type="exclusive">
@@ -1722,7 +1673,7 @@
 		<request>
 			<var name="sec" style="key"/>
 		</request>
-		<single item="seo_wrap" />
+		<single item="url_seo_wrap" />
 		<single item="section" var="sec" id="cur_sec" cache-vars="sec">
 			<list item="product" id="prod">
 				<link name="show_product" target="product" type="exclusive">

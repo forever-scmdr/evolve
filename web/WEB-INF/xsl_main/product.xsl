@@ -289,6 +289,45 @@
 			</div>
 		</div>
 
+		<div class="view-table">
+	<table>
+		<thead>
+			<tr>
+				<th>Название</th>
+				<th>Описание</th>
+				<th>Производитель</th>
+				<th>Количество</th>
+				<th>Срок поставки</th>
+				<th>Кратность заказа</th>
+				<th>Цена (бел.руб.)</th>
+				<th>Заказать</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>TEST 1</td>
+				<td>Описание TEST 1</td>
+				<td>Производитель</td>
+				<td>10</td>
+				<td>12.12.2022</td>
+				<td>5</td>
+				<td>189</td>
+				<td><button class="button" type="submit">Заказать</button></td>
+			</tr>
+			<tr>
+				<td>TEST 1</td>
+				<td>Описание TEST 1</td>
+				<td>Производитель</td>
+				<td>10</td>
+				<td>12.12.2022</td>
+				<td>5</td>
+				<td>189</td>
+				<td><button class="button" type="submit">Заказать</button></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
 		<div class="device-full">
 			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>
 			<div class="tabs tabs_product">

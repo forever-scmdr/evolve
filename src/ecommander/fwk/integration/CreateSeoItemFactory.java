@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class CreateSeoItemFactory implements ItemEventCommandFactory {
 	public static final String SEO_CATALOG = "seo_catalog";
-	public static final String SEO_WRAP = "seo_wrap";
+	public static final String SEO_WRAP = "url_seo_wrap";
 	public static final String KEY_UNIIQUE = "key_unique";
 	public static final String SEO = "seo";
 

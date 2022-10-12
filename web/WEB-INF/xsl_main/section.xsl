@@ -7,7 +7,7 @@
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
 	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
-	<xsl:variable name="subs" select="$main_menu_section/section[f:num(hide) = 0]"/>
+	<xsl:variable name="subs" select="$main_menu_section[1]/section[f:num(hide) = 0]"/>
 	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
@@ -146,6 +146,45 @@
 	</xsl:template>
 
 	<xsl:template name="TAGS">
+
+	<div class="view-table">
+	<table>
+		<thead>
+			<tr>
+				<th>Название</th>
+				<th>Описание</th>
+				<th>Производитель</th>
+				<th>Количество</th>
+				<th>Срок поставки</th>
+				<th>Кратность заказа</th>
+				<th>Цена (бел.руб.)</th>
+				<th>Заказать</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>TEST 1</td>
+				<td>Описание TEST 1</td>
+				<td>Производитель</td>
+				<td>10</td>
+				<td>12.12.2022</td>
+				<td>5</td>
+				<td>189</td>
+				<td><button class="button" type="submit">Заказать</button></td>
+			</tr>
+			<tr>
+				<td>TEST 1</td>
+				<td>Описание TEST 1</td>
+				<td>Производитель</td>
+				<td>10</td>
+				<td>12.12.2022</td>
+				<td>5</td>
+				<td>189</td>
+				<td><button class="button" type="submit">Заказать</button></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
 		<xsl:if test="$subs or $sel_sec/tag">
 			<xsl:if test="$show_devices">
 				<div class="labels labels_section">
@@ -229,9 +268,15 @@
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
 						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
+							<img src="img/icon-line.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Строками</span>
+					</a>
+					<a href="{page/set_view_line}" class="icon-link">
+						<div class="icon">
+							<img src="img/icon-lines.svg" alt="" />
+						</div>
+						<span class="icon-link__item">Таблица</span>
 					</a>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
