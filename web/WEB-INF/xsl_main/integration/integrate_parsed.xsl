@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/integrate_parsed_csv");
+				document.location.replace("/integrate_parsed");
 			}, 5000);
 		</script>
 		</head>

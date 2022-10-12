@@ -22,6 +22,9 @@
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+				<a style="position: absolute; right: 0px; font-weight: bold;" href="excel_search_action/?q=шторыn=">
+                	<img src="img/excel2.png" /> Сохранить результаты
+                </a>
 			</div>
 		</div>
 
@@ -41,9 +44,15 @@
 					</a>
 					<a href="{page/set_view_list}" class="icon-link">
 						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
+							<img src="img/icon-line.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Строками</span>
+					</a>
+					<a href="{page/set_view_line}" class="icon-link">
+						<div class="icon">
+							<img src="img/icon-lines.svg" alt="" />
+						</div>
+						<span class="icon-link__item">Таблица</span>
 					</a>
 				</div>
 			</div>
