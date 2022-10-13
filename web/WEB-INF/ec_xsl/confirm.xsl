@@ -122,14 +122,11 @@
 							Кол
 						</th>
 						<th>
-							Цена
+							Наличие
 						</th>
-						<th>
-							Стоимость
-						</th>
-						<!-- 	<th>
-                                Наличие
-                            </th> -->
+<!--						<th>-->
+<!--							Стоимость-->
+<!--						</th>-->
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
@@ -145,7 +142,7 @@
 								<xsl:value-of select="qty"/>
 							</td>
 							<td>
-								<xsl:value-of select="f:cart_sum($product/price)"/>
+<!--								<xsl:value-of select="f:cart_sum($product/price)"/>-->
 								<xsl:if test="not_available = '1'">
 									<p>
 										доступно: <xsl:value-of select="$product/qty"/>
@@ -157,11 +154,9 @@
 								</xsl:if>
 							</td>
 							<td>
-								<xsl:value-of select="f:cart_sum(sum)"/>
+<!--								<xsl:value-of select="f:cart_sum(sum)"/>-->
 							</td>
-							<!-- <td>
-								<xsl:value-of select="$product/qty"/>
-							</td> -->
+
 						</tr>
 					</xsl:for-each>
 				</table>
