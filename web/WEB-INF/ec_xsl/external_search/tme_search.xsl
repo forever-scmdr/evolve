@@ -76,16 +76,16 @@
 			</div>
 			<div class="device__article-number"></div>
 			<div class="device__price" style="display:block;">
-				<div class="price_normal">
-					<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />
+				<div class="price_normal">по заппросу
+<!--					<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />-->
 				</div>
-				<xsl:variable name="prices">
-					<xsl:for-each select="$price">
-						<xsl:value-of select="concat(normalize-space(Amount), '+ ', '&lt;strong&gt;', concat(f:price_output(PriceValue, $shop), ' ', upper-case($curr)), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
-					</xsl:for-each>
-				</xsl:variable>
-				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$prices}">Цена зависит от количества</a>
-				<div class="nds">*цена включает НДС</div>
+<!--				<xsl:variable name="prices">-->
+<!--					<xsl:for-each select="$price">-->
+<!--						<xsl:value-of select="concat(normalize-space(Amount), '+ ', '&lt;strong&gt;', concat(f:price_output(PriceValue, $shop), ' ', upper-case($curr)), '&lt;/strong&gt;', '&lt;br/&gt;')"/>-->
+<!--					</xsl:for-each>-->
+<!--				</xsl:variable>-->
+<!--				<a data-container="body"  data-html="true" data-toggle="popover" data-placement="top" data-content="{$prices}">Цена зависит от количества</a>-->
+<!--				<div class="nds">*цена включает НДС</div>-->
 			</div>
 			<div class="device__order">
 				<xsl:call-template name="CART_BUTTON">
@@ -166,18 +166,18 @@
 				<div id="compare_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-balance-scale"></i>&#160;сравнить</div>
 				<div id="fav_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-star"></i>сравнить</div>
 			</div>
-			<div class="device__price device_row__price">
-				<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />
-				<div class="nds">*цена c НДС</div>
-				<xsl:if test="count($price) &gt; 1"></xsl:if>
-				<div class="manyPrice">
-					<xsl:for-each select="$price">
-						<div class="manyPrice__item">
-							<div class="manyPrice__qty"><xsl:value-of select="Amount" />+</div>
-							<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output(PriceValue, $shop), ' ', upper-case($curr))" /></div>
-						</div>
-					</xsl:for-each>
-				</div>
+			<div class="device__price device_row__price">по запросу
+<!--				<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/', $unit)" />-->
+<!--				<div class="nds">*цена c НДС</div>-->
+<!--				<xsl:if test="count($price) &gt; 1"></xsl:if>-->
+<!--				<div class="manyPrice">-->
+<!--					<xsl:for-each select="$price">-->
+<!--						<div class="manyPrice__item">-->
+<!--							<div class="manyPrice__qty"><xsl:value-of select="Amount" />+</div>-->
+<!--							<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output(PriceValue, $shop), ' ', upper-case($curr))" /></div>-->
+<!--						</div>-->
+<!--					</xsl:for-each>-->
+<!--				</div>-->
 			</div>
 			<div class="device__order device_row__order">
 				<xsl:call-template name="CART_BUTTON">

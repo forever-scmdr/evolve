@@ -516,7 +516,8 @@
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
 
 	<xsl:template match="*" mode="product-table">
-		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>
+<!--		<xsl:variable name="has_price" select="price and price != '0'  and f:num(qty) != 0"/>-->
+		<xsl:variable name="has_price" select="0 = 1"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>
 		<xsl:variable name="display_price_old" select="f:price_ictrade(price_old)"/>
@@ -637,7 +638,8 @@
 
 
 	<xsl:template match="*" mode="product-lines">
-		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>
+<!--		<xsl:variable name="has_price" select="f:num(price) != 0 and f:num(qty) != 0"/>-->
+		<xsl:variable name="has_price" select="0 = 1"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 
 		<xsl:variable name="display_price" select="f:price_ictrade(price)"/>

@@ -33,13 +33,13 @@
 			<div class="device__price">
 				<div class="price_normal">
 					<xsl:variable name="price" select="string(min(current()//price))"/>
-					<xsl:if test="f:num($price) &gt; 0">
-						<xsl:variable name="output_price" select="if(count(offer) = 1) then f:price_output($price, $shop) else concat('от ', f:price_output($price, $shop))"/>
-						<xsl:value-of select="concat($output_price, ' ', upper-case($curr), '/шт.')" />
-					</xsl:if>
-					<xsl:if test="f:num($price) = 0">
+<!--					<xsl:if test="f:num($price) &gt; 0">-->
+<!--						<xsl:variable name="output_price" select="if(count(offer) = 1) then f:price_output($price, $shop) else concat('от ', f:price_output($price, $shop))"/>-->
+<!--						<xsl:value-of select="concat($output_price, ' ', upper-case($curr), '/шт.')" />-->
+<!--					</xsl:if>-->
+<!--					<xsl:if test="f:num($price) = 0">-->
 						Цена по запросу
-					</xsl:if>
+<!--					</xsl:if>-->
 				</div>
 			</div>
 			<xsl:if test="count(offer) = 1">
@@ -48,9 +48,9 @@
 					<xsl:with-param name="product" select="current()"/>
 				</xsl:call-template>
 			</xsl:if>
-			<xsl:if test="count(offer) &gt; 1">
-				<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
-			</xsl:if>
+<!--			<xsl:if test="count(offer) &gt; 1">-->
+<!--				<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>-->
+<!--			</xsl:if>-->
 			<xsl:if test="not(offer)">
 				<xsl:call-template name="CART_BUTTON_ZERO" >
 					<xsl:with-param name="product" select="current()"/>
@@ -93,24 +93,24 @@
 						<xsl:variable name="output_price" select="if(count(offer) = 1) then f:price_output($price, $shop) else concat('от ', f:price_output($price, $shop))"/>
 						<xsl:value-of select="concat($output_price, ' ', upper-case($curr), '/шт.')" />
 					</xsl:if>
-					<xsl:if test="f:num($price) = 0">
+<!--					<xsl:if test="f:num($price) = 0">-->
 						Цена по запросу
-					</xsl:if>
+<!--					</xsl:if>-->
 				</div>
-				<div class="nds">*цена c НДС</div>
-				<xsl:if test="count(offer) = 1 and count(offer/price) &gt; 1">
-					<xsl:variable name="prc" select="offer/price" />
-					<xsl:variable name="p" select="position()"/>
-					<div class="manyPrice">
-						<xsl:for-each select="offer/min_qty">
-							<xsl:variable name="p" select="position()"/>
-							<div class="manyPrice__item">
-								<div class="manyPrice__qty"><xsl:value-of select="." />+</div>
-								<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output($prc[$p], $shop), ' ', upper-case($curr))" /></div>
-							</div>
-						</xsl:for-each>
-					</div>
-				</xsl:if>
+<!--				<div class="nds">*цена c НДС</div>-->
+<!--				<xsl:if test="count(offer) = 1 and count(offer/price) &gt; 1">-->
+<!--					<xsl:variable name="prc" select="offer/price" />-->
+<!--					<xsl:variable name="p" select="position()"/>-->
+<!--					<div class="manyPrice">-->
+<!--						<xsl:for-each select="offer/min_qty">-->
+<!--							<xsl:variable name="p" select="position()"/>-->
+<!--							<div class="manyPrice__item">-->
+<!--								<div class="manyPrice__qty"><xsl:value-of select="." />+</div>-->
+<!--								<div class="manyPrice__price"><xsl:value-of select="concat(f:price_output($prc[$p], $shop), ' ', upper-case($curr))" /></div>-->
+<!--							</div>-->
+<!--						</xsl:for-each>-->
+<!--					</div>-->
+<!--				</xsl:if>-->
 			</div>
 			<div class="device__order device_row__order">
 				<xsl:if test="count(offer) = 1">
@@ -119,9 +119,9 @@
 						<xsl:with-param name="product" select="current()"/>
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="count(offer) &gt; 1">
-					<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>
-				</xsl:if>
+<!--				<xsl:if test="count(offer) &gt; 1">-->
+<!--					<input type="submit" onclick="$('#price-popup-{@id}').show()" class="button" value="Подробнее"/>-->
+<!--				</xsl:if>-->
 				<xsl:if test="not(offer)">
 					<xsl:call-template name="CART_BUTTON_ZERO" >
 						<xsl:with-param name="product" select="current()"/>

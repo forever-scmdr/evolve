@@ -84,9 +84,9 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValue(QTY_PARAM, qty);
 
 			Item shop = ItemQuery.loadSingleItemByParamValue("shop", NAME_PARAM, getVarSingleValue("aux"), Item.STATUS_NORMAL);
-			Item currency = loadCurrency(shop);
+			//Item currency = loadCurrency(shop);
 
-			product.setValueUI("currency_id", currency.getStringValue(NAME_PARAM));
+			//product.setValueUI("currency_id", currency.getStringValue(NAME_PARAM));
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, quantity);
 		}

@@ -32,29 +32,29 @@
 
 	<xsl:template name="MARKUP">
 
-		<script type="application/ld+json">
-			<xsl:variable name="quote">"</xsl:variable>
-			{
-			"@context": "http://schema.org/",
-			"@type": "Product",
-			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,
-			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,
-			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,
-			"offers": {
-			"@type": "Offer",
-			"priceCurrency": "BYN",
-			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>
-			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
-			}, "aggregateRating": {
-			"@type": "AggregateRating",
-			"ratingValue": "4.9",
-			"ratingCount": "53",
-			"bestRating": "5",
-			"worstRating": "1",
-			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />
-			}
-			}
-		</script>
+<!--		<script type="application/ld+json">-->
+<!--			<xsl:variable name="quote">"</xsl:variable>-->
+<!--			{-->
+<!--			"@context": "http://schema.org/",-->
+<!--			"@type": "Product",-->
+<!--			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)" />,-->
+<!--			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)" />,-->
+<!--			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)" />,-->
+<!--			"offers": {-->
+<!--			"@type": "Offer",-->
+<!--			"priceCurrency": "BYN",-->
+<!--			<xsl:if test="f:num($price) &gt; 0">"price": <xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)" /></xsl:if>-->
+<!--			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>-->
+<!--			}, "aggregateRating": {-->
+<!--			"@type": "AggregateRating",-->
+<!--			"ratingValue": "4.9",-->
+<!--			"ratingCount": "53",-->
+<!--			"bestRating": "5",-->
+<!--			"worstRating": "1",-->
+<!--			"name": <xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)" />-->
+<!--			}-->
+<!--			}-->
+<!--		</script>-->
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
@@ -113,22 +113,22 @@
 				<xsl:if test="not($has_lines)">
 					<div class="device-page__actions">
 						<!-- <xsl:if test="f:num($p/price) &gt; 0"> -->
-						<xsl:if test="$has_price and f:num($p/price) &gt; 0">
-							<div class="device__price device__price_device-page">
-								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>
-								<div class="price_normal">
-									<xsl:value-of select="concat($display_price, ' ', upper-case($curr), '/', $unit)" />
-									<div class="nds">*Цена включает НДС</div>
-								</div>
+<!--						<xsl:if test="$has_price and f:num($p/price) &gt; 0">-->
+<!--							<div class="device__price device__price_device-page">-->
+<!--								<xsl:if test="$p/price_old"><div class="price_old"><span><xsl:value-of select="$display_price_old"/></span></div></xsl:if>-->
+<!--								<div class="price_normal">-->
+<!--									<xsl:value-of select="concat($display_price, ' ', upper-case($curr), '/', $unit)" />-->
+<!--									<div class="nds">*Цена включает НДС</div>-->
+<!--								</div>-->
 
-							</div>
-						</xsl:if>
+<!--							</div>-->
+<!--						</xsl:if>-->
 						<!-- <xsl:if test="f:num($p/price) = 0"> -->
-						<xsl:if test="not($has_price) or f:num($p/price) = 0">
+<!--						<xsl:if test="not($has_price) or f:num($p/price) = 0">-->
 							<div class="device__price device__price_device-page">
 								Цена по запросу
 							</div>
-						</xsl:if>
+<!--						</xsl:if>-->
 						<div id="cart_list_{$p/@id}" class="device__order device__order_device-page product_purchase_container">
 							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 								<xsl:if test="$has_price">
