@@ -114,7 +114,7 @@
 		<child item="seo"/>
 	</item>
 
-	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц" ag-id="1833" ag-hash="-1426352126">
+	<item name="transient_seo_catalog" caption="Каталог SEO временных страниц" ag-id="1832" ag-hash="-1426352126">
 		<child item="url_seo" />
 	</item>
 
@@ -313,13 +313,13 @@
 	</item>
 
 
-	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1844" ag-hash="878968494">
+	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1833" ag-hash="878968494">
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
 
-	<item name="product_extra_file" super="product_extra" caption="Файл с описанием" ag-id="1845" ag-hash="878678427">
+	<item name="product_extra_file" super="product_extra" caption="Файл с описанием" ag-id="1834" ag-hash="878678427">
 		<parameter name="desc" type="string" caption="Описание"/>
 		<parameter name="size" type="string" caption="Рзамер"/>
 		<parameter name="file" type="file" caption="Файл"/>
