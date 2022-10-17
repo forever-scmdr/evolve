@@ -17,6 +17,14 @@
 	<xsl:variable name="product_params_limit" select="6"/>
 
 
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                    ТОВАР В ВИДЕ ТАБЛИЦЫ (плитка)                     ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -111,7 +119,16 @@
 	</xsl:template>
 
 
-	<xsl:template match="*" mode="product-lines">
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////         ТОВАР ОТДЕЛЬНЫМИ СТРОКАМИ (расширенная информация)           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<xsl:template match="*" mode="product-list">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -275,9 +292,188 @@
 				</div>
 			</div>
 		</div>
-
-
 	</xsl:template>
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////         				ТОВАР В ОБЩЕЙ ТАБЛИЦЕ	 			           ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<xsl:template match="*" mode="product-lines">
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+
+		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+
+
+		<tr>
+			<td><a href="{show_product}"><xsl:value-of select="name"/></a></td>
+			<td>Описание TEST 1</td>
+			<td>Производитель</td>
+			<td>10</td>
+			<td>12.12.2022</td>
+			<td>5</td>
+			<td>189</td>
+			<td><button class="button" type="submit">Заказать</button></td>
+		</tr>
+
+
+		<div class="device device_row">
+
+
+			<div class="device__column">
+
+
+
+				<!-- device image -->
+				<div class="device__image img">
+					<a href="{show_product}">
+						<img src="{$pic_path}" alt="" />
+					</a>
+				</div>
+
+				<!-- device tags -->
+				<div class="tags device__tags">
+					<!--
+					<xsl:for-each select="tag">
+						<div class="tag device__tag"><xsl:value-of select="." /></div>
+					</xsl:for-each>
+					<xsl:for-each select="mark">
+						<div class="tag device__tag"><xsl:value-of select="." /></div>
+					</xsl:for-each>
+					-->
+					<xsl:for-each select="label">
+						<div class="tag device__tag {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
+					</xsl:for-each>
+				</div>
+
+			</div>
+
+			<div class="device__column">
+
+				<!-- device title -->
+				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
+
+				<!-- device identification code -->
+				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+
+				<!-- device description parameters -->
+				<div class="device__info">
+
+					<table class="params">
+						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
+						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
+						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
+						<xsl:variable name="p" select="current()"/>
+
+						<xsl:if test="//page/@name != 'fav'">
+							<tbody>
+								<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
+									<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+									<tr class="tr">
+										<td><xsl:value-of select="$param/@caption"/></td>
+										<td><xsl:value-of select="$param"/></td>
+									</tr>
+								</xsl:for-each>
+								<xsl:if test="count($captions) &gt; $product_params_limit">
+									<tr>
+										<td colspan="2">
+											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>
+										</td>
+									</tr>
+								</xsl:if>
+							</tbody>
+							<xsl:if test="count($captions) &gt; $product_params_limit">
+								<tbody id="params-{@id}" style="display:none;">
+									<xsl:for-each select="$captions[position() &gt; $product_params_limit]">
+										<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+										<tr class="tr">
+											<td><xsl:value-of select="$param/@caption"/></td>
+											<td><xsl:value-of select="$param"/></td>
+										</tr>
+									</xsl:for-each>
+								</tbody>
+							</xsl:if>
+						</xsl:if>
+						<xsl:if test="//page/@name = 'fav'">
+							<xsl:for-each select="$captions[position() &lt; 5]">
+								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+								<tr class="tr">
+									<td><xsl:value-of select="$param/@caption"/></td>
+									<td><xsl:value-of select="$param"/></td>
+								</tr>
+							</xsl:for-each>
+						</xsl:if>
+					</table>
+
+					<!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
+				</div>
+
+			</div>
+
+			<!-- device price -->
+			<div class="device__column">
+				<div class="price device__price">
+					<xsl:if test="$has_price">
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
+						<div class="price__item_new">
+							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</div>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div></div>
+					</xsl:if>
+				</div>
+			</div>
+
+			<!-- stock status (not displayed, delete display: none to show) -->
+			<div class="device__column" style="display: none">
+				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
+					<div class="">в наличии</div>
+				</xsl:if>
+				<xsl:if test="(not(qty) or number(qty) &lt;= 0) and not($has_lines)">
+					<div class="">под заказ</div>
+				</xsl:if>
+			</div>
+
+			<div class="device__column">
+
+				<!-- device order -->
+				<xsl:call-template name="CART_BUTTON">
+					<xsl:with-param name="p" select="current()"/>
+				</xsl:call-template>
+
+				<xsl:call-template name="EXTRA_ORDERING_TYPES">
+					<xsl:with-param name="p" select="current()"/>
+				</xsl:call-template>
+
+				<!-- device actions (compare and favourites) -->
+				<div class="add">
+					<xsl:call-template name="FAV_AND_COMPARE">
+						<xsl:with-param name="p" select="current()"/>
+					</xsl:call-template>
+				</div>
+			</div>
+		</div>
+	</xsl:template>
+
+
+
+
+
 
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="p" />

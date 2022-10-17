@@ -315,6 +315,9 @@
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
 		</link>
+		<link name="set_view_lines" target="section" copy-page-vars="yes" type="exclusive">
+			<var name="view" value="lines"/>
+		</link>
 		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
 		</link>
@@ -423,6 +426,9 @@
 		<link name="set_view_list" target="tag_section" copy-page-vars="yes">
 			<var name="view" value="list"/>
 		</link>
+		<link name="set_view_lines" target="tag_section" copy-page-vars="yes">
+			<var name="view" value="lines"/>
+		</link>
 		<link name="set_limit_24" target="tag_section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
 		</link>
@@ -524,6 +530,9 @@
 		</link>
 		<link name="set_view_list" target="search" copy-page-vars="yes">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_lines" target="search" copy-page-vars="yes">
+			<var name="view" value="lines"/>
 		</link>
 		<link name="show_only_available" target="search">
 			<var name="q" var="q"/>
@@ -1269,6 +1278,9 @@
 		</link>
 		<link name="set_view_list" target="fav">
 			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_lines" target="fav">
+			<var name="view" value="lines"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

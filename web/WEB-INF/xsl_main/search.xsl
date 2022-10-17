@@ -68,7 +68,7 @@
 				</xsl:if>
 				<xsl:if test="$view = 'list'">
 					<div class="devices__wrap devices__wrap_rows">
-						<xsl:apply-templates select="$products" mode="product-lines"/>
+						<xsl:apply-templates select="$products" mode="product-list"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="not($products)">
