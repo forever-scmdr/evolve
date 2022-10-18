@@ -175,7 +175,7 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
-		<parameter name="USD_show" type="byte" default="1" caption="Доллар США - показывать на сайте" description="0 - не показывать, 1 - показывать">
+		<parameter name="USD_show" type="byte" default="0" caption="Доллар США - показывать на сайте" description="0 - не показывать, 1 - показывать">
 			<value>0</value>
 			<value>1</value>
 		</parameter>
@@ -188,7 +188,7 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
-		<parameter name="EUR_show" type="byte" default="1" caption="Евро - показывать на сайте" description="0 - не показывать, 1 - показывать">
+		<parameter name="EUR_show" type="byte" default="0" caption="Евро - показывать на сайте" description="0 - не показывать, 1 - показывать">
 			<value>0</value>
 			<value>1</value>
 		</parameter>

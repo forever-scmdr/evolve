@@ -360,6 +360,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				quotient = (double) (DISCOUNT_2) / (double) 100;
 			}
 		}
+		/* Временное удаление персональной скидки
 		if (isRegistered()) {
 			BigDecimal personalDiscount = getUserInfo().getDecimalValue(user_.DISCOUNT, BigDecimal.ZERO);
 			if (personalDiscount.compareTo(discount) > 0) {
@@ -367,6 +368,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				quotient = personalDiscount.doubleValue() / (double) 100;
 			}
 		}
+		*/
 		if (quotient > 0.001) {
 			sum = sum.subtract(discountSum.multiply(BigDecimal.valueOf(quotient)));
 		}
@@ -1105,10 +1107,25 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	public ResultPE proceed() throws Exception {
 		Item userData = getUserInfo();
 		if (userData == null) {
-			Item newPhysUserData = getSessionMapper().createSessionRootItem(USER_PHYS);
-			getSessionMapper().saveTemporaryItem(newPhysUserData, USER);
+			userData = getSessionMapper().createSessionRootItem(USER_PHYS);
+			getSessionMapper().saveTemporaryItem(userData, USER);
 		}
-		return doRecalculate() ? getResult("post") : getResult("cart");
+		boolean hasRegularBoughts = false;
+		boolean isRecalculateSuccess = doRecalculate();
+		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
+		for (Item bought : boughts) {
+			double maxQuantity = bought.getDoubleValue(bought_.QTY_TOTAL, 0d);
+			if (maxQuantity > 0) {
+				hasRegularBoughts = true;
+				break;
+			}
+		}
+		boolean isJur = StringUtils.equalsIgnoreCase(userData.getItemType().getName(), USER_JUR);
+		boolean isTooSmall = false;
+		if (!checkMinSum(isJur) && hasRegularBoughts) {
+			isTooSmall = true;
+		}
+		return isRecalculateSuccess ? (isTooSmall ? getSumTooSmallResult() : getResult("post")) : getResult("cart");
 	}
 
 	/**
