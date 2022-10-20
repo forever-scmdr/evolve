@@ -17,8 +17,8 @@
 
 	<xsl:variable name="common" select="page/common"/>
 	<xsl:variable name="base" select="page/base" />
-	<xsl:variable name="cur_sec" select="page//current_section"/>
-	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/>
+	<xsl:variable name="cur_sec" select="page//current_section"/><!-- текущий раздел каталога -->
+	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/><!-- выбранный раздел каталога (если нет текущего - то раздел выбранного товара) -->
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 	<xsl:variable name="currencies" select="page/catalog/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
@@ -27,7 +27,21 @@
 	<xsl:variable name="query" select="page/variables/q"/>
 	<xsl:variable name="hide_side_menu" select="f:num(/page/custom_page/hide_side_menu) = 1"/>
 
-	<xsl:variable name="active_menu_item"/>	<!-- переопределяется -->
+	<!--Отображение товаров в каталоге -->
+	<xsl:variable name="view_var" select="page/variables/view"/>
+	<xsl:variable name="view_catalog">
+		<xsl:choose>
+			<xsl:when test="page/catalog/default_view = 'список'">list</xsl:when>
+			<xsl:when test="page/catalog/default_view = 'таблица'">lines</xsl:when>
+			<xsl:otherwise>table</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="view" select="if ($view_var) then $view_var else $view_catalog"/>
+
+	<!-- Список отключенных элементов (плитка список таблица поиск) -->
+	<xsl:variable name="view_disabled" select="page/catalog/disable"/>
+
+	<xsl:variable name="active_menu_item"/><!-- переопределяется -->
 
 
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
@@ -177,18 +191,20 @@
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search search">
-						<form action="{page/search_link}" method="post">
-							<input class="input header-search__input"
-								   ajax-href="{page/search_ajax_link}" result="search-result"
-								   query="q" min-size="3" id="q-ipt" type="text"
-								   placeholder="Введите поисковый запрос" autocomplete="off"
-								   name="q" value="{$query}" autofocus=""/>
-							<button class="button header-search__button" type="submit">Найти</button>
-							<!-- quick search -->
-							<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
-							<!-- quick search end -->
-						</form>
-						<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
+						<xsl:if test="not($view_disabled = 'поиск')">
+							<form action="{page/search_link}" method="post">
+								<input class="input header-search__input"
+									   ajax-href="{page/search_ajax_link}" result="search-result"
+									   query="q" min-size="3" id="q-ipt" type="text"
+									   placeholder="Введите поисковый запрос" autocomplete="off"
+									   name="q" value="{$query}" autofocus=""/>
+								<button class="button header-search__button" type="submit">Найти</button>
+								<!-- quick search -->
+								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
+								<!-- quick search end -->
+							</form>
+							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
+						</xsl:if>
 					</div>
 					<!-- need styles -->
 					<xsl:if test="$has_currency_rates and $currencies">

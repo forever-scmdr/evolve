@@ -10,7 +10,6 @@
 	</xsl:template>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
-	<xsl:variable name="view" select="page/variables/view"/>
 
 	<xsl:template name="CONTENT">
 		<!-- CONTENT BEGIN -->
@@ -74,8 +73,15 @@
 			<div class="view-container desktop">
 				<div class="view">
 					<span>Показывать:</span>
-					<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
-					<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+					<xsl:if test="not($view_disabled = 'плитка')">
+						<span><i class="fas fa-th-large"></i> <a href="{page/set_view_table}">Плиткой</a></span>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'список')">
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_list}">Строками</a></span>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'таблица')">
+						<span><i class="fas fa-th-list"></i> <a href="{page/set_view_lines}">Таблицей</a></span>
+					</xsl:if>
 				</div>
 			</div>
 			<div class="catalog-items{' lines'[$view = 'list']}"><!-- добавить класс lines для отображения по строкам -->

@@ -11,7 +11,6 @@
 	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
@@ -36,24 +35,30 @@
 		<xsl:if test="$products">
 			<div class="view view_section">
 				<div class="view__column">
-					<a href="{page/set_view_table}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-grid.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Плиткой</span>
-					</a>
-					<a href="{page/set_view_list}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-line.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Строками</span>
-					</a>
-					<a href="{page/set_view_line}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Таблица</span>
-					</a>
+					<xsl:if test="not($view_disabled = 'плитка')">
+						<a href="{page/set_view_table}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-grid.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Плиткой</span>
+						</a>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'список')">
+						<a href="{page/set_view_list}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-line.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Строками</span>
+						</a>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'таблица')">
+						<a href="{page/set_view_lines}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-lines.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Таблица</span>
+						</a>
+					</xsl:if>
 				</div>
 			</div>
 		</xsl:if>
@@ -70,6 +75,9 @@
 					<div class="devices__wrap devices__wrap_rows">
 						<xsl:apply-templates select="$products" mode="product-list"/>
 					</div>
+				</xsl:if>
+				<xsl:if test="$view = 'lines'">
+					<xsl:apply-templates select="$products" mode="product-lines"/>
 				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>

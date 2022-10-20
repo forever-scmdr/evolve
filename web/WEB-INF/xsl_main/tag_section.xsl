@@ -10,7 +10,6 @@
 	<xsl:variable name="title"><xsl:value-of select="page/variables/tag"/></xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="view" select="page/variables/view"/>
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
@@ -29,14 +28,24 @@
 			<xsl:if test="$products">
 				<div class="view-container desktop">
 					<div class="view">
-						<span class="{'active'[not($view = 'list')]}">
-							<i class="fas fa-th-large"></i>
-							<a href="{page/set_view_table}">Плиткой</a>
-						</span>
-						<span class="{'active'[$view = 'list']}">
-							<i class="fas fa-th-list"></i>
-							<a href="{page/set_view_list}">Строками</a>
-						</span>
+						<xsl:if test="not($view_disabled = 'плитка')">
+							<span class="{'active'[$view = 'table']}">
+								<i class="fas fa-th-large"></i>
+								<a href="{page/set_view_table}">Плиткой</a>
+							</span>
+						</xsl:if>
+						<xsl:if test="not($view_disabled = 'список')">
+							<span class="{'active'[$view = 'list']}">
+								<i class="fas fa-th-list"></i>
+								<a href="{page/set_view_list}">Строками</a>
+							</span>
+						</xsl:if>
+						<xsl:if test="not($view_disabled = 'таблица')">
+							<span class="{'active'[$view = 'lines']}">
+								<i class="fas fa-th-list"></i>
+								<a href="{page/set_view_lines}">Таблицей</a>
+							</span>
+						</xsl:if>
 					</div>
 				</div>
 			</xsl:if>

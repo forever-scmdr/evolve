@@ -22,6 +22,9 @@
 					<xsl:apply-templates select="page/product" mode="product-list"/>
 				</div>
 			</xsl:if>
+			<xsl:if test="$view = 'lines'">
+				<xsl:apply-templates select="page/product" mode="product-lines"/>
+			</xsl:if>
 			<xsl:if test="$not_found">
 				<h4>Нет добавленных товаров</h4>
 			</xsl:if>
