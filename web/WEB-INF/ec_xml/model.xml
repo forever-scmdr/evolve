@@ -187,6 +187,11 @@
 			<value>да</value>
 			<value>нет</value>
 		</parameter>
+		<parameter name="default_view" type="string" caption="Отображение товаров по умолчанию" default="плитка">
+			<value>плитка</value>
+			<value>список</value>
+			<value>таблица</value>
+		</parameter>
 		<child item="currencies" single="true"/>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
@@ -194,6 +199,12 @@
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 		<parameter name="integration_pending" type="byte" caption="Идет интгеграция" domain="0-1" />
 		<parameter name="big_integration" type="file" caption="Excel файл интеграции" description="полное обонвление" />
+		<parameter name="disable" type="string" caption="Отключить отображение" multiple="true">
+			<value>плитка</value>
+			<value>список</value>
+			<value>таблица</value>
+			<value>поиск</value>
+		</parameter>
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 

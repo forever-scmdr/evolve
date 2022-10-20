@@ -239,7 +239,7 @@
 		<request>
 			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
@@ -391,7 +391,7 @@
 		</request>
 		<request>
 			<var name="page" value="1"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
@@ -468,7 +468,7 @@
 	<page name="search_ajax" template="search_ajax">
 		<request>
 			<var name="q"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
@@ -509,7 +509,7 @@
 		<request>
 			<var name="q"/>
 			<var name="old_query"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
@@ -1230,7 +1230,7 @@
 	<page name="fav" template="fav">
 		<request>
 			<var name="favourites" scope="cookie"/>
-			<var name="view" value="table" scope="cookie"/>
+			<var name="view" scope="cookie"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>

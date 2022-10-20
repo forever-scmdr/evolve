@@ -51,7 +51,7 @@
 	</xsl:template>
 
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
-	<xsl:variable name="view" select="page/variables/view"/>
+
 	<xsl:variable name="tag" select="page/variables/tag"/>
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
@@ -109,6 +109,11 @@
 						<xsl:apply-templates select="$sel_sec/product" mode="product-list"/>
 					</div>
 				</xsl:if>
+				<xsl:if test="$view = 'lines'">
+					<xsl:call-template name="LINES_TABLE">
+						<xsl:with-param name="products" select="$sel_sec/product"/>
+					</xsl:call-template>
+				</xsl:if>
 				<xsl:if test="$not_found">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
@@ -146,45 +151,8 @@
 	</xsl:template>
 
 	<xsl:template name="TAGS">
+		<!-- VIEW TABLE -->
 
-	<div class="view-table">
-	<table>
-		<thead>
-			<tr>
-				<th>Название</th>
-				<th>Описание</th>
-				<th>Производитель</th>
-				<th>Количество</th>
-				<th>Срок поставки</th>
-				<th>Кратность заказа</th>
-				<th>Цена (бел.руб.)</th>
-				<th>Заказать</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>TEST 1</td>
-				<td>Описание TEST 1</td>
-				<td>Производитель</td>
-				<td>10</td>
-				<td>12.12.2022</td>
-				<td>5</td>
-				<td>189</td>
-				<td><button class="button" type="submit">Заказать</button></td>
-			</tr>
-			<tr>
-				<td>TEST 1</td>
-				<td>Описание TEST 1</td>
-				<td>Производитель</td>
-				<td>10</td>
-				<td>12.12.2022</td>
-				<td>5</td>
-				<td>189</td>
-				<td><button class="button" type="submit">Заказать</button></td>
-			</tr>
-		</tbody>
-	</table>
-	</div>
 		<xsl:if test="$subs or $sel_sec/tag">
 			<xsl:if test="$show_devices">
 				<div class="labels labels_section">
@@ -260,24 +228,30 @@
 		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">
 			<div class="view view_section">
 				<div class="view__column">
-					<a href="{page/set_view_table}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-grid.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Плиткой</span>
-					</a>
-					<a href="{page/set_view_list}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-line.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Строками</span>
-					</a>
-					<a href="{page/set_view_line}" class="icon-link">
-						<div class="icon">
-							<img src="img/icon-lines.svg" alt="" />
-						</div>
-						<span class="icon-link__item">Таблица</span>
-					</a>
+					<xsl:if test="not($view_disabled = 'плитка')">
+						<a href="{page/set_view_table}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-grid.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Плиткой</span>
+						</a>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'список')">
+						<a href="{page/set_view_list}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-line.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Строками</span>
+						</a>
+					</xsl:if>
+					<xsl:if test="not($view_disabled = 'таблица')">
+						<a href="{page/set_view_lines}" class="icon-link">
+							<div class="icon">
+								<img src="img/icon-lines.svg" alt="" />
+							</div>
+							<span class="icon-link__item">Таблица</span>
+						</a>
+					</xsl:if>
 				</div>
 				<xsl:if test="/page/@name != 'fav'">
 					<div class="view__column">
