@@ -514,9 +514,8 @@ public abstract class BasicCartManageCommand extends Command {
 	    checkStrategy();
 		loadCart();
 
-		//Hotfix 13.10.2022 Hide all prices
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
-		//BigDecimal totalSum = new BigDecimal(0); // полная сумма
+		BigDecimal totalSum = new BigDecimal(0); // полная сумма
 		double totalQuantity = 0;
 		boolean result = true;
 
@@ -535,22 +534,22 @@ public abstract class BasicCartManageCommand extends Command {
 
 				extraActionWithBought(bought);
 				// Первоначальная сумма
-				//BigDecimal price = getSpecialPrice(product, availableQty);
-				//BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
+				BigDecimal price = getSpecialPrice(product, availableQty);
+				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
 				if(StringUtils.isBlank(bought.getStringValue("aux"))){
-				//	productSum = productSum.divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d)));
+					productSum = productSum.divide(new BigDecimal(product.getDoubleValue(ItemNames.product_.MIN_QTY, 1d)));
 				}else {
 					getSessionMapper().saveTemporaryItem(product);
 				}
 				totalQuantity += totalQty;
-				//bought.setValue(PRICE_PARAM, price);
-				//bought.setValue(SUM_PARAM, productSum);
-				//totalSum = totalSum.add(productSum);
+				bought.setValue(PRICE_PARAM, price);
+				bought.setValue(SUM_PARAM, productSum);
+				totalSum = totalSum.add(productSum);
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
-		//cart.setValue(SUM_PARAM, totalSum);
+		cart.setValue(SUM_PARAM, totalSum);
 		cart.setValue(QTY_PARAM, totalQuantity);
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);

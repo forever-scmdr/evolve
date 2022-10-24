@@ -54,8 +54,7 @@
 
 	<!-- TABLE view -->
 	<xsl:template match="item">
-<!--		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>-->
-		<xsl:variable name="has_price" select="1 = 0"/>
+		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>
 		<xsl:variable name="min_price" select="min(pb/f:num(text()))"/>
 		<xsl:variable name="prefix" select="if(count(pb) &gt; 1) then ' от ' else ''"/>
 
@@ -74,7 +73,7 @@
 						<xsl:value-of select="concat($prefix, f:price_output($min_price, $shop), ' ', upper-case($curr), '/шт.')" />
 						<div class="nds">*цена включает НДС</div>
 					</xsl:if>
-					<xsl:if test="not($has_price)">Цена по запросу</xsl:if>
+					<xsl:if test="not($has_price)">Цена неизвестна</xsl:if>
 				</div>
 				<xsl:if test="$has_price">
 					<xsl:if test="count(pb) &gt; 1">
@@ -107,8 +106,7 @@
 
 	<!-- LIST view -->
 	<xsl:template match="item" mode="lines">
-		<!--		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>-->
-		<xsl:variable name="has_price" select="1 = 0"/>
+		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>
 		<xsl:variable name="min_price" select="min(pb/f:num(text()))"/>
 		<xsl:variable name="prefix" select="if(count(pb) &gt; 1) then ' от ' else ''"/>
 
@@ -189,8 +187,7 @@
 
 	<xsl:template name="CART_BUTTON_COMMON">
 		<xsl:param name="product"/>
-		<!--		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>-->
-		<xsl:variable name="has_price" select="1 = 0"/>
+		<xsl:variable name="has_price" select="pb[f:num(text()) &gt; 0]"/>
 
 		<xsl:variable name="map" select="string-join($product/pb/concat(@qty, ':', .), ';')"/>
 		<input type="number" class="text-input" name="qty" value="1" min="1" step="1"/>

@@ -43,7 +43,7 @@
 
 	<xsl:template name="TOTAL_SUM_AND_BUTTONS">
 		<div class="total">
-			<xsl:if test="f:num(page/cart/sum) > 0">
+			<xsl:if test="page/cart/sum != '0'">
 				<p>Итого: <xsl:value-of select="f:cart_sum($cart/sum)"/></p>
 			</xsl:if>
 			<!-- <input type="submit" class="button inverted" value="Пересчитать" id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}')"/> -->
@@ -121,32 +121,32 @@
 				</xsl:if>
 			</div>
 
-<!--			<div class="price one">-->
-<!--				<p>-->
-<!--					<span>Цена</span>-->
-<!--					<xsl:value-of select="$price"/>-->
-<!--					<xsl:if test="$p/spec_price">-->
-<!--						<xsl:variable name="sq" select="$p/spec_qty"/>-->
-<!--						<xsl:variable name="x">-->
-<!--							<xsl:for-each select="$p/spec_price">-->
-<!--								<xsl:variable name="pos" select="position()"/>-->
-<!--								<xsl:variable name="q" select="$sq[$pos]"/>-->
-<!--								<xsl:variable name="display_spec" select="f:price_ictrade(.)"/>-->
-<!--								<xsl:value-of select="concat($q, '+ ', '&lt;strong&gt;', $display_spec,' ', upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>-->
-<!--							</xsl:for-each>-->
-<!--						</xsl:variable>-->
-<!--						<br/>-->
-<!--						<a data-container="body" data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}" style="font-size:12px;">подробнее</a>-->
-<!--					</xsl:if>-->
-<!--				</p>-->
-<!--			</div>-->
+			<div class="price one">
+				<p>
+					<span>Цена</span>
+					<xsl:value-of select="$price"/>
+					<xsl:if test="$p/spec_price">
+						<xsl:variable name="sq" select="$p/spec_qty"/>
+						<xsl:variable name="x">
+							<xsl:for-each select="$p/spec_price">
+								<xsl:variable name="pos" select="position()"/>
+								<xsl:variable name="q" select="$sq[$pos]"/>
+								<xsl:variable name="display_spec" select="f:price_ictrade(.)"/>
+								<xsl:value-of select="concat($q, '+ ', '&lt;strong&gt;', $display_spec,' ', upper-case($curr), '&lt;/strong&gt;', '&lt;br/&gt;')"/>
+							</xsl:for-each>
+						</xsl:variable>
+						<br/>
+						<a data-container="body" data-html="true" data-toggle="popover" data-placement="top" data-content="{$x}" style="font-size:12px;">подробнее</a>
+					</xsl:if>
+				</p>
+			</div>
 
-<!--			<div class="price all">-->
-<!--				<p>-->
-<!--					<span>Сумма позиц.</span>-->
-<!--					<xsl:value-of select="$sum"/>-->
-<!--				</p>-->
-<!--			</div>-->
+			<div class="price all">
+				<p>
+					<span>Сумма позиц.</span>
+					<xsl:value-of select="$sum"/>
+				</p>
+			</div>
 			<a href="{delete}" class="delete" ajax="true">
 				<i class="fas fa-times"/>
 			</a>

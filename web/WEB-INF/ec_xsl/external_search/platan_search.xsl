@@ -56,25 +56,25 @@
 				<div id="fav_list_{@id}" style="visibility: hidden;" class="icon-link device__action-link"><i class="fas fa-star"></i>сравнить</div>
 			</div>
 			<div class="device__price device_row__price">
-				<div class="price_normal">по запросу
-<!--					<xsl:value-of select="concat(f:price_output(CENA_ROZ, $shop), ' ', upper-case($curr), '/', EI_NAME)"/>-->
+				<div class="price_normal">
+					<xsl:value-of select="concat(f:price_output(CENA_ROZ, $shop), ' ', upper-case($curr), '/', EI_NAME)"/>
 				</div>
-<!--				<div class="nds">-->
-<!--					*цена c НДС-->
-<!--				</div>-->
-<!--				<xsl:if test="f:num(CENA_PACK) != 0">-->
-<!--					<div class="price_special">-->
-<!--						Спец цена:-->
-<!--						<br/>-->
-<!--						<span>-->
-<!--							<xsl:value-of select="concat(f:price_output(CENA_PACK, $shop), ' ', upper-case($curr))"/>-->
-<!--						</span>-->
-<!--						от-->
-<!--						<span>-->
-<!--							<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>-->
-<!--						</span>-->
-<!--					</div>-->
-<!--				</xsl:if>-->
+				<div class="nds">
+					*цена c НДС
+				</div>
+				<xsl:if test="f:num(CENA_PACK) != 0">
+					<div class="price_special">
+						Спец цена:
+						<br/>
+						<span>
+							<xsl:value-of select="concat(f:price_output(CENA_PACK, $shop), ' ', upper-case($curr))"/>
+						</span>
+						от
+						<span>
+							<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>
+						</span>
+					</div>
+				</xsl:if>
 			</div>
 			<div class="device__order device_row__order">
 				<xsl:call-template name="CART_BUTTON">
@@ -105,24 +105,24 @@
 			</div>
 			<xsl:if test="f:num(CENA_ROZ) != 0">
 				<div class="device__price" style="flex-direction: column">
-					<div class="price_normal">по запросу
-<!--						<xsl:value-of select="concat(f:price_output(CENA_ROZ, $shop), ' ', upper-case($curr), '/', EI_NAME)"/>-->
+					<div class="price_normal">
+						<xsl:value-of select="concat(f:price_output(CENA_ROZ, $shop), ' ', upper-case($curr), '/', EI_NAME)"/>
 					</div>
-<!--					<div class="nds">-->
-<!--						*цена включает НДС-->
-<!--					</div>-->
-<!--					<xsl:if test="f:num(CENA_PACK) != 0">-->
-<!--						<div class="price_special">-->
-<!--							Спец цена:-->
-<!--							<span>-->
-<!--								<xsl:value-of select="concat(f:price_output(CENA_PACK, $shop), ' ', upper-case($curr))"/>-->
-<!--							</span>-->
-<!--							от-->
-<!--							<span>-->
-<!--								<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>-->
-<!--							</span>-->
-<!--						</div>-->
-<!--					</xsl:if>-->
+					<div class="nds">
+						*цена включает НДС
+					</div>
+					<xsl:if test="f:num(CENA_PACK) != 0">
+						<div class="price_special">
+							Спец цена:
+							<span>
+								<xsl:value-of select="concat(f:price_output(CENA_PACK, $shop), ' ', upper-case($curr))"/>
+							</span>
+							от
+							<span>
+								<xsl:value-of select="concat(UPACK, ' ', EI_NAME)"/>
+							</span>
+						</div>
+					</xsl:if>
 				</div>
 			</xsl:if>
 			<xsl:if test="f:num(CENA_ROZ) = 0">
