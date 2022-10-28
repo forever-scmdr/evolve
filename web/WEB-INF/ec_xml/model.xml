@@ -203,7 +203,6 @@
 			<value>плитка</value>
 			<value>список</value>
 			<value>таблица</value>
-			<value>поиск</value>
 		</parameter>
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
@@ -914,6 +913,38 @@
 			<value>on</value>
 		</parameter>
 		<parameter name="product_quick_view" type="string" caption="Быстрый просмотр товара" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="catalog_link" type="string" caption="Ссылка на каталог товаров" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="cart" type="string" caption="Корзина товаров" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="favourites" type="string" caption="Избранное" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="compare" type="string" caption="Сравнение" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="personal" type="string" caption="Регистрация и личный кабинет" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="bom_search" type="string" caption="Поиск BOM" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="excel_search_results" type="string" caption="Сохранение результатов поиска в Excel" default="off">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
+		<parameter name="search" type="string" caption="Поиск" default="on">
 			<value>off</value>
 			<value>on</value>
 		</parameter>

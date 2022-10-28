@@ -26,6 +26,7 @@
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
 	<xsl:variable name="query" select="page/variables/q"/>
 	<xsl:variable name="hide_side_menu" select="f:num(/page/custom_page/hide_side_menu) = 1"/>
+	<xsl:variable name="is_search_multiple" select="false()"/><!-- Поиск BOM (true) или простой поиск (false) -->
 
 	<!--Отображение товаров в каталоге -->
 	<xsl:variable name="view_var" select="page/variables/view"/>
@@ -36,7 +37,7 @@
 			<xsl:otherwise>table</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="view" select="if ($view_var) then $view_var else $view_catalog"/>
+	<xsl:variable name="view" select="if ($is_search_multiple) then 'lines' else if ($view_var) then $view_var else $view_catalog"/>
 
 	<!-- Список отключенных элементов (плитка список таблица поиск) -->
 	<xsl:variable name="view_disabled" select="page/catalog/disable"/>
@@ -46,9 +47,19 @@
 
 	<!-- ****************************    НАСТРОЙКИ ОТОБРАЖЕНИЯ    ******************************** -->
 
-	<xsl:variable name="page_menu" select="page/optional_modules/display_settings/side_menu_pages"/>
-    <xsl:variable name="has_quick_search" select="page/optional_modules/display_settings/catalog_quick_search = ('simple', 'advanced')"/>
-	<xsl:variable name="has_currency_rates" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
+	<xsl:variable name="mods" select="page/optional_modules/display_settings"/>
+	<xsl:variable name="page_menu" select="$mods/side_menu_pages"/>
+    <xsl:variable name="has_quick_search" select="$mods/catalog_quick_search = ('simple', 'advanced')"/>
+	<xsl:variable name="has_currency_rates" select="$mods/currency_rates = 'on'"/>
+
+	<xsl:variable name="has_catalog" select="$mods/catalog_link = 'on'"/><!-- + -->
+	<xsl:variable name="has_cart" select="$mods/cart = 'on'"/><!-- + -->
+	<xsl:variable name="has_fav" select="$mods/favourites = 'on'"/><!-- + -->
+	<xsl:variable name="has_compare" select="$mods/compare = 'on'"/><!-- + -->
+	<xsl:variable name="has_personal" select="$mods/personal = 'on'"/><!-- + -->
+	<xsl:variable name="has_bom_search" select="$mods/bom_search = 'on'"/><!-- + -->
+	<xsl:variable name="has_excel_search_results" select="$mods/excel_search_results = 'on'"/>
+	<xsl:variable name="has_search" select="$mods/search = 'on'"/><!-- + -->
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -191,19 +202,21 @@
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search search">
-						<xsl:if test="not($view_disabled = 'поиск')">
+						<xsl:if test="$has_search">
 							<form action="{page/search_link}" method="post">
 								<input class="input header-search__input"
 									   ajax-href="{page/search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
 									   placeholder="Введите поисковый запрос" autocomplete="off"
-									   name="q" value="{$query}" autofocus=""/>
+									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
 								<button class="button header-search__button" type="submit">Найти</button>
 								<!-- quick search -->
 								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 								<!-- quick search end -->
 							</form>
-							<a href="" data-toggle="modal" data-target="#modal-excel">Загрузка BOM</a>
+							<xsl:if test="$has_bom_search">
+								<a href="#" popup="modal-excel">Загрузка BOM</a>
+							</xsl:if>
 						</xsl:if>
 					</div>
 					<!-- need styles -->
@@ -231,14 +244,16 @@
 					</xsl:if>
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-							<a href="{page/cart_link}" class="icon-link">
-								<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-								<span class="icon-link__item">Загрузка...</span>
-							</a>
-						</div>
+						<xsl:if test="$has_cart">
+							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
+								<a href="{page/cart_link}" class="icon-link">
+									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
+									<span class="icon-link__item">Загрузка...</span>
+								</a>
+							</div>
+						</xsl:if>
 						<div class="links">
-							<a href="/kontakty" class="icon-link">
+							<a href="{page/contacts_link}" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
@@ -250,26 +265,32 @@
 							</a>
 						</div>
 						<div class="user">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-								<a href="{page/login_link}" class="icon-link">
-									<div class="icon">
-										<img src="img/icon-lock.svg" alt="" />
-									</div>
-									<span class="icon-link__item">Вход / Регистрация</span>
-								</a>
-							</div>
-							<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span class="icon-link__item">Избранное</span>
-								</a>
-							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-								<a class="icon-link">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span class="icon-link__item">Сравнение</span>
-								</a>
-							</div>
+							<xsl:if test="$has_personal">
+								<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
+									<a href="{page/login_link}" class="icon-link">
+										<div class="icon">
+											<img src="img/icon-lock.svg" alt="" />
+										</div>
+										<span class="icon-link__item">Вход / Регистрация</span>
+									</a>
+								</div>
+							</xsl:if>
+							<xsl:if test="$has_fav">
+								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
+									<a class="icon-link">
+										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+										<span class="icon-link__item">Избранное</span>
+									</a>
+								</div>
+							</xsl:if>
+							<xsl:if test="$has_compare">
+								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
+									<a class="icon-link">
+										<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+										<span class="icon-link__item">Сравнение</span>
+									</a>
+								</div>
+							</xsl:if>
 						</div>
 					</div>
 				</div>
@@ -279,33 +300,35 @@
 		<div class="main-menu">
 			<div class="container">
 				<div class="main-menu__wrap wrap">
-					<div class="main-menu__item">
-						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
-						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
-							<div class="sections">
-								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
-									<xsl:if test="section[f:num(hide) = 0]">
-										<a href="{show_products}" rel="#sub_{@id}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-									<xsl:if test="not(section)">
-										<a href="{show_products}">
-											<xsl:value-of select="name" />
-										</a>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-
-							<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
-								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section[f:num(hide) = 0]">
-										<a href="{show_products}"><xsl:value-of select="name" /></a>
+					<xsl:if test="$has_catalog">
+						<div class="main-menu__item">
+							<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
+							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
+								<div class="sections">
+									<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+										<xsl:if test="section[f:num(hide) = 0]">
+											<a href="{show_products}" rel="#sub_{@id}">
+												<xsl:value-of select="name" />
+											</a>
+										</xsl:if>
+										<xsl:if test="not(section)">
+											<a href="{show_products}">
+												<xsl:value-of select="name" />
+											</a>
+										</xsl:if>
 									</xsl:for-each>
 								</div>
-							</xsl:for-each>
+
+								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+									<div class="subsections" style="display: none" id="sub_{@id}">
+										<xsl:for-each select="section[f:num(hide) = 0]">
+											<a href="{show_products}"><xsl:value-of select="name" /></a>
+										</xsl:for-each>
+									</div>
+								</xsl:for-each>
+							</div>
 						</div>
-					</div>
+					</xsl:if>
 					<xsl:for-each select="page/news[in_main_menu = 'да']">
 						<xsl:variable name="key" select="@key"/>
 						<xsl:variable name="sel" select="page/varibles/sel"/>
@@ -383,30 +406,36 @@
 					</li>
 				</ul>
 				<ul>
-					<li>
-						<a href="{page/cart_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Корзина</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/fav_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-star.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Избранное</span>
-						</a>
-					</li>
-					<li>
-						<a href="{page/compare_link}" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-balance.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Сравнение</span>
-						</a>
-					</li>
+					<xsl:if test="$has_cart">
+						<li>
+							<a href="{page/cart_link}" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-cart.svg" alt="" />
+								</div>
+								<span class="icon-link__item">Корзина</span>
+							</a>
+						</li>
+					</xsl:if>
+					<xsl:if test="$has_fav">
+						<li>
+							<a href="{page/fav_link}" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-star.svg" alt="" />
+								</div>
+								<span class="icon-link__item">Избранное</span>
+							</a>
+						</li>
+					</xsl:if>
+					<xsl:if test="$has_compare">
+						<li>
+							<a href="{page/compare_link}" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-balance.svg" alt="" />
+								</div>
+								<span class="icon-link__item">Сравнение</span>
+							</a>
+						</li>
+					</xsl:if>
 				</ul>
 				<ul>
 					<xsl:for-each select="page/news[in_main_menu = 'да']">
@@ -802,7 +831,7 @@
 				<xsl:call-template name="ONE_CLICK_FORM"/>
 				<xsl:call-template name="SUBSCRIBE_FORM"/>
 				<!-- cheaper -->
-	            <div xmlns="http://www.w3.org/1999/xhtml" class="modal fade" tabindex="-1" role="dialog" id="cheaper" show-loader="yes">
+	            <div class="modal fade" tabindex="-1" role="dialog" id="cheaper" show-loader="yes">
 					<div class="modal-dialog" role="document">
 					      <div class="modal-content">
 					         <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button><div class="modal-title h4">Нашли этот же инструмент дешевле? Мы сделаем скидку!</div>
@@ -813,27 +842,6 @@
 					   </div>
 	            </div>
 				<!-- cheaper END -->
-				<!-- modal-excel -->
-	            <div class="modal fade" tabindex="-1" role="dialog" id="modal-excel" show-loader="yes">
-					<div class="modal-dialog" role="document">
-					      <div class="modal-content">
-					         <div class="modal-header">
-							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-							 	<div class="modal-title h4">Загрузка BOM</div>
-					         </div>
-					         <div class="modal-body">
-							 	<p class="mb-3">Вы можете загрузить список необходимых товаров в формате Excel (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
-					         	<p class="mb-3"><a href="#">Скачать образец файла</a></p>
-								<form action="" method="post" enctype="multipart/form-data" class="d-flex">
-									<input type="file" name="file" id="file" class="get-file" />
-									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
-									<input type="submit" value="Найти" />
-								</form>
-							 </div>
-					      </div>
-					   </div>
-	            </div>
-				<!-- modal-excel END -->
 				<script type="text/javascript" src="magnific_popup/jquery.magnific-popup.min.js"></script>
 				<!-- <script type="text/javascript" src="js/bootstrap.js"/> -->
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
@@ -918,6 +926,34 @@
 
 
 				<div class="popup" style="display: none;" id="modal_popup" > +++ </div>
+
+				<!-- BOM поиск -->
+				<div class="popup" role="dialog" id="modal-excel" style="display: none">
+					<div class="modal-dialog modal-md" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close popup__close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+								<div class="modal-title h4">Загрузка BOM</div>
+							</div>
+							<script>
+								function fileName(name) {
+									var index = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
+									return name.substring(index + 1);
+								}
+							</script>
+							<div class="modal-body">
+								<p>Вы можете загрузить список необходимых товаров в формате Excel  (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
+								<p><a href="files/query.xlsx">Скачать образец файла</a></p>
+								<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
+								<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
+									<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text(fileName($(this).val()))"/>
+									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
+									<input type="submit" value="Найти" />
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
 
 			</body>
 		</html>

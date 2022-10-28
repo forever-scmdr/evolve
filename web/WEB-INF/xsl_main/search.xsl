@@ -7,12 +7,19 @@
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
 
-	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
-	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="page/variables/q"/>"</xsl:variable>
+	<!-- Поиск BOM -->
+	<xsl:variable name="queries" select="page/variables/q"/>
+	<xsl:variable name="numbers" select="page/variables/n"/>
+	<xsl:variable name="is_search_multiple" select="count($queries) &gt; 1"/>
+
+
+	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="if ($is_search_multiple) then 'BOM' else page/variables/q"/>"</xsl:variable>
+	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="if ($is_search_multiple) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="products" select="page/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
+
 
 
 	<xsl:template name="PAGE_PATH">
@@ -21,9 +28,11 @@
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
-				<a style="position: absolute; right: 0px; font-weight: bold;" href="excel_search_action/?q=шторыn=">
-                	<img src="img/excel2.png" /> Сохранить результаты
-                </a>
+				<xsl:if test="$has_excel_search_results">
+					<a style="position: absolute; right: 0px; font-weight: bold;" href="{page/save_excel_file}">
+						<img src="img/excel2.png" /> Сохранить результаты
+					</a>
+				</xsl:if>
 			</div>
 		</div>
 
@@ -32,7 +41,7 @@
 
 	<xsl:template name="CONTENT">
 
-		<xsl:if test="$products">
+		<xsl:if test="$products and not($is_search_multiple)">
 			<div class="view view_section">
 				<div class="view__column">
 					<xsl:if test="not($view_disabled = 'плитка')">
@@ -77,7 +86,12 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">
-					<xsl:apply-templates select="$products" mode="product-lines"/>
+					<xsl:call-template name="LINES_TABLE">
+						<xsl:with-param name="products" select="$products"/>
+						<xsl:with-param name="multiple" select="$is_search_multiple"/>
+						<xsl:with-param name="queries" select="$queries"/>
+						<xsl:with-param name="numbers" select="$numbers"/>
+					</xsl:call-template>
 				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>

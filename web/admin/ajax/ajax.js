@@ -101,14 +101,17 @@ function initAjax(elementId) {
         var loaderId = link.attr("ajax-loader-id");
         var popupId = link.attr("popup");
         var href = link.attr("href");
-        var targetElem = $("#" + popupId);
+        if (popupId.indexOf("#") != 0 && popupId.indexOf(".") != 0) {
+            popupId = "#" + popupId;
+        }
+        var targetElem = $(popupId);
         if (targetElem != null) {
             if (href != null && href.trim() != '' && href != '#') {
                 insertAjax(href, loaderId, function (argData) {
                     targetElem.show('fade', 100);
                 });
             } else {
-                targetElem.show('fade', 100);
+                targetElem.toggle('fade', 100);
             }
         } else {
             alert("AJAX popup: element '" + popupId + "' is not found or URL '" + href + "' is incorrect");

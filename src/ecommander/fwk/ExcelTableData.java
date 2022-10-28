@@ -150,13 +150,13 @@ public class ExcelTableData implements TableDataSource {
 			}
 		}
 
-		if (validSheets.size() > 0){
+		if (validSheets.size() > 0) {
 			currentSheet = validSheets.get(0).sheet;
 			headerCell = validSheets.get(0).headerCell;
 			currentHeader = validSheets.get(0).header;
 		}
 		//Wrong document with no valid sheets
-		else{
+		else {
 			throw new Exception("В файле отсутствуют обязательные колонки: " + missingColumns.toString());
 		}
 	}

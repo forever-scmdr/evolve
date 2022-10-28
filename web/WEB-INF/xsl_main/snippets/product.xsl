@@ -3,15 +3,20 @@
 	<xsl:import href="../utils/utils.xsl"/>
 	<xsl:import href="constants.xsl"/>
 
+	<xsl:variable name="ops" select="page/optional_modules"/>
+	<xsl:variable name="disp" select="$ops/display_settings"/>
 	<xsl:variable name="is_fav" select="page/@name = 'fav'"/>
 	<xsl:variable name="is_compare" select="page/@name = 'compare'"/>
-	<xsl:variable name="is_one_click" select="page/optional_modules/one_click/status = 'on'"/>
-	<xsl:variable name="is_my_price" select="page/optional_modules/my_price/status = 'on'"/>
-	<xsl:variable name="is_subscribe" select="page/optional_modules/product_subscribe/status = 'on'"/>
-	<xsl:variable name="is_quick_view" select="page/optional_modules/display_settings/product_quick_view = 'on'"/>
-	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
+	<xsl:variable name="has_one_click" select="$ops/one_click/status = 'on'"/>
+	<xsl:variable name="has_my_price" select="$ops/my_price/status = 'on'"/>
+	<xsl:variable name="has_subscribe" select="$ops/product_subscribe/status = 'on'"/>
+	<xsl:variable name="has_quick_view" select="$disp/product_quick_view = 'on'"/>
+	<xsl:variable name="has_fav" select="$disp/favourites = 'on'"/>
+	<xsl:variable name="has_compare" select="$disp/compare = 'on'"/>
+	<xsl:variable name="has_cart" select="$disp/cart = 'on'"/>
+	<xsl:variable name="mp_link" select="if ($ops/my_price/link_name) then $ops/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
-	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
+	<xsl:variable name="jur_price_on" select="$disp/jur_price = 'on'"/>
 	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
@@ -64,7 +69,7 @@
 			</div>
 
 			<!-- quick view (not displayed, delete <div> with display: none to show) -->
-			<xsl:if test="$is_quick_view">
+			<xsl:if test="$has_quick_view">
 				<div>
 					<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
 				</div>
@@ -150,7 +155,7 @@
 				</div>
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
-				<xsl:if test="$is_quick_view">
+				<xsl:if test="$has_quick_view">
 					<div style="display: none">
 						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
 					</div>
@@ -305,6 +310,13 @@
 
 
 	<xsl:template match="*" mode="product-lines">
+		<xsl:param name="multiple" select="false()"/>
+		<xsl:param name="hidden" select="false()"/>
+		<xsl:param name="number" select="-1"/>
+		<xsl:param name="position" select="1"/>
+		<xsl:param name="query" select="''"/>
+		<xsl:param name="has_more" select="false()"/>
+
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
@@ -317,7 +329,8 @@
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 		<xsl:variable name="p" select="current()"/>
 
-		<tr>
+		<tr class="prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
+			<xsl:if test="$multiple"><td><b><xsl:value-of select="$query" /></b></td></xsl:if>
 			<td><a href="{show_product}"><xsl:value-of select="name"/></a></td><!--название -->
 			<td><!--описание -->
 				<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
@@ -336,15 +349,17 @@
 			<td><!--заказать -->
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="p" select="current()"/>
+					<xsl:with-param name="default_qty" select="$number"/>
 				</xsl:call-template>
 			</td>
-			<xsl:if test="$is_one_click or $is_my_price or $is_subscribe"><!--дополнительно -->
+			<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><!--дополнительно -->
 				<td>
 					<xsl:call-template name="EXTRA_ORDERING_TYPES">
 						<xsl:with-param name="p" select="current()"/>
 					</xsl:call-template>
 				</td>
 			</xsl:if>
+			<xsl:if test="$multiple"><td><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></td></xsl:if>
 		</tr>
 	</xsl:template>
 
@@ -360,54 +375,60 @@
 
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="p" />
-		<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
-		<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
+		<xsl:param name="default_qty" select="-1"/>
+		<xsl:if test="$has_cart">
+			<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
+			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
-		<!-- device order -->
-		<xsl:if test="not($has_lines)">
-			<div class="order device-order cart_list_{$p/@id}" id="cart_list_{$p/@id}">
-				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-					<input type="number"
-						   class="input input_type_number" name="qty"
-						   value="{if ($p/min_qty) then min_qty else 1}"
-						   min="{if ($p/min_qty) then $p/min_qty else 1}"
-						   step="{if ($p/step) then f:num($p/step) else 1}" />
+			<!-- device order -->
+			<xsl:if test="not($has_lines)">
+				<div class="order device-order cart_list_{$p/@id}" id="cart_list_{$p/@id}">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+						<input type="number"
+							   class="input input_type_number" name="qty"
+							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
+							   min="{if ($p/min_qty) then $p/min_qty else 1}"
+							   step="{if ($p/step) then f:num($p/step) else 1}" />
 
-					<xsl:if test="$has_price">
-						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
-					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-					</xsl:if>
-				</form>
-			</div>
-		</xsl:if>
-		<xsl:if test="$has_lines">
-			<div class="order device-order">
-				<a class="button" href="{$p/show_product}">Подробнее</a>
-			</div>
+						<xsl:if test="$has_price">
+							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+						</xsl:if>
+						<xsl:if test="not($has_price)">
+							<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+						</xsl:if>
+					</form>
+				</div>
+			</xsl:if>
+			<xsl:if test="$has_lines">
+				<div class="order device-order">
+					<a class="button" href="{$p/show_product}">Подробнее</a>
+				</div>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
+
+
+
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
 
 		<!-- one click -->
-		<xsl:if test="$is_one_click">
+		<xsl:if test="$has_one_click">
 			<div class="text_sm" style="margin-top: auto;">
 				<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>
 			</div>
 		</xsl:if>
 
 		<!-- subscribe for update -->
-		<xsl:if test="$is_subscribe">
+		<xsl:if test="$has_subscribe">
 			<div class="text_sm" style="margin-top: auto;">
 				<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
 			</div>
 		</xsl:if>
 
 		<!-- propose my price -->
-		<xsl:if test="$is_my_price">
+		<xsl:if test="$has_my_price">
 			<div class="text_sm" style="margin-top: auto;">
 				<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 			</div>
@@ -415,38 +436,43 @@
 	</xsl:template>
 
 
+
+
 	<xsl:template name="FAV_AND_COMPARE">
 		<xsl:param name="p" />
-
-		<xsl:choose>
-			<xsl:when test="$is_fav">
-				<a href="{$p/from_fav}" class="add__item icon-link">
-					<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-					<span><xsl:value-of select="$compare_remove_label"/></span>
-				</a>
-			</xsl:when>
-			<xsl:otherwise>
-				<div id="fav_list_{@id}">
-					<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+		<xsl:if test="$has_fav">
+			<xsl:choose>
+				<xsl:when test="$is_fav">
+					<a href="{$p/from_fav}" class="add__item icon-link">
 						<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-						<span><xsl:value-of select="$compare_add_label"/></span>
+						<span><xsl:value-of select="$compare_remove_label"/></span>
+					</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<div id="fav_list_{@id}">
+						<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+							<span><xsl:value-of select="$compare_add_label"/></span>
+						</a>
+					</div>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		<xsl:if test="$has_compare">
+			<xsl:if test="not($is_compare)">
+				<div id="compare_list_{$p/@id}">
+					<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+						<span><xsl:value-of select="$go_to_compare_label"/></span>
 					</a>
 				</div>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:if test="not($is_compare)">
-			<div id="compare_list_{$p/@id}">
-				<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+			</xsl:if>
+			<xsl:if test="$is_compare">
+				<a href="{$p/from_compare}" class="add__item icon-link">
 					<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-					<span><xsl:value-of select="$go_to_compare_label"/></span>
+					<span><xsl:value-of select="$compare_remove_label"/></span>
 				</a>
-			</div>
-		</xsl:if>
-		<xsl:if test="$is_compare">
-			<a href="{$p/from_compare}" class="add__item icon-link">
-				<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-				<span><xsl:value-of select="$compare_remove_label"/></span>
-			</a>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
@@ -462,21 +488,52 @@
 
 	<xsl:template name="LINES_TABLE">
 		<xsl:param name="products"/>
+		<xsl:param name="multiple" select="false()"/>
+		<xsl:param name="queries" select="queries"/>
+		<xsl:param name="numbers" select="numbers"/>
 		<div class="view-table">
 			<table>
 				<thead>
 					<tr>
+						<xsl:if test="$multiple"><th>Запрос</th></xsl:if>
 						<th>Название</th>
 						<th>Описание</th>
 						<th>Срок поставки</th>
 						<th>Количество</th>
 						<th>Цена (бел.руб.)</th>
 						<th>Заказать</th>
-						<xsl:if test="$is_one_click or $is_my_price or $is_subscribe"><th>Дополнительно</th></xsl:if>
+						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
+						<xsl:if test="$multiple"><th>Показать</th></xsl:if>
 					</tr>
 				</thead>
 				<tbody>
-					<xsl:apply-templates select="$products" mode="product-lines"/>
+					<xsl:if test="$multiple">
+						<xsl:for-each select="$queries">
+							<xsl:variable name="q" select="."/>
+							<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
+							<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
+							<xsl:variable name="p" select="position()"/>
+							<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q]"/>
+							<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
+							<xsl:apply-templates select="$price_query_products[1]" mode="product-lines">
+								<xsl:with-param name="multiple" select="true()"/>
+								<xsl:with-param name="query" select="$q"/>
+								<xsl:with-param name="number" select="$n"/>
+								<xsl:with-param name="position" select="$p"/>
+								<xsl:with-param name="has_more" select="$more_than_one"/>
+							</xsl:apply-templates>
+							<xsl:apply-templates select="$price_query_products[position() &gt; 1]" mode="product-lines">
+								<xsl:with-param name="multiple" select="true()"/>
+								<xsl:with-param name="query" select="$q"/>
+								<xsl:with-param name="hidden" select="'hidden'"/>
+								<xsl:with-param name="number" select="$n"/>
+								<xsl:with-param name="position" select="$p"/>
+							</xsl:apply-templates>
+						</xsl:for-each>
+					</xsl:if>
+					<xsl:if test="not($multiple)">
+						<xsl:apply-templates select="$products" mode="product-lines"/>
+					</xsl:if>
 				</tbody>
 			</table>
 		</div>
