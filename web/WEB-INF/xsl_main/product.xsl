@@ -130,34 +130,40 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<div id="cart_list_{$p/@id}" class="order order_product">
-							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
-									<!-- кнопка запросить цену на стрранице товара -->
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-							</form>
-						</div>
+						<xsl:if test="$has_cart">
+							<div id="cart_list_{$p/@id}" class="order order_product">
+								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+									<xsl:if test="$has_price">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+									<xsl:if test="not($has_price)">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+										<!-- кнопка запросить цену на стрранице товара -->
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+								</form>
+							</div>
+						</xsl:if>
 						<div class="add add_product">
-							<div id="fav_list_{$p/@id}">
-								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-									<span><xsl:value-of select="$compare_add_label"/></span>
-								</a>
-							</div>
-							<div id="compare_list_{$p/@id}">
-								<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-									<span><xsl:value-of select="$go_to_compare_label"/></span>
-								</a>
-							</div>
+							<xsl:if test="$has_fav">
+								<div id="fav_list_{$p/@id}">
+									<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+										<span><xsl:value-of select="$compare_add_label"/></span>
+									</a>
+								</div>
+							</xsl:if>
+							<xsl:if test="$has_compare">
+								<div id="compare_list_{$p/@id}">
+									<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+										<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+										<span><xsl:value-of select="$go_to_compare_label"/></span>
+									</a>
+								</div>
+							</xsl:if>
 						</div>
 					</div>
 
@@ -168,17 +174,17 @@
 					</xsl:choose>
 					-->
 					<div class="extra-buttons product-actions mitaba">
-						<xsl:if test="$is_my_price">
+						<xsl:if test="$has_my_price">
 							<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" class="button secondary button_size_lg"
 							   data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>
 						</xsl:if>
-						<xsl:if test="$is_one_click">
+						<xsl:if test="$has_one_click">
 							<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" class="button_size_lg"
 							   data-target="#modal-one_click">Купить в 1 клик</a>
 						</xsl:if>
 					</div>
 					<!-- один клик и своя цена не сверстаны -->
-					<xsl:if test="$is_one_click or $is_my_price">
+					<xsl:if test="$has_one_click or $has_my_price">
 						<div class="extra-buttons">
 <!--							<xsl:if test="$is_one_click">-->
 <!--								<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click">Купить в 1 клик</a>-->
@@ -186,7 +192,7 @@
 <!--							<xsl:if test="$is_my_price">-->
 <!--								<a href="{$p/my_price_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-my_price"><xsl:value-of select="$mp_link"/></a>-->
 <!--							</xsl:if>-->
-							<xsl:if test="$is_subscribe">
+							<xsl:if test="$has_subscribe">
 								<a href="{$p/subscribe_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-subscribe">Сообщить о появлении</a>
 							</xsl:if>
 						</div>

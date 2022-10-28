@@ -84,6 +84,7 @@
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
+		<link name="excel_search_link" target="excel_search" type="itemform"/>
 
 		<!-- REGISTRATION -->
 		<link name="register_link" target="register"/>
@@ -465,88 +466,6 @@
 
 
 
-	<page name="search_ajax" template="search_ajax">
-		<request>
-			<var name="q"/>
-			<var name="view" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
-			<var name="cur" value="BYN" scope="cookie"/>
-		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<personal>
-			<list item="user" tag="registration">
-				<filter>
-					<parameter name="registered">
-						<var value="1"/>
-					</parameter>
-				</filter>
-			</list>
-		</personal>
-		<list item="product" id="prod">
-			<filter>
-				<fulltext limit="5" compare="EVERY" type="prefix">
-					<var var="q"/>
-				</fulltext>
-<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
-		<link name="show_all" target="search">
-			<var name="q" var="q"/>
-			<!-- <var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/> -->
-		</link>
-	</page>
-
-	<page name="search" template="search">
-		<request>
-			<var name="q"/>
-			<var name="old_query"/>
-			<var name="view" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
-		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
-		<list item="product" id="prod">
-			<filter>
-				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
-					<var var="q"/>
-				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS"/>
-		</list>
-		<link name="set_view_table" target="search" copy-page-vars="yes">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="search" copy-page-vars="yes">
-			<var name="view" value="list"/>
-		</link>
-		<link name="set_view_lines" target="search" copy-page-vars="yes">
-			<var name="view" value="lines"/>
-		</link>
-		<link name="show_only_available" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value="0"/>
-		</link>
-		<link name="show_all" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value=""/>
-		</link>
-		<include name="COMMON"/>
-	</page>
-
-
-
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
@@ -630,6 +549,158 @@
 		<link name="compare_link" target="compare"/>
 		<link name="show_cart" target="cart"/>
 	</page>
+
+
+
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////       ПОИСК И ВСЕ ВСПОМОГАТЕЛЬНЫЕ СТРАНИЦЫ И КОМАНДЫ ДЛЯ НЕГО        ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
+	<page name="search_ajax" template="search_ajax">
+		<request>
+			<var name="q"/>
+			<var name="view" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
+			<var name="cur" value="BYN" scope="cookie"/>
+		</request>
+<!--		<command class="extra.FixSearchQuery"/>-->
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+		<personal>
+			<list item="user" tag="registration">
+				<filter>
+					<parameter name="registered">
+						<var value="1"/>
+					</parameter>
+				</filter>
+			</list>
+		</personal>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="5" compare="EVERY" type="prefix">
+					<var var="q"/>
+				</fulltext>
+<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+		</list>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<!-- <var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/> -->
+		</link>
+	</page>
+
+
+	<page name="search" template="search">
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+			<var name="old_query"/>
+			<var name="view" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/>
+		</request>
+<!--		<command class="extra.FixSearchQuery"/>-->
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="48" compare="EVERY" name="name">
+					<var var="q"/>
+				</fulltext>
+				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<include name="PRODUCT_PARAMS_LINKS"/>
+		</list>
+		<link name="set_view_table" target="search" copy-page-vars="yes">
+			<var name="view" value="table"/>
+		</link>
+		<link name="set_view_list" target="search" copy-page-vars="yes">
+			<var name="view" value="list"/>
+		</link>
+		<link name="set_view_lines" target="search" copy-page-vars="yes">
+			<var name="view" value="lines"/>
+		</link>
+		<link name="show_only_available" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="search">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+		<include name="COMMON"/>
+	</page>
+
+
+	<!-- Страница, которая обрабатывает переданный Excel файл с запросами и перенаправляет на страницу результатов -->
+	<page name="excel_search">
+		<link name="success" target="search"/><!-- search --><!-- search_for_xls --><!-- search_bom -->
+		<link name="error" target="search">
+			<var name="message" value="Ошибка формата файла запроса"/>
+		</link>
+		<command class="extra.ExcelSearch">
+			<result name="success" type="forward"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+
+	<!-- Страница, которая вызывает команду сохранения результатов поиска в виде Excel файла -->
+	<page name="excel_search_action">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+		</request>
+		<link name="xml_link" target="excel_search_page">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+		<link name="success" target="excel_search_page"/>
+		<link name="error" target="search">
+			<var name="message" value="Ошибка формата файла запроса"/>
+		</link>
+		<command class="extra.CreateSearchExcel">
+			<result name="success" type="forward"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
+
+
+	<!-- Страница, для построения результатов поиска в виде Excel файла -->
+	<!-- Используется командой CreateSearchExcel на странице excel_search_action -->
+	<page name="excel_search_page" template="search_for_xls">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+		</request>
+		<list item="product" id="prod">
+			<filter>
+				<fulltext limit="48" compare="EVERY" name="name">
+					<var var="q"/>
+				</fulltext>
+			</filter>
+		</list>
+		<include name="COMMON"/>
+	</page>
+
+
 
 
 
