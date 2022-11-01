@@ -93,13 +93,13 @@
 					</xsl:for-each>
 				</div>
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
-					<xsl:for-each select="$p/gallery">
-						<img src="{$p/@path}{.}" alt="{$p/name}"/>
+					<xsl:for-each select="$p/gallery_path">
+						<img src="{$pic_server}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+					<xsl:if test="not($p/gallery_path)">
+						<img src="{concat($pic_server, $p/main_pic_path)}" alt="{$p/name}"/>
 					</xsl:if>
-					<xsl:if test="not($p/gallery) and not($p/main_pic)">
+					<xsl:if test="not($p/gallery_path) and not($p/main_pic_path)">
 						<img src="img/no_image.png" alt="{$p/name}"/>
 					</xsl:if>
 				</div>

@@ -430,6 +430,7 @@ public interface ItemNames {
         String VENDOR_CODE = "vendor_code";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_PATH = "main_pic_path";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -586,6 +587,7 @@ public interface ItemNames {
         String VENDOR_CODE = "vendor_code";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_PATH = "main_pic_path";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -950,6 +952,7 @@ public interface ItemNames {
         String VENDOR_CODE = "vendor_code";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_PATH = "main_pic_path";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -972,6 +975,10 @@ public interface ItemNames {
         String AVAILABLE = "available";
         String CATEGORY_ID = "category_id";
         String URL = "url";
+        String QTY_OPT = "qty_opt";
+        String PRICE_OPT = "price_opt";
+        String PRICE_OPT_OLD = "price_opt_old";
+        String NEXT_DELIVERY = "next_delivery";
         String HAS_LINES = "has_lines";
 
     }
@@ -1075,6 +1082,7 @@ public interface ItemNames {
         String CODE = "code";
         String PARENT_ID = "parent_id";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_PATH = "main_pic_path";
         String EXTRA = "extra";
         String PARAMS_SHORT = "params_short";
         String PARAMS_LIST = "params_list";

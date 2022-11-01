@@ -23,6 +23,7 @@ public class Product
     public final static String VENDOR_CODE = "vendor_code";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
+    public final static String MAIN_PIC_PATH = "main_pic_path";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
@@ -45,6 +46,10 @@ public class Product
     public final static String AVAILABLE = "available";
     public final static String CATEGORY_ID = "category_id";
     public final static String URL = "url";
+    public final static String QTY_OPT = "qty_opt";
+    public final static String PRICE_OPT = "price_opt";
+    public final static String PRICE_OPT_OLD = "price_opt_old";
+    public final static String NEXT_DELIVERY = "next_delivery";
     public final static String HAS_LINES = "has_lines";
 
     private Product(Item item) {
@@ -238,6 +243,22 @@ public class Product
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_main_pic_path(String value) {
+        setValue("main_pic_path", value);
+    }
+
+    public String get_main_pic_path() {
+        return getStringValue("main_pic_path");
+    }
+
+    public String getDefault_main_pic_path(String defaultVal) {
+        return getStringValue("main_pic_path", defaultVal);
+    }
+
+    public boolean contains_main_pic_path(String value) {
+        return containsValue("main_pic_path", value);
     }
 
     public void set_small_pic(File value) {
@@ -610,6 +631,88 @@ public class Product
 
     public boolean contains_url(String value) {
         return containsValue("url", value);
+    }
+
+    public void set_qty_opt(Double value) {
+        setValue("qty_opt", value);
+    }
+
+    public void setUI_qty_opt(String value)
+        throws Exception
+    {
+        setValueUI("qty_opt", value);
+    }
+
+    public Double get_qty_opt() {
+        return getDoubleValue("qty_opt");
+    }
+
+    public Double getDefault_qty_opt(Double defaultVal) {
+        return getDoubleValue("qty_opt", defaultVal);
+    }
+
+    public boolean contains_qty_opt(Double value) {
+        return containsValue("qty_opt", value);
+    }
+
+    public void set_price_opt(BigDecimal value) {
+        setValue("price_opt", value);
+    }
+
+    public void setUI_price_opt(String value)
+        throws Exception
+    {
+        setValueUI("price_opt", value);
+    }
+
+    public BigDecimal get_price_opt() {
+        return getDecimalValue("price_opt");
+    }
+
+    public BigDecimal getDefault_price_opt(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt", defaultVal);
+    }
+
+    public boolean contains_price_opt(BigDecimal value) {
+        return containsValue("price_opt", value);
+    }
+
+    public void set_price_opt_old(BigDecimal value) {
+        setValue("price_opt_old", value);
+    }
+
+    public void setUI_price_opt_old(String value)
+        throws Exception
+    {
+        setValueUI("price_opt_old", value);
+    }
+
+    public BigDecimal get_price_opt_old() {
+        return getDecimalValue("price_opt_old");
+    }
+
+    public BigDecimal getDefault_price_opt_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt_old", defaultVal);
+    }
+
+    public boolean contains_price_opt_old(BigDecimal value) {
+        return containsValue("price_opt_old", value);
+    }
+
+    public void set_next_delivery(String value) {
+        setValue("next_delivery", value);
+    }
+
+    public String get_next_delivery() {
+        return getStringValue("next_delivery");
+    }
+
+    public String getDefault_next_delivery(String defaultVal) {
+        return getStringValue("next_delivery", defaultVal);
+    }
+
+    public boolean contains_next_delivery(String value) {
+        return containsValue("next_delivery", value);
     }
 
     public void set_has_lines(Byte value) {

@@ -22,6 +22,7 @@ public class Section
     public final static String CODE = "code";
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
+    public final static String MAIN_PIC_PATH = "main_pic_path";
     public final static String EXTRA = "extra";
     public final static String PARAMS_SHORT = "params_short";
     public final static String PARAMS_LIST = "params_list";
@@ -230,6 +231,22 @@ public class Section
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_main_pic_path(String value) {
+        setValue("main_pic_path", value);
+    }
+
+    public String get_main_pic_path() {
+        return getStringValue("main_pic_path");
+    }
+
+    public String getDefault_main_pic_path(String defaultVal) {
+        return getStringValue("main_pic_path", defaultVal);
+    }
+
+    public boolean contains_main_pic_path(String value) {
+        return containsValue("main_pic_path", value);
     }
 
     public void set_extra(String value) {

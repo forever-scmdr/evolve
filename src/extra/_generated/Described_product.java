@@ -23,6 +23,7 @@ public class Described_product
     public final static String VENDOR_CODE = "vendor_code";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
+    public final static String MAIN_PIC_PATH = "main_pic_path";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
@@ -237,6 +238,22 @@ public class Described_product
 
     public boolean contains_main_pic(File value) {
         return containsValue("main_pic", value);
+    }
+
+    public void set_main_pic_path(String value) {
+        setValue("main_pic_path", value);
+    }
+
+    public String get_main_pic_path() {
+        return getStringValue("main_pic_path");
+    }
+
+    public String getDefault_main_pic_path(String defaultVal) {
+        return getStringValue("main_pic_path", defaultVal);
+    }
+
+    public boolean contains_main_pic_path(String value) {
+        return containsValue("main_pic_path", value);
     }
 
     public void set_small_pic(File value) {

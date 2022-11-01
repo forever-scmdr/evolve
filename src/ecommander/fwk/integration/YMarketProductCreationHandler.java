@@ -8,6 +8,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -21,29 +22,30 @@ import java.util.*;
 
 public class YMarketProductCreationHandler extends DefaultHandler implements CatalogConst {
 
-	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
+	private static final HashMap<String, String> SINGLE_PARAMS = new HashMap<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
 
 	static {
-		SINGLE_PARAMS.add(URL_ELEMENT);
-		SINGLE_PARAMS.add(PRICE_ELEMENT);
-		SINGLE_PARAMS.add(CURRENCY_ID_ELEMENT);
+		SINGLE_PARAMS.put(ID_ATTR, Product.CODE);
+		SINGLE_PARAMS.put(URL_ELEMENT, Product.URL);
+		SINGLE_PARAMS.put(PRICE_ELEMENT, Product.PRICE);
+		SINGLE_PARAMS.put(CURRENCY_ID_ELEMENT, null);
 		//SINGLE_PARAMS.add(CATEGORY_ID_ELEMENT);
-		SINGLE_PARAMS.add(NAME_ELEMENT);
-		SINGLE_PARAMS.add(VENDOR_CODE_ELEMENT);
-		SINGLE_PARAMS.add(DESCRIPTION_ELEMENT);
-		SINGLE_PARAMS.add(COUNTRY_OF_ORIGIN_ELEMENT);
-		SINGLE_PARAMS.add(MODEL_ELEMENT);
-		SINGLE_PARAMS.add(QUANTITY_ELEMENT);
-		SINGLE_PARAMS.add(QUANTITY_OPT_ELEMENT);
-		SINGLE_PARAMS.add(VENDOR_ELEMENT);
-		SINGLE_PARAMS.add(OLDPRICE_ELEMENT);
-		SINGLE_PARAMS.add(PRICE_OPT_ELEMENT);
-		SINGLE_PARAMS.add(OLDOPTPRICE_ELEMENT);
-		SINGLE_PARAMS.add(MIN_QUANTITY_ELEMENT);
-		SINGLE_PARAMS.add(MIN_QTY_PARAM);
-		SINGLE_PARAMS.add(STATUS_ELEMENT);
-		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
+		SINGLE_PARAMS.put(NAME_ELEMENT, Product.NAME);
+		SINGLE_PARAMS.put(VENDOR_CODE_ELEMENT, Product.VENDOR_CODE);
+		SINGLE_PARAMS.put(DESCRIPTION_ELEMENT, Product.DESCRIPTION);
+		SINGLE_PARAMS.put(COUNTRY_OF_ORIGIN_ELEMENT, Product.COUNTRY);
+		SINGLE_PARAMS.put(MODEL_ELEMENT, null);
+		SINGLE_PARAMS.put(QUANTITY_ELEMENT, Product.QTY);
+		SINGLE_PARAMS.put(QUANTITY_OPT_ELEMENT, Product.SPEC_QTY);
+		SINGLE_PARAMS.put(VENDOR_ELEMENT, Product.VENDOR);
+		SINGLE_PARAMS.put(OLDPRICE_ELEMENT, Product.PRICE_OLD);
+		SINGLE_PARAMS.put(PRICE_OPT_ELEMENT, Product.PRICE_OPT);
+		SINGLE_PARAMS.put(OLDOPTPRICE_ELEMENT, Product.PRICE_OPT_OLD);
+		SINGLE_PARAMS.put(MIN_QUANTITY_ELEMENT, Product.MIN_QTY);
+		SINGLE_PARAMS.put(STATUS_ELEMENT, null);
+		SINGLE_PARAMS.put(NEXT_DELIVERY_ELEMENT, Product.NEXT_DELIVERY);
+
 
 		MULTIPLE_PARAMS.add(SECTION_ID_ELEMENT);
 		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
@@ -86,7 +88,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
-				String code = singleParams.get(ID_ATTR);
+				String code = singleParams.get(Product.CODE);
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
@@ -253,6 +255,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							needSave = true;
 						} else if (newPicUrl == null && !product.containsValue(GALLERY_PATH_PARAM, picUrl)) {
 							product.setValue(GALLERY_PATH_PARAM, picUrl);
+							hasGallery = true;
+							needSave = true;
 						}
 					} catch (Exception e) {
 						info.addError("Неверный формат картинки: " + picUrl, picUrl);
@@ -271,17 +275,17 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				if (noMainPic && picUrls.size() > 0 && hasGallery) {
 					if (hasPicUrl) {
 						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+						try {
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
+							DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
+							DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
+						} catch (Exception e) {
+							info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						}
+						needSave = false;
 					} else {
-						product.setValue(MAIN_PIC_PATH_PARAM,  Strings.getFileName(picUrls.iterator().next()));
+						product.setValue(MAIN_PIC_PATH_PARAM,  picUrls.iterator().next());
 					}
-					try {
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
-						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
-						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
-					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
-					}
-					needSave = false;
 				}
 				if (needSave) {
 					try {
@@ -293,7 +297,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 				info.increaseProcessed();
 				isInsideOffer = false;
-			} else if (isInsideOffer && SINGLE_PARAMS.contains(qName) && parameterReady) {
+			} else if (isInsideOffer && SINGLE_PARAMS.containsKey(qName) && parameterReady) {
 				singleParams.put(paramName, StringUtils.trim(paramValue.toString()));
 			} else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName) && parameterReady) {
 				specialParams.put(paramName, StringUtils.trim(paramValue.toString()));
@@ -338,8 +342,10 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (SINGLE_PARAMS.contains(qName) || MULTIPLE_PARAMS.contains(qName))) {
-			paramName = qName;
+		else if (isInsideOffer && (SINGLE_PARAMS.containsKey(qName) || MULTIPLE_PARAMS.contains(qName))) {
+			paramName = SINGLE_PARAMS.get(qName);
+			if (paramName == null)
+				paramName = qName;
 			parameterReady = true;
 		}
 		// Пользовательские параметры продуктов

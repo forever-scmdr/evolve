@@ -245,7 +245,7 @@
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка" description="прямое прикрепление картинки"/>
-		<parameter name="main_pic_path" type="picture" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
+		<parameter name="main_pic_path" type="string" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
@@ -352,7 +352,7 @@
 
 	<!--Обычный товар или товар, который содержит другие товары-->
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
-	      default-page="product" super="described_product * seo_container line_product_container">
+	      default-page="product" super="described_product * opt_product seo_container line_product_container">
 	</item>
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
