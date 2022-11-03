@@ -331,16 +331,34 @@
 
 		<tr class="prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
 			<xsl:if test="$multiple"><td><b><xsl:value-of select="$query" /></b></td></xsl:if>
-			<td><a href="{show_product}"><xsl:value-of select="name"/></a></td><!--название -->
+			<td>
+				<a href="{show_product}"><xsl:value-of select="name"/></a>
+				<xsl:if test="label"><p/></xsl:if>
+				<xsl:for-each select="label">
+					<div class="tag device__tag {f:translit(.)}" style="display: inline-block;">
+						<xsl:value-of select="." />
+					</div>
+				</xsl:for-each>
+				<p/>
+				<xsl:call-template name="FAV_AND_COMPARE">
+					<xsl:with-param name="p" select="current()"/>
+					<xsl:with-param name="is_inline" select="true()"/>
+				</xsl:call-template>
+			</td><!--название -->
 			<td><!--описание -->
 				<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
 					<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-					<xsl:value-of select="$param"/>;
+					<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
 				</xsl:for-each>
 			</td>
 			<td><xsl:value-of select="next_delivery"/></td><!--дата поставки -->
 			<td><xsl:value-of select="qty"/></td><!--количество на складе -->
 			<td><!--цена -->
+				<xsl:if test="price_old">
+					<div class="price__item_old">
+						<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+					</div>
+				</xsl:if>
 				<xsl:if test="$has_price">
 					<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
 				</xsl:if>
@@ -440,6 +458,7 @@
 
 	<xsl:template name="FAV_AND_COMPARE">
 		<xsl:param name="p" />
+		<xsl:param name="is_inline" select="false()"/>
 		<xsl:if test="$has_fav">
 			<xsl:choose>
 				<xsl:when test="$is_fav">
@@ -449,7 +468,7 @@
 					</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<div id="fav_list_{@id}">
+					<div id="fav_list_{@id}" style="{'display: inline-block;'[$is_inline]}">
 						<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
 							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
 							<span><xsl:value-of select="$compare_add_label"/></span>
@@ -460,7 +479,7 @@
 		</xsl:if>
 		<xsl:if test="$has_compare">
 			<xsl:if test="not($is_compare)">
-				<div id="compare_list_{$p/@id}">
+				<div id="compare_list_{$p/@id}" style="{'display: inline-block;'[$is_inline]}">
 					<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 						<span><xsl:value-of select="$go_to_compare_label"/></span>
@@ -500,7 +519,7 @@
 						<th>Описание</th>
 						<th>Срок поставки</th>
 						<th>Количество</th>
-						<th>Цена (бел.руб.)</th>
+						<th>Цена</th>
 						<th>Заказать</th>
 						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
 						<xsl:if test="$multiple"><th>Показать</th></xsl:if>

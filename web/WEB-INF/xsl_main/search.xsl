@@ -86,12 +86,14 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">
-					<xsl:call-template name="LINES_TABLE">
-						<xsl:with-param name="products" select="$products"/>
-						<xsl:with-param name="multiple" select="$is_search_multiple"/>
-						<xsl:with-param name="queries" select="$queries"/>
-						<xsl:with-param name="numbers" select="$numbers"/>
-					</xsl:call-template>
+					<xsl:if test="$products">
+						<xsl:call-template name="LINES_TABLE">
+							<xsl:with-param name="products" select="$products"/>
+							<xsl:with-param name="multiple" select="$is_search_multiple"/>
+							<xsl:with-param name="queries" select="$queries"/>
+							<xsl:with-param name="numbers" select="$numbers"/>
+						</xsl:call-template>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="not($products)">
 					<h4>По заданным критериям товары не найдены</h4>

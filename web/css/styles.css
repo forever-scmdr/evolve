@@ -1617,7 +1617,7 @@ img {
 			display: block; }
 		.view__column {
 		    margin: 0 0 5px !important;
-			display: none;
+			/*display: none;*/ /* TODO temp comment */
 		}
 		div.view__column ~ .view__column{
 			display: block;

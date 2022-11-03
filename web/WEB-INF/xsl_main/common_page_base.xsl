@@ -253,7 +253,7 @@
 							</div>
 						</xsl:if>
 						<div class="links">
-							<a href="{page/contacts_link}" class="icon-link">
+							<a href="kontakty" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
@@ -385,26 +385,30 @@
 		<div class="menu-container mobile">
 			<div class="menu-overlay" onclick="showMobileMainMenu()"></div>
 			<div class="menu-content">
-				<ul>
-					<li>
-						<a href="#" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-lock.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Вход / регистрация</span>
-						</a>
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
-							<div class="icon">
-								<img src="img/icon-cart.svg" alt="" />
-							</div>
-							<span class="icon-link__item">Каталог продукции</span>
-						</a>
-					</li>
-				</ul>
+				<xsl:if test="$has_personal">
+					<ul>
+						<li>
+							<a href="#" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-lock.svg" alt="" />
+								</div>
+								<span class="icon-link__item">Вход / регистрация</span>
+							</a>
+						</li>
+					</ul>
+				</xsl:if>
+				<xsl:if test="$has_catalog">
+					<ul>
+						<li>
+							<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-cart.svg" alt="" />
+								</div>
+								<span class="icon-link__item">Каталог продукции</span>
+							</a>
+						</li>
+					</ul>
+				</xsl:if>
 				<ul>
 					<xsl:if test="$has_cart">
 						<li>
