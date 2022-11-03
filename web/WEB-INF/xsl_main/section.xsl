@@ -110,9 +110,11 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">
-					<xsl:call-template name="LINES_TABLE">
-						<xsl:with-param name="products" select="$sel_sec/product"/>
-					</xsl:call-template>
+					<xsl:if test="$sel_sec/product">
+						<xsl:call-template name="LINES_TABLE">
+							<xsl:with-param name="products" select="$sel_sec/product"/>
+						</xsl:call-template>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="$not_found">
 					<h4>По заданным критериям товары не найдены</h4>
