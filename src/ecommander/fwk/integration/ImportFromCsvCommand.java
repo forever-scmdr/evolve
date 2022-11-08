@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import com.google.common.base.Charsets;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 
 public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst {
 
@@ -87,6 +89,9 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			processLabelsAndTags(product, src);
 
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreUser().noFulltextIndex());
+			if (product.isStatusHidden()) {
+				executeAndCommitCommandUnits(ItemStatusDBUnit.restore(product));
+			}
 
 			Item seo = getSeo(product);
 			populateSeo(seo, src);
@@ -192,6 +197,24 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
 		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra().ignoreUser());
+
+		setOperation("Скрывание товаров");
+		setProcessed(0);
+		setLineNumber(0);
+		ItemQuery prodQuery = new ItemQuery("product").setLimit(50).setIdSequential(0);
+		List<Item> prods = prodQuery.loadItems();
+		while (prods.size() > 0) {
+			long prodId = 0;
+			for (Item prod : prods) {
+				executeCommandUnit(ItemStatusDBUnit.hide(prod));
+				prodId = prod.getId();
+				getInfo().increaseProcessed();
+			}
+			commitCommandUnits();
+			prodQuery.setIdSequential(prodId);
+			prods = prodQuery.loadItems();
+		}
+
 		setOperation("Обновлние каталога");
 		setProcessed(0);
 		setLineNumber(0);

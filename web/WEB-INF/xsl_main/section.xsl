@@ -6,14 +6,30 @@
 	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
-	<xsl:variable name="main_menu_section" select="page/catalog//section[@id = $sel_sec_id]"/>
+	<xsl:variable name="main_menu_section" select="$catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section[1]/section[f:num(hide) = 0]"/>
-	<xsl:variable name="show_devices" select="$sel_sec/show_devices = '1' or not($subs)"/>
+
+	<!-- Настройки каталога по отображению товаров и разделов (по умолчанию) -->
+	<xsl:variable name="catalog_show_devices" select="$catalog/show_devices"/>
+	<xsl:variable name="catalog_sub_view" select="$catalog/sub_view"/>
+	<xsl:variable name="catalog_show_subs" select="$catalog/show_subs"/>
+	<xsl:variable name="catalog_hide_side_menu" select="$catalog/hide_side_menu"/>
+
+	<!-- Настройки выбранного раздела по отображению товаров и разделов -->
+	<xsl:variable name="section_show_devices" select="if ($sel_sec/show_devices and not($sel_sec/show_devices = '')) then $sel_sec/show_devices else $catalog_show_devices"/>
+	<xsl:variable name="section_sub_view" select="if ($sel_sec/sub_view and not($sel_sec/sub_view = '')) then $sel_sec/sub_view else $catalog_sub_view"/>
+	<xsl:variable name="section_show_subs" select="if ($sel_sec/show_subs and not($sel_sec/show_subs = '')) then $sel_sec/show_subs else $catalog_show_subs"/>
+	<xsl:variable name="section_hide_side_menu" select="if ($sel_sec/hide_side_menu and not($sel_sec/hide_side_menu = '')) then $sel_sec/hide_side_menu else $catalog_hide_side_menu"/>
+
+	<!-- Фактическое отображение товаров и разделов (зависит от настроек и самих данных) -->
+	<xsl:variable name="show_devices" select="($section_show_devices = '1') or not($subs)"/>
 
 	<xsl:variable name="default_sub_view" select="if($show_devices) then 'tags' else 'pics'"/>
 
-	<xsl:variable name="sub_view" select="if($sel_sec/sub_view != '') then $sel_sec/sub_view else $default_sub_view"/>
+	<xsl:variable name="sub_view" select="if($section_sub_view != '') then $section_sub_view else $default_sub_view"/>
 	<xsl:variable name="is_manual_filter_on" select="page/optional_modules/display_settings/manual_filter_params = 'on'"/>
+	<xsl:variable name="hide_side_menu" select="$section_hide_side_menu = '1'"/>
+
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -69,7 +85,7 @@
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Каталог</a>
-				<xsl:for-each select="page/catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
+				<xsl:for-each select="$catalog//section[.//@id = $sel_sec_id and @id != $sel_sec_id]">
 					<div class="path__arrow"></div>
 					<a class="path__link" href="{show_products}">
 						<xsl:value-of select="name"/>
@@ -92,7 +108,7 @@
 		<xsl:call-template name="FILTER"/>
 
 		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
-		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($sel_sec/show_subs = '0')">
+		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($section_show_subs = '0')">
 			<div class="h3">Товары</div>
 		</xsl:if>
 		<xsl:call-template name="DISPLAY_CONTROL"/>
@@ -161,7 +177,7 @@
 					<xsl:apply-templates select="$sel_sec/tag"/>
 				</div>
 			</xsl:if>
-			<xsl:if test="not($sel_sec/show_subs = '0')">
+			<xsl:if test="not($section_show_subs = '0')">
 				<xsl:if test="$subs and $sub_view = 'tags'">
 					<div class="labels labels_section">
 						<xsl:apply-templates select="$subs" mode="tag"/>
