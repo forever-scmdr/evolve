@@ -20,7 +20,8 @@
 	<xsl:variable name="cur_sec" select="page//current_section"/><!-- текущий раздел каталога -->
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/><!-- выбранный раздел каталога (если нет текущего - то раздел выбранного товара) -->
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
-	<xsl:variable name="currencies" select="page/catalog/currencies"/>
+	<xsl:variable name="catalog" select="page/catalog"/>
+	<xsl:variable name="currencies" select="$catalog/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
@@ -32,15 +33,16 @@
 	<xsl:variable name="view_var" select="page/variables/view"/>
 	<xsl:variable name="view_catalog">
 		<xsl:choose>
-			<xsl:when test="page/catalog/default_view = 'список'">list</xsl:when>
-			<xsl:when test="page/catalog/default_view = 'таблица'">lines</xsl:when>
+			<xsl:when test="$catalog/default_view = 'список'">list</xsl:when>
+			<xsl:when test="$catalog/default_view = 'таблица'">lines</xsl:when>
 			<xsl:otherwise>table</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="view" select="if ($is_search_multiple) then 'lines' else if ($view_var) then $view_var else $view_catalog"/>
+	<xsl:variable name="has_catalog_popup" select="not($catalog/hide_popup_menu = '1')"/>
 
 	<!-- Список отключенных элементов (плитка список таблица поиск) -->
-	<xsl:variable name="view_disabled" select="page/catalog/disable"/>
+	<xsl:variable name="view_disabled" select="$catalog/disable"/>
 
 	<xsl:variable name="active_menu_item"/><!-- переопределяется -->
 
@@ -300,12 +302,12 @@
 		<div class="main-menu">
 			<div class="container">
 				<div class="main-menu__wrap wrap">
-					<xsl:if test="$has_catalog">
+					<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да'">
 						<div class="main-menu__item">
 							<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
 							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 								<div class="sections">
-									<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+									<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
 										<xsl:if test="section[f:num(hide) = 0]">
 											<a href="{show_products}" rel="#sub_{@id}">
 												<xsl:value-of select="name" />
@@ -319,7 +321,7 @@
 									</xsl:for-each>
 								</div>
 
-								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+								<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
 									<div class="subsections" style="display: none" id="sub_{@id}">
 										<xsl:for-each select="section[f:num(hide) = 0]">
 											<a href="{show_products}"><xsl:value-of select="name" /></a>
@@ -397,7 +399,7 @@
 						</li>
 					</ul>
 				</xsl:if>
-				<xsl:if test="$has_catalog">
+				<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да'">
 					<ul>
 						<li>
 							<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
@@ -523,7 +525,7 @@
 					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
 				</div>
 				<ul>
-					<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+					<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
 						<li>
 							<xsl:if test="section[f:num(hide) = 0]">
 								<a rel="{concat('#m_sub_', @id)}">
@@ -540,7 +542,7 @@
 					</xsl:for-each>
 				</ul>
 			</div>
-			<xsl:for-each select="page/catalog/section[section]">
+			<xsl:for-each select="$catalog/section[section]">
 				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
@@ -568,7 +570,7 @@
 				</div>
 				</xsl:if>
 			</xsl:for-each>
-			<xsl:for-each select="page/catalog/section/section[section]">
+			<xsl:for-each select="$catalog/section/section[section]">
 				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
@@ -610,7 +612,7 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+			<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a class="side-menu__link{' side-menu__link_active'[$l1_active]}" href="{show_products}"><xsl:value-of select="name"/> </a>
@@ -865,8 +867,10 @@
 							}
 						});
 
+						<xsl:if test="$has_catalog_popup">
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
+						</xsl:if>
 						initDropDownHeader();
 						/*
 						<xsl:if test="$has_quick_search">

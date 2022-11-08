@@ -204,6 +204,11 @@
 			<value>список</value>
 			<value>таблица</value>
 		</parameter>
+		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы" description="перед товарами" default="0"/>
+		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками" default="pics"/>
+		<parameter name="show_devices" type="byte" domain="0-1" caption="Показать товары" description="всех подразделов параллельно с самими подразделами" default="1"/>
+		<parameter name="hide_side_menu" type="byte" domain="0-1" caption="Скрыть боковое меню" default="0"/>
+		<parameter name="hide_popup_menu" type="byte" domain="0-1" caption="Скрыть выпадающее меню" default="0"/>
 		<on-update class="ecommander.fwk.CopyToUpload"/>
 	</item>
 
@@ -218,13 +223,14 @@
 		<child item="params_xml" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
+		<parameter name="code" type="string" caption="Код раздела"/>
+		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
 		<parameter name="hide" type="byte" domain="0-1" caption="не показывать ссылку на этот раздел" default="0"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка разделов"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
 		<parameter name="sub_view" type="string" domain="sub_view" caption="Тип отображения подразделов" description="tags - тегами, pics - с картинками"/>
 		<parameter name="show_devices" type="byte" domain="0-1" caption="Показать товары"/>
-		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
-		<parameter name="code" type="string" caption="Код раздела"/>
+		<parameter name="hide_side_menu" type="byte" domain="0-1" caption="Скрыть боковое меню"/>
 		<parameter name="parent_id" type="string" caption="Код родительского раздела" description="в яндекс маркете" />
 		<parameter name="main_pic" type="picture" caption="Картинка" description="для страницы списка разделов"/>
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
