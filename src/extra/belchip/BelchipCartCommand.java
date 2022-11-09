@@ -40,12 +40,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private static long discountLastUpdated = 0;
 	private final static long DISCOUNT_UPDATE_FREQ = 1000 * 60 * 10;
 
-	private double minimalOrderJurSum = (float) 0;
-	private double minimalOrderPhySum = (float) 0;
-	private double minimalOrderPostSum = (float) 0;
-	private double minimalOrderSum = (float) 0;
+	private float minimalOrderSum = (float) 0;
 	private String lessThenMinimalOrderMessage = "";
-	private boolean isMinimalOrderSumPost = false;
 
 	private static final String MARKER_SEPARATOR = ":=:";
 	private static final String ITEM_SEPARATOR = ":item:";
@@ -414,26 +410,21 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	private boolean checkMinSum(boolean isJur) throws Exception {
 		double min;
 		Item orderVars = ItemQuery.loadSingleItemByName(ORDER_EMAILS);
-		minimalOrderJurSum = Double.parseDouble(getVarSingleValue("min_jur_sum"));
-		minimalOrderPhySum = Double.parseDouble(getVarSingleValue("min_phys_sum"));
-		minimalOrderPostSum = Double.parseDouble(getVarSingleValue("min_phys_post_sum"));
-		isMinimalOrderSumPost = false;
 		if (!isJur) {
 			if (needPost) {
-				min = minimalOrderPostSum;
+				min = Double.parseDouble(getVarSingleValue("min_phys_post_sum"));
 				min = (orderVars == null) ? min : orderVars.getDoubleValue(order_emails_.MIN_POST, min);
 				this.minimalOrderSum = (float) min;
 				lessThenMinimalOrderMessage = POST_LTM;
-				isMinimalOrderSumPost = true;
 			} else {
-				min = minimalOrderPhySum;
+				min = Double.parseDouble(getVarSingleValue("min_phys_sum"));
 				min = (orderVars == null) ? min : orderVars.getDoubleValue(order_emails_.MIN_PHYS, min);
 				this.minimalOrderSum = (float) min;
-				lessThenMinimalOrderMessage = LTM; // PHYS_LTM;
+				lessThenMinimalOrderMessage = PHYS_LTM;
 			}
 			return cart.getDecimalValue(cart_.SUM, BigDecimal.ZERO).compareTo(BigDecimal.valueOf(min)) >= 0;
 		} else {
-			min = minimalOrderJurSum;
+			min = Double.parseDouble(getVarSingleValue("min_jur_sum"));
 			min = (orderVars == null) ? min : orderVars.getDoubleValue(order_emails_.MIN_JUR, min);
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT, cart.getId());
 			BigDecimal sum = BigDecimal.ZERO;
@@ -443,8 +434,8 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 				BigDecimal price = product.getDecimalValue(product_.PRICE, BigDecimal.ZERO);
 				sum = sum.add(price.multiply(BigDecimal.valueOf(q)));
 			}
-			this.minimalOrderSum = min;
-			lessThenMinimalOrderMessage = LTM; // JUR_LTM;
+			this.minimalOrderSum = (float) min;
+			lessThenMinimalOrderMessage = JUR_LTM;
 			return sum.compareTo(BigDecimal.valueOf(min)) >= 0;
 		}
 	}
@@ -507,10 +498,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @throws Exception
 	 */
 	private ResultPE getSumTooSmallResult() throws Exception {
-		if (isMinimalOrderSumPost)
-			cart.setExtra(MESSAGE_PARAM, String.format(lessThenMinimalOrderMessage, minimalOrderSum));
-		else
-			cart.setExtra(MESSAGE_PARAM, String.format(lessThenMinimalOrderMessage, minimalOrderJurSum, minimalOrderPhySum));
+		cart.setExtra(MESSAGE_PARAM, String.format(lessThenMinimalOrderMessage, minimalOrderSum));
 		cart.setExtra(IN_PROGRESS, "false");
 		getSessionMapper().saveTemporaryItem(cart);
 		return getResult("not_set");
