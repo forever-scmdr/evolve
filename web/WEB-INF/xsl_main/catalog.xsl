@@ -6,6 +6,10 @@
 	<xsl:variable name="title" select="'Каталог продукции'"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 
+	<xsl:variable name="catalog_hide_side_menu" select="$catalog/hide_side_menu"/>
+	<xsl:variable name="hide_side_menu" select="$catalog_hide_side_menu = '1'"/>
+
+
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
 	</xsl:template>
