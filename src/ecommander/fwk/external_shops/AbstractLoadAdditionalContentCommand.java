@@ -20,7 +20,7 @@ public abstract class AbstractLoadAdditionalContentCommand extends Command {
 		if(urls != null){
 			Item externalInfo = getSessionMapper().getSingleItemByParamValue("external_url", "code", code);
 			if(externalInfo != null){
-				content = externalInfo.getStringValue("content", content);
+				//content = externalInfo.getStringValue("content", content);
 				if(StringUtils.isBlank(content)){
 					String url = externalInfo.getStringValue("url");
 					String html = OkWebClient.getInstance().getString(url);
