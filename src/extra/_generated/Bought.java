@@ -19,8 +19,6 @@ public class Bought
     public final static String NOT_AVAILABLE = "not_available";
     public final static String SUM = "sum";
     public final static String AUX = "aux";
-    public final static String COMPLECATATION_NAME = "complecatation_name";
-    public final static String OPTION = "option";
 
     private Bought(Item item) {
         super(item);
@@ -219,22 +217,6 @@ public class Bought
 
     public boolean contains_aux(String value) {
         return containsValue("aux", value);
-    }
-
-    public void set_complecatation_name(String value) {
-        setValue("complecatation_name", value);
-    }
-
-    public String get_complecatation_name() {
-        return getStringValue("complecatation_name");
-    }
-
-    public String getDefault_complecatation_name(String defaultVal) {
-        return getStringValue("complecatation_name", defaultVal);
-    }
-
-    public boolean contains_complecatation_name(String value) {
-        return containsValue("complecatation_name", value);
     }
 
 }

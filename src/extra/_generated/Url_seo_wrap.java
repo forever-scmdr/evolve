@@ -10,6 +10,8 @@ public class Url_seo_wrap
 
     public final static String _NAME = "url_seo_wrap";
     public final static String MAIN_HOST = "main_host";
+    public final static String PRODUCT_PREFIX = "product_prefix";
+    public final static String PRODUCT_SUFIX = "product_sufix";
 
     private Url_seo_wrap(Item item) {
         super(item);
@@ -44,6 +46,38 @@ public class Url_seo_wrap
 
     public boolean contains_main_host(String value) {
         return containsValue("main_host", value);
+    }
+
+    public void set_product_prefix(String value) {
+        setValue("product_prefix", value);
+    }
+
+    public String get_product_prefix() {
+        return getStringValue("product_prefix");
+    }
+
+    public String getDefault_product_prefix(String defaultVal) {
+        return getStringValue("product_prefix", defaultVal);
+    }
+
+    public boolean contains_product_prefix(String value) {
+        return containsValue("product_prefix", value);
+    }
+
+    public void set_product_sufix(String value) {
+        setValue("product_sufix", value);
+    }
+
+    public String get_product_sufix() {
+        return getStringValue("product_sufix");
+    }
+
+    public String getDefault_product_sufix(String defaultVal) {
+        return getStringValue("product_sufix", defaultVal);
+    }
+
+    public boolean contains_product_sufix(String value) {
+        return containsValue("product_sufix", value);
     }
 
 }

@@ -26,7 +26,7 @@ public class UpdateCurrencyRates extends Command implements ItemNames {
 	private static final String SCALE_SUFFIX = "_scale";
 	private static final String UPDATE_SUFFIX = "_update";
 	private static final String CURRENCIES = "currencies";
-	private static final String CATALOG = "catalog";
+	private static final String CATALOG_META = "catalog_meta";
 	private static final byte ONE = (byte) 1;
 
 	@Override
@@ -44,8 +44,8 @@ public class UpdateCurrencyRates extends Command implements ItemNames {
 			xml = xml.substring(xml.indexOf('<'));
 		}
 		Document doc = Jsoup.parse(xml, "", Parser.xmlParser());
-		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-		Item currencies = ItemUtils.ensureSingleItem(CURRENCIES, getInitiator(), catalog.getId(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		Item catalogMeta = ItemUtils.ensureSingleRootItem(CATALOG_META, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		Item currencies = ItemUtils.ensureSingleItem(CURRENCIES, getInitiator(), catalogMeta.getId(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		for (String paramName : currencies.getItemType().getParameterNames()) {
 			if (StringUtils.endsWithIgnoreCase(paramName, RATE_SUFFIX)) {
 				String currencyCode = StringUtils.substringBefore(paramName, RATE_SUFFIX);
