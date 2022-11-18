@@ -11,6 +11,7 @@ public class Map_part
     public final static String _NAME = "map_part";
     public final static String NAME = "name";
     public final static String SPOILER = "spoiler";
+    public final static String SHOW_PLACES = "show_places";
     public final static String CENTER = "center";
     public final static String ZOOM = "zoom";
 
@@ -69,6 +70,28 @@ public class Map_part
 
     public boolean contains_spoiler(Byte value) {
         return containsValue("spoiler", value);
+    }
+
+    public void set_show_places(Byte value) {
+        setValue("show_places", value);
+    }
+
+    public void setUI_show_places(String value)
+        throws Exception
+    {
+        setValueUI("show_places", value);
+    }
+
+    public Byte get_show_places() {
+        return getByteValue("show_places");
+    }
+
+    public Byte getDefault_show_places(Byte defaultVal) {
+        return getByteValue("show_places", defaultVal);
+    }
+
+    public boolean contains_show_places(Byte value) {
+        return containsValue("show_places", value);
     }
 
     public void set_center(String value) {

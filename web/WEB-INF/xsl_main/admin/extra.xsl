@@ -64,6 +64,12 @@
 					<!-- <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li> -->
 				</ul>
 
+				<h2 class="title">Интеграция внешних складов</h2>
+
+				<ul class="no-drag">
+					<li><a href="integrate_excel?action=start">Разобрать содержимое директории integrate_manual</a></li>
+				</ul>
+
                 <h2 class="title">Парсинг сайтов</h2>
                 <ul>
                     <li>Индивидуально для каждого сайта</li>

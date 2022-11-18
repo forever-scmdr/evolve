@@ -17,6 +17,14 @@ public class Display_settings
     public final static String JUR_PRICE = "jur_price";
     public final static String PRODUCT_UPDATE_SUBSCRIBE = "product_update_subscribe";
     public final static String PRODUCT_QUICK_VIEW = "product_quick_view";
+    public final static String CATALOG_LINK = "catalog_link";
+    public final static String CART = "cart";
+    public final static String FAVOURITES = "favourites";
+    public final static String COMPARE = "compare";
+    public final static String PERSONAL = "personal";
+    public final static String BOM_SEARCH = "bom_search";
+    public final static String EXCEL_SEARCH_RESULTS = "excel_search_results";
+    public final static String SEARCH = "search";
 
     private Display_settings(Item item) {
         super(item);
@@ -163,6 +171,134 @@ public class Display_settings
 
     public boolean contains_product_quick_view(String value) {
         return containsValue("product_quick_view", value);
+    }
+
+    public void set_catalog_link(String value) {
+        setValue("catalog_link", value);
+    }
+
+    public String get_catalog_link() {
+        return getStringValue("catalog_link");
+    }
+
+    public String getDefault_catalog_link(String defaultVal) {
+        return getStringValue("catalog_link", defaultVal);
+    }
+
+    public boolean contains_catalog_link(String value) {
+        return containsValue("catalog_link", value);
+    }
+
+    public void set_cart(String value) {
+        setValue("cart", value);
+    }
+
+    public String get_cart() {
+        return getStringValue("cart");
+    }
+
+    public String getDefault_cart(String defaultVal) {
+        return getStringValue("cart", defaultVal);
+    }
+
+    public boolean contains_cart(String value) {
+        return containsValue("cart", value);
+    }
+
+    public void set_favourites(String value) {
+        setValue("favourites", value);
+    }
+
+    public String get_favourites() {
+        return getStringValue("favourites");
+    }
+
+    public String getDefault_favourites(String defaultVal) {
+        return getStringValue("favourites", defaultVal);
+    }
+
+    public boolean contains_favourites(String value) {
+        return containsValue("favourites", value);
+    }
+
+    public void set_compare(String value) {
+        setValue("compare", value);
+    }
+
+    public String get_compare() {
+        return getStringValue("compare");
+    }
+
+    public String getDefault_compare(String defaultVal) {
+        return getStringValue("compare", defaultVal);
+    }
+
+    public boolean contains_compare(String value) {
+        return containsValue("compare", value);
+    }
+
+    public void set_personal(String value) {
+        setValue("personal", value);
+    }
+
+    public String get_personal() {
+        return getStringValue("personal");
+    }
+
+    public String getDefault_personal(String defaultVal) {
+        return getStringValue("personal", defaultVal);
+    }
+
+    public boolean contains_personal(String value) {
+        return containsValue("personal", value);
+    }
+
+    public void set_bom_search(String value) {
+        setValue("bom_search", value);
+    }
+
+    public String get_bom_search() {
+        return getStringValue("bom_search");
+    }
+
+    public String getDefault_bom_search(String defaultVal) {
+        return getStringValue("bom_search", defaultVal);
+    }
+
+    public boolean contains_bom_search(String value) {
+        return containsValue("bom_search", value);
+    }
+
+    public void set_excel_search_results(String value) {
+        setValue("excel_search_results", value);
+    }
+
+    public String get_excel_search_results() {
+        return getStringValue("excel_search_results");
+    }
+
+    public String getDefault_excel_search_results(String defaultVal) {
+        return getStringValue("excel_search_results", defaultVal);
+    }
+
+    public boolean contains_excel_search_results(String value) {
+        return containsValue("excel_search_results", value);
+    }
+
+    public void set_search(String value) {
+        setValue("search", value);
+    }
+
+    public String get_search() {
+        return getStringValue("search");
+    }
+
+    public String getDefault_search(String defaultVal) {
+        return getStringValue("search", defaultVal);
+    }
+
+    public boolean contains_search(String value) {
+        return containsValue("search", value);
     }
 
 }

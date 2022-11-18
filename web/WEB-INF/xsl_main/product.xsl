@@ -17,6 +17,7 @@
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
+	<xsl:variable name="is_not_plain" select="$p/product_section"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -113,7 +114,7 @@
 
 				<xsl:if test="not($has_lines)">
 					<!-- цена -->
-					<xsl:if test="$has_price">
+					<xsl:if test="$has_price and $is_not_plain">
 						<div class="price price_product">
 							<xsl:if test="$p/price_old">
 								<div class="price__item price__item_old">
@@ -130,7 +131,7 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<xsl:if test="$has_cart">
+						<xsl:if test="$has_cart and $is_not_plain">
 							<div id="cart_list_{$p/@id}" class="order order_product">
 								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 									<xsl:if test="$has_price">

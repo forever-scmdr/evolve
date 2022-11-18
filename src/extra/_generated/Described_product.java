@@ -25,7 +25,15 @@ public class Described_product
     public final static String VENDOR_CODE = "vendor_code";
     public final static String OFFER_ID = "offer_id";
     public final static String AVAILABLE = "available";
+    public final static String GROUP_ID = "group_id";
+    public final static String URL = "url";
     public final static String CATEGORY_ID = "category_id";
+    public final static String CURRENCY_ID = "currency_id";
+    public final static String PRICE_ORIGINAL = "price_original";
+    public final static String PRICE_OLD = "price_old";
+    public final static String PRICE_OPT = "price_opt";
+    public final static String PRICE_OPT_OLD = "price_opt_old";
+    public final static String NEXT_DELIVERY = "next_delivery";
     public final static String STATUS = "status";
     public final static String SEARCH = "search";
     public final static String MIN_QTY = "min_qty";
@@ -44,6 +52,12 @@ public class Described_product
     public final static String MARK = "mark";
     public final static String LABEL = "label";
     public final static String EXTRA_INPUT = "extra_input";
+    public final static String PRICE_RUB = "price_RUB";
+    public final static String PRICE_RUB_OLD = "price_RUB_old";
+    public final static String PRICE_USD = "price_USD";
+    public final static String PRICE_USD_OLD = "price_USD_old";
+    public final static String PRICE_EUR = "price_EUR";
+    public final static String PRICE_EUR_OLD = "price_EUR_old";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -281,6 +295,38 @@ public class Described_product
         return containsValue("available", value);
     }
 
+    public void set_group_id(String value) {
+        setValue("group_id", value);
+    }
+
+    public String get_group_id() {
+        return getStringValue("group_id");
+    }
+
+    public String getDefault_group_id(String defaultVal) {
+        return getStringValue("group_id", defaultVal);
+    }
+
+    public boolean contains_group_id(String value) {
+        return containsValue("group_id", value);
+    }
+
+    public void set_url(String value) {
+        setValue("url", value);
+    }
+
+    public String get_url() {
+        return getStringValue("url");
+    }
+
+    public String getDefault_url(String defaultVal) {
+        return getStringValue("url", defaultVal);
+    }
+
+    public boolean contains_url(String value) {
+        return containsValue("url", value);
+    }
+
     public void set_category_id(String value) {
         setValue("category_id", value);
     }
@@ -295,6 +341,126 @@ public class Described_product
 
     public boolean contains_category_id(String value) {
         return containsValue("category_id", value);
+    }
+
+    public void set_currency_id(String value) {
+        setValue("currency_id", value);
+    }
+
+    public String get_currency_id() {
+        return getStringValue("currency_id");
+    }
+
+    public String getDefault_currency_id(String defaultVal) {
+        return getStringValue("currency_id", defaultVal);
+    }
+
+    public boolean contains_currency_id(String value) {
+        return containsValue("currency_id", value);
+    }
+
+    public void set_price_original(BigDecimal value) {
+        setValue("price_original", value);
+    }
+
+    public void setUI_price_original(String value)
+        throws Exception
+    {
+        setValueUI("price_original", value);
+    }
+
+    public BigDecimal get_price_original() {
+        return getDecimalValue("price_original");
+    }
+
+    public BigDecimal getDefault_price_original(BigDecimal defaultVal) {
+        return getDecimalValue("price_original", defaultVal);
+    }
+
+    public boolean contains_price_original(BigDecimal value) {
+        return containsValue("price_original", value);
+    }
+
+    public void set_price_old(BigDecimal value) {
+        setValue("price_old", value);
+    }
+
+    public void setUI_price_old(String value)
+        throws Exception
+    {
+        setValueUI("price_old", value);
+    }
+
+    public BigDecimal get_price_old() {
+        return getDecimalValue("price_old");
+    }
+
+    public BigDecimal getDefault_price_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_old", defaultVal);
+    }
+
+    public boolean contains_price_old(BigDecimal value) {
+        return containsValue("price_old", value);
+    }
+
+    public void set_price_opt(BigDecimal value) {
+        setValue("price_opt", value);
+    }
+
+    public void setUI_price_opt(String value)
+        throws Exception
+    {
+        setValueUI("price_opt", value);
+    }
+
+    public BigDecimal get_price_opt() {
+        return getDecimalValue("price_opt");
+    }
+
+    public BigDecimal getDefault_price_opt(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt", defaultVal);
+    }
+
+    public boolean contains_price_opt(BigDecimal value) {
+        return containsValue("price_opt", value);
+    }
+
+    public void set_price_opt_old(BigDecimal value) {
+        setValue("price_opt_old", value);
+    }
+
+    public void setUI_price_opt_old(String value)
+        throws Exception
+    {
+        setValueUI("price_opt_old", value);
+    }
+
+    public BigDecimal get_price_opt_old() {
+        return getDecimalValue("price_opt_old");
+    }
+
+    public BigDecimal getDefault_price_opt_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_opt_old", defaultVal);
+    }
+
+    public boolean contains_price_opt_old(BigDecimal value) {
+        return containsValue("price_opt_old", value);
+    }
+
+    public void set_next_delivery(String value) {
+        setValue("next_delivery", value);
+    }
+
+    public String get_next_delivery() {
+        return getStringValue("next_delivery");
+    }
+
+    public String getDefault_next_delivery(String defaultVal) {
+        return getStringValue("next_delivery", defaultVal);
+    }
+
+    public boolean contains_next_delivery(String value) {
+        return containsValue("next_delivery", value);
     }
 
     public void set_status(String value) {
@@ -593,6 +759,138 @@ public class Described_product
 
     public boolean contains_extra_input(String value) {
         return containsValue("extra_input", value);
+    }
+
+    public void set_price_RUB(BigDecimal value) {
+        setValue("price_RUB", value);
+    }
+
+    public void setUI_price_RUB(String value)
+        throws Exception
+    {
+        setValueUI("price_RUB", value);
+    }
+
+    public BigDecimal get_price_RUB() {
+        return getDecimalValue("price_RUB");
+    }
+
+    public BigDecimal getDefault_price_RUB(BigDecimal defaultVal) {
+        return getDecimalValue("price_RUB", defaultVal);
+    }
+
+    public boolean contains_price_RUB(BigDecimal value) {
+        return containsValue("price_RUB", value);
+    }
+
+    public void set_price_RUB_old(BigDecimal value) {
+        setValue("price_RUB_old", value);
+    }
+
+    public void setUI_price_RUB_old(String value)
+        throws Exception
+    {
+        setValueUI("price_RUB_old", value);
+    }
+
+    public BigDecimal get_price_RUB_old() {
+        return getDecimalValue("price_RUB_old");
+    }
+
+    public BigDecimal getDefault_price_RUB_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_RUB_old", defaultVal);
+    }
+
+    public boolean contains_price_RUB_old(BigDecimal value) {
+        return containsValue("price_RUB_old", value);
+    }
+
+    public void set_price_USD(BigDecimal value) {
+        setValue("price_USD", value);
+    }
+
+    public void setUI_price_USD(String value)
+        throws Exception
+    {
+        setValueUI("price_USD", value);
+    }
+
+    public BigDecimal get_price_USD() {
+        return getDecimalValue("price_USD");
+    }
+
+    public BigDecimal getDefault_price_USD(BigDecimal defaultVal) {
+        return getDecimalValue("price_USD", defaultVal);
+    }
+
+    public boolean contains_price_USD(BigDecimal value) {
+        return containsValue("price_USD", value);
+    }
+
+    public void set_price_USD_old(BigDecimal value) {
+        setValue("price_USD_old", value);
+    }
+
+    public void setUI_price_USD_old(String value)
+        throws Exception
+    {
+        setValueUI("price_USD_old", value);
+    }
+
+    public BigDecimal get_price_USD_old() {
+        return getDecimalValue("price_USD_old");
+    }
+
+    public BigDecimal getDefault_price_USD_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_USD_old", defaultVal);
+    }
+
+    public boolean contains_price_USD_old(BigDecimal value) {
+        return containsValue("price_USD_old", value);
+    }
+
+    public void set_price_EUR(BigDecimal value) {
+        setValue("price_EUR", value);
+    }
+
+    public void setUI_price_EUR(String value)
+        throws Exception
+    {
+        setValueUI("price_EUR", value);
+    }
+
+    public BigDecimal get_price_EUR() {
+        return getDecimalValue("price_EUR");
+    }
+
+    public BigDecimal getDefault_price_EUR(BigDecimal defaultVal) {
+        return getDecimalValue("price_EUR", defaultVal);
+    }
+
+    public boolean contains_price_EUR(BigDecimal value) {
+        return containsValue("price_EUR", value);
+    }
+
+    public void set_price_EUR_old(BigDecimal value) {
+        setValue("price_EUR_old", value);
+    }
+
+    public void setUI_price_EUR_old(String value)
+        throws Exception
+    {
+        setValueUI("price_EUR_old", value);
+    }
+
+    public BigDecimal get_price_EUR_old() {
+        return getDecimalValue("price_EUR_old");
+    }
+
+    public BigDecimal getDefault_price_EUR_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_EUR_old", defaultVal);
+    }
+
+    public boolean contains_price_EUR_old(BigDecimal value) {
+        return containsValue("price_EUR_old", value);
     }
 
     public void add_gallery(File value) {

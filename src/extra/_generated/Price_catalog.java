@@ -13,6 +13,7 @@ public class Price_catalog
     public final static String NAME = "name";
     public final static String QUOTIENT = "quotient";
     public final static String DEFAULT_SHIP_TIME = "default_ship_time";
+    public final static String CURRENCY = "currency";
 
     private Price_catalog(Item item) {
         super(item);
@@ -91,6 +92,22 @@ public class Price_catalog
 
     public boolean contains_default_ship_time(Byte value) {
         return containsValue("default_ship_time", value);
+    }
+
+    public void set_currency(String value) {
+        setValue("currency", value);
+    }
+
+    public String get_currency() {
+        return getStringValue("currency");
+    }
+
+    public String getDefault_currency(String defaultVal) {
+        return getStringValue("currency", defaultVal);
+    }
+
+    public boolean contains_currency(String value) {
+        return containsValue("currency", value);
     }
 
 }

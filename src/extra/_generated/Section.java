@@ -13,12 +13,14 @@ public class Section
     public final static String _NAME = "section";
     public final static String NAME = "name";
     public final static String ICON = "icon";
+    public final static String CODE = "code";
+    public final static String CATEGORY_ID = "category_id";
+    public final static String HIDE = "hide";
     public final static String SHORT = "short";
     public final static String SHOW_SUBS = "show_subs";
     public final static String SUB_VIEW = "sub_view";
     public final static String SHOW_DEVICES = "show_devices";
-    public final static String CATEGORY_ID = "category_id";
-    public final static String CODE = "code";
+    public final static String HIDE_SIDE_MENU = "hide_side_menu";
     public final static String PARENT_ID = "parent_id";
     public final static String MAIN_PIC = "main_pic";
     public final static String EXTRA = "extra";
@@ -71,6 +73,60 @@ public class Section
 
     public boolean contains_icon(File value) {
         return containsValue("icon", value);
+    }
+
+    public void set_code(String value) {
+        setValue("code", value);
+    }
+
+    public String get_code() {
+        return getStringValue("code");
+    }
+
+    public String getDefault_code(String defaultVal) {
+        return getStringValue("code", defaultVal);
+    }
+
+    public boolean contains_code(String value) {
+        return containsValue("code", value);
+    }
+
+    public void set_category_id(String value) {
+        setValue("category_id", value);
+    }
+
+    public String get_category_id() {
+        return getStringValue("category_id");
+    }
+
+    public String getDefault_category_id(String defaultVal) {
+        return getStringValue("category_id", defaultVal);
+    }
+
+    public boolean contains_category_id(String value) {
+        return containsValue("category_id", value);
+    }
+
+    public void set_hide(Byte value) {
+        setValue("hide", value);
+    }
+
+    public void setUI_hide(String value)
+        throws Exception
+    {
+        setValueUI("hide", value);
+    }
+
+    public Byte get_hide() {
+        return getByteValue("hide");
+    }
+
+    public Byte getDefault_hide(Byte defaultVal) {
+        return getByteValue("hide", defaultVal);
+    }
+
+    public boolean contains_hide(Byte value) {
+        return containsValue("hide", value);
     }
 
     public void set_short(String value) {
@@ -149,36 +205,26 @@ public class Section
         return containsValue("show_devices", value);
     }
 
-    public void set_category_id(String value) {
-        setValue("category_id", value);
+    public void set_hide_side_menu(Byte value) {
+        setValue("hide_side_menu", value);
     }
 
-    public String get_category_id() {
-        return getStringValue("category_id");
+    public void setUI_hide_side_menu(String value)
+        throws Exception
+    {
+        setValueUI("hide_side_menu", value);
     }
 
-    public String getDefault_category_id(String defaultVal) {
-        return getStringValue("category_id", defaultVal);
+    public Byte get_hide_side_menu() {
+        return getByteValue("hide_side_menu");
     }
 
-    public boolean contains_category_id(String value) {
-        return containsValue("category_id", value);
+    public Byte getDefault_hide_side_menu(Byte defaultVal) {
+        return getByteValue("hide_side_menu", defaultVal);
     }
 
-    public void set_code(String value) {
-        setValue("code", value);
-    }
-
-    public String get_code() {
-        return getStringValue("code");
-    }
-
-    public String getDefault_code(String defaultVal) {
-        return getStringValue("code", defaultVal);
-    }
-
-    public boolean contains_code(String value) {
-        return containsValue("code", value);
+    public boolean contains_hide_side_menu(Byte value) {
+        return containsValue("hide_side_menu", value);
     }
 
     public void set_parent_id(String value) {
