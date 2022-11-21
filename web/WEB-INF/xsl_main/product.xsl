@@ -296,6 +296,14 @@
 			</div>
 		</div>
 
+
+		<xsl:if test="page/plain_catalog/product">
+			<xsl:call-template name="LINES_TABLE">
+				<xsl:with-param name="products" select="page/plain_catalog/product"/>
+			</xsl:call-template>
+		</xsl:if>
+
+
 		<div class="view-table">
 	<table>
 		<thead>
