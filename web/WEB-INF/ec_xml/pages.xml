@@ -466,7 +466,7 @@
 
 
 
-	<page name="product" template="" cacheable="false">
+	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
@@ -501,7 +501,7 @@
 			</list>
 		</single>
 		<single item="plain_catalog">
-			<list item="product" id="plain" tag="cool">
+			<list item="product" id="plain" transit="true">
 				<filter>
 					<fulltext name="name" limit="50" compare="EVERY">
 						<var ref="prod" parameter="name"/>
@@ -614,7 +614,7 @@
 	</page>
 
 
-	<page name="search" template="search">
+	<page name="search" template="">
 		<request>
 			<var name="q"/>
 			<var name="n"/>
@@ -623,6 +623,9 @@
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="name">

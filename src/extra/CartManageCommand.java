@@ -43,7 +43,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		String id = getVarSingleValue("id");
 		ensureCart();
 		Item bought = getSessionMapper().getSingleItemByParamValue(BOUGHT_ITEM, CODE_PARAM, code);
-		if(bought == null){
+		if (bought == null) {
 			bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
 			bought.setValue(CODE_PARAM, code);
 			bought.setValue(QTY_PARAM, 1d);
@@ -57,7 +57,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 			product.setValue(QTY_PARAM, 10000000d);
 			getSessionMapper().saveTemporaryItem(product);
 			setBoughtQtys(product, bought, 1d);
-		}else{
+		} else {
 			//bought.setValue(QTY_PARAM, bought.getDoubleValue(QTY_PARAM) + 1);
 			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 			setBoughtQtys(product, bought, bought.getDoubleValue(QTY_PARAM) + 1);
