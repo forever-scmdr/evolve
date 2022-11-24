@@ -397,6 +397,11 @@
 			<value>USD</value>
 			<value>EUR</value>
 		</parameter>
+		<parameter name="qty_quotient_policy" type="string" caption="Применять коэффициент" description="к чему применять коэффициент в зависимости от количества">
+			<value>количество</value>
+			<value>минимальная партия</value>
+		</parameter>
+		<parameter name="qty_quotient" type="tuple" caption="Коэффициент в завивимости от количества" multiple="true"/>
 	</item>
 
 	<!-- Настройки интегрируемых складов (plain_catalog) -->
