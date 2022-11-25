@@ -614,7 +614,7 @@
 	</page>
 
 
-	<page name="search" template="">
+	<page name="search" template="search">
 		<request>
 			<var name="q"/>
 			<var name="n"/>
@@ -637,6 +637,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<ancestor item="plain_section" transit="false"/>
 		</list>
 		<link name="set_view_table" target="search" copy-page-vars="yes">
 			<var name="view" value="table"/>
@@ -1162,9 +1163,11 @@
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
+			<extra-input name="extrafile" ref="user_phys" form="customer_form"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
+			<extra-input name="extrafile" ref="user_jur" form="customer_form"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
-	<xsl:import href="../utils/utils.xsl"/>
+	<xsl:import href="../utils/multiple_prices.xsl"/>
 	<xsl:import href="constants.xsl"/>
 
 	<xsl:variable name="ops" select="page/optional_modules"/>
@@ -34,6 +34,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="plain" select="plain_section"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -90,7 +91,19 @@
 						</div>
 					</xsl:if>
 					<div class="price__item_new">
-						<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						<!-- Для обычных товаров (не из каталога price_catalog) -->
+						<xsl:if test="not($plain)">
+							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</xsl:if>
+						<!-- Для товаров из каталога price_catalog -->
+						<xsl:if test="$plain">
+							<span class="price__value"><xsl:call-template name="ALL_PRICES">
+								<xsl:with-param name="need_sum" select="false()"/>
+								<xsl:with-param name="price_byn" select="price"/>
+								<xsl:with-param name="product" select="."/>
+								<xsl:with-param name="section_name" select="$plain/name"/>
+							</xsl:call-template></span>
+						</xsl:if>
 					</div>
 				</div>
 			</xsl:if>
@@ -137,6 +150,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="plain" select="plain_section"/>
 
 
 		<div class="device device_row">
@@ -259,7 +273,19 @@
 							</div>
 						</xsl:if>
 						<div class="price__item_new">
-							<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+							<!-- Для обычных товаров (не из каталога price_catalog) -->
+							<xsl:if test="not($plain)">
+								<span class="price__value"><xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+							</xsl:if>
+							<!-- Для товаров из каталога price_catalog -->
+							<xsl:if test="$plain">
+								<span class="price__value"><xsl:call-template name="ALL_PRICES">
+									<xsl:with-param name="need_sum" select="false()"/>
+									<xsl:with-param name="price_byn" select="price"/>
+									<xsl:with-param name="product" select="."/>
+									<xsl:with-param name="section_name" select="$plain/name"/>
+								</xsl:call-template></span>
+							</xsl:if>
 						</div>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
@@ -316,6 +342,7 @@
 		<xsl:param name="position" select="1"/>
 		<xsl:param name="query" select="''"/>
 		<xsl:param name="has_more" select="false()"/>
+		<xsl:variable name="plain" select="plain_section"/>
 
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -360,7 +387,20 @@
 					</div>
 				</xsl:if>
 				<xsl:if test="$has_price">
-					<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
+					<!-- Для обычных товаров (не из каталога price_catalog) -->
+					<xsl:if test="not($plain)">
+						<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
+					</xsl:if>
+					<!-- Для товаров из каталога price_catalog -->
+					<xsl:if test="$plain">
+						<xsl:call-template name="ALL_PRICES">
+							<xsl:with-param name="need_sum" select="false()"/>
+							<xsl:with-param name="price_byn" select="price"/>
+							<xsl:with-param name="product" select="."/>
+							<xsl:with-param name="section_name" select="$plain/name"/>
+						</xsl:call-template>
+					</xsl:if>
+
 				</xsl:if>
 				<xsl:if test="not($has_price)"> - </xsl:if>
 			</td>
