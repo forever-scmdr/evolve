@@ -60,9 +60,12 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 			BigDecimal[] rate = rates.get(currencyCode);
 			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN));
 			bynPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(4, RoundingMode.UP);
+			product.setValue(PRICE_PREFIX + currencyCode, price);
 		}
 		product.setValue(PRICE, bynPrice);
 		for (String CODE : rates.keySet()) {
+			if (StringUtils.equalsIgnoreCase(CODE, currencyCode))
+				continue;
 			BigDecimal[] rate = rates.get(CODE);
 			BigDecimal currencyPrice = bynPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(4, RoundingMode.UP);
 			product.setValue(PRICE_PREFIX + CODE, currencyPrice);

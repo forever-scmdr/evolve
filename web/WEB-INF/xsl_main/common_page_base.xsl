@@ -450,10 +450,10 @@
 						</a></li>
 					</xsl:for-each>
 					<xsl:for-each select="page/custom_pages/*[in_main_menu = 'да']">
-						<xsl:if test="show_page != ''">
+						<xsl:if test="name(.) = 'custom_page'">
 							<li><a href="{show_page}"><xsl:value-of select="header"/></a></li>
 						</xsl:if>
-						<xsl:if test="link != ''">
+						<xsl:if test="not(name(.) = 'custom_page')">
 							<li><a href="{link}"><xsl:value-of select="name"/></a></li>
 						</xsl:if>
 					</xsl:for-each>

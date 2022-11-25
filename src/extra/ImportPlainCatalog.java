@@ -90,13 +90,14 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		for (File excel : excels) {
 			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt"))
 				continue;
+			String filePrefix = StringUtils.substringBeforeLast(excel.getName(), ".");
 			// Загрузка раздела
-			List<Item> sections = ItemQuery.loadByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, excel.getName());
+			List<Item> sections = ItemQuery.loadByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, filePrefix);
 			for (Item sec : sections) {
 				executeAndCommitCommandUnits(ItemStatusDBUnit.delete(sec));
 			}
 			section = Item.newChildItem(sectionType, catalog);
-			section.setValue(plain_section_.NAME, excel.getName());
+			section.setValue(plain_section_.NAME, filePrefix);
 			section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
 			addDebug(section);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
@@ -107,17 +108,16 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				} else {
 					price = new ExcelTableData(excel, NAME_HEADER, CODE_HEADER);
 				}
-				String suffix = StringUtils.substringBeforeLast(excel.getName(), ".");
 				// Загрузка настроек
-				Item sectionSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(Price_catalog.NAME, suffix).loadFirstItem();
+				Item sectionSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(Price_catalog.NAME, filePrefix).loadFirstItem();
 				if (sectionSettings == null) {
 					sectionSettings = Item.newChildItem(sectionSettingsType, plainCatalogSettings);
-					sectionSettings.setValueUI(Price_catalog.NAME, suffix);
+					sectionSettings.setValueUI(Price_catalog.NAME, filePrefix);
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(sectionSettings));
 				}
 				final Price_catalog settings = Price_catalog.get(sectionSettings);
 				// префикс (суффикс) кода товара
-				final String codeSuffix = StringUtils.substring(suffix, 0, 5);
+				final String codeSuffix = StringUtils.substring(filePrefix, 0, 5);
 				count = 0;
 				TableDataRowProcessor proc = src -> {
 					String code = null;
@@ -139,8 +139,8 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_available(available);
 							prod.set_qty(src.getDoubleValue(QTY_HEADER));
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
-							BigDecimal price = filePrice.multiply(settings.get_quotient());
-							currencyRates.setAllPrices(prod, price, settings.get_currency());
+							//BigDecimal price = filePrice.multiply(settings.get_quotient());
+							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
 							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
 							prod.set_min_qty(minQty);

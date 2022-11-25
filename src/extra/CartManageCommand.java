@@ -5,7 +5,14 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.pages.ResultPE;
 import extra._generated.ItemNames;
+import org.apache.commons.fileupload.FileItem;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.util.ByteArrayDataSource;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -99,7 +106,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		return !hasError;
 	}
-
+/*
 	@Override
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
 //		if (discounts == null) {
@@ -201,5 +208,28 @@ public class CartManageCommand extends BasicCartManageCommand {
 			ServerLogger.error("Email PDF generation error", e);
 			return false;
 		}
+	}
+	*/
+
+	@Override
+	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
+		// ПРикрепляет к письму все файловые extra параметры, которые были назедны в запросе
+		if (!isCustomerEmail) {
+			Item form = getItemForm().getItemSingleTransient();
+			for (String extraKey : form.getExtraKeys()) {
+				ArrayList<Object> values = form.getListExtra(extraKey);
+				if (values.size() > 0 && values.get(0) instanceof FileItem) {
+					for (Object value : values) {
+						FileItem file = (FileItem) value;
+						DataSource dataSource = new ByteArrayDataSource(file.getInputStream(), file.getContentType());
+						MimeBodyPart filePart = new MimeBodyPart();
+						filePart.setDataHandler(new DataHandler(dataSource));
+						filePart.setFileName(file.getName());
+						mp.addBodyPart(filePart);
+					}
+				}
+			}
+		}
+		return true;
 	}
 }
