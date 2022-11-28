@@ -109,14 +109,14 @@ public class CartManageCommand extends BasicCartManageCommand {
 		Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
 		String aux = bought.getStringValue("aux");
 		if(StringUtils.isNotBlank(aux)){
-//			Item shop = ItemQuery.loadSingleItemByParamValue("shop", NAME_PARAM, aux, Item.STATUS_NORMAL);
-//			Item currency = loadCurrency(shop);
-//			double q1 = 1 + currency.getDoubleValue("q",0d);
-//			double q2 = 1 + shop.getDoubleValue("q", 0d);
-//			double ratio = currency.getDoubleValue("ratio");
-//			int scale = currency.getIntValue("scale");
+			Item shop = ItemQuery.loadSingleItemByParamValue("shop", NAME_PARAM, aux, Item.STATUS_NORMAL);
+			Item currency = loadCurrency(shop);
+			double q1 = 1 + currency.getDoubleValue("q",0d);
+			double q2 = 1 + shop.getDoubleValue("q", 0d);
+			double ratio = currency.getDoubleValue("ratio");
+			int scale = currency.getIntValue("scale");
 			String priceMapString = bought.getStringValue("price_map");
-			TreeMap<Double, String> priceMap = new TreeMap<>();//parsePriceMap(priceMapString, ratio, q1, q2, scale);
+			TreeMap<Double, String> priceMap = parsePriceMap(priceMapString, ratio, q1, q2, scale);
 			TreeMap<Double, String> priceOrigMap = parsePriceMap(priceMapString, 1, 1, 1, 1);
 			double totalQty = bought.getDoubleValue(QTY_TOTAL_PARAM);
 			if (priceMap.size() > 0) {
