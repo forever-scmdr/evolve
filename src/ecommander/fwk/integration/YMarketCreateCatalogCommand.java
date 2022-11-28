@@ -104,31 +104,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 		}
 
-		// Удаление всех пользовательских параметров товаров (айтемов и типов)
-//		info.pushLog("Удаление параметров товаров");
-//		int processed = 0;
-//		info.setProcessed(processed);
-//		ItemQuery paramsQuery = new ItemQuery(PARAMS_ITEM);
-//		paramsQuery.setLimit(10);
-//		List<Item> itemsToDelete = paramsQuery.loadItems();
-//		while (itemsToDelete.size() > 0) {
-//			for (Item item : itemsToDelete) {
-//				executeCommandUnit(ItemStatusDBUnit.delete(item));
-//			}
-//			commitCommandUnits();
-//			processed += itemsToDelete.size();
-//			info.setProcessed(processed);
-//			itemsToDelete = paramsQuery.loadItems();
-//		}
-//
-//		LinkedHashSet<String> typesToDelete = ItemTypeRegistry.getItemExtenders(PARAMS_ITEM);
-//		typesToDelete.remove(PARAMS_ITEM);
-//		for (String typeToDelete : typesToDelete) {
-//			executeAndCommitCommandUnits(new DeleteItemTypeBDUnit(ItemTypeRegistry.getItemType(typeToDelete).getTypeId()));
-//		}
-//
-//		DataModelBuilder.newForceUpdate().tryLockAndReloadModel();
-
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога и типов завершена.");
 		info.pushLog("Создание товаров");

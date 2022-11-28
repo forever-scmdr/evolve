@@ -30,7 +30,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.put(URL_ELEMENT, Product.URL);
 		SINGLE_PARAMS.put(PRICE_ELEMENT, Product.PRICE);
 		SINGLE_PARAMS.put(CURRENCY_ID_ELEMENT, null);
-		//SINGLE_PARAMS.add(CATEGORY_ID_ELEMENT);
 		SINGLE_PARAMS.put(NAME_ELEMENT, Product.NAME);
 		SINGLE_PARAMS.put(VENDOR_CODE_ELEMENT, Product.VENDOR_CODE);
 		SINGLE_PARAMS.put(DESCRIPTION_ELEMENT, Product.DESCRIPTION);
@@ -60,7 +59,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
 
-	private HashMap<String, Item> sections = null;
+	private HashMap<String, Item> sections;
 
 	private IntegrateBase.Info info; // информация для пользователя
 	private HashMap<String, String> singleParams;
@@ -89,7 +88,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(Product.CODE);
-				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
 				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(SECTION_ID_ELEMENT, new LinkedHashSet<>());
@@ -181,9 +179,6 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				else
 					product.setValueUI(PRICE_PARAM, "0");
 
-				// Качать картинки только для новых товаров
-				boolean wasNew = product.isNew();
-
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 
 				// Удалить айтемы с параметрами продукта, если продукт ранее уже существовал
@@ -241,7 +236,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				for (String picUrl : picUrls) {
 					try {
 						String fileName = Strings.getFileName(picUrl);
-						URL newPicUrl = null;
+						URL newPicUrl;
 						try {
 							newPicUrl = new URL(picUrl);
 							hasPicUrl = true;

@@ -16,7 +16,6 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.jsoup.Jsoup;
@@ -372,26 +371,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	}
 
 
-	private Boolean hasCode = null;
-	private Boolean hasName = null;
-	private Boolean hasCategoryId = null;
 
 	/**
 	 * Создать уникальное название для класса
 	 * @param section
 	 * @return
 	 */
-	private String createClassName(Item section) {
-		if (hasCode == null) {
-			hasCode = section.getItemType().hasParameter("code");
-			hasName = section.getItemType().hasParameter("name");
-			hasCategoryId = section.getItemType().hasParameter("category_id");
-		}
-		if (hasCode && section.isValueNotEmpty("code")) {
+	public static String createClassName(Item section) {
+		if (section.isValueNotEmpty("code")) {
 			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("code")));
 		}
-		if (hasName && section.isValueNotEmpty("name")) {
-			if (!hasCategoryId || section.isValueEmpty("category_id")) {
+		if (section.isValueNotEmpty("name")) {
+			if (section.isValueEmpty("category_id")) {
 				// в этом случае использовать ID айтема, т.к. могут быть разделы с одинаковым названием
 				return Strings.createXmlElementName(StringUtils.lowerCase("pid_" + section.getId()));
 			}
