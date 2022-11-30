@@ -367,18 +367,20 @@
 					</div>
 				</xsl:for-each>
 				<p/>
+				<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
 				<xsl:call-template name="FAV_AND_COMPARE">
 					<xsl:with-param name="p" select="current()"/>
 					<xsl:with-param name="is_inline" select="true()"/>
 				</xsl:call-template>
 			</td><!--название -->
 			<td><!--описание -->
+				<xsl:value-of select="description" disable-output-escaping="yes"/>
 				<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
 					<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 					<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
 				</xsl:for-each>
 			</td>
-			<td><xsl:value-of select="next_delivery"/></td><!--дата поставки -->
+			<td><xsl:value-of select="next_delivery"/><xsl:value-of select="available"/></td><!--дата поставки -->
 			<td><xsl:value-of select="qty"/></td><!--количество на складе -->
 			<td><!--цена -->
 				<xsl:if test="price_old">

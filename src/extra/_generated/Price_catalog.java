@@ -14,6 +14,8 @@ public class Price_catalog
     public final static String QUOTIENT = "quotient";
     public final static String DEFAULT_SHIP_TIME = "default_ship_time";
     public final static String CURRENCY = "currency";
+    public final static String QTY_QUOTIENT_POLICY = "qty_quotient_policy";
+    public final static String QTY_QUOTIENT = "qty_quotient";
 
     private Price_catalog(Item item) {
         super(item);
@@ -108,6 +110,22 @@ public class Price_catalog
 
     public boolean contains_currency(String value) {
         return containsValue("currency", value);
+    }
+
+    public void set_qty_quotient_policy(String value) {
+        setValue("qty_quotient_policy", value);
+    }
+
+    public String get_qty_quotient_policy() {
+        return getStringValue("qty_quotient_policy");
+    }
+
+    public String getDefault_qty_quotient_policy(String defaultVal) {
+        return getStringValue("qty_quotient_policy", defaultVal);
+    }
+
+    public boolean contains_qty_quotient_policy(String value) {
+        return containsValue("qty_quotient_policy", value);
     }
 
 }

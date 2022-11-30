@@ -934,6 +934,8 @@ public interface ItemNames {
         String QUOTIENT = "quotient";
         String DEFAULT_SHIP_TIME = "default_ship_time";
         String CURRENCY = "currency";
+        String QTY_QUOTIENT_POLICY = "qty_quotient_policy";
+        String QTY_QUOTIENT = "qty_quotient";
 
     }
 

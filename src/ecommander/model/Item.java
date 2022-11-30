@@ -1180,6 +1180,21 @@ public class Item implements ItemBasics {
 	}
 	/**
 	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
+	 * Тип параметра - tuple
+	 * @param paramName
+	 * @return
+	 */
+	public final ArrayList<Pair<String, String>> getTupleValues(String paramName) {
+		ArrayList<Pair<String, String>> result = new ArrayList<>();
+		Collection<SingleParameter> multipleValues = getParamValues(paramName);
+		for (SingleParameter sp : multipleValues) {
+			if (!sp.isEmpty())
+				result.add((Pair<String, String>)sp.getValue());
+		}
+		return result;
+	}
+	/**
+	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
 	 * Тип параметра - целочисленный длинный
 	 * @param paramName
 	 * @return
