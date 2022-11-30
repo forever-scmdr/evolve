@@ -352,6 +352,12 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
+	/**
+	 * Дополнительные загузки для товара (напрмер раздел каталога с настройками)
+	 */
+	protected void extraProductLoading(Item product) throws Exception {
+		// по умолчанию ничего не делает
+	}
 
 
     private Item createBought(long prodId, double qty) throws Exception {
@@ -375,6 +381,8 @@ public abstract class BasicCartManageCommand extends Command {
             parent.setContextPrimaryParentId(product.getId());
             getSessionMapper().saveTemporaryItem(parent);
         }
+        // Дополнительные загрузки для товара, которые также должны храниться с корзиной в сеансе
+        extraProductLoading(product);
         return bought;
     }
 
@@ -547,6 +555,17 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	/**
+	 * Получить цену товара в зависимости от количества
+	 * @param product
+	 * @param priceParam
+	 * @param qty
+	 * @return
+	 */
+	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
+		return product.getDecimalValue(priceParam, new BigDecimal(0));
+	}
+
+	/**
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
@@ -571,7 +590,7 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price = product.getDecimalValue(PRICE, new BigDecimal(0));
+				BigDecimal price =  getProductPriceForQty(product, PRICE, availableQty);
 				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
 				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);

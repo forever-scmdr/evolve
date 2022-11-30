@@ -1,25 +1,65 @@
 package extra;
 
 import ecommander.fwk.BasicCartManageCommand;
+import ecommander.fwk.Pair;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import extra._generated.Price_catalog;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.util.ByteArrayDataSource;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Корзина
  * Created by E on 6/3/2018.
  */
 public class CartManageCommand extends BasicCartManageCommand {
+
+	public static final String PLAIN_SECTION = "plain_section";
+	public static final String PRICE_CATALOG = "price_catalog";
+	private static final String DEFAULT = "default";
+
+	private static class PriceCatalog {
+		private String name;
+		private BigDecimal defaultQuotient;
+		private ArrayList<Pair<BigDecimal, BigDecimal>> qtyQuotients = new ArrayList<>();
+		private boolean quotientForPack;
+
+		private PriceCatalog(String name, BigDecimal defaultQuotient, boolean quotientForPack) {
+			this.name = name;
+			this.defaultQuotient = defaultQuotient;
+			this.quotientForPack = quotientForPack;
+			if (defaultQuotient == null || defaultQuotient.equals(BigDecimal.ZERO)) {
+				this.defaultQuotient = BigDecimal.ONE;
+			}
+		}
+
+		private void prepare() {
+			qtyQuotients.sort((first, second) -> first.getLeft().subtract(second.getLeft()).intValue());
+		}
+
+		private void addQuotient(Pair<String, String> pair) {
+			qtyQuotients.add(new Pair<>(DecimalDataType.parse(pair.getLeft(), 2), DecimalDataType.parse(pair.getRight(), 4)));
+		}
+	}
+
+
+	// Раздел => Базовый коэффициент, Коэффициенты от суммы
+	private HashMap<String, PriceCatalog> priceIntervals = null;
+
 
 	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
 	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
@@ -106,6 +146,66 @@ public class CartManageCommand extends BasicCartManageCommand {
 		}
 		return !hasError;
 	}
+
+
+	@Override
+	protected void extraProductLoading(Item product) throws Exception {
+		Item section = new ItemQuery(PLAIN_SECTION).setChildId(product.getId(), false).loadFirstItem();
+		if (section != null) {
+			section.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), product.getId());
+			getSessionMapper().saveTemporaryItem(section);
+		}
+	}
+
+
+	@Override
+	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
+		Item section = getSessionMapper().getSingleItemByName(PLAIN_SECTION, product.getId());
+		if (section != null) {
+			loadPriceIntervals();
+			String secName = section.getStringValue(NAME_PARAM);
+			PriceCatalog quotients = priceIntervals.get(secName);
+			if (quotients != null) {
+				BigDecimal quotient = quotients.defaultQuotient;
+				for (Pair<BigDecimal, BigDecimal> qtyQuotient : quotients.qtyQuotients) {
+					double qtyLimit = qtyQuotient.getLeft().doubleValue();
+					if (quotients.quotientForPack)
+						qtyLimit *= product.getDoubleValue("step", 1.0);
+					if (qtyLimit > qty) {
+						break;
+					}
+					quotient = qtyQuotient.getRight();
+				}
+				return  product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
+			}
+		}
+		return product.getDecimalValue(priceParam, BigDecimal.ZERO);
+	}
+
+	/**
+	 * Загрузить интервалы цен и коэфиициенты для этих интервалов
+	 */
+	private void loadPriceIntervals() {
+		if (priceIntervals == null) {
+			priceIntervals = new HashMap<>();
+			try {
+				List<Item> priceCatalogs = new ItemQuery(PRICE_CATALOG).loadItems();
+				for (Item priceCatalog : priceCatalogs) {
+					Price_catalog cat = Price_catalog.get(priceCatalog);
+					PriceCatalog intervals = new PriceCatalog(cat.get_name(), cat.getDefault_quotient(BigDecimal.ONE), !"количество".equalsIgnoreCase(cat.get_qty_quotient_policy()));
+					for (Pair<String, String> quotients : cat.getTupleValues(Price_catalog.QTY_QUOTIENT)) {
+						intervals.addQuotient(quotients);
+					}
+					intervals.prepare();
+					priceIntervals.put(cat.get_name(), intervals);
+				}
+			} catch (Exception e) {
+				ServerLogger.error("Unable to load price intervals", e);
+			}
+		}
+	}
+
+
 /*
 	@Override
 	protected boolean recalculateCart(String...priceParamName) throws Exception {
