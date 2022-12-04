@@ -144,14 +144,14 @@
 
 	<assoc name="catalog_link" caption="Ссылка в каталоге" transitive="true" ag-id="3" ag-hash="-1147981728"/>
 
-	<item name="original_gallery" caption="Исходная галерея" ag-id="10" ag-hash="743720676" >
+	<item name="original_gallery" caption="Исходная галерея" virtual="true" ag-id="10" ag-hash="743720676">
 		<parameter name="watermark_filename"  type="string" caption="Название файла водяного знака"/>
 		<parameter name="watermark_file_modified"  type="long" caption="Дата изменения файла водяного знака"/>
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 	</item>
 
 
-	<item name="gallery" caption="Галерея" ag-id="11" ag-hash="-196315310">
+	<item name="gallery" caption="Галерея" virtual="true" ag-id="11" ag-hash="-196315310">
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<parameter name="gallery_path" type="string" caption="Путь к файлу" multiple="true"/>
 		<child item="original_gallery" single="true" virtual="true"/>
@@ -237,19 +237,15 @@
 	</item>
 
 	<!--Товар с описанием, абстрактный, сам по себе никогда не создается, параметры из yandex market. Наследует product -->
-	<item name="described_product" caption="Абстрактный товар с описанием" super="abstract_product * gallery product_with_params product_labels yandex_product" virtual="true" ag-id="16" ag-hash="1523682729">
+	<item name="described_product" caption="Абстрактный товар с описанием" super="abstract_product * path_pics product_with_params product_labels yandex_product" virtual="true" ag-id="16" ag-hash="1523682729">
 
 		<!-- basics -->
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
 		<parameter name="vendor" type="string" caption="Производитель" description="продукта" text-index="fulltext" />
 		<parameter name="vendor_code" type="string" caption="Артикул" description="продукта" text-index="fulltext" />
 		<parameter name="country" type="string" caption="Страна производства"/>
-		<parameter name="main_pic" type="picture" caption="Главная картинка" description="прямое прикрепление картинки"/>
-		<parameter name="main_pic_path" type="string" caption="Путь к картинке" description="если картинка задается не напрямую а через внешний путь"/>
-		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
-<!--		<parameter name="status" type="string" caption="Статус"/>-->
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
 		<parameter name="files" type="file" caption="Файлы" multiple="true"/>
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
@@ -257,16 +253,10 @@
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
 		<child item="product_extra"/>
 
-		<!-- name extras extend item[name_extras]-->
-		<!-- yandex market extend item[yandex_product]-->
-
 		<!-- groups -->
 		<parameter name="group_id" type="string" caption="Номер группы" description="для группировки подобных товаров (разные цвета)" multiple="true"/>
 		<!-- associations -->
 		<parameter name="assoc_code" type="string" caption="Код связанного товара" multiple="true"/>
-
-		<!-- exported form other sites extend item [exported_product]-->
-		<!-- opt extend item [opt_product]-->
 
 		<!-- complex price/quantity logic -->
 		<parameter name="unit" type="string" caption="Единица измерения"/>
@@ -274,21 +264,28 @@
 		<parameter name="step" type="double" caption="Шаг заказа"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 
-		<!-- labels extend item[product_labels]-->
+	</item>
 
-<!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
+	<!-- картинки-ссылки -->
+	<item name="path_pics" virtual="true" ag-id="115" ag-hash="-377707517">
+		<parameter name="pic_link" caption="ссылка на изображение" type="string" multiple="true"/>
+	</item>
 
-		<!-- user-defined params extend item[product_with_params]-->
-
+	<!-- обычные картинки -->
+	<item name="regular_pics" virtual="true" super="* gallery" ag-id="116" ag-hash="-564364564">
+		<parameter name="main_pic" type="picture" caption="Главная картинка" description="прямое прикрепление картинки"/>
+		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
 
+	<!-- префиксы и постфиксы к названию -->
 	<item name="name_extras" virtual="true" ag-id="17" ag-hash="-72511849">
 		<parameter name="type" type="string" caption="Тип товара" description="например, аккумуляторный лобзик" text-index="fulltext" />
 		<parameter name="name_extra" type="string" caption="Дополнительно к названию" description="например, 18В ; MetaLoc" text-index="fulltext" />
 	</item>
 
+	<!-- параметры для яндекс-маркета -->
 	<item name="yandex_product" virtual="true" ag-id="18" ag-hash="-196099423">
 		<parameter name="offer_id" type="string" caption="Код предложения" description="в яндекс маркете"/>
 		<parameter name="available" type="byte" caption="В наличии" description="в яндекс маркете"/>
@@ -296,6 +293,7 @@
 		<parameter name="url" type="string" caption="Код предложения" description="в яндекс маркете"/>
 	</item>
 
+	<!-- товары с оптовой ценой -->
 	<item name="opt_product" caption="товар для оптовой торговли" virtual="true" ag-id="19" ag-hash="409648995">
 		<parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
 		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
@@ -304,6 +302,7 @@
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 	</item>
 
+	<!-- товары с ценой в разных валютах -->
 	<item name="currencies_product" caption="товар с ценами в разных валютах" virtual="true" ag-id="20" ag-hash="1926862111">
 		<parameter name="price_RUB" type="currency-precise" caption="Цена RUB"/>
 		<parameter name="price_RUB_old" type="currency-precise" caption="Цена RUB"/>
@@ -322,25 +321,54 @@
 	</item>
 
 
+	<!-- параметры нужны для создания фильтров. У каждого типа товаров свой набор параметров -->
 	<item name="product_with_params" caption="товар с параметрами" virtual="true" ag-id="22" ag-hash="595670991">
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 	</item>
 
+	<!-- вложенные товары, которые отличаются по одному-двум параметрам. Например боитнки одной модели и цвета, но разных размеров. Каждый размер - вложенный товар -->
 	<item name="line_product_container" virtual="true" ag-id="23" ag-hash="2031155622">
 		<parameter name="has_lines" type="byte" caption="Есть ли товары-строки" description="1 - есть, 0 - нет" default="0"/>
 		<child item="line_product"/>
 	</item>
 
+	<!-- Товар с дополнительными опциями. Опция - свойство товара, которое можно выбрпать или не выбрать. Например кофе с сахаром или без. Кофе - товар. Сахар - опция. Сахар без кофе не продается. -->
 	<item name="option_container" virtual="true" ag-id="24" ag-hash="696811831">
 		<child item="option" assoc="option"/>
 	</item>
 
-	<item name="basic_gallery" virtual="true">
+	<item name="basic_gallery" virtual="true" ag-id="110" ag-hash="614917185">
 		<parameter name="pic" caption="Изображение" description="слайды в галерее" type="picture" multiple="true"/>
 	</item>
 
-	<item name="complex_product" caption="Товар с опциями" super="product option_container" ag-id="109" ag-hash="-970119072" />
+	<!-- Сложный продукт с опциями и вариантами сборки и опциями. -->
+	<item name="complex_product" caption="Товар с опциями" super="product option_container" ag-id="109" ag-hash="-970119072">
+		<child item="complectation"/>
+	</item>
+
+
+	<item name="complectation" super="unia_product option_container unia_product *" caption="Вариант сборки" key="number" ag-id="111" ag-hash="-1586387108">
+		<parameter name="number" type="integer" caption="порядковый номер"/>
+		<child item="base_complectation_product"/>
+		<parameter name="price" caption="цена" type="currency"/>
+	</item>
+
+	<item name="base_complectation_product" super="* unia_product" caption="Собранное устройство" key="serial number" ag-id="112" ag-hash="955507742">
+		<parameter name="number" type="integer" caption="порядковый номер"/>
+		<parameter name="code" type="string" caption="Артмкул товара"/>
+		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="serial" type="string" caption="Серийный номер" />
+		<parameter name="reserve_time" type="string" caption="Зарезервирован с по" />
+	</item>
+
+	<!-- unia quantity -->
+	<item name="unia_product" virtual="true" ag-id="113" ag-hash="1486900257">
+		<parameter name="qty_factory" type="integer" caption="на заводе"/>
+		<parameter name="qty_smolensk" type="integer" caption="в Смоленске"/>
+		<parameter name="qty_reserve" type="integer" caption="в резерве"/>
+		<parameter name="qty_store" type="integer" caption="на складе"/>
+	</item>
 
 	<item name="exported_product" caption="товар с другого сайта" virtual="true" ag-id="25" ag-hash="63796227">
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
@@ -360,6 +388,9 @@
 	<item name="product" caption="Товар из каталога" description="вложен в раздел" key-unique="true"
 	      default-page="product" super="described_product * seo_container basic_gallery">
 	</item>
+
+	<item name="part" caption="Запчасть" super="product unia_product" ag-id="114" ag-hash="3433459"/>
+
 
 	<!-- Опция - элеммент комплектации товара, которая может влиять на его стоимость. Например доплнительная порция гочицы в шаурме. -->
 	<item name="option" caption="Опция" super="abstract_product *" ag-id="28" ag-hash="-1010136971"></item>

@@ -38,16 +38,6 @@
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
 				</link>
-				<list item="product" transit="true">
-					<filter>
-						<limit>
-							<var value="1"/>
-						</limit>
-						<sorting direction="DESC">
-							<var value="main_pic"/>
-						</sorting>
-					</filter>
-				</list>
 			</tree>
 		</single>
 
@@ -260,7 +250,7 @@
 				<var name="tag" var="tag"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<list item="product" id="prod" transit="true" assoc="* catalog_link">
+			<list item="product" id="prod" transit="true" assoc="* catalog_link" tag="product">
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
@@ -1109,13 +1099,9 @@
 			<var name="message"/>
 		</request>
 		<session>
-			<single item="user_phys" id="phys" tag="phys"/>
 			<single item="user_jur" id="jur" tag="jur"/>
 			<single item="cart"/>
 		</session>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer_phys"/>
-		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
@@ -1133,9 +1119,6 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer_phys"/>
-		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
@@ -1167,9 +1150,6 @@
 				<list item="bought" id="bought"/>
 			</single>
 			<list item="user" tag="registration"/>
-			<new item="user_phys" id="user_phys">
-				<parameter-input ref="user_phys" form="customer_phys"/>
-			</new>
 			<new item="user_jur" id="user_jur">
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
@@ -1374,9 +1354,6 @@
 			<var name="action" value="login"/>
 			<var name="src" value="personal"/>
 		</link>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="register"/>
-		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
 		</new>

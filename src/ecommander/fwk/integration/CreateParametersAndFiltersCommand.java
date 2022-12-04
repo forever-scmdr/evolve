@@ -177,7 +177,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		doCreate(sections);
 	}
 
-	protected void doCreate(List<Item> sections) throws Exception {
+	protected void doCreate(Collection<Item> sections) throws Exception {
 		info.setOperation("Создание классов и фильтров");
 		info.setToProcess(sections.size());
 		info.setProcessed(0);

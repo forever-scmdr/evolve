@@ -1,16 +1,16 @@
 package extra;
 
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,55 +24,73 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private boolean parameterReady = false;
 	private String paramName;
 	private StringBuilder paramValue = new StringBuilder();
+	private static HashMap<String, String> PRODUCT_PARAMS_MAP = new HashMap<>();
+	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
+	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
 
-	private static ItemType paramsXmlType;
-	private static ItemType optionType = ItemTypeRegistry.getItemType("option");
-	private static HashMap<String, String> BUILT_IN_PARAMS = new HashMap<>();
-	private static HashMap<String, String> PARAMS_MAP = new HashMap<>();
 
 	static {
-		BUILT_IN_PARAMS.put("Завод", VENDOR_PARAM);
-		BUILT_IN_PARAMS.put("factory", VENDOR_PARAM);
-		BUILT_IN_PARAMS.put("number", VENDOR_CODE_PARAM);
+		PRODUCT_PARAMS_MAP.put("Завод", VENDOR_PARAM);
+		PRODUCT_PARAMS_MAP.put("factory", VENDOR_PARAM);
+		PRODUCT_PARAMS_MAP.put("number", VENDOR_CODE_PARAM);
+		PRODUCT_PARAMS_MAP.put("picture", "pic_link");
+		PRODUCT_PARAMS_MAP.put("id", CODE_PARAM);
+		PRODUCT_PARAMS_MAP.put("price", PRICE_PARAM);
+		PRODUCT_PARAMS_MAP.put("qantity_factory", "qty_factory");
+		PRODUCT_PARAMS_MAP.put("qantity_smolensk", "qty_smolensk");
+		PRODUCT_PARAMS_MAP.put("qantity_stored", "qty_store");
+		PRODUCT_PARAMS_MAP.put("qantity_reserv", "qty_reserve");
+		PRODUCT_PARAMS_MAP.put("qantity_free", "qty");
+		PRODUCT_PARAMS_MAP.put("name", "name");
+		PRODUCT_PARAMS_MAP.put("description", TEXT_PARAM);
 
-		PARAMS_MAP.put("id", CODE_PARAM);
+		OPTION_PARAMS_MAP.put("id_opcii", CODE_PARAM);
+		OPTION_PARAMS_MAP.put("name_opcii", NAME);
+		OPTION_PARAMS_MAP.put("price", PRICE_PARAM);
 
+		SERIAL_PARAMS.put("id_tehniki", CODE_PARAM);
+		SERIAL_PARAMS.put("name_tehniki", NAME);
+		SERIAL_PARAMS.put("serial", "serial");
+		SERIAL_PARAMS.put("time", "time");
 	}
 
 	private IntegrateBase.Info info; // информация для пользователя
-	private HashMap<String, String> singleParams = new HashMap<>();
-	private HashMap<String, LinkedHashSet<String>> multipleParams = new HashMap<>();
-	private HashSet<Item> children = new HashSet<>();
+	private HashMap<String, ArrayList<String>> productParams = new HashMap<>();
 	private LinkedHashMap<String, String> specialParams = new LinkedHashMap<>();
-	private ItemType productType = ItemTypeRegistry.getItemType(PRODUCT_ITEM);
-	private List<Item> sectionsWithNewItemTypes = new LinkedList<Item>();
+	private ItemType productType;
+	private Set<Item> sectionsWithNewItemTypes = new HashSet<>();
 	private User initiator;
 	private boolean isInsideProduct = false;
 	private boolean isInsideOptions = false;
-	private boolean isGallery = false;
 	private HashMap<String, Item> existingItems = new HashMap<>();
+	private List<HashMap<String, String>> optionsBuffer = new LinkedList<>();
+	private List<Complectation> complectationBuffer = new LinkedList<>();
+	private HashMap<String, String> currentOption = new HashMap<>();
 	private Assoc optionAssoc = ItemTypeRegistry.getAssoc("option");
 	private String currentSection;
+	private boolean isInsideComplectation;
+	private ComplectationChild currentCompl;
+
+
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
 
 			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
-				String code = singleParams.get(CODE_PARAM);
-				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code);
+				String code = productParams.get(CODE_PARAM).get(0);
+				Item product = ItemQuery.loadSingleItemByParamValue(productType.getName(), CODE_PARAM, code);
 				Item section = existingItems.get(currentSection);
 				if (product == null) {
-
 					product = ItemUtils.newChildItem(productType.getName(), section);
 				}
-
-				for (String paramName : singleParams.keySet()) {
-					product.setValueUI(paramName, singleParams.get(paramName));
-				}
-				for (String paramName : multipleParams.keySet()) {
-					for (String value : multipleParams.get(paramName)) {
+				for (String paramName : productParams.keySet()) {
+					for (String value : productParams.get(paramName)) {
 						product.setValueUI(paramName, value);
+						if(NAME.equalsIgnoreCase(paramName)){
+							product.setKeyUnique(Strings.translit(value));
+						}
 					}
 				}
 
@@ -80,46 +98,224 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 				processSpecialParameters(product);
 
-				for (Item child : children) {
-					if (child.getItemType().equals(optionType)) {
-						DelayedTransaction.executeSingle(initiator, CreateAssocDBUnit.childExistsSoft(child, product.getId(), optionAssoc.getId()).ignoreUser());
-					}
-				}
+				processOptions(product);
+
+				//processComplectation(product);
 
 				info.increaseProcessed();
 				resetProduct();
 			}
+			else if("options".equalsIgnoreCase(qName)){
+				isInsideOptions = false;
+				optionsBuffer.add(currentOption);
+			}else if("complectation".equalsIgnoreCase(qName)){
+				isInsideComplectation = false;
+			}else if(isInsideProduct && !isInsideOptions && !isInsideComplectation){
+				processProductParams();
+			}else if(isInsideOptions){
+				if(ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
+					currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
+				}
+			}else if(isInsideComplectation){
+
+			}
 		} catch (Exception e) {
-			ServerLogger.error("Integration error", e);
-			info.setLineNumber(locator.getLineNumber());
-			info.setLinePosition(locator.getColumnNumber());
-			info.addError(e);
+			handleException(e);
+		}
+	}
+
+	private void processOptions(Item product) throws Exception {
+		ensureOptions();
+		attachOptionsToProduct(product);
+	}
+
+	private void attachOptionsToProduct(Item product) throws Exception {
+		for(HashMap<String, String> opt : optionsBuffer){
+			String code = opt.get(CODE_PARAM);
+			Item option = existingItems.get(code);
+			DelayedTransaction.executeSingle(initiator, CreateAssocDBUnit.childExistsSoft(option, product.getId(), optionAssoc.getId()).ignoreUser());
+		}
+	}
+
+	/**
+	 * ensures that options are up to date (updates existing or creates if not exist)
+	 */
+	private void ensureOptions() throws Exception {
+		Item section = existingItems.get(currentSection);
+		for(HashMap<String, String> opt : optionsBuffer){
+			String code = opt.get(CODE_PARAM);
+			Item option = existingItems.containsKey(code)? existingItems.get(code) : ItemUtils.newChildItem("option", section);
+			for(Map.Entry<String, String> e : opt.entrySet()){
+				option.setValueUI(e.getKey(), e.getValue());
+			}
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(option).noFulltextIndex().ignoreUser());
+			if(!existingItems.containsKey(code)){
+				existingItems.put(code, option);
+			}
+		}
+	}
+
+	private void processProductParams() {
+		if(PRICE_OPT_PARAM.equalsIgnoreCase(paramName) || StringUtils.isBlank(paramName)){return;}
+		if(productType.hasParameter(paramName)){
+			ArrayList<String> values = productParams.getOrDefault(paramName ,new ArrayList<>());
+			String v = "pic_link".equalsIgnoreCase(paramName)? paramValue.toString() : StringUtils.normalizeSpace(paramValue.toString());
+			values.add(v);
+			if(!productParams.containsKey(paramName)){
+				productParams.put(paramName,values);
+			}
+		}else if("section_id".equalsIgnoreCase(paramName)){
+			currentSection = paramValue.toString();
+		}else{
+			specialParams.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
+		}
+	}
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		parameterReady = false;
+		paramName = "";
+		paramValue = new StringBuilder();
+
+		if("product".equalsIgnoreCase(qName)){
+			isInsideProduct = true;
+
+		}else if("options".equalsIgnoreCase(qName)){
+			isInsideOptions = true;
+		}else if("complectation".equalsIgnoreCase(qName)){
+			isInsideComplectation = true;
+		}
+		else if(isInsideProduct){
+			//processing complectation
+			if(isInsideComplectation){}
+			//processing options
+			else if(isInsideOptions){
+				paramName = OPTION_PARAMS_MAP.getOrDefault(qName, qName);
+				parameterReady = true;
+				if(CODE_PARAM.equalsIgnoreCase(paramName)){
+					if(!currentOption.isEmpty()){
+						optionsBuffer.add(currentOption);
+
+					}
+					currentOption = new HashMap<>();
+				}
+			}
+			//processing params
+			else{
+				if(PRODUCT_PARAMS_MAP.containsKey(qName) || "section_id".equalsIgnoreCase(qName)){
+					paramName = PRODUCT_PARAMS_MAP.getOrDefault(qName, qName);
+					parameterReady = true;
+				}
+				else if("param".equalsIgnoreCase(qName)){
+					String caption = attributes.getValue(NAME);
+					parameterReady = true;
+					paramName = PRODUCT_PARAMS_MAP.getOrDefault(caption, caption);
+				}
+			}
 		}
 	}
 
 	private void processSpecialParameters(Item product) throws Exception {
-		Byte[] ass = new Byte[] {ItemTypeRegistry.getPrimaryAssocId()};
-		ArrayList<Item> children = ItemQuery.loadByParentId(product.getId(),ass);
-		Item paramsXml;
-		String paramsItemTypeName = CreateParametersAndFiltersCommand.createClassName(existingItems.get(currentSection));
-		ItemType paramsItemType = ItemTypeRegistry.getItemType(paramsItemTypeName);
-		if(paramsXmlType == null){
-			sectionsWithNewItemTypes.add(existingItems.get(currentSection));
-		}else{
-			Item paramsItem;
+		if(!specialParams.isEmpty()) {
+			Byte[] ass = new Byte[]{ItemTypeRegistry.getPrimaryAssocId()};
+			ArrayList<Item> children = ItemQuery.loadByParentId(product.getId(), ass);
+			populateAuxParamsOrFallback(product, children);
+			populateXml(product, children);
 		}
 
 	}
 
+	private Item ensureChild(String itemTypeName, Item parent, Collection<Item> existingChildren){
+		for(Item el : existingChildren){
+			if(el.getTypeName().equals(itemTypeName)){
+				return el;
+			}
+		}
+		return ItemUtils.newChildItem(itemTypeName, parent);
+	}
+
+	private void populateXml(Item product, ArrayList<Item> children) throws Exception {
+		Item paramsXml = ensureChild(PARAMS_XML_ITEM, product, children);
+
+		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+		for(Map.Entry<String, String> entry: specialParams.entrySet()){
+			xml.startElement("parameter")
+					.addElement("name", entry.getKey())
+					.addElement("value", entry.getValue())
+					.endElement();
+		}
+		paramsXml.setValue(XML_PARAM, xml.toString());
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(paramsXml).ignoreUser().noFulltextIndex().noTriggerExtra());
+	}
+
+	/**
+	 * Finds the item type for "params" and ensures it existence
+	 * if item type does not exist or has changed adds the section to the list of sections with new item types.
+	 * @param product - parent of the "params" item
+	 * @param children - list of existing item children
+	 */
+	private void populateAuxParamsOrFallback(Item product, List<Item> children) throws Exception {
+
+		// load itemType for the aux params item
+		String paramsItemTypeName = CreateParametersAndFiltersCommand.createClassName(existingItems.get(currentSection));
+		ItemType paramsItemType = ItemTypeRegistry.getItemType(paramsItemTypeName);
+		if(paramsItemType == null){
+			sectionsWithNewItemTypes.add(existingItems.get(currentSection));
+			return;
+		}
+
+		Item aux = ensureChild(paramsItemTypeName, product, children);
+		for(Map.Entry<String, String> param : specialParams.entrySet()){
+			String name = Strings.createXmlElementName(param.getKey());
+			String value = param.getValue();
+			try {
+				aux.setValueUI(name, value);
+			}catch (Exception e){
+				//fallback if parameter not exists
+				sectionsWithNewItemTypes.add(existingItems.get(currentSection));
+				return;
+			}
+		}
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(aux).ignoreUser().noFulltextIndex().noTriggerExtra());
+	}
+
+	@Override
+	public void startDocument(){
+		if(productType.hasChild("option", "option")){
+			try {
+				List<Item> options = new ItemQuery("option").loadItems();
+				for(Item option : options){
+					existingItems.put(option.getStringValue(CODE_PARAM), option);
+				}
+
+				info.setCurrentJob("Удаление комплектаций");
+
+				ItemQuery productsQuery = new ItemQuery("complectation");
+				productsQuery.setLimit(1000);
+
+				List<Item> oldComplectations;
+				while ((oldComplectations = productsQuery.loadItems()).size() > 0) {
+					for (Item old : oldComplectations) {
+						DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.delete(old.getId()).ignoreUser(true).noFulltextIndex());
+						info.increaseProcessed();
+					}
+				}
+
+				info.setCurrentJob("Создание товаров");
+
+			} catch (Exception e) {
+				handleException(e);
+			}
+		}
+	}
+
 	private void resetProduct() {
-		singleParams = new HashMap<>();
-		multipleParams = new HashMap<>();
-		children = new HashMap<>();
+		productParams = new HashMap<>();
 		specialParams = new LinkedHashMap<>();
-		isInsideOptions = false;
 		isInsideProduct = false;
-		isGallery = false;
 		currentSection = "";
+		optionsBuffer = new LinkedList<>();
+		currentOption = new HashMap<>();
 	}
 
 	public UniaProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -130,5 +326,33 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 	public void setProductType(String productTypeName) {
 		this.productType = ItemTypeRegistry.getItemType(productTypeName);
+	}
+
+	public Collection<Item> getSectionsWithNewItemTypes() {
+		return sectionsWithNewItemTypes;
+	}
+
+	@Override
+	public void characters(char[] ch, int start, int length) throws SAXException {
+		if (parameterReady)
+			paramValue.append(ch, start, length);
+	}
+
+	@Override
+	public void setDocumentLocator(Locator locator) {
+		this.locator = locator;
+	}
+
+	private void handleException(Throwable e){
+		ServerLogger.error("Integration error", e);
+		info.setLineNumber(locator.getLineNumber());
+		info.setLinePosition(locator.getColumnNumber());
+		info.addError(e);
+	}
+
+	private static class Complectation{
+		private List<HashMap<String, String>> options = new LinkedList<>();
+		private List<HashMap<String, String>> serials = new LinkedList<>();
+		private HashMap<String, String> params = new HashMap<>();
 	}
 }

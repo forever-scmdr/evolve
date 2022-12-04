@@ -3,19 +3,18 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
-import ecommander.model.Item;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
+import ecommander.model.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import extra.UniaProductCreationHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +25,9 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
-	private static final String GET_PRICE_PARAM = "get_price";
-
-	private static boolean getPrice = false;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		getPrice = StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(GET_PRICE_PARAM, "yes"), "yes", "true");
 		return true;
 	}
 
@@ -100,20 +95,25 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 					addError("Невозможно удалить DOCTYPE " + xml, xml.getName());
 				}
 			}
-
-
 		}
 
 		// Создание самих товаров
-		info.pushLog("Подготовка каталога и типов завершена.");
+		info.pushLog("Подготовка каталога завершена.");
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
+
+		List<Item> sectionsWithNewItemTypes = new ArrayList<>();
+
 		for (File xml : xmls) {
+
 			YMarketCatalogCreationHandler secHandler = secHandlers.get(xml.getName());
-			YMarketProductCreationHandler prodHandler = new YMarketProductCreationHandler(secHandler.getSections(), info, getInitiator());
-			prodHandler.getPrice(getPrice);
+			UniaProductCreationHandler prodHandler = new UniaProductCreationHandler(secHandler.getSections(), info, getInitiator());
+			String productItemTypeName = StringUtils.containsIgnoreCase(xml.getName(), "parts")? "part" : "complex_product";
+			prodHandler = new UniaProductCreationHandler(secHandler.getSections(),info,getInitiator());
+			prodHandler.setProductType(productItemTypeName);
 			parser.parse(xml, prodHandler);
+			sectionsWithNewItemTypes.addAll(prodHandler.getSectionsWithNewItemTypes());
 		}
 
 		info.pushLog("Создание товаров завершено");
@@ -132,8 +132,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Создание фильтров");
 		info.pushLog("Создание фильтров");
 
-		new CreateParametersAndFiltersCommand(this).integrate();
-
+		new CreateParametersAndFiltersCommand(this).doCreate(sectionsWithNewItemTypes);
 		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
@@ -145,14 +144,14 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
 			if(!mainPic.isFile()){
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
-				q.setLimit(50);
+				q.setLimit(1);
 				q.setParentId(section.getId(), true);
-				//q.addParameterCriteria(MAIN_PIC_PARAM, "-", "!=", null, Compare.SOME);
+				q.addParameterCriteria("pic_link", "", "!=", null, Compare.SOME);
 				List<Item> products = q.loadItems();
 				for(Item prod : products){
-					mainPic = prod.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(prod.isFileProtected()));
-					if(mainPic.isFile()){
-						section.setValue(MAIN_PIC_PARAM, mainPic);
+					List<String>mainPics = prod.outputValues("pic_link");
+					if(mainPics.size() > 0){
+						section.setValue(MAIN_PIC_PARAM, mainPics.get(0));
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
 						break;
 					}
