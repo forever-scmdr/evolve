@@ -27,7 +27,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static HashMap<String, String> PRODUCT_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
-	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION, PARTS};
 
 
 	static {
@@ -44,10 +44,12 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		PRODUCT_PARAMS_MAP.put("qantity_free", "qty");
 		PRODUCT_PARAMS_MAP.put("name", "name");
 		PRODUCT_PARAMS_MAP.put("description", TEXT_PARAM);
+		PRODUCT_PARAMS_MAP.put("part_id", "part_id");
 
 		OPTION_PARAMS_MAP.put("id_opcii", CODE_PARAM);
 		OPTION_PARAMS_MAP.put("name_opcii", NAME);
 		OPTION_PARAMS_MAP.put("price", PRICE_PARAM);
+		OPTION_PARAMS_MAP.put("price_opt", "");
 
 		SERIAL_PARAMS.put("id_tehniki", CODE_PARAM);
 		SERIAL_PARAMS.put("name_tehniki", NAME);
@@ -67,10 +69,12 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private List<HashMap<String, String>> optionsBuffer = new LinkedList<>();
 	private List<Complectation> complectationBuffer = new LinkedList<>();
 	private HashMap<String, String> currentOption = new HashMap<>();
+	HashMap<String, String> currentSerial = new HashMap<>();
+	private Complectation currentCompl;
 	private Assoc optionAssoc = ItemTypeRegistry.getAssoc("option");
 	private String currentSection;
 	private boolean isInsideComplectation;
-	private ComplectationChild currentCompl;
+	private ComplectationChild complStaus;
 
 
 
@@ -95,12 +99,9 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				}
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser());
-
 				processSpecialParameters(product);
-
 				processOptions(product);
-
-				//processComplectation(product);
+				processComplectations(product);
 
 				info.increaseProcessed();
 				resetProduct();
@@ -110,6 +111,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				optionsBuffer.add(currentOption);
 			}else if("complectation".equalsIgnoreCase(qName)){
 				isInsideComplectation = false;
+				addNotEmptyComplectationChildren();
+
 			}else if(isInsideProduct && !isInsideOptions && !isInsideComplectation){
 				processProductParams();
 			}else if(isInsideOptions){
@@ -117,10 +120,66 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
 				}
 			}else if(isInsideComplectation){
-
+				String value = StringUtils.normalizeSpace(paramValue.toString());
+				if(complStaus == ComplectationChild.SERIAL){
+					currentSerial.put(paramName, value);
+				}
+				else if(complStaus == ComplectationChild.PARTS){
+					if(qName.equals("part_id")){
+						currentCompl.parts.add(value);
+					}
+				}
+				else if(complStaus == ComplectationChild.OPTION){
+					currentOption.put(paramName, value);
+				}
+				else if(StringUtils.isNotBlank(paramName)){
+					currentCompl.params.put(paramName, value);
+				}
 			}
 		} catch (Exception e) {
 			handleException(e);
+		}
+	}
+
+	private void addNotEmptyComplectationChildren() {
+		if(!currentOption.isEmpty())
+		currentCompl.options.add(currentOption);
+		if(!currentSerial.isEmpty())
+		currentCompl.serials.add(currentSerial);
+		if(!currentCompl.isEmpty())
+		complectationBuffer.add(currentCompl);
+	}
+
+	private void processComplectations(Item product) throws Exception {
+		int i = 0;
+		for(Complectation complectation : complectationBuffer){
+			i++;
+			complectation.params.put("number", String.valueOf(i));
+			presistComplectation(complectation, product);
+		}
+	}
+
+	private void presistComplectation(Complectation complectationTemplate, Item product) throws Exception {
+		Item complectation = ItemUtils.newChildItem("complectation", product);
+		for(Map.Entry<String, String> e : complectationTemplate.params.entrySet()){
+			complectation.setValueUI(e.getKey(), e.getValue());
+		}
+		for(String part : complectationTemplate.parts){
+			complectation.setValueUI("part_id", part);
+		}
+		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(complectation).noFulltextIndex().ignoreUser());
+		optionsBuffer = complectationTemplate.options;
+		processOptions(complectation);
+		optionsBuffer = new LinkedList<>();
+		int i = 0;
+		for(HashMap<String, String> serialTemplate : complectationTemplate.serials){
+			Item serial = ItemUtils.newChildItem("base_complectation_product", complectation);
+			i++;
+			serial.setValue("number", i);
+			for(Map.Entry<String, String> e : serialTemplate.entrySet()){
+				serial.setValueUI(e.getKey(), e.getValue());
+			}
+			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(serial).noFulltextIndex().ignoreUser());
 		}
 	}
 
@@ -184,10 +243,41 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 			isInsideOptions = true;
 		}else if("complectation".equalsIgnoreCase(qName)){
 			isInsideComplectation = true;
+			complStaus = ComplectationChild.SERIAL;
+			currentSerial = new HashMap<>();
+			currentOption = new HashMap<>();
+			currentCompl = new Complectation();
 		}
 		else if(isInsideProduct){
 			//processing complectation
-			if(isInsideComplectation){}
+			if(isInsideComplectation){
+				parameterReady = true;
+				complStaus = checkComplStaus(qName);
+				if(complStaus == ComplectationChild.SERIAL){
+					paramName = SERIAL_PARAMS.getOrDefault(qName, PRODUCT_PARAMS_MAP.get(qName));
+					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
+						currentCompl.serials.add(currentSerial);
+						currentSerial = new HashMap<>();
+					}
+					else if("qty_reserve".equalsIgnoreCase(paramName)){
+						String time = attributes.getValue("time");
+						if(StringUtils.isNotBlank(time))
+						currentSerial.put("reserve_time", time);
+					}else if("qty_store".equalsIgnoreCase(paramName)){
+						String time = attributes.getValue("time");
+						if(StringUtils.isNotBlank(time))
+						currentSerial.put("stored_time", time);
+					}
+				}else if(complStaus == ComplectationChild.OPTION){
+					paramName = OPTION_PARAMS_MAP.get(qName);
+					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
+						currentCompl.options.add(currentOption);
+						currentOption = new HashMap<>();
+					}
+				}else{
+					paramName = PRODUCT_PARAMS_MAP.get(qName);
+				}
+			}
 			//processing options
 			else if(isInsideOptions){
 				paramName = OPTION_PARAMS_MAP.getOrDefault(qName, qName);
@@ -195,7 +285,6 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				if(CODE_PARAM.equalsIgnoreCase(paramName)){
 					if(!currentOption.isEmpty()){
 						optionsBuffer.add(currentOption);
-
 					}
 					currentOption = new HashMap<>();
 				}
@@ -213,6 +302,19 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				}
 			}
 		}
+	}
+
+	private ComplectationChild checkComplStaus(String qName) {
+		if("part_id".equals(qName) || "part_name".equals(qName)) return ComplectationChild.PARTS;
+		if(complStaus == ComplectationChild.SERIAL && !OPTION_PARAMS_MAP.containsKey(qName)){
+			return ComplectationChild.SERIAL;
+		}else if(OPTION_PARAMS_MAP.containsKey(qName)){
+			if(currentOption.isEmpty() && !OPTION_PARAMS_MAP.get(qName).equals(CODE_PARAM)){
+				return ComplectationChild.COMPLECTATION;
+			}
+			return ComplectationChild.OPTION;
+		}
+		return ComplectationChild.COMPLECTATION;
 	}
 
 	private void processSpecialParameters(Item product) throws Exception {
@@ -300,7 +402,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 						info.increaseProcessed();
 					}
 				}
-
+				info.setProcessed(0);
 				info.setCurrentJob("Создание товаров");
 
 			} catch (Exception e) {
@@ -316,6 +418,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		currentSection = "";
 		optionsBuffer = new LinkedList<>();
 		currentOption = new HashMap<>();
+		currentSerial = new HashMap<>();
+		complectationBuffer = new LinkedList<>();
 	}
 
 	public UniaProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
@@ -354,5 +458,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		private List<HashMap<String, String>> options = new LinkedList<>();
 		private List<HashMap<String, String>> serials = new LinkedList<>();
 		private HashMap<String, String> params = new HashMap<>();
+		private List<String> parts = new LinkedList<>();
+
+		boolean isEmpty(){
+			return options.isEmpty() && serials.isEmpty() && params.isEmpty() && parts.isEmpty();
+		}
 	}
 }

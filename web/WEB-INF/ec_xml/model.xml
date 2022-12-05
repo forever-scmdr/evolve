@@ -348,10 +348,13 @@
 	</item>
 
 
-	<item name="complectation" super="unia_product option_container unia_product *" caption="Вариант сборки" key="number" ag-id="111" ag-hash="-1586387108">
+	<item name="complectation" super="unia_product option_container *" caption="Вариант сборки" key="number" ag-id="111" ag-hash="-1586387108">
 		<parameter name="number" type="integer" caption="порядковый номер"/>
 		<child item="base_complectation_product"/>
 		<parameter name="price" caption="цена" type="currency"/>
+		<parameter name="qty" type="integer" caption="количество"/>
+		<parameter name="part_id" type="string" caption="Код запчасти" multiple="true"/>
+		<child item="part" assoc="general"/>
 	</item>
 
 	<item name="base_complectation_product" super="* unia_product" caption="Собранное устройство" key="serial number" ag-id="112" ag-hash="955507742">
@@ -359,7 +362,9 @@
 		<parameter name="code" type="string" caption="Артмкул товара"/>
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="serial" type="string" caption="Серийный номер" />
+		<parameter name="qty" type="integer" caption="количество"/>
 		<parameter name="reserve_time" type="string" caption="Зарезервирован с по" />
+		<parameter name="stored_time" type="string" caption="На складе с по" />
 	</item>
 
 	<!-- unia quantity -->
