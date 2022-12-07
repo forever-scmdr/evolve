@@ -8,7 +8,10 @@
 
 #https://www.digikey.com
 
-https://www.digikey.com/product-detail/sitemap.xml
+http://sitemap.octopart.com/octo_offsite_sitemap2_0.xml.gz
+http://sitemap.octopart.com/octo_offsite_sitemap2_1.xml.gz
+http://sitemap.octopart.com/octo_offsite_sitemap2_2.xml.gz
+http://sitemap.octopart.com/octo_offsite_sitemap2_3.xml.gz
 
 
 #
@@ -17,7 +20,7 @@ https://www.digikey.com/product-detail/sitemap.xml
 
 #https:\/\/www\.digikey\.com.*\/products\/filter\/.*$    -   https://www.digikey.com/en/products/filter/cable-and-hose-carriers-drag-chains/1014
 #https:\/\/www\.digikey\.com.*\/products\/category\/.*$  -   https://www.digikey.com/en/products/category/boxes-enclosures-racks/27
-https:\/\/www\.digikey\.com.*\/en\/products\/detail\/.*$  product.xsl    https://www.digikey.com/en/products/detail/vector-electronics/VME64E02P01/6819140
+https:\/\/octopart\.com.*\/.*$  product.xsl    https://octopart.com/plh250-p-tti-66355926
 
 
 

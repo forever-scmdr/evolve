@@ -69,6 +69,7 @@ table {
 .title_1, h1 {
 	font-weight: 700;
 	font-size: 30px;
+	line-height: 30px;
 	margin: 0 0 24px; }
 
 .title_2, h2 {
@@ -1622,9 +1623,6 @@ img {
 		div.view__column ~ .view__column{
 			display: block;
 		}
-		.view__column:last-child {
-		    display: none!important;
-		}
 		.view__column select {
     		width: 100%;
 		} }
@@ -2893,6 +2891,8 @@ input.get-file {
 	}
 	.vl_approach .approach_item:nth-child(2n) { margin: 0 8% 50px 0; }
 	.vl_approach .approach_item:nth-child(n+5) { margin: 0 8% 50px 0; }
+
+
 }
 .vl_c_carousel {
 	overflow: auto;
@@ -3107,4 +3107,86 @@ img[alt="right"] {
 	float: right;
 	clear: right;
 	margin: 0 16px 24px 0;
+}
+.mtable-row {display: none;}
+@media (max-width: 767px) {
+	.view-table table {
+		font-size: 11px;
+		color: #616161;
+		letter-spacing: 0.3px;
+		line-height: 1.3;
+		display: flex;
+		height: 100%;
+	}
+	.view-table table tr {
+		border-bottom: 1px solid #e0e0e0;
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 30px;
+		border: solid 2px #000;
+		width: 100%;
+	}
+	.view-table table tr * {
+		margin-right: 5px;
+	}
+	.view-table table tr td .add__item.icon-link span{
+		display: none;
+	}
+	.cart > *:last-child {
+		margin-bottom: 0;
+		position: absolute;
+	}
+	.view-table table td, .view-table table th {
+		padding: 1px 5px;
+		vertical-align: top;
+		border: solid 1px #e5e5e5;
+		vertical-align: middle;
+		text-align: right;
+		width: 100%;
+		height: 46px;
+		overflow: auto;
+		display: flex;
+		align-items: center;
+	}
+	.view-table table thead{
+		width: 30%;
+		display: none;
+	}
+	.view-table table thead tr{
+		border-color: #ccc;
+	}
+	.view-table table tbody{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.view-table table tr.mtable-row {
+		display: block;
+		width: 30%;
+		border-color:#ccc;
+	}
+	.view-table table tr.row2  {
+		width: 70%;
+	}
+	.devices__wrap_rows {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.device_row, .device_row:last-child {
+		flex-direction: column;
+		text-align: left;
+		border: 1px solid #9E9E9E;
+		align-items: center;
+	}
+	.device__column {
+		margin: 0px 0px 10px;
+		width: 100%;
+		padding: 5px;
+	}
+	.device_row .device__image {
+		width: 100%;
+		margin: 0;
+	}
+	.device_row .order {
+		justify-content: center;
+	}
 }

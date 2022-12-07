@@ -125,7 +125,7 @@ public class Crawler implements DBConstants.Parse {
 
 		// Проверка - обычный парсинг или парсинг sitemap.xml
 		String testSeed = seedUrls.iterator().next();
-		boolean isSitemapCrawl = StringUtils.containsIgnoreCase(testSeed, "sitemap") && StringUtils.endsWith(testSeed, ".xml");
+		boolean isSitemapCrawl = StringUtils.containsIgnoreCase(testSeed, "sitemap") && StringUtils.containsIgnoreCase(testSeed, ".xml");
 
 		// Сохранение сидов
 		TemplateQuery insert = new TemplateQuery("insert url");
@@ -328,11 +328,14 @@ public class Crawler implements DBConstants.Parse {
 		 * @param doc
 		 */
 		protected void deleteInsubstancialData(Document doc) {
+			/*
 			doc.select("script").remove();
 			doc.select("header").remove();
 			doc.select("div[id=header__storage]").remove();
 			doc.select("div[id=settingsModal]").remove();
 			doc.select("div[data-testid=footer-test]").remove();
+
+			 */
 		}
 
 		/**

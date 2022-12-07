@@ -15,12 +15,31 @@
     <xsl:variable name="quotient_default" select="$price_catalogs/quotient"/>
 
 
+    <xsl:function name="f:cur">
+        <xsl:choose>
+            <xsl:when test="$currency = 'RUB'">₽</xsl:when>
+            <xsl:when test="$currency = 'USD'">$</xsl:when>
+            <xsl:when test="$currency = 'EUR'">€</xsl:when>
+        </xsl:choose>
+    </xsl:function>
+
+
+    <xsl:function name="f:print_cur">
+        <xsl:param name="sum"/>
+        <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
+        <xsl:choose>
+            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat(f:format_currency_precise($sum), $BYN_cur) else concat(f:format_currency_precise($sum), f:cur())"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="f:format_currency_precise($sum)" /></xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+
     <xsl:template name="ALL_PRICES">
         <xsl:param name="section_name"/>
         <xsl:param name="product"/>
         <xsl:param name="need_sum" select="false()"/>
-        <xsl:param name="price_byn"/>
-        <xsl:variable name="base_price" select="f:num($price_byn)"/>
+        <xsl:param name="price_in_currency"/>
+        <xsl:variable name="base_price" select="f:num($price_in_currency)"/>
         <xsl:variable name="catalog" select="$price_catalogs/price_catalog[name = $section_name]"/>
         <xsl:variable name="intervals" select="$catalog/qty_quotient"/>
         <xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
@@ -41,16 +60,16 @@
 <!--           </b>-->
 <!--           </p>-->
             <p>
-                <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:format_currency_precise($pack_sum)"/></xsl:if>
+                <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
                 <xsl:if test="not($need_sum)">
-                    <xsl:value-of select="f:format_currency_precise($unit_price)"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.<xsl:if test="$pack_quotient != 1">&#160;-&#160;упк(<xsl:value-of select="$pack_quotient" />)</xsl:if>
+                    <xsl:value-of select="f:print_cur($unit_price)"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.<xsl:if test="$pack_quotient != 1">&#160;-&#160;упк(<xsl:value-of select="$pack_quotient" />)</xsl:if>
                 </xsl:if>
             </p>
         </xsl:for-each>
         <xsl:if test="not($price_intervals)">
             <xsl:variable name="q" select="f:num($catalog/quotient)"/>
             <xsl:variable name="unit_price" select="$base_price * $q"/>
-            <xsl:value-of select="f:format_currency_precise($unit_price)"/><xsl:if test="$pack_quotient != 1">&#160;-&#160;упк(<xsl:value-of select="$pack_quotient" />)</xsl:if>
+            <xsl:value-of select="f:print_cur($unit_price)"/><xsl:if test="$pack_quotient != 1">&#160;-&#160;упк(<xsl:value-of select="$pack_quotient" />)</xsl:if>
         </xsl:if>
     </xsl:template>
 

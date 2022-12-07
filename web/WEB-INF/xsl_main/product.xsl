@@ -3,10 +3,11 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
+	<xsl:variable name="has_plain" select="$mods/plain_in_product = 'on'"/><!-- + -->
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -297,51 +298,11 @@
 		</div>
 
 
-		<xsl:if test="page/plain_catalog/product">
+		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
 			</xsl:call-template>
 		</xsl:if>
-
-
-		<div class="view-table">
-	<table>
-		<thead>
-			<tr>
-				<th>Название</th>
-				<th>Описание</th>
-				<th>Производитель</th>
-				<th>Количество</th>
-				<th>Срок поставки</th>
-				<th>Кратность заказа</th>
-				<th>Цена (бел.руб.)</th>
-				<th>Заказать</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>TEST 1</td>
-				<td>Описание TEST 1</td>
-				<td>Производитель</td>
-				<td>10</td>
-				<td>12.12.2022</td>
-				<td>5</td>
-				<td>189</td>
-				<td><button class="button" type="submit">Заказать</button></td>
-			</tr>
-			<tr>
-				<td>TEST 1</td>
-				<td>Описание TEST 1</td>
-				<td>Производитель</td>
-				<td>10</td>
-				<td>12.12.2022</td>
-				<td>5</td>
-				<td>189</td>
-				<td><button class="button" type="submit">Заказать</button></td>
-			</tr>
-		</tbody>
-	</table>
-	</div>
 
 		<div class="device-full">
 			<xsl:variable name="has_text" select="string-length($p/text) &gt; 15"/>

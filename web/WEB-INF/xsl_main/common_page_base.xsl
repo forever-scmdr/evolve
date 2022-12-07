@@ -21,7 +21,7 @@
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/><!-- выбранный раздел каталога (если нет текущего - то раздел выбранного товара) -->
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
 	<xsl:variable name="catalog" select="page/catalog"/>
-	<xsl:variable name="currencies" select="$catalog/currencies"/>
+	<xsl:variable name="currencies" select="page/currencies"/>
 	<xsl:variable name="h1" select="'not-set'"/>
 	<xsl:variable name="sel_news_id" select="page/selected_news/@id"/>
 	<xsl:variable name="city" select="f:value_or_default(page/variables/city, 'Минск')"/>
@@ -62,6 +62,11 @@
 	<xsl:variable name="has_bom_search" select="$mods/bom_search = 'on'"/><!-- + -->
 	<xsl:variable name="has_excel_search_results" select="$mods/excel_search_results = 'on'"/>
 	<xsl:variable name="has_search" select="$mods/search = 'on'"/><!-- + -->
+	<xsl:variable name="search_catalog" select="contains($mods/search_results, 'каталог')"/>
+    <xsl:variable name="search_plain" select="contains($mods/search_results, 'склад')"/>
+	<xsl:variable name="search_not_set" select="not($search_catalog) and not($search_plain)"/>
+    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>
+	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -205,9 +210,9 @@
 					</a>
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
-							<form action="{page/search_link}" method="post">
+							<form action="{$search_link}" method="post">
 								<input class="input header-search__input"
-									   ajax-href="{page/search_ajax_link}" result="search-result"
+									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
 									   placeholder="Введите поисковый запрос" autocomplete="off"
 									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
@@ -390,7 +395,7 @@
 				<xsl:if test="$has_personal">
 					<ul>
 						<li>
-							<a href="#" class="icon-link">
+							<a href="{page/login_link}" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-lock.svg" alt="" />
 								</div>
@@ -404,7 +409,7 @@
 						<li>
 							<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
 								<div class="icon">
-									<img src="img/icon-cart.svg" alt="" />
+									<img src="img/icon-catalog.svg" alt="" />
 								</div>
 								<span class="icon-link__item">Каталог продукции</span>
 							</a>
@@ -880,16 +885,16 @@
                         </xsl:if>
 						*/
 					});
-
+					<xsl:text disable-output-escaping="yes">
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
 							var mi = $(this);
-							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
+							$('#dropdownMenuLink').html(mi.html() + '&lt;i class="fas fa-caret-down"&gt;&lt;/i&gt;');
 							$('.dd_block').hide();
 							$('#' + mi.attr('dd-id')).show();
 						});
 					}
-
+					</xsl:text>
 					function searchAjax(el){
 						var $el = $(el);
 						<!-- console.log($el); -->
@@ -898,7 +903,7 @@
 							<xsl:text disable-output-escaping="yes">
 								var $form = $("&lt;form&gt;",
 							</xsl:text>
-								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
+								{'method' : 'post', 'action' : '<xsl:value-of select="$search_ajax_link"/>', 'id' : 'tmp-form'}
 							);
 							<xsl:text disable-output-escaping="yes">
 								var $ipt2 = $("&lt;input&gt;",

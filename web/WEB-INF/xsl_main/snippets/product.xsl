@@ -99,7 +99,7 @@
 						<xsl:if test="$plain">
 							<span class="price__value"><xsl:call-template name="ALL_PRICES">
 								<xsl:with-param name="need_sum" select="false()"/>
-								<xsl:with-param name="price_byn" select="price"/>
+								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 								<xsl:with-param name="product" select="."/>
 								<xsl:with-param name="section_name" select="$plain/name"/>
 							</xsl:call-template></span>
@@ -281,7 +281,7 @@
 							<xsl:if test="$plain">
 								<span class="price__value"><xsl:call-template name="ALL_PRICES">
 									<xsl:with-param name="need_sum" select="false()"/>
-									<xsl:with-param name="price_byn" select="price"/>
+									<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 									<xsl:with-param name="product" select="."/>
 									<xsl:with-param name="section_name" select="$plain/name"/>
 								</xsl:call-template></span>
@@ -355,8 +355,18 @@
 		<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 		<xsl:variable name="p" select="current()"/>
-
-		<tr class="prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
+		<tr class="mtable-row">
+						<xsl:if test="$multiple"><th>Запрос</th></xsl:if>
+						<th>Название</th>
+						<th>Описание</th>
+						<th>Срок поставки</th>
+						<th>Количество</th>
+						<th>Цена</th>
+						<th>Заказать</th>
+						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
+						<xsl:if test="$multiple"><th>Показать</th></xsl:if>
+		</tr>
+		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
 			<xsl:if test="$multiple"><td><b><xsl:value-of select="$query" /></b></td></xsl:if>
 			<td>
 				<a href="{show_product}"><xsl:value-of select="name"/></a>
@@ -375,10 +385,12 @@
 			</td><!--название -->
 			<td><!--описание -->
 				<xsl:value-of select="description" disable-output-escaping="yes"/>
-				<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
-					<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-					<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
-				</xsl:for-each>
+				<xsl:if test="not($plain)">
+					<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
+						<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+						<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
+					</xsl:for-each>
+				</xsl:if>
 			</td>
 			<td><xsl:value-of select="next_delivery"/><xsl:value-of select="available"/></td><!--дата поставки -->
 			<td><xsl:value-of select="qty"/></td><!--количество на складе -->
@@ -397,7 +409,7 @@
 					<xsl:if test="$plain">
 						<xsl:call-template name="ALL_PRICES">
 							<xsl:with-param name="need_sum" select="false()"/>
-							<xsl:with-param name="price_byn" select="price"/>
+							<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 							<xsl:with-param name="product" select="."/>
 							<xsl:with-param name="section_name" select="$plain/name"/>
 						</xsl:call-template>

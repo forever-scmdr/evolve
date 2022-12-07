@@ -218,7 +218,22 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Список товаров" children-per-page="30" children-sorting="DESC" ag-id="2110" ag-hash="-1742571868">
+	<item name="search" super="* seo_container" caption="Настройки поиска" ag-id="2114" ag-hash="-906336856">
+		<parameter name="default_view" type="string" caption="Отображение товаров по умолчанию" default="плитка">
+			<value>плитка</value>
+			<value>список</value>
+			<value>таблица</value>
+		</parameter>
+		<parameter name="disable" type="string" caption="Отключить отображение" multiple="true">
+			<value>плитка</value>
+			<value>список</value>
+			<value>таблица</value>
+		</parameter>
+		<parameter name="hide_side_menu" type="byte" domain="0-1" caption="Скрыть боковое меню" default="0"/>
+	</item>
+
+
+	<item name="plain_catalog" caption="Склады товаров" children-per-page="30" children-sorting="DESC" ag-id="2110" ag-hash="-1742571868">
 		<child item="plain_section"/>
 	</item>
 
@@ -1004,6 +1019,15 @@
 			<value>off</value>
 			<value>on</value>
 		</parameter>
+		<parameter name="search_results" type="string" caption="Результаты поиска" default="склады и каталог">
+			<value>склады</value>
+			<value>каталог</value>
+			<value>склады и каталог</value>
+		</parameter>
+		<parameter name="plain_in_product" type="string" caption="Товары со складов на странице товара из каталога" default="on">
+			<value>off</value>
+			<value>on</value>
+		</parameter>
 	</item>
 
 
@@ -1134,6 +1158,7 @@
 	<root>
 		<child item="feedback_params" single="true" />
 		<child item="catalog" single="true" />
+		<child item="search" single="true" />
 		<child item="catalog_meta" single="true" />
 		<child item="plain_catalog" single="true" />
 		<child item="main_page" single="true"/>

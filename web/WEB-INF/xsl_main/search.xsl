@@ -3,9 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
 
 	<!-- Поиск BOM -->
 	<xsl:variable name="queries" select="page/variables/q"/>
@@ -13,11 +10,35 @@
 	<xsl:variable name="is_search_multiple" select="count($queries) &gt; 1"/>
 
 
+	<!--Отображение товаров в каталоге -->
+	<xsl:variable name="search" select="page/search"/>
+	<xsl:variable name="view_var" select="page/variables/sview"/>
+	<xsl:variable name="view_search">
+		<xsl:choose>
+			<xsl:when test="$search/default_view = 'список'">list</xsl:when>
+			<xsl:when test="$search/default_view = 'таблица'">lines</xsl:when>
+			<xsl:otherwise>table</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="view" select="if ($is_search_multiple) then 'lines' else if ($view_var) then $view_var else $view_search"/>
+	<xsl:variable name="hide_side_menu" select="$search/hide_side_menu = '1'"/>
+	<!-- Список отключенных элементов (плитка список таблица поиск) -->
+	<xsl:variable name="view_disabled" select="$search/disable"/>
+
+
+
+	<xsl:template name="LEFT_COLOUMN">
+		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+	</xsl:template>
+
+
+
+
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="if ($is_search_multiple) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="if ($is_search_multiple) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="products" select="page/product"/>
+	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 
@@ -27,7 +48,7 @@
 			<div class="path__item">
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
-				<a class="path__link" href="{page/catalog_link}">Каталог</a>
+				<a class="path__link" href="{page/catalog_link}">Поиск</a>
 				<xsl:if test="$has_excel_search_results">
 					<a style="position: absolute; right: 0px; font-weight: bold;" href="{page/save_excel_file}">
 						<img src="img/excel2.png" /> Сохранить результаты
@@ -45,7 +66,7 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<xsl:if test="not($view_disabled = 'плитка')">
-						<a href="{page/set_view_table}" class="icon-link">
+						<a href="{page/set_view_table}" class="icon-link{' active'[$view = 'table']}">
 							<div class="icon">
 								<img src="img/icon-grid.svg" alt="" />
 							</div>
@@ -53,7 +74,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'список')">
-						<a href="{page/set_view_list}" class="icon-link">
+						<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}">
 							<div class="icon">
 								<img src="img/icon-line.svg" alt="" />
 							</div>
@@ -61,7 +82,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'таблица')">
-						<a href="{page/set_view_lines}" class="icon-link">
+						<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}">
 							<div class="icon">
 								<img src="img/icon-lines.svg" alt="" />
 							</div>

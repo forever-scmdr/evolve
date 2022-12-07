@@ -18,15 +18,19 @@
 	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 
+
+	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
+
+
 	<xsl:template match="/">
 		<div class="result" id="search-result">
-			<xsl:if test="not(page/product)">
+			<xsl:if test="not($products)">
 				По Вашему запросу ничего не найдено.
 			</xsl:if>
-			<xsl:if test="page/product">
+			<xsl:if test="$products">
 				<xsl:if test="not($is_advanced)">
 					<ul>
-						<xsl:for-each select="page/product">
+						<xsl:for-each select="$products">
 							<li>
 								<a href="{show_product}">
 									<xsl:value-of select="name"/>
@@ -37,7 +41,7 @@
 				</xsl:if>
 				<xsl:if test="$is_advanced">
 					<div class="cart-container">
-						<xsl:for-each select="page/product">
+						<xsl:for-each select="$products">
 							<div class="item">
 								<a href="{show_product}" class="image-container">
 									<img src="{@path}{main_pic}" alt=""/>
@@ -58,12 +62,12 @@
 		</div>
 
 		<div class="result" id="search-result-mobile">
-			<xsl:if test="not(page/product)">
+			<xsl:if test="not($products)">
 				По Вашему запросу ничего не найдено.
 			</xsl:if>
-			<xsl:if test="page/product">
+			<xsl:if test="$products">
 				<div class="cart-container">
-					<xsl:for-each select="page/product">
+					<xsl:for-each select="$products">
 						<div class="item">
 							<a href="{show_product}" class="image-container">
 								<img src="{@path}{main_pic}" alt=""/>

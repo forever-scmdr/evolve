@@ -199,6 +199,14 @@ public class OkWebClient {
 //				.header("Accept-Encoding", "dentity")
 //				.build();
 		try (Response response = client.newCall(request).execute()) {
+			byte[] bytes = response.body().bytes();
+			String result1 = new String(bytes, StandardCharsets.UTF_8);
+			String result2 = new String(bytes, StandardCharsets.UTF_16);
+			String result3 = new String(bytes, StandardCharsets.ISO_8859_1);
+			String result4 = new String(bytes, StandardCharsets.US_ASCII);
+			String result5 = new String(bytes, StandardCharsets.UTF_16BE);
+			String result6 = new String(bytes, StandardCharsets.UTF_16LE);
+			System.out.println(result1 + result2 + result3 + result4 + result5 + result6);
 			return response.body().string();
 		}
 	}
@@ -221,9 +229,11 @@ public class OkWebClient {
 
 			//check if we have gzip response
 			String contentEncoding = response.headers().get("Content-Encoding");
+			if (StringUtils.isBlank(contentEncoding))
+				contentEncoding = response.headers().get("Content-Type");
 
 			//this is used to decompress gzipped responses
-			if (contentEncoding != null && contentEncoding.equals("gzip"))
+			if (contentEncoding != null && StringUtils.containsIgnoreCase(contentEncoding,"gzip"))
 			{
 				Long contentLength = response.body().contentLength();
 				GzipSource responseBody = new GzipSource(response.body().source());
