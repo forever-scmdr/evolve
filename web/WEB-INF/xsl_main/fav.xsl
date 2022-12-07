@@ -23,7 +23,11 @@
 				</div>
 			</xsl:if>
 			<xsl:if test="$view = 'lines'">
-				<xsl:apply-templates select="page/product" mode="product-lines"/>
+				<xsl:if test="page/product">
+					<xsl:call-template name="LINES_TABLE">
+						<xsl:with-param name="products" select="page/product"/>
+					</xsl:call-template>
+				</xsl:if>
 			</xsl:if>
 			<xsl:if test="$not_found">
 				<h4>Нет добавленных товаров</h4>

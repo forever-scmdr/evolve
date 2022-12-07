@@ -32,8 +32,9 @@
 			</list>
 		</usergroup>
 
+		<single item="currencies"/>
+
 		<single item="catalog" id="catalog_main" cacheable="true">
-			<single item="currencies"/>
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="keypath"/>
@@ -78,7 +79,11 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="search_catalog_link" target="search_catalog"/>
+		<link name="search_plain_link" target="search_plain"/>
 		<link name="search_ajax_link" target="search_ajax"/>
+        <link name="search_ajax_catalog_link" target="search_catalog_ajax"/>
+        <link name="search_ajax_plain_link" target="search_plain_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
@@ -470,6 +475,9 @@
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -507,10 +515,8 @@
 						<var ref="prod" parameter="name"/>
 					</fulltext>
 				</filter>
-				<link name="to_cart" target="cart_action">
-					<var name="action" value="addToCart"/>
-					<var name="prod" ref="plain"/>
-				</link>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:plain"/>
+				<ancestor item="plain_section" transit="false"/>
 			</list>
 		</single>
 		<list item="product" tag="assoc" id="assoc">
@@ -573,14 +579,14 @@
 
 
 
-	<page name="search_ajax" template="search_ajax">
+	<include-definition name="SEARCH_AJAX_COMMON">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
+		<!--		<command class="extra.FixSearchQuery"/>-->
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
 				<list item="module"/>
@@ -595,6 +601,12 @@
 				</filter>
 			</list>
 		</personal>
+	</include-definition>
+
+
+	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
+	<page name="search_ajax" template="search_ajax">
+		<include name="SEARCH_AJAX_COMMON"/>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="5" compare="EVERY" type="prefix">
@@ -614,18 +626,95 @@
 	</page>
 
 
-	<page name="search" template="search">
+	<!-- Страница для поиска по основному каталогу (не склады) -->
+	<page name="search_catalog_ajax" template="search_ajax">
+		<include name="SEARCH_AJAX_COMMON"/>
+		<single item="catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="5" compare="EVERY" type="prefix">
+						<var var="q"/>
+					</fulltext>
+					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+			</list>
+		</single>
+		<link name="show_all" target="search_catalog">
+			<var name="q" var="q"/>
+			<!-- <var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/> -->
+		</link>
+	</page>
+
+
+	<!-- Страница для поиска по каталогу удаленных складов (не основному) -->
+	<page name="search_plain_ajax" template="search_ajax">
+		<include name="SEARCH_AJAX_COMMON"/>
+		<single item="plain_catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="5" compare="EVERY" type="prefix">
+						<var var="q"/>
+					</fulltext>
+					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+			</list>
+		</single>
+		<link name="show_all" target="search_plain">
+			<var name="q" var="q"/>
+			<!-- <var name="view" value="table" scope="cookie"/>
+			<var name="minqty" value="" scope="cookie"/> -->
+		</link>
+	</page>
+
+
+
+	<!-- Общие места для всех (трех) страниц поиска -->
+	<include-definition name="SEARCH_COMMON">
 		<request>
 			<var name="q"/>
 			<var name="n"/>
 			<var name="old_query"/>
-			<var name="view" scope="cookie"/>
+			<var name="sview" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
-<!--		<command class="extra.FixSearchQuery"/>-->
+		<!--		<command class="extra.FixSearchQuery"/>-->
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
 		</single>
+		<single item="search" cacheable="true"/>
+		<link name="set_view_table" target="$pname" copy-page-vars="yes">
+			<var name="sview" value="table"/>
+		</link>
+		<link name="set_view_list" target="$pname" copy-page-vars="yes">
+			<var name="sview" value="list"/>
+		</link>
+		<link name="set_view_lines" target="$pname" copy-page-vars="yes">
+			<var name="sview" value="lines"/>
+		</link>
+		<link name="show_only_available" target="$pname">
+			<var name="q" var="q"/>
+			<var name="minqty" value="0"/>
+		</link>
+		<link name="show_all" target="$pname">
+			<var name="q" var="q"/>
+			<var name="minqty" value=""/>
+		</link>
+		<link name="save_excel_file" target="excel_search_action">
+			<var name="q" var="q"/>
+			<var name="n" var="n"/>
+		</link>
+	</include-definition>
+
+
+	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
+	<page name="search" template="search">
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="name">
@@ -639,29 +728,54 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<link name="set_view_table" target="search" copy-page-vars="yes">
-			<var name="view" value="table"/>
-		</link>
-		<link name="set_view_list" target="search" copy-page-vars="yes">
-			<var name="view" value="list"/>
-		</link>
-		<link name="set_view_lines" target="search" copy-page-vars="yes">
-			<var name="view" value="lines"/>
-		</link>
-		<link name="show_only_available" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value="0"/>
-		</link>
-		<link name="show_all" target="search">
-			<var name="q" var="q"/>
-			<var name="minqty" value=""/>
-		</link>
-		<link name="save_excel_file" target="excel_search_action">
-			<var name="q" var="q"/>
-			<var name="n" var="n"/>
-		</link>
+		<include name="SEARCH_COMMON" replace="$pname:search"/>
 		<include name="COMMON"/>
 	</page>
+
+
+	<!-- Страница для поиска по основному каталогу (не склады) -->
+	<page name="search_catalog" template="search">
+		<single item="catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="48" compare="EVERY" name="name">
+						<var var="q"/>
+					</fulltext>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			</list>
+		</single>
+		<include name="SEARCH_COMMON" replace="$pname:search_catalog"/>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<!-- Страница для поиска по каталогу удаленных складов (не основному) -->
+	<page name="search_plain" template="search">
+		<single item="plain_catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="48" compare="EVERY" name="name">
+						<var var="q"/>
+					</fulltext>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+				<ancestor item="plain_section" transit="false"/>
+			</list>
+		</single>
+		<include name="SEARCH_COMMON" replace="$pname:search"/>
+		<include name="COMMON"/>
+	</page>
+
 
 
 	<!-- Страница, которая обрабатывает переданный Excel файл с запросами и перенаправляет на страницу результатов -->
@@ -1266,6 +1380,9 @@
 			<var name="compare" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<list item="product" id="prod">
 			<filter>
 				<parameter name="code" compare="SOME">
@@ -1322,6 +1439,9 @@
 			<var name="favourites" scope="cookie"/>
 			<var name="view" scope="cookie"/>
 		</request>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<list item="product" id="prod">
 			<filter>
 				<parameter name="code" compare="SOME">
@@ -1341,6 +1461,7 @@
 				<var name="src_page" value="fav"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<ancestor item="plain_section" transit="false"/>
 			<!--
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
@@ -1380,6 +1501,9 @@
 		<request>
 			<var name="compare" scope="cookie"/>
 		</request>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<list item="product" id="prod">
 			<filter>
 				<parameter name="code" compare="SOME">
@@ -1397,6 +1521,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<ancestor item="plain_section" transit="false"/>
 		</list>
 		<include name="COMMON"/>
 	</page>

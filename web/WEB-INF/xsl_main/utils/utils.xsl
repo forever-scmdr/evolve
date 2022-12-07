@@ -55,7 +55,7 @@
 
     <xsl:function name="f:is_numeric" as="xs:boolean">
         <xsl:param name="str"/>
-        <xsl:sequence select="number($str) = $str"/>
+        <xsl:sequence select="string(number($str)) = string($str)"/>
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
@@ -83,7 +83,7 @@
     <xsl:variable name="rates" select="page//currencies[1]"/>
     <xsl:variable name="rates_on" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
     <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
-    <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then ' бел.р.' else ' pуб.'"/>
+    <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then 'Br' else 'pуб.'"/>
     <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur) else $currency"/>
 
     <xsl:function name="f:exchange_param">
