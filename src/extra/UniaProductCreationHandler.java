@@ -423,6 +423,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	public UniaProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {
+		super();
 		this.info = info;
 		this.initiator = initiator;
 		existingItems.putAll(sections);

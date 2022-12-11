@@ -50,7 +50,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		SAXParser parser = factory.newSAXParser();
 
 		// Создание (обновление) каталога товаров
-		info.setOperation("Создание разделов каталога и типов товаров");
+		info.setOperation("Создание разделов каталога");
 		info.pushLog("Создание разделов");
 		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		info.setProcessed(0);
@@ -108,9 +108,8 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		for (File xml : xmls) {
 
 			YMarketCatalogCreationHandler secHandler = secHandlers.get(xml.getName());
-			UniaProductCreationHandler prodHandler = new UniaProductCreationHandler(secHandler.getSections(), info, getInitiator());
 			String productItemTypeName = StringUtils.containsIgnoreCase(xml.getName(), "parts")? "part" : "complex_product";
-			prodHandler = new UniaProductCreationHandler(secHandler.getSections(),info,getInitiator());
+			UniaProductCreationHandler prodHandler = new UniaProductCreationHandler(secHandler.getSections(),info,getInitiator());
 			prodHandler.setProductType(productItemTypeName);
 			parser.parse(xml, prodHandler);
 			sectionsWithNewItemTypes.addAll(prodHandler.getSectionsWithNewItemTypes());
