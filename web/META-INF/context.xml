@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context reloadable="true">
-	<!-- 
-	<Resource 
-		name="jdbc/ECommanderDB" 
-		auth="Container" 
-		type="javax.sql.DataSource"
-		maxActive="10"
-		maxIdle="5"
-		validationQuery="SELECT 1"
-		testOnBorrow="true"
-		testWhileIdle="true"
-		timeBetweenEvictionRunsMillis="10000"
-		minEvictableIdleTimeMillis="60000"
-		username="nasklade"
-		password="nasklade"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://opt.nasklade.by:3306/nasklade?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
-	/>
-	 -->
-	<Resource 
-		name="jdbc/ECommanderDB" 
-		auth="Container" 
-		type="javax.sql.DataSource"
-		maxActive="10"
-		maxIdle="5"
-		validationQuery="SELECT 1"
-		testOnBorrow="true"
-		testWhileIdle="true"
-		timeBetweenEvictionRunsMillis="10000"
-		minEvictableIdleTimeMillis="60000"
-		username="portalun_main"
-		password="portalun_main"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://unia-vostok.must.by:3306/portalun_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
-	/>
+
+<!--	<Resource -->
+<!--		name="jdbc/ECommanderDB" -->
+<!--		auth="Container" -->
+<!--		type="javax.sql.DataSource"-->
+<!--		maxActive="10"-->
+<!--		maxIdle="5"-->
+<!--		validationQuery="SELECT 1"-->
+<!--		testOnBorrow="true"-->
+<!--		testWhileIdle="true"-->
+<!--		timeBetweenEvictionRunsMillis="10000"-->
+<!--		minEvictableIdleTimeMillis="60000"-->
+<!--		username="portalun_main"-->
+<!--		password="portalun_main"-->
+<!--		driverClassName="com.mysql.jdbc.Driver"-->
+<!--		url="jdbc:mysql://unia-vostok.must.by:3306/portalun_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"-->
+<!--	/>-->
+
+		<Resource
+			name="jdbc/ECommanderDB"
+			auth="Container"
+			type="javax.sql.DataSource"
+			maxActive="10"
+			maxIdle="5"
+			validationQuery="SELECT 1"
+			testOnBorrow="true"
+			testWhileIdle="true"
+			timeBetweenEvictionRunsMillis="10000"
+			minEvictableIdleTimeMillis="60000"
+			username="root"
+			password="eeee"
+			driverClassName="com.mysql.jdbc.Driver"
+			url="jdbc:mysql://localhost:3306/uina?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+		/>
 
 </Context>
