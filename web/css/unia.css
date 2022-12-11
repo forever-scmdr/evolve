@@ -1,0 +1,66 @@
+/*fixes for unia-vostok*/ 
+.complectations{margin: 40px 0;}
+.legend{
+	margin-bottom: 20px;
+	padding-left: 35px;
+	height: 20px;
+	position: relative;
+	line-height: 20px;
+}
+.legend:before{
+	content: ' - ';
+	display: block;
+	position: absolute;
+	height: 20px;
+	border-left: 20px solid #ebebeb;
+	left: 0;
+	padding-left: 5px;
+}
+
+.complectation label .opt{ font-weight: bold; }
+.mandatory li{
+	background:  #ebebeb;
+}
+.mandatory{
+	background:  #ebebeb;
+}
+td.total{
+	font-size: 18px;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.options-table label{
+	display: block;
+	padding: 8px 4px;
+}
+.complectation-summary{margin-bottom: 20px;}
+.complectation-summary:last-of-type{margin-bottom: 0;}
+
+table.with-borders td, table.with-borders th{
+	border: 1px solid #ccc;
+	vertical-align: middle;
+}
+
+span.toggle{
+	display: block;
+	text-align: center;
+	text-transform: uppercase;
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: #c05a61;
+}
+
+table.with-borders tr:hover{
+	background: #f0f0f0;
+}
+table.with-borders p{
+	margin-bottom: 1rem;
+}
+table.with-borders ul li{
+	list-style: disc;
+}
+table.with-borders ul{
+	padding-left: 20px;
+}

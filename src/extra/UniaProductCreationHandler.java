@@ -27,7 +27,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static HashMap<String, String> PRODUCT_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
-	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION, PARTS};
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
 
 
 	static {
@@ -44,10 +44,12 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		PRODUCT_PARAMS_MAP.put("qantity_free", "qty");
 		PRODUCT_PARAMS_MAP.put("name", "name");
 		PRODUCT_PARAMS_MAP.put("description", TEXT_PARAM);
-		PRODUCT_PARAMS_MAP.put("part_id", "part_id");
+
 
 		OPTION_PARAMS_MAP.put("id_opcii", CODE_PARAM);
+		OPTION_PARAMS_MAP.put("part_id", CODE_PARAM);
 		OPTION_PARAMS_MAP.put("name_opcii", NAME);
+		OPTION_PARAMS_MAP.put("part_name", NAME);
 		OPTION_PARAMS_MAP.put("price", PRICE_PARAM);
 		OPTION_PARAMS_MAP.put("price_opt", "");
 
@@ -124,13 +126,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				if(complStaus == ComplectationChild.SERIAL){
 					currentSerial.put(paramName, value);
 				}
-				else if(complStaus == ComplectationChild.PARTS){
-					if(qName.equals("part_id")){
-						currentCompl.parts.add(value);
-					}
-				}
 				else if(complStaus == ComplectationChild.OPTION){
-					currentOption.put(paramName, value);
+					if(ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
+						currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
+					}
 				}
 				else if(StringUtils.isNotBlank(paramName)){
 					currentCompl.params.put(paramName, value);
@@ -163,9 +162,6 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		Item complectation = ItemUtils.newChildItem("complectation", product);
 		for(Map.Entry<String, String> e : complectationTemplate.params.entrySet()){
 			complectation.setValueUI(e.getKey(), e.getValue());
-		}
-		for(String part : complectationTemplate.parts){
-			complectation.setValueUI("part_id", part);
 		}
 		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(complectation).noFulltextIndex().ignoreUser());
 		optionsBuffer = complectationTemplate.options;
@@ -252,7 +248,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 			//processing complectation
 			if(isInsideComplectation){
 				parameterReady = true;
-				complStaus = checkComplStaus(qName);
+				complStaus = checkComplStatus(qName);
 				if(complStaus == ComplectationChild.SERIAL){
 					paramName = SERIAL_PARAMS.getOrDefault(qName, PRODUCT_PARAMS_MAP.get(qName));
 					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
@@ -271,7 +267,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				}else if(complStaus == ComplectationChild.OPTION){
 					paramName = OPTION_PARAMS_MAP.get(qName);
 					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
-						currentCompl.options.add(currentOption);
+						if(!currentOption.isEmpty()){currentCompl.options.add(currentOption);}
 						currentOption = new HashMap<>();
 					}
 				}else{
@@ -304,8 +300,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		}
 	}
 
-	private ComplectationChild checkComplStaus(String qName) {
-		if("part_id".equals(qName) || "part_name".equals(qName)) return ComplectationChild.PARTS;
+	private ComplectationChild checkComplStatus(String qName) {
+		if(PRICE_PARAM.equals(qName)) return ComplectationChild.COMPLECTATION;
 		if(complStaus == ComplectationChild.SERIAL && !OPTION_PARAMS_MAP.containsKey(qName)){
 			return ComplectationChild.SERIAL;
 		}else if(OPTION_PARAMS_MAP.containsKey(qName)){
@@ -459,10 +455,9 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		private List<HashMap<String, String>> options = new LinkedList<>();
 		private List<HashMap<String, String>> serials = new LinkedList<>();
 		private HashMap<String, String> params = new HashMap<>();
-		private List<String> parts = new LinkedList<>();
 
 		boolean isEmpty(){
-			return options.isEmpty() && serials.isEmpty() && params.isEmpty() && parts.isEmpty();
+			return options.isEmpty() && serials.isEmpty() && params.isEmpty();
 		}
 	}
 }

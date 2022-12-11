@@ -49,7 +49,6 @@
 	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
-	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror');</xsl:variable>
 
 
 
@@ -730,6 +729,7 @@
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
 				<link  href="js/nanogallery/css/nanogallery2.min.css" rel="stylesheet" type="text/css"/>
+				<link rel="stylesheet" type="text/css" href="css/unia.css"/>
 
 				<xsl:if test="page/styles">
 					<xsl:if test="page/styles/css != ''">

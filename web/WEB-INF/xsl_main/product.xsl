@@ -130,21 +130,24 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<div id="cart_list_{$p/@id}" class="order order_product">
-							<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-								<xsl:if test="$has_price">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<input type="number" class="input input_size_lg input_type_number" name="qty"
-										   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
-									<!-- кнопка запросить цену на стрранице товара -->
-									<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-								</xsl:if>
-							</form>
-						</div>
+						<xsl:if test="$p/@type != 'complex_product'">
+							<div id="cart_list_{$p/@id}" class="order order_product">
+
+								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+									<xsl:if test="$has_price">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+									<xsl:if test="not($has_price)">
+										<input type="number" class="input input_size_lg input_type_number" name="qty"
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+										<!-- кнопка запросить цену на стрранице товара -->
+										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+									</xsl:if>
+								</form>
+							</div>
+						</xsl:if>
 						<div class="add add_product">
 							<div id="fav_list_{$p/@id}">
 								<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
@@ -208,57 +211,6 @@
 				</xsl:if>
 
 
-
-				<!-- вложенные товары не сверстаны -->
-				<xsl:if test="$has_lines">
-					<div class="multi-device">
-						<div style="padding-left: 0;">Размер</div>
-						<div>Цена</div>
-						<div></div>
-
-						<xsl:for-each select="$p/line_product">
-							<xsl:variable name="has_price" select="price and price != '0'"/>
-							<div class="multi-device__name"><xsl:value-of select="name" /></div>
-							<div class="multi-device__price">
-								<xsl:if test="$has_price">
-									<xsl:if test="price_old"><div class="multi-device__price_old"><xsl:value-of select="f:exchange(current(), $price_old_param_name, 0)"/></div></xsl:if>
-									<div class="multi-device__price_new"><xsl:value-of select="f:exchange(current(), $price_param_name, 0)"/></div>
-								</xsl:if>
-								<xsl:if test="not($has_price)">
-									<div class="multi-device__price_new">по запросу</div>
-								</xsl:if>
-							</div>
-							<div class="multi-device__actions" id="cart_list_{@id}">
-								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
-									<xsl:if test="$has_price">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-										<input type="submit" class="button" value="{$to_cart_available_label}" />
-									</xsl:if>
-									<xsl:if test="not($has_price)">
-										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
-										<input type="submit" class="button" value="{$to_cart_na_label}" />
-									</xsl:if>
-								</form>
-							</div>
-						</xsl:for-each>
-
-					</div>
-					<div class="multi-device__links">
-						<div id="compare_list_{$p/@id}">
-							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-								<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
-							</a>
-						</div>
-						<div id="fav_list_{$p/@id}">
-							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-								<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
-							</a>
-						</div>
-					</div>
-				</xsl:if>
-
 				<div class="product-lables">
 					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 				</div>
@@ -289,136 +241,11 @@
 			</div>
 		</div>
 
+
+
+
 		<div class="device-basic complectations">
-			<div class="complectation device-basic__column" style="flex: 0 0 50%;">
-				<h3>Опции</h3>
-
-					<table style="width:100%">
-						<tr class="mandatory">
-							<td><input type="radio" id="wheel1" name="wheels" /></td>
-							<td>
-								<label for="wheel1"><b>wl-0012</b></label>
-							</td>
-							<td>
-								<label for="wheel1">Колеса тип 1</label>
-							</td>
-							<td>
-								<b>10500</b><br/>
-								12099
-							</td>
-						</tr>
-						<tr class="mandatory">
-							<td><input type="radio" id="wheel2" name="wheels" /></td>
-							<td>
-								<label for="wheel2"><b>wl-0013</b></label>
-							</td>
-							<td>
-								<label for="wheel2">Колеса тип 2</label>
-							</td>
-							<td>
-								<b>10550</b><br/>
-								12200
-							</td>
-						</tr>
-
-						<tr >
-							<td><input type="checkbox" id="o1" name="wheels" /></td>
-							<td>
-								<label for="o1"><b>5150</b></label>
-							</td>
-							<td>
-								<label for="o1">Фильтр для шланга гидросистемы (штука)</label>
-							</td>
-							<td>
-								<b>500</b><br/>
-							9999
-							</td>
-						</tr>
-						<tr class="mandatory">
-							<td><input type="checkbox" id="o2" name="wheels" /></td>
-							<td>
-								<label for="o2"><b>0013</b></label>
-							</td>
-							<td>
-								<label for="o2">Главная рама</label>
-							</td>
-							<td>
-								<b>3550</b><br/>
-								4000
-							</td>
-						</tr>
-						<tr >
-							<td><input type="checkbox" id="o3" name="wheels" /></td>
-							<td>
-								<label for="o3"><b>5250</b></label>
-							</td>
-							<td>
-								<label for="o3">Дполнительный насос шланга гидросистемы</label>
-							</td>
-							<td>
-								<b>375</b><br/>
-							862
-							</td>
-						</tr>
-						<tr >
-							<td><input type="checkbox" id="o4" name="wheels" /></td>
-							<td>
-								<label for="o4"><b>5350</b></label>
-							</td>
-							<td>
-								<label for="o4">Гудок атовматический навесной</label>
-							</td>
-							<td>
-								<b>250</b><br/>
-							400
-							</td>
-						</tr>
-					</table>
-
-					<div class="legend">
-						Обязательные опции
-					</div>
-
-			</div>
-			<div class="complectation device-basic__column">
-				<h3>Выбранная комплектация</h3>
-				<!-- <div style="margin-bottom:40px"></div> -->
-				<table>
-					<tr>
-						<td>
-							<b>wl-0013</b>
-							Колеса тип 2
-						</td>
-						<td>
-							<b>10500</b><br/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>wl-0013</b>
-							Главная рама
-						</td>
-						<td>
-							<b>3550</b><br/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>5150</b>
-							Фильтр для шланга гидросистемы (штука)
-						</td>
-						<td>
-							<b>500</b><br/>
-						</td>
-					</tr>
-					<tr>
-						<td class="total">Сумма: <b>25673</b></td>
-						<td>
-							<button class="button button_size_lg" type="submit">Предзаказ</button>
-						</td>
-					</tr>
-				</table>
-			</div>
+			<xsl:call-template name="OPTIONS"/>
 		</div>
 
 		<div class="device-full">
@@ -430,6 +257,9 @@
 					</xsl:if>
 					<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
+					</xsl:if>
+					<xsl:if test="$p/complectation">
+						<a href="#tab_compl" class="tab{' tab_active'[not($has_text)]}">Отчет по складам</a>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
 						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
@@ -452,6 +282,11 @@
 								<xsl:apply-templates select="$params_xml/params/parameter"/>
 								<xsl:apply-templates select="$params_xml/params/group"/>
 							</table>
+						</div>
+					</xsl:if>
+					<xsl:if test="$p/complectation">
+						<div class="tab-container" id="tab_compl" style="{'display: none'[$has_text]}">
+							<xsl:apply-templates select="$p/complectation"/>
 						</div>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
@@ -528,6 +363,148 @@
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
 	</xsl:template>
 
+	<xsl:template match="complectation">
+		<div class="complectation-summary">
+
+			<h3>Список доступных варивантов сборки</h3>
+			<table class="with-borders">
+				<thead>
+					<tr>
+						<th rowspan="2">Описание</th>
+						<th colspan="5">Наличие</th>
+					</tr>
+					<tr>
+						<th>factory</th>
+						<th>smolensk</th>
+						<th>stored</th>
+						<th>reserv</th>
+						<th>free</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>
+						<p>
+							<b><xsl:value-of select="$p/name"/></b>
+						</p>
+						<xsl:if test="f:num(price) &gt; 0">
+							<p>
+								Цена: <b><xsl:value-of select="price"/></b>
+							</p>
+						</xsl:if>
+						<xsl:if test="option">
+							<p>
+								Дополнительные опции:
+							</p>
+							<ul>
+								<xsl:for-each select="option">
+									<li>
+										<xsl:value-of  select="name"/>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</xsl:if>
+					</td>
+					<td>
+						<xsl:value-of select="qty_factory"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_smolensk"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_store"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_reserve"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6">
+						<span class="toggle" onclick="$('#cmpl-{@id}').toggle()">Подробный список</span>
+					</td>
+				</tr>
+				<tbody id="cmpl-{@id}" style="display: none;">
+					<xsl:for-each select="base_complectation_product">
+						<tr>
+							<td>
+								Серийный номер: <b><xsl:value-of select="if(serial != '') then serial else 'N/A'"/></b>
+								<xsl:if test="reserve_time != ''">
+									<br/>Зарезервирован: <b><xsl:value-of select="reserve_time"/></b>
+								</xsl:if>
+								<xsl:if test="stored_time != ''">
+									<br/>На складе:<b><xsl:value-of select="stored_time"/></b>
+								</xsl:if>
+							</td>
+							<td>
+								<xsl:value-of select="qty_factory"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_smolensk"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_store"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_reserve"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty"/>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="OPTIONS">
+			<div class="device-basic complectations">
+				<form method="POST" action="{$p/to_cart_pre_order}" data-price="{f:num($p/price)}">
+					<div class="complectation device-basic__column" style="flex: 0 0 50%;">
+						<xsl:if test="$p/option">
+							<h3>Опции</h3>
+						</xsl:if>
+						<table style="width:100%" class="options-table">
+							<tr>
+								<th></th>
+								<th style="text-align: left"></th>
+								<th style="text-align: left">Цена</th>
+							</tr>
+							<xsl:for-each select="$p/option">
+								<tr>
+									<td>
+										<input type="checkbox" value="{@id}" data-name="{name}" data-price="{price}" id="cb-{@id}"/>
+									</td>
+									<td style="padding:0">
+										<label for="cb-{@id}">
+											<xsl:value-of select="name"/>
+										</label>
+									</td>
+									<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
+										<label for="cb-{@id}">
+											<xsl:value-of select="price"/>
+										</label>
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</div>
+					<div class="complectation device-basic__column">
+						<xsl:if test="$p/option">
+							<h3 class="desktop-only">Выбранная комплектация</h3>
+						</xsl:if>
+						<table>
+							<tr>
+								<td class="total">Сумма: <b id="sum"><xsl:value-of select="$p/price"/></b></td>
+								<td style="text-align:right;"><button class="button button_size_lg" type="submit">Предзаказ</button></td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+	</xsl:template>
 
 
 </xsl:stylesheet>
