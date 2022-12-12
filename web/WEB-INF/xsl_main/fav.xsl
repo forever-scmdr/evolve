@@ -29,10 +29,11 @@
 					</xsl:call-template>
 				</xsl:if>
 			</xsl:if>
-			<xsl:if test="$not_found">
-				<h4>Нет добавленных товаров</h4>
+			<xsl:if test="not(page/product)">
+				<h4>По заданным критериям товары не найдены</h4>
 			</xsl:if>
 		</div>
+
 	</xsl:template>
 
 </xsl:stylesheet>

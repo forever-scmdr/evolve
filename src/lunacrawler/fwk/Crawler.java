@@ -284,6 +284,11 @@ public class Crawler implements DBConstants.Parse {
 							if (StringUtils.equalsIgnoreCase(title, "Blocked") || StringUtils.containsIgnoreCase(title, "Site Connectivity Issues")) {
 								throw new Exception("BLOCKED");
 							}
+							Element h2 = doc.body().selectFirst("h2");
+							if (h2 != null && StringUtils.containsIgnoreCase(h2.ownText(), "One more step")) {
+								throw new Exception("BLOCKED");
+							}
+
 
 							// Удалить ненужное
 							deleteInsubstancialData(doc);

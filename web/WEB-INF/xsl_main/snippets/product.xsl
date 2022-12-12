@@ -355,83 +355,95 @@
 		<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 		<xsl:variable name="p" select="current()"/>
-		<tr class="mtable-row">
-						<xsl:if test="$multiple"><th>Запрос</th></xsl:if>
-						<th>Название</th>
-						<th>Описание</th>
-						<th>Срок поставки</th>
-						<th>Количество</th>
-						<th>Цена</th>
-						<th>Заказать</th>
-						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
-						<xsl:if test="$multiple"><th>Показать</th></xsl:if>
-		</tr>
 		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
-			<xsl:if test="$multiple"><td><b><xsl:value-of select="$query" /></b></td></xsl:if>
+			<xsl:if test="$multiple"><td><div class="thn">Запрос</div>
+			<div class="thd"><b><xsl:value-of select="$query" /></b></div></td></xsl:if>
 			<td>
-				<a href="{show_product}"><xsl:value-of select="name"/></a>
-				<xsl:if test="label"><p/></xsl:if>
-				<xsl:for-each select="label">
-					<div class="tag device__tag {f:translit(.)}" style="display: inline-block;">
-						<xsl:value-of select="." />
-					</div>
-				</xsl:for-each>
-				<p/>
-				<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
-				<xsl:call-template name="FAV_AND_COMPARE">
-					<xsl:with-param name="p" select="current()"/>
-					<xsl:with-param name="is_inline" select="true()"/>
-				</xsl:call-template>
+				<div class="thn">Название</div>
+				<div class="thd">
+					<a href="{show_product}"><xsl:value-of select="name"/></a>
+					<xsl:if test="label"><p/></xsl:if>
+					<xsl:for-each select="label">
+						<div class="tag device__tag {f:translit(.)}" style="display: inline-block;">
+							<xsl:value-of select="." />
+						</div>
+					</xsl:for-each>
+					<p/>
+					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+					<xsl:call-template name="FAV_AND_COMPARE">
+						<xsl:with-param name="p" select="current()"/>
+						<xsl:with-param name="is_inline" select="true()"/>
+					</xsl:call-template>
+				</div>
 			</td><!--название -->
 			<td><!--описание -->
-				<xsl:value-of select="description" disable-output-escaping="yes"/>
-				<xsl:if test="not($plain)">
-					<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
-						<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
-						<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
-					</xsl:for-each>
-				</xsl:if>
-			</td>
-			<td><xsl:value-of select="next_delivery"/><xsl:value-of select="available"/></td><!--дата поставки -->
-			<td><xsl:value-of select="qty"/></td><!--количество на складе -->
-			<td><!--цена -->
-				<xsl:if test="price_old">
-					<div class="price__item_old">
-						<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
-					</div>
-				</xsl:if>
-				<xsl:if test="$has_price">
-					<!-- Для обычных товаров (не из каталога price_catalog) -->
+				<div class="thn">Описание</div>
+				<div class="thd">
+					<xsl:value-of select="description" disable-output-escaping="yes"/>
 					<xsl:if test="not($plain)">
-						<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
+						<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
+							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+							<xsl:value-of select="normalize-space(current())"/>: <xsl:value-of select="$param"/>;
+						</xsl:for-each>
 					</xsl:if>
-					<!-- Для товаров из каталога price_catalog -->
-					<xsl:if test="$plain">
-						<xsl:call-template name="ALL_PRICES">
-							<xsl:with-param name="need_sum" select="false()"/>
-							<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
-							<xsl:with-param name="product" select="."/>
-							<xsl:with-param name="section_name" select="$plain/name"/>
-						</xsl:call-template>
+				</div>
+			</td>
+			<td><!--дата поставки -->
+				<div class="thn">Срок поставки</div>
+				<div class="thd"><xsl:value-of select="next_delivery"/><xsl:value-of select="available"/></div>
+			</td>
+			<td><!--количество на складе -->
+				<div class="thn">Количество</div>
+				<div class="thd"><xsl:value-of select="qty"/></div>
+			</td>
+			<td>
+				<div class="thn">Цена</div>
+				<div class="thd"><!--цена -->
+					<xsl:if test="price_old">
+						<div class="price__item_old">
+							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+						</div>
 					</xsl:if>
+					<xsl:if test="$has_price">
+						<!-- Для обычных товаров (не из каталога price_catalog) -->
+						<xsl:if test="not($plain)">
+							<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
+						</xsl:if>
+						<!-- Для товаров из каталога price_catalog -->
+						<xsl:if test="$plain">
+							<xsl:call-template name="ALL_PRICES">
+								<xsl:with-param name="need_sum" select="false()"/>
+								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
+								<xsl:with-param name="product" select="."/>
+								<xsl:with-param name="section_name" select="$plain/name"/>
+							</xsl:call-template>
+						</xsl:if>
 
-				</xsl:if>
-				<xsl:if test="not($has_price)"> - </xsl:if>
+					</xsl:if>
+					<xsl:if test="not($has_price)"> - </xsl:if>
+				</div>
 			</td>
 			<td><!--заказать -->
+				<div class="thn">Заказать</div>
+				<div class="thd">
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="p" select="current()"/>
 					<xsl:with-param name="default_qty" select="$number"/>
 				</xsl:call-template>
+				</div>
 			</td>
 			<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><!--дополнительно -->
 				<td>
-					<xsl:call-template name="EXTRA_ORDERING_TYPES">
-						<xsl:with-param name="p" select="current()"/>
-					</xsl:call-template>
+					<div class="thn">Дополнительно</div>
+					<div class="thd">
+						<xsl:call-template name="EXTRA_ORDERING_TYPES">
+							<xsl:with-param name="p" select="current()"/>
+						</xsl:call-template>
+					</div>
 				</td>
 			</xsl:if>
-			<xsl:if test="$multiple"><td><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></td></xsl:if>
+			<xsl:if test="$multiple"><td><div class="thn">Показать</div>
+			<div class="thd"><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></div></td></xsl:if>
 		</tr>
 	</xsl:template>
 

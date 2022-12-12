@@ -247,7 +247,7 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<xsl:if test="not($view_disabled = 'плитка')">
-						<a href="{page/set_view_table}" class="icon-link">
+						<a href="{page/set_view_table}"  class="icon-link{' active'[$view = 'table']}">
 							<div class="icon">
 								<img src="img/icon-grid.svg" alt="" />
 							</div>
@@ -255,7 +255,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'список')">
-						<a href="{page/set_view_list}" class="icon-link">
+						<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}">
 							<div class="icon">
 								<img src="img/icon-line.svg" alt="" />
 							</div>
@@ -263,7 +263,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'таблица')">
-						<a href="{page/set_view_lines}" class="icon-link">
+						<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}">
 							<div class="icon">
 								<img src="img/icon-lines.svg" alt="" />
 							</div>
