@@ -2,8 +2,10 @@ package ecommander.fwk;
 
 import okhttp3.*;
 import okhttp3.internal.http.RealResponseBody;
+import okio.BufferedSource;
 import okio.GzipSource;
 import okio.Okio;
+import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +30,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContexts;
+import org.brotli.dec.BrotliInputStream;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -199,14 +202,14 @@ public class OkWebClient {
 //				.header("Accept-Encoding", "dentity")
 //				.build();
 		try (Response response = client.newCall(request).execute()) {
-			byte[] bytes = response.body().bytes();
-			String result1 = new String(bytes, StandardCharsets.UTF_8);
-			String result2 = new String(bytes, StandardCharsets.UTF_16);
-			String result3 = new String(bytes, StandardCharsets.ISO_8859_1);
-			String result4 = new String(bytes, StandardCharsets.US_ASCII);
-			String result5 = new String(bytes, StandardCharsets.UTF_16BE);
-			String result6 = new String(bytes, StandardCharsets.UTF_16LE);
-			System.out.println(result1 + result2 + result3 + result4 + result5 + result6);
+//			byte[] bytes = response.body().bytes();
+//			String result1 = new String(bytes, StandardCharsets.UTF_8);
+//			String result2 = new String(bytes, StandardCharsets.UTF_16);
+//			String result3 = new String(bytes, StandardCharsets.ISO_8859_1);
+//			String result4 = new String(bytes, StandardCharsets.US_ASCII);
+//			String result5 = new String(bytes, StandardCharsets.UTF_16BE);
+//			String result6 = new String(bytes, StandardCharsets.UTF_16LE);
+//			System.out.println(result1 + result2 + result3 + result4 + result5 + result6);
 			return response.body().string();
 		}
 	}
@@ -233,13 +236,21 @@ public class OkWebClient {
 				contentEncoding = response.headers().get("Content-Type");
 
 			//this is used to decompress gzipped responses
-			if (contentEncoding != null && StringUtils.containsIgnoreCase(contentEncoding,"gzip"))
-			{
+			if (contentEncoding != null && StringUtils.containsIgnoreCase(contentEncoding,"gzip")) {
 				Long contentLength = response.body().contentLength();
 				GzipSource responseBody = new GzipSource(response.body().source());
 				Headers strippedHeaders = response.headers().newBuilder().build();
 				return response.newBuilder().headers(strippedHeaders)
 						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, Okio.buffer(responseBody)))
+						.build();
+			}
+			else if (contentEncoding != null && StringUtils.equalsIgnoreCase(contentEncoding, "br")) {
+				Long contentLength = response.body().contentLength();
+				//GzipSource responseBody = new GzipSource(response.body().source());
+				Headers strippedHeaders = response.headers().newBuilder().build();
+				BufferedSource src = Okio.buffer(Okio.source(new BrotliInputStream(response.body().source().inputStream())));
+				return response.newBuilder().headers(strippedHeaders)
+						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, src))
 						.build();
 			}
 			else

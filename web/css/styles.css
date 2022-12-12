@@ -222,7 +222,14 @@ table {
 	display: inline-flex;
 	align-items: center;
 	font-size: 14px; }
-
+.view__column .icon-link {
+	-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+.view__column .icon-link.active {
+	-webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(0%);
+}
 .icon-link_after .icon {
 	margin: 0 0 0 4px; }
 
@@ -3108,7 +3115,7 @@ img[alt="right"] {
 	clear: right;
 	margin: 0 16px 24px 0;
 }
-.mtable-row {display: none;}
+.thn {display: none;}
 @media (max-width: 767px) {
 	.view-table table {
 		font-size: 11px;
@@ -3123,7 +3130,7 @@ img[alt="right"] {
 		display: flex;
 		flex-direction: column;
 		margin-bottom: 30px;
-		border: solid 2px #000;
+		border: solid 1px #e0e0e0;
 		width: 100%;
 	}
 	.view-table table tr * {
@@ -3132,21 +3139,23 @@ img[alt="right"] {
 	.view-table table tr td .add__item.icon-link span{
 		display: none;
 	}
-	.cart > *:last-child {
+	.cart > div:last-child {
 		margin-bottom: 0;
 		position: absolute;
 	}
+	.header__column_links > div.cart {
+		margin-right: 20px
+	}
 	.view-table table td, .view-table table th {
-		padding: 1px 5px;
+		padding: 0;
 		vertical-align: top;
 		border: solid 1px #e5e5e5;
 		vertical-align: middle;
-		text-align: right;
+		text-align: left;
 		width: 100%;
-		height: 46px;
 		overflow: auto;
 		display: flex;
-		align-items: center;
+		margin: 0;
 	}
 	.view-table table thead{
 		width: 30%;
@@ -3160,13 +3169,8 @@ img[alt="right"] {
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.view-table table tr.mtable-row {
-		display: block;
-		width: 30%;
-		border-color:#ccc;
-	}
 	.view-table table tr.row2  {
-		width: 70%;
+		width: 100%;
 	}
 	.devices__wrap_rows {
 		grid-template-columns: repeat(2, 1fr);
@@ -3188,5 +3192,24 @@ img[alt="right"] {
 	}
 	.device_row .order {
 		justify-content: center;
+	}
+	.thn {
+		display: flex;
+		align-items:center;
+		width: 30%;
+		background: #f2f2f2;
+		align-items: center;
+		vertical-align: middle;
+		padding: 5px;
+		margin: 0;
+	}
+	.thd {
+		width:70%;
+		padding: 5px;
+		margin: 0;
+		border: solid 1px #000;
+	}
+	.view-table table tr * {
+		margin-right: 0px;
 	}
 }
