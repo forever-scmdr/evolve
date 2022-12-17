@@ -286,6 +286,7 @@
 					</xsl:if>
 					<xsl:if test="$p/complectation">
 						<div class="tab-container" id="tab_compl" style="{'display: none'[$has_text]}">
+							<h3>Список доступных вариантов сборки</h3>
 							<xsl:apply-templates select="$p/complectation"/>
 						</div>
 					</xsl:if>
@@ -365,8 +366,6 @@
 
 	<xsl:template match="complectation">
 		<div class="complectation-summary">
-
-			<h3>Список доступных варивантов сборки</h3>
 			<table class="with-borders">
 				<thead>
 					<tr>
