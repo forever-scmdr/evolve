@@ -133,11 +133,18 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 								prod.set_code(code);
 							}
 							prod.set_name(src.getValue(NAME_HEADER));
+							String nextDelivery = src.getValue(DELAY_HEADER);
+							if (StringUtils.isBlank(nextDelivery))
+								nextDelivery = settings.get_default_ship_time();
+							prod.set_next_delivery(nextDelivery);
+							/*
 							Byte available = NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) -1);
 							if (available < 0)
 								available = settings.get_default_ship_time();
 							prod.set_available(available);
+							 */
 							prod.set_qty(src.getDoubleValue(QTY_HEADER));
+							prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
 							//BigDecimal price = filePrice.multiply(settings.get_quotient());
 							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());

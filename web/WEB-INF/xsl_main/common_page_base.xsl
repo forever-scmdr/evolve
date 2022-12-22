@@ -233,10 +233,10 @@
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
 								<ul class="currency-options">
 									<xsl:variable name="currency_link" select="page/set_currency"/>
-									<li class="{'active'[$currency = 'BYN']}">
-										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-									</li>
+<!--									<li class="{'active'[$currency = 'BYN']}">-->
+<!--										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>-->
+<!--										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>-->
+<!--									</li>-->
 									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
 										<xsl:variable name="active" select="$currency = $cur"/>
@@ -469,10 +469,10 @@
 							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
 							<ul class="currency-options">
 								<xsl:variable name="currency_link" select="page/set_currency"/>
-								<li class="{'active'[$currency = 'BYN']}">
-									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>
-									<xsl:if test="$currency = 'BYN'">BYN</xsl:if>
-								</li>
+<!--								<li class="{'active'[$currency = 'BYN']}">-->
+<!--									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>-->
+<!--									<xsl:if test="$currency = 'BYN'">BYN</xsl:if>-->
+<!--								</li>-->
 								<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 									<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
 									<xsl:variable name="active" select="$currency = $cur"/>

@@ -298,7 +298,7 @@ public class CrawlerController {
 				for (String line : lines) {
 			        line = line.trim();
 			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
-			        	String[] parts = StringUtils.split(line, ' ');
+			        	String[] parts = StringUtils.split(line, " \t");
 			        	if (parts.length == 1) {
 			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
 			        		seedUrls.add(seed);

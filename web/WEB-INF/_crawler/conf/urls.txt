@@ -1,27 +1,16 @@
 #############################################
 # 				testo.ru
 #############################################
-
 #
 # Initial urls
 #
-
 #https://www.digikey.com
-
-http://sitemap.octopart.com/octo_offsite_sitemap2_0.xml.gz
-http://sitemap.octopart.com/octo_offsite_sitemap2_1.xml.gz
-http://sitemap.octopart.com/octo_offsite_sitemap2_2.xml.gz
-http://sitemap.octopart.com/octo_offsite_sitemap2_3.xml.gz
-
-
+https://www.lcsc.com/sitemap.xml
 #
 #  Pages to parse
 #
-
 #https:\/\/www\.digikey\.com.*\/products\/filter\/.*$    -   https://www.digikey.com/en/products/filter/cable-and-hose-carriers-drag-chains/1014
 #https:\/\/www\.digikey\.com.*\/products\/category\/.*$  -   https://www.digikey.com/en/products/category/boxes-enclosures-racks/27
-https:\/\/octopart\.com.*\/.*$  product.xsl    https://octopart.com/plh250-p-tti-66355926
-
-
-
+https:\/\/www\.lcsc\.com\/product-detail.*\/.*$	product.xsl	https://www.lcsc.com/product-detail/Pre-ordered-Products_RENESAS_C1883652.html
+#https:\/\/octopart\.com.*\/.*$  product.xsl    https://octopart.com/plh250-p-tti-66355926
 #https:\/\/forever\.by.*\/digikey\/.*$   product.xsl    https://forever.by/digikey/CB15.html

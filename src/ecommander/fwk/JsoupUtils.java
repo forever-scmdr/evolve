@@ -30,7 +30,7 @@ public class JsoupUtils {
 
 	public static String outputHtmlDoc(Document jsoupDoc) {
 		setSettings(jsoupDoc);
-		return jsoupDoc.body().outerHtml();
+		return jsoupDoc.outerHtml();
 	}
 
 	public static String outputXmlDoc(Document jsoupDoc) {

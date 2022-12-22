@@ -65,7 +65,7 @@
 
     <xsl:function name="f:format_currency">
         <xsl:param name="num"/>
-        <xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>
+        <xsl:value-of select="format-number($num, '#0.####')"/><!--<xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>-->
     </xsl:function>
 
     <xsl:function name="f:format_currency_precise">
@@ -82,7 +82,8 @@
 
     <xsl:variable name="rates" select="page//currencies[1]"/>
     <xsl:variable name="rates_on" select="page/optional_modules/display_settings/currency_rates = 'on'"/>
-    <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, 'BYN')"/>
+    <xsl:variable name="default_currency" select="f:value_or_default(page/optional_modules/display_settings/default_currency, 'BYN')"/>
+    <xsl:variable name="currency" select="f:value_or_default(page/variables/cur, $default_currency)"/>
     <xsl:variable name="BYN_cur" select="if ($rates and $rates_on) then 'Br' else 'pуб.'"/>
     <xsl:variable name="curr_out" select="if ($currency = 'BYN') then normalize-space($BYN_cur) else $currency"/>
 

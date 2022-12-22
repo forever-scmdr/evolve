@@ -3,6 +3,7 @@ package extra;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.Display_settings;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,6 +21,7 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 	private static final String PRICE_PREFIX = "price_";
 
 	private HashMap<String, BigDecimal[]> rates;
+	private String defaultCurrency = "BYN";
 
 	public CurrencyRates() throws Exception {
 		load();
@@ -36,10 +38,14 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 						BigDecimal[] rateData = new BigDecimal[3];
 						rateData[0] = curs.getDecimalValue(CODE + RATE_SUFFIX, new BigDecimal(1));
 						rateData[1] = curs.getDecimalValue(CODE + SCALE_SUFFIX, new BigDecimal(1));
-						rateData[2] = curs.getDecimalValue(CODE + EXTRA_SUFFIX, new BigDecimal(0)).add(new BigDecimal(1));
+						rateData[2] = curs.getDecimalValue(CODE + EXTRA_SUFFIX, new BigDecimal(0))/*.add(new BigDecimal(1))*/;
 						rates.put(CODE, rateData);
 					}
 				}
+			}
+			Item options = ItemQuery.loadSingleItemByName(DISPLAY_SETTINGS);
+			if (options != null) {
+				defaultCurrency = options.getStringValue(Display_settings.DEFAULT_CURRENCY, "BYN");
 			}
 		}
 	}
@@ -54,20 +60,20 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 		if (price == null || rates == null || rates.size() == 0)
 			return;
 		currencyCode = StringUtils.trim(StringUtils.upperCase(currencyCode));
-		BigDecimal bynPrice = price; // если валюта BYN или не найдена (тоже считать что BYN)
+		BigDecimal defaultCurrencyPrice = price; // если валюта BYN или не найдена (тоже считать что BYN)
 		// Если цена в одной из валют сайта кроме BYN
 		if (rates.containsKey(currencyCode)) {
 			BigDecimal[] rate = rates.get(currencyCode);
 			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN));
-			bynPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(4, RoundingMode.UP);
+			defaultCurrencyPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(4, RoundingMode.UP);
 			product.setValue(PRICE_PREFIX + currencyCode, price);
 		}
-		product.setValue(PRICE, bynPrice);
+		product.setValue(PRICE, defaultCurrencyPrice);
 		for (String CODE : rates.keySet()) {
 			if (StringUtils.equalsIgnoreCase(CODE, currencyCode))
 				continue;
 			BigDecimal[] rate = rates.get(CODE);
-			BigDecimal currencyPrice = bynPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(4, RoundingMode.UP);
+			BigDecimal currencyPrice = defaultCurrencyPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(4, RoundingMode.UP);
 			product.setValue(PRICE_PREFIX + CODE, currencyPrice);
 		}
 	}
