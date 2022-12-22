@@ -390,7 +390,7 @@
 			</td>
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><xsl:value-of select="available"/></div>
+				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>

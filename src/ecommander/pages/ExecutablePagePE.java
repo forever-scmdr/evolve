@@ -172,7 +172,7 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			}
 		}
 		// Добавить переменную - ссылку на эту страницу
-		addVariablePE(new RequestVariablePE(PAGEURL_VALUE, linkUrl));
+		addVariable(new StaticVariable(PAGEURL_VALUE, linkUrl));
 	}
 	/**
 	 * Установить формы, переданные через POST - переменные разный айтемов и форму на базе определенного типа айтема

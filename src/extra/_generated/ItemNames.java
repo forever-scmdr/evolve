@@ -18,6 +18,7 @@ public interface ItemNames {
     String CURRENCIES = "currencies";
     String CATALOG_META = "catalog_meta";
     String CATALOG = "catalog";
+    String SEARCH = "search";
     String PLAIN_CATALOG = "plain_catalog";
     String PLAIN_SECTION = "plain_section";
     String SECTION = "section";
@@ -483,6 +484,9 @@ public interface ItemNames {
         String BOM_SEARCH = "bom_search";
         String EXCEL_SEARCH_RESULTS = "excel_search_results";
         String SEARCH = "search";
+        String SEARCH_RESULTS = "search_results";
+        String PLAIN_IN_PRODUCT = "plain_in_product";
+        String DEFAULT_CURRENCY = "default_currency";
 
     }
 
@@ -1066,6 +1070,15 @@ public interface ItemNames {
 
         String _ITEM_NAME = "robots_text_overrider";
         String FILE_CONTENT = "file_content";
+
+    }
+
+    public interface search_ {
+
+        String _ITEM_NAME = "search";
+        String DEFAULT_VIEW = "default_view";
+        String DISABLE = "disable";
+        String HIDE_SIDE_MENU = "hide_side_menu";
 
     }
 

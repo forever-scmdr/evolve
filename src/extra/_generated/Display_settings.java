@@ -25,6 +25,9 @@ public class Display_settings
     public final static String BOM_SEARCH = "bom_search";
     public final static String EXCEL_SEARCH_RESULTS = "excel_search_results";
     public final static String SEARCH = "search";
+    public final static String SEARCH_RESULTS = "search_results";
+    public final static String PLAIN_IN_PRODUCT = "plain_in_product";
+    public final static String DEFAULT_CURRENCY = "default_currency";
 
     private Display_settings(Item item) {
         super(item);
@@ -299,6 +302,54 @@ public class Display_settings
 
     public boolean contains_search(String value) {
         return containsValue("search", value);
+    }
+
+    public void set_search_results(String value) {
+        setValue("search_results", value);
+    }
+
+    public String get_search_results() {
+        return getStringValue("search_results");
+    }
+
+    public String getDefault_search_results(String defaultVal) {
+        return getStringValue("search_results", defaultVal);
+    }
+
+    public boolean contains_search_results(String value) {
+        return containsValue("search_results", value);
+    }
+
+    public void set_plain_in_product(String value) {
+        setValue("plain_in_product", value);
+    }
+
+    public String get_plain_in_product() {
+        return getStringValue("plain_in_product");
+    }
+
+    public String getDefault_plain_in_product(String defaultVal) {
+        return getStringValue("plain_in_product", defaultVal);
+    }
+
+    public boolean contains_plain_in_product(String value) {
+        return containsValue("plain_in_product", value);
+    }
+
+    public void set_default_currency(String value) {
+        setValue("default_currency", value);
+    }
+
+    public String get_default_currency() {
+        return getStringValue("default_currency");
+    }
+
+    public String getDefault_default_currency(String defaultVal) {
+        return getStringValue("default_currency", defaultVal);
+    }
+
+    public boolean contains_default_currency(String value) {
+        return containsValue("default_currency", value);
     }
 
 }
