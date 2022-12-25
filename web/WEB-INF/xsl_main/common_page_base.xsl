@@ -72,7 +72,7 @@
 	<xsl:template match="custom_page" mode="menu_first">
 		<xsl:variable name="key" select="@key"/>
 		<!-- без подразделов -->
-		<xsl:if test="not(custom_page | page_link) or f:num(hide_popup_menu) = 1">
+		<xsl:if test="not(custom_page)">
 			<div class="main-menu__item {'active'[$active_menu_item = $key]}">
 				<a href="{show_page}" class="{'active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
@@ -80,7 +80,7 @@
 			</div>
 		</xsl:if>
 		<!-- с подразделами -->
-		<xsl:if test="(custom_page | page_link) and f:num(hide_popup_menu) = 0">
+		<xsl:if test="custom_page or page_link">
 			<div class="main-menu__item" style="position: relative;">
 				<a href="#ts_{@id}" class="show-sub{' active'[$active_menu_item = $key]}">
 					<span><xsl:value-of select="header"/></span>
@@ -265,8 +265,8 @@
 						<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
 						<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 							<div class="sections">
-								<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
-									<xsl:if test="section[f:num(hide) = 0]">
+								<xsl:for-each select="page/catalog/section">
+									<xsl:if test="section">
 										<a href="{show_products}" rel="#sub_{@id}">
 											<xsl:value-of select="name" />
 										</a>
@@ -279,9 +279,9 @@
 								</xsl:for-each>
 							</div>
 
-							<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+							<xsl:for-each select="page/catalog/section">
 								<div class="subsections" style="display: none" id="sub_{@id}">
-									<xsl:for-each select="section[f:num(hide) = 0]">
+									<xsl:for-each select="section">
 										<a href="{show_products}"><xsl:value-of select="name" /></a>
 									</xsl:for-each>
 								</div>
@@ -305,7 +305,7 @@
 	<xsl:template match="block" mode="footer">
 		<div class="footer__column">
 			<xsl:if test="header and not(header = '')"><div class="footer__title"><xsl:value-of select="header" /></div></xsl:if>
-			<div class="footer__text"><xsl:value-of select="text|code" disable-output-escaping="yes"/></div>
+			<div class="footer__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
 		</div>
 	</xsl:template>
 
@@ -472,15 +472,15 @@
 					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
 				</div>
 				<ul>
-					<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+					<xsl:for-each select="page/catalog/section">
 						<li>
-							<xsl:if test="section[f:num(hide) = 0]">
+							<xsl:if test="section">
 								<a rel="{concat('#m_sub_', @id)}">
 									<xsl:value-of select="name"/>
 								</a>
 								<span>></span>
 							</xsl:if>
-							<xsl:if test="not(section[f:num(hide) = 0])">
+							<xsl:if test="not(section)">
 								<a href="{show_products}">
 									<xsl:value-of select="name"/>
 								</a>
@@ -490,7 +490,6 @@
 				</ul>
 			</div>
 			<xsl:for-each select="page/catalog/section[section]">
-				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
@@ -498,7 +497,7 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-							<xsl:for-each select="section[f:num(hide) = 0]">
+						<xsl:for-each select="section">
 							<li>
 								<xsl:if test="section">
 									<a rel="{concat('#m_sub_', @id)}">
@@ -515,10 +514,8 @@
 						</xsl:for-each>
 					</ul>
 				</div>
-				</xsl:if>
 			</xsl:for-each>
 			<xsl:for-each select="page/catalog/section/section[section]">
-				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
 						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
@@ -526,14 +523,13 @@
 						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
 					</div>
 					<ul>
-							<xsl:for-each select="section[f:num(hide) = 0]">
+						<xsl:for-each select="section">
 							<li>
 								<a href="{show_products}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 					</ul>
 				</div>
-				</xsl:if>
 			</xsl:for-each>
 		</div>
 	</xsl:template>
@@ -559,25 +555,25 @@
 
 	<xsl:template name="INC_SIDE_MENU_INTERNAL_CATALOG">
 		<div class="side-menu">
-			<xsl:for-each select="page/catalog/section[f:num(hide) = 0]">
+			<xsl:for-each select="page/catalog/section">
 				<xsl:variable name="l1_active" select="@id = $sel_sec_id"/>
 				<div class="side-menu__item side-menu__item_level_1">
 					<a class="side-menu__link{' side-menu__link_active'[$l1_active]}" href="{show_products}"><xsl:value-of select="name"/> </a>
 				</div>
 				<xsl:if test=".//@id = $sel_sec_id">
-					<xsl:for-each select="section[f:num(hide) = 0]">
+					<xsl:for-each select="section">
 						<xsl:variable name="l2_active" select="@id = $sel_sec_id"/>
 						<div class="side-menu__item side-menu__item_level_2">
 							<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l2_active]}"><xsl:value-of select="name"/></a>
 						</div>
 						<xsl:if test=".//@id = $sel_sec_id">
-							<xsl:for-each select="section[f:num(hide) = 0]">
+							<xsl:for-each select="section">
 								<xsl:variable name="l3_active" select="@id = $sel_sec_id"/>
 								<div class="side-menu__item side-menu__item_level_3">
 									<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="name"/></a>
 								</div>
 								<xsl:if test=".//@id = $sel_sec_id">
-									<xsl:for-each select="section[f:num(hide) = 0]">
+									<xsl:for-each select="section">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
 										<div class="side-menu__item side-menu__item_level_4">
 											<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l4_active]}"><xsl:value-of select="name"/></a>

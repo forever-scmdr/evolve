@@ -64,3 +64,9 @@ table.with-borders ul li{
 table.with-borders ul{
 	padding-left: 20px;
 }
+label{
+	cursor: pointer;
+}
+@media (max-width: 1280px){
+	.wide-only{display: none;}
+}

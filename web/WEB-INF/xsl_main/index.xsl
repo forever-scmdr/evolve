@@ -62,20 +62,8 @@
 		</div>
 		<div class="slider-nav"></div>
 		<!-- slider end -->
-		<xsl:variable name="unwanted_types" select="('main_promo_bottom', 'seo', 'product', 'main_slider_frame', 'banner_section')"/>
 
-
-		<xsl:for-each select="page/main_page/(*[not($unwanted_types = @type) and @type != ''])">
-			<xsl:if test="@type != 'custom_block'">
-				<xsl:text disable-output-escaping="yes">&lt;div class="container" &gt;</xsl:text>
-			</xsl:if>
-			<xsl:apply-templates select="." mode="content"/>
-			<xsl:if test="@type != 'custom_block'">
-				<xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
-			</xsl:if>
-		</xsl:for-each>
-
-
+		<xsl:apply-templates select="page/main_page/custom_block" />
 
 		<section class="s-info">
 			<div class="container">

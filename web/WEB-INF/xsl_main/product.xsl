@@ -460,7 +460,7 @@
 
 	<xsl:template name="OPTIONS">
 			<div class="device-basic complectations">
-				<form method="POST" action="{$p/to_cart_pre_order}" data-price="{f:num($p/price)}">
+				<form method="POST" action="{$p/to_cart_pre_order}" data-price="{f:num($p/price)}" id="cmpl-form">
 					<div class="complectation device-basic__column" style="flex: 0 0 50%;">
 						<xsl:if test="$p/option">
 							<h3>Опции</h3>
@@ -474,7 +474,7 @@
 							<xsl:for-each select="$p/option">
 								<tr>
 									<td>
-										<input type="checkbox" value="{@id}" data-name="{name}" data-price="{price}" id="cb-{@id}"/>
+										<input class="option-cb" type="checkbox" value="{@id}" data-name="{name}" data-price="{f:num(price)}" id="cb-{@id}"/>
 									</td>
 									<td style="padding:0">
 										<label for="cb-{@id}">
@@ -492,7 +492,12 @@
 					</div>
 					<div class="complectation device-basic__column">
 						<xsl:if test="$p/option">
-							<h3 class="desktop-only">Выбранная комплектация</h3>
+							<div class="wide-only">
+								<h3 class="desktop-only" style="margin-bottom:12px">Выбранная комплектация</h3>
+								<div>
+									<table style="width:100%" class="options-table" id="selected_options"></table>
+								</div>
+							</div>
 						</xsl:if>
 						<table>
 							<tr>
@@ -501,6 +506,39 @@
 							</tr>
 						</table>
 					</div>
+
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$optionCb = $("#cmpl-form").find(".option-cb");
+							$sum = $("#sum");
+							$optionCb.change(function(e){
+								var $t = $(this);
+								var checked = $t.is("checked");
+
+								var sum = 0;
+								var updatedSelection = $("&lt;table&gt;");
+
+								for(i = 0; i &lt; $optionCb.length; i++){
+									var $current = $($optionCb.get(i));
+									if($current.is(":checked")){
+										sum += $current.attr("data-price") * 1;
+
+										$tr = $("&lt;tr&gt;");
+										$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-name")}));
+										$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-price").toLocaleString('ru-RU'), "style" : "font-weight: bold"}));
+										updatedSelection.append($tr);
+									}
+								}
+								$("#selected_options").html(updatedSelection.html());
+								sum += $("#cmpl-form").attr("data-price") * 1;
+								sum = sum.toLocaleString('ru-RU');
+								$sum.html(sum);
+							})
+						});
+
+
+					</script>
+
 				</form>
 			</div>
 	</xsl:template>

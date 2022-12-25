@@ -15,7 +15,6 @@
 		<xsl:variable name="type_id" select="1828"/>
 		<xsl:variable name="center" select="concat('[',center,']')"/>
 		<xsl:variable name="zoom" select="zoom"/>
-		<xsl:variable name="map_id" select="concat('map-', @id)"/>
 
 		<h2><xsl:value-of select="name"/></h2>
 
@@ -24,13 +23,13 @@
 				<a class="region-link active" data-center="{center}" data-zoom="{$zoom}">Все</a>
 				<xsl:for-each select="region">
 					<span style="padding: 0 0.7rem;">|</span>
-					<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}" id="region-link-{@id}">
+					<a class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
 						<xsl:value-of select="name" />
 					</a>
 				</xsl:for-each>
 			</div>
 		</xsl:if>
-		<div id="{$map_id}" style="width:100%; height:500px;">
+		<div id="map-{@id}" style="width:100%; height:500px;">
 			<script type="text/javascript">
 
 				function parseCoordinates(c){
@@ -105,19 +104,6 @@
 							}
 					});
 				}
-				<xsl:if test="f:num(show_places) = 1">
-
-				var pointLinks = document.getElementsByClassName('point-pointer');
-				for(i =0; i &lt; pointLinks.length; i++){
-					ymaps.domEvent.manager.group(pointLinks[i]).add(events, function (event){
-						var a = event.get("target");
-						var coordinates = parseCoordinates(a.getAttribute("data-coordinates"));
-						yMap.setZoom(13.5);
-						yMap.panTo(coordinates);
-
-					});
-				}
-				</xsl:if>
 				objectManager.add(placemarks);
 				yMap.geoObjects.add(objectManager);
 
@@ -139,58 +125,6 @@
 				}
 				};
 			</script>
-		</div>
-
-		<xsl:if test="f:num(show_places) = 1">
-			<xsl:if test="point">
-				<div class="map-points-list">
-					<xsl:for-each select="point">
-						<xsl:apply-templates select=".">
-							<xsl:with-param name="map_id" select="$map_id" />
-						</xsl:apply-templates>
-					</xsl:for-each>
-				</div>
-			</xsl:if>
-				<xsl:for-each select="region">
-					<div class="title title_2">
-						<a onclick="$(document).scrollTop($('#{$map_id}').offset().top - 100);" class="region-link" data-center="{center}" data-zoom="{zoom}" data-region="{@id}">
-							<xsl:value-of select="name"/>
-						</a>
-					</div>
-					<div class="map-points-list">
-						<xsl:apply-templates select="point">
-							<xsl:with-param name="map_id" select="$map_id" />
-						</xsl:apply-templates>
-					</div>
-				</xsl:for-each>
-
-		</xsl:if>
-
-	</xsl:template>
-
-	<xsl:template match="point">
-
-		<xsl:param name="map_id"/>
-
-		<div class="point">
-			<xsl:if test="coords != ''">
-				<a class="point-pointer" data-coordinates="{coords}" onclick="$(document).scrollTop($('#{$map_id}').offset().top - 100);">
-					<xsl:value-of select="name"/>
-				</a>
-			</xsl:if>
-			<xsl:if test="not(coords != '')">
-				<a><xsl:value-of select="name"/></a>
-			</xsl:if>
-			<xsl:if test="info | address" >
-				<div class="text">
-					<xsl:if test="info" >
-						<p><xsl:value-of select="info"/></p>
-					</xsl:if>
-					<xsl:if test="address" >
-						<p><xsl:value-of select="address"/></p>
-					</xsl:if>
-				</div>
-			</xsl:if>
 		</div>
 	</xsl:template>
 
@@ -311,9 +245,5 @@
 				</script>
 			</div>
 		</div>
-	</xsl:template>
-
-	<xsl:template match="custom_block" mode="content">
-		<xsl:apply-templates select="."/>
 	</xsl:template>
 </xsl:stylesheet>
