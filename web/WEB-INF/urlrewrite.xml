@@ -9,6 +9,11 @@
 
 -->
 <urlrewrite>
+    <!--SSL сертификат (отличать от обычных директорий и /eco урлов)-->
+    <rule match-type="regex" enabled="true">
+        <from>^.*\.well-known\/.*</from>
+        <to type="forward" last="true">$0</to>
+    </rule>
     <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>

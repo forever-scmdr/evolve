@@ -15,14 +15,6 @@
     <xsl:variable name="quotient_default" select="$price_catalogs/quotient"/>
 
 
-    <xsl:function name="f:cur">
-        <xsl:choose>
-            <xsl:when test="$currency = 'RUB'">₽</xsl:when>
-            <xsl:when test="$currency = 'USD'">$</xsl:when>
-            <xsl:when test="$currency = 'EUR'">€</xsl:when>
-        </xsl:choose>
-    </xsl:function>
-
 
     <xsl:function name="f:print_cur">
         <xsl:param name="sum"/>
