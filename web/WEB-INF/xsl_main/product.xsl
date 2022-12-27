@@ -474,7 +474,7 @@
 							<xsl:for-each select="$p/option">
 								<tr>
 									<td>
-										<input class="option-cb" type="checkbox" value="{@id}" data-name="{name}" data-price="{f:num(price)}" id="cb-{@id}"/>
+										<input name="option" class="option-cb" type="checkbox" value="{@id}" data-name="{name}" data-price="{f:num(price)}" id="cb-{@id}"/>
 									</td>
 									<td style="padding:0">
 										<label for="cb-{@id}">
@@ -501,6 +501,11 @@
 						</xsl:if>
 						<table>
 							<tr>
+								<td colspan="2">
+									<label>Название комплектации: <input id="cname-{$p/code}" type="text" name="сomplectation_name"/></label>
+								</td>
+							</tr>
+							<tr>
 								<td class="total">Сумма: <b id="sum"><xsl:value-of select="$p/price"/></b></td>
 								<td style="text-align:right;"><button class="button button_size_lg" type="submit">Предзаказ</button></td>
 							</tr>
@@ -511,34 +516,32 @@
 						$(document).ready(function(){
 							$optionCb = $("#cmpl-form").find(".option-cb");
 							$sum = $("#sum");
-							$optionCb.change(function(e){
-								var $t = $(this);
-								var checked = $t.is("checked");
+							update();
+							$optionCb.change(function(e){update();});
 
+							function update(){
 								var sum = 0;
 								var updatedSelection = $("&lt;table&gt;");
 
 								for(i = 0; i &lt; $optionCb.length; i++){
-									var $current = $($optionCb.get(i));
-									if($current.is(":checked")){
-										sum += $current.attr("data-price") * 1;
+								var $current = $($optionCb.get(i));
+								if($current.is(":checked")){
+								sum += $current.attr("data-price") * 1;
 
-										$tr = $("&lt;tr&gt;");
-										$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-name")}));
-										$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-price").toLocaleString('ru-RU'), "style" : "font-weight: bold"}));
-										updatedSelection.append($tr);
-									}
+								$tr = $("&lt;tr&gt;");
+								$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-name")}));
+								$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-price").toLocaleString('ru-RU'), "style" : "font-weight: bold"}));
+								updatedSelection.append($tr);
+								}
 								}
 								$("#selected_options").html(updatedSelection.html());
 								sum += $("#cmpl-form").attr("data-price") * 1;
 								sum = sum.toLocaleString('ru-RU');
 								$sum.html(sum);
-							})
+							}
 						});
 
-
 					</script>
-
 				</form>
 			</div>
 	</xsl:template>

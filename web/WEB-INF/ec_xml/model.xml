@@ -480,17 +480,31 @@
 		<parameter name="price" type="currency" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
 		<parameter name="sum" type="currency" caption="Полная стоимость"/>
-		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
-		<parameter name="complecatation_name" type="string" caption="Название комплектации"/>
-		<parameter name="option" type="tuple" caption="Опции" format="=" multiple="true"/>
+		<parameter name="is_complex" type="byte" domain="0-1" caption="Товар с опциями"/>
+		<parameter name="сomplectation_name" type="string" caption="Название комплектации"/>
 		<child item="product" single="true"/>
+		<child item="pseudo_option" multiple="true"/>
+	</item>
+
+	<item name="pseudo_option" virtual="true" caption="Опция" key="name" ag-id="2296" ag-hash="-1937526250">
+		<parameter name="name" type="string" caption="Наименование опции"  description="Используется в истории заказов"/>
+		<parameter name="code" type="string" caption="Артикул"/>
+		<parameter name="price" type="currency" caption="Цена товара"  description="На момент заказа"/>
 	</item>
 
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176" >
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
+
+		//Заказ
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
+		<parameter name="sum_saved" type="currency" caption="Сэкономленная сумма"/>
+
+		//Предзаказ
+		<parameter name="p_sum" type="currency" caption="Общая сумма"/>
+		<parameter name="p_sum_discount" type="currency" caption="Сумма с учетом скидки"/>
+		<parameter name="p_sum_saved" type="currency" caption="Сэкономленная сумма"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -513,11 +527,12 @@
 	<item name="purchase" caption="Заказ" key="num" ag-id="820" ag-hash="1743324417" >
 		<parameter name="num" caption="Номер" type="string"/>
 		<parameter name="date" caption="Дата" type="date"/>
-		<parameter name="qty" type="double" caption="Количество (deprecated)" description="для обратной совместимости"/>
 		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" caption="Общее количество"/>
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum_discount" type="currency" caption="Общая сумма со скидкой"/>
+		<parameter name="sum_saved" type="currency" caption="Сэкономленная сума"/>
 		<child item="bought"/>
 	</item>
 

@@ -7,4 +7,6 @@
 /web/WEB-INF/_lucene/
 /web/files/
 /web/WEB-INF/ec_xml/model_custom.xml
+/web/WEB-INF/ec_xml/~model_custom.xml
+/web/WEB-INF/ec_xml/~model.xml
 /web/WEB-INF/ec_xml/ecommander/

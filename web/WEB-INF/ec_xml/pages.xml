@@ -108,7 +108,7 @@
 			<var name="prod" ref="prod"/>
 		</link>
 		<link name="to_cart_pre_order" target="cart_action">
-			<var name="action" value="addToPreOrder"/>
+			<var name="action" value="addComplexToCart"/>
 			<var name="prod" ref="prod"/>
 		</link>
 		<link name="to_fav" target="cookie_list_action_redirect">
@@ -940,6 +940,7 @@
 	<page name="cart_ajax" template="cart_ajax">
 		<request>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="cart_complex_cookie" scope="cookie"/>
 			<var name="cur" value="BYN" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
@@ -961,7 +962,7 @@
 	</page>
 
 
-	<page name="complect_ajax" template="complect_ajax">
+	<page name="complect_ajax" template="">
 		<request>
 			<var name="message"/>
 			<var name="product" />
@@ -975,8 +976,8 @@
 							<var name="action" value="createComplectation"/>
 							<var name="prod" ref="product"/>
 						</link>
-						<list item="option"/>
 					</list>
+					<list item="pseudo_option"/>
 					<link name="update_complect_link" target="cart_action">
 						<var name="action" value="updateComplectation"/>
 						<var name="bought" ref="bought"/>
