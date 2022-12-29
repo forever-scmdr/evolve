@@ -234,6 +234,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
 				for (String picUrl : picUrls) {
+					picUrl = StringUtils.substringBefore(picUrl, "?");
 					try {
 						String fileName = Strings.getFileName(picUrl);
 						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
@@ -256,7 +257,9 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				if (noMainPic && picUrls.size() > 0) {
 					if (picUrls.size() > 0) {
-						product.setValue(MAIN_PIC_PARAM, new URL(picUrls.iterator().next()));
+						String firstPicName = picUrls.iterator().next();
+						firstPicName = StringUtils.substringBefore(firstPicName, "?");
+						product.setValue(MAIN_PIC_PARAM, new URL(firstPicName));
 					}
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
