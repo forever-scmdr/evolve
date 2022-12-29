@@ -189,6 +189,7 @@
 
 	<!-- Служебные данные для каталога продукции (чтобы можно было удалять сам каталог, а данные не удалялись бы) -->
 	<item name="catalog_meta" caption="Настройки каталога" ag-id="2109" ag-hash="-1147955605">
+		<parameter name="excel_order_template" type="file" caption="Шаблон Excel для счет-фактуры при заказе" description="должен содержать специальные метки"/>
 		<child item="price_catalogs" single="true"/>
 		<child item="currencies" single="true"/>
 	</item>

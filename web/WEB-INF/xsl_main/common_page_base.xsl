@@ -634,6 +634,7 @@
 								<div class="side-menu__item side-menu__item_level_3">
 									<a href="{show_products}" class="side-menu__link{' side-menu__link_active'[$l3_active]}"><xsl:value-of select="name"/></a>
 								</div>
+								<!--
 								<xsl:if test=".//@id = $sel_sec_id">
 									<xsl:for-each select="section[f:num(hide) = 0]">
 										<xsl:variable name="l4_active" select="@id = $sel_sec_id"/>
@@ -642,6 +643,7 @@
 										</div>
 									</xsl:for-each>
 								</xsl:if>
+								-->
 							</xsl:for-each>
 						</xsl:if>
 					</xsl:for-each>

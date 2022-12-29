@@ -221,6 +221,7 @@ public abstract class BasicCartManageCommand extends Command {
 					+ ";charset=UTF-8");
 			addExtraEmailBodyPart(false, customerMultipart);
 		}
+		addExtraEmailBillPart(orderNumber, customerMultipart); // Добавить файл с счет-фактурой (в случае если шаблон есть)
 
 		// Отправка на ящик заказчика
 		try {
@@ -313,7 +314,24 @@ public abstract class BasicCartManageCommand extends Command {
 
 	protected abstract boolean validate() throws Exception;
 
+	/**
+	 * Добавить к письму заказа магазина вложенные в форму файлы, переданные пользователем
+	 * @param isCustomerEmail
+	 * @param mp
+	 * @return
+	 * @throws Exception
+	 */
 	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
+		return true;
+	}
+
+	/**
+	 * Добавить к письму заказа покупателя файл со счет-фактурой
+	 * @param mp
+	 * @return
+	 * @throws Exception
+	 */
+	protected boolean addExtraEmailBillPart(String orderNum, Multipart mp) throws Exception {
 		return true;
 	}
 

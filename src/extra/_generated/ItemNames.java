@@ -261,6 +261,7 @@ public interface ItemNames {
     public interface catalog_meta_ {
 
         String _ITEM_NAME = "catalog_meta";
+        String EXCEL_ORDER_TEMPLATE = "excel_order_template";
 
     }
 
@@ -345,6 +346,9 @@ public interface ItemNames {
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
         String EUR_UPDATE = "EUR_update";
+        String BYN_RATE = "BYN_rate";
+        String BYN_SCALE = "BYN_scale";
+        String BYN_UPDATE = "BYN_update";
 
     }
 
@@ -461,6 +465,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_BYN = "price_BYN";
+        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
 
     }
@@ -632,6 +638,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_BYN = "price_BYN";
+        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
 
     }
@@ -998,6 +1006,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_BYN = "price_BYN";
+        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

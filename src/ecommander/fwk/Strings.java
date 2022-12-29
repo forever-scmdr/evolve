@@ -187,7 +187,7 @@ public class Strings
      * @param number
      * @return
      */
-    public static String numberToRusWords(double number) {
+    public static String numberToRusWords(long number) {
 		RuleBasedNumberFormat nf = new RuleBasedNumberFormat(Locale.forLanguageTag("ru"), RuleBasedNumberFormat.SPELLOUT);
 		return nf.format(number);
     }

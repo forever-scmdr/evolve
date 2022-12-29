@@ -1,10 +1,14 @@
 package extra;
 
+import ecommander.controllers.AppContext;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.integration.ExcelTemplateProcessor;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -16,17 +20,20 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.util.ByteArrayDataSource;
+import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 /**
  * Корзина
  * Created by E on 6/3/2018.
  */
-public class CartManageCommand extends BasicCartManageCommand {
+public class CartManageCommand extends BasicCartManageCommand implements ItemNames {
 
 	public static final String PLAIN_SECTION = "plain_section";
 	public static final String PRICE_CATALOG = "price_catalog";
@@ -64,10 +71,10 @@ public class CartManageCommand extends BasicCartManageCommand {
 	public static final HashSet<String> MANDATORY_PHYS = new HashSet<>();
 	public static final HashSet<String> MANDATORY_JUR = new HashSet<>();
 	static {
-		MANDATORY_PHYS.add(ItemNames.user_phys_.NAME);
+		MANDATORY_PHYS.add(user_phys_.NAME);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.ADDRESS);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.EMAIL);
-		MANDATORY_PHYS.add(ItemNames.user_phys_.PHONE);
+		MANDATORY_PHYS.add(user_phys_.PHONE);
 		//MANDATORY_PHYS.add(ItemNames.user_phys_.SHIP_TYPE);
 
 		//MANDATORY_JUR.add(ItemNames.user_jur_.ACCOUNT);
@@ -75,12 +82,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_ADDRESS);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_CODE);
-		MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_NAME);
+		MANDATORY_JUR.add(user_jur_.CONTACT_NAME);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_PHONE);
-		MANDATORY_JUR.add(ItemNames.user_jur_.PHONE);
+		MANDATORY_JUR.add(user_jur_.PHONE);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.DIRECTOR);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.EMAIL);
-		MANDATORY_JUR.add(ItemNames.user_jur_.ORGANIZATION);
+		MANDATORY_JUR.add(user_jur_.ORGANIZATION);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.SHIP_TYPE);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.UNP);
 	}
@@ -123,7 +130,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	@Override
 	protected boolean validate() throws Exception {
 		Item form = getItemForm().getItemSingleTransient();
-		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(USER_PHYS).getTypeId();
 		boolean hasError = false;
 		if (isPhys) {
 			for (String mandatory : MANDATORY_PHYS) {
@@ -328,6 +335,74 @@ public class CartManageCommand extends BasicCartManageCommand {
 						mp.addBodyPart(filePart);
 					}
 				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean addExtraEmailBillPart(String orderNum, Multipart mp) throws Exception {
+		Item catalogMeta = ItemQuery.loadSingleItemByName(CATALOG_META);
+		if (catalogMeta == null)
+			return false;
+		File template = catalogMeta.getFileValue(catalog_meta_.EXCEL_ORDER_TEMPLATE, AppContext.getFilesDirPath(false));
+		if (template != null && template.exists()) {
+			try {
+				Item customer = getItemForm().getItemSingleTransient();
+				boolean isPhys = customer.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+				ExcelTemplateProcessor proc = new ExcelTemplateProcessor(template);
+				proc.replace("$doc_num", "C-" + orderNum);
+				proc.replace("$order_num", orderNum);
+				proc.replace("$order_date", DateDataType.outputDate(System.currentTimeMillis(), DateDataType.DAY_FORMATTER));
+				proc.replace("$customer_name", isPhys ? customer.outputValue(user_phys_.NAME) : customer.outputValue(user_jur_.ORGANIZATION));
+				proc.replace("$customer_name", isPhys ? customer.outputValue(user_phys_.NAME) : customer.outputValue(user_jur_.ORGANIZATION));
+				ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+				for (int i = 0; i < boughts.size() - 1; i++) {
+					proc.duplicateRowContaining("$prod_name");
+				}
+				BigDecimal nds = BigDecimal.valueOf(20);
+				BigDecimal ndsPercents = nds.add(BigDecimal.valueOf(100));
+				BigDecimal ndsQuotient = BigDecimal.valueOf(100).divide(ndsPercents, RoundingMode.HALF_EVEN);
+				for (Item bought : boughts) {
+					BigDecimal sum = bought.getDecimalValue(bought_.SUM);
+					BigDecimal noNdsSum = sum.multiply(ndsQuotient);
+					BigDecimal justNdsSum = sum.subtract(noNdsSum);
+					BigDecimal noNdsPrice = noNdsSum.divide(BigDecimal.valueOf(bought.getDoubleValue(bought_.QTY)), RoundingMode.HALF_EVEN).setScale(2, RoundingMode.CEILING);
+					proc.replace("$prod_name", bought.outputValue(bought_.NAME));
+					proc.replace("$prod_qty", bought.outputValue(bought_.QTY));
+					proc.replace("$prod_price", noNdsPrice.toPlainString());
+					proc.replace("$prod_sum", noNdsSum.toPlainString());
+					proc.replace("$prod_sum_nds", justNdsSum.toPlainString());
+					proc.replace("$prod_sum_full", sum.toPlainString());
+				}
+				BigDecimal cartSum = cart.getDecimalValue(cart_.SUM);
+				BigDecimal roubles = cartSum.setScale(0, RoundingMode.DOWN);
+				BigDecimal cents = cartSum.subtract(roubles);
+				BigDecimal sumNoNds = cartSum.multiply(ndsQuotient);
+				BigDecimal justNds = cartSum.subtract(sumNoNds);
+				BigDecimal roublesJustNds = justNds.setScale(0, RoundingMode.DOWN);
+				BigDecimal centsJustNds = justNds.subtract(roublesJustNds);
+				String justNdsRubString = Strings.numberToRusWords(roublesJustNds.longValue()) + " "
+						+ Strings.numberEnding(roublesJustNds.longValue(), "рубль", "рубля", "рублей");
+				String justNdsCentString = Strings.numberToRusWords(centsJustNds.longValue()) + " "
+						+ Strings.numberEnding(centsJustNds.longValue(), "копейка", "копейки", "копеек");
+				String rubString = Strings.numberToRusWords(roubles.longValue()) + " "
+						+ Strings.numberEnding(roubles.longValue(), "рубль", "рубля", "рублей");
+				String centString = Strings.numberToRusWords(cents.longValue()) + " "
+						+ Strings.numberEnding(cents.longValue(), "копейка", "копейки", "копеек");
+				proc.replace("$just_nds_words", justNdsRubString + " " + justNdsCentString);
+				proc.replace("$sum_words", rubString + " " + centString);
+
+				File xlsFile = new File(AppContext.getFilesDirPath(false) + "files/" + orderNum + ".xlsx");
+				proc.writeExcelFile(xlsFile);
+				DataSource xlsxSource = new FileDataSource(xlsFile); // , "application/vnd.ms-excel"
+				MimeBodyPart xlsxPart = new MimeBodyPart();
+				xlsxPart.setDataHandler(new DataHandler(xlsxSource));
+				xlsxPart.setFileName(xlsFile.getName());
+				mp.addBodyPart(xlsxPart);
+			} catch (Exception e) {
+				ServerLogger.error("Can not use customer bill template ", e);
+				return false;
 			}
 		}
 		return true;
