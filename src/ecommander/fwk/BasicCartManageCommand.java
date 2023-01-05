@@ -1,25 +1,29 @@
 package ecommander.fwk;
 
+import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -73,6 +77,9 @@ public abstract class BasicCartManageCommand extends Command {
 	private static final String COMPLEX_COOKIE = "cart_complex_cookie";
 	private static final String STRATEGY_VAR = "strategy";
 
+	final String IN_PROGRESS = "in_progress";
+	final String TRUE = "true";
+
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -81,6 +88,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	protected Item cart;
+	protected Item userItem;
 	protected Strategy strategy = Strategy.deny_overbuy;
 
 
@@ -105,7 +113,13 @@ public abstract class BasicCartManageCommand extends Command {
 		} catch (Exception e) {/**/}
 		addProduct(prodId, quantity);
 		recalculateCart();
-		saveCookie();
+
+		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId())
+				.stream()
+				.filter(b -> b.getByteValue("is_complex", (byte)0) == 0)
+				.collect(Collectors.toList());
+
+		saveCartCookie(boughts);
 		return getResult("ajax");
 	}
 
@@ -119,7 +133,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if (o.size() == 0) {
 			getSessionMapper().removeItems(boughtId, BOUGHT_ITEM);
 			recalculateCart();
-			saveCookie();
+			saveCartCookies();
 		}
 		return getResult("cart");
 	}
@@ -129,7 +143,7 @@ public abstract class BasicCartManageCommand extends Command {
 		checkStrategy();
 		updateQtys();
 		recalculateCart();
-		saveCookie();
+		saveCartCookies();
 		return getResult("cart");
 	}
 
@@ -138,7 +152,7 @@ public abstract class BasicCartManageCommand extends Command {
 		checkStrategy();
 		updateQtys();
 		recalculateCart();
-		saveCookie();
+		saveCartCookies();
 		return getResult("proceed");
 	}
 
@@ -146,16 +160,14 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getItemSingleTransient();
-		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+
 		recalculateCart();
-		saveCookie();
+		saveCartCookies();
 
 		if (!validate()) {
 			return getResult("validation_failed");
 		}
 
-		final String IN_PROGRESS = "in_progress";
-		final String TRUE = "true";
 		loadCart();
 		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
 			return getResult("confirm");
@@ -166,104 +178,184 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("confirm");
 		}
 
-		// Проверка, есть ли обычные заказы, заказы с количеством 0 и кастомные заказы
-
-
-		// Загрузка и модификация счетчика
 		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
 		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
-		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
-		if (count > 99999)
-			count = 1;
-		String orderNumber = String.format("%05d", count);
 
-		cart.setValue("order_num", orderNumber);
+		boolean simpleExists = getCookieVarValues(CART_COOKIE).size() > 0;
+		boolean complexExists = getCookieVarValues(COMPLEX_COOKIE).size() > 0;
+
+		try {
+			if (simpleExists) {
+				processOrder(counter, form);
+			}
+
+			if (complexExists) {
+				processPreOrder(counter, form);
+			}
+		} catch (MessagingException e) {
+			ServerLogger.error("Unable to send email", e);
+			cart.setExtra(IN_PROGRESS, null);
+			getSessionMapper().saveTemporaryItem(cart);
+			return getResult("email_send_failed").setVariable("message", "Не удалось отправить email.");
+		} catch (Exception e) {
+			ServerLogger.error("Cart failed", e);
+			cart.setExtra(IN_PROGRESS, null);
+			getSessionMapper().saveTemporaryItem(cart);
+			return getResult("general_error");
+		}
+
+		cart.setValue(PROCESSED_PARAM, (byte) 1);
+		cart.setExtra(IN_PROGRESS, null);
 		getSessionMapper().saveTemporaryItem(cart);
+		return getResult("confirm");
+	}
+
+	private void processPreOrder(Item counter, Item form) throws Exception {
+		String orderNumber = generateOrderNumber(counter);
 
 		// Подготовка тела письма
-		String regularTopic
-				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+		String regularTopic = "Предзаказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
+		final String customerEmailTemplate = "order_email";
+		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
 
 		// Письмо для продавца
-		Multipart shopMultipart = new MimeMultipart();
-		MimeBodyPart shopTextPart = new MimeBodyPart();
-		shopMultipart.addBodyPart(shopTextPart);
-		LinkPE shopEmailLink = LinkPE.newDirectLink("link", "shop_email", false);
-		ExecutablePagePE shopTemplate;
-		try {
-			shopTemplate = getExecutablePage(shopEmailLink.serialize());
-		} catch (PageNotFoundException e) {
-			shopTemplate = null;
-		}
-		if (shopTemplate == null) {
-			shopEmailLink = LinkPE.newDirectLink("link", "order_email", false);
-			shopTemplate = getExecutablePage(shopEmailLink.serialize());
-		}
-		ByteArrayOutputStream shopEmailBytes = new ByteArrayOutputStream();
-		PageController.newSimple().executePage(shopTemplate, shopEmailBytes);
-		shopTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-				+ ";charset=UTF-8");
-		addExtraEmailBodyPart(false, shopMultipart);
-
+		//sendEmail(regularTopic, shopEmail, shopEmailTemplate);
 		// Письмо для покупателя
-		Multipart customerMultipart = new MimeMultipart();
-		MimeBodyPart customerTextPart = new MimeBodyPart();
-		customerMultipart.addBodyPart(customerTextPart);
-		try {
-			LinkPE customerEmailLink = LinkPE.newDirectLink("link", "customer_email", false);
-			ExecutablePagePE customerTemplate = getExecutablePage(customerEmailLink.serialize());
-			ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(customerTemplate, customerEmailBytes);
-			customerTextPart.setContent(customerEmailBytes.toString("UTF-8"), customerTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(true, customerMultipart);
-		} catch (Exception e) {
-			customerTextPart.setContent(shopEmailBytes.toString("UTF-8"), shopTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-					+ ";charset=UTF-8");
-			addExtraEmailBodyPart(false, customerMultipart);
-		}
+		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
-		// Отправка на ящик заказчика
-		try {
-			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, regularTopic, customerMultipart);
-		} catch (Exception e) {
-			ServerLogger.error("Unable to send email", e);
-			cart.setExtra(IN_PROGRESS, null);
-			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Не удалось отправить сообщение на указанный ящик");
-		}
-		// Отправка на ящик магазина
-		try {
-			EmailUtils.sendGmailDefault(shopEmail, regularTopic, shopMultipart);
-		} catch (Exception e) {
-			ServerLogger.error("Unable to send email", e);
-			cart.setExtra(IN_PROGRESS, null);
-			getSessionMapper().saveTemporaryItem(cart);
-			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
-		}
+		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte) 1);
+		String xml = buildPreOrderXml(boughts);
+		saveToFile(xml, orderNumber);
+		saveToHistory(boughts, form, "p_sum", "p_sum_discount", "p_sum_saved");
+		updateCounterItem(counter, cart.getStringValue("order_num"));
+	}
 
-		// Сохранение нового значения счетчика, если все отправлено удачно
-		counter.setValue(COUNT_PARAM, count);
-		//counter.setValue(DATE_PARAM, newDate);
-		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
+	private void saveToFile(String xml, String name) throws IOException {
+		Path p = Paths.get(AppContext.getContextPath(), "orders", name+".xml");
+		FileUtils.writeStringToFile(p.toFile(), xml, StandardCharsets.UTF_8);
+	}
 
+	protected String buildPreOrderXml(Collection<Item> boughts) throws Exception {
+		XmlDocumentBuilder orderXml = XmlDocumentBuilder.newDoc();
+		orderXml.startElement("order", "date", DATE_FORMAT.format(new Date()), "number", cart.getValue("order_num"));
+
+		//Buyers's contacts
+		orderXml.startElement("buyer");
+		ItemType userType = userItem.getItemType();
+		for (String paramName : userType.getParameterNames()) {
+			Object value = userItem.getValue(paramName);
+			if (value != null && StringUtils.isNotBlank(value.toString())) {
+				orderXml.addElement(paramName, value);
+			}
+		}
+		orderXml.endElement();
+
+		//Shopping list
+		orderXml.startElement("products");
+
+		for (Item bought : boughts) {
+
+			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+
+			//product
+			orderXml
+					.startElement("prodcut")
+					.addElement(CODE_PARAM, bought.getStringValue(CODE_PARAM))
+					.addElement(NAME_PARAM, bought.getStringValue(NAME_PARAM))
+					.addElement("custom_name", bought.getStringValue("сomplectation_name"))
+					.addElement(PRICE_PARAM, product.getValue(PRICE_PARAM))
+					.addElement(SUM_PARAM, bought.getValue(SUM_PARAM));
+
+			//options
+			orderXml.startElement("options");
+
+			List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
+			for (Item option : options) {
+				orderXml
+						.startElement("option")
+						.addElement(CODE_PARAM, option.getStringValue(CODE_PARAM))
+						.addElement(NAME_PARAM, option.getStringValue(NAME_PARAM))
+						.addElement(PRICE_PARAM, option.getValue(PRICE_PARAM))
+						.endElement();
+			}
+			orderXml.endElement();
+			orderXml.endElement();
+		}
+		orderXml.endElement();
+
+		//sum
+		orderXml
+				.startElement("total")
+				.addElement(SUM_PARAM, cart.getValue("p_sum"))
+				.addElement("sum_discount", cart.getValue("p_sum_discount"))
+				.addElement("sum_saved", cart.getValue("p_sum_saved"))
+				.endElement();
+
+
+		orderXml.endElement();
+		return orderXml.toString();
+	}
+
+	private void processOrder(Item counter, Item form) throws Exception {
+		String orderNumber = generateOrderNumber(counter);
+
+		// Подготовка тела письма
+		String regularTopic = "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+
+		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
+		final String shopEmail = getVarSingleValue("email");
+		final String customerEmailTemplate = "order_email";
+		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
+
+		// Письмо для продавца
+		sendEmail(regularTopic, shopEmail, shopEmailTemplate);
+		// Письмо для покупателя
+		sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
+
+		List<Item> boughts = getSessionMapper()
+				.getItemsByName(BOUGHT_ITEM, cart.getId())
+				.stream()
+				.filter(b -> b.getByteValue("is_complex", (byte) 0) == 0)
+				.collect(Collectors.toList());
+
+		saveToHistory(boughts, form, "sum", "sum_discount", "sum_saved");
+		updateCounterItem(counter, cart.getStringValue("order_num"));
+	}
+
+
+	private boolean pageExists(String pageName) throws UnsupportedEncodingException, UserNotAllowedException {
+		try {
+			getExecutablePage(LinkPE.newDirectLink("link", pageName, false).serialize());
+		} catch (PageNotFoundException e) {
+			return false;
+		}
+		return true;
+	}
+
+	private void sendEmail(String topic, String email, String templatePageName, boolean... isCustomerEmail) throws Exception {
+		if (StringUtils.isBlank(email)) return;
+
+		Multipart multipart = new MimeMultipart();
+		MimeBodyPart textPart = new MimeBodyPart();
+		multipart.addBodyPart(textPart);
+		LinkPE templatePageLink = LinkPE.newDirectLink("link", templatePageName, false);
+
+		ExecutablePagePE templatePage = getExecutablePage(templatePageLink.serialize());
+		ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(templatePage, customerEmailBytes);
+		textPart.setContent(customerEmailBytes.toString("UTF-8"), templatePage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+				+ ";charset=UTF-8");
+		addExtraEmailBodyPart(isCustomerEmail.length > 0 && isCustomerEmail[0], multipart);
+		EmailUtils.sendGmailDefault(email, topic, multipart);
+	}
+
+	private void saveToHistory(List<Item> boughts, Item form, String sumParam, String sumDiscountParam, String sumSavedParam) throws Exception {
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
-
-		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
-		Item userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
-
-		// 2. Потом надо попробовать загружить пользователя по введенному email
-		if (userItem == null) {
-			String email = form.getStringValue(EMAIL_PARAM);
-			if (StringUtils.isNotBlank(email))
-				userItem = new ItemQuery(USER_ITEM).addParameterCriteria(EMAIL_PARAM, email, "=", null, Compare.SOME).loadFirstItem();
-		}
 
 		// 3. Если пользователь не нашелся по email, надо создать нового пользователя
 		//    сам пользователь не создается (логин-пароль), только айтем пользователя
@@ -281,14 +373,16 @@ public abstract class BasicCartManageCommand extends Command {
 		// 4. Сохранить все покупки в истории, если пользователь нашелся или был создан
 		if (userItem != null) {
 			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
-			purchase.setValue(NUM_PARAM, orderNumber + "");
+			purchase.setValue(NUM_PARAM, cart.getValue("order_num"));
 			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
-			purchase.setValue(QTY_PARAM, cart.getValue(QTY_PARAM));
 			purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
 			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
-			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
+			purchase.setValue(SUM_PARAM, cart.getValue(sumParam));
+			purchase.setValue("sum_discount", cart.getValue(sumDiscountParam));
+			purchase.setValue("sum_saved", cart.getValue(sumSavedParam));
+
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
-			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+
 			for (Item bought : boughts) {
 				Item boughtToSave = new Item(bought);
 				boughtToSave.setContextPrimaryParentId(purchase.getId());
@@ -302,12 +396,24 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подтвердить изменения
 		commitCommandUnits();
+	}
 
-		cart.setValue(PROCESSED_PARAM, (byte) 1);
-		cart.setExtra(IN_PROGRESS, null);
-		setCookieVariable(CART_COOKIE, null);
+	private String generateOrderNumber(Item counter) {
+		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
+		if (count > 99999)
+			count = 1;
+		String orderNumber = String.format("%05d", count);
+
+		cart.setValue("order_num", orderNumber);
 		getSessionMapper().saveTemporaryItem(cart);
-		return getResult("confirm");
+		return orderNumber;
+	}
+
+	private void updateCounterItem(Item counter, String latestOrderNumber) throws Exception {
+		// Сохранение нового значения счетчика, если все отправлено удачно
+		int n = Integer.parseInt(latestOrderNumber.replace("\\D", ""));
+		counter.setValue(COUNT_PARAM, n);
+		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
 	}
 
 	protected abstract boolean validate() throws Exception;
@@ -315,7 +421,6 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean addExtraEmailBodyPart(boolean isCustomerEmail, Multipart mp) throws Exception {
 		return true;
 	}
-
 
 	private void updateQtys() throws Exception {
 		MultipleHttpPostForm form = getItemForm();
@@ -355,10 +460,18 @@ public abstract class BasicCartManageCommand extends Command {
 		checkStrategy();
 		ensureCart();
 		String idStr = getVarSingleValue(PROD_PARAM);
+		String boughtIdStr = getVarSingleValue("complectation_id");
 		String name = getVarSingleValue("сomplectation_name");
+
+		long boughtId = StringUtils.isBlank(boughtIdStr)? 0L : Long.parseLong(boughtIdStr);
 		long prodId = Long.parseLong(idStr);
 		Item product = ItemQuery.loadById(prodId);
-		Item bought = getOrCreateBought(product, name);
+
+		if(StringUtils.isBlank(name)){
+			name = generateDefaultName(product.getStringValue(CODE_PARAM));
+		}
+
+		Item bought = boughtId == 0? getOrCreateBought(product, name) : getSessionMapper().getItemSingle(boughtId);
 
 		bought.setValueUI("is_complex", "1");
 
@@ -384,10 +497,36 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(bought);
 
 		recalculateCart();
-		saveCookie();
 
-		return getResult("complect_ajax");
+		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte)1);
+		saveCartComplexCookie(boughts);
+
+		ResultPE res = getResult("complect_ajax");
+		res.setVariable(CODE_PARAM, product.getStringValue(CODE_PARAM));
+
+		return res;
 	}
+
+	private String generateDefaultName(String code) throws Exception {
+		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, CODE_PARAM, code);
+		boolean nameExists;
+		int c = boughts.size() + 1;
+		String name = "Комплектация " + c;
+		do{
+			nameExists = false;
+			for(Item bought : boughts){
+				String n = bought.getStringValue("сomplectation_name", "");
+				if(n.equals(name)){
+					nameExists = true;
+					c++;
+					name = "Комплектация " + c;
+					break;
+				}
+			}
+		}while (nameExists);
+		return name;
+	}
+
 
 	private Item getOrCreateBought(Item product, String name) throws Exception {
 		String code = product.getStringValue(CODE_PARAM);
@@ -480,11 +619,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 		qtyWanted = res.doubleValue();
 
-//        qtyWanted = Math.max(product.getDoubleValue("min_qty", 0), qtyWanted);
-//       	double minQ = product.getDoubleValue("min_qty", 0);
-//       	double q = qtyWanted - minQ;
-//        qtyWanted = minQ + Math.ceil(q / step) * step;
-
 		double qtyAvail = 0;
 		double qtyTotal = 0;
 		double qty = 0;
@@ -524,8 +658,25 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(cart);
 			}
 		}
+		if (userItem == null){
+			ensureUserItem();
+		}
 		refreshCart();
 	}
+
+	private  void ensureUserItem() throws Exception {
+		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
+		userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
+
+		// 2. Потом надо попробовать загружить пользователя по введенному email
+		if (userItem == null) {
+			String email = getInitiator().getName();
+			if (StringUtils.isNotBlank(email))
+				userItem = new ItemQuery(USER_ITEM).addParameterCriteria(EMAIL_PARAM, email, "=", null, Compare.SOME).loadFirstItem();
+		}
+	}
+
+
 
 	/**
 	 * Если корзина уже была отправлена, создать ее заново
@@ -557,45 +708,78 @@ public abstract class BasicCartManageCommand extends Command {
 	 *
 	 * @throws Exception
 	 */
-	protected void saveCookie() throws Exception {
+	protected void saveCartCookies() throws Exception {
 		ensureCart();
+
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
-		ArrayList<String> codeQtys = new ArrayList<>();
+		ArrayList<Item> simpleBoughts = new ArrayList<>();
+		ArrayList<Item> complexBoughts = new ArrayList<>();
+
+		for (Item b : boughts) {
+			if (b.getByteValue("is_complex", (byte) 0) == 0) {
+				simpleBoughts.add(b);
+			} else {
+				complexBoughts.add(b);
+			}
+		}
+
+		saveCartCookie(simpleBoughts);
+		saveCartComplexCookie(complexBoughts);
+	}
+
+	/**
+	 * Сохраняет куки со списком для предзаказа
+	 *
+	 * @param boughts - list of bought items that CAN have options
+	 */
+	private void saveCartComplexCookie(Collection<Item> boughts) throws Exception {
+		if (boughts.size() == 0) {
+			setCookieVariable(COMPLEX_COOKIE, null);
+			return;
+		}
 		StringBuilder cmplBulder = new StringBuilder();
 		for (Item bought : boughts) {
-			if (bought.getByteValue("is_complex", (byte) 0) == 0) {
-				Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
-				double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
-				codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
-			} else {
-				String encodedName = Base64.getEncoder()
-						.encodeToString(
-								bought
-										.getStringValue("сomplectation_name", "")
-										.getBytes()
-						);
-				String code = bought.getStringValue(CODE_PARAM);
-				cmplBulder.append(encodedName).append('\'');
-				cmplBulder.append(code);
+			String encodedName = Base64.getEncoder()
+					.encodeToString(
+							bought
+									.getStringValue("сomplectation_name", "")
+									.getBytes()
+					);
+			String code = bought.getStringValue(CODE_PARAM);
+			cmplBulder.append(encodedName).append('\'');
+			cmplBulder.append(code);
 
-				List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
-				for(Item o : options){
-					cmplBulder.append(',').append(o.getStringValue(CODE_PARAM));
-				}
-				cmplBulder.append('|');
+			List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
+			for (Item o : options) {
+				cmplBulder.append(',').append(o.getStringValue(CODE_PARAM));
 			}
+			cmplBulder.append('|');
+		}
+		setCookieVariable(COMPLEX_COOKIE, cmplBulder.toString());
+	}
+
+	/**
+	 * Сохраняет куки со списком для предзаказа
+	 *
+	 * @param boughts - list of bought items that CANNOT have options
+	 */
+	private void saveCartCookie(Collection<Item> boughts) throws Exception {
+		if (boughts.size() == 0) {
+			setCookieVariable(CART_COOKIE, null);
+			return;
+		}
+		ArrayList<String> codeQtys = new ArrayList<>();
+		for (Item bought : boughts) {
+			Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+			double quantity = bought.getDoubleValue(QTY_TOTAL_PARAM);
+			if (quantity < 0.001) continue;
+			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
 		}
 		if (codeQtys.size() > 0) {
 			String cookie = StringUtils.join(codeQtys, '/');
 			setCookieVariable(CART_COOKIE, cookie);
 		} else {
 			setCookieVariable(CART_COOKIE, null);
-		}
-
-		if(cmplBulder.length() > 0){
-			setCookieVariable(COMPLEX_COOKIE, cmplBulder.toString());
-		}else{
-			setCookieVariable(COMPLEX_COOKIE, null);
 		}
 	}
 
@@ -611,19 +795,19 @@ public abstract class BasicCartManageCommand extends Command {
 		String[] complects = StringUtils.split(cookie, '|');
 		ensureCart();
 
-		for (String c : complects){
+		for (String c : complects) {
 			restoreSingleComplex(c);
 		}
 	}
 
 	protected void restoreSingleComplex(String c) throws Exception {
-		if(StringUtils.isBlank(c)) return;
+		if (StringUtils.isBlank(c)) return;
 
-		String[] codes = StringUtils.substringAfter(c,"'").split(",");
+		String[] codes = StringUtils.substringAfter(c, "'").split(",");
 		Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, codes[0]);
 
 		Item bought = createBought(product, 1d);
-		bought.setValue("is_complex", (byte)1);
+		bought.setValue("is_complex", (byte) 1);
 
 		String name64 = StringUtils.substringBefore(c, "'");
 		String name = new String(Base64.getDecoder().decode(name64.getBytes()));
@@ -632,8 +816,8 @@ public abstract class BasicCartManageCommand extends Command {
 
 		BigDecimal sum = product.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO);
 
-		if(codes.length > 1){
-			for(int i = 1; i < codes.length; i++){
+		if (codes.length > 1) {
+			for (int i = 1; i < codes.length; i++) {
 				Item option = ItemQuery.loadSingleItemByParamValue("abstract_product", CODE_PARAM, codes[i], Item.STATUS_NORMAL);
 				sum = addOptionToBought(bought, sum, option);
 			}
@@ -664,7 +848,7 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE restoreFromCookie() throws Exception {
 		checkStrategy();
 		loadCart();
-		if (cart != null)return null;
+		if (cart != null) return null;
 
 		restoreSimpleFromCookie();
 		restoreComplexFromCookie();
@@ -696,6 +880,10 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean recalculateCart(String... priceParamName) throws Exception {
 		checkStrategy();
 		loadCart();
+		if(userItem == null){
+			ensureUserItem();
+		}
+
 		if (cart == null) return false;
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 		BigDecimal totalSum = new BigDecimal(0); // полная сумма
@@ -734,8 +922,26 @@ public abstract class BasicCartManageCommand extends Command {
 				}
 			}
 		}
+
+		BigDecimal discountQuotient = userItem.getDecimalValue("personal_discount", BigDecimal.ZERO).divide(new BigDecimal(
+				100
+		));
+
+		BigDecimal sumSaved = totalSum.multiply(discountQuotient);
+		BigDecimal sumDiscount = totalSum.subtract(sumSaved);
+
 		cart.setValue(SUM_PARAM, totalSum);
+		cart.setValue("sum_discount", sumDiscount);
+		cart.setValue("sum_saved", sumSaved);
 		cart.setValue(QTY_PARAM, totalQuantity);
+
+		BigDecimal sumSavedPreOrder = preOrderSum.multiply(discountQuotient);
+		BigDecimal sumPreOrderDiscount = preOrderSum.subtract(sumSavedPreOrder);
+
+		cart.setValue("p_sum", preOrderSum);
+		cart.setValue("p_sum_discount", sumPreOrderDiscount);
+		cart.setValue("p_sum_saved", sumSavedPreOrder);
+
 		// Сохранить корзину
 		getSessionMapper().saveTemporaryItem(cart);
 		return result && (totalQuantity > 0 || preOrderQantity > 0);

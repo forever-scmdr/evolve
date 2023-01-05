@@ -12,8 +12,8 @@
 	<xsl:variable name="mp_link" select="if (page/optional_modules/my_price/link_name) then page/optional_modules/my_price/link_name else 'Моя цена'"/>
 	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
 	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
-	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
-	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
+	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price' else 'price'"/>
+	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
 
 	<xsl:variable name="pic_server" select="'http://62.109.11.85/'"/>
@@ -114,7 +114,7 @@
 	<xsl:template match="*" mode="product-lines">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
-		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="has_lines" select="@type = 'complex_product'"/>
 
 
 		<div class="device device_row">
@@ -279,31 +279,35 @@
 
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="p" />
-		<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
+		<xsl:variable name="has_lines" select="@type = 'complex_product'"/>
 		<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 		<!-- device order -->
 		<xsl:if test="not($has_lines)">
 			<div class="order device-order cart_list_{$p/@id}" id="cart_list_{$p/@id}">
-				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
-					<input type="number"
-						   class="input input_type_number" name="qty"
-						   value="{if ($p/min_qty) then min_qty else 1}"
-						   min="{if ($p/min_qty) then $p/min_qty else 1}"
-						   step="{if ($p/step) then f:num($p/step) else 1}" />
+				<xsl:if test="$is_jur">
+					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+						<input type="number"
+							   class="input input_type_number" name="qty"
+							   value="{if ($p/min_qty) then min_qty else 1}"
+							   min="{if ($p/min_qty) then $p/min_qty else 1}"
+							   step="{if ($p/step) then f:num($p/step) else 1}" />
 
-					<xsl:if test="$has_price">
-						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
-					</xsl:if>
-					<xsl:if test="not($has_price)">
-						<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-					</xsl:if>
-				</form>
+						<xsl:if test="$has_price">
+							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+						</xsl:if>
+						<xsl:if test="not($has_price)">
+							<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+						</xsl:if>
+					</form>
+				</xsl:if>
 			</div>
 		</xsl:if>
 		<xsl:if test="$has_lines">
 			<div class="order device-order">
-				<a class="button" href="{$p/show_product}">Подробнее</a>
+				<xsl:if test="$is_jur">
+					<a class="button" href="{$p/show_product}">Подробнее</a>
+				</xsl:if>
 			</div>
 		</xsl:if>
 	</xsl:template>

@@ -537,6 +537,7 @@
 	</item>
 
 	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="821" ag-hash="3599307" >
+		<parameter name="personal_discount" type="currency" caption="Персональная скидка"/>
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="password" type="string" caption="Пароль"/>
@@ -548,7 +549,7 @@
 	</item>
 
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405" >
-		<parameter name="personal_discount" type="currency" caption="Индивидуальная скидка"/>
+		<parameter name="personal_discount" type="currency" caption="Индивидуальная скидка, %"/>
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />

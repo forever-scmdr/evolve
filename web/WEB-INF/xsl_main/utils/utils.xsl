@@ -45,6 +45,7 @@
     <!--/////////////                                                                      ////////////-->
     <!--/////////////                        FORMATTING NUMBERS                            ////////////-->
     <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
     <xsl:function name="f:num" as="xs:double">
@@ -68,6 +69,11 @@
         <xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>
     </xsl:function>
 
+	<xsl:function name="f:format_currency_thousands">
+		<xsl:param name="num"/>
+		<xsl:value-of select="if (floor($num) = $num) then format-number($num, '### ###', 'r') else format-number($num, '### ###.00', 'r')"/>
+	</xsl:function>
+
     <xsl:function name="f:format_currency_precise">
         <xsl:param name="num"/>
         <xsl:value-of select="format-number($num, '#0.0000')"/>
@@ -78,6 +84,7 @@
     <!--/////////////                                                                      ////////////-->
     <!--/////////////                         CURRENCY EXCHANGE                            ////////////-->
     <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
     <xsl:variable name="rates" select="page//currencies[1]"/>
@@ -126,9 +133,10 @@
         <xsl:param name="default"/>
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:variable name="sum" select="f:exchange($item, $param_name, $default)"/>
+        <xsl:variable name="sum_formatted" select="f:format_currency_thousands($sum)"/>
         <xsl:choose>
-            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat($sum, $BYN_cur) else concat($sum, ' ', $currency)"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
+            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat($sum_formatted, $BYN_cur) else concat($sum_formatted, ' ', $currency)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$sum_formatted" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
 
@@ -137,6 +145,7 @@
     <!--/////////////                                                                      ////////////-->
     <!--/////////////                         CURRENCY OUTPUT                              ////////////-->
     <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
     <xsl:function name="f:rub_kop" as="xs:string">
@@ -195,6 +204,7 @@
     <!--/////////////                                                                      ////////////-->
     <!--/////////////                           DATE AND TIME                              ////////////-->
     <!--/////////////                                                                      ////////////-->
+    <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
     <!-- Перевод XSL даты в миллисекунды -->

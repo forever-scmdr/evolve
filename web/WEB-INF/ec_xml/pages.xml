@@ -95,6 +95,11 @@
 		<single item="styles">
 			<list item="label_style"/>
 		</single>
+
+		<personal>
+			<single item="user_jur" />
+		</personal>
+
 	</include-definition>
 
 
@@ -576,6 +581,9 @@
 				<list item="base_complectation_product"/>
 				<list item="option" assoc="option"/>
 			</list>
+			<link name="complect_ajax_link" target="complect_ajax">
+				<var name="code" ref="prod" parameter="code"/>
+			</link>
 		</single>
 
 		<include name="COMMON"/>
@@ -962,32 +970,19 @@
 	</page>
 
 
-	<page name="complect_ajax" template="">
+	<page name="complect_ajax" template="complect_ajax"">
 		<request>
 			<var name="message"/>
 			<var name="product" />
-			<var name="bought" />
+			<var name="code"/>
 		</request>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
-					<list item="abstract_product" id="product" tag="product">
-						<link name="create_complect_link" target="cart_action">
-							<var name="action" value="createComplectation"/>
-							<var name="prod" ref="product"/>
-						</link>
-					</list>
+					<list item="abstract_product" id="product" tag="product"/>
 					<list item="pseudo_option"/>
-					<link name="update_complect_link" target="cart_action">
-						<var name="action" value="updateComplectation"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="create_complect_link" target="cart_action">
-						<var name="action" value="createComplectation"/>
-						<var name="prod" ref="product"/>
-					</link>
 					<link name="delete_link" target="cart_action">
-						<var name="action" value="deleteComplect"/>
+						<var name="action" value="delete"/>
 						<var name="bought" ref="bought"/>
 					</link>
 				</list>
@@ -1048,13 +1043,10 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
-						<list item="option"/>
 					</list>
+					<list item="pseudo_option"/>
 					<link name="delete" target="cart_action">
 						<var name="action" value="delete"/>
-						<var name="bought" ref="bought"/>
-					</link>
-					<link name="complect_ajax_link" target="complect_ajax">
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>

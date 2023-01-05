@@ -262,8 +262,8 @@
 						<a href="#tab_compl" class="tab{' tab_active'[not($has_text)]}">Отчет по складам</a>
 					</xsl:if>
 					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
-					</xsl:for-each>
+					<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
+				</xsl:for-each>
 					<xsl:if test="$p/product_extra_file">
 						<a href="#tab_files" class="tab">Файлы</a>
 					</xsl:if>
@@ -458,37 +458,101 @@
 		</div>
 	</xsl:template>
 
+
 	<xsl:template name="OPTIONS">
+		<xsl:if test="$is_jur">
+			<xsl:call-template name="OPTIONS_REGISTERED"/>
+		</xsl:if>
+		<xsl:if test="not($is_jur)">
+			<xsl:call-template name="OPTIONS_GUEST"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="OPTIONS_GUEST">
+		<div class="device-basic complectations" id="cmpl-form" data-price="{f:num($p/price)}">
+			<div class="complectation device-basic__column" style="flex: 0 0 50%;">
+				<xsl:if test="$p/option">
+					<h3>Опции</h3>
+					<table style="width:100%" class="options-table">
+						<tr>
+							<th></th>
+							<th style="text-align: left"></th>
+							<th style="text-align: left">Цена</th>
+						</tr>
+						<xsl:for-each select="$p/option">
+							<tr>
+								<td>
+									<input name="option" class="option-cb" type="checkbox" data-name="{name}" data-price="{f:num(price)}" id="cb-{@id}"/>
+								</td>
+								<td style="padding:0">
+									<label for="cb-{@id}">
+										<xsl:value-of select="name"/>
+									</label>
+								</td>
+								<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
+									<label for="cb-{@id}">
+										<xsl:value-of select="price"/>
+									</label>
+								</td>
+							</tr>
+						</xsl:for-each>
+					</table>
+					<xsl:call-template name="OPTIONS_SCRIPT"/>
+				</xsl:if>
+			</div>
+			<div class="complectation device-basic__column">
+				<xsl:if test="$p/option">
+					<div class="wide-only">
+						<h3 class="desktop-only" style="margin-bottom:12px">Выбранная комплектация</h3>
+						<div>
+							<table style="width:100%" class="options-table" id="selected_options"></table>
+						</div>
+					</div>
+				</xsl:if>
+				<table>
+					<tr>
+						<td class="total">Сумма: <b id="sum"><xsl:value-of select="$p/price"/></b></td>
+						<td style="text-align:right;">
+							<button class="button button_size_lg" style="background: #ccc; color: #363636; border-color: #ccc;">Заказ доступен после регистрации</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="OPTIONS_REGISTERED">
 			<div class="device-basic complectations">
-				<form method="POST" action="{$p/to_cart_pre_order}" data-price="{f:num($p/price)}" id="cmpl-form">
+				<form method="POST" ajax="true" action="{$p/to_cart_pre_order}" data-price="{f:num($p/price)}" id="cmpl-form">
 					<div class="complectation device-basic__column" style="flex: 0 0 50%;">
 						<xsl:if test="$p/option">
 							<h3>Опции</h3>
-						</xsl:if>
-						<table style="width:100%" class="options-table">
-							<tr>
-								<th></th>
-								<th style="text-align: left"></th>
-								<th style="text-align: left">Цена</th>
-							</tr>
-							<xsl:for-each select="$p/option">
+							<table style="width:100%" class="options-table">
 								<tr>
-									<td>
-										<input name="option" class="option-cb" type="checkbox" value="{@id}" data-name="{name}" data-price="{f:num(price)}" id="cb-{@id}"/>
-									</td>
-									<td style="padding:0">
-										<label for="cb-{@id}">
-											<xsl:value-of select="name"/>
-										</label>
-									</td>
-									<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
-										<label for="cb-{@id}">
-											<xsl:value-of select="price"/>
-										</label>
-									</td>
+									<th></th>
+									<th style="text-align: left"></th>
+									<th style="text-align: left">Цена</th>
 								</tr>
-							</xsl:for-each>
-						</table>
+								<xsl:for-each select="$p/option">
+									<tr>
+										<td>
+											<input name="option" class="option-cb" type="checkbox" value="{@id}" data-name="{name}" data-price="{f:num(price)}" id="cb-{code}"/>
+										</td>
+										<td style="padding:0">
+											<label for="cb-{code}">
+												<xsl:value-of select="name"/>
+											</label>
+										</td>
+										<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
+											<label for="cb-{code}">
+												<xsl:value-of select="price"/>
+											</label>
+										</td>
+									</tr>
+								</xsl:for-each>
+							</table>
+							<xsl:call-template name="OPTIONS_SCRIPT"/>
+						</xsl:if>
 					</div>
 					<div class="complectation device-basic__column">
 						<xsl:if test="$p/option">
@@ -502,7 +566,16 @@
 						<table>
 							<tr>
 								<td colspan="2">
-									<label>Название комплектации: <input id="cname-{$p/code}" type="text" name="сomplectation_name"/></label>
+									Название комплектации
+									<!-- ID of selected complectation for editing it's name -->
+									<input type="hidden" name="complectation_id" id="cmp-id-{$p/code}"/>
+									<div class="combobox" >
+										<select onchange="this.nextElementSibling.value = $(this).find('option:selected').text(); $('#cmp-id-{$p/code}').val(this.value); selectOptions(this.value);" id="existing-complectations-{$p/code}">
+											<!-- Existing complectation names loaded by ajax -->
+											<option value=""></option>
+										</select>
+										<input class="field" type="text" name="сomplectation_name" placeholder="Новая комплектация"/>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -510,40 +583,61 @@
 								<td style="text-align:right;"><button class="button button_size_lg" type="submit">Предзаказ</button></td>
 							</tr>
 						</table>
+						<div id="scripts"></div>
 					</div>
 
-					<script type="text/javascript">
-						$(document).ready(function(){
-							$optionCb = $("#cmpl-form").find(".option-cb");
-							$sum = $("#sum");
-							update();
-							$optionCb.change(function(e){update();});
-
-							function update(){
-								var sum = 0;
-								var updatedSelection = $("&lt;table&gt;");
-
-								for(i = 0; i &lt; $optionCb.length; i++){
-								var $current = $($optionCb.get(i));
-								if($current.is(":checked")){
-								sum += $current.attr("data-price") * 1;
-
-								$tr = $("&lt;tr&gt;");
-								$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-name")}));
-								$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-price").toLocaleString('ru-RU'), "style" : "font-weight: bold"}));
-								updatedSelection.append($tr);
-								}
-								}
-								$("#selected_options").html(updatedSelection.html());
-								sum += $("#cmpl-form").attr("data-price") * 1;
-								sum = sum.toLocaleString('ru-RU');
-								$sum.html(sum);
-							}
-						});
-
-					</script>
 				</form>
 			</div>
+	</xsl:template>
+
+	<xsl:template name="OPTIONS_SCRIPT">
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+			insertAjax('<xsl:value-of select="$p/complect_ajax_link"/>');
+
+			$optionCb = $("#cmpl-form").find(".option-cb");
+			$sum = $("#sum");
+			update();
+			$optionCb.change(function(e){update();});
+
+			});
+
+			function update(){
+				var sum = 0;
+				var updatedSelection = $("&lt;table&gt;");
+
+				for(i = 0; i &lt; $optionCb.length; i++){
+					var $current = $($optionCb.get(i));
+					if($current.is(":checked")){
+						sum += $current.attr("data-price") * 1;
+
+						$tr = $("&lt;tr&gt;");
+						$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-name")}));
+						$tr.append($("&lt;td&gt;", {"html" : $current.attr("data-price").toLocaleString('ru-RU'), "style" : "font-weight: bold"}));
+						updatedSelection.append($tr);
+					}
+				}
+				$("#selected_options").html(updatedSelection.html());
+				sum += $("#cmpl-form").attr("data-price") * 1;
+				sum = sum.toLocaleString('ru-RU');
+				$sum.html(sum);
+			}
+
+			function selectOptions(value){
+				$(".options-table").find(":checked").each(function(i){
+					this.checked = false;
+				});
+				if(typeof value != undefined &amp;&amp; value.length &gt; 0){
+					c = copmlectationOptions[value];
+					for(i = 0; i &lt; c.length; i++ ){
+						document.getElementById(c[i]).checked = true;
+					}
+				}
+				update();
+			}
+
+		</script>
 	</xsl:template>
 
 
