@@ -1,6 +1,7 @@
 package extra;
 
 import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
 import ecommander.fwk.BasicCartManageCommand;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
@@ -10,12 +11,15 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.model.datatypes.DecimalDataType;
+import ecommander.pages.ExecutablePagePE;
+import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
@@ -24,6 +28,7 @@ import javax.activation.FileDataSource;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.util.ByteArrayDataSource;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,6 +43,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 	public static final String PLAIN_SECTION = "plain_section";
 	public static final String PRICE_CATALOG = "price_catalog";
 	private static final String DEFAULT = "default";
+	private static final String JSON_ORDERS_DIR = "WEB-INF/json_orders";
 
 	private static class PriceCatalog {
 		private String name;
@@ -355,33 +361,39 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				proc.replace("$order_num", orderNum);
 				proc.replace("$order_date", DateDataType.outputDate(System.currentTimeMillis(), DateDataType.DAY_FORMATTER));
 				proc.replace("$customer_name", isPhys ? customer.outputValue(user_phys_.NAME) : customer.outputValue(user_jur_.ORGANIZATION));
-				proc.replace("$customer_name", isPhys ? customer.outputValue(user_phys_.NAME) : customer.outputValue(user_jur_.ORGANIZATION));
+				proc.replace("$customer_address", isPhys ? customer.outputValue(user_phys_.ADDRESS) : customer.outputValue(user_jur_.ADDRESS));
 				ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
 				for (int i = 0; i < boughts.size() - 1; i++) {
 					proc.duplicateRowContaining("$prod_name");
 				}
-				BigDecimal nds = BigDecimal.valueOf(20);
-				BigDecimal ndsPercents = nds.add(BigDecimal.valueOf(100));
-				BigDecimal ndsQuotient = BigDecimal.valueOf(100).divide(ndsPercents, RoundingMode.HALF_EVEN);
+				BigDecimal nds = BigDecimal.valueOf((double) 20);
+				BigDecimal ndsPercents = nds.add(BigDecimal.valueOf((double) 100));
+				BigDecimal ndsQuotient = BigDecimal.valueOf((double) 100).divide(ndsPercents, 6, RoundingMode.HALF_EVEN);
 				for (Item bought : boughts) {
-					BigDecimal sum = bought.getDecimalValue(bought_.SUM);
-					BigDecimal noNdsSum = sum.multiply(ndsQuotient);
-					BigDecimal justNdsSum = sum.subtract(noNdsSum);
-					BigDecimal noNdsPrice = noNdsSum.divide(BigDecimal.valueOf(bought.getDoubleValue(bought_.QTY)), RoundingMode.HALF_EVEN).setScale(2, RoundingMode.CEILING);
+					Item product = getSessionMapper().getSingleItemByName(PRODUCT_ITEM, bought.getId());
+					BigDecimal sum = bought.getDecimalValue(bought_.SUM).setScale(2, RoundingMode.CEILING);
+					BigDecimal noNdsSum = sum.multiply(ndsQuotient).setScale(2, RoundingMode.CEILING);
+					BigDecimal justNdsSum = sum.subtract(noNdsSum).setScale(2, RoundingMode.CEILING);
+					BigDecimal noNdsPrice = noNdsSum.divide(BigDecimal.valueOf(bought.getDoubleValue(bought_.QTY)), 6, RoundingMode.HALF_EVEN)
+							.setScale(2, RoundingMode.CEILING);
 					proc.replace("$prod_name", bought.outputValue(bought_.NAME));
+					proc.replace("$prod_unit", product.getStringValue(described_product_.UNIT, "шт."));
 					proc.replace("$prod_qty", bought.outputValue(bought_.QTY));
 					proc.replace("$prod_price", noNdsPrice.toPlainString());
 					proc.replace("$prod_sum", noNdsSum.toPlainString());
 					proc.replace("$prod_sum_nds", justNdsSum.toPlainString());
 					proc.replace("$prod_sum_full", sum.toPlainString());
 				}
-				BigDecimal cartSum = cart.getDecimalValue(cart_.SUM);
+				BigDecimal cartSum = cart.getDecimalValue(cart_.SUM).setScale(2, RoundingMode.CEILING);;
 				BigDecimal roubles = cartSum.setScale(0, RoundingMode.DOWN);
-				BigDecimal cents = cartSum.subtract(roubles);
-				BigDecimal sumNoNds = cartSum.multiply(ndsQuotient);
+				BigDecimal cents = cartSum.subtract(roubles).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.CEILING);
+				BigDecimal sumNoNds = cartSum.multiply(ndsQuotient).setScale(2, RoundingMode.CEILING);;
 				BigDecimal justNds = cartSum.subtract(sumNoNds);
 				BigDecimal roublesJustNds = justNds.setScale(0, RoundingMode.DOWN);
-				BigDecimal centsJustNds = justNds.subtract(roublesJustNds);
+				BigDecimal centsJustNds = justNds.subtract(roublesJustNds).multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.CEILING);;
+				proc.replace("$cart_sum", sumNoNds.toPlainString());
+				proc.replace("$cart_sum_nds", justNds.toPlainString());
+				proc.replace("$cart_sum_full", cartSum.toPlainString());
 				String justNdsRubString = Strings.numberToRusWords(roublesJustNds.longValue()) + " "
 						+ Strings.numberEnding(roublesJustNds.longValue(), "рубль", "рубля", "рублей");
 				String justNdsCentString = Strings.numberToRusWords(centsJustNds.longValue()) + " "
@@ -390,10 +402,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 						+ Strings.numberEnding(roubles.longValue(), "рубль", "рубля", "рублей");
 				String centString = Strings.numberToRusWords(cents.longValue()) + " "
 						+ Strings.numberEnding(cents.longValue(), "копейка", "копейки", "копеек");
-				proc.replace("$just_nds_words", justNdsRubString + " " + justNdsCentString);
-				proc.replace("$sum_words", rubString + " " + centString);
+				boolean hasNdsCents = centsJustNds.compareTo(BigDecimal.valueOf(1)) >= 0;
+				boolean hasSumCents = cents.compareTo(BigDecimal.valueOf(1)) >= 0;
+				proc.replace("$just_nds_words", justNdsRubString + (hasNdsCents ? " " + justNdsCentString : ""));
+				proc.replace("$sum_words", rubString + (hasSumCents ? " " + centString : ""));
 
-				File xlsFile = new File(AppContext.getFilesDirPath(false) + "files/" + orderNum + ".xlsx");
+				File xlsFile = new File(AppContext.getFilesDirPath(false) + "bill_" + orderNum + proc.getExtension());
 				proc.writeExcelFile(xlsFile);
 				DataSource xlsxSource = new FileDataSource(xlsFile); // , "application/vnd.ms-excel"
 				MimeBodyPart xlsxPart = new MimeBodyPart();
@@ -407,4 +421,30 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		}
 		return true;
 	}
+
+
+	@Override
+	protected boolean postProcessCart(String orderNum) throws Exception {
+		String folder = AppContext.getRealPath(JSON_ORDERS_DIR);
+		File dir = new File(folder);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+
+		Item user = getSessionMapper().getSingleRootItemByName(USER);
+		LinkPE orderFileLink = LinkPE.newDirectLink("link", "order_file", false);
+		orderFileLink.addStaticVariable("order_num", orderNum);
+		orderFileLink.addStaticVariable("deivery", user.getStringValue("get_order_from"));
+		orderFileLink.addStaticVariable("payment", user.getStringValue("pay_by"));
+		//orderFileLink.addStaticVariable("currency", currency);
+
+		ExecutablePagePE orderFileTemplate = getExecutablePage(orderFileLink.serialize());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		PageController.newSimple().executePage(orderFileTemplate, out);
+		File file = new File(folder + "/" + orderNum + ".json");
+		FileUtils.writeByteArrayToFile(file, out.toByteArray());
+
+		return true;
+	}
+
 }

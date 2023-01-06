@@ -243,6 +243,9 @@ public abstract class BasicCartManageCommand extends Command {
 			return getResult("email_send_failed").setVariable("message", "Отправка заказа временно недоступна, попробуйте позже или звоните по телефону");
 		}
 
+		// Дополнительные действия после отправки заказа
+		postProcessCart(orderNumber);
+
 		// Сохранение нового значения счетчика, если все отправлено удачно
 		counter.setValue(COUNT_PARAM, count);
 		//counter.setValue(DATE_PARAM, newDate);
@@ -332,6 +335,16 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	protected boolean addExtraEmailBillPart(String orderNum, Multipart mp) throws Exception {
+		return true;
+	}
+
+	/**
+	 * Дополнителные действия после отпрваки заказа на почту
+	 * Например, сохранить файл заказа для автоматической обработки системой клиента
+	 * @param orderNum
+	 * @return
+	 */
+	protected boolean postProcessCart(String orderNum) throws Exception {
 		return true;
 	}
 

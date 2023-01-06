@@ -1,7 +1,6 @@
 package extra;
 
 import ecommander.fwk.OkWebClient;
-import ecommander.fwk.WebClient;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.ResultPE;
@@ -16,10 +15,12 @@ public class ApiProxyCommand extends Command {
 		String url = getVarSingleValue(ExecutablePagePE.PAGEURL_VALUE);
 		String pageName = getVarSingleValue(ExecutablePagePE.PAGENAME_VALUE);
 		String apiBase = getVarSingleValue("api_base");
+		String token = getVarSingleValue("token");
+		String tokenHeaderName = getVarSingleValue("token_header");
 		String urlToGet = apiBase + StringUtils.substringAfterLast(url, pageName + "/");
 		try {
 			//String response = OkWebClient.getInstance().getString(urlToGet);
-			String response = WebClient.getString(urlToGet);
+			String response = OkWebClient.getInstance().getStringHeaders(urlToGet, tokenHeaderName, token);
 			return getResult("success").setValue(response);
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();

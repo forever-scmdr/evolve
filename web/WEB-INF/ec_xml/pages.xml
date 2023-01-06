@@ -1353,6 +1353,31 @@
 
 
 
+	<page name="order_file" template="order_file">
+		<headers Content-Type="application/json;charset=utf-8" />
+		<request>
+			<var name="action" value="post_jur" />
+			<var name="order_num" />
+			<var name="currency" />
+			<var name="url_base" value="https://belchip.by" />
+		</request>
+		<list item="payment"/>
+		<session>
+			<single item="user" tag="user"/>
+			<single item="cart" id="cart">
+				<list item="bought" id="bought">
+					<list item="product" id="product" tag="product" />
+				</list>
+			</single>
+		</session>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
+		<single item="currencies"/>
+	</page>
+
+
+
 	<page name="fav_ajax" template="fav_ajax">
 		<request>
 			<var name="favourites" scope="cookie"/>
@@ -2175,6 +2200,8 @@
 		<headers Content-Type="text/plain"/>
 		<request>
 			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
+			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
+			<var name="token_header" value="Authorization"/>
 		</request>
 		<command class="extra.ApiProxyCommand">
 			<result name="success" type="plain_text"/>
