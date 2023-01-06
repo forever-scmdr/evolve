@@ -2,7 +2,11 @@ package ecommander.fwk.integration;
 
 import ecommander.fwk.POIExcelWrapper;
 import ecommander.fwk.POIUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -15,8 +19,8 @@ public class ExcelTemplateProcessor {
 	private File templatePath;
 
 	private POIExcelWrapper excel;
-	private XSSFWorkbook wb;
-	private XSSFSheet sheet;
+	private Workbook wb;
+	private Sheet sheet;
 	private FormulaEvaluator eval;
 
 	public ExcelTemplateProcessor(File templatePath) {
@@ -29,7 +33,7 @@ public class ExcelTemplateProcessor {
 	private void createDoc() {
 		if (excel == null) {
 			excel = POIExcelWrapper.create(templatePath);
-			wb = (XSSFWorkbook) excel.getWorkbook();
+			wb = excel.getWorkbook();
 			sheet = wb.getSheetAt(wb.getActiveSheetIndex());
 			eval = wb.getCreationHelper().createFormulaEvaluator();
 		}
@@ -47,7 +51,13 @@ public class ExcelTemplateProcessor {
 		POIUtils.CellXY cellXY = POIUtils.findFirstContaining(sheet, eval, searchString);
 		if (cellXY == null)
 			return false;
-		POIUtils.copyRow(wb, sheet, cellXY.row, cellXY.row + 1);
+		if (wb instanceof HSSFWorkbook) {
+			POIUtils.copyRow((HSSFWorkbook) wb, (HSSFSheet) sheet, cellXY.row, cellXY.row + 1);
+		} else if (wb instanceof XSSFWorkbook) {
+			POIUtils.copyRow((XSSFWorkbook) wb, (XSSFSheet) sheet, cellXY.row, cellXY.row + 1);
+		} else  {
+			return false;
+		}
 		return true;
 	}
 
@@ -94,5 +104,17 @@ public class ExcelTemplateProcessor {
 		wb.write(new FileOutputStream(filePath));
 		excel.close();
 		return filePath;
+	}
+
+	/**
+	 * Расширение файла (тип файла Excel) в зависимости от типа документа
+	 * @return
+	 */
+	public String getExtension() {
+		createDoc();
+		if (wb instanceof XSSFWorkbook) {
+			return ".xlsx";
+		}
+		return ".xls";
 	}
 }

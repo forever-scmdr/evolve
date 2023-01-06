@@ -214,6 +214,26 @@ public class OkWebClient {
 		}
 	}
 
+	/**
+	 * Получить строку ответа с использованием заголовков запроса
+	 * @param url
+	 * @param headers
+	 * @return
+	 * @throws IOException
+	 */
+	public String getStringHeaders(String url, String... headers) throws IOException {
+		Request.Builder builder = new Request.Builder().url(url);
+		for (int i = 1; i < headers.length; i += 2) {
+			builder.header(headers[i - 1], headers[i]);
+		}
+		Request request = builder.build();
+		try (Response response = client.newCall(request).execute()) {
+			if (response.body() != null)
+				return response.body().string();
+			return null;
+		}
+	}
+
 
 	private static class UnzippingInterceptor implements Interceptor {
 		@Override
