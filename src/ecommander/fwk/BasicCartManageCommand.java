@@ -413,7 +413,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение нового значения счетчика, если все отправлено удачно
 		int n = Integer.parseInt(latestOrderNumber.replace("\\D", ""));
 		counter.setValue(COUNT_PARAM, n);
-		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(counter).ignoreUser());
 	}
 
 	protected abstract boolean validate() throws Exception;
@@ -503,6 +503,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 		ResultPE res = getResult("complect_ajax");
 		res.setVariable(CODE_PARAM, product.getStringValue(CODE_PARAM));
+
+		String message = StringUtils.isBlank(idStr)? "Создан список опций: " + name  : "Обнолен список опций: "+ name;
+		res.setVariable("message", message);
 
 		return res;
 	}

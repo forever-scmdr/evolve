@@ -95,3 +95,19 @@ label{
 	width: 262px;
 	height: 20px;
 }
+
+.white-popup {
+	position: relative;
+	background: #FFF;
+	padding: 25px 35px;
+	width: auto;
+	max-width: 600px;
+	margin: 20px auto;
+}
+.white-popup ul{
+	text-align: left;
+}
+.white-popup ul li{
+	list-style-type: disc;
+	margin-top: 10px;
+}
