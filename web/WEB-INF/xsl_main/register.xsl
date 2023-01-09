@@ -55,6 +55,13 @@
 							<input class="input" type="password"
 								   name="{$inp/p1/@input}" error="{$inp/p1/@validation-error}"/>
 						</div>
+						<div class="form__item form-item">
+							<label>
+								Даю согласие на обработку моих персональных данных:&#160;
+								<input type="checkbox" value="да"
+									   name="{$inp/confirmpersonal/@input}" error="{$inp/confirmpersonal/@validation-error}"/>
+							</label>
+						</div>
 						<button class="button button_big" type="submit">Зарегистрироваться</button>
 					</form>
 				</div>
@@ -82,6 +89,13 @@
 							</div>
 							<input class="input" type="password"
 								   name="{$inp/p1/@input}" error="{$inp/p1/@validation-error}"/>
+						</div>
+						<div class="form__item form-item">
+							<label>
+								Даю согласие на обработку моих персональных данных:&#160;
+								<input type="checkbox" value="да"
+									   name="{$inp/confirmpersonal/@input}" error="{$inp/confirmpersonal/@validation-error}"/>
+							</label>
 						</div>
 						<button class="button button_big" type="submit">Зарегистрироваться</button>
 					</form>

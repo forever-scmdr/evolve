@@ -33,6 +33,7 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 	public static final String P1_EXTRA = "p1";
 	public static final String P2_EXTRA = "p2";
 	public static final String P3_EXTRA = "p3";
+	public static final String PERSONAL_CONFIRMATION_INPUT = "confirmpersonal";
 
 	/**
 	 * Проверка заполненности полей пользователя юридического лица
@@ -110,6 +111,11 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 		}
 		if (!StringUtils.equals(formUser.getStringValue(user_.PASSWORD), formUser.getStringExtra(P1_EXTRA))) {
 			sessionUser.setExtra(MESSAGE_EXTRA, "Пароль и подтверждение пароля не совпадают");
+			getSessionMapper().saveTemporaryItem(sessionUser, USER);
+			return getResult("error");
+		}
+		if (!StringUtils.equals(formUser.getStringExtra(PERSONAL_CONFIRMATION_INPUT), YES_VALUE)) {
+			sessionUser.setExtra(MESSAGE_EXTRA, "Регистрация возможна только в случае согласия на обработку персональных данных");
 			getSessionMapper().saveTemporaryItem(sessionUser, USER);
 			return getResult("error");
 		}

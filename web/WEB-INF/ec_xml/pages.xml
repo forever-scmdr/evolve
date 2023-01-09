@@ -1794,11 +1794,13 @@
 			<parameter-input ref="user_phys" form="register"/>
 			<extra-input ref="user_phys" form="register" name="pseudo"/>
 			<extra-input ref="user_phys" form="register" name="p1"/>
+			<extra-input ref="user_phys" form="register" name="confirmpersonal"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
 			<extra-input ref="user_jur" form="register" name="pseudo"/>
 			<extra-input ref="user_jur" form="register" name="p1"/>
+			<extra-input ref="user_jur" form="register" name="confirmpersonal"/>
 		</new>
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
@@ -2362,7 +2364,7 @@
 	</page>
 
 
-	<page name="send_emails" ><!-- schedule="0 */10 * ? * *" -->
+	<page name="send_emails" schedule="0 */10 * ? * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -2372,20 +2374,11 @@
 	</page>
 
 
-	<page name="inform_subscribers"><!--  schedule="0 5/10 * ? * *" -->
+	<page name="inform_subscribers" schedule="0 5/10 * ? * *">
 		<command class="ecommander.fwk.integration.InformSubscribersCommand">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
-<!--
-	<page name="get_rates" schedule="0 0 */2 ? * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="extra.UpdateCurrencyRates"/>
-	</page>
--->
 
 
 	<page name="import_users" template="integration/integration">
@@ -2463,7 +2456,7 @@
 
 
 
-	<page name="price_update_auto_start" template="integration"><!--  schedule="0 30 10-20 ? * * *" -->
+	<page name="price_update_auto_start" template="integration" schedule="0 30 10-20 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 			<var name="param" value="webfile1.xml" />
@@ -2498,7 +2491,7 @@
 
 
 	<!-- Разбор сторонних складов -->
-	<page name="integrate_excel_auto_start" schedule="0 0 5,14 ? * * *">
+	<page name="integrate_excel_auto_start" schedule="0 0 3,11 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
