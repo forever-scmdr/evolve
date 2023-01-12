@@ -71,7 +71,7 @@
 
 	<xsl:function name="f:format_currency_thousands">
 		<xsl:param name="num"/>
-		<xsl:value-of select="if (floor($num) = $num) then format-number($num, '### ###', 'r') else format-number($num, '### ###.00', 'r')"/>
+		<xsl:value-of select="if (floor($num) = $num) then format-number($num, '### ###', 'r') else format-number($num, '### ##0.00', 'r')"/>
 	</xsl:function>
 
     <xsl:function name="f:format_currency_precise">

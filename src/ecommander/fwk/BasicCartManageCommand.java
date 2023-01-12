@@ -47,6 +47,10 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
+	public enum CookieStrategy{
+		COOKIE, USER_ITEM, COOKIE_AND_USER_ITEM
+	}
+
 	protected static final String PRODUCT_ITEM = "abstract_product";
 	protected static final String CART_ITEM = "cart";
 	protected static final String BOUGHT_ITEM = "bought";
@@ -90,6 +94,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected Item cart;
 	protected Item userItem;
 	protected Strategy strategy = Strategy.deny_overbuy;
+	protected CookieStrategy cookieStrategy = CookieStrategy.USER_ITEM;
 
 
 	protected void checkStrategy() {
@@ -207,7 +212,20 @@ public abstract class BasicCartManageCommand extends Command {
 		cart.setValue(PROCESSED_PARAM, (byte) 1);
 		cart.setExtra(IN_PROGRESS, null);
 		getSessionMapper().saveTemporaryItem(cart);
+
+		clearCookies();
+
 		return getResult("confirm");
+	}
+
+	protected  void clearCookies() throws Exception {
+		setCookieVariable(CART_COOKIE, null);
+		setCookieVariable(COMPLEX_COOKIE, null);
+		if(userItem != null){
+			userItem.clearValue(CART_COOKIE);
+			userItem.clearValue(COMPLEX_COOKIE);
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem).ignoreUser());
+		}
 	}
 
 	private void processPreOrder(Item counter, Item form) throws Exception {
@@ -238,7 +256,10 @@ public abstract class BasicCartManageCommand extends Command {
 		FileUtils.writeStringToFile(p.toFile(), xml, StandardCharsets.UTF_8);
 	}
 
-	protected String buildPreOrderXml(Collection<Item> boughts) throws Exception {
+	protected String buildPreOrderXml(Collection<Item> boughts, boolean... isComplex) throws Exception {
+
+		boolean complex = isComplex.length == 0 || isComplex[0];
+
 		XmlDocumentBuilder orderXml = XmlDocumentBuilder.newDoc();
 		orderXml.startElement("order", "date", DATE_FORMAT.format(new Date()), "number", cart.getValue("order_num"));
 
@@ -269,32 +290,46 @@ public abstract class BasicCartManageCommand extends Command {
 					.addElement(PRICE_PARAM, product.getValue(PRICE_PARAM))
 					.addElement(SUM_PARAM, bought.getValue(SUM_PARAM));
 
-			//options
-			orderXml.startElement("options");
+			if(complex) {
+				//options
+				orderXml.startElement("options");
 
-			List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
-			for (Item option : options) {
-				orderXml
-						.startElement("option")
-						.addElement(CODE_PARAM, option.getStringValue(CODE_PARAM))
-						.addElement(NAME_PARAM, option.getStringValue(NAME_PARAM))
-						.addElement(PRICE_PARAM, option.getValue(PRICE_PARAM))
-						.endElement();
+				List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
+
+
+				for (Item option : options) {
+					orderXml
+							.startElement("option")
+							.addElement(CODE_PARAM, option.getStringValue(CODE_PARAM))
+							.addElement(NAME_PARAM, option.getStringValue(NAME_PARAM))
+							.addElement(PRICE_PARAM, option.getValue(PRICE_PARAM))
+							.endElement();
+				}
+
+				orderXml.endElement();
+			}else{
+				orderXml.addElement(QTY_PARAM, bought.getValue(QTY_TOTAL_PARAM));
 			}
-			orderXml.endElement();
 			orderXml.endElement();
 		}
 		orderXml.endElement();
 
 		//sum
-		orderXml
-				.startElement("total")
-				.addElement(SUM_PARAM, cart.getValue("p_sum"))
-				.addElement("sum_discount", cart.getValue("p_sum_discount"))
-				.addElement("sum_saved", cart.getValue("p_sum_saved"))
-				.endElement();
-
-
+		if(complex) {
+			orderXml
+					.startElement("total")
+					.addElement(SUM_PARAM, cart.getValue("p_sum"))
+					.addElement("sum_discount", cart.getValue("p_sum_discount"))
+					.addElement("sum_saved", cart.getValue("p_sum_saved"))
+					.endElement();
+		}else{
+			orderXml
+					.startElement("total")
+					.addElement(SUM_PARAM, cart.getValue("sum"))
+					.addElement("sum_discount", cart.getValue("sum_discount"))
+					.addElement("sum_saved", cart.getValue("sum_saved"))
+					.endElement();
+		}
 		orderXml.endElement();
 		return orderXml.toString();
 	}
@@ -311,15 +346,18 @@ public abstract class BasicCartManageCommand extends Command {
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
 
 		// Письмо для продавца
-		sendEmail(regularTopic, shopEmail, shopEmailTemplate);
+		//sendEmail(regularTopic, shopEmail, shopEmailTemplate);
 		// Письмо для покупателя
-		sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
+		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
 		List<Item> boughts = getSessionMapper()
 				.getItemsByName(BOUGHT_ITEM, cart.getId())
 				.stream()
 				.filter(b -> b.getByteValue("is_complex", (byte) 0) == 0)
 				.collect(Collectors.toList());
+
+		String xml = buildPreOrderXml(boughts, false);
+		saveToFile(xml, orderNumber);
 
 		saveToHistory(boughts, form, "sum", "sum_discount", "sum_saved");
 		updateCounterItem(counter, cart.getStringValue("order_num"));
@@ -388,6 +426,10 @@ public abstract class BasicCartManageCommand extends Command {
 				boughtToSave.setContextPrimaryParentId(purchase.getId());
 				boughtToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
 				executeCommandUnit(SaveItemDBUnit.get(boughtToSave).ignoreUser());
+				if(boughtToSave.getByteValue("is_complex", (byte)0) == 1){
+					List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
+					saveOptionsHisotry(options, boughtToSave);
+				}
 			}
 		}
 		//
@@ -397,6 +439,16 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подтвердить изменения
 		commitCommandUnits();
 	}
+
+	protected void saveOptionsHisotry(List<Item> options, Item boughtToSave) throws Exception {
+		commitCommandUnits();
+		for(Item option : options){
+			option.setContextPrimaryParentId(boughtToSave.getId());
+			option.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+			executeCommandUnit(SaveItemDBUnit.get(option).ignoreUser());
+		}
+	}
+
 
 	private String generateOrderNumber(Item counter) {
 		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
@@ -504,7 +556,7 @@ public abstract class BasicCartManageCommand extends Command {
 		ResultPE res = getResult("complect_ajax");
 		res.setVariable(CODE_PARAM, product.getStringValue(CODE_PARAM));
 
-		String message = StringUtils.isBlank(idStr)? "Создан список опций: " + name  : "Обнолен список опций: "+ name;
+		String message = StringUtils.isBlank(boughtIdStr)? "Создан список опций: " + name  : "Обнолен список опций: "+ name;
 		res.setVariable("message", message);
 
 		return res;
@@ -758,7 +810,8 @@ public abstract class BasicCartManageCommand extends Command {
 			}
 			cmplBulder.append('|');
 		}
-		setCookieVariable(COMPLEX_COOKIE, cmplBulder.toString());
+		String cookie = cmplBulder.toString();
+		persistCookie(COMPLEX_COOKIE, cookie);
 	}
 
 	/**
@@ -778,11 +831,37 @@ public abstract class BasicCartManageCommand extends Command {
 			if (quantity < 0.001) continue;
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
 		}
-		if (codeQtys.size() > 0) {
-			String cookie = StringUtils.join(codeQtys, '/');
-			setCookieVariable(CART_COOKIE, cookie);
-		} else {
-			setCookieVariable(CART_COOKIE, null);
+
+		String cookie = codeQtys.size() > 0? StringUtils.join(codeQtys, '/') : null;
+		persistCookie(CART_COOKIE, cookie);
+	}
+
+	private void persistCookie(String varName, String cookie) throws Exception {
+		switch(cookieStrategy){
+			case COOKIE: setCookieVariable(varName, cookie); break;
+			case USER_ITEM:
+				ensureUserItem();
+				if(StringUtils.isBlank(cookie)){
+					userItem.clearValue(varName);
+				}
+				else{
+					userItem.setValue(varName, cookie);
+				}
+				executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
+				break;
+			case COOKIE_AND_USER_ITEM:
+				if(getInitiator().inGroup(REGISTERED_GROUP)){
+					ensureUserItem();
+					if(StringUtils.isBlank(cookie)){
+						userItem.clearValue(varName);
+					}
+					else{
+						userItem.setValue(varName, cookie);
+					}
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
+				}else{
+					setCookieVariable(varName, cookie);
+				}
 		}
 	}
 
@@ -792,7 +871,7 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @throws Exception
 	 */
 	public void restoreComplexFromCookie() throws Exception {
-		String cookie = getVarSingleValue(COMPLEX_COOKIE);
+		String cookie = getCartCookieString(COMPLEX_COOKIE);
 		if (StringUtils.isBlank(cookie)) return;
 
 		String[] complects = StringUtils.split(cookie, '|');
@@ -860,8 +939,26 @@ public abstract class BasicCartManageCommand extends Command {
 		return null;
 	}
 
+	private String getCartCookieString(String varName) throws Exception {
+		switch (cookieStrategy){
+			case COOKIE: return getVarSingleValue(varName);
+			case USER_ITEM:
+				ensureUserItem();
+				return userItem.getStringValue(varName);
+			case COOKIE_AND_USER_ITEM:
+				if(getInitiator().inGroup(REGISTERED_GROUP)){
+					ensureUserItem();
+					return userItem.getStringValue(varName);
+				}else{
+					return getVarSingleValue(varName);
+				}
+				default: return null;
+		}
+	}
+
 	private void restoreSimpleFromCookie() throws Exception {
-		String cookie = getVarSingleValue(CART_COOKIE);
+		String cookie = getCartCookieString(CART_COOKIE);
+
 		if (StringUtils.isBlank(cookie)) return;
 
 		String[] codeQtys = StringUtils.split(cookie, '/');
