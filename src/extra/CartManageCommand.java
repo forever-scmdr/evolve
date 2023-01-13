@@ -17,10 +17,9 @@ import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
-import org.apache.commons.collections4.CollectionUtils;
+import extra._generated.User_phys;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -32,7 +31,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Корзина
@@ -431,11 +433,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			dir.mkdirs();
 		}
 
-		Item user = getSessionMapper().getSingleRootItemByName(USER);
+		//Item user = getSessionMapper().getSingleRootItemByName(USER);
+		Item customer = getItemForm().getItemSingleTransient();
 		LinkPE orderFileLink = LinkPE.newDirectLink("link", "order_file", false);
 		orderFileLink.addStaticVariable("order_num", orderNum);
-		orderFileLink.addStaticVariable("deivery", user.getStringValue("get_order_from"));
-		orderFileLink.addStaticVariable("payment", user.getStringValue("pay_by"));
+		orderFileLink.addStaticVariable("deivery", customer.getStringValue(User_phys.SHIP_TYPE));
+		orderFileLink.addStaticVariable("payment", customer.getStringValue(User_phys.PAY_TYPE));
 		//orderFileLink.addStaticVariable("currency", currency);
 
 		ExecutablePagePE orderFileTemplate = getExecutablePage(orderFileLink.serialize());

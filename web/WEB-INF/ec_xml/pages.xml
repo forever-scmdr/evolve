@@ -32,7 +32,7 @@
 			</list>
 		</usergroup>
 
-		<single item="currencies"/>
+		<single item="currencies" cacheable="true"/>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
@@ -1194,7 +1194,12 @@
 			</single>
 		</session>
 		<link name="show_cart" target="cart"/>
-		<single item="currencies"/>
+		<single item="currencies" cacheable="true"/>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
 	</page>
 
 
@@ -2205,6 +2210,21 @@
 		</request>
 		<command class="extra.ApiProxyCommand">
 			<result name="success" type="plain_text"/>
+		</command>
+	</page>
+
+
+	<page name="api_xml">
+		<headers Content-Type="text/plain"/>
+		<request>
+			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
+			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
+			<var name="token_header" value="Authorization"/>
+			<var name="root_element" value="provider"/>
+		</request>
+		<command class="extra.ApiJsonToXMLCommand">
+			<result name="success" type="plain_text"/>
+			<result name="error" type="plain_text"/>
 		</command>
 	</page>
 

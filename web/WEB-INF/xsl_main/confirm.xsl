@@ -84,7 +84,7 @@
 							<td><xsl:value-of select="$product/code"/></td>
 							<td><xsl:value-of select="$product/name"/></td>
 							<td><xsl:value-of select="qty"/></td>
-							<td><xsl:value-of select="$product/price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
+							<td><xsl:value-of select="price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
 							<td><xsl:value-of select="sum"/></td>
 							<xsl:if test="$cart/bought/item_own_extras" >
 								<td>
