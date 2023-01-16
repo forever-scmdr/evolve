@@ -111,3 +111,18 @@ label{
 	list-style-type: disc;
 	margin-top: 10px;
 }
+
+.past-product__info .option-li::before{
+	content: " - ";
+}
+.option-li{
+	margin-top: 10px;
+	color: #616161;
+}
+.option-li .price{
+	font-weight: bold;
+	color: #707070;
+}
+.past-product__info .options .options-header{
+	margin-top: 15px;
+}

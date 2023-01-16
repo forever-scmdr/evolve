@@ -3,7 +3,10 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
-import ecommander.model.*;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -143,14 +146,14 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			File mainPic = section.getFileValue(MAIN_PIC_PARAM, AppContext.getFilesDirPath(section.isFileProtected()));
 			if(!mainPic.isFile()){
 				ItemQuery q = new ItemQuery(PRODUCT_ITEM);
-				q.setLimit(1);
+				q.setLimit(100);
 				q.setParentId(section.getId(), true);
-				q.addParameterCriteria("pic_link", "", "!=", null, Compare.SOME);
+//				q.addParameterCriteria("pic_link", "", "!=", null, Compare.SOME);
 				List<Item> products = q.loadItems();
 				for(Item prod : products){
 					List<String>mainPics = prod.outputValues("pic_link");
 					if(mainPics.size() > 0){
-						section.setValue(MAIN_PIC_PARAM, mainPics.get(0));
+						section.setValueUI("main_pic_path", mainPics.get(0));
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
 						break;
 					}

@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--Аттрибут "type" - тип каталога. "products" - каталгог техники. "parts" - каталог запчастей-->
-<catalog date="12.12.2022 17:12" type="parts">
+<catalog date="28.11.2022 15:11" type="parts">
 	<sections>
 		<section id="c36f58dd-e9b0-11e4-bbbc-001e67996d0c">Стандартные изделия</section>
 		<section id="d6a429ab-e9b0-11e4-bbbc-001e67996d0c">Оригинальные изделия</section>
@@ -316,8 +316,8 @@
 			<qantity_factory>189</qantity_factory>
 			<qantity_smolensk>189</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>4</qantity_reserv>
-			<qantity_free>185</qantity_free>
+			<qantity_reserv>-53</qantity_reserv>
+			<qantity_free>136</qantity_free>
 			<description>
 				<![CDATA[
 Изготовлен из не цветного металла. Служит в качестве рабочих органов корпуса плуга. Устанавливается на плуги производства компании Уния.]]></description>
@@ -356,8 +356,8 @@
 			<qantity_factory>184</qantity_factory>
 			<qantity_smolensk>184</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>4</qantity_reserv>
-			<qantity_free>180</qantity_free>
+			<qantity_reserv>-53</qantity_reserv>
+			<qantity_free>131</qantity_free>
 			<description>
 				<![CDATA[
 Изготовлен из не цветного металла. Служит в качестве рабочих органов корпуса плуга. Устанавливается на плуги производства компании Уния.]]></description>
@@ -386,8 +386,8 @@
 			<qantity_factory>27</qantity_factory>
 			<qantity_smolensk>27</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>27</qantity_free>
+			<qantity_reserv>-11</qantity_reserv>
+			<qantity_free>16</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS L
 Pierś odkładnicy MX prawa
@@ -416,8 +416,8 @@ Pierś odkładnicy MX prawa
 			<qantity_factory>15</qantity_factory>
 			<qantity_smolensk>15</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>15</qantity_free>
+			<qantity_reserv>-11</qantity_reserv>
+			<qantity_free>4</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS L
 Pierś odkładnicy MX lewa
@@ -447,8 +447,8 @@ Pierś odkładnicy MX lewa
 			<qantity_factory>7</qantity_factory>
 			<qantity_smolensk>7</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>7</qantity_free>
+			<qantity_reserv>-5</qantity_reserv>
+			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[Skrzydło odkładnicy MX prawe
 2113268]]></description>
@@ -476,8 +476,8 @@ Pierś odkładnicy MX lewa
 			<qantity_factory>7</qantity_factory>
 			<qantity_smolensk>7</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>7</qantity_free>
+			<qantity_reserv>-5</qantity_reserv>
+			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[Skrzydło odkładnicy MX lewe]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -501,13 +501,13 @@ Pierś odkładnicy MX lewa
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>11</qantity_factory>
-			<qantity_smolensk>11</qantity_smolensk>
+			<qantity_factory>19</qantity_factory>
+			<qantity_smolensk>19</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>11</qantity_free>
+			<qantity_free>19</qantity_free>
 			<description>
-				<![CDATA[Listwa płozu MX prawa 
+				<![CDATA[Listwa płozu MX prawa
 2113171
 Изготовлена из не цветного металла. Служит в качестве рабочего органа корпуса плуга. Устанавливается на орудия для обработки почвы производства компании «UNIA».
 ]]></description>
@@ -533,11 +533,11 @@ Pierś odkładnicy MX lewa
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>7</qantity_factory>
-			<qantity_smolensk>7</qantity_smolensk>
+			<qantity_factory>15</qantity_factory>
+			<qantity_smolensk>15</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>7</qantity_free>
+			<qantity_free>15</qantity_free>
 			<description>
 				<![CDATA[Listwa płozu MX lewa
 2113170
@@ -755,10 +755,10 @@ Uchwyt zgarniacza lewy
 			<qantity_factory>17</qantity_factory>
 			<qantity_smolensk>17</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>17</qantity_free>
+			<qantity_reserv>-4</qantity_reserv>
+			<qantity_free>13</qantity_free>
 			<description>
-				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/Korpus MX 
+				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/Korpus MX
 Nakładka płozu T
 2113176]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -798,7 +798,7 @@ Nakładka płozu T
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>24</qantity_free>
 			<description>
-				<![CDATA[Piętka 	
+				<![CDATA[Piętka
 kurpus tylny
 2134972]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -926,8 +926,8 @@ kurpus tylny
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>137</qantity_reserv>
-			<qantity_free>-137</qantity_free>
+			<qantity_reserv>108</qantity_reserv>
+			<qantity_free>-108</qantity_free>
 			<description>
 				<![CDATA[Lemiesz z dłutem ZX prawy kpl
 PŁUGI/Pługi obracalne/IBIS L/ХХL]]></description>
@@ -964,8 +964,8 @@ PŁUGI/Pługi obracalne/IBIS L/ХХL]]></description>
 			<qantity_factory>-1</qantity_factory>
 			<qantity_smolensk>-1</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>142</qantity_reserv>
-			<qantity_free>-143</qantity_free>
+			<qantity_reserv>99</qantity_reserv>
+			<qantity_free>-100</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS L/XXL
 Lemiesz z dłutem ZX lewy kp
@@ -1582,7 +1582,7 @@ Lemiesz z dłutem IBIS P
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Lemiesz IBIS P kpl. spaw.]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1117_51-150_0</param>
@@ -2063,7 +2063,7 @@ Nakładka
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>8</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Nakładka]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1117/81-001/0</param>
@@ -4201,7 +4201,7 @@ Oś zawieszenia ø60 kat. II/28 (szary)
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Oś zaw.70 kat.III/36/885 kpl.spawana
-1435/95-000/0 	
+1435/95-000/0
 2111123
 Kret 7, 7S (5,5S na ramie 7)]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -4233,7 +4233,7 @@ Kret 7, 7S (5,5S na ramie 7)]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[PŁUGI/Pługi obracalne/IBIS 
+				<![CDATA[PŁUGI/Pługi obracalne/IBIS
 Koło kpl.
 Поз. 5
 1013986
@@ -4376,7 +4376,7 @@ Amortyzator 40/20/64
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[70/40-240 SYS 5A
-Cylinder obrotu pługa DZ 
+Cylinder obrotu pługa DZ
 IBIS M, IBIS L
 поз.22
 2146050]]></description>
@@ -4430,8 +4430,8 @@ ylinder obrotu pługa DZ 80/40-236 HPS3A
 			<qantity_factory>12</qantity_factory>
 			<qantity_smolensk>12</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>7</qantity_reserv>
-			<qantity_free>5</qantity_free>
+			<qantity_reserv>-10</qantity_reserv>
+			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS XL/IBIS XXL
 Pierś odkładnicy ZX prawa
@@ -4462,8 +4462,8 @@ Pierś odkładnicy ZX prawa
 			<qantity_factory>18</qantity_factory>
 			<qantity_smolensk>18</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>7</qantity_reserv>
-			<qantity_free>11</qantity_free>
+			<qantity_reserv>-10</qantity_reserv>
+			<qantity_free>8</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS XL/Korpus ZX lewy
 Pierś odkładnicy ZX lewa
@@ -4494,8 +4494,8 @@ Pierś odkładnicy ZX lewa
 			<qantity_factory>16</qantity_factory>
 			<qantity_smolensk>16</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>16</qantity_free>
+			<qantity_reserv>-4</qantity_reserv>
+			<qantity_free>12</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS XL/XXL
 Skrzydło odkładnicy ZX prawe
@@ -4525,8 +4525,8 @@ Skrzydło odkładnicy ZX prawe
 			<qantity_factory>16</qantity_factory>
 			<qantity_smolensk>16</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>16</qantity_free>
+			<qantity_reserv>-4</qantity_reserv>
+			<qantity_free>12</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS XL
 Skrzydło odkładnicy ZX lewe
@@ -4555,8 +4555,8 @@ Skrzydło odkładnicy ZX lewe
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>7</qantity_reserv>
-			<qantity_free>-7</qantity_free>
+			<qantity_reserv>-10</qantity_reserv>
+			<qantity_free>-10</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS XL/Korpus ZX prawy
 Po/1703 М1815L
@@ -4586,8 +4586,8 @@ Listwa płozu ZX prawa (Ostatni korpus)
 			<qantity_factory>4</qantity_factory>
 			<qantity_smolensk>4</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>7</qantity_reserv>
-			<qantity_free>-3</qantity_free>
+			<qantity_reserv>-10</qantity_reserv>
+			<qantity_free>-6</qantity_free>
 			<description>
 				<![CDATA[Listwa płozu ZX lewa
 2113172
@@ -5523,7 +5523,7 @@ Kółko wysiewające nasiona drobne
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>290</qantity_free>
 			<description>
-				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 780/4D/Aparaty wysiewające	
+				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 780/4D/Aparaty wysiewające
 Kółko wysiewające kpl.
 2115579
 Предназначена для ремонта техники производства FAMAROL (Польша).
@@ -6357,7 +6357,7 @@ Skrzynka przekł. bezstop.
 				<![CDATA[
 Изготовлен из пластмассы.
 Необходим для транспортировки по нему потока семян и минерального удобрения, идущего к сошникам от высевающих аппаратов. Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
-	 
+
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">3043/00-04-000/1</param>
@@ -6617,7 +6617,7 @@ SIEWNIKI/Starsze wersje maszyn]]></description>
 			<description>
 				<![CDATA[Redlica długa kpl. z zawiasą
 2116795
-Изготовлен из черных металлов. 
+Изготовлен из черных металлов.
 Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -6648,7 +6648,7 @@ SIEWNIKI/Starsze wersje maszyn]]></description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/MAZUR/MAZUR 1100/6,0 D
 Redlica krótka kpl. z zawiasą
 
-Изготовлен из черных металлов. 
+Изготовлен из черных металлов.
 Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -7136,7 +7136,7 @@ Ząb spulchniacza śladu kp
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Talerz tnący
 Изготовлен из черных металлов. Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой. Устанавливается на сельскохозяйственные орудия производства компании FAMAROL]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -7195,6 +7195,36 @@ Talerz skrajny prawy ø455/4
 			<param name="number">1680_39-001_0</param>
 			<param name="category">A</param>
 			<param name="weight">4</param>
+		</product>
+		<product>
+			<id>51706fcb-89b7-11e4-a3d9-001e67996d0d</id>
+			<name>Диск режущий сошника</name>
+			<section_id>55e5fc68-ea57-11e4-bbbc-001e67996d0c</section_id>
+			<price>22,6</price>
+			<price_opt>31,64</price_opt>
+			<partForlds>
+				<partForld_id>689b28a8-07f3-4ad6-8781-2cab6079edb7</partForld_id>
+				<partForld_name>Навесная механическая сеялка MAZUR 855/1100</partForld_name>
+				<partForld_id>eb729fbc-16fe-11e4-87a4-001e67996d0d</partForld_id>
+				<partForld_name>Навесная механическая сеялка POLONEZ 1000 premium*</partForld_name>
+				<partForld_id>ae170990-1ee5-11e4-87a4-001e67996d0d</partForld_id>
+				<partForld_name>Полунавесная пневматическая сеялка FS 2000/3*</partForld_name>
+				<partForld_id>8f8e93ac-6340-4ed7-a68d-bcfae76701c2</partForld_id>
+				<partForld_name>Навесная механическая сеялка POLONEZ 550/780/800/1000</partForld_name>
+			</partForlds>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_stored>0</qantity_stored>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
+			<description>
+				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 550/3D [ do 2017r POZNANIAK 550/3D ]
+2041943
+Изготовлен из черных металлов. Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой. Устанавливается на сельскохозяйственные орудия производства компании FAMAROL]]></description>
+			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
+			<param name="number">3078/70-00-002/1</param>
+			<param name="category">A</param>
+			<param name="weight">2</param>
 		</product>
 		<product>
 			<id>51706fcc-89b7-11e4-a3d9-001e67996d0d</id>
@@ -8163,7 +8193,7 @@ Sprężyna naciągowa
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Skrzynka prędkości 
+				<![CDATA[Skrzynka prędkości
 3045/44-00-000/1 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">3045/44-00-000/1 </param>
@@ -10935,7 +10965,7 @@ Sprężyna
 			<description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 780/4 PREMIUM
 Zawiasa redlicy krótkiej
-	
+
 2116793
 Изготовлен из черных металлов. Предназначен для крепления элементов агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
@@ -11962,7 +11992,7 @@ Zawiasa redlicy długiej
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 550/3D [ do 2017r POZNANIAK 550/3D 
+				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 550/3D [ do 2017r POZNANIAK 550/3D
 Wkręt M6x12 stożkowy]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">PN-85/M-82105</param>
@@ -12379,7 +12409,7 @@ Redliczka
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>137</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Agregaty uprawowe/VIKING L	
+				<![CDATA[UPRAWA/Agregaty uprawowe/VIKING L
 Sprężyna SV (45x10)
 2113284
 Изготовлен из нецветного метала. Служит для фиксации рабочего органа.. Устанавливается на почвообрабатывающие орудия компании UNIA]]></description>
@@ -12608,8 +12638,8 @@ Sprężyna główna SX (50x10)
 			<qantity_factory>548</qantity_factory>
 			<qantity_smolensk>548</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>-40</qantity_reserv>
-			<qantity_free>508</qantity_free>
+			<qantity_reserv>-180</qantity_reserv>
+			<qantity_free>368</qantity_free>
 			<description>
 				<![CDATA[Gęsiostópka 100 Ząb SK
 Изготовлен из чернового металла. Выполняет роль рабочего органа. Устанавливается на почвообрабатывающие агрегаты производства фирмы UNIA.]]></description>
@@ -12992,7 +13022,7 @@ Spulchniacz kpl.]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>6</qantity_free>
 			<description>
-				<![CDATA[Trzon gęsiostópki kpl. 
+				<![CDATA[Trzon gęsiostópki kpl.
 UPRAWA/Agregaty uprawowe/ATLAS HP/Spulchniacz ATLAS HP
 2002283]]></description>
 			<picture>/picture/136f4fc1-89b8-11e4-a3d9-001e67996d0d_20220818_130358.jpg</picture>
@@ -13216,7 +13246,7 @@ Gęsiostópka 180]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Agregaty uprawowe/KOMBI  	
+				<![CDATA[UPRAWA/Agregaty uprawowe/KOMBI
 5,1m
 Wał strunowy prawy ø310/1,15m kpl.spawany]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -13262,7 +13292,7 @@ Wał strunowy prawy ø310/1,15m kpl.spawany]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Wał strunowy ø320 kpl.spawany	
+				<![CDATA[Wał strunowy ø320 kpl.spawany
 3,7m 5,1m]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1664/10-000/0</param>
@@ -15447,8 +15477,8 @@ Talerz kroju ø455/4
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>6</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Agregaty ścierniskowe/KOS H	
-Uszczelka	
+				<![CDATA[UPRAWA/Agregaty ścierniskowe/KOS H
+Uszczelka
 1014764]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1861/02-003/0</param>
@@ -15513,8 +15543,8 @@ Krój talerzowy prawy kpl. ø455/4
 			<id>3ca56248-89b8-11e4-a3d9-001e67996d0d</id>
 			<name>Крыло левое</name>
 			<section_id>dd93ecfa-ea55-11e4-bbbc-001e67996d0c</section_id>
-			<price>22</price>
-			<price_opt>30,8</price_opt>
+			<price>6,6</price>
+			<price_opt>9,24</price_opt>
 			<partForlds>
 				<partForld_id>d31e1e16-94b8-4a7f-8301-50b5ade7c87a</partForld_id>
 				<partForld_name>Стерневой культиватор KOS</partForld_name>
@@ -15592,8 +15622,8 @@ Krój talerzowy prawy kpl. ø455/4
 			<qantity_factory>36</qantity_factory>
 			<qantity_smolensk>36</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>34</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>36</qantity_free>
 			<description>
 				<![CDATA[Служит в качестве рабочего органа стерневого культиватора, предназначен для заглубления и взрыхления верхнего слоя почва. Изготовлен из стали. Устанавливается на стерневые культиваторы производства компании UNIA.]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -15947,7 +15977,7 @@ Ramię kroju prawe kpl.spawane
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>9</qantity_free>
 			<description>
-				<![CDATA[ARES ТL 
+				<![CDATA[ARES ТL
 Ramię kroju lewe kpl.spawane
 
 Изготовлена из чернового металла. Предназначена фиксации диска на раме дискатора. Устанавливается на почвообрабатывающие агрегаты производства фирмы UNIA.]]></description>
@@ -15975,11 +16005,11 @@ Ramię kroju lewe kpl.spawane
 				<partForld_id>2f8af457-4b71-4498-a255-4a857126d7f9</partForld_id>
 				<partForld_name>Навесная механическая сеялка AMBER 900/1200</partForld_name>
 			</partForlds>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_factory>6</qantity_factory>
+			<qantity_smolensk>6</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_free>6</qantity_free>
 			<description>
 				<![CDATA[Piasta kpl.A
 Ступица изготовлена из черного метала. Выполняет роль элемента передающего вращение. Устанавливается на почвообрабатывающие орудия производства компании UNIA]]></description>
@@ -16048,11 +16078,11 @@ Ramię kroju lewe kpl.spawane
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>107</qantity_factory>
-			<qantity_smolensk>107</qantity_smolensk>
+			<qantity_factory>157</qantity_factory>
+			<qantity_smolensk>157</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>107</qantity_free>
+			<qantity_free>157</qantity_free>
 			<description>
 				<![CDATA[Изготовлена из стали, предназначена для фиксации подшипника на оси ступицы. Устанавливается на почвообрабатывающие агрегаты производства компании UNIA]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -16082,11 +16112,11 @@ Ramię kroju lewe kpl.spawane
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>151</qantity_factory>
-			<qantity_smolensk>151</qantity_smolensk>
+			<qantity_factory>201</qantity_factory>
+			<qantity_smolensk>201</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>151</qantity_free>
+			<qantity_free>201</qantity_free>
 			<description>
 				<![CDATA[1025277
 MB5 Шайба
@@ -16109,11 +16139,11 @@ MB5 Шайба
 				<partForld_id>fe1149c1-c9d9-4561-8d20-6b7d9cfe9fe6</partForld_id>
 				<partForld_name>Почвообрабатывающий агрегат FRONT C/TL</partForld_name>
 			</partForlds>
-			<qantity_factory>9</qantity_factory>
-			<qantity_smolensk>9</qantity_smolensk>
+			<qantity_factory>59</qantity_factory>
+			<qantity_smolensk>59</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>9</qantity_free>
+			<qantity_free>59</qantity_free>
 			<description>
 				<![CDATA[
 Изготовлено из неармированной резины. Устанавливается на гидравлические цилиндры и прочие запасные части производства компании UNIA, требующие дополнительного уплотнения]]></description>
@@ -16233,8 +16263,8 @@ Classic
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>2</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES P/ARES XL 
-Talerz kroju uzębiony Ø560/4 	
+				<![CDATA[UPRAWA/Brony talerzowe/ARES P/ARES XL
+Talerz kroju uzębiony Ø560/4
 Classic
 2159402]]></description>
 			<picture>/picture/43c44da3-89b8-11e4-a3d9-001e67996d0d_Screenshot_3.png</picture>
@@ -16287,16 +16317,16 @@ Talerz kroju uzębiony ø 560/6- CLASSIC
 				<partForld_id>68a15f84-9410-481c-934e-6a2b17f83bf2</partForld_id>
 				<partForld_name>Cтерневой культиватор CROSS</partForld_name>
 			</partForlds>
-			<qantity_factory>12</qantity_factory>
-			<qantity_smolensk>12</qantity_smolensk>
+			<qantity_factory>262</qantity_factory>
+			<qantity_smolensk>262</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>210</qantity_reserv>
-			<qantity_free>-198</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>262</qantity_free>
 			<description>
 				<![CDATA[AU1415 190X35
 Amortyzator ø35x190
 ARES XL
-Цилиндрообразный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента. 
+Цилиндрообразный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента.
 Устанавливается совместно со стойкой на дисковых боронах производства компании UNIA
 ]]></description>
 			<picture>/picture/43c44da5-89b8-11e4-a3d9-001e67996d0d_Screenshot_22.png</picture>
@@ -16344,7 +16374,7 @@ ARES XL
 			<qantity_free>12</qantity_free>
 			<description>
 				<![CDATA[/ARES XL 560
-поз.7 
+поз.7
 Изготовлена из чернового металла. Предназначена фиксации диска на раме дискатора. Устанавливается на почвообрабатывающие агрегаты производства фирмы UNIA.]]></description>
 			<picture>/picture/43c44da9-89b8-11e4-a3d9-001e67996d0d_MNS0042376-proc.jpg</picture>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -17128,8 +17158,8 @@ Płyta zęba]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>27</qantity_reserv>
-			<qantity_free>-27</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -17176,9 +17206,9 @@ Płyta zęba]]></description>
 			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[
-	
+
 UPRAWA/Agregaty ścierniskowe/KOS PREMIUM/Ząb CX, CX–A
-Sprężyna duża	
+Sprężyna duża
 1013765]]></description>
 			<picture>/picture/590e4aa1-89b8-11e4-a3d9-001e67996d0d_20220519_135715.jpg</picture>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -18413,7 +18443,7 @@ Koło pasowe dp=133]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Изготовлен из черных металлов. Количество зубьев-34. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+				<![CDATA[Изготовлен из черных металлов. Количество зубьев-34. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -18483,7 +18513,7 @@ UNIA- FAMAROL
 			<description>
 				<![CDATA[KOSIARKI/Kosiarki dyskowe/ALKA CL/ALKA CL 2,4
 Koło zębate Z45 M3
-Изготовлен из черных металлов. Количество зубьев-45. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-45. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 
 ]]></description>
@@ -19143,7 +19173,7 @@ Wspornik
 			<description>
 				<![CDATA[KOSIARKI/Kosiarki dyskowe/ALKA L/ALKA L 2,1
 Koło 297
-Изготовлен из черных металлов. Предназначена для передачи крутящего момента между шкивами ременной передачи, используется для ремонта.Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Предназначена для передачи крутящего момента между шкивами ременной передачи, используется для ремонта.Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -21455,7 +21485,7 @@ Czujnik D4 - docinacz
 			<qantity_free>4</qantity_free>
 			<description>
 				<![CDATA[PRASY/Prasy stałokomorowe/DF 1,8 V/D
-Czujnik D5 - owijanie siatką	
+Czujnik D5 - owijanie siatką
 1016570]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">SPZ-S5 (D5)</param>
@@ -21608,7 +21638,7 @@ Czujnik D1 - siłownik (SPZ-L1) SPZ-S1L
 			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[
-Изготовлен из черных металлов. Количество зубьев-22/27. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-22/27. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -22214,8 +22244,8 @@ podwozie z kołami 10,0/80-12 i dyszlem o długości 1800 mm - ARES L (2,5 - 4 m
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PRASY/Prasy Łańcuchowo-walcowe/DF 1,8 V/Rolka 1
-Rolka górna spaw.	
-2141990 (2124344)		
+Rolka górna spaw.
+2141990 (2124344)
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5595/005-02-400(5595/005-02-100)</param>
@@ -22929,7 +22959,7 @@ Sprzęgło igiełkowe HFL 3530 35x42x30]]></description>
 			<description>
 				<![CDATA[Pasek klinowy
 1015944
-Изготовлен из резины. Предназначена для передачи крутящего момента между шкивами агрегата 
+Изготовлен из резины. Предназначена для передачи крутящего момента между шкивами агрегата
 Устанавливается на сельскохозяйственные машины производства компании FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -24405,8 +24435,8 @@ Tulejka 40x44x20
 			<qantity_factory>36</qantity_factory>
 			<qantity_smolensk>36</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>34</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>36</qantity_free>
 			<description>
 				<![CDATA[Łopatka prawa długa LR10 L-280
 Изготовлена из не цветного металла.
@@ -24447,8 +24477,8 @@ Tulejka 40x44x20
 			<qantity_factory>37</qantity_factory>
 			<qantity_smolensk>37</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>37</qantity_free>
+			<qantity_reserv>-2</qantity_reserv>
+			<qantity_free>35</qantity_free>
 			<description>
 				<![CDATA[Łopatka lewa długa LR10 L-280
 Изготовлена из не цветного металла.
@@ -24486,11 +24516,11 @@ Tulejka 40x44x20
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>5</qantity_factory>
-			<qantity_smolensk>5</qantity_smolensk>
+			<qantity_factory>1</qantity_factory>
+			<qantity_smolensk>1</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-3</qantity_reserv>
-			<qantity_free>2</qantity_free>
+			<qantity_free>-2</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX (maszyny produkowane od 2019 r.)/Tarcze rozsiewające
 Tarcza prawa kpl. z łopatka LM 20 (18-24 m)
@@ -24520,11 +24550,11 @@ Tarcza prawa kpl. z łopatka LM 20 (18-24 m)
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>8</qantity_factory>
-			<qantity_smolensk>8</qantity_smolensk>
+			<qantity_factory>4</qantity_factory>
+			<qantity_smolensk>4</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-3</qantity_reserv>
-			<qantity_free>5</qantity_free>
+			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[MINERALNE/Rozsiewacze zawieszane/MX, MS/MX (maszyny produkowane od 2019 r.)/Tarcze rozsiewające
 Tarcza lewa kpl. z łopatkami LM 20 (18-24 m)
@@ -24730,7 +24760,7 @@ Tarcza lewa kpl. z łopatkami LM 20 (18-24 m)
 			<qantity_free>8</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000
-Tarcza prawa kpl. z łopatkami LM 30	
+Tarcza prawa kpl. z łopatkami LM 30
 2041937
 MX 2100-3000; Poz. 2, 18, 21, 22, 23, 24, 25]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
@@ -24790,13 +24820,13 @@ Tarcza lewa kpl. z łopatkami LM 30 (do nawozów )]]></description>
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>57</qantity_factory>
-			<qantity_smolensk>57</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>57</qantity_free>
+			<qantity_reserv>3</qantity_reserv>
+			<qantity_free>-3</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/PLUS/RCW 5500 plus; 
+				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/PLUS/RCW 5500 plus;
 2041930
 RCW 8200 plus
 Łopatka lewa krótka LR30 L-300
@@ -24824,11 +24854,11 @@ RCW 8200 plus
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>67</qantity_factory>
-			<qantity_smolensk>67</qantity_smolensk>
+			<qantity_factory>7</qantity_factory>
+			<qantity_smolensk>7</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>67</qantity_free>
+			<qantity_free>7</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000
 Łopatka prawa krótka LR30 L-300
@@ -24863,11 +24893,11 @@ RCW 8200 plus
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>124</qantity_factory>
-			<qantity_smolensk>124</qantity_smolensk>
+			<qantity_factory>14</qantity_factory>
+			<qantity_smolensk>14</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-4</qantity_reserv>
-			<qantity_free>120</qantity_free>
+			<qantity_free>10</qantity_free>
 			<description>
 				<![CDATA[Łopatka lewa długa LR 30 L=410
 2041931
@@ -24904,11 +24934,11 @@ RCW 8200 plus
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>121</qantity_factory>
-			<qantity_smolensk>121</qantity_smolensk>
+			<qantity_factory>11</qantity_factory>
+			<qantity_smolensk>11</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-4</qantity_reserv>
-			<qantity_free>117</qantity_free>
+			<qantity_free>7</qantity_free>
 			<description>
 				<![CDATA[Łopatka prawa długa LR30 L-410
 Изготовлена из не цветного металла. Выполняет роль рабочего разбрасывателя. Устанавливается на разбрасыватели минеральных удобрений производства компании AGROMET-UNIA
@@ -24986,11 +25016,11 @@ RCW 8200 plus
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>29</qantity_factory>
-			<qantity_smolensk>29</qantity_smolensk>
+			<qantity_factory>34</qantity_factory>
+			<qantity_smolensk>34</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>29</qantity_free>
+			<qantity_free>34</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Łopatka kpl. prawa (do wapna)
@@ -25017,11 +25047,11 @@ RCW 8200 plus
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>27</qantity_factory>
-			<qantity_smolensk>27</qantity_smolensk>
+			<qantity_factory>32</qantity_factory>
+			<qantity_smolensk>32</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>27</qantity_free>
+			<qantity_free>32</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 1000
 2025115
@@ -25073,11 +25103,11 @@ RCW 8200 plus
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>22</qantity_factory>
-			<qantity_smolensk>22</qantity_smolensk>
+			<qantity_factory>7</qantity_factory>
+			<qantity_smolensk>7</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>22</qantity_free>
+			<qantity_free>7</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX (maszyny produkowane od 2019 r.)/Napęd;
 Łożysko wałka kpl.
@@ -25175,11 +25205,11 @@ Mieszadło spiralne prawe kpl.(czerwony)
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>24</qantity_factory>
-			<qantity_smolensk>24</qantity_smolensk>
+			<qantity_factory>14</qantity_factory>
+			<qantity_smolensk>14</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>3</qantity_reserv>
-			<qantity_free>21</qantity_free>
+			<qantity_free>11</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX
 Siłownik nurnikowy GCN 02-24-16/86
@@ -25245,11 +25275,11 @@ Podpora L=93
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>21</qantity_factory>
-			<qantity_smolensk>21</qantity_smolensk>
+			<qantity_factory>11</qantity_factory>
+			<qantity_smolensk>11</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>21</qantity_free>
+			<qantity_free>11</qantity_free>
 			<description>
 				<![CDATA[MB30.07
 NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX MB 30.07
@@ -25272,11 +25302,11 @@ Przekładnia boczna kpl.
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>13</qantity_factory>
-			<qantity_smolensk>13</qantity_smolensk>
+			<qantity_factory>8</qantity_factory>
+			<qantity_smolensk>8</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>13</qantity_free>
+			<qantity_free>8</qantity_free>
 			<description>
 				<![CDATA[Przekładnia stożkowa kpl. PK201T-1.16-01
 MX 850 - 1600
@@ -25308,8 +25338,8 @@ Przekładnia stożkowa kpl.
 			<qantity_factory>-2</qantity_factory>
 			<qantity_smolensk>-2</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>5</qantity_reserv>
-			<qantity_free>-7</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>-3</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200
 Przekładnia kątowa kpl.
@@ -27053,7 +27083,7 @@ PYRA 3000
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[TECHNIKA ZIEMNIACZANA/Kombajn do ziemniaków i warzyw/PYRA 1600/Oddzielacz łęcin T-18	
+				<![CDATA[TECHNIKA ZIEMNIACZANA/Kombajn do ziemniaków i warzyw/PYRA 1600/Oddzielacz łęcin T-18
 Łopatka zgarnia
 2159088
 поз.2]]></description>
@@ -28127,7 +28157,7 @@ Oś talerzy L=362
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[SIEWNIKI/Starsze wersje maszyn
-Nakładka spawana 
+Nakładka spawana
 2129623]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">SC02/05-00-500</param>
@@ -33647,8 +33677,8 @@ Kątownik wypory
 			<qantity_factory>183</qantity_factory>
 			<qantity_smolensk>183</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>40</qantity_reserv>
-			<qantity_free>143</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>183</qantity_free>
 			<description>
 				<![CDATA[Śruba z łbem stożkowym M12x1,25x35
 Изготовлен из не цветного металла. Выполняет роль резьбового соединения. Предел прочности на растяжение 800 Н/мм2.Устанавливается на сельскохозяйственные орудия производства компании «UNIA».]]></description>
@@ -33682,11 +33712,11 @@ Kątownik wypory
 				<partForld_id>130aaf23-9c8a-4dbe-bc99-147f21399b7c</partForld_id>
 				<partForld_name>Плуги загонные TUR</partForld_name>
 			</partForlds>
-			<qantity_factory>271</qantity_factory>
-			<qantity_smolensk>271</qantity_smolensk>
+			<qantity_factory>391</qantity_factory>
+			<qantity_smolensk>391</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>80</qantity_reserv>
-			<qantity_free>191</qantity_free>
+			<qantity_reserv>50</qantity_reserv>
+			<qantity_free>341</qantity_free>
 			<description>
 				<![CDATA[Śruba z łbem stożkowym M12x1,25x40
 1013789
@@ -34205,7 +34235,7 @@ M20x1,5-10-B-Fe/Zn
 				<![CDATA[PRASY/Prasy walcowe/DF 1,8 D
 Przekładnia główna
 LK13-16-24/51-D
-	
+
 2124407
 ]]></description>
 			<picture>/picture/0c63d852-e2a3-4876-b00a-f431b38308e4_20220818_134228.jpg</picture>
@@ -34268,11 +34298,11 @@ LK13-16-24/51-D
 				<partForld_id>130aaf23-9c8a-4dbe-bc99-147f21399b7c</partForld_id>
 				<partForld_name>Плуги загонные TUR</partForld_name>
 			</partForlds>
-			<qantity_factory>1</qantity_factory>
-			<qantity_smolensk>1</qantity_smolensk>
+			<qantity_factory>3</qantity_factory>
+			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>1</qantity_free>
+			<qantity_free>3</qantity_free>
 			<description>
 				<![CDATA[Po/1528 M1813
 Изготовлен из черных металлов. Предназначен для ремонта техники для обработки почвы . Устанавливается на селькохозяйственные орудия производства компании UNIA.]]></description>
@@ -34295,11 +34325,11 @@ LK13-16-24/51-D
 				<partForld_id>8876b27b-76cc-41e2-bfae-ff688aad6e4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MX</partForld_name>
 			</partForlds>
-			<qantity_factory>53</qantity_factory>
-			<qantity_smolensk>53</qantity_smolensk>
+			<qantity_factory>8</qantity_factory>
+			<qantity_smolensk>8</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>4</qantity_reserv>
-			<qantity_free>49</qantity_free>
+			<qantity_free>4</qantity_free>
 			<description>
 				<![CDATA[Zabierak sprzęgła kpl. fi26
 2019219
@@ -39115,11 +39145,11 @@ CASS T 35x65x14.5/17
 				<partForld_id>238cc1f0-3878-47f2-ac48-a008901c9c14</partForld_id>
 				<partForld_name>Дисковый агрегат ARES  P XXL/TX/TWIX</partForld_name>
 			</partForlds>
-			<qantity_factory>23</qantity_factory>
-			<qantity_smolensk>23</qantity_smolensk>
+			<qantity_factory>25</qantity_factory>
+			<qantity_smolensk>25</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>23</qantity_free>
+			<qantity_free>25</qantity_free>
 			<description>
 				<![CDATA[Au/2765 М1816
 UPRAWA/Brony talerzowe/ARES HP
@@ -41045,7 +41075,7 @@ Sworzeń z uchwytem kpl. spaw.
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[/ARES L/ARES XL/KOS 
+				<![CDATA[/ARES L/ARES XL/KOS
 Pierścień gumowy]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">8550/31-101/0</param>
@@ -41068,7 +41098,7 @@ Pierścień gumowy]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[ARES L/ARES XL/KOS 
+				<![CDATA[ARES L/ARES XL/KOS
 Pierścień dystansowy]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">8550/31-102/0</param>
@@ -42004,7 +42034,7 @@ Oś kroju kpl. spaw.]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/VIKING XL
-Sprężyna	
+Sprężyna
 2113272
 поз.3]]></description>
 			<picture>/picture/8abf4a5d-21e1-4925-bbd6-cc8f635ae6b9_VikingXL_006.png</picture>
@@ -42576,8 +42606,8 @@ Trzon zęba A
 			<qantity_factory>250</qantity_factory>
 			<qantity_smolensk>250</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>-10</qantity_reserv>
-			<qantity_free>240</qantity_free>
+			<qantity_reserv>-26</qantity_reserv>
+			<qantity_free>224</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/VIKING L/Ząb SK/KOMBI
 Sprężyna SK (45x10)
@@ -47433,7 +47463,7 @@ Nakładka A
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>59</qantity_free>
 			<description>
-				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/Korpus MX 
+				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/Korpus MX
 DIN 608
 ZM12x1,25x35-10.9-Fe/Zn
 1025423]]></description>
@@ -47824,16 +47854,16 @@ Talerz kroju uzębiony ø485/4
 				<partForld_id>657cd38f-ced4-4102-8454-e4a0f378566b</partForld_id>
 				<partForld_name>Дисковый агрегат ARES  L/L DRIVE</partForld_name>
 			</partForlds>
-			<qantity_factory>16</qantity_factory>
-			<qantity_smolensk>16</qantity_smolensk>
+			<qantity_factory>19</qantity_factory>
+			<qantity_smolensk>19</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>16</qantity_free>
+			<qantity_free>19</qantity_free>
 			<description>
 				<![CDATA[AU/03420 M1816
 UPRAWA/Brony talerzowe/ARES L
 Ramię kroju prawe kpl.spawane
-Krój talerzowy ARES L ø485 (CLASSIC,AGRESSIVE)	
+Krój talerzowy ARES L ø485 (CLASSIC,AGRESSIVE)
 поз. 7
 2131451]]></description>
 			<picture>/picture/fc7c1def-1ae2-410e-9fa7-731607b9bb82_Screenshot_7.png</picture>
@@ -47852,16 +47882,16 @@ Krój talerzowy ARES L ø485 (CLASSIC,AGRESSIVE)
 				<partForld_id>657cd38f-ced4-4102-8454-e4a0f378566b</partForld_id>
 				<partForld_name>Дисковый агрегат ARES  L/L DRIVE</partForld_name>
 			</partForlds>
-			<qantity_factory>16</qantity_factory>
-			<qantity_smolensk>16</qantity_smolensk>
+			<qantity_factory>19</qantity_factory>
+			<qantity_smolensk>19</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>16</qantity_free>
+			<qantity_free>19</qantity_free>
 			<description>
 				<![CDATA[AU/03423 M1816
 UPRAWA/Brony talerzowe/ARES L
 Ramię kroju lewe kpl.spawane
-Krój talerzowy ARES L ø485 (CLASSIC,AGRESSIVE)	
+Krój talerzowy ARES L ø485 (CLASSIC,AGRESSIVE)
 поз.8
 2131452]]></description>
 			<picture>/picture/57a60a41-b42c-499d-8ce6-8fc8acdc0502_Screenshot_18.png</picture>
@@ -49139,7 +49169,7 @@ M20x1,5x180-10.9-B-Fe/Zn
 			<description>
 				<![CDATA[PŁUGI/Pługi zagonowe/TUR VARIO/KOS
 Podkładka sprężysta
-	
+
 Na każdy nóż]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">Z16,3-Fe/Zn</param>
@@ -49355,7 +49385,7 @@ Słupica kroju z ramieniem kpl. spaw.
 			<description>
 				<![CDATA[UPRAWA/Agregaty ścierniskowe/CROSS S
 Krój talerzowy podwójny kpl. ø455/4
-3,0m – 3 3,5m – 3 4,0m - 3 
+3,0m – 3 3,5m – 3 4,0m - 3
 2131410]]></description>
 			<picture>/picture/f623db08-807a-49c2-a100-dc15689a4549_20220519_135548.jpg</picture>
 			<picture>/picture/f623db08-807a-49c2-a100-dc15689a4549_20220519_135536.jpg</picture>
@@ -49713,10 +49743,10 @@ Płyta grządzieli tłoczona]]></description>
 			<price>55,6</price>
 			<price_opt>77,84</price_opt>
 			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_factory>2</qantity_factory>
+			<qantity_smolensk>2</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>2</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/IBIS L
@@ -49735,10 +49765,10 @@ Płyta uchwytu górna B
 			<price>55,6</price>
 			<price_opt>77,84</price_opt>
 			<partForlds/>
-			<qantity_factory>5</qantity_factory>
-			<qantity_smolensk>5</qantity_smolensk>
+			<qantity_factory>7</qantity_factory>
+			<qantity_smolensk>7</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>2</qantity_reserv>
 			<qantity_free>5</qantity_free>
 			<description>
 				<![CDATA[IBIS M
@@ -50231,11 +50261,11 @@ BKH-12L
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>315</qantity_factory>
-			<qantity_smolensk>315</qantity_smolensk>
+			<qantity_factory>69</qantity_factory>
+			<qantity_smolensk>69</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>6</qantity_reserv>
-			<qantity_free>309</qantity_free>
+			<qantity_free>63</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze zawieszane/MX, MS
 Tarcza elastyczna
@@ -50256,18 +50286,16 @@ Tarcza elastyczna
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>5</qantity_factory>
-			<qantity_smolensk>5</qantity_smolensk>
+			<qantity_factory>9</qantity_factory>
+			<qantity_smolensk>9</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>5</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>9</qantity_free>
 			<description>
 				<![CDATA[MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 2019375
 Piasta skrzynki kpl. (szary stalowy)
 Изготовлена из черных металлов. Предназначен для ремонта разбрасыватели минеральных удобрений производства компании «UNIA».]]></description>
-			<picture>/picture/17cd177c-dc1c-11e7-4991-52540071dadf_1669875960051.JPEG</picture>
-			<picture>/picture/17cd177c-dc1c-11e7-4991-52540071dadf_1669875960090.JPEG</picture>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2039/83-005/0 (2039/83-02-100.00)</param>
 			<param name="category">A</param>
@@ -50399,11 +50427,11 @@ Koło łańcuchowe kpl. Z=39
 				<partForld_id>27db8c8a-b068-465e-8a54-be8f96cb2b01</partForld_id>
 				<partForld_name>Разбрасыватели минеральных удобрений</partForld_name>
 			</partForlds>
-			<qantity_factory>24</qantity_factory>
-			<qantity_smolensk>24</qantity_smolensk>
+			<qantity_factory>25</qantity_factory>
+			<qantity_smolensk>25</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>22</qantity_free>
+			<qantity_reserv>-2</qantity_reserv>
+			<qantity_free>23</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/Aparat ślimakowy kpl. - 1 silnik
 Śruba napinająca
@@ -50423,10 +50451,10 @@ Koło łańcuchowe kpl. Z=39
 				<partForld_id>27db8c8a-b068-465e-8a54-be8f96cb2b01</partForld_id>
 				<partForld_name>Разбрасыватели минеральных удобрений</partForld_name>
 			</partForlds>
-			<qantity_factory>1</qantity_factory>
-			<qantity_smolensk>1</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
+			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/Aparat ślimakowy kpl. - 1 silnik
@@ -50515,11 +50543,11 @@ SAUER DANFOSS KAT151-0211
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>2</qantity_factory>
-			<qantity_smolensk>2</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>2</qantity_free>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200
 Tuleja dyszla kpl.2244/06-04-000.00
@@ -50766,7 +50794,7 @@ Płytka skrobaka
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[CN-845-16-40/400 GTR	
+				<![CDATA[CN-845-16-40/400 GTR
 Siłownik klapy]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5595/003-01-100</param>
@@ -50895,11 +50923,11 @@ ARES HP/CROSS HP]]></description>
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>16</qantity_factory>
-			<qantity_smolensk>16</qantity_smolensk>
+			<qantity_factory>8</qantity_factory>
+			<qantity_smolensk>8</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>15</qantity_free>
+			<qantity_free>7</qantity_free>
 			<description>
 				<![CDATA[2053/03-03-000; 2053/03-035/0; PK201T-1.16-03
 Przekładnia stożkowa kpl. z tuleją czujnika (1001182)
@@ -51035,11 +51063,11 @@ Sprężyna kpl
 				<partForld_id>27db8c8a-b068-465e-8a54-be8f96cb2b01</partForld_id>
 				<partForld_name>Разбрасыватели минеральных удобрений</partForld_name>
 			</partForlds>
-			<qantity_factory>2</qantity_factory>
-			<qantity_smolensk>2</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-1</qantity_reserv>
-			<qantity_free>1</qantity_free>
+			<qantity_free>-1</qantity_free>
 			<description>
 				<![CDATA[Obudowa środkowa kpl.
 2032636
@@ -51059,11 +51087,11 @@ Sprężyna kpl
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>7</qantity_factory>
-			<qantity_smolensk>7</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>-6</qantity_reserv>
-			<qantity_free>1</qantity_free>
+			<qantity_reserv>-5</qantity_reserv>
+			<qantity_free>-5</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze zawieszane/MX, MS Tarcza lewa kpl. spaw. LM30
 2053/03-05-100.0S (2053/03-00-100.02) MX 2100 - 3000
@@ -51084,11 +51112,11 @@ Sprężyna kpl
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>7</qantity_factory>
-			<qantity_smolensk>7</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>-3</qantity_reserv>
-			<qantity_free>4</qantity_free>
+			<qantity_reserv>-2</qantity_reserv>
+			<qantity_free>-2</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze zawieszane/MX, MS Tarcza prawa kpl. spaw. LM30
 2053/03-06-100.0S (2053/03-00-200.02)
@@ -51158,11 +51186,11 @@ Zaczep kpl.
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>1</qantity_factory>
-			<qantity_smolensk>1</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_reserv>2</qantity_reserv>
+			<qantity_free>-2</qantity_free>
 			<description>
 				<![CDATA[Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200
 Wał przegub.-teleskop. 400 Nm z końcówkami 6x6
@@ -51185,11 +51213,11 @@ Wał przegub.-teleskop. 400 Nm z końcówkami 6x6
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>6</qantity_factory>
-			<qantity_smolensk>6</qantity_smolensk>
+			<qantity_factory>3</qantity_factory>
+			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>6</qantity_free>
+			<qantity_free>3</qantity_free>
 			<description>
 				<![CDATA[MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Wał przegub.-teleskop. 400 Nm 7G3N101CE007007B
@@ -51257,11 +51285,11 @@ Wał przegub.-teleskop. 400 Nm 7G3N101CE007007B
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>5</qantity_factory>
-			<qantity_smolensk>5</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>3</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 2036877]]></description>
@@ -51280,11 +51308,11 @@ Wał przegub.-teleskop. 400 Nm 7G3N101CE007007B
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>2</qantity_factory>
-			<qantity_smolensk>2</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>2</qantity_free>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Wkładka
@@ -51304,11 +51332,11 @@ Wkładka
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_factory>3</qantity_factory>
+			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>29</qantity_reserv>
-			<qantity_free>-29</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>3</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200
 Wkładka gumowa]]></description>
@@ -51353,11 +51381,11 @@ Wał tylny kpl. (czerwony)
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>3</qantity_factory>
-			<qantity_smolensk>3</qantity_smolensk>
+			<qantity_factory>2</qantity_factory>
+			<qantity_smolensk>2</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>3</qantity_free>
+			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Sprzęgło kpl.
@@ -51405,8 +51433,8 @@ Koło zębate z=14
 			<qantity_factory>3</qantity_factory>
 			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>3</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[Wał przegub.-teleskop. 400 Nm
 7G3N101CE007096
@@ -51432,8 +51460,8 @@ Koło zębate z=14
 			<qantity_factory>74</qantity_factory>
 			<qantity_smolensk>74</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>17</qantity_reserv>
-			<qantity_free>57</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>74</qantity_free>
 			<description>
 				<![CDATA[Sprężyna naciągowa
 1000043
@@ -51674,7 +51702,7 @@ ARES XL (3,0 3,5 4,0)]]></description>
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/MAX/Pole zębowe
 Ap/615 Jarzmo M12x84x98 Kp,Fe/Zn
-	
+
 2001722]]></description>
 			<picture>/picture/ee05f302-fc30-11e7-4991-52540071dadf_Screenshot_13.png</picture>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -51738,11 +51766,11 @@ Korpus przył.prost.reduk.G3/8˝/M18x1,5
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>8</qantity_factory>
-			<qantity_smolensk>8</qantity_smolensk>
+			<qantity_factory>4</qantity_factory>
+			<qantity_smolensk>4</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>8</qantity_free>
+			<qantity_free>4</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX Przekładnia stożkowa kpl
 MX2100-3000  (1000145)]]></description>
@@ -51762,11 +51790,11 @@ MX2100-3000  (1000145)]]></description>
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>4</qantity_factory>
-			<qantity_smolensk>4</qantity_smolensk>
+			<qantity_factory>2</qantity_factory>
+			<qantity_smolensk>2</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>-1</qantity_reserv>
-			<qantity_free>3</qantity_free>
+			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[Замена 4R-302-2-BA-302 (Wał przegubowo - teleskopowy) na 4R-305-4-BA-302 (Wał przegubowo-teleskopowy 6x8) 1000069
 7G2N071CE093007A
@@ -51816,7 +51844,7 @@ Przekładnia kpl. mechaniczna (pasowy)
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[RCW 10 000	
+				<![CDATA[RCW 10 000
 Przekładnia mechaniczna
 RCW 10000 (stosowana od 2012 r.)]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
@@ -51881,11 +51909,11 @@ Pas pędny 6250x800x9 3-przekładkowy (RCW 5500/8200)
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>2</qantity_factory>
-			<qantity_smolensk>2</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>2</qantity_free>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[RCW 10 000
 NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
@@ -52092,11 +52120,11 @@ Zderzak
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>4</qantity_factory>
-			<qantity_smolensk>4</qantity_smolensk>
+			<qantity_factory>3</qantity_factory>
+			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>4</qantity_free>
+			<qantity_free>3</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Przekładnia stożkowa MB 28.25
@@ -52228,11 +52256,11 @@ Zespół łożyskowy Z 210 , D210 d=50]]></description>
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
 			</partForlds>
-			<qantity_factory>9</qantity_factory>
-			<qantity_smolensk>9</qantity_smolensk>
+			<qantity_factory>11</qantity_factory>
+			<qantity_smolensk>11</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>9</qantity_free>
+			<qantity_free>11</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Pokrywa (czerwo
@@ -52528,7 +52556,7 @@ Przekładnia kątowa
 			<description>
 				<![CDATA[NAWOŻENIE ORGANICZNE/Rozrzutniki obornika/TYTAN PREMIUM/Tytan Premium 11,13,18
 Wał przegubowo-teleskop. 540Nm l=1010÷1540
-7G7R 101 CEWR709 
+7G7R 101 CEWR709
 поз.1
 1001950]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
@@ -53186,7 +53214,7 @@ Koło Z30 m3,5]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>2</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW PLUS/RCW 5500 plus; RCW 8200 
+				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW PLUS/RCW 5500 plus; RCW 8200
 Silnik hydrauliczny 200 OMR
 1001521
 Изготовлен из не цветного металла. Предназначен для транспортировки гидравлической жидкости. Устанавливается на разбрасыватели минеральных удобрений производства компании AGROMET PILMET
@@ -53200,8 +53228,8 @@ Silnik hydrauliczny 200 OMR
 			<id>33ba0d96-0cd2-11e8-4991-52540071dadf</id>
 			<name>Шестерня коническая z=18</name>
 			<section_id>9aaef3f9-ea60-11e4-bbbc-001e67996d0c</section_id>
-			<price>48,9</price>
-			<price_opt>85,575</price_opt>
+			<price>34,3</price>
+			<price_opt>60,025</price_opt>
 			<partForlds>
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
@@ -53209,12 +53237,10 @@ Silnik hydrauliczny 200 OMR
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/Przekładnia stożkowa- stara wersja
-Koło zębate z-18
-1003441]]></description>
+				<![CDATA[Koło zębate z-18]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2022/03-013/0  (2022/03-02-004.00)</param>
 			<param name="category">B</param>
@@ -53224,8 +53250,8 @@ Koło zębate z-18
 			<id>158c02ae-0cd5-11e8-4991-52540071dadf</id>
 			<name>Шестерня коническая z=21</name>
 			<section_id>9aaef3f9-ea60-11e4-bbbc-001e67996d0c</section_id>
-			<price>66,7</price>
-			<price_opt>116,725</price_opt>
+			<price>38,6</price>
+			<price_opt>67,55</price_opt>
 			<partForlds>
 				<partForld_id>68e336c9-4cb3-42b2-b90e-334e261602b4</partForld_id>
 				<partForld_name>Прицепные разбрасыватели удобрений RCW</partForld_name>
@@ -53233,12 +53259,10 @@ Koło zębate z-18
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/Przekładnia stożkowa- stara wersj
-Koło zębate 1 Z=21
-1003440]]></description>
+				<![CDATA[Koło zębate 1 Z=21]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2022/03-012/0 (2022/03-01-008.00) </param>
 			<param name="category">B</param>
@@ -54273,7 +54297,7 @@ Przelotka porcelanowa
 			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[
-Изготовлен из черных металлов. Количество зубьев-22. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-22. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -54357,11 +54381,11 @@ UNIA- FAMAROL
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>1</qantity_factory>
-			<qantity_smolensk>1</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>1</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>-1</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX
 Łańcuch rolkowy 10B-1 66 ogn+PZ
@@ -54545,7 +54569,7 @@ UNIA- FAMAROL
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Изготовлено из черных металлов. Количество зубьев-36. Предназначено для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+				<![CDATA[Изготовлено из черных металлов. Количество зубьев-36. Предназначено для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -54609,10 +54633,10 @@ Koło z=36 spaw.
 				<partForld_id>323d4cbd-d9c1-4cf4-a461-776e34d3d0d7</partForld_id>
 				<partForld_name>Пресс-подборщик рулонный DF 1,8D/1,8Dd</partForld_name>
 			</partForlds>
-			<qantity_factory>8</qantity_factory>
-			<qantity_smolensk>8</qantity_smolensk>
+			<qantity_factory>10</qantity_factory>
+			<qantity_smolensk>10</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>2</qantity_reserv>
 			<qantity_free>8</qantity_free>
 			<description>
 				<![CDATA[PRASY/Prasy walcowe/DF 1,8 D
@@ -55610,11 +55634,11 @@ Zabierak sprzęgła kpl. Ø26 (szary)
 				<partForld_id>31da4c0b-5869-4277-88b1-e45f5edf7f4e</partForld_id>
 				<partForld_name>Разбрасыватели удобрений MXL 1200/3000</partForld_name>
 			</partForlds>
-			<qantity_factory>9</qantity_factory>
-			<qantity_smolensk>9</qantity_smolensk>
+			<qantity_factory>3</qantity_factory>
+			<qantity_smolensk>3</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>9</qantity_free>
+			<qantity_free>3</qantity_free>
 			<description>
 				<![CDATA[Przekładnia boczna kpl. LK6-21-18-C
 NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/MX, MS/MX
@@ -55753,7 +55777,7 @@ Przekładnia bezstopniowa]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Zespół kół łańcuchowych]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">3223/30-02-100.02(8253-223-300-180)</param>
@@ -56077,7 +56101,7 @@ VIS/037 M1813]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES 
+				<![CDATA[UPRAWA/Brony talerzowe/ARES
 Talerz kroju uzębiony ø485/4
 Рисунок, поз. 1]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -56126,7 +56150,7 @@ Talerz kroju uzębiony ø485/4
 				<![CDATA[TECHNIKA ZIEMNIACZANA/Kombajn do ziemniaków i warzyw/BOLKO
 2127751
 Koło łańcuchowe Z=15
-Изготовлен из черных металлов. Количество зубьев-15. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-15. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -56173,7 +56197,7 @@ UNIA- FAMAROL
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Koło łańcuchowe
-Изготовлен из черных металлов. Количество зубьев-14. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-14. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -56243,7 +56267,7 @@ UNIA- FAMAROL
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Koło łańcuchowe Z=14
-Изготовлен из черных металлов. Количество зубьев-14. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-14. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -56268,7 +56292,7 @@ UNIA- FAMAROL
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Wałek kpl.
-Изготовлена из черных металлов. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлена из черных металлов. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -56406,11 +56430,11 @@ Ramię koła kpl. spaw. prawe]]></description>
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>36</qantity_factory>
-			<qantity_smolensk>36</qantity_smolensk>
+			<qantity_factory>44</qantity_factory>
+			<qantity_smolensk>44</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>-1</qantity_reserv>
-			<qantity_free>35</qantity_free>
+			<qantity_reserv>-27</qantity_reserv>
+			<qantity_free>17</qantity_free>
 			<description>
 				<![CDATA[Lemiesz z dłutem MX lewy kpl. A
 Поз. 2]]></description>
@@ -56431,11 +56455,11 @@ Ramię koła kpl. spaw. prawe]]></description>
 				<partForld_id>ca5ba053-4c28-4854-ba0c-cc01899ba4df</partForld_id>
 				<partForld_name>Плуги навесные оборотные IBIS XM</partForld_name>
 			</partForlds>
-			<qantity_factory>1</qantity_factory>
-			<qantity_smolensk>1</qantity_smolensk>
+			<qantity_factory>9</qantity_factory>
+			<qantity_smolensk>9</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>1</qantity_free>
+			<qantity_reserv>-26</qantity_reserv>
+			<qantity_free>-17</qantity_free>
 			<description>
 				<![CDATA[Lemiesz z dłutem MX prawy kpl. A
 Поз.2
@@ -56932,8 +56956,8 @@ BN-74/1902-06]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Tarcza wysiewająca kpl
-Изготовлен из черных металлов. 
-Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой. 
+Изготовлен из черных металлов.
+Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой.
 Устанавливается на сельскохозяйственные орудия производства компании UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -57597,7 +57621,7 @@ Płyta uchwytu górna C
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS M/Zabezpieczenie bezpiecznikowe
 Płyta uchwytu dolna C
-Кронштейн держателя корпусов нижний 
+Кронштейн держателя корпусов нижний
 2132366
 Изготовлен из черного метала. Служит для фиксации рабочего органа на раме.Устанавливается на орудия для обработки почвы производства компании «UNIA]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -58148,7 +58172,7 @@ Skrzydło odkładnicy lewe]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Tulejka]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5413/44-01-007/1 (8255-413-440-576)</param>
@@ -58191,7 +58215,7 @@ Tulejka]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Koło łańcuchowe z=30
-Изготовлено из черных металлов. Количество зубьев-30. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлено из черных металлов. Количество зубьев-30. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -58442,7 +58466,7 @@ Koło napędowe
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[5511/000-01-001 
+				<![CDATA[5511/000-01-001
 5511/00020 Blacha oporowa
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -58606,7 +58630,7 @@ Pokrywa I
 IBIS XL, IBIS XXL
 
 
- 
+
 PŁUGI/Pługi obracalne/IBIS XXL]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1152/35-002/0</param>
@@ -58633,7 +58657,7 @@ PŁUGI/Pługi obracalne/IBIS XXL]]></description>
 IBIS XL, IBIS XXL
 
 
- 
+
 PŁUGI/Pługi obracalne/IBIS XXL]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1152/35-001/0 </param>
@@ -58830,7 +58854,7 @@ UPRAWA/Brony talerzowe/ARES XL поз.3
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Talerz kroju uzębiony ø510/4 – AGRESSIVE 
+				<![CDATA[Talerz kroju uzębiony ø510/4 – AGRESSIVE
 UPRAWA/Brony talerzowe/ARES XL]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">2456/006-01-001/00</param>
@@ -58853,7 +58877,7 @@ UPRAWA/Brony talerzowe/ARES XL]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Listwa sterująca		
+				<![CDATA[Listwa sterująca
 
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -58874,8 +58898,8 @@ UPRAWA/Brony talerzowe/ARES XL]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Płyta uchwytu dolna kpl.spawana
 PŁUGI/Półzawieszane pługi obracalne/VIS XM
@@ -58898,8 +58922,8 @@ PŁUGI/Półzawieszane pługi obracalne/VIS XM
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>4</qantity_reserv>
-			<qantity_free>-4</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[VIS/623 М1815
 Płyta grządzieli
@@ -59063,11 +59087,11 @@ WEGA 1400 UNO]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[ścierniskowe/KOS
-Śruba odchylania ramy 
+Śruba odchylania ramy
 gregaty ścierniskowe/KOS H/KRET/IBIS M
 2136034]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -59451,7 +59475,7 @@ Zawór kulowy 5-drogowy]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Gwiazda odmierz. spaw.]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8245-511-008-199(5511/008-03-200)</param>
@@ -59497,7 +59521,7 @@ Podpora wału kpl.]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Oś rolki	
+				<![CDATA[Oś rolki
 5511/008-00-002]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8245-511-008-028(5511/008-00-002)</param>
@@ -59539,7 +59563,7 @@ Podpora wału kpl.]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Kątownik prawy]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5511/104-01-601</param>
@@ -59585,7 +59609,7 @@ Kątownik prawy]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Licznik kostek kpl.
-	
+
 5511/01005]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8245-511-010-057 (5511/010-00-000)</param>
@@ -59792,7 +59816,7 @@ Wałek wysiewający
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>71</qantity_free>
 			<description>
-				<![CDATA[Nożyk prawy 106	
+				<![CDATA[Nożyk prawy 106
 1019140
 Изготовлен из черных металлов Сменный элемент. Предназначен для ремонта и замены. Устанавливается на сельскохозяйственные орудия производства компании UNIA- FAMAROL]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -60348,7 +60372,7 @@ ESS-575]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>10</qantity_free>
 			<description>
-				<![CDATA[Boulon à tête fraisée à collet carré M12x090 - 12.9 + EH12	
+				<![CDATA[Boulon à tête fraisée à collet carré M12x090 - 12.9 + EH12
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">BFCC12-090-12.9+EH12</param>
@@ -60479,8 +60503,8 @@ ESS-575]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>108</qantity_reserv>
-			<qantity_free>-108</qantity_free>
+			<qantity_reserv>50</qantity_reserv>
+			<qantity_free>-50</qantity_free>
 			<description>
 				<![CDATA[Болт крепления диска к ступице Agrisem (DOM)]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -60536,8 +60560,8 @@ ESS-575]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>5</qantity_reserv>
-			<qantity_free>-5</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Гайка 8.8 хромированая]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -60743,7 +60767,7 @@ MC2 - в исполнении с карбидной наплавкой]]></descr
 			<qantity_reserv>4</qantity_reserv>
 			<qantity_free>-4</qantity_free>
 			<description>
-				<![CDATA[Подшипник для ремонта ступицы 
+				<![CDATA[Подшипник для ремонта ступицы
 3309 2RS1 (ESS548)]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">ROUL-510</param>
@@ -61303,8 +61327,8 @@ Vis FHC M 12 × 25 - 10.9 - noircie
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Półzawieszane pługi obracalne/VIS L/XL/Uchwyt korpusu z grządz. L - B
 Płyta uchwytu górna kpl.spawana
@@ -61325,16 +61349,16 @@ Płyta uchwytu górna kpl.spawana
 				<partForld_id>215a8a58-cbb3-48c3-b3fc-4f8f71771ec5</partForld_id>
 				<partForld_name>Дисковый агрегат ARES XL</partForld_name>
 			</partForlds>
-			<qantity_factory>1 416</qantity_factory>
-			<qantity_smolensk>1 416</qantity_smolensk>
+			<qantity_factory>1 483</qantity_factory>
+			<qantity_smolensk>1 483</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>67</qantity_reserv>
 			<qantity_free>1 416</qantity_free>
 			<description>
 				<![CDATA[Amortyzator 33x52x150
 UPRAWA/Brony talerzowe/ARES XL
 1030040
-Треугольный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента. 
+Треугольный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента.
 Устанавливается совместно со стойкой на дисковых боронах производства компании UNIA
 
 ]]></description>
@@ -61477,7 +61501,7 @@ Starsze wersje maszyn]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Goleń z grządzielą tłoczoną kpl. spawana 
+				<![CDATA[Goleń z grządzielą tłoczoną kpl. spawana
 Starsze wersje maszyn]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1117/95-000/0 </param>
@@ -63022,7 +63046,7 @@ Odsiewacz przenośnikowy]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS
-Wałek II L=480 (na wpust) 
+Wałek II L=480 (na wpust)
 MX 850 - 1600]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2039/83-01-101</param>
@@ -63062,11 +63086,11 @@ wał podwójny Crosskill 400/40/2]]></description>
 				<partForld_id>861e950c-e13e-4c9b-b1e8-6557522f2cfc</partForld_id>
 				<partForld_name>Пневматические посевные агрегаты FENIX 3000/3; 3000/4; 3000/6;</partForld_name>
 			</partForlds>
-			<qantity_factory>6</qantity_factory>
-			<qantity_smolensk>6</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>6</qantity_free>
+			<qantity_reserv>4</qantity_reserv>
+			<qantity_free>-4</qantity_free>
 			<description>
 				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX A 700/3 i 700/3D
 Talerz czyszczący 	RS-2
@@ -63095,9 +63119,7 @@ Talerz czyszczący 	RS-2
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Starsze wersje maszyn/Pozostałe
-Oś wału Crosskill 2m
-	
-2151574]]></description>
+Oś wału Crosskill 2m]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1608/50-100/0 (1655/95-100/0)</param>
 			<param name="category">B</param>
@@ -63209,7 +63231,7 @@ Zaślepka tarczy]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Wał spiralny XL 3,0m kpl.spawany (без креплений,подшипников и рамки)
-Ares L 6,0 2 szt.	
+Ares L 6,0 2 szt.
 Ares XL 3,0 1 szt. 6,0 2 szt.
 Поз.9]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -63739,7 +63761,7 @@ Pierścień zabezpieczajacy C
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[OPCJE DO MASZYN/UPRAWA/KRET B3_5/ B 5/ S3_5/ S 5
-wał spiralny , ARES XL  ø600/3,0m 
+wał spiralny , ARES XL  ø600/3,0m
 Skład zespołu:
 1.8860/30-100/0 Rama wału 3,0m kpl.spawana 1 sz
 2.8860/30-300/0 Belka skrobaków wału spiralnego kpl 1 sz
@@ -64151,7 +64173,7 @@ Nóż ŁL1-6
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Glebogryzark Фреза горизонтальная KRUK
-Śruba drobnozwojna z gwintem na części trzpienia	
+Śruba drobnozwojna z gwintem na części trzpienia
 Na każdy nóż поз.4]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">M16x1,5x35-10.9-B-Fe/Zn</param>
@@ -64198,7 +64220,7 @@ Koło kpl.spawane]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[OPCJE DO MASZYN/UPRAWA/Brony talerzowe/ARES L
-sprzęg siewnika do podwozia z kołami 10.0/80-12 ARES L (2,5 - 4 m)  
+sprzęg siewnika do podwozia z kołami 10.0/80-12 ARES L (2,5 - 4 m)
  ARES L (2,5 3,0 3,5 4,0)
 ]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -64221,7 +64243,7 @@ sprzęg siewnika do podwozia z kołami 10.0/80-12 ARES L (2,5 - 4 m)
 			<description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 780/4 PREMIUM
 Redlica specjalna   Поз.1 (1.1-1.2.11)
-Изготовлен из черных металлов. 
+Изготовлен из черных металлов.
 Предназначен для   образования в почве борозды, направления в неё семян и заделки их почвой Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -64267,7 +64289,7 @@ Redlica specjalna prawa Поз.1(1,1-1.2.11)]]></description>
 			<description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POZNANIAK/POZNANIAK 330/2,5 D
 Znacznik talerzowy z osią  Поз.6
-Изготовлен из черных металлов. 
+Изготовлен из черных металлов.
 Предназначена для ремонта техники
 Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
 ]]></description>
@@ -64499,7 +64521,7 @@ Spulchniacz kpl.]]></description>
 				<![CDATA[Kp/041 М1815
 UPRAWA/Agregaty uprawowe/VIKING L
 Łącznik kpl.spawany
-	
+
 2137339]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">2553/01-000/0 (КР5.3/01-00/0 )</param>
@@ -64591,7 +64613,7 @@ Wózek prawy kpl.]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000  MXL 1600
-Nadstawka kpl. 330 litrów	
+Nadstawka kpl. 330 litrów
 MX 1600. 2041/00-025/0 zastępuje 2041/00-005/1]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2041/00-01-000.00 (2041/00-025/0)</param>
@@ -64679,8 +64701,8 @@ Wał strunowy lewy n390/2,0m/9 kpl. spaw. - 6m
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/VIKING XL
-Wał strunowy prawy n390/2,0m/9 kpl.spaw. - 	
-6m W zespole -2 
+Wał strunowy prawy n390/2,0m/9 kpl.spaw. -
+6m W zespole -2
 2003373]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">8140/60-100/0</param>
@@ -64906,7 +64928,7 @@ Wałek tulei dyszla
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS
-Wałek II 	
+Wałek II
 MX 2100 - 3000]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2039/23-009/0</param>
@@ -65782,8 +65804,8 @@ Sworzeń II
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>-1</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE ORGANICZNE/Rozrzutniki obornika/TYTAN PREMIUM/Tytan Premium 11,13,18
 Resor kpl. поз.3
@@ -65938,7 +65960,7 @@ Sworzeń rolki]]></description>
 			<description>
 				<![CDATA[PRASY/Prasa kostkująca/KOSTKA
 Nagarniak gwiaździsty поз.1
-Изготовлено из черных металлов. 
+Изготовлено из черных металлов.
 Служит рабочим органом тюкового пресс-подборщика. Устанавливается на сельскохозяйственные орудия производства компании FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -66002,14 +66024,14 @@ Wydźwig podbieracza kpl]]></description>
 				<partForld_id>1d555165-07ab-4410-b724-872887fa5a2a</partForld_id>
 				<partForld_name>Сеялка FENIX</partForld_name>
 			</partForlds>
-			<qantity_factory>11</qantity_factory>
-			<qantity_smolensk>11</qantity_smolensk>
+			<qantity_factory>1</qantity_factory>
+			<qantity_smolensk>1</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>11</qantity_free>
+			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX A 700/3 i 700/3D
-Talerz tnący	
+Talerz tnący
 2041943
 Изготовлен из черных металлов. Предназначен для   подрезания слоев почвы, используется для замены и ремонта сеялки. Устанавливается на сельскохозяйственные орудия производства компании «UNIA».]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
@@ -66060,7 +66082,7 @@ Turbina spaw.
 				<![CDATA[UPRAWA/Starsze wersje maszyn/Pozostałe
 Para kół zębatych stożkowa-łukow.z=11/32
 1500/20-200/0 Jest to komplet. 1500/20-004/0 і
-1500/20-003/0 
+1500/20-003/0
 
 
 
@@ -66376,7 +66398,7 @@ Wrzeciono kpl. spaw. A
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[Łożysko wrzeciona kpl. spaw. A
-	
+
 6,0m-3szt, 8,0m-6szt]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">2553/12-400/0</param>
@@ -66416,7 +66438,7 @@ Wrzeciono kpl. spaw. A
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[	
+				<![CDATA[
 Pokrętło
 6,0m-3szt, 8,0m-6szt]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -66599,7 +66621,7 @@ Pochwa słupicy kpl.spawana]]></description>
 			<description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 1000/4D DUPLO
 3204 2RS Łożysko skośne
-1017850 
+1017850
 Двурядный, шариковый подшипник. Изготовлен из черных металлов. Имеет сферическую поверхность, позволяющая компенсировать перекосы вала при работе агрегата. Устанавливается на сельскохозяйственные орудия производства компании UNIA- FAMAROL]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">3204 2RS</param>
@@ -66846,7 +66868,7 @@ Koło z-13 - 1 1/4&quot; spaw]]></description>
 				<![CDATA[SIEWNIKI/Siewniki mechaniczne/POLONEZ/POLONEZ 780/4 PREMIUM
 Łańcuch 74 PS
 1026412
-Изготовлена из черных металлов. 
+Изготовлена из черных металлов.
 Применяется для передачи механической мощности в различных механизмах. Устанавливается на сельскохозяйственные машины производства компании FAMAROL
 
 ]]></description>
@@ -67441,7 +67463,7 @@ Dźwignia A]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[TECHNIKA ZIEMNICZANA/Starsze wersje maszyn
-Rolka 
+Rolka
 w komplecie pod numerem 5644/60-01-900.00]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8255-644-600-526 (5644/60-01-901/0)</param>
@@ -67774,7 +67796,7 @@ Tarcza sortująca]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Wał ogumiony ø 500/ 3,0m kpl.	
+				<![CDATA[Wał ogumiony ø 500/ 3,0m kpl.
 ARES L (3,0m-1szt, 6,0m-2szt)
 
 Резиновый вал для ARES XL 6 H
@@ -68133,8 +68155,8 @@ Wziernik 5x80x140
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000 
-Sito kpl. MXL 1200-1600 	
+				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000
+Sito kpl. MXL 1200-1600
 wym. 550x665]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2041/01-00-100.01(2041/01-004/1)</param>
@@ -68156,7 +68178,7 @@ wym. 550x665]]></description>
 			<description>
 				<![CDATA[Ступица к транспортной тележке
 Moyeu 8 holes M20 x 1,5
-Только корпус поз.5 
+Только корпус поз.5
 В сборе россыпью дозаказать:9RNQI- 2 шт
 9RT100- 2 шт
 9RDF4865B 2 шт
@@ -68282,8 +68304,8 @@ Podkładka piersi ażur LONG]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>-1</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX
 1000074
@@ -68364,7 +68386,7 @@ Wał przegubowo - teleskopowy
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>15</qantity_free>
 			<description>
-				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.                     
+				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">AGM11-03-630 </param>
@@ -68384,7 +68406,7 @@ Wał przegubowo - teleskopowy
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.                     
+				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">AGM11-03-625</param>
@@ -68404,7 +68426,7 @@ Wał przegubowo - teleskopowy
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.                     
+				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">AGM11-03-624</param>
@@ -68424,7 +68446,7 @@ Wał przegubowo - teleskopowy
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>15</qantity_free>
 			<description>
-				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.                     
+				<![CDATA[Пластина. Предназначена для крепления наральника к стойке. Изготовлена из метала. Устанавливается на агрегаты производства Agrisem International.
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">AGM11-03-631</param>
@@ -68463,7 +68485,7 @@ Wał przegubowo - teleskopowy
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>11</qantity_free>
 			<description>
-				<![CDATA[Болт. Служит для крепления лапы к стойке. Изготовлен из метала. 
+				<![CDATA[Болт. Служит для крепления лапы к стойке. Изготовлен из метала.
 Устанавливается на агрегаты производства Agrisem International
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -69159,7 +69181,7 @@ Podkładka sprężysta]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL 
+				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL
 Przedłużacz wieszaka kpl.
 ]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -69393,13 +69415,11 @@ Tuleja ø101,6x11/87,5]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
-Piasta skrzynki kpl. (czerwony) Поз.13
-2024987]]></description>
-			<picture>/picture/7bff2126-cf14-11e9-f79d-52540071dadf_RCW100_120_017.png</picture>
+Piasta skrzynki kpl. (czerwony) Поз.13]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2046/05-20-150.00</param>
 			<param name="category">B</param>
@@ -69481,7 +69501,7 @@ Odsiewacz przenośnikowy]]></description>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Brony talerzowe/ARES HP/ARES XL
-Wał rurowy Ø600/Ø51 kpl. spaw. Lewy (6.0m) 
+Wał rurowy Ø600/Ø51 kpl. spaw. Lewy (6.0m)
 поз. 10
 2003318]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -69972,7 +69992,7 @@ Wspornik walca kpl.spawany A]]></description>
 			<description>
 				<![CDATA[PRASY/Prasy łańcuchowo-walcowe/DF 1,8 V
 Dźwignia spaw.
-	
+
 2124415]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5595/008-00-610</param>
@@ -70449,6 +70469,25 @@ Podkładka 50x62x3Zn]]></description>
 			<param name="weight">0</param>
 		</product>
 		<product>
+			<id>c4c55170-e371-11e9-f79d-52540071dadf</id>
+			<name>Карданный вал на RCW (последний)</name>
+			<section_id>9aaef3f9-ea60-11e4-bbbc-001e67996d0c</section_id>
+			<price/>
+			<price_opt/>
+			<partForlds/>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_stored>0</qantity_stored>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
+			<description>
+				<![CDATA[]]></description>
+			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
+			<param name="number">5R-502-7-BA-J501</param>
+			<param name="category">B</param>
+			<param name="weight">0</param>
+		</product>
+		<product>
 			<id>a34efa3e-e37e-11e9-f79d-52540071dadf</id>
 			<name>Болт для DF/Master</name>
 			<section_id>9615df69-ea5e-11e4-bbbc-001e67996d0c</section_id>
@@ -70501,8 +70540,8 @@ Tuleja z kołem spaw.
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Nilos 33018/ AV
@@ -70523,8 +70562,8 @@ Nilos 33018/ AV
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Изготовлена из стали, предназначена для фиксации подшипника на оси ступицы. Устанавливается на сельскохозяйственные орудия производства компании «UNIA».
@@ -70565,8 +70604,8 @@ Zawleczka sprężynowa
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Podkładka MB18 ZN D-5406
@@ -70587,8 +70626,8 @@ Podkładka MB18 ZN D-5406
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Pierścień uszcz. A100x140x15 D-3760]]></description>
@@ -70607,8 +70646,8 @@ Pierścień uszcz. A100x140x15 D-3760]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Pierścień ø100h8/90H8x20
@@ -70815,7 +70854,7 @@ ARES XLH (6,0 7,5)]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL 
+				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL
 Wysięg koła kpl. spaw.
 
 ]]></description>
@@ -70880,7 +70919,7 @@ Wysięg koła kpl. spaw.
 			<description>
 				<![CDATA[PRASY/Prasa kostkująca/KOSTKA
 Podajnik bel
-Изготовлено из черных металлов. 
+Изготовлено из черных металлов.
 Служит для облегчения загрузки тюков на прицеп с тюкового пресс-подборщика. Устанавливается на сельскохозяйственные орудия производства компании компании UNIA- FAMAROL
 ]]></description>
 			<picture>/picture/233bb6b0-eff0-11e9-f79d-52540071dadf_16013004.jpg</picture>
@@ -71119,7 +71158,7 @@ Wał wyjściowy (1005993)]]></description>
 			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[
-Изготовлен из черных металлов. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -71551,7 +71590,7 @@ CS8N081CER07R07
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[5х50 ZN D-1481 Фиксатор пальца		
+				<![CDATA[5х50 ZN D-1481 Фиксатор пальца
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">5х50 ZN D-1481 </param>
@@ -71592,7 +71631,7 @@ RCW, MXL]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[Каток T-Sem к Дискатор Disc-O-Mulch Gold 6 м		
+				<![CDATA[Каток T-Sem к Дискатор Disc-O-Mulch Gold 6 м
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">Каток T-Sem</param>
@@ -71977,7 +72016,7 @@ Płoza przednia kpl.spawana
 			<qantity_free>4</qantity_free>
 			<description>
 				<![CDATA[Etrier Ø16 x 120
-Cкоба фиксации 
+Cкоба фиксации
 ]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
 			<param name="number">ETR-501</param>
@@ -71994,8 +72033,8 @@ Cкоба фиксации
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>12</qantity_reserv>
-			<qantity_free>-12</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[ISO4014 - Vis H M 24 x 190 - 10.9 - zingué blanc]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -72181,7 +72220,7 @@ Uszczelnienie plastikowe]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX S 700/3 i 700/3D	
+				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX S 700/3 i 700/3D
 Komin spaw. поз.6]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">14008231</param>
@@ -72201,7 +72240,7 @@ Komin spaw. поз.6]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX S 700/3 i 700/3D	
+				<![CDATA[ZESTAWY UPRAWOWO-SIEWNE/Zestawy uprawowo-siewne pneumatyczne/FENIX/FENIX S 700/3 i 700/3D
 Przewód elastyczny роз. 23]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">3201/13-00-001</param>
@@ -72724,7 +72763,7 @@ Obudowa łożyska]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL 
+				<![CDATA[UPRAWA/Brony talerzowe/ARES L/ARES XL
 Dyszel 3300 kpl. spaw.
 
 ]]></description>
@@ -73591,10 +73630,10 @@ ANSI100HX50SPRE
 			<price>18,9</price>
 			<price_opt>26,46</price_opt>
 			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_factory>2</qantity_factory>
+			<qantity_smolensk>2</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>2</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PRASY/Prasy łańcuchowo-walcowe/DF 1,8 V
@@ -75042,7 +75081,7 @@ Sworzeń zaczepu kpl. fi 22/28]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[ЛБР 
+				<![CDATA[ЛБР
 Цена 7,0 р]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">Болт M6х16 -8,8 </param>
@@ -76157,7 +76196,7 @@ Zespół zgrzebeł 8,0m kpl.
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/ATLAS HP
-Płoza zębata długa 2,00m kpl.spawana	
+Płoza zębata długa 2,00m kpl.spawana
 4,5-1;6-3;8(wąski 3,0m)-1
 ]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -76420,11 +76459,11 @@ Napinacz 08B kpl.]]></description>
 			<price>39,5</price>
 			<price_opt>55,3</price_opt>
 			<partForlds/>
-			<qantity_factory>6</qantity_factory>
-			<qantity_smolensk>6</qantity_smolensk>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>6</qantity_free>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[TYTAN
 Łopatka lewa kpl. (szary stalowy
@@ -77423,7 +77462,7 @@ Rolka taśmy palcowej
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[TECHNIKA ZIEMNICZANA/Kombajn do ziemniaków i warzyw/BOLKO
-	
+
 Otulina
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -78389,7 +78428,7 @@ kpl. wkładek do sadzenia ziemniaków dużych (dla KORA 4/4H/4HP/4HO]]></descrip
 			<qantity_free>2</qantity_free>
 			<description>
 				<![CDATA[OPCJE DO MASZYN/TECHNIKA ZIEMNICZANA/Sadzarki do ziemniaków/KORA/
-	
+
 kpl. wkładek do sadzenia ziemniaków małych (dla KORA 2)]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">3222/19-22-000/M (dla KORA 2)</param>
@@ -78430,7 +78469,7 @@ kpl. wkładek do sadzenia ziemniaków dużych (for KORA 2)
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000	
+				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 Korba kpl spaw (czerwony)
 ]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
@@ -79352,7 +79391,7 @@ brona typu C z uchwytem (tylko wersja bezpiecznikowa) - KRET B 3_5/ 5 тольк
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[
-Изготовлена из черных металлов. Количество зубьев-12. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлена из черных металлов. Количество зубьев-12. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -79374,7 +79413,7 @@ UNIA- FAMAROL
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[
-Изготовлено из черных металлов. Количество зубьев-39. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлено из черных металлов. Количество зубьев-39. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -79729,7 +79768,7 @@ Sprężyna naciskowa 3,8/16,0/30]]></description>
 			<description>
 				<![CDATA[PRASY/Prasy walcowe/DF 1,8 D
 Koło łańcuchowe spaw. Z=22
-Изготовлен из черных металлов. Количество зубьев-22. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании 
+Изготовлен из черных металлов. Количество зубьев-22. Предназначена для передачи крутящего момента между шкивами агрегата. Устанавливается на сельскохозяйственные орудия производства компании
 UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -79815,7 +79854,7 @@ Czujnik indukcyjny (1002911)
 				<![CDATA[OPCJE DO MASZYN/PRASY/Prasy łańcuchowo-walcowe/DF 1,8 V eco
 DF-KASETA
 dodatkowa skrzynia na siatkę
-Изготовлено из черных металлов. 
+Изготовлено из черных металлов.
 Служит для облегчения загрузки тюков на прицеп с тюкового пресс-подборщика и для хранения сетки при транспортировке. Устанавливается на сельскохозяйственные орудия производства компании компании UNIA- FAMAROL
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -80829,12 +80868,10 @@ Sworzeń 40 kpl. spaw.]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Podwozie/Podwozie/Zestaw kołowy kpl. montaż. (2041/61-04-000.01)
-Piasta koła (półoś)
-1001156]]></description>
+				<![CDATA[Piasta koła (półoś)]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">S70MA600009</param>
 			<param name="category">A</param>
@@ -81556,15 +81593,15 @@ Rdzeń lewy ażur Long kpl. spaw.
 			<price>494,8</price>
 			<price_opt>692,72</price_opt>
 			<partForlds/>
-			<qantity_factory>2</qantity_factory>
-			<qantity_smolensk>2</qantity_smolensk>
+			<qantity_factory>1</qantity_factory>
+			<qantity_smolensk>1</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>2</qantity_free>
+			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200
 поз.D
-Czujnik pasa (silnika)   (1003143)  ID1030866-нов 
+Czujnik pasa (silnika)   (1003143)  ID1030866-нов
 Электронный. Предназначен для передачи сигнала о включении блокировки дифференциала заднего и/или среднего моста на панель приборов. Номинальное напряжение 12В. Устанавливается на почвообрабатывающие орудия производства компании UNIA
 ]]></description>
 			<picture>/picture/9dec5060-24b3-11eb-658b-52540071dadf_15608.jpg</picture>
@@ -82124,7 +82161,7 @@ Belka zawieszenia dolnego kpl. II
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[TECHNIKA ZIEMNICZANA/Kombajn do ziemniaków i warzyw/BOLKO
-Pręt podający kpl.	
+Pręt podający kpl.
 2126997]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8255-643-450-055 (5643/45-00-100/0)</param>
@@ -83001,8 +83038,8 @@ Sprężyna
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>10</qantity_reserv>
-			<qantity_free>-10</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -83692,7 +83729,7 @@ Krzyżak kpl.
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[TECHNIKA ZIEMNIACZANA/Sadzarki do ziemniaków/KORA/KORA 2
-	
+
 Nakładka
 1018893
 ]]></description>
@@ -83736,7 +83773,7 @@ Sworzeń I
 			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 100, 100 TD, 120, 120 TD
-Tulejka	
+Tulejka
 2042188]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2244/04-00-005.00 (2244/04-004/0)</param>
@@ -83837,11 +83874,11 @@ UCFL 204 NSK
 			<price>111,1</price>
 			<price_opt>155,54</price_opt>
 			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_factory>1</qantity_factory>
+			<qantity_smolensk>1</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
 			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_free>1</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Pługi obracalne/IBIS M
 Wrzeciono kpl. A
@@ -84259,7 +84296,7 @@ Wałek
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[SIEWNIKI/Siewniki do warzyw/KRUK RĘCZNY/KRUK RĘCZNY A	
+				<![CDATA[SIEWNIKI/Siewniki do warzyw/KRUK RĘCZNY/KRUK RĘCZNY A
 Łyżeczka nr 2
 1018340]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
@@ -84454,6 +84491,25 @@ Ramię spaw
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">8245-511-012-395 (5511/112-07-000)</param>
 			<param name="category">B</param>
+			<param name="weight">0</param>
+		</product>
+		<product>
+			<id>4136158c-ae46-11eb-4597-52540071dadf</id>
+			<name>ВОМ </name>
+			<section_id>5e9dd16b-e9b4-11e4-bbbc-001e67996d0c</section_id>
+			<price/>
+			<price_opt/>
+			<partForlds/>
+			<qantity_factory>0</qantity_factory>
+			<qantity_smolensk>0</qantity_smolensk>
+			<qantity_stored>0</qantity_stored>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
+			<description>
+				<![CDATA[]]></description>
+			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
+			<param name="number">5R-502-7-BAJ501</param>
+			<param name="category">A</param>
 			<param name="weight">0</param>
 		</product>
 		<product>
@@ -84836,7 +84892,7 @@ Podkładka blokująca SKM 10
 Komputer R-14 	(R-11)
 z uchwytem
 2018101
-	
+
 ]]></description>
 			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
 			<param name="number">Компьютер</param>
@@ -85053,7 +85109,7 @@ Przekładnia boczna kpl.
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MX, MS/MX (maszyny produkowane od 2019 r.)
 поз.1.1
-Przekładnia środkowa	
+Przekładnia środkowa
 2041597]]></description>
 			<picture>/picture/0d313f74-c36c-11eb-4597-52540071dadf_ред1.png</picture>
 			<picture>/picture/0d313f74-c36c-11eb-4597-52540071dadf_ред2.png</picture>
@@ -86645,7 +86701,7 @@ Rolka wstrząsacza kompletna (poz. 12÷19)
 				<![CDATA[Amortyzator 35x56x160 (треугольн) Ares XL
 UPRAWA/Brony talerzowe/ARES XL
 1013499
-Цилиндрообразный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента. 
+Цилиндрообразный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента.
 Устанавливается совместно со стойкой на дисковых боронах производства компании UNIA
 
 ]]></description>
@@ -87134,7 +87190,7 @@ Sworzeń 30x132/120
 			<description>
 				<![CDATA[UPRAWA/Agregaty uprawowe/ATLAS HP
 Kołek sprężysty
-8x65-Fe/Zn  
+8x65-Fe/Zn
 ]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">8x65-Fe/Zn  </param>
@@ -87250,8 +87306,8 @@ M20x60-10,9-B-Fe/Zn]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>15</qantity_reserv>
-			<qantity_free>-15</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -87269,8 +87325,8 @@ M20x60-10,9-B-Fe/Zn]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>6</qantity_reserv>
-			<qantity_free>-6</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -87288,8 +87344,8 @@ M20x60-10,9-B-Fe/Zn]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>25</qantity_reserv>
-			<qantity_free>-25</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -87307,8 +87363,8 @@ M20x60-10,9-B-Fe/Zn]]></description>
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>5</qantity_reserv>
-			<qantity_free>-5</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -87448,8 +87504,8 @@ Przedł.VIS XM-S k.p.MX 180
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>10</qantity_reserv>
-			<qantity_free>-10</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -87491,7 +87547,7 @@ Przedł.VIS XM-S k.p.MX 180
 			<description>
 				<![CDATA[Amortyzator 33x52x150
 
-Треугольный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента. 
+Треугольный амортизатор. Изготовлен из резины. Предназначен для смягчения воздействия внешних факторов амортизационного элемента.
 Устанавливается совместно со стойкой на дисковых боронах производства компании UNIA
 ]]></description>
 			<picture>/picture/1c7ea096-177e-11ec-4597-52540071dadf_Screenshot_10.png</picture>
@@ -88205,8 +88261,8 @@ Blokada cylindra koła kpl.spa
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Półzawieszane pługi obracalne/VIS L/XL
 Wpust pryzmatyczny A 22x14x56
@@ -89117,8 +89173,8 @@ Goleń resorowa mała kpl. spaw. (XM)
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>3</qantity_reserv>
-			<qantity_free>-3</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -89136,8 +89192,8 @@ Goleń resorowa mała kpl. spaw. (XM)
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>15</qantity_reserv>
-			<qantity_free>-15</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -89155,8 +89211,8 @@ Goleń resorowa mała kpl. spaw. (XM)
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>30</qantity_reserv>
-			<qantity_free>-30</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -89193,8 +89249,8 @@ Goleń resorowa mała kpl. spaw. (XM)
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>30</qantity_reserv>
-			<qantity_free>-30</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -89218,7 +89274,7 @@ Goleń resorowa mała kpl. spaw. (XM)
 				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 3000; 5500; 10000
 2024910
 Koło zębate (z=14) z nakrętką
-с гайкой поз. 
+с гайкой поз.
 Изготовлено их не цветного металла.  Количество зубьев – 14. Предназначено для привода в движение механизма поднятия заслонки. Устанавливается на разбрасыватели минеральных удобрений производства компании производства компании UNIA]]></description>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">2035/32-005/0 (2035/32-04-000.00)</param>
@@ -91404,8 +91460,8 @@ Dźwignia k.sp.
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Półzawieszane pługi obracalne/VIS L/XL/Układ
 Wydźwig belki kpl.spaw. A
@@ -91914,8 +91970,8 @@ Nakrętka koronowa M60x2-Fe/Zn5
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[PŁUGI/Starsze wersje maszyn
 Vis/453 Kątownik wypory
@@ -91954,15 +92010,15 @@ Krzyżak kpl
 			<price/>
 			<price_opt/>
 			<partForlds/>
-			<qantity_factory>14</qantity_factory>
-			<qantity_smolensk>14</qantity_smolensk>
+			<qantity_factory>18</qantity_factory>
+			<qantity_smolensk>18</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>4</qantity_reserv>
 			<qantity_free>14</qantity_free>
 			<description>
 				<![CDATA[Сириус-М
 NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000
-Łopatka prawa krótka LR30 L-300  
+Łopatka prawa krótka LR30 L-300
 Изготовлена из не цветного металла.
 Выполняет
 роль
@@ -91985,14 +92041,14 @@ NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000
 			<price/>
 			<price_opt/>
 			<partForlds/>
-			<qantity_factory>14</qantity_factory>
-			<qantity_smolensk>14</qantity_smolensk>
+			<qantity_factory>18</qantity_factory>
+			<qantity_smolensk>18</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>4</qantity_reserv>
 			<qantity_free>14</qantity_free>
 			<description>
 				<![CDATA[Сириус-М Лопатка разбрасывателя RCW
-NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/PLUS/RCW 5500 plus; 
+NAWOŻENIE MINERALNE/Rozsiewacze zawieszane/MXL/MXL 1200 - 3000/PLUS/RCW 5500 plus;
 2041930
 RCW 8200 plus
 Łopatka lewa krótka LR30 L-300
@@ -92009,10 +92065,10 @@ RCW 8200 plus
 			<price/>
 			<price_opt/>
 			<partForlds/>
-			<qantity_factory>11</qantity_factory>
-			<qantity_smolensk>11</qantity_smolensk>
+			<qantity_factory>15</qantity_factory>
+			<qantity_smolensk>15</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>4</qantity_reserv>
 			<qantity_free>11</qantity_free>
 			<description>
 				<![CDATA[Сириус-М-Лопатка разбрасывателя RCW
@@ -92040,10 +92096,10 @@ RCW 8200 plus
 			<price/>
 			<price_opt/>
 			<partForlds/>
-			<qantity_factory>12</qantity_factory>
-			<qantity_smolensk>12</qantity_smolensk>
+			<qantity_factory>16</qantity_factory>
+			<qantity_smolensk>16</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
+			<qantity_reserv>4</qantity_reserv>
 			<qantity_free>12</qantity_free>
 			<description>
 				<![CDATA[Лопатка разбрасывателя RCW, Сириус-М
@@ -93760,7 +93816,7 @@ Płyta uchwytu górna kpl.spawana
 				<![CDATA[PŁUGI/Pozostał
 Płyta uchwytu dolna kpl.spawana
 2148766
-Кронштейн  корпусов нижний 
+Кронштейн  корпусов нижний
 Изготовлен из черного метала. Служит для фиксации рабочего органа на раме.Устанавливается на орудия для обработки почвы производства компании «UNIA]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
 			<param name="number">1151/04-200/0</param>
@@ -93864,7 +93920,7 @@ Czop koła]]></description>
 			<qantity_reserv>0</qantity_reserv>
 			<qantity_free>0</qantity_free>
 			<description>
-				<![CDATA[UPRAWA/Agregaty ścierniskowe/KOS PREMIUM/Koło podporowe KOS PREMIUM LONG/ARES L 
+				<![CDATA[UPRAWA/Agregaty ścierniskowe/KOS PREMIUM/Koło podporowe KOS PREMIUM LONG/ARES L
 Ramię koła kpl.spawane
 2165342]]></description>
 			<param name="factory">UNIA Sp. z o.o.</param>
@@ -94151,8 +94207,8 @@ C03.62 Редуктор центральный (Сириус-М) -1 шт]]></des
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>10</qantity_reserv>
-			<qantity_free>-10</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -94170,8 +94226,8 @@ C03.62 Редуктор центральный (Сириус-М) -1 шт]]></des
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>42</qantity_reserv>
-			<qantity_free>-42</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -94189,8 +94245,8 @@ C03.62 Редуктор центральный (Сириус-М) -1 шт]]></des
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>4</qantity_reserv>
-			<qantity_free>-4</qantity_free>
+			<qantity_reserv>0</qantity_reserv>
+			<qantity_free>0</qantity_free>
 			<description>
 				<![CDATA[]]></description>
 			<param name="factory">AGRISEM International S. A.</param>
@@ -94355,8 +94411,8 @@ Koło zębate z-36
 			<qantity_factory>0</qantity_factory>
 			<qantity_smolensk>0</qantity_smolensk>
 			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
+			<qantity_reserv>1</qantity_reserv>
+			<qantity_free>-1</qantity_free>
 			<description>
 				<![CDATA[NAWOŻENIE MINERALNE/Podwozie/Podwozie/Zestaw kołowy kpl. montaż. (2041/61-04-000.01)
 Półoś kpl. spaw. (szary)
@@ -94549,112 +94605,6 @@ MXL 2100]]></description>
 			<picture>/picture/d7fa2314-6cb3-11ed-fb9e-52540071dadf_Шасси с колесами и дышлом.jpg</picture>
 			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
 			<param name="number">(18011016)</param>
-			<param name="category">B</param>
-			<param name="weight">0</param>
-		</product>
-		<product>
-			<id>4045cd90-6fb3-11ed-fb9e-52540071dadf</id>
-			<name>Ступица диска</name>
-			<section_id>5726d306-ea60-11e4-bbbc-001e67996d0c</section_id>
-			<price>21,3</price>
-			<price_opt>29,82</price_opt>
-			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
-			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
-			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/MXL PREMIUM 5500/ 8200/Zestaw tarcz
-Piasta tarczy skrajnej (szary)
-2019422]]></description>
-			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
-			<param name="number">2039/13-03-100.01 (2039/13-031/2)</param>
-			<param name="category">A</param>
-			<param name="weight">0</param>
-		</product>
-		<product>
-			<id>84959a70-6fbd-11ed-fb9e-52540071dadf</id>
-			<name>Звездочка Z=20</name>
-			<section_id>9cf2565f-ea61-11e4-bbbc-001e67996d0c</section_id>
-			<price>84,4</price>
-			<price_opt>147,7</price_opt>
-			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
-			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
-			<description>
-				<![CDATA[TECHNIKA ZIEMNIACZANA/Kombajn do ziemniaków i warzyw/BOLKO
-Koło pasowe klinowe
-2126929]]></description>
-			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
-			<param name="number">8255-643-300-309 (5643/30-00-100.00,5643/300-309)</param>
-			<param name="category">B</param>
-			<param name="weight">0</param>
-		</product>
-		<product>
-			<id>8d667eea-7219-11ed-599a-52540071dadf</id>
-			<name>Крышка редуктора резиновая</name>
-			<section_id>9aaef3f9-ea60-11e4-bbbc-001e67996d0c</section_id>
-			<price>1,6</price>
-			<price_opt>2,8</price_opt>
-			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
-			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>2</qantity_reserv>
-			<qantity_free>-2</qantity_free>
-			<description>
-				<![CDATA[NAWOŻENIE MINERALNE/Rozsiewacze przyczepiane/RCW/RCW 100, 100 TD, 120, 120 TD/Belka napędu tarcz
-Osłona przekładni gumowa
-1004209]]></description>
-			<param name="factory">AGROMET PILMET Sp. z o.o.</param>
-			<param name="number">2042/00-00-005.03 </param>
-			<param name="category">B</param>
-			<param name="weight">0</param>
-		</product>
-		<product>
-			<id>becf8ca4-7487-11ed-599a-52540071dadf</id>
-			<name>Амортизатор 74X43X16</name>
-			<section_id>740086e5-e9b4-11e4-bbbc-001e67996d0c</section_id>
-			<price>14,9</price>
-			<price_opt>20,86</price_opt>
-			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
-			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>0</qantity_reserv>
-			<qantity_free>0</qantity_free>
-			<description>
-				<![CDATA[UPRAWA/Brony talerzowe/ARES P/Krój talerzowy XL ø 560 WP, XXL ø 660 WP
-Amortyzator 74X43X16
-1013500
-]]></description>
-			<param name="factory">UNIA Sp. z o.o.</param>
-			<param name="number">2325/31-001/0</param>
-			<param name="category">A</param>
-			<param name="weight">0</param>
-		</product>
-		<product>
-			<id>a02b461c-7536-11ed-ec94-52540071dadf</id>
-			<name>Редуктор (вертикильный)</name>
-			<section_id>03658c64-ea5d-11e4-bbbc-001e67996d0c</section_id>
-			<price>466,7</price>
-			<price_opt>816,725</price_opt>
-			<partForlds/>
-			<qantity_factory>0</qantity_factory>
-			<qantity_smolensk>0</qantity_smolensk>
-			<qantity_stored>0</qantity_stored>
-			<qantity_reserv>1</qantity_reserv>
-			<qantity_free>-1</qantity_free>
-			<description>
-				<![CDATA[KOSIARKI/Kosiarki dyskowe/ALKA CL/ALKA CL 2,4/Napęd kosiarki
-Przekładnia pionowa 
-2121277]]></description>
-			<param name="factory">UNIA-FAMAROL Sp. z o.o.</param>
-			<param name="number">5157/700-07-410 </param>
 			<param name="category">B</param>
 			<param name="weight">0</param>
 		</product>

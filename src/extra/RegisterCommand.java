@@ -13,7 +13,7 @@ public class RegisterCommand extends BasicRegisterCommand {
 	@Override
 	protected boolean validate() throws Exception {
 		Item form = getItemForm().getItemSingleTransient();
-		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
+		boolean isPhys = ItemTypeRegistry.getItemType(ItemNames.USER_PHYS) != null && (form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId());
 		boolean hasError = false;
 		if (isPhys) {
 			for (String mandatory : CartManageCommand.MANDATORY_PHYS) {

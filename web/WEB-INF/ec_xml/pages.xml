@@ -1095,7 +1095,9 @@
 		</new>
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="pseudo_option" />
+				</list>
 			</single>
 		</session>
 		<list item="product" tag="product" id="prod">
@@ -1108,9 +1110,9 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
-		<link name="confirm_link" target="cart_action" type="itemform">
-			<var name="action" value="confirm"/>
-		</link>
+<!--		<link name="confirm_link" target="cart_action" type="itemform">-->
+<!--			<var name="action" value="confirm"/>-->
+<!--		</link>-->
 		<include name="COMMON"/>
 	</page>
 
@@ -1118,7 +1120,9 @@
 	<page name="order_email" template="order_email">
 		<session>
 			<single item="cart">
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="pseudo_option"/>
+				</list>
 			</single>
 			<list item="user" tag="registration"/>
 			<new item="user_jur" id="user_jur">
@@ -1445,12 +1449,16 @@
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
 				</filter>
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<list item="pseudo_option"/>
+				</list>
 			</list>
 		</personal>
 		<list item="product" id="prod">
 			<filter>
-				<parameter name="code" compare="SOME"><var ref="bought" parameter="code"/></parameter>
+				<parameter name="code" compare="SOME">
+					<var ref="bought" parameter="code"/>
+				</parameter>
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>

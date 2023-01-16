@@ -186,16 +186,20 @@ public abstract class BasicCartManageCommand extends Command {
 		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
 		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
 
-		boolean simpleExists = getCookieVarValues(CART_COOKIE).size() > 0;
-		boolean complexExists = getCookieVarValues(COMPLEX_COOKIE).size() > 0;
+		boolean simpleExists = StringUtils.isNotBlank(getCartCookieString(CART_COOKIE));
+		boolean complexExists = StringUtils.isNotBlank(getCartCookieString(COMPLEX_COOKIE));
+
+		ResultPE res = getResult("confirm");
 
 		try {
 			if (simpleExists) {
 				processOrder(counter, form);
+				res.setVariable("simple_order_num", cart.getStringValue("order_num"));
 			}
 
 			if (complexExists) {
 				processPreOrder(counter, form);
+				res.setVariable("complex_order_num", cart.getStringValue("order_num"));
 			}
 		} catch (MessagingException e) {
 			ServerLogger.error("Unable to send email", e);
@@ -215,7 +219,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		clearCookies();
 
-		return getResult("confirm");
+		return res;
 	}
 
 	protected  void clearCookies() throws Exception {
@@ -240,9 +244,9 @@ public abstract class BasicCartManageCommand extends Command {
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
 
 		// Письмо для продавца
-		//sendEmail(regularTopic, shopEmail, shopEmailTemplate);
+		sendEmail(regularTopic, shopEmail, shopEmailTemplate);
 		// Письмо для покупателя
-		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
+		sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
 		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte) 1);
 		String xml = buildPreOrderXml(boughts);
@@ -345,10 +349,16 @@ public abstract class BasicCartManageCommand extends Command {
 		final String customerEmailTemplate = "order_email";
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
 
+		LinkPE customerLink = LinkPE.newDirectLink("link", customerEmailTemplate, false);
+		customerLink.addStaticVariable("is_complex", "1");
+
+		LinkPE shopLink = LinkPE.newDirectLink("link", shopEmailTemplate, false);
+		shopLink.addStaticVariable("is_complex", "1");
+
 		// Письмо для продавца
-		//sendEmail(regularTopic, shopEmail, shopEmailTemplate);
+		sendEmail(regularTopic, shopEmail, shopLink);
 		// Письмо для покупателя
-		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
+		sendEmail(regularTopic, customerEmail, customerLink, true);
 
 		List<Item> boughts = getSessionMapper()
 				.getItemsByName(BOUGHT_ITEM, cart.getId())
@@ -373,13 +383,11 @@ public abstract class BasicCartManageCommand extends Command {
 		return true;
 	}
 
-	private void sendEmail(String topic, String email, String templatePageName, boolean... isCustomerEmail) throws Exception {
+	private void sendEmail(String topic, String email, LinkPE templatePageLink, boolean... isCustomerEmail) throws Exception{
 		if (StringUtils.isBlank(email)) return;
 
 		Multipart multipart = new MimeMultipart();
 		MimeBodyPart textPart = new MimeBodyPart();
-		multipart.addBodyPart(textPart);
-		LinkPE templatePageLink = LinkPE.newDirectLink("link", templatePageName, false);
 
 		ExecutablePagePE templatePage = getExecutablePage(templatePageLink.serialize());
 		ByteArrayOutputStream customerEmailBytes = new ByteArrayOutputStream();
@@ -388,6 +396,13 @@ public abstract class BasicCartManageCommand extends Command {
 				+ ";charset=UTF-8");
 		addExtraEmailBodyPart(isCustomerEmail.length > 0 && isCustomerEmail[0], multipart);
 		EmailUtils.sendGmailDefault(email, topic, multipart);
+	}
+
+	private void sendEmail(String topic, String email, String templatePageName, boolean... isCustomerEmail) throws Exception {
+		if (StringUtils.isBlank(email)) return;
+
+		LinkPE templatePageLink = LinkPE.newDirectLink("link", templatePageName, false);
+		sendEmail(topic, email, templatePageLink, isCustomerEmail);
 	}
 
 	private void saveToHistory(List<Item> boughts, Item form, String sumParam, String sumDiscountParam, String sumSavedParam) throws Exception {

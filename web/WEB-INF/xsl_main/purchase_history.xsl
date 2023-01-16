@@ -39,6 +39,8 @@
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
 						<xsl:variable name="prod" select="$products[code = $code]"/>
+						<xsl:variable name="is_complex" select="pseudo_option != ''"/>
+
 						<div class="past-order__product past-product" style="display: none">
 							<div class="past-product__image">
 								<xsl:if test="$prod"><img src="{$prod/@path}{$prod/main_pic}" alt="" /></xsl:if>
@@ -56,22 +58,42 @@
 									<span>Кол-во: <xsl:value-of select="qty"/> шт.</span>
 									<span>Сумма: <xsl:value-of select="sum"/> руб.</span>
 								</div>
+
+								<xsl:if test="$is_complex">
+									<div class="options">
+										<div class="options-header">Дополнительные модули</div>
+										<xsl:for-each select="pseudo_option">
+											<div class="option-li">
+												<xsl:value-of select="concat(name, ': ')"/>
+												<span class="price">
+													<xsl:value-of select="f:format_currency_thousands(f:num(price))" />
+												</span>
+											</div>
+										</xsl:for-each>
+									</div>
+								</xsl:if>
+
 							</div>
 							<xsl:if test="$prod">
 								<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
 								<div class="past-product__action">
 									<div class="past-product__price"><xsl:if test="$has_price"><xsl:value-of select="$prod/price"/> руб.</xsl:if></div>
 									<div id="cart_list_{$prod/code}" class="product_purchase_container">
-										<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
-											<xsl:if test="$has_price">
-												<input class="input" type="number" name="qty" value="{qty}" min="0"/>
-												<button type="submit" class="button"><xsl:value-of select="$to_cart_available_label"/></button>
-											</xsl:if>
-											<xsl:if test="not($has_price)">
-												<input class="input" type="number" name="qty" value="1" min="0"/>
-												<button class="button button_not-available" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
-											</xsl:if>
-										</form>
+										<xsl:if test="not($is_complex)">
+											<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
+												<xsl:if test="$has_price">
+													<input class="input" type="number" name="qty" value="{qty}" min="0"/>
+													<button type="submit" class="button"><xsl:value-of select="$to_cart_available_label"/></button>
+												</xsl:if>
+												<xsl:if test="not($has_price)">
+													<input class="input" type="number" name="qty" value="1" min="0"/>
+													<button class="button button_not-available" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+												</xsl:if>
+											</form>
+										</xsl:if>
+										<xsl:if test="$is_complex">
+											<a href="$prod/show_product" class="button">Подробнее</a>
+										</xsl:if>
 									</div>
 								</div>
 							</xsl:if>

@@ -77,6 +77,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private String currentSection;
 	private boolean isInsideComplectation;
 	private ComplectationChild complStaus;
+	private static final String IMG_HOST = "http://62.109.11.85";
 
 
 
@@ -93,6 +94,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				}
 				for (String paramName : productParams.keySet()) {
 					for (String value : productParams.get(paramName)) {
+						value = "pic_link".equals(paramName) && StringUtils.isNotBlank(value)? IMG_HOST + value : value;
 						product.setValueUI(paramName, value);
 						if(NAME.equalsIgnoreCase(paramName)){
 							product.setKeyUnique(Strings.translit(value));
@@ -137,6 +139,16 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 			}
 		} catch (Exception e) {
 			handleException(e);
+		}
+	}
+
+	private void addImagHost(Item product) throws Exception {
+		ArrayList<String> links = product.getStringValues("pic_link");
+		LinkedHashSet<String> set = new LinkedHashSet<>();
+		set.addAll(links);
+		product.clearValue("pic_link");
+		for(String l : set){
+			product.setValueUI("pic_link", IMG_HOST + l);
 		}
 	}
 
