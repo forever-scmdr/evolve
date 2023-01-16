@@ -183,9 +183,9 @@
 			<td><xsl:value-of select="$product/code"/></td>
 			<td>
 				<xsl:value-of select="$product/name"/>
-				<xsl:if test="pseudo_option">
+				<xsl:if test="./pseudo_option">
 					<ul>
-						<xsl:for-each select="pseudo_option">
+						<xsl:for-each select="./pseudo_option">
 							<li>
 								<xsl:value-of select="concat(name ,': ', f:format_currency_thousands(f:num(price)))"/>
 							</li>
