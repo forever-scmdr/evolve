@@ -126,3 +126,7 @@ label{
 .past-product__info .options .options-header{
 	margin-top: 15px;
 }
+cart-confirm__table ul li{
+	margin-top: 5px;
+	list-style-type: disc;
+}
