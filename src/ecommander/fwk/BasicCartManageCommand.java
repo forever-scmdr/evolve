@@ -394,6 +394,7 @@ public abstract class BasicCartManageCommand extends Command {
 		PageController.newSimple().executePage(templatePage, customerEmailBytes);
 		textPart.setContent(customerEmailBytes.toString("UTF-8"), templatePage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 				+ ";charset=UTF-8");
+		multipart.addBodyPart(textPart);
 		addExtraEmailBodyPart(isCustomerEmail.length > 0 && isCustomerEmail[0], multipart);
 		EmailUtils.sendGmailDefault(email, topic, multipart);
 	}
@@ -458,9 +459,12 @@ public abstract class BasicCartManageCommand extends Command {
 	protected void saveOptionsHisotry(List<Item> options, Item boughtToSave) throws Exception {
 		commitCommandUnits();
 		for(Item option : options){
-			option.setContextPrimaryParentId(boughtToSave.getId());
-			option.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
-			executeCommandUnit(SaveItemDBUnit.get(option).ignoreUser());
+			Item optionToSave = ItemUtils.newChildItem("pseudo_option", boughtToSave);
+			for(String name : ItemTypeRegistry.getItemType("pseudo_option").getParameterNames()){
+				optionToSave.setValue(name, option.getValue(name));
+			}
+			optionToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
+			executeCommandUnit(SaveItemDBUnit.get(optionToSave).ignoreUser());
 		}
 	}
 
