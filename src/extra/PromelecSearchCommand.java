@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class PromelecSearchCommand extends Command {
 	private static final String LOGIN = "AlphaChip";
 	private static final String PZD = "67304a79eec95cb8a694de4f911d0c96";
-	private static int USER_ID = 112717;
+	private static int USER_ID = 199656;
 	private static final String SEARCH_BY_NAME_METHOD = "items_data_find";
 	private static final String TEST_URL = "http://base2.promelec.ru:222/rpc_test";
 	private static final String PRODUCTION_URL = "http://base2.promelec.ru:221/rpc";
