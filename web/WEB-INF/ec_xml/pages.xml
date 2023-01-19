@@ -660,20 +660,20 @@
 
 
 
-	<page name="product" template="" cacheable="false" >
+	<page name="product" template="product" cacheable="true" >
 		<request>
 			<var name="prod" style="translit"/>
 			<var name="assoc_code"/>
 			<var name="name"/>
 			<var name="vendor_code"/>
 		</request>
-		<link name="canonical_link" target="product" type="exclusive">
-			<var name="prod" var="prod" style="translit"/>
-		</link>
 		<single item="product" id="prod" var="prod">
+			<link name="canonical_link" target="product" type="exclusive">
+				<var name="prod" item="prod" style="translit"/>
+			</link>
 			<single item="seo" id="seo"/>
 			<single item="params" id="params"/>
-			<single item="product_extra" />
+			<single item="product_extra"/>
 			<single item="manual"/>
 			<ancestor item="section" transit="false" tag="product_section" id="parent"/>
 			<link name="to_cart" target="cart_action">
@@ -1816,18 +1816,8 @@
 	</page>
 
 
-	<!-- <page name="get_ebv_auto_start" template="integration" schedule="0 0 2 ? * * *">
-		<request>
-			<var name="action" value="start"/>
-		</request>
-		<command class="extra.UpdateCurrencyRates"/>
-		<command class="extra.ImportEbvCom">
-			<result name="complete" type="xml"/>
-		</command>
-	</page> -->
 
-
-	<page name="get_eltech_auto_start" template="integration" schedule="0 0 3 ? * * *">
+	<page name="get_eltech_auto_start" template="integration" schedule="0 0 2 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1837,6 +1827,18 @@
 		</command>
 	</page>
 
+
+	<page name="get_ebv_auto_start" template="integration" schedule="0 0 3 ? * * *">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.UpdateCurrencyRates"/>
+		<command class="extra.ImportEbvCom">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 	<page name="update_currency_ratios">
 		<request>
 			<var name="action" value="start"/>
@@ -1845,7 +1847,7 @@
 	</page>
 
 
-	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 4 ? * * *">
+	<page name="reindex_all_auto_start" template="integration/reindex" schedule="0 0 5 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -1853,6 +1855,17 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
+
+
+	<page name="add_promo_products" template="integration">
+		<request>
+			<var name="action" value="start"/>
+		</request>
+		<command class="extra.ImportPlainCatalogPromo" clear-cache="no">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<page name="digikey_manual_authorise">
 		<request>

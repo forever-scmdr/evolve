@@ -154,10 +154,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final BigDecimal D_100 = new BigDecimal(100);
 
 	private static BigDecimal getQtyQuotient(BigDecimal price) {
-		if (price.compareTo(D_0003) < 0) {
-			return D_100;
-		} else if (price.compareTo(D_003) < 0) {
-			return D_10;
+
+		if (price != null) {
+			if (price.compareTo(D_0003) < 0) {
+				return D_100;
+			} else if (price.compareTo(D_003) < 0) {
+				return D_10;
+			}
 		}
 		return new BigDecimal(1);
 	}
