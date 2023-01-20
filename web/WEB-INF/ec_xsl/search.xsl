@@ -297,7 +297,7 @@
 				-->
 			</xsl:if>
 			<xsl:if test="not($has_price)">
-				<td colspan="2"><p>запрос цены</p></td>
+				<td ><p>запрос цены</p></td>
 			</xsl:if>
 			<td id="cart_search_{@id}">
 				<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_search_{@id}">

@@ -171,6 +171,12 @@
 
 		<!-- CATALOG ITEMS -->
 		<div class="container">
+			<div class="title_2">Специальное предложение на компоненты со склада</div>
+			<div class="tags">
+				<xsl:for-each select="page/product">
+					<a href="{show_product}"><label class="tag"><xsl:value-of select="name"/></label></a>
+				</xsl:for-each>
+			</div>
 			<div class="title_2">Каталог продукции</div>
 			<div class="catalog-items">
 				<xsl:for-each select="/page/catalog/section">
@@ -182,12 +188,6 @@
 						<a href="{$link}" class="device__image device_section__image" style="background-image: url({$pic});"></a>
 						<a href="{$link}" class="device__title"><xsl:value-of select="name"/></a>
 					</div>
-				</xsl:for-each>
-			</div>
-			<div class="title_2">Новинки</div>
-			<div class="tags">
-				<xsl:for-each select="page/product">
-					<a href="{show_product}"><label class="tag"><xsl:value-of select="name"/></label></a>
 				</xsl:for-each>
 			</div>
 		</div>
@@ -297,6 +297,17 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript" src="fotorama/fotorama.js"/>
+	</xsl:template>
+
+
+	<xsl:template match="seo | url_seo">
+		<xsl:variable name="product_title" select="string-join(//page/product/name, ', ')"/>
+		<title>
+			<xsl:value-of select="concat(title, $product_title)"/>
+		</title>
+		<meta name="description" content="{description}"/>
+		<meta name="keywords" content="{keywords}"/>
+		<xsl:value-of select="meta" disable-output-escaping="yes"/>
 	</xsl:template>
 
 </xsl:stylesheet>

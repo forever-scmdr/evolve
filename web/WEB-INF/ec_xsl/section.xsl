@@ -54,7 +54,7 @@
 	<xsl:variable name="tag1" select="page/variables/tag1"/>
 	<xsl:variable name="tag2" select="page/variables/*[starts-with(name(), 'tag2')]"/>
 
-	<xsl:variable name="cities" select="'Минске', 'Бресте', 'Гродно', 'Могилеве', 'Гомеле', 'Речице'"/>
+	<xsl:variable name="cities" select="'Минске', 'Москве'"/>
 
 	<xsl:variable name="page_num" select="f:num(page/variables/page)"/>
 

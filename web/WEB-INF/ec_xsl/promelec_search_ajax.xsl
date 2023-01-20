@@ -153,16 +153,16 @@
 				</xsl:if>
 			</td>
 			-->
-			<xsl:if test="//page/variables/admin = 'true'">
-				<td>
-<!--					<xsl:if test="pricebreaks">-->
+			<xsl:if test="//page/variables/admin = 'true' ">
+<!-- 				<td>
+
 						<xsl:for-each select="$pricebreaks/break">
 							<p>
 								<xsl:value-of select="f:convert_curr_no_extra(@price)"/>
 							</p>
 						</xsl:for-each>
-<!--					</xsl:if>-->
-				</td>
+
+				</td> -->
 				<td>promelec.ru</td>
 				<td>
 
@@ -180,6 +180,7 @@
 					<input type="hidden" value="{@altname}" name="vendor_code"/>
 					<input type="hidden" value="RUB" name="currency_code"/>
 					<input type="hidden" value="promelec.ru" name="quotients"/>
+					<input type="hidden" value="{concat('promelec.ru_', (f:num(@flag_f4p)+1))}" name="store"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>

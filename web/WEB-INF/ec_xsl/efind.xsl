@@ -53,12 +53,12 @@
 							<xsl:with-param name="price_byn" select="f:num(price)"/>
 						</xsl:call-template>
 					</xsl:if>
-					<stock><xsl:value-of select="qty"/></stock>
+					<stock><xsl:value-of select="translate(qty, translate(qty,'0123456789.,',''),'')"/></stock>
 					<xsl:if test="f:is_numeric(available) and f:num(available) &gt; 0">
 						<dlv><xsl:value-of select="f:num(available) * 7"/> дней</dlv>
 					</xsl:if>
 					<xsl:if test="not(available) or available = '0'">
-						<dlv>склад</dlv>
+						<xsl:text disable-output-escaping="yes">&lt;dlv&gt;&lt;/dlv&gt;</xsl:text>
 					</xsl:if>
 					<bid>0</bid>
 				</item>

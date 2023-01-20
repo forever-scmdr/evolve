@@ -281,6 +281,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			String max = getVarSingleValue("max").replaceAll("[^0-9.,]", "").replace(',', '.');
 			String map = getVarSingleValue("map");
 			String currencyCode = getVarSingleValue("currency_code");
+			String store =  getVarSingleValue("store");
 			currencyCode = StringUtils.isBlank(currencyCode) ? "USD" : currencyCode;
 			Item quotients = StringUtils.isBlank(getVarSingleValue("quotients")) ? digiKeyQuotients : ItemQuery.loadSingleItemByParamValue(PRICE_CATALOG_ITEM, NAME_PARAM, "promelec.ru");
 
@@ -305,6 +306,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				bought.setExtra("map", map);
 				bought.setExtra("currency_code", currencyCode);
 				bought.setExtra("quotients", getVarSingleValue("quotients"));
+				bought.setExtra("store", store);
 				getSessionMapper().saveTemporaryItem(bought);
 
 				Item product = getSessionMapper().createSessionItem("product", bought.getId());
