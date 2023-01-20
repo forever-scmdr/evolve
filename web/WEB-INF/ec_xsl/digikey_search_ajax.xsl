@@ -151,6 +151,7 @@
 					<input type="hidden" value="{vendor_code}" name="vendor_code"/>
 					<input type="hidden" value="{vendor}" name="vendor"/>
 					<input type="hidden" value="{url}" name="url"/>
+					<input type="hidden" value="digikey.com" name="store"/>
 					<input type="submit" value="Заказать"/>
 				</form>
 			</td>
