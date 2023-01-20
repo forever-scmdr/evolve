@@ -154,7 +154,7 @@
 			</td>
 			-->
 			<xsl:if test="//page/variables/admin = 'true' ">
-<!-- 				<td>
+				<td>
 
 						<xsl:for-each select="$pricebreaks/break">
 							<p>
@@ -162,8 +162,10 @@
 							</p>
 						</xsl:for-each>
 
-				</td> -->
-				<td>promelec.ru</td>
+				</td>
+				<td>
+					<xsl:value-of select="concat('promelec.ru_', (f:num(@flag_f4p)+1))"/>
+				</td>
 				<td>
 
 				</td>
