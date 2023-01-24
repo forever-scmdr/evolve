@@ -39,6 +39,8 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
+	<xsl:variable name="products_api" select="page/api_search/product_list/product"/>
+	<xsl:variable name="has_results" select="$products or $products_api"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 
@@ -62,7 +64,7 @@
 
 	<xsl:template name="CONTENT">
 
-		<xsl:if test="$products and not($is_search_multiple)">
+		<xsl:if test="$has_results and not($is_search_multiple)">
 			<div class="view view_section">
 				<div class="view__column">
 					<xsl:if test="not($view_disabled = 'плитка')">
@@ -94,29 +96,32 @@
 		</xsl:if>
 
 
-		<xsl:if test="$products">
+		<xsl:if test="$has_results">
 			<div class="devices devices_section{' lines'[$view = 'list']}">
 				<xsl:if test="$view = 'table'">
 					<div class="devices__wrap">
 						<xsl:apply-templates select="$products" mode="product-table"/>
+						<xsl:apply-templates select="$products_api" mode="product-table-api"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'list'">
 					<div class="devices__wrap devices__wrap_rows">
 						<xsl:apply-templates select="$products" mode="product-list"/>
+						<xsl:apply-templates select="$products_api" mode="product-list-api"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">
-					<xsl:if test="$products">
+					<xsl:if test="$has_results">
 						<xsl:call-template name="LINES_TABLE">
 							<xsl:with-param name="products" select="$products"/>
+							<xsl:with-param name="products_api" select="$products_api"/>
 							<xsl:with-param name="multiple" select="$is_search_multiple"/>
 							<xsl:with-param name="queries" select="$queries"/>
 							<xsl:with-param name="numbers" select="$numbers"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:if>
-				<xsl:if test="not($products)">
+				<xsl:if test="not($has_results)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
 			</div>

@@ -6,8 +6,13 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.SessionItemMapper;
+import extra._generated.Bought;
 import extra._generated.ItemNames;
+import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -40,7 +45,8 @@ public abstract class BasicCartManageCommand extends Command {
         }
     }
 
-	protected static final String PRODUCT_ITEM = "abstract_product";
+	protected static final String PRODUCT_ITEM = "product";
+	protected static final String ABSTRACT_PRODUCT_ITEM = "abstract_product";
 	protected static final String CART_ITEM = "cart";
 	protected static final String BOUGHT_ITEM = "bought";
 	protected static final String PURCHASE_ITEM = "purchase";
@@ -49,6 +55,11 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PRICE_OPT_PARAM = "price_opt";
 	protected static final String NOT_AVAILABLE = "not_available";
 	protected static final String QTY_PARAM = "qty";
+	protected static final String MIN_QTY_PARAM = "min_qty";
+	protected static final String STEP_PARAM = "step";
+	protected static final String EXTRA_XML_PARAM = "extra_xml";
+	protected static final String OUTER_PARAM = "outer";
+	protected static final String OUTER_PRODUCT_PARAM = "outer_product";
     protected static final String QTY_AVAIL_PARAM = "qty_avail";
     protected static final String QTY_TOTAL_PARAM = "qty_total";
 	protected static final String SUM_PARAM = "sum";
@@ -96,12 +107,14 @@ public abstract class BasicCartManageCommand extends Command {
 		String idStr = getVarSingleValue(PROD_PARAM);
 		double quantity = 0;
 		long prodId = 0;
+		String outerProductString = getVarSingleValue(OUTER_PARAM);
 		try {
 			quantity = DoubleDataType.parse(getVarSingleValue(QTY_PARAM));
 			prodId = Long.parseLong(idStr);
 		} catch (Exception e) {/**/}
-		addProduct(prodId, quantity);
-		recalculateCart();
+		Item bought = addProduct(prodId, quantity, outerProductString);
+		if (bought != null)
+			recalculateCart();
 		return getResult("ajax");
 	}
 
@@ -390,16 +403,44 @@ public abstract class BasicCartManageCommand extends Command {
 		// по умолчанию ничего не делает
 	}
 
-
-    private Item createBought(long prodId, double qty) throws Exception {
+	/**
+	 * Создать сеансовый айтем bought
+	 * @param prodId
+	 * @param qty
+	 * @param outerParams - для товаров, которых нет в каталоге (сторонние товары)
+	 * @return
+	 * @throws Exception
+	 */
+    private Item createBought(long prodId, double qty, String outerParams) throws Exception {
         if (qty <= 0)
             return null;
         Item product = ItemQuery.loadById(prodId);
-        if (product == null)
-            return null;
+        // Возможно товар является внешним (т.е. его нет в базе, а параметры берутся из outerParams)
+        if (product == null) {
+	        Document doc = JsoupUtils.parseXml(outerParams);
+	        String code = JsoupUtils.getTagValue(doc, CODE_PARAM);
+	        if (code == null)
+	        	return null;
+        	// Создание айтема для внешнего товара и заполнение его параметрами
+	        product = getSessionMapper().createSessionRootItem(ItemNames.PRODUCT);
+	        product.setValueUI(CODE_PARAM, code);
+	        product.setValueUI(EXTRA_XML_PARAM, outerParams);
+	        Element productEl = doc.getElementsByTag("product").first();
+	        if (productEl != null) {
+		        for (Element childEl : productEl.children()) {
+			        String paramName = childEl.tagName();
+			        String value = childEl.ownText();
+			        if (product.getItemType().hasParameter(paramName))
+			        	product.setValueUI(paramName, value);
+		        }
+	        }
+        }
         Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
         bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
         bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+        if (StringUtils.isNotBlank(outerParams)) {
+	        bought.setValue(OUTER_PRODUCT_PARAM, outerParams);
+        }
         setBoughtQtys(product, bought, qty);
         // Сохраняется bought
         getSessionMapper().saveTemporaryItem(bought);
@@ -407,7 +448,7 @@ public abstract class BasicCartManageCommand extends Command {
         product.setContextPrimaryParentId(bought.getId());
         getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
         // Загрузка и сохранение родительского продукта (для продуктов, вложенных в другие продукты)
-        Item parent = new ItemQuery(PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
+        Item parent = new ItemQuery(ABSTRACT_PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
         if (parent != null) {
             parent.setContextPrimaryParentId(product.getId());
             getSessionMapper().saveTemporaryItem(parent);
@@ -417,21 +458,29 @@ public abstract class BasicCartManageCommand extends Command {
         return bought;
     }
 
-    private void addProduct(long prodId, double qty) throws Exception {
+	/**
+	 * Добавить товар в корзину, создав айтем bought
+	 * @param prodId
+	 * @param qty
+	 * @param outerParams
+	 * @return
+	 * @throws Exception
+	 */
+    private Item addProduct(long prodId, double qty, String outerParams) throws Exception {
         checkStrategy();
         ensureCart();
         // Проверка, есть ли уже такой девайс в корзине (если есть, изменить количество)
         Item boughtProduct = getSessionMapper().getItemSingle(prodId);
         if (boughtProduct == null) {
-            createBought(prodId, qty);
+	        return createBought(prodId, qty, outerParams);
         } else {
-            Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
-            if (qty <= 0) {
-                getSessionMapper().removeItems(bought.getId());
-                return;
-            }
-            setBoughtQtys(boughtProduct, bought, qty);
-            getSessionMapper().saveTemporaryItem(bought);
+	        Item bought = getSessionMapper().getItem(boughtProduct.getContextParentId(), BOUGHT_ITEM);
+	        if (qty <= 0) {
+		        getSessionMapper().removeItems(bought.getId());
+	        }
+	        setBoughtQtys(boughtProduct, bought, qty);
+	        getSessionMapper().saveTemporaryItem(bought);
+	        return bought;
         }
     }
 
@@ -445,15 +494,16 @@ public abstract class BasicCartManageCommand extends Command {
 	protected void setBoughtQtys(Item product, Item bought, double qtyWanted) {
 		byte b = getInitiator().getRole("registered");
 		String qp = b > -1 ? "qty_opt" : QTY_PARAM;
-        double maxQuantity = product.getDoubleValue(qp, MAX_QTY);
-
-        //fix 16.02.2021 Product quantity step added
-        double step = product.getDoubleValue("step", product.getDoubleValue("min_qty", 1));
-
-        //double sucks! use BigDecimal
+		double maxQuantity = MAX_QTY;
+		double step = 1;
+		BigDecimal min = BigDecimal.ZERO;
+		if (product != null) {
+			maxQuantity = product.getDoubleValue(qp, MAX_QTY);
+			step = product.getDoubleValue(STEP_PARAM, product.getDoubleValue(MIN_QTY_PARAM, 1));
+			min = new BigDecimal(product.getDoubleValue(MIN_QTY_PARAM, 0));
+		}
 		BigDecimal wanted = new BigDecimal(qtyWanted);
 		BigDecimal stepD = new BigDecimal(step);
-		BigDecimal min = new BigDecimal(product.getDoubleValue("min_qty", 0));
 
 		wanted = wanted.setScale(6, RoundingMode.HALF_UP);
 		stepD = stepD.setScale(6, RoundingMode.DOWN);
@@ -575,10 +625,10 @@ public abstract class BasicCartManageCommand extends Command {
 		String[] codeQtys = StringUtils.split(cookie, '/');
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
-			Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, pair[0]);
+			Item product = ItemQuery.loadSingleItemByParamValue(ABSTRACT_PRODUCT_ITEM, CODE_PARAM, pair[0]);
 			double qty = DoubleDataType.parse(pair[1]);
 			if (product != null) {
-				addProduct(product.getId(), qty);
+				addProduct(product.getId(), qty, null);
 			}
 		}
 		recalculateCart();

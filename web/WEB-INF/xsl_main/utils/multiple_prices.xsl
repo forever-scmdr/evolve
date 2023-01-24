@@ -66,4 +66,35 @@
     </xsl:template>
 
 
+
+    <xsl:template name="ALL_PRICES_API">
+        <xsl:param name="product"/>
+        <xsl:param name="need_sum" select="false()"/>
+        <xsl:variable name="price_intervals" select="$product/prices/break"/>
+        <xsl:for-each select="$price_intervals">
+            <xsl:variable name="pos" select="position()"/>
+            <xsl:variable name="min_interval_qty" select="f:num(@qty)"/>
+            <xsl:variable name="max_interval_qty" select="if ($pos = last()) then 999999999 else (f:num($price_intervals[$pos + 1]/@qty) - 1)"/>
+            <xsl:variable name="min_pack" select="$min_interval_qty"/>
+            <xsl:variable name="max_pack" select="$max_interval_qty"/>
+            <xsl:variable name="unit_price" select="f:exchange(current(), 'price', 0)"/>
+            <xsl:variable name="pack_sum" select="$unit_price * $min_pack"/>
+            <!--           <p><b>-->
+            <!--                !<xsl:value-of select="$catalog/qty_quotient_policy"/>|-->
+            <!--           </b>-->
+            <!--           </p>-->
+            <p>
+                <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
+                <xsl:if test="not($need_sum)">
+                    <xsl:value-of select="f:print_cur($unit_price)"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.
+                </xsl:if>
+            </p>
+        </xsl:for-each>
+        <xsl:if test="not($price_intervals)">
+            <xsl:variable name="unit_price" select="f:exchange($product/price, 'price', 0)"/>
+            <xsl:value-of select="f:print_cur($unit_price)"/>
+        </xsl:if>
+    </xsl:template>
+
+
 </xsl:stylesheet>

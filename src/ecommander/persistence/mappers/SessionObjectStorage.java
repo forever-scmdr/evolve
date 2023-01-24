@@ -7,13 +7,13 @@ package ecommander.persistence.mappers;
  */
 public abstract class SessionObjectStorage extends ParametricObjectStorage {
 
-	private long idBase = Long.MIN_VALUE;
+	private long idBase = -100000;
 	/**
 	 * Генерирует ID для очередного вновь создаваемого сеансового айтема
 	 * @return
 	 */
 	public long generateId() {
-		return idBase++;
+		return idBase--;
 	}
 
 }

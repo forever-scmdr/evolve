@@ -13,9 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApiJsonToXMLCommand extends Command {
+
+	private HashMap<String, String> replacements = new HashMap<>();
+
 	@Override
 	public ResultPE execute() throws Exception {
 		String url = getVarSingleValue(ExecutablePagePE.PAGEURL_VALUE);
@@ -25,6 +29,14 @@ public class ApiJsonToXMLCommand extends Command {
 		String tokenHeaderName = getVarSingleValue("token_header");
 		String rootElementName = getVarSingleValueDefault("root_element", "provider");
 		String urlToGet = apiBase + StringUtils.substringAfterLast(url, pageName + "/");
+
+		String replace = getVarSingleValueDefault("replace", "");
+		String[] replacePairs = StringUtils.split(replace, ", ");
+		for (String replacePair : replacePairs) {
+			String[] keyValue = StringUtils.split(replacePair, ":=");
+			if (keyValue.length == 2)
+				replacements.put(keyValue[0], keyValue[1]);
+		}
 		try {
 			//String response = OkWebClient.getInstance().getString(urlToGet);
 			String response = OkWebClient.getInstance().getStringHeaders(urlToGet, tokenHeaderName, token);
@@ -41,6 +53,7 @@ public class ApiJsonToXMLCommand extends Command {
 	}
 
 	private void processElement(JsonElement element, XmlDocumentBuilder xml, String rootElement) {
+		String tagToCreate = replacements.getOrDefault(rootElement, rootElement);
 		if (element.isJsonArray()) {
 			JsonArray array = element.getAsJsonArray();
 			for (JsonElement arrayItem : array) {
@@ -49,15 +62,15 @@ public class ApiJsonToXMLCommand extends Command {
 		} else if (element.isJsonObject()) {
 			JsonObject object = element.getAsJsonObject();
 			Map<String, JsonElement> map = object.asMap();
-			xml.startElement(rootElement);
+			xml.startElement(tagToCreate);
 			for (String key : map.keySet()) {
 				processElement(map.get(key), xml, key);
 			}
 			xml.endElement();
 		} else if (element.isJsonPrimitive()) {
-			xml.addElement(rootElement, element.getAsString());
+			xml.addElement(tagToCreate, element.getAsString());
 		} else if (element.isJsonNull()) {
-			xml.addElement(rootElement, "");
+			xml.addElement(tagToCreate, "");
 		}
 	}
 }

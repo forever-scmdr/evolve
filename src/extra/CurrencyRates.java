@@ -6,6 +6,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Display_settings;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,11 +15,12 @@ import java.util.HashMap;
 /**
  * Created by E on 7/6/2019.
  */
-public class CurrencyRates implements ItemNames, ItemNames.product_{
+public class CurrencyRates implements ItemNames{
 	private static final String RATE_SUFFIX = "_rate";
 	private static final String SCALE_SUFFIX = "_scale";
 	private static final String EXTRA_SUFFIX = "_extra";
 	private static final String PRICE_PREFIX = "price_";
+	private static final String PRICE_PARAM_NAME = "price";
 
 	private HashMap<String, BigDecimal[]> rates;
 	private String defaultCurrency = "BYN";
@@ -57,8 +59,40 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 	 * @param currencyCode
 	 */
 	public void setAllPrices(Item product, BigDecimal price, String currencyCode) {
+		HashMap<String, BigDecimal> allPrices = getAllPrices(price, currencyCode);
+		for (String paramName : allPrices.keySet()) {
+			product.setValue(paramName, allPrices.get(paramName));
+		}
+	}
+
+	/**
+	 * Установить значения всех параметров товара с ценой во всех валютах для товара в виде XML разобранного в JSoup
+	 * @param productNode
+	 * @param price
+	 * @param currencyCode
+	 */
+	public void setAllPricesJsoup(Element productNode, BigDecimal price, String currencyCode) {
+		HashMap<String, BigDecimal> allPrices = getAllPrices(price, currencyCode);
+		for (String paramName : allPrices.keySet()) {
+			if (StringUtils.equalsIgnoreCase(paramName, PRICE_PARAM_NAME)) {
+				productNode.getElementsByTag(PRICE_PARAM_NAME).remove();
+			}
+			productNode.appendElement(paramName).text(allPrices.get(paramName).toString());
+		}
+	}
+
+	/**
+	 * Получить значения цены товара во всех валютах
+	 * Возвращается map название параметра => цена
+	 * Название параметра содержит код валюты
+	 * @param price
+	 * @param currencyCode
+	 * @return
+	 */
+	private HashMap<String, BigDecimal> getAllPrices(BigDecimal price, String currencyCode) {
+		HashMap<String, BigDecimal> allPrices = new HashMap<>();
 		if (price == null || rates == null || rates.size() == 0)
-			return;
+			return allPrices;
 		currencyCode = StringUtils.trim(StringUtils.upperCase(currencyCode));
 		BigDecimal defaultCurrencyPrice = price; // если валюта BYN или не найдена (тоже считать что BYN)
 		// Если цена в одной из валют сайта кроме BYN
@@ -66,17 +100,19 @@ public class CurrencyRates implements ItemNames, ItemNames.product_{
 			BigDecimal[] rate = rates.get(currencyCode);
 			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN));
 			defaultCurrencyPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(4, RoundingMode.UP);
-			product.setValue(PRICE_PREFIX + currencyCode, price);
+			allPrices.put(PRICE_PREFIX + currencyCode, price);
 		}
-		product.setValue(PRICE, defaultCurrencyPrice);
+		allPrices.put(PRICE_PARAM_NAME, defaultCurrencyPrice);
 		for (String CODE : rates.keySet()) {
 			if (StringUtils.equalsIgnoreCase(CODE, currencyCode))
 				continue;
 			BigDecimal[] rate = rates.get(CODE);
 			BigDecimal currencyPrice = defaultCurrencyPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(4, RoundingMode.UP);
-			product.setValue(PRICE_PREFIX + CODE, currencyPrice);
+			allPrices.put(PRICE_PREFIX + CODE, currencyPrice);
 		}
+		return allPrices;
 	}
+
 
 	public BigDecimal getPrice(Item product, String currencyCode) {
 		return product.getDecimalValue(PRICE_PREFIX + currencyCode);

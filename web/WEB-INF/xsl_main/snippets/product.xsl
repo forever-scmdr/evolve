@@ -20,6 +20,7 @@
 	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
+	<xsl:variable name="to_cart_api_link" select="page/to_cart_api"/>
 
 
 
@@ -77,7 +78,7 @@
 			</xsl:if>
 
 			<!-- device title -->
-			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
+			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/> - table</span></a>
 
 			<!-- device identification code -->
 			<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -135,6 +136,85 @@
 			</div>
 		</div>
 	</xsl:template>
+
+
+	<!-- /////////////////////// -->
+	<!-- ТОВАР В ВИДЕ ТАБЛИЦЫ (плитка), но для API -->
+	<!-- /////////////////////// -->
+
+	<xsl:template match="*" mode="product-table-api">
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="multipe_prices" select="prices"/>
+		<div class="card device">
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+
+			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
+			<div style="display: none">
+				<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+					<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
+						<i class="fas fa-search-plus"></i>
+					</a>
+				</xsl:if>
+			</div>
+
+			<!-- device image -->
+			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
+
+			<!-- device tags -->
+			<div class="tags device__tags">
+				<xsl:for-each select="label">
+					<div class="tag device__tag {f:translit(.)}">
+						<xsl:value-of select="." />
+					</div>
+				</xsl:for-each>
+			</div>
+
+			<!-- quick view (not displayed, delete <div> with display: none to show) -->
+			<xsl:if test="$has_quick_view">
+				<div>
+					<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
+				</div>
+			</xsl:if>
+
+			<!-- device title -->
+			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/> - table api</span></a>
+
+			<!-- device identification code -->
+			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+
+			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
+			<xsl:if test="$has_price">
+				<div class="price device__price">
+					<xsl:if test="price_old">
+						<div class="price__item_old">
+							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+						</div>
+					</xsl:if>
+					<div class="price__item_new">
+						<!-- Для обычных товаров (не из каталога price_catalog) -->
+						<xsl:if test="not($multipe_prices)">
+							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+						</xsl:if>
+						<!-- Для товаров из каталога price_catalog -->
+						<xsl:if test="$multipe_prices">
+							<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
+								<xsl:with-param name="need_sum" select="false()"/>
+								<xsl:with-param name="product" select="."/>
+							</xsl:call-template></span>
+						</xsl:if>
+					</div>
+				</div>
+			</xsl:if>
+
+			<!-- device order -->
+			<xsl:call-template name="CART_BUTTON_API">
+				<xsl:with-param name="p" select="current()"/>
+			</xsl:call-template>
+
+		</div>
+	</xsl:template>
+
 
 
 
@@ -204,7 +284,7 @@
 			<div class="device__column">
 
 				<!-- device title -->
-				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
+				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/> - list</span></a>
 
 				<!-- device identification code -->
 				<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -324,6 +404,156 @@
 			</div>
 		</div>
 	</xsl:template>
+
+
+
+	<!-- /////////////////////// -->
+	<!-- ТОВАР ОТДЕЛЬНЫМИ СТРОКАМИ (расширенная информация), но для API -->
+	<!-- /////////////////////// -->
+
+	<xsl:template match="*" mode="product-list-api">
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="multipe_prices" select="prices"/>
+		<div class="device device_row">
+			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+
+			<div class="device__column">
+
+				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
+				<div style="display: none">
+					<xsl:if test="main_pic and number(main_pic/@width) &gt; 200">
+						<a href="{concat(@path, main_pic)}" class="magnific_popup-image zoom-icon" title="{name}">
+							<i class="fas fa-search-plus"></i>
+						</a>de
+					</xsl:if>
+				</div>
+
+				<!-- quick view (not displayed, delete <div> with display: none to show) -->
+				<xsl:if test="$has_quick_view">
+					<div style="display: none">
+						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
+					</div>
+				</xsl:if>
+
+				<!-- device image -->
+				<div class="device__image img">
+					<a href="{show_product}">
+						<img src="{$pic_path}" alt="" />
+					</a>
+				</div>
+
+				<!-- device tags -->
+				<div class="tags device__tags">
+					<xsl:for-each select="label">
+						<div class="tag device__tag {f:translit(.)}">
+							<xsl:value-of select="." />
+						</div>
+					</xsl:for-each>
+				</div>
+
+			</div>
+
+			<div class="device__column">
+
+				<!-- device title -->
+				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/> - list api</span></a>
+
+				<!-- device identification code -->
+				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+
+				<!-- device description parameters -->
+				<div class="device__info">
+
+<!--					<table class="params">-->
+<!--						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>-->
+<!--						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>-->
+<!--						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>-->
+<!--						<xsl:variable name="p" select="current()"/>-->
+
+<!--						<xsl:if test="//page/@name != 'fav'">-->
+<!--							<tbody>-->
+<!--								<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">-->
+<!--									<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+<!--									<tr class="tr">-->
+<!--										<td><xsl:value-of select="$param/@caption"/></td>-->
+<!--										<td><xsl:value-of select="$param"/></td>-->
+<!--									</tr>-->
+<!--								</xsl:for-each>-->
+<!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
+<!--									<tr>-->
+<!--										<td colspan="2">-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</xsl:if>-->
+<!--							</tbody>-->
+<!--							<xsl:if test="count($captions) &gt; $product_params_limit">-->
+<!--								<tbody id="params-{@id}" style="display:none;">-->
+<!--									<xsl:for-each select="$captions[position() &gt; $product_params_limit]">-->
+<!--										<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+<!--										<tr class="tr">-->
+<!--											<td><xsl:value-of select="$param/@caption"/></td>-->
+<!--											<td><xsl:value-of select="$param"/></td>-->
+<!--										</tr>-->
+<!--									</xsl:for-each>-->
+<!--								</tbody>-->
+<!--							</xsl:if>-->
+<!--						</xsl:if>-->
+<!--						<xsl:if test="//page/@name = 'fav'">-->
+<!--							<xsl:for-each select="$captions[position() &lt; 5]">-->
+<!--								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+<!--								<tr class="tr">-->
+<!--									<td><xsl:value-of select="$param/@caption"/></td>-->
+<!--									<td><xsl:value-of select="$param"/></td>-->
+<!--								</tr>-->
+<!--							</xsl:for-each>-->
+<!--						</xsl:if>-->
+<!--					</table>-->
+
+					<!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
+				</div>
+
+			</div>
+
+			<!-- device price -->
+			<div class="device__column">
+				<div class="price device__price">
+					<xsl:if test="$has_price">
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
+						<div class="price__item_new">
+							<!-- Для обычных товаров (не из каталога price_catalog) -->
+							<xsl:if test="not($multipe_prices)">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/></span>
+							</xsl:if>
+							<!-- Для товаров из каталога price_catalog -->
+							<xsl:if test="$multipe_prices">
+								<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
+									<xsl:with-param name="need_sum" select="false()"/>
+									<xsl:with-param name="product" select="."/>
+								</xsl:call-template></span>
+							</xsl:if>
+						</div>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<div></div>
+					</xsl:if>
+				</div>
+			</div>
+
+			<div class="device__column">
+				<!-- device order -->
+				<xsl:call-template name="CART_BUTTON_API">
+					<xsl:with-param name="p" select="current()"/>
+				</xsl:call-template>
+			</div>
+		</div>
+	</xsl:template>
+
 
 
 
@@ -449,6 +679,100 @@
 
 
 
+
+	<!-- /////////////////////// -->
+	<!-- ТОВАР В ОБЩЕЙ ТАБЛИЦЕ, но для API -->
+	<!-- /////////////////////// -->
+
+	<xsl:template match="*" mode="product-lines-api">
+		<xsl:param name="multiple" select="false()"/>
+		<xsl:param name="hidden" select="false()"/>
+		<xsl:param name="number" select="-1"/>
+		<xsl:param name="position" select="1"/>
+		<xsl:param name="query" select="''"/>
+		<xsl:param name="has_more" select="false()"/>
+		<xsl:variable name="multipe_prices" select="prices"/>
+
+		<xsl:variable name="has_price" select="price and price != '0'"/>
+
+		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+		<xsl:variable name="p" select="current()"/>
+		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
+			<xsl:if test="$multiple"><td><div class="thn">Запрос</div>
+				<div class="thd"><b><xsl:value-of select="$query" /></b></div></td></xsl:if>
+			<td>
+				<div class="thn">Название</div>
+				<div class="thd">
+					<a href="{show_product}"><xsl:value-of select="name"/></a>
+					<p/>
+					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+				</div>
+			</td><!--название -->
+			<td><!--описание -->
+				<div class="thn">Описание</div>
+				<div class="thd">
+					<xsl:value-of select="description" disable-output-escaping="yes"/>
+				</div>
+			</td>
+			<td><!--дата поставки -->
+				<div class="thn">Срок поставки</div>
+				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+			</td>
+			<td><!--количество на складе -->
+				<div class="thn">Количество</div>
+				<div class="thd"><xsl:value-of select="qty"/></div>
+			</td>
+			<td>
+				<div class="thn">Цена</div>
+				<div class="thd"><!--цена -->
+					<xsl:if test="price_old">
+						<div class="price__item_old">
+							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+						</div>
+					</xsl:if>
+					<xsl:if test="$has_price">
+						<!-- Для обычных товаров (не из каталога price_catalog) -->
+						<xsl:if test="not($multipe_prices)">
+							<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
+						</xsl:if>
+						<!-- Для товаров из каталога price_catalog -->
+						<xsl:if test="$multipe_prices">
+							<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
+								<xsl:with-param name="need_sum" select="false()"/>
+								<xsl:with-param name="product" select="$p"/>
+							</xsl:call-template></span>
+						</xsl:if>
+
+					</xsl:if>
+					<xsl:if test="not($has_price)"> - </xsl:if>
+				</div>
+			</td>
+			<td><!--заказать -->
+				<div class="thn">Заказать</div>
+				<div class="thd">
+					<xsl:call-template name="CART_BUTTON_API">
+						<xsl:with-param name="p" select="$p"/>
+					</xsl:call-template>
+				</div>
+			</td>
+			<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><!--дополнительно -->
+				<td>
+					<div class="thn">Дополнительно</div>
+					<div class="thd">
+						<xsl:call-template name="EXTRA_ORDERING_TYPES">
+							<xsl:with-param name="p" select="current()"/>
+						</xsl:call-template>
+					</div>
+				</td>
+			</xsl:if>
+			<xsl:if test="$multiple"><td><div class="thn">Показать</div>
+				<div class="thd"><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></div></td></xsl:if>
+		</tr>
+	</xsl:template>
+
+
+
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////         			КНОПКИ ЗАКАЗАТЬ И ДОПОЛНИТЕЛЬНЫЕ	 		       ////////////-->
@@ -491,6 +815,35 @@
 		</xsl:if>
 	</xsl:template>
 
+
+
+	<xsl:template name="CART_BUTTON_API">
+		<xsl:param name="p" />
+		<xsl:param name="default_qty" select="-1"/>
+		<xsl:if test="$has_cart">
+			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
+
+			<!-- device order -->
+			<div class="order device-order cart_list_{$p/code}" id="cart_list_{$p/code}">
+				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+					<input type="hidden" name="prod" value="-10"/>
+					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
+					<input type="number"
+						   class="input input_type_number" name="qty"
+						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
+						   min="{if ($p/min_qty) then $p/min_qty else 1}"
+						   step="{if ($p/step) then f:num($p/step) else 1}" />
+
+					<xsl:if test="$has_price">
+						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+					</xsl:if>
+					<xsl:if test="not($has_price)">
+						<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+					</xsl:if>
+				</form>
+			</div>
+		</xsl:if>
+	</xsl:template>
 
 
 
@@ -573,6 +926,7 @@
 
 	<xsl:template name="LINES_TABLE">
 		<xsl:param name="products"/>
+		<xsl:param name="products_api" select="emptynode"/>
 		<xsl:param name="multiple" select="false()"/>
 		<xsl:param name="queries" select="queries"/>
 		<xsl:param name="numbers" select="numbers"/>
@@ -618,6 +972,7 @@
 					</xsl:if>
 					<xsl:if test="not($multiple)">
 						<xsl:apply-templates select="$products" mode="product-lines"/>
+						<xsl:apply-templates select="$products_api" mode="product-lines-api"/>
 					</xsl:if>
 				</tbody>
 			</table>

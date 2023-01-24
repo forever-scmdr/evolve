@@ -2,10 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
-import ecommander.fwk.BasicCartManageCommand;
-import ecommander.fwk.Pair;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.fwk.integration.ExcelTemplateProcessor;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
@@ -18,8 +15,13 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
 import extra._generated.User_phys;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -31,10 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Корзина
@@ -175,23 +174,56 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 	@Override
 	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
-		Item section = getSessionMapper().getSingleItemByName(PLAIN_SECTION, product.getId());
-		if (section != null) {
-			loadPriceIntervals();
-			String secName = section.getStringValue(NAME_PARAM);
-			PriceCatalog quotients = priceIntervals.get(secName);
-			if (quotients != null) {
-				BigDecimal quotient = quotients.defaultQuotient;
-				for (Pair<BigDecimal, BigDecimal> qtyQuotient : quotients.qtyQuotients) {
-					double qtyLimit = qtyQuotient.getLeft().doubleValue();
-					if (quotients.quotientForPack)
-						qtyLimit *= product.getDoubleValue("step", 1.0);
-					if (qtyLimit > qty) {
-						break;
+		// Для товаров, которые были загружены из БД (реальные товары из каталога)
+		if (product.getId() >= 0) {
+			Item section = getSessionMapper().getSingleItemByName(PLAIN_SECTION, product.getId());
+			if (section != null) {
+				loadPriceIntervals();
+				String secName = section.getStringValue(NAME_PARAM);
+				PriceCatalog quotients = priceIntervals.get(secName);
+				if (quotients != null) {
+					BigDecimal quotient = quotients.defaultQuotient;
+					for (Pair<BigDecimal, BigDecimal> qtyQuotient : quotients.qtyQuotients) {
+						double qtyLimit = qtyQuotient.getLeft().doubleValue();
+						if (quotients.quotientForPack)
+							qtyLimit *= product.getDoubleValue("step", 1.0);
+						if (qtyLimit > qty) {
+							break;
+						}
+						quotient = qtyQuotient.getRight();
 					}
-					quotient = qtyQuotient.getRight();
+					return product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
 				}
-				return  product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
+			}
+		}
+		// Для сторонних товаров, которых нет в БД
+		else {
+			String outerXML = product.getStringValue(EXTRA_XML_PARAM);
+			if (StringUtils.isNotBlank(outerXML)) {
+				Document parsed = JsoupUtils.parseXml(outerXML);
+				Element prices = parsed.getElementsByTag(SearchApiCommand.PRICES_TAG).first();
+				HashMap<BigDecimal, BigDecimal> intervals = new HashMap<>();
+				if (prices != null) {
+					Elements breaks = parsed.getElementsByTag(SearchApiCommand.BREAK_TAG);
+					for (Element aBreak : breaks) {
+						BigDecimal breakQty = DecimalDataType.parse(aBreak.attr(SearchApiCommand.QTY_ATTR), 4);
+						if (breakQty == null)
+							breakQty = BigDecimal.ONE;
+						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagValue(aBreak, SearchApiCommand.PRICE_TAG), 4);
+						intervals.put(breakQty, breakPrice);
+					}
+					ArrayList<BigDecimal> qtysOrdered = new ArrayList<>(intervals.keySet());
+					Collections.sort(qtysOrdered);
+					qtysOrdered.add(BigDecimal.valueOf(Long.MAX_VALUE)); // чтобы гарантированно не выйти за предел
+					BigDecimal decimalQty = new BigDecimal(qty);
+					for (int i = 0; i < qtysOrdered.size(); i++) {
+						if (qtysOrdered.get(i).compareTo(decimalQty) > 0) {
+							if (i > 0)
+								return intervals.get(qtysOrdered.get(i - 1));
+							return intervals.get(qtysOrdered.get(i));
+						}
+					}
+				}
 			}
 		}
 		return product.getDecimalValue(priceParam, BigDecimal.ZERO);

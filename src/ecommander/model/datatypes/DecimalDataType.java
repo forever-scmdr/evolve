@@ -3,6 +3,7 @@ package ecommander.model.datatypes;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -37,7 +38,7 @@ public class DecimalDataType extends FormatDataType {
 		else
 			((DecimalFormat) formatter).setParseBigDecimal(true);
 		if (value != null)
-			((BigDecimal)value).setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+			value = ((BigDecimal)value).setScale(scale, RoundingMode.HALF_EVEN);
 		return super.outputValue(value, formatter);
 	}
 
@@ -51,7 +52,7 @@ public class DecimalDataType extends FormatDataType {
 			String toParse = stringValue.replaceAll("\\s", "");
 			num = (BigDecimal) ((DecimalFormat)formatter).parse(toParse, pp);
 			if (pp.getIndex() == stringValue.length()) {
-				return num.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+				return num.setScale(scale, RoundingMode.HALF_EVEN);
 			}
 		}
 		return parse(stringValue, scale);
@@ -70,7 +71,7 @@ public class DecimalDataType extends FormatDataType {
 			}
 			if (num == null)
 				return null;
-			return num.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+			return num.setScale(scale, RoundingMode.HALF_EVEN);
 		}
 		catch (Exception e) {
 			return null;
