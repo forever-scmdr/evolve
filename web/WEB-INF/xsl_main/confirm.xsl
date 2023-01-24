@@ -79,7 +79,8 @@
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
-						<xsl:variable name="product" select="//page/product[code = current()/code]"/>
+<!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
+						<xsl:variable name="product" select="product"/>
 						<tr>
 							<td><xsl:value-of select="$product/code"/></td>
 							<td><xsl:value-of select="$product/name"/></td>

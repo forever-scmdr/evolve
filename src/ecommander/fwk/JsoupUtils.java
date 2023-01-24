@@ -54,4 +54,37 @@ public class JsoupUtils {
 	public static Document parseXml(String unknownXml) {
 		return Jsoup.parse(unknownXml, "", Parser.xmlParser());
 	}
+
+	/**
+	 * Получить значение тэга. Подразумевается что такой тэг один.
+	 * Берется значение первого найденного тэга
+	 * @param node
+	 * @param tag
+	 * @return
+	 */
+	public static String getTagValue(Element node, String tag) {
+		if (node == null)
+			return null;
+		Element el = node.getElementsByTag(tag).first();
+		if (el == null)
+			return null;
+		return el.ownText();
+	}
+
+	/**
+	 * Получить значение атрибута тэга. Подразумевается что такой тэг один.
+	 * Берется значение атрибута первого найденного тэга
+	 * @param node
+	 * @param tag
+	 * @param attr
+	 * @return
+	 */
+	public static String getTagAttr(Element node, String tag, String attr) {
+		if (node == null)
+			return null;
+		Element el = node.getElementsByTag(tag).first();
+		if (el == null)
+			return null;
+		return el.attr(attr);
+	}
 }
