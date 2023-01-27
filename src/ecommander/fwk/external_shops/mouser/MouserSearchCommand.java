@@ -3,6 +3,7 @@ package ecommander.fwk.external_shops.mouser;
 import ecommander.model.Item;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,8 +24,10 @@ public class MouserSearchCommand extends Command{
 
 	@Override
 	public ResultPE execute() throws Exception {
-		String keyword = getVarSingleValue("q");
-		boolean inStock = "0".equals(getVarSingleValue("minqty"));
+		String res = "";
+		try{
+			String keyword = getVarSingleValue("q");
+			boolean inStock = "0".equals(getVarSingleValue("minqty"));
 		//boolean isPartNumber = keyword.matches(PART_NUMBER_PATTERN);
 		boolean isPartNumber = false;
 		String stock = inStock? ",\"searchOptions\":\"InStock\"":"";
@@ -36,7 +39,10 @@ public class MouserSearchCommand extends Command{
 
 		rememberUrls(listOfParts);
 
-		String res = MouserJsonToXMLConverter.convert(listOfParts);
+		res = MouserJsonToXMLConverter.convert(listOfParts);
+		}catch(Exception e){
+			res = ExceptionUtils.getStackTrace(e);
+		}
 
 		ResultPE result = getResult("result");
 		result.setValue(res);
