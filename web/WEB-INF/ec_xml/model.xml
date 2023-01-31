@@ -205,6 +205,10 @@
 			<value>список</value>
 			<value>таблица</value>
 		</parameter>
+		<parameter name="show_filter" type="string" caption="Параметры подбора в разделах по умолчанию открыты" default="нет">
+			<value>да</value>
+			<value>нет</value>
+		</parameter>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />

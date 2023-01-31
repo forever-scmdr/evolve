@@ -586,8 +586,12 @@
 		<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
 		<xsl:variable name="p" select="current()"/>
 		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
-			<xsl:if test="$multiple"><td><div class="thn">Запрос</div>
-			<div class="thd"><b><xsl:value-of select="$query" /></b></div></td></xsl:if>
+			<xsl:if test="$multiple">
+				<td>
+					<div class="thn">Запрос</div>
+					<div class="thd"><b><xsl:value-of select="$query" /></b></div>
+				</td>
+			</xsl:if>
 			<td>
 				<div class="thn">Название</div>
 				<div class="thd">
@@ -699,8 +703,12 @@
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 		<xsl:variable name="p" select="current()"/>
 		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
-			<xsl:if test="$multiple"><td><div class="thn">Запрос</div>
-				<div class="thd"><b><xsl:value-of select="$query" /></b></div></td></xsl:if>
+			<xsl:if test="$multiple">
+				<td>
+					<div class="thn">Запрос</div>
+					<div class="thd"><b><xsl:value-of select="$query" /></b></div>
+				</td>
+			</xsl:if>
 			<td>
 				<div class="thn">Название</div>
 				<div class="thd">
@@ -830,8 +838,8 @@
 					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
 					<input type="number"
 						   class="input input_type_number" name="qty"
-						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
-						   min="{if ($p/min_qty) then $p/min_qty else 1}"
+						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
+						   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
 						   step="{if ($p/step) then f:num($p/step) else 1}" />
 
 					<xsl:if test="$has_price">
@@ -926,10 +934,11 @@
 
 	<xsl:template name="LINES_TABLE">
 		<xsl:param name="products"/>
-		<xsl:param name="products_api" select="emptynode"/>
+		<xsl:param name="results_api" select="emptynode"/>
 		<xsl:param name="multiple" select="false()"/>
 		<xsl:param name="queries" select="queries"/>
 		<xsl:param name="numbers" select="numbers"/>
+		<xsl:variable name="colspan" select="8 + (if ($has_one_click or $has_my_price or $has_subscribe) then 1 else 0)"/>
 		<div class="view-table">
 			<table>
 				<thead>
@@ -968,11 +977,39 @@
 								<xsl:with-param name="number" select="$n"/>
 								<xsl:with-param name="position" select="$p"/>
 							</xsl:apply-templates>
+							<xsl:variable name="query_results_api" select="$results_api[query = $q]"/>
+							<xsl:variable name="more_than_one_api" select="count($query_results_api/product) &gt; 1"/>
+							<xsl:apply-templates select="$query_results_api/product[1]" mode="product-lines-api">
+								<xsl:with-param name="multiple" select="true()"/>
+								<xsl:with-param name="query" select="$q"/>
+								<xsl:with-param name="number" select="$n"/>
+								<xsl:with-param name="position" select="$p + 1000"/>
+								<xsl:with-param name="has_more" select="$more_than_one_api"/>
+							</xsl:apply-templates>
+							<xsl:apply-templates select="$query_results_api/product[position() &gt; 1]" mode="product-lines-api">
+								<xsl:with-param name="multiple" select="true()"/>
+								<xsl:with-param name="query" select="$q"/>
+								<xsl:with-param name="hidden" select="'hidden'"/>
+								<xsl:with-param name="number" select="$n"/>
+								<xsl:with-param name="position" select="$p + 1000"/>
+							</xsl:apply-templates>
+							<xsl:if test="not($price_query_products) and not($query_results_api)">
+								<tr>
+									<td>
+										<div class="thn">Запрос</div>
+										<div class="thd"><b><xsl:value-of select="." /></b></div>
+									</td>
+									<td colspan="{$colspan}">
+										<div class="thn">Варианты</div>
+										<div class="thd"><b>По запросу товары не найдены</b></div>
+									</td>
+								</tr>
+							</xsl:if>
 						</xsl:for-each>
 					</xsl:if>
 					<xsl:if test="not($multiple)">
 						<xsl:apply-templates select="$products" mode="product-lines"/>
-						<xsl:apply-templates select="$products_api" mode="product-lines-api"/>
+						<xsl:apply-templates select="$results_api/product" mode="product-lines-api"/>
 					</xsl:if>
 				</tbody>
 			</table>

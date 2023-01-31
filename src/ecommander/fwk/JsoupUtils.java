@@ -58,14 +58,14 @@ public class JsoupUtils {
 	/**
 	 * Получить значение тэга. Подразумевается что такой тэг один.
 	 * Берется значение первого найденного тэга
-	 * @param node
+	 * @param parent
 	 * @param tag
 	 * @return
 	 */
-	public static String getTagValue(Element node, String tag) {
-		if (node == null)
+	public static String getTagFirstValue(Element parent, String tag) {
+		if (parent == null)
 			return null;
-		Element el = node.getElementsByTag(tag).first();
+		Element el = parent.getElementsByTag(tag).first();
 		if (el == null)
 			return null;
 		return el.ownText();

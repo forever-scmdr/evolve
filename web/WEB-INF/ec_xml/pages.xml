@@ -486,7 +486,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<single item="seo" assoc="seo"/>
-			<list item="product_extra"/>
+			<list item="product_extra" tag="product_extra"/>
 			<list item="params_xml"/>
 			<ancestor item="section" transit="false" id="cur_sec" tag="product_section">
 				<link name="show_products" target="section" type="exclusive">
@@ -564,7 +564,7 @@
 			<var name="prod" style="keypath"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product">
-			<list item="product_extra"/>
+			<list item="product_extra" tag="product_extra"/>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</single>
 		<link name="fav_link" target="fav"/>
@@ -719,6 +719,8 @@
 	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
 	<page name="search" template="search">
 		<request>
+			<var name="q"/>
+			<var name="n"/>
 			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
@@ -830,6 +832,7 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
+			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -838,6 +841,10 @@
 				</fulltext>
 			</filter>
 		</list>
+		<command class="extra.SearchApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+		</command>
 		<include name="COMMON"/>
 	</page>
 
@@ -2245,7 +2252,7 @@
 			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
 			<var name="token_header" value="Authorization"/>
 			<var name="root_element" value="provider"/>
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, packquantity:step"/>
+			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, packquantity:step, leadtimedays:next_delivery"/>
 		</request>
 		<command class="extra.ApiJsonToXMLCommand">
 			<result name="success" type="plain_text"/>
@@ -2263,6 +2270,7 @@
 		<command class="extra.SearchApiCommand">
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
 		</command>
 	</page>
 

@@ -39,8 +39,8 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
-	<xsl:variable name="products_api" select="page/api_search/product_list/product"/>
-	<xsl:variable name="has_results" select="$products or $products_api"/>
+	<xsl:variable name="results_api" select="page/api_search/product_list/results"/>
+	<xsl:variable name="has_results" select="$products or $results_api"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 
@@ -51,7 +51,7 @@
 				<a class="path__link" href="{$main_host}">Главная страница</a>
 				<div class="path__arrow"></div>
 				<a class="path__link" href="{page/catalog_link}">Поиск</a>
-				<xsl:if test="$has_excel_search_results">
+				<xsl:if test="$has_excel_search_results and $has_results">
 					<a style="position: absolute; right: 0px; font-weight: bold;" href="{page/save_excel_file}">
 						<img src="img/excel2.png" /> Сохранить результаты
 					</a>
@@ -101,30 +101,30 @@
 				<xsl:if test="$view = 'table'">
 					<div class="devices__wrap">
 						<xsl:apply-templates select="$products" mode="product-table"/>
-						<xsl:apply-templates select="$products_api" mode="product-table-api"/>
+						<xsl:apply-templates select="$results_api/product" mode="product-table-api"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'list'">
 					<div class="devices__wrap devices__wrap_rows">
 						<xsl:apply-templates select="$products" mode="product-list"/>
-						<xsl:apply-templates select="$products_api" mode="product-list-api"/>
+						<xsl:apply-templates select="$results_api/product" mode="product-list-api"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">
 					<xsl:if test="$has_results">
 						<xsl:call-template name="LINES_TABLE">
 							<xsl:with-param name="products" select="$products"/>
-							<xsl:with-param name="products_api" select="$products_api"/>
+							<xsl:with-param name="results_api" select="$results_api"/>
 							<xsl:with-param name="multiple" select="$is_search_multiple"/>
 							<xsl:with-param name="queries" select="$queries"/>
 							<xsl:with-param name="numbers" select="$numbers"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:if>
-				<xsl:if test="not($has_results)">
-					<h4>По заданным критериям товары не найдены</h4>
-				</xsl:if>
 			</div>
+		</xsl:if>
+		<xsl:if test="not($has_results)">
+			<h4>По заданным критериям товары не найдены</h4>
 		</xsl:if>
 	</xsl:template>
 

@@ -15,7 +15,6 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
 import extra._generated.User_phys;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -209,7 +208,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 						BigDecimal breakQty = DecimalDataType.parse(aBreak.attr(SearchApiCommand.QTY_ATTR), 4);
 						if (breakQty == null)
 							breakQty = BigDecimal.ONE;
-						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagValue(aBreak, SearchApiCommand.PRICE_TAG), 4);
+						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagFirstValue(aBreak, SearchApiCommand.PRICE_TAG), 4);
 						intervals.put(breakQty, breakPrice);
 					}
 					ArrayList<BigDecimal> qtysOrdered = new ArrayList<>(intervals.keySet());
