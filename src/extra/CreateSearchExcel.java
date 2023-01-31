@@ -166,7 +166,7 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 		row.createCell(++colIdx).setCellValue(MIN_QTY);
 		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE);
-		sh.setColumnWidth(colIdx, 12 * 256);
+		sh.setColumnWidth(colIdx, 20 * 256);
 		row.createCell(++colIdx).setCellValue(SUM);
 		sh.setColumnWidth(colIdx, 20 * 256);
 		if (isAdmin) {

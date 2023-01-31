@@ -6,10 +6,7 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.SessionItemMapper;
-import extra._generated.Bought;
 import extra._generated.ItemNames;
-import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -282,10 +279,10 @@ public abstract class BasicCartManageCommand extends Command {
 		//    сам пользователь не создается (логин-пароль), только айтем пользователя
 		if (userItem == null) {
 			if (StringUtils.isNotBlank(form.getStringValue(EMAIL_PARAM))) {
-				Item catalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
+				Item regCatalog = ItemUtils.ensureSingleRootItem(REGISTERED_CATALOG_ITEM, User.getDefaultUser(),
 						UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
-				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());
-				form.setOwner(UserGroupRegistry.getGroup(REGISTERED_GROUP), User.ANONYMOUS_ID);
+				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), regCatalog.getId());
+				form.setOwner(UserGroupRegistry.getGroup(User.USER_DEFAULT_GROUP), User.ANONYMOUS_ID);
 				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
 				userItem = form;
 			}
@@ -418,7 +415,7 @@ public abstract class BasicCartManageCommand extends Command {
         // Возможно товар является внешним (т.е. его нет в базе, а параметры берутся из outerParams)
         if (product == null) {
 	        Document doc = JsoupUtils.parseXml(outerParams);
-	        String code = JsoupUtils.getTagValue(doc, CODE_PARAM);
+	        String code = JsoupUtils.getTagFirstValue(doc, CODE_PARAM);
 	        if (code == null)
 	        	return null;
         	// Создание айтема для внешнего товара и заполнение его параметрами

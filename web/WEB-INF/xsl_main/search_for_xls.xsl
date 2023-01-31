@@ -5,6 +5,7 @@
 
 
 	<xsl:variable name="products" select="page/product"/>
+	<xsl:variable name="results_api" select="page/api_search/product_list/results"/>
 	<xsl:variable name="queries" select="page/variables/q"/>
 	<xsl:variable name="numbers" select="page/variables/n"/>
 	<xsl:variable name="multiple" select="count($queries) &gt; 1"/>
@@ -16,46 +17,43 @@
 
 
 
+	<xsl:function name="f:print_cur">
+		<xsl:param name="sum"/>
+		<xsl:variable name="is_byn" select="$currency = 'BYN'"/>
+		<xsl:choose>
+			<xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat(f:format_currency_precise($sum), $BYN_cur) else concat(f:format_currency_precise($sum), f:cur())"/></xsl:when>
+			<xsl:otherwise><xsl:value-of select="f:format_currency_precise($sum)" /></xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+
 
 
 	<xsl:template match="/">
 		<result>
-			<xsl:if test="$products">
+			<xsl:if test="$products or $results_api">
 				<xsl:if test="$multiple">
 					<xsl:for-each select="$queries">
 						<xsl:variable name="q" select="."/>
 						<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
 						<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
-						<xsl:variable name="p" select="position()"/>
 						<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q and plain_section]"/>
 						<xsl:variable name="no_price_query_products" select="$products[item_own_extras/query = $q and not(plain_section)]"/>
-						<xsl:apply-templates select="$price_query_products[1]">
+						<xsl:apply-templates select="$results_api[query = $q]/product" mode="api">
 							<xsl:with-param name="number" select="$n"/>
-							<xsl:with-param name="position" select="$p"/>
+							<xsl:with-param name="query" select="$q"/>
 						</xsl:apply-templates>
-						<xsl:apply-templates select="$price_query_products[position() &gt; 1]">
-							<xsl:with-param name="hidden" select="'hidden'"/>
+						<xsl:apply-templates select="$price_query_products" mode="common">
 							<xsl:with-param name="number" select="$n"/>
-							<xsl:with-param name="position" select="$p"/>
 						</xsl:apply-templates>
-						<xsl:apply-templates select="$no_price_query_products[1]">
+						<xsl:apply-templates select="$no_price_query_products" mode="common">
 							<xsl:with-param name="number" select="$n"/>
-							<xsl:with-param name="position" select="$p"/>
-						</xsl:apply-templates>
-						<xsl:apply-templates select="$no_price_query_products[position() &gt; 1]">
-							<xsl:with-param name="hidden" select="'hidden'"/>
-							<xsl:with-param name="number" select="$n"/>
-							<xsl:with-param name="position" select="$p"/>
 						</xsl:apply-templates>
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:if test="not($multiple)">
-					<xsl:for-each select="$products[plain_section]">
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
-					<xsl:for-each select="$products[not(plain_section)]">
-						<xsl:apply-templates select="."/>
-					</xsl:for-each>
+					<xsl:apply-templates select="$results_api/product" mode="api"/>
+					<xsl:apply-templates select="$products[plain_section]" mode="common"/>
+					<xsl:apply-templates select="$products[not(plain_section)]" mode="common"/>
 				</xsl:if>
 			</xsl:if>
 		</result>
@@ -90,11 +88,38 @@
 
 
 
+	<xsl:template name="ALL_PRICES_API">
+		<xsl:param name="product"/>
+		<xsl:param name="need_sum" select="false()"/>
+		<xsl:variable name="price_intervals" select="$product/prices/break"/>
+		<xsl:for-each select="$price_intervals">
+			<xsl:variable name="pos" select="position()"/>
+			<xsl:variable name="min_interval_qty" select="f:num(@qty)"/>
+			<xsl:variable name="max_interval_qty" select="if ($pos = last()) then 999999999 else (f:num($price_intervals[$pos + 1]/@qty) - 1)"/>
+			<xsl:variable name="min_pack" select="$min_interval_qty"/>
+			<xsl:variable name="max_pack" select="$max_interval_qty"/>
+			<xsl:variable name="unit_price" select="f:exchange(current(), 'price', 0)"/>
+			<xsl:variable name="pack_sum" select="$unit_price * $min_pack"/>
+			<num_price>
+				<xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
+				<xsl:if test="not($need_sum)">
+					<xsl:value-of select="f:print_cur($unit_price)"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.
+				</xsl:if>
+			</num_price>
+		</xsl:for-each>
+		<xsl:if test="not($price_intervals)">
+			<num_price>
+				<xsl:variable name="unit_price" select="f:exchange($product/price, 'price', 0)"/>
+				<xsl:value-of select="f:print_cur($unit_price)"/>
+			</num_price>
+		</xsl:if>
+	</xsl:template>
 
-	<xsl:template match="product">
-		<xsl:param name="hidden"/>
+
+
+
+	<xsl:template match="product" mode="common">
 		<xsl:param name="number"/>
-		<xsl:param name="position"/>
 		<xsl:variable name="unit" select="if (unit) then unit else 'шт.'"/>
 		<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
 		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
@@ -145,6 +170,55 @@
 			<plain_section>
 				<name><xsl:value-of select="plain_section/name"/></name>
 				<date><xsl:value-of select="plain_section/date"/></date>
+			</plain_section>
+		</product>
+	</xsl:template>
+
+
+
+
+	<xsl:template match="product" mode="api">
+		<xsl:param name="number"/>
+		<xsl:param name="query"/>
+		<xsl:variable name="unit" select="if (unit) then unit else 'шт.'"/>
+		<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
+		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
+		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
+		<xsl:variable name="multipe_prices" select="prices"/>
+		<product>
+			<xsl:if test="$multiple">
+				<query><xsl:value-of select="$query" /></query>
+			</xsl:if>
+			<name type="{if (vendor_code) then 'catalog' else 'list'}"><xsl:value-of select="name" /></name>
+			<name_extra><xsl:value-of select="description" /></name_extra>
+			<vendor><xsl:value-of select="vendor" /></vendor>
+			<!--<td><a><xsl:value-of select="code"/></a></td>-->
+			<qty><xsl:value-of select="qty"/></qty>
+			<available><xsl:value-of select="next_delivery"/></available>
+			<unit><xsl:value-of select="$unit"/></unit>
+			<min_qty><xsl:value-of select="$min_qty"/></min_qty>
+			<xsl:if test="$has_price">
+				<unit_price>
+					<xsl:call-template name="ALL_PRICES_API">
+						<xsl:with-param name="product" select="."/>
+						<xsl:with-param name="need_sum" select="false()"/>
+					</xsl:call-template>
+				</unit_price>
+				<total_price>
+					<xsl:call-template name="ALL_PRICES_API">
+						<xsl:with-param name="product" select="."/>
+						<xsl:with-param name="need_sum" select="true()"/>
+					</xsl:call-template>
+				</total_price>
+			</xsl:if>
+			<xsl:if test="not($has_price)">
+				<total_price>запрос цены</total_price>
+			</xsl:if>
+			<price_original><xsl:value-of select="f:exchange(current(), 'price', 0)"/></price_original>
+			<request_qty><xsl:value-of select="$num" /></request_qty>
+			<plain_section>
+				<name>api</name>
+				<date>10.10.2023</date>
 			</plain_section>
 		</product>
 	</xsl:template>

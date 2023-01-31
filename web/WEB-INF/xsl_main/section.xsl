@@ -14,6 +14,7 @@
 	<xsl:variable name="catalog_sub_view" select="$catalog/sub_view"/>
 	<xsl:variable name="catalog_show_subs" select="$catalog/show_subs"/>
 	<xsl:variable name="catalog_hide_side_menu" select="$catalog/hide_side_menu"/>
+	<xsl:variable name="catalog_catalog_show_filter_default" select="$catalog/show_filter = 'да'"/>
 
 	<!-- Настройки выбранного раздела по отображению товаров и разделов -->
 	<xsl:variable name="section_show_devices" select="if ($sel_sec/show_devices and not($sel_sec/show_devices = '')) then $sel_sec/show_devices else $catalog_show_devices"/>
@@ -199,16 +200,18 @@
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
+		<xsl:variable name="filter_is_open" select="$user_filter or $catalog_catalog_show_filter_default"/>
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="filter filter_section">
-				<a href="#" onclick="$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
+				<a href="#" onclick="$('.filter_extra').toggle();$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
 					<div class="icon">
 						<img src="img/icon-gear.svg" alt="" />
 					</div>
-					<span class="icon-link__item">Подбор по параметрам</span>
+					<span class="icon-link__item filter_extra" style="{'display: none'[$filter_is_open]}">Показать подбор по параметрам</span>
+					<span class="icon-link__item filter_extra" style="{'display: none'[not($filter_is_open)]}">Скрыть подбор по параметрам</span>
 				</a>
 				<form method="post" action="{$sel_sec/filter_base_link}">
-					<div class="filter__wrap" style="{'display: none'[not($user_filter)]}" id="filters_container">
+					<div class="filter__wrap" style="{'display: none'[not($filter_is_open)]}" id="filters_container">
 						<xsl:for-each select="$captions">
 							<xsl:variable name="input" select="$valid_inputs[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
 							<xsl:if test="$input">
