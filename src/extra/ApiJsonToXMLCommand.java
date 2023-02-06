@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.OkWebClient;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.Command;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 public class ApiJsonToXMLCommand extends Command {
 
-	private HashMap<String, String> replacements = new HashMap<>();
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -32,6 +32,7 @@ public class ApiJsonToXMLCommand extends Command {
 
 		String replace = getVarSingleValueDefault("replace", "");
 		String[] replacePairs = StringUtils.split(replace, ", ");
+		HashMap<String, String> replacements = new HashMap<>();
 		for (String replacePair : replacePairs) {
 			String[] keyValue = StringUtils.split(replacePair, ":=");
 			if (keyValue.length == 2)
@@ -40,10 +41,8 @@ public class ApiJsonToXMLCommand extends Command {
 		try {
 			//String response = OkWebClient.getInstance().getString(urlToGet);
 			String response = OkWebClient.getInstance().getStringHeaders(urlToGet, tokenHeaderName, token);
-			JsonElement element = JsonParser.parseString(response);
-			XmlDocumentBuilder xml = XmlDocumentBuilder.newDoc();
-			processElement(element, xml, rootElementName);
-			return getResult("success").setValue(xml.toString());
+			String xml = JsoupUtils.transformJsonToXml(response, rootElementName, replacements);
+			return getResult("success").setValue(xml);
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
@@ -52,25 +51,4 @@ public class ApiJsonToXMLCommand extends Command {
 		}
 	}
 
-	private void processElement(JsonElement element, XmlDocumentBuilder xml, String rootElement) {
-		String tagToCreate = replacements.getOrDefault(rootElement, rootElement);
-		if (element.isJsonArray()) {
-			JsonArray array = element.getAsJsonArray();
-			for (JsonElement arrayItem : array) {
-				processElement(arrayItem, xml, rootElement);
-			}
-		} else if (element.isJsonObject()) {
-			JsonObject object = element.getAsJsonObject();
-			Map<String, JsonElement> map = object.asMap();
-			xml.startElement(tagToCreate);
-			for (String key : map.keySet()) {
-				processElement(map.get(key), xml, key);
-			}
-			xml.endElement();
-		} else if (element.isJsonPrimitive()) {
-			xml.addElement(tagToCreate, element.getAsString());
-		} else if (element.isJsonNull()) {
-			xml.addElement(tagToCreate, "");
-		}
-	}
 }

@@ -497,6 +497,8 @@ public abstract class BasicCartManageCommand extends Command {
 		if (product != null) {
 			maxQuantity = product.getDoubleValue(qp, MAX_QTY);
 			step = product.getDoubleValue(STEP_PARAM, product.getDoubleValue(MIN_QTY_PARAM, 1));
+			if (step < 0.0001)
+				step = 1;
 			min = new BigDecimal(product.getDoubleValue(MIN_QTY_PARAM, 0));
 		}
 		BigDecimal wanted = new BigDecimal(qtyWanted);

@@ -5,11 +5,14 @@ import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.OkWebClient;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jsoup.nodes.Document;
@@ -18,6 +21,7 @@ import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -75,6 +79,10 @@ public class SearchApiCommand extends Command {
 		//StringBuilder sb = new StringBuilder();
 		LinkedHashMap<String, StringBuilder> queryResults = new LinkedHashMap<>();
 		CurrencyRates rates = new CurrencyRates();
+		Item catalogSettings = new ItemQuery(ItemNames.PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, "api").loadFirstItem();
+		BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
+		if (catalogSettings != null)
+			extraQuotient = catalogSettings.getDecimalValue(ItemNames.price_catalog_.QUOTIENT, BigDecimal.ONE);
 		for (Element provider : providers) {
 			String providerId = JsoupUtils.getTagFirstValue(provider, "id");
 			Elements replies = provider.getElementsByTag("reply");
@@ -97,10 +105,15 @@ public class SearchApiCommand extends Command {
 				for (String name : identicalProducts.keySet()) {
 					ArrayList<Element> identical = identicalProducts.get(name);
 					Element result = identical.get(0);
-					result.tagName("product");
+					result.tagName(ItemNames.PRODUCT);
 					String newCode = Strings.createXmlElementName(name) + "_" + Strings.createXmlElementName(providerId);
 					result.attr("id", newCode);
-					result.prependElement("code").text(newCode);
+					result.prependElement(ItemNames.product_.CODE).text(newCode);
+					String currency = StringUtils.defaultIfBlank(JsoupUtils.getTagFirstValue(result, "currency"), "USD");
+					Element currencyEl = result.getElementsByTag("currency").first();
+					if (currencyEl != null)
+						currencyEl.tagName(ItemNames.product_.CURRENCY_ID);
+					result.appendElement(ItemNames.product_.CATEGORY_ID).text(providerId);
 					Element prices = result.appendElement(PRICES_TAG);
 					for (Element priceElement : identical) {
 						Element aBreak = prices.appendElement(BREAK_TAG);
@@ -108,7 +121,10 @@ public class SearchApiCommand extends Command {
 						String priceStr = JsoupUtils.getTagFirstValue(priceElement, PRICE_TAG);
 						BigDecimal price = DecimalDataType.parse(priceStr, 4);
 						if (price != null) {
-							String currency = StringUtils.defaultIfBlank(JsoupUtils.getTagFirstValue(result, "currency"), "USD");
+							// Добавить тэг с оригинальной ценой (в оригинальной валюте)
+							aBreak.appendElement(ItemNames.product_.PRICE_ORIGINAL).text(priceStr);
+							// Применить коэффициент
+							price = price.multiply(extraQuotient).setScale(4, RoundingMode.UP);
 							rates.setAllPricesJsoup(aBreak, price, currency);
 						}
 					}

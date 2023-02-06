@@ -933,7 +933,7 @@
 
 
 	<xsl:template name="LINES_TABLE">
-		<xsl:param name="products"/>
+		<xsl:param name="products" select="emptynode"/>
 		<xsl:param name="results_api" select="emptynode"/>
 		<xsl:param name="multiple" select="false()"/>
 		<xsl:param name="queries" select="queries"/>
