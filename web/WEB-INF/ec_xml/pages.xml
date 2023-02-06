@@ -147,6 +147,9 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="$prod"/>
 		</link>
+		<link name="api_ajax_link" target="search_api_ajax">
+			<var name="q" ref="$prod" parameter="name"/>
+		</link>
 		<list item="params"/>
 	</include-definition>
 
@@ -1227,6 +1230,7 @@
 			<var name="code"/>
 			<var name="qty"/>
 			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -1399,7 +1403,13 @@
 		</request>
 		<list item="payment"/>
 		<session>
-			<single item="user" tag="user"/>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="product" id="product" tag="product" />
@@ -2272,6 +2282,36 @@
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
 		</command>
+	</page>
+
+
+	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
+	<page name="search_api_ajax" template="search_api_ajax">
+		<!--		<headers Content-Type="text/xml"/>-->
+		<request>
+			<var name="q"/>
+			<var name="server" value="http://test.must.by/api_xml"/>
+		</request>
+		<command class="extra.SearchApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
+
+
+	<page name="update_order_status" schedule="">
+		<request>
+			<var name="status_dir" value="integrate_status"/>
+		</request>
 	</page>
 
 

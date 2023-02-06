@@ -251,7 +251,6 @@
 								</form>
 							</div>
 						</xsl:for-each>
-
 					</div>
 					<div class="multi-device__links">
 						<div id="compare_list_{$p/@id}">
@@ -302,6 +301,10 @@
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
 			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:if test="$p/api_ajax_link">
+			<div id="products_api_ajax" ajax-href="{$p/api_ajax_link}" ajax-show-loader="yes"></div>
 		</xsl:if>
 
 		<div class="device-full">

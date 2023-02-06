@@ -458,12 +458,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 	@Override
 	protected boolean postProcessCart(String orderNum) throws Exception {
-		String folder = AppContext.getRealPath(JSON_ORDERS_DIR);
-		File dir = new File(folder);
+		String fileName = getVarSingleValueDefault("order_dir", JSON_ORDERS_DIR);
+		String path = AppContext.getRealPath(fileName);
+		File dir = new File(path);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-
 		//Item user = getSessionMapper().getSingleRootItemByName(USER);
 		Item customer = getItemForm().getItemSingleTransient();
 		LinkPE orderFileLink = LinkPE.newDirectLink("link", "order_file", false);
@@ -475,7 +475,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		ExecutablePagePE orderFileTemplate = getExecutablePage(orderFileLink.serialize());
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PageController.newSimple().executePage(orderFileTemplate, out);
-		File file = new File(folder + "/" + orderNum + ".json");
+		File file = new File(path + "/" + orderNum + ".json");
 		FileUtils.writeByteArrayToFile(file, out.toByteArray());
 
 		return true;
