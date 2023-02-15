@@ -42,24 +42,26 @@
 
 	<xsl:template name="INDEX_BLOCKS">
 		<!-- slider -->
-		<div class="slider">
-			<xsl:for-each select="page/main_page/main_slider_frame">
-				<div class="slider__item">
-					<div class="slider__content">
-						<div class="container slider__container">
-							<div class="slider__body">
-								<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
-								<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
-								<a class="slider__button button" href="{link}"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+		<xsl:if test="page/main_page/main_slider_frame">
+			<div class="slider">
+				<xsl:for-each select="page/main_page/main_slider_frame">
+					<div class="slider__item">
+						<div class="slider__content">
+							<div class="container slider__container">
+								<div class="slider__body">
+									<div class="slider__title"><xsl:value-of select="name" disable-output-escaping="yes"/></div>
+									<div class="slider__text"><xsl:value-of select="text" disable-output-escaping="yes"/></div>
+									<a class="slider__button button" href="{link}"><xsl:value-of select="link_name" disable-output-escaping="yes"/></a>
+								</div>
 							</div>
 						</div>
+						<div class="slider__image">
+							<img src="{@path}{pic}" alt="" />
+						</div>
 					</div>
-					<div class="slider__image">
-						<img src="{@path}{pic}" alt="" />
-					</div>
-				</div>
-			</xsl:for-each>
-		</div>
+				</xsl:for-each>
+			</div>
+		</xsl:if>
 		<div class="slider-nav"></div>
 		<!-- slider end -->
 		<xsl:variable name="unwanted_types" select="('main_promo_bottom', 'seo', 'product', 'main_slider_frame', 'banner_section')"/>

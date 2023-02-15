@@ -19,6 +19,7 @@ public class Bought
     public final static String NOT_AVAILABLE = "not_available";
     public final static String SUM = "sum";
     public final static String AUX = "aux";
+    public final static String OUTER_PRODUCT = "outer_product";
 
     private Bought(Item item) {
         super(item);
@@ -217,6 +218,22 @@ public class Bought
 
     public boolean contains_aux(String value) {
         return containsValue("aux", value);
+    }
+
+    public void set_outer_product(String value) {
+        setValue("outer_product", value);
+    }
+
+    public String get_outer_product() {
+        return getStringValue("outer_product");
+    }
+
+    public String getDefault_outer_product(String defaultVal) {
+        return getStringValue("outer_product", defaultVal);
+    }
+
+    public boolean contains_outer_product(String value) {
+        return containsValue("outer_product", value);
     }
 
 }

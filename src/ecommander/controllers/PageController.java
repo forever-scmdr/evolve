@@ -221,7 +221,7 @@ public class PageController {
 		if (page.isCacheClearNeeded())
 			clearCache();
 		// Работа с результатом выполнения страницы
-		if (result != null) {
+		if (!ResultPE.isResultInline(result)) {
 			// Результат выполнения - XML документ
 			if (result.getType() == ResultType.xml/* && !StringUtils.isBlank(result.getValue())*/) {
 				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocFull(result.getValue());

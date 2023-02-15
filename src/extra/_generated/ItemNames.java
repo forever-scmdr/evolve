@@ -33,6 +33,8 @@ public interface ItemNames {
     String PARAMS_XML = "params_xml";
     String PRICE_CATALOG = "price_catalog";
     String PRICE_CATALOGS = "price_catalogs";
+    String ANALOGS = "analogs";
+    String ANALOG = "analog";
     String FEEDBACK_PARAMS = "feedback_params";
     String BOUGHT = "bought";
     String CART = "cart";
@@ -73,10 +75,7 @@ public interface ItemNames {
     String NEWS_ITEM = "news_item";
     String NEWS = "news";
     String ARTICLES = "articles";
-    String DEALER_COORDS = "dealer_coords";
-    String DEALERS_PAGE = "dealers_page";
     String DOCS = "docs";
-    String CONTACTS = "contacts";
     String FEEDBACK_FORM = "feedback_form";
     String GENERIC_FORM = "generic_form";
     String MY_PRICE_FORM = "my_price_form";
@@ -154,6 +153,20 @@ public interface ItemNames {
 
     }
 
+    public interface analog_ {
+
+        String _ITEM_NAME = "analog";
+        String NAME = "name";
+        String SET = "set";
+
+    }
+
+    public interface analogs_ {
+
+        String _ITEM_NAME = "analogs";
+
+    }
+
     public interface articles_ {
 
         String _ITEM_NAME = "articles";
@@ -225,6 +238,7 @@ public interface ItemNames {
         String NOT_AVAILABLE = "not_available";
         String SUM = "sum";
         String AUX = "aux";
+        String OUTER_PRODUCT = "outer_product";
 
     }
 
@@ -244,6 +258,7 @@ public interface ItemNames {
         String _ITEM_NAME = "catalog";
         String IN_MAIN_MENU = "in_main_menu";
         String DEFAULT_VIEW = "default_view";
+        String SHOW_FILTER = "show_filter";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
@@ -317,16 +332,6 @@ public interface ItemNames {
 
     }
 
-    public interface contacts_ {
-
-        String _ITEM_NAME = "contacts";
-        String TEXT = "text";
-        String MAP = "map";
-        String BOTTOM_TEXT = "bottom_text";
-        String TEXT_PIC = "text_pic";
-
-    }
-
     public interface counter_ {
 
         String _ITEM_NAME = "counter";
@@ -392,21 +397,6 @@ public interface ItemNames {
     public interface custom_pages_ {
 
         String _ITEM_NAME = "custom_pages";
-
-    }
-
-    public interface dealer_coords_ {
-
-        String _ITEM_NAME = "dealer_coords";
-        String NAME = "name";
-        String ADDRESS = "address";
-        String INFO = "info";
-
-    }
-
-    public interface dealers_page_ {
-
-        String _ITEM_NAME = "dealers_page";
 
     }
 
@@ -1057,6 +1047,7 @@ public interface ItemNames {
         String QTY_AVAIL = "qty_avail";
         String QTY_TOTAL = "qty_total";
         String SUM = "sum";
+        String STATUS = "status";
 
     }
 
