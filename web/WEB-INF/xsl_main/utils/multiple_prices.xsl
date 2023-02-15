@@ -70,6 +70,7 @@
     <xsl:template name="ALL_PRICES_API">
         <xsl:param name="product"/>
         <xsl:param name="need_sum" select="false()"/>
+        <xsl:param name="need_original" select="false()"/>
         <xsl:variable name="price_intervals" select="$product/prices/break"/>
         <xsl:for-each select="$price_intervals">
             <xsl:variable name="pos" select="position()"/>
@@ -86,7 +87,8 @@
             <p>
                 <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
                 <xsl:if test="not($need_sum)">
-                    <xsl:value-of select="f:print_cur($unit_price)"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.
+                    <xsl:variable name="out" select="if ($need_original) then concat(price_original, '&#160;', $product/currency_id) else f:print_cur($unit_price)"/>
+                    <xsl:value-of select="$out"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.
                 </xsl:if>
             </p>
         </xsl:for-each>

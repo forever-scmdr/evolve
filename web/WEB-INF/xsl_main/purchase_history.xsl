@@ -28,6 +28,7 @@
 					<div class="past-order__info">
 						<div class="past-order__title"><a href="#" class="order_toggle">Заказ №<xsl:value-of select="num"/></a></div>
 						<div class="past-order__date"><xsl:value-of select="date"/></div>
+						<div class="past-order__title"><xsl:value-of select="status"/></div>
 					</div>
 					<div class="past-order__price">
 						<div class="past-order__sum"><xsl:value-of select="sum"/> руб</div>

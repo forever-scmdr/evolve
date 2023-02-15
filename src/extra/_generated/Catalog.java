@@ -14,6 +14,7 @@ public class Catalog
     public final static String _NAME = "catalog";
     public final static String IN_MAIN_MENU = "in_main_menu";
     public final static String DEFAULT_VIEW = "default_view";
+    public final static String SHOW_FILTER = "show_filter";
     public final static String SHIP_DATE = "ship_date";
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
@@ -75,6 +76,22 @@ public class Catalog
 
     public boolean contains_default_view(String value) {
         return containsValue("default_view", value);
+    }
+
+    public void set_show_filter(String value) {
+        setValue("show_filter", value);
+    }
+
+    public String get_show_filter() {
+        return getStringValue("show_filter");
+    }
+
+    public String getDefault_show_filter(String defaultVal) {
+        return getStringValue("show_filter", defaultVal);
+    }
+
+    public boolean contains_show_filter(String value) {
+        return containsValue("show_filter", value);
     }
 
     public void set_ship_date(Long value) {

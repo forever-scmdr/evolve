@@ -21,6 +21,8 @@
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
 	<xsl:variable name="to_cart_api_link" select="page/to_cart_api"/>
+	<xsl:variable name="is_admin" select="page/@name = 'admin_search'"/>
+	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 
 
 
@@ -78,7 +80,7 @@
 			</xsl:if>
 
 			<!-- device title -->
-			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/> - table</span></a>
+			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
 			<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -178,7 +180,7 @@
 			</xsl:if>
 
 			<!-- device title -->
-			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/> - table api</span></a>
+			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
 			<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -284,7 +286,7 @@
 			<div class="device__column">
 
 				<!-- device title -->
-				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/> - list</span></a>
+				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
 				<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -457,7 +459,7 @@
 			<div class="device__column">
 
 				<!-- device title -->
-				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/> - list api</span></a>
+				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
 				<div class="text_size_sm"><xsl:value-of select="code"/></div>
@@ -610,6 +612,16 @@
 					</xsl:call-template>
 				</div>
 			</td><!--название -->
+			<xsl:if test="$is_admin">
+				<td>
+					<div class="thn">Поставщик</div>
+					<div class="thd"><xsl:value-of select="$plain/name"/></div>
+				</td>
+				<td>
+					<div class="thn">Дата прайса</div>
+					<div class="thd"><xsl:value-of select="$plain/date"/></div>
+				</td>
+			</xsl:if>
 			<td><!--описание -->
 				<div class="thn">Описание</div>
 				<div class="thd">
@@ -657,6 +669,12 @@
 					<xsl:if test="not($has_price)"> - </xsl:if>
 				</div>
 			</td>
+			<xsl:if test="$is_admin">
+				<td>
+					<div class="thn">Базовая цена</div>
+					<div class="thd"><xsl:value-of select="f:exchange(current(), 'price', 0)" /></div>
+				</td>
+			</xsl:if>
 			<td><!--заказать -->
 				<div class="thn">Заказать</div>
 				<div class="thd">
@@ -717,6 +735,16 @@
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
 				</div>
 			</td><!--название -->
+			<xsl:if test="$is_admin">
+				<td>
+					<div class="thn">Поставщик</div>
+					<div class="thd"><xsl:value-of select="$p/category_id"/></div>
+				</td>
+				<td>
+					<div class="thn">Дата прайса</div>
+					<div class="thd"><xsl:value-of select="$p/pricedate"/></div>
+				</td>
+			</xsl:if>
 			<td><!--описание -->
 				<div class="thn">Описание</div>
 				<div class="thd">
@@ -756,6 +784,28 @@
 					<xsl:if test="not($has_price)"> - </xsl:if>
 				</div>
 			</td>
+			<xsl:if test="$is_admin">
+				<td>
+					<div class="thn">Базовая цена</div>
+					<div class="thd">
+						<xsl:if test="$has_price">
+							<!-- Для обычных товаров (не из каталога price_catalog) -->
+							<xsl:if test="not($multipe_prices)">
+								<xsl:value-of select="price"/>&#160;<xsl:value-of select="currency_id"/>
+							</xsl:if>
+							<!-- Для товаров из каталога price_catalog -->
+							<xsl:if test="$multipe_prices">
+								<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
+									<xsl:with-param name="need_sum" select="false()"/>
+									<xsl:with-param name="need_original" select="true()"/>
+									<xsl:with-param name="product" select="$p"/>
+								</xsl:call-template></span>
+							</xsl:if>
+
+						</xsl:if>
+					</div>
+				</td>
+			</xsl:if>
 			<td><!--заказать -->
 				<div class="thn">Заказать</div>
 				<div class="thd">
@@ -945,10 +995,15 @@
 					<tr>
 						<xsl:if test="$multiple"><th>Запрос</th></xsl:if>
 						<th>Название</th>
+						<xsl:if test="$is_admin">
+							<th>Поставщик</th>
+							<th>Дата прайса</th>
+						</xsl:if>
 						<th>Описание</th>
 						<th>Срок поставки</th>
 						<th>Количество</th>
 						<th>Цена</th>
+						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
 						<th>Заказать</th>
 						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
 						<xsl:if test="$multiple"><th>Показать</th></xsl:if>
@@ -963,6 +1018,13 @@
 							<xsl:variable name="p" select="position()"/>
 							<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q]"/>
 							<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
+							<xsl:if test="$analogs/set/analog = $q">
+								<tr>
+									<td colspan="{$colspan + 1}">
+										<div class="thd"><b>Аналоги</b></div>
+									</td>
+								</tr>
+							</xsl:if>
 							<xsl:apply-templates select="$price_query_products[1]" mode="product-lines">
 								<xsl:with-param name="multiple" select="true()"/>
 								<xsl:with-param name="query" select="$q"/>

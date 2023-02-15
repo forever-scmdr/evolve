@@ -158,8 +158,6 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	
 	private LuceneIndexMapper() throws IOException {
 		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
-		directory.close(); // TODO ???
-		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath())); // TODO ???
 		tikaParsers.put(HTML, new HtmlParser());
 		try {
 			IndexWriterConfig config = new IndexWriterConfig(getAnalyzer())

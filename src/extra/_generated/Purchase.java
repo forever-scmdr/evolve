@@ -16,6 +16,7 @@ public class Purchase
     public final static String QTY_AVAIL = "qty_avail";
     public final static String QTY_TOTAL = "qty_total";
     public final static String SUM = "sum";
+    public final static String STATUS = "status";
 
     private Purchase(Item item) {
         super(item);
@@ -160,6 +161,22 @@ public class Purchase
 
     public boolean contains_sum(BigDecimal value) {
         return containsValue("sum", value);
+    }
+
+    public void set_status(String value) {
+        setValue("status", value);
+    }
+
+    public String get_status() {
+        return getStringValue("status");
+    }
+
+    public String getDefault_status(String defaultVal) {
+        return getStringValue("status", defaultVal);
+    }
+
+    public boolean contains_status(String value) {
+        return containsValue("status", value);
     }
 
 }

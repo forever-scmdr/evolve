@@ -28,6 +28,7 @@
 	<xsl:variable name="query" select="page/variables/q"/>
 	<xsl:variable name="hide_side_menu" select="f:num(/page/custom_page/hide_side_menu) = 1"/>
 	<xsl:variable name="is_search_multiple" select="false()"/><!-- Поиск BOM (true) или простой поиск (false) -->
+	<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
 
 	<!--Отображение товаров в каталоге -->
 	<xsl:variable name="view_var" select="page/variables/view"/>
@@ -210,7 +211,7 @@
 					</a>
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
-							<form action="{$search_link}" method="post">
+							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post">
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
@@ -959,7 +960,6 @@
 							<div class="modal-body">
 								<p>Вы можете загрузить список необходимых товаров в формате Excel  (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
 								<p><a href="files/query.xlsx">Скачать образец файла</a></p>
-								<xsl:variable name="admin" select="page/@name = 'admin_search'"/>
 								<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
 									<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text(fileName($(this).val()))"/>
 									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>

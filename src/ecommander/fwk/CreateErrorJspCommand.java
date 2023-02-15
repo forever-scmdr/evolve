@@ -11,6 +11,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 public class CreateErrorJspCommand extends Command {
 
@@ -94,6 +98,14 @@ public class CreateErrorJspCommand extends Command {
 
 		Files.deleteIfExists(dest);
 		Files.write(dest, pageContent.getBytes(StandardCharsets.UTF_8));
+
+		// Установить разрешения
+		try {
+			Set<PosixFilePermission> ownerWritable = PosixFilePermissions.fromString("rw-rw-r--");
+			Files.setPosixFilePermissions(dest, ownerWritable);
+		} catch (Exception e) {
+			ServerLogger.error("Can't set file permissions", e);
+		}
 
 		return null;
 	}
