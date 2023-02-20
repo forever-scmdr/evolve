@@ -23,6 +23,7 @@
 	<xsl:variable name="to_cart_api_link" select="page/to_cart_api"/>
 	<xsl:variable name="is_admin" select="page/@name = 'admin_search'"/>
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
+	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
 
 
 
@@ -694,7 +695,7 @@
 					</div>
 				</td>
 			</xsl:if>
-			<xsl:if test="$multiple"><td><div class="thn">Показать</div>
+			<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><td><div class="thn">Показать</div>
 			<div class="thd"><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></div></td></xsl:if>
 		</tr>
 	</xsl:template>
@@ -730,7 +731,7 @@
 			<td>
 				<div class="thn">Название</div>
 				<div class="thd">
-					<a href="{show_product}"><xsl:value-of select="name"/></a>
+					<a><xsl:value-of select="name"/></a>
 					<p/>
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
 				</div>
@@ -824,7 +825,7 @@
 					</div>
 				</td>
 			</xsl:if>
-			<xsl:if test="$multiple"><td><div class="thn">Показать</div>
+			<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><td><div class="thn">Показать</div>
 				<div class="thd"><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></div></td></xsl:if>
 		</tr>
 	</xsl:template>
@@ -993,7 +994,7 @@
 			<table>
 				<thead>
 					<tr>
-						<xsl:if test="$multiple"><th>Запрос</th></xsl:if>
+						<xsl:if test="$multiple"><th><xsl:value-of select="if ($multiple_analog_sets) then 'Запрос' else 'Аналоги'" /></th></xsl:if>
 						<th>Название</th>
 						<xsl:if test="$is_admin">
 							<th>Поставщик</th>
@@ -1006,7 +1007,7 @@
 						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
 						<th>Заказать</th>
 						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
-						<xsl:if test="$multiple"><th>Показать</th></xsl:if>
+						<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><th>Показать</th></xsl:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -1018,10 +1019,11 @@
 							<xsl:variable name="p" select="position()"/>
 							<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q]"/>
 							<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
-							<xsl:if test="$analogs/set/analog = $q">
+							<xsl:variable name="prev_q" select="$queries[$p - 1]"/>
+							<xsl:if test="$analogs/set/analog = $q and $analogs/set/base = $prev_q">
 								<tr>
 									<td colspan="{$colspan + 1}">
-										<div class="thd"><b>Аналоги</b></div>
+										<div class="thd"><b>Аналоги <xsl:value-of select="$prev_q" /></b></div>
 									</td>
 								</tr>
 							</xsl:if>

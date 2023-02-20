@@ -170,7 +170,6 @@
 
 	<page name="index" template="index" cacheable="true" cache-vars="cur">
 		<single item="main_page" id="main" cacheable="true">
-			<list item="main_promo_bottom"/>
 			<list item="main_slider_frame"/>
 			<single item="seo" assoc="seo"/>
 			<single item="seo"/>
@@ -198,9 +197,6 @@
 				</list>
 			</tree>
 		</single>
-		<list item="banner_section" id="banner_section" cacheable="true">
-			<list item="banner"/>
-		</list>
 		<single item="news_wrap" cacheable="true">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
@@ -726,9 +722,12 @@
 			<var name="n"/>
 			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
+		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
+			<result name="analogs" type="inline_xml"/>
+		</command>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY" name="name">
+				<fulltext limit="48" compare="SOME" name="name">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -739,9 +738,6 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
-			<result name="analogs" type="inline_xml"/>
-		</command>
 		<command class="extra.SearchApiCommand" tag="api_search">
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
@@ -1681,7 +1677,7 @@
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
 		<link name="success" target="register">
-			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
+			<var name="message" value="Успешно! Ваш запрос передан специалисту, ожидайте ответ на указанную вами почту."/>
 			<var name="success" value="true"/>
 		</link>
 		<link name="login" target-var="src">
