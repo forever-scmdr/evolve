@@ -222,7 +222,7 @@
 												<table class="wtf-list">
 													<tr>
 														<td class="active" id="tabParams">
-															<a href="javascript:selectTab('tabParams', '{/admin-page/link[@name='parameters']}')" >Редактировть элемент</a>
+															<a href="javascript:selectTab('tabParams', '{/admin-page/link[@name='parameters']}')" >Редактировать элемент</a>
 														</td>
 <!-- 														<td id="tabMountTo"> -->
 <!-- 															<a href="javascript:selectTab('tabMountTo', '{/admin-page/link[@name='mountTo']}')" title="???">Прикпрепить элемент к</a> -->
@@ -230,12 +230,12 @@
 <!-- 														<td id="tabToMount"> -->
 <!-- 															<a href="javascript:selectTab('tabToMount', '{/admin-page/link[@name='toMount']}')" title="¿¿¿">Прикпрепить к элементу</a> -->
 <!-- 														</td> -->
-														<td id="tabMoveTo">
-															<a href="javascript:selectTab('tabMoveTo', '{/admin-page/link[@name='moveTo']}')" title='Например из раздела "важные новости" в раздел "очень важные новости"'>Переместить выбранный элемент в</a>
-														</td>
-														<td id="tabToMove">
-															<a href="javascript:selectTab('tabToMove', '{/admin-page/link[@name='toMove']}')">Переместить в выбранный элемент</a>
-														</td>
+<!--														<td id="tabMoveTo">-->
+<!--															<a href="javascript:selectTab('tabMoveTo', '{/admin-page/link[@name='moveTo']}')" title='Например из раздела "важные новости" в раздел "очень важные новости"'>Переместить выбранный элемент в</a>-->
+<!--														</td>-->
+<!--														<td id="tabToMove">-->
+<!--															<a href="javascript:selectTab('tabToMove', '{/admin-page/link[@name='toMove']}')">Переместить в выбранный элемент</a>-->
+<!--														</td>-->
 													</tr>
 												</table>
 											</div>
