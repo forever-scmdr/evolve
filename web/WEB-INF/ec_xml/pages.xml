@@ -720,7 +720,7 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
 			<result name="analogs" type="inline_xml"/>
@@ -754,7 +754,7 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -870,7 +870,7 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -1254,7 +1254,7 @@
 
 	<page name="cart_action">
 		<request>
-			<var name="strategy" value="ignore_overbuy"/><!-- extra_line_overbuy -->
+			<var name="strategy" value="deny_overbuy"/><!-- extra_line_overbuy -->
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
@@ -2290,7 +2290,7 @@
 			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
 			<var name="token_header" value="Authorization"/>
 			<var name="root_element" value="provider"/>
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, packquantity:step, leadtimedays:next_delivery"/>
+			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, minpakquantity:step, leadtimedays:next_delivery, addinfo:description"/>
 		</request>
 		<command class="extra.ApiJsonToXMLCommand">
 			<result name="success" type="plain_text"/>
@@ -2303,7 +2303,7 @@
 		<headers Content-Type="text/xml"/>
 		<request>
 			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<command class="extra.SearchApiCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2318,7 +2318,7 @@
 		<headers Content-Type="text/xml"/>
 		<request>
 			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<command class="extra.SearchApiCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2333,7 +2333,7 @@
 		<!--		<headers Content-Type="text/xml"/>-->
 		<request>
 			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
 		<command class="extra.SearchApiCommand" tag="api_search">
 			<result name="product_list" type="inline_xml"/>

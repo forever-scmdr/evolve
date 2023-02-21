@@ -84,7 +84,7 @@
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
-			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+			<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -290,7 +290,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -463,7 +463,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -623,7 +623,9 @@
 					<div class="thd"><xsl:value-of select="$plain/date"/></div>
 				</td>
 			</xsl:if>
-			<td><!--описание -->
+			<!--описание -->
+			<!--
+			<td>
 				<div class="thn">Описание</div>
 				<div class="thd">
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
@@ -635,9 +637,22 @@
 					</xsl:if>
 				</div>
 			</td>
+			-->
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
 				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+			</td>
+			<td><!--Норма упаковки -->
+				<div class="thn">Норма упаковки</div>
+				<div class="thd"><xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'"/></div>
+			</td>
+			<td><!-- Кратность заказа -->
+				<div class="thn">Кратность заказа</div>
+				<div class="thd"><xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'"/></div>
+			</td>
+			<td><!-- Минимальная партия -->
+				<div class="thn">Минимальная партия</div>
+				<div class="thd"><xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'"/></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>
@@ -746,15 +761,30 @@
 					<div class="thd"><xsl:value-of select="$p/pricedate"/></div>
 				</td>
 			</xsl:if>
-			<td><!--описание -->
+			<!--описание -->
+			<!--
+			<td>
 				<div class="thn">Описание</div>
 				<div class="thd">
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
 				</div>
 			</td>
+			-->
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
 				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+			</td>
+			<td><!--Норма упаковки -->
+				<div class="thn">Норма упаковки</div>
+				<div class="thd"><xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'"/></div>
+			</td>
+			<td><!-- Кратность заказа -->
+				<div class="thn">Кратность заказа</div>
+				<div class="thd"><xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'"/></div>
+			</td>
+			<td><!-- Минимальная партия -->
+				<div class="thn">Минимальная партия</div>
+				<div class="thd"><xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'"/></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>
@@ -853,9 +883,9 @@
 					<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 						<input type="number"
 							   class="input input_type_number" name="qty"
-							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
-							   min="{if ($p/min_qty) then $p/min_qty else 1}"
-							   step="{if ($p/step) then f:num($p/step) else 1}" />
+							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty and not($p/min_qty = '')) then min_qty else 1}"
+							   min="{if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else 1}"
+							   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" />
 
 						<xsl:if test="$has_price">
 							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -889,9 +919,9 @@
 					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
 					<input type="number"
 						   class="input input_type_number" name="qty"
-						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   step="{if ($p/step) then f:num($p/step) else 1}" />
+						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
+						   min="{if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
+						   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" />
 
 					<xsl:if test="$has_price">
 						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -1000,8 +1030,11 @@
 							<th>Поставщик</th>
 							<th>Дата прайса</th>
 						</xsl:if>
-						<th>Описание</th>
+<!--						<th>Описание</th>-->
 						<th>Срок поставки</th>
+						<th>Норма упаковки</th>
+						<th>Кратность заказа</th>
+						<th>Минимальная партия</th>
 						<th>Количество</th>
 						<th>Цена</th>
 						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
