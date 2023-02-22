@@ -66,7 +66,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 					productsSection = Item.newChildItem(ItemTypeRegistry.getItemType("section"), catalog);
 					productsSection.setValue("name", "Товары");
 					productsSection.setValue("code", "products");
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(productsSection));
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(productsSection).noFulltextIndex().ignoreUser());
 				}
 				YMarketCatalogCreationHandler prodSecHandler = new YMarketCatalogCreationHandler(productsSection, info, getInitiator());
 				secHandlers.put(xml.getName(), prodSecHandler);
@@ -85,7 +85,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 					partsSection = Item.newChildItem(ItemTypeRegistry.getItemType("section"), catalog);
 					partsSection.setValue("name", "Запчасти");
 					partsSection.setValue("code", "parts");
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(partsSection));
+					executeAndCommitCommandUnits(SaveItemDBUnit.get(partsSection).noFulltextIndex().ignoreUser());
 				}
 				new YMarketCatalogCreationHandler(partsSection, info, getInitiator());
 				YMarketCatalogCreationHandler partsSecHandler = new YMarketCatalogCreationHandler(partsSection, info, getInitiator());
@@ -125,6 +125,11 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		attachImages();
 
 		info.pushLog("Прикрепление картинок к разделам завершено");
+
+		new CreateParametersAndFiltersCommand(this).doCreate(sectionsWithNewItemTypes);
+		info.pushLog("Создание фильтров завершено");
+
+
 		info.pushLog("Индексация");
 		info.setOperation("Индексация");
 
@@ -134,8 +139,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.setOperation("Создание фильтров");
 		info.pushLog("Создание фильтров");
 
-		new CreateParametersAndFiltersCommand(this).doCreate(sectionsWithNewItemTypes);
-		info.pushLog("Создание фильтров завершено");
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
@@ -154,7 +157,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 					List<String>mainPics = prod.outputValues("pic_link");
 					if(mainPics.size() > 0){
 						section.setValueUI("main_pic_path", mainPics.get(0));
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().ignoreUser());
 						break;
 					}
 				}

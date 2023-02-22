@@ -49,6 +49,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 	private static byte DELETE = 3;
 
 	public static final String EMAIL_PARAM = "email";
+	public static final String LOGIN_PARAM = "login";
 	public static final String PASSWORD_PARAM = "password";
 	public static final String REGISTERED = "registered";
 
@@ -65,7 +66,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 	@Override
 	public void execute() throws Exception {
 		if (mode == CREATE) {
-			if (userItem.isValueEmpty(EMAIL_PARAM)) {
+			if (userItem.isValueEmpty(EMAIL_PARAM) && userItem.isValueEmpty(LOGIN_PARAM)) {
 				throw new EcommanderException(VALIDATION_FAILED, "Не заполнены обязательные поля");
 			}
 			makeRegistered();
@@ -83,11 +84,16 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		} else if (mode == UPDATE) {
 			makeRegistered();
 			String initialEmail = (String)((SingleParameter)userItem.getParameterByName(EMAIL_PARAM)).getInitialValue();
+			String initialLogin = (String)((SingleParameter)userItem.getParameterByName(LOGIN_PARAM)).getInitialValue();
+
 			//String initialPass = (String)((SingleParameter)userItem.getParameterByName(PASSWORD_PARAM)).getInitialValue();
-			User user = UserMapper.getUser(initialEmail, /*initialPass, */getTransactionContext().getConnection());
-			if (user != null && (userItem.getParameterByName(EMAIL_PARAM).hasChanged()
-					|| userItem.getParameterByName(PASSWORD_PARAM).hasChanged())) {
-				user.setNewName(userItem.getStringValue(EMAIL_PARAM));
+			User user = StringUtils.isBlank(initialLogin)? UserMapper.getUser(initialEmail, /*initialPass, */getTransactionContext().getConnection()):  UserMapper.getUser(initialLogin, /*initialPass, */getTransactionContext().getConnection());
+
+			boolean loginHasChanged = userItem.getParameterByName(LOGIN_PARAM).hasChanged() || userItem.getParameterByName(EMAIL_PARAM).hasChanged();
+			String newLogin = StringUtils.isNotBlank(userItem.getStringValue(LOGIN_PARAM))? userItem.getStringValue(LOGIN_PARAM) :  userItem.getStringValue(EMAIL_PARAM);
+
+			if (user != null && (loginHasChanged || userItem.getParameterByName(PASSWORD_PARAM).hasChanged())) {
+				user.setNewName(newLogin);
 				user.setNewPassword(userItem.getStringValue(PASSWORD_PARAM));
 				try {
 					executeCommand(new UpdateUserDBUnit(user, false).ignoreUser());
@@ -95,9 +101,11 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 					throw new EcommanderException(VALIDATION_FAILED, "Пользователь с таким именем уже существует");
 				}
 			}
+
 		} else if (mode == DELETE) {
-			User user = UserMapper.getUser(userItem.getStringValue(EMAIL_PARAM), userItem.getStringValue(PASSWORD_PARAM),
-					getTransactionContext().getConnection());
+//			User user = UserMapper.getUser(userItem.getStringValue(LOGIN_PARAM), userItem.getStringValue(PASSWORD_PARAM),
+//					getTransactionContext().getConnection());
+			User user = UserMapper.getUser(userItem.getOwnerUserId());
 			if (user != null) {
 				executeCommand(new DeleteUserDBUnit(user.getUserId(), true).ignoreUser());
 			}
@@ -115,7 +123,9 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		} else if (userItem.getByteValue(REGISTERED) == (byte) 0) {
 			return;
 		}
-		String userName = userItem.getStringValue(EMAIL_PARAM);
+		String login =  userItem.getStringValue(LOGIN_PARAM, "");
+		String userName = StringUtils.isBlank(login)? userItem.getStringValue(EMAIL_PARAM) : login;
+		userItem.setValue(LOGIN_PARAM, userName);
 		String password = userItem.getStringValue(PASSWORD_PARAM);
 		if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
 			throw new EcommanderException(ErrorCodes.VALIDATION_FAILED, "User name or password is empty");
@@ -126,9 +136,12 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			executeCommand(new SaveNewUserDBUnit(newUser).ignoreUser());
 		} catch (UserExistsExcepion e) {
 			User owner = UserMapper.getUser(userItem.getOwnerUserId());
-			if (StringUtils.equalsIgnoreCase(newUser.getName(), owner.getName()))
+			if (owner != null && StringUtils.equalsIgnoreCase(newUser.getName(), owner.getName())){
 				return;
-			throw e;
+			}else if(owner == null){
+				//executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
+				return;
+			}
 		}
 		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
 
@@ -141,15 +154,16 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 			regularLink.addStaticVariable("user", userItem.getId() + "");
 			ExecutablePagePE regularTemplate =
 					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, null);
-			final String customerEmail = userItem.getStringValue("email");
+			final String customerEmail = userItem.getStringValue(EMAIL_PARAM);
 
 			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
 			PageController.newSimple().executePage(regularTemplate, regularBos);
 			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
 					+ ";charset=UTF-8");
 
-			if (StringUtils.isNotBlank(customerEmail))
-				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте titantools.by", regularMP);
+			if (StringUtils.isNotBlank(customerEmail)) {
+//				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте portal-uniavostok.by", regularMP);
+			}
 
 		} catch (PageNotFoundException pnf) {
 			// ничего не делать (все нормально)

@@ -27,7 +27,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static HashMap<String, String> PRODUCT_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
-	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
+
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION}
+
+	;
 
 
 	static {
@@ -60,7 +63,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	private IntegrateBase.Info info; // информация для пользователя
-	private HashMap<String, ArrayList<String>> productParams = new HashMap<>();
+	private HashMap<String, LinkedHashSet<String>> productParams = new HashMap<>();
 	private LinkedHashMap<String, String> specialParams = new LinkedHashMap<>();
 	private ItemType productType;
 	private Set<Item> sectionsWithNewItemTypes = new HashSet<>();
@@ -80,24 +83,35 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static final String IMG_HOST = "http://62.109.11.85";
 
 
-
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
 
 			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
-				String code = productParams.get(CODE_PARAM).get(0);
+				String code = productParams.get(CODE_PARAM).iterator().next();
 				Item product = ItemQuery.loadSingleItemByParamValue(productType.getName(), CODE_PARAM, code);
 				Item section = existingItems.get(currentSection);
+
+				if (section == null) {
+					info.pushLog(code + "no section: " + currentSection);
+					return;
+				}
+
 				if (product == null) {
 					product = ItemUtils.newChildItem(productType.getName(), section);
 				}
 				for (String paramName : productParams.keySet()) {
+					if (StringUtils.isBlank(paramName)) continue;
 					for (String value : productParams.get(paramName)) {
-						value = "pic_link".equals(paramName) && StringUtils.isNotBlank(value)? IMG_HOST + value : value;
-						product.setValueUI(paramName, value);
-						if(NAME.equalsIgnoreCase(paramName)){
-							product.setKeyUnique(Strings.translit(value));
+						if (value != null) {
+							value = "pic_link".equals(paramName) && StringUtils.isNotBlank(value) ? IMG_HOST + value : value;
+							product.setValueUI(paramName, value);
+							if (NAME.equalsIgnoreCase(paramName)) {
+								product.setKeyUnique(Strings.translit(value));
+							}
+						} else {
+							//product.clearValue(paramName);
+							info.pushLog(productParams.get("name") + " " + code + " no value for: " + paramName);
 						}
 					}
 				}
@@ -109,31 +123,28 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 				info.increaseProcessed();
 				resetProduct();
-			}
-			else if("options".equalsIgnoreCase(qName)){
+			} else if ("options".equalsIgnoreCase(qName)) {
 				isInsideOptions = false;
 				optionsBuffer.add(currentOption);
-			}else if("complectation".equalsIgnoreCase(qName)){
+			} else if ("complectation".equalsIgnoreCase(qName)) {
 				isInsideComplectation = false;
 				addNotEmptyComplectationChildren();
 
-			}else if(isInsideProduct && !isInsideOptions && !isInsideComplectation){
+			} else if (isInsideProduct && !isInsideOptions && !isInsideComplectation) {
 				processProductParams();
-			}else if(isInsideOptions){
-				if(ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
+			} else if (isInsideOptions) {
+				if (ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
 					currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
 				}
-			}else if(isInsideComplectation){
+			} else if (isInsideComplectation) {
 				String value = StringUtils.normalizeSpace(paramValue.toString());
-				if(complStaus == ComplectationChild.SERIAL){
+				if (complStaus == ComplectationChild.SERIAL) {
 					currentSerial.put(paramName, value);
-				}
-				else if(complStaus == ComplectationChild.OPTION){
-					if(ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
+				} else if (complStaus == ComplectationChild.OPTION) {
+					if (ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
 						currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
 					}
-				}
-				else if(StringUtils.isNotBlank(paramName)){
+				} else if (StringUtils.isNotBlank(paramName)) {
 					currentCompl.params.put(paramName, value);
 				}
 			}
@@ -142,28 +153,19 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		}
 	}
 
-	private void addImagHost(Item product) throws Exception {
-		ArrayList<String> links = product.getStringValues("pic_link");
-		LinkedHashSet<String> set = new LinkedHashSet<>();
-		set.addAll(links);
-		product.clearValue("pic_link");
-		for(String l : set){
-			product.setValueUI("pic_link", IMG_HOST + l);
-		}
-	}
 
 	private void addNotEmptyComplectationChildren() {
-		if(!currentOption.isEmpty())
-		currentCompl.options.add(currentOption);
-		if(!currentSerial.isEmpty())
-		currentCompl.serials.add(currentSerial);
-		if(!currentCompl.isEmpty())
-		complectationBuffer.add(currentCompl);
+		if (!currentOption.isEmpty())
+			currentCompl.options.add(currentOption);
+		if (!currentSerial.isEmpty())
+			currentCompl.serials.add(currentSerial);
+		if (!currentCompl.isEmpty())
+			complectationBuffer.add(currentCompl);
 	}
 
 	private void processComplectations(Item product) throws Exception {
 		int i = 0;
-		for(Complectation complectation : complectationBuffer){
+		for (Complectation complectation : complectationBuffer) {
 			i++;
 			complectation.params.put("number", String.valueOf(i));
 			presistComplectation(complectation, product);
@@ -172,7 +174,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 	private void presistComplectation(Complectation complectationTemplate, Item product) throws Exception {
 		Item complectation = ItemUtils.newChildItem("complectation", product);
-		for(Map.Entry<String, String> e : complectationTemplate.params.entrySet()){
+		for (Map.Entry<String, String> e : complectationTemplate.params.entrySet()) {
 			complectation.setValueUI(e.getKey(), e.getValue());
 		}
 		DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(complectation).noFulltextIndex().ignoreUser());
@@ -180,11 +182,11 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		processOptions(complectation);
 		optionsBuffer = new LinkedList<>();
 		int i = 0;
-		for(HashMap<String, String> serialTemplate : complectationTemplate.serials){
+		for (HashMap<String, String> serialTemplate : complectationTemplate.serials) {
 			Item serial = ItemUtils.newChildItem("base_complectation_product", complectation);
 			i++;
 			serial.setValue("number", i);
-			for(Map.Entry<String, String> e : serialTemplate.entrySet()){
+			for (Map.Entry<String, String> e : serialTemplate.entrySet()) {
 				serial.setValueUI(e.getKey(), e.getValue());
 			}
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(serial).noFulltextIndex().ignoreUser());
@@ -197,7 +199,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	private void attachOptionsToProduct(Item product) throws Exception {
-		for(HashMap<String, String> opt : optionsBuffer){
+		for (HashMap<String, String> opt : optionsBuffer) {
 			String code = opt.get(CODE_PARAM);
 			Item option = existingItems.get(code);
 			DelayedTransaction.executeSingle(initiator, CreateAssocDBUnit.childExistsSoft(option, product.getId(), optionAssoc.getId()).ignoreUser());
@@ -209,31 +211,33 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	 */
 	private void ensureOptions() throws Exception {
 		Item section = existingItems.get(currentSection);
-		for(HashMap<String, String> opt : optionsBuffer){
+		for (HashMap<String, String> opt : optionsBuffer) {
 			String code = opt.get(CODE_PARAM);
-			Item option = existingItems.containsKey(code)? existingItems.get(code) : ItemUtils.newChildItem("option", section);
-			for(Map.Entry<String, String> e : opt.entrySet()){
+			Item option = existingItems.containsKey(code) ? existingItems.get(code) : ItemUtils.newChildItem("option", section);
+			for (Map.Entry<String, String> e : opt.entrySet()) {
 				option.setValueUI(e.getKey(), e.getValue());
 			}
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(option).noFulltextIndex().ignoreUser());
-			if(!existingItems.containsKey(code)){
+			if (!existingItems.containsKey(code)) {
 				existingItems.put(code, option);
 			}
 		}
 	}
 
 	private void processProductParams() {
-		if(PRICE_OPT_PARAM.equalsIgnoreCase(paramName) || StringUtils.isBlank(paramName)){return;}
-		if(productType.hasParameter(paramName)){
-			ArrayList<String> values = productParams.getOrDefault(paramName ,new ArrayList<>());
-			String v = "pic_link".equalsIgnoreCase(paramName)? paramValue.toString() : StringUtils.normalizeSpace(paramValue.toString());
+		if (PRICE_OPT_PARAM.equalsIgnoreCase(paramName) || StringUtils.isBlank(paramName)) {
+			return;
+		}
+		if (productType.hasParameter(paramName)) {
+			LinkedHashSet<String> values = productParams.getOrDefault(paramName, new LinkedHashSet<>());
+			String v = "pic_link".equalsIgnoreCase(paramName) ? paramValue.toString() : StringUtils.normalizeSpace(paramValue.toString());
 			values.add(v);
-			if(!productParams.containsKey(paramName)){
-				productParams.put(paramName,values);
+			if (!productParams.containsKey(paramName)) {
+				productParams.put(paramName, values);
 			}
-		}else if("section_id".equalsIgnoreCase(paramName)){
+		} else if ("section_id".equalsIgnoreCase(paramName)) {
 			currentSection = paramValue.toString();
-		}else{
+		} else {
 			specialParams.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
 		}
 	}
@@ -244,66 +248,65 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		paramName = "";
 		paramValue = new StringBuilder();
 
-		if("product".equalsIgnoreCase(qName)){
+		if ("product".equalsIgnoreCase(qName)) {
 			isInsideProduct = true;
 
-		}else if("options".equalsIgnoreCase(qName)){
+		} else if ("options".equalsIgnoreCase(qName)) {
 			isInsideOptions = true;
-		}else if("complectation".equalsIgnoreCase(qName)){
+		} else if ("complectation".equalsIgnoreCase(qName)) {
 			isInsideComplectation = true;
 			complStaus = ComplectationChild.SERIAL;
 			currentSerial = new HashMap<>();
 			currentOption = new HashMap<>();
 			currentCompl = new Complectation();
-		}
-		else if(isInsideProduct){
+		} else if (isInsideProduct) {
 			//processing complectation
-			if(isInsideComplectation){
+			if (isInsideComplectation) {
 				parameterReady = true;
 				complStaus = checkComplStatus(qName);
-				if(complStaus == ComplectationChild.SERIAL){
+				if (complStaus == ComplectationChild.SERIAL) {
 					paramName = SERIAL_PARAMS.getOrDefault(qName, PRODUCT_PARAMS_MAP.get(qName));
-					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
+					if (CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()) {
 						currentCompl.serials.add(currentSerial);
 						currentSerial = new HashMap<>();
-					}
-					else if("qty_reserve".equalsIgnoreCase(paramName)){
+					} else if ("qty_reserve".equalsIgnoreCase(paramName)) {
 						String time = attributes.getValue("time");
-						if(StringUtils.isNotBlank(time))
-						currentSerial.put("reserve_time", time);
-					}else if("qty_store".equalsIgnoreCase(paramName)){
+						if (StringUtils.isNotBlank(time))
+							currentSerial.put("reserve_time", time);
+					} else if ("qty_store".equalsIgnoreCase(paramName)) {
 						String time = attributes.getValue("time");
-						if(StringUtils.isNotBlank(time))
-						currentSerial.put("stored_time", time);
+						if (StringUtils.isNotBlank(time))
+							currentSerial.put("stored_time", time);
 					}
-				}else if(complStaus == ComplectationChild.OPTION){
+				} else if (complStaus == ComplectationChild.OPTION) {
 					paramName = OPTION_PARAMS_MAP.get(qName);
-					if(CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()){
-						if(!currentOption.isEmpty()){currentCompl.options.add(currentOption);}
+					if (CODE_PARAM.equalsIgnoreCase(paramName) && !currentSerial.isEmpty()) {
+						if (!currentOption.isEmpty()) {
+							currentCompl.options.add(currentOption);
+						}
 						currentOption = new HashMap<>();
 					}
-				}else{
+				} else {
 					paramName = PRODUCT_PARAMS_MAP.get(qName);
 				}
 			}
 			//processing options
-			else if(isInsideOptions){
+			else if (isInsideOptions) {
 				paramName = OPTION_PARAMS_MAP.getOrDefault(qName, qName);
 				parameterReady = true;
-				if(CODE_PARAM.equalsIgnoreCase(paramName)){
-					if(!currentOption.isEmpty()){
+				if (CODE_PARAM.equalsIgnoreCase(paramName)) {
+					if (!currentOption.isEmpty()) {
 						optionsBuffer.add(currentOption);
 					}
 					currentOption = new HashMap<>();
 				}
 			}
 			//processing params
-			else{
-				if(PRODUCT_PARAMS_MAP.containsKey(qName) || "section_id".equalsIgnoreCase(qName)){
+			else {
+				if (PRODUCT_PARAMS_MAP.containsKey(qName) || "section_id".equalsIgnoreCase(qName)) {
 					paramName = PRODUCT_PARAMS_MAP.getOrDefault(qName, qName);
 					parameterReady = true;
-				}
-				else if("param".equalsIgnoreCase(qName)){
+				} else if ("param".equalsIgnoreCase(qName)) {
 					String caption = attributes.getValue(NAME);
 					parameterReady = true;
 					paramName = PRODUCT_PARAMS_MAP.getOrDefault(caption, caption);
@@ -313,11 +316,11 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	private ComplectationChild checkComplStatus(String qName) {
-		if(PRICE_PARAM.equals(qName)) return ComplectationChild.COMPLECTATION;
-		if(complStaus == ComplectationChild.SERIAL && !OPTION_PARAMS_MAP.containsKey(qName)){
+		if (PRICE_PARAM.equals(qName)) return ComplectationChild.COMPLECTATION;
+		if (complStaus == ComplectationChild.SERIAL && !OPTION_PARAMS_MAP.containsKey(qName)) {
 			return ComplectationChild.SERIAL;
-		}else if(OPTION_PARAMS_MAP.containsKey(qName)){
-			if(currentOption.isEmpty() && !OPTION_PARAMS_MAP.get(qName).equals(CODE_PARAM)){
+		} else if (OPTION_PARAMS_MAP.containsKey(qName)) {
+			if (currentOption.isEmpty() && !OPTION_PARAMS_MAP.get(qName).equals(CODE_PARAM)) {
 				return ComplectationChild.COMPLECTATION;
 			}
 			return ComplectationChild.OPTION;
@@ -326,7 +329,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	private void processSpecialParameters(Item product) throws Exception {
-		if(!specialParams.isEmpty()) {
+		if (!specialParams.isEmpty()) {
 			Byte[] ass = new Byte[]{ItemTypeRegistry.getPrimaryAssocId()};
 			ArrayList<Item> children = ItemQuery.loadByParentId(product.getId(), ass);
 			populateAuxParamsOrFallback(product, children);
@@ -335,9 +338,9 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 	}
 
-	private Item ensureChild(String itemTypeName, Item parent, Collection<Item> existingChildren){
-		for(Item el : existingChildren){
-			if(el.getTypeName().equals(itemTypeName)){
+	private Item ensureChild(String itemTypeName, Item parent, Collection<Item> existingChildren) {
+		for (Item el : existingChildren) {
+			if (el.getTypeName().equals(itemTypeName)) {
 				return el;
 			}
 		}
@@ -348,7 +351,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		Item paramsXml = ensureChild(PARAMS_XML_ITEM, product, children);
 
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-		for(Map.Entry<String, String> entry: specialParams.entrySet()){
+		for (Map.Entry<String, String> entry : specialParams.entrySet()) {
 			xml.startElement("parameter")
 					.addElement("name", entry.getKey())
 					.addElement("value", entry.getValue())
@@ -361,7 +364,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	/**
 	 * Finds the item type for "params" and ensures it existence
 	 * if item type does not exist or has changed adds the section to the list of sections with new item types.
-	 * @param product - parent of the "params" item
+	 *
+	 * @param product  - parent of the "params" item
 	 * @param children - list of existing item children
 	 */
 	private void populateAuxParamsOrFallback(Item product, List<Item> children) throws Exception {
@@ -369,18 +373,18 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		// load itemType for the aux params item
 		String paramsItemTypeName = CreateParametersAndFiltersCommand.createClassName(existingItems.get(currentSection));
 		ItemType paramsItemType = ItemTypeRegistry.getItemType(paramsItemTypeName);
-		if(paramsItemType == null){
+		if (paramsItemType == null) {
 			sectionsWithNewItemTypes.add(existingItems.get(currentSection));
 			return;
 		}
 
 		Item aux = ensureChild(paramsItemTypeName, product, children);
-		for(Map.Entry<String, String> param : specialParams.entrySet()){
+		for (Map.Entry<String, String> param : specialParams.entrySet()) {
 			String name = Strings.createXmlElementName(param.getKey());
 			String value = param.getValue();
 			try {
 				aux.setValueUI(name, value);
-			}catch (Exception e){
+			} catch (Exception e) {
 				//fallback if parameter not exists
 				sectionsWithNewItemTypes.add(existingItems.get(currentSection));
 				return;
@@ -390,11 +394,11 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	@Override
-	public void startDocument(){
-		if(productType.hasChild("option", "option")){
+	public void startDocument() {
+		if (productType.hasChild("option", "option")) {
 			try {
 				List<Item> options = new ItemQuery("option").loadItems();
-				for(Item option : options){
+				for (Item option : options) {
 					existingItems.put(option.getStringValue(CODE_PARAM), option);
 				}
 
@@ -456,19 +460,19 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		this.locator = locator;
 	}
 
-	private void handleException(Throwable e){
+	private void handleException(Throwable e) {
 		ServerLogger.error("Integration error", e);
 		info.setLineNumber(locator.getLineNumber());
 		info.setLinePosition(locator.getColumnNumber());
 		info.addError(e);
 	}
 
-	private static class Complectation{
+	private static class Complectation {
 		private List<HashMap<String, String>> options = new LinkedList<>();
 		private List<HashMap<String, String>> serials = new LinkedList<>();
 		private HashMap<String, String> params = new HashMap<>();
 
-		boolean isEmpty(){
+		boolean isEmpty() {
 			return options.isEmpty() && serials.isEmpty() && params.isEmpty();
 		}
 	}

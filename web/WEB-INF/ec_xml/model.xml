@@ -486,7 +486,7 @@
 		<child item="pseudo_option" multiple="true"/>
 	</item>
 
-	<item name="pseudo_option" virtual="true" caption="Опция" key="name" ag-id="2296" ag-hash="-1937526250">
+	<item name="pseudo_option" virtual="true" caption="Опция" key="name" ag-id="2297" ag-hash="-1937526250">
 		<parameter name="name" type="string" caption="Наименование опции"  description="Используется в истории заказов"/>
 		<parameter name="code" type="string" caption="Артикул"/>
 		<parameter name="price" type="currency" caption="Цена товара"  description="На момент заказа"/>
@@ -533,10 +533,11 @@
 		<parameter name="sum" type="currency" caption="Общая сумма"/>
 		<parameter name="sum_discount" type="currency" caption="Общая сумма со скидкой"/>
 		<parameter name="sum_saved" type="currency" caption="Сэкономленная сума"/>
+		<parameter name="is_complex" type="byte" domain="0-1" caption="Товар с опциями"/>
 		<child item="bought"/>
 	</item>
 
-	<item name="order_memory" virtual="true" ag-id="2297" ag-hash="856096530">
+	<item name="order_memory" virtual="true" ag-id="2298" ag-hash="856096530">
 		<parameter name="cart_cookie" type="string" caption="Куки простого заказа"/>
 		<parameter name="cart_complex_cookie" type="string" caption="Куки сложного заказа"/>
 	</item>
@@ -545,6 +546,7 @@
 		<parameter name="personal_discount" type="currency" caption="Персональная скидка"/>
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
+		<parameter name="login" type="string" caption="Логин"/>
 		<parameter name="password" type="string" caption="Пароль"/>
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<child item="purchase"/>
@@ -556,10 +558,12 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user order_memory" ag-id="23" ag-hash="-266151405" >
 		<parameter name="personal_discount" type="currency" caption="Индивидуальная скидка, %"/>
 		<parameter name="organization" type="string" caption="Наименование организации" />
-		<parameter name="contract_number" type="string" caption="Номер договора" />
+		<parameter name="uid" type="string" caption="Номер договора" description="ID в 1С" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
-		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
+		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" multiple="true"/>
 		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="f_address" type="string" caption="Фактический адрес" />
+		<parameter name="p_address" type="string" caption="Почтовый адрес" />
 	</item>
 
 	<item name="registered_catalog" caption="Каталог пользователей" children-sorting="DESC" children-per-page="50" ag-id="822" ag-hash="-755203236" >

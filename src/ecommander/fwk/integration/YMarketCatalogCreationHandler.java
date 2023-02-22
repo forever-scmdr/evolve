@@ -11,6 +11,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -88,7 +89,13 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			info.addError(code+ " " + e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			String stackTrace = ExceptionUtils.getStackTrace(e);
+			StringBuilder sb = new StringBuilder();
+			for(String s : stackTrace.split("\n")){
+				sb.append("<p>").append(s).append("</p>");
+			}
+			info.addError(sb.toString(), locator.getLineNumber(), locator.getColumnNumber());
 		}
 	}
 

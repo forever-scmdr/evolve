@@ -16,16 +16,14 @@
 	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
 
-	<xsl:variable name="pic_server" select="'http://62.109.11.85/'"/>
-
 
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="card device">
-			<xsl:variable  name="main_pic" select="main_pic_path"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat($pic_server, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable  name="main_pic" select="pic_link[1]"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then $main_pic else 'img/no_image.png'"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -35,7 +33,7 @@
 			</div>
 
 			<!-- device image -->
-			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
+			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror}"/></a>
 
 			<!-- device tags -->
 			<div class="tags device__tags">
@@ -118,8 +116,8 @@
 
 
 		<div class="device device_row">
-			<xsl:variable  name="main_pic" select="main_pic_path"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat($pic_server, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable  name="main_pic" select="pic_link[1]"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then $main_pic else 'img/no_image.png'"/>
 
 			<div class="device__column">
 
@@ -140,7 +138,7 @@
 				<!-- device image -->
 				<div class="device__image img">
 					<a href="{show_product}">
-						<img src="{$pic_path}" alt="" />
+						<img  src="{$pic_path}" alt="" onerror="{$onerror}" />
 					</a>
 				</div>
 

@@ -518,7 +518,7 @@
 				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
 					<var var="q"/>
 				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 			</filter>
 			<link name="show_product" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
@@ -970,7 +970,7 @@
 	</page>
 
 
-	<page name="complect_ajax" template="complect_ajax"">
+	<page name="complect_ajax" template="complect_ajax">
 		<request>
 			<var name="message"/>
 			<var name="product" />
@@ -1545,6 +1545,19 @@
 			<var name="action"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<!--//                                                                          -->
+	<!--//                      Разбор файлов с пользователями и историей покупок                         -->
+	<!--//                                                                          -->
+	<page name="integrate_dealer_history" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ParseClientInteractionHistoryCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
 	</page>

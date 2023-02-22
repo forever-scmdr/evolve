@@ -3,7 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="concat($p/name, ' купить в Минске')"/>
+	<xsl:variable name="title" select="concat($p/name, '')"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
@@ -20,7 +20,7 @@
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
 	<xsl:template name="MARKUP">
-		<xsl:variable name="price" select="$p/price"/>
+		<!-- <xsl:variable name="price" select="$p/price"/>
 		<script type="application/ld+json">
 			<xsl:variable name="quote">"</xsl:variable>
 			{
@@ -46,7 +46,7 @@
 			<xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)"/>
 			}
 			}
-		</script>
+		</script> -->
 	</xsl:template>
 
 	<xsl:template name="PAGE_PATH">
@@ -111,13 +111,13 @@
 				</div>
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75"
 					 data-allowfullscreen="native">
-					<xsl:for-each select="$p/gallery_path">
-						<img src="{$pic_server}{.}" alt="{$p/name}"/>
+					<xsl:for-each select="$p/pic_link">
+						<img src="{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery_path)">
+					<!-- <xsl:if test="not($p/gallery_path)">
 						<img src="{concat($pic_server, $p/main_pic_path)}" alt="{$p/name}"/>
-					</xsl:if>
-					<xsl:if test="not($p/gallery_path) and not($p/main_pic_path)">
+					</xsl:if> -->
+					<xsl:if test="not($p/gallery_path) and not($p/pic_link)">
 						<img src="img/no_image.png" alt="{$p/name}"/>
 					</xsl:if>
 				</div>
@@ -580,31 +580,33 @@
 					<xsl:call-template name="OPTIONS_SCRIPT"/>
 				</xsl:if>
 			</div>
-			<div class="complectation device-basic__column" style="flex: 0 0 50%;">
-				<xsl:if test="$p/option">
-					<div class="wide-only">
-						<h3 class="desktop-only" style="margin-bottom:12px">Выбранная комплектация</h3>
-						<div>
-							<table style="width:100%" class="options-table" id="selected_options"></table>
+			<xsl:if test="$p/@type = 'complex_product'">
+				<div class="complectation device-basic__column" style="flex: 0 0 50%;">
+					<xsl:if test="$p/option">
+						<div class="wide-only">
+							<h3 class="desktop-only" style="margin-bottom:12px">Выбранная комплектация</h3>
+							<div>
+								<table style="width:100%" class="options-table" id="selected_options"></table>
+							</div>
 						</div>
-					</div>
-				</xsl:if>
-				<table>
-					<tr>
-						<td class="total">Сумма:
-							<b id="sum">
-								<xsl:value-of select="$p/price"/>
-							</b>
-						</td>
-						<td style="text-align:right;">
-							<button class="button button_size_lg"
-									style="background: #ccc; color: #363636; border-color: #ccc;">Заказ доступен после
-								регистрации
-							</button>
-						</td>
-					</tr>
-				</table>
-			</div>
+					</xsl:if>
+					<table>
+						<tr>
+							<td class="total">Сумма:
+								<b id="sum">
+									<xsl:value-of select="$p/price"/>
+								</b>
+							</td>
+							<td style="text-align:right;">
+								<button class="button button_size_lg"
+										style="background: #ccc; color: #363636; border-color: #ccc;">Заказ доступен после
+									регистрации
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</xsl:if>
 		</div>
 	</xsl:template>
 
