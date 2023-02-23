@@ -554,6 +554,39 @@
 		</xsl:call-template>
 	</xsl:template>
 
+
+
+	<xsl:template match="custom_block[news]">
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_top" />
+		</xsl:call-template>
+		<div class="block sections-block ptb">
+			<div class="{'container'[$need_container]}">
+				<div class="title title_2"><xsl:value-of select="header" /></div>
+<!--				<div class="icons-block__wrap">-->
+				<div class="info-items__wrap">
+					<xsl:for-each select="news/news_item">
+						<xsl:variable name="news_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat(../@path, ../main_pic)"/>
+						<div class="info-item card">
+							<div class="info-item__image img"><img src="{$news_pic}" alt="" style="max-width:100%;" /></div>
+							<div class="info-item__info">
+								<div class="info-item__date"><xsl:value-of select="date"/></div>
+								<a href="{show_news_item}" class="info-item__title"><xsl:value-of select="header"/></a>
+								<div class="info-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+							</div>
+							<a href="{show_news_item}" class="info-item__link"></a>
+						</div>
+					</xsl:for-each>
+				</div>
+			</div>
+		</div>
+		<xsl:call-template name="DIVIDER">
+			<xsl:with-param name="need" select="divider_bottom" />
+		</xsl:call-template>
+	</xsl:template>
+
+
+
 	<xsl:template name="DIVIDER">
 		<xsl:param name="need"/>
 		<xsl:if test="f:num($need) = 1"><div class="divider"></div></xsl:if>

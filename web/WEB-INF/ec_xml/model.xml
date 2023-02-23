@@ -188,7 +188,7 @@
 	</item>
 
 	<!-- Служебные данные для каталога продукции (чтобы можно было удалять сам каталог, а данные не удалялись бы) -->
-	<item name="catalog_meta" caption="Настройки каталога" ag-id="1835" ag-hash="-1147955605">
+	<item name="catalog_meta" caption="Настройки каталога" ag-id="2109" ag-hash="-1147955605">
 		<parameter name="excel_order_template" type="file" caption="Шаблон Excel для счет-фактуры при заказе" description="должен содержать специальные метки"/>
 		<child item="price_catalogs" single="true"/>
 		<child item="currencies" single="true"/>
@@ -230,7 +230,7 @@
 	</item>
 
 
-	<item name="search" super="* seo_container" caption="Настройки поиска" ag-id="1840" ag-hash="-906336856">
+	<item name="search" super="* seo_container" caption="Настройки поиска" ag-id="2114" ag-hash="-906336856">
 		<parameter name="default_view" type="string" caption="Отображение товаров по умолчанию" default="плитка">
 			<value>плитка</value>
 			<value>список</value>
@@ -245,12 +245,12 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Склады товаров" children-per-page="30" children-sorting="DESC" ag-id="1836" ag-hash="-1742571868">
+	<item name="plain_catalog" caption="Склады товаров" children-per-page="30" children-sorting="DESC" ag-id="2110" ag-hash="-1742571868">
 		<child item="plain_section"/>
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="1837" ag-hash="-328034960">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="2111" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<parameter name="thread" type="string" caption="Поток"/>
@@ -373,7 +373,7 @@
 	</item>
 
 
-	<item name="product_extra" caption="Дополнительно для товара" key="name" ag-id="818" ag-hash="1373246656" virtual="true">
+	<item name="product_extra" caption="Дополнительно для товара" key="name" virtual="true" ag-id="818" ag-hash="1373246656">
 		<parameter name="name" type="string" caption="Название"/>
 	</item>
 
@@ -416,7 +416,7 @@
 	</item>
 
 	<!-- Настройки для одного склада (plain_catalog) -->
-	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="1838" ag-hash="2102484771">
+	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="2112" ag-hash="2102484771">
 		<parameter name="name" type="string" caption="Название поставщика" />
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию" default="14"/>
@@ -434,7 +434,7 @@
 	</item>
 
 	<!-- Настройки интегрируемых складов (plain_catalog) -->
-	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="1839" ag-hash="752518576">
+	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="2113" ag-hash="752518576">
 		<parameter name="product_code_extra" type="string" caption="Код товара с названием поставщика" description="надо ли добавлять к коду товара код поставщика" default="да">
 			<value>да</value>
 			<value>нет</value>
@@ -444,12 +444,12 @@
 
 
 	<!-- Каталог аналогов -->
-	<item name="analogs" caption="Каталог аналогов" children-per-page="50" ag-id="1841" ag-hash="-864340605">
+	<item name="analogs" caption="Каталог аналогов" children-per-page="50" ag-id="2115" ag-hash="-864340605">
 		<child item="analog"/>
 	</item>
 
 	<!-- Одна группа аналогов -->
-	<item name="analog" caption="Аналоги" key="name" ag-id="1842" ag-hash="-1413355280">
+	<item name="analog" caption="Аналоги" key="name" ag-id="2116" ag-hash="-1413355280">
 		<parameter name="name" caption="Название" type="string" description="Для наглядности"/>
 		<parameter name="set" type="string" caption="Список аналогов" description="добавляются аналоги по одному" multiple="true"/>
 	</item>
@@ -738,23 +738,24 @@
 		<parameter name="type" type="string" caption="Тип блока" domain="custom_block_type"/>
 	</item>
 
-   <item name="custom_block" caption="Блок" super="domain_dependent_display page_extra *" key="name type" ag-id="1764" ag-hash="714512959">
-		<parameter name="header" type="string" caption="Заголовок" />
-		<parameter name="subheader" type="string" caption="Подзаголовок" />
-		<parameter name="text" type="tiny-text" caption="Текст" />
-		<parameter name="code" type="plain-text" caption="Произвольный код" />
-		<parameter name="image" type="picture" caption="Изображение" />
-		<parameter name="image_bgr" type="picture" caption="Фоновое изображение" />
-		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба" />
-		<parameter name="link" type="string" caption="Ссылка" />
-		<parameter name="class" type="string" caption="Класс CSS" />
-	   	<parameter name="divider_top" type="byte" domain="0-1" caption="полоска-разделитеь сверху"/>
-	   	<parameter name="divider_bottom" type="byte" domain="0-1" caption="полоска-разделитеь снизу"/>
-	   	<parameter name="odd_style" type="byte" domain="0-1" caption="разный вид для четных и нечетных блоков"/>
-		<child item="custom_block" inline="true" />
-		<child item="product" assoc="general" />
-		<child item="section" assoc="general" />
-		<child item="custom_page" assoc="general" />
+	<item name="custom_block" caption="Блок" super="domain_dependent_display page_extra *" key="name type" ag-id="1764" ag-hash="714512959">
+		<parameter name="header" type="string" caption="Заголовок"/>
+		<parameter name="subheader" type="string" caption="Подзаголовок"/>
+		<parameter name="text" type="tiny-text" caption="Текст"/>
+		<parameter name="code" type="plain-text" caption="Произвольный код"/>
+		<parameter name="image" type="picture" caption="Изображение"/>
+		<parameter name="image_bgr" type="picture" caption="Фоновое изображение"/>
+		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба"/>
+		<parameter name="link" type="string" caption="Ссылка"/>
+		<parameter name="class" type="string" caption="Класс CSS"/>
+		<parameter name="divider_top" type="byte" domain="0-1" caption="полоска-разделитеь сверху"/>
+		<parameter name="divider_bottom" type="byte" domain="0-1" caption="полоска-разделитеь снизу"/>
+		<parameter name="odd_style" type="byte" domain="0-1" caption="разный вид для четных и нечетных блоков"/>
+		<child item="custom_block" inline="true"/>
+		<child item="product" assoc="general"/>
+		<child item="section" assoc="general"/>
+		<child item="custom_page" assoc="general"/>
+		<child item="news" assoc="general"/>
 	</item>
 
 

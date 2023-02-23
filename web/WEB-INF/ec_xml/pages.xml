@@ -195,22 +195,18 @@
 						<var name="p" ref="block_page" style="keypath"/>
 					</link>
 				</list>
+				<list item="news" assoc="general">
+					<list item="news_item" id="ni">
+						<filter>
+							<sorting direction="DESC"><var value="date"/></sorting>
+							<limit><var value="4"/></limit>
+						</filter>
+						<link name="show_news_item" target="news_item" type="exclusive">
+							<var name="ni" ref="ni" style="key"/>
+						</link>
+					</list>
+				</list>
 			</tree>
-		</single>
-		<single item="news_wrap" cacheable="true">
-			<list item="news_item" id="ni" transit="true">
-				<filter>
-					<sorting direction="DESC">
-						<var value="date"/>
-					</sorting>
-					<limit>
-						<var value="4"/>
-					</limit>
-				</filter>
-				<link name="show_news_item" target="news_item" type="exclusive">
-					<var name="ni" ref="ni" style="key"/>
-				</link>
-			</list>
 		</single>
 		<include name="COMMON"/>
 	</page>
