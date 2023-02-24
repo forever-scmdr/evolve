@@ -113,7 +113,6 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 	}
 
 	private void makeRegistered() throws Exception {
-		Parameter regParam = userItem.getParameterByName(REGISTERED);
 		if (userItem.isPersonal()) {
 			if (userItem.getByteValue(REGISTERED) != (byte) 1) {
 				userItem.setValue(REGISTERED, (byte) 1);

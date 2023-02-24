@@ -12,6 +12,7 @@
 		<xsl:call-template name="DOCTYPE"/>
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
+                <base href="{page/base}"/>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 			<title>Результат интеграции</title><!-- ******************* TODO LOCAL ******************** -->
 		<style>
@@ -48,6 +49,10 @@
 					<td>Элементов обработано:</td>
 					<td class="error"><xsl:value-of select="/page/processed"/></td>
 				</tr>
+                    <tr>
+                        <td>Проиндексировано товаров:</td>
+                        <td class="error"><xsl:value-of select="/page/items-indexed"/></td>
+                    </tr>
 				<tr><td colspan="2" align="center"><b>Хронология интеграции</b></td></tr>
 				<xsl:for-each select="/page/message">
 					<tr>

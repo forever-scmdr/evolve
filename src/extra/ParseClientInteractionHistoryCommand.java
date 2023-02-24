@@ -51,7 +51,7 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
 			return false;
 		}
-		info.setToProcess(xmls.size());
+		//info.setToProcess(xmls.size());
 		return true;
 	}
 
@@ -92,6 +92,8 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 		private Item currentDealerIitem;
 		private Item currentOrder;
 		private User currentUser;
+
+		private byte registeredGroupId = UserGroupRegistry.getGroup("registered");
 
 		private Item parent;
 
@@ -135,18 +137,30 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 						clearBuffers();
 						break;
 					case USER_EL:
-						parent = loadAndUpdateItem("user_jur", "login", root);
+						String login = currentItemBuffer.getOrDefault("login", currentItemBuffer.get("email")).get(0);
+						info.setCurrentJob(login);
+
+						int id = UserMapper.getUserId(login);
+						currentUser = UserMapper.getUser(id);
+
+						parent = loadAndUpdateItem("user_jur", "uid", root);
 						currentDealerIitem = parent;
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(parent).ignoreUser().noFulltextIndex());
 						currentItemBuffer = new HashMap<>();
 						currentUser = UserMapper.getUser(currentDealerIitem.getOwnerUserId());
+						if(currentUser == null){
+							login = currentDealerIitem.getStringValue("login", currentDealerIitem.getStringValue("email"));
+							id = UserMapper.getUserId(login);
+							currentUser = UserMapper.getUser(id);
+							executeAndCommitCommandUnits(ChangeItemOwnerDBUnit.newUser(currentDealerIitem, currentUser.getUserId(), UserGroupRegistry.getGroup("registered")).ignoreUser());
+						}
 						break;
 					case BOUGHT_EL:
 						Item bought = loadAndUpdateItem("bought", "code", parent);
 						bought.setValue("is_complex", parent.getValue("is_complex"));
-						executeCommandUnit(ChangeItemOwnerDBUnit.newUser(bought, currentUser.getUserId(), UserGroupRegistry.getGroup("registered")).ignoreUser());
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(bought).ignoreUser().noFulltextIndex());
+						saveItem(bought);
 						currentItemBuffer = new HashMap<>();
+						info.increaseProcessed();
 						break;
 					default:
 						setParameter(qName);
@@ -155,9 +169,8 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 			} catch (Exception e) {
 				handleException(e);
 			}
-
-			parameterReady = false;
 		}
+
 
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -187,8 +200,7 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 						paramNamesMap = DEVICE_PARAMS;
 						if (currentOrder == null) {
 							currentOrder = loadAndUpdateItem("purchase", "num", currentDealerIitem);
-							executeCommandUnit(ChangeItemOwnerDBUnit.newUser(currentOrder, currentUser.getUserId(), UserGroupRegistry.getGroup("registered")).ignoreUser());
-							executeAndCommitCommandUnits(SaveItemDBUnit.get(currentOrder).ignoreUser());
+							saveItem(currentOrder);
 						}
 						parent = currentOrder;
 						break;
@@ -226,6 +238,9 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 			String value = currentItemBuffer.get(key).get(0);
 			ItemQuery q = new ItemQuery(itemName);
 			q.setParentId(parent.getId(), false);
+			if(currentUser != null) {
+				q.setUser(currentUser);
+			}
 			q.addParameterCriteria(key, value, "=", null, Compare.SOME);
 
 			Item item = q.loadFirstItem();
@@ -240,6 +255,17 @@ public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 				}
 			}
 			return item;
+		}
+
+		private void saveItem(Item item) throws Exception {
+			boolean isNew = item.isNew();
+			if(isNew){
+				item.setOwner(registeredGroupId, currentUser.getUserId());
+			}
+			executeAndCommitCommandUnits(SaveItemDBUnit.get(item).ignoreUser().noFulltextIndex());
+			if(!isNew){
+				executeAndCommitCommandUnits(ChangeItemOwnerDBUnit.newUser(item, currentUser.getUserId(), UserGroupRegistry.getGroup("registered")).ignoreUser());
+			}
 		}
 
 		@Override
