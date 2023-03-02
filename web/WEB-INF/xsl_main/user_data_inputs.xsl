@@ -89,6 +89,7 @@
 			<input class="input form__element" type="text" id="form_contact_phone"
 				   name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
 		</div>
+		<!--
 		<xsl:if test="page/@name != 'register'">
 			<div class="form__item"><label class="form-label" for="form_ship">Способ доставки: <a href="dostavka">подробнее</a></label>
 				<select class="form__element" id="form_ship"
@@ -109,6 +110,7 @@
 				</select>
 			</div>
 		</xsl:if>
+		-->
 		<div class="form__item">
 			<label class="form-label" for="form_ja">Юридический адрес:</label>
 			<input class="input form__element" type="text" id="form_ja"
@@ -119,6 +121,7 @@
 			<input class="input form__element" type="text" id="form_account"
 				   name="{$inp/account/@input}" value="{f:not_empty($inp/account, $vals/account)}"/>
 		</div>
+		<!--
 		<div class="form__item">
 			<label class="form-label" for="form_bank">Название банка:</label>
 			<input class="input form__element" type="text" id="form_bank"
@@ -134,11 +137,13 @@
 			<input class="input form__element" type="text" id="form_bankc"
 				   name="{$inp/bank_code/@input}" value="{f:not_empty($inp/bank_code, $vals/bank_code)}"/>
 		</div>
+		-->
 		<div class="form__item">
-			<label class="form-label" for="form_unp">УНП:</label>
+			<label class="form-label" for="form_unp">ИНН:</label>
 			<input class="input form__element" type="text" id="form_unp"
 				   name="{$inp/unp/@input}" value="{f:not_empty($inp/unp, $vals/unp)}"/>
 		</div>
+		<!--
 		<div class="form__item">
 			<label class="form-label" for="form_dir">Ф.И.О директора:</label>
 			<input class="input form__element" type="text" id="form_dir"
@@ -149,6 +154,7 @@
 			<input class="input form__element" type="text" id="form_base"
 				   name="{$inp/base/@input}" value="{f:not_empty($inp/base, $vals/base)}"/>
 		</div>
+		-->
 	</xsl:template>
 
 

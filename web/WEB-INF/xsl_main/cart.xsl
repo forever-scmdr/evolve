@@ -29,12 +29,17 @@
 										</a>
 									</div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
-										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
+										<xsl:if test="$p/@id &gt; 0">
+											<a class="cart-item__name" href="$p/show_product"><xsl:value-of select="$p/name"/></a>
+										</xsl:if>
+										<xsl:if test="$p/@id &lt; 0">
+											<span style="color: #0072bc;" class="cart-item__name"><xsl:value-of select="$p/name"/></span>
+										</xsl:if>
 										<p/>
 										<div class="cart-item__artnumber">Норма упк.: <xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'" /></div>
 										<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
 										<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
+										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$p/qty" /></div>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">

@@ -261,14 +261,14 @@
 							</div>
 						</xsl:if>
 						<div class="links">
-							<a href="kontakty" class="icon-link">
+							<a href="tel:+74951081272" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
 							</a>
 							<a href="javascript:showMobileMainMenu()" class="icon-link">
 								<div class="icon">
-									<img src="img/icon-bars.svg" alt="" />
+									<img src="img/icon-bars-mobile.svg" alt="" />
 								</div>
 							</a>
 						</div>
@@ -363,24 +363,7 @@
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
-					<div class="footer__column">
-						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
-							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
-						</xsl:if>
-						<a href="http://forever.by" class="forever">
-							<img src="img/forever.png" alt="" />
-							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
-						</a>
-						<div class="google-rating">
-							<div class="google-rating__stars">
-								<img src="img/icon-google-rating.png" alt="" />
-							</div>
-							<div class="google-rating__text">
-								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
-							</div>
-						</div>
-					</div>
-					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>
+					<xsl:apply-templates select="$footer/block" mode="footer"/>
 				</div>
 			</div>
 		</div>
@@ -468,7 +451,7 @@
 					<ul>
 						<li class="catalog-currency">
 							<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
-							<ul class="currency-options">
+							
 								<xsl:variable name="currency_link" select="page/set_currency"/>
 <!--								<li class="{'active'[$currency = 'BYN']}">-->
 <!--									<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>-->
@@ -482,7 +465,7 @@
 										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
 									</li>
 								</xsl:for-each>
-							</ul>
+							
 						</li>
 					</ul>
 				</xsl:if>
@@ -948,7 +931,7 @@
 					<div class="modal-dialog modal-md" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="close popup__close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
+								<button type="button" class="close popup__close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Х</span></button>
 								<div class="modal-title h4">Загрузка BOM</div>
 							</div>
 							<script>

@@ -746,7 +746,7 @@
 			<td>
 				<div class="thn">Название</div>
 				<div class="thd">
-					<a><xsl:value-of select="name"/></a>
+					<span style="color: #0072bc;"><xsl:value-of select="name"/></span>
 					<p/>
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
 				</div>

@@ -26,7 +26,7 @@
 				</a> /
 				<a href="/logout.login?target=index" class="icon-link">
 					<div class="icon"><img src="img/icon-exit.svg" alt="" /></div>
-					<span class="icon-link__item">x</span>
+					<span class="icon-link__item"></span>
 				</a>
 			</div>
 		</xsl:if>

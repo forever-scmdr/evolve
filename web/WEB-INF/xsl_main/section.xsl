@@ -205,7 +205,7 @@
 			<div class="filter filter_section">
 				<a href="#" onclick="$('.filter_extra').toggle();$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
 					<div class="icon">
-						<img src="img/icon-gear.svg" alt="" />
+						<img src="img/icon-gear-catalog.svg" alt="" />
 					</div>
 					<span class="icon-link__item filter_extra" style="{'display: none'[$filter_is_open]}">Показать подбор по параметрам</span>
 					<span class="icon-link__item filter_extra" style="{'display: none'[not($filter_is_open)]}">Скрыть подбор по параметрам</span>

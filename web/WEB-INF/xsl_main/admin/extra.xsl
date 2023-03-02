@@ -38,7 +38,19 @@
 					<li><a id="a3" href="javascript:confirmLink('integration?action=start', $('#a3'))" title="Полное обновление каталога товаров">Удаление и создание заново всего каталога</a></li>
 				</ul>
 -->
-				<h2 class="title">SEO</h2>
+				
+				
+				<h2 class="title">Функции сайта</h2>
+
+				<ul class="no-drag">
+					<li><a href="/admin_search/">Поиск менеджера/администратора</a></li>
+					<li><a href="get_rates">Принудительное обновление курсов валют</a></li>
+					<li><a href="update_order_status">Принудительное обновление статусов заказов</a></li>
+					<li><a href="/efind?q=GD25Q16CSIGR">Страница интеграции E-find (с примером запроса GD25Q16CSIGR)</a></li>
+					<li><a href="api_xml/search?name=GD25Q16CSIGR">Страница преобразования выдачи API в XML (для разработчика)</a></li>
+				</ul>
+				
+				<h2 class="title">404</h2>
 
 				<ul class="no-drag">
 					<li><a href="update_error_page">Обновить страницу 404</a></li>
@@ -64,7 +76,7 @@
 					<!-- <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li> -->
 				</ul>
 
-				<h2 class="title">Интеграция внешних складов</h2>
+				<!--<h2 class="title">Интеграция внешних складов</h2>
 
 				<ul class="no-drag">
 					<li><a href="integrate_excel?action=start">Разобрать содержимое директории integrate_manual</a></li>
@@ -73,7 +85,7 @@
                 <h2 class="title">Парсинг сайтов</h2>
                 <ul>
                     <li>Индивидуально для каждого сайта</li>
-                </ul>
+                </ul> -->
 
                 <h2 class="title">Дополнительно</h2>
                 <ul class="no-drag">

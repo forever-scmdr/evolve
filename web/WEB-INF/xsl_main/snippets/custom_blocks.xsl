@@ -123,7 +123,7 @@
 		</xsl:call-template>
 		<div class="{'container '[$need_container]}vl_pos_rel pb">
 			<h2 class="ptb banner-numbers ">
-				<b class="color2"><xsl:value-of select="header"/></b>
+				<b><xsl:value-of select="header"/></b>
 				<xsl:if test="subheader != ''">
 					&#160;<b class="color1"><xsl:value-of select="subheader"/></b>
 				</xsl:if>

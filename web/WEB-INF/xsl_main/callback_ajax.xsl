@@ -15,7 +15,7 @@
 		<div class="result" id="modal_popup">
 			<div class="popup__body">
 				<div class="popup__content">
-					<a class="popup__close" href="#">×</a>
+					<a class="popup__close" href="#">Х</a>
 					<div class="popup__title title title_2" style="font-weight: normal;">Закажите обратный звонок</div>
 
 					<!-- <p style="margin-bottom: 16px; text-align: center; color: #707070;">Наш специалист перезвонит Вам в течение минуты</p> -->

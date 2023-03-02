@@ -49,14 +49,17 @@
 					<p>Юр. адрес: <xsl:value-of select="$contacts/address"/></p>
 					<xsl:if test="not($contacts/no_account = 'да')">
 						<p>Расчетный счет: <xsl:value-of select="$contacts/account"/></p>
+					<!--
 						<p>Название банка: <xsl:value-of select="$contacts/bank"/></p>
 						<p>Адрес банка: <xsl:value-of select="$contacts/bank_address"/></p>
 						<p>Код банка: <xsl:value-of select="$contacts/bank_code"/></p>
+					-->
 					</xsl:if>
 					<xsl:if test="$contacts/no_account = 'да'">
 						<p>Нет расчетного счета</p>
 					</xsl:if>
-					<p>УНП: <xsl:value-of select="$contacts/unp"/></p>
+					<p>ИНН: <xsl:value-of select="$contacts/unp"/></p>
+					<!--
 					<p>Ф.И.О директора (индивидуального предпринимателя): <xsl:value-of select="$contacts/director"/></p>
 					<p>
 						Действует на основании: <xsl:value-of select="$contacts/base"/>
@@ -64,7 +67,8 @@
 							&#160;№ <xsl:value-of select="$contacts/base_number"/> от <xsl:value-of select="$contacts/base_date"/>
 						</xsl:if>
 					</p>
-					<p>Дополнительно: <xsl:value-of select="$contacts/comment"/></p>
+					-->
+					<p>Комментарий: <xsl:value-of select="$contacts/comment"/></p>
 				</xsl:if>
 			</div>
 			<div class="cart-confirm__table">

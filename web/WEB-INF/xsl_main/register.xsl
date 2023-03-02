@@ -7,8 +7,9 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
-	<xsl:variable name="is_jur"
-	              select="not($is_login) and ((page/user_jur//@validation-error or page/user_jur/organization != '') or page/registration/@type = 'user_jur')"/>
+<!-- 	<xsl:variable name="is_jur"
+	              select="not($is_login) and ((page/user_jur//@validation-error or page/user_jur/organization != '') or page/registration/@type = 'user_jur')"/> -->
+	<xsl:variable name="is_jur" select="not($is_login)" />
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -41,20 +42,20 @@
 			</xsl:if>
 			<xsl:if test="$message and $success">
 				<div class="alert alert-success">
-					<p><xsl:value-of select="$message"/></p>
+					<p style="color:green;"><b><xsl:value-of select="$message"/></b></p>
 				</div>
 			</xsl:if>
 
 			<div class="tabs__nav">
 				<a href="#tab_login" class="tab{' tab_active'[$is_login]}">Вход</a>
-				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Физическое лицо</a>
-				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Юридическое лицо</a>
+				<!--<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Физическое лицо</a>-->
+				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Регистрация</a>
 			</div>
 			<div class="tabs__content">
 
 				<div class="tab-container" id="tab_login" style="{'display: none'[not($is_login)]}">
 					<div class="text form__text">
-						<p>Введите адрес электрнной почты и пароль.</p>
+						<p>Введите адрес электронной почты и пароль.</p>
 					</div>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form__item">

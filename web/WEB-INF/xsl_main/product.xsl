@@ -84,7 +84,7 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
+		<!-- <p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p> -->
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 				<div class="tags">
@@ -201,18 +201,18 @@
 					</xsl:if>
 
 					<!-- параметры -->
-<!--					<table class="params">-->
-<!--						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>-->
-<!--						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>-->
-<!--						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>-->
-<!--						<xsl:for-each select="$captions">-->
-<!--							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
-<!--							<tr>-->
-<!--								<td><xsl:value-of select="$param/@caption"/></td>-->
-<!--								<td><xsl:value-of select="$param"/></td>-->
-<!--							</tr>-->
-<!--						</xsl:for-each>-->
-<!--					</table>-->
+					<table class="params">
+						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
+						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
+						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
+						<xsl:for-each select="$captions">
+							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+							<tr>
+								<td><xsl:value-of select="$param/@caption"/></td>
+								<td><xsl:value-of select="$param"/></td>
+							</tr>
+						</xsl:for-each>
+					</table>
 				</xsl:if>
 
 
@@ -267,7 +267,7 @@
 				</xsl:if>
 
 				<div class="product-lables">
-					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+			<!--		<xsl:value-of select="$p/text" disable-output-escaping="yes"/> -->					
 				</div>
 
 				<div class="product-icons">

@@ -27,16 +27,16 @@
 				<div class="orders__item past-order">
 					<div class="past-order__info">
 						<div class="past-order__title"><a href="#" class="order_toggle">Заказ №<xsl:value-of select="num"/></a></div>
-						<div class="past-order__date"><xsl:value-of select="date"/></div>
+						<div class="past-order__date"><xsl:value-of select="substring-before(date, ' ')"/></div>
 						<div class="past-order__title"><xsl:value-of select="status"/></div>
 					</div>
 					<div class="past-order__price">
-						<div class="past-order__sum"><xsl:value-of select="sum"/> руб</div>
+						<div class="past-order__sum"><xsl:value-of select="sum"/> руб.</div>
 						<div class="past-order__qty">Позиций: <xsl:value-of select="qty"/></div>
 					</div>
-					<div class="past-order__action" style="display: none">
+					<!--<div class="past-order__action" style="display: none">
 						<button class="button past-order__button submit_all_again"><xsl:value-of select="$to_cart_available_label"/></button>
-					</div>
+					</div>-->
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
 						<xsl:variable name="prod" select="$products[code = $code]"/>
@@ -51,14 +51,14 @@
 								<xsl:if test="not($prod)">
 									<xsl:value-of select="name"/>
 								</xsl:if>
-								<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>
+								<!--<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>-->
 								<div class="past-product__old-price">
 									<span>Цена: <xsl:value-of select="price"/> руб.</span>
 									<span>Кол-во: <xsl:value-of select="qty"/> шт.</span>
 									<span>Сумма: <xsl:value-of select="sum"/> руб.</span>
 								</div>
 							</div>
-							<xsl:if test="$prod">
+							<!--<xsl:if test="$prod">
 								<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
 								<div class="past-product__action">
 									<div class="past-product__price"><xsl:if test="$has_price"><xsl:value-of select="$prod/price"/> руб.</xsl:if></div>
@@ -75,7 +75,7 @@
 										</form>
 									</div>
 								</div>
-							</xsl:if>
+							</xsl:if>-->
 						</div>
 					</xsl:for-each>
 				</div>
