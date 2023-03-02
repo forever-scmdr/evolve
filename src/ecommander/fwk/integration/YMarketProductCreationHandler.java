@@ -43,6 +43,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		SINGLE_PARAMS.add(MIN_QTY_PARAM);
 		SINGLE_PARAMS.add(STATUS_ELEMENT);
 		SINGLE_PARAMS.add(NEXT_DELIVERY_ELEMENT);
+		SINGLE_PARAMS.add(SALES_NOTES_ELEMENT);
 
 		MULTIPLE_PARAMS.add(CATEGORY_ID_ELEMENT);
 		MULTIPLE_PARAMS.add(PICTURE_ELEMENT);
@@ -87,7 +88,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				HashSet<String> productContainers = new HashSet<>();
 				String code = singleParams.get(ID_ATTR);
 				//String secCode = singleParams.get(CATEGORY_ID_ELEMENT);
-				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, OFFER_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+				Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				boolean isProductNotNew = true;
 				LinkedHashSet<String> categoryIds = multipleParams.getOrDefault(CATEGORY_ID_ELEMENT, new LinkedHashSet<>());
 				if (product == null) {
@@ -107,7 +108,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 
 				product.setValue(CODE_PARAM, code);
-				product.setValue(OFFER_ID_PARAM, code);
+				//product.setValue(OFFER_ID_PARAM, code); перенесено ниже - OFFER_ID_PARAM
 				product.setValue(AVAILABLE_PARAM, StringUtils.equalsIgnoreCase(singleParams.get(AVAILABLE_ATTR), TRUE_VAL) ? (byte) 1 : (byte) 0);
 				product.setValueUI(QTY_PARAM, singleParams.get(QUANTITY_ELEMENT));
 				if (product.getItemType().hasParameter(GROUP_ID_PARAM))
@@ -146,6 +147,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				if (product.getItemType().hasParameter(NEXT_DELIVERY_PARAM))
 					product.setValueUI(NEXT_DELIVERY_PARAM, singleParams.get(NEXT_DELIVERY_ELEMENT));
+				if (product.getItemType().hasParameter(URL_PARAM))
+					product.setValueUI(URL_PARAM, singleParams.get(SALES_NOTES_ELEMENT));
 
 				if (product.getItemType().hasParameter(ANALOG_CODE_PARAM) && multipleParams.containsKey(ANALOG_ELEMENT)) {
 					for (String val : multipleParams.get(ANALOG_ELEMENT)) {
