@@ -16,6 +16,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -55,7 +56,16 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		// Создание (обновление) каталога товаров
 		info.setOperation("Создание разделов каталога и типов товаров");
 		info.pushLog("Создание разделов");
-		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		// Попробовать получить каталог со страницы (если он есть и получилось его загрузить)
+		// Это дает возможномть иметь более одного каталога
+		LinkedHashMap<Long, Item> catalogsToUpdate = getLoadedItems("catalog_to_update");
+		Item catalog = null;
+		if (catalogsToUpdate.size() > 0) {
+			catalog = catalogsToUpdate.entrySet().iterator().next().getValue();
+		}
+		if (catalog == null) {
+			catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		}
 		YMarketCatalogCreationHandler secHandler = new YMarketCatalogCreationHandler(catalog, info, getInitiator());
 		info.setProcessed(0);
 		for (File xml : xmls) {

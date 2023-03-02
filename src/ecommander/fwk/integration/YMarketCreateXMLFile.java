@@ -135,6 +135,8 @@ public class YMarketCreateXMLFile extends Command implements CatalogConst {
 					Document doc = Jsoup.parse(text);
 					xml.startElement(DESCRIPTION_ELEMENT).addText(doc.body().text()).endElement();
 				}
+				if (baseProduct.isValueNotEmpty(URL_PARAM))
+					xml.startElement(SALES_NOTES_ELEMENT).addText(baseProduct.getStringValue(URL_PARAM)).endElement();
 
 				// Галерея
 				boolean hasGallery = false;

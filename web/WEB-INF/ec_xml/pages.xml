@@ -238,7 +238,6 @@
 	</page>
 
 
-
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
 			<var name="sec" style="keypath"/>
@@ -1862,6 +1861,7 @@
 		<request>
 			<var name="action"/>
 		</request>
+		<single item="catalog" id="catalog_to_update"/>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>

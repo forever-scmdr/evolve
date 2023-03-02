@@ -96,6 +96,7 @@ public interface CatalogConst {
 	String PICTURE_ELEMENT = "picture";
 	String VENDOR_ELEMENT = "vendor";
 	String MODEL_ELEMENT = "model";
+	String SALES_NOTES_ELEMENT = "sales-notes";
 	String VENDOR_CODE_ELEMENT = "vendorCode";
 	String DESCRIPTION_ELEMENT = "description";
 	String COUNTRY_OF_ORIGIN_ELEMENT = "country_of_origin";
