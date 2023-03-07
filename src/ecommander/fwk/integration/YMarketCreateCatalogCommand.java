@@ -60,8 +60,6 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements YMarke
 			parser.parse(xml, secHandler);
 			info.increaseProcessed();
 		}
-		if (4 > 2)
-			return;
 
 		// Разбор всех параметров товаров по разделам. Операции с БД не происходят
 		info.setToProcess(xmls.size());

@@ -94,8 +94,8 @@ public class YMarketProductCreationHandler extends DefaultHandler implements YMa
 				product.setValue(DESCRIPTION_PARAM, commonParams.get(DESCRIPTION_ELEMENT));
 				product.setValue(COUNTRY_PARAM, commonParams.get(COUNTRY_OF_ORIGIN_ELEMENT));
 
-				//product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
-				product.setValueUI(PRICE_PARAM, "2");
+				product.setValueUI(PRICE_PARAM, commonParams.get(PRICE_ELEMENT));
+				//product.setValueUI(PRICE_PARAM, "2");
 
 				// Качать картинки только для новых товаров
 				if (product.isNew()) {

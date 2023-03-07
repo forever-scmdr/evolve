@@ -7,6 +7,7 @@ import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
@@ -31,8 +32,16 @@ public class MakeExcelPrice extends Command {
 
 	@Override
 	public ResultPE execute() throws Exception {
-		synchronized (MUTEX){
-			ItemQuery q = new ItemQuery(ItemNames.PRODUCT);
+		String mode = getVarSingleValue("mode");
+		synchronized (MUTEX) {
+			ItemQuery q = null;
+			if (StringUtils.equalsIgnoreCase(mode, "visible")) {
+				q = new ItemQuery(ItemNames.PRODUCT);
+			} else if (StringUtils.equalsIgnoreCase(mode, "hidden")) {
+				q = new ItemQuery(ItemNames.PRODUCT, Item.STATUS_NIDDEN);
+			} else {
+				q = new ItemQuery(ItemNames.PRODUCT, Item.STATUS_NORMAL, Item.STATUS_NIDDEN);
+			}
 			List<Item> products = q.loadItems();
 
 			int rowIdx = -1;

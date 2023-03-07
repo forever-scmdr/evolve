@@ -5,23 +5,29 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--/////////////                             SEO                                  ////////////-->
 
-	<item name="seo" caption="SEO" ag-id="2512" ag-hash="113757">
+	<item name="seo" caption="SEO" ag-id="2156" ag-hash="113757">
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="url_seo" key="name" caption="SEO" ag-id="2513" ag-hash="-169844339">
+	<item name="url_seo" key="name" caption="SEO" ag-id="2157" ag-hash="-169844339">
 		<parameter name="name" type="string" caption="Название" description="для поиска в CMS"/>
 		<parameter name="url" type="string" caption="URL" description="должен совпадать с подсказкой в коде страницы"/>
 		<parameter name="title" type="string" caption="title"/>
+		<parameter name="h1" type="string" caption="h1"/>
 		<parameter name="description" type="string" caption="description"/>
 		<parameter name="keywords" type="string" caption="keywords"/>
 		<parameter name="meta" caption="meta" type="plain-text"/>
+		<parameter name="text" caption="текст" type="text"/>
+		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="2514" ag-hash="843192252">
+	<item name="url_seo_wrap" caption="Хранилище спец. SEO" ag-id="2158" ag-hash="843192252">
 		<parameter name="main_host" type="string" caption="основной домен" description="без слэша вконце"/>
 		<child item="url_seo" />
 	</item>
@@ -35,7 +41,6 @@
 	<item name="catalog" caption="Каталог продукции" children-per-page="30" children-sorting="ASC" ag-id="2" ag-hash="555704345">
 		<child item="seo" single="true"/>
 		<child item="section" />
-		<child item="temporary_section" single="true"/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
 		<parameter name="date" type="date" caption="Дата обновления каталога" format=""/>
 	</item>
@@ -53,10 +58,6 @@
 		<parameter name="params_filter" type="filter" caption="Фильтр" description="для продукции" />
 	</item>
 
-	<item name="temporary_section" caption="Временный раздел">
-		<child item="product"/>
-		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цен" />
-	</item>
 
 
 
@@ -75,13 +76,14 @@
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
 		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
-		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта"/>
+		<parameter name="price" type="currency" caption="Цена" description="в валюте текущего сайта" default="0"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" format="width: 300" caption="Главная картинка"/>
-		<parameter name="description" type="text" caption="Полное описание" text-index="fulltext" />
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
+		<parameter name="text" type="text" caption="Полное описание (не выводятся)" text-index="fulltext" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+		<parameter name="side_text" type="text" caption="Правая колонка" text-index="fulltext" />
 		<parameter name="gallery" type="picture" caption="Галерея" multiple="true"/>
 		<child item="params" single="true"/>
 	</item>
@@ -177,14 +179,13 @@
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
-	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622" >
+	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
 		<parameter name="address" type="string" caption="Адрес" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
-
 
 	<item name="registered_catalog" caption="Каталог пользователей" ag-id="1195" ag-hash="-755203236">
 		<child item="user"/>
@@ -195,7 +196,7 @@
 	<!--/////////////                                                                      ////////////-->
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
-	<item name="news_wrap" caption="Новостые разделы" ag-id="2515" ag-hash="301189686">
+	<item name="news_wrap" caption="Новостые разделы" ag-id="2159" ag-hash="301189686">
 		<child item="news"/>
 	</item>
 
@@ -212,6 +213,7 @@
 
 	<item name="news" caption="Новостной раздел" key="name" key-unique="true" default-page="news" ag-id="12" ag-hash="3377875">
 		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="on_main" type="string" domain="yes-no" caption="Показать на главной странице?"/>
 		<child item="seo" single="true"/>
 		<child item="news_item"/>
 	</item>
@@ -244,9 +246,18 @@
 	</item>
 
 	<item name="common" caption="На всех страницах" ag-id="22" ag-hash="-1354814997">
+		<parameter name="product_side_text" type="text" caption="текст на странице карточки товара"/>
 		<parameter name="top" type="short-text" caption="Верх" description="телефоны"/>
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
+		
+		<parameter name="link_link2" type="string" caption="Ссылка на акцию 2" description="начиная с http://"/>
+		<parameter name="link_text2" type="string" caption="Текст ссылки на акцию 2" description="выводится слева под каталогом"/>
+		<parameter name="link_link3" type="string" caption="Ссылка на акцию 3" description="начиная с http://"/>
+		<parameter name="link_text3" type="string" caption="Текст ссылки на акцию 4" description="выводится слева под каталогом"/>
+		<parameter name="link_link4" type="string" caption="Ссылка на акцию 4" description="начиная с http://"/>
+		<parameter name="link_text4" type="string" caption="Текст ссылки на акцию 4" description="выводится слева под каталогом"/>
+		
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
 		<parameter name="bottom" type="short-text" caption="Телефоны внизу"/>
 		<parameter name="bottom_address" type="short-text" caption="Адрес внизу"/>
@@ -277,23 +288,23 @@
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 	</item>
 
-	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="2482" ag-hash="1227433863">
+	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="2160" ag-hash="1227433863">
 		<child item="named_code"/>
 	</item>
 
-	<item name="named_code" key="name" caption="Модуль" ag-id="2483" ag-hash="-281007309">
+	<item name="named_code" key="name" caption="Модуль" ag-id="2161" ag-hash="-281007309">
 		<parameter name="name" type="string" caption="Имя"/>
 		<parameter name="code" type="plain-text" caption="Код для вставки на сайт"/>
 	</item>
 
-	<item name="file_overriders" caption="Перезапись файлов" description="Тут можно создаввать айтемы, перезаписывающие файлы" ag-id="2517" ag-hash="-253836880">
+	<item name="file_overriders" caption="Перезапись файлов" description="Тут можно создаввать айтемы, перезаписывающие файлы" ag-id="2162" ag-hash="-253836880">
 		<child item="text_file_overrider"/>
 		<child item="file_overrider"/>
 		<child item="robots_text_overrider" single="true"/>
 		<child item="robots_overrider" single="true"/>
 	</item>
 
-	<item name="text_file_overrider" key="name" caption="Файл (текстовый)" description="Позволяет презаписать любой файл. Только для разработчиков!" ag-id="2518" ag-hash="1723673717">
+	<item name="text_file_overrider" key="name" caption="Файл (текстовый)" description="Позволяет презаписать любой файл. Только для разработчиков!" ag-id="2163" ag-hash="1723673717">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
 		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="src: src;"/>
@@ -301,7 +312,7 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="file_overrider" key="name" caption="Файл" description="Прикрепленный файл копируется в указанное место" ag-id="2519" ag-hash="1238737699">
+	<item name="file_overrider" key="name" caption="Файл" description="Прикрепленный файл копируется в указанное место" ag-id="2164" ag-hash="1238737699">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="src" type="string" caption="Файл" description="путь к файлу, который нужно перезаписать" />
 		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="src: src;"/>
@@ -309,13 +320,13 @@
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="robots_text_overrider" caption="Перезапись robots.txt" ag-id="2520" ag-hash="995375434">
+	<item name="robots_text_overrider" caption="Перезапись robots.txt" ag-id="2165" ag-hash="995375434">
 		<parameter name="file_content" type="plain-text" caption="Содержимое файла" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
 		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
 	</item>
 
-	<item name="robots_overrider" caption="Прикрепить robots.txt" ag-id="2521" ag-hash="613905584">
+	<item name="robots_overrider" caption="Прикрепить robots.txt" ag-id="2166" ag-hash="613905584">
 		<parameter name="file_content" type="file" caption="Файл для копирования" description="После сохранения файл бует презаписан!" format="dest: robots.txt;"/>
 		<on-update class="ecommander.fwk.WriteToDestFileFactory"/>
 		<on-create class="ecommander.fwk.WriteToDestFileFactory"/>
@@ -337,5 +348,5 @@
 	</root>
 
 
-<!--EXP-->
+	<!--EXP-->
 </model>

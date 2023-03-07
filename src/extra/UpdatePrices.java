@@ -5,6 +5,7 @@ import ecommander.fwk.ExcelPriceList;
 import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -13,6 +14,7 @@ import extra._generated.Product;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Разбор файла с ценой
@@ -30,14 +32,19 @@ public class UpdatePrices extends IntegrateBase {
 		if (catalog == null)
 			return false;
 		File priceFile = catalog.getFileValue(ItemNames.catalog.INTEGRATION, AppContext.getFilesDirPath(false));
+		List<Item> sections = new ItemQuery(ItemNames.SECTION).loadItems();
+		for (Item section : sections) {
+			executeAndCommitCommandUnits(ItemStatusDBUnit.hide(section));
+		}
 		price = new ExcelPriceList(priceFile, PRICE_HEADER) {
 			@Override
 			protected void processRow() throws Exception {
 				String code = StringUtils.replace(getValue(0), " ", "");
 				if (StringUtils.isNotBlank(code)) {
-					Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code));
+					Item prod = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code, Item.STATUS_NORMAL, Item.STATUS_NIDDEN);
 					if (prod != null) {
-						prod.set_price(getCurrencyValue(PRICE_HEADER));
+						DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.restore(prod));
+						prod.setValue(ItemNames.product.PRICE, getCurrencyValue(PRICE_HEADER));
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();
 					} else {

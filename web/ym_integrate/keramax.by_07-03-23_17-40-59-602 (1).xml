@@ -1,0 +1,1933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<yml_catalog date="2023-03-07 05:40">
+  <shop>
+    <name>keramax.by</name>
+    <company>keramax.by</company>
+    <url>https://keramax.by</url>
+    <currencies>
+      <currency id="BYN" rate="1" />
+    </currencies>
+    <categories>
+      <category id="k1191585822">Керамическая плитка и керамогранит</category>
+    </categories>
+    <offers>
+      <offer id="k15214" available="true">
+        <url>https://keramax.by/product/aglomerat/</url>
+        <price>35.9</price>
+        <site_price>35.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/AG21.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Cafe_AG21_AW01_12.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Aglomerat_21-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Aglomerat_21-int-1.jpg</picture>
+        <name>Aglomerat AG21</name>
+        <vendorCode>15214</vendorCode>
+        <description><![CDATA[<p>Керамогранит Estima / Aglomerat в размере 60&#215;60 исполнен в стиле светло-серого  агломерированного камня, известняка. Дизайн серого агломерата популярен в лофтовых интерьерах, его минимализм и брутальность хорошо сочетаются с предметами декора и мебели индустриального стиля. Светло-серые тона керамогранитного агломерата урбанизируют интерьер, делая его строгим, лаконичным и вместе с тем очень активным и деловым.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Aglomerat</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k14098" available="true">
+        <url>https://keramax.by/product/art-ar01/</url>
+        <price>45.9</price>
+        <site_price>45.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/ar01-11.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/int-Kitchen_AR01_UN03_3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/int-Kitchen_AR01_UN03_4.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/int-art-1.jpg</picture>
+        <name>Art AR01</name>
+        <vendorCode>14098</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Art под натуральный камень в серо-белой палитре с различными рисунками: состаренный пэчворк и геометрия. Коллекция представлена в размере 40,5х40,5см и отличается высокой детализацией рисунка. Керамогранит Art подходит для укладки на пол или стены как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Art</param>
+        <param name="Назначение">Для стен, Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Бетон, Пэчворк, Рисунок</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k13204" available="true">
+        <url>https://keramax.by/product/brigantina-bg00/</url>
+        <price>45.9</price>
+        <site_price>45.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/bg00.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_bg00-1-1.jpg</picture>
+        <name>Brigantina BG00</name>
+        <vendorCode>13204</vendorCode>
+        <description><![CDATA[<p>Керамогранит Brigantina &#8212; это ректифицированный керамогранит с обрезным краем, что позволяет укладывать его с минимальным швом (&#171;бесшовный метод укладки&#187;). Правдоподобно имитирует рисунок натурального состаренного дерева. Включает в себя до 10 вариантов графических отпечатков. Подходит для укладки как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Brigantina</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">150×600</param>
+      </offer>
+      <offer id="k13208" available="true">
+        <url>https://keramax.by/product/brigantina-bg01/</url>
+        <price>45.9</price>
+        <site_price>45.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/bg01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_bg00.jpg</picture>
+        <name>Brigantina BG01</name>
+        <vendorCode>13208</vendorCode>
+        <description><![CDATA[<p>Керамогранит Brigantina &#8212; это ректифицированный керамогранит с обрезным краем, что позволяет укладывать его с минимальным швом (&#171;бесшовный метод укладки&#187;). Правдоподобно имитирует рисунок натурального состаренного дерева. Включает в себя до 10 вариантов графических отпечатков. Подходит для укладки как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Brigantina</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Бежевый, Коричневый</param>
+        <param name="Размер">150×600</param>
+      </offer>
+      <offer id="k13214" available="true">
+        <url>https://keramax.by/product/brigantina-bg03/</url>
+        <price>45.9</price>
+        <site_price>45.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/bg03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_bg03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_bg03-2.jpg</picture>
+        <name>Brigantina BG03</name>
+        <vendorCode>13214</vendorCode>
+        <description><![CDATA[<p>Керамогранит Brigantina &#8212; это ректифицированный керамогранит с обрезным краем, что позволяет укладывать его с минимальным швом (&#171;бесшовный метод укладки&#187;). Правдоподобно имитирует рисунок натурального состаренного дерева. Включает в себя до 10 вариантов графических отпечатков. Подходит для укладки как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Brigantina</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">150×600</param>
+      </offer>
+      <offer id="k13218" available="true">
+        <url>https://keramax.by/product/brigantina-bg05/</url>
+        <price>45.9</price>
+        <site_price>45.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/bg05.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_bg05-1.jpg</picture>
+        <name>Brigantina BG05</name>
+        <vendorCode>13218</vendorCode>
+        <description><![CDATA[<p>Керамогранит Brigantina &#8212; это ректифицированный керамогранит с обрезным краем, что позволяет укладывать его с минимальным швом (&#171;бесшовный метод укладки&#187;). Правдоподобно имитирует рисунок натурального состаренного дерева. Включает в себя до 10 вариантов графических отпечатков. Подходит для укладки как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Brigantina</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">150×600</param>
+      </offer>
+      <offer id="k13412" available="true">
+        <url>https://keramax.by/product/dream-wood-dw01/</url>
+        <price>39.9</price>
+        <site_price>39.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/dw01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw01-21.jpg</picture>
+        <name>Dream Wood DW01</name>
+        <vendorCode>13412</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Dream Wood имитирует натуральное дерево в 4 оттенках и отличается высокой детализацией текстуры.Подходит для укладки как в жилых, так и в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dream Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Белый, Серый</param>
+        <param name="Размер">300×600</param>
+      </offer>
+      <offer id="k13419" available="true">
+        <url>https://keramax.by/product/dream-wood-dw02/</url>
+        <price>35.9</price>
+        <site_price>35.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/dw02.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw02-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw02.jpg</picture>
+        <name>Dream Wood DW02</name>
+        <vendorCode>13419</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Dream Wood имитирует натуральное дерево в 4 оттенках и отличается высокой детализацией текстуры.Подходит для укладки как в жилых, так и в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dream Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">300×600</param>
+      </offer>
+      <offer id="k13425" available="true">
+        <url>https://keramax.by/product/dream-wood-dw04/</url>
+        <price>45.5</price>
+        <site_price>45.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/dw04.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw04.jpg</picture>
+        <name>Dream Wood DW04</name>
+        <vendorCode>13425</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Dream Wood имитирует натуральное дерево в 4 оттенках и отличается высокой детализацией текстуры.Подходит для укладки как в жилых, так и в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dream Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Бежевый, Коричневый</param>
+        <param name="Размер">300×600</param>
+      </offer>
+      <offer id="k13429" available="true">
+        <url>https://keramax.by/product/dream-wood-dw05/</url>
+        <price>35.9</price>
+        <site_price>35.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/dw05.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw005.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-dw05-2.jpg</picture>
+        <name>Dream Wood DW05</name>
+        <vendorCode>13429</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Dream Wood имитирует натуральное дерево в 4 оттенках и отличается высокой детализацией текстуры.Подходит для укладки как в жилых, так и в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dream Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">300×600</param>
+      </offer>
+      <offer id="k13584" available="true">
+        <url>https://keramax.by/product/gabro-gb03/</url>
+        <price>69.5</price>
+        <site_price>69.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/gb03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_gb033.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-gb03.jpg</picture>
+        <name>Gabro GB03</name>
+        <vendorCode>13584</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит Gabro имитирует рисунок натурального камня и отличается высокой степенью детализации. Предназначен для отделки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Gabro</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13587" available="true">
+        <url>https://keramax.by/product/gabro-gb04/</url>
+        <price>69.5</price>
+        <site_price>69.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/gb04.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_gb04-011.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_gb04-021.jpg</picture>
+        <name>Gabro GB04</name>
+        <vendorCode>13587</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит Gabro имитирует рисунок натурального камня и отличается высокой степенью детализации. Предназначен для отделки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Gabro</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый, Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13553" available="true">
+        <url>https://keramax.by/product/hard-hd02/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/hd02.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int111-NG03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd04-1.jpg</picture>
+        <name>Hard HD02</name>
+        <vendorCode>13553</vendorCode>
+        <description><![CDATA[<p>Морозостойкий неполированный керамогранит Hard имитирует каменный рисунок разных оттенков. Коллекция представлена в размере 60х60см, толщиной 1см и имеет среднюю вариативность. Керамогранит Hard подходит для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hard</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13568" available="true">
+        <url>https://keramax.by/product/hard-hd03/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/hd03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd03-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd03-2.jpg</picture>
+        <name>Hard HD03</name>
+        <vendorCode>13568</vendorCode>
+        <description><![CDATA[<p>Морозостойкий неполированный керамогранит Hard имитирует каменный рисунок разных оттенков. Коллекция представлена в размере 60х60см, толщиной 1см и имеет среднюю вариативность. Керамогранит Hard подходит для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hard</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый, Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13570" available="true">
+        <url>https://keramax.by/product/hard-hd04/</url>
+        <price>64.9</price>
+        <site_price>64.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/hd04.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd03-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd04-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-hd03-1.jpg</picture>
+        <name>Hard HD04</name>
+        <vendorCode>13570</vendorCode>
+        <description><![CDATA[<p>Морозостойкий неполированный керамогранит Hard имитирует каменный рисунок разных оттенков. Коллекция представлена в размере 60х60см, толщиной 1см и имеет среднюю вариативность. Керамогранит Hard подходит для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hard</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13750" available="true">
+        <url>https://keramax.by/product/jazz-jz03/</url>
+        <price>59.9</price>
+        <site_price>59.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/jz-03.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/JZ03_60X60-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/JZ03_60X60.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/JZ03-TF03_60X60-60X120-2.jpg</picture>
+        <name>Jazz JZ03</name>
+        <vendorCode>13750</vendorCode>
+        <description><![CDATA[<p>Глазурованный керамогранит Jazz, имитирует рисунок натурального камня в серо-бежевой палитре и отличается высокой степенью детализации. Коллекция представлена в размерах 60х60 и 60х120, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Jazz подходит для укладки как в жилых, так и технических и общественных помещенях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Jazz</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k13755" available="true">
+        <url>https://keramax.by/product/jazz-jz04/</url>
+        <price>59.9</price>
+        <site_price>59.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/jz-04.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/Floor_JZ04_1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/JZ03_60X60.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/JZ03-TF03_60X60-60X120-2.jpg</picture>
+        <name>Jazz JZ04</name>
+        <vendorCode>13755</vendorCode>
+        <description><![CDATA[<p>Глазурованный керамогранит Jazz, имитирует рисунок натурального камня в серо-бежевой палитре и отличается высокой степенью детализации. Коллекция представлена в размерах 60х60 и 60х120, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Jazz подходит для укладки как в жилых, так и технических и общественных помещенях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Jazz</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k15251" available="true">
+        <url>https://keramax.by/product/luna-03/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_03.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_int-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_int-1.jpg</picture>
+        <name>Luna LN03</name>
+        <vendorCode>15251</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Estima / Luna в размере 60&#215;60, имитирующий бетон, отличается высокой степенью проработки текстуры. Коллекция включает в себя до 10 вариантов графических отпечатков. Керамогранит Luna подходит для укладки как в жилых, так и в технических и общественных помещенях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Luna</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15255" available="true">
+        <url>https://keramax.by/product/luna-ln04/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_04.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Luna_int-3.jpg</picture>
+        <name>Luna LN04</name>
+        <vendorCode>15255</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Estima / Luna в размере 60&#215;60, имитирующий бетон, отличается высокой степенью проработки текстуры. Коллекция включает в себя до 10 вариантов графических отпечатков. Керамогранит Luna подходит для укладки как в жилых, так и в технических и общественных помещенях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Luna</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k14103" available="true">
+        <url>https://keramax.by/product/melody-mo01/</url>
+        <price>41.9</price>
+        <site_price>41.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/melody-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/Kitchen_MO01_DW01_1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/Bathroom_MO01-405x405-1.jpg</picture>
+        <name>Melody MO01</name>
+        <vendorCode>14103</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Melody имитирует рисунок натурального мрамора разных оттенков и отличается высокой степенью детализации. Коллекция представлена в размере 40,5х40,5см и включает в себя 6 оттенков с разными прожилками и венами. Подходит для укладки в жилых, общественных и  технических помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Melody</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k14107" available="true">
+        <url>https://keramax.by/product/melody-mo03/</url>
+        <price>41.9</price>
+        <site_price>41.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/mo03.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/Kitchen_MO03_1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/MO03-U01_300x600.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/MO03-U01_1.jpg</picture>
+        <name>Melody MO03</name>
+        <vendorCode>14107</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Melody имитирует рисунок натурального мрамора разных оттенков и отличается высокой степенью детализации. Коллекция представлена в размере 40,5х40,5см и включает в себя 6 оттенков с разными прожилками и венами. Подходит для укладки в жилых, общественных и  технических помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Melody</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k14792" available="true">
+        <url>https://keramax.by/product/melody-mo06/</url>
+        <price>41.9</price>
+        <site_price>41.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/mo-06.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/mo-06-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/mo-06-2.jpg</picture>
+        <name>Melody MO06</name>
+        <vendorCode>14792</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Melody имитирует рисунок натурального мрамора разных оттенков и отличается высокой степенью детализации. Коллекция представлена в размере 40,5х40,5см и включает в себя 6 оттенков с разными прожилками и венами. Подходит для укладки в жилых, общественных и  технических помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Melody</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k13604" available="true">
+        <url>https://keramax.by/product/monocolor-mc01-polished/</url>
+        <price>87.9</price>
+        <site_price>87.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/mc01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-mc01-4.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-mc01-01.jpg</picture>
+        <name>Monocolor MC01 polished</name>
+        <vendorCode>13604</vendorCode>
+        <description><![CDATA[<p>Полированный керамогранит Моноколор MC01 супер-чёрный отличается высокой механической прочностью и устойчивостью к истиранию. Прокрашен по всей толщине. Подходит для технических и общественных помещений, фасадов зданий и улицы. Укладывается с минимальным швом.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Monocolor</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Моноколор</param>
+        <param name="Поверхность">Полированная</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13627" available="true">
+        <url>https://keramax.by/product/monocolor-mc02-polished/</url>
+        <price>69.5</price>
+        <site_price>69.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/mc02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-mc-02-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-mc02-2.jpg</picture>
+        <name>Monocolor MC02 polished</name>
+        <vendorCode>13627</vendorCode>
+        <description><![CDATA[<p>Полированный керамогранит Моноколор MC02 отличается высокой механической прочностью и устойчивостью к истиранию. Прокрашен по всей толщине. Подходит для технических и общественных помещений, фасадов зданий и улицы. Укладывается с минимальным швом.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Monocolor</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Моноколор</param>
+        <param name="Поверхность">Полированная</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13799" available="true">
+        <url>https://keramax.by/product/montis-mn01-mat/</url>
+        <price>64.9</price>
+        <site_price>64.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/mn01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_mn01-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_mn01-02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_mn01-03.jpg</picture>
+        <name>Montis MN01 mat</name>
+        <vendorCode>13799</vendorCode>
+        <description><![CDATA[<p>Глазурованный керамогранит Montis имитирует рисунок натурального белого мрамора с серыми прожилками и отличается высокой степенью детализации. Коллекция представлена в двух размерах: 60х60 и 60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Montis подходит для укладки как в жилых, так технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Montis</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13632" available="true">
+        <url>https://keramax.by/product/polaris-pl01/</url>
+        <price>79.5</price>
+        <site_price>79.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/pl-01-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-pl01-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/pl-01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/pl-01-3.jpg</picture>
+        <name>Polaris PL01 polished</name>
+        <vendorCode>13632</vendorCode>
+        <description><![CDATA[<p>Polaris &#8212; полированный керамогранит, имитирующий рисунок натурального белого мрамора. Коллекция представлена в размере 60*60 см, толщиной 1 см и включает в себя до 10 вариантов графических отпечатков. Подходит для укладки как жилых, так и технических и общественных помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Polaris</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Поверхность">Полированная</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15264" available="true">
+        <url>https://keramax.by/product/rainbow-rw01/</url>
+        <price>28.9</price>
+        <site_price>28.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_01_int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_01_int-2.jpg</picture>
+        <name>Rainbow RW01</name>
+        <vendorCode>15264</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rainbow</param>
+        <param name="Назначение">Для пола, Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Бежевый, Белый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15268" available="true">
+        <url>https://keramax.by/product/rainbow-rw032/</url>
+        <price>28.9</price>
+        <site_price>28.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_032.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_032_int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/rainbow_032_int-2.jpg</picture>
+        <name>Rainbow RW032</name>
+        <vendorCode>15268</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rainbow</param>
+        <param name="Назначение">Для пола, Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13668" available="true">
+        <url>https://keramax.by/product/rainbow-rw034/</url>
+        <price>25.9</price>
+        <site_price>25.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/rw034-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-034-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-034-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-034-3.jpg</picture>
+        <name>Rainbow RW034 mat</name>
+        <vendorCode>13668</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Rainbow под камень отличается высокой механической прочностью и устойчивостью к истиранию. Подходит для укладки на улице, а также в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rainbow</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый, Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13732" available="true">
+        <url>https://keramax.by/product/rainbow-rw10-300x300/</url>
+        <price>37.9</price>
+        <site_price>37.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/rw10-300.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-300-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-300-1.jpg</picture>
+        <name>Rainbow RW10 300×300</name>
+        <vendorCode>13732</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rainbow, Standart</param>
+        <param name="Назначение">Для пола, Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k13676" available="true">
+        <url>https://keramax.by/product/rainbow-rw10-mat/</url>
+        <price>59.9</price>
+        <site_price>59.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/rw10.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-10-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-10-1-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-10-3.jpg</picture>
+        <name>Rainbow RW10 mat</name>
+        <vendorCode>13676</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Rainbow под камень отличается высокой механической прочностью и устойчивостью к истиранию. Подходит для укладки на улице, а также в технических и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rainbow</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k14113" available="true">
+        <url>https://keramax.by/product/rock-rc01/</url>
+        <price>39.6</price>
+        <site_price>39.6</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/rock-01.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/int-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/int-Kitchen_AR01_UN03_4.jpg</picture>
+        <name>Rock RC01</name>
+        <vendorCode>14113</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Rock имитирует натуральный камень в 3 разнообразных оттенках и отличается высокой детализацией текстуры. Коллекция представлена в размере 40,5х40,5см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Rock подходит для укладки как в жилых и общественных помещениях, а также на фасаде или террасе вашего дома.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rock</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k14796" available="true">
+        <url>https://keramax.by/product/rock-rc02-rustik/</url>
+        <price>39.6</price>
+        <site_price>39.6</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/rc02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/Living-room_RC02_MW02_2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/08/Living-room_RC02_MW02_3.jpg</picture>
+        <name>Rock RC02 rustik</name>
+        <vendorCode>14796</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Rock имитирует натуральный камень в 3 разнообразных оттенках и отличается высокой детализацией текстуры. Коллекция представлена в размере 40,5х40,5см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Rock подходит для укладки как в жилых и общественных помещениях, а также на фасаде или террасе вашего дома.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rock</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k14117" available="true">
+        <url>https://keramax.by/product/rock-rc03/</url>
+        <price>39.6</price>
+        <site_price>39.6</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/rock-03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/Living-Room_RC03_40x40DW05_30x60.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/Kitchen_RC03_1.jpg</picture>
+        <name>Rock RC03 rustik</name>
+        <vendorCode>14117</vendorCode>
+        <description><![CDATA[<p>Неполированный керамогранит Rock имитирует натуральный камень в 3 разнообразных оттенках и отличается высокой детализацией текстуры. Коллекция представлена в размере 40,5х40,5см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Rock подходит для укладки как в жилых и общественных помещениях, а также на фасаде или террасе вашего дома.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Rock</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">400×400</param>
+      </offer>
+      <offer id="k13777" available="true">
+        <url>https://keramax.by/product/spanish-wood-sp00/</url>
+        <price>58.2</price>
+        <site_price>58.2</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/sp00-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP00-1-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP00-2-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP00-3.jpg</picture>
+        <name>Spanish Wood SP00</name>
+        <vendorCode>13777</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Spanish Wood натурально имитирует состаренную паркетную доску и отличается высокой детализацией рисунка. Ректифицированный под 90 градусов край позволяет применить бесшовный способ укладки. Коллекция представлена в размере 19,4х120&#215;1см и подходит для укладки как  в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Spanish Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">200×1200</param>
+      </offer>
+      <offer id="k13783" available="true">
+        <url>https://keramax.by/product/spanish-wood-sp01/</url>
+        <price>66.5</price>
+        <site_price>66.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/sp01-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP01-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP01-3.jpg</picture>
+        <name>Spanish Wood SP01</name>
+        <vendorCode>13783</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Spanish Wood натурально имитирует состаренную паркетную доску и отличается высокой детализацией рисунка. Ректифицированный под 90 градусов край позволяет применить бесшовный способ укладки. Коллекция представлена в размере 19,4х120&#215;1см и подходит для укладки как  в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Spanish Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">200×1200</param>
+      </offer>
+      <offer id="k13789" available="true">
+        <url>https://keramax.by/product/spanish-wood-sp03/</url>
+        <price>66.5</price>
+        <site_price>66.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/sp03-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP03-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP03-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP03-4.jpg</picture>
+        <name>Spanish Wood SP03</name>
+        <vendorCode>13789</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Spanish Wood натурально имитирует состаренную паркетную доску и отличается высокой детализацией рисунка. Ректифицированный под 90 градусов край позволяет применить бесшовный способ укладки. Коллекция представлена в размере 19,4х120&#215;1см и подходит для укладки как  в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Spanish Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">200×1200</param>
+      </offer>
+      <offer id="k13794" available="true">
+        <url>https://keramax.by/product/spanish-wood-sp04/</url>
+        <price>66.5</price>
+        <site_price>66.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/sp04-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP04-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP04-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int_SP04-3.jpg</picture>
+        <name>Spanish Wood SP04</name>
+        <vendorCode>13794</vendorCode>
+        <description><![CDATA[<p>Матовый керамогранит Spanish Wood натурально имитирует состаренную паркетную доску и отличается высокой детализацией рисунка. Ректифицированный под 90 градусов край позволяет применить бесшовный способ укладки. Коллекция представлена в размере 19,4х120&#215;1см и подходит для укладки как  в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Spanish Wood</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Жёлтый</param>
+        <param name="Размер">200×1200</param>
+      </offer>
+      <offer id="k13648" available="true">
+        <url>https://keramax.by/product/standart-st011/</url>
+        <price>13.9</price>
+        <site_price>13.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/st011.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-11-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-11-1-1.jpg</picture>
+        <name>Standart ST011 (2 сорт)</name>
+        <vendorCode>13648</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Standart</param>
+        <param name="Назначение">Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k13642" available="true">
+        <url>https://keramax.by/product/standart-st03/</url>
+        <price>28.5</price>
+        <site_price>28.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/st03.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-03-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-03-3.jpg</picture>
+        <name>Standart ST03</name>
+        <vendorCode>13642</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Standart</param>
+        <param name="Назначение">Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k13638" available="true">
+        <url>https://keramax.by/product/standart-st10/</url>
+        <price>34.9</price>
+        <site_price>34.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/st10.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-10.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-10-1.jpg</picture>
+        <name>Standart ST10</name>
+        <vendorCode>13638</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Standart</param>
+        <param name="Назначение">Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k13652" available="true">
+        <url>https://keramax.by/product/standart-st16/</url>
+        <price>33.9</price>
+        <site_price>33.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/st16.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-16-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-16-3.jpg</picture>
+        <name>Standart ST16</name>
+        <vendorCode>13652</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашен по всей толщине. Реалистично имитирует натуральный камень. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Standart</param>
+        <param name="Назначение">Для фасада и террасы, Технический керамогранит</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k13657" available="true">
+        <url>https://keramax.by/product/standart-st17/</url>
+        <price>29.9</price>
+        <site_price>29.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/st17.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-17.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-17-2.jpg</picture>
+        <name>Standart ST17</name>
+        <vendorCode>13657</vendorCode>
+        <description><![CDATA[<p>Неполированный морозостойкий керамогранит, окрашенный по всей толщине. Обладает повышенной стойкостью к истиранию. Идеально подходит для наружных работ, а также технических помещений и помещений с высокой проходимостью.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Standart</param>
+        <param name="Назначение">Для пола, Керамогранит, Технический керамогранит</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13397" available="true">
+        <url>https://keramax.by/product/traffic-tf01/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/TF01.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-Traffic-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-tf01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-tf01-1.jpeg</picture>
+        <name>Traffic TF01</name>
+        <vendorCode>13397</vendorCode>
+        <description><![CDATA[<p>Traffic &#8212; это неполированный керамогранит, имитирующий цементное покрытие и отличающийся высокой степенью детализации. Коллекция представлена в размерах: 60х60см и  60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Traffic подходит для укладки как жилых, так технических и общественных помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Traffic</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k13407" available="true">
+        <url>https://keramax.by/product/traffic-tf03/</url>
+        <price>62.9</price>
+        <site_price>62.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/TF03.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-Traffic-TF03-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-tf03-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/JZ03-TF03_60X60-60X120.jpg</picture>
+        <name>Traffic TF03</name>
+        <vendorCode>13407</vendorCode>
+        <description><![CDATA[<p>Traffic &#8212; это неполированный керамогранит, имитирующий цементное покрытие и отличающийся высокой степенью детализации. Коллекция представлена в размерах: 60х60см и  60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Traffic подходит для укладки как жилых, так технических и общественных помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Traffic</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k13577" available="true">
+        <url>https://keramax.by/product/tramontana-tn02/</url>
+        <price>67.5</price>
+        <site_price>67.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/NG03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int21-NG03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int111-NG03.jpg</picture>
+        <name>Tramontana TN02</name>
+        <vendorCode>13577</vendorCode>
+        <description><![CDATA[<p>Матовый морозостойкий керамогранит Energy NG03 воспроизводит поверхность отшлифованного натурального гранита и имеет толщину 1см. Предназначен для отделки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Tramontana</param>
+        <param name="Назначение">Для пола, Керамогранит, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k13255" available="true">
+        <url>https://keramax.by/product/urban-bricks-ub01/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/ub01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub01-1.jpg</picture>
+        <name>Urban Bricks UB01</name>
+        <vendorCode>13255</vendorCode>
+        <description><![CDATA[<p>Морозостойкий керамогранит URBAN BRICKS является отличным материалом для наружной отделки фасада. Не выцветает и не выгорает. Ректифицированный формат 60х120 см позволяет укладывать плитку с минимальным швом. Также коллекция применяется и для отделки внутренних помещений. Лучшая альтернатива фасадным панелям.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Urban Bricks</param>
+        <param name="Назначение">Для стен, Керамогранит, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Кирпич</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k13259" available="true">
+        <url>https://keramax.by/product/urban-bricks-ub04/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/ub04.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub04.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub03.jpg</picture>
+        <name>Urban Bricks UB04</name>
+        <vendorCode>13259</vendorCode>
+        <description><![CDATA[<p>Морозостойкий керамогранит URBAN BRICKS является отличным материалом для наружной отделки фасада. Не выцветает и не выгорает. Ректифицированный формат 60х120 см позволяет укладывать плитку с минимальным швом. Также коллекция применяется и для отделки внутренних помещений. Лучшая альтернатива фасадным панелям.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Urban Bricks</param>
+        <param name="Назначение">Для стен, Керамогранит, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Кирпич</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k13263" available="true">
+        <url>https://keramax.by/product/urban-bricks-ub05/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/ub05.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub05-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int_ub05-2.jpg</picture>
+        <name>Urban Bricks UB05</name>
+        <vendorCode>13263</vendorCode>
+        <description><![CDATA[<p>Морозостойкий керамогранит URBAN BRICKS является отличным материалом для наружной отделки фасада. Не выцветает и не выгорает. Ректифицированный формат 60х120 см позволяет укладывать плитку с минимальным швом. Также коллекция применяется и для отделки внутренних помещений. Лучшая альтернатива фасадным панелям.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Urban Bricks</param>
+        <param name="Назначение">Для стен, Керамогранит, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Кирпич</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k13441" available="true">
+        <url>https://keramax.by/product/vision-vs01-mat/</url>
+        <price>59.5</price>
+        <site_price>59.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/vs01_60x120-2.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-VS01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-VS01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/vs01_60x120.jpeg</picture>
+        <name>Vision VS01 mat</name>
+        <vendorCode>13441</vendorCode>
+        <description><![CDATA[<p>Vision &#8212; керамогранит с матовой поверхностью, под мрамор в бело-серо-черной палитре, с тонкими мраморными прожилками. Коллекция представлена в размерах 60х60 и 60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Vision подходит для укладки в как жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Vision</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k13499" available="true">
+        <url>https://keramax.by/product/vision-vs01-polished/</url>
+        <price>94.9</price>
+        <site_price>94.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/vs01_60x120_polir.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-VS01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-VS01.jpg</picture>
+        <name>Vision VS01 polished</name>
+        <vendorCode>13499</vendorCode>
+        <description><![CDATA[<p>Vision VS01 &#8212; это керамогранит с полированной поверхностью, под мрамор в бело-серо-черной палитре, с тонкими мраморными прожилками. Коллекция представлена в размерах 60х60 и 60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Vision подходит для укладки как в жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Vision</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Поверхность">Полированная</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k13745" available="true">
+        <url>https://keramax.by/product/vision-vs02-mat/</url>
+        <price>69.5</price>
+        <site_price>69.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/vs02_60x120.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-VS01-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-VS01.jpg</picture>
+        <name>Vision VS02 mat</name>
+        <vendorCode>13745</vendorCode>
+        <description><![CDATA[<p>Vision — керамогранит с матовой поверхностью, под мрамор в бело-серо-черной палитре, с тонкими мраморными прожилками. Коллекция представлена в размерах 60х60 и 60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Vision подходит для укладки в как жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Vision</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной</param>
+        <param name="Дизайн">Бетон, Металл, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k13433" available="true">
+        <url>https://keramax.by/product/vision-vs03-mat/</url>
+        <price>75.9</price>
+        <site_price>75.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/vs03_60x120.jpeg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/int-VS03-21.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/06/int-VS03-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/05/vs03_60x120-3.jpeg</picture>
+        <name>Vision VS03 mat</name>
+        <vendorCode>13433</vendorCode>
+        <description><![CDATA[<p>Vision VS03 &#8212; керамогранит с матовой поверхностью, под мрамор в бело-серо-черной палитре, с тонкими мраморными прожилками. Коллекция представлена в размерах 60х60 и 60х120см, толщиной 1см и включает в себя до 10 вариантов графических отпечатков. Керамогранит Vision подходит для укладки в как жилых, так и общественных помещениях.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Vision</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Дизайн">Мрамор</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k14429" available="true">
+        <url>https://keramax.by/product/zebra-zb02/</url>
+        <price>17.3</price>
+        <site_price>17.3</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/zb02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/zebra_20x20x12_3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/zebra_20x20x12_4.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2022/07/zebra_20x20x12_5.jpg</picture>
+        <name>Zebra ZB02 (12мм)</name>
+        <vendorCode>14429</vendorCode>
+        <description><![CDATA[<p>Утолщенный морозостойкий керамогранит Zebra 300x300x12мм повышенной прочности. Предназначен для жилых и технических помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Габариты">30 × 30 × 1.2 cm</param>
+        <param name="Коллекция">Zebra</param>
+        <param name="Назначение">Для пола, Керамогранит, Технический керамогранит</param>
+        <param name="Дизайн">Бетон, Камень, Рисунок</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">300×300</param>
+      </offer>
+      <offer id="k14992" available="true">
+        <url>https://keramax.by/product/alicante-beige/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/ALICANTE_Beige.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante_beige-21.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante_beige-31.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante_beige-41.jpg</picture>
+        <name>Alicante бежевый</name>
+        <vendorCode>14992</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA ALICANTE воплощает в своём дизайне природную красоту мрамора Имперадор.<br>
+Данный вид камня прекрасно сочетается с большинством отделочных материалов и вписывается в любой интерьер.<br>
+Керамогранит Аликанте применяется в качестве напольного покрытия или для облицовки стен внутри и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Alicante</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k14988" available="true">
+        <url>https://keramax.by/product/alicante-brown/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/ALICANTE_brown.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante_brown-21.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante_brown-2.jpg</picture>
+        <name>Alicante коричневый</name>
+        <vendorCode>14988</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA ALICANTE воплощает в своём дизайне природную красоту мрамора Имперадор.<br>
+Данный вид камня прекрасно сочетается с большинством отделочных материалов и вписывается в любой интерьер.<br>
+Керамогранит Аликанте применяется в качестве напольного покрытия или для облицовки стен внутри и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Alicante</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k14982" available="true">
+        <url>https://keramax.by/product/alicante-grey/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/ALICANTE-Gray.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante-gray-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/alicante-gray-3.jpg</picture>
+        <name>Alicante светло-серый</name>
+        <vendorCode>14982</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA ALICANTE воплощает в своём дизайне природную красоту мрамора Имперадор.<br>
+Данный вид камня прекрасно сочетается с большинством отделочных материалов и вписывается в любой интерьер.<br>
+Керамогранит Аликанте применяется в качестве напольного покрытия или для облицовки стен внутри и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Alicante</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k14997" available="true">
+        <url>https://keramax.by/product/amsterdam-brown/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Amsredam-600x1200-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Amsredam_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Amsredam_int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Amsredam_int-4.jpg</picture>
+        <name>Amsterdam коричневый</name>
+        <vendorCode>14997</vendorCode>
+        <description><![CDATA[<p>Керамогранит Amsterdam Axima производится в формате 1200&#215;600 и 1200&#215;200. Рисунок с потрясающей правдоподобностью имитирует срез дубовой доски. Этот эффект достигается за счёт цифровой графики и рельефного штампа. Используя керамический гранит Амстердам Аксима, вы получаете долговечный материал и великолепный интерьер.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Amsterdam</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">200×1200, 600×1200</param>
+      </offer>
+      <offer id="k15002" available="true">
+        <url>https://keramax.by/product/antwerp-beige/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/antwerp-beg.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Antwerp_int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Antwerp_int-4.jpg</picture>
+        <name>Antwerp бежевый</name>
+        <vendorCode>15002</vendorCode>
+        <description><![CDATA[<p>Дизайн натурального мрамора и травертина, является одним из лучших в отделке современных интерьеров.<br>
+Керамогранит Антверп от Axima выполнен с матовой, немного структурированной поверхностью, что придаёт ему еще больше натуральности и тактильности. Удачное сочетание цветовых оттенков привнесет в ваш интерьер естественную стилистику камня и оригинальность.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Antwerp</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15010" available="true">
+        <url>https://keramax.by/product/antwerp-grey/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/antwerp-svser.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Antwerp_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Antwerp_int-2.jpg</picture>
+        <name>Antwerp серый</name>
+        <vendorCode>15010</vendorCode>
+        <description><![CDATA[<p>Дизайн натурального мрамора и травертина, является одним из лучших в отделке современных интерьеров.<br>
+Керамогранит Антверп от Axima выполнен с матовой, немного структурированной поверхностью, что придаёт ему еще больше натуральности и тактильности. Удачное сочетание цветовых оттенков привнесет в ваш интерьер естественную стилистику камня и оригинальность.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Antwerp</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15018" available="true">
+        <url>https://keramax.by/product/bari-white/</url>
+        <price>54.9</price>
+        <site_price>54.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bari-white.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Bari-int.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Bari-int-2.jpg</picture>
+        <name>Bari белый</name>
+        <vendorCode>15018</vendorCode>
+        <description><![CDATA[<p>Bari — коллекция с непревзойденным дизайном. Эффект мрамора с железистыми прожилками придает камню натуральную текстуру и роскошь. Благодаря своему яркому визуальному решению керамогранит Bari дает возможность создать по-настоящему запоминающийся, уникальный интерьер. Эстетические качества коллекции позволяют использовать ее для внутренней и внешней отделки стен, а также в оформлении отдельных деталей пространства. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Bari</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15022" available="true">
+        <url>https://keramax.by/product/bari-brown/</url>
+        <price>54.9</price>
+        <site_price>54.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bari-brown.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Bari-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Bari-int.jpg</picture>
+        <name>Bari коричневый</name>
+        <vendorCode>15022</vendorCode>
+        <description><![CDATA[<p>Bari — коллекция с непревзойденным дизайном. Эффект мрамора с железистыми прожилками придает камню натуральную текстуру и роскошь. Благодаря своему яркому визуальному решению керамогранит Bari дает возможность создать по-настоящему запоминающийся, уникальный интерьер. Эстетические качества коллекции позволяют использовать ее для внутренней и внешней отделки стен, а также в оформлении отдельных деталей пространства. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Bari</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15199" available="true">
+        <url>https://keramax.by/product/bari-blue/</url>
+        <price>54.9</price>
+        <site_price>54.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/bari-sin.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Bari-int-1.jpg</picture>
+        <name>Bari синий</name>
+        <vendorCode>15199</vendorCode>
+        <description><![CDATA[<p>Bari — коллекция с непревзойденным дизайном. Эффект мрамора с железистыми прожилками придает камню натуральную текстуру и роскошь. Благодаря своему яркому визуальному решению керамогранит Bari дает возможность создать по-настоящему запоминающийся, уникальный интерьер. Эстетические качества коллекции позволяют использовать ее для внутренней и внешней отделки стен, а также в оформлении отдельных деталей пространства. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Bari</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Синий</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15024" available="true">
+        <url>https://keramax.by/product/barselona-bezh/</url>
+        <price>38.5</price>
+        <site_price>38.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barselona-svetlo_bezhevyy.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barselona-svetlo_bezhevyy-int-21.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barselona-svetlo_bezhevyy-int-1.jpg</picture>
+        <name>Barselona бежевый</name>
+        <vendorCode>15024</vendorCode>
+        <description><![CDATA[<p>Мраморовидный рисунок коллекции Barselona пронизан выразительными прожилками, которые сплетены в завораживающую паутину горной породы. Керамогранит Барселона имеет высокую степень износостойкости и неприхотлив в уходе. Применяется для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Barselona</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15032" available="true">
+        <url>https://keramax.by/product/barselona-coffee/</url>
+        <price>47.5</price>
+        <site_price>47.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barselona-kofeynyy.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barcelona_600h600_int-02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barcelona_600h600_int-01.jpg</picture>
+        <name>Barselona кофейный</name>
+        <vendorCode>15032</vendorCode>
+        <description><![CDATA[<p>Мраморовидный рисунок коллекции Barselona пронизан выразительными прожилками, которые сплетены в завораживающую паутину горной породы. Керамогранит Барселона имеет высокую степень износостойкости и неприхотлив в уходе. Применяется для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Barselona</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15028" available="true">
+        <url>https://keramax.by/product/barselona-grey/</url>
+        <price>38.5</price>
+        <site_price>38.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barselona-svetlo_seryy.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barcelona_600h600_int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/barcelona_600h600_int-2.jpg</picture>
+        <name>Barselona серый</name>
+        <vendorCode>15028</vendorCode>
+        <description><![CDATA[<p>Мраморовидный рисунок коллекции Barselona пронизан выразительными прожилками, которые сплетены в завораживающую паутину горной породы. Керамогранит Барселона имеет высокую степень износостойкости и неприхотлив в уходе. Применяется для укладки как внутри, так и снаружи помещений.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Barselona</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15036" available="true">
+        <url>https://keramax.by/product/bergen-bezh/</url>
+        <price>49.5</price>
+        <site_price>49.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bergen-beg.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bergen-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bergen-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/bergen-3.jpg</picture>
+        <name>Bergen бежевый</name>
+        <vendorCode>15036</vendorCode>
+        <description><![CDATA[<p>Керамогранит Bergen Axima производится в формате 1200&#215;600 и 1200&#215;200. Рисунок с потрясающей правдоподобностью имитирует срез дубовой доски. Этот эффект достигается за счёт цифровой графики и рельефного штампа. Используя керамический гранит Берген Аксима, вы получаете долговечный материал и великолепный интерьер.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Bergen</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Для фасада и террасы</param>
+        <param name="Дизайн">Дерево</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">200×1200, 600×1200</param>
+      </offer>
+      <offer id="k15047" available="true">
+        <url>https://keramax.by/product/berlin-svetly/</url>
+        <price>49.8</price>
+        <site_price>49.8</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-svser.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-sv-int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-sv-int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-sv-int-2.jpg</picture>
+        <name>Berlin светло-серый</name>
+        <vendorCode>15047</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA BERLIN / АКСИМА БЕРЛИН исполнен в стиле натурального вулканического туфа или состаренной тонированной итальянской штукатурки. Серый цвет натурального камня придаст строгость и классичность любому интерьеру или фасаду здания.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Berlin</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15041" available="true">
+        <url>https://keramax.by/product/berlin-grey/</url>
+        <price>49.8</price>
+        <site_price>49.8</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-seraya.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-int-4.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/berlin-int-3.jpg</picture>
+        <name>Berlin серый</name>
+        <vendorCode>15041</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA BERLIN / АКСИМА БЕРЛИН исполнен в стиле натурального вулканического туфа или состаренной тонированной итальянской штукатурки. Серый цвет натурального камня придаст строгость и классичность любому интерьеру или фасаду здания.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Berlin</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15065" available="true">
+        <url>https://keramax.by/product/bonn/</url>
+        <price>54</price>
+        <site_price>54</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/BOON-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Boon_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Boon_int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/BOON-1200.jpg</picture>
+        <name>Bonn</name>
+        <vendorCode>15065</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA BONN / Аксима Бонн 60&#215;60 исполнен в стиле классического белого мрамора. Изысканный дизайн керамогранита украсит собой как современный, так и классический интерьер.<br>
+Его природная красота и неповторимость рисунка, в сочетании с предметами декора и мебели, создадут атмосферу уюта лаконичности и комфорта, оттеняя и усиливая на контрасте цвета элементов интерьера.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Bonn</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k15070" available="true">
+        <url>https://keramax.by/product/boston-kofe/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-kof.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-kof-int-02.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-kof-int-01.jpg</picture>
+        <name>Boston кофейный</name>
+        <vendorCode>15070</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA BOSTON / Аксима Бостон 60&#215;60 исполнен в стиле благородного ониксового мрамора. Изысканный дизайн керамогранита Бостон украсит собой как современный, так и классический интерьер. Серые и кофейные тона ониксового камня привнесут в интерьер атмосферу уюта и утонченности стиля, делая его лаконичным и вместе с тем очень домашним.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Boston</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый, Коричневый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15074" available="true">
+        <url>https://keramax.by/product/boston-sery/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-ser.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-ser-int-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/boston-ser-int-02.jpg</picture>
+        <name>Boston серый</name>
+        <vendorCode>15074</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA BOSTON / Аксима Бостон 60&#215;60 исполнен в стиле благородного ониксового мрамора. Изысканный дизайн керамогранита Бостон украсит собой как современный, так и классический интерьер. Серые и кофейные тона ониксового камня привнесут в интерьер атмосферу уюта и утонченности стиля, делая его лаконичным и вместе с тем очень домашним.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Boston</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый, Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15078" available="true">
+        <url>https://keramax.by/product/dakar/</url>
+        <price>49.2</price>
+        <site_price>49.2</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/DAKAR-600x600-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Interer-DAKAR-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/Interer-DAKAR-1.jpg</picture>
+        <name>Dakar</name>
+        <vendorCode>15078</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA DAKAR / Аксима Дакар 60&#215;60 исполнен в стиле черного мрамора. Черный цвет керамогранита, особенно с мраморной фактурой, несомненно найдет своё место в современных интерьерах различного назначения. Его минимализм и брутальность хорошо сочетаются со многими отделочными материалами и предметами декора и мебели. Черные тона мраморной плитки делают интерьер более строгим, лаконичным и вместе с тем очень активным и деловым. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dakar</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15205" available="true">
+        <url>https://keramax.by/product/dallas-%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE-%D1%81%D0%B5%D1%80%D1%8B%D0%B9/</url>
+        <price>41.2</price>
+        <site_price>41.2</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/DALLAS_svetlo_ser.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Cafe_AG21_AW01_12.jpg</picture>
+        <name>Dallas светло-серый</name>
+        <vendorCode>15205</vendorCode>
+        <description><![CDATA[<p>Керамогранит Dallas Axima представляет собой плитки размером 60&#215;60, выполненные в стиле терраццо. Этот дизайн зародился еще в Венеции, когда для придания материалу особой прочности в него добавляли кусочки мрамора, камней, стекла, а иногда и ракушек разной фракции. На сегодняшний день этот дизайн широко используется в различных интерьерах, а также домами моды при создании коллекций одежды.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dallas</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15209" available="true">
+        <url>https://keramax.by/product/dallas-%D1%82%D0%B5%D0%BC%D0%BD%D0%BE-%D1%81%D0%B5%D1%80%D1%8B%D0%B9/</url>
+        <price>41.2</price>
+        <site_price>41.2</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/DALLAS_temno_ser.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Dallas-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Dallas-int-3.jpg</picture>
+        <name>Dallas темно-серый</name>
+        <vendorCode>15209</vendorCode>
+        <description><![CDATA[<p>Керамогранит Dallas Axima представляет собой плитки размером 60&#215;60, выполненные в стиле терраццо. Этот дизайн зародился еще в Венеции, когда для придания материалу особой прочности в него добавляли кусочки мрамора, камней, стекла, а иногда и ракушек разной фракции. На сегодняшний день этот дизайн широко используется в различных интерьерах, а также домами моды при создании коллекций одежды.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Dallas</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15094" available="true">
+        <url>https://keramax.by/product/delhi-bezh/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/delhi-bezh.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/deli_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/deli_int-01.jpg</picture>
+        <name>Delhi бежевый</name>
+        <vendorCode>15094</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA DELHI / Аксима Дели матовый 60&#215;120 выполнен в стиле индийского натурального мрамора. Дизайн природного камня наиболее популярен в интерьерах любого назначения и прекрасно сочетается с большинством используемых отделочных материалов и предметами мебели. Рисунок натурального мрамора  придаст строгость и классичность любому интерьеру. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Delhi</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15098" available="true">
+        <url>https://keramax.by/product/delhi-grey/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/delhi-grey.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/deli_int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/deli_int-4.jpg</picture>
+        <name>Delhi серый</name>
+        <vendorCode>15098</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA DELHI / Аксима Дели матовый 60&#215;120 выполнен в стиле индийского натурального мрамора. Дизайн природного камня наиболее популярен в интерьерах любого назначения и прекрасно сочетается с большинством используемых отделочных материалов и предметами мебели. Рисунок натурального мрамора  придаст строгость и классичность любому интерьеру. </p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Delhi</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15103" available="true">
+        <url>https://keramax.by/product/detroit/</url>
+        <price>42.1</price>
+        <site_price>42.1</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/DETROIT-01.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/DETROIT-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/01/DETROIT-int-1.jpg</picture>
+        <name>Detroit</name>
+        <vendorCode>15103</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA DETROIT 60&#215;60 исполнен в стиле бетона или цемента. Этот дизайн весьма популярен в современных интерьерах различного назначения. Его минимализм и брутальность хорошо сочетаются со многими отделочными материалами и предметами мебели индустриального стиля. Серые тона цемента урбанизируют интерьер, делая его строгим, лаконичным и вместе с тем очень активным и деловым.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Detroit</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15108" available="true">
+        <url>https://keramax.by/product/florence/</url>
+        <price>55.9</price>
+        <site_price>55.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/florence.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/florence-int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/florence-int-2.jpg</picture>
+        <name>Florence серый</name>
+        <vendorCode>15108</vendorCode>
+        <description><![CDATA[<p>Керамогранит Florence Axima удивительно достоверно передаёт естественную природную карасоту мрамора Calacatta. Мрамор Калакатта — синоним роскоши, его молочно-белый фон с неструктурированными прожилками серого и золотистого цвета придаст помещению исключительный и элегантный вид.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Florence</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый, Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15112" available="true">
+        <url>https://keramax.by/product/glasgow-beige/</url>
+        <price>47.5</price>
+        <site_price>47.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow-beg.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow-int5.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow_int-3.jpg</picture>
+        <name>Glasgow светло-бежевый</name>
+        <vendorCode>15112</vendorCode>
+        <description><![CDATA[<p>Новая серия керамогранита AXIMA GLASGOW / Аксима Глазго под вулканический базальтовый камень исполнена с матовой, немного структурированной поверхностью, что придаёт ей еще больше натуральности и тактильности. Прекрасно подобранное сочетание рисунков привнесут благородную стилистику и оригинальность вашему жилому пространству.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Glasgow</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15116" available="true">
+        <url>https://keramax.by/product/glasgow-grey/</url>
+        <price>47.5</price>
+        <site_price>47.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow-grey.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow-int3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/glasgow-int4.jpg</picture>
+        <name>Glasgow серый</name>
+        <vendorCode>15116</vendorCode>
+        <description><![CDATA[<p>Новая серия керамогранита AXIMA GLASGOW / Аксима Глазго под вулканический базальтовый камень исполнена с матовой, немного структурированной поверхностью, что придаёт ей еще больше натуральности и тактильности. Прекрасно подобранное сочетание рисунков привнесут благородную стилистику и оригинальность вашему жилому пространству.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Glasgow</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15134" available="true">
+        <url>https://keramax.by/product/hannover-rizhiy/</url>
+        <price>51.9</price>
+        <site_price>51.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-ryzh.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-int-3.jpg</picture>
+        <name>Hannover рыжий</name>
+        <vendorCode>15134</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA HANNOVER / АКСИМА ГАННОВЕР выполнен в дизайне, стилизованном под камень. Данный вид благородного природного материала прекрасно сочетается с большинством отделочных материалов и предметами мебели. Серо-коричневый фон керамогранитной плитки под натуральный камень придаст строгость и элегантность любому интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hannover</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Коричневый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15130" available="true">
+        <url>https://keramax.by/product/hannover-svetly/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-svetl.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-svetl-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-svetl-int-1.jpg</picture>
+        <name>Hannover светло-бежевый</name>
+        <vendorCode>15130</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA HANNOVER / АКСИМА ГАННОВЕР выполнен в дизайне, стилизованном под камень. Данный вид благородного природного материала прекрасно сочетается с большинством отделочных материалов и предметами мебели. Серо-коричневый фон керамогранитной плитки под натуральный камень придаст строгость и элегантность любому интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hannover</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15139" available="true">
+        <url>https://keramax.by/product/hannover-black/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-black.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/hannover-int-4.jpg</picture>
+        <name>Hannover черный</name>
+        <vendorCode>15139</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA HANNOVER / АКСИМА ГАННОВЕР выполнен в дизайне, стилизованном под камень. Данный вид благородного природного материала прекрасно сочетается с большинством отделочных материалов и предметами мебели. Серо-коричневый фон керамогранитной плитки под натуральный камень придаст строгость и элегантность любому интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Hannover</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15142" available="true">
+        <url>https://keramax.by/product/livorno/</url>
+        <price>42.9</price>
+        <site_price>42.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/LIVORNO-seriy.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Livorno.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/LIVORNO-bezh.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/LIVORNO-ryzhiy.jpg</picture>
+        <name>Livorno</name>
+        <vendorCode>15142</vendorCode>
+        <description><![CDATA[<p>Керамогранит Livorno Axima выпускается в трех цветовых решениях: серый, бежевый и рыжий варианты мрамора Калакатта. Это один из самых признанных дизайнов, творцом которого выступила сама природа. Керамогранит Ливорно от Аксима наполнит пространство духом аристократичности и благородства.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Livorno</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый, Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15154" available="true">
+        <url>https://keramax.by/product/madrid-svetly/</url>
+        <price>51.9</price>
+        <site_price>51.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-sv-sery.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-s5.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-s6.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-s7.jpg</picture>
+        <name>Madrid светло-серый</name>
+        <vendorCode>15154</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA MADRID / Аксима Мадрид 60&#215;60 выполнен в лофтовой стилистике в серых тонах. Дизайн серой цементной штукатурки традиционно популярен в интерьерах различного назначения. Серые оттенки керамической плитки Мадрид придадут стильность, комфорт и изысканность любому интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Madrid</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15159" available="true">
+        <url>https://keramax.by/product/madrid-grey/</url>
+        <price>51.9</price>
+        <site_price>51.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-sery.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-t1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-t2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Madrid-int-t3.jpg</picture>
+        <name>Madrid серый</name>
+        <vendorCode>15159</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA MADRID / Аксима Мадрид 60&#215;60 выполнен в лофтовой стилистике в серых тонах. Дизайн серой цементной штукатурки традиционно популярен в интерьерах различного назначения. Серые оттенки керамической плитки Мадрид придадут стильность, комфорт и изысканность любому интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Madrid</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Бетон, Камень</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15164" available="true">
+        <url>https://keramax.by/product/manchester/</url>
+        <price>55.1</price>
+        <site_price>55.1</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Manchester.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/manchester_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/manchester_int-2.jpg</picture>
+        <name>Manchester</name>
+        <vendorCode>15164</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA MANCHESTER / Аксима Манчестер серый 60&#215;120 исполнен в стиле английского натурального травертина. Дизайн серого мраморного камня наиболее популярен в интерьерах любого назначения и прекрасно сочетается с предметами мебели и декора. Серый цвет керамогранита под натуральный камень придаст строгость и классичность вашему интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Manchester</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×1200</param>
+      </offer>
+      <offer id="k15170" available="true">
+        <url>https://keramax.by/product/newyork-bezh/</url>
+        <price>52.5</price>
+        <site_price>52.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/newyork-beg-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/newyork-int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/newyork-int-1.jpg</picture>
+        <name>New York бежевый</name>
+        <vendorCode>15170</vendorCode>
+        <description><![CDATA[<p>Коллекция «New York» / Axima детально воспроизводит текстуру роскошного оникса. Благодаря супербелой глазури, цвета коллекции получились чистыми, а графика глубокой.<br>
+Точное повторение фактуры и элегантность камня никого не оставят равнодушным и позволит вам наслаждаться изысканной красотой керамогранита «Нью Йорк» максимально долго.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">New York</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15177" available="true">
+        <url>https://keramax.by/product/orleans-geometry/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/orlean-geom.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/int-orlean-06.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/int-orlean-05.jpg</picture>
+        <name>Orleans геометрия</name>
+        <vendorCode>15177</vendorCode>
+        <description><![CDATA[<p>Керамогранит АКСИМА ОРЛЕАН геометрия 60&#215;60 из новой коллекции от Axima, создан создан в духе орлеанских архитектурных мотивов, в сочетании строгой геометрии и черного и белого мрамора. Узор чередуемых контрастных цветов и правильных форм, наполняет интерьер атмосферой средневековых замков Франции. Новая серия керамогранитной плитки под натуральный мрамор AXIMA ORLEANS состоит из двух цветографических решений: в белом и черном исполнении, с матовой поверхностью, что придаёт ей еще больше натуральности и тактильности.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Orleans</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Геометрия, Рисунок</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый, Чёрный</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15174" available="true">
+        <url>https://keramax.by/product/orleans-kvadrat/</url>
+        <price>43.5</price>
+        <site_price>43.5</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/orlean-kvadrat.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/int-orlean-03.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/int-orlean-02.jpg</picture>
+        <name>Orleans квадрат</name>
+        <vendorCode>15174</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA ORLEANS квадрат 60&#215;60 из новой коллекции от Аксима, создан в духе орлеанских архитектурных мотивов. Узнаваемый узор чередуемых контрастных цветов и лаконичных форм, наполняет интерьер атмосферой и настроением средневековой Франции. Удачное сочетание цветовых оттенков и декора напольной керамической плитки АКСИМА ОРЛЕАН квадрат привнесут естественную стилистику мрамора и оригинальность его современного исполнения в жилые и общественные пространства.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Orleans</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Геометрия, Рисунок</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Бежевый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15186" available="true">
+        <url>https://keramax.by/product/stockholm/</url>
+        <price>39.7</price>
+        <site_price>39.7</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/stockholm.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/stokgolm_final-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/stokgolm_final-2.jpg</picture>
+        <name>Stockholm</name>
+        <vendorCode>15186</vendorCode>
+        <description><![CDATA[<p>Керамогранит Stockholm Axima выпускается в формате 600×600 мм. Рисунок представляет мраморную породу благородного серого цвета. Этот качественный отделочный материал придаст помещению строгий и солидный вид. Керамический гранит Стокгольм Аксима имеет высокую износостойкость и не боится перепадов температуры.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Stockholm</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+      <offer id="k15190" available="true">
+        <url>https://keramax.by/product/vancouver/</url>
+        <price>53.9</price>
+        <site_price>53.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/VANCUVER.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Vancouver_int-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Vancouver_int-2.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Vancouver_int-3.jpg</picture>
+        <name>Vancouver</name>
+        <vendorCode>15190</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA VANCUVER /Аксима Ванкувер матовый 60х60 и 60х120 выполнен в стиле белого каррарского мрамора. Дизайн белого мраморного камня весьма популярен в интерьерах различного назначения и прекрасно сочетается с предметами мебели и декора в классическом стиле. Светлые оттенки мраморной плитки согреют, придадут стильность, комфорт и изысканность домашнему интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Vancouver</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Белый, Серый</param>
+        <param name="Размер">600×1200, 600×600</param>
+      </offer>
+      <offer id="k15195" available="true">
+        <url>https://keramax.by/product/washington-sery/</url>
+        <price>44.9</price>
+        <site_price>44.9</site_price>
+        <currencyId>BYN</currencyId>
+        <categoryId>k1191585822</categoryId>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/Washington-1.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/vashington-int-3.jpg</picture>
+        <picture>https://keramax.by/wp-content/uploads/2023/02/vashington-int-2.jpg</picture>
+        <name>Washington серый</name>
+        <vendorCode>15195</vendorCode>
+        <description><![CDATA[<p>Керамогранит AXIMA WASHINGTON / Аксима Вашингтон серый 60х60 выполнен в стиле строгого серого кварцита или базальтового камня. Дизайн керамической плитки серого камня с мягкой матовой поверхностью традиционно популярен в интерьерах различного назначения. Серые тона керамического гранита под натуральный камень придадут строгость, стильность и комфорт как домашнему, так и общественному интерьеру.</p>]]></description>
+        <count>100</count>
+        <param name="Коллекция">Washington</param>
+        <param name="Назначение">Для пола, Керамогранит, Для ванной, Фартук для кухни, Для фасада и террасы</param>
+        <param name="Дизайн">Камень, Мрамор</param>
+        <param name="Поверхность">Матовая</param>
+        <param name="Цвет">Серый</param>
+        <param name="Размер">600×600</param>
+      </offer>
+    </offers>
+  </shop>
+</yml_catalog>
