@@ -54,7 +54,8 @@ public class ExcelTemplateProcessor {
 		if (wb instanceof HSSFWorkbook) {
 			POIUtils.copyRow((HSSFWorkbook) wb, (HSSFSheet) sheet, cellXY.row, cellXY.row + 1);
 		} else if (wb instanceof XSSFWorkbook) {
-			POIUtils.copyRow((XSSFWorkbook) wb, (XSSFSheet) sheet, cellXY.row, cellXY.row + 1);
+			//POIUtils.copyRow((XSSFWorkbook) wb, (XSSFSheet) sheet, cellXY.row, cellXY.row + 1);
+			POIUtils.copyRow2(wb, sheet, cellXY.row, cellXY.row + 1);
 		} else  {
 			return false;
 		}

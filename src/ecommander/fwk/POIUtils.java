@@ -3,6 +3,7 @@ package ecommander.fwk;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -140,108 +141,11 @@ public class POIUtils {
 	 * @param destinationRowNum
 	 */
 	public static void copyRow(XSSFWorkbook workbook, XSSFSheet worksheet, int sourceRowNum, int destinationRowNum) {
-        // Get the source / new row
-        XSSFRow newRow = worksheet.getRow(destinationRowNum);
-
-        // If the row exist in destination, push down all rows by 1 else create a new row
-        if (newRow != null) {
-            worksheet.shiftRows(destinationRowNum, worksheet.getLastRowNum(), 1);
-            if (sourceRowNum >= destinationRowNum)
-            	sourceRowNum++;
-        }
-        newRow = worksheet.createRow(destinationRowNum);
-        
-        // Get the source / new row
-        XSSFRow sourceRow = worksheet.getRow(sourceRowNum);
-        
-        // Loop through source columns to add to new row
-        for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
-            // Grab a copy of the old/new cell
-            XSSFCell oldCell = sourceRow.getCell(i);
-            XSSFCell newCell = newRow.createCell(i);
-
-            // If the old cell is null jump to next cell
-            if (oldCell == null) {
-                newCell = null;
-                continue;
-            }
-
-            // Copy style from old cell and apply to new cell
-            XSSFCellStyle newCellStyle = workbook.createCellStyle();
-			newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-			StylesTable newStylesSource = newCell.getSheet().getWorkbook().getStylesSource();
-			StylesTable oldStylesSource = oldCell.getSheet().getWorkbook().getStylesSource();
-			for (XSSFCellFill fill : oldStylesSource.getFills()) {
-				XSSFCellFill fillNew = new XSSFCellFill(fill.getCTFill(), oldStylesSource.getIndexedColors());
-				newStylesSource.putFill(fillNew);
-			}
-			for (XSSFCellBorder border : oldStylesSource.getBorders()) {
-				XSSFCellBorder borderNew = new XSSFCellBorder(border.getCTBorder());
-				newStylesSource.putBorder(borderNew);
-			}
-//			for (XSSFFont font : oldStylesSource.getFonts()) {
-//				XSSFFont fontNew = new XSSFFont(font.getCTFont());
-//				fontNew.registerTo(newStylesSource);
-//			}
-//			newCellStyle.setFillForegroundColor(oldCell.getCellStyle().getFillForegroundColor());
-//			newCellStyle.setFillPattern(oldCell.getCellStyle().getFillPattern());
-//			newCellStyle.setBorderTop(oldCell.getCellStyle().getBorderTop());
-//			newCellStyle.setBorderBottom(oldCell.getCellStyle().getBorderBottom());
-//			newCellStyle.setBorderLeft(oldCell.getCellStyle().getBorderLeft());
-//			newCellStyle.setBorderRight(oldCell.getCellStyle().getBorderRight());
-			newCell.setCellStyle(newCellStyle);
-            
-            // If there is a cell comment, copy
-            if (oldCell.getCellComment() != null) {
-                newCell.setCellComment(oldCell.getCellComment());
-            }
-
-            // If there is a cell hyperlink, copy
-            if (oldCell.getHyperlink() != null) {
-                newCell.setHyperlink(oldCell.getHyperlink());
-            }
-
-            // Set the cell data type
-            newCell.setCellType(oldCell.getCellType());
-
-            // Set the cell data value
-			if (oldCell.getCellType() == CellType.BLANK) {
-				newCell.setCellValue(oldCell.getStringCellValue());
-			} else if (oldCell.getCellType() == CellType.BOOLEAN) {
-				newCell.setCellValue(oldCell.getBooleanCellValue());
-			} else if (oldCell.getCellType() == CellType.ERROR) {
-				newCell.setCellErrorValue(oldCell.getErrorCellValue());
-			} else if (oldCell.getCellType() == CellType.FORMULA) {
-				newCell.setCellFormula(oldCell.getCellFormula());
-			} else if (oldCell.getCellType() == CellType.NUMERIC) {
-				newCell.setCellValue(oldCell.getNumericCellValue());
-			} else if (oldCell.getCellType() == CellType.STRING) {
-				newCell.setCellValue(oldCell.getRichStringCellValue());
-			}
-        }
-
-        // If there are are any merged regions in the source row, copy to new row
-//        ArrayList<CellRangeAddress> mergedRegions = new ArrayList<CellRangeAddress>();
-//        for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
-//        	mergedRegions.add(worksheet.getMergedRegion(i));
-//        }
-//		for (CellRangeAddress cellRangeAddress : mergedRegions) {
-//			if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
-//				CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(),
-//						(newRow.getRowNum() + (cellRangeAddress.getLastRow() - cellRangeAddress.getFirstRow())),
-//						cellRangeAddress.getFirstColumn(), cellRangeAddress.getLastColumn());
-//				worksheet.addMergedRegion(newCellRangeAddress);
-//			}
-//		}
-		for (int i = 0; i < worksheet.getNumMergedRegions(); i++) {
-			CellRangeAddress cellRangeAddress = worksheet.getMergedRegion(i);
-			if (cellRangeAddress.getFirstRow() == sourceRow.getRowNum()) {
-				CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(),
-						(newRow.getRowNum() + (cellRangeAddress.getLastRow() - cellRangeAddress.getFirstRow())),
-						cellRangeAddress.getFirstColumn(), cellRangeAddress.getLastColumn());
-				worksheet.addMergedRegion(newCellRangeAddress);
-			}
-		}
+		ArrayList<Row> rows = new ArrayList<>();
+		rows.add(worksheet.getRow(sourceRowNum));
+		worksheet.createRow(worksheet.getLastRowNum() + 1);
+		worksheet.shiftRows(sourceRowNum, sourceRowNum + 1, 1);
+		worksheet.copyRows(rows, destinationRowNum, new CellCopyPolicy());
     }
 	/**
 	 * Создать цвет
@@ -474,4 +378,112 @@ public class POIUtils {
 	public static POIExcelWrapper openExcel(Path path) {
 		return POIExcelWrapper.create(path);
 	}
+
+
+
+
+
+
+
+	/**
+	 * Copies a row from a row index on the given workbook and sheet to another row index. If the destination row is
+	 * already occupied, shift all rows down to make room.
+	 *
+	 */
+	public static void copyRow2(Workbook workbook, Sheet worksheet, int from, int to) {
+		Row sourceRow = worksheet.getRow(from);
+		Row newRow = worksheet.getRow(to);
+
+		if (alreadyExists(newRow))
+			worksheet.shiftRows(to, worksheet.getLastRowNum(), 1);
+		else
+			newRow = worksheet.createRow(to);
+
+		for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
+			Cell oldCell = sourceRow.getCell(i);
+			Cell newCell = newRow.createCell(i);
+			if (oldCell != null) {
+				copyCellStyle(workbook, oldCell, newCell);
+				copyCellComment(oldCell, newCell);
+				copyCellHyperlink(oldCell, newCell);
+				copyCellDataTypeAndValue(oldCell, newCell);
+			}
+		}
+
+		copyAnyMergedRegions(worksheet, sourceRow, newRow);
+	}
+
+	private static void copyCellStyle(Workbook workbook, Cell oldCell, Cell newCell) {
+		CellStyle style = workbook.createCellStyle();
+		style.cloneStyleFrom(oldCell.getCellStyle());
+		newCell.setCellStyle(style);
+	}
+
+	private static void copyCellComment(Cell oldCell, Cell newCell) {
+		if (newCell.getCellComment() != null)
+			newCell.setCellComment(oldCell.getCellComment());
+	}
+
+	private static void copyCellHyperlink(Cell oldCell, Cell newCell) {
+		if (oldCell.getHyperlink() != null)
+			newCell.setHyperlink(oldCell.getHyperlink());
+	}
+
+	private static void copyCellDataTypeAndValue(Cell oldCell, Cell newCell) {
+		setCellDataType(oldCell, newCell);
+		setCellDataValue(oldCell, newCell);
+	}
+
+	private static void setCellDataType(Cell oldCell, Cell newCell) {
+		newCell.setCellType(oldCell.getCellType());
+	}
+
+	private static void setCellDataValue(Cell oldCell, Cell newCell) {
+		switch (oldCell.getCellType()) {
+			case BLANK:
+				newCell.setCellValue(oldCell.getStringCellValue());
+				break;
+			case BOOLEAN:
+				newCell.setCellValue(oldCell.getBooleanCellValue());
+				break;
+			case ERROR:
+				newCell.setCellErrorValue(oldCell.getErrorCellValue());
+				break;
+			case FORMULA:
+				newCell.setCellFormula(oldCell.getCellFormula());
+				break;
+			case NUMERIC:
+				newCell.setCellValue(oldCell.getNumericCellValue());
+				break;
+			case STRING:
+				newCell.setCellValue(oldCell.getRichStringCellValue());
+				break;
+		}
+	}
+
+	private static boolean alreadyExists(Row newRow) {
+		return newRow != null;
+	}
+
+	private static void copyAnyMergedRegions(Sheet worksheet, Row sourceRow, Row newRow) {
+		for (int i = 0; i < worksheet.getNumMergedRegions(); i++)
+			copyMergeRegion(worksheet, sourceRow, newRow, worksheet.getMergedRegion(i));
+	}
+
+	private static void copyMergeRegion(Sheet worksheet, Row sourceRow, Row newRow, CellRangeAddress mergedRegion) {
+		CellRangeAddress range = mergedRegion;
+		if (range.getFirstRow() == sourceRow.getRowNum()) {
+			int lastRow = newRow.getRowNum() + (range.getLastRow() - range.getFirstRow());
+			CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(), lastRow, range.getFirstColumn(), range.getLastColumn());
+			worksheet.addMergedRegion(newCellRangeAddress);
+		}
+	}
+
+
+
+
+
+
+
+
 }

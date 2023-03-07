@@ -21,7 +21,7 @@
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:choose>
             <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat(f:format_currency_precise($sum), $BYN_cur) else concat(f:format_currency_precise($sum), f:cur())"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="f:format_currency_precise($sum)" /></xsl:otherwise>
+            <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
 
@@ -78,7 +78,7 @@
             <xsl:variable name="max_interval_qty" select="if ($pos = last()) then 999999999 else (f:num($price_intervals[$pos + 1]/@qty) - 1)"/>
             <xsl:variable name="min_pack" select="$min_interval_qty"/>
             <xsl:variable name="max_pack" select="$max_interval_qty"/>
-            <xsl:variable name="unit_price" select="f:exchange(current(), 'price', 0)"/>
+            <xsl:variable name="unit_price" select="f:num(f:exchange(current(), 'price', 0))"/>
             <xsl:variable name="pack_sum" select="$unit_price * $min_pack"/>
             <!--           <p><b>-->
             <!--                !<xsl:value-of select="$catalog/qty_quotient_policy"/>|-->

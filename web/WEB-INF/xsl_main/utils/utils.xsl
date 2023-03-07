@@ -55,22 +55,27 @@
 
     <xsl:function name="f:is_numeric" as="xs:boolean">
         <xsl:param name="str"/>
-        <xsl:sequence select="number($str) = f:num(string($str))"/>
+        <xsl:sequence select="f:num(string($str)) != 0 or string($str) = '0'"/>
     </xsl:function>
 
     <xsl:function name="f:currency_decimal">
         <xsl:param name="str" as="xs:string?"/>
-        <xsl:value-of select="format-number(f:num($str), '#0.00')"/>
+        <xsl:value-of select="translate(format-number(f:num($str), '#,##0.00'), ',', '&#160;')"/>
+    </xsl:function>
+
+    <xsl:function name="f:format_decimal">
+        <xsl:param name="str" as="xs:string?"/>
+        <xsl:value-of select="translate(format-number(f:num($str), '#,##0.##'), ',', '&#160;')"/>
     </xsl:function>
 
     <xsl:function name="f:format_currency">
         <xsl:param name="num"/>
-        <xsl:value-of select="format-number($num, '#0.00##')"/><!--<xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>-->
+        <xsl:value-of select="translate(format-number($num, '#,##0.00##'), ',', '&#160;')"/><!--<xsl:value-of select="if (floor($num) = $num) then format-number($num, '#0.##') else format-number($num, '#0.00')"/>-->
     </xsl:function>
 
     <xsl:function name="f:format_currency_precise">
         <xsl:param name="num"/>
-        <xsl:value-of select="format-number($num, '#0.0000')"/>
+        <xsl:value-of select="translate(format-number($num, '#,##0.0000'), ',', '&#160;')"/>
     </xsl:function>
 
 

@@ -485,9 +485,9 @@
 		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
-		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="price" type="currency" format="#.###" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="sum" type="currency" format="#.###" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="outer_product" type="plain-text" caption="Дополнительный каталог"/>
 		<child item="product" single="true"/>
@@ -496,7 +496,7 @@
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
-		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum" type="currency" format="#.###" caption="Общая сумма"/>
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>

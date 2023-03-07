@@ -651,7 +651,7 @@
 				<div class="thd"><xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'"/></div>
 			</td>
 			<td><!-- Минимальная партия -->
-				<div class="thn">Минимальная партия</div>
+				<div class="thn">MIN</div>
 				<div class="thd"><xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'"/></div>
 			</td>
 			<td><!--количество на складе -->
@@ -776,19 +776,19 @@
 			</td>
 			<td><!--Норма упаковки -->
 				<div class="thn">Норма упаковки</div>
-				<div class="thd"><xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'"/></div>
+				<div class="thd"><xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then f:format_decimal($p/packquantity) else '1'"/></div>
 			</td>
 			<td><!-- Кратность заказа -->
 				<div class="thn">Кратность заказа</div>
 				<div class="thd"><xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'"/></div>
 			</td>
 			<td><!-- Минимальная партия -->
-				<div class="thn">Минимальная партия</div>
-				<div class="thd"><xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'"/></div>
+				<div class="thn">MIN</div>
+				<div class="thd"><xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then f:format_decimal($p/min_qty) else '1'"/></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>
-				<div class="thd"><xsl:value-of select="qty"/></div>
+				<div class="thd"><xsl:value-of select="f:format_decimal(qty)"/></div>
 			</td>
 			<td>
 				<div class="thn">Цена</div>
@@ -885,7 +885,7 @@
 							   class="input input_type_number" name="qty"
 							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty and not($p/min_qty = '')) then min_qty else 1}"
 							   min="{if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else 1}"
-							   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" />
+							   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}"/>
 
 						<xsl:if test="$has_price">
 							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -921,7 +921,7 @@
 						   class="input input_type_number" name="qty"
 						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
 						   min="{if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
-						   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" />
+						   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" max="{$p/qty}"/>
 
 					<xsl:if test="$has_price">
 						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -1034,7 +1034,7 @@
 						<th>Срок поставки</th>
 						<th>Норма упаковки</th>
 						<th>Кратность заказа</th>
-						<th>Минимальная партия</th>
+						<th>MIN</th>
 						<th>Количество</th>
 						<th>Цена</th>
 						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>

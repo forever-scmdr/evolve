@@ -74,7 +74,7 @@
 			<div class="cart-confirm__table">
 				<table>
 					<tr>
-						<td>Код</td>
+<!--						<td>Код</td>-->
 						<td>Наименование</td>
 						<td>Количество</td>
 						<td>Цена</td>
@@ -86,9 +86,9 @@
 <!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
 						<xsl:variable name="product" select="product"/>
 						<tr>
-							<td><xsl:value-of select="$product/code"/></td>
+<!--							<td><xsl:value-of select="$product/code"/></td>-->
 							<td><xsl:value-of select="$product/name"/></td>
-							<td><xsl:value-of select="qty"/></td>
+							<td><xsl:value-of select="f:format_decimal(qty)"/></td>
 							<td><xsl:value-of select="price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
 							<td><xsl:value-of select="sum"/></td>
 							<xsl:if test="$cart/bought/item_own_extras" >

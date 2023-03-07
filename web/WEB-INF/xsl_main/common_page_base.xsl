@@ -844,6 +844,7 @@
 				<script type="text/javascript" src="admin/ajax/ajax.js"/>
 				<script type="text/javascript" src="admin/js/jquery.form.min.js"/>
 				<script type="text/javascript" src="admin/jquery-ui/jquery-ui.js"/>
+				<script type="text/javascript" src="js/autoNumeric.min.js"/>
 				<script type="text/javascript" src="js/bootstrap.min.js"/>
 				<script type="text/javascript" src="js/web.js"/>
 				<!-- <script type="text/javascript" src="slick/slick.min.js"></script> -->
@@ -857,6 +858,8 @@
 								verticalFit: true
 							}
 						});
+
+						var inputs = AutoNumeric.multiple('input[type=number]', {digitGroupSeparator: " "});
 
 						<xsl:if test="$has_catalog_popup">
 						initCatalogPopupMenu('#catalog_main_menu', '.popup-catalog-menu');
