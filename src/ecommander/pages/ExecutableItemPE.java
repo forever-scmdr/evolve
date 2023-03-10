@@ -605,6 +605,8 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			if (CacheablePEManager.getCache(getFilter()))
 				return;
 			final ItemType itemType = ItemTypeRegistry.getItemType(getFilter().getUserFilter().getBaseItemName());
+			if (itemType == null)
+				return;
 			// Выполнить загрузку фильтра
 			getFilter().getUserFilter().iterate(new FilterDefinitionVisitor() {
 				public void visitInput(InputDef input) throws EcommanderException {

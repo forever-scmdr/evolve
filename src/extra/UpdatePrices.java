@@ -44,6 +44,10 @@ public class UpdatePrices extends IntegrateBase {
 					Item prod = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product.CODE, code, Item.STATUS_NORMAL, Item.STATUS_NIDDEN);
 					if (prod != null) {
 						DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.restore(prod));
+						List<Item> parents = new ItemQuery(ItemNames.SECTION, Item.STATUS_NIDDEN).setChildId(prod.getId(), true).loadItems();
+						for (Item parent : parents) {
+							DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.restoreJustSelf(parent));
+						}
 						prod.setValue(ItemNames.product.PRICE, getCurrencyValue(PRICE_HEADER));
 						DelayedTransaction.executeSingle(User.getDefaultUser(), SaveItemDBUnit.get(prod).noFulltextIndex().ingoreComputed());
 						info.increaseProcessed();

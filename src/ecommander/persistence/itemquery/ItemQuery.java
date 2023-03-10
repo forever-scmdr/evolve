@@ -522,8 +522,12 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			itemDescStack.pop();
 		}
 		itemDescStack.push(userFilterItem);
-		UserFilterSQLCreator builderBuilder = new UserFilterSQLCreator(filter, userFilterItem, userInput);
-		filterDef.iterate(builderBuilder);
+		try {
+			UserFilterSQLCreator builderBuilder = new UserFilterSQLCreator(filter, userFilterItem, userInput);
+			filterDef.iterate(builderBuilder);
+		} catch (IllegalArgumentException e) {
+			// пропустить
+		}
 	}
 	/**
 	 * Создать новый фильтр и вернуть его

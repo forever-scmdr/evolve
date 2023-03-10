@@ -5,7 +5,7 @@
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="pre-last" select="count(/admin-page/path/item) - 1"/>
-	<xsl:variable name="parsedItem" select="/admin-page/path/item[$pre-last]" />
+	<xsl:variable name="parent" select="/admin-page/path/item[$pre-last]" />
 	
 
 	<xsl:template name="DOCTYPE">
@@ -145,33 +145,64 @@
 							<div class="list additional">
 								<h4>Дополнительно</h4>
 								<ul class="no-drag">
-									<li class="visible" title="Загрзить товары из Yandex Market">
-										<a href="integrate/?action=start">Интеграция каталога</a>
-									</li>
-									<li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
-										<a href="generate_sitemap">Обновить карту сайта</a>
-									</li>
-									<li class="visible" title="Очищает все кеши. Длительная и ресурсоемкая операция.">
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
 										<a href="admin_drop_all_caches.action">Очистить все кеши</a>
 									</li>
-									<li class="visible" title="Обновить список товаров для полнотекстового поиска">
+									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
 										<a href="admin_reindex.action">Переиндексация</a>
 									</li>
-									<!--<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">-->
-										<!--<a href="admin_domains_initialize.domain">-->
-											<!--Управление доменами-->
-										<!--</a>-->
-									<!--</li>-->
-									<!--<li class="visible" title="Измениение паролей, создание и удаление пользователей">-->
-										<!--<a href="admin_users_initialize.user">-->
-											<!--Управление пользователями-->
-										<!--</a>-->
-									<!--</li>-->
+									<li class="visible" title="Будет сформирован прайс-литст">
+										<a href="download_prices">
+											Скачать прайс-лист (все товары)
+										</a>
+									</li>
+									<li class="visible" title="Будет сформирован прайс-литст">
+										<a href="download_prices?mode=visible">
+											Прайс-лист (только видимые товары)
+										</a>
+									</li>
+									<li class="visible" title="Будет сформирован прайс-литст">
+										<a href="download_prices?mode=hidden">
+											Прайс-лист (только скрытые товары)
+										</a>
+									</li>
+									<li class="visible" title="Обновить цены">
+										<a href="update_prices?action=start">
+											Обновить цены
+										</a>
+									</li>
+									<li class="visible" title="Будет сгенерирован sitemap.xml">
+										<a href="generate_sitemap">
+											Обновить карту сайта
+										</a>
+									</li>
+									<!-- <li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
+										<a href="admin_domains_initialize.domain">
+											Управление доменами
+										</a>
+									</li>
+									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
+										<a href="admin_users_initialize.user">
+											Управление пользователями
+										</a>
+									</li>
 									<li class="visible" title="Содание новых типов объектов, управление ранее созданными">
 										<a href="admin_types_init.type">
 											Управление классами объектов
 										</a>
+									</li> -->
+									<li class="visible" title="Разбор файла интеграции">
+										<a href="integrate?action=start">
+											Разбор файла интеграции
+										</a>
 									</li>
+									<!--
+									<li class="visible" title="Функция в разработке">
+										<a href="#" onclick="alert('Функция в разработке'); return false;">
+											Управление миром
+										</a>
+									</li>
+									-->
 								</ul>
 							</div>
 						</div>
@@ -193,7 +224,7 @@
 												<xsl:value-of select="admin-page/message"/>
 											</div>
 											<div class="margin context-duplicate">
-												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', '{admin-page/status-link}', 'simple')">Скрыть</a>
+												<a id="hide-item" class="hide-link icon" href="javascript:positionOnly('#hide-item', 'Вы таки правда хотите скрыть этот раздел?', 'simple')">Скрыть</a>
 												<xsl:if test="$item/@files-protected = 'true'">
 													<a id="lock-files" class="secure-link icon" href="javascript:positionOnly('#lock-files', 'Снять защиту с файлов', '{admin-page/protect-files}', 'simple')">Разрешить доступ к файлам</a>
 												</xsl:if>
