@@ -1584,6 +1584,12 @@
 		</command>
 	</page>
 
+	<page name="updated_orders">
+		<command class="extra.CreateUpdatedOrdersFeed">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 	<!--/////////////                                                                      ////////////-->
