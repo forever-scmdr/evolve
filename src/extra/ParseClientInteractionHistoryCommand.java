@@ -25,7 +25,7 @@ import java.util.*;
 public class ParseClientInteractionHistoryCommand extends IntegrateBase {
 
 
-	private static final Path INTEGRATION_DIR = Paths.get(AppContext.getContextPath(), "upload", "interactions");
+	private static final Path INTEGRATION_DIR = Paths.get(AppContext.getRealPath("upload/interactions"));
 
 	//clear all buffer variable on start of this tag
 	private static final String DEALER_EL = "dealer";

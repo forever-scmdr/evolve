@@ -1445,15 +1445,49 @@
 
 	<page name="purchase_history" template="purchase_history" authority-groups="registered">
 		<personal>
-			<list item="purchase">
+			<list item="purchase" id="purchase">
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
 				</filter>
 				<list item="bought" id="bought">
 					<list item="pseudo_option"/>
+					<link name="update_bought" target="history_action">
+						<var name="purchase" ref="purchase"/>
+						<var name="bought" ref="bought"/>
+						<var name="action" value="update_bought"/>
+					</link>
+					<link name="confirm_date" target="history_action">
+						<var name="purchase" ref="purchase"/>
+						<var name="bought" ref="bought"/>
+						<var name="action" value="confirm_date"/>
+					</link>
 				</list>
+				<list item="payment_stage" id="payment">
+					<filter>
+						<sorting direction="ASC">
+							<var value="date"/>
+						</sorting>
+					</filter>
+					<link name="delete" target="history_action">
+						<var name="action" value="delete"/>
+						<var name="payment" ref="payment"/>
+						<var name="purchase" ref="purchase"/>
+					</link>
+					<link name="update" target="history_action">
+						<var name="action" value="update_payment"/>
+						<var name="payment" ref="payment"/>
+						<var name="purchase" ref="purchase"/>
+					</link>
+<!--					<parameter-input ref="payment" name="sum"/>-->
+<!--					<parameter-input ref="payment" name="date"/>-->
+				</list>
+				<link name="create_payment"  target="history_action">
+					<var name="purchase" ref="purchase"/>
+					<var name="action" value="create_payment"/>
+				</link>
 			</list>
 		</personal>
+
 		<list item="product" id="prod">
 			<filter>
 				<parameter name="code" compare="SOME">
@@ -1472,8 +1506,83 @@
 	</page>
 
 
+	<page name="history_ajax" template="history_ajax">
+		<request>
+			<var name="purchase"/>
+		</request>
+		<single item="purchase" var="purchase" id="purchase">
+			<list item="bought" id="bought">
+				<list item="pseudo_option"/>
+				<link name="update_bought" target="history_action">
+					<var name="purchase" ref="purchase"/>
+					<var name="bought" ref="bought"/>
+					<var name="action" value="update_bought"/>
+				</link>
+				<link name="confirm_date" target="history_action">
+					<var name="purchase" ref="purchase"/>
+					<var name="bought" ref="bought"/>
+					<var name="action" value="confirm_date"/>
+				</link>
+			</list>
+			<list item="payment_stage" id="payment">
+				<filter>
+					<sorting direction="ASC">
+						<var value="date"/>
+					</sorting>
+				</filter>
+				<link name="delete" target="history_action">
+					<var name="action" value="delete"/>
+					<var name="payment" ref="payment"/>
+					<var name="purchase" ref="purchase"/>
+				</link>
+				<link name="update" target="history_action">
+					<var name="action" value="update_payment"/>
+					<var name="payment" ref="payment"/>
+					<var name="purchase" ref="purchase"/>
+				</link>
+			</list>
+			<link name="create_payment"  target="history_action">
+				<var name="purchase" ref="purchase"/>
+				<var name="action" value="create_payment"/>
+			</link>
+		</single>
+
+		<list item="product" id="prod">
+			<filter>
+				<parameter name="code" compare="SOME">
+					<var ref="bought" parameter="code"/>
+				</parameter>
+			</filter>
+			<link name="show_product" target="product" type="exclusive">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<include name="PRODUCT_PARAMS_LINKS"/>
+		</list>
+	</page>
 
 
+	<page name="history_action" authority-groups="registered">
+		<request>
+			<var name="purchase"/>
+		</request>
+		<link name="ajax" target="history_ajax">
+			<var name="purchase" var="purchase"/>
+			<var name="message" value="Изменения успешно сохранены"/>
+			<var name="result" value="success"/>
+		</link>
+		<link name="error" target="history_ajax">
+			<var name="purchase" var="purchase"/>
+			<var name="message" value="Не удалось сохранить изменения"/>
+			<var name="result" value="error"/>
+		</link>
+		<command class="extra.ManageHistoryCommand">
+			<result name="ajax" type="redirect"/>
+			<result name="error" type="redirect"/>
+		</command>
+	</page>
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->

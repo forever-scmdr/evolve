@@ -130,3 +130,34 @@ cart-confirm__table ul li{
 	margin-top: 5px;
 	list-style-type: disc;
 }
+
+.shipment_date{
+	padding: 5px 0;
+	margin: 5px 0;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	font-size: 15px;
+}
+.shipment_date input{
+	padding: 6px 3px;
+	border: 1px solid #ccc;
+}
+.unia_date a{
+	color: red;
+	text-decoration: underline;
+}
+.past-order .payments{
+	display: grid;
+	grid-column: 1/-1;
+}
+.payments .past-order__product{
+	border-color: transparent;
+}
+.payments .button{
+	border: 0;
+}
+.payments input{
+	border: 1px solid #ccc;
+	padding: 6px 3px;
+	margin-right: 6px;
+}

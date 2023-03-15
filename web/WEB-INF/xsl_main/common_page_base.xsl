@@ -826,7 +826,9 @@
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
 							var mi = $(this);
-							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
+							<xsl:text disable-output-escaping="yes">
+							$('#dropdownMenuLink').html(mi.html() + '&lt;i class="fas fa-caret-down"&gt;&lt;/i&gt;');
+							</xsl:text>
 							$('.dd_block').hide();
 							$('#' + mi.attr('dd-id')).show();
 						});
@@ -836,8 +838,9 @@
 						var $el = $(el);
 						<!-- console.log($el); -->
 						var val = $el.val();
-						if(val.length > 2){
-							<xsl:text disable-output-escaping="yes">
+					<xsl:text disable-output-escaping="yes">
+						if(val.length &gt; 2){
+
 								var $form = $("&lt;form&gt;",
 							</xsl:text>
 								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
@@ -859,8 +862,10 @@
 
 					$(document).on('click', 'body', function(e){
 						var $trg = $(e.target);
-						if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
-						$('#search-result').hide();
+					<xsl:text disable-output-escaping="yes">
+					if($trg.closest('#search-result').length &gt; 0 || $trg.is('#search-result') || $trg.is('input')) return;
+					</xsl:text>
+					$('#search-result').hide();
 						$('#search-result').html('');
 					});
 

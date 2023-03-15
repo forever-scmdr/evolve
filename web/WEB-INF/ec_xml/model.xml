@@ -484,6 +484,22 @@
 		<parameter name="сomplectation_name" type="string" caption="Название комплектации"/>
 		<child item="product" single="true"/>
 		<child item="pseudo_option" multiple="true"/>
+
+
+		<parameter name="proposed_dealer_date" type="date" caption="дата, предложенная покупателем" />
+<!--		<parameter name="proposed_unia_date" type="date" caption="дата, предложенная поставщиком" />-->
+
+		<parameter name="deadline_date" type="date" caption="deadline_date" />
+		<parameter name="ready_date" type="date" caption="ready_date" />
+
+		<parameter name="status" type="string" caption="статус" />
+	</item>
+
+	<item name="payment_stage" key="date" caption="Платеж" ag-id="2299" ag-hash="1773878149">
+		<parameter name="date" type="date" caption="дата"/>
+		<parameter name="sum" type="currency" caption="сумма"/>
+		<parameter name="percent" type="currency" caption="процент"/>
+		<parameter name="status" type="string" caption="статус" />
 	</item>
 
 	<item name="pseudo_option" virtual="true" caption="Опция" key="name" ag-id="2297" ag-hash="-1937526250">
@@ -534,7 +550,10 @@
 		<parameter name="sum_discount" type="currency" caption="Общая сумма со скидкой"/>
 		<parameter name="sum_saved" type="currency" caption="Сэкономленная сума"/>
 		<parameter name="is_complex" type="byte" domain="0-1" caption="Товар с опциями"/>
+
+		<parameter name="status" type="string" caption="статус" />
 		<child item="bought"/>
+		<child item="payment_stage" />
 	</item>
 
 	<item name="order_memory" virtual="true" ag-id="2298" ag-hash="856096530">
