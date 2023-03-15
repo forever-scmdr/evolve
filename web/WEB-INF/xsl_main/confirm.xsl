@@ -30,6 +30,7 @@
 	<xsl:template name="CONTENT">
 		<div class="cart-confirm">
 			<div class="cart-confirm__text">
+                <strong>На вашу почту выслан счёт для оплаты (срок действия 3 дня).</strong><p/><br/>
 				<p>Заявка №<xsl:value-of select="$cart/order_num"/></p>
 				<p>Позиций: <xsl:value-of select="$cart/qty"/></p>
 				<p>Сумма: <xsl:value-of select="$cart/sum"/></p>

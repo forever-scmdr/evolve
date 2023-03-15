@@ -16,7 +16,6 @@
 
 
 
-
 	<xsl:function name="f:print_cur">
 		<xsl:param name="sum"/>
 		<xsl:variable name="is_byn" select="$currency = 'BYN'"/>
@@ -25,7 +24,6 @@
 			<xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
-
 
 
 	<xsl:template match="/">
@@ -98,7 +96,7 @@
 			<xsl:variable name="max_interval_qty" select="if ($pos = last()) then 999999999 else (f:num($price_intervals[$pos + 1]/@qty) - 1)"/>
 			<xsl:variable name="min_pack" select="$min_interval_qty"/>
 			<xsl:variable name="max_pack" select="$max_interval_qty"/>
-			<xsl:variable name="unit_price" select="f:exchange(current(), 'price', 0)"/>
+			<xsl:variable name="unit_price" select="f:num(f:exchange(current(), 'price', 0))"/>
 			<xsl:variable name="pack_sum" select="$unit_price * $min_pack"/>
 			<num_price>
 				<xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
@@ -124,7 +122,7 @@
 		<xsl:variable name="min_qty" select="if (min_qty and f:num(min_qty) &gt; 0) then f:num(min_qty) else 1"/>
 		<xsl:variable name="num" select="if ($number and $number &gt;= $min_qty) then $number else $min_qty"/>
 		<xsl:variable name="has_price" select="price and f:num(price) &gt; 0.001"/>
-		<product>
+		<product test="test">
 			<xsl:if test="$multiple">
 				<query><xsl:value-of select="item_own_extras/query" /></query>
 			</xsl:if>
@@ -133,6 +131,9 @@
 			<vendor><xsl:value-of select="vendor" /></vendor>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<qty><xsl:value-of select="qty"/></qty>
+			<next_delivery><xsl:value-of select="next_delivery"/></next_delivery>
+			<step><xsl:value-of select="step"/></step>
+			<packquantity><xsl:value-of select="packquantity"/></packquantity>
 			<available>
 				<xsl:if test="not(vendor_code)">
 					<xsl:if test="available and not(available = '0') and f:num(available) &gt; 0"><xsl:value-of select="f:num(available) * 7"/> дней</xsl:if>
@@ -194,6 +195,9 @@
 			<vendor><xsl:value-of select="vendor" /></vendor>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<qty><xsl:value-of select="qty"/></qty>
+			<next_delivery><xsl:value-of select="next_delivery"/></next_delivery>
+			<step><xsl:value-of select="if (step and not(step = '')) then step else '1'"/></step>
+			<packquantity><xsl:value-of select="if (packquantity and not(packquantity = '')) then f:format_decimal(packquantity) else '1'"/></packquantity>
 			<available><xsl:value-of select="next_delivery"/></available>
 			<unit><xsl:value-of select="$unit"/></unit>
 			<min_qty><xsl:value-of select="$min_qty"/></min_qty>

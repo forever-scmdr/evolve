@@ -1261,6 +1261,7 @@
 			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="mandatory_jur" value="organization, email, account, unp"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>

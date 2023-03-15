@@ -396,8 +396,7 @@ public class POIUtils {
 
 		if (alreadyExists(newRow))
 			worksheet.shiftRows(to, worksheet.getLastRowNum(), 1);
-		else
-			newRow = worksheet.createRow(to);
+		newRow = worksheet.createRow(to);
 
 		for (int i = 0; i < sourceRow.getLastCellNum(); i++) {
 			Cell oldCell = sourceRow.getCell(i);

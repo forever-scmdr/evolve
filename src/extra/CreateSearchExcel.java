@@ -39,20 +39,19 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 	//file Constants
 
 
-	protected static final String QUERY = "Запрос";
+	//protected static final String QUERY = "Запрос";
 	protected static final String NAME = "Название";
-	protected static final String NAME_EXTRA = "Описание";
 	protected static final String VENDOR = "Производитель";
-	protected static final String QTY = "Кол.";
 	protected static final String AVAILABLE = "Срок поставки";
-	protected static final String UNIT = "Ед.изм.";
-	protected static final String MIN_QTY = "Мин.заказ";
+	protected static final String PACKQTY = "Норма упаковки";
+	protected static final String STEP = "Кратность заказа";
+	protected static final String MIN_QTY = "Минимальная партия";
+	protected static final String QTY = "Количество";
 	protected static final String PRICE = "Цена";
-	protected static final String SUM = "Сумма";
-	protected static final String INITIAL_PRICE = "Нач.цена";
-	protected static final String STORE = "Склад";
-	protected static final String UPDATED = "Обновлено";
 	protected static final String REQUEST = "Заказ";
+	protected static final String INITIAL_PRICE = "Нач.цена";
+	protected static final String STORE = "Поставщик";
+	protected static final String UPDATED = "Обновлено";
 
 
 	@Override
@@ -80,17 +79,19 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 			String query = JsoupUtils.nodeText(prod, "query");
 			boolean isNewQuery = !StringUtils.equalsIgnoreCase(query, currentQuery);
 			resultsPerQuery = isNewQuery ? 0 : resultsPerQuery + 1;
+			/*
 			if (resultsPerQuery >= 10)
 				continue;
+			 */
 			row = sh.createRow(++rowIndex);
-			row.createCell(++colIdx).setCellValue(query);
+			//row.createCell(++colIdx).setCellValue(query);
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "name"));
-			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "name_extra"));
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "vendor"));
-			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "qty"));
-			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "available"));
-			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "unit"));
+			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "next_delivery"));
+			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "packquantity"));
+			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "step"));
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "min_qty"));
+			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "qty"));
 
 			StringBuilder price = new StringBuilder();
 			StringBuilder sum = new StringBuilder();
@@ -114,12 +115,12 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 			}
 
 			row.createCell(++colIdx).setCellValue(price.toString());
-			row.createCell(++colIdx).setCellValue(sum.toString());
+			//row.createCell(++colIdx).setCellValue(sum.toString());
 
 			if (isAdmin) {
 				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "price_original"));
-				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod.getElementsByTag("plain_section").first(), "name"));
-				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod.getElementsByTag("plain_section").first(), "date"));
+				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "category_id"));
+				row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "pricedate"));
 			}
 
 			row.createCell(++colIdx).setCellValue(JsoupUtils.nodeText(prod, "request_qty"));
@@ -149,25 +150,25 @@ public class CreateSearchExcel extends Command implements CatalogConst {
 
 		//built-in params
 		Row row = sh.createRow(++rowIdx);
-		row.createCell(++colIdx).setCellValue(QUERY);
-		sh.setColumnWidth(colIdx, 25 * 256);
+//		row.createCell(++colIdx).setCellValue(QUERY);
+//		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(NAME);
 		sh.setColumnWidth(colIdx, 30 * 256);
-		row.createCell(++colIdx).setCellValue(NAME_EXTRA);
-		sh.setColumnWidth(colIdx, 30 * 256);
+//		row.createCell(++colIdx).setCellValue(NAME_EXTRA);
+//		sh.setColumnWidth(colIdx, 30 * 256);
 		row.createCell(++colIdx).setCellValue(VENDOR);
 		sh.setColumnWidth(colIdx, 20 * 256);
-		row.createCell(++colIdx).setCellValue(QTY);
-		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(AVAILABLE);
 		sh.setColumnWidth(colIdx, 12 * 256);
-		row.createCell(++colIdx).setCellValue(UNIT);
-		sh.setColumnWidth(colIdx, 10 * 256);
+		row.createCell(++colIdx).setCellValue(PACKQTY);
+		sh.setColumnWidth(colIdx, 8 * 256);
+		row.createCell(++colIdx).setCellValue(STEP);
+		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(MIN_QTY);
 		sh.setColumnWidth(colIdx, 8 * 256);
+		row.createCell(++colIdx).setCellValue(QTY);
+		sh.setColumnWidth(colIdx, 8 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE);
-		sh.setColumnWidth(colIdx, 20 * 256);
-		row.createCell(++colIdx).setCellValue(SUM);
 		sh.setColumnWidth(colIdx, 20 * 256);
 		if (isAdmin) {
 			row.createCell(++colIdx).setCellValue(INITIAL_PRICE);

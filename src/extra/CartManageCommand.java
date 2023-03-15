@@ -135,6 +135,26 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 	@Override
 	protected boolean validate() throws Exception {
+		String manPhysStr = getVarSingleValueDefault("mandatory_phys", null);
+		String manJurStr = getVarSingleValueDefault("mandatory_jur", null);
+		if (StringUtils.isNotBlank(manPhysStr)) {
+			String[] paramNames = StringUtils.split(manPhysStr, ",; ");
+			synchronized (MANDATORY_PHYS) {
+				MANDATORY_PHYS.clear();
+				for (String paramName : paramNames) {
+					MANDATORY_PHYS.add(StringUtils.trim(paramName));
+				}
+			}
+		}
+		if (StringUtils.isNotBlank(manJurStr)) {
+			String[] paramNames = StringUtils.split(manJurStr, ",; ");
+			synchronized (MANDATORY_JUR) {
+				MANDATORY_JUR.clear();
+				for (String paramName : paramNames) {
+					MANDATORY_JUR.add(StringUtils.trim(paramName));
+				}
+			}
+		}
 		Item form = getItemForm().getItemSingleTransient();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(USER_PHYS).getTypeId();
 		boolean hasError = false;

@@ -66,27 +66,27 @@
 		<xsl:param name="vals" select="$inp"/>
 		<div class="form__item">
 			<label class="form-label" for="form_org">Наименование организации:</label>
-			<input class="input form__element" type="text" id="form_org"
+			<input class="input form__element" type="text" id="form_org" style="{'border-color: red; border-width: 2px'[$inp/organization/@validation-error]}"
 				   name="{$inp/organization/@input}" value="{f:not_empty($inp/organization, $vals/organization)}" error="{$inp/organization/@validation-error}"/>
 		</div>
 		<div class="form__item">
 			<label class="form-label" for="form_org">Телефон/факс:</label>
-			<input class="input form__element" type="text" id="form_org"
+			<input class="input form__element" type="text" id="form_org" style="{'border-color: red; border-width: 2px'[$inp/phone/@validation-error]}"
 				   name="{$inp/phone/@input}" value="{f:not_empty($inp/phone, $vals/phone)}"/>
 		</div>
 		<div class="form__item">
 			<label class="form-label" for="form_email">E-mail:</label>
-			<input class="input form__element" type="text" id="form_email"
+			<input class="input form__element" type="text" id="form_email" style="{'border-color: red; border-width: 2px'[$inp/email/@validation-error]}"
 				   name="{$inp/email/@input}" value="{f:not_empty($inp/email, $vals/email)}"/>
 		</div>
 		<div class="form__item">
 			<label class="form-label" for="form_contact">Контактное лицо:</label>
-			<input class="input form__element" type="text" id="form_contact"
+			<input class="input form__element" type="text" id="form_contact" style="{'border-color: red; border-width: 2px'[$inp/contact_name/@validation-error]}"
 				   name="{$inp/contact_name/@input}" value="{f:not_empty($inp/contact_name, $vals/contact_name)}"/>
 		</div>
 		<div class="form__item">
 			<label class="form-label" for="form_contact_phone">Телефон контактного лица:</label>
-			<input class="input form__element" type="text" id="form_contact_phone"
+			<input class="input form__element" type="text" id="form_contact_phone" style="{'border-color: red; border-width: 2px'[$inp/contact_phone/@validation-error]}"
 				   name="{$inp/contact_phone/@input}" value="{f:not_empty($inp/contact_phone, $vals/contact_phone)}"/>
 		</div>
 		<!--
@@ -113,12 +113,12 @@
 		-->
 		<div class="form__item">
 			<label class="form-label" for="form_ja">Юридический адрес:</label>
-			<input class="input form__element" type="text" id="form_ja"
+			<input class="input form__element" type="text" id="form_ja" style="{'border-color: red; border-width: 2px'[$inp/address/@validation-error]}"
 				   name="{$inp/address/@input}" value="{f:not_empty($inp/address, $vals/address)}"/>
 		</div>
 		<div class="form__item">
 			<label class="form-label" for="form_account">Расчетный счет:</label>
-			<input class="input form__element" type="text" id="form_account"
+			<input class="input form__element" type="text" id="form_account" style="{'border-color: red; border-width: 2px'[$inp/account/@validation-error]}"
 				   name="{$inp/account/@input}" value="{f:not_empty($inp/account, $vals/account)}"/>
 		</div>
 		<!--
@@ -140,7 +140,7 @@
 		-->
 		<div class="form__item">
 			<label class="form-label" for="form_unp">ИНН:</label>
-			<input class="input form__element" type="text" id="form_unp"
+			<input class="input form__element" type="text" id="form_unp" style="{'border-color: red; border-width: 2px'[$inp/unp/@validation-error]}"
 				   name="{$inp/unp/@input}" value="{f:not_empty($inp/unp, $vals/unp)}"/>
 		</div>
 		<!--

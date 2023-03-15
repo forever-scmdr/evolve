@@ -921,7 +921,7 @@
 						   class="input input_type_number" name="qty"
 						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
 						   min="{if ($p/min_qty and not($p/min_qty = '')) then f:num($p/min_qty) else 1}"
-						   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" max="{$p/qty}"/>
+						   step="{if ($p/step and not($p/step = '')) then f:num($p/step) else 1}" max="{f:num($p/qty)}"/>
 
 					<xsl:if test="$has_price">
 						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
