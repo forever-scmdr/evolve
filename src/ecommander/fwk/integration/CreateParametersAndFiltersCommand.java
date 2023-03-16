@@ -318,6 +318,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		for (Item section : sections) {
 			String className = createClassName(section);
 			ItemType paramDesc = ItemTypeRegistry.getItemType(StringUtils.lowerCase(className));
+			if (paramDesc == null) {
+				info.pushLog("No item def {} found in {} section", className, section.getStringValue("name"));
+				info.increaseProcessed();
+				continue;
+			}
 			info.getTimer().start(DB_PRODUCT_TIMER_NAME);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false).loadItems();
 			info.getTimer().stop(DB_PRODUCT_TIMER_NAME);
