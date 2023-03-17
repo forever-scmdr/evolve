@@ -748,8 +748,8 @@
 		<parameter name="youtube" type="string" caption="Видеоролик с Ютуба"/>
 		<parameter name="link" type="string" caption="Ссылка"/>
 		<parameter name="class" type="string" caption="Класс CSS"/>
-		<parameter name="divider_top" type="byte" domain="0-1" caption="полоска-разделитеь сверху"/>
-		<parameter name="divider_bottom" type="byte" domain="0-1" caption="полоска-разделитеь снизу"/>
+		<parameter name="divider_top" type="byte" domain="0-1" caption="полоска-разделитель сверху"/>
+		<parameter name="divider_bottom" type="byte" domain="0-1" caption="полоска-разделитель снизу"/>
 		<parameter name="odd_style" type="byte" domain="0-1" caption="разный вид для четных и нечетных блоков"/>
 		<child item="custom_block" inline="true"/>
 		<child item="product" assoc="general"/>
