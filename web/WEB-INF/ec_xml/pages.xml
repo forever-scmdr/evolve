@@ -283,8 +283,7 @@
 					</parameter>
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" var="sec" style="keypath"/>
-					<var name="prod" ref="prod" style="keypath"/>
+					<var name="prod" ref="prod" style="key"/>
 				</link>
 				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			</list>
@@ -953,7 +952,7 @@
 				</list>
 				<list item="product" id="prod" assoc="general">
 					<link name="show_product" target="product" type="exclusive">
-						<var name="prod" ref="prod" style="keypath"/>
+						<var name="prod" ref="prod" style="key"/>
 					</link>
 					<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 				</list>
