@@ -1354,7 +1354,7 @@
 			<var name="message" value="Вы успешно зарегистрированы, спасибо"/>
 			<var name="success" value="true"/>
 		</link>
-		<link name="login" target-var="src">
+		<link name="login" target="catalog">
 			<var name="success" value="true"/>
 		</link>
 		<link name="login_error" target="register">

@@ -16,6 +16,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UniaProductCreationHandler extends DefaultHandler implements CatalogConst {
 
@@ -116,6 +118,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					}
 				}
 
+				processDescription(product);
+
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser());
 				processSpecialParameters(product);
 				processOptions(product);
@@ -150,6 +154,35 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 			}
 		} catch (Exception e) {
 			handleException(e);
+		}
+	}
+
+	private void processDescription(Item product) {
+		String text = product.getStringValue(TEXT_PARAM);
+
+		Pattern p = Pattern.compile("«.+»");
+		Matcher m = p.matcher(text);
+
+		while (m.find()){
+			String s = m.group();
+			text = m.replaceFirst('"' + s.substring(1, s.length() - 1) + '"');
+		}
+
+		if(StringUtils.isNotBlank(text)){
+			String[] split = StringUtils.split(text, "»");
+			if(split.length == 1){
+				XmlDocumentBuilder textBuilder = XmlDocumentBuilder.newDocPart();
+				textBuilder.addElement("p", text);
+				product.setValue(TEXT_PARAM, textBuilder.toString());
+			}else{
+				XmlDocumentBuilder textBuilder = XmlDocumentBuilder.newDocPart();
+				textBuilder.startElement("ul");
+				for(String s : split) {
+					textBuilder.addElement("li", s.trim());
+				}
+				textBuilder.endElement();
+				product.setValue(TEXT_PARAM, textBuilder.toString());
+			}
 		}
 	}
 

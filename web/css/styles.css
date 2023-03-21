@@ -1784,8 +1784,15 @@ img {
 
 
 
-.tab-container p {
-	line-height: 1.3; }
+.tab-container {
+	line-height: 1.5;
+	font-size: 1.125rem;
+}
+
+.product-lables{
+	line-height: 1.5;
+	font-size: 1.125rem;
+}
 
 hr {
 	border-bottom: 1px solid #616161;

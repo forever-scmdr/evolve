@@ -53,11 +53,11 @@
 
 				<div class="tab-container" id="tab_login" style="{'display: none'[not($is_login)]}">
 					<div class="text form__text">
-						<p>Введите адрес электрнной почты и пароль.</p>
+						<p>Введите имя пользователя и пароль.</p>
 					</div>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form__item">
-							<label class="form-label" for="login">Электронная почта:</label>
+							<label class="form-label" for="login">Логин:</label>
 							<input class="input form__element" type="text" id="login" name="email"/>
 						</div>
 						<div class="form__item">
