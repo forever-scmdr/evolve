@@ -30,9 +30,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
 
-	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION}
-
-	;
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
 
 
 	static {

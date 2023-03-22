@@ -1149,7 +1149,7 @@
 			<var name="favourites" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="favourites"/>
@@ -1171,7 +1171,7 @@
 			<var name="compare" scope="cookie"/>
 		</request>
 		<headers Cache-Control="no-cache" Expires="-1"/>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="compare"/>
@@ -1227,7 +1227,7 @@
 			<var name="favourites" scope="cookie"/>
 			<var name="view" value="table" scope="cookie"/>
 		</request>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="favourites"/>
@@ -1246,27 +1246,6 @@
 				<var name="src_page" value="fav"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS"/>
-			<!--
-			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-
-			<link name="to_cart" target="cart_action">
-				<var name="action" value="addToCart"/>
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="to_compare" target="cookie_list_action">
-				<var name="update_cookie_name" value="compare"/>
-				<var name="update_cookie_value" ref="prod" parameter="code"/>
-				<var name="action" value="add"/>
-				<var name="src_page" value="compare_ajax"/>
-			</link>
-			<link name="one_click_link" target="one_click_ajax">
-				<var name="prod" ref="prod"/>
-			</link>
-			<link name="subscribe_link" target="subscribe_ajax">
-				<var name="prod" ref="prod"/>
-			</link> -->
 		</list>
 		<link name="set_view_table" target="fav">
 			<var name="view" value="table"/>
@@ -1282,7 +1261,7 @@
 		<request>
 			<var name="compare" scope="cookie"/>
 		</request>
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<parameter name="code" compare="SOME">
 					<var var="compare"/>

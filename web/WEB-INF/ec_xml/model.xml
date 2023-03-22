@@ -268,7 +268,7 @@
 
 	<!-- картинки-ссылки -->
 	<item name="path_pics" virtual="true" ag-id="2101" ag-hash="-377707517" >
-		<parameter name="pic_link" caption="ссылка на изображение" type="string" multiple="true"/>
+		<parameter name="pic_link" caption="ссылка на изображение" type="plain-text" format="height: 24px;" multiple="true"/>
 	</item>
 
 	<!-- обычные картинки -->
