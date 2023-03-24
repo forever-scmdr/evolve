@@ -796,9 +796,11 @@ img {
 	text-transform: uppercase;
 	font-weight: 700;
 	display: flex;
-	position: relative; }
+	position: relative;
+	transition: 1s;  }
 	.main-menu__item:hover {
-		background-color: #ff8000; }
+		background-color: #ff8000;
+		transition: 1s;  }
 	.main-menu__item > a {
 		position: absolute;
 		top: 0;
