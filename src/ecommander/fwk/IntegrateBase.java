@@ -3,13 +3,14 @@ package ecommander.fwk;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Интеграция файла XML Результаты валидации и выполнения в след. виде
@@ -70,13 +71,6 @@ public abstract class IntegrateBase extends Command {
 			this.originator = originator;
 		}
 
-		private Error(Throwable e, Info info) {
-			message = ExceptionUtils.getStackTrace(e);
-			lineNumber = info.lineNumber;
-			position = info.position;
-			originator = "";
-		}
-
 		@SuppressWarnings("unused")
 		private boolean isLineNumber() {
 			return lineNumber != -1;
@@ -96,7 +90,6 @@ public abstract class IntegrateBase extends Command {
 		private ArrayList<Error> errors = new ArrayList<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 30;
-		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
 		private String host;
 
 		public synchronized void setOperation(String opName) {
@@ -163,27 +156,12 @@ public abstract class IntegrateBase extends Command {
 			errors.add(new Error(message, lineNumber, position));
 		}
 
-		public synchronized void addError(Throwable e) {
-			errors.add(new Error(e, this));
-		}
-
 		public synchronized void addError(String message, String originator) {
 			errors.add(new Error(message, originator));
 		}
 
 		public synchronized void setInProgress(boolean inProgress) {
 			this.inProgress = inProgress;
-		}
-
-		public synchronized void addSlowQuery(String queryLog, long nanos) {
-			slowQueries.put(nanos, queryLog);
-			if (slowQueries.size() > 100) {
-				slowQueries.remove(slowQueries.firstKey());
-			}
-		}
-
-		public String getHost() {
-			return host;
 		}
 
 		public synchronized void output(XmlDocumentBuilder doc) throws IOException {
@@ -214,19 +192,6 @@ public abstract class IntegrateBase extends Command {
 			for (Error error : errors) {
 				doc.startElement("error", "line", error.lineNumber, "coloumn", error.position, "originator", error.originator)
 						.addText(error.message).endElement();
-			}
-			if (slowQueries.size() > 0) {
-				doc.startElement("slow");
-				for (Map.Entry<Long, String> entry : slowQueries.entrySet()) {
-					doc
-							.startElement("q")
-							.startElement("log").addText(entry.getValue()).endElement()
-							.startElement("time").addText(entry.getKey() / 1000000).endElement()
-							.endElement();
-
-
-				}
-				doc.endElement();
 			}
 			ServerLogger.debug(doc.toString());
 		}
