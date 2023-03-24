@@ -141,7 +141,9 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	}
 
 	public final String getValue(int colIndex) {
-		return StringUtils.trim(currentRow[colIndex]);
+		if (currentRow.length > colIndex)
+			return StringUtils.trim(currentRow[colIndex]);
+		return null;
 	}
 
 	public final Double getDoubleValue(int colIndex) {

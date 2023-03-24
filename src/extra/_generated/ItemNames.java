@@ -64,10 +64,7 @@ public interface ItemNames {
     String MAP_PART = "map_part";
     String REGION = "region";
     String POINT = "point";
-    String MAIN_PROMO_BOTTOM = "main_promo_bottom";
     String MAIN_SLIDER_FRAME = "main_slider_frame";
-    String BANNER = "banner";
-    String BANNER_SECTION = "banner_section";
     String DOMAIN_DEPENDENT_DISPLAY = "domain_dependent_display";
     String CUSTOM_BLOCK = "custom_block";
     String MAIN_PAGE = "main_page";
@@ -117,6 +114,7 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_OPT = "qty_opt";
         String UNIT = "unit";
+        String SECTION_NAME = "section_name";
 
     }
 
@@ -170,27 +168,6 @@ public interface ItemNames {
     public interface articles_ {
 
         String _ITEM_NAME = "articles";
-
-    }
-
-    public interface banner_ {
-
-        String _ITEM_NAME = "banner";
-        String BACKGROUND = "background";
-        String BACKGROUND_PIC = "background_pic";
-        String HEADER = "header";
-        String TEXT = "text";
-        String IMAGE_PIC = "image_pic";
-        String IMAGE_CODE = "image_code";
-        String LINK = "link";
-        String EXTRA_STYLE = "extra_style";
-
-    }
-
-    public interface banner_section_ {
-
-        String _ITEM_NAME = "banner_section";
-        String NAME = "name";
 
     }
 
@@ -416,6 +393,7 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_OPT = "qty_opt";
         String UNIT = "unit";
+        String SECTION_NAME = "section_name";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
@@ -589,6 +567,7 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_OPT = "qty_opt";
         String UNIT = "unit";
+        String SECTION_NAME = "section_name";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";
@@ -637,16 +616,6 @@ public interface ItemNames {
     public interface main_page_ {
 
         String _ITEM_NAME = "main_page";
-
-    }
-
-    public interface main_promo_bottom_ {
-
-        String _ITEM_NAME = "main_promo_bottom";
-        String TEXT_BIG = "text_big";
-        String TEXT_SMALL = "text_small";
-        String PIC = "pic";
-        String LINK = "link";
 
     }
 
@@ -957,6 +926,7 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_OPT = "qty_opt";
         String UNIT = "unit";
+        String SECTION_NAME = "section_name";
         String TYPE = "type";
         String NAME_EXTRA = "name_extra";
         String VENDOR = "vendor";

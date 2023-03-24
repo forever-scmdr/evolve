@@ -19,6 +19,7 @@ public class Product
     public final static String QTY = "qty";
     public final static String QTY_OPT = "qty_opt";
     public final static String UNIT = "unit";
+    public final static String SECTION_NAME = "section_name";
     public final static String TYPE = "type";
     public final static String NAME_EXTRA = "name_extra";
     public final static String VENDOR = "vendor";
@@ -194,6 +195,22 @@ public class Product
 
     public boolean contains_unit(String value) {
         return containsValue("unit", value);
+    }
+
+    public void set_section_name(String value) {
+        setValue("section_name", value);
+    }
+
+    public String get_section_name() {
+        return getStringValue("section_name");
+    }
+
+    public String getDefault_section_name(String defaultVal) {
+        return getStringValue("section_name", defaultVal);
+    }
+
+    public boolean contains_section_name(String value) {
+        return containsValue("section_name", value);
     }
 
     public void set_type(String value) {
