@@ -193,6 +193,8 @@
 			<name type="{if (vendor_code) then 'catalog' else 'list'}"><xsl:value-of select="name" /></name>
 			<name_extra><xsl:value-of select="description" /></name_extra>
 			<vendor><xsl:value-of select="vendor" /></vendor>
+            <category_id><xsl:value-of select="category_id" /></category_id>
+            <pricedate><xsl:value-of select="pricedate" /></pricedate>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<qty><xsl:value-of select="qty"/></qty>
 			<next_delivery><xsl:value-of select="next_delivery"/></next_delivery>

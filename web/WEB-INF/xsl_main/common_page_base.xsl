@@ -511,7 +511,7 @@
 			<div class="content" id="m_sub_cat">
 				<div class="small-nav">
 					<a class="header">Каталог продукции</a>
-					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">×</a>
+					<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">Х</a>
 				</div>
 				<ul>
 					<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
@@ -520,7 +520,7 @@
 								<a rel="{concat('#m_sub_', @id)}">
 									<xsl:value-of select="name"/>
 								</a>
-								<span>></span>
+								<span><a><xsl:text disable-output-escaping="yes">&gt;</xsl:text></a></span>
 							</xsl:if>
 							<xsl:if test="not(section[f:num(hide) = 0])">
 								<a href="{show_products}">
@@ -535,9 +535,9 @@
 				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_cat"><i class="fas fa-chevron-left"></i></a>
+						<a href="" class="back" rel="#m_sub_cat"><xsl:text disable-output-escaping="yes">&lt;</xsl:text></a><!-- <i class="fas fa-chevron-left"></i> -->
 						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">Х</a><!-- <i class="fas fa-times"></i> -->
 					</div>
 					<ul>
 							<xsl:for-each select="section[f:num(hide) = 0]">
@@ -546,7 +546,7 @@
 									<a rel="{concat('#m_sub_', @id)}">
 										<xsl:value-of select="name"/>
 									</a>
-									<i class="fas fa-chevron-right"></i>
+									<span><a><xsl:text disable-output-escaping="yes">&gt;</xsl:text></a></span>
 								</xsl:if>
 								<xsl:if test="not(section)">
 									<a href="{show_products}" >
@@ -563,9 +563,9 @@
 				<xsl:if test="f:num(hide) = 0">
 				<div class="content next" id="m_sub_{@id}">
 					<div class="small-nav">
-						<a href="" class="back" rel="#m_sub_{../@id}"><i class="fas fa-chevron-left"></i></a>
+						<a href="" class="back" rel="#m_sub_{../@id}"><xsl:text disable-output-escaping="yes">&lt;</xsl:text></a><!-- <i class="fas fa-chevron-left"></i> -->
 						<a href="{show_products}" class="header"><xsl:value-of select="name"/></a>
-						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;"><i class="fas fa-times"></i></a>
+						<a href="" class="close" onclick="hideMobileCatalogMenu(); return false;">Х</a><!-- <i class="fas fa-times"></i> -->
 					</div>
 					<ul>
 							<xsl:for-each select="section[f:num(hide) = 0]">
@@ -942,10 +942,10 @@
 							</script>
 							<div class="modal-body">
 								<p>Вы можете загрузить список необходимых товаров в формате Excel  (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
-								<p><a href="files/query.xlsx">Скачать образец файла</a></p>
+								<p style="padding-top: 3px; padding-bottom: 8px;"><a href="files/query.xlsx">Скачать образец файла</a></p>
 								<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
 									<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('form').find('label').text(fileName($(this).val()))"/>
-									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
+									<label for="file" class="upload" style="padding: 7px; font-size: small;">Загрузить Excel-файл с компьютера</label>
 									<input type="submit" value="Найти" />
 								</form>
 							</div>
