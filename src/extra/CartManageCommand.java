@@ -164,6 +164,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 	@Override
 	protected void extraProductLoading(Item product) throws Exception {
 		Item section = new ItemQuery(PLAIN_SECTION).setChildId(product.getId(), false).loadFirstItem();
+		if (section == null && product.isValueNotEmpty("section_name")) {
+			section = ItemQuery.loadSingleItemByParamValue(PLAIN_SECTION, NAME_PARAM, product.getStringValue("section_name"));
+		}
 		if (section != null) {
 			section.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), product.getId());
 			getSessionMapper().saveTemporaryItem(section);
