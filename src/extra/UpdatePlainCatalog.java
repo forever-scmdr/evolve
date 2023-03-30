@@ -31,13 +31,13 @@ import java.util.List;
 public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String INTEGRATION_DIR = "integrate_manual";
 
-	private static final String CODE_HEADER = "код";
 	private static final String NAME_HEADER = "название";
 	private static final String QTY_HEADER = "остаток";
 	private static final String PRICE_HEADER = "цена";
+	private static final String MIN_QTY_HEADER = "минимальная партия заказа";
+	private static final String STEP_HEADER = "шаг заказа";
 
 	private TableDataSource price;
-	private Item section;
 	private ItemType sectionSettingsType;
 	private Item plainCatalogSettings;
 	private int count = 0;
@@ -93,20 +93,22 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(sectionSettings));
 				}
 				final Price_catalog settings = Price_catalog.get(sectionSettings);
+				final Item catalogItem = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
+				if (catalogItem == null) {
+					info.addError("Не создан каталог продукции", "init");
+					return;
+				}
 				count = 0;
 				TableDataRowProcessor proc = src -> {
-					String code = null;
 					String name = null;
 					try {
-						code = src.getValue(CODE_HEADER);
 						name = src.getValue(NAME_HEADER);
-						if (StringUtils.isNotBlank(code) || StringUtils.isNotBlank(name)) {
-							Product prod = null;
-							if (StringUtils.isNotBlank(code)) {
-								prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
-							} else if (StringUtils.isNotBlank(name)) {
-								prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.NAME, name));
-							}
+						if (StringUtils.isNotBlank(name)) {
+							Product prod = Product.get(
+									new ItemQuery(ItemNames.PRODUCT)
+											.addParameterEqualsCriteria(product_.NAME, name)
+											.setParentId(catalogItem.getId(), true)
+											.loadFirstItem());
 							if (prod == null) {
 								return;
 							}
@@ -118,6 +120,12 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 							}
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
 							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
+							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
+							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? 1.0 : fileMinQty;
+							prod.set_min_qty(minQty);
+							Double fileStep = src.getDoubleValue(STEP_HEADER);
+							Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
+							prod.set_step(step);
 							executeCommandUnit(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 							if (count >= 100) {
 								commitCommandUnits();
@@ -128,7 +136,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 						}
 					} catch (Exception e) {
 						ServerLogger.error("line process error", e);
-						info.addError("Ошибка формата строки (" + code + ", " + name + ")", src.getRowNum(), 0);
+						info.addError("Ошибка формата строки (" + name + ")", src.getRowNum(), 0);
 					}
 				};
 				price.iterate(proc);

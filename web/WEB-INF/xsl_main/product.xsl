@@ -19,6 +19,7 @@
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 	<xsl:variable name="is_not_plain" select="$p/product_section"/>
+	<xsl:variable name="multiple_prices" select="not($is_not_plain) or (section_name and not(section_name = ''))"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -115,7 +116,21 @@
 
 				<xsl:if test="not($has_lines)">
 					<!-- цена -->
-					<xsl:if test="$has_price and $is_not_plain">
+
+					<!-- Множественная цена с промежутками -->
+					<xsl:if test="section_name and not(section_name = '')">
+						<div class="price price_product">
+							<xsl:call-template name="ALL_PRICES">
+								<xsl:with-param name="need_sum" select="false()"/>
+								<xsl:with-param name="price_in_currency" select="f:exchange($p, 'price', 0)"/>
+								<xsl:with-param name="product" select="$p"/>
+								<xsl:with-param name="section_name" select="section_name"/>
+							</xsl:call-template>
+						</div>
+					</xsl:if>
+
+					<!-- Простая цена -->
+					<xsl:if test="$has_price and not($multiple_prices)">
 						<div class="price price_product">
 							<xsl:if test="$p/price_old">
 								<div class="price__item price__item_old">

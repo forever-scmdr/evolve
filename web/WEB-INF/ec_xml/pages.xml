@@ -252,6 +252,9 @@
 			<var name="tag"/>
 			<var name="mark"/>
 		</request>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>

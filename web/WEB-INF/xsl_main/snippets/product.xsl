@@ -38,7 +38,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="plain" select="plain_section"/>
+		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -105,7 +105,7 @@
 								<xsl:with-param name="need_sum" select="false()"/>
 								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 								<xsl:with-param name="product" select="."/>
-								<xsl:with-param name="section_name" select="$plain/name"/>
+								<xsl:with-param name="section_name" select="$plain"/>
 							</xsl:call-template></span>
 						</xsl:if>
 					</div>
@@ -233,7 +233,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
-		<xsl:variable name="plain" select="plain_section"/>
+		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 
 
 		<div class="device device_row">
@@ -366,7 +366,7 @@
 									<xsl:with-param name="need_sum" select="false()"/>
 									<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 									<xsl:with-param name="product" select="."/>
-									<xsl:with-param name="section_name" select="$plain/name"/>
+									<xsl:with-param name="section_name" select="$plain"/>
 								</xsl:call-template></span>
 							</xsl:if>
 						</div>
@@ -575,7 +575,8 @@
 		<xsl:param name="position" select="1"/>
 		<xsl:param name="query" select="''"/>
 		<xsl:param name="has_more" select="false()"/>
-		<xsl:variable name="plain" select="plain_section"/>
+		<xsl:variable name="plain_section" select="plain_section"/>
+		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -616,11 +617,11 @@
 			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Поставщик</div>
-					<div class="thd"><xsl:value-of select="$plain/name"/></div>
+					<div class="thd"><xsl:value-of select="$plain"/></div>
 				</td>
 				<td>
 					<div class="thn">Дата прайса</div>
-					<div class="thd"><xsl:value-of select="$plain/date"/></div>
+					<div class="thd"><xsl:value-of select="$plain_section/date"/></div>
 				</td>
 			</xsl:if>
 			<td><!--описание -->
@@ -662,7 +663,7 @@
 								<xsl:with-param name="need_sum" select="false()"/>
 								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
 								<xsl:with-param name="product" select="."/>
-								<xsl:with-param name="section_name" select="$plain/name"/>
+								<xsl:with-param name="section_name" select="$plain"/>
 							</xsl:call-template>
 						</xsl:if>
 
