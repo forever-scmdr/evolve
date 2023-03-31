@@ -93,20 +93,22 @@ public class SearchApiCommand extends Command {
 				// Сначала просто сгруппировать результаты по названию продукта (группы цен)
 				for (Element result : results) {
 					String name = JsoupUtils.getTagFirstValue(result, "name");
-					ArrayList<Element> identical = identicalProducts.get(name);
+					String qty = JsoupUtils.getTagFirstValue(result, "qty");
+					String key = name + "_" + qty;
+					ArrayList<Element> identical = identicalProducts.get(key);
 					if (identical == null) {
 						identical = new ArrayList<>();
-						identicalProducts.put(name, identical);
+						identicalProducts.put(key, identical);
 					}
 					identical.add(result);
 				}
 				// Теперь взять первый результат за основу и добавить в него все цены из других товаров
 				StringBuilder sb = new StringBuilder();
-				for (String name : identicalProducts.keySet()) {
-					ArrayList<Element> identical = identicalProducts.get(name);
+				for (String key : identicalProducts.keySet()) {
+					ArrayList<Element> identical = identicalProducts.get(key);
 					Element result = identical.get(0);
 					result.tagName(ItemNames.PRODUCT);
-					String newCode = Strings.createXmlElementName(name) + "_" + Strings.createXmlElementName(providerId);
+					String newCode = Strings.createXmlElementName(key) + "_" + Strings.createXmlElementName(providerId);
 					result.attr("id", newCode);
 					result.prependElement(ItemNames.product_.CODE).text(newCode);
 					String currency = StringUtils.defaultIfBlank(JsoupUtils.getTagFirstValue(result, "currency"), "USD");

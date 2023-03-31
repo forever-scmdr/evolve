@@ -640,7 +640,7 @@
 			-->
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="if (normalize-space($p/next_delivery) = '0') then 'на складе' else $p/next_delivery"/><!--<xsl:value-of select="available"/>--></div>
 			</td>
 			<td><!--Норма упаковки -->
 				<div class="thn">Норма упаковки</div>
@@ -772,7 +772,7 @@
 			-->
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="if (normalize-space($p/next_delivery) = '0') then 'на складе' else $p/next_delivery"/><!--<xsl:value-of select="available"/>--></div>
 			</td>
 			<td><!--Норма упаковки -->
 				<div class="thn">Норма упаковки</div>

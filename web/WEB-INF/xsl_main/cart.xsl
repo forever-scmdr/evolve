@@ -40,6 +40,7 @@
 										<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
 										<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
 										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$p/qty" /></div>
+										<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($p/next_delivery) = '0') then 'на складе' else $p/next_delivery" /></div>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
