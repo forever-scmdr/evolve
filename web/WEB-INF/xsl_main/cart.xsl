@@ -48,8 +48,8 @@
 				<div class="cart-list__item cart-item">
 					<div class="cart-item__image">
 						<a href="{$p/show_product}">
-							<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
-							<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
+							<xsl:if test="$p/pic_link"><img src="{$p/pic_link[1]}" alt="{$p/name}" /></xsl:if>
+							<xsl:if test="not($p/pic_link)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
 						</a>
 					</div>
 					<div class="cart-item__info">
@@ -109,13 +109,13 @@
 			<xsl:for-each select="$complex_bought">
 				<xsl:variable name="p" select="product"/>
 				<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur($p, 'price', 0) else 'по запросу'"/>
-				<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+				<xsl:variable name="sum" select="if (f:num(sum) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 
 				<div class="cart-list__item cart-item">
 					<div class="cart-item__image">
 						<a href="{$p/show_product}">
-							<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
-							<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
+							<xsl:if test="$p/pic_link"><img src="{$p/pic_link[1]}" alt="{$p/name}" /></xsl:if>
+							<xsl:if test="not($p/pic_link)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
 						</a>
 					</div>
 					<div class="cart-item__info">
@@ -194,10 +194,10 @@
 
 	<xsl:template name="BUTTONS">
 		<div class="cart-total__buttons">
+<!--			<button class="button button_2 cart-total__button" type="submit"-->
+<!--					id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>-->
 			<button class="button button_2 cart-total__button" type="submit"
-					id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
-			<button class="button button_2 cart-total__button" type="submit"
-					onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
+					onclick="$(this).closest('form').attr('action', '{page/confirm_link}')">Подтвердить</button>
 		</div>
 	</xsl:template>
 

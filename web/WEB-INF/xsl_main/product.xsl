@@ -97,9 +97,9 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">Артикул:
+		<!-- <p class="subtitle">Артикул:
 			<xsl:value-of select="$p/code"/>
-		</p>
+		</p> -->
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 				<div class="tags">
@@ -437,11 +437,11 @@
 						<th colspan="5">Наличие</th>
 					</tr>
 					<tr>
-						<th>factory</th>
-						<th>smolensk</th>
-						<th>stored</th>
-						<th>reserv</th>
-						<th>free</th>
+						<th>Заказано на заводе</th>
+						<th>Находится в Смоленске</th>
+						<th>Находится на хранении</th>
+						<th>Резерв</th>
+						<th>Свободно к продаже</th>
 					</tr>
 				</thead>
 				<tr>

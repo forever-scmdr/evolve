@@ -218,16 +218,20 @@
 	</xsl:template>
 
 	<xsl:template name="DISPLAY_CONTROL">
-		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">
+		<xsl:if test="($show_devices and not($not_found)) or (/page/@name = 'fav' and page/product)">
+
+			<xsl:variable name="table"  select="page/variables/view = 'table'"/>
+			<xsl:variable name="list"  select="page/variables/view = 'list'"/>
+
 			<div class="view view_section">
 				<div class="view__column">
-					<a href="{page/set_view_table}" class="icon-link">
+					<a href="{page/set_view_table}" class="icon-link{' active'[$table]}">
 						<div class="icon">
 							<img src="img/icon-grid.svg" alt="" />
 						</div>
 						<span class="icon-link__item">Плиткой</span>
 					</a>
-					<a href="{page/set_view_list}" class="icon-link">
+					<a href="{page/set_view_list}" class="icon-link{' active'[$list]}">
 						<div class="icon">
 							<img src="img/icon-lines.svg" alt="" />
 						</div>
@@ -307,10 +311,10 @@
 
 	<xsl:template match="section" mode="pic">
 		<div class="catalog-item">
-			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else ''"/>
-			<xsl:variable name="product_pic" select="if (product/main_pic != '') then concat(product/@path, product/main_pic) else ''"/>
-			<xsl:variable name="pic" select="if($sec_pic != '') then $sec_pic else if($product_pic != '') then $product_pic else 'img/no_image.png'"/>
-			<div class="catalog-item__image img"><img src="{$pic}"  onerror="{$onerror}" alt="{name}" /></div>
+			<xsl:variable name="sec_pic" select="if (main_pic != '') then concat(@path, main_pic) else main_pic_path"/>
+
+			<div class="catalog-item__image img">
+				<img src="{$sec_pic}"  onerror="{$onerror}" alt="{name}" /></div>
 			<div class="catalog-item__info">
 				<div class="catalog-item__title"><xsl:value-of select="name"/></div>
 				<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>

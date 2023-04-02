@@ -720,7 +720,7 @@
 
 				<xsl:call-template name="SEO"/>
 				<link rel="stylesheet" type="text/css" href="magnific_popup/magnific-popup.css"/>
-				<link rel="stylesheet" href="css/styles.css?version=1.65"/>
+				<link rel="stylesheet" href="css/styles.css?version=1.66"/>
 				<link rel="stylesheet" href="css/fixes.css?version=1.0"/>
 				<link  href="css/fotorama.css" rel="stylesheet" />
 				<link rel="stylesheet" href="js/nanogallery/css/nanogallery2.woff.min.css"/>
@@ -826,9 +826,7 @@
 					function initDropDownHeader() {
 						$('.dd_menu_item').click(function() {
 							var mi = $(this);
-							<xsl:text disable-output-escaping="yes">
-							$('#dropdownMenuLink').html(mi.html() + '&lt;i class="fas fa-caret-down"&gt;&lt;/i&gt;');
-							</xsl:text>
+							$('#dropdownMenuLink').html(mi.html() + '<i class="fas fa-caret-down"></i>');
 							$('.dd_block').hide();
 							$('#' + mi.attr('dd-id')).show();
 						});
@@ -838,9 +836,8 @@
 						var $el = $(el);
 						<!-- console.log($el); -->
 						var val = $el.val();
-					<xsl:text disable-output-escaping="yes">
-						if(val.length &gt; 2){
-
+						if(val.length > 2){
+							<xsl:text disable-output-escaping="yes">
 								var $form = $("&lt;form&gt;",
 							</xsl:text>
 								{'method' : 'post', 'action' : '<xsl:value-of select="page/search_ajax_link"/>', 'id' : 'tmp-form'}
@@ -862,10 +859,8 @@
 
 					$(document).on('click', 'body', function(e){
 						var $trg = $(e.target);
-					<xsl:text disable-output-escaping="yes">
-					if($trg.closest('#search-result').length &gt; 0 || $trg.is('#search-result') || $trg.is('input')) return;
-					</xsl:text>
-					$('#search-result').hide();
+						if($trg.closest('#search-result').length > 0 || $trg.is('#search-result') || $trg.is('input')) return;
+						$('#search-result').hide();
 						$('#search-result').html('');
 					});
 

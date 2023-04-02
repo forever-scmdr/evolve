@@ -24,24 +24,18 @@
                 .no{color: #dc0000; font-weight: bold;}
                 .path{color: #0071bc;}
             </style>
+
+            <body>
+                <div>
                     <script>
                         function endsWith(str, suffix) {
                         return str.indexOf(suffix, str.length - suffix.length) !== -1;
                         }
 
-                setTimeout(function(){
-                    document.location.replace("/crawl");
+                        refreshTimeout = setTimeout(function(){
+                        document.location.replace('/<xsl:value-of select="page/@name"/>');
                         }, 5000);
 
-                refreshTimeout = setTimeout(
-                        function () {
-                            h = document.location.href;
-                            h = h.replace("_start", "");
-                            h = h.replace("?action=start", "");
-                            document.location.replace(h);
-                        },
-                        5000
-                );
                         function toggleRefresh() {
                             refresher = document.getElementById('refresher');
                             if (refresher.classList.contains("clicked")) {
@@ -55,10 +49,10 @@
                         }
                         }
                     </script>
-            <body>
+                </div>
                 <h1><xsl:value-of select="/page/operation"/></h1>
                 <h2>Процесс выполнения</h2>
-                <h2><xsl:value-of select="/page/current_job"/></h2>
+                 <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
                 <xsl:if test="/page/error">
                     <h2>ошибки выполнения интеграции</h2>
                     <table>
@@ -74,11 +68,7 @@
                     </table>
                 </xsl:if>
                 <table>
-                    <tr>
-                        <td colspan="2">
-                            <input type="button" id="refresher" value="выключить/включить обновление страницы" onclick="toggleRefresh();"/>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>Строка файла:</td>
                         <td class="error">

@@ -43,7 +43,7 @@
 				<div class="past-order__date"><xsl:value-of select="date"/></div>
 			</div>
 			<div class="past-order__price">
-				<div class="past-order__sum"><xsl:value-of select="sum_discount"/> руб</div>
+				<div class="past-order__sum"><xsl:value-of select="sum_discount"/> €</div>
 				<div class="past-order__qty">Позиций: <xsl:value-of select="sum(bought/f:num(qty_total))"/></div>
 			</div>
 
@@ -56,36 +56,38 @@
 				</div>
 			</xsl:if>
 
-			<div class="payments" id="payments-{@id}">
-				<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
-					<div class="past-product__image"></div>
-					<div class="past-order__title">Расписание платежей</div>
-				</div>
-				<xsl:for-each select="payment_stage">
+			<xsl:if test="bought/f:num(is_complex) = 1">
+				<div class="payments" id="payments-{@id}">
 					<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
 						<div class="past-product__image"></div>
-						<div class="payment">
-							<form method="post" action="{update}" id="pmt{@id}">
-								<input type="date" name="date" value="{f:date_value(date)}" data-old="{f:date_value(date)}"/>
-
-								<input type="text" name="sum" value="{sum}" data-old="{sum}"/>
-								<span class="percent">
-									<b><xsl:value-of select="percent"/>%&#160;</b>
-								</span>
-								<button class="button" style="background: #bbb;" onclick="postForm('pmt{@id}', 'payments-{@id}'); return false;">Сохранить</button>
-								<a class="delete" onclick="insertAjax('{delete}', 'payments-{@id}')">×</a>
-							</form>
-						</div>
+						<div class="past-order__title">Расписание платежей</div>
 					</div>
-				</xsl:for-each>
-			</div>
-			<div class="payments">
-				<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
-					<div class="past-product__image"></div>
-					<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}', '{create_payment}');">Добавить платеж</button>
-					<!--								<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}'); populatePayment('payments-{@id}');">Копировать платеж</button>-->
+					<xsl:for-each select="payment_stage">
+						<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
+							<div class="past-product__image"></div>
+							<div class="payment">
+								<form method="post" action="{update}" id="pmt{@id}">
+									<input type="date" name="date" value="{f:date_value(date)}" data-old="{f:date_value(date)}"/>
+
+									<input type="text" name="sum" value="{sum}" data-old="{sum}"/>
+									<span class="percent">
+										<b><xsl:value-of select="percent"/>%&#160;</b>
+									</span>
+									<button class="button" style="background: #bbb;" onclick="postForm('pmt{@id}', 'payments-{@id}'); return false;">Сохранить</button>
+									<a class="delete" onclick="insertAjax('{delete}', 'payments-{@id}')">×</a>
+								</form>
+							</div>
+						</div>
+					</xsl:for-each>
 				</div>
-			</div>
+				<div class="payments">
+					<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
+						<div class="past-product__image"></div>
+						<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}', '{create_payment}');">Добавить платеж</button>
+						<!--								<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}'); populatePayment('payments-{@id}');">Копировать платеж</button>-->
+					</div>
+				</div>
+			</xsl:if>
 
 
 			<script type="text/javascript">
@@ -128,11 +130,11 @@
 						<xsl:if test="not($prod)">
 							<xsl:value-of select="name"/>
 						</xsl:if>
-						<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>
+<!--					<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>-->
 						<div class="past-product__old-price">
-							<span>Цена: <xsl:value-of select="price"/> руб.</span>
+							<span>Цена: <xsl:value-of select="f:exchange_cur(., 'price', 0)"/></span>
 							<span>Кол-во: <xsl:value-of select="qty_total"/> шт.</span>
-							<span>Сумма: <xsl:value-of select="sum"/> руб.</span>
+							<span>Сумма: <xsl:value-of select="f:exchange_cur(., 'sum', 0)"/></span>
 						</div>
 
 						<xsl:if test="$is_complex">

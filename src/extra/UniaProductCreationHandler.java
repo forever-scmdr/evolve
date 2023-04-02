@@ -39,7 +39,6 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		PRODUCT_PARAMS_MAP.put("number", VENDOR_CODE_PARAM);
 		PRODUCT_PARAMS_MAP.put("picture", "pic_link");
 		PRODUCT_PARAMS_MAP.put("id", CODE_PARAM);
-		PRODUCT_PARAMS_MAP.put("price", PRICE_PARAM);
 		PRODUCT_PARAMS_MAP.put("qantity_factory", "qty_factory");
 		PRODUCT_PARAMS_MAP.put("qantity_smolensk", "qty_smolensk");
 		PRODUCT_PARAMS_MAP.put("qantity_stored", "qty_store");
@@ -54,7 +53,6 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		OPTION_PARAMS_MAP.put("name_opcii", NAME);
 		OPTION_PARAMS_MAP.put("part_name", NAME);
 		OPTION_PARAMS_MAP.put("price", PRICE_PARAM);
-		OPTION_PARAMS_MAP.put("price_opt", "");
 
 		SERIAL_PARAMS.put("id_tehniki", CODE_PARAM);
 		SERIAL_PARAMS.put("name_tehniki", NAME);
@@ -82,6 +80,26 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private ComplectationChild complStaus;
 	private static final String IMG_HOST = "http://62.109.11.85";
 
+	public static void setPriceParam(String paramName){
+		String pp = "";
+
+		for(String key : PRODUCT_PARAMS_MAP.keySet()){
+			if(PRODUCT_PARAMS_MAP.get(key).equals(PRICE_PARAM)){
+				pp = key; break;
+			}
+		}
+		PRODUCT_PARAMS_MAP.remove(pp);
+
+		for(String key : OPTION_PARAMS_MAP.keySet()){
+			if(OPTION_PARAMS_MAP.get(key).equals(PRICE_PARAM)){
+				pp = key; break;
+			}
+		}
+		OPTION_PARAMS_MAP.remove(pp);
+
+		PRODUCT_PARAMS_MAP.put(paramName, PRICE_PARAM);
+		OPTION_PARAMS_MAP.put(paramName, PRICE_PARAM);
+	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -117,6 +135,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				}
 
 				processDescription(product);
+				processInStock(product);
 
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser());
 				processSpecialParameters(product);
@@ -153,6 +172,18 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		} catch (Exception e) {
 			handleException(e);
 		}
+	}
+
+	private void processInStock(Item product) {
+		boolean inStock = product.getDoubleValue(QTY_PARAM, 0d) > 0
+				|| product.getIntValue("qty_factory", 0) > 0
+				|| product.getIntValue("qty_smolensk", 0) > 0
+				|| product.getIntValue("qty_reserve", 0) > 0
+				|| product.getIntValue("qty_store", 0) > 0
+				|| (complectationBuffer != null && complectationBuffer.size() > 0);
+
+		byte v = inStock? (byte) 1 : (byte) 0;
+		product.setValue("in_stock", v);
 	}
 
 	private void processDescription(Item product) {

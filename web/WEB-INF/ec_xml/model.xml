@@ -263,7 +263,7 @@
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="step" type="double" caption="Шаг заказа"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
-
+		<parameter name="in_stock" type="byte" domain="0-1" default="0" caption="В наличии"/>
 	</item>
 
 	<!-- картинки-ссылки -->

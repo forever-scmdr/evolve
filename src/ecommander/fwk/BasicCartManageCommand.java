@@ -244,7 +244,7 @@ public abstract class BasicCartManageCommand extends Command {
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
 
 		// Письмо для продавца
-		sendEmail(regularTopic, shopEmail, shopEmailTemplate);
+		// sendEmail(regularTopic, shopEmail, shopEmailTemplate);
 		// Письмо для покупателя
 		sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
@@ -356,7 +356,7 @@ public abstract class BasicCartManageCommand extends Command {
 		shopLink.addStaticVariable("is_complex", "1");
 
 		// Письмо для продавца
-		sendEmail(regularTopic, shopEmail, shopLink);
+		// sendEmail(regularTopic, shopEmail, shopLink);
 		// Письмо для покупателя
 		sendEmail(regularTopic, customerEmail, customerLink, true);
 

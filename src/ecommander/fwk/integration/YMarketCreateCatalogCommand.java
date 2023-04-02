@@ -112,8 +112,11 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 			YMarketCatalogCreationHandler secHandler = secHandlers.get(xml.getName());
 			String productItemTypeName = StringUtils.containsIgnoreCase(xml.getName(), "parts")? "part" : "complex_product";
+			String priceParam = StringUtils.containsIgnoreCase(xml.getName(), "parts")? "price_opt" : "price";
+
 			UniaProductCreationHandler prodHandler = new UniaProductCreationHandler(secHandler.getSections(),info,getInitiator());
 			prodHandler.setProductType(productItemTypeName);
+			UniaProductCreationHandler.setPriceParam(priceParam);
 			parser.parse(xml, prodHandler);
 			sectionsWithNewItemTypes.addAll(prodHandler.getSectionsWithNewItemTypes());
 		}

@@ -64,7 +64,7 @@
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
-			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+			<!-- <div class="text_size_sm"><xsl:value-of select="code"/></div> -->
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -167,7 +167,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<!-- <div class="text_size_sm"><xsl:value-of select="code"/></div> -->
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -217,6 +217,8 @@
 							</xsl:for-each>
 						</xsl:if>
 					</table>
+
+					<xsl:apply-templates  select="complectation" mode="product-lines"/>
 
 <!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 				</div>
@@ -277,7 +279,7 @@
 
 	<xsl:template name="CART_BUTTON">
 		<xsl:param name="p" />
-		<xsl:variable name="has_lines" select="@type = 'complex_product'"/>
+		<xsl:variable name="has_lines" select="@type = 'complex_product' or name(.) = 'complex_product'"/>
 		<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 		<!-- device order -->
@@ -369,6 +371,117 @@
 				<span><xsl:value-of select="$compare_remove_label"/></span>
 			</a>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="complectation" mode="product-lines">
+
+		<xsl:variable name="p" select="./.."/>
+
+		<div class="complectation-summary">
+			<table class="with-borders">
+				<thead>
+					<tr>
+						<th rowspan="2">Описание</th>
+						<th colspan="5">Наличие</th>
+					</tr>
+					<tr>
+						<th>Заказано на заводе</th>
+						<th>Находится в Смоленске</th>
+						<th>Находится на хранении</th>
+						<th>Резерв</th>
+						<th>Свободно к продаже</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>
+						<p>
+							<b>
+								<xsl:value-of select="$p/name"/>
+							</b>
+						</p>
+						<xsl:if test="f:num(price) &gt; 0">
+							<p>
+								Цена:
+								<b>
+									<xsl:value-of select="price"/>
+								</b>
+							</p>
+						</xsl:if>
+						<xsl:if test="option">
+							<p>
+								Дополнительные опции:
+							</p>
+							<ul>
+								<xsl:for-each select="option">
+									<li>
+										<xsl:value-of select="name"/>
+									</li>
+								</xsl:for-each>
+							</ul>
+						</xsl:if>
+					</td>
+					<td>
+						<xsl:value-of select="qty_factory"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_smolensk"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_store"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty_reserve"/>
+					</td>
+					<td>
+						<xsl:value-of select="qty"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="6">
+						<span class="toggle" onclick="$('#cmpl-{@id}').toggle()">Подробный список</span>
+					</td>
+				</tr>
+				<tbody id="cmpl-{@id}" style="display: none;">
+					<xsl:for-each select="base_complectation_product">
+						<tr>
+							<td>
+								Серийный номер:
+								<b>
+									<xsl:value-of select="if(serial != '') then serial else 'N/A'"/>
+								</b>
+								<xsl:if test="reserve_time != ''">
+									<br/>Зарезервирован:
+									<b>
+										<xsl:value-of select="reserve_time"/>
+									</b>
+								</xsl:if>
+								<xsl:if test="stored_time != ''">
+									<br/>На складе:
+									<b>
+										<xsl:value-of select="stored_time"/>
+									</b>
+								</xsl:if>
+							</td>
+							<td>
+								<xsl:value-of select="qty_factory"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_smolensk"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_store"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty_reserve"/>
+							</td>
+							<td>
+								<xsl:value-of select="qty"/>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>

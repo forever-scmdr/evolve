@@ -148,9 +148,11 @@
 	<include-definition name="SECTION_DISPLAY_LINKS">
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="table"/>
+			<var name="minqty" value=""/>
 		</link>
 		<link name="set_view_list" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="list"/>
+			<var name="minqty" value="0"/>
 		</link>
 		<link name="set_limit_24" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="limit" value="24"/>
@@ -312,7 +314,7 @@
 			<var name="tag"/>
 			<var name="mark"/>
 		</request>
-		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
+		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view page">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
 				<var name="tag" var="tag"/>
@@ -322,7 +324,7 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<parameter name="in_stock" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -347,6 +349,11 @@
 					<var name="prod" ref="prod" style="keypath"/>
 				</link>
 				<include name="PRODUCT_PARAMS_LINKS"/>
+
+				<list item="complectation">
+					<list item="base_complectation_product"/>
+					<list item="option" assoc="option"/>
+				</list>
 			</list>
 			<list item="product" tag="tag" id="tag" assoc="* catalog_link">
 				<aggregation parameter="tag"/>
@@ -1060,6 +1067,9 @@
 		</link>
 		<link name="proceed_link" target="cart_action" type="itemform">
 			<var name="action" value="proceed"/>
+		</link>
+		<link name="confirm_link" target="cart_action" type="itemform">
+			<var name="action" value="customerForm"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

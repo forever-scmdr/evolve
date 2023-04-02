@@ -33,7 +33,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected boolean validate() throws Exception {
-		Item form = getItemForm().getItemSingleTransient();
+		Item form = userItem;// getItemForm().getItemSingleTransient();
 		boolean hasError = false;
 
 		for (String mandatory : MANDATORY_JUR) {
