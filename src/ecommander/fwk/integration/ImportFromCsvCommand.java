@@ -1,9 +1,7 @@
 package ecommander.fwk.integration;
 
-import com.google.common.base.Charsets;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
-import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -14,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class ImportFromCsvCommand extends IntegrateBase implements CatalogConst 
 			addError("no CSV catalog found!", "loading catalog file attempt");
 			return false;
 		}
-		data = new CharSeparatedTxtTableData(csvData.getAbsolutePath(), Charsets.UTF_8, true, HEADER_PARAMS.get(CODE_PARAM), HEADER_PARAMS.get(NAME));
+		data = new CharSeparatedTxtTableData(csvData.getAbsolutePath(), StandardCharsets.UTF_8, true, HEADER_PARAMS.get(CODE_PARAM), HEADER_PARAMS.get(NAME));
 		return true;
 	}
 
