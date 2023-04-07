@@ -11,6 +11,7 @@ import ecommander.model.ItemTypeRegistry;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.MoveItemDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -81,7 +82,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 	@Override
 	protected void integrate() throws Exception {
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 1);
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
+		DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		hideAllProducts();
 		setOperation("Обновлние каталога");
 		setProcessed(0);
@@ -98,7 +99,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 		deleteHidden();
 
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
+		DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra()));
 		//indexation
 		info.setOperation("Индексация названий товаров");
 		LuceneIndexMapper.getSingleton().reindexAll();
@@ -109,15 +110,17 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		setOperation("Скрываем товары");
 		setProcessed(0);
 		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
-		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
+		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName()).setLimit(100);
 		List<Item> products;
 		int counter = 0;
-		while ((products = productsQuery.loadItems()).size() > 0) {
+		long prevId = 0;
+		while ((products = productsQuery.setIdSequential(prevId).loadItems()).size() > 0) {
 			for (Item product : products) {
 				executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
 				counter++;
 				if (counter >= HIDE_BATCH_SIZE) {commitCommandUnits();}
 				info.increaseProcessed();
+				prevId = product.getId();
 			}
 			commitCommandUnits();
 		}
@@ -161,7 +164,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 			for (Item product : products) {
 				startID = product.getId();
 				if (StringUtils.isBlank(product.getStringValue(CODE_PARAM))) {
-					executeAndCommitCommandUnits(ItemStatusDBUnit.delete(product.getId()));
+					DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(product.getId())));
 					deletedCounter++;
 				}
 				info.increaseProcessed();
@@ -214,7 +217,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 					currentSection.setValue(CODE_PARAM, sectionCode);
 					currentSection.setValue(NAME_PARAM, sectionName);
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentSection).noFulltextIndex());
+					DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(currentSection).noFulltextIndex()));
 					//if(isNew) sectionsWithNewItemTypes.add(currentSection.getId());
 
 				}
@@ -258,7 +261,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							List<Item> duplicates = ItemQuery.loadByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 							currentProduct = duplicates.size() == 0 ? null : duplicates.remove(0);
 							for (Item duplicate : duplicates) {
-								executeAndCommitCommandUnits(ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex());
+								DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex()));
 							}
 
 							if (currentProduct == null) {
@@ -267,7 +270,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							} else {
 								executeCommandUnit(ItemStatusDBUnit.restore(currentProduct.getId()));
 								if (productNeedsMoving()) {
-									executeAndCommitCommandUnits(new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra());
+									DelayedTransaction.executeSingle(getInitiator(), (new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra()));
 								}
 							}
 						} else if (MAIN_PIC_PARAM.equals(paramName)) {
@@ -322,7 +325,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					currentProduct.setValue(STEP_PARAM, min);
 					byte available = currentProduct.getDoubleValue(QTY_PARAM, 0d) > 0 && currentProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO ? (byte) 1 : (byte) 0;
 					currentProduct.setValue(AVAILABLE_PARAM, available);
-					executeAndCommitCommandUnits(SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
+					DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra()));
 
 					if (StringUtils.isNotBlank(xml.toString())) {
 						ItemQuery query = new ItemQuery(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM)).setParentId(currentProduct.getId(), false);
@@ -332,7 +335,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
 						} else if (items.size() > 1) {
 							for (Item item : items) {
-								executeAndCommitCommandUnits(ItemStatusDBUnit.delete(item.getId()).ignoreFileErrors().ignoreUser());
+								DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(item.getId()).ignoreFileErrors().ignoreUser()));
 							}
 							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
 						} else {
@@ -341,7 +344,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						if (!"Прочее".equals(currentSection.getStringValue(NAME_PARAM, "")))
 							sectionsWithNewItemTypes.add(currentSection.getId());
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
+						DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra()));
 					}
 
 				}
