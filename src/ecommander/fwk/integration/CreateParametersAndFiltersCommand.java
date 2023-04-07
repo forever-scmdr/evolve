@@ -13,6 +13,7 @@ import ecommander.pages.Command;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
+import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -166,7 +167,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				for (Item product : products) {
 					List<Item> oldParams = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadItems();
 					for (Item oldParam : oldParams) {
-						executeAndCommitCommandUnits(ItemStatusDBUnit.delete(oldParam));
+						DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(oldParam));
 					}
 					Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
 					if (paramsXml != null) {
@@ -204,7 +205,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
 				}
 				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 
 				// Создать класс для продуктов из этого раздела
 				ItemType newClass = new ItemType(className, 0, classCaption, "", "",
@@ -218,11 +219,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
 							"", caption, unit, "", false, false, null, null));
 				}
-				executeAndCommitCommandUnits(new SaveNewItemTypeDBUnit(newClass));
+				DelayedTransaction.executeSingle(getInitiator(), new SaveNewItemTypeDBUnit(newClass));
 
 			} else {
 				section.clearValue(PARAMS_FILTER_PARAM);
-				executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
+				DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 			}
 			info.increaseProcessed();
 		}
@@ -276,7 +277,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 								}
 							}
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
+						DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(params).noFulltextIndex().noTriggerExtra());
 					}
 				}
 			}

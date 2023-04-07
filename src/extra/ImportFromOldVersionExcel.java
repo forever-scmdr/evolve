@@ -141,7 +141,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		while ((products = productsQuery.loadItems()).size() > 0) {
 			for (Item product : products) {
 				if (now - product.getTimeUpdated() > ABSENT_PRODUCT_LIFETIME || StringUtils.isBlank(product.getStringValue(CODE_PARAM))) {
-					executeCommandUnit(ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
+					DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(product.getId()).ignoreUser(true).noFulltextIndex());
 					counter++;
 					info.increaseProcessed();
 					if (counter > DELETE_BATCH_SIZE) {
