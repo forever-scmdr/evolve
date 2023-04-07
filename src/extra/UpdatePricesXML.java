@@ -2,6 +2,7 @@ package extra;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDataSource;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.model.Item;
@@ -40,7 +41,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 			info.addError("Не найден файл интеграции", priceXmlFile.getAbsolutePath());
 			return false;
 		}
-		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), StandardCharsets.UTF_8);
+		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), Strings.SYSTEM_ENCODING);
 		reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
 		reportDir.mkdirs();
 		long date = System.currentTimeMillis();
