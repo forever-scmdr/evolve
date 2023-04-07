@@ -99,7 +99,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 		deleteHidden();
 
-		DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra()));
+		DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		//indexation
 		info.setOperation("Индексация названий товаров");
 		LuceneIndexMapper.getSingleton().reindexAll();
@@ -164,7 +164,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 			for (Item product : products) {
 				startID = product.getId();
 				if (StringUtils.isBlank(product.getStringValue(CODE_PARAM))) {
-					DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(product.getId())));
+					DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(product.getId()));
 					deletedCounter++;
 				}
 				info.increaseProcessed();
@@ -217,7 +217,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 
 					currentSection.setValue(CODE_PARAM, sectionCode);
 					currentSection.setValue(NAME_PARAM, sectionName);
-					DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(currentSection).noFulltextIndex()));
+					DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(currentSection).noFulltextIndex());
 					//if(isNew) sectionsWithNewItemTypes.add(currentSection.getId());
 
 				}
@@ -261,16 +261,16 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							List<Item> duplicates = ItemQuery.loadByParamValue(PRODUCT_ITEM, CODE_PARAM, cellValue, Item.STATUS_HIDDEN, Item.STATUS_NORMAL);
 							currentProduct = duplicates.size() == 0 ? null : duplicates.remove(0);
 							for (Item duplicate : duplicates) {
-								DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex()));
+								DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(duplicate.getId()).ignoreUser(true).noFulltextIndex());
 							}
 
 							if (currentProduct == null) {
 								currentProduct = ItemUtils.newChildItem(PRODUCT_ITEM, currentSection);
 								currentProduct.setValue(CODE_PARAM, cellValue);
 							} else {
-								executeCommandUnit(ItemStatusDBUnit.restore(currentProduct.getId()));
+								DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.restore(currentProduct.getId()));
 								if (productNeedsMoving()) {
-									DelayedTransaction.executeSingle(getInitiator(), (new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra()));
+									DelayedTransaction.executeSingle(getInitiator(), new MoveItemDBUnit(currentProduct, currentSection).ignoreUser(true).noFulltextIndex().noTriggerExtra());
 								}
 							}
 						} else if (MAIN_PIC_PARAM.equals(paramName)) {
@@ -325,7 +325,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 					currentProduct.setValue(STEP_PARAM, min);
 					byte available = currentProduct.getDoubleValue(QTY_PARAM, 0d) > 0 && currentProduct.getDecimalValue(PRICE_PARAM, BigDecimal.ZERO) != BigDecimal.ZERO ? (byte) 1 : (byte) 0;
 					currentProduct.setValue(AVAILABLE_PARAM, available);
-					DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra()));
+					DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(currentProduct).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 
 					if (StringUtils.isNotBlank(xml.toString())) {
 						ItemQuery query = new ItemQuery(ItemTypeRegistry.getItemType(PARAMS_XML_ITEM)).setParentId(currentProduct.getId(), false);
@@ -335,7 +335,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
 						} else if (items.size() > 1) {
 							for (Item item : items) {
-								DelayedTransaction.executeSingle(getInitiator(), (ItemStatusDBUnit.delete(item.getId()).ignoreFileErrors().ignoreUser()));
+								DelayedTransaction.executeSingle(getInitiator(), ItemStatusDBUnit.delete(item.getId()).ignoreFileErrors().ignoreUser());
 							}
 							paramsXML = ItemUtils.newChildItem(PARAMS_XML_ITEM, currentProduct);
 						} else {
@@ -344,7 +344,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
 						if (!"Прочее".equals(currentSection.getStringValue(NAME_PARAM, "")))
 							sectionsWithNewItemTypes.add(currentSection.getId());
-						DelayedTransaction.executeSingle(getInitiator(), (SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra()));
+						DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 					}
 
 				}
