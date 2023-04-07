@@ -41,152 +41,153 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	public void execute() throws Exception {
 		// Создать значение ключа
-		item.prepareToSave();
+		synchronized (item) {
+			item.prepareToSave();
 
-		// Загрузка и валидация родительского айтема, если надо
-		Connection conn = getTransactionContext().getConnection();
-		if (item.hasParent()) {
-			if (parent == null)
-				parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
-			testPrivileges(parent);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
-		//          Файловые параметры айтема уже можно сохранять, т.к. их значения уже можно получить
-		//          (для этого не нужно выполнять команду сохранения файлов)
-		//
-		TemplateQuery itemInsert = new TemplateQuery("New item insert");
-		itemInsert.INSERT_INTO(ITEM_TBL).SET()
-				.col(I_SUPERTYPE).int_(item.getBasicSupertypeId())
-				._col(I_TYPE_ID).int_(item.getTypeId())
-				._col(I_KEY).string(item.getKey())
-				._col(I_T_KEY).string(item.getKeyUnique())
-				._col(I_PROTECTED).byte_(item.isFileProtected() ? (byte)1 : (byte)0)
-				._col(I_GROUP).byte_(item.getOwnerGroupId())
-				._col(I_USER).int_(item.getOwnerUserId())
-				._col(I_STATUS).byte_(item.getStatus())
-				._col(I_PARAMS).string(item.outputValues());
-		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
-		boolean hasId = item.getId() > 0;
-		if (hasId)
-			itemInsert._col(I_ID).long_(item.getId());
-
-		if (!hasId) {
-			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
-				pstmt.executeUpdate();
-				ResultSet rs = pstmt.getGeneratedKeys();
-				if (rs.next())
-					item.setId(rs.getLong(1));
+			// Загрузка и валидация родительского айтема, если надо
+			Connection conn = getTransactionContext().getConnection();
+			if (item.hasParent()) {
+				if (parent == null)
+					parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
+				testPrivileges(parent);
 			}
-		} else {
-			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn)) {
-				pstmt.executeUpdate();
-			}
-		}
 
-		/////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 2.   Если айтем имеет уникальный текстовый ключ, то происходит его сохранение в
-		//          таблицу ключей. Также может произойти обнлвение таблицы айтема, в случае
-		//          если заданный тектовый ключ неуникален и был сгенерирован другой
-		//
-		if (item.getItemType().isKeyUnique()) {
-			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
-			uniqueKeyInsert
-					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
-					.col(UK_ID).long_(item.getId())
-					._col(UK_KEY).string(item.getKeyUnique());
-			PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
-			boolean needItemUpdate = false;
-			try {
-				keyUniqueStmt.executeUpdate();
-			} catch (Exception e) {
-				// Значит такой ключ уже существует, добавить к ключу ID айтема
-				item.setKeyUnique(item.getKeyUnique() + item.getId());
-				keyUniqueStmt.setString(2, item.getKeyUnique());
-				keyUniqueStmt.executeUpdate();
-				needItemUpdate = true;
-			} finally {
-				if (keyUniqueStmt != null)
-					keyUniqueStmt.close();
-			}
-			// Обновление уникального ключа айтема (если это нужно)
-			if (needItemUpdate) {
-				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
-				keyUpdate.UPDATE(ITEM_TBL)
-						.SET().col(I_T_KEY).string(item.getKeyUnique())
-						.WHERE().col(I_ID).long_(item.getId());
-				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
+			//          Файловые параметры айтема уже можно сохранять, т.к. их значения уже можно получить
+			//          (для этого не нужно выполнять команду сохранения файлов)
+			//
+			TemplateQuery itemInsert = new TemplateQuery("New item insert");
+			itemInsert.INSERT_INTO(ITEM_TBL).SET()
+					.col(I_SUPERTYPE).int_(item.getBasicSupertypeId())
+					._col(I_TYPE_ID).int_(item.getTypeId())
+					._col(I_KEY).string(item.getKey())
+					._col(I_T_KEY).string(item.getKeyUnique())
+					._col(I_PROTECTED).byte_(item.isFileProtected() ? (byte) 1 : (byte) 0)
+					._col(I_GROUP).byte_(item.getOwnerGroupId())
+					._col(I_USER).int_(item.getOwnerUserId())
+					._col(I_STATUS).byte_(item.getStatus())
+					._col(I_PARAMS).string(item.outputValues());
+			// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
+			boolean hasId = item.getId() > 0;
+			if (hasId)
+				itemInsert._col(I_ID).long_(item.getId());
+
+			if (!hasId) {
+				try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
+					pstmt.executeUpdate();
+					ResultSet rs = pstmt.getGeneratedKeys();
+					if (rs.next())
+						item.setId(rs.getLong(1));
+				}
+			} else {
+				try (PreparedStatement pstmt = itemInsert.prepareQuery(conn)) {
 					pstmt.executeUpdate();
 				}
 			}
-		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
-		//
-		if (item.hasParent()) {
-			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
-		} else {
-			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
-			rootQuery
-					.INSERT_INTO(ITEM_PARENT_TBL).SET()
-					.col(IP_CHILD_ID).long_(item.getId())
-					._col(IP_PARENT_ID).long_(item.getId())
-					._col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getRootAssocId())
-					._col(IP_PARENT_DIRECT).byte_((byte)1)
-					._col(IP_CHILD_SUPERTYPE).int_(item.getBasicSupertypeId())
-					._col(IP_WEIGHT).int_(0);
-			try (PreparedStatement pstmt = rootQuery.prepareQuery(conn)) {
-				pstmt.executeUpdate();
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 4.   Сохранение файлов айтема
-		//
-		try {
-			executeCommand(new SaveItemFilesUnit(item));
-		} catch (Exception e) {
-			if (!ignoreFileErrors)
-				throw e;
-			else
-				ServerLogger.warn("Ignoring file error while saving new item", e);
-		}
-		// Если сохранение файлов привело к обновлению айтема (например, скачались файлы по заданному URL),
-		// надо обновить параметры айтема
-		if (item.hasChanged()) {
-			TemplateQuery updateItem = new TemplateQuery("Update item");
-			updateItem.UPDATE(DBConstants.ItemTbl.ITEM_TBL).SET()
-					.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
-					.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
-			try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
-				pstmt.executeUpdate();
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
-		//
-		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 6.   Дополнительная обработка
-		//
-		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
-			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
-				PersistenceCommandUnit command = fac.createCommand(item);
-				if (command instanceof DBPersistenceCommandUnit) {
-					((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser).ignoreFileErrors(ignoreFileErrors);
+			/////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 2.   Если айтем имеет уникальный текстовый ключ, то происходит его сохранение в
+			//          таблицу ключей. Также может произойти обнлвение таблицы айтема, в случае
+			//          если заданный тектовый ключ неуникален и был сгенерирован другой
+			//
+			if (item.getItemType().isKeyUnique()) {
+				TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
+				uniqueKeyInsert
+						.INSERT_INTO(UNIQUE_KEY_TBL).SET()
+						.col(UK_ID).long_(item.getId())
+						._col(UK_KEY).string(item.getKeyUnique());
+				PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn);
+				boolean needItemUpdate = false;
+				try {
+					keyUniqueStmt.executeUpdate();
+				} catch (Exception e) {
+					// Значит такой ключ уже существует, добавить к ключу ID айтема
+					item.setKeyUnique(item.getKeyUnique() + item.getId());
+					keyUniqueStmt.setString(2, item.getKeyUnique());
+					keyUniqueStmt.executeUpdate();
+					needItemUpdate = true;
+				} finally {
+					if (keyUniqueStmt != null)
+						keyUniqueStmt.close();
 				}
-				executeCommandInherited(command);
+				// Обновление уникального ключа айтема (если это нужно)
+				if (needItemUpdate) {
+					TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
+					keyUpdate.UPDATE(ITEM_TBL)
+							.SET().col(I_T_KEY).string(item.getKeyUnique())
+							.WHERE().col(I_ID).long_(item.getId());
+					try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
+						pstmt.executeUpdate();
+					}
+				}
 			}
-		}
 
-		// Добавление в полнотекстовый индекс
-		if (insertIntoFulltextIndex) {
-			LuceneIndexMapper.getSingleton().updateItem(item);
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
+			//
+			if (item.hasParent()) {
+				executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
+			} else {
+				TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
+				rootQuery
+						.INSERT_INTO(ITEM_PARENT_TBL).SET()
+						.col(IP_CHILD_ID).long_(item.getId())
+						._col(IP_PARENT_ID).long_(item.getId())
+						._col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getRootAssocId())
+						._col(IP_PARENT_DIRECT).byte_((byte) 1)
+						._col(IP_CHILD_SUPERTYPE).int_(item.getBasicSupertypeId())
+						._col(IP_WEIGHT).int_(0);
+				try (PreparedStatement pstmt = rootQuery.prepareQuery(conn)) {
+					pstmt.executeUpdate();
+				}
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 4.   Сохранение файлов айтема
+			//
+			try {
+				executeCommand(new SaveItemFilesUnit(item));
+			} catch (Exception e) {
+				if (!ignoreFileErrors)
+					throw e;
+				else
+					ServerLogger.warn("Ignoring file error while saving new item", e);
+			}
+			// Если сохранение файлов привело к обновлению айтема (например, скачались файлы по заданному URL),
+			// надо обновить параметры айтема
+			if (item.hasChanged()) {
+				TemplateQuery updateItem = new TemplateQuery("Update item");
+				updateItem.UPDATE(DBConstants.ItemTbl.ITEM_TBL).SET()
+						.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
+						.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
+				try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
+					pstmt.executeUpdate();
+				}
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 5.   Сохранить параметры айтема в таблицах индексов
+			//
+			ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
+
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			// Шаг 6.   Дополнительная обработка
+			//
+			if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
+				for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
+					PersistenceCommandUnit command = fac.createCommand(item);
+					if (command instanceof DBPersistenceCommandUnit) {
+						((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser).ignoreFileErrors(ignoreFileErrors);
+					}
+					executeCommandInherited(command);
+				}
+			}
+
+			// Добавление в полнотекстовый индекс
+			if (insertIntoFulltextIndex) {
+				LuceneIndexMapper.getSingleton().updateItem(item);
+			}
 		}
 	}
-
 }

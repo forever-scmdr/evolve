@@ -6,7 +6,6 @@ import ecommander.model.Item;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,6 @@ public class CheckProductDates extends IntegrateBase implements CatalogConst {
 		setOperation("Проверка дат актуальнсти.");
 		SimpleDateFormat format = new SimpleDateFormat("YYYY");
 		long defaultDate = format.parse("2100").getTime();
-		long startID = 0;
 		long day = 24 * 60 * 60 * 1000;
 		long now = new Date().getTime();
 		now -= now % day;
@@ -32,8 +30,8 @@ public class CheckProductDates extends IntegrateBase implements CatalogConst {
 		q.setIdSequential(0);
 		q.setLimit(1000);
 		List<Item> products = q.loadItems();
+		long id=0;
 		while (products != null && products.size() > 0){
-			long id = 0;
 			for(Item product : products){
 				id = product.getId();
 				long date = product.getLongValue(DATE_PARAM, defaultDate);
@@ -52,8 +50,6 @@ public class CheckProductDates extends IntegrateBase implements CatalogConst {
 			q.setIdSequential(id);
 			products = q.loadItems();
 		}
-		info.setOperation("Индексация названий товаров");
-		LuceneIndexMapper.getSingleton().reindexAll();
 		setOperation("Интеграция завершена");
 	}
 }

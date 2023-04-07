@@ -33,6 +33,7 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 	private File priceXmlFile;
 	private File reportFile;
 	private File backupFile;
+	private int inStockCount = 0;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -44,7 +45,6 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
 		priceFile = new XmlDataSource(AppContext.getRealPath(XML_FILE_NAME), Strings.SYSTEM_ENCODING);
 		reportDir = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR));
 		reportDir.mkdirs();
-		long date = System.currentTimeMillis();
 		reportFile = new File (AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "report.txt"));
 		backupFile = new File(AppContext.getRealPath(INTEGRATE_DIR + REPORT_DIR + "metabo_import.xml"));
 		return true;
@@ -77,15 +77,19 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
                 BigDecimal qty = DecimalDataType.parse(qtyStr, 4);
                 product.setValueUI(PRICE_PARAM, priceStr);
                 product.setValueUI(QTY_PARAM, qtyStr);
-                if (qty.compareTo(ZERO) > 0)
-                    product.setValueUI(AVAILABLE_PARAM, "1");
-                executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
+                if (qty.compareTo(ZERO) > 0) {
+					product.setValueUI(AVAILABLE_PARAM, "1");
+					inStockCount++;
+				}
+
+                executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
                 updatedCodes.add(code);
                 info.increaseProcessed();
 			} catch (Exception e) {
 				info.addError(e.getLocalizedMessage(), code);
 			}
 		}
+        pushLog("Товаров в наличии в файле: " + inStockCount);
 		FileUtils.cleanDirectory(reportDir);
         FileUtils.write(reportFile, report, Charset.forName("Cp1251"));
 		priceFile.finishDocument();
@@ -107,13 +111,13 @@ public class UpdatePricesXML extends IntegrateBase implements CatalogConst {
                 if (!updatedCodes.contains(product.getStringValue(CODE_PARAM, ""))) {
                     product.setValueUI(QTY_PARAM, "0");
                     product.setValueUI(AVAILABLE_PARAM, "0");
-                    executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
+                    executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex().noTriggerExtra());
                     info.increaseProcessed();
                 }
             }
         } while (products.size() > 0);
 		info.addLog("Завершено обновление отсутсвующих товаров");
-		FileUtils.moveFile(priceXmlFile, backupFile);
+		    FileUtils.moveFile(priceXmlFile, backupFile);
 
         info.setOperation("Интеграция завершена");
 	}

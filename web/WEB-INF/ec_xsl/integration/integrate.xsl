@@ -22,33 +22,35 @@
 			.no{color: #dc0000; font-weight: bold;}
 			.path{color: #0071bc;}
 		</style>
-			<script>
-				function endsWith(str, suffix) {
-					return str.indexOf(suffix, str.length - suffix.length) !== -1;
-				}
+			<xsl:if test="//refresh = 'true'">
+				<script>
+					function endsWith(str, suffix) {
+						return str.indexOf(suffix, str.length - suffix.length) !== -1;
+					}
 
-				refreshTimeout = setTimeout(
-						function () {
+					refreshTimeout = setTimeout(
+							function () {
+								h = document.location.href;
+								h = h.replace("_start", "");
+								h = h.replace("?action=start", "");
+								document.location.replace(h);
+							},
+							5000
+					);
+					function toggleRefresh() {
+						refresher = document.getElementById('refresher');
+						if (refresher.classList.contains("clicked")) {
 							h = document.location.href;
 							h = h.replace("_start", "");
 							h = h.replace("?action=start", "");
 							document.location.replace(h);
-						},
-						5000
-				);
-				function toggleRefresh() {
-					refresher = document.getElementById('refresher');
-					if (refresher.classList.contains("clicked")) {
-						h = document.location.href;
-						h = h.replace("_start", "");
-						h = h.replace("?action=start", "");
-						document.location.replace(h);
-					} else {
-						clearTimeout(refreshTimeout);
-						refresher.classList.add("clicked");
+						} else {
+							clearTimeout(refreshTimeout);
+							refresher.classList.add("clicked");
+						}
 					}
-				}
-			</script>
+				</script>
+			</xsl:if>
 		</head>
 		<body>
 			<h1><xsl:value-of select="/page/operation"/></h1>
