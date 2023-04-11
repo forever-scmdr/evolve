@@ -97,7 +97,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 		createFiltersAndItemTypes();
 		catalog.setValue(INTEGRATION_PENDING_PARAM, (byte) 0);
 
-		deleteHidden();
+		//deleteHidden();
 
 		DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(catalog).noFulltextIndex().noTriggerExtra());
 		//indexation
