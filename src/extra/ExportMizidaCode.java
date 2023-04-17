@@ -20,8 +20,8 @@ public class ExportMizidaCode extends Command {
 		String fileName = getVarSingleValue("file");
 		for (Item allProd : allProds) {
 			String code = allProd.getStringValue("code");
-			String mizida_code = allProd.getStringValue("mizida_code");
-			if (StringUtils.isNoneBlank(code, mizida_code)) {
+			String mizida_code = allProd.getStringValue("mizida_code", "");
+			if (StringUtils.isNotBlank(code)) {
 				content.append(code).append('\t').append(mizida_code).append("\r\n");
 			}
 		}
