@@ -24,7 +24,8 @@ public class ImportMizidaCode extends Command {
 			String[] parts = StringUtils.split(line, '\t');
 			Item product = ItemQuery.loadSingleItemByParamValue("product", "code", parts[0], Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 			if (product != null) {
-				product.setValueUI("vendor_code", parts[1]);
+				String vendorCode = parts.length < 2 ? null : parts[1];
+				product.setValueUI("vendor_code", vendorCode);
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noTriggerExtra());
 			}
 		}
