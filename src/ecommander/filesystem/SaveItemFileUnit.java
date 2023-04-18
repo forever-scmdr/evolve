@@ -1,5 +1,6 @@
 package ecommander.filesystem;
 
+import com.mysql.fabric.Server;
 import ecommander.fwk.FileException;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
@@ -52,6 +53,7 @@ public class SaveItemFileUnit extends SingleItemDirectoryFileUnit {
 			try {
 				fileItem.write(newFile);
 			} catch (Exception e) {
+				ServerLogger.error("File error: ", e);
 				throw new FileException("File '" + newFile + "' has not been created successfully");
 			}
 			// !! Установка нового значения параметра в айтеме, т. к. только здесь определяется его значение
