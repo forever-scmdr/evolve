@@ -14,7 +14,7 @@
 	<xsl:variable name="has_extra" select="page/cart//available = '-1'"/>
 	<xsl:variable name="show_when_has_plain" select="if ($has_extra) then '1' else '0'"/>
 
-	<xsl:variable name="message" select="$cart/item_own_extras/user_message | $user/item_own_extras/user_message"/>
+	<xsl:variable name="message" select="$cart/item_own_extras/user_message | $user/item_own_extras/user_message | page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = ('true', 'yes')"/>
 	<xsl:variable name="is_jur" select="$user/@type = 'user_jur'"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
@@ -186,6 +186,13 @@
 								<input class="input" type="password"
 									   name="{$inp/p1/@input}" error="{$inp/p1/@validation-error}"/>
 							</div>
+							<div class="form__item form-item">
+								<label>
+									Даю согласие на обработку моих персональных данных:&#160;
+									<input type="checkbox" value="да"
+										   name="{$inp/confirmpersonal/@input}" error="{$inp/confirmpersonal/@validation-error}"/>
+								</label>
+							</div>
 						</div>
 						<xsl:if test="not($is_user_registered)">
 							<xsl:if test="not($is_register)">
@@ -230,6 +237,13 @@
 								</div>
 								<input class="input" type="password"
 									   name="{$inp/p1/@input}" error="{$inp/p1/@validation-error}"/>
+							</div>
+							<div class="form__item form-item">
+								<label>
+									Даю согласие на обработку моих персональных данных:&#160;
+									<input type="checkbox" value="да"
+										   name="{$inp/confirmpersonal/@input}" error="{$inp/confirmpersonal/@validation-error}"/>
+								</label>
 							</div>
 						</div>
 						<xsl:if test="not($is_user_registered)">

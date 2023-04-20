@@ -690,9 +690,12 @@
 					<var var="q" />
 				</fulltext>
 				-->
-				<parameter name="strict_search" sign="like" pattern="%v%" compare="SOME">
+				<fulltext limit="500" name="strict_search" type="extra.belchip.StrictWildcardBelchipFulltextQuery" compare="EVERY">
 					<var var="q" />
-				</parameter>
+				</fulltext>
+<!--				<parameter name="strict_search" sign="like" pattern="%v%" compare="SOME">-->
+<!--					<var var="q" />-->
+<!--				</parameter>-->
 				<limit>
 					<var value="500"/>
 				</limit>
@@ -1421,11 +1424,13 @@
 			<parameter-input ref="user_phys" form="user_phys"/>
 			<extra-input ref="user_phys" form="user_phys" name="pseudo"/>
 			<extra-input ref="user_phys" form="register" name="p1"/>
+			<extra-input ref="user_phys" form="register" name="confirmpersonal"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="user_jur"/>
 			<extra-input ref="user_jur" form="user_jur" name="pseudo"/>
 			<extra-input ref="user_jur" form="register" name="p1"/>
+			<extra-input ref="user_jur" form="register" name="confirmpersonal"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>
@@ -1439,6 +1444,7 @@
 		<link name="register_submit_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
 			<var name="redirect_target" value="proceed"/>
+			<var name="success_target" value="proceed"/>
 		</link>
 		<list item="delivery" >
 			<filter>
@@ -1814,12 +1820,13 @@
 		<request>
 			<var name="action"/>
 			<var name="redirect_target" value="register"/>
+			<var name="success_target" value="personal"/>
 		</request>
 		<link name="error" target-var="redirect_target">
 			<var name="success" value="no"/>
 			<var name="register" value="register"/>
 		</link>
-		<link name="success" target="personal">
+		<link name="success" target-var="success_target">
 			<var name="success" value="yes"/>
 			<var name="register" value="register"/>
 			<var name="message" value="Регистрация завершена успешно"/>
@@ -2491,7 +2498,7 @@
 
 
 	<!-- Разбор сторонних складов -->
-	<page name="integrate_excel_auto_start" schedule="0 0 3,11 ? * * *">
+	<page name="integrate_excel_auto_start" schedule="0 0 3 ? * * *">
 		<request>
 			<var name="action" value="start"/>
 		</request>

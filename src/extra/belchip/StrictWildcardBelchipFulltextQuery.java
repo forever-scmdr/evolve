@@ -9,7 +9,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 
 public class StrictWildcardBelchipFulltextQuery extends StrictPrefixBelchipFulltextQuery {
 
-	private WildcardQuery createWildcardQuery(Term term) {
+	protected WildcardQuery createWildcardQuery(Term term) {
 		return new WildcardQuery(new Term(term.field(), '*' + term.text() + '*'));
 	}
 

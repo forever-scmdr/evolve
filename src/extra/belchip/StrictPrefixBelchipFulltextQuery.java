@@ -30,7 +30,7 @@ public class StrictPrefixBelchipFulltextQuery extends LuceneQueryCreator {
 		return null;
 	}
 	
-	private WildcardQuery createWildcardQuery(Term term) {
+	protected WildcardQuery createWildcardQuery(Term term) {
 		return new WildcardQuery(new Term(term.field(), term.text() + '*'));
 	}
 
