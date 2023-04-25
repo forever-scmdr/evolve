@@ -3,6 +3,7 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ItemUtils;
+import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
@@ -13,10 +14,14 @@ import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra.UniaProductCreationHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,10 +42,14 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	@Override
 	protected void integrate() throws Exception {
 		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
+
 		if (!integrationDir.exists()) {
 			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
+
+		downloadFromFtp("62.109.11.85:21", 21, "ftp-storage", "lO0iL7iY7c", "exchange_price", AppContext.getRealPath(INTEGRATION_DIR));
+
 		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
 		if (xmls.size() == 0) {
 			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
@@ -213,5 +222,49 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	@Override
 	protected void terminate() {
 
+	}
+
+	private static boolean downloadFromFtp(String host, int port, String login, String pwd, String remotePath ,String localPath){
+		FTPClient ftpClient = new FTPClient();
+
+		try{
+			int reply;
+			InetAddress address = InetAddress.getByAddress(new byte[]{62,109,11,85});
+			ftpClient.connect(address.getHostAddress(), port);
+			ftpClient.login(login,pwd);
+			reply = ftpClient.getReplyCode();
+			if (!FTPReply.isPositiveCompletion(reply)) {
+				ftpClient.disconnect();
+				ServerLogger.error("Failed to connect. Ftp reply: "+reply);
+				return false;
+			}
+
+			ftpClient.changeWorkingDirectory(remotePath);
+			FTPFile[] files = ftpClient.listFiles();
+
+			for(FTPFile f: files){
+				if(f.isFile() && (f.getName().equals("ex_parts.xml") || f.getName().equals("ex_products.xml"))){
+					File localFile = new File(localPath+"/"+f.getName());
+					OutputStream stream = new FileOutputStream(localFile);
+					ftpClient.retrieveFile(f.getName(), stream);
+					stream.close();
+				}
+			}
+			ftpClient.logout();
+
+		}
+		catch (Exception e){
+			ServerLogger.error(e);
+		}
+		finally{
+			if(ftpClient.isConnected()){
+				try {
+					ftpClient.disconnect();
+				}catch (IOException e){
+					ServerLogger.error(e);
+				}
+			}
+		}
+		return true;
 	}
 }
