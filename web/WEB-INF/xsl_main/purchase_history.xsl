@@ -84,7 +84,6 @@
 					<div class="past-order__product past-product" style="{'display: none;'[not($msg)]}">
 						<div class="past-product__image"></div>
 						<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}', '{create_payment}');">Добавить платеж</button>
-						<!--								<button style="background: #bbb; padding: 8px 16px; color: #fff;" onclick="createPayment('payments-{@id}'); populatePayment('payments-{@id}');">Копировать платеж</button>-->
 					</div>
 				</div>
 			</xsl:if>

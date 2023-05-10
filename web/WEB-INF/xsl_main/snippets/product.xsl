@@ -122,25 +122,25 @@
 			<div class="device__column">
 
 				<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
-				<div style="display: none">
+				<!-- <div style="display: none">
 					<a href="{$main_pic}" class="magnific_popup-image zoom-icon" title="{name}">
 						<i class="fas fa-search-plus"></i>
 					</a>
-				</div>
+				</div> -->
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
-				<xsl:if test="$is_quick_view">
+				<!-- <xsl:if test="$is_quick_view">
 					<div style="display: none">
 						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
 					</div>
-				</xsl:if>
+				</xsl:if> -->
 
 				<!-- device image -->
-				<div class="device__image img">
+			<!-- 	<div class="device__image img">
 					<a href="{show_product}">
 						<img  src="{$pic_path}" alt="" onerror="{$onerror}" />
 					</a>
-				</div>
+				</div> -->
 
 				<!-- device tags -->
 				<div class="tags device__tags">
@@ -164,7 +164,9 @@
 			<div class="device__column">
 
 				<!-- device title -->
-				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
+				<a href="{show_product}" class="device__name">
+					<span><xsl:value-of select="name"/></span>
+				</a>
 
 				<!-- device identification code -->
 				<!-- <div class="text_size_sm"><xsl:value-of select="code"/></div> -->
@@ -219,6 +221,16 @@
 					</table>
 
 					<xsl:apply-templates  select="complectation" mode="product-lines"/>
+					<xsl:if test="@type != 'complex_product' and name(.) != 'complex_product'">
+						<h3>Наличие</h3>
+						<ul style="margin-bottom: 8px;">
+							<li>Заказано на заводе: <xsl:value-of select="qty_factory"/></li>
+							<li>Находится в Смоленске: <xsl:value-of select="qty_smolensk"/></li>
+							<li>Находится на хранении: <xsl:value-of select="qty_store"/></li>
+							<li>Резерв: <xsl:value-of select="qty_reserve"/></li>
+							<li>Свободно к продаже: <xsl:value-of select="qty"/></li>
+						</ul>
+					</xsl:if>
 
 <!--					<xsl:value-of select="text" disable-output-escaping="yes"/>-->
 				</div>
@@ -226,7 +238,7 @@
 			</div>
 
 			<!-- device price -->
-			<div class="device__column">
+			<!-- <div class="device__column">
 				<div class="price device__price">
 					<xsl:if test="$has_price">
 						<xsl:if test="price_old">
@@ -243,7 +255,7 @@
 					</xsl:if>
 				</div>
 			</div>
-
+ -->
 			<!-- stock status (not displayed, delete display: none to show) -->
 			<div class="device__column" style="display: none">
 				<xsl:if test="(qty and number(qty) &gt; 0) or $has_lines">
@@ -254,24 +266,26 @@
 				</xsl:if>
 			</div>
 
-			<div class="device__column">
+			<xsl:if test="@type != 'complex_product' and name(.) != 'complex_product'">
+				<div class="device__column">
 
-				<!-- device order -->
-				<xsl:call-template name="CART_BUTTON">
-					<xsl:with-param name="p" select="current()"/>
-				</xsl:call-template>
-
-				<xsl:call-template name="EXTRA_ORDERING_TYPES">
-					<xsl:with-param name="p" select="current()"/>
-				</xsl:call-template>
-
-				<!-- device actions (compare and favourites) -->
-				<div class="add">
-					<xsl:call-template name="FAV_AND_COMPARE">
+					<!-- device order -->
+					<xsl:call-template name="CART_BUTTON">
 						<xsl:with-param name="p" select="current()"/>
 					</xsl:call-template>
+
+					<xsl:call-template name="EXTRA_ORDERING_TYPES">
+						<xsl:with-param name="p" select="current()"/>
+					</xsl:call-template>
+
+					<!-- device actions (compare and favourites) -->
+					<!-- <div class="add">
+						<xsl:call-template name="FAV_AND_COMPARE">
+							<xsl:with-param name="p" select="current()"/>
+						</xsl:call-template>
+					</div> -->
 				</div>
-			</div>
+			</xsl:if>
 		</div>
 
 
@@ -357,7 +371,7 @@
 				</div>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:if test="not($is_compare)">
+		<!-- <xsl:if test="not($is_compare)">
 			<div id="compare_list_{$p/@id}">
 				<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
 					<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
@@ -370,7 +384,7 @@
 				<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 				<span><xsl:value-of select="$compare_remove_label"/></span>
 			</a>
-		</xsl:if>
+		</xsl:if> -->
 	</xsl:template>
 
 	<xsl:template match="complectation" mode="product-lines">
@@ -396,7 +410,7 @@
 					<td>
 						<p>
 							<b>
-								<xsl:value-of select="$p/name"/>
+								<a href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
 							</b>
 						</p>
 						<xsl:if test="f:num(price) &gt; 0">

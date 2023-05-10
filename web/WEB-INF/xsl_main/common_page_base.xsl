@@ -246,12 +246,12 @@
 									<span class="icon-link__item">Избранное</span>
 								</a>
 							</div>
-							<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
+							<!-- <div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
 								<a class="icon-link">
 									<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 									<span class="icon-link__item">Сравнение</span>
 								</a>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>

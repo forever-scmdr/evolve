@@ -1,7 +1,6 @@
 package extra;
 
 import ecommander.fwk.BasicCartManageCommand;
-import ecommander.model.Item;
 import ecommander.pages.ResultPE;
 import extra._generated.ItemNames;
 
@@ -33,19 +32,21 @@ public class CartManageCommand extends BasicCartManageCommand {
 
 	@Override
 	protected boolean validate() throws Exception {
-		Item form = userItem;// getItemForm().getItemSingleTransient();
-		boolean hasError = false;
+//		Item form = userItem;// getItemForm().getItemSingleTransient();
+//		boolean hasError = false;
+//
+//		for (String mandatory : MANDATORY_JUR) {
+//			if (form.isValueEmpty(mandatory)) {
+//				//getItemForm().setValidationError(form.getId(), mandatory, "Не заполнен параметр");
+//				hasError = true;
+//			}
+//		}
+//		removeSessionForm("customer_phys");
+//		saveSessionForm("customer_jur");
+//
+//		return !hasError;
 
-		for (String mandatory : MANDATORY_JUR) {
-			if (form.isValueEmpty(mandatory)) {
-				getItemForm().setValidationError(form.getId(), mandatory, "Не заполнен параметр");
-				hasError = true;
-			}
-		}
-		removeSessionForm("customer_phys");
-		saveSessionForm("customer_jur");
-
-		return !hasError;
+		return true;
 	}
 
 }

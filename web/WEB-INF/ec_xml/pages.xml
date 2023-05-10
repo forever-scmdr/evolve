@@ -1057,6 +1057,7 @@
 						<var name="bought" ref="bought"/>
 					</link>
 					<parameter-input ref="bought" name="qty"/>
+					<parameter-input ref="bought" name="proposed_dealer_date"/>
 					<extra-input ref="bought" name="extra1"/>
 					<extra-input ref="bought" name="extra2"/>
 				</list>
@@ -1065,9 +1066,9 @@
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="recalculate"/>
 		</link>
-		<link name="proceed_link" target="cart_action" type="itemform">
-			<var name="action" value="proceed"/>
-		</link>
+<!--		<link name="proceed_link" target="cart_action" type="itemform">-->
+<!--			<var name="action" value="proceed"/>-->
+<!--		</link>-->
 		<link name="confirm_link" target="cart_action" type="itemform">
 			<var name="action" value="customerForm"/>
 		</link>

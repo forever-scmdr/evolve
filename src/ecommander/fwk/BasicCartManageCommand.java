@@ -238,7 +238,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подготовка тела письма
 		String regularTopic = "Предзаказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
-		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
+		final String customerEmail = userItem.getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 		final String customerEmailTemplate = "order_email";
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
@@ -246,7 +246,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Письмо для продавца
 		// sendEmail(regularTopic, shopEmail, shopEmailTemplate);
 		// Письмо для покупателя
-		sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
+		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
 		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte) 1);
 		String xml = buildPreOrderXml(boughts);
@@ -344,7 +344,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Подготовка тела письма
 		String regularTopic = "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
 
-		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
+		final String customerEmail = userItem.getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
 		final String customerEmailTemplate = "order_email";
 		final String shopEmailTemplate = pageExists("shop_email") ? "shop_email" : customerEmailTemplate;
@@ -353,12 +353,12 @@ public abstract class BasicCartManageCommand extends Command {
 		customerLink.addStaticVariable("is_complex", "1");
 
 		LinkPE shopLink = LinkPE.newDirectLink("link", shopEmailTemplate, false);
-		shopLink.addStaticVariable("is_complex", "1");
+		shopLink.addStaticVariable("is_complex", "0");
 
 		// Письмо для продавца
 		// sendEmail(regularTopic, shopEmail, shopLink);
 		// Письмо для покупателя
-		sendEmail(regularTopic, customerEmail, customerLink, true);
+		//sendEmail(regularTopic, customerEmail, customerLink, true);
 
 		List<Item> boughts = getSessionMapper()
 				.getItemsByName(BOUGHT_ITEM, cart.getId())
