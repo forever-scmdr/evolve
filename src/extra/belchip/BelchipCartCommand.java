@@ -92,11 +92,11 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * Восстанавливает корзину из сохраненной ранее в БД
 	 * @throws Exception
 	 */
-	private void restoreCartFromUserInfo() throws Exception {
+	private void restoreCartFromUserInfoDB() throws Exception {
 		Item userInfo = getUserInfo();
 		if (userInfo == null)
 			return;
-		restoreBoughtsFromTemp(userInfo);
+		restoreBoughtsFromTempDB(userInfo);
 	}
 
 	/**
@@ -104,12 +104,16 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 * @param userInfo
 	 * @throws Exception
 	 */
-	private void restoreBoughtsFromTemp(Item userInfo) throws Exception {
+	private void restoreBoughtsFromTempDB(Item userInfo) throws Exception {
 		if (userInfo == null || (userInfo.isValueEmpty(user_.BOUGHTS_SERIALIZED) && userInfo.isValueEmpty(user_.CUSTOM_BOUGHTS_SERIALIZED)))
 			return;
 
-		boolean hasNoRegularBoughts = cart == null || getSessionMapper().getItemsByName(BOUGHT, cart.getId()).isEmpty();
-		boolean hasNoCustomBoughts = cart == null || getSessionMapper().getItemsByParamValue(CUSTOM_BOUGHT, custom_bought_.NONEMPTY, "true").isEmpty();
+		// Закомменчено и добавлены заглушки, потому что надо загрузать из БД корзину в любом случае, даже если
+		// незалогиненный юзер успел накидать товаров в корзину
+		//boolean hasNoRegularBoughts = cart == null || getSessionMapper().getItemsByName(BOUGHT, cart.getId()).isEmpty();
+		//boolean hasNoCustomBoughts = cart == null || getSessionMapper().getItemsByParamValue(CUSTOM_BOUGHT, custom_bought_.NONEMPTY, "true").isEmpty();
+		boolean hasNoRegularBoughts = true;
+		boolean hasNoCustomBoughts = true;
 
 		// Простые заказы (айтемы bought)
 		if (hasNoRegularBoughts) {
@@ -1092,7 +1096,7 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 	 */
 	public ResultPE restoreFromCookie() throws Exception {
 		if (isRegistered()) {
-			restoreCartFromUserInfo();
+			restoreCartFromUserInfoDB();
 		} else {
 			restoreCartFromCookieString(getVarSingleValue(CART_COOKIE));
 		}
@@ -1207,16 +1211,17 @@ public class BelchipCartCommand extends CartManageCommand implements CartConstan
 		if (userInfo != null) {
 			getSessionMapper().removeItems(USER);
 			getSessionMapper().saveTemporaryItem(userInfo, USER);
+			getSessionMapper().removeItems(CART);
 		}
 		startUserSession(user);
 		cart = getSessionMapper().getSingleRootItemByName(CART);
 		if (cart == null) {
 			createNewSessionCart();
-			restoreCartFromUserInfo();
+			restoreCartFromUserInfoDB();
 			if (cart != null)
 				recalculateCart();
 		} else {
-			restoreCartFromUserInfo();
+			restoreCartFromUserInfoDB();
 			recalculateCart();
 			saveCartChangesInDBAndCookie();
 		}
