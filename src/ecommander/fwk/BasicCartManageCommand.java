@@ -3,12 +3,15 @@ package ecommander.fwk;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.model.*;
+import ecommander.model.datatypes.DateDataType;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -72,6 +75,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String NUM_PARAM = "num";
 	protected static final String DATE_PARAM = "date";
 	protected static final String EMAIL_PARAM = "email";
+	protected static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd").withZoneUTC();
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
 	public static final String REGISTERED_GROUP = "registered";
@@ -166,7 +170,27 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
 		Item form = getItemForm().getItemSingleTransient();
 
-		recalculateCart();
+		List<Object> dates = form.getListExtra("p-date");
+		List<Object> sums = form.getListExtra("p-sum");
+		if(dates.size() != sums.size()){
+			return getResult("cart");
+		}
+
+		loadCart();
+		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
+
+		MultipleHttpPostForm f = getItemForm();
+
+
+		for (Item bought : boughts) {
+			ItemInputValues vals = f.getReadOnlyItemValues(bought.getId());
+			String dealerDate = vals.getStringParam("proposed_dealer_date");
+			long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
+			bought.setValue("proposed_dealer_date", d);
+			getSessionMapper().saveTemporaryItem(bought);
+		}
+
+		//	recalculateCart();
 		saveCartCookies();
 
 		if (!validate()) {
@@ -249,9 +273,19 @@ public abstract class BasicCartManageCommand extends Command {
 		//sendEmail(regularTopic, customerEmail, customerEmailTemplate, true);
 
 		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte) 1);
-		String xml = buildPreOrderXml(boughts);
+
+		List<Object> dates = form.getListExtra("p-date");
+		List<Object> sums = form.getListExtra("p-sum");
+
+		TreeMap<String, String> payments = new TreeMap<>();
+
+		for(int i = 0; i < dates.size(); i++){
+			payments.put(dates.get(i).toString(), sums.get(i).toString());
+		}
+
+		String xml = buildPreOrderXml(boughts, payments);
 		saveToFile(xml, orderNumber);
-		saveToHistory(boughts, form, "p_sum", "p_sum_discount", "p_sum_saved");
+		saveToHistory(boughts, payments, form, "p_sum", "p_sum_discount", "p_sum_saved");
 		updateCounterItem(counter, cart.getStringValue("order_num"));
 	}
 
@@ -260,7 +294,7 @@ public abstract class BasicCartManageCommand extends Command {
 		FileUtils.writeStringToFile(p.toFile(), xml, StandardCharsets.UTF_8);
 	}
 
-	protected String buildPreOrderXml(Collection<Item> boughts, boolean... isComplex) throws Exception {
+	protected String buildPreOrderXml(Collection<Item> boughts, Map<String, String> payments, boolean... isComplex) throws Exception {
 
 		boolean complex = isComplex.length == 0 || isComplex[0];
 
@@ -272,6 +306,9 @@ public abstract class BasicCartManageCommand extends Command {
 		ItemType userType = userItem.getItemType();
 		for (String paramName : userType.getParameterNames()) {
 			Object value = userItem.getValue(paramName);
+
+			if("password".equals(paramName) || "registered".equals(paramName) || "cart_cookie".equals(paramName) || "cart_complex_cookie".equals(paramName)) continue;
+
 			if (value != null && StringUtils.isNotBlank(value.toString())) {
 				orderXml.addElement(paramName, value);
 			}
@@ -334,6 +371,23 @@ public abstract class BasicCartManageCommand extends Command {
 					.addElement("sum_saved", cart.getValue("sum_saved"))
 					.endElement();
 		}
+
+		//payments
+		if(payments != null){
+			orderXml.startElement("payments");
+			for(Map.Entry<String, String> entry : payments.entrySet()){
+
+				long d = DateDataType.parseDate(entry.getKey(), DATE_FORMATTER);
+
+				orderXml.startElement("payment");
+				orderXml.addElement("date", DateDataType.outputDate(d));
+				orderXml.addElement("sum", entry.getValue());
+				orderXml.endElement();
+			}
+			orderXml.endElement();
+		}
+
+
 		orderXml.endElement();
 		return orderXml.toString();
 	}
@@ -366,10 +420,10 @@ public abstract class BasicCartManageCommand extends Command {
 				.filter(b -> b.getByteValue("is_complex", (byte) 0) == 0)
 				.collect(Collectors.toList());
 
-		String xml = buildPreOrderXml(boughts, false);
+		String xml = buildPreOrderXml(boughts, null, false);
 		saveToFile(xml, orderNumber);
 
-		saveToHistory(boughts, form, "sum", "sum_discount", "sum_saved");
+		saveToHistory(boughts, null, form, "sum", "sum_discount", "sum_saved");
 		updateCounterItem(counter, cart.getStringValue("order_num"));
 	}
 
@@ -406,7 +460,7 @@ public abstract class BasicCartManageCommand extends Command {
 		sendEmail(topic, email, templatePageLink, isCustomerEmail);
 	}
 
-	private void saveToHistory(List<Item> boughts, Item form, String sumParam, String sumDiscountParam, String sumSavedParam) throws Exception {
+	private void saveToHistory(List<Item> boughts, Map<String, String> payments, Item form, String sumParam, String sumDiscountParam, String sumSavedParam) throws Exception {
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
 		//
@@ -445,6 +499,15 @@ public abstract class BasicCartManageCommand extends Command {
 				if(boughtToSave.getByteValue("is_complex", (byte)0) == 1){
 					List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
 					saveOptionsHisotry(options, boughtToSave);
+				}
+			}
+
+			if(payments != null) {
+				for (Map.Entry<String, String> entry : payments.entrySet()) {
+					Item payment = Item.newChildItem(ItemTypeRegistry.getItemType("payment_stage"), purchase);
+					payment.setValue("date",DateDataType.parseDate(entry.getKey(), DATE_FORMATTER));
+					payment.setValueUI("sum", entry.getValue());
+					executeCommandUnit(SaveItemDBUnit.get(payment).ignoreUser());
 				}
 			}
 		}
@@ -503,6 +566,11 @@ public abstract class BasicCartManageCommand extends Command {
 		for (Item bought : boughts) {
 			ItemInputValues vals = form.getReadOnlyItemValues(bought.getId());
 			String qty = vals.getStringParam(QTY_PARAM);
+
+			String dealerDate = vals.getStringParam("proposed_dealer_date");
+			long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
+			bought.setValue("proposed_dealer_date", d);
+
 			if (StringUtils.isNotBlank(qty)) {
 				double quantity = -1;
 				try {

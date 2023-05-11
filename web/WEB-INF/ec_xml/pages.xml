@@ -1058,9 +1058,9 @@
 					</link>
 					<parameter-input ref="bought" name="qty"/>
 					<parameter-input ref="bought" name="proposed_dealer_date"/>
-					<extra-input ref="bought" name="extra1"/>
-					<extra-input ref="bought" name="extra2"/>
 				</list>
+				<extra-input ref="cart" name="p-date"/>
+				<extra-input ref="cart" name="p-sum"/>
 			</single>
 		</session>
 		<link name="recalculate_link" target="cart_action" type="itemform">

@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -121,7 +121,20 @@
 					<div class="cart-item__info">
 						<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
 
-						<div>Дата поставки: <input name="{input/proposed_dealer_date/@input}" type="date"/></div>
+<!--						<div>-->
+<!--							Дата поставки EXTRA:-->
+
+
+<!--								<input type="date"-->
+<!--								   name="{input/date/@input}"-->
+<!--								   value="{f:date_value(input/date)}"/>-->
+
+<!--						</div>-->
+						<div>
+							Дата поставки:
+							<input type="date" name="{input/proposed_dealer_date/@input}" value="{f:date_value(proposed_dealer_date)}" data-old="{f:date_value(proposed_dealer_date)}"/>
+
+						</div>
 						<!-- <div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div> -->
 					</div>
 
@@ -173,9 +186,7 @@
 			<p>График платежей</p>
 			<div class="payments" id="payments"></div>
 			<div class="payments">
-
-					<button style="background: #bbb; width: 100%; padding: 8px 16px; color: #fff;" onclick="createPayment('payments', '{create_payment}'); return false;">Добавить платеж</button>
-
+				<button style="background: #bbb; width: 100%; padding: 8px 16px; color: #fff;" onclick="createPayment('payments', '{create_payment}'); return false;">Добавить платеж</button>
 			</div>
 		</div>
 
@@ -270,26 +281,30 @@
 		<script type="text/javascript">
 			function createPayment(id, action){
 			$el = $('#'+id);
+
+			dateName = '<xsl:value-of select="page/cart/input/p-date/@input"/>';
+			sumName = '<xsl:value-of select="page/cart/input/p-sum/@input"/>';
+
+
 			<xsl:text disable-output-escaping="yes">
+				div1 = $('&lt;div&gt;', {"class" : "past-order__product past-product"});
+				div =  $('&lt;div&gt;', {"class" : "payment"});
 
-							div1 = $('&lt;div&gt;', {"class" : "past-order__product past-product"});
-<!--							div1.append($('&lt;div&gt;',{"class": "past-product__image"}));-->
-
-							div =  $('&lt;div&gt;', {"class" : "payment"});
-							now = new Date()*1;
-							pid = "pmt"+now;
-
-							form = $('&lt;form&gt;', {"method" : "post", "action": action, "id": pid});
-							form.append($('&lt;input&gt;', {"type": "date", "name": "date"}));
-							form.append($('&lt;span&gt;', {"class": "percent"}));
-							form.append($('&lt;input&gt;', {"type": "text", "name": "sum", placeholder: "введите сумму"}));
-<!--							form.append($('&lt;button&gt;', {"text": "Сохранить", "class": "button", "style": "background: #e52d2a;", "onclick": "postForm('"+pid+"','"+id+"'); return false;"}));-->
-							div.append(form);
-							div1.append(div);
-							$el.append(div1);
-							</xsl:text>
+				div.append($('&lt;input&gt;', {"placeholder" : "дд-мм-гггг", "name": dateName, "type": "date"}));
+				div.append($('&lt;span&gt;', {"class": "percent"}));
+				div.append($('&lt;input&gt;', {"type": "text", "name": sumName, placeholder: "введите сумму"}));
+				div1.append(div);
+				$el.append(div1);
+			</xsl:text>
 			}
 		</script>
 	</xsl:template>
+
+	<xsl:function name="f:date_value" as="xs:string?">
+		<xsl:param name="date"/>
+		<xsl:if test="$date and string-length($date) &gt; 9">
+			<xsl:value-of select="string-join((substring($date, 7, 4), substring($date, 4, 2), substring($date, 1, 2)),'-')"/>
+		</xsl:if>
+	</xsl:function>
 
 </xsl:stylesheet>
