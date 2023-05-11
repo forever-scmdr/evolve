@@ -348,6 +348,9 @@ public abstract class BasicCartManageCommand extends Command {
 				}
 
 				orderXml.endElement();
+
+				orderXml.addElement("proposed_dealer_date", bought.outputValue("proposed_dealer_date"));
+
 			}else{
 				orderXml.addElement(QTY_PARAM, bought.getValue(QTY_TOTAL_PARAM));
 			}
