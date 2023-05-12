@@ -195,6 +195,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 				String sectionName = getCellAsString(row.getCell(1));
 
 				sectionName = sectionName.matches("Прочее \\(\\d+\\)") ? "Прочее" : sectionName;
+				sectionName = StringUtils.startsWithIgnoreCase(sectionName, "ПРОЧЕЕ") ? "Прочее" : sectionName;
 
 				if (getFilledCellsCount(row) == 2 && StringUtils.isNotBlank(sectionCode) && StringUtils.isNotBlank(sectionName)) {
 
@@ -342,7 +343,7 @@ public class ImportFromOldVersionExcel extends CreateParametersAndFiltersCommand
 							paramsXML = items.get(0);
 						}
 						paramsXML.setValueUI(XML_PARAM, xml.toString());
-						if (!"Прочее".equals(currentSection.getStringValue(NAME_PARAM, "")))
+						if (!StringUtils.equalsIgnoreCase("ПРОЧЕЕ", currentSection.getStringValue(NAME_PARAM, "")))
 							sectionsWithNewItemTypes.add(currentSection.getId());
 						DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(paramsXML).noFulltextIndex().ignoreFileErrors().ignoreUser().noTriggerExtra());
 					}
