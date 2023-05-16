@@ -507,6 +507,7 @@
 				</link>
 			</list>
 		</single>
+<!--		<command class="extra.LazyCreateAssocCommand"/>-->
 		<single item="plain_catalog">
 			<list item="product" id="plain" transit="true">
 				<filter>
