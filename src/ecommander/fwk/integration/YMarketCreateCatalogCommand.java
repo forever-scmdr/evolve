@@ -8,6 +8,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
@@ -33,6 +34,8 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
+	private static final int HIDE_BATCH_SIZE = 500;
+	private Item catalog;
 
 	@Override
 	protected boolean makePreparations() throws Exception {
@@ -64,7 +67,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		// Создание (обновление) каталога товаров
 		info.setOperation("Создание разделов каталога");
 		info.pushLog("Создание разделов");
-		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
+		catalog = ItemUtils.ensureSingleRootItem(CATALOG_ITEM, getInitiator(), UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		info.setProcessed(0);
 		HashMap<String, YMarketCatalogCreationHandler> secHandlers = new HashMap<>();
 		for (File xml : xmls) {
@@ -111,13 +114,22 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 		// Создание самих товаров
 		info.pushLog("Подготовка каталога завершена.");
+
+
+		List<Item> sectionsWithNewItemTypes = new ArrayList<>();
+
+		hideAllProducts();
+		deleteComplectations();
+
 		info.pushLog("Создание товаров");
 		info.setOperation("Создание товаров");
 		info.setProcessed(0);
 
-		List<Item> sectionsWithNewItemTypes = new ArrayList<>();
-
 		for (File xml : xmls) {
+
+			if("ex_parts.xml".equalsIgnoreCase(xml.getName())) continue;
+
+			info.setCurrentJob(xml.getName());
 
 			YMarketCatalogCreationHandler secHandler = secHandlers.get(xml.getName());
 			String productItemTypeName = StringUtils.containsIgnoreCase(xml.getName(), "parts")? "part" : "complex_product";
@@ -154,6 +166,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
+
 
 	private void attachImages() throws Exception {
 		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
@@ -222,6 +235,56 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	@Override
 	protected void terminate() {
 
+	}
+
+	private void hideAllProducts() throws Exception {
+		setOperation("Скрываем товары");
+		setProcessed(0);
+		ItemQuery productsQuery = new ItemQuery(PRODUCT_ITEM, Item.STATUS_NORMAL);
+		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
+		List<Item> products;
+		int counter = 0;
+
+		while ((products = productsQuery.loadItems()).size() > 0) {
+			for (Item product : products) {
+				if("complectation".equalsIgnoreCase(product.getTypeName()) || "base_complectation_product".equalsIgnoreCase(product.getTypeName()) ){
+					executeCommandUnit(ItemStatusDBUnit.delete(product).ignoreUser(true).noFulltextIndex());
+				}
+				else {
+					executeCommandUnit(ItemStatusDBUnit.hide(product).ignoreUser(true).noFulltextIndex());
+				}
+				counter++;
+				if (counter >= HIDE_BATCH_SIZE) {
+					commitCommandUnits();
+					info.increaseProcessed(counter);
+					counter = 0;
+				}
+			}
+			commitCommandUnits();
+			info.increaseProcessed(counter);
+		}
+	}
+
+	private void deleteComplectations() throws Exception {
+		setOperation("Удаляем комплектации");
+		setProcessed(0);
+
+		ItemQuery productsQuery = new ItemQuery("complectation", Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+		productsQuery.setParentId(catalog.getId(), true, ItemTypeRegistry.getPrimaryAssoc().getName());
+		List<Item> products;
+		int counter = 0;
+		while ((products = productsQuery.loadItems()).size() > 0) {
+			for (Item product : products) {
+				executeCommandUnit(ItemStatusDBUnit.delete(product).ignoreUser(true).noFulltextIndex());
+				if (counter >= HIDE_BATCH_SIZE) {
+					commitCommandUnits();
+					info.increaseProcessed(counter);
+					counter = 0;
+				}
+			}
+			commitCommandUnits();
+			info.increaseProcessed(counter);
+		}
 	}
 
 	private static boolean downloadFromFtp(String host, int port, String login, String pwd, String remotePath ,String localPath){

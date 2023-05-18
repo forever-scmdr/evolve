@@ -107,7 +107,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 			if (StringUtils.equalsIgnoreCase(qName, PRODUCT_ELEMENT)) {
 				String code = productParams.get(CODE_PARAM).iterator().next();
-				Item product = ItemQuery.loadSingleItemByParamValue(productType.getName(), CODE_PARAM, code);
+				Item product = ItemQuery.loadSingleItemByParamValue(productType.getName(), CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 				Item section = existingItems.get(currentSection);
 
 				if (section == null) {
@@ -128,8 +128,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 								product.setKeyUnique(Strings.translit(value));
 							}
 						} else {
-							//product.clearValue(paramName);
-							info.pushLog(productParams.get("name") + " " + code + " no value for: " + paramName);
+							if(product.getItemType().getParameterNames().contains(paramName)) {
+								product.clearValue(paramName);
+							}
+							//info.pushLog(productParams.get("name") + " " + code + " no value for: " + paramName);
 						}
 					}
 				}
@@ -137,7 +139,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				processDescription(product);
 				processInStock(product);
 
+
 				DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreUser());
+				DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(product).noFulltextIndex().ignoreUser());
+
 				processSpecialParameters(product);
 				processOptions(product);
 				processComplectations(product);
@@ -252,6 +257,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				serial.setValueUI(e.getKey(), e.getValue());
 			}
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(serial).noFulltextIndex().ignoreUser());
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(serial).noFulltextIndex().ignoreUser());
 		}
 	}
 
@@ -339,6 +345,12 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 						String time = attributes.getValue("time");
 						if (StringUtils.isNotBlank(time))
 							currentSerial.put("stored_time", time);
+					} else if ("qantity_factory".equalsIgnoreCase(qName)){
+						if(attributes.getValue("time" ) != null) {
+							LinkedHashSet<String> s = new LinkedHashSet<>();
+							s.add(attributes.getValue("time"));
+							productParams.put("manuf_date", s);
+						}
 					}
 				} else if (complStaus == ComplectationChild.OPTION) {
 					paramName = OPTION_PARAMS_MAP.get(qName);
@@ -350,6 +362,15 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					}
 				} else {
 					paramName = PRODUCT_PARAMS_MAP.get(qName);
+
+					if("qantity_factory".equalsIgnoreCase(qName)){
+						if(attributes.getValue("time" ) != null) {
+							LinkedHashSet<String> s = new LinkedHashSet<>();
+							s.add(attributes.getValue("time"));
+							productParams.put("manuf_date", s);
+						}
+					}
+
 				}
 			}
 			//processing options
@@ -372,6 +393,15 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					String caption = attributes.getValue(NAME);
 					parameterReady = true;
 					paramName = PRODUCT_PARAMS_MAP.getOrDefault(caption, caption);
+				}
+
+
+				if("qantity_factory".equalsIgnoreCase(qName)){
+					if(attributes.getValue("time" ) != null) {
+						LinkedHashSet<String> s = new LinkedHashSet<>();
+						s.add(attributes.getValue("time"));
+						productParams.put("manuf_date", s);
+					}
 				}
 			}
 		}

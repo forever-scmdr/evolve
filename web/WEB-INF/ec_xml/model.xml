@@ -345,6 +345,7 @@
 	<!-- Сложный продукт с опциями и вариантами сборки и опциями. -->
 	<item name="complex_product" caption="Товар с опциями" super="product option_container" ag-id="2104" ag-hash="-970119072" >
 		<child item="complectation"/>
+		<parameter name="manuf_date" type="date" caption="Дата производства"/>
 	</item>
 
 
@@ -371,6 +372,7 @@
 		<parameter name="qty_smolensk" type="integer" caption="в Смоленске"/>
 		<parameter name="qty_reserve" type="integer" caption="в резерве"/>
 		<parameter name="qty_store" type="integer" caption="на складе"/>
+		<parameter name="manuf_date" type="date" caption="Дата производства"/>
 	</item>
 
 	<item name="exported_product" caption="товар с другого сайта" virtual="true" ag-id="1841" ag-hash="63796227" >
