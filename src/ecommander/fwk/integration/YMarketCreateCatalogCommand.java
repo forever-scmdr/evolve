@@ -127,7 +127,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 
 		for (File xml : xmls) {
 
-			if("ex_parts.xml".equalsIgnoreCase(xml.getName())) continue;
+			//if("ex_parts.xml".equalsIgnoreCase(xml.getName())) continue;
 
 			info.setCurrentJob(xml.getName());
 
