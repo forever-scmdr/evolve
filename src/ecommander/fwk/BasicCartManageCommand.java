@@ -129,8 +129,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 		//getSessionMapper().saveTemporaryItem(form, "user");
 
-		if (!validate()) {
-			return getResult("validation_failed");
+		ResultPE validatedError = validate();
+		if (validatedError != null) {
+			return validatedError;
 		}
 
 		final String IN_PROGRESS = "in_progress";
@@ -298,7 +299,13 @@ public abstract class BasicCartManageCommand extends Command {
 		return getResult("confirm");
 	}
 
-	protected abstract boolean validate() throws Exception;
+	/**
+	 * Вернуть результат валидации.
+	 * Если валидация успешна, вернуть null, если не успешна - резлуьтат ошибки со всеми установленныи парамтерами
+	 * @return
+	 * @throws Exception
+	 */
+	protected abstract ResultPE validate() throws Exception;
 
 	protected boolean addExtraEmailBodyParts(boolean isCustomerEmail, Multipart mp) throws Exception {
 		return true;

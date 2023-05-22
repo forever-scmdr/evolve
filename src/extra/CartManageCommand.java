@@ -153,7 +153,7 @@ public class CartManageCommand extends BasicCartManageCommand {
 	}
 
 	@Override
-	protected boolean validate() throws Exception {
+	protected ResultPE validate() throws Exception {
 		Item form = getItemForm().getItemSingleTransient();
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
 		boolean hasError = false;
@@ -176,7 +176,20 @@ public class CartManageCommand extends BasicCartManageCommand {
 			removeSessionForm("customer_phys");
 			saveSessionForm("customer_jur");
 		}
-		return !hasError;
+		if (hasError)
+			return getResult("validation_failed");
+		boolean isPostPersonalConfirmed = Boolean.parseBoolean(getVarSingleValue("post_personal_confirmed"));
+		if (!isPostPersonalConfirmed) {
+			String strConfirm = form.getStringExtra("confirm-post-personal");
+			if (Boolean.parseBoolean(strConfirm)) {
+				setCookieVariable("post_personal_confirmed", strConfirm);
+				isPostPersonalConfirmed = true;
+			}
+		}
+		if (!isPostPersonalConfirmed) {
+			return getResult("personal_failed");
+		}
+		return null;
 	}
 
 	@Override

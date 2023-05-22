@@ -8,6 +8,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="is_jur" select="page/user_jur/input/field[@name != 'registered'] != ''"/>
 	<xsl:variable name="is_phys" select="not($is_jur)"/>
+	<xsl:variable name="personal_confirmed" select="page/variables/post_personal_confirmed = 'true'"/>
 	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/input/organization != '' or page/jur or page/user_jur/input/field != ''"/>-->
 
 	<xsl:template name="CONTENT">
@@ -44,6 +45,14 @@
 								<xsl:with-param name="vals" select="page/phys"/>
 							</xsl:call-template>
 						</div>
+						<xsl:if test="not($personal_confirmed)">
+							<div class="form-group">
+								<input type="checkbox" value="true" class="form-control"
+									   name="{$inp/confirm-post-personal/@input}" error="{$inp/confirm-post-personal/@validation-error}"
+									   style="width: auto; display:inline-block; height: auto; margin-right: 10px"/>
+								<label style="display:inline-block;">Даю согласие на обработку моих персональных данных:</label>
+							</div>
+						</xsl:if>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>
@@ -62,6 +71,14 @@
 								<xsl:with-param name="vals" select="page/jur"/>
 							</xsl:call-template>
 						</div>
+						<xsl:if test="not($personal_confirmed)">
+							<div class="form-group">
+								<input type="checkbox" value="true" class="form-control"
+									   name="{$inp/confirm-post-personal/@input}" error="{$inp/confirm-post-personal/@validation-error}"
+									   style="width: auto; display:inline-block; height: auto; margin-right: 10px"/>
+								<label style="display:inline-block;">Даю согласие на обработку моих персональных данных:</label>
+							</div>
+						</xsl:if>
 						<div class="form-group">
 							<label>Комментарий:</label>
 							<textarea class="form-control" rows="3" name="{$inp/comment/@input}"><xsl:value-of select="$inp/comment"/></textarea>

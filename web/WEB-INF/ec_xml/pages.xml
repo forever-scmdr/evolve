@@ -769,6 +769,7 @@
 			<var name="qty"/>
 			<var name="email" value="sales@ictrade.by"/>
 			<var name="cart_cookie" scope="cookie"/>
+			<var name="post_personal_confirmed" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -776,6 +777,9 @@
 		<link name="confirm" target="confirm"/>
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="personal_failed" target="proceed">
+			<var name="message" value="Для обработки заказа нужно ваше согласие на обработку личных данных"/>
 		</link>
 		<link name="email_send_failed" target="proceed">
 			<var name="message"/>
@@ -830,6 +834,7 @@
 	<page name="proceed" template="proceed">
 		<request>
 			<var name="message"/>
+			<var name="post_personal_confirmed" scope="cookie"/>
 		</request>
 		<session>
 			<single item="user_phys" id="phys" tag="phys"/>
@@ -838,9 +843,11 @@
 		</session>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="customer_phys"/>
+			<extra-input ref="user_phys" name="confirm-post-personal"/>
 		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
+			<extra-input ref="user_jur" name="confirm-post-personal"/>
 		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="update"/>
