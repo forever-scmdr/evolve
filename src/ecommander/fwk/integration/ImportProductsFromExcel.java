@@ -625,8 +625,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 	}
 
 	private Collection<File> loadExcelFiles() throws Exception {
-		String loadOption = getVarSingleValue(FILE_LOCATION_VAR);
-		loadOption = StringUtils.isBlank(loadOption) ? DEFAULT_FILE_LOCATION : loadOption;
+		String loadOption = getVarSingleValueDefault(FILE_LOCATION_VAR, DEFAULT_FILE_LOCATION);
 		if (loadOption.indexOf(':') == -1) {
 			Path p = Paths.get(AppContext.getContextPath(), loadOption);
 			if (p.toFile().isDirectory()) {
