@@ -569,6 +569,11 @@
 	</page>
 
 
+
+	<!--//////////////////////////////////////////////////////////////////////
+								AJAX  ПОИСК
+		//////////////////////////////////////////////////////////////////////-->
+
 	<page name="search_ajax" template="search_ajax">
 		<request>
 			<var name="q"/>
@@ -591,6 +596,11 @@
 
 
 
+
+	<!--//////////////////////////////////////////////////////////////////////
+								ПРОСТОЙ  ПОИСК
+		//////////////////////////////////////////////////////////////////////-->
+
 	<page name="search" template="search">
 		<request>
 			<var name="q" />
@@ -607,22 +617,43 @@
 			<var name="view" value="table" scope="cookie"/>
 			<var name="page" value="1"/>
 		</request>
-		<list item="product" id="product" tag="search_product">
-			<filter>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<fulltext limit="500" name="search"
-						  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
-						  compare="EVERY">
-					<var var="q" />
-				</fulltext>
-				<limit>
-					<var value="500"/>
-				</limit>
-				<pages>
-					<var var="page"/>
-				</pages>
-			</filter>
-		</list>
+		<single item="catalog" tag="search_catalog">
+			<list item="product" id="product" tag="search_product" transit="true">
+				<filter>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<fulltext limit="250" name="search"
+							  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
+							  compare="EVERY">
+						<var var="q" />
+					</fulltext>
+					<limit>
+						<var value="250"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+			</list>
+		</single>
+
+		<single item="plain_catalog" tag="search_plain_catalog">
+			<list item="product" id="plain_product" tag="search_product" transit="true">
+				<filter>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<fulltext limit="250" name="search"
+							  type="(extra.belchip.BelchipTermFulltextQuery extra.belchip.PrefixBelchipFulltextQuery)(extra.belchip.BelchipTermFulltextQueryKey extra.belchip.PrefixBelchipFulltextQueryKey)"
+							  compare="EVERY">
+						<var var="q" />
+					</fulltext>
+					<limit>
+						<var value="250"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+			</list>
+		</single>
 
 		<list item="product" id="display_product" tag="product" ref="product">
 			<filter>
@@ -653,6 +684,26 @@
 			</ancestor>
 		</list>
 
+		<list item="product" id="display_plain_product" tag="product" ref="plain_product">
+			<filter>
+				<!--
+				<parameter name="code" sign="=" compare="SOME">
+					<var ref="product" parameter="code" />
+				</parameter>
+				-->
+				<sorting direction-var="dir1">
+					<var var="sort1" />
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sort2" />
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sort3" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_plain_product"/>
+		</list>
+
 		<include name="COMMON"/>
 		<include name="CATALOG_PAGE_LINKS" replace="$page:search"/>
 
@@ -665,6 +716,11 @@
 	</page>
 
 
+
+
+	<!--//////////////////////////////////////////////////////////////////////
+                            СТРОГИЙ  ПОИСК
+    //////////////////////////////////////////////////////////////////////-->
 
 	<page name="search_strict" template="search">
 		<request>
@@ -682,25 +738,34 @@
 			<var name="view" value="table" scope="cookie"/>
 		</request>
 
-		<list item="product" id="product" tag="search_product">
-			<filter>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-				<!--
-				<fulltext limit="500" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery" compare="EVERY">
-					<var var="q" />
-				</fulltext>
-				-->
-				<fulltext limit="500" name="strict_search" type="extra.belchip.StrictWildcardBelchipFulltextQuery" compare="EVERY">
-					<var var="q" />
-				</fulltext>
-<!--				<parameter name="strict_search" sign="like" pattern="%v%" compare="SOME">-->
-<!--					<var var="q" />-->
-<!--				</parameter>-->
-				<limit>
-					<var value="500"/>
-				</limit>
-			</filter>
-		</list>
+		<single item="catalog" tag="search_catalog">
+			<list item="product" id="product" transit="true" tag="search_product">
+				<filter>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<!-- type="extra.belchip.StrictWildcardBelchipFulltextQuery" -->
+					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+						<var var="q" />
+					</fulltext>
+					<limit>
+						<var value="250"/>
+					</limit>
+				</filter>
+			</list>
+		</single>
+		<single item="plain_catalog" tag="search_plain_catalog">
+			<list item="product" id="plain_product" transit="true" tag="search_product">
+				<filter>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<!-- type="extra.belchip.StrictWildcardBelchipFulltextQuery" -->
+					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+						<var var="q" />
+					</fulltext>
+					<limit>
+						<var value="250"/>
+					</limit>
+				</filter>
+			</list>
+		</single>
 
 		<list item="product" id="display_product" tag="product" ref="product">
 			<filter>
@@ -726,6 +791,22 @@
 			</ancestor>
 		</list>
 
+		<list item="product" id="display_plain_product" tag="product" ref="plain_product">
+			<filter>
+				<sorting direction-var="dir1">
+					<var var="sort1" />
+				</sorting>
+				<sorting direction-var="dir2">
+					<var var="sort2" />
+				</sorting>
+				<sorting direction-var="dir3">
+					<var var="sort3" />
+				</sorting>
+			</filter>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:display_plain_product"/>
+		</list>
+
+
 		<include name="COMMON"/>
 		<include name="CATALOG_PAGE_LINKS" replace="$page:search_strict"/>
 
@@ -739,6 +820,10 @@
 
 
 
+
+	<!--//////////////////////////////////////////////////////////////////////
+                        НЕТОЧНЫЙ  ПОИСК
+		//////////////////////////////////////////////////////////////////////-->
 
 	<page name="search_fuzzy" template="search">
 		<request>
@@ -804,6 +889,9 @@
 
 
 
+	<!--//////////////////////////////////////////////////////////////////////
+                    ТОВАР
+    //////////////////////////////////////////////////////////////////////-->
 
 	<page name="product" template="product" cacheable="true">
 		<request>
