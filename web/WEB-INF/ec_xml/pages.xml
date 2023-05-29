@@ -1010,15 +1010,15 @@
 		<link name="cart" target="cart"/>
 		<link name="proceed" target="proceed"/>
 		<link name="confirm" target="confirm"/>
-		<link name="validation_failed" target="proceed">
+		<link name="validation_failed" target="cart">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
+		</link>
+		<link name="general_error" target="cart">
+			<var name="message" value="Ошибка обработки заказа"/>
 		</link>
 		<link name="complect_ajax" target="complect_ajax"/>
 		<link name="invalid_option_list" target="complect_ajax">
 			<var name="message" value="Не выбраны необходимые компоненты или присутствуют некорректные комопонетны"/>
-		</link>
-		<link name="email_send_failed" target="proceed">
-			<var name="message"/>
 		</link>
 		<command class="extra.CartManageCommand" method-var="action">
 			<result name="ajax" type="redirect"/>
@@ -1029,6 +1029,7 @@
 			<result name="email_send_failed" type="redirect"/>
 			<result name="complect_ajax" type="redirect"/>
 			<result name="invalid_option_list" type="redirect"/>
+			<result name="general_error" type="redirect"/>
 		</command>
 	</page>
 

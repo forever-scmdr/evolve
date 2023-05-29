@@ -176,22 +176,35 @@ public abstract class BasicCartManageCommand extends Command {
 		ResultPE res;
 
 		try {
-			List<Object> dates = form.getListExtra("p-date");
-			List<Object> sums = form.getListExtra("p-sum");
-			if (dates.size() != sums.size()) {
-				return getResult("general_error");
-			}
 
 			MultipleHttpPostForm f = getItemForm();
 			res = getResult("confirm");
 
-			for (Item bought : boughts) {
-				ItemInputValues vals = f.getReadOnlyItemValues(bought.getId());
-				String dealerDate = vals.getStringParam("proposed_dealer_date");
-				long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
-				bought.setValue("proposed_dealer_date", d);
-				getSessionMapper().saveTemporaryItem(bought);
+			boolean simpleExists = StringUtils.isNotBlank(getCartCookieString(CART_COOKIE));
+			boolean complexExists = StringUtils.isNotBlank(getCartCookieString(COMPLEX_COOKIE));
+
+			if(complexExists){
+
+				try {
+					List<Object> dates = form.getListExtra("p-date");
+					List<Object> sums = form.getListExtra("p-sum");
+					if (dates.size() != sums.size()) {
+						return getResult("validation_failed");
+					}
+				}catch (Exception e){
+					return getResult("validation_failed");
+				}
+
+				for (Item bought : boughts) {
+					if(bought.getByteValue("is_complex", (byte)0) == 0) continue;
+					ItemInputValues vals = f.getReadOnlyItemValues(bought.getId());
+					String dealerDate = vals.getStringParam("proposed_dealer_date");
+					long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
+					bought.setValue("proposed_dealer_date", d);
+					getSessionMapper().saveTemporaryItem(bought);
+				}
 			}
+
 
 			//	recalculateCart();
 			saveCartCookies();
@@ -212,9 +225,6 @@ public abstract class BasicCartManageCommand extends Command {
 
 			Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
 			Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
-
-			boolean simpleExists = StringUtils.isNotBlank(getCartCookieString(CART_COOKIE));
-			boolean complexExists = StringUtils.isNotBlank(getCartCookieString(COMPLEX_COOKIE));
 
 			if (simpleExists) {
 				processOrder(counter, form);
