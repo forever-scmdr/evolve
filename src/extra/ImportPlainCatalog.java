@@ -260,13 +260,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		}
 
 		info.pushLog("Создание товаров завершено");
-//		info.pushLog("Индексация");
-//		info.setOperation("Индексация");
-//
-//		LuceneIndexMapper.getSingleton().reindexAll();
-//
-//		info.pushLog("Индексация завершена");
-//		info.pushLog("Интеграция успешно завершена");
+		info.pushLog("Индексация");
+		info.setOperation("Индексация");
+
+		LuceneIndexMapper.getSingleton().reindexAll();
+
+		info.pushLog("Индексация завершена");
+		info.pushLog("Интеграция успешно завершена");
 		info.setOperation("Интеграция завершена");
 	}
 
