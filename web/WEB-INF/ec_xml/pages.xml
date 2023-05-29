@@ -1101,9 +1101,7 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" form="customer_jur"/>
-		</new>
+
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1121,9 +1119,6 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 		</list>
-<!--		<link name="confirm_link" target="cart_action" type="itemform">-->
-<!--			<var name="action" value="confirm"/>-->
-<!--		</link>-->
 		<include name="COMMON"/>
 	</page>
 

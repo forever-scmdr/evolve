@@ -5,10 +5,8 @@
 
 	<xsl:variable name="title" select="'Заявка оформлена'" />
 
-	<xsl:variable name="is_jur" select="not(page/user_jur/input/organization = '')"/>
-	<xsl:variable name="is_phys" select="not($is_jur)"/>
 	<xsl:variable name="cart" select="page/cart"/>
-	<xsl:variable name="contacts" select="if ($is_jur) then page/user_jur/input else page/user_phys/input"/>
+	<xsl:variable name="contacts" select="page/user_jur" />
 	<xsl:variable name="has_simple" select="page/variables/simple_order_num != ''"/>
 	<xsl:variable name="has_complex" select="page/variables/complex_order_num != ''"/>
 	<xsl:variable name="need_tabs" select="$has_complex and $has_simple"/>
@@ -62,32 +60,9 @@
 				<p>Позиций: <xsl:value-of select="$cart/qty"/></p>
 				<p>Сумма: <xsl:value-of select="f:format_currency_thousands(f:num($cart/sum_discount))"/></p>
 
-
 				<p>Организация: <xsl:value-of select="$contacts/organization"/></p>
-				<p>Телефон/факс: <xsl:value-of select="$contacts/phone"/></p>
-				<p>Электнонный адрес: <xsl:value-of select="$contacts/email"/></p>
-				<p>Контактное лицо: <xsl:value-of select="$contacts/contact_name"/></p>
-				<p>Телефон контактного лица: <xsl:value-of select="$contacts/contact_phone"/></p>
-				<p>Юр. адрес: <xsl:value-of select="$contacts/address"/></p>
-				<xsl:if test="not($contacts/no_account = 'да')">
-					<p>Расчетный счет: <xsl:value-of select="$contacts/account"/></p>
-					<p>Название банка: <xsl:value-of select="$contacts/bank"/></p>
-					<p>Адрес банка: <xsl:value-of select="$contacts/bank_address"/></p>
-					<p>Код банка: <xsl:value-of select="$contacts/bank_code"/></p>
-				</xsl:if>
-				<xsl:if test="$contacts/no_account = 'да'">
-					<p>Нет расчетного счета</p>
-				</xsl:if>
-				<p>УНП: <xsl:value-of select="$contacts/unp"/></p>
-				<p>Ф.И.О директора (индивидуального предпринимателя): <xsl:value-of select="$contacts/director"/></p>
-				<p>
-					Действует на основании: <xsl:value-of select="$contacts/base"/>
-					<xsl:if test="$contacts/base != 'Устава'">
-						&#160;№ <xsl:value-of select="$contacts/base_number"/> от <xsl:value-of select="$contacts/base_date"/>
-					</xsl:if>
-				</p>
-				<p>Дополнительно: <xsl:value-of select="$contacts/comment"/></p>
-
+				<p><a href="/personal" target="_blank">Редактироать контактные данные</a></p>
+				<p>&#160;</p>
 			</div>
 			<div class="cart-confirm__table">
 				<table>
@@ -115,30 +90,8 @@
 				<p>Сумма: <xsl:value-of select="f:format_currency_thousands(f:num($cart/p_sum_discount))"/></p>
 
 				<p>Организация: <xsl:value-of select="$contacts/organization"/></p>
-				<p>Телефон/факс: <xsl:value-of select="$contacts/phone"/></p>
-				<p>Электнонный адрес: <xsl:value-of select="$contacts/email"/></p>
-				<p>Контактное лицо: <xsl:value-of select="$contacts/contact_name"/></p>
-				<p>Телефон контактного лица: <xsl:value-of select="$contacts/contact_phone"/></p>
-				<p>Юр. адрес: <xsl:value-of select="$contacts/address"/></p>
-				<xsl:if test="not($contacts/no_account = 'да')">
-					<p>Расчетный счет: <xsl:value-of select="$contacts/account"/></p>
-					<p>Название банка: <xsl:value-of select="$contacts/bank"/></p>
-					<p>Адрес банка: <xsl:value-of select="$contacts/bank_address"/></p>
-					<p>Код банка: <xsl:value-of select="$contacts/bank_code"/></p>
-				</xsl:if>
-				<xsl:if test="$contacts/no_account = 'да'">
-					<p>Нет расчетного счета</p>
-				</xsl:if>
-				<p>УНП: <xsl:value-of select="$contacts/unp"/></p>
-				<p>Ф.И.О директора (индивидуального предпринимателя): <xsl:value-of select="$contacts/director"/></p>
-				<p>
-					Действует на основании: <xsl:value-of select="$contacts/base"/>
-					<xsl:if test="$contacts/base != 'Устава'">
-						&#160;№ <xsl:value-of select="$contacts/base_number"/> от <xsl:value-of select="$contacts/base_date"/>
-					</xsl:if>
-				</p>
-				<p>Дополнительно: <xsl:value-of select="$contacts/comment"/></p>
-
+				<p><a href="/personal" target="_blank">Редактироать контактные данные</a></p>
+				<p>&#160;</p>
 			</div>
 			<div class="cart-confirm__table">
 				<table>

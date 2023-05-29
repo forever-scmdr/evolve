@@ -50,7 +50,7 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 	}
 
-	public enum CookieStrategy{
+	public enum CookieStrategy {
 		COOKIE, USER_ITEM, COOKIE_AND_USER_ITEM
 	}
 
@@ -125,7 +125,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		List<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId())
 				.stream()
-				.filter(b -> b.getByteValue("is_complex", (byte)0) == 0)
+				.filter(b -> b.getByteValue("is_complex", (byte) 0) == 0)
 				.collect(Collectors.toList());
 
 		saveCartCookie(boughts);
@@ -168,54 +168,54 @@ public abstract class BasicCartManageCommand extends Command {
 
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
-		Item form = getItemForm().getItemSingleTransient();
 
-		List<Object> dates = form.getListExtra("p-date");
-		List<Object> sums = form.getListExtra("p-sum");
-		if(dates.size() != sums.size()){
-			return getResult("cart");
-		}
+		Item form = getItemForm().getItemSingleTransient();
 
 		loadCart();
 		ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
-
-		MultipleHttpPostForm f = getItemForm();
-
-
-		for (Item bought : boughts) {
-			ItemInputValues vals = f.getReadOnlyItemValues(bought.getId());
-			String dealerDate = vals.getStringParam("proposed_dealer_date");
-			long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
-			bought.setValue("proposed_dealer_date", d);
-			getSessionMapper().saveTemporaryItem(bought);
-		}
-
-		//	recalculateCart();
-		saveCartCookies();
-
-		if (!validate()) {
-			return getResult("validation_failed");
-		}
-
-		loadCart();
-		if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
-			return getResult("confirm");
-		}
-		cart.setExtra(IN_PROGRESS, TRUE);
-		getSessionMapper().saveTemporaryItem(cart);
-		if ((Byte) cart.getValue(PROCESSED_PARAM, (byte) 0) == (byte) 1) {
-			return getResult("confirm");
-		}
-
-		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
-		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
-
-		boolean simpleExists = StringUtils.isNotBlank(getCartCookieString(CART_COOKIE));
-		boolean complexExists = StringUtils.isNotBlank(getCartCookieString(COMPLEX_COOKIE));
-
-		ResultPE res = getResult("confirm");
+		ResultPE res;
 
 		try {
+			List<Object> dates = form.getListExtra("p-date");
+			List<Object> sums = form.getListExtra("p-sum");
+			if (dates.size() != sums.size()) {
+				return getResult("general_error");
+			}
+
+			MultipleHttpPostForm f = getItemForm();
+			res = getResult("confirm");
+
+			for (Item bought : boughts) {
+				ItemInputValues vals = f.getReadOnlyItemValues(bought.getId());
+				String dealerDate = vals.getStringParam("proposed_dealer_date");
+				long d = DateDataType.parseDate(dealerDate, DATE_FORMATTER);
+				bought.setValue("proposed_dealer_date", d);
+				getSessionMapper().saveTemporaryItem(bought);
+			}
+
+			//	recalculateCart();
+			saveCartCookies();
+
+			if (!validate()) {
+				return getResult("validation_failed");
+			}
+
+			loadCart();
+			if (StringUtils.equalsIgnoreCase(cart.getStringExtra(IN_PROGRESS), TRUE)) {
+				return getResult("confirm");
+			}
+			cart.setExtra(IN_PROGRESS, TRUE);
+			getSessionMapper().saveTemporaryItem(cart);
+			if ((Byte) cart.getValue(PROCESSED_PARAM, (byte) 0) == (byte) 1) {
+				return getResult("confirm");
+			}
+
+			Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
+			Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
+
+			boolean simpleExists = StringUtils.isNotBlank(getCartCookieString(CART_COOKIE));
+			boolean complexExists = StringUtils.isNotBlank(getCartCookieString(COMPLEX_COOKIE));
+
 			if (simpleExists) {
 				processOrder(counter, form);
 				res.setVariable("simple_order_num", cart.getStringValue("order_num"));
@@ -246,10 +246,10 @@ public abstract class BasicCartManageCommand extends Command {
 		return res;
 	}
 
-	protected  void clearCookies() throws Exception {
+	protected void clearCookies() throws Exception {
 		setCookieVariable(CART_COOKIE, null);
 		setCookieVariable(COMPLEX_COOKIE, null);
-		if(userItem != null){
+		if (userItem != null) {
 			userItem.clearValue(CART_COOKIE);
 			userItem.clearValue(COMPLEX_COOKIE);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem).ignoreUser());
@@ -279,7 +279,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		TreeMap<String, String> payments = new TreeMap<>();
 
-		for(int i = 0; i < dates.size(); i++){
+		for (int i = 0; i < dates.size(); i++) {
 			payments.put(dates.get(i).toString(), sums.get(i).toString());
 		}
 
@@ -290,7 +290,7 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	private void saveToFile(String xml, String name) throws IOException {
-		Path p = Paths.get(AppContext.getContextPath(), "orders", name+".xml");
+		Path p = Paths.get(AppContext.getContextPath(), "orders", name + ".xml");
 		FileUtils.writeStringToFile(p.toFile(), xml, StandardCharsets.UTF_8);
 	}
 
@@ -307,7 +307,8 @@ public abstract class BasicCartManageCommand extends Command {
 		for (String paramName : userType.getParameterNames()) {
 			Object value = userItem.getValue(paramName);
 
-			if("password".equals(paramName) || "registered".equals(paramName) || "cart_cookie".equals(paramName) || "cart_complex_cookie".equals(paramName)) continue;
+			if ("password".equals(paramName) || "registered".equals(paramName) || "cart_cookie".equals(paramName) || "cart_complex_cookie".equals(paramName))
+				continue;
 
 			if (value != null && StringUtils.isNotBlank(value.toString())) {
 				orderXml.addElement(paramName, value);
@@ -331,7 +332,7 @@ public abstract class BasicCartManageCommand extends Command {
 					.addElement(PRICE_PARAM, product.getValue(PRICE_PARAM))
 					.addElement(SUM_PARAM, bought.getValue(SUM_PARAM));
 
-			if(complex) {
+			if (complex) {
 				//options
 				orderXml.startElement("options");
 
@@ -351,7 +352,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 				orderXml.addElement("proposed_dealer_date", bought.outputValue("proposed_dealer_date"));
 
-			}else{
+			} else {
 				orderXml.addElement(QTY_PARAM, bought.getValue(QTY_TOTAL_PARAM));
 			}
 			orderXml.endElement();
@@ -359,14 +360,14 @@ public abstract class BasicCartManageCommand extends Command {
 		orderXml.endElement();
 
 		//sum
-		if(complex) {
+		if (complex) {
 			orderXml
 					.startElement("total")
 					.addElement(SUM_PARAM, cart.getValue("p_sum"))
 					.addElement("sum_discount", cart.getValue("p_sum_discount"))
 					.addElement("sum_saved", cart.getValue("p_sum_saved"))
 					.endElement();
-		}else{
+		} else {
 			orderXml
 					.startElement("total")
 					.addElement(SUM_PARAM, cart.getValue("sum"))
@@ -376,9 +377,9 @@ public abstract class BasicCartManageCommand extends Command {
 		}
 
 		//payments
-		if(payments != null){
+		if (payments != null) {
 			orderXml.startElement("payments");
-			for(Map.Entry<String, String> entry : payments.entrySet()){
+			for (Map.Entry<String, String> entry : payments.entrySet()) {
 
 				long d = DateDataType.parseDate(entry.getKey(), DATE_FORMATTER);
 
@@ -440,7 +441,7 @@ public abstract class BasicCartManageCommand extends Command {
 		return true;
 	}
 
-	private void sendEmail(String topic, String email, LinkPE templatePageLink, boolean... isCustomerEmail) throws Exception{
+	private void sendEmail(String topic, String email, LinkPE templatePageLink, boolean... isCustomerEmail) throws Exception {
 		if (StringUtils.isBlank(email)) return;
 
 		Multipart multipart = new MimeMultipart();
@@ -499,16 +500,16 @@ public abstract class BasicCartManageCommand extends Command {
 				boughtToSave.setContextPrimaryParentId(purchase.getId());
 				boughtToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
 				executeCommandUnit(SaveItemDBUnit.get(boughtToSave).ignoreUser());
-				if(boughtToSave.getByteValue("is_complex", (byte)0) == 1){
+				if (boughtToSave.getByteValue("is_complex", (byte) 0) == 1) {
 					List<Item> options = getSessionMapper().getItemsByName("pseudo_option", bought.getId());
 					saveOptionsHisotry(options, boughtToSave);
 				}
 			}
 
-			if(payments != null) {
+			if (payments != null) {
 				for (Map.Entry<String, String> entry : payments.entrySet()) {
 					Item payment = Item.newChildItem(ItemTypeRegistry.getItemType("payment_stage"), purchase);
-					payment.setValue("date",DateDataType.parseDate(entry.getKey(), DATE_FORMATTER));
+					payment.setValue("date", DateDataType.parseDate(entry.getKey(), DATE_FORMATTER));
 					payment.setValueUI("sum", entry.getValue());
 					executeCommandUnit(SaveItemDBUnit.get(payment).ignoreUser());
 				}
@@ -524,9 +525,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 	protected void saveOptionsHisotry(List<Item> options, Item boughtToSave) throws Exception {
 		commitCommandUnits();
-		for(Item option : options){
+		for (Item option : options) {
 			Item optionToSave = ItemUtils.newChildItem("pseudo_option", boughtToSave);
-			for(String name : ItemTypeRegistry.getItemType("pseudo_option").getParameterNames()){
+			for (String name : ItemTypeRegistry.getItemType("pseudo_option").getParameterNames()) {
 				optionToSave.setValue(name, option.getValue(name));
 			}
 			optionToSave.setOwner(userItem.getOwnerGroupId(), userItem.getOwnerUserId());
@@ -605,15 +606,15 @@ public abstract class BasicCartManageCommand extends Command {
 		String boughtIdStr = getVarSingleValue("complectation_id");
 		String name = getVarSingleValue("сomplectation_name");
 
-		long boughtId = StringUtils.isBlank(boughtIdStr)? 0L : Long.parseLong(boughtIdStr);
+		long boughtId = StringUtils.isBlank(boughtIdStr) ? 0L : Long.parseLong(boughtIdStr);
 		long prodId = Long.parseLong(idStr);
 		Item product = ItemQuery.loadById(prodId);
 
-		if(StringUtils.isBlank(name)){
+		if (StringUtils.isBlank(name)) {
 			name = generateDefaultName(product.getStringValue(CODE_PARAM));
 		}
 
-		Item bought = boughtId == 0? getOrCreateBought(product, name) : getSessionMapper().getItemSingle(boughtId);
+		Item bought = boughtId == 0 ? getOrCreateBought(product, name) : getSessionMapper().getItemSingle(boughtId);
 
 		bought.setValueUI("is_complex", "1");
 
@@ -640,13 +641,13 @@ public abstract class BasicCartManageCommand extends Command {
 
 		recalculateCart();
 
-		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte)1);
+		List<Item> boughts = getSessionMapper().getItemsByParamValue(BOUGHT_ITEM, "is_complex", (byte) 1);
 		saveCartComplexCookie(boughts);
 
 		ResultPE res = getResult("complect_ajax");
 		res.setVariable(CODE_PARAM, product.getStringValue(CODE_PARAM));
 
-		String message = StringUtils.isBlank(boughtIdStr)? "Создан список опций: " + name  : "Обнолен список опций: "+ name;
+		String message = StringUtils.isBlank(boughtIdStr) ? "Создан список опций: " + name : "Обнолен список опций: " + name;
 		res.setVariable("message", message);
 
 		return res;
@@ -657,18 +658,18 @@ public abstract class BasicCartManageCommand extends Command {
 		boolean nameExists;
 		int c = boughts.size() + 1;
 		String name = "Комплектация " + c;
-		do{
+		do {
 			nameExists = false;
-			for(Item bought : boughts){
+			for (Item bought : boughts) {
 				String n = bought.getStringValue("сomplectation_name", "");
-				if(n.equals(name)){
+				if (n.equals(name)) {
 					nameExists = true;
 					c++;
 					name = "Комплектация " + c;
 					break;
 				}
 			}
-		}while (nameExists);
+		} while (nameExists);
 		return name;
 	}
 
@@ -803,13 +804,13 @@ public abstract class BasicCartManageCommand extends Command {
 				getSessionMapper().saveTemporaryItem(cart);
 			}
 		}
-		if (userItem == null){
+		if (userItem == null) {
 			ensureUserItem();
 		}
 		refreshCart();
 	}
 
-	private  void ensureUserItem() throws Exception {
+	private void ensureUserItem() throws Exception {
 		// 1. Сначала нужно попробовать текущего пользователя (если он залогинен)
 		userItem = new ItemQuery(USER_ITEM).setUser(getInitiator()).loadFirstItem();
 
@@ -820,7 +821,6 @@ public abstract class BasicCartManageCommand extends Command {
 				userItem = new ItemQuery(USER_ITEM).addParameterCriteria(EMAIL_PARAM, email, "=", null, Compare.SOME).loadFirstItem();
 		}
 	}
-
 
 
 	/**
@@ -922,34 +922,34 @@ public abstract class BasicCartManageCommand extends Command {
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
 		}
 
-		String cookie = codeQtys.size() > 0? StringUtils.join(codeQtys, '/') : null;
+		String cookie = codeQtys.size() > 0 ? StringUtils.join(codeQtys, '/') : null;
 		persistCookie(CART_COOKIE, cookie);
 	}
 
 	private void persistCookie(String varName, String cookie) throws Exception {
-		switch(cookieStrategy){
-			case COOKIE: setCookieVariable(varName, cookie); break;
+		switch (cookieStrategy) {
+			case COOKIE:
+				setCookieVariable(varName, cookie);
+				break;
 			case USER_ITEM:
 				ensureUserItem();
-				if(StringUtils.isBlank(cookie)){
+				if (StringUtils.isBlank(cookie)) {
 					userItem.clearValue(varName);
-				}
-				else{
+				} else {
 					userItem.setValue(varName, cookie);
 				}
 				executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
 				break;
 			case COOKIE_AND_USER_ITEM:
-				if(getInitiator().inGroup(REGISTERED_GROUP)){
+				if (getInitiator().inGroup(REGISTERED_GROUP)) {
 					ensureUserItem();
-					if(StringUtils.isBlank(cookie)){
+					if (StringUtils.isBlank(cookie)) {
 						userItem.clearValue(varName);
-					}
-					else{
+					} else {
 						userItem.setValue(varName, cookie);
 					}
 					executeAndCommitCommandUnits(SaveItemDBUnit.get(userItem));
-				}else{
+				} else {
 					setCookieVariable(varName, cookie);
 				}
 		}
@@ -1030,19 +1030,21 @@ public abstract class BasicCartManageCommand extends Command {
 	}
 
 	private String getCartCookieString(String varName) throws Exception {
-		switch (cookieStrategy){
-			case COOKIE: return getVarSingleValue(varName);
+		switch (cookieStrategy) {
+			case COOKIE:
+				return getVarSingleValue(varName);
 			case USER_ITEM:
 				ensureUserItem();
 				return userItem.getStringValue(varName);
 			case COOKIE_AND_USER_ITEM:
-				if(getInitiator().inGroup(REGISTERED_GROUP)){
+				if (getInitiator().inGroup(REGISTERED_GROUP)) {
 					ensureUserItem();
 					return userItem.getStringValue(varName);
-				}else{
+				} else {
 					return getVarSingleValue(varName);
 				}
-				default: return null;
+			default:
+				return null;
 		}
 	}
 
@@ -1070,7 +1072,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected boolean recalculateCart(String... priceParamName) throws Exception {
 		checkStrategy();
 		loadCart();
-		if(userItem == null){
+		if (userItem == null) {
 			ensureUserItem();
 		}
 
