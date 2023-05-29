@@ -51,7 +51,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			return;
 		}
 
-		downloadFromFtp("62.109.11.85:21", 21, "ftp-storage", "lO0iL7iY7c", "exchange_price", AppContext.getRealPath(INTEGRATION_DIR));
+		downloadFromFtp(new byte[]{62,109,11,85}, 21, "ftp-storage", "lO0iL7iY7c", "exchange_price", AppContext.getRealPath(INTEGRATION_DIR));
 
 		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
 		if (xmls.size() == 0) {
@@ -287,12 +287,12 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 		}
 	}
 
-	private static boolean downloadFromFtp(String host, int port, String login, String pwd, String remotePath ,String localPath){
+	private static boolean downloadFromFtp(byte[] host, int port, String login, String pwd, String remotePath ,String localPath){
 		FTPClient ftpClient = new FTPClient();
 
 		try{
 			int reply;
-			InetAddress address = InetAddress.getByAddress(new byte[]{62,109,11,85});
+			InetAddress address = InetAddress.getByAddress(host);
 			ftpClient.connect(address.getHostAddress(), port);
 			ftpClient.login(login,pwd);
 			reply = ftpClient.getReplyCode();
