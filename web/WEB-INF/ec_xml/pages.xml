@@ -1319,7 +1319,7 @@
 	<!--//                                                                          -->
 	<!--//                      Разбор файлов Yandex Market                         -->
 	<!--//                                                                          -->
-	<page name="integrate" template="integrate" authority-groups="common">
+	<page name="integrate" template="integration/integration" authority-groups="common">
 		<request>
 			<var name="action"/>
 		</request>
@@ -1369,13 +1369,13 @@
 	</page>
 
 
-	<!--<page name="create_prices" template="integration">-->
+	<!--<page name="create_prices" template="integration/integration">-->
 		<!--<command class="extra.IntegratePriceList" clear-cache="yes">-->
 			<!--<result name="complete" type="xml"/>-->
 		<!--</command>-->
 	<!--</page>-->
 
-	<page name="separate_products" template="integration">
+	<page name="separate_products" template="integration/integration">
 		<command class="ecommander.fwk.integration.CreateSectionsFromProducts" clear-cache="yes">
 			<result name="complete" type="xml"/>
 		</command>
@@ -1449,6 +1449,11 @@
 		</command>
 	</page>
 
+	<page name="generate_big_sitemap" template="integration/integration">
+		<command class="ecommander.fwk.CreateBigSiteMap">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 
 	<page name="create_filters" template="create_filters">
 		<request>
