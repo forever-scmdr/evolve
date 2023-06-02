@@ -78,6 +78,7 @@
 <!--						<td>Код</td>-->
 						<td>Наименование</td>
 						<td>Количество</td>
+						<td>Срок поставки</td>
 						<td>Цена</td>
 						<td>Сумма</td>
 						<xsl:if test="$cart/bought/item_own_extras" ><td>Дополнительно</td></xsl:if>
@@ -85,11 +86,12 @@
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
 <!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
-						<xsl:variable name="product" select="product"/>
+						<xsl:variable name="p" select="product"/>
 						<tr>
 <!--							<td><xsl:value-of select="$product/code"/></td>-->
-							<td><xsl:value-of select="$product/name"/></td>
+							<td><xsl:value-of select="$p/name"/></td>
 							<td><xsl:value-of select="f:format_decimal(qty)"/></td>
+							<td><xsl:value-of select="if (normalize-space($p/next_delivery) = '0') then 'на складе' else $p/next_delivery" /></td>
 							<td><xsl:value-of select="price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
 							<td><xsl:value-of select="sum"/></td>
 							<xsl:if test="$cart/bought/item_own_extras" >

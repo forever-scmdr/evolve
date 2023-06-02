@@ -35,13 +35,13 @@
 
 		<div class="tabs tabs_product">
 			<xsl:if test="$message and not($success)">
-				<div class="alert alert-danger">
-					<h4>Ошибка</h4>
-					<p><xsl:value-of select="$message"/></p>
+				<div class="alert alert_danger">
+					<div class="alert__title">Ошибка!</div>
+					<div class="alert__text"><xsl:value-of select="$message"/></div>
 				</div>
 			</xsl:if>
 			<xsl:if test="$message and $success">
-				<div class="alert alert-success">
+				<div class="alert alert_success">
 					<p style="color:green;"><b><xsl:value-of select="$message"/></b></p>
 				</div>
 			</xsl:if>

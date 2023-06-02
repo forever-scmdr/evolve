@@ -48,6 +48,7 @@
 					<li><a href="update_order_status">Принудительное обновление статусов заказов</a></li>
 					<li><a href="/efind?q=GD25Q16CSIGR">Страница интеграции E-find (с примером запроса GD25Q16CSIGR)</a></li>
 					<li><a href="api_xml/search?name=GD25Q16CSIGR">Страница преобразования выдачи API в XML (для разработчика)</a></li>
+					<li><a href="search_api?q=GD25Q16CSIGR">Страница выдачи исходного JSON из API (для разработчика)</a></li>
 				</ul>
 				
 				<h2 class="title">404</h2>

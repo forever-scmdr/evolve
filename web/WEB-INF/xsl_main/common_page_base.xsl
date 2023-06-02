@@ -363,7 +363,18 @@
 			<div class="container">
 				<div class="footer__wrap">
 					<xsl:variable name="footer" select="page/common/footer"/>
-					<xsl:apply-templates select="$footer/block" mode="footer"/>
+					<xsl:apply-templates select="$footer/block[position() &lt; 5]" mode="footer"/>
+					<div class="footer__column">
+						<div class="footer__title">Курсы валют</div>
+						<div class="footer__text">
+							<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+								<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+								<xsl:if test="f:num(.) &gt; 1">
+									<p><xsl:value-of select="$cur"/> - <xsl:value-of select="." /></p>
+								</xsl:if>
+							</xsl:for-each>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

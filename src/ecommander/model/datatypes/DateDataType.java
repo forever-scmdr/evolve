@@ -26,9 +26,9 @@ public class DateDataType extends FormatDataType {
 
 	private static final String MILLIS_META = "millis"; // дата или время в миллисекундах
 	
-	public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm").withZoneUTC();
-	public static DateTimeFormatter DAY_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZoneUTC();
-	public static DateTimeFormatter REPORT_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZoneUTC();
+	public static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm").withZone(DateTimeZone.getDefault());
+	public static DateTimeFormatter DAY_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy").withZone(DateTimeZone.getDefault());
+	public static DateTimeFormatter REPORT_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy_HH.mm").withZone(DateTimeZone.getDefault());
 	
 	private static int TIMEZONE_HOUR_OFFSET = 100;
 	

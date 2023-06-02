@@ -1087,46 +1087,6 @@
 		</link>
 	</page>
 
-	<page name="comment_ajax" template="comment_ajax">
-		<request>
-			<var name="result"/>
-			<var name="message"/>
-		</request>
-		<new item="comment" id="form">
-			<parameter-input ref="form" form="comment"/>
-		</new>
-		<link name="submit_link" target="comment_command" type="itemform">
-			<var name="form_name" value="comment"/>
-			<var name="source_page" value="comment_ajax"/>
-		</link>
-	</page>
-
-	<page name="comment_command">
-		<request>
-			<var name="form_name"/>
-			<var name="source_page"/>
-			<var name="required" value="phone|email, text"/>
-		</request>
-		<link name="success" target-var="source_page">
-			<var name="result" value="success"/>
-			<var name="message" value="Ваш отзыв передан на модерацию, спасибо"/>
-		</link>
-		<link name="error_not_set" target-var="source_page">
-			<var name="result" value="error"/>
-			<var name="message" value="Заполните, пожалуйста, обязательные поля"/>
-		</link>
-		<link name="general_error" target-var="source_page">
-			<var name="result" value="error"/>
-			<var name="message"
-				 value="Отзыв не был обработан из-за ошибки сервера. Пожалуйста, попробуйте позже."/>
-		</link>
-		<command class="extra.AddCommentCommand">
-			<result name="success" type="redirect"/>
-			<result name="error_not_set" type="redirect"/>
-			<result name="general_error" type="redirect"/>
-		</command>
-	</page>
-
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
@@ -1406,19 +1366,18 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<!--
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
-		-->
-		<single item="common"/>
+	</page>
+
+
+
+	<page name="status_email" template="status_email">
+		<request>
+			<var name="pur"/>
+		</request>
+		<single item="purchase" var="pur">
+			<list item="bought" id="bought"/>
+			<ancestor item="user" tag="registration"/>
+		</single>
 	</page>
 
 
@@ -1429,7 +1388,7 @@
 			<var name="action" value="post_jur" />
 			<var name="order_num" />
 			<var name="currency" />
-			<var name="url_base" value="https://belchip.by" />
+			<var name="url_base" value="http://gammtrade.ru" />
 		</request>
 		<list item="payment"/>
 		<session>
@@ -2291,7 +2250,7 @@
 			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
 			<var name="token_header" value="Authorization"/>
 			<var name="root_element" value="provider"/>
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, minpakquantity:step, leadtimedays:next_delivery, addinfo:description"/>
+			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, multipleorderquantity:step, leadtimedays:next_delivery, addinfo:description"/>
 		</request>
 		<command class="extra.ApiJsonToXMLCommand">
 			<result name="success" type="plain_text"/>

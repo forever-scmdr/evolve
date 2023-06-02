@@ -23,10 +23,12 @@
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
-										<a href="{$p/show_product}">
-											<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
-											<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
-										</a>
+										<xsl:if test="$p/@id &gt; 0">
+											<a href="{$p/show_product}">
+												<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
+												<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
+											</a>
+										</xsl:if>
 									</div>
 									<div class="cart-item__info">
 										<xsl:if test="$p/@id &gt; 0">
@@ -61,7 +63,7 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{f:num($p/qty)}"/>
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
