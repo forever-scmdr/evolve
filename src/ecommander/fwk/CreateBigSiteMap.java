@@ -72,7 +72,7 @@ public class CreateBigSiteMap extends IntegrateBase {
 				id = product.getId();
 				part.startElement("url")
 						.startElement("loc")
-						.addText(base + product.getKeyUnique())
+						.addText(base + "product/" + product.getKeyUnique() + "/")
 						.endElement()
 						.startElement("changefreq")
 						.addText("daily")
