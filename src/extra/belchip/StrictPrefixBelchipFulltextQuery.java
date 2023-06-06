@@ -1,6 +1,7 @@
 package extra.belchip;
 
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
@@ -32,6 +33,11 @@ public class StrictPrefixBelchipFulltextQuery extends LuceneQueryCreator {
 	
 	protected WildcardQuery createWildcardQuery(Term term) {
 		return new WildcardQuery(new Term(term.field(), term.text() + '*'));
+	}
+
+	@Override
+	protected QueryParser createQueryParser(String paramName) {
+		return new QueryParser(paramName, LuceneIndexMapper.getKyewordAnalyzer());
 	}
 
 }

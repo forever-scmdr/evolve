@@ -1,6 +1,7 @@
 package extra.belchip;
 
 import ecommander.persistence.itemquery.fulltext.LuceneQueryCreator;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;

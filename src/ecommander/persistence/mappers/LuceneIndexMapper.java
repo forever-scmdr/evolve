@@ -623,6 +623,14 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	public static QueryParser createQueryParser(String field) {
 		return new QueryParser(field, getAnalyzer());
 	}
+
+	/**
+	 * Получить простой анализатор без всяких стеммингов и т.п.
+	 * @return
+	 */
+	public static Analyzer getKyewordAnalyzer() {
+		return analyzers.get("keyword");
+	}
 	/**
 	 * Разобрать строку с помощью текущего анализатора
 	 * @param string
