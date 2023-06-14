@@ -40,7 +40,6 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 		for (Item item : toDelete) {
 			DelayedTransaction.executeSingle(User.getDefaultUser(), ItemStatusDBUnit.delete(item));
 		}
-		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(100, null));
 		final Item prodPresCat = ItemUtils.ensureSingleRootItem(PRODUCT_PRESENT_CATALOG, User.getDefaultUser(),
 				UserGroupRegistry.getDefaultGroup(), User.ANONYMOUS_ID);
 		final ItemType prodPresType = ItemTypeRegistry.getItemType(PRODUCT_PRESENT);
@@ -91,6 +90,7 @@ public class UpdatePrices extends IntegrateBase implements ItemNames {
 
 			}
 		};
+		DelayedTransaction.executeSingle(User.getDefaultUser(), new CleanAllDeletedItemsDBUnit(100, null).noFulltextIndex());
 		return true;
 	}
 
