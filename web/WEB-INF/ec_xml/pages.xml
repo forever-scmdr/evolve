@@ -743,7 +743,7 @@
 				<filter>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<!-- type="extra.belchip.StrictWildcardBelchipFulltextQuery" -->
-					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
 						<var var="q" />
 					</fulltext>
 					<limit>
@@ -756,8 +756,8 @@
 			<list item="product" id="plain_product" transit="true" tag="search_product">
 				<filter>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-					<!-- type="extra.belchip.StrictWildcardBelchipFulltextQuery" -->
-					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+					<!-- type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" -->
+					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery)" compare="EVERY">
 						<var var="q" />
 					</fulltext>
 					<limit>
