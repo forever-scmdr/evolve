@@ -122,17 +122,36 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				TableDataRowProcessor proc = src -> {
 					String code = null;
 					try {
-						code = src.getValue(CODE_HEADER);
+						String origCode = src.getValue(CODE_HEADER);
+						code = origCode;
+						String desc = src.getValue(NAME_EXTRA_HEADER);
+						boolean isRF = StringUtils.startsWithIgnoreCase(code, "RF");
+						if (isRF) {
+							code = desc;
+						}
 						if (StringUtils.isNotBlank(code)) {
 							if (addCodeSuffix) {
 								code = codeSuffix + code;
+								origCode = codeSuffix + origCode;
 							}
 							Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
+							if (prod == null && isRF) {
+								prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, origCode));
+							}
 							if (prod == null) {
 								prod = Product.get(Item.newChildItem(productType, section));
-								prod.set_code(code);
 							}
-							prod.set_name(src.getValue(NAME_HEADER));
+							if (isRF) {
+								prod.set_code(code);
+								prod.set_name(src.getValue(NAME_EXTRA_HEADER));
+								prod.set_name_extra(src.getValue(CODE_HEADER));
+								prod.set_description(src.getValue(CODE_HEADER));
+							} else {
+								prod.set_code(code);
+								prod.set_name(src.getValue(NAME_HEADER));
+								prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
+								prod.set_description(src.getValue(NAME_EXTRA_HEADER));
+							}
 							String nextDelivery = src.getValue(DELAY_HEADER);
 							if (StringUtils.isBlank(nextDelivery))
 								nextDelivery = settings.get_default_ship_time();
@@ -155,8 +174,6 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
 							prod.set_step(step);
 							prod.set_vendor(src.getValue(VENDOR_HEADER));
-							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
-							prod.set_description(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_unit(src.getValue(UNIT_HEADER));
 							executeCommandUnit(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
 							if (count >= 100) {

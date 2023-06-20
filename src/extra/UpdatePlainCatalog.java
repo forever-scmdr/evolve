@@ -31,6 +31,8 @@ import java.util.List;
 public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String INTEGRATION_DIR = "integrate_manual";
 
+	private static final String CODE_HEADER = "код";
+	private static final String NAME_EXTRA_HEADER = "описание";
 	private static final String NAME_HEADER = "название";
 	private static final String QTY_HEADER = "остаток";
 	private static final String PRICE_HEADER = "цена";
@@ -103,12 +105,30 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 					String name = null;
 					try {
 						name = src.getValue(NAME_HEADER);
-						if (StringUtils.isNotBlank(name)) {
+						String code = src.getValue(CODE_HEADER);
+						String desc = src.getValue(NAME_EXTRA_HEADER);
+						boolean isRF = StringUtils.startsWithIgnoreCase(code, "RF");
+						if (StringUtils.isNotBlank(name) || isRF) {
 							Product prod = Product.get(
 									new ItemQuery(ItemNames.PRODUCT)
 											.addParameterEqualsCriteria(product_.NAME, name)
 											.setParentId(catalogItem.getId(), true)
 											.loadFirstItem());
+							// Если загрузился товар, то это неправильный RF, значит надо поменять местами название и описание
+							if (isRF) {
+								if (prod != null) {
+									prod.set_name(desc);
+									prod.set_code(desc);
+									prod.set_name_extra(name);
+									prod.set_description(name);
+								} else {
+									prod = Product.get(
+											new ItemQuery(ItemNames.PRODUCT)
+													.addParameterEqualsCriteria(product_.NAME, desc)
+													.setParentId(catalogItem.getId(), true)
+													.loadFirstItem());
+								}
+							}
 							if (prod == null) {
 								return;
 							}
