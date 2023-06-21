@@ -2,6 +2,8 @@ package ecommander.fwk;
 
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,6 +13,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -65,9 +68,14 @@ public class XmlDataSource {
 	private String tagContent;
 
 	public XmlDataSource(String fileName, Charset charset) throws XMLStreamException, IOException {
+		/*
 		Reader fileReader = Files.newBufferedReader(Paths.get(fileName), charset);
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		reader = factory.createXMLStreamReader(fileReader);
+		 */
+		BOMInputStream bis = new BOMInputStream(FileUtils.openInputStream(new File(fileName)));
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		reader = factory.createXMLStreamReader(bis, charset.name());
 	}
 
 	/**
