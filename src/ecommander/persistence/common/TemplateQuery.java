@@ -1,16 +1,16 @@
 package ecommander.persistence.common;
 
-import ecommander.fwk.MysqlConnector;
-import ecommander.persistence.mappers.DBConstants;
-import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ecommander.common.ServerLogger;
+import ecommander.persistence.mappers.DBConstants;
 /**
  * Последовательность частей запроса
  * Представляет как весь запрос с поддержкой шаблонов, так и его часть.
@@ -30,7 +30,7 @@ public class TemplateQuery implements QueryPart {
 	private String name; // название шаблона, например, <<PREDECESSOR_ID>>
 	private HashMap<String, TemplateQuery> subqueries; // Шаблоны по именам
 	private ArrayList<QueryPart> queryParts; // Все части запроса, в том числе шаблоны (которые также есть и в templates)
-
+	
 	private TemplateQuery(TemplateQuery prototype) {
 		this(prototype.name);
 		for (String key : prototype.subqueries.keySet()) {
@@ -48,8 +48,8 @@ public class TemplateQuery implements QueryPart {
 	
 	public TemplateQuery(String name) {
 		this.name = name;
-		queryParts = new ArrayList<>();
-		subqueries = new HashMap<>();
+		queryParts = new ArrayList<QueryPart>();
+		subqueries = new HashMap<String, TemplateQuery>();
 	}
 	/**
 	 * !!! Вызывается автоматически !!!
@@ -94,7 +94,7 @@ public class TemplateQuery implements QueryPart {
 	 * @param name
 	 * @return
 	 */
-	private final TemplateQuery getOrCreateSubquery(String name) {
+	public final TemplateQuery getOrCreateSubquery(String name) {
 		TemplateQuery query = subqueries.get(name);
 		if (query == null) {
 			query = new TemplateQuery(name);
@@ -102,195 +102,24 @@ public class TemplateQuery implements QueryPart {
 		}
 		return query;
 	}
-
-	/**
-	 *
-	 * @param name
-	 * @return
-	 */
-	public final TemplateQuery removeSubquery(String name) {
-		TemplateQuery toRemove = subqueries.get(name);
-		if (toRemove != null) {
-			subqueries.remove(name);
-			queryParts.remove(toRemove);
-		}
-		return this;
-	}
-
+	
 	public final TemplateQuery sql(String sql) {
 		queryParts.add(new SqlQueryPart(sql));
-		return this;
-	}
-
-	/**
-	 * Создать часть SELECT <поле1, поле2, ...>
-	 * @param columns
-	 * @return
-	 */
-	public final TemplateQuery SELECT(Object... columns) {
-		queryParts.add(new SqlQueryPart("SELECT " + StringUtils.join(columns, ", ")));
-		return this;
-	}
-
-	/**
-	 * Создать часть SELECT DISTINCT <поле1, поле2, ...>
-	 * @param columns
-	 * @return
-	 */
-	public final TemplateQuery SELECT_DISTINCT(Object... columns) {
-		queryParts.add(new SqlQueryPart("SELECT DISTINCT " + StringUtils.join(columns, ", ")));
-		return this;
-	}
-
-	/**
-	 * Создать вызов встроенной функции (функции агрегации или простой функции)
-	 * @param function
-	 * @param args
-	 * @return
-	 */
-	public final TemplateQuery FUNC(String function, String... args) {
-		queryParts.add(new SqlQueryPart(" " + function + "(" + StringUtils.join(args, ", ") + ")"));
-		return this;
-	}
-
-	/**
-	 * Создать директиву FROM
-	 * @param tableNames
-	 * @return
-	 */
-	public final TemplateQuery FROM(String...tableNames) {
-		queryParts.add(new SqlQueryPart(" FROM " + StringUtils.join(tableNames, ", ")));
-		return this;
-	}
-
-	public final TemplateQuery WHERE() {
-		queryParts.add(new SqlQueryPart(" WHERE "));
-		return this;
-	}
-
-	public final TemplateQuery AND() {
-		queryParts.add(new SqlQueryPart(" AND "));
-		return this;
-	}
-
-	public final TemplateQuery OR() {
-		queryParts.add(new SqlQueryPart(" OR "));
-		return this;
-	}
-
-	public final TemplateQuery UNION_ALL() {
-		queryParts.add(new SqlQueryPart(" UNION ALL "));
-		return this;
-	}
-
-	public final TemplateQuery com() {
-		queryParts.add(new SqlQueryPart(", "));
-		return this;
-	}
-
-	public final TemplateQuery col(String column, String...sign) {
-		queryParts.add(new SqlQueryPart(" " + column + (sign.length > 0 ? sign[0] : "=")));
-		return this;
-	}
-
-	public final TemplateQuery col_IN(String column) {
-		queryParts.add(new SqlQueryPart(" " + column + " IN"));
-		return this;
-	}
-
-	/**
-	 * Аналогично col только с идущей спереди запятой (для второго и последующих значений в списке колонок)
-	 * @param column
-	 * @param sign
-	 * @return
-	 */
-	public final TemplateQuery _col(String column, String...sign) {
-		queryParts.add(new SqlQueryPart(", " + column + (sign.length > 0 ? sign[0] : "=")));
-		return this;
-	}
-
-	public final TemplateQuery INSERT_INTO(String tableName, String...colNames) {
-		StringBuilder sql = new StringBuilder("INSERT INTO ");
-		sql.append(tableName);
-		if (colNames.length > 0) {
-			sql.append(" (").append(StringUtils.join(colNames, ", ")).append(") ");
-		}
-		queryParts.add(new SqlQueryPart(sql.toString()));
-		return this;
-	}
-
-	public final TemplateQuery DELETE_FROM_WHERE(String tableName) {
-		queryParts.add(new SqlQueryPart("DELETE FROM " + tableName + " WHERE "));
-		return this;
-	}
-
-	public final TemplateQuery UPDATE(String tableName) {
-		queryParts.add(new SqlQueryPart("UPDATE " + tableName));
-		return this;
-	}
-
-	public final TemplateQuery DELETE(String tableName) {
-		queryParts.add(new SqlQueryPart("DELETE FROM " + tableName));
-		return this;
-	}
-
-	public final TemplateQuery DELETE_join(String tableName) {
-		queryParts.add(new SqlQueryPart("DELETE " + tableName + " FROM " + tableName));
-		return this;
-	}
-
-	public final TemplateQuery SET() {
-		queryParts.add(new SqlQueryPart(" SET "));
-		return this;
-	}
-
-	public final TemplateQuery ORDER_BY(String...colNames) {
-		queryParts.add(new SqlQueryPart(" ORDER BY " + StringUtils.join(colNames, ',')));
-		return this;
-	}
-
-	public final TemplateQuery LIMIT(int limit, int...startFrom) {
-		StringBuilder sb = new StringBuilder(" LIMIT ");
-		if (startFrom.length > 0)
-			sb.append(startFrom[0]).append(',');
-		sb.append(limit);
-		queryParts.add(new SqlQueryPart(sb));
-		return this;
-	}
-
-	public final TemplateQuery ON_DUPLICATE_KEY_UPDATE(String colName) {
-		queryParts.add(new SqlQueryPart(" ON DUPLICATE KEY UPDATE " + colName + "="));
-		return this;
-	}
-	/**
-	 * Создать соединение с другой таблицей. Колонки, по которым происходит соединение,
-	 * перечисляются парами, т. е. Т1.Кол1, Т2.Кол1, Т1.Кол2, Т2.Кол2 и т.д.
-	 * @param tableName
-	 * @param columnPairs
-	 * @return
-	 */
-	public final TemplateQuery INNER_JOIN(String tableName, String... columnPairs) {
-		if (columnPairs.length % 2 != 0 || columnPairs.length == 0)
-			throw new IllegalArgumentException("There must be pairs of columns as JOIN conditions");
-		StringBuilder sb = new StringBuilder(" INNER JOIN ");
-		sb.append(tableName).append(" ON ");
-		for (int i = 0; i < columnPairs.length; i += 2) {
-			if (i > 0)
-				sb.append(" AND ");
-			sb.append(columnPairs[i]).append("=").append(columnPairs[i + 1]);
-		}
-		queryParts.add(new SqlQueryPart(sb));
 		return this;
 	}
 	/**
 	 * Добавляет пустой плейсхолдер для подзапроса
 	 * @param name
-	 * @return Созданный подзапрос!!! (НЕ родительский запрос!!!)
+	 * @return
 	 */
 	public final TemplateQuery subquery(String name) {
-		TemplateQuery subquery = getOrCreateSubquery(name);
-		queryParts.add(subquery);
-		return subquery;
+		TemplateQuery template = subqueries.get(name);
+		if (template == null) {
+			template = new TemplateQuery(name);
+			subqueries.put(name, template);
+		}
+		queryParts.add(template);
+		return this;
 	}
 	/**
 	 * Создает значение подзапроса на базе переданного шаблона
@@ -307,135 +136,70 @@ public class TemplateQuery implements QueryPart {
 	 * Нужно для того, чтобы исходный объект оставался тем же, а содержимое полностью менялось
 	 * @param query
 	 */
-	public final TemplateQuery replace(TemplateQuery query) {
+	public final void replace(TemplateQuery query) {
 		this.name = query.name;
 		this.queryParts = query.queryParts;
 		this.subqueries = query.subqueries;
-		return this;
 	}
 
 	public final boolean isEmpty() {
 		return queryParts.size() == 0;
 	}
 	
-	public final TemplateQuery byte_(byte value) {
+	public final TemplateQuery setByte(byte value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery int_(int value) {
+	public final TemplateQuery setInt(int value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery long_(long value) {
+	public final TemplateQuery setLong(long value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery double_(double value) {
-		queryParts.add(new ValueQueryPart(value));
-		return this;
-	}
-
-	public final TemplateQuery decimal(BigDecimal value) {
+	public final TemplateQuery setDouble(double value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery string(String value) {
+	public final TemplateQuery setString(String value) {
 		queryParts.add(new ValueQueryPart(value));
 		return this;
 	}
 	
-	public final TemplateQuery stringArray(String[] array) {
+	public final TemplateQuery setStringArray(String[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 	
-	public final TemplateQuery longArray(Long[] array) {
+	public final TemplateQuery setLongArray(Long[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
 	
-	public final TemplateQuery doubleArray(Double[] array) {
+	public final TemplateQuery setDoubleArray(Double[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
-
-	public final TemplateQuery decimalArray(BigDecimal[] array) {
+	
+	public final TemplateQuery setIntArray(Integer[] array) {
 		queryParts.add(new ValueArrayQueryPart(array));
 		return this;
 	}
-
-	public final TemplateQuery intArray(Integer[] array) {
-		queryParts.add(new ValueArrayQueryPart(array));
-		return this;
-	}
-
-	public final TemplateQuery byteArray(Byte[] array) {
-		queryParts.add(new ValueArrayQueryPart(array));
-		return this;
-	}
-
-	public final TemplateQuery stringIN(String... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
-	public final TemplateQuery longIN(Long... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
-	public final TemplateQuery doubleIN(Double... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
-	public final TemplateQuery decimalIN(BigDecimal... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
-	public final TemplateQuery intIN(Integer... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
-	public final TemplateQuery byteIN(Byte... values) {
-		queryParts.add(new SqlQueryPart("("));
-		queryParts.add(new ValueArrayQueryPart(values));
-		queryParts.add(new SqlQueryPart(")"));
-		return this;
-	}
-
+	
 	public final PreparedStatement prepareQuery(Connection conn, boolean returnAutoGenerated) throws SQLException {
 		StringBuilder query = new StringBuilder();
 		appendForPrepared(query);
-		//ServerLogger.debug(toString());
-		PreparedStatement pstmt;
-		if (returnAutoGenerated) {
-			if (conn instanceof MysqlConnector.LoggedConnection)
-				pstmt = ((MysqlConnector.LoggedConnection) conn).prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS, toString());
-			else
-				pstmt = conn.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
-		} else {
-			if (conn instanceof MysqlConnector.LoggedConnection)
-				pstmt = ((MysqlConnector.LoggedConnection) conn).prepareStatement(query.toString(), toString());
-			else
-				pstmt = conn.prepareStatement(query.toString());
-		}
+		ServerLogger.debug(toString() + "\n" + query);
+		PreparedStatement pstmt = null;
+		if (returnAutoGenerated)
+			pstmt = conn.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
+		else
+			pstmt = conn.prepareStatement(query.toString());
 		setPrepared(pstmt, 1);
 		return pstmt;
 	}
@@ -459,14 +223,6 @@ public class TemplateQuery implements QueryPart {
 	
 	@Override
 	public String toString() {
-		return getSimpleSql();
-	}
-
-	/**
-	 * Развернутая запись запроса (все подзапросы и значения перечислены отдельно)
-	 * @return
-	 */
-	public String explain() {
 		StringBuilder sb = new StringBuilder(name + ": ");
 		for (QueryPart part : queryParts) {
 			if (part instanceof TemplateQuery)
@@ -503,18 +259,18 @@ public class TemplateQuery implements QueryPart {
 			query.sql(templateBuf);
 		return query;
 	}
-
+	
 	public static void main(String[] args) {
 		
 		// Тест 1
 		
 //		TemplateQuery query = new TemplateQuery("<MAIN>");
-//		query.sql("SELECT * FROM ").subquery("<ANCESTOR>").sql(" WHERE ").int_(10).subquery("<CRIT>").sql(" LIMIT ").long_(1000);
-//		query.getSubquery("<ANCESTOR>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").string("STR_VAL").subquery("<SUBLIMIT>");
-//		TemplateQuery sub = query.getSubquery("<ANCESTOR>").getSubquery("<TABLE>");
+//		query.sql("SELECT * FROM ").subquery("<PARENT>").sql(" WHERE ").setInt(10).subquery("<CRIT>").sql(" LIMIT ").setLong(1000);
+//		query.getSubquery("<PARENT>").sql(" inner select ").subquery("<TABLE>").sql(" inner sort ").setString("STR_VAL").subquery("<SUBLIMIT>");
+//		TemplateQuery sub = query.getSubquery("<PARENT>").getSubquery("<TABLE>");
 //		sub.sql(" INNER INNER SELECT ");
-//		sub = query.getSubquery("<ANCESTOR>").getSubquery("<SUBLIMIT>");
-//		sub.sql(" SUB SUBLIMIT ").longArray(new Long []{(long)5, (long)6, (long)7});
+//		sub = query.getSubquery("<PARENT>").getSubquery("<SUBLIMIT>");
+//		sub.sql(" SUB SUBLIMIT ").setLongArray(new Long []{(long)5, (long)6, (long)7});
 //		System.out.println(query);
 //		System.out.println();
 //		System.out.println();
@@ -525,11 +281,11 @@ public class TemplateQuery implements QueryPart {
 		// Тест 2
 		
 		String QUERY_SKELETON 
-			= "SELECT CHILD.*<<PREDECESSOR_ID>>"
-			+ " FROM " + DBConstants.ItemTbl.ITEM_TBL + " AS CHILD <<JOIN>>"
-			+ " WHERE CHILD." + DBConstants.ItemTbl.I_SUPERTYPE + " IN <<POLYMORPHIC_TYPE_IDS>>"
+			= "SELECT ITEM.*<<PREDECESSOR_ID>>"
+			+ " FROM " + DBConstants.Item.TABLE + " AS ITEM <<JOIN>>"
+			+ " WHERE ITEM." + DBConstants.Item.TYPE_ID + " IN <<POLYMORPHIC_TYPE_IDS>>"
 			+ " <<PARENT_CONDITION>> <<USER_CONDITION>> <<FILTER_CONDITION>> "
-			+ " ORDER BY <<SORTING>> CHILD." + DBConstants.ItemTbl.I_KEY
+			+ " ORDER BY <<SORTING>> ITEM." + DBConstants.Item.INDEX_WEIGHT
 			+ " <<LIMIT>>";
 		TemplateQuery query = createFromString(QUERY_SKELETON, "main");
 		System.out.println(query);

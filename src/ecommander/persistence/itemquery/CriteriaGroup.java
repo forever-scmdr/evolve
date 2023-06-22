@@ -1,54 +1,62 @@
 package ecommander.persistence.itemquery;
 
-import ecommander.model.Compare;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
-import ecommander.persistence.common.TemplateQuery;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.ItemType;
+import ecommander.model.item.LOGICAL_SIGN;
+import ecommander.model.item.ParameterDescription;
+import ecommander.persistence.common.TemplateQuery;
 
 /**
- * Группа критериев, которая является одной из нескольких, каждая из которых является достаточной для удовлетворения
- * криетриев фильтра.
- * Каждая такая группа объединяется с другими такими группами логическим знаком OR в общем SQL запросе
+ * Группа критериев, объединенная одним логическим знаком
+ * Можно считать, что группа критериев это логическое выражение в скобках в SQL запросе, например 
+ * ... WHERE ... (some_size > 0 AND some_size <= 10 AND quantity > 0)
+ * 
+ * TODO <fix> сделать так, чтобы sorting всегда использовал логический знак AND при добавлении к списку притериев вне зависимости от
+ * знака, установленного в группе критериев
  * @author EEEE
  *
  */
-class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
+class CriteriaGroup implements FilterCriteria {
 
 	protected final List<FilterCriteria> criterias;
-	protected final ArrayList<AssociatedItemCriteriaGroup> assocCriterias;
+	protected final LOGICAL_SIGN sign;
 	protected final String groupId; // ID группы, нужен для названия таблиц параметров
-	protected final ItemType item;
-	protected final HashMap<Integer, String> paramTableNames = new HashMap<>();
-
-	CriteriaGroup(String optionId, ItemType item) {
-		this.groupId = optionId;
-		this.item = item;
-		criterias = new ArrayList<>();
-		assocCriterias = new ArrayList<>();
+	
+	CriteriaGroup(LOGICAL_SIGN sign, String groupId) {
+		this.sign = sign;
+		this.groupId = groupId;
+		criterias = new ArrayList<FilterCriteria>();
 	}
 
 	public void appendQuery(TemplateQuery query) {
 		if (!isNotBlank())
 			return;
+		TemplateQuery wherePart = query.getSubquery(ItemQuery.WHERE_OPT);
+		if (wherePart.getSubquery(ItemQuery.FILTER_JOIN_OPT) == null) {
+			if (!wherePart.isEmpty())
+				wherePart.sql(" AND ");
+			wherePart.subquery(ItemQuery.FILTER_JOIN_OPT).subquery(ItemQuery.FILTER_CRITS_OPT);
+		}
+		TemplateQuery filterCondition = wherePart.getSubquery(ItemQuery.FILTER_CRITS_OPT);
+		filterCondition.sql("(");
+		boolean notFirst = false;
 		for (FilterCriteria criteria : criterias) {
+			if (notFirst && criteria.isNotBlank()) {
+				filterCondition.sql(sign.toString());
+			}
 			if (criteria.isNotBlank()) {
-				criteria.appendQuery(query);
+				notFirst = true;
+				criteria.appendQuery(query); // !!! Передается изначальный запрос query, а не filterCondition !!!
 			}
 		}
-		for (FilterCriteria assocCriteria : assocCriterias) {
-			if (assocCriteria.isNotBlank()) {
-				assocCriteria.appendQuery(query);
-			}
-		}
+		filterCondition.sql(")");
 	}
 	/**
 	 * Добавить критерий, одиночный или множественный
@@ -59,81 +67,31 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	 * @param compType
 	 */
 	public void addParameterCriteria(ParameterDescription param, ItemType item, List<String> values, String sign, String pattern,
-			Compare compType) {
-		String tableName = "F" + criterias.size();
+			COMPARE_TYPE compType) {
+		String tableName = groupId + 'F' + criterias.size();
 		// Одно значение
 		if (values.size() == 1)
-			addOptimized(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, groupId, isOption(), compType));
+			criterias.add(new SingleParamCriteria(param, item, values.get(0), sign, pattern, tableName, compType));
 		// Множество значений с выбором любого варианта (параметр соответствует любому из значений)
-		else if (values.size() > 0 && (compType == Compare.ANY || compType == Compare.SOME))
-			addOptimized(new MultipleParamCriteria(param, item, values, sign, tableName, groupId, isOption(), compType));
+		else if (values.size() > 0 && (compType == COMPARE_TYPE.ANY || compType == COMPARE_TYPE.SOME))
+			criterias.add(new MultipleParamCriteria(param, item, values, sign, tableName, compType));
 		// Множество значений с выбором каждого варианта (параметр соответствует всем значениям)
 		else if (values.size() > 0) {
-			Compare localComp = compType == Compare.EVERY ? Compare.SOME : Compare.ANY;
 			for (String value : values) {
-				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, groupId, isOption(), localComp));
-				tableName = groupId + "F" + criterias.size();
+				criterias.add(new SingleParamCriteria(param, item, value, sign, pattern, tableName, compType));
+				tableName = groupId + 'F' + criterias.size();
 			}
-		} else
-			addOptimized(new SingleParamCriteria(param, item, "", sign, pattern, tableName, groupId, isOption(), compType));
-	}
-
-	private void addOptimized(ParameterCriteria crit) {
-		optimizeJoin(crit);
-		criterias.add(crit);
+		} else 
+			criterias.add(new SingleParamCriteria(param, item, "", sign, pattern, tableName, compType));
 	}
 	/**
-	 * Оптимизировать join для критерия
-	 * Если уже есть соединение с индексной таблицей такого параметра, то повторное соединение не нужно
-	 * @param crit
-	 */
-	protected void optimizeJoin(ParameterCriteria crit) {
-		if (crit.isNotBlank()) {
-			String joinedTableName = paramTableNames.get(crit.getParameterId());
-			if (joinedTableName != null) {
-				crit.optimizeJoins(joinedTableName);
-			} else {
-				paramTableNames.put(crit.getParameterId(), crit.getIndexTableName());
-			}
-		}
-	}
-
-	/**
-	 * Добавить критерий по параметру потомка
-	 * @param item
-	 * @param assocId
-	 * @param type
-	 * @return
-	 */
-	public AssociatedItemCriteriaGroup addAssociatedCriteria(ItemType item, Byte[] assocId, AssociatedItemCriteriaGroup.Type type) {
-		String critId = (type == AssociatedItemCriteriaGroup.Type.CHILD ? "C" : "P") + assocCriterias.size() + groupId;
-		AssociatedItemCriteriaGroup newCrit = new AssociatedItemCriteriaGroup(critId, item, assocId, type, null, this.item);
-		assocCriterias.add(newCrit);
-		return newCrit;
-	}
-
-	/**
-	 * Добавить критерий предшественника
-	 * @param assocName
+	 * Добавить группу критериев
 	 * @param sign
-	 * @param itemIds
-	 * @param compType
 	 */
-	public void addPredecessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
-		criterias.add(new PredecessorCriteria(item, sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
-				groupId + "R" + criterias.size(), compType));
-	}
-
-	/**
-	 * Добавить критерий потомка
-	 * @param assocName
-	 * @param sign
-	 * @param itemIds
-	 * @param compType
-	 */
-	public void addSuccessors(String assocName, String sign, Collection<Long> itemIds, Compare compType) {
-		criterias.add(new SuccessorCriteria(sign, itemIds, ItemTypeRegistry.getAssocId(assocName),
-				groupId + "R" + criterias.size(), compType));
+	final CriteriaGroup addGroup(LOGICAL_SIGN sign) {
+		CriteriaGroup group = new CriteriaGroup(sign, "G" + criterias.size());
+		criterias.add(group);
+		return group;
 	}
 
 	public boolean isNotBlank() {
@@ -141,45 +99,48 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 			if (criteria.isNotBlank())
 				return true;
 		}
-		for (AssociatedItemCriteriaGroup criteria : assocCriterias) {
-			if (criteria.isNotBlank())
-				return true;
-		}
 		return false;
 	}
 	
 	public boolean isEmptySet() {
-		for (FilterCriteria criteria : criterias) {
-			if (criteria.isEmptySet())
-				return true;
-		}
-		for (AssociatedItemCriteriaGroup criteria : assocCriterias) {
-			if (criteria.isEmptySet())
-				return true;
+		if (sign == LOGICAL_SIGN.AND) {
+			for (FilterCriteria criteria : criterias) {
+				if (criteria.isEmptySet())
+					return true;
+			}
+		} else {
+			for (FilterCriteria criteria : criterias) {
+				if (!criteria.isEmptySet())
+					return false;
+			}
 		}
 		return false;
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
-		if (!isNotBlank())
-			return queryBuilder;
-		BooleanQuery.Builder innerBuilder = new BooleanQuery.Builder();
-		Occur innerOccur = Occur.MUST;
-		for (FilterCriteria criteria : criterias) {
-			if (criteria.isNotBlank())
-				criteria.appendLuceneQuery(innerBuilder, innerOccur);
+	public void useParentCriteria() {
+		for (FilterCriteria crit : criterias) {
+			crit.useParentCriteria();
 		}
-		if (queryBuilder == null)
-			return innerBuilder;
-		if (occur == null)
-			occur = Occur.MUST;
-		BooleanQuery innerQuery = innerBuilder.build();
-		if (innerQuery.clauses().size() > 0)
-			queryBuilder.add(innerBuilder.build(), occur);
-		return queryBuilder;
 	}
 
-	protected boolean isOption() {
-		return true;
+	protected Occur getOccur() {
+		if (sign == LOGICAL_SIGN.OR)
+			return Occur.SHOULD;
+		return Occur.MUST;
+	}
+	
+	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
+		if (!isNotBlank())
+			return query;
+		BooleanQuery innerQuery = new BooleanQuery();
+		Occur innerOccur = getOccur();
+		for (FilterCriteria criteria : criterias) {
+			if (criteria.isNotBlank())
+				criteria.appendLuceneQuery(innerQuery, innerOccur);
+		}
+		if (query == null)
+			return innerQuery;
+		query.add(innerQuery, occur);
+		return query;
 	}
 }

@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class ByteDataType extends FormatDataType {
 
-	public ByteDataType(Type type) {
+	ByteDataType(Type type) {
 		super(type);
 	}
 

@@ -1,0 +1,41 @@
+property.system_encoding = UTF-8
+
+paths.data_model = <<context_root>>/WEB-INF/ec_xml/model.xml
+paths.commands_model = <<context_root>>/WEB-INF/ec_xml/commands.xml
+paths.data_model_update = <<context_root>>/WEB-INF/ec_xml/model_update.xml
+paths.pages_model = <<context_root>>/WEB-INF/ec_xml/pages.xml
+paths.domains = <<context_root>>/WEB-INF/ec_xml/domains.xml
+paths.users = <<context_root>>/WEB-INF/ec_xml/users.xml
+paths.urls = <<context_root>>/WEB-INF/url.txt
+paths.context_root = <<context_root>>
+paths.files_folder = /sitefiles/
+paths.temp_folder = /sitefiles/_temp/
+paths.upload_folder = <<context_root>>/sitefiles/_temp/
+paths.styles_folder = /WEB-INF/ec_xsl/
+paths.cache_folder = /_cache/
+paths.cache_xml_folder = /WEB-INF/_cachexml/
+
+#######################################
+## 
+#######################################
+
+settings.enable_cache = false
+
+#######################################
+## 
+#######################################
+
+format.date=dd.MM.yyyy
+
+#######################################
+## 
+#######################################
+
+locale.language=ru
+locale.country=BE
+
+#######################################
+## 
+#######################################
+
+admin.group = admin

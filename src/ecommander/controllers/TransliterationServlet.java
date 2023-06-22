@@ -1,15 +1,19 @@
 package ecommander.controllers;
 
-import ecommander.fwk.PageNotFoundException;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Timer;
-import ecommander.fwk.UserNotAllowedException;
-import org.apache.commons.lang3.StringUtils;
+import java.io.IOException;
 
+import javax.measure.quantity.Length;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ecommander.common.ServerLogger;
+import ecommander.common.Timer;
+import ecommander.common.exceptions.PageNotFoundException;
+import ecommander.common.exceptions.UserNotAllowedException;
 
 /**
  * Сервлет, который обрабатывает запросы eco/
@@ -28,50 +32,27 @@ public class TransliterationServlet extends BasicServlet {
 	private static final long serialVersionUID = 1847991927782653866L;
 
 	/**
-	 *
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
-		String userUrl = "";
+		String userUrl = getUserUrl(request);
+		String[] parts = StringUtils.split(userUrl, '/');
+		if (parts.length > 3 && !StringUtils.contains(parts[parts.length - 1], '.')) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
+		// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
 		try {
-			Timer.getTimer().start(Timer.REQUEST_PROCESS, userUrl);
-
 			ServerLogger.debug("Get method: Page output started");
-
-			// проверка протокола с последующим редиректом если это надо
-			if (!checkProtocolScheme(request, response)) {
-//				ServerLogger.warn("\n\n-----------------------CHECK PROTOCOL RETURN---------------------------");
-				return;
-			}
-
-			// получить пользовательский урл
-			userUrl = getUserUrl(request);
-
-			// Если запрашивается индексная страница - это может быть ошибка, например в картинке не указан урл
-			// Надо проанализировать, какой заголовок Accept отправляет браузер.
-			// Для индексной страницы он должен содержать text/html
-			if (StringUtils.startsWithIgnoreCase(userUrl, AppContext.getWelcomePageName())) {
-//				ServerLogger.warn("\n\n-----------------------REQUEST HEADERS---------------------------");
-//				Enumeration<String> names = request.getHeaderNames();
-//				while (names.hasMoreElements()) {
-//					String name = names.nextElement();
-//					ServerLogger.warn(name + " -> " + request.getHeader(name));
-//				}
-//				ServerLogger.warn("\n\n");
-				if (StringUtils.startsWithIgnoreCase(request.getHeader("Accept"), "image")) {
-					ServerLogger.error("Maybe page html error - empty img src attribute");
-					response.sendError(HttpServletResponse.SC_NOT_FOUND);
-					return;
-				}
-			}
-
+//			ServerLogger.error("--------------------------           " + userUrl + "           --------------------------");
 			MainExecutionController mainController = new MainExecutionController(request, response, userUrl);
 			mainController.execute(getBaseUrl(request), getServletContext());
 		} catch (UserNotAllowedException e) {
 			processUserNotAllowed(request, response, userUrl);
 		} catch (PageNotFoundException e) {
-			// Если заданного URL нет в маппинге, то считать что запрошен файл и передать его
-			sendFile(response, userUrl, false);
+			sendFile(response, userUrl);
 		} catch (Exception e) {
 			handleError(request, response, e);
 		} finally {

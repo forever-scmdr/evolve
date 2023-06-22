@@ -1,21 +1,20 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.fwk.UserExistsExcepion;
-import ecommander.model.User;
-import ecommander.model.UserMapper;
-import ecommander.persistence.common.TemplateQuery;
-import ecommander.persistence.mappers.DBConstants;
-
-import java.sql.PreparedStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.HashSet;
+import java.sql.Statement;
+
+import ecommander.common.ServerLogger;
+import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.users.User;
 
 /**
  * Создается новый пользователь
  * @author EEEE
  *
  */
-public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBConstants.UsersTbl, DBConstants.UserGroups {
+public class SaveNewUserDBUnit extends DBPersistenceCommandUnit {
 
 	private User user;
 	
@@ -24,41 +23,29 @@ public class SaveNewUserDBUnit extends DBPersistenceCommandUnit implements DBCon
 	}
 	
 	public void execute() throws Exception {
-
-		// Проверить права доступа
-		testPrivileges(user, false);
-
-		// Проверить существование пользователя с таким именем
-		if (UserMapper.userNameExists(user.getName(), getTransactionContext().getConnection()))
-			throw new UserExistsExcepion(user.getName());
-
-		// Сохранить пользователя и его права
-		TemplateQuery insertUser = new TemplateQuery("Create new User");
-		insertUser.INSERT_INTO(USER_TBL, U_LOGIN, U_PASSWORD, U_DESCRIPTION)
-				.sql(" VALUES (")
-				.string(user.getName()).com()
-				.string(user.getPassword()).com()
-				.string(user.getDescription()).sql(");\r\n");
-		HashSet<User.Group> groups = user.getGroups();
-		if (groups.size() > 0)
-			insertUser.INSERT_INTO(USER_GROUP_TBL, UG_GROUP_ID, UG_GROUP_NAME, UG_ROLE, UG_USER_ID)
-					.sql(" VALUES ");
-		boolean notFirst = false;
-		for (User.Group group : groups) {
-			if (notFirst)
-				insertUser.com();
-			insertUser.sql(" (").byte_(group.id).com()
-					.string(group.name).com()
-					.byte_(group.role)
-					.sql(", LAST_INSERT_ID())");
-			notFirst = true;
+		if (!getTransactionContext().getInitiator().isSuperUser() && !ignoreUser)
+			throw new UserNotAllowedException();
+		Statement stmt = null;
+		try	{
+			Connection conn = getTransactionContext().getConnection();
+			stmt = conn.createStatement();
+			String sql = new String();
+			sql += "INSERT INTO " + DBConstants.Users.TABLE + " SET " + DBConstants.Users.LOGIN + "='" + user.getName() + "', "
+					+ DBConstants.Users.GROUP + "='" + user.getGroup() + "', " + DBConstants.Users.PASSWORD + "='"
+					+ user.getPassword() + "', " + DBConstants.Users.DESCRIPTION + "='" + user.getDescription() + "'";
+			ServerLogger.debug(sql);
+			stmt.executeUpdate(sql);
+			if (user.getUserId() == User.NO_USER_ID) {
+				// Получается ID нового айтема и устанавливается этот объект айтема
+				ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+				rs.next();
+				user.setNewId(rs.getLong(1));
+			}
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
-		try (PreparedStatement pstmt = insertUser.prepareQuery(getTransactionContext().getConnection(), true)) {
-			pstmt.executeUpdate();
-			ResultSet rs = pstmt.getGeneratedKeys();
-			rs.next();
-			user.setNewId(rs.getInt(1));
-		}
+		
 	}
 
 }

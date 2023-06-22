@@ -1,14 +1,15 @@
 package ecommander.controllers;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.UserNotAllowedException;
-import ecommander.pages.LinkPE;
-import ecommander.pages.MultipleHttpPostForm;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import ecommander.common.ServerLogger;
+import ecommander.common.exceptions.UserNotAllowedException;
+import ecommander.pages.elements.ItemHttpPostForm;
+import ecommander.pages.elements.LinkPE;
 /**
  * Подразумевается, что этот сервлет обрабатывает только 
  * @author EEEE
@@ -26,7 +27,7 @@ public class ItemFormServlet extends BasicServlet {
 		targetUrl = targetUrl.substring(ITEM_FORM_PREFIX_LENGTH);
 		try {
 			LinkPE target = LinkPE.parseLink(targetUrl);
-			MultipleHttpPostForm itemForm = new MultipleHttpPostForm(req);
+			ItemHttpPostForm itemForm = new ItemHttpPostForm(req, target);
 			MainExecutionController mainController = new MainExecutionController(req, resp, target.serialize());
 			mainController.setPostItemForm(itemForm);
 			mainController.execute(getBaseUrl(req), getServletContext());
@@ -40,7 +41,7 @@ public class ItemFormServlet extends BasicServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ServerLogger.warn("GET method invoked in SingleItemHttpPostFormDeprecated servlet: " + getBaseUrl(req));
+		ServerLogger.warn("GET method invoked in ItemHttpPostForm servlet: " + getBaseUrl(req));
 	}
 //
 //	public static void main(String[] args) {

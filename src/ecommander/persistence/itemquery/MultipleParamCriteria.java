@@ -1,25 +1,25 @@
 package ecommander.persistence.itemquery;
 
-import ecommander.model.Compare;
-import ecommander.model.ItemType;
-import ecommander.model.ParameterDescription;
-import ecommander.persistence.common.TemplateQuery;
-import ecommander.persistence.mappers.DataTypeMapper;
+import java.util.Collection;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 
-import java.util.Collection;
-
+import ecommander.model.item.COMPARE_TYPE;
+import ecommander.model.item.ItemType;
+import ecommander.model.item.ParameterDescription;
+import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.mappers.DBConstants;
+import ecommander.persistence.mappers.DataTypeMapper;
 /**
  * Множественный критерий - Один параметр, много подходящий значений
  * @author EEEE
  *
  */
-class MultipleParamCriteria extends ParameterCriteria {
+class MultipleParamCriteria extends FilterParameterCriteria {
 
 	private Collection<String> values;	// массив строковых значений параметра, с которым он будет сравниваться, передается пользователем 
 								// или берется из страничной переменной
@@ -31,8 +31,8 @@ class MultipleParamCriteria extends ParameterCriteria {
 	private static final String NOT_IN = " NOT IN ";
 	
 	MultipleParamCriteria(ParameterDescription param, ItemType item, Collection<String> values, String sign, String tableName,
-	                     String groupName, boolean isParentOption, Compare type) {
-		super(param, item, tableName, groupName, isParentOption);
+			COMPARE_TYPE type) {
+		super(param, item, tableName);
 		this.values = values;
 		sign = sign.trim();
 		if (StringUtils.isBlank(sign) || sign.equals("="))
@@ -40,14 +40,14 @@ class MultipleParamCriteria extends ParameterCriteria {
 		else
 			this.sign = NOT_IN;
 		isBlank = (values == null || values.size() == 0);
-		if ((type == Compare.SOME || type == Compare.EVERY) && isBlank && StringUtils.equals(this.sign, IN))
+		if ((type == COMPARE_TYPE.SOME || type == COMPARE_TYPE.EVERY) && isBlank)
 			isEmptySet = true;
 	}
 
 	@Override
 	protected void appendParameterValue(TemplateQuery query) {
-		query = query.getSubquery(WHERE);
-		query.AND().col(INDEX_TABLE + "." + II_VALUE, " " + sign + " ");
+		query = query.getSubquery(ItemQuery.WHERE_OPT).getSubquery(ItemQuery.FILTER_CRITS_OPT);
+		query.sql(" AND " + tableName + "." + DBConstants.ItemIndexes.VALUE + " " + sign + " ");
 		if (values.size() > 0) {
 			query.sql("(");
 			DataTypeMapper.appendPreparedStatementRequestValues(param.getType(), query, values);
@@ -57,20 +57,24 @@ class MultipleParamCriteria extends ParameterCriteria {
 		}
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
+	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
 		if (param.isFulltextFilterable()) {
 			if (!sign.equals(IN) && !sign.equals(NOT_IN))
-				return queryBuilder;
-			BooleanQuery.Builder innerQuery = new BooleanQuery.Builder();
+				return query;
+			BooleanQuery innerQuery = new BooleanQuery();
 			Occur innerOccur = Occur.SHOULD;
 			if (sign.equals(NOT_IN))
 				innerOccur = Occur.MUST_NOT;
 			for (String value : values) {
 				innerQuery.add(new TermQuery(new Term(param.getName(), value)), innerOccur);
 			}
-			queryBuilder.add(innerQuery.build(), occur);
+			query.add(innerQuery, occur);
 		}
-		return queryBuilder;
+		return query;
+	}
+
+	public String getParentColumnName() {
+		return tableName + '.' + DBConstants.ItemIndexes.ITEM_PARENT;
 	}
 
 	@Override

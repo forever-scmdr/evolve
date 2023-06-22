@@ -2,13 +2,13 @@ package ecommander.persistence.commandunits;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.Strings;
-import ecommander.pages.output.ItemTypeMDWriter;
-import ecommander.pages.output.ParameterDescriptionMDWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.model.ParameterDescription;
+import ecommander.common.Strings;
+import ecommander.controllers.output.ItemTypeMDWriter;
+import ecommander.controllers.output.ParameterDescriptionMDWriter;
+import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.model.item.ItemType;
+import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.item.ParameterDescription;
 
 /**
  * Сохраняет новый тип айтема в файле пользовательский айтемов.
@@ -30,12 +30,11 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 	
 	private ItemType newType = null;
 	
-	public SaveNewItemTypeDBUnit(String itemName, String caption, String description, String strExtends, String itemKey) {
+	public SaveNewItemTypeDBUnit(String itemName, String caption, String description, String strExtends, String itemKey, boolean inline) {
 		itemName = Strings.createXmlElementName(itemName.trim());
 		ItemType parent = ItemTypeRegistry.getItemType(strExtends);
 		boolean isKeyUnique = parent != null && parent.isKeyUnique();
-		newType = new ItemType(itemName, 0, caption, description, itemKey, strExtends, null,
-				itemVirtual, isUserDefined, true, isKeyUnique);
+		newType = new ItemType(itemName, 0, caption, description, itemKey, strExtends, itemVirtual, isUserDefined, inline, true, isKeyUnique);
 	}
 	
 	public SaveNewItemTypeDBUnit(ItemType type) {
@@ -44,10 +43,7 @@ public class SaveNewItemTypeDBUnit extends ItemModelFilePersistenceCommandUnit {
 
 	@Override
 	protected void executeInt() throws Exception {
-		// На всякий случай выполнить сначала удаление айтема с таким названием
-		executeCommand(new DeleteItemTypeBDUnit(newType.getName()));
-		// Потом выполнить сохранение
-		ItemTypeMDWriter writer = new ItemTypeMDWriter(newType, ITEM);
+		ItemTypeMDWriter writer = new ItemTypeMDWriter(newType, ITEM_ELEMENT);
 		for (ParameterDescription param : newType.getParameterList()) {
 			writer.addSubwriter(new ParameterDescriptionMDWriter(param));
 		}

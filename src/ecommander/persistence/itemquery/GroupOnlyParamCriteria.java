@@ -1,19 +1,21 @@
 package ecommander.persistence.itemquery;
 
-import ecommander.model.ItemType;
-import ecommander.model.ParameterDescription;
-import ecommander.persistence.common.TemplateQuery;
-import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+
+import ecommander.model.item.ItemType;
+import ecommander.model.item.ParameterDescription;
+import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.mappers.DBConstants;
 /**
  * Критерий только для группировки, не содержит значений
  * @author EEEE
  *
  */
-class GroupOnlyParamCriteria extends ParameterCriteria {
+class GroupOnlyParamCriteria extends FilterParameterCriteria {
 
 	GroupOnlyParamCriteria(ParameterDescription param, ItemType item, String tableName) {
-		super(param, item, tableName, "", false);
+		super(param, item, tableName);
 	}
 
 	@Override
@@ -21,9 +23,13 @@ class GroupOnlyParamCriteria extends ParameterCriteria {
 		// Ничего добавлять не надо
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
+	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
 		// Ничего не добавляется
-		return queryBuilder;
+		return query;
+	}
+
+	public String getParentColumnName() {
+		return tableName + '.' + DBConstants.ItemIndexes.ITEM_PARENT;
 	}
 
 	public boolean isNotBlank() {

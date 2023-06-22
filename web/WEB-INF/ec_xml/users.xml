@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <authority>
-<groups>
-	<group name="common"/>
-	<group name="registered"/>
-	<group name="0dmin"/>
-</groups>
-<users>
-	<user name="admin" password="eeee" description="Мега админ">
-		<group name="common" role="admin"/>
-		<group name="registered" role="admin"/>
-	</user>
-
-	<user name="0dmin" password="eeee" description="Мега админ">
-		<group name="0dmin" role="admin"/>
-	</user>
-</users>
+	<groups>
+		<group>common</group>
+		<group>registered</group>
+	</groups>
+	<users>
+		<user>
+			<group>common</group>
+			<login>admin</login>
+			<password>eeee</password>
+			<description>Мега админ</description>
+		</user>
+		<user>
+			<group>registered</group>
+			<login>test</login>
+			<password>test</password>
+			<description>test</description>
+		</user>
+	</users>
 </authority>

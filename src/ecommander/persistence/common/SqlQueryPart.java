@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 class SqlQueryPart implements QueryPart {
 
-	private CharSequence code;
+	private String code;
 	
-	public SqlQueryPart(CharSequence sql) {
+	public SqlQueryPart(String sql) {
 		code = sql;
 	}
 	
@@ -25,7 +25,7 @@ class SqlQueryPart implements QueryPart {
 
 	@Override
 	public String toString() {
-		return code.toString();
+		return code;
 	}
 
 	public QueryPart createClone() {

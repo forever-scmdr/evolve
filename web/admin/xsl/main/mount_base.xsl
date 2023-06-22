@@ -89,8 +89,8 @@
 									<xsl:apply-templates select="admin-page/mount/type"/>
 									<xsl:if test="admin-page/mount//input">
 									<div class="add_link_button">
-										<a href="#" class="button" onclick="$('#addForm').submit(); return false;">
-											<xsl:value-of select="$button_img" />
+										<a href="#" onclick="$('#addForm').submit(); return false;">
+											<img src="{$button_img}" alt="" />
 										</a>
 									</div>
 									</xsl:if>
@@ -109,8 +109,8 @@
 									<xsl:apply-templates select="admin-page/mounted/type"/>
 									<xsl:if test="admin-page/mounted//input">
 									<div class="add_link_button">
-										<a href="#" class="button" onclick="$('#deleteForm').submit(); return false;">
-											Удалить
+										<a href="#" onclick="$('#deleteForm').submit(); return false;">
+											<img src="admin/admin_img/remove_link.png" alt="" />
 										</a>
 									</div>
 									</xsl:if>

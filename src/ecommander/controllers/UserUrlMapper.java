@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.pages.var.VariablePE;
+import ecommander.common.ServerLogger;
+import ecommander.pages.elements.variables.VariablePE;
 
 
 /**

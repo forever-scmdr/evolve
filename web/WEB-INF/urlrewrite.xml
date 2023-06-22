@@ -9,32 +9,14 @@
 
 -->
 <urlrewrite>
-    <!--SSL сертификат (отличать от обычных директорий и /eco урлов)-->
-    <rule match-type="regex" enabled="true">
-        <from>^.*\.well-known\/.*</from>
-        <to type="forward" last="true">$0</to>
-    </rule>
-    <!--Переход на страницу index-->
     <rule match-type="regex" enabled="true">
         <from>^/?$</from>
         <to type="forward" last="false">/index/</to>
     </rule>
-    <!--Защищенные файлы (доступные только для авторизованных пользователей) - спецсервлет protected-->
     <rule match-type="wildcard" enabled="true">
-        <from>/restrict_files/**.*</from>
-        <to type="forward" last="true">/protected/$1.$2</to>
+        <from>/**.*</from>
+        <to type="forward" last="true">/$1.$2</to>
     </rule>
-    <!--Обычные файлы и обработчики для администратора (.action)-->
-    <rule match-type="regex" enabled="true">
-        <from>^.+\.(action|login|afilter|type|domain|user|htm)$</from>
-        <to type="forward" last="true">$0</to>
-    </rule>
-    <!--Обычные файлы-->
-    <rule match-type="regex" enabled="true">
-        <from>^.*\..{2,4}$</from>
-        <to type="forward" last="true">$0</to>
-    </rule>
-    <!--Страницы сайта (основная работа CMS)-->
     <rule match-type="wildcard" enabled="true">
         <from>/**</from>
         <to type="forward" last="true">/eco/$1</to>

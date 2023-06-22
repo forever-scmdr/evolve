@@ -12,7 +12,7 @@ package ecommander.persistence.mappers;
  * @author E
  *
  */
-public interface DBConstants
+public class DBConstants
 {
 
 	/**************************************************************************************************
@@ -34,53 +34,44 @@ public interface DBConstants
 	 * 
 	 * @author E
 	 */
-	interface ItemTbl
+	public interface Item
 	{
-		String ITEM_TBL = "item";
-		String I_ID = "i_id"; // ID айтема (не типа айтема, а конкретного айтема)
-		String I_SUPERTYPE = "i_supertype"; // уникальный ID супертипа (непользовательского типа) айтема (PK)
-		String I_TYPE_ID = "i_type_id"; // уникальный ID типа айтема
-		String I_KEY = "i_key"; // Название айтема, которое юзер видит в CMS
-		String I_T_KEY = "i_t_key"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
-		String I_PROTECTED = "i_protected"; // время последнего обновления айтема
-		String I_PARAMS = "i_params"; // значения всех параметров айтема в виде XML
-		String I_UPDATED = "i_updated"; // время последнего обновления айтема
-		String I_STATUS = "i_status"; // Показывать (0), скрытый (1), айтем удален но можно восстановить (2), айтем удален безвозвратно (3)
-		String I_USER = "i_user"; // Владелец айтема (0 - айтем принадлежит группе и не имеет владельца)
-		String I_GROUP = "i_group"; // Группа-владелец айтема
-	}
-
-	/**
-	 * Таблица, в которой хранится описание модели данных в виде XML
-	 */
-	interface ModelXML {
-		String MODEL_XML_TBL = "model_xml";
-		String XML_NAME = "xml_name";
-		String XML_XML = "xml_xml";
+		String TABLE = "Item";
+		String TYPE_ID = "I_TYPE_ID"; // уникальный ID типа айтема (PK)
+		String KEY = "I_KEY"; // Название айтема, которое юзер видит в CMS
+		String TRANSLIT_KEY = "I_T_KEY"; // Уникальный ключ айтема, который можно испльзовать для поиска вместо ID
+		String ID = "I_ID"; // ID айтема (не типа айтема, а конкретного айтема)
+		String DIRECT_PARENT_ID = "I_PARENT_ID"; // ID непосредственного предка айтема
+		String REF_ID = "I_REF_ID"; // Для нормальных айтемов REF_ID = ID, а для айтемов-ссылок - ID айтема, на который идет ссылка
+		String INDEX_WEIGHT = "I_WEIGHT"; // порядковый номер (вес с разницей 100 по умолчаню) в списке всех потомков одного родителя (для сортировки)
+		String OWNER_GROUP_ID = "I_OWNER_GROUP_ID"; // Группа владельца айтема
+		String OWNER_USER_ID = "I_OWNER_USER_ID"; // Юзер - владелец айтема
+		String PRED_ID_PATH = "I_PRED_ID_PATH"; // Путь к текущему айтему через всех его предшественников (для работы с файлами)
+		String PARAMS = "I_PARAMS"; // значения всех параметров айтема в виде XML
+		String UPDATED = "I_UPDATED"; // время последнего обновления айтема
 	}
 	/**
 	 * Уникальные строковые ключи некоторых айтемов, которые можно передавать через URL с целью уникальной идентификации айтема
 	 * @author E
 	 *
 	 */
-	interface UniqueItemKeys {
-		String UNIQUE_KEY_TBL = "unique_key";
-		String UK_ID = "uk_item_id"; // ID айтема
-		String UK_KEY = "uk_key"; // Уникальный текстовый ключ
+	public interface UniqueItemKeys {
+		String TABLE = "UniqueKey";
+		String ID = "UK_ITEM_ID"; // ID айтема
+		String KEY = "UK_KEY"; // Уникальный текстовый ключ
 	}
 	/**
 	 * Таблица, в которой хранятся пары родитель-потомок для всех возможных комбинаций айтемов родителей и айтемов потомков
 	 * @author EEEE
 	 *
 	 */
-	interface ItemParent {
-		String ITEM_PARENT_TBL = "item_parent";
-		String IP_ASSOC_ID = "ip_assoc_id"; // ID ассоциации
-		String IP_PARENT_ID = "ip_parent_id"; // ID предка
-		String IP_CHILD_ID = "ip_child_id"; // ID потомка
-		String IP_CHILD_SUPERTYPE = "ip_child_supertype"; // Супертип (непользовательский тип) потомка
-		String IP_PARENT_DIRECT = "ip_parent_direct"; // Уровень вложенности по отношению к предку (1 - прямой потомок, 0 - непрямой)
-		String IP_WEIGHT = "ip_weight"; // Вес прямого потомка среди всех прямых потомков предка с заданной ассоциацией
+	public interface ItemParent {
+		String TABLE = "ItemParent";
+		String REF_ID = "IP_REF_ID";
+		String PARENT_ID = "IP_PARENT_ID";
+		String ITEM_ID = "IP_ITEM_ID";
+		String ITEM_TYPE = "IP_TYPE"; // Тип айтема
+		String PARENT_LEVEL = "IP_LEVEL"; // Уровень вложенности по отношению к предку
 	}
 	/**
 	 * Параметры айтема
@@ -92,27 +83,18 @@ public interface DBConstants
 	 * Таблица хранит все значения всех параметров типа Integet и Long всех айтемов и используется только при поиске по фильтру 
 	 * или при сортировке по значению параметра
 	 * @author EEEE
+	 * TODO <enhance> !!! Использовать в запросах фильтрации II_TYPE - меньше элементов остается после выбора из этой таблицы
 	 */
-	interface ItemIndexes {
-		String INT_INDEX_TBL = "int_index";
-		String DECIMAL_INDEX_TBL = "decimal_index";
-		String DOUBLE_INDEX_TBL = "double_index";
-		String STRING_INDEX_TBL = "string_index";
-		String II_ITEM_ID = "ii_item"; // ID айтема (не типа айтема, а конкретного айтема)
-		String II_ITEM_TYPE = "ii_type"; // ID типа айтема
-		String II_PARAM = "ii_param"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
-		String II_VALUE = "ii_val"; // Занчение
-	}
-	/**
-	 * Таблица, в которой хранятся ID всех ассоциаций
-	 * Она нужна для того, чтобы генерировать уникальные ID для ассоциаций
-	 * @author E
-	 *
-	 */
-	interface AssocIds {
-		String ASSOC_IDS_TBL = "assoc_ids";
-		String AID_ASSOC_NAME = "aid_name";
-		String AID_ASSOC_ID = "aid_id";
+	public interface ItemIndexes {
+		String INT_TABLE_NAME = "IntIndex";
+		String DOUBLE_TABLE_NAME = "DoubleIndex";
+		String STRING_TABLE_NAME = "StringIndex";
+		String ASSOCIATED_TABLE_NAME = "AssocIndex";
+		String REF_ID = "II_REF_ID"; // ID айтема (не типа айтема, а конкретного айтема)
+		String ITEM_PARAM = "II_PARAM"; // ID параметра айтема (каждый параметр имеет уникальный ID вне зависимости от уникальности его названия)
+		String ITEM_TYPE = "II_TYPE"; // ID типа айтема
+		String ITEM_PARENT = "II_PARENT"; // ID прямого родителя айтема
+		String VALUE = "II_VAL"; // Занчение (одн
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех айтемов
@@ -120,10 +102,10 @@ public interface DBConstants
 	 * @author E
 	 *
 	 */
-	interface ItemIds {
-		String ITEM_IDS_TBL = "item_ids";
-		String IID_ITEM_NAME = "iid_name";
-		String IID_ITEM_ID = "iid_id";
+	public interface ItemIds {
+		String TABLE = "ItemIds";
+		String ITEM_NAME = "IID_NAME";
+		String ITEM_ID = "IID_ID";
 	}
 	/**
 	 * Таблица, в которой хранятся ID всех айтемов
@@ -131,11 +113,11 @@ public interface DBConstants
 	 * @author E
 	 *
 	 */
-	interface ParamIds {
-		String PARAM_IDS_TBL = "param_ids";
-		String PID_ITEM_ID = "pid_item_id";
-		String PID_PARAM_NAME = "pid_param_name";
-		String PID_PARAM_ID = "pid_param_id";
+	public interface ParamIds {
+		String TABLE = "ParamIds";
+		String ITEM_ID = "PID_ITEM_ID";
+		String PARAM_NAME = "PID_PARAM_NAME";
+		String PARAM_ID = "PID_PARAM_ID";
 	}
 	/**************************************************************************************************
 	 **                                        СТРАНИЦЫ
@@ -148,66 +130,89 @@ public interface DBConstants
 	 */
 	
 	
+//	/**************************************************************************************************
+//	 **                                        Домены
+//	 **************************************************************************************************/
+//	
+//	/**
+//	 * Таблицы для доменов. Так как они отвечают только
+//	 * за представление информации и удобство пользователя и не участвуют в процессах бизнес логики, то расположены отдельно. 
+//	 */
+//
+//	/**
+//	 * Таблица доменов без значений
+//	 * @author E
+//	 */
+//	public interface DomainAbstract
+//	{
+//		String TABLE = "DomainAbstract";
+//		String NAME = "D_NAME"; // уникальное имя домена
+//		String FORMAT = "D_FORMAT"; // формат домена, аналогично формату параметра. 
+//									// Нужен, т. к. домен иногда будет выводиться независимо от айтемов (в админке, например)
+//		String VIEW = "D_VIEW"; // Вид, в котором выводится домен (комбобокс, чекбокс, радиогруп)
+//	}
+//
+//	/**
+//	 * Поскольку использовать домены будет только пользователь (они нужны только для удобства пользователя и в логике не участвуют),
+//	 * значения любых типов данных хранятся в виде строки
+//	 * @author E
+//	 */
+//	public interface DomainValues
+//	{
+//		String TABLE = "DomainValues";
+//		String DOMAIN_NAME = "DV_DOMAIN_NAME"; // название домена
+//		String VALUE = "DV_VALUE"; // значение домена
+//		String INDEX = "DV_INDEX"; // порядковый номер значения домена
+//	}
+
 	/**************************************************************************************************
 	 **                                        ЮЗЕРЫ
 	 **************************************************************************************************/
 
+	/**
+	 * Для юзеров тоже надо делать отдельный файл, так же как и для айтемов и старниц.
+	 * Всего получается 3 настроечных файла - юзеры, айтемы и страницы.
+	 * В файле юзеров определяются группы, айтемы, которые могут просматривать либо редактировать эти группы
+	 * и юзеры, которые входят в эти группы
+	 * @author E
+	 */
 
 	/**
 	 * Группы пользователей
 	 * @author E
 	 */
-	interface Group {
-		String GROUPS_TBL = "groups";
-		String G_ID = "g_id";
-		String G_NAME = "g_name";
+	public interface UserGroup
+	{
+		String TABLE = "UserGroup";
+		String ID = "UG_ID";
+		String NAME = "UG_NAME";
 	}
 	
 	/**
 	 * Таблица юзеров и их принадлежность к группам
 	 * @author E
 	 */
-	interface UsersTbl {
-		String USER_TBL = "user";
-		String U_ID = "u_id";
-		String U_LOGIN = "u_login";
-		String U_PASSWORD = "u_password";
-		String U_DESCRIPTION = "u_description";
+	public interface Users
+	{
+		String TABLE = "Users";
+		String ID = "U_ID";
+		String GROUP = "U_GROUP";
+		String LOGIN = "U_LOGIN";
+		String PASSWORD = "U_PASSWORD";
+		String DESCRIPTION = "U_DESCRIPTION";
 	}
-
-	/**
-	 * Группы, к которым принадлежать пользователь (один может принадлежать многим группам)
-	 * и роли пользователей в этих группах (простой пользователь или админ)
-	 */
-	interface UserGroups {
-		String USER_GROUP_TBL = "user_group";
-		String UG_USER_ID = "ug_user_id";
-		String UG_GROUP_ID = "ug_group_id";
-		String UG_GROUP_NAME = "ug_group_name";
-		String UG_ROLE = "ug_role";
-	}
-
-	/**************************************************************************************************
-	 **                         ЛОГ ИЗМЕНЕНИЯ АЙЕТМОВ С COMPUTED ПАРАМТЕРАМИ
-	 **************************************************************************************************/
-
-	interface ComputedLog {
-		String COMPUTED_LOG_TBL = "computed_log";
-		String L_ITEM = "l_item";
-	}
-
-	/**************************************************************************************************
-	 **                                     ПАРСИНГ
-	 **************************************************************************************************/
-
-	interface Parse {
-		String PARSE_TBL = "parse";
-		String PR_SERIAL = "pr_serial";
-		String PR_URL = "pr_url";
-		String PR_FILENAME = "pr_filename";
-		String PR_STATUS = "pr_status";
-		String PR_COMMENT = "pr_comment";
-	}
-
-
+	
+//	/**
+//	 * Таблица разрешений на каждый айтем, доступ к которому отличается от доступа по умолчанию
+//	 * !!! НА БУДУЩЕЕ !!!
+//	 * @author E
+//	 */
+//	public interface Permissions
+//	{
+//		String TABLE = "Permissions";
+//		String ITEM_TYPE_ID = "S_ITEM_TYPE_ID";
+//		String GROUP = "S_GROUP";
+//		String PERMISSION = "S_PERMISSION"; // может быть только READ или WRITE. По умолчанию все айтемы только READ.
+//	}
+//	
 }

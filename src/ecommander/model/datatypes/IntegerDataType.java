@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class IntegerDataType extends FormatDataType {
 
-	public IntegerDataType(Type type) {
+	IntegerDataType(Type type) {
 		super(type);
 	}
 

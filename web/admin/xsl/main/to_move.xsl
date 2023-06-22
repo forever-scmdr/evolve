@@ -9,6 +9,6 @@
 	<xsl:variable name="mount_text">Переместить в "<xsl:value-of select="$item/@caption"/>" элемент:</xsl:variable>
 	<xsl:variable name="form_action" select="'admin_to_move.action'"/>
 	<xsl:variable name="input_type" select="'radio'"/>
-	<xsl:variable name="button_img" select="'Переместить'"/>
+	<xsl:variable name="button_img" select="'admin/admin_img/move.png'"/>
 	
 </xsl:stylesheet>

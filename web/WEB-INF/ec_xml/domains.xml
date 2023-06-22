@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <domains>
 	<domain name="yes-no" view-type="combobox">
-		<value>да</value>
 		<value>нет</value>
+		<value>да</value>
 	</domain>
 	<domain name="0-1" view-type="combobox">
 		<value>0</value>
 		<value>1</value>
 	</domain>
-	<domain name="sub_view" view-type="combobox">
-		<value>tags</value>
-		<value>pics</value>
+	<domain name="услуги" view-type="combobox">
+		<value>Диагностические и лечебно-реабилитационные услуги</value>
+		<value>Досуг</value>
+		<value>Консультации специалистов</value>
+		<value>Лечебные процедуры</value>
+		<value>Медицинские</value>
+		<value>Питание</value>
+		<value>Прочее</value>
+		<value>СПА-центр</value>
 	</domain>
-	<domain name="module_place" view-type="combobox">
-		<value>head_start</value>
-		<value>head_end</value>
-		<value>body_start</value>
-		<value>body_end</value>
-	</domain>
-	<domain name="custom_block_type">
-		<value>цитата</value>
-		<value>в одну колонку</value>
-		<value>в 2 колонки</value>
-		<value>в 4 колонки</value>
-		<value>в 5 колонок</value>
-		<value>карусель</value>
-		<value>яндекс-карта</value>
-		<value>подарки</value>
-		<value>счетчик</value>
-		<value>Преимущества</value>
-		<value>Товары</value>
-	</domain>
-
 </domains>

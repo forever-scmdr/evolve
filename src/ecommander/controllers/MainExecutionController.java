@@ -4,11 +4,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Timer;
-import ecommander.fwk.ValidationException;
-import ecommander.pages.*;
-import ecommander.pages.ValidationResults.StructureMessage;
+import ecommander.common.ServerLogger;
+import ecommander.common.Timer;
+import ecommander.common.exceptions.ValidationException;
+import ecommander.pages.elements.ExecutablePagePE;
+import ecommander.pages.elements.ItemHttpPostForm;
+import ecommander.pages.elements.ItemVariablesContainer;
+import ecommander.pages.elements.PageModelRegistry;
+import ecommander.pages.elements.ValidationResults.StructureMessage;
 
 /**
  * Класс, который координирует все действия по обработке запроса пользователя
@@ -18,7 +21,8 @@ import ecommander.pages.ValidationResults.StructureMessage;
 public class MainExecutionController {
 
 	// Форма, которая была отправлена пользователем, устанавливается из экшена struts
-	private MultipleHttpPostForm itemForm = null;
+	private ItemHttpPostForm itemForm = null;
+	private ItemVariablesContainer postItemVariables = null;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private String requestUrl;
@@ -31,20 +35,21 @@ public class MainExecutionController {
 	/**
 	 * Если юзеру не разрешен доступ к этой странице, то возвращаетс false
 	 * Иначе возвращается true
-	 * @param baseUrl
-	 * @param servletContext
-	 * @throws Exception
+	 * @param ostream
+	 * @throws Exception 
 	 */
 	public void execute(String baseUrl, ServletContext servletContext) throws Exception {
-		Timer.getTimer().start(Timer.INIT);
-		// Старт приложения, если он еще не был осуществлен
-		StartController.getSingleton().start(servletContext);
-		// Создание контекста сеанса
-		try (SessionContext sessContext = SessionContext.createSessionContext(req)) {
+		SessionContext sessContext = null;
+		try {
+			Timer.getTimer().start(Timer.INIT);
+			// Старт приложения, если он еще не был осуществлен
+			StartController.start(servletContext);
+			// Создание контекста сеанса
+			sessContext = SessionContext.createSessionContext(req);
 			// Загрузка страницы
 			ExecutablePagePE page = PageModelRegistry.testAndGetRegistry().getExecutablePage(requestUrl, baseUrl, sessContext);
 			// Установить переменные, если есть команды на странице
-			page.setPostData(itemForm);
+			page.setPostData(itemForm, postItemVariables);
 			Timer.getTimer().stop(Timer.INIT);
 			// Выполнить страницу (загрузить и выполнить команды) или взять ее из кеша
 			PageController.newUsingCache(requestUrl, req.getServerName()).processPage(page, resp);
@@ -56,18 +61,17 @@ public class MainExecutionController {
 				ServerLogger.error("Cause: ", ve.getResults().getException());
 			throw ve;
 		} finally {
-			Timer.getTimer().stop(Timer.INIT);
+			if (sessContext != null)
+				sessContext.closeDBConnection();		
 		}
 	}
 
-	public void setPostItemForm(MultipleHttpPostForm itemPostForm) {
+	public void setPostItemForm(ItemHttpPostForm itemPostForm) {
 		itemForm = itemPostForm;
 	}
 
+	public void setPostItemVariables(ItemVariablesContainer postItemVariables) {
+		this.postItemVariables = postItemVariables;
+	}
+	
 }
-
-
-
-
-
-

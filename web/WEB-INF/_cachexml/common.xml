@@ -1,0 +1,55 @@
+<common_count>1</common_count>
+<common type="common" id="4" path="sitefiles/1/4/" key="obschaya_informatsiya">
+<phone>+375(1797) 28-888</phone>
+<phone_hidden>&lt;p&gt;&lt;strong&gt;Телефоны: из Беларуси: &amp;nbsp;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;8 01797 28888&lt;/p&gt;
+&lt;p&gt;8 01797 25594&lt;/p&gt;
+&lt;p&gt;8 01797 25592&lt;/p&gt;
+&lt;p&gt;+37529 358 39 51&lt;/p&gt;
+&lt;p&gt;+37529 166 22 57&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Из других стран:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;8 10-375-1797 28888&lt;/p&gt;
+&lt;p&gt;8 10 3751797 25594&lt;/p&gt;
+&lt;p&gt;8 10&amp;nbsp;375 1797 25592&lt;/p&gt;
+&lt;p&gt;+37529 358 39 51&lt;/p&gt;
+&lt;p&gt;+37529 166 22 57&lt;/p&gt;
+&lt;script&gt;// &lt;![CDATA[
+(function(i,s,o,g,r,a,m){i[&apos;GoogleAnalyticsObject&apos;]=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,&apos;script&apos;,&apos;https://www.google-analytics.com/analytics.js&apos;,&apos;ga&apos;);
+
+  ga(&apos;create&apos;, &apos;UA-40387937-7&apos;, &apos;auto&apos;);
+  ga(&apos;send&apos;, &apos;pageview&apos;);
+// ]]&gt;&lt;/script&gt;
+&lt;!-- Yandex.Metrika counter --&gt;
+&lt;script&gt;// &lt;![CDATA[
+(function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter29575385 = new Ya.Metrika({
+                    id:29575385,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName(&quot;script&quot;)[0],
+            s = d.createElement(&quot;script&quot;),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = &quot;text/javascript&quot;;
+        s.async = true;
+        s.src = &quot;https://mc.yandex.ru/metrika/watch.js&quot;;
+
+        if (w.opera == &quot;[object Opera]&quot;) {
+            d.addEventListener(&quot;DOMContentLoaded&quot;, f, false);
+        } else { f(); }
+    })(document, window, &quot;yandex_metrika_callbacks&quot;);
+// ]]&gt;&lt;/script&gt;
+&lt;noscript&gt;&lt;div&gt;&lt;img src=&quot;https://mc.yandex.ru/watch/29575385&quot; style=&quot;position:absolute; left:-9999px;&quot; alt=&quot;&quot; /&gt;&lt;/div&gt;&lt;/noscript&gt;&lt;!-- /Yandex.Metrika counter --&gt;</phone_hidden>
+<copy>&lt;p&gt;Унитарное предприятие &amp;laquo;АСБ Санаторий Спутник&amp;raquo;, 2013&lt;br /&gt;&amp;nbsp;+375(1797)28-8-88&lt;br /&gt;&lt;a href=&quot;http://belarusbank.by/&quot; target=&quot;blank&quot;&gt;ОАО &amp;laquo;АСБ Беларусбанк&amp;raquo;&lt;/a&gt;&lt;/p&gt;</copy>
+<eur>2,19</eur>
+</common>

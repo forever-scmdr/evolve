@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.pages.output.MetaDataWriter;
-import ecommander.fwk.XmlDocumentBuilder;
-import ecommander.persistence.common.PersistenceCommandUnit;
-import ecommander.persistence.common.TransactionContext;
+import ecommander.controllers.output.MetaDataWriter;
+import ecommander.controllers.output.XmlDocumentBuilder;
+import ecommander.persistence.PersistenceCommandUnit;
+import ecommander.persistence.TransactionContext;
 
 /**
  * Абстрактный класс для команд базы данных
@@ -102,11 +102,9 @@ abstract class ModelFilePersistenceCommandUnit implements PersistenceCommandUnit
 
 	protected void executeCommand(ModelFilePersistenceCommandUnit commandUnit) throws Exception {
 		if (executedCommands == null)
-			executedCommands = new ArrayList<>();
-		commandUnit.fileContents = fileContents;
-		commandUnit.executeInt(); // заново читать читать файл не надо
+			executedCommands = new ArrayList<PersistenceCommandUnit>();
+		commandUnit.execute();
 		executedCommands.add(commandUnit);
-		fileContents = commandUnit.fileContents;
 	}
 
 	protected abstract void executeInt() throws Exception;

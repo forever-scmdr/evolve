@@ -1,0 +1,420 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+	background: transparent none repeat scroll 0 0;
+	border: 0 none;
+	font-size: 100%;
+	margin: 0;
+	outline: 0 none;
+	padding: 0;
+	vertical-align: baseline;
+}
+html, body {
+	font-family: Arial;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+    color: #127d49;
+    cursor: pointer;
+}
+.header{
+	background: #117D49;
+	color: #fff;
+}
+.header h2{font-size: 24px; font-weight: normal; margin-right: 65px;}
+.header > .inner{width: 960px; margin: 0 auto; padding: 11px 20px;}
+.header > .inner > div, .header h2, .heder .blue-button{display: inline-block; vertical-align: middle;}
+.header > .inner > div{font-size: 12px; margin-right: 12px;}
+.blue-button{
+	background: linear-gradient(to bottom, rgba(147, 206, 222, 1) 0%, rgba(84, 118, 130, 1) 64%, rgba(84, 118, 130, 1) 100%) repeat scroll 0 0;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 12px;
+	padding: 6px 16px;
+	float: right;
+	margin-right: 20px;
+	text-decoration: none;
+	display: inline-block;
+	vertical-align: middle;
+}
+.mainwrap{
+	width: 960px; margin: 0 auto;
+}
+h1{
+	font-size: 30px;
+	margin-top: 21px;
+	margin-bottom: 5px;
+	font-weight: normal;
+}
+.room-sel{color: gray; font-size: 12px;}
+.room-sel select {display: block; margin-top: 2px; color: #000; border: 1px solid silver; padding: 3px;}
+.room_sel_select {display: inline-block; margin-top: 2px; color: #000; border: 1px solid silver; padding: 3px;}
+.room-sel td{padding-right: 7px;}
+.room-sel .green-button{
+	background: linear-gradient(to bottom, rgba(18, 121, 18, 1) 0%, rgba(1, 96, 33, 1) 100%) repeat scroll 0 0;
+	border-radius: 5px;
+	color: #fff;
+	display: block;
+	padding: 5px 0;
+	text-align: center;
+	text-decoration: none;
+	width: 90px;
+}
+.room-sel .blue-button{margin-top: -29px;}
+#ubertable{margin-top: 40px;}
+#room-days{border-collapse: collapse;}
+#room-days .year-sep{background: #ebebeb; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;}
+#room-days td{padding: 3px; vertical-align: middle; font-size: 14px;}
+#room-days .month-name{padding-right: 20px; border-right: 1px solid #ccc;}
+#room-days th{font-weight: normal; text-align: center; font-size: 12px; vertical-align: middle; padding-bottom: 8px;}
+#room-days .day{width: 19px;}
+#room-days tr td:nth-of-type(2){padding-left: 20px;}
+#room-days .day:before{
+	content: '';
+	display: block;
+	height: 17px;
+	width: 17px;
+	border: 1px solid #ccc;
+	background-color: transparent;
+	border-color: #ccc;
+}
+#room-days .day.sel-start:before, #room-days .day.selected:before{
+	background-color: #127910;
+	border-color: #127910;
+}
+#room-days .day.between:before{background-color: #ebebeb;}
+#room-days .day.sel-end:before{background-color: #ccc;}
+
+.form-wrap label {
+	display: block;
+	margin-bottom: 19px;
+	color: gray;
+	font-size: 14px;
+}
+
+.form-wrap label input[type="text"], .form-wrap label textarea{
+	border: 1px solid #ccc;
+	display: block;
+	margin-top: 3px;
+	padding: 4px 6px;
+	color: #000;
+
+}
+.form-wrap label textarea{
+	width: 260px;
+	height: 100px;
+}
+table.ddd td{padding-right: 15px;}
+table.ddd td input[type="text"]{
+	width: 112px;
+}
+.birth-date{
+	margin-top: -6px;
+	margin-bottom: 16px;
+}
+.birth-date span{display: block; margin-bottom: 4px; color: gray; font-size: 14px;}
+.birth-date select{
+	border: 1px solid #ccc;
+	/*border-right: 0;*/
+	padding: 4px 6px;
+}
+.birth-date input.years{width: 40px; border: 1px solid #ccc; margin-left: 8px;padding: 4px 6px; text-align: center;}
+.birth-date select.years{width: 75px; border: 1px solid #ccc; margin-left: 8px;padding: 4px 6px; text-align: center;}
+.birth-date .total{display: inline-block; margin-left: 10px;}
+.ilb{display: inline-block; vertical-align: top;}
+
+.w-500 .order-room-list{width: 280px; font-size: 14px; margin-left: 37px;margin-top: 6px;}
+.w-500 .order-room-list p{margin-bottom: 12px;}
+.w-500 .order-room-list .r span{font-size: 12px; display: block; color: gray;}
+.order-room{
+	padding: 10px;
+	-webkit-box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	-moz-box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	margin-top: 15px;
+	font-size: 12px;
+}
+.order-room .room-sel{
+	display: inline-block;
+	width: 290px;
+	margin-right: 20px;
+	vertical-align: top;
+}
+.room-sel > div{
+	margin: 5px;
+}
+.cross-button{
+	background: url('../img/icon_close.png') center no-repeat;
+	background-size: contain;
+}
+.order-room .room-sel .cross-button{
+	display: block;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin-top: 4px;
+	text-indent: 100px;
+}
+.order-room .room-sel select{
+	width: 185px;
+}
+.order-room .room-sel label{
+	color: #000;
+	display: block;
+	margin-bottom: 6px;
+	vertical-align: middle;
+}
+.order-room .blue-button{float: none;}
+h2 {
+	font-size: 25px;
+	font-weight: normal;
+	margin-bottom: 12px;
+}
+.personal-forms{
+	margin-top:72px;
+}
+.mainwrap .common .form-wrap h3{font-size: 18px; font-weight: normal; margin-top: 13px; margin-bottom: 24px;}
+.form-wrap{
+	display: inline-block;
+	width: 272px;
+	vertical-align: top;
+	margin-right: 45px;
+	position: relative;
+}
+.form-wrap .form{
+	position: relative;
+}
+.form-wrap:last-of-type{
+	margin-right: 0;
+}
+.form-wrap .sep{
+	padding: 13px 0;
+	margin-bottom: 19px;
+}
+.form-wrap .sep:before{
+	display: block;
+	content: ' ';
+	height: 0px;
+	overflow: hidden;
+	width: 200px;
+	margin: 0 auto;
+	border-bottom: 1px solid #363636;
+}
+.form-wrap label{
+	display: block;
+	margin-bottom: 19px;
+}
+.form-wrap label input[type='text']{
+	display: block;
+	border: 1px solid #ccc;
+	width: 254px;
+	margin-top: 3px;
+	padding: 4px 6px;
+	
+}
+.form-wrap label select{
+	display: block;
+	border: 1px solid #ccc;
+	width: 270px;
+	margin-top: 3px;
+	padding: 4px 6px;
+	/*border-right: 0;*/
+}
+.birth-date{
+	margin-bottom: 19px;
+	margin-top: -6px;	
+}
+.birth-date span{display: block; margin-bottom: 4px;}
+.birth-date select{
+	border: 1px solid #ccc;
+	/*border-right: 0;*/
+	padding: 4px 6px;
+}
+.submit-container{
+	padding-top: 20px;
+	border-top: 2px solid gray;
+	overflow: auto;
+	zoom:1;
+}
+.submit-container .submit{
+	background: linear-gradient(to bottom, rgba(18,121,18,1) 0%, rgba(1,96,33,1) 100%);
+	font-size: 22px;
+	color: #fff;
+	display: block;
+	width: 200px;
+	padding: 20px 0;
+	border-radius: 5px;
+	text-decoration: none;
+	text-align: center;
+	float: right;
+}
+.nmbr{padding: 3px 6px; width: 40px; border: 1px solid silver; margin-top: 3px;}
+.form-wrap.w-500{width: 610px;}
+.confirm .submit{
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgba(18, 121, 18, 1) 0%, rgba(1, 96, 33, 1) 100%) repeat scroll 0 0;
+	border-radius: 5px;
+	color: #fff;
+	display: block;
+	/*float: right;*/
+	font-size: 22px;
+	padding: 20px 12px;
+	text-align: center;
+	margin-bottom: 10px;
+	text-decoration: none;
+   /* width: 200px;*/
+}
+.ilb.confirm{width: 300px;}
+.form-wrap .form .cross-button{
+	right: 0;
+	margin-right: -20px;
+	top: 18px;
+	position: absolute;
+	display: block;
+	height: 20px;
+	margin-top: 4px;
+	overflow: hidden;
+	text-indent: 100px;
+	width: 20px;
+}
+h3 {
+	font-size: 18px;
+	font-weight: normal;
+	margin-bottom: 24px;
+	margin-top: 13px;
+}
+.confirm .blue-button{width:270px; float: none; margin-bottom: 7px; display: block; text-align: center; font-size: 16px;}
+.blue-button.no-float{
+	margin: 0 0 0 0;
+	float: none;
+}
+.sbmt a.submit {
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgba(18, 121, 18, 1) 0%, rgba(1, 96, 33, 1) 100%) repeat scroll 0 0;
+	border-radius: 5px;
+	color: #fff;
+	display: inline-block;
+	padding: 5px 8px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 12px;
+	/*width: 90px;*/
+}
+.order-table{font-size: 14px; margin-top: 36px;}
+.order-table .filter a{
+	display: inline-block;
+	margin-left: 10px;
+}
+
+.order-table .filter a.active{
+	font-weight: bold;
+	text-decoration: none;
+	color: #000;
+}
+.order-table .sep{
+	border-top: 1px solid silver;
+	margin-top: 19px;
+	margin-bottom: 20px;
+}
+.order-table table{
+	width: 100%;
+	border-collapse: collapse;
+}
+.order-table table th, .order-table table td{
+	text-align: left;
+	vertical-align: top;
+	padding: 4px 8px;
+}
+.order-table table th{
+	font-weight: normal;
+	color: gray;
+	padding-top: 0;
+}
+.order-table table .status div{
+	width: 23px;
+	height: 23px;
+	position: relative;
+	text-align: center;
+	border: 1px solid orange;
+	border-radius: 23px;
+	margin-top: -3px;
+}
+.order-table table .status div span{
+	padding-top: 4px;
+	display: block;
+}
+.order-table table .status div.red{
+	border-color: red;
+	background-color: #ebebeb;
+}
+.order-table table .status div.new{
+	border-color: blue;
+}
+.order-table table .status div.ok{
+	border-color: transparent;
+	background: url('../img/icon_star.png') center no-repeat;
+	background-size: 22px 22px;
+}
+.intervals-table h3{margin-bottom: 6px;}
+.time-table:after{
+	display: block;
+	clear: both;
+}
+.intervals-table{
+	padding: 10px;
+	-webkit-box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	-moz-box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	box-shadow: 1px 5px 13px -2px rgba(0,0,0,0.75);
+	margin-top: 15px;
+	/*font-size: 12px;*/
+}
+.time-table td{ padding: 2px 6px; font-size: 13px; border-bottom: 2px solid transparent;}
+.time-table .ctrl, .time-table  .time{ float: left; }
+.time table{
+	border-collapse: collapse;
+}
+.time td{
+	/*border-left: 1px solid #ebebeb;*/
+	border-right: 0;
+	border-top: 0;
+	border-bottom: 2px solid transparent;
+}
+.time td.month{
+	/*border-bottom: 1px solid #ebebeb;*/
+}
+.time .used{
+	border-bottom-color: #117D49;
+}
+.time-table{margin-top: 15px;}
+.time{width: 600px; overflow: hidden;}
+
+.time-table td.checkbox{padding: 0 0; vertical-align: middle;}
+.checkbox label{
+	display: block;
+	background: url('../img/icon_dot_green.png') center no-repeat;
+	vertical-align: middle;
+	overflow: hidden;
+	width: 16px;
+	height: 16px;
+
+	cursor: pointer;
+}
+tr.fade{opacity: .5;}
+.fade .used{
+	border-bottom-color: #9CDAA4;
+}
+.intervals-table > div{
+	margin-bottom: 40px;
+}
+.intervals-table > div:last-of-type{
+	margin-bottom: 0;
+}
+.intervals-table h3{margin-top: 0;}
+.m-start{font-weight: bold; background-color: #ebebeb;}
+/*.time{border: 1px solid #ebebeb; border-left: 0;}*/
+.datepicker {
+ border: 1px solid #ccc;
+ display: block;
+ padding: 3px 2px;
+ text-align: center;
+ width: 75px;
+}

@@ -22,7 +22,7 @@
 			</label>
 			<label>
 				Описание:
-				<input type="text" id="alt" name="alt" />
+				<input type="text" id="alt" />
 			</label>
 			<label>
 				Ширина:

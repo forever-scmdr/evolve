@@ -1,25 +1,27 @@
 package ecommander.controllers;
 
-import com.google.common.base.Splitter;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.model.User;
-import ecommander.pages.MultipleHttpPostForm;
-import ecommander.persistence.mappers.SessionItemMapper;
-import ecommander.persistence.mappers.SessionObjectStorage;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map.Entry;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ecommander.common.MysqlConnector;
+import ecommander.common.ServerLogger;
+import ecommander.common.Strings;
+import ecommander.pages.elements.ItemHttpPostForm;
+import ecommander.persistence.mappers.SessionItemMapper;
+import ecommander.persistence.mappers.SessionObjectStorage;
+import ecommander.users.User;
 /**
  * Интерфейс для работы со всем, что касается сеансов, а именно:
  * - установка текущего пользователя (после успешной аутентификации)
@@ -30,13 +32,10 @@ import java.util.Map.Entry;
  * - получение значения переменной страницы
  * 
  * Также этот класс позволяет работать с cookie аналогично сеансовым переменным
- *
- * TODO хранить счетчик объектов в сеансе, чтобы после удаления последнего объекта можно было бы завершать сеанс
- *
  * @author EEEE
  *
  */
-public class SessionContext implements AutoCloseable {
+public class SessionContext {
 
 	private static final String STORAGE_SESSION_NAME = "session_storage";
 	private static final String USER_SESSION_NAME = "session_user";
@@ -44,23 +43,7 @@ public class SessionContext implements AutoCloseable {
 	private static final String PROGRESS_SESSION_NAME_PREFIX = "progress_";
 	private static final String FORM_SESSION_NAME_PREFIX = "form_";
 	private static final String CONTENT_UPDATE_VAR_NAME = "adm$content$update";
-
-	private static final String SESSION_OBJECT_COUNT = "$object_count$";
-
 	private static final int COOKIE_EXPIRE = 10 * 24 * 60 * 60;
-	private static final long INITIAL_GENERATED_ID = -100L;
-
-	private static final String COOKIE_SPLIT_DELIMITER = "~$~";
-	private static final int COOKIE_MAX_LENGTH = 2500;
-
-	@Override
-	public void close() throws Exception {
-		if (hasSession()) {
-			storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
-			if (storage != null && storage.isEmpty())
-				removeSessionObject(STORAGE_SESSION_NAME);
-		}
-	}
 
 	public static class Progress implements Serializable {
 		private static final long serialVersionUID = -8802030992284237402L;
@@ -82,12 +65,10 @@ public class SessionContext implements AutoCloseable {
 	}
 	
 	private HttpServletRequest request;
+	private Connection dbConnection;
 	private SessionObjectStorage storage = null;
 	private User user = null;
 	private HashMap<String, String> cookies = null;
-	// Генератор ID для новых айтемов. Предполагается, что при повторной загрузке одной и той же страницы
-	// сгенерируются одни и те же ID (это нужно для восстановления ранее сохраненных введеннй пользователем значений полей)
-	private long _id_generator = INITIAL_GENERATED_ID;
 
 	private SessionContext(HttpServletRequest request) {
 		this.request = request;
@@ -95,55 +76,6 @@ public class SessionContext implements AutoCloseable {
 
 	public static SessionContext createSessionContext(HttpServletRequest request) {
 		return new SessionContext(request);
-	}
-
-	/**
-	 * Создать контекст сеанса только с одним установленным пользователем
-	 * (без фактического сеанса, из всех данных только пользователь)
-	 * @param user
-	 * @return
-	 */
-	public static SessionContext userOnlySessionContext(User user) {
-		SessionContext context = new SessionContext(null);
-		context.user = user;
-		return context;
-	}
-
-	/**
-	 * Добавить занчение в сеанс и увеличить счетчик, если раньше в сеансе не было значения с таким именем
-	 * @param name
-	 * @param object
-	 */
-	private void setSessionObject(String name, Object object) {
-		if (object == null) {
-			removeSessionObject(name);
-		} else {
-			HttpSession session = forceGetSession();
-			int objectCount = (Integer) ObjectUtils.defaultIfNull(session.getAttribute(SESSION_OBJECT_COUNT), 0);
-			Object oldValue = session.getAttribute(name);
-			session.setAttribute(name, object);
-			if (oldValue == null) {
-				objectCount++;
-				session.setAttribute(SESSION_OBJECT_COUNT, objectCount);
-			}
-		}
-	}
-
-	/**
-	 * Удалить значение из сеанса и уменьшить счетчик.
-	 * Если счетчик достиг 0, завершить сеанс
-	 * @param name
-	 */
-	private void removeSessionObject(String name) {
-		HttpSession session = forceGetSession();
-		int objectCount = (Integer) ObjectUtils.defaultIfNull(session.getAttribute(SESSION_OBJECT_COUNT), 0);
-		Object oldValue = session.getAttribute(name);
-		session.removeAttribute(name);
-		if (oldValue != null) {
-			objectCount--;
-		}
-		if (objectCount <= 0)
-			session.invalidate();
 	}
 	/**
 	 * Получить сеансовое хранилище
@@ -153,10 +85,10 @@ public class SessionContext implements AutoCloseable {
 	public final SessionObjectStorage getStorage(boolean create) {
 		if (storage == null) {
 			if (hasSession() || create) {
-				storage = (SessionObjectStorage) forceGetSession().getAttribute(STORAGE_SESSION_NAME);
+				storage = (SessionObjectStorage)forceGetSession().getAttribute(STORAGE_SESSION_NAME);
 				if (storage == null) {
 					storage = SessionItemMapper.createSessionStorage();
-					setSessionObject(STORAGE_SESSION_NAME, storage);
+					forceGetSession().setAttribute(STORAGE_SESSION_NAME, storage);
 				}
 			} else {
 				return SessionItemMapper.createSessionStorage();
@@ -167,7 +99,7 @@ public class SessionContext implements AutoCloseable {
 	
 	public void setUser(User user) {
 		this.user = user;
-		setSessionObject(USER_SESSION_NAME, user);
+		forceGetSession().setAttribute(USER_SESSION_NAME, user);
 	}
 
 	public void userExit() {
@@ -193,9 +125,9 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public void setVariableValue(String varName, String varValue) {
 		if (!StringUtils.isBlank(varName) && !StringUtils.isBlank(varValue))
-			setSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
+			forceGetSession().setAttribute(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
 		else if (!StringUtils.isBlank(varName))
-			removeSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName);
+			forceGetSession().removeAttribute(VARIABLE_SESSION_NAME_PREFIX + varName);
 	}
 	/**
 	 * Вернуть значение переменной страницы.
@@ -209,28 +141,6 @@ public class SessionContext implements AutoCloseable {
 		return null;
 	}
 	/**
-	 * Установить или удалить значение переменной (значение переменной - объект)
-	 * @param varName
-	 * @param varValue
-	 */
-	public void setVariableObject(String varName, Object varValue) {
-		if (!StringUtils.isBlank(varName) && varValue != null)
-			setSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName, varValue);
-		else
-			removeSessionObject(VARIABLE_SESSION_NAME_PREFIX + varName);
-	}
-	/**
-	 * Вернуть значение переменной-объекта.
-	 * Если сеанс не существует (не начат), то он не создается, а значение переменной возвращается равной null
-	 * @param varName
-	 * @return
-	 */
-	public Object getVariableObject(String varName) {
-		if (hasSession())
-			return forceGetSession().getAttribute(VARIABLE_SESSION_NAME_PREFIX + varName);
-		return null;
-	}
-	/**
 	 * Установить текущий прогресс по длительной операции
 	 * @param progressName
 	 * @param size
@@ -241,7 +151,7 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public void setProgress(String progressName, double size, double total, double percent, String unit, String message) {
 		if (hasSession())
-			setSessionObject(PROGRESS_SESSION_NAME_PREFIX + progressName, new Progress(percent, size, total, unit, message));
+			forceGetSession().setAttribute(PROGRESS_SESSION_NAME_PREFIX + progressName, new Progress(percent, size, total, unit, message));
 	}
 	/**
 	 * Получить текущий прогресс по длительной операции с заданным именем
@@ -252,14 +162,6 @@ public class SessionContext implements AutoCloseable {
 		if (hasSession())
 			return (Progress) forceGetSession().getAttribute(PROGRESS_SESSION_NAME_PREFIX + progressName);
 		return null;
-	}
-
-	/**
-	 * Удалить прогресс из сеанса
-	 * @param progressName
-	 */
-	public void removeProgress(String progressName) {
-		removeSessionObject(PROGRESS_SESSION_NAME_PREFIX + progressName);
 	}
 	/**
 	 * Вернуть любой объект (ранее установленный) из сеанса
@@ -278,77 +180,47 @@ public class SessionContext implements AutoCloseable {
 	 */
 	public void setCookie(String name, String value) {
 		if (cookies == null)
-			cookies = new HashMap<>();
+			cookies = new HashMap<String, String>();
 		cookies.put(name, value);
 	}
 	/**
 	 * Вернуть куки, переданный с запросом.
 	 * Если куки не найден, возвращается null
-	 * Если куки с искомым именем был установлен ранее при выполнении команды, то возвращается он,
-	 * а куки из request игнорируется
 	 * @param name
 	 * @return
 	 */
 	public String getCookie(String name) {
 		if (request == null)
 			return null;
-		if (cookies != null && cookies.containsKey(name))
-			return cookies.get(name);
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null)
 			return null;
-		// Куки может состоять из нескольких частей
-		final int MAX_PARTS = 20;
-		String[] values = new String[MAX_PARTS];
-		boolean hasValue = false;
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(name)) {
+			if (cookie.getName().equals(name))
 				try {
-					values[0] = URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
-					hasValue = true;
+					return URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
 				} catch (UnsupportedEncodingException e) {
 					ServerLogger.error("Unable to decode cookie", e);
 					return null;
 				}
-			} else if (StringUtils.startsWith(cookie.getName(), name + COOKIE_SPLIT_DELIMITER)) {
-				try {
-					String decoded = URLDecoder.decode(cookie.getValue(), Strings.SYSTEM_ENCODING);
-					String[] parts = StringUtils.splitByWholeSeparator(cookie.getName(), COOKIE_SPLIT_DELIMITER);
-					if (parts != null && parts.length == 2) {
-						int index = Integer.parseInt(parts[1]);
-						if (index > 0 && index < MAX_PARTS) {
-							values[index] = decoded;
-							hasValue = true;
-						}
-					}
-				} catch (UnsupportedEncodingException e) {
-					ServerLogger.error("Unable to decode cookie", e);
-					return null;
-				} catch (Exception e) {
-					// just continue loop
-				}
-			}
 		}
-		if (hasValue)
-			return StringUtils.join(values, null);
 		return null;
 	}
 	/**
 	 * Сохранить форму ввода пользователя в сеансе (например, если возникли ошибки валидации формы)
 	 * Вызывается не автоматически, и только в процессе выполнения команд по требованию
 	 * @param form
-	 * @param formId
 	 */
-	public void saveForm(MultipleHttpPostForm form, String formId) {
-		setSessionObject(FORM_SESSION_NAME_PREFIX + formId, form);
+	public void saveForm(ItemHttpPostForm form) {
+		forceGetSession().setAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId(), form);
 	}
 	/**
 	 * Удалить форму из сеанса
-	 * @param formId
+	 * @param form
 	 */
-	public void removeForm(String formId) {
+	public void removeForm(ItemHttpPostForm form) {
 		if (hasSession())
-			removeSessionObject(FORM_SESSION_NAME_PREFIX + formId);
+			forceGetSession().removeAttribute(FORM_SESSION_NAME_PREFIX + form.getFormId());
 	}
 	/**
 	 * Получить из сеанса ранее сохраненную форму
@@ -356,43 +228,29 @@ public class SessionContext implements AutoCloseable {
 	 * @param formId
 	 * @return
 	 */
-	public MultipleHttpPostForm getForm(String formId) {
+	public ItemHttpPostForm getForm(String formId) {
 		if (hasSession())
-			return (MultipleHttpPostForm) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
+			return (ItemHttpPostForm) forceGetSession().getAttribute(FORM_SESSION_NAME_PREFIX + formId);
 		return null;
 	}
 	/**
 	 * Записать все установленные куки в ответ сервера
 	 * @param resp
 	 */
-	void flushCookies(HttpServletResponse resp) {
+	public void flushCookies(HttpServletResponse resp) {
 		if (cookies != null) {
 			for (Entry<String, String> vals : cookies.entrySet()) {
 				try {
+					Cookie cookie = null;
 					if (StringUtils.isBlank(vals.getValue())) {
-						Cookie cookie;
 						cookie = new Cookie(vals.getKey(), "");
 						cookie.setMaxAge(0); // удаление куки
-						cookie.setPath("/");
-						resp.addCookie(cookie);
 					} else {
-						if (vals.getValue().length() <= COOKIE_MAX_LENGTH) {
-							Cookie cookie = new Cookie(vals.getKey(), URLEncoder.encode(vals.getValue(), Strings.SYSTEM_ENCODING));
-							cookie.setMaxAge(COOKIE_EXPIRE);
-							cookie.setPath("/");
-							resp.addCookie(cookie);
-						} else {
-							int i = 0;
-							for(final String part : Splitter.fixedLength(COOKIE_MAX_LENGTH).split(vals.getValue())) {
-								String name = i == 0 ? vals.getKey() : vals.getKey() + COOKIE_SPLIT_DELIMITER + i;
-								Cookie cookie = new Cookie(name, URLEncoder.encode(part, Strings.SYSTEM_ENCODING));
-								cookie.setMaxAge(COOKIE_EXPIRE);
-								cookie.setPath("/");
-								resp.addCookie(cookie);
-								i++;
-							}
-						}
+						cookie = new Cookie(vals.getKey(), URLEncoder.encode(vals.getValue(), Strings.SYSTEM_ENCODING));
+						cookie.setMaxAge(COOKIE_EXPIRE);
 					}
+					cookie.setPath("/");
+					resp.addCookie(cookie);
 				} catch (Exception e) {
 					ServerLogger.error("Unable to encode cookie", e);
 				}
@@ -422,6 +280,26 @@ public class SessionContext implements AutoCloseable {
 		return request.getSession(true);
 	}
 	/**
+	 * Получить подключение к базе данных
+	 * @return
+	 */
+	public Connection getDBConnection() {
+		try {
+			if (dbConnection == null || dbConnection.isClosed())
+				dbConnection = MysqlConnector.getConnection(request);
+		} catch (Exception e) {
+			ServerLogger.error("Unable to get new MySQL connection", e);
+		}
+		return dbConnection;
+	}
+	/**
+	 * Закрыть подключение
+	 */
+	public void closeDBConnection() {
+		MysqlConnector.closeConnection(dbConnection);
+		dbConnection = null;
+	}
+	/**
 	 * Установить режим визуального редактирования сайта
 	 * @param contentUpdateOn
 	 */
@@ -435,19 +313,5 @@ public class SessionContext implements AutoCloseable {
 	public final boolean isContentUpdateMode() {
 		return Boolean.parseBoolean(getVariableValue(CONTENT_UPDATE_VAR_NAME));
 	}
-
-	/**
-	 * Сгенерировать новый ID для новых айтемов данного запроса
-	 * @return
-	 */
-	public final long getNewId() {
-		return _id_generator--;
-	}
-
-	/**
-	 * Возврат первоначального значения для генератора сеансовых ID айтемов
-	 */
-	public final void resetIdGenerator() {
-		_id_generator = INITIAL_GENERATED_ID;
-	}
+	
 }

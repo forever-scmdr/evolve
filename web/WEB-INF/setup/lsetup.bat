@@ -1,0 +1,1 @@
+java -cp /var/www/baref/data/www/baref.by/WEB-INF/setup/setup.jar:/var/www/baref/data/www/baref.by/WEB-INF/lib/mysql-connector-java-3.1.12-bin.jar ecommander.deploy.SetupResin /var/www/baref/data/www/baref.by

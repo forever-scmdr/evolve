@@ -39,340 +39,360 @@
 	</xsl:template>
 
 	<xsl:template match="itemdesc" mode="OPTION">
-		<option value="{@ag-id}"><xsl:value-of select="@caption"/></option>
+		<option value="{@id}"><xsl:value-of select="@caption"/></option>
 		<xsl:apply-templates select="itemdesc" mode="OPTION"/>
 	</xsl:template>
 
 	<xsl:template match="updating-itemdesc[@user-def = 'true']">
-		<xsl:variable name="iid" select="@ag-id"/>
 		<xsl:call-template name="MOVE_SCRIPT"/>
-		<div class="buttonBar">
-			<a href="#deleteOptions" class="button totalDelete fancybox" style="background: #DA4453;">Удалить этот класс</a>
-			<a href="{create_link}" class="button totalAdd">Создать подкласс</a>
-			<a href="#deleteOptions2" class="button totalDelete fancybox">Изменить базовый класс</a>
-		</div>
-
-	<div class="multiple_param edit-class add-param">
-		<p class="form_title">Добавить параметр</p>
-		<form id="new_param" action="{new_param_link}" method="post">
-			<label style="margin-left: 12px;">
-				Назавние параметра:
-				<input name="paramName" type="text" class="textForm" value="{//data/paramName}" />
-			</label>
-			<label style="margin-left: 12px;">
-				Описание параметра:
-				<input name="description" type="text" class="textForm" value="{//data/paramName}" />
-			</label>
-
-			<label class="radioblock width-6 ilb">
-				одиночный
-				<input name="quantifier" id="single-new-param" type="radio" group="qu" checked="checked" value="single" />
-			</label>
-			<label class="radioblock width-6 ilb">
-				множественный
-				<input name="quantifier" type="radio" group="qu" value="multiple" />
-			</label>
-			<label style="margin-left: 12px;">
-			Тип данных:
-			<select name="typeName">
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'string'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Строковый'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'integer'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Целочисленный'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'long'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Целочисл. длинный'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'double'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Дробный'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'text'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Текстовый'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'date'" />
-					<xsl:with-param name="check" select="//data/typeName" />
-					<xsl:with-param name="caption" select="'Дата'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'picture'" />
-					<xsl:with-param name="check" select="@type" />
-					<xsl:with-param name="caption" select="'Изображение'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'file'" />
-					<xsl:with-param name="check" select="@type" />
-					<xsl:with-param name="caption" select="'Файл'" />
-				</xsl:call-template>
-				<xsl:call-template name="check_option">
-					<xsl:with-param name="value" select="'associated'" />
-					<xsl:with-param name="check" select="@type" />
-					<xsl:with-param name="caption" select="'Ассоциация'" />
-				</xsl:call-template>
-			</select>
-			</label>
-			<label style="margin-left: 12px;">
-				Список значений:
-				<select name="domainName">
-					<xsl:call-template name="check_option">
-						<xsl:with-param name="value" select="''" />
-						<xsl:with-param name="check" select="//data/domainName" />
-						<xsl:with-param name="caption" select="' - '" />
-					</xsl:call-template>
-					<xsl:for-each select="//domains/domain">
-						<xsl:call-template name="check_option">
-							<xsl:with-param name="value" select="." />
-							<xsl:with-param name="check" select="//data/domainName" />
-							<xsl:with-param name="caption" select="." />
-						</xsl:call-template>
-					</xsl:for-each>
-				</select>
-			</label>
-			<label style="margin-left: 12px;">
-				Формат:
-				<input name="format" type="text" class="textForm" value="{//data/paramName}" />
-			</label>
-			<a href="#" onclick="$('#new_param').submit();return false;" class="button partialSave totalAdd">Создать параметр</a>
-		</form>
-	</div>
-        
-		<div class="multiple_param edit-class">
-			<p class="form_title">Редактировать класс</p>
-			<form id="item" action="{update_link}" method="post">
-				<label style="margin-left: 12px;">
-					Назавние класса:
-					<input type="text" class="textForm" value="{@caption}" name="caption" />
-				</label>
-				<label style="margin-left: 12px;">
-					Описание класса:
-					<input type="text" class="textForm" value="{@description}" name="description" />
-				</label>
-				<input id="paramOrder" type="hidden" name="paramOrder" value="" />
-				<input type="hidden" name="extends" value="{@super}" />
-				<input type="hidden" name="name" value="{@name}" />
-			</form>
-			
-			<xsl:if test="parameter[@owner-id = $iid]">
-				<p class="form_title" style="background: #909090;">Редактируемые параметры</p>
-				<ul class="edit-params">
-					<xsl:for-each select="parameter[@owner-id = $iid]">
-						<li id="pord_{@ag-id}" name="{@ag-id}">
-							<a class="{@type} param" title="редактировать" onclick="$('#par_{@ag-id}').toggle(200);return false;">
-								<xsl:value-of select="@caption" />
-							</a>
-							<span class="setPosition">
-								<a href="#" class="up" onclick="up('pord_{@ag-id}');return false;"></a>
-								<a href="#" class="down" onclick="down('pord_{@ag-id}');return false;"></a>
-							</span>
-							<a href="{delete_link}" class="delete" title="Удалить" >Удалить</a>
-							
-							<div id="par_{@ag-id}" class="parameterOptions" style="display:none;">
-								<form id="id_{@ag-id}" action="{update_link}" method="post">
-									<label >
-										Название:
-										<input name="caption" type="text" value="{@caption}" />
-									</label>
-									<label >
-										Описание:
-										<input name="description" type="text" value="{@description}" />
-									</label>
-									<div class="label">Количество зачений:<br/>
-										<xsl:call-template name="check_radio">
-											<xsl:with-param name="value" select="'false'" />
-											<xsl:with-param name="check" select="@multiple" />
-											<xsl:with-param name="name" select="'quantifier'" />
-										</xsl:call-template>
-										<label for="single" style="display: inline;">одиночный</label><br/>
-										<xsl:call-template name="check_radio">
-											<xsl:with-param name="value" select="'true'" />
-											<xsl:with-param name="check" select="@multiple" />
-											<xsl:with-param name="name" select="'quantifier'" />
-										</xsl:call-template>
-										<label for="multiple"  style="display: inline;">множественный</label>
-									</div>
-									
-									<label>
-										<span style="padding-bottom: 5px; display:block;">Тип данных:</span>
-										<select name="typeName">
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'string'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Строковый'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'integer'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Целочисленный'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'long'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Целочисл. длинный'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'double'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Дробный'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'text'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Текстовый'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'date'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Дата'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'picture'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Изображение'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'file'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Файл'" />
-											</xsl:call-template>
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="'associated'" />
-												<xsl:with-param name="check" select="@type" />
-												<xsl:with-param name="caption" select="'Ассоциация'" />
-											</xsl:call-template>
-										</select>
-									</label>
-									<label>
-										<span style="padding-bottom: 5px; display:block;">Предопределенное значение:</span>
-										<select name="domainName" >
-											<xsl:variable name="domain" select="@domain" />
-											<xsl:call-template name="check_option">
-												<xsl:with-param name="value" select="''" />
-												<xsl:with-param name="check" select="$domain" />
-												<xsl:with-param name="caption" select="' - '" />
-											</xsl:call-template>
-											<xsl:for-each select="//domains/domain">
-												<xsl:call-template name="check_option">
-													<xsl:with-param name="value" select="." />
-													<xsl:with-param name="check" select="$domain" />
-													<xsl:with-param name="caption" select="." />
-												</xsl:call-template>
-											</xsl:for-each>
-										</select>
-									</label>
-									<label >
-										Формат:
-										<input name="format" type="text" value="{@format}" />
-									</label>
-									<input name="paramName" type="hidden" value="{@name}" />
-									<a href="#" onclick="$('#id_{@ag-id}').submit();return false;" class="button partialSave">Сохранить</a>
+		<table class="type_1">
+		<tr>
+			<!-- ************************ Основные параметры айтема **************************** -->
+			<td>
+				<div class="buttonBar">
+					<a href="#deleteOptions" class="button totalDelete fancybox">Удалить</a>
+					<a href="{create_link}" class="button totalAdd">Создать подкласс</a>
+				</div>
+				<div id="deleteOptions" style="display: none;">
+					<table>
+						<tr>
+							<td>
+								<form id="new_par" action="{//updating-itemdesc/delete_link}" method="post">
+									<h3>Изменить родительский элемент</h3>
+									<select name="newId">
+										<xsl:apply-templates select="//items/itemdesc" mode="OPTION"/>
+									</select>
+									<a href="javascript:$('#new_par').submit()" class="button totalSave">Изменить</a>
 								</form>
-							</div>
-							
-						</li>
-					</xsl:for-each>
-				</ul>
-			</xsl:if>
-		</div>
-		
-		<div class="multiple_param edit-class">
-			<p class="form_title" style="background: #909090;">Базовые параметры</p>
-			<ul class="edit-params">
-				<xsl:for-each select="parameter[@owner-id != $iid]">
-					<li class="{@type} base-param">
-						<xsl:value-of select="@caption"/>
-					</li>
-				</xsl:for-each>
-			</ul>
-		</div>
-		
-		<div id="deleteOptions" class="deleteOptions" style="display: none;">
-			<table>
-				<tr>
-					<td class="">
-						<h3>Удалить навсегда</h3>
-						<p>Все элементы этого класса будут удалены!</p>
-					</td>
-				</tr>
-				<tr>
-					<td class="delete">
-						<a href="{//updating-itemdesc/delete_link}" class="button totalDelete">Удалить</a>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div id="deleteOptions2" class="deleteOptions" style="display: none;">
-			<table>
-				<tr>
-					<td>
-						<form id="new_par" action="{//updating-itemdesc/delete_link}" method="post">
-							<h3>Изменить базовый класс</h3>
-							<select name="newId">
-								<xsl:apply-templates select="//items/itemdesc[.//@extendable = 'true'] | //items/selected-itemdesc" mode="OPTION" />
-							</select>
-							
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="javascript:$('#new_par').submit()" class="button totalSave">Изменить</a>
-					</td>
-				</tr>
-			</table>
-		</div>
+							</td>
+							<td class="delete">
+								<h3>Удалить навсегда вместе с элементами каталога</h3>
+								<p>Все связанные позиции каталога также будут удалены</p>
+								<a href="{//updating-itemdesc/delete_link}" class="button totalDelete">Удалить</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<table class="basicContainer">
+					<form id="item" action="{update_link}" method="post">
+						<input id="paramOrder" type="hidden" name="paramOrder" value=""/>
+						<input type="hidden" name="extends" value="{@extends}"/>
+						<input type="hidden" name="name" value="{@name}"/>
+						<tr>
+							<td class="sideColoumn">
+								Название:
+							</td>
+							<td class="mainColoumn">
+								<input type="text" class="textForm" value="{@caption}" name="caption" />
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								Описание:
+							</td>
+							<td class="mainColoumn">
+								<textarea name="description"><xsl:value-of select="@description"/></textarea>
+							</td>
+						</tr>
+					</form>
+					<tr>
+						<td class="sideColoumn"></td>
+						<td class="mainColoumn">
+							<h2>Параметры:</h2>
+						</td>
+					</tr>
+					<tr>
+						<td class="sideColoumn"></td>
+						<td class="mainColoumn">
+							<xsl:variable name="item_id" select="@id"/>
+							<xsl:for-each select="parameter">
+								<xsl:if test="@owner-id != $item_id">
+									<div><xsl:value-of select="@caption"/></div>
+								</xsl:if>
+								<xsl:if test="@owner-id = $item_id">
+									<div id="pord_{@id}" name="{@id}">
+										<span class="setPosition">
+											<a href="#" onclick="up('pord_{@id}');return false;"><img src="admin/admin_img/upArrow.png" alt="" /></a>
+											<a href="#" onclick="down('pord_{@id}');return false;"><img src="admin/admin_img/downArrow.png" alt="" /></a>
+										</span>
+										<a href="#" onclick="$('#par_{@id}').toggle(200);return false;"><xsl:value-of select="@caption"/></a>
+										<a href="{delete_link}"><img src="admin/admin_img/deleteButtonTiny.png" alt="" /></a>
+										<!-- редактирование свойств параметра -->
+										<div id="par_{@id}" class="parameterOptions" style="display:none">
+											<form id="id_{@id}" action="{update_link}" method="post">
+												<input name="paramName" type="hidden" value="{@name}" />
+												<div class="inputField">
+													<div class="label">название:</div>
+													<input name="caption" type="text" value="{@caption}" />
+												</div>
+												<div class="radioButtons">
+													<div class="label">количество зачений:</div>
+													<xsl:call-template name="check_radio">
+														<xsl:with-param name="value" select="'single'"/>
+														<xsl:with-param name="check" select="@quantifier"/>
+														<xsl:with-param name="name" select="'quantifier'"/>
+													</xsl:call-template>
+													<label for="single">одиночный</label>
+													<xsl:call-template name="check_radio">
+														<xsl:with-param name="value" select="'multiple'"/>
+														<xsl:with-param name="check" select="@quantifier"/>
+														<xsl:with-param name="name" select="'quantifier'"/>
+													</xsl:call-template>
+													<label for="multiple">множественный</label>
+												</div>
+												<div class="select">
+													<div class="label">тип данных:</div>
+													<select name="typeName">
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'string'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Строковый'"/>
+														</xsl:call-template>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'integer'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Целочисленный'"/>
+														</xsl:call-template>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'long'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Целочисл. длинный'"/>
+														</xsl:call-template>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'double'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Дробный'"/>
+														</xsl:call-template>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'text'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Текстовый'"/>
+														</xsl:call-template>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="'date'"/>
+															<xsl:with-param name="check" select="@type"/>
+															<xsl:with-param name="caption" select="'Дата'"/>
+														</xsl:call-template>
+													</select>
+												</div>
+												<div class="select">
+													<div class="label">предопределенное значение:</div>
+													<select name="domainName">
+														<xsl:variable name="domain" select="@domain"/>
+														<xsl:call-template name="check_option">
+															<xsl:with-param name="value" select="''"/>
+															<xsl:with-param name="check" select="$domain"/>
+															<xsl:with-param name="caption" select="' - '"/>
+														</xsl:call-template>
+														<xsl:for-each select="//domains/domain">
+															<xsl:call-template name="check_option">
+																<xsl:with-param name="value" select="."/>
+																<xsl:with-param name="check" select="$domain"/>
+																<xsl:with-param name="caption" select="."/>
+															</xsl:call-template>
+														</xsl:for-each>
+													</select>
+												</div>
+												<div class="inputField">
+													<div class="label">формат:</div>
+													<input name="format" type="text" value="{@format}" />
+												</div>
+												<div class="textArea">
+													<div class="label">описание:</div>
+													<textarea name="description"><xsl:value-of select="@description"/></textarea>
+												</div>
+												<a href="#" onclick="$('#id_{@id}').submit();return false;" class="button partialSave">Сохранить</a>
+											</form>
+										</div>
+									</div>
+								</xsl:if>
+							</xsl:for-each>
+							<!-- /редактирование свойств параметра -->
+							<a href="javascript:submitItem()" class="button totalSave">Сохранить класс</a>
+						</td>
+					</tr>
+					<form id="new_param" action="{new_param_link}" method="post">
+						<tr>
+							<td class="sideColoumn"></td>
+							<td class="mainColoumn">
+								<h2>Новый параметр:</h2>
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								название:
+							</td>
+							<td class="mainColoumn">
+								<input name="paramName" type="text" class="textForm" value="{//data/paramName}" />
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								количество зачений:
+							</td>
+							<td class="mainColoumn">
+								<!-- 
+								<xsl:call-template name="check_radio">
+									<xsl:with-param name="value" select="'single'"/>
+									<xsl:with-param name="check" select="//data/quantifier"/>
+									<xsl:with-param name="name" select="'quantifier'"/>
+								</xsl:call-template>
+								 -->
+								<input name="quantifier" type="radio" group="qu" checked="checked" value="single" />
+								<label for="single">одиночный</label>
+								<!-- 
+								<xsl:call-template name="check_radio">
+									<xsl:with-param name="value" select="'multiple'"/>
+									<xsl:with-param name="check" select="//data/quantifier"/>
+									<xsl:with-param name="name" select="'quantifier'"/>
+								</xsl:call-template>
+								-->
+								<input name="quantifier" type="radio" group="qu" value="multiple" />
+								<label for="multiple">множественный</label>
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								тип данных:
+							</td>
+							<td class="mainColoumn">
+								<select name="typeName">
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'string'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Строковый'"/>
+									</xsl:call-template>
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'integer'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Целочисленный'"/>
+									</xsl:call-template>
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'long'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Целочисл. длинный'"/>
+									</xsl:call-template>
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'double'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Дробный'"/>
+									</xsl:call-template>
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'text'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Текстовый'"/>
+									</xsl:call-template>
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="'date'"/>
+										<xsl:with-param name="check" select="//data/typeName"/>
+										<xsl:with-param name="caption" select="'Дата'"/>
+									</xsl:call-template>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								предопределенное значение:
+							</td>
+							<td class="mainColoumn">
+								<select name="domainName">
+									<xsl:call-template name="check_option">
+										<xsl:with-param name="value" select="''"/>
+										<xsl:with-param name="check" select="//data/domainName"/>
+										<xsl:with-param name="caption" select="' - '"/>
+									</xsl:call-template>
+									<xsl:for-each select="//domains/domain">
+										<xsl:call-template name="check_option">
+											<xsl:with-param name="value" select="."/>
+											<xsl:with-param name="check" select="//data/domainName"/>
+											<xsl:with-param name="caption" select="."/>
+										</xsl:call-template>
+									</xsl:for-each>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn">
+								Описание:
+							</td>
+							<td class="mainColoumn">
+								<textarea name="description"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="sideColoumn"></td>
+							<td class="mainColoumn">
+								<a href="#" onclick="$('#new_param').submit();return false;" class="button totalAdd">Создать параметр</a>
+							</td>
+						</tr>
+					</form>
+				</table>
+			</td>
+			<!-- ***************************************************************************************** -->
+		</tr>
+		</table>	
 	</xsl:template>
 
 	<xsl:template match="updating-itemdesc[@user-def = 'false']">
-		<div class="buttonBar">
-			<a href="{create_link}" class="button totalAdd">Создать подкласс</a>
-		</div>
-		<div class="multiple_param edit-class">
-			<p class="form_title" style="">Сведения о классе</p>
-			<p style="margin-left: 12px; margin-right: 12px; margin-bottom: 10px;">Название: <xsl:value-of select="@name"/></p>
-			<xsl:if test="@description != ''">
-				<p style="margin-left: 12px; margin-right: 12px; margin-bottom: 10px;">Описание: <xsl:value-of select="@description"/></p>
-			</xsl:if>
-			<p class="form_title" style="background: #909090;">Базовые параметры</p>
-			<ul class="edit-params">
-				<xsl:for-each select="parameter">
-					<li class="{@type} base-param">
-						<xsl:value-of select="@caption"/>
-					</li>
-				</xsl:for-each>
-			</ul>
-		</div>
+		<table class="type_1">
+		<tr>
+			<!-- ************************ Основные параметры айтема **************************** -->
+			<td>
+				<div class="buttonBar">
+					<a href="{create_link}" class="button totalAdd">Создать подкласс</a>
+				</div>
+				<table class="basicContainer">
+					<tr>
+						<td class="sideColoumn">
+							Название:
+						</td>
+						<td class="mainColoumn">
+							<xsl:value-of select="@name"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="sideColoumn">
+							Описание:
+						</td>
+						<td class="mainColoumn">
+							<xsl:value-of select="@description"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="sideColoumn"></td>
+						<td class="mainColoumn">
+							<h2>Параметры:</h2>
+						</td>
+					</tr>
+					<tr>
+						<td class="sideColoumn"></td>
+						<td class="mainColoumn">
+							<xsl:for-each select="parameter">
+								<div>
+									<xsl:value-of select="@caption"/>
+								</div>
+							</xsl:for-each>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<!-- ***************************************************************************************** -->
+		</tr>
+		</table>	
 	</xsl:template>
 
 
 	<xsl:template name="CONTENT">
-		<h1 class="title"  style="margin-bottom: 20px;">
-			<xsl:value-of select="//updating-itemdesc/@caption"/>
-		</h1>
-		<div class="edit-arena">
-			<div class="wide">
-				<div class="margin">
-					<xsl:apply-templates select="//updating-itemdesc"/>				
+		<h1 class="title"><xsl:value-of select="//updating-itemdesc/@caption"/></h1>
+		<!-- tabs -->
+		<div class="tabs_container">
+			<div class="tabs">
+				<div class="clear">
 				</div>
 			</div>
 		</div>
-	<div class="footer">
-		<div class="save-links save">
-			<a href="javascript:submitItem()" title="Сохранить и остаться на странице">Сохранить</a>
-			<a href="javascript:submitItem(); document.location.href = 'admin_initialize.action'" title='Сохранить и перейти к структуре сайта"'>Сохранить и выйти</a>
-		</div>
-	</div>
-
+		<!-- /tabs -->
+		<xsl:apply-templates select="//updating-itemdesc"/>
 	</xsl:template>
 
 </xsl:stylesheet>

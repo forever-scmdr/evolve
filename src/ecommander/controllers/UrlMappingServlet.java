@@ -1,16 +1,18 @@
 package ecommander.controllers;
 
-import ecommander.fwk.ServerLogger;
-import org.apache.commons.lang3.StringUtils;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ecommander.common.ServerLogger;
 
 /**
  * Класс для установления соответствия между URL, которые задал пользователь и URL, которые используются

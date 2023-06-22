@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<style type="text/css">
+			*{font-family: Arial;font-size: 14px;}
+			body{padding: 10px;}
+			label{display: block; margin-bottom: 15px; width: 400px;}
+			label input{float: right; width: 200px;}
+		</style>
+	</head>
+	<body>
+	
+	<form action="uploaded.htm" id="uploadForm">
+		<label>
+			Загрузите файл:
+			<input type="file" id="file"/>
+		</label>
+		<label>
+			Или укажите путь к нему:
+			<input type="text" id="path"/>
+		</label>
+		<label>
+			Описание:
+			<input type="text" id="alt"/>
+		</label>
+		<label>
+			Ширина:
+			<input type="number" id="width"/>
+		</label>
+		<label>
+			Высота:
+			<input type="number" id="height"/>
+		</label>
+		<input type="submit" value="загрузить"/>
+	</form>	
+	<script type="text/javascript" src="upload_handler.js"></script>
+	</body>
+</html>

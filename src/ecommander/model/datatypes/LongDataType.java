@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class LongDataType extends FormatDataType {
 
-	public LongDataType(Type type) {
+	LongDataType(Type type) {
 		super(type);
 	}
 
