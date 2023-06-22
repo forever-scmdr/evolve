@@ -91,6 +91,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 				}
 
 			} else if (StringUtils.containsIgnoreCase(xml.getName(), "parts")) {
+
 				Item partsSection = new ItemQuery("section").setParentId(catalog.getId(), false)
 						.addParameterEqualsCriteria("code", "parts").loadFirstItem();
 				if (partsSection == null) {

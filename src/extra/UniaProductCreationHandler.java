@@ -30,7 +30,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private static HashMap<String, String> OPTION_PARAMS_MAP = new HashMap<>();
 	private static HashMap<String, String> SERIAL_PARAMS = new HashMap<>();
 
-	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION};
+	private enum ComplectationChild {SERIAL, OPTION, COMPLECTATION, NEW}
 
 
 	static {
@@ -257,7 +257,7 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				serial.setValueUI(e.getKey(), e.getValue());
 			}
 			DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(serial).noFulltextIndex().ignoreUser());
-			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(serial).noFulltextIndex().ignoreUser());
+			DelayedTransaction.executeSingle(initiator, ItemStatusDBUnit.restore(complectation).ignoreUser());
 		}
 	}
 
@@ -360,7 +360,14 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 						}
 						currentOption = new HashMap<>();
 					}
-				} else {
+				}
+				else if(complStaus == ComplectationChild.NEW){
+					if(!currentCompl.isEmpty()){
+						complectationBuffer.add(currentCompl);
+					}
+					currentCompl = new Complectation();
+				}
+				else {
 					paramName = PRODUCT_PARAMS_MAP.get(qName);
 
 					if("qantity_factory".equalsIgnoreCase(qName)){
@@ -408,6 +415,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	}
 
 	private ComplectationChild checkComplStatus(String qName) {
+		if("id_tehniki".equalsIgnoreCase(qName))
+			return ComplectationChild.NEW;
 		if (PRICE_PARAM.equals(qName)) return ComplectationChild.COMPLECTATION;
 		if (complStaus == ComplectationChild.SERIAL && !OPTION_PARAMS_MAP.containsKey(qName)) {
 			return ComplectationChild.SERIAL;
