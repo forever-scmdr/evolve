@@ -47,8 +47,8 @@
 				<h2 class="title">Интеграция Yandex.Market</h2>
 
 				<ul class="no-drag">
-					<li><a href="integrate?action=start">Импорт каталога YML</a></li>
-					<li><a href="integrate?get_price=no&amp;action=start">Импорт каталога YML (без цен)</a></li>
+					<li><a href="integrate?action=start">Импорт каталога UNIA</a></li>
+					<!-- <li><a href="integrate?get_price=no&amp;action=start">Импорт каталога YML (без цен)</a></li> -->
 					<li><a href="create_yml_file">Экспорт каталога YML</a></li>
 					<li><a href="create_yml_file">Экспорт каталога YML (без цен)</a></li>
 					<li><a href="create_yml_file">Экспорт каталога YML (только товары в наличии)</a></li>

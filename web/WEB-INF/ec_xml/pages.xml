@@ -520,7 +520,7 @@
 			<var name="minqty" value="" scope="cookie"/>
 		</request>
 <!--		<command class="extra.FixSearchQuery"/>-->
-		<list item="product" id="prod">
+		<list item="product" id="prod" tag="product">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="name type name_extra vendor code vendor_code xml">
 					<var var="q"/>
@@ -1102,7 +1102,6 @@
 		<request>
 			<var name="message"/>
 		</request>
-
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1644,6 +1643,15 @@
 	<page name="integrate" template="integration/create_excel" authority-groups="common">
 		<request>
 			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="integrate_start"  schedule="0 0 14 ? * * *">
+		<request>
+			<var name="action" value="start"/>
 		</request>
 		<command class="ecommander.fwk.integration.YMarketCreateCatalogCommand" clear-cache="yes">
 			<result name="complete" type="xml"/>
