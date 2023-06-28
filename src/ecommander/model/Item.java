@@ -577,6 +577,16 @@ public class Item implements ItemBasics {
 	public final void setContextPrimaryParentId(long parentId) {
 		this.contextParentId = parentId;
 	}
+
+	/**
+	 * Установить контекстный статус (статус в контексте выполнения)
+	 * Статус айтема в БД не меняется, это метод чисто для удобства (для разной логики if'ов)
+	 * @param status
+	 */
+	public final void setContextStatus(byte status) {
+		this.status = status;
+	}
+
 	/**
 	 * Возвращает значение одиночного парамтера
 	 * @param paramId
