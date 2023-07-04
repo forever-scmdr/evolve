@@ -134,7 +134,9 @@ public class ItemStatusDBUnit extends DBPersistenceCommandUnit implements DBCons
 			pstmt.executeUpdate();
 		}
 		endQuery();
-
+		if (item instanceof Item) {
+			((Item) item).setContextStatus(newStatus);
+		}
 
 		// Дополнительная обработка для удаления
 		if (triggerExtra && newStatus == Item.STATUS_DELETED) {
