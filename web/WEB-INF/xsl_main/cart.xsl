@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="utils/multiple_prices.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -18,6 +19,8 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;cool&gt;eeee&lt;/cool&gt;&lt;/prod&gt;'))"/>
+							<xsl:variable name="multipe_prices" select="$outer/prod/product/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<div class="cart-list__item cart-item">
@@ -56,7 +59,15 @@
 								</xsl:if>
 								<div class="cart-item__price">
 									<span class="text-label">Цена</span>
-									<span><xsl:value-of select="$price"/></span>
+									<span>
+										<xsl:if test="not($multipe_prices)" ><xsl:value-of select="$price"/></xsl:if>
+										<xsl:if test="$multipe_prices">
+											<xsl:call-template name="ALL_PRICES_API">
+												<xsl:with-param name="need_sum" select="false()"/>
+												<xsl:with-param name="product" select="$outer/prod/product"/>
+											</xsl:call-template>
+										</xsl:if>
+									</span>
 									<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>
 								</div>
 								<div class="cart-item__quantity">

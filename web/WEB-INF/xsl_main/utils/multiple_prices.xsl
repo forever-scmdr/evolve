@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
-<xsl:stylesheet
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:f="f:f"
-        version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
     <xsl:import href="utils.xsl"/>
     <xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 
@@ -20,7 +15,7 @@
         <xsl:param name="sum"/>
         <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
         <xsl:choose>
-            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat(f:format_currency_precise($sum), $BYN_cur) else concat(f:format_currency_precise($sum), f:cur())"/></xsl:when>
+            <xsl:when test="f:is_numeric($sum)"><xsl:value-of select="if ($is_byn) then concat(f:format_currency($sum), $BYN_cur) else concat(f:format_currency($sum), f:cur())"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>

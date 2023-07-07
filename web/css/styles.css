@@ -564,7 +564,7 @@ img {
 
 .alert_danger {
 	background-color: #fff1c8;
-	color: #8e7425; }
+	color: red; }
 
 .alert_success {
 	background-color: #DCEDC8;
@@ -1683,7 +1683,7 @@ img {
 
 .device-basic__column:first-child {
 	flex: 0 0 40%;
-	margin-right: 24px;
+	margin-right: 80px;
 	position: relative; }
 	.device-preview__column:first-child{
 		position: relative;
@@ -1878,7 +1878,7 @@ table.full-params th {
 	display: grid;
 	grid-template-areas: "im in pr qt sm dl"
  "ex ex ex ex ex ex";
-	grid-template-columns: 100px 1fr 100px 100px 100px 20px;
+	grid-template-columns: 100px 1fr 150px 60px 90px 20px;
 	font-size: 13px;
 	border: 1px solid #e0e0e0;
 	position: relative; }

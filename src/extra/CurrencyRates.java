@@ -99,7 +99,7 @@ public class CurrencyRates implements ItemNames{
 		if (rates.containsKey(currencyCode)) {
 			BigDecimal[] rate = rates.get(currencyCode);
 			BigDecimal extraQuotient = (new BigDecimal(1)).add(rate[2].divide(new BigDecimal(100), 6, RoundingMode.HALF_EVEN));
-			defaultCurrencyPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(4, RoundingMode.UP);
+			defaultCurrencyPrice = price.multiply(rate[0]).divide(rate[1], 6, RoundingMode.HALF_EVEN).multiply(extraQuotient).setScale(2, RoundingMode.UP);
 			allPrices.put(PRICE_PREFIX + currencyCode, price);
 		}
 		allPrices.put(PRICE_PARAM_NAME, defaultCurrencyPrice);
@@ -107,7 +107,7 @@ public class CurrencyRates implements ItemNames{
 			if (StringUtils.equalsIgnoreCase(CODE, currencyCode))
 				continue;
 			BigDecimal[] rate = rates.get(CODE);
-			BigDecimal currencyPrice = defaultCurrencyPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(4, RoundingMode.UP);
+			BigDecimal currencyPrice = defaultCurrencyPrice.divide(rate[0], 6, RoundingMode.HALF_EVEN).multiply(rate[1]).setScale(2, RoundingMode.UP);
 			allPrices.put(PRICE_PREFIX + CODE, currencyPrice);
 		}
 		return allPrices;

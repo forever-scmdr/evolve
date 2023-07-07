@@ -33,7 +33,6 @@
                 <strong>На вашу почту выслан счёт для оплаты (срок действия 3 дня).</strong><p/><br/>
 				<p>Заявка №<xsl:value-of select="$cart/order_num"/></p>
 				<p>Позиций: <xsl:value-of select="$cart/qty"/></p>
-				<p>Сумма: <xsl:value-of select="$cart/sum"/></p>
 				<xsl:if test="$is_phys">
 					<p>Покупатель: <xsl:value-of select="$contacts/name"/></p>
 					<p>Телефон: <xsl:value-of select="$contacts/phone"/></p>
@@ -79,8 +78,8 @@
 						<td>Наименование</td>
 						<td>Количество</td>
 						<td>Срок поставки</td>
-						<td>Цена</td>
-						<td>Сумма</td>
+						<td>Цена (<xsl:value-of select="f:cur()"/>)</td>
+						<td>Сумма (<xsl:value-of select="f:cur()"/>)</td>
 						<xsl:if test="$cart/bought/item_own_extras" ><td>Дополнительно</td></xsl:if>
 					</tr>
 					<xsl:for-each select="$cart/bought">
@@ -103,6 +102,14 @@
 							</xsl:if>
 						</tr>
 					</xsl:for-each>
+					<tr>
+						<td style="font-weight: 700">Сумма:</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<xsl:if test="$cart/bought/item_own_extras" ><td></td></xsl:if>
+						<td><xsl:value-of select="$cart/sum"/></td>
+					</tr>
 				</table>
 			</div>
 		</div>

@@ -65,7 +65,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		}
 
 		private void addQuotient(Pair<String, String> pair) {
-			qtyQuotients.add(new Pair<>(DecimalDataType.parse(pair.getLeft(), 2), DecimalDataType.parse(pair.getRight(), 4)));
+			qtyQuotients.add(new Pair<>(DecimalDataType.parse(pair.getLeft(), 2), DecimalDataType.parse(pair.getRight(), 2)));
 		}
 	}
 
@@ -225,10 +225,10 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				if (prices != null) {
 					Elements breaks = parsed.getElementsByTag(SearchApiCommand.BREAK_TAG);
 					for (Element aBreak : breaks) {
-						BigDecimal breakQty = DecimalDataType.parse(aBreak.attr(SearchApiCommand.QTY_ATTR), 4);
+						BigDecimal breakQty = DecimalDataType.parse(aBreak.attr(SearchApiCommand.QTY_ATTR), 2);
 						if (breakQty == null)
 							breakQty = BigDecimal.ONE;
-						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagFirstValue(aBreak, SearchApiCommand.PRICE_TAG), 4);
+						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagFirstValue(aBreak, SearchApiCommand.PRICE_TAG), 2);
 						intervals.put(breakQty, breakPrice);
 					}
 					ArrayList<BigDecimal> qtysOrdered = new ArrayList<>(intervals.keySet());

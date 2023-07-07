@@ -127,9 +127,10 @@ public class SearchApiCommand extends Command {
 						BigDecimal price = DecimalDataType.parse(priceStr, 4);
 						if (price != null) {
 							// Добавить тэг с оригинальной ценой (в оригинальной валюте)
-							aBreak.appendElement(ItemNames.product_.PRICE_ORIGINAL).text(priceStr);
+							//aBreak.appendElement(ItemNames.product_.PRICE_ORIGINAL).text(priceStr);
+							aBreak.appendElement(ItemNames.product_.PRICE_ORIGINAL).text(price.setScale(2, RoundingMode.UP).toString());
 							// Применить коэффициент
-							price = price.multiply(extraQuotient).setScale(4, RoundingMode.UP);
+							price = price.multiply(extraQuotient).setScale(2, RoundingMode.UP);
 							rates.setAllPricesJsoup(aBreak, price, currency);
 						}
 					}
