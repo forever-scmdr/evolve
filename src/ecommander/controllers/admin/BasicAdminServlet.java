@@ -8,12 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ecommander.controllers.*;
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.controllers.BasicServlet;
-import ecommander.controllers.LoginServlet;
-import ecommander.controllers.SessionContext;
-import ecommander.controllers.StartController;
 import ecommander.controllers.parsing.DataModelBuilder;
 import ecommander.controllers.parsing.DomainBuilder;
 import ecommander.users.User;
@@ -112,8 +109,7 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 * @return
 	 */
 	protected static String getContextPath(HttpServletRequest req) {
-		String domain = req.getServerName() + (req.getServerPort() == 80 ? "" : ":" + req.getServerPort()) + req.getContextPath();
-		return "http://" + (StringUtils.isBlank(req.getContextPath()) ? domain : domain + "/");
+		return BasicServlet.getContextPath(req) + (StringUtils.isBlank(req.getContextPath()) ? "" : "/");
 	}
 	/**
 	 * Получить полную строку запроса из объекта запроса
@@ -122,9 +118,8 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 */
 	public static String getRequestStrig(HttpServletRequest request) {
 		return 
-				request.getScheme() + "://" + request.getServerName() + 
-				("http".equals(request.getScheme()) && request.getServerPort() == 80 || 
-				"https".equals(request.getScheme()) && request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				AppContext.getProtocolScheme() + "://" + request.getServerName() +
+				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
 				request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
 	}
 }
