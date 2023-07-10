@@ -36,6 +36,13 @@ public class TransliterationServlet extends BasicServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Строка вида /spas/eeee/test.htm (/spas - это ContextPath)
+
+		// проверка протокола с последующим редиректом если это надо
+		if (!checkProtocolScheme(request, response)) {
+//				ServerLogger.warn("\n\n-----------------------CHECK PROTOCOL RETURN---------------------------");
+			return;
+		}
+
 		String userUrl = getUserUrl(request);
 		String[] parts = StringUtils.split(userUrl, '/');
 		if (parts.length > 3 && !StringUtils.contains(parts[parts.length - 1], '.')) {

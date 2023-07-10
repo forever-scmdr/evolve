@@ -103,7 +103,7 @@ public abstract class BasicServlet extends HttpServlet {
 		} catch (Exception e1) {
 			ServerLogger.error("unable to send error page", e1);
 			response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-			response.setHeader("Location", "http://" + getContextPath(request) + ERROR_STATIC_PAGE_NAME);
+			response.setHeader("Location",  AppContext.getProtocolScheme() + "://" + getContextPath(request) + ERROR_STATIC_PAGE_NAME);
 			response.setContentType("text/html");
 		}
 	}
