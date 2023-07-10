@@ -15,6 +15,7 @@ import ecommander.controllers.parsing.DataModelBuilder;
 import ecommander.controllers.parsing.DomainBuilder;
 import ecommander.users.User;
 /**
+ *
  * Базовый класс для всех админских модулей
  * @author EEEE
  *
