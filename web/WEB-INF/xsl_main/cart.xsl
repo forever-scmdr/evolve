@@ -9,7 +9,7 @@
 	<xsl:variable name="cart" select="page/cart"/>
 	<xsl:variable name="regular_bought" select="$cart/bought[f:num(is_complex) = 0]"/>
 	<xsl:variable name="complex_bought" select="$cart/bought[f:num(is_complex) = 1]"/>
-	<xsl:variable name="has_both" select="$regular_bought != '' and $complex_bought != '' and not($cart/processed = 1)"/>
+	<xsl:variable name="has_both" select="$regular_bought and $complex_bought and not($cart/processed = 1)"/>
 	<xsl:variable name="cart_is_empty" select="$cart/processed = 1 or not($cart/bought)"/>
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -131,7 +131,7 @@
 
 <!--						</div>-->
 						<div>
-							Дата поставки:
+							<span style="color: red; font-weight: bold">Введите дату поставки:</span>
 							<input type="date" name="{input/proposed_dealer_date/@input}" value="{f:date_value(proposed_dealer_date)}" data-old="{f:date_value(proposed_dealer_date)}"/>
 
 						</div>

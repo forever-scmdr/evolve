@@ -19,7 +19,35 @@
 				  select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 
-	<xsl:template name="MARKUP"/>
+	<xsl:template name="MARKUP">
+		<!-- <xsl:variable name="price" select="$p/price"/>
+		<script type="application/ld+json">
+			<xsl:variable name="quote">"</xsl:variable>
+			{
+			"@context": "http://schema.org/",
+			"@type": "Product",
+			"name": <xsl:value-of select="concat($quote, replace($p/name, $quote, ''), $quote)"/>,
+			"image": <xsl:value-of select="concat($quote, $main_host, '/', $p/@path, $p/gallery[1], $quote)"/>,
+			"brand": <xsl:value-of select="concat($quote, $p/tag[1], $quote)"/>,
+			"offers": {
+			"@type": "Offer",
+			"priceCurrency": "BYN",
+			<xsl:if test="f:num($price) &gt; 0">"price":
+				<xsl:value-of select="concat($quote,f:currency_decimal($price), $quote)"/>
+			</xsl:if>
+			<xsl:if test="f:num($price) = 0">"price":"15000.00"</xsl:if>
+			}, "aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "4.9",
+			"ratingCount": "53",
+			"bestRating": "5",
+			"worstRating": "1",
+			"name":
+			<xsl:value-of select="concat($quote, translate($p/name, $quote, ''), $quote)"/>
+			}
+			}
+		</script> -->
+	</xsl:template>
 
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">

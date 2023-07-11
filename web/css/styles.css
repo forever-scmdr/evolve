@@ -1794,6 +1794,13 @@ img {
 	font-size: 1.125rem;
 }
 
+.product-lables ul li, .tab-container ul li{
+	list-style-type: disc;
+}
+.tab-container ul{
+	margin-left: 20px;
+}
+
 hr {
 	border-bottom: 1px solid #616161;
 	margin-bottom: 24px; }

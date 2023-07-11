@@ -1022,7 +1022,7 @@ public class Item implements ItemBasics {
 	 */
 	public final ArrayList<Object> getListExtra(String name) {
 		if (extras == null)
-			return null;
+			return new ArrayList<>(0);
 		return extras.getExtraList(name);
 	}
 	/**
