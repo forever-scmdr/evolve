@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -80,6 +81,14 @@ public class InputSetPE implements PageElement {
 				}
 			}
 			ItemInputs inputs = new ItemInputs(item, predIds.toArray(new Long[0]));
+			// Восстановить значения, ранее сохраненные в сеансе (если это надо делать)
+			MultipleHttpPostForm savedForm = pageModel.getSessionContext().getForm(formId);
+			if (savedForm != null) {
+				try {
+					Item srcItem = savedForm.getItemSingleTransient();
+					inputs = new ItemInputs(item, srcItem, predIds.toArray(new Long[0]));
+				} catch (Exception e) { /**/ }
+			}
 			if (isParameter) {
 				if (names.size() == 0)
 					inputs.addAllParameters();
@@ -87,12 +96,6 @@ public class InputSetPE implements PageElement {
 					inputs.addParameters(names.toArray(new String[0]));
 			} else {
 				inputs.addExtra(names.toArray(new String[0]));
-			}
-			// Восстановить значения, ранее сохраненные в сеансе (если это надо делать)
-			MultipleHttpPostForm savedForm = pageModel.getSessionContext().getForm(formId);
-			if (savedForm != null) {
-				InputValues savedItemInputValues = savedForm.getItemInput(item.getId());
-				inputs.update(savedItemInputValues);
 			}
 			return inputs;
 		}

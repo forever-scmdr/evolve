@@ -144,6 +144,8 @@ public abstract class BasicCartManageCommand extends Command {
 	public ResultPE customerForm() throws Exception {
 		// Сохранение формы в сеансе (для унификации с персональным айтемом анкеты)
         Item form = getItemForm().getItemSingleTransient();
+		removeSessionForm("customer_phys");
+		saveSessionForm("customer_jur");
         boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(ItemNames.USER_PHYS).getTypeId();
         // TODO добавить логику выбора параметра цены (оптовая или розничная)
         //recalculateCart(isPhys ? PRICE_PARAM : PRICE_OPT_PARAM);

@@ -40,10 +40,13 @@
 							<xsl:variable name="multipe_prices" select="$outer/prod/product/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+							<xsl:variable name="not_api" select="$p/@id &gt; 0"/>
+							<xsl:variable name="total_qty" select="if ($not_api and not($p/qty)) then '1000' else $p/qty"/>
+							<xsl:variable name="dlv" select="if ($not_api and not($p/next_delivery)) then '7' else $p/next_delivery"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
-										<xsl:if test="$p/@id &gt; 0">
+										<xsl:if test="$not_api">
 											<a href="{$p/show_product}">
 												<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
 												<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
@@ -51,18 +54,18 @@
 										</xsl:if>
 									</div>
 									<div class="cart-item__info">
-										<xsl:if test="$p/@id &gt; 0">
-											<a class="cart-item__name" href="$p/show_product"><xsl:value-of select="$p/name"/></a>
+										<xsl:if test="$not_api">
+											<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
 										</xsl:if>
-										<xsl:if test="$p/@id &lt; 0">
-											<span style="color: #0072bc;" class="cart-item__name"><xsl:value-of select="$p/name"/></span>
+										<xsl:if test="not($not_api)">
+											<span class="cart-item__name"><xsl:value-of select="$p/name"/></span>
 										</xsl:if>
 										<p/>
 										<div class="cart-item__artnumber">Норма упк.: <xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'" /></div>
 										<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
 										<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
-										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$p/qty" /></div>
-										<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($p/next_delivery) = '0') then 'на складе' else $p/next_delivery" /></div>
+										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$total_qty" /></div>
+										<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($dlv) = '0') then 'на складе' else $dlv" /></div>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
@@ -91,7 +94,7 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{f:num($p/qty)}"/>
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{$total_qty}"/>
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">

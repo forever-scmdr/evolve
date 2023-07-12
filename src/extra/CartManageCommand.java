@@ -436,6 +436,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 					proc.replace("$prod_sum", noNdsSum.toPlainString());
 					proc.replace("$prod_sum_nds", justNdsSum.toPlainString());
 					proc.replace("$prod_sum_full", sum.toPlainString());
+					proc.replace("$prod_dlv", product.getStringValue(described_product_.NEXT_DELIVERY, "7"));
 				}
 				BigDecimal cartSum = cart.getDecimalValue(cart_.SUM).setScale(2, RoundingMode.CEILING);;
 				BigDecimal roubles = cartSum.setScale(0, RoundingMode.DOWN);

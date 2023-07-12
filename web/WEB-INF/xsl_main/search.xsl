@@ -10,6 +10,7 @@
 	<xsl:variable name="is_search_multiple" select="count($queries) &gt; 1"/>
 	<xsl:variable name="query_sets" select="page/extra_query/analogs/set"/>
 	<xsl:variable name="originally_multiple" select="count($query_sets) &gt; 1"/>
+	<xsl:variable name="title_query" select="if ($originally_multiple) then 'BOM' else if ($query_sets) then $query_sets[1]/base else $queries[1]"/>
 
 
 	<!--Отображение товаров в каталоге -->
@@ -36,8 +37,8 @@
 
 
 
-	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="if ($originally_multiple) then 'BOM' else $query_sets[1]/base"/>"</xsl:variable>
-	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="if ($originally_multiple) then 'BOM' else $query_sets[1]/base"/>"</xsl:variable>
+	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="$title_query"/>"</xsl:variable>
+	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="$title_query"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
