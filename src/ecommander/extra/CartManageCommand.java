@@ -166,6 +166,13 @@ public class CartManageCommand extends Command {
 				int days = Days.daysBetween(fromDate, toDate).getDays();
 				if (days < 4)
 					return getResult(ROOM_SEARCH).addVariable(MESSAGE, "Внимание! Минимальный срок бронирования - четыре дня");
+				for (Long formId : room.getLongValues(ItemNames.free_room.ORDER_FORM_BASE)) {
+					Item baseBed = getSessionMapper().getItemSingle(formId);
+					String voucherType = baseBed.getStringValue(ItemNames.order_form.VOUCHER_TYPE, "");
+					boolean isSan = StringUtils.equalsIgnoreCase(voucherType, SAN_VOUCHER);
+					if (isSan && days < 7)
+						return getResult(ROOM_SEARCH).addVariable(MESSAGE, "Внимание! Минимальный срок бронирования санаторно-курортной путевки - семь дней");
+				}
 			}
 			
 			// Сохранение гражданства и валюты
