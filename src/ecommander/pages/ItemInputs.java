@@ -1,6 +1,7 @@
 package ecommander.pages;
 
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
 import ecommander.model.ParameterDescription;
 
 import java.util.ArrayList;
@@ -28,19 +29,42 @@ import java.util.List;
 public class ItemInputs {
 	private static final String FORM_ITEM_UNIQUE_KEY = "ukey";
 
-	private Item item;
+	private Item item; // айтем, для которого делается форма
+	private Item srcItem; // айтем, из которого берутся параметры для формы
 
 	private InputValues inputs = new InputValues();
 	private Long[] predecessors;
 
+	/**
+	 * Создание новых инпутов для айтема
+	 * @param item
+	 * @param predecessors
+	 */
 	public ItemInputs(Item item, Long... predecessors) {
 		this.item = item;
 		this.predecessors = predecessors;
+		this.srcItem = item;
+	}
+
+	/**
+	 * Создание инпутов и копирование в них значений другого айтема
+	 * @param item
+	 * @param copyFrom
+	 * @param predecessors
+	 */
+	public ItemInputs(Item item, Item copyFrom, Long... predecessors) {
+		this.item = item;
+		this.predecessors = predecessors;
+		if (copyFrom != null && (item.getTypeId() == copyFrom.getTypeId() || ItemTypeRegistry.getItemExtenders(item.getTypeName()).contains(copyFrom.getTypeName()))) {
+			this.srcItem = copyFrom;
+		} else {
+			this.srcItem = item;
+		}
 	}
 
 	public void addAllParameters() {
 		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
-			ArrayList<String> vals = item.outputValues(paramDesc.getName());
+			ArrayList<String> vals = srcItem.outputValues(paramDesc.getName());
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
 			inputs.add(input, vals);
@@ -59,7 +83,7 @@ public class ItemInputs {
 	void addParameters(String... paramNames) {
 		for (String paramName : paramNames) {
 			ParameterDescription paramDesc = item.getItemType().getParameter(paramName);
-			ArrayList<String> vals = item.outputValues(paramName);
+			ArrayList<String> vals = srcItem.outputValues(paramName);
 			ItemInputName input = new ItemInputName(item.getId(), item.getContextParentId(),
 					item.getTypeId(), paramDesc.getId(), null, predecessors);
 			inputs.add(input, vals);
@@ -69,7 +93,7 @@ public class ItemInputs {
 	void addExtra(String... extraNames) {
 		for (String extraName : extraNames) {
 			ArrayList<String> vals = new ArrayList<>();
-			List<Object> objVals = item.getListExtra(extraName);
+			List<Object> objVals = srcItem.getListExtra(extraName);
 			if (objVals != null) {
 				for (Object obj : objVals) {
 					vals.add(obj.toString());
