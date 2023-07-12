@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="user_data_inputs.xsl"/>
 	<xsl:import href="utils/multiple_prices.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
@@ -6,6 +7,7 @@
 
 	<xsl:variable name="title" select="'Ваш заказ'" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+    <xsl:variable name="message" select="page/variables/message"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -13,6 +15,21 @@
 
 
 	<xsl:template name="CONTENT">
+        <xsl:if test="$message and not($success)">
+            <div class="alert alert_danger">
+                <div class="alert__title">Ошибка.</div>
+                <div class="alert__text">
+                    <p><xsl:value-of select="$message"/>.</p>
+                </div>
+            </div>
+        </xsl:if>
+        <xsl:if test="$message and $success">
+            <div class="alert alert_success">
+                <div class="alert__text">
+                    <p><xsl:value-of select="$message"/></p>
+                </div>
+            </div>
+        </xsl:if>
 		<div class="cart-list">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
@@ -105,15 +122,21 @@
 								</xsl:if>
 							</div>
 						</xsl:for-each>
+					</form>
+					<form action="{page/confirm_link}" method="post" enctype="multipart/form-data">
+						<xsl:variable name="inp" select="page/user_jur/input"/>
+						<div style="display:none">
+							<xsl:call-template name="USER_JUR_INPUTS">
+								<xsl:with-param name="inp" select="$inp"/>
+								<xsl:with-param name="vals" select="page/jur"/>
+							</xsl:call-template>
+						</div>
 						<div class="cart-total">
 							<xsl:if test="page/cart/sum != '0'">
 								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:exchange_cur(page/cart, 'sum', 0)"/></div>
 							</xsl:if>
 							<div class="cart-total__buttons">
-								<button class="button button_2 cart-total__button" type="submit"
-										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
-								<button class="button button_2 cart-total__button" type="submit"
-										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
+								<button class="button button_2 cart-total__button" type="submit">Оформить заказ</button>
 							</div>
 						</div>
 					</form>

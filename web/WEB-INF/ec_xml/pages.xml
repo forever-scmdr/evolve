@@ -1230,7 +1230,7 @@
 		<link name="validation_failed" target="proceed">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
-		<link name="email_send_failed" target="proceed">
+		<link name="email_send_failed" target="cart">
 			<var name="message"/>
 		</link>
 		<command class="extra.CartManageCommand" method-var="action">
@@ -1271,12 +1271,19 @@
 					<extra-input ref="bought" name="extra2"/>
 				</list>
 			</single>
+			<single item="user_jur" id="jur" tag="jur"/>
 		</session>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="customer_jur"/>
+		</new>
 		<link name="recalculate_link" target="cart_action" type="itemform">
 			<var name="action" value="recalculate"/>
 		</link>
 		<link name="proceed_link" target="cart_action" type="itemform">
 			<var name="action" value="proceed"/>
+		</link>
+		<link name="confirm_link" target="cart_action" type="itemform">
+			<var name="action" value="customerForm"/>
 		</link>
 		<include name="COMMON"/>
 	</page>
