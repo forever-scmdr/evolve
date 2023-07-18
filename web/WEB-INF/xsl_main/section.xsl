@@ -115,6 +115,7 @@
 					<div class="devices__wrap devices__wrap_rows">
 						<xsl:apply-templates select="$sel_sec/product" mode="product-lines"/>
 					</div>
+					<div id="on-update" ></div>
 				</xsl:if>
 				<xsl:if test="$not_found">
 					<h4>По заданным критериям товары не найдены</h4>

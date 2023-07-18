@@ -279,6 +279,7 @@
 		</script>
 
 		<script type="text/javascript">
+			var totalSum = <xsl:value-of select="f:exchange($cart, 'p_sum_discount', 0)" />;
 			function createPayment(id, action){
 			$el = $('#'+id);
 
@@ -287,15 +288,22 @@
 
 
 			<xsl:text disable-output-escaping="yes">
-				div1 = $('&lt;div&gt;', {"class" : "past-order__product past-product"});
-				div =  $('&lt;div&gt;', {"class" : "payment"});
+				var div1 = $('&lt;div&gt;', {"class" : "past-order__product past-product"});
+				var div =  $('&lt;div&gt;', {"class" : "payment", cid: id});
 
 				div.append($('&lt;input&gt;', {"placeholder" : "дд-мм-гггг", "name": dateName, "type": "date"}));
 				div.append($('&lt;span&gt;', {"class": "percent"}));
-				div.append($('&lt;input&gt;', {"type": "text", "name": sumName, placeholder: "введите сумму"}));
+				div.append($('&lt;input&gt;', {width: "auto", type: "number", class: "percent", placeholder: "введите процент", min: "1", max: "100", onchange: "updateSum($(this))"}));
+				div.append($('&lt;input&gt;', {type: "text", class: "sum", name: sumName, placeholder: "сумма платежа",  readonly:"readonly"}));
 				div1.append(div);
 				$el.append(div1);
 			</xsl:text>
+			}
+
+			function updateSum(jqEl) {
+				var percent = jqEl.val();
+				var percentSum = (totalSum * percent / 100).toFixed(2);
+				jqEl.closest('.payment').find('.sum').val(percentSum);
 			}
 		</script>
 	</xsl:template>

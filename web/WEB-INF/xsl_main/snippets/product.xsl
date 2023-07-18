@@ -433,6 +433,21 @@
 								</xsl:for-each>
 							</ul>
 						</xsl:if>
+						<xsl:if test="$is_jur">
+							<div id="cart_list_{$p/@id}">
+								<button class="button button_size_lg" type="submit"
+										onclick="postForm('cmpl-form{$p/@id}', 'cart_list_{$p/@id}', function() {{insertAjax('cart_ajax')}})">Предзаказ</button>
+							</div>
+						</xsl:if>
+						<!-- Форма заказа (НАЧАЛО)  -->
+						<div style="display: none">
+							<form method="post" action="{$p/to_cart_pre_order}" id="cmpl-form{$p/@id}">
+								<xsl:for-each select="option">
+									<input name="option" class="option-cb" type="checkbox" value="{@id}" checked="checked"/>
+								</xsl:for-each>
+							</form>
+						</div>
+						<!-- Форма заказа (КОНЕЦ)  -->
 					</td>
 					<td>
 						<xsl:value-of select="qty_factory"/>
