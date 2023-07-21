@@ -197,10 +197,10 @@
             <pricedate><xsl:value-of select="pricedate" /></pricedate>
 			<!--<td><a><xsl:value-of select="code"/></a></td>-->
 			<qty><xsl:value-of select="qty"/></qty>
-			<next_delivery><xsl:value-of select="if (normalize-space(next_delivery) = '0') then 'на складе' else next_delivery"/></next_delivery>
+			<next_delivery><xsl:value-of select="if (next_delivery = '0') then 'на складе' else next_delivery"/></next_delivery>
 			<step><xsl:value-of select="if (step and not(step = '')) then step else '1'"/></step>
 			<packquantity><xsl:value-of select="if (packquantity and not(packquantity = '')) then f:format_decimal(packquantity) else '1'"/></packquantity>
-			<available><xsl:value-of select="if (normalize-space(next_delivery) = '0') then 'на складе' else next_delivery"/></available>
+			<available><xsl:value-of select="if (next_delivery = '0') then 'на складе' else next_delivery"/></available>
 			<unit><xsl:value-of select="$unit"/></unit>
 			<min_qty><xsl:value-of select="$min_qty"/></min_qty>
 			<xsl:if test="$has_price">

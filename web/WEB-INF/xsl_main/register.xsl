@@ -13,7 +13,7 @@
 
 
 	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
 
 	<xsl:template name="PAGE_HEADING">

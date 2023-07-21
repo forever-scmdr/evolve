@@ -93,8 +93,8 @@
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 
-									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{$total_qty}"/>
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{f:num($total_qty)}" 
+										class="input qty-input" data-old="{f:num(qty)}"/>
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
@@ -126,7 +126,7 @@
 							</div>
 						</xsl:for-each>
 					</form>
-					<form action="{page/confirm_link}" method="post" enctype="multipart/form-data">
+					<form action="{page/confirm_link}" method="post" enctype="multipart/form-data" onsubmit="return isValid">
 						<xsl:variable name="inp" select="page/user_jur/input"/>
 						<div style="display:none">
 							<xsl:call-template name="USER_JUR_INPUTS">
@@ -155,36 +155,48 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
+			var isValid = true;
 			$(".qty-input").change(function(){
 
 				if(typeof recalcTo != "undefined"){
 					clearTimeout(recalcTo);
 				}
 
-				$t = $(this);
-				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
+				var t = $(this);
+				isValid = t[0].checkValidity();
+
+				if(t.val() != t.attr("data-old") &amp;&amp; isValid){
+					t.popover('hide');
 
 					var $form = $(this).closest('form');
 					var func = function(){
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
 						//$form.submit();
-						postForm($form,'v', function(){ $t.attr("data-old", $t.val()); });
+						postForm($form,'v', function(){ t.attr("data-old", t.val()); });
 					};
 
 					recalcTo = setTimeout(func, 500);
 
-				} else if(!validate($t.val())){
-					if(validate($t.attr("data-old"))){
-						$t.val($t.attr("data-old"));
-					}else{
-						$t.val("1");
-					}
+				} else {
+			        t.popover({
+			            placement:'bottom',
+			            trigger:'manual',
+			            html:true,
+			            content:'<div style="background-color: #FFDDDD; width: 60px;">max ' + t.attr('max') + '</div>'
+			        });
+			        t.popover('show');
 				}
 			});
 
-			function validate(val){
-				return parseFloat(val) &gt; 0;
-			}
+
+			$(document).ready(function() {
+				$(window).keydown(function(event){
+					if(event.keyCode == 13) {
+						event.preventDefault();
+						return false;
+					}
+				});
+			});
 		</script>
 	</xsl:template>
 

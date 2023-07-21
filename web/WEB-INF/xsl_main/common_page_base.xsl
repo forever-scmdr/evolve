@@ -17,6 +17,7 @@
 
 	<xsl:variable name="common" select="page/common"/>
 	<xsl:variable name="base" select="page/base" />
+	<xsl:variable name="is_user_registered" select="page/registration"/>
 	<xsl:variable name="cur_sec" select="page//current_section"/><!-- текущий раздел каталога -->
 	<xsl:variable name="sel_sec" select="if ($cur_sec) then $cur_sec else page/product/product_section[1]"/><!-- выбранный раздел каталога (если нет текущего - то раздел выбранного товара) -->
 	<xsl:variable name="sel_sec_id" select="$sel_sec/@id"/>
@@ -210,7 +211,7 @@
 						<img src="img/logo.png" alt="" class="logo__image" />
 					</a>
 					<div class="header__column header__search header-search search">
-						<xsl:if test="$has_search">
+						<xsl:if test="$has_search and $is_user_registered">
 							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post">
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
@@ -252,7 +253,7 @@
 					</xsl:if>
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<xsl:if test="$has_cart">
+						<xsl:if test="$has_cart and $is_user_registered">
 							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
 								<a href="{page/cart_link}" class="icon-link">
 									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
@@ -308,7 +309,7 @@
 		<div class="main-menu">
 			<div class="container">
 				<div class="main-menu__wrap wrap">
-					<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да'">
+					<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да' and $is_user_registered">
 						<div class="main-menu__item">
 							<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
 							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
@@ -399,7 +400,7 @@
 						</li>
 					</ul>
 				</xsl:if>
-				<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да'">
+				<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да' and $is_user_registered">
 					<ul>
 						<li>
 							<a href="#" onclick="showMobileCatalogMenu(); return false" class="icon-link">
@@ -412,7 +413,7 @@
 					</ul>
 				</xsl:if>
 				<ul>
-					<xsl:if test="$has_cart">
+					<xsl:if test="$has_cart and $is_user_registered">
 						<li>
 							<a href="{page/cart_link}" class="icon-link">
 								<div class="icon">
