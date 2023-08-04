@@ -2,12 +2,17 @@ package ecommander.pages.output;
 
 import ecommander.fwk.FilterProcessException;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.User;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
 import ecommander.pages.var.FilterStaticVariable;
 import ecommander.pages.var.Variable;
+import org.apache.catalina.util.URLEncoder;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.net.URLDecoder;
 
 /**
  * Создает XML для страницы
@@ -110,6 +115,7 @@ public class PageWriter {
 	private static final String BASE_ELEMENT = "base";
 	private static final String VARIABLES_ELEMENT = "variables";
 	private static final String SOURCE_LINK_ELEMENT = "source_link";
+	private static final String SOURCE_LINK_UNESCAPED_ELEMENT = "source_link_unescaped";
 	private static final String USER_ELEMENT = "user";
 	private static final String ID_ATTRIBUTE = "id";
 	private static final String ROLE_ATTRIBUTE = "admin";
@@ -138,6 +144,7 @@ public class PageWriter {
 		xml.startElement(ROOT_ELEMENT, NAME_ATTRIBUTE, page.getPageName());
 		// <source_link>catalog/device_type:v:/device_field:v:Маркировка шита/manufacturer:v:Markem</source_link>
 		xml.startElement(SOURCE_LINK_ELEMENT).addText(page.getRequestLink().getOriginalUrl()).endElement();
+		xml.startElement(SOURCE_LINK_UNESCAPED_ELEMENT).addText(URLDecoder.decode(page.getRequestLink().getOriginalUrl(), Strings.SYSTEM_ENCODING)).endElement();
 		// <user id="4455">
 		//      <group name="common" id="0" admin="1"/>
 		//      ...

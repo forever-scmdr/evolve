@@ -337,6 +337,7 @@
 		</link>
 		<link name="reset_filter_link" type="exclusive" target="section">
 			<var name="sec" var="sec" style="key"/>
+			<var name="show_filter" value="yes"/>
 		</link>
 
 		<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
@@ -542,8 +543,7 @@
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="prod" ref="assoc"/>
 			</link>
-		</list>
-		<list item="product" tag="grouped" id="grouped">
+		</list>		<list item="product" tag="grouped" id="grouped">
 			<filter>
 				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
 			</filter>
@@ -560,6 +560,7 @@
 		<request>
 			<var name="prod" style="keypath"/>
 		</request>
+		<single item="catalog" cacheable="true" id="catalog"/>
 		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra" tag="product_extra"/>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>

@@ -20,6 +20,7 @@
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 	<xsl:variable name="is_not_plain" select="$p/product_section"/>
 	<xsl:variable name="multiple_prices" select="not($is_not_plain) or (section_name and not(section_name = ''))"/>
+	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -152,12 +153,12 @@
 								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 									<xsl:if test="$has_price">
 										<input type="number" class="input input_size_lg input_type_number" name="qty"
-											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else $step_default}"/>
 										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="input input_size_lg input_type_number" name="qty"
-											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else 1}"/>
+											   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else $step_default}"/>
 										<!-- кнопка запросить цену на стрранице товара -->
 										<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 									</xsl:if>
@@ -255,12 +256,12 @@
 								<form action="{to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{@id}">
 									<xsl:if test="$has_price">
 										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else $step_default}" />
 										<input type="submit" class="button" value="{$to_cart_available_label}" />
 									</xsl:if>
 									<xsl:if test="not($has_price)">
 										<input type="number" class="text-input" name="qty"
-											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else 0.1}" />
+											   value="{if (min_qty) then min_qty else 1}" min="{if (min_qty) then min_qty else 0}" step="{if (step) then f:num(step) else $step_default}" />
 										<input type="submit" class="button" value="{$to_cart_na_label}" />
 									</xsl:if>
 								</form>
@@ -268,16 +269,20 @@
 						</xsl:for-each>
 					</div>
 					<div class="multi-device__links">
-						<div id="compare_list_{$p/@id}">
-							<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
-								<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
-							</a>
-						</div>
-						<div id="fav_list_{$p/@id}">
-							<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
-								<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
-							</a>
-						</div>
+						<xsl:if test="$has_compare">
+							<div id="compare_list_{$p/@id}">
+								<a href="{$p/to_compare}" class="device__action-link icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+									<i class="fas fa-balance-scale"></i><xsl:value-of select="$go_to_compare_label"/>
+								</a>
+							</div>
+						</xsl:if>
+						<xsl:if test="$has_fav">
+							<div id="fav_list_{$p/@id}">
+								<a href="{$p/to_fav}" class="device__action-link icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+									<i class="fas fa-star"></i><xsl:value-of select="$compare_add_label"/>
+								</a>
+							</div>
+						</xsl:if>
 					</div>
 				</xsl:if>
 

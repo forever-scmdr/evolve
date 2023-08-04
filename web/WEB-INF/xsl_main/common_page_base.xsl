@@ -71,15 +71,18 @@
 
 	<!-- ****************************    SEO    ******************************** -->
 
-	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = /page/source_link]"/>
-	<xsl:variable name="seo" select="if($url_seo != '') then $url_seo else //seo[1]"/>
+	<xsl:variable name="source_link" select="/page/source_link"/>
+	<xsl:variable name="source_link_unescaped" select="/page/source_link_unescaped"/>
+	<xsl:variable name="url_seo" select="/page/url_seo_wrap/url_seo[url = $source_link_unescaped]"/>
+	<xsl:variable name="seo" select="if($url_seo) then $url_seo else //seo[1]"/>
 
 	<xsl:variable name="title" select="''" />
 	<xsl:variable name="meta_description" select="''" />
 	<xsl:variable name="main_host" select="if(page/url_seo_wrap/main_host != '') then page/url_seo_wrap/main_host else $base" />
 
-	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize(page/source_link, '\?')[1]) else ''" />
-	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>
+	<xsl:variable name="default_canonical" select="if(page/@name != 'index') then concat('/', tokenize($source_link, '\?')[1]) else ''" />
+<!--	<xsl:variable name="custom_canonical" select="//canonical_link[1]"/>-->
+	<xsl:variable name="custom_canonical" select="concat($main_host, $source_link)"/>
 
 	<xsl:variable name="canonical" select="if($custom_canonical != '') then $custom_canonical else $default_canonical"/>
 	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror');</xsl:variable>
@@ -89,7 +92,6 @@
 
 	<!-- ****************************    ПОЛЬЗОВАТЕЛЬСКИЕ МОДУЛИ    ******************************** -->
 
-	<xsl:variable name="source_link" select="/page/source_link"/>
 	<xsl:variable name="modules" select="page/modules/named_code[not(url != '') or contains($source_link, url)]"/>
 
 	<xsl:variable name="head-start-modules" select="$modules[place = 'head_start']"/>
@@ -261,7 +263,7 @@
 							</div>
 						</xsl:if>
 						<div class="links">
-							<a href="kontakty" class="icon-link">
+							<a href="{if ($common/phone_link and not($common/phone_link = '')) then $common/phone_link else 'kontakty'}" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
@@ -760,7 +762,7 @@
 				<xsl:text disable-output-escaping="yes">
 &lt;!--
 				</xsl:text>
-<xsl:value-of select="page/source_link"/>
+<xsl:value-of select="page/source_link_unescaped"/>
 				<xsl:text disable-output-escaping="yes">
 --&gt;
 				</xsl:text>
@@ -1003,7 +1005,7 @@
 
 	<xsl:template name="SEO">
 		<xsl:variable name="quote">"</xsl:variable>
-		<link rel="canonical" href="{concat($main_host, $canonical)}" />
+		<link rel="canonical" href="{$canonical}" />
 		<xsl:if test="$seo">
 			<xsl:apply-templates select="$seo"/>
 		</xsl:if>
@@ -1028,7 +1030,7 @@
 
 	<xsl:template match="seo | url_seo">
 		<title>
-			<xsl:value-of select="title"/>
+			<xsl:value-of select="if (title and not(normalize-space(title) = '')) then title else $title"/>
 		</title>
 		<meta name="description" content="{description}"/>
 		<meta name="keywords" content="{keywords}"/>
