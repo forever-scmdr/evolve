@@ -75,7 +75,6 @@
 	<xsl:variable name="not_found" select="$tag1 and not($sel_sec/product)"/>
 	<xsl:variable name="products" select="$sel_sec/product or $not_found"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
-	<xsl:variable name="canonical" select="$sel_sec/canonical_link"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
 
@@ -110,7 +109,7 @@
 
 		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($section_show_subs = '0')">
-			<div class="h3">Товары</div>
+			<div class="h3">&#160;</div><!--Товары-->
 		</xsl:if>
 		<xsl:call-template name="DISPLAY_CONTROL"/>
 		
@@ -200,7 +199,7 @@
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
 		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/@caption"/>
-		<xsl:variable name="filter_is_open" select="$user_filter or $catalog_catalog_show_filter_default"/>
+		<xsl:variable name="filter_is_open" select="$user_filter or $catalog_catalog_show_filter_default or //page/variables/show_filter = 'yes'"/>
 		<xsl:if test="not($subs) and $valid_inputs">
 			<div class="filter filter_section">
 				<a href="#" onclick="$('.filter_extra').toggle();$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">

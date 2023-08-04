@@ -12,6 +12,7 @@
 	<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 	<xsl:variable name="price" select="$p/price"/>
 	<xsl:variable name="price_old" select="$p/price_old"/>
+	<xsl:variable name="step_default" select="if (page/catalog/default_step) then page/catalog/default_step else '1'"/>
 
 	<xsl:template match="/">
 		<div>
@@ -156,7 +157,7 @@
 		<span class="cart_list_{$p/@id}" id="cart_list_a_{$p/@id}" style="display: inline-block">
 			<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_a_{$p/@id}" style="display: inline;">
 				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty"
-					   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else 0.1}" />
+					   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else $step_default}" />
 				<xsl:if test="$has_price">
 					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then $to_cart_available_label else $to_cart_na_label}"/>
 				</xsl:if>

@@ -24,6 +24,7 @@
 	<xsl:variable name="is_admin" select="page/@name = 'admin_search'"/>
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
+	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
 
 
@@ -856,7 +857,7 @@
 							   class="input input_type_number" name="qty"
 							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
 							   min="{if ($p/min_qty) then $p/min_qty else 1}"
-							   step="{if ($p/step) then f:num($p/step) else 1}" />
+							   step="{if ($p/step) then f:num($p/step) else $step_default}" />
 
 						<xsl:if test="$has_price">
 							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -892,7 +893,7 @@
 						   class="input input_type_number" name="qty"
 						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
 						   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   step="{if ($p/step) then f:num($p/step) else 1}" />
+						   step="{if ($p/step) then f:num($p/step) else $step_default}" />
 
 					<xsl:if test="$has_price">
 						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>

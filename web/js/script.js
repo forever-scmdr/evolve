@@ -6,30 +6,32 @@ $(document).ready(function(){
 		autoplay: false,
 		autoplaySpeed: 3000
 	});
-	$('.device-carousel').slick( {
-		arrows:false,
-		dots: true,
-		appendDots:$('.device-nav'),
-		// autoplay: false,
-		// autoplaySpeed: 3000
-		slidesToShow: 5,
-		slidesToScroll: 5,
-		responsive:[
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3
-				}
-			},
-			{
-				breakpoint: 768,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			},
-		]
+	$('.device-carousel').each(function() {
+		$(this).slick({
+			arrows: false,
+			dots: true,
+			appendDots: $(this).siblings('.device-nav'),
+			// autoplay: false,
+			// autoplaySpeed: 3000
+			slidesToShow: 5,
+			slidesToScroll: 5,
+			responsive: [
+				{
+					breakpoint: 1024,
+					settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3
+					}
+				},
+				{
+					breakpoint: 768,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				},
+			]
+		})
 	});
 	$('.device-carousel-similar').slick( {
 		arrows:false,

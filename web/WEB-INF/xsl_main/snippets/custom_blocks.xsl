@@ -473,11 +473,15 @@
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 				<div class="icons-block__wrap">
 					<xsl:for-each select="custom_block">
+						<!-- добавляется ссылка (тег a href=...) перед блоком и закрывается после блока -->
+						<xsl:variable name="has_link" select="link and not(link = '')"/>
+						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;a href=</xsl:text><xsl:value-of select="link" /><xsl:text disable-output-escaping="yes">&gt;</xsl:text></xsl:if>
 						<div class="banner-icons">
 							<div class="banner-icons__image"><img src="{@path}{image}" alt="" /></div>
 							<div class="banner-icons__title"><xsl:value-of select="header" /></div>
 							<div class="banner-icons__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 						</div>
+						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text></xsl:if>
 					</xsl:for-each>
 				</div>
 			</div>
@@ -516,11 +520,15 @@
 			<div class="{'container'[$need_container]}">
 				<div class="gifts-block__wrap">
 					<xsl:for-each select="custom_block">
+						<!-- добавляется ссылка (тег a href=...) перед блоком и закрывается после блока -->
+						<xsl:variable name="has_link" select="link and not(link = '')"/>
+						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;a href=</xsl:text><xsl:value-of select="link" /><xsl:text disable-output-escaping="yes">&gt;</xsl:text></xsl:if>
 						<div class="banner-gift">
 							<div class="banner-gift__image"><img src="{@path}{image}" alt="" /></div>
 							<div class="banner-gift__title"><xsl:value-of select="header" /></div>
 							<div class="banner-gift__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
 						</div>
+						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;/a&gt;</xsl:text></xsl:if>
 					</xsl:for-each>
 				</div>
 			</div>

@@ -188,7 +188,7 @@
 	</item>
 
 	<!-- Служебные данные для каталога продукции (чтобы можно было удалять сам каталог, а данные не удалялись бы) -->
-	<item name="catalog_meta" caption="Настройки каталога" ag-id="2109" ag-hash="-1147955605">
+	<item name="catalog_meta" caption="Настройки каталога" ag-id="1835" ag-hash="-1147955605">
 		<parameter name="excel_order_template" type="file" caption="Шаблон Excel для счет-фактуры при заказе" description="должен содержать специальные метки"/>
 		<child item="price_catalogs" single="true"/>
 		<child item="currencies" single="true"/>
@@ -210,6 +210,7 @@
 			<value>да</value>
 			<value>нет</value>
 		</parameter>
+		<parameter name="default_step" type="double" caption="Шаг количества товаров при заказе" default="1"/>
 		<child item="section" />
 		<parameter name="ship_date" type="date" caption="Дата поставки" format=""/>
 		<parameter name="integration" type="file" caption="Excel файл интеграции" description="обновление цены" />
@@ -230,7 +231,7 @@
 	</item>
 
 
-	<item name="search" super="* seo_container" caption="Настройки поиска" ag-id="2114" ag-hash="-906336856">
+	<item name="search" super="* seo_container" caption="Настройки поиска" ag-id="1840" ag-hash="-906336856">
 		<parameter name="default_view" type="string" caption="Отображение товаров по умолчанию" default="плитка">
 			<value>плитка</value>
 			<value>список</value>
@@ -245,12 +246,12 @@
 	</item>
 
 
-	<item name="plain_catalog" caption="Склады товаров" children-per-page="30" children-sorting="DESC" ag-id="2110" ag-hash="-1742571868">
+	<item name="plain_catalog" caption="Склады товаров" children-per-page="30" children-sorting="DESC" ag-id="1836" ag-hash="-1742571868">
 		<child item="plain_section"/>
 	</item>
 
 
-	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="2111" ag-hash="-328034960">
+	<item name="plain_section" caption="Поставщик" key="name date" children-per-page="50" children-sorting="ASC" ag-id="1837" ag-hash="-328034960">
 		<parameter name="name" type="string" caption="Название"/>
 		<parameter name="date" type="date" caption="Дата"/>
 		<parameter name="thread" type="string" caption="Поток"/>
@@ -417,7 +418,7 @@
 	</item>
 
 	<!-- Настройки для одного склада (plain_catalog) -->
-	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="2112" ag-hash="2102484771">
+	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="1838" ag-hash="2102484771">
 		<parameter name="name" type="string" caption="Название поставщика" />
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию" default="14"/>
@@ -435,7 +436,7 @@
 	</item>
 
 	<!-- Настройки интегрируемых складов (plain_catalog) -->
-	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="2113" ag-hash="752518576">
+	<item name="price_catalogs" caption="Настройки поставщиков" ag-id="1839" ag-hash="752518576">
 		<parameter name="product_code_extra" type="string" caption="Код товара с названием поставщика" description="надо ли добавлять к коду товара код поставщика" default="да">
 			<value>да</value>
 			<value>нет</value>
@@ -445,12 +446,12 @@
 
 
 	<!-- Каталог аналогов -->
-	<item name="analogs" caption="Каталог аналогов" children-per-page="50" ag-id="2115" ag-hash="-864340605">
+	<item name="analogs" caption="Каталог аналогов" children-per-page="50" ag-id="1841" ag-hash="-864340605">
 		<child item="analog"/>
 	</item>
 
 	<!-- Одна группа аналогов -->
-	<item name="analog" caption="Аналоги" key="name" ag-id="2116" ag-hash="-1413355280">
+	<item name="analog" caption="Аналоги" key="name" ag-id="1842" ag-hash="-1413355280">
 		<parameter name="name" caption="Название" type="string" description="Для наглядности"/>
 		<parameter name="set" type="string" caption="Список аналогов" description="добавляются аналоги по одному" multiple="true"/>
 	</item>
@@ -599,6 +600,7 @@
 		<parameter name="left" type="short-text" caption="Заказ и консультация" description="под каталогом"/>
 		<parameter name="link_text" type="string" caption="Текст ссылки на акцию" description="выводится слева под каталогом"/>
 		<parameter name="link_link" type="string" caption="Ссылка на акцию" description="начиная с http://"/>
+		<parameter name="phone_link" type="string" caption="Ссылка на иконке телефона" description="можно писать tel:..."/>
 		<parameter name="google_verification" type="string" caption="google verification code"/>
 		<parameter name="yandex_verification" type="string" caption="yandex verification code"/>
 		<child item="delivery" single="true"/>

@@ -5,6 +5,8 @@
 
 	<xsl:variable name="title" select="'Ваш заказ'" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+    <xsl:variable name="message" select="page/variables/message"/>
+	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -12,6 +14,21 @@
 
 
 	<xsl:template name="CONTENT">
+        <xsl:if test="$message and not($success)">
+            <div class="alert alert_danger">
+                <div class="alert__title">Ошибка.</div>
+                <div class="alert__text">
+                    <p><xsl:value-of select="$message"/>.</p>
+                </div>
+            </div>
+        </xsl:if>
+        <xsl:if test="$message and $success">
+            <div class="alert alert_success">
+                <div class="alert__text">
+                    <p><xsl:value-of select="$message"/></p>
+                </div>
+            </div>
+        </xsl:if>
 		<div class="cart-list">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
@@ -51,7 +68,7 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else $step_default}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
@@ -106,36 +123,38 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
+			var isValid = true;
 			$(".qty-input").change(function(){
 
 				if(typeof recalcTo != "undefined"){
 					clearTimeout(recalcTo);
 				}
 
-				$t = $(this);
-				if($t.val() != $t.attr("data-old") &amp; validate($t.val())){
+				var t = $(this);
+				isValid = t[0].checkValidity();
+
+				if(t.val() != t.attr("data-old") &amp;&amp; isValid){
+					t.popover('hide');
 
 					var $form = $(this).closest('form');
 					var func = function(){
 					$form.attr("action", '<xsl:value-of select="page/recalculate_link"/>');
 						//$form.submit();
-						postForm($form,'v', function(){ $t.attr("data-old", $t.val()); });
+						postForm($form,'v', function(){ t.attr("data-old", t.val()); });
 					};
 
 					recalcTo = setTimeout(func, 500);
 
-				} else if(!validate($t.val())){
-					if(validate($t.attr("data-old"))){
-						$t.val($t.attr("data-old"));
-					}else{
-						$t.val("1");
-					}
+				} else {
+			        t.popover({
+			            placement:'bottom',
+			            trigger:'manual',
+			            html:true,
+			            content:'<div style="background-color: #FFDDDD; width: 60px;">max ' + t.attr('max') + '</div>'
+			        });
+			        t.popover('show');
 				}
 			});
-
-			function validate(val){
-				return parseFloat(val) &gt; 0;
-			}
 		</script>
 	</xsl:template>
 
