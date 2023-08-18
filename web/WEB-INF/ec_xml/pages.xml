@@ -1641,7 +1641,7 @@
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
 		<link name="user_exists" target="register">
-			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+			<var name="message" value="Ошибка! Пользователь с таким почтовым ящиком уже существует. Введите, пожалуйста, другой почтовый ящик."/>
 		</link>
 		<link name="success" target="register">
 			<var name="message" value="Успешно! Ваш запрос передан специалисту, ожидайте ответ на указанную вами почту."/>
@@ -1667,7 +1667,7 @@
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
 		</link>
 		<link name="user_exists_personal" target="personal">
-			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
+			<var name="message" value="Ошибка! Пользователь с таким почтовым ящиком уже существует. Введите, пожалуйста, другой почтовый ящик."/>
 		</link>
 		<command class="extra.JustEmailRegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>

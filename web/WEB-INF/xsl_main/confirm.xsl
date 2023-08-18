@@ -107,7 +107,6 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<xsl:if test="$cart/bought/item_own_extras" ><td></td></xsl:if>
 						<td><xsl:value-of select="$cart/sum"/></td>
 					</tr>
 				</table>

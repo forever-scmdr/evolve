@@ -227,6 +227,17 @@
 								<a href="#" popup="modal-excel">Загрузка BOM</a>
 							</xsl:if>
 						</xsl:if>
+						<xsl:if test="$has_search and not($is_user_registered)">
+							<form>
+								<input class="input header-search__input"
+								   min-size="3" id="q-ipt" type="text"
+								   placeholder="Введите поисковый запрос" autocomplete="off" autofocus="" onclick="$('#modal-register').show('fade', 100);"/>
+								<button class="button header-search__button" type="submit" onclick="$('#modal-register').show('fade', 100); return false;">Найти</button>
+							</form>
+							<xsl:if test="$has_bom_search">
+								<a href="#" popup="modal-register">Загрузка BOM</a>
+							</xsl:if>
+						</xsl:if>
 					</div>
 					<!-- need styles -->
 					<xsl:if test="$has_currency_rates and $currencies">
@@ -960,6 +971,22 @@
 									<label for="file" class="upload" style="padding: 7px; font-size: small;">Загрузить Excel-файл с компьютера</label>
 									<input type="submit" value="Найти" />
 								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--  Сообщение о регистрации -->
+				<div class="popup" role="dialog" id="modal-register" style="display: none">
+					<div class="modal-dialog modal-md" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close popup__close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Х</span></button>
+								<div class="modal-title h4">Пройдите регистрацию или авторизуйтесь</div>
+							</div>
+							<div class="modal-body">
+								<p>После этого вы получите доступ к полному функционалу сайта. На первый заказ скидка 3%.</p>
+								<p style="padding-top: 15px; padding-bottom: 8px;"><a href="{page/register_link}">Перейти к регистрации</a></p>
 							</div>
 						</div>
 					</div>

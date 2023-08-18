@@ -88,7 +88,8 @@
 						<div class="form__item">
 							<label class="form-label" for="formid">Пароль:</label>
 							<input class="input form__element" type="text" id="formid"
-								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
+								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"
+								   style="{'border-color: red; border-width: 2px'[$inp/password/@validation-error]}"/>
 						</div>
 						<div class="form__proceed">
 							<input type="submit" class="button button_size_lg" value="Отправить анкету"/>
@@ -112,7 +113,8 @@
 						<div class="form__item">
 							<label class="form-label" for="formid">Пароль:</label>
 							<input class="input form__element" type="text" id="formid"
-								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
+								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"
+								   style="{'border-color: red; border-width: 2px'[$inp/password/@validation-error]}"/>
 						</div>
 						<div class="form__proceed">
 							<input type="submit" class="button button_size_lg" value="Отправить анкету"/>
