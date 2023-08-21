@@ -1320,12 +1320,6 @@
 		<request>
 			<var name="message"/>
 		</request>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="customer_phys"/>
-		</new>
-		<new item="user_jur" id="user_jur">
-			<parameter-input ref="user_jur" form="customer_jur"/>
-		</new>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1336,7 +1330,14 @@
 					</list>
 				</list>
 			</single>
+			<single item="user_jur" id="jur" tag="jur"/>
 		</session>
+		<new item="user_phys" id="user_phys">
+			<parameter-input ref="user_phys" form="customer_phys"/>
+		</new>
+		<new item="user_jur" id="user_jur">
+			<parameter-input ref="user_jur" form="customer_jur"/>
+		</new>
 <!--		<list item="product" tag="product" id="prod">-->
 <!--			<filter>-->
 <!--				<parameter name="code" compare="SOME" sign="=">-->
