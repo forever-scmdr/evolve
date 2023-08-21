@@ -1,0 +1,684 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Экопресс тест</title>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" type="text/javascript"></script>
+	<style type="text/css">
+		*{font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;}
+		body{background: #ccc; margin: 0; padding: 0;}
+		.mainwrap{padding: 40px 20px; background: #fff; width: 1200px; margin: 0 auto;}
+		h1{margin-top: 0;}
+		.bug-descr{color: #656565;}
+		.currency-input{border-collapse: collapse;}
+		.currency-input, .currency-input *{ font-family: Arial; font-size: 15px;}
+		.currency-input td, .currency-input th{border: 1px solid #ccc; }
+		.currency-input td.bank,
+		.currency-input td.branch,
+		.currency-input th{padding: 5px 10px;}
+		.currency-input td{vertical-align: top;}
+		.currency-input tbody tr:nth-of-type(2n){background: #ebebeb;}
+		.currency-input td.branch{padding-left: 25px;}
+		.currency-input td input{padding: 3px; width: 50px; display: block; border: 1px solid #ccc; margin: 5px auto;}
+		.currency-input td input.bad{border: 2px solid red;}
+		.currency-input td input.date{width: 80px;}
+		.currency-input td input.time{width: 60px; text-align: center;}
+		.currency-input td input.user-defined{background: #ccc;}
+		.currency-input tr.selected{background: #4285F4 !important;}
+		.currency-input td.selected{background: #4862A3;}
+		.currency-input a.submit{display: block; margin: 5px; padding: 5px; background: #3FCD81; color: #fff; text-decoration: none;}
+		.insertOn{background: #FEECBC;}
+	</style>
+</head>
+<body>
+<div class="page">
+	<div class="mainwrap">
+		<h1>Таблица ввода курсов валют</h1>
+		<div class="bug-descr">
+			<p>Это <strong>прототип</strong>. Его единственное предназначение - продемонстрировать меру моего понимания ТЗ и тот факт, что я могу сделать таблицу с управлением с клавиатуры. Конечно, он ничего никуда не отправляет. :)</p>
+			<p>Если стобцы рассатвлены не в том порядке, их меньше или больше чем нужно или еше что-то в этом роде - не беда. Просто пришлите таблицу в ворде. Мы оформиим её как приложение к ТЗ и сделаетм всё, как там.<br />Секунды в колонке "время" для наглядности. Проверял в хроме и фаерфоксе.<br />Что релаоизовано:</p>
+			<ol>
+				<li>Преключение кнопкой TAB</li>
+				<li>Переключене кнопками<span style="color: #000000;"> <strong>&darr;&uarr;</strong></span></li>
+				<li>Построчное копирование из таблийц Microsoft Office</li>
+				<li>Режим замены</li>
+				<li>"Сохранение" по нажатию кнопки ввод</li>
+				<li>Проверка введенных значенй перед отправкой</li>
+				<li>В поле ввода курса валют можно ввести только точки и цифры.</li>
+			</ol>
+		</div>
+		<hr/>
+		<table class="currency-input" id="currency-inputs">
+			<thead>
+			<tr>
+				<th rowspan="2">Отделение</th>
+				<th colspan="2">USD</th>
+				<th colspan="2">EUR</th>
+				<th colspan="2">RUR</th>
+				<th colspan="2">PLZ</th>
+				<th rowspan="2">Время</th>
+				<th rowspan="2">Дата</th>
+				<th rowspan="2"></th>
+			</tr>
+			<tr>
+				<th>прод. USD</th>
+				<th>пок. USD</th>
+				<th>прод. EUR</th>
+				<th>пок. EUR</th>
+				<th>прод. RUR</th>
+				<th>пок. RUR</th>
+				<th>прод. PLZ</th>
+				<th>пок. PLZ</th>
+				
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td class="bank">Приорбанк</td>
+				
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:56" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="11.11.2011" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+			</tr>
+			<tr>
+				<td class="branch">Приорбанк филиал 1</td>
+				
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:23" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="11.11.2011" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+				
+			</tr>
+			<tr>
+				<td class="branch">Приорбанк филиал 2</td>
+				
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:11" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="17.11.2011" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+			
+			</tr>
+			<tr>
+				<td class="branch">Приорбанк филиал 3</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:34" placeholder="время" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="15.12.2016" placeholder="дата" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+				
+			</tr>
+			<tr>
+				<td class="bank">Белагропромбанк</td>
+				
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:34" placeholder="время" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="15.12.2016" placeholder="дата" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+			</tr>
+			<tr>
+				<td class="branch">Белагропромбанк филиал 1</td>
+				
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" placeholder="продажа" value="11.234" class="toCopy rate"/>
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy rate" value="11.234" placeholder="покупка" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy time" value="11:34" placeholder="время" />
+						</label>
+					</td>
+					<td>
+						<label>
+							<input type="text" class="toCopy date" value="15.12.2016" placeholder="дата" />
+						</label>
+					</td>
+					<td>
+						<form action="x" method="post" name="xx" class="checkRegexp">
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<input type="hidden" name="q" />
+							<a href="#" class="submit" title="опубилковать">OK</a>
+						</form>
+					</td>
+				
+			</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).on('paste', 'input', function(e)
+	{
+		v = $(e.currentTarget).val();
+		bufferContent = e.originalEvent.clipboardData.getData('Text');
+		if(bufferContent.indexOf("\t")>0){
+			e.preventDefault();
+			arr = bufferContent.split("\t");
+			t = $(e.currentTarget);
+			td = t.closest("td");
+			nextIpts = td.nextAll("td").find("input.toCopy");
+			t.val(arr[0]);
+			for (var i = 1; i < arr.length; i++) {
+				nextIpts.eq(i-1).val(arr[i]);
+			}
+		}
+	});
+	$(document).on("keydown", "#currency-inputs", function(e){
+		//alert(e.keyCode);
+		if(e.ctrlKey){return;}
+		switch(e.keyCode){
+			//TAB
+			case 9 : 
+			setTimeout(function(){
+				currentIpT = $("#currency-inputs").find("input:focus");
+				td = currentIpT.closest("td");
+				tr = currentIpT.closest("tr");
+				$("#currency-inputs").find(".selected").removeClass("selected");
+				tr.addClass("selected");
+				td.addClass("selected");
+			}, 0);
+			break;
+			//DOWN
+			case 40 :
+				tr = $("#currency-inputs").find("tr.selected").next("tbody tr");
+				if(tr.length == 0){break;}
+				$("#currency-inputs").find(".selected").removeClass("selected");
+				tr.addClass("selected");
+				tr.find("input:eq(0)").focus();
+				tr.find("td:eq(1)").addClass("selected");
+			break;
+			//UP
+			case 38 :
+				tr = $("#currency-inputs").find("tr.selected").prev("tbody tr");
+				if(tr.length == 0){break;}
+				$("#currency-inputs").find(".selected").removeClass("selected");
+				tr.addClass("selected");
+				tr.find("input:eq(0)").focus();
+				tr.find("td:eq(1)").addClass("selected");;
+			break;
+			//ENTER
+			case 13: $("tr.selected").find(".submit").trigger("click");break;
+			case 45: 
+				ipts = $("#currency-inputs").find("input");
+				ipts.toggleClass("insertOn");
+				ipts.each(function(i){
+					v = $(this).val();
+					$(this).data("old-val", v);
+				});
+			break;
+			//CHARS
+			default:
+				trgt = $(e.target);
+				char = e.key;
+				
+				if(char.length > 1)return;
+			
+				nd = (trgt.is(".time"))? ":": ".";
+				//alert(char);
+				if(char != nd && isNaN(char)){
+					//idx = getCaretPosition(e.target);
+					e.preventDefault();
+					//trgt.val(trgt.val().replace(char,""));
+					//moveCaretPosition(e.target, idx);
+					break;
+				}
+				if(trgt.is(".insertOn")){
+					e.preventDefault();
+					idx = getCaretPosition(e.target);
+					ov = trgt.data("old-val").split("");
+					ov[idx] = char;
+					x = "";
+					for(i=0; i<ov.length; i++){
+						x += ov[i];
+					}
+					trgt.data("old-val", x);
+					trgt.val(x);
+					moveCaretPosition(e.target, idx+1);
+				}
+				if(trgt.is(".time") || trgt.is(".date")){
+					trgt.addClass("user-defined");
+				}
+			break;
+		}
+	});
+	$(document).on("click", "#currency-inputs", function(e){
+		t = $(e.target);
+		if(t.is("input")){
+			$("#currency-inputs").find(".selected").removeClass("selected");
+			//t.addClass("selected");
+			t.closest("tr").addClass("selected");
+			t.closest("td").addClass("selected");
+		}
+		else if(t.is(".submit")){
+			e.preventDefault();
+			f = $(t).closest("form");
+			ipt = $(t).closest("tr").find("input.toCopy");
+			ipt.each(function(i){
+				f.find("input:eq("+i+")").val($(this).val());
+			});
+			f.submit();
+		}
+	});
+	$(document).on("change", "input[type='text']", function(e){
+		v = $(this).val();
+		v = v.replace(",",".");
+		$(this).val(v);
+	});
+	$(document).on("focus", "input", function(e){
+		currentIpT = $(this);
+		td = currentIpT.closest("td");
+		tr = currentIpT.closest("tr");
+		$("#currency-inputs").find(".selected").removeClass("selected");
+		tr.addClass("selected");
+		td.addClass("selected");
+		
+	});
+	$(document).on("blur","input", function(e){
+		$(this).removeClass("bad");
+	});
+	$(".checkRegexp").submit(function(e){
+		var re = /\-?\d+(\.\d{0,})?/;
+		ok = true;
+		for(i = 0; i< $(this).find("input").length; i++){
+
+			ipt = $(this).closest("tr").find(".toCopy").eq(i);
+			v = ipt.val();
+				if(ipt.is(".rate") && (!re.test(v) || v.length != 5)){
+					ipt.addClass("bad");
+					ok = false;
+				}
+			}
+			if(!ok){
+				e.preventDefault();
+				alert("Некоторые курсы введены с ошибками!");
+			}
+			else{
+				e.preventDefault();
+				alert("Данные на сайте обновлены");
+				$(".time").removeClass("user-defined");
+			}
+	});
+
+	function getCaretPosition(input){
+		var CaretPos = 0;
+		if(document.selection){
+			input.focus();
+			var Sel = document.selection.createRange();
+			Sel.moveStart ('character', -input.value.length);
+			CaretPos = Sel.text.length;
+		}
+		else if (input.selectionStart || input.selectionStart == '0'){
+			CaretPos = input.selectionStart;
+		}
+		return CaretPos;
+	}
+	function moveCaretPosition(input, idx){
+		input.focus();
+		input.selectionStart = idx;
+	}
+	$(document).ready(function(){
+		setInterval(function(){
+			d = new Date();
+			h = d.getHours();
+			m = d.getMinutes();
+			s = d.getSeconds();
+			m = (m<10)? '0'+m:m;
+			s = (s<10)? '0'+s:s;
+			dt = (d.getDate()<10)? "0"+d.getDate():d.getDate();
+			mn = (d.getMonth()+1<10)? "0"+(d.getMonth()+1):d.getMonth()+1;
+			$(".time").not(".user-defined, :focus").val(h+":"+m+":"+s);
+			$(".date").not(".user-defined, :focus").val(dt+"."+mn+"."+d.getFullYear());
+		},500);
+	});
+</script>
+</body>
+</html>

@@ -1347,6 +1347,12 @@
 
 
 	<page name="order_email" template="order_email">
+        <usergroup name="0dmin">
+            <list item="optional_modules" cacheable="true">
+                <list item="module"/>
+            </list>
+        </usergroup>
+		<single item="currencies" cacheable="true"/>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1390,6 +1396,12 @@
 			<var name="currency" />
 			<var name="url_base" value="https://belchip.by" />
 		</request>
+        <usergroup name="0dmin">
+            <list item="optional_modules" cacheable="true">
+                <list item="module"/>
+            </list>
+        </usergroup>
+		<single item="currencies" cacheable="true"/>
 		<list item="payment"/>
 		<session>
 			<list item="user" tag="registration"/>

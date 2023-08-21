@@ -1,0 +1,277 @@
+/*
+**	Author: Vladimir Shevchenko
+**	Author URI: http://www.howtomake.com.ua
+**	Description: Стилизация элементов формы с помощью CSS и jQuery
+*/
+
+/*	=	общие стили 
+body { padding: 0 4em 4em; margin: 0; font: 13px/1.8 Helvetica; color: #444; }
+a { text-decoration: none; }
+#main { width: 75%; font-size: 18px; }
+#main h1 { font: 2em Helvetica; margin: 20px 0 10px 0; padding-bottom: 5px; border-bottom: 2px solid #444444; }
+#main h2 { font-size: 18px; font-weight: normal; margin: 10px 0 0 0; }
+*/
+/* Sprite */
+.radio, .drop li, .slct, .check {
+	background: url(sprite.png) 0 0 no-repeat;
+}
+
+/* Form */
+.customForm {
+	color: #444444;
+	width: 320px;
+	margin: 2em auto;
+	font: 13px/1.8 Helvetica;
+}
+.customForm input, .customForm textarea {
+	font: 13px Helvetica;
+}
+
+/* = Input */
+ input {
+	width: 300px;
+	font-size: 13px;
+	padding: 6px 0 4px 10px;
+	border: 1px solid #cecece;
+	background: #F6F6f6;
+	border-radius: 5px;
+}
+ textarea {
+	display: block;
+	/* = Убираем скролл */
+	overflow: auto;
+	
+	/* = Убираем увеличение */
+	resize: none;
+	width: 300px;
+	height: 50px;
+	
+	/* = Добавим фон, рамку, отступ */
+	background: #f6f6f6;
+	border: 1px solid #cecece;
+	border-radius: 5px 0 0 0;
+	padding: 8px 0 8px 10px;
+}
+/* = Переключатели Radio Button */
+.radio {
+	display: block;
+	height: 25px;
+	background-position: 0 -56px;
+	coloR: #444;
+	cursor: pointer;
+	text-indent: 22px;
+	font-size: 13px;
+}
+.radio.active {
+	background-position: 0 -86px;
+}
+.radio.error {
+	border-color: #ff0000;
+}
+
+/*	=	CheckBox */
+/* Стилизируем чекбокс, точнее скрываем его */
+.check input[type=checkbox] {
+	position: absolute;
+	left: -10000px;
+}
+.check {
+	background-position: 0 3px;
+	padding-left: 25px;
+	cursor: pointer;
+	position: relative;
+}
+.check.active {
+	background-position: 0 -27px;
+}
+
+/*	=	Select */
+.slct {
+	display: block;
+	border-radius: 5px;
+	border: 1px solid #cecece;
+	background-color: #F6F6f6;
+	width: 285px;
+	padding: 4px 15px 4px 10px;
+	color: #444;
+	background-position: 290px -145px;
+	
+	/*
+		Супер финт обрезаем текст
+		чтобы не вылезал за рамку
+	*/
+	overflow: hidden;
+	white-space:nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;	
+	
+}
+.slct.active {
+	border-radius: 5px 5px 0 0;
+	border-bottom: none;
+}
+.drop {
+	margin: 0;
+	padding: 0;
+	width: 310px;
+	/*border: 1px solid #cecece;
+	border-top: none;
+	display: none;*/
+	/*position: absolute;*/
+	background: #fff;
+}
+.drop li {
+	list-style: none;
+	border-top: 1px dotted #e8e8e8;
+	cursor: pointer;
+	display: block;
+	color: #444;
+	padding: 4px 15px 4px 25px;
+	background-position: 10px -119px;
+}
+.drop li:hover {
+	background-color: #e8e8e8;
+	color: #222;
+}
+
+/*	=	File Load */
+/* Стили для контейнера */
+.file-load-block {
+	width: 112px;
+	height: 137px;
+	/*overflow: hidden;*/
+	position: relative;
+}
+.file-load-block::after{
+	display: block;
+	position: absolute;
+	z-index: 1;
+	border: .5px dashed #707070;
+	width: 111px;
+	height: 100px;
+	border-radius: 4px;
+	background: #ebebeb;
+	text-align: center;
+	content: '+'; 
+	bottom: 0;
+	font-size: 50px;
+	font-weight: bold;
+	line-height: 100px;
+	color: gray;
+}
+.file-load-block.upload::after{
+	background-color: pink;
+}
+.file-load-block.url::after{
+	background-color: #ccc;
+}
+.file-load-block .text_ipt{display: none;}
+.file-load-block .text{z-index: 1; display: block; bottom: 10px; position: absolute; text-align: center; width: 112px;}
+/* работаем с инпутом который конкретно file */
+.file-load-block input[type=file] {
+	/* делаем кроссбраузерную прозрачность */
+	opacity: 0;
+	filter: alpha(opacity=0); 
+	/* Позиционируем абсолютно отсносительно контейнера по правому краю */
+	position: absolute;
+	top: 33px;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	/* 
+	Задаем высоту и делаем шрифт огромным 
+	для того чтобы кнопка "обзор" занимала все пространство контейнера
+	*/
+	font-size: 0;
+	/* Ставим наш инпут поверх всего содержимого */
+	z-index: 2;
+	cursor: pointer;
+	width: auto;
+	display: block;
+	width: 112px;
+	background: red;
+	padding: 0;
+}
+/* Стилизируем инпут и кнопку которые под загрузчиком */
+.file-load-block input[type=text] {
+	z-index: 1;
+	width: 91px;
+	padding-right: 10px;
+	white-space:nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;	
+}
+.file-load-block button {
+	position: absolute;
+	right: 0;
+	top: 2px;
+	width: 90px;
+	height: 28px;
+	border: 1px solid #ccc;
+	background: #fff;
+	color: #666;
+	border-radius: 5px;
+	box-shadow: inset 0 2px 2px #ccc; 
+}
+.file-load-block .button-hover {
+	box-shadow: 0 0 2px #ccc;
+}
+
+/*	=	Reset Form */
+.reset-form button {
+	width: 90px;
+	height: 28px;
+	border: 1px solid #ccc;
+	background: #fff;
+	color: #666;
+	border-radius: 5px;
+	box-shadow: inset 0 2px 2px #ccc;
+	cursor: pointer;
+}
+.reset-form button:hover {
+	box-shadow: 0 0 2px #ccc;
+}
+.reset-form button:active {
+	margin-top: 1px;
+	margin-bottom: -1px;
+	zoom: 1;
+}
+
+/*	=	Form Send */
+.sendmail button {
+	width: 90px;
+	height: 28px;
+	border: 1px solid #ccc;
+	background: #fff;
+	color: #666;
+	border-radius: 5px;
+	box-shadow: inset 0 2px 2px #ccc;
+	cursor: pointer;
+}
+.sendmail button:hover {
+	box-shadow: 0 0 2px #ccc;
+}
+.sendmail button:active {
+	margin-top: 1px;
+	margin-bottom: -1px;
+	zoom: 1;
+}
+
+
+
+
+
+/*================================
+	Стили "HowToMake" для header'а
+================================*/
+
+header { display: block; position: relative; margin: 0 -4em; background: #f9f9f9; }		
+.back { font:normal 3em 'Agency FB'; color: #0074A3; position:absolute; top: 10px; right: 10%;}
+.back:hover {text-decoration: underline;}
+h1 {margin: 0 0 0 2em;}
+h1 a { display: inline-block; font: normal 3em 'Agency FB'; text-decoration: none; }
+.how { color: #990000; }
+.to { color: #0074A3; }
+.make { color: #006600; }
+.demo { font: normal 2em 'Agency FB';}
+.clear { clear: borth; margin-top: -1px; height: 1px;}

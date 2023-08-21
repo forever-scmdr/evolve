@@ -427,7 +427,7 @@
 								</xsl:choose>
 							</xsl:variable>
 
-							<div class="banner-sections">
+							<div class="banner-sections" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
 								<div class="banner-sections__image img">
 									<img src="{$pic}" onerror="{$onerror}" />
 								</div>
@@ -523,7 +523,7 @@
 						<!-- добавляется ссылка (тег a href=...) перед блоком и закрывается после блока -->
 						<xsl:variable name="has_link" select="link and not(link = '')"/>
 						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;a href=</xsl:text><xsl:value-of select="link" /><xsl:text disable-output-escaping="yes">&gt;</xsl:text></xsl:if>
-						<div class="banner-gift">
+						<div class="banner-gift" style="transform: perspective(500px) rotateX(0deg) rotateY(0deg);">
 							<div class="banner-gift__image"><img src="{@path}{image}" alt="" /></div>
 							<div class="banner-gift__title"><xsl:value-of select="header" /></div>
 							<div class="banner-gift__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
@@ -568,7 +568,7 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
-		<div class="block sections-block ptb">
+		<div class="block sections-block ptb" data-aos="fade-up">
 			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 <!--				<div class="icons-block__wrap">-->
