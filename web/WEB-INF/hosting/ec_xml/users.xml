@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<authority>
+<groups>
+	<group name="common"/>
+	<group name="registered"/>
+	<group name="0dmin"/>
+</groups>
+<users>
+	<user name="admin" password="eeee" description="Мега админ">
+		<group name="common" role="admin"/>
+		<group name="registered" role="admin"/>
+	</user>
+
+	<user name="0dmin" password="eeee" description="Мега админ">
+		<group name="0dmin" role="admin"/>
+	</user>
+</users>
+</authority>
