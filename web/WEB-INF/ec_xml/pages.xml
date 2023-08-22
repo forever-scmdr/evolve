@@ -543,7 +543,8 @@
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="prod" ref="assoc"/>
 			</link>
-		</list>		<list item="product" tag="grouped" id="grouped">
+		</list>
+		<list item="product" tag="grouped" id="grouped">
 			<filter>
 				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
 			</filter>
@@ -1248,6 +1249,9 @@
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<command class="extra.CartManageCommand" method="restoreFromCookie"/>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<session>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
@@ -1257,6 +1261,7 @@
 								<var name="prod" ref="parent" style="key"/>
 							</link>
 						</single>
+						<ancestor item="plain_section" transit="false"/>
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
