@@ -147,9 +147,6 @@
 		<link name="my_price_link" target="my_price_ajax">
 			<var name="prod" ref="$prod"/>
 		</link>
-		<link name="api_ajax_link" target="search_api_ajax">
-			<var name="q" ref="$prod" parameter="name"/>
-		</link>
 		<list item="params"/>
 	</include-definition>
 
@@ -720,7 +717,6 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
 		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
 			<result name="analogs" type="inline_xml"/>
@@ -738,11 +734,6 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<command class="extra.SearchApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
 		<include name="SEARCH_COMMON" replace="$pname:search"/>
 		<include name="COMMON"/>
 	</page>
@@ -754,7 +745,6 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -771,11 +761,6 @@
 		</list>
 		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
 			<result name="analogs" type="inline_xml"/>
-		</command>
-		<command class="extra.SearchApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
 		</command>
 		<include name="SEARCH_COMMON" replace="$pname:admin_search"/>
 		<include name="COMMON"/>
@@ -870,7 +855,6 @@
 		<request>
 			<var name="q"/>
 			<var name="n"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
 		</request>
 		<list item="product" id="prod">
 			<filter>
@@ -879,11 +863,6 @@
 				</fulltext>
 			</filter>
 		</list>
-		<command class="extra.SearchApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
 		<include name="COMMON"/>
 	</page>
 
@@ -2250,102 +2229,6 @@
 		</command>
 	</page>
 
-
-
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--/////////////                      		 	API         		   	               ////////////-->
-	<!--/////////////                                                                      ////////////-->
-	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-	<page name="api_proxy">
-		<headers Content-Type="text/plain"/>
-		<request>
-			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
-			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
-			<var name="token_header" value="Authorization"/>
-		</request>
-		<command class="extra.ApiProxyCommand">
-			<result name="success" type="plain_text"/>
-		</command>
-	</page>
-
-	<!-- Страница для получения JSON в виде XML -->
-	<page name="api_xml">
-		<headers Content-Type="text/plain"/>
-		<request>
-			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
-			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
-			<var name="token_header" value="Authorization"/>
-			<var name="root_element" value="provider"/>
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, packquantity:step, leadtimedays:next_delivery"/>
-		</request>
-		<command class="extra.ApiJsonToXMLCommand">
-			<result name="success" type="plain_text"/>
-			<result name="error" type="plain_text"/>
-		</command>
-	</page>
-
-	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
-	<page name="search_api">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
-		</request>
-		<command class="extra.SearchApiCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
-
-
-	<!-- Страница поиска для efind -->
-	<page name="efind" template="efind">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
-		</request>
-		<command class="extra.SearchApiCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
-
-
-	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
-	<page name="search_api_ajax" template="search_api_ajax">
-		<!--		<headers Content-Type="text/xml"/>-->
-		<request>
-			<var name="q"/>
-			<var name="server" value="http://test.must.by/api_xml"/>
-		</request>
-		<command class="extra.SearchApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-	<page name="update_order_status" schedule="">
-		<request>
-			<var name="status_dir" value="integrate_status"/>
-		</request>
-		<command class="extra.UpdateOrderStatusByJson"/>
-	</page>
 
 
 </site>

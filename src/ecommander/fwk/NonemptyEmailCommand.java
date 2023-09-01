@@ -158,7 +158,11 @@ public class NonemptyEmailCommand extends Command {
 			}
 			// Отправка письма
 			topic = StringUtils.isBlank(postForm.getSingleStringExtra("topic"))? topic : postForm.getSingleStringExtra("topic");
-			EmailUtils.sendGmailDefault(emailTo, topic, mp);
+			// Если ящики идут через запятую
+			String[] emailTos = StringUtils.split(emailTo, ", ");
+			for (String to : emailTos) {
+				EmailUtils.sendGmailDefault(to, topic, mp);
+			}
 		} catch (Exception e) {
 			try {
 				saveSessionForm(formNameStr);
