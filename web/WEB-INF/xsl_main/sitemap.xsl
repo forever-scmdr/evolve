@@ -29,20 +29,19 @@
             <xsl:for-each select="page/news">
                 <url>
                     <loc>
-                        <xsl:value-of select="concat($base, '/', show_page)"/>
+                        <xsl:value-of select="concat($base, show_page)"/>
                     </loc>
                     <changefreq>daily</changefreq>
                     <priority>0.70</priority>
                 </url>
             </xsl:for-each>
-            <url>
-                <loc>
-                    <xsl:value-of select="concat($base, '/', page/contacts_link)"/>
-                </loc>
-                <changefreq>monthly</changefreq>
-                <priority>0.70</priority>
-            </url>
+            <xsl:text disable-output-escaping="yes">&lt;!--
+            </xsl:text>SECTIONS<xsl:text disable-output-escaping="yes">
+            --&gt;</xsl:text>
             <xsl:apply-templates select="page/catalog/section"/>
+            <xsl:text disable-output-escaping="yes">&lt;!--
+            </xsl:text>CUSTOM AND NEWS<xsl:text disable-output-escaping="yes">
+            --&gt;</xsl:text>
             <xsl:for-each select="page/custom_page">
                 <url>
                     <loc>
@@ -68,7 +67,7 @@
         <xsl:if test="section">
             <url>
                 <loc>
-                    <xsl:value-of select="concat($base, '/', show_section)"/>
+                    <xsl:value-of select="concat($base, show_products)"/>
                 </loc>
                 <changefreq>daily</changefreq>
                 <priority>0.80</priority>

@@ -1926,12 +1926,12 @@
 			</tree>
 		</single>
 
-			<list item="custom_page" id="custom_page" cacheable="false">
-				<link name="show_page" target="page" type="exclusive">
-					<var name="p" ref="custom_page" style="key"/>
-				</link>
-			</list>
-			<list item="news" id="news" cacheable="false">
+		<list item="custom_page" id="custom_page" cacheable="false">
+			<link name="show_page" target="page" type="exclusive">
+				<var name="p" ref="custom_page" style="key"/>
+			</link>
+		</list>
+		<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
