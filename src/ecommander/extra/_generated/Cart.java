@@ -16,8 +16,6 @@ public class Cart
     public final static String SUM = "sum";
     public final static String SUM_DISCOUNT = "sum_discount";
     public final static String PROCESSED = "processed";
-    public final static String EXTRA_SUM_STR = "extra_sum_str";
-    public final static String EXTRA_DATE_STR = "extra_date_str";
 
     private Cart(Item item) {
         super(item);
@@ -140,38 +138,6 @@ public class Cart
 
     public boolean contains_processed(Byte value) {
         return containsValue("processed", value);
-    }
-
-    public void set_extra_sum_str(String value) {
-        setValue("extra_sum_str", value);
-    }
-
-    public String get_extra_sum_str() {
-        return getStringValue("extra_sum_str");
-    }
-
-    public String getDefault_extra_sum_str(String defaultVal) {
-        return getStringValue("extra_sum_str", defaultVal);
-    }
-
-    public boolean contains_extra_sum_str(String value) {
-        return containsValue("extra_sum_str", value);
-    }
-
-    public void set_extra_date_str(String value) {
-        setValue("extra_date_str", value);
-    }
-
-    public String get_extra_date_str() {
-        return getStringValue("extra_date_str");
-    }
-
-    public String getDefault_extra_date_str(String defaultVal) {
-        return getStringValue("extra_date_str", defaultVal);
-    }
-
-    public boolean contains_extra_date_str(String value) {
-        return containsValue("extra_date_str", value);
     }
 
 }

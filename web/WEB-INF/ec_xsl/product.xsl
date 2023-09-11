@@ -70,8 +70,8 @@
 		</p>
 		<div class="catalog-item-container">
 			<div class="gallery">
-				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="native" data-width="100%">
-					<xsl:for-each select="$p/gallery">
+				<div class="fotorama" data-nav="thumbs" data-thumbheight="80" data-thumbwidth="80" data-allowfullscreen="native" data-width="100%" data-maxwidth="340">
+					<xsl:for-each select="distinct-values($p/gallery)">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<xsl:if test="not($p/gallery)">
@@ -153,7 +153,7 @@
 							</div>
 						</div>
 						<xsl:choose>
-							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <span style="color:#8c8297; padding-left: .55rem;">Обновлено: <xsl:value-of select="f:utc_millis_to_bel_date(page/catalog[1]/date/@millis)"/></span></div></xsl:when>
+							<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии <span style="color:#8c8297; padding-left: .55rem;">Обновлено: <xsl:value-of select="substring(f:utc_millis_to_bel_date($p/date), 1, 10)"/></span></div></xsl:when>
 							<xsl:otherwise><div class="device__in-stock device__in-stock_no"><i class="far fa-clock"></i> под заказ</div></xsl:otherwise>
 						</xsl:choose>
 					</div>
@@ -164,13 +164,14 @@
 					<xsl:variable name="param_names" select="distinct-values($p/line_product/params/param/@name)"/>
 					<xsl:variable name="param_captions" select="distinct-values($p/line_product/params/param/@caption)"/>
 
-					<xsl:variable name="cols" select="count($param_names) + 4"/>
+					<!-- <xsl:variable name="cols" select="count($param_names) + 4"/> -->
+						<xsl:variable name="cols" select="4"/>
 
 					<div class="multi-device" style="grid-template-columns: repeat({$cols}, 1fr);">
 						<div style="padding-left: 0;">Вариант</div>
-						<xsl:for-each select="$param_captions">
+						<!-- <xsl:for-each select="$param_captions">
 							<div style="color: #a2a2a2; font-size: 13px;"><xsl:value-of select="."/></div>
-						</xsl:for-each>
+						</xsl:for-each> -->
 						<div>Цена</div>
 						<div>Наличие</div>
 						<div></div>
@@ -181,10 +182,10 @@
 							<xsl:variable name="has_price" select="price and price != '0'"/>
 							<div class="multi-device__name"><xsl:value-of select="$lp/name" /></div>
 							<xsl:for-each select="$param_names">
-								<div class="multi-device__name">
+								<!-- <div class="multi-device__name">
 									<xsl:value-of select="$lp/params/param[@name = current()]" />
 									
-								</div>
+								</div> -->
 							</xsl:for-each>
 							<div class="multi-device__price">
 								<xsl:if test="$has_price">
@@ -235,7 +236,6 @@
 						</div>
 					</div>
 				</xsl:if>
-
 				<div class="device-benefits">
 					<div class="device-benefits__item">
 						<i class="fas fa-shield-alt device-benefits__icon"></i>
@@ -251,37 +251,39 @@
 					</div>
 				</div>
 				
-				<div class="extra-contacts">
-					<div class="extra-contacts__title">Телефоны для связи</div>
-					<div class="extra-contacts__items">
-						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 17) 357-92-85</div>
-							<div class="extra-contacts__text">ул. Притыцкого, 42</div>
-						</div>
-						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 162) 337-93-90</div>
-							<div class="extra-contacts__text">ул. Я.Коласа, 30</div>
-						</div>
-						<div class="extra-contacts__item">
-							<div class="extra-contacts__number">(+375 17) 354-47-84</div>
-							<div class="extra-contacts__text">ул.Толбухина,12-А</div>
+				<xsl:if test="//product_phone">
+					<div class="extra-contacts">
+						<xsl:if test="count(//product_phone) &gt; 1">
+							<div class="extra-contacts__title">Телефоны для связи</div>
+						</xsl:if>
+						<xsl:if test="count(//product_phone) = 1">
+							<div class="extra-contacts__title">Телефон для связи</div>
+						</xsl:if>
+						<div class="extra-contacts__items">
+							<xsl:for-each select="//product_phone">
+								<div class="extra-contacts__item">
+									<div class="extra-contacts__number"><xsl:value-of select="phone"/><img src="img/viber.svg" style="height: 24px; margin-left: 8px;" /></div>
+									<div class="extra-contacts__text"><xsl:value-of select="address"/></div>
+								</div>
+							</xsl:for-each>
 						</div>
 					</div>
-				</div>
+				</xsl:if>
 				<div class="extra-info">
-					<xsl:value-of select="$p/description" disable-output-escaping="yes"/>
+					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 				</div>
 			</div>
 			<div class="description">
 
-					<ul class="nav nav-tabs" role="tablist">
-						<!-- <xsl:if test="$p/params != ''"> -->
-								<li role="presentation" class="{'active'[not($p/product_extra)]}">
-									<a href="#tab1" role="tab" data-toggle="tab">Описание</a>
+					 <ul class="nav nav-tabs" role="tablist">
+						 <xsl:if test="$p/params != ''">
+<!--								<li role="presentation" class="{'active'[not($p/product_extra)]}">-->
+								 <li role="presentation" class="active">
+									<a href="#tab1" role="tab" data-toggle="tab">Характеристики</a>
 								</li>
-							<!-- </xsl:if> -->
+						 </xsl:if>
 						<!--<xsl:if test="string-length($p/text) &gt; 15">-->
-							<xsl:for-each select="$p/product_extra[. != '']">
+							<!-- <xsl:for-each select="$p/product_extra[. != '']">
 								
 								<xsl:variable name="first" select="position()=1" />
 								<li role="presentation" class="{'active'[$first]}">
@@ -289,24 +291,35 @@
 										<xsl:value-of select="current()/name"/>
 									</a> 
 								</li>
-							</xsl:for-each>
+							</xsl:for-each> -->
 							
-					</ul>
+					 </ul>
 				<div class="tab-content">
 					<!-- <xsl:if test="$p/params != ''"> -->
 						<div role="tabpanel" class="tab-pane {'active'[not($p/product_extra)]}" id="tab1">
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+<!--							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 							<table>
 								<colgroup>
 									<col style="width: 40%"/>
 								</colgroup>
-								<xsl:for-each select="$p/params/param">
+								<xsl:variable name="lile_products" select="$p/line_product/params"/>
+								<xsl:for-each select="if($p/params/param) then $p/params/param else $lile_products[1]/param">
+									<xsl:variable name="c" select="@caption"/>
+									<xsl:variable name="d" select="@description"/>
 									<tr>
 										<td>
-											<p><strong><xsl:value-of select="@caption"/></strong></p>
+											<p><strong><xsl:value-of select="$c"/></strong></p>
 										</td>
 										<td>
-											<p><xsl:value-of select="."/><xsl:text> </xsl:text><xsl:value-of select="@description"/></p>
+											<xsl:if  test="not($lile_products)">
+												<p><xsl:value-of select="concat(., $d)"/></p>
+											</xsl:if>
+											<xsl:if  test="$lile_products">
+												<xsl:variable name="p" select="distinct-values($lile_products/param[@caption = $c])"/>
+												<p>
+													<xsl:value-of select="concat(string-join($p, concat($d, '; ')), $d)"/>
+												</p>
+											</xsl:if>
 										</td>
 									</tr>
 								</xsl:for-each>

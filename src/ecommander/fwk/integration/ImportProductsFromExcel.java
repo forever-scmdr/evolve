@@ -89,7 +89,12 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 			protected void processRow() throws Exception {
 				info.setLineNumber(getRowNum() + 1);
 				String code = getValue(CreateExcelPriceList.CODE_FILE);
-				if (StringUtils.isBlank(code)) return;
+				if (StringUtils.isBlank(code)) {
+					if(StringUtils.isBlank(code)){
+						addError("Отсутствует код товара: "+ getValue(CreateExcelPriceList.NAME_FILE)+". Лист: "+ getSheetName(), "");
+					}
+					return;
+				}
 
 				//check duplicate codes
 				if(duplicateCodes.contains(code) && !CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)){
@@ -193,7 +198,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					if (currentSubsection == null) currentSubsection = currentSection;
 					boolean isProduct = "+".equals(getValue(CreateExcelPriceList.IS_DEVICE_FILE));
 					Item product = getExistingProduct(code, isProduct);
-					TreeSet<String> headers = getHeaders();
+					if(catalog.equals(product)) return;
+					LinkedHashSet<String> headers = getHeaders();
 					Path picsFolder = Paths.get(AppContext.getContextPath()).resolve("");
 					varValues withPictures = settings.get(WITH_PICS);
 					// product NOT exists
@@ -239,12 +245,16 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 										}
 										break;
 									case SEARCH_BY_CELL_VALUE:
+										try {
 										cellValue = StringUtils.replaceChars(cellValue, '\\', System.getProperty("file.separator").charAt(0));
 										mainPicPath = picsFolder.resolve(cellValue);
 										if( mainPicPath.toFile().isFile()) {
 											product.setValue(MAIN_PIC_PARAM, mainPicPath.toFile());
-										}else{
+										}else if(StringUtils.isNotBlank(cellValue)){
 											pushLog("No file: " + mainPicPath.toAbsolutePath());
+										}
+										}catch (Exception e){
+											info.addError(e);
 										}
 										break;
 									case DOWNLOAD: {
@@ -308,7 +318,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 								}
 							}
 						}
-						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(false).noFulltextIndex());
+						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors(true).noFulltextIndex());
 						if(isProduct) currentProduct = product;
 						//MANUALS
 						for (String header : headers) {
@@ -337,7 +347,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 												break;
 										}
 									}
-									executeCommandUnit(SaveItemDBUnit.get(manualItem).noFulltextIndex().noTriggerExtra());
+									executeCommandUnit(SaveItemDBUnit.get(manualItem).ignoreFileErrors(true).noFulltextIndex().noTriggerExtra());
 								}
 								commitCommandUnits();
 							}
@@ -404,7 +414,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 													//product.clearValue("medium_pic");
 													product.clearValue("small_pic");
 												}
-												else{
+												else if(StringUtils.isNotBlank(cellValue)){
 													pushLog("No file: " + mainPicFile.getAbsolutePath());
 												}
 											}
@@ -648,7 +658,13 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 					prod = new ItemQuery(PRODUCT_ITEM).setParentId(currentSubsection.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
 				}
 				else {
-					prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(currentProduct.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
+					try {
+						prod = new ItemQuery(LINE_PRODUCT_ITEM).setParentId(currentProduct.getId(), false).addParameterCriteria(CODE_PARAM, code, "=", null, Compare.SOME).loadFirstItem();
+					}catch (NullPointerException e){
+						addError("Отсутствует родитель товара: "+ code,"");
+						return catalog;
+					}
+
 				}
 				return prod;
 			}
@@ -658,6 +674,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand i
 				currentSection = null;
 				currentSubsection = null;
 				currentProduct = null;
+				info.setCurrentJob("Лист: " + getSheetName());
 			}
 		};
 		return true;

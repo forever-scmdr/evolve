@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <site>
 
 	<!-- ******************************* Включение для разделов каталога ****************************** -->
@@ -16,6 +16,7 @@
 					</filter>
 				</list>
 			</tree>
+			<single item="stores"/>
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="false" >
@@ -36,6 +37,7 @@
 				<list item="block"/>
 			</list>
 			<single item="product_side"/>
+			<list item="product_phone"/>
 		</single>
 		<link name="index_link" target="index"/>
 		<link name="articles_link" target="articles"/>
@@ -62,6 +64,10 @@
 			<list item="url_seo"/>
 		</single>
 	</include-definition>
+
+	<page name="test_dupls" template="test_dupls">
+		<include name="COMMON"/>
+	</page>
 
 
 
@@ -131,7 +137,7 @@
 			<var name="limit" value="48" scope="cookie"/>
 			<var name="sort" scope="cookie"/>
 			<var name="direction" value="ASC" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/>
+			<var name="minqty" value="-1" scope="cookie"/>
 			<var name="fil"/>
 			<var name="tag"/>
 		</request>
@@ -144,7 +150,8 @@
 				<filter>
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+					<!-- <parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter> -->
+					<parameter name="qty" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
 					</sorting>
@@ -299,7 +306,7 @@
 
 
 
-	<page name="product" template="product" cacheable="false">
+	<page name="product" template="product" cacheable="false" critical-item="prod">
 		<request>
 			<var name="prod" style="translit"/>
 		</request>
@@ -446,7 +453,7 @@
 			<var name="p" style="translit"/>
 		</request>
 		<single item="custom_page" var="p" cacheable="false" cache-vars="p">
-			<single item="seo"/>
+			<single item="seo" assoc="seo"/>
 			<list item="custom_page" id="child">
 				<link target="page" type="exclusive" name="show_page">
 					<var ref="child" style="translit" name="p"/>
@@ -540,7 +547,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="shop@interpartner.by, bio@forever-ds.com"/>
+			<var name="email" value="shop@interpartner.by"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
@@ -573,11 +580,11 @@
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
 					<list item="abstract_product" id="prod" tag="product">
-						<single item="product" id="parent">
+						<list item="product" id="parent">
 							<link name="show_product" target="product" type="exclusive">
 								<var name="prod" ref="parent" style="translit"/>
 							</link>
-						</single>
+						</list>
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="translit"/>
 						</link>
@@ -1239,4 +1246,21 @@
 		</command>
 	</page>
 
+	<page name="parse_excel_interpartner" template="integration/create_excel" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.InterPartnerExcelImport" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="clear_gallery" template="integration" >
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.FindAndRemoveSamePics" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
 </site>

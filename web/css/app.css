@@ -7521,7 +7521,7 @@ td .catalog-item {
 	display:block;
 	margin-bottom:10px;
 	overflow:hidden;
-	height:48px;
+	height:68px;
 	line-height:1;
 }
 .device__article-number {
@@ -7681,11 +7681,17 @@ td .catalog-item {
 	top:8px;
 	right:8px;
 	color:#bdbdbd;
+	background: rgba(255,255,255, .5);
+	border-radius: 12px;
+	
 }
 .device_row .zoom-icon {
 	top:6px;
-	left:56px;
+	/*left:56px;*/
 	color: #999;
+	background: #fff;
+	border-radius: 12px;
+	background: rgba(255,255,255, .5);
 }
 @media (max-width: 375px) {
 	.device__order input[type="number"] {
@@ -8715,6 +8721,10 @@ color: #333333;
 	display:flex;
 	height:44px;
 	font-size: 24px;
+	margin-right: 16px;
+}
+.main-menu__item:last-child {
+	margin-right: 0;
 }
 .main-menu__item a {
 	color: #fff;
@@ -8760,3 +8770,11 @@ color: #333333;
 	}
 }
 /* responsive general end*/
+
+
+
+
+
+.desktop .logo img {
+	margin-top: 2px; 
+}
