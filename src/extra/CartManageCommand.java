@@ -115,6 +115,12 @@ public class CartManageCommand extends BasicCartManageCommand {
 				}
 			}
 		}
+		if (getItemForm() != null) {
+			Item form = getItemForm().getItemSingleTransient();
+			if (userForm == null && StringUtils.containsIgnoreCase(form.getStringValue("ship_type"), "самовывоз")) {
+				discount += discounts.get_self_delivery();
+			}
+		}
 		BigDecimal discountedSum = originalSum.multiply(new BigDecimal((100 - discount) / 100));
 		discountedSum = discountedSum.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 		cart.setValue(ItemNames.cart_.SUM_DISCOUNT, discountedSum);
