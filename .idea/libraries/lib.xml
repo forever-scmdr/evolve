@@ -2,15 +2,12 @@
   <library name="lib">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/web/WEB-INF/lib" />
-      <root url="jar://$PROJECT_DIR$/web/kotlin-stdlib.jar!/" />
-      <root url="jar://$PROJECT_DIR$/web/kotlin-reflect.jar!/" />
-      <root url="jar://$PROJECT_DIR$/web/kotlin-test.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/" />
-      <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
-      <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/plugins/Kotlin/kotlinc/lib/kotlin-stdlib-sources.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/plugins/Kotlin/kotlinc/lib/kotlin-reflect-sources.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/plugins/Kotlin/kotlinc/lib/kotlin-test-sources.jar!/" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/web/WEB-INF/lib" recursive="false" />
   </library>
