@@ -50,6 +50,7 @@ public class DeleteItemTypeBDUnit extends ItemModelFilePersistenceCommandUnit {
 			saveFile();
 		}
 		// Удаление типа и замена типа всех его айтемов
+		// Тут нет удаления самих айтемов этого типа. Их надо удалять явно.
 		else {
 			// TODO <enhance> сделать изменение типа айтемов удаляемого типа
 		}
