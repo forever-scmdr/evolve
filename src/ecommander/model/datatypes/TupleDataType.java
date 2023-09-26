@@ -6,6 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 
+/**
+ * Парное значение в виде ключ:значение. По сути представляет собой простую строку, но разделенную на две части
+ * Хранится в БД как строка, ищестя как строка. Если надо искать только по ключу (все значения подходят), то надо
+ * использовать ... sign="like" pattern="v%".
+ * Если надо искать конкретное значение определенного ключа, то надо передать все подходящие значения целой строки
+ * вида ключ_1$+$значение_1, ключ_1$+$значение_2, ключ_1$+$значение_3 ...
+ */
 public class TupleDataType extends FormatDataType {
 
 	public static final String KEY_META = "key";
@@ -58,8 +65,7 @@ public class TupleDataType extends FormatDataType {
 
 	@Override
 	public String outputValue(Object value, Object formatter) {
-		if (formatter == null) formatter = DEFAULT_FORMAT;
-		return ((TupleFormatter) formatter).output((Pair<String, String>) value);
+		return outputTuple(value, formatter);
 	}
 
 	@Override
@@ -82,5 +88,10 @@ public class TupleDataType extends FormatDataType {
 	public static String createCombinedValue(Pair<String, String> value, Object formatter) {
 		if (formatter == null) formatter = DEFAULT_FORMAT;
 		return StringUtils.isBlank(value.getRight()) ? value.getLeft() : value.getLeft() + ((TupleFormatter) formatter).format + value.getRight();
+	}
+
+	public static String outputTuple(Object value, Object formatter) {
+		if (formatter == null) formatter = DEFAULT_FORMAT;
+		return ((TupleFormatter) formatter).output((Pair<String, String>) value);
 	}
 }
