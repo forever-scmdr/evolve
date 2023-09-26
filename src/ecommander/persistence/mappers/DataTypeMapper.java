@@ -2,11 +2,8 @@ package ecommander.persistence.mappers;
 
 import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
+import ecommander.model.datatypes.*;
 import ecommander.model.datatypes.DataType.Type;
-import ecommander.model.datatypes.DateDataType;
-import ecommander.model.datatypes.DecimalDataType;
-import ecommander.model.datatypes.DoubleDataType;
-import ecommander.model.datatypes.FileDataType;
 import ecommander.persistence.common.TemplateQuery;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
@@ -369,7 +366,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.string(StringUtils.substring(((Pair<String, String>)value).getLeft(), 0, 100));
+			pstmt.string(StringUtils.substring(TupleDataType.outputTuple(value, null), 0, 100));
 		}
 
 		@Override
@@ -384,7 +381,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
-			itemDoc.add(new StringField(fieldName, ((Pair<String, String>)value).getLeft(), Field.Store.NO));
+			itemDoc.add(new StringField(fieldName, TupleDataType.outputTuple(value, null), Field.Store.NO));
 		}
 	}
 
