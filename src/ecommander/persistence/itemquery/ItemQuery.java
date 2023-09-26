@@ -1076,7 +1076,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	}
 
 	/**
-	 * Загрузить один айтем по уникальному ключу
+	 * Загрузить только один айтем по каждому уникальному ключу
 	 * @param keys
 	 * @return
 	 * @throws Exception
@@ -1091,6 +1091,19 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 			result.put(item.getKeyUnique(), item);
 		}
 		return result;
+	}
+
+	/**
+	 * Загрузиить всего один айтем по одному уникальному ключу
+	 * @param key
+	 * @return
+	 * @throws Exception
+	 */
+	public static Item loadSingleItemByUniqueKey(String key) throws Exception {
+		ArrayList<Item> items = loadByUniqueKey(Arrays.asList(key));
+		if (items.size() > 0)
+			return items.get(0);
+		return null;
 	}
 	/**
 	 * Загрузить айтем по значению одного параметра

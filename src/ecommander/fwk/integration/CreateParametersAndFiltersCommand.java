@@ -7,6 +7,7 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
+import ecommander.model.datatypes.LongDataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
@@ -19,6 +20,7 @@ import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -174,8 +176,26 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 
 	@Override
 	protected void integrate() throws Exception {
-		List<Item> sections = new ItemQuery(SECTION_ITEM).loadItems();
-		doCreate(sections);
+		String justOneSection = getVarSingleValue("section");
+		List<Item> sections = null;
+		if (StringUtils.isNotBlank(justOneSection)) {
+			long longId = NumberUtils.toLong(justOneSection, -1);
+			Item section = null;
+			if (longId > 0)
+				section = ItemQuery.loadById(longId);
+			if (section == null)
+				section = ItemQuery.loadSingleItemByUniqueKey(justOneSection);
+			if (section == null)
+				section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, NAME_PARAM, justOneSection);
+			sections = new ArrayList<>();
+			if (section != null) {
+				sections.add(section);
+			}
+		} else {
+			sections = new ItemQuery(SECTION_ITEM).loadItems();
+		}
+		if (sections.size() > 0)
+			doCreate(sections);
 	}
 
 	protected void doCreate(List<Item> sections) throws Exception {

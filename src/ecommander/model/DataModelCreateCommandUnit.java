@@ -825,6 +825,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 
 	/**
 	 * Сохранить файл с добавленными атрибутами ag-hash и ag-id
+	 * TODO - медленная операция, может от нее вообще отказаться или делать только когда надо
 	 * @param file
 	 * @param xml
 	 * @throws IOException
