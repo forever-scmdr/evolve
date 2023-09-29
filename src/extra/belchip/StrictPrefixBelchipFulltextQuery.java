@@ -6,9 +6,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.spans.SpanNearQuery;
-import org.apache.lucene.search.spans.SpanQuery;
-import org.apache.lucene.search.spans.SpanTermQuery;
+import org.apache.lucene.search.spans.*;
 
 import java.util.ArrayList;
 
@@ -20,11 +18,12 @@ public class StrictPrefixBelchipFulltextQuery extends LuceneQueryCreator {
 		Query parsedQuery = parser.createPhraseQuery(param, value);
 		if (parsedQuery instanceof PhraseQuery) {
 			PhraseQuery phraseQuery = (PhraseQuery) parsedQuery;
-			BooleanQuery.Builder builder = new BooleanQuery.Builder();
+			ArrayList<SpanQuery> parts = new ArrayList<>(4);
 			for (Term term : phraseQuery.getTerms()) {
-				builder.add(createWildcardQuery(term), Occur.MUST);
+				SpanQuery sq = new SpanMultiTermQueryWrapper<>(createWildcardQuery(term));
+				parts.add(sq);
 			}
-			return builder.build();
+			return new SpanNearQuery(parts.toArray(new SpanQuery[0]), 1, true);
 		} else if (parsedQuery instanceof TermQuery) {
 			return createWildcardQuery(new Term(param, value));
 		}

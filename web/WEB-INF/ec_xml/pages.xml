@@ -743,7 +743,7 @@
 				<filter>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<!-- type="extra.belchip.StrictWildcardBelchipFulltextQuery" -->
-					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictWildcardBelchipFulltextQuery)" compare="EVERY">
+					<fulltext limit="250" name="strict_search" type="(extra.belchip.BelchipTermNoSplitFulltextQuery extra.belchip.StrictPrefixBelchipFulltextQuery)" compare="EVERY">
 						<var var="q" />
 					</fulltext>
 					<limit>
