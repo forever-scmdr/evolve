@@ -30,7 +30,8 @@
 		<h3>Заказ №<xsl:value-of select="$cart/order_num"/></h3>
 		<div class="item-summ" style="padding-bottom: 20px;">
 			Позиций: <xsl:value-of select="count($cart/bought)"/><br/>
-			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.
+			Сумма: <span><xsl:value-of select="$cart/sum"/></span> руб.<br/>
+			Итого к оплате (с учетом скидок): <span><xsl:value-of select="$cart/sum_discount"/></span> руб.
 		</div>
 		<div class="checkout-cont1">
 			<div class="info" style="padding-bottom: 20px;">

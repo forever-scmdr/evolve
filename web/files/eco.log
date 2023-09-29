@@ -19443,3 +19443,855 @@
 <admin-page name="main/paste" username="admin">
 	<domain>http://localhost:8080</domain>
 </admin-page>
+[ERROR]-[14:06:49]-[RMI TCP Connection(3)-127.0.0.1] - CONTEXT INITED
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - Start transaction, try #1
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - Transaction successfull at try #1
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - Start transaction, try #1
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - SELECT * FROM assoc_ids
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - SELECT * FROM item_ids
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - DELETE FROM param_ids WHERE pid_item_id NOT IN (SELECT iid_id FROM item_ids)
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - SELECT * FROM param_ids
+[DEBUG]-[14:06:49]-[http-nio-8080-exec-1] - SELECT * FROM model_xml
+[DEBUG]-[14:06:50]-[http-nio-8080-exec-1] - Transaction successfull at try #1
+[DEBUG]-[14:06:51]-[http-nio-8080-exec-1] - DYNAMIC: index/ GENERATED IN 1729 MILLIS
+[ERROR]-[14:06:51]-[http-nio-8080-exec-1] - CMS Exception
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:348)
+	at org.apache.catalina.connector.OutputBuffer.appendByteArray(OutputBuffer.java:747)
+	at org.apache.catalina.connector.OutputBuffer.append(OutputBuffer.java:674)
+	at org.apache.catalina.connector.OutputBuffer.writeBytes(OutputBuffer.java:383)
+	at org.apache.catalina.connector.OutputBuffer.write(OutputBuffer.java:361)
+	at org.apache.catalina.connector.CoyoteOutputStream.write(CoyoteOutputStream.java:97)
+	at java.base/java.io.ByteArrayOutputStream.writeTo(ByteArrayOutputStream.java:161)
+	at ecommander.controllers.PageController.processPage(PageController.java:116)
+	at ecommander.controllers.MainExecutionController.execute(MainExecutionController.java:50)
+	at ecommander.controllers.TransliterationServlet.doGet(TransliterationServlet.java:69)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:661)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:425)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:357)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:294)
+	at org.tuckey.web.filters.urlrewrite.NormalRewrittenUrl.doRewrite(NormalRewrittenUrl.java:213)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:171)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:145)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:92)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:394)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at ecommander.fwk.CharsetFilter.doFilter(CharsetFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:670)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:136)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1431)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:775)
+	at org.apache.tomcat.util.net.SocketWrapperBase.writeBlocking(SocketWrapperBase.java:600)
+	at org.apache.tomcat.util.net.SocketWrapperBase.write(SocketWrapperBase.java:544)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.doWrite(Http11OutputBuffer.java:540)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.doWrite(ChunkedOutputFilter.java:112)
+	at org.apache.coyote.http11.Http11OutputBuffer.doWrite(Http11OutputBuffer.java:193)
+	at org.apache.coyote.Response.doWrite(Response.java:606)
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:335)
+	... 47 more
+[DEBUG]-[14:06:51]-[http-nio-8080-exec-2] - Get method: Page output started
+[ERROR]-[14:06:51]-[http-nio-8080-exec-1] - Thread #33: 'init' time - 684 662 mks
+[ERROR]-[14:06:51]-[http-nio-8080-exec-1] - Thread #33: 'load_db_items' time - 684 431 mks
+[ERROR]-[14:06:51]-[http-nio-8080-exec-1] - Thread #33: 'xsl_transform' time - 1 027 945 mks
+[ERROR]-[14:06:51]-[http-nio-8080-exec-1] - Thread #33: 'request_process' time - 2 421 807 mks  URL: index/
+[DEBUG]-[14:06:51]-[http-nio-8080-exec-2] - CACHE: index/ SENT IN 5 MILLIS
+[ERROR]-[14:06:51]-[http-nio-8080-exec-2] - CMS Exception
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:309)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:271)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at ecommander.controllers.PageController.processPage(PageController.java:117)
+	at ecommander.controllers.MainExecutionController.execute(MainExecutionController.java:50)
+	at ecommander.controllers.TransliterationServlet.doGet(TransliterationServlet.java:69)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:661)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:425)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:357)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:294)
+	at org.tuckey.web.filters.urlrewrite.NormalRewrittenUrl.doRewrite(NormalRewrittenUrl.java:213)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:171)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:145)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:92)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:394)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at ecommander.fwk.CharsetFilter.doFilter(CharsetFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:670)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:136)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1431)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:775)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:739)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:723)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1246)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:399)
+	at org.apache.coyote.Response.action(Response.java:207)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:305)
+	... 43 more
+[ERROR]-[14:06:51]-[http-nio-8080-exec-2] - Thread #34: 'init' time - 244 mks
+[ERROR]-[14:06:51]-[http-nio-8080-exec-2] - Thread #34: 'get_from_cache' time - 4 625 mks
+[ERROR]-[14:06:51]-[http-nio-8080-exec-2] - Thread #34: 'request_process' time - 11 505 mks  URL: index/
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-3] - CACHE: index/ SENT IN 0 MILLIS
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'init' time - 253 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'get_from_cache' time - 386 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'request_process' time - 1 765 mks  URL: index/
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-10] - Get method: Page output started
+[DEBUG]-[14:06:52]-[http-nio-8080-exec-7] - Get method: Page output started
+[ERROR]-[14:06:52]-[http-nio-8080-exec-10] - Thread #42: 'init' time - 3 309 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-10] - Thread #42: 'load_db_items' time - 305 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-10] - Thread #42: 'xsl_transform' time - 27 881 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-10] - Thread #42: 'request_process' time - 34 309 mks  URL: fav_ajax/
+[ERROR]-[14:06:52]-[http-nio-8080-exec-8] - Thread #40: 'init' time - 121 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-8] - Thread #40: 'load_db_items' time - 6 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-8] - Thread #40: 'xsl_transform' time - 34 777 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-8] - Thread #40: 'request_process' time - 35 580 mks  URL: personal_ajax/
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'init' time - 3 127 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'load_db_items' time - 105 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'xsl_transform' time - 32 441 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-3] - Thread #35: 'request_process' time - 36 496 mks  URL: compare_ajax/
+[ERROR]-[14:06:52]-[http-nio-8080-exec-1] - Thread #33: 'init' time - 125 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-1] - Thread #33: 'load_db_items' time - 53 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-1] - Thread #33: 'xsl_transform' time - 37 181 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-1] - Thread #33: 'request_process' time - 47 360 mks  URL: feedback_ajax/
+[ERROR]-[14:06:52]-[http-nio-8080-exec-7] - Thread #39: 'init' time - 3 285 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-7] - Thread #39: 'load_db_items' time - 15 345 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-7] - Thread #39: 'xsl_transform' time - 46 716 mks
+[ERROR]-[14:06:52]-[http-nio-8080-exec-7] - Thread #39: 'request_process' time - 66 393 mks  URL: cart_ajax/
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-3] - DYNAMIC: aktivnyi_otdyh/ GENERATED IN 494 MILLIS
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'init' time - 3 694 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'load_db_items' time - 244 150 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'xsl_transform' time - 219 392 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'request_process' time - 500 468 mks  URL: aktivnyi_otdyh/
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-5] - Get method: Page output started
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-6] - Get method: Page output started
+[DEBUG]-[14:06:57]-[http-nio-8080-exec-9] - Get method: Page output started
+[ERROR]-[14:06:57]-[http-nio-8080-exec-5] - Thread #37: 'init' time - 222 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-5] - Thread #37: 'load_db_items' time - 60 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-5] - Thread #37: 'xsl_transform' time - 31 220 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-5] - Thread #37: 'request_process' time - 32 038 mks  URL: fav_ajax/
+[ERROR]-[14:06:57]-[http-nio-8080-exec-6] - Thread #38: 'init' time - 130 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-6] - Thread #38: 'load_db_items' time - 40 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-6] - Thread #38: 'xsl_transform' time - 34 782 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-6] - Thread #38: 'request_process' time - 35 399 mks  URL: compare_ajax/
+[ERROR]-[14:06:57]-[http-nio-8080-exec-7] - Thread #39: 'init' time - 77 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-7] - Thread #39: 'load_db_items' time - 5 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-7] - Thread #39: 'xsl_transform' time - 37 402 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-7] - Thread #39: 'request_process' time - 38 057 mks  URL: personal_ajax/
+[ERROR]-[14:06:57]-[http-nio-8080-exec-9] - Thread #41: 'init' time - 87 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-9] - Thread #41: 'load_db_items' time - 22 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-9] - Thread #41: 'xsl_transform' time - 50 171 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-9] - Thread #41: 'request_process' time - 51 046 mks  URL: feedback_ajax/
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'init' time - 217 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'load_db_items' time - 93 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'xsl_transform' time - 59 855 mks
+[ERROR]-[14:06:57]-[http-nio-8080-exec-3] - Thread #35: 'request_process' time - 60 742 mks  URL: cart_ajax/
+[DEBUG]-[14:07:02]-[http-nio-8080-exec-2] - Get method: Page output started
+[ERROR]-[14:07:02]-[http-nio-8080-exec-2] - Thread #34: 'init' time - 209 mks
+[ERROR]-[14:07:02]-[http-nio-8080-exec-2] - Thread #34: 'load_db_items' time - 120 mks
+[ERROR]-[14:07:02]-[http-nio-8080-exec-2] - Thread #34: 'xsl_transform' time - 21 976 mks
+[ERROR]-[14:07:02]-[http-nio-8080-exec-2] - Thread #34: 'request_process' time - 23 721 mks  URL: cart_ajax/
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-4] - Get method: Page output started
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'init' time - 176 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'load_db_items' time - 183 819 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'xsl_transform' time - 115 144 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'request_process' time - 301 743 mks  URL: cart/
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-10] - Get method: Page output started
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:07:03]-[http-nio-8080-exec-4] - Get method: Page output started
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'init' time - 292 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'load_db_items' time - 14 750 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'init' time - 136 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'load_db_items' time - 50 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'xsl_transform' time - 19 839 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-1] - Thread #33: 'request_process' time - 20 925 mks  URL: fav_ajax/
+[ERROR]-[14:07:03]-[http-nio-8080-exec-10] - Thread #42: 'init' time - 102 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-10] - Thread #42: 'load_db_items' time - 8 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-10] - Thread #42: 'xsl_transform' time - 21 544 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-10] - Thread #42: 'request_process' time - 22 225 mks  URL: personal_ajax/
+[ERROR]-[14:07:03]-[http-nio-8080-exec-2] - Thread #34: 'init' time - 137 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-2] - Thread #34: 'load_db_items' time - 41 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-2] - Thread #34: 'xsl_transform' time - 21 382 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-2] - Thread #34: 'request_process' time - 22 177 mks  URL: compare_ajax/
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'init' time - 76 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'load_db_items' time - 22 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'xsl_transform' time - 25 005 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-4] - Thread #36: 'request_process' time - 25 962 mks  URL: feedback_ajax/
+[ERROR]-[14:07:03]-[http-nio-8080-exec-8] - Thread #40: 'init' time - 309 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-8] - Thread #40: 'load_db_items' time - 145 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-8] - Thread #40: 'xsl_transform' time - 32 270 mks
+[ERROR]-[14:07:03]-[http-nio-8080-exec-8] - Thread #40: 'request_process' time - 33 370 mks  URL: cart_ajax/
+[DEBUG]-[14:07:05]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:07:05]-[http-nio-8080-exec-6] - Get method: Page output started
+[ERROR]-[14:07:05]-[http-nio-8080-exec-6] - Thread #38: 'init' time - 92 mks
+[ERROR]-[14:07:05]-[http-nio-8080-exec-6] - Thread #38: 'load_db_items' time - 182 198 mks
+[ERROR]-[14:07:05]-[http-nio-8080-exec-6] - Thread #38: 'xsl_transform' time - 95 038 mks
+[ERROR]-[14:07:05]-[http-nio-8080-exec-6] - Thread #38: 'request_process' time - 280 198 mks  URL: proceed/
+[DEBUG]-[14:07:06]-[http-nio-8080-exec-10] - Get method: Page output started
+[DEBUG]-[14:07:06]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:07:06]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:07:06]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:07:06]-[http-nio-8080-exec-8] - Get method: Page output started
+[ERROR]-[14:07:06]-[http-nio-8080-exec-4] - Thread #36: 'init' time - 193 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-2] - Thread #34: 'init' time - 97 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-4] - Thread #36: 'load_db_items' time - 41 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-2] - Thread #34: 'load_db_items' time - 6 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-4] - Thread #36: 'xsl_transform' time - 16 573 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-2] - Thread #34: 'xsl_transform' time - 16 942 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-4] - Thread #36: 'request_process' time - 17 499 mks  URL: fav_ajax/
+[ERROR]-[14:07:06]-[http-nio-8080-exec-8] - Thread #40: 'init' time - 121 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-2] - Thread #34: 'request_process' time - 17 578 mks  URL: personal_ajax/
+[ERROR]-[14:07:06]-[http-nio-8080-exec-8] - Thread #40: 'load_db_items' time - 45 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-8] - Thread #40: 'xsl_transform' time - 16 129 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-8] - Thread #40: 'request_process' time - 17 151 mks  URL: compare_ajax/
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'init' time - 155 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'load_db_items' time - 4 028 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'init' time - 65 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'load_db_items' time - 1 231 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'xsl_transform' time - 19 189 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-7] - Thread #39: 'request_process' time - 21 263 mks  URL: feedback_ajax/
+[ERROR]-[14:07:06]-[http-nio-8080-exec-10] - Thread #42: 'init' time - 177 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-10] - Thread #42: 'load_db_items' time - 128 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-10] - Thread #42: 'xsl_transform' time - 27 460 mks
+[ERROR]-[14:07:06]-[http-nio-8080-exec-10] - Thread #42: 'request_process' time - 28 674 mks  URL: cart_ajax/
+[DEBUG]-[14:07:33]-[http-nio-8080-exec-4] - Get method: Page output started
+[ERROR]-[14:08:50]-[RMI TCP Connection(3)-127.0.0.1] - CONTEXT INITED
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - Start transaction, try #1
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - Transaction successfull at try #1
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - Start transaction, try #1
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - SELECT * FROM assoc_ids
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - SELECT * FROM item_ids
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - DELETE FROM param_ids WHERE pid_item_id NOT IN (SELECT iid_id FROM item_ids)
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - SELECT * FROM param_ids
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - SELECT * FROM model_xml
+[DEBUG]-[14:08:51]-[http-nio-8080-exec-1] - Transaction successfull at try #1
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-1] - DYNAMIC: index/ GENERATED IN 1663 MILLIS
+[ERROR]-[14:08:53]-[http-nio-8080-exec-1] - CMS Exception
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:348)
+	at org.apache.catalina.connector.OutputBuffer.appendByteArray(OutputBuffer.java:747)
+	at org.apache.catalina.connector.OutputBuffer.append(OutputBuffer.java:674)
+	at org.apache.catalina.connector.OutputBuffer.writeBytes(OutputBuffer.java:383)
+	at org.apache.catalina.connector.OutputBuffer.write(OutputBuffer.java:361)
+	at org.apache.catalina.connector.CoyoteOutputStream.write(CoyoteOutputStream.java:97)
+	at java.base/java.io.ByteArrayOutputStream.writeTo(ByteArrayOutputStream.java:161)
+	at ecommander.controllers.PageController.processPage(PageController.java:116)
+	at ecommander.controllers.MainExecutionController.execute(MainExecutionController.java:50)
+	at ecommander.controllers.TransliterationServlet.doGet(TransliterationServlet.java:69)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:661)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:425)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:357)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:294)
+	at org.tuckey.web.filters.urlrewrite.NormalRewrittenUrl.doRewrite(NormalRewrittenUrl.java:213)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:171)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:145)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:92)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:394)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at ecommander.fwk.CharsetFilter.doFilter(CharsetFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:670)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:136)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1431)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:775)
+	at org.apache.tomcat.util.net.SocketWrapperBase.writeBlocking(SocketWrapperBase.java:600)
+	at org.apache.tomcat.util.net.SocketWrapperBase.write(SocketWrapperBase.java:544)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.doWrite(Http11OutputBuffer.java:540)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.doWrite(ChunkedOutputFilter.java:112)
+	at org.apache.coyote.http11.Http11OutputBuffer.doWrite(Http11OutputBuffer.java:193)
+	at org.apache.coyote.Response.doWrite(Response.java:606)
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:335)
+	... 47 more
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-2] - Get method: Page output started
+[ERROR]-[14:08:53]-[http-nio-8080-exec-1] - Thread #31: 'init' time - 691 097 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-1] - Thread #31: 'load_db_items' time - 607 462 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-1] - Thread #31: 'xsl_transform' time - 1 038 288 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-1] - Thread #31: 'request_process' time - 2 360 495 mks  URL: index/
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-2] - CACHE: index/ SENT IN 1 MILLIS
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - CMS Exception
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:348)
+	at org.apache.catalina.connector.OutputBuffer.appendByteArray(OutputBuffer.java:747)
+	at org.apache.catalina.connector.OutputBuffer.append(OutputBuffer.java:674)
+	at org.apache.catalina.connector.OutputBuffer.writeBytes(OutputBuffer.java:383)
+	at org.apache.catalina.connector.OutputBuffer.write(OutputBuffer.java:361)
+	at org.apache.catalina.connector.CoyoteOutputStream.write(CoyoteOutputStream.java:97)
+	at java.base/java.io.ByteArrayOutputStream.writeTo(ByteArrayOutputStream.java:161)
+	at ecommander.controllers.PageController.processPage(PageController.java:116)
+	at ecommander.controllers.MainExecutionController.execute(MainExecutionController.java:50)
+	at ecommander.controllers.TransliterationServlet.doGet(TransliterationServlet.java:69)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:661)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:425)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:357)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:294)
+	at org.tuckey.web.filters.urlrewrite.NormalRewrittenUrl.doRewrite(NormalRewrittenUrl.java:213)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:171)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:145)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:92)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:394)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at ecommander.fwk.CharsetFilter.doFilter(CharsetFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:670)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.io.IOException: Программа на вашем хост-компьютере разорвала установленное подключение
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:136)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1431)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:775)
+	at org.apache.tomcat.util.net.SocketWrapperBase.writeBlocking(SocketWrapperBase.java:600)
+	at org.apache.tomcat.util.net.SocketWrapperBase.write(SocketWrapperBase.java:544)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.doWrite(Http11OutputBuffer.java:540)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.doWrite(ChunkedOutputFilter.java:112)
+	at org.apache.coyote.http11.Http11OutputBuffer.doWrite(Http11OutputBuffer.java:193)
+	at org.apache.coyote.Response.doWrite(Response.java:606)
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:335)
+	... 47 more
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 175 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'get_from_cache' time - 754 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 12 602 mks  URL: index/
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-3] - CACHE: index/ SENT IN 1 MILLIS
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 369 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'get_from_cache' time - 581 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 2 535 mks  URL: index/
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:08:53]-[http-nio-8080-exec-2] - Get method: Page output started
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 2 212 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 264 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 32 463 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 35 718 mks  URL: compare_ajax/
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 2 563 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 36 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 33 485 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 37 422 mks  URL: fav_ajax/
+[ERROR]-[14:08:53]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 105 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 39 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 30 210 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 39 985 mks  URL: feedback_ajax/
+[ERROR]-[14:08:53]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 121 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 6 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 41 358 mks
+[ERROR]-[14:08:53]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 42 151 mks  URL: personal_ajax/
+[ERROR]-[14:08:58]-[http-nio-8080-exec-1] - Thread #31: 'init' time - 2 368 mks
+[ERROR]-[14:08:58]-[http-nio-8080-exec-1] - Thread #31: 'load_db_items' time - 4 706 263 mks
+[ERROR]-[14:08:58]-[http-nio-8080-exec-1] - Thread #31: 'xsl_transform' time - 26 248 mks
+[ERROR]-[14:08:58]-[http-nio-8080-exec-1] - Thread #31: 'request_process' time - 4 736 162 mks  URL: cart_ajax/
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-8] - DYNAMIC: aktivnyi_otdyh/ GENERATED IN 453 MILLIS
+[ERROR]-[14:09:03]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 1 865 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 222 419 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 198 577 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 456 295 mks  URL: aktivnyi_otdyh/
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-6] - Get method: Page output started
+[DEBUG]-[14:09:03]-[http-nio-8080-exec-5] - Get method: Page output started
+[ERROR]-[14:09:03]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 109 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 7 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 28 075 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 28 727 mks  URL: personal_ajax/
+[ERROR]-[14:09:03]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 115 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 28 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 27 629 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 28 577 mks  URL: fav_ajax/
+[ERROR]-[14:09:03]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 122 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 45 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 27 691 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 28 409 mks  URL: compare_ajax/
+[ERROR]-[14:09:03]-[http-nio-8080-exec-5] - Thread #35: 'init' time - 66 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-5] - Thread #35: 'load_db_items' time - 21 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-5] - Thread #35: 'xsl_transform' time - 30 398 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-5] - Thread #35: 'request_process' time - 31 164 mks  URL: feedback_ajax/
+[ERROR]-[14:09:03]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 441 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 126 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 40 417 mks
+[ERROR]-[14:09:03]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 41 711 mks  URL: cart_ajax/
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-4] - Get method: Page output started
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 176 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 180 036 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 116 034 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 298 440 mks  URL: cart/
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-5] - Get method: Page output started
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:09:08]-[http-nio-8080-exec-8] - Get method: Page output started
+[ERROR]-[14:09:08]-[http-nio-8080-exec-1] - Thread #31: 'init' time - 205 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 188 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-1] - Thread #31: 'load_db_items' time - 43 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 31 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 23 813 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-1] - Thread #31: 'xsl_transform' time - 23 813 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 24 669 mks  URL: compare_ajax/
+[ERROR]-[14:09:08]-[http-nio-8080-exec-1] - Thread #31: 'request_process' time - 24 580 mks  URL: fav_ajax/
+[ERROR]-[14:09:08]-[http-nio-8080-exec-5] - Thread #35: 'init' time - 255 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-5] - Thread #35: 'load_db_items' time - 7 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-5] - Thread #35: 'xsl_transform' time - 24 302 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-5] - Thread #35: 'request_process' time - 25 025 mks  URL: personal_ajax/
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 90 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 29 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 25 478 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 26 443 mks  URL: feedback_ajax/
+[ERROR]-[14:09:08]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 136 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 127 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 36 268 mks
+[ERROR]-[14:09:08]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 37 717 mks  URL: cart_ajax/
+[DEBUG]-[14:09:09]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:09:12]-[http-nio-8080-exec-2] - Get method: Page output started
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 103 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 181 979 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 119 755 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 304 578 mks  URL: proceed/
+[DEBUG]-[14:09:13]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:09:13]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:09:13]-[http-nio-8080-exec-10] - Get method: Page output started
+[DEBUG]-[14:09:13]-[http-nio-8080-exec-6] - Get method: Page output started
+[DEBUG]-[14:09:13]-[http-nio-8080-exec-3] - Get method: Page output started
+[ERROR]-[14:09:13]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 94 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-10] - Thread #40: 'init' time - 75 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 29 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 295 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 16 156 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 7 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-10] - Thread #40: 'load_db_items' time - 38 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-10] - Thread #40: 'xsl_transform' time - 16 960 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-10] - Thread #40: 'request_process' time - 17 537 mks  URL: fav_ajax/
+[ERROR]-[14:09:13]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 16 758 mks  URL: compare_ajax/
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 17 153 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 17 922 mks  URL: personal_ajax/
+[ERROR]-[14:09:13]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 54 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 18 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 18 972 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 19 671 mks  URL: feedback_ajax/
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 150 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 2 823 541 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 399 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 112 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 28 768 mks
+[ERROR]-[14:09:13]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 29 942 mks  URL: cart_ajax/
+[DEBUG]-[14:09:24]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-3] - CACHE: index/ SENT IN 0 MILLIS
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 311 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'get_from_cache' time - 247 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 1 734 mks  URL: index/
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:11:39]-[http-nio-8080-exec-6] - Get method: Page output started
+[ERROR]-[14:11:39]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 134 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 271 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 86 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 37 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 40 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 14 735 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 5 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 15 614 mks  URL: fav_ajax/
+[ERROR]-[14:11:39]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 14 734 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 15 611 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 15 388 mks  URL: compare_ajax/
+[ERROR]-[14:11:39]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 16 123 mks  URL: personal_ajax/
+[ERROR]-[14:11:39]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 345 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 35 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 17 788 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 19 113 mks  URL: feedback_ajax/
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 223 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 133 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 27 076 mks
+[ERROR]-[14:11:39]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 28 180 mks  URL: cart_ajax/
+[ERROR]-[14:11:47]-[http-nio-8080-exec-7] - Unable to send email
+javax.mail.MessagingException: Can't send command to SMTP host;
+  nested exception is:
+	javax.net.ssl.SSLHandshakeException: No appropriate protocol (protocol is disabled or cipher suites are inappropriate)
+	at com.sun.mail.smtp.SMTPTransport.sendCommand(SMTPTransport.java:1717)
+	at com.sun.mail.smtp.SMTPTransport.sendCommand(SMTPTransport.java:1704)
+	at com.sun.mail.smtp.SMTPTransport.ehlo(SMTPTransport.java:1088)
+	at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:468)
+	at javax.mail.Service.connect(Service.java:291)
+	at javax.mail.Service.connect(Service.java:172)
+	at javax.mail.Service.connect(Service.java:192)
+	at ecommander.fwk.EmailUtils.sendGmail(EmailUtils.java:62)
+	at ecommander.fwk.EmailUtils.sendGmailDefault(EmailUtils.java:90)
+	at ecommander.fwk.BasicCartManageCommand.customerForm(BasicCartManageCommand.java:217)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at ecommander.pages.CommandPE.execute(CommandPE.java:104)
+	at ecommander.pages.ExecutablePagePE.execute(ExecutablePagePE.java:203)
+	at ecommander.controllers.PageController.processSimplePage(PageController.java:213)
+	at ecommander.controllers.PageController.processCacheablePage(PageController.java:190)
+	at ecommander.controllers.PageController.processPageInt(PageController.java:132)
+	at ecommander.controllers.PageController.processPage(PageController.java:77)
+	at ecommander.controllers.MainExecutionController.execute(MainExecutionController.java:50)
+	at ecommander.controllers.ItemFormServlet.doPost(ItemFormServlet.java:32)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:661)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:425)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:357)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:294)
+	at org.tuckey.web.filters.urlrewrite.NormalRewrittenUrl.doRewrite(NormalRewrittenUrl.java:213)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.handleRewrite(RuleChain.java:171)
+	at org.tuckey.web.filters.urlrewrite.RuleChain.doRules(RuleChain.java:145)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriter.processRequest(UrlRewriter.java:92)
+	at org.tuckey.web.filters.urlrewrite.UrlRewriteFilter.doFilter(UrlRewriteFilter.java:394)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at ecommander.fwk.CharsetFilter.doFilter(CharsetFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:670)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: javax.net.ssl.SSLHandshakeException: No appropriate protocol (protocol is disabled or cipher suites are inappropriate)
+	at java.base/sun.security.ssl.HandshakeContext.<init>(HandshakeContext.java:172)
+	at java.base/sun.security.ssl.ClientHandshakeContext.<init>(ClientHandshakeContext.java:103)
+	at java.base/sun.security.ssl.TransportContext.kickstart(TransportContext.java:247)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:448)
+	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:921)
+	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1291)
+	at com.sun.mail.util.TraceOutputStream.write(TraceOutputStream.java:110)
+	at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:81)
+	at java.base/java.io.BufferedOutputStream.flush(BufferedOutputStream.java:142)
+	at com.sun.mail.smtp.SMTPTransport.sendCommand(SMTPTransport.java:1715)
+	... 59 more
+[DEBUG]-[14:11:47]-[http-nio-8080-exec-9] - Get method: Page output started
+[ERROR]-[14:11:47]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 174 mks
+[ERROR]-[14:11:47]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 187 113 mks
+[ERROR]-[14:11:47]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 127 474 mks
+[ERROR]-[14:11:47]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 317 868 mks  URL: proceed/?message=%D0%9D%D0%B5+%D1%83%D0%B4%D0%B0%D0%BB%D0%BE%D1%81%D1%8C+%D0%BE%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C+%D1%81%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D0%BD%D0%B8%D0%B5+%D0%BD%D0%B0+%D1%83%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9+%D1%8F%D1%89%D0%B8%D0%BA
+[DEBUG]-[14:11:48]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:11:48]-[http-nio-8080-exec-6] - Get method: Page output started
+[DEBUG]-[14:11:48]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:11:48]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:11:48]-[http-nio-8080-exec-9] - Get method: Page output started
+[ERROR]-[14:11:48]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 109 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 282 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 36 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 606 635 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 16 266 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 4 742 586 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 16 854 mks  URL: fav_ajax/
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 182 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 33 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 14 430 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 15 242 mks  URL: compare_ajax/
+[ERROR]-[14:11:48]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 87 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 5 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 17 895 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 18 390 mks  URL: personal_ajax/
+[ERROR]-[14:11:48]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 90 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 20 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 16 445 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 17 149 mks  URL: feedback_ajax/
+[ERROR]-[14:11:48]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 177 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 125 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 22 912 mks
+[ERROR]-[14:11:48]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 23 816 mks  URL: cart_ajax/
+[DEBUG]-[14:11:54]-[http-nio-8080-exec-8] - Get method: Page output started
+[ERROR]-[14:11:54]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 897 mks  URL: shop_email/
+[DEBUG]-[14:12:24]-[http-nio-8080-exec-6] - Get method: Page output started
+[ERROR]-[14:12:25]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 264 mks
+[ERROR]-[14:12:25]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 181 068 mks
+[ERROR]-[14:12:25]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 67 301 mks
+[ERROR]-[14:12:25]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 250 737 mks  URL: order_email/
+[DEBUG]-[14:13:55]-[http-nio-8080-exec-4] - Get method: Page output started
+[ERROR]-[14:13:55]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 244 mks
+[ERROR]-[14:13:55]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 186 992 mks
+[ERROR]-[14:13:55]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 42 603 mks
+[ERROR]-[14:13:55]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 231 994 mks  URL: order_email/
+[DEBUG]-[14:14:12]-[http-nio-8080-exec-8] - Get method: Page output started
+[ERROR]-[14:14:12]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 279 mks
+[ERROR]-[14:14:12]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 180 405 mks
+[ERROR]-[14:14:12]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 43 344 mks
+[ERROR]-[14:14:12]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 225 892 mks  URL: order_email/
+[DEBUG]-[14:14:37]-[http-nio-8080-exec-3] - Get method: Page output started
+[ERROR]-[14:14:37]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 259 mks
+[ERROR]-[14:14:37]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 181 439 mks
+[ERROR]-[14:14:37]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 43 678 mks
+[ERROR]-[14:14:37]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 227 370 mks  URL: order_email/
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-2] - CACHE: index/ SENT IN 0 MILLIS
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 266 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'get_from_cache' time - 258 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 1 179 mks  URL: index/
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-10] - Get method: Page output started
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-9] - Get method: Page output started
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:16:19]-[http-nio-8080-exec-5] - Get method: Page output started
+[ERROR]-[14:16:19]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 62 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-5] - Thread #35: 'init' time - 68 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 38 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 32 405 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-5] - Thread #35: 'load_db_items' time - 36 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 32 836 mks  URL: fav_ajax/
+[ERROR]-[14:16:19]-[http-nio-8080-exec-5] - Thread #35: 'xsl_transform' time - 31 259 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-5] - Thread #35: 'request_process' time - 31 774 mks  URL: compare_ajax/
+[ERROR]-[14:16:19]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 58 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 3 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 32 865 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 33 270 mks  URL: personal_ajax/
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 65 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 16 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 32 202 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 32 733 mks  URL: feedback_ajax/
+[ERROR]-[14:16:19]-[http-nio-8080-exec-10] - Thread #40: 'init' time - 95 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-10] - Thread #40: 'load_db_items' time - 74 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-10] - Thread #40: 'xsl_transform' time - 40 336 mks
+[ERROR]-[14:16:19]-[http-nio-8080-exec-10] - Thread #40: 'request_process' time - 40 970 mks  URL: cart_ajax/
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-8] - Get method: Page output started
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 328 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 190 053 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 87 595 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 280 617 mks  URL: confirm
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-5] - Get method: Page output started
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:18:40]-[http-nio-8080-exec-1] - Get method: Page output started
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 74 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 109 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 23 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 20 721 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 21 365 mks  URL: fav_ajax/
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 27 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 20 716 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 21 197 mks  URL: compare_ajax/
+[ERROR]-[14:18:40]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 64 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 6 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 21 900 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 22 470 mks  URL: personal_ajax/
+[ERROR]-[14:18:40]-[http-nio-8080-exec-1] - Thread #31: 'init' time - 110 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-1] - Thread #31: 'load_db_items' time - 25 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-1] - Thread #31: 'xsl_transform' time - 23 194 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-1] - Thread #31: 'request_process' time - 24 078 mks  URL: feedback_ajax/
+[ERROR]-[14:18:40]-[http-nio-8080-exec-5] - Thread #35: 'init' time - 171 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-5] - Thread #35: 'load_db_items' time - 192 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-5] - Thread #35: 'xsl_transform' time - 27 666 mks
+[ERROR]-[14:18:40]-[http-nio-8080-exec-5] - Thread #35: 'request_process' time - 28 542 mks  URL: cart_ajax/
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-3] - Get method: Page output started
+[ERROR]-[14:19:31]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 299 mks
+[ERROR]-[14:19:31]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 179 908 mks
+[ERROR]-[14:19:31]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 83 496 mks
+[ERROR]-[14:19:31]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 265 785 mks  URL: confirm
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-2] - Get method: Page output started
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-7] - Get method: Page output started
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-8] - Get method: Page output started
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-6] - Get method: Page output started
+[DEBUG]-[14:19:31]-[http-nio-8080-exec-10] - Get method: Page output started
+[ERROR]-[14:19:32]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 104 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 24 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-2] - Thread #32: 'init' time - 123 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 14 168 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-7] - Thread #37: 'init' time - 68 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 14 832 mks  URL: fav_ajax/
+[ERROR]-[14:19:32]-[http-nio-8080-exec-2] - Thread #32: 'load_db_items' time - 47 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-2] - Thread #32: 'xsl_transform' time - 14 199 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-7] - Thread #37: 'load_db_items' time - 5 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-7] - Thread #37: 'xsl_transform' time - 14 379 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-2] - Thread #32: 'request_process' time - 15 065 mks  URL: compare_ajax/
+[ERROR]-[14:19:32]-[http-nio-8080-exec-7] - Thread #37: 'request_process' time - 14 948 mks  URL: personal_ajax/
+[ERROR]-[14:19:32]-[http-nio-8080-exec-10] - Thread #40: 'init' time - 80 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-10] - Thread #40: 'load_db_items' time - 22 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-10] - Thread #40: 'xsl_transform' time - 16 665 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-10] - Thread #40: 'request_process' time - 17 418 mks  URL: feedback_ajax/
+[ERROR]-[14:19:32]-[http-nio-8080-exec-8] - Thread #38: 'init' time - 98 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-8] - Thread #38: 'load_db_items' time - 96 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-8] - Thread #38: 'xsl_transform' time - 21 791 mks
+[ERROR]-[14:19:32]-[http-nio-8080-exec-8] - Thread #38: 'request_process' time - 22 680 mks  URL: cart_ajax/
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-6] - Get method: Page output started
+[ERROR]-[14:19:57]-[http-nio-8080-exec-6] - Thread #36: 'init' time - 260 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-6] - Thread #36: 'load_db_items' time - 180 251 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-6] - Thread #36: 'xsl_transform' time - 80 943 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-6] - Thread #36: 'request_process' time - 263 800 mks  URL: confirm
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-1] - Get method: Page output started
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-3] - Get method: Page output started
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-5] - Get method: Page output started
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-4] - Get method: Page output started
+[DEBUG]-[14:19:57]-[http-nio-8080-exec-9] - Get method: Page output started
+[ERROR]-[14:19:57]-[http-nio-8080-exec-3] - Thread #33: 'init' time - 120 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-4] - Thread #34: 'init' time - 162 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-5] - Thread #35: 'init' time - 92 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-4] - Thread #34: 'load_db_items' time - 58 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-5] - Thread #35: 'load_db_items' time - 40 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-3] - Thread #33: 'load_db_items' time - 7 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-3] - Thread #33: 'xsl_transform' time - 20 690 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-5] - Thread #35: 'xsl_transform' time - 20 533 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-5] - Thread #35: 'request_process' time - 21 350 mks  URL: fav_ajax/
+[ERROR]-[14:19:57]-[http-nio-8080-exec-4] - Thread #34: 'xsl_transform' time - 18 151 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-4] - Thread #34: 'request_process' time - 19 174 mks  URL: compare_ajax/
+[ERROR]-[14:19:57]-[http-nio-8080-exec-3] - Thread #33: 'request_process' time - 21 360 mks  URL: personal_ajax/
+[ERROR]-[14:19:57]-[http-nio-8080-exec-9] - Thread #39: 'init' time - 93 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-9] - Thread #39: 'load_db_items' time - 34 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-9] - Thread #39: 'xsl_transform' time - 22 365 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-9] - Thread #39: 'request_process' time - 23 130 mks  URL: feedback_ajax/
+[ERROR]-[14:19:57]-[http-nio-8080-exec-1] - Thread #31: 'init' time - 180 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-1] - Thread #31: 'load_db_items' time - 117 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-1] - Thread #31: 'xsl_transform' time - 28 312 mks
+[ERROR]-[14:19:57]-[http-nio-8080-exec-1] - Thread #31: 'request_process' time - 29 316 mks  URL: cart_ajax/
+[DEBUG]-[14:24:09]-[pool-1-thread-1] - Start transaction, try #1
+[DEBUG]-[14:24:09]-[pool-1-thread-1] - Transaction successfull at try #1
