@@ -288,7 +288,8 @@ public abstract class BasicServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	public static boolean checkProtocolScheme(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String requestScheme = "http";
+		//String requestScheme = "http";
+		String requestScheme = AppContext.getProtocolScheme(); // TODO временный фикс для neocomponent.com
 		String checkHeaderValue = request.getHeader(AppContext.getTestHttpsHeader());
 		if (checkHeaderValue != null &&
 				(!AppContext.hasTestHttpsValue() || StringUtils.equalsIgnoreCase(AppContext.getTestHttpsHeaderValue(), checkHeaderValue))) {
