@@ -127,7 +127,8 @@ public class RegisterCommand extends Command implements ItemNames, CartConstants
 			if (userItem != null && userItem.isPersonal())
 				throw new UserNotAllowedException("user exists");
 			if (userItem != null) {
-				Item.updateParamValues(formUser, userItem);
+				if (!Item.updateParamValues(formUser, userItem))
+					throw new UserNotAllowedException("user exists");
 			} else {
 				userItem = formUser;
 				userItem.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), catalog.getId());

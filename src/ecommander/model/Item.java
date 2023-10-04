@@ -884,7 +884,7 @@ public class Item implements ItemBasics {
 	 * @param destination
 	 * @throws SQLException 
 	 */
-	private static void updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...exceptParams) {
+	private static boolean updateParamValuesInner(Item source, Item destination, boolean keepFiles, String...exceptParams) {
 		// Если тип айтемов не совпадает - ничего не делать
 		try {
 			Collection<ParameterDescription> paramsToCopy;
@@ -895,7 +895,7 @@ public class Item implements ItemBasics {
 			else if (ItemTypeRegistry.getItemPredecessorsExt(source.getTypeName()).contains(destination.getTypeName()))
 				paramsToCopy = destination.itemType.getParameterList();
 			else
-				return;
+				return false;
 			source.populateMap();
 			HashSet<String> excludeParams = null;
 			// Если переданы параметры для копирования, то создать из них множество
@@ -930,6 +930,7 @@ public class Item implements ItemBasics {
 		} catch (Exception e) {
 			// Ничего не делать
 		}
+		return true;
 	}
 
 	/**
@@ -940,8 +941,8 @@ public class Item implements ItemBasics {
 	 * @param destination
 	 * @param exceptParams
 	 */
-	public static void updateParamValues(Item source, Item destination, String...exceptParams) {
-		updateParamValuesInner(source, destination, false, exceptParams);
+	public static boolean updateParamValues(Item source, Item destination, String...exceptParams) {
+		return updateParamValuesInner(source, destination, false, exceptParams);
 	}
 
 	/**
@@ -951,8 +952,8 @@ public class Item implements ItemBasics {
 	 * @param source
 	 * @param destination
 	 */
-	public static void updateParamValuesKeepFiles(Item source, Item destination) {
-		updateParamValuesInner(source, destination, true);
+	public static boolean updateParamValuesKeepFiles(Item source, Item destination) {
+		return updateParamValuesInner(source, destination, true);
 	}
 	/**
 	 * Установить дополнительное значение в айтем (не параметр)
