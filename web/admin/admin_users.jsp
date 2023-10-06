@@ -6,6 +6,7 @@
 <%@page import="ecommander.model.User"%>
 <%@page import="ecommander.controllers.SessionContext"%>
 <%@page import="ecommander.fwk.Strings"%>
+<%@ page import="ecommander.controllers.AppContext" %>
 <%@include file="login_import.jsp"%>
 <html>
 <head>
@@ -37,8 +38,8 @@
 				</div>
 			</div>
 			<div class="right-col">
-				<a href="<%=request.getServerName() + (request.getServerPort() == 80 ? "" : ":" + request.getServerPort()) + request.getContextPath()%>" class="gray">
-					<%=request.getServerName() + (request.getServerPort() == 80 ? "" : ":" + request.getServerPort()) + request.getContextPath()%>
+				<a href="<%=AppContext.getServerNamePort(request) + request.getContextPath()%>" class="gray">
+					<%=AppContext.getServerNamePort(request) + request.getContextPath()%>
 				</a>
 				<a href="#">
 					<img src="admin/img/visual_btn.png" alt="visual editor" />

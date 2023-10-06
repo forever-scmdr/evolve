@@ -32,7 +32,7 @@
 			<div class="cart-confirm__text">
 				<p>Заявка №<xsl:value-of select="$cart/order_num"/></p>
 				<p>Позиций: <xsl:value-of select="$cart/qty"/></p>
-				<p>Сумма: <xsl:value-of select="$cart/sum"/></p>
+				<p>Сумма: <xsl:value-of select="f:exchange_cur($cart, 'sum', 0)"/></p>
 				<xsl:if test="$is_phys">
 					<p>Покупатель: <xsl:value-of select="$contacts/name"/></p>
 					<p>Телефон: <xsl:value-of select="$contacts/phone"/></p>
@@ -80,13 +80,15 @@
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
 <!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
-						<xsl:variable name="product" select="product"/>
+						<xsl:variable name="p" select="product"/>
+						<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
+                        <xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 						<tr>
-							<td><xsl:value-of select="$product/code"/></td>
-							<td><xsl:value-of select="$product/name"/></td>
+							<td><xsl:value-of select="$p/code"/></td>
+							<td><xsl:value-of select="$p/name"/></td>
 							<td><xsl:value-of select="qty"/></td>
-							<td><xsl:value-of select="price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
-							<td><xsl:value-of select="sum"/></td>
+							<td><xsl:value-of select="$price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
+							<td><xsl:value-of select="$sum"/></td>
 							<xsl:if test="$cart/bought/item_own_extras" >
 								<td>
 									<xsl:if test="item_own_extras/extra1"><p><xsl:value-of select="item_own_extras/extra1"/></p></xsl:if>

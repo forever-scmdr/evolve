@@ -412,7 +412,7 @@
 		</xsl:call-template>
 		<div class="block sections-block ptb">
 			<div class="{'container'[$need_container]}">
-				<div class="title title_2"><xsl:value-of select="header" /></div>
+				<div class="title title_2" ><xsl:value-of select="header" /></div>
 					<div class="sections-block_wrap{if(type='в 4 колонки') then '-4' else '-5'}">
 						<xsl:for-each select="custom_block | section | custom_page">
 							

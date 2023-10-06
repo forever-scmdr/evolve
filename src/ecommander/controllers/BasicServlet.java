@@ -272,8 +272,7 @@ public abstract class BasicServlet extends HttpServlet {
 	
 	public static String getContextPath(HttpServletRequest request) {
 		return
-				AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				AppContext.getProtocolScheme() + "://" + AppContext.getServerNamePort(request) +
 				request.getContextPath();
 	}
 	/**
@@ -319,8 +318,7 @@ public abstract class BasicServlet extends HttpServlet {
 			userUrl = userUrl.substring(1);
 		}
 
-		String contextPath = AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+		String contextPath = AppContext.getProtocolScheme() + "://" + AppContext.getServerNamePort(request) +
 				request.getContextPath();
 		if (!StringUtils.endsWith(contextPath, "/"))
 			contextPath += "/";
