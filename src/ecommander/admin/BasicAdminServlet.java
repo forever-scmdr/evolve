@@ -111,14 +111,12 @@ public abstract class BasicAdminServlet extends HttpServlet {
 	 */
 	public static String getRequestStrig(HttpServletRequest request) {
 		return 
-				AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+				AppContext.getProtocolScheme() + "://" + AppContext.getServerNamePort(request) +
 				request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
 	}
 
 	public static String createAbsoluteUrl(HttpServletRequest request, String relativeUrl) {
-		return AppContext.getProtocolScheme() + "://" + request.getServerName() +
-				(request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+		return AppContext.getProtocolScheme() + "://" + AppContext.getServerNamePort(request) +
 				"/" + relativeUrl;
 	}
 }

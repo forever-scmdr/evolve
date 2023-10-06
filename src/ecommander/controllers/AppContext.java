@@ -3,8 +3,10 @@ package ecommander.controllers;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.persistence.commandunits.DeleteComplex;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
@@ -24,6 +26,8 @@ public class AppContext {
 	private static String TEST_HTTPS_HEADER;
 	private static String TEST_HTTPS_HEADER_VALUE;
 	private static boolean IS_HTTPS;
+	private static String SERVER_NAME;
+	private static int SERVER_PORT;
 	private static boolean HAS_TEST_HTTPS_VALUE;
 	
 	private static String MAIN_XML_MODELS_DIR;
@@ -74,6 +78,8 @@ public class AppContext {
 			TEST_HTTPS_HEADER_VALUE = props.getProperty("url.https.test.value");
 			HAS_TEST_HTTPS_VALUE = StringUtils.isNotBlank(TEST_HTTPS_HEADER_VALUE);
 			IS_HTTPS = StringUtils.equalsIgnoreCase(PROTOCOL_SCHEME, "https");
+			SERVER_NAME = props.getProperty("url.server_name", null);
+			SERVER_PORT = NumberUtils.toInt(props.getProperty("url.server_port", "-1"), -1);
 			
 			// часовая зона
 			try {
@@ -228,5 +234,21 @@ public class AppContext {
 
 	public static boolean hasTestHttpsValue() {
 		return HAS_TEST_HTTPS_VALUE;
+	}
+
+	/**
+	 * Имя сервера для ссылок.
+	 * Иногда не возможно взять его из HttpServletRequest
+	 * @param req
+	 * @return
+	 */
+	public static String getServerNamePort(HttpServletRequest req) {
+		String serverName = StringUtils.isNotBlank(SERVER_NAME) ? SERVER_NAME : req.getServerName();
+		int port = SERVER_PORT >= 0 ? SERVER_PORT : req.getServerPort();
+		return serverName + (port == 80 || port == 443 ? "" : ":" + port);
+	}
+
+	public static String getServerName(HttpServletRequest req) {
+		return StringUtils.isNotBlank(SERVER_NAME) ? SERVER_NAME : req.getServerName();
 	}
 }

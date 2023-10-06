@@ -37,6 +37,8 @@
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+                            <xsl:variable name="plain_section" select="$p/plain_section"/>
+                            <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
@@ -61,8 +63,20 @@
 								</xsl:if>
 								<div class="cart-item__price">
 									<span class="text-label">Цена</span>
-									<span><xsl:value-of select="$price"/></span>
-									<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>
+									<span>
+										<!-- Для обычных товаров (не из каталога price_catalog) -->
+										<xsl:if test="not($plain)"><xsl:value-of select="$price"/></xsl:if>
+										<!-- Для товаров из каталога price_catalog -->
+										<xsl:if test="$plain">
+											<xsl:call-template name="ALL_PRICES">
+												<xsl:with-param name="need_sum" select="false()"/>
+												<xsl:with-param name="price_in_currency" select="f:exchange($p, 'price', 0)"/>
+												<xsl:with-param name="product" select="$p"/>
+												<xsl:with-param name="section_name" select="$plain"/>
+											</xsl:call-template>
+										</xsl:if>
+									</span>
+									<!--<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>-->
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>

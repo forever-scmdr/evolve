@@ -47,7 +47,7 @@ public class MainExecutionController {
 			page.setPostData(itemForm);
 			Timer.getTimer().stop(Timer.INIT);
 			// Выполнить страницу (загрузить и выполнить команды) или взять ее из кеша
-			PageController.newUsingCache(requestUrl, req.getServerName()).processPage(page, resp);
+			PageController.newUsingCache(requestUrl, AppContext.getServerName(req)).processPage(page, resp);
 		} catch (ValidationException ve) {
 			for (StructureMessage error : ve.getResults().getStructureErrors()) {
 				ServerLogger.error("pages.xml: " + error.originator + " - " + error.message);
