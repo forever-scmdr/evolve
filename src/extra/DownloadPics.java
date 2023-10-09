@@ -7,7 +7,6 @@ import ecommander.model.Item;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.mappers.ItemMapper;
 import extra._generated.ItemNames;
-import javafx.scene.web.WebView;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

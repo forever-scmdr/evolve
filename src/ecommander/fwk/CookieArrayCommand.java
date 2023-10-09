@@ -20,6 +20,10 @@ public class CookieArrayCommand extends Command {
 		super(outer);
 	}
 
+	public CookieArrayCommand() {
+		super();
+	}
+
 	@Override
 	public ResultPE execute() throws Exception {
 		return null;
