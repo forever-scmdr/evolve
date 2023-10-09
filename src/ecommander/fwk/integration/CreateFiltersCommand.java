@@ -7,7 +7,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
-import ecommander.model.datatypes.LongDataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
@@ -17,7 +16,8 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
+import kotlin.Triple;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -34,9 +34,9 @@ import java.text.ParsePosition;
 import java.util.*;
 
 /**
- * Created by E on 17/5/2018.
+ * Команда для сознания фильтра, подразумевающая что вся информация хранится в одном айтеме товара (параметры xml и
  */
-public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
+public class CreateFiltersCommand extends IntegrateBase implements CatalogConst {
 
 	public static final String ELEMENT_CLASSES_PROCESS_TIMER_NAME = "classes_element";
 	public static final String DB_CLASSES_TIMER_NAME = "classes_DB";
@@ -63,6 +63,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		protected LinkedHashMap<String, DataType.Type> paramTypes = new LinkedHashMap<>();
 		protected LinkedHashMap<String, Pair<String, Boolean>> paramCaptions = new LinkedHashMap<>();
 		protected HashMap<String, String> paramUnits = new HashMap<>();
+		protected HashMap<String, HashSet<String>> uniqueParamValues = new LinkedHashMap<>();
 		protected HashSet<String> notInFilter = new HashSet<>();
 		protected static final NumberFormat eng_format = NumberFormat.getInstance(new Locale("en"));
 		protected static final NumberFormat ru_format = NumberFormat.getInstance(new Locale("ru"));
@@ -73,28 +74,33 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 
 		protected void addParameter(String name, String value, boolean isMultiple) {
+			value = StringUtils.normalizeSpace(value);
 			String paramName = Strings.createXmlElementName(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
 				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
+				uniqueParamValues.put(paramName, new HashSet<>());
 			} else if (isMultiple) {
 				Pair<String, Boolean> cap = paramCaptions.get(paramName);
 				if (cap != null && !cap.getRight()) {
 					paramCaptions.put(paramName, new Pair<>(cap.getLeft(), true));
 				}
 			}
+			if (StringUtils.isNotBlank(value)) {
+				uniqueParamValues.get(paramName).add(value);
+			}
 			DataType.Type currentType = paramTypes.get(paramName);
-			Pair<DataType.Type, String> test = testValueHasUnit(value);
-			if (currentType.equals(DataType.Type.INTEGER) && test.getLeft() != DataType.Type.INTEGER) {
-				paramTypes.put(paramName, test.getLeft());
-			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getLeft() == DataType.Type.STRING) {
+			Triple<DataType.Type, String, Object> test = testValueHasUnit(value);
+			if (currentType.equals(DataType.Type.INTEGER) && test.getFirst() != DataType.Type.INTEGER) {
+				paramTypes.put(paramName, test.getFirst());
+			} else if (currentType.equals(DataType.Type.DOUBLE) && test.getFirst() == DataType.Type.STRING) {
 				paramTypes.put(paramName, DataType.Type.STRING);
 			}
-			if (StringUtils.isNotBlank(test.getRight()) && test.getLeft() != DataType.Type.STRING) {
-				String newUnit = test.getRight();
+			if (StringUtils.isNotBlank(test.getSecond()) && test.getFirst() != DataType.Type.STRING) {
+				String newUnit = test.getSecond();
 				String oldUnit = paramUnits.get(paramName);
 				if (oldUnit == null) {
-					paramUnits.put(paramName, test.getRight());
+					paramUnits.put(paramName, test.getSecond());
 				}
 				// Если разные размерности (единицы измерения) в одном параметре - хранить как строку
 				else if (StringUtils.isNotBlank(oldUnit) && !StringUtils.equalsIgnoreCase(newUnit, oldUnit)) {
@@ -111,32 +117,33 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			notInFilter.add(paramName);
 		}
 
-		private static boolean testDouble(String value) {
+		private static Pair<Boolean, Number> testDouble(String value) {
 			ParsePosition pp = new ParsePosition(0);
-			ru_format.parse(value, pp);
+			Number parsed = ru_format.parse(value, pp);
 			if (pp.getIndex() != value.length()) {
 				pp = new ParsePosition(0);
-				eng_format.parse(value, pp);
+				parsed = eng_format.parse(value, pp);
 				if (pp.getIndex() != value.length())
-					return false;
+					return new Pair<>(Boolean.FALSE, null);
 			}
-			return true;
+			return new Pair<>(Boolean.FALSE, parsed);
 		}
 
-		protected static Pair<DataType.Type, String> testValueHasUnit(String value) {
+		protected static Triple<DataType.Type, String, Object> testValueHasUnit(String value) {
 			try {
-				Integer.parseInt(value);
+				Number parsed = Integer.parseInt(value);
 				if (value.matches("0\\d+")) {
-					return new Pair<>(DataType.Type.STRING, null);
+					return new Triple<>(DataType.Type.STRING, null, value);
 				}
-				return new Pair<>(DataType.Type.INTEGER, null);
+				return new Triple<>(DataType.Type.INTEGER, null, parsed);
 			} catch (NumberFormatException nfe1) {
-				if (testDouble(value)) {
-					return new Pair<>(DataType.Type.DOUBLE, null);
+				Pair<Boolean, Number> doubleTest = testDouble(value);
+				if (doubleTest.getLeft()) {
+					return new Triple<>(DataType.Type.DOUBLE, null, doubleTest.getRight());
 				} else {
 					//fix bug with % material
 					if(value.matches("\\d+([\\.,]\\d+)?%\\D+")){
-						return new Pair<>(DataType.Type.STRING, null);
+						return new Triple<>(DataType.Type.STRING, null, value);
 					}
 					if (value.matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$")) {
 						int unitStart = 0;
@@ -144,17 +151,18 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 						String numStr = value.substring(0, unitStart).trim();
 						String unit = value.substring(unitStart).trim();
 						try {
-							Integer.parseInt(numStr);
-							return new Pair<>(DataType.Type.INTEGER, unit);
+							Number parsed = Integer.parseInt(numStr);
+							return new Triple<>(DataType.Type.INTEGER, unit, parsed);
 						} catch (NumberFormatException nfe2) {
-							if (testDouble(numStr)) {
-								return new Pair<>(DataType.Type.DOUBLE, unit);
+							doubleTest = testDouble(numStr);
+							if (doubleTest.getLeft()) {
+								return new Triple<>(DataType.Type.DOUBLE, unit, doubleTest.getRight());
 							} else {
-								return new Pair<>(DataType.Type.STRING, null);
+								return new Triple<>(DataType.Type.STRING, null, value);
 							}
 						}
 					} else {
-						return new Pair<>(DataType.Type.STRING, null);
+						return new Triple<>(DataType.Type.STRING, null, value);
 					}
 				}
 			}
@@ -162,11 +170,11 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 	}
 
 
-	public CreateParametersAndFiltersCommand(Command outer) {
+	public CreateFiltersCommand(Command outer) {
 		super(outer);
 	}
 
-	public CreateParametersAndFiltersCommand() {
+	public CreateFiltersCommand() {
 	}
 
 	@Override
@@ -212,30 +220,22 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 		}
 		for (Item section : sections) {
 			info.getTimer().start(ELEMENT_CLASSES_PROCESS_TIMER_NAME);
-			info.getTimer().start(DB_CLASSES_TIMER_NAME);
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0])).setLimit(1).loadItems();
-			info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 			if (products.size() > 0) {
-
-				// Загрузить и добавить все строковые товары
-				/*
-				if (ItemTypeRegistry.getItemType(LINE_PRODUCT_ITEM) != null)
-					products.addAll(new ItemQuery(LINE_PRODUCT_ITEM).setParentId(section.getId(), true).loadItems());
-				*/
-
+				Item first = products.get(0);
 				// Анализ параметров продуктов
-				String className = createClassName(section);
-				Params params = new Params(section.getStringValue(NAME_PARAM), className);
+				Params params = new Params(section.getStringValue(NAME_PARAM), first.getTypeName());
 				info.getTimer().start(DB_CLASSES_TIMER_NAME);
-				ItemQuery paramsXmlQuery = new ItemQuery(PARAMS_XML_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0]))
+				// params_xml айтем не используется, загружаются просто сами товары, которые уже сами содержат параметр params_xml
+				ItemQuery paramsXmlQuery = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0]))
 						.setIdSequential(0).setLimit(50);
 				List<Item> paramsXmlItems = paramsXmlQuery.loadItems();
 				long lastParamsXmlId = 0;
 				while (paramsXmlItems.size() > 0) {
-					for (Item paramsXmlItem : paramsXmlItems) {
-						lastParamsXmlId = paramsXmlItem.getId();
-						if (StringUtils.isNotBlank(paramsXmlItem.getStringValue(XML_PARAM))) {
-							String xml = "<params>" + paramsXmlItem.getStringValue(XML_PARAM) + "</params>";
+					for (Item product : paramsXmlItems) {
+						lastParamsXmlId = product.getId();
+						if (StringUtils.isNotBlank(product.getStringValue(PARAMS_XML_PARAM))) {
+							String xml = "<params>" + product.getStringValue(PARAMS_XML_PARAM) + "</params>";
 							Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
 							Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
 							for (Element paramEl : paramEls) {
@@ -257,11 +257,9 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 				}
 				info.getTimer().stop(DB_CLASSES_TIMER_NAME);
 
-				// Создание фильтра
-				String classCaption = section.getStringValue(NAME_PARAM);
 				// Создать фильтр и установить его в айтем
 				FilterDefinition filter = FilterDefinition.create("");
-				filter.setRoot(className);
+				filter.setRoot(first.getTypeName());
 				for (String paramName : params.paramTypes.keySet()) {
 					if (params.notInFilter.contains(paramName))
 						continue;
@@ -269,7 +267,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					String unit = params.paramUnits.get(paramName);
 					InputDef input = new InputDef("droplist", caption, unit, "");
 					filter.addPart(input);
-					input.addPart(new CriteriaDef("=", paramName, params.paramTypes.get(paramName), ""));
+					input.addPart(new CriteriaDef("=", PARAM_VALS_PARAM, params.paramTypes.get(paramName), ""));
 				}
 				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
 				info.getTimer().start(DB_CLASSES_TIMER_NAME);
