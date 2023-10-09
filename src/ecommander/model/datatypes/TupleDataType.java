@@ -85,13 +85,19 @@ public class TupleDataType extends FormatDataType {
 		return metas;
 	}
 
-	public static String createCombinedValue(Pair<String, String> value, Object formatter) {
-		if (formatter == null) formatter = DEFAULT_FORMAT;
-		return StringUtils.isBlank(value.getRight()) ? value.getLeft() : value.getLeft() + ((TupleFormatter) formatter).format + value.getRight();
-	}
-
 	public static String outputTuple(Object value, Object formatter) {
 		if (formatter == null) formatter = DEFAULT_FORMAT;
 		return ((TupleFormatter) formatter).output((Pair<String, String>) value);
+	}
+
+	/**
+	 * Создать объект нужного типа для tuple (Pair<String, String>), который потом можно
+	 * устанавливать как значение параметра айтема
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Object newTuple(String name, String value) {
+		return new Pair<String, String>(name, value);
 	}
 }

@@ -344,6 +344,11 @@
 		<parameter name="price_BYN" type="currency-precise" caption="Цена BYN"/>
 		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>
 
+		<!-- Параметры для фильтрации в виде tuple (вместо сабайтема params) -->
+		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров"/>
+		<!-- Параметры в виде XML (см. айтем params_xml) -->
+		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
+
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
