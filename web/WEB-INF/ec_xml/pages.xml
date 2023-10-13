@@ -37,7 +37,7 @@
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="keypath"/>
+					<var name="sec" ref="sec" style="key"/>
 				</link>
 				<list item="product" transit="true">
 					<filter>
@@ -117,9 +117,11 @@
 	</include-definition>
 
 
-
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="show_product_ajax" target="product_ajax">
+			<var name="prod" ref="$prod" style="key"/>
+		</link>
+		<link name="show_lines_ajax" target="lines_ajax">
 			<var name="prod" ref="$prod" style="key"/>
 		</link>
 		<link name="to_cart" target="cart_action">
@@ -184,12 +186,12 @@
 				</list>
 				<list item="section" assoc="general" id="block_sec">
 					<link name="show_products" target="section" type="exclusive">
-						<var name="sec" ref="block_sec" style="keypath"/>
+						<var name="sec" ref="block_sec" style="key"/>
 					</link>
 				</list>
 				<list item="custom_page" assoc="general" id="block_page">
 					<link name="show_page" target="page" type="exclusive">
-						<var name="p" ref="block_page" style="keypath"/>
+						<var name="p" ref="block_page" style="key"/>
 					</link>
 				</list>
 				<list item="news" assoc="general">
@@ -237,7 +239,7 @@
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
-			<var name="sec" style="keypath"/>
+			<var name="sec" style="key"/>
 			<var name="page" value="1"/>
 			<var name="view" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
@@ -470,7 +472,7 @@
 
 	<page name="product" template="product" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="prod" style="key"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -527,6 +529,9 @@
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
+			<link name="show_lines_ajax" target="lines_ajax">
+				<var name="prod" ref="assoc" style="key"/>
+			</link>
 			<link name="to_cart" target="cart_action">
 				<var name="action" value="addToCart"/>
 				<var name="prod" ref="assoc"/>
@@ -556,16 +561,46 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="keypath"/>
+			<var name="prod" style="key"/>
 		</request>
 		<single item="catalog" cacheable="true" id="catalog"/>
-		<single item="product" id="prod" var="prod" tag="product">
+		<single item="product" id="prod_ajax" var="prod" tag="product" cacheable="true" cache-vars="prod">
 			<list item="product_extra" tag="product_extra"/>
-			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod_ajax"/>
 		</single>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_link" target="compare"/>
 		<link name="show_cart" target="cart"/>
+	</page>
+
+
+
+	<!-- Товары-строки или API товары -->
+	<page name="lines_ajax" template="lines_ajax" cacheable="true">
+		<request>
+			<var name="prod" style="key"/>
+		</request>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
+		<single item="product" id="prod" var="prod" tag="product"/>
+		<single item="plain_catalog">
+			<list item="product" id="plain" transit="true">
+				<filter>
+					<fulltext name="name" limit="50" compare="EVERY">
+						<var ref="prod" parameter="name"/>
+					</fulltext>
+				</filter>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:plain"/>
+				<ancestor item="plain_section" transit="false"/>
+			</list>
+		</single>
+		<single item="currencies" cacheable="true"/>
 	</page>
 
 
@@ -943,7 +978,7 @@
 				</list>
 				<list item="section" id="ass_sec" assoc="general">
 					<link name="show_products" target="section" type="exclusive">
-						<var name="prod" ref="ass_sec" style="keypath"/>
+						<var name="prod" ref="ass_sec" style="key"/>
 					</link>
 				</list>
 			</tree>
@@ -1510,6 +1545,9 @@
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
+			<link name="show_lines_ajax" target="lines_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1742,6 +1780,9 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="show_product_ajax" target="product_ajax">
+				<var name="prod" ref="prod" style="key"/>
+			</link>
+			<link name="show_lines_ajax" target="lines_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
