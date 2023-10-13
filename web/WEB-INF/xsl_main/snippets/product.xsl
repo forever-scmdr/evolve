@@ -315,7 +315,7 @@
 								<xsl:if test="count($captions) &gt; $product_params_limit">
 									<tr>
 										<td colspan="2">
-											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>
+											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>
 										</td>
 									</tr>
 								</xsl:if>
@@ -488,7 +488,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->

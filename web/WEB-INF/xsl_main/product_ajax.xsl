@@ -32,13 +32,13 @@
 										</div>
 									</xsl:for-each>
 								</div>
-								<div class="gallery">
+								<!--<div class="gallery">
 									<xsl:call-template name="FOTORAMA"/>
-								</div>
+								</div>-->
 							</div>
 							<div class="device-preview__column">
 
-								<div class="device-actions">
+								<!--<div class="device-actions">
 									<div class="device-actions__price price">
 										<xsl:if test="$has_price">
 											<div class="price__new">
@@ -58,7 +58,8 @@
 									<div class="device-actions__buttons order-buttons">
 										<xsl:call-template name="CART" />&#160;<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click" class="button button_secondary">Купить в 1 клик</a>
 									</div>
-								</div>
+								</div>-->
+								
 								<div class="tabs">
 									<div class="tabs__links">
 										<a href="#tab-params" role="tab" data-toggle="tab" class="tabs__link tabs__link_active">Характеристики</a>

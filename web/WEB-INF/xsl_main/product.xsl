@@ -14,6 +14,7 @@
 	</xsl:template>
 
 
+	<xsl:variable name="hide_side_menu" select="true()"/>
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
@@ -217,18 +218,18 @@
 					</xsl:if>
 
 					<!-- параметры -->
-<!--					<table class="params">-->
-<!--						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>-->
-<!--						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>-->
-<!--						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>-->
-<!--						<xsl:for-each select="$captions">-->
-<!--							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
-<!--							<tr>-->
-<!--								<td><xsl:value-of select="$param/@caption"/></td>-->
-<!--								<td><xsl:value-of select="$param"/></td>-->
-<!--							</tr>-->
-<!--						</xsl:for-each>-->
-<!--					</table>-->
+					<table class="params">
+						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
+						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
+						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
+						<xsl:for-each select="$captions">
+							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+							<tr>
+								<td><xsl:value-of select="$param/@caption"/></td>
+								<td><xsl:value-of select="$param"/></td>
+							</tr>
+						</xsl:for-each>
+					</table>
 				</xsl:if>
 
 
@@ -294,23 +295,23 @@
 					<xsl:if test="$p/files">
 						<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
 							<div class="icon icon_size_lg">
-								<img src="img/product-icon-02.png" alt="" />
+								<img src="img/pdf.png" alt="" />
 							</div>
-							<span class="icon-link__item">скачать</span>
-						</a>
+							<span class="icon-link__item">Документация (скачать)</span>
+						</a><br/><br/>
 					</xsl:if>
-<!--					<a href="" class="icon-link product-icons__item">-->
-<!--						<div class="icon icon_size_lg">-->
-<!--							<img src="img/product-icon-02.png" alt="" />-->
-<!--						</div>-->
-<!--						<span class="icon-link__item">поделиться</span>-->
-<!--					</a>-->
-<!--					<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" target="_blank">-->
-<!--						<div class="icon icon_size_lg">-->
-<!--							<img src="img/product-icon-02.png" alt="" />-->
-<!--						</div>-->
-<!--						<span class="icon-link__item">распечатать</span>-->
-<!--					</a>-->
+					<!--<a href="" class="icon-link product-icons__item">
+						<div class="icon icon_size_lg">
+							<img src="img/share.png" alt="" />
+						</div>
+						<span class="icon-link__item">поделиться</span>
+					</a>
+					<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" target="_blank">
+						<div class="icon icon_size_lg">
+							<img src="img/print.png" alt="" />
+						</div>
+						<span class="icon-link__item">распечатать</span>
+					</a>-->
 				</div>
 
 			</div>
