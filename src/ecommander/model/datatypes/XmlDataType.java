@@ -16,7 +16,8 @@ public class XmlDataType extends StringDataType {
 	@Override
 	public String outputValue(Object value, Object formatter) {
 		if (StringUtils.isNotBlank((String) value))
-			return JsoupUtils.prepareValidXml((String) value);
+			return (String) value;
+			//return JsoupUtils.prepareValidXml((String) value);
 		return "";
 	}
 }

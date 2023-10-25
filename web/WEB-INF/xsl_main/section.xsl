@@ -77,6 +77,7 @@
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
 
 	<xsl:variable name="user_filter" select="page/variables/fil[input]"/>
+	<xsl:variable name="user_vals" select="page/variables/*[starts-with(name(), 'val_')]"/>
 
 
 	<xsl:template name="PAGE_PATH">
@@ -106,6 +107,7 @@
 		</xsl:if>
 		<xsl:call-template name="TAGS"/>
 		<xsl:call-template name="FILTER"/>
+<!--		<xsl:call-template name="XML_FILTER"/>-->
 
 		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($section_show_subs = '0')">
@@ -243,6 +245,60 @@
 			</div>
 		</xsl:if>
 	</xsl:template>
+
+
+	<xsl:template name="XML_FILTER">
+		<xsl:variable name="filter" select="parse-xml($sel_sec/xml_filter)/filter"/>
+		<xsl:variable name="valid_inputs" select="$filter/param[count(values/value) &gt; 1]"/>
+		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
+		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>
+		<xsl:variable name="captions" select="if ($is_user_defined and $is_manual_filter_on) then $user_defined_params else $valid_inputs/name"/>
+		<xsl:variable name="filter_is_open" select="$user_filter or $catalog_catalog_show_filter_default or //page/variables/show_filter = 'yes'"/>
+		<xsl:if test="not($subs) and $valid_inputs">
+			<div class="filter filter_section">
+				<a href="#" onclick="$('.filter_extra').toggle();$('#filters_container').slideToggle(200);return false;" class="icon-link filter__button button">
+					<div class="icon">
+						<img src="img/icon-gear.svg" alt="" />
+					</div>
+					<span class="icon-link__item filter_extra" style="{'display: none'[$filter_is_open]}">Показать подбор по параметрам</span>
+					<span class="icon-link__item filter_extra" style="{'display: none'[not($filter_is_open)]}">Скрыть подбор по параметрам</span>
+				</a>
+				<form method="post" action="{page/xml_filter_link}">
+					<div class="filter__wrap" style="{'display: none'[not($filter_is_open)]}" id="filters_container">
+						<xsl:for-each select="$captions">
+							<xsl:variable name="index" select="position()"/>
+							<xsl:variable name="input" select="$valid_inputs[lower-case(normalize-space(name)) = lower-case(normalize-space(current()))]"/>
+							<xsl:if test="$input">
+								<xsl:variable name="name" select="concat('val_', $index)"/>
+								<div class="filter__item active checkgroup">
+									<div class="filter__title"><xsl:value-of select="$input/name"/></div>
+									<div class="filter__values">
+										<xsl:for-each select="$input/values/value">
+											<div class="filter__value">
+												<label>
+													<input name="{$name}" type="checkbox" value="{val}">
+														<xsl:if test="val = $user_vals">
+															<xsl:attribute name="checked" select="'checked'"/>
+														</xsl:if>
+														&#160;<xsl:value-of select="cap"/>
+													</input>
+												</label>
+											</div>
+										</xsl:for-each>
+									</div>
+								</div>
+							</xsl:if>
+						</xsl:for-each>
+						<div class="filter__actions">
+							<button class="button button_2" type="submit">Показать результат</button>
+							<button class="button button_2" onclick="location.href = '{page/reset_filter_link}'; return false;">Сбросить</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</xsl:if>
+	</xsl:template>
+
 
 	<xsl:template name="DISPLAY_CONTROL">
 		<xsl:if test="($show_devices and not($not_found) and $sel_sec/product) or (/page/@name = 'fav' and page/product)">

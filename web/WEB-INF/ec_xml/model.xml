@@ -351,7 +351,7 @@
 		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>
 
 		<!-- Параметры для фильтрации в виде tuple (вместо сабайтема params) -->
-		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров"/>
+		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров" multiple="true"/>
 		<!-- Параметры в виде XML (см. айтем params_xml) -->
 		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
 
@@ -359,8 +359,12 @@
 		<child item="product_extra"/>
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
+		<!--
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
+		-->
+		<on-update class="ecommander.fwk.model.CreateTuplesFromXmlParams"/>
+		<on-update class="ecommander.fwk.model.CreateTuplesFromXmlParams"/>
 	</item>
 
 
@@ -392,7 +396,7 @@
 
 
 	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1833" ag-hash="878968494">
-		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
+		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" text-index-item="described_product" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 	</item>
 

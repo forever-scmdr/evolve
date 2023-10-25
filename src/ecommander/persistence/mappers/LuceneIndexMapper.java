@@ -268,7 +268,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		if (!item.getItemType().isFulltextSearchable())
 			return;
 
-		HashMap<Long, Document> docs = createAndPopulateItemDoc(item, ancestors);
+		HashMap<Long, Document> docs = createAndPopulateItemDoc(item, ancestors, null);
 		// Добавление айтема в индекс
 		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
 		//		ServerLogger.debug(item.getId());
@@ -281,15 +281,24 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 
 	/**
 	 * Создать и заполнить документ для одного айтема
+	 * пересоздавать айтем, который должен искаться (в этом случае пропадают ранее добавленные параметры вложенных айтемов)
 	 * @param item
 	 * @param ancestors
 	 * @return
 	 * @throws Exception
 	 */
-	private HashMap<Long, Document> createAndPopulateItemDoc(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws Exception {
+	private HashMap<Long, Document> createAndPopulateItemDoc(Item item, ArrayList<Pair<Byte, Long>> ancestors, HashMap<Long, Document> earlierCreated) throws Exception {
 		HashMap<Long, Document> docs = new HashMap<>();
-		Document itemDoc = createItemDoc(item, ancestors);
-		docs.put(item.getId(), itemDoc);
+		Document itemDoc;
+		if (earlierCreated != null) {
+			docs.putAll(earlierCreated);
+		}
+		if (docs.containsKey(item.getId())) {
+			itemDoc = earlierCreated.get(item.getId());
+		} else {
+			itemDoc = createItemDoc(item, ancestors);
+			docs.put(item.getId(), itemDoc);
+		}
 
 		// Заполняются все индексируемые параметры
 		// Заполнение полнотекстовых параметров
@@ -304,7 +313,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					}
 					LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> predAncestors = ItemMapper.loadItemAncestors(predIds.toArray(new Long[0]));
 					for (Item pred : preds) {
-						docs.putAll(createAndPopulateItemDoc(pred, predAncestors.get(pred.getId())));
+						docs.putAll(createAndPopulateItemDoc(pred, predAncestors.get(pred.getId()), docs));
 					}
 				}
 				for (Document doc : docs.values()) {

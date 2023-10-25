@@ -1,11 +1,11 @@
 package ecommander.fwk.integration;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.Pair;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
+import ecommander.model.datatypes.DoubleDataType;
+import ecommander.model.datatypes.TupleDataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
@@ -31,14 +31,16 @@ import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
- * Команда для сознания фильтра, подразумевающая что вся информация хранится в одном айтеме товара (параметры xml и
+ * Команда для сознания фильтра, подразумевающая, что вся информация хранится в одном айтеме товара
+ * (параметры xml и один строковый параметр с множественными значениями)
+ * Параметры команды (переменные страницы) - возможны два режима работы
+ * 	- section - список id или названий или урлов разделов для создания фильтров
+ * 	- page_sec - страничный ID одного текущего раздела на странице раздела. Для создания фильтров на лету (лейзи)
  */
 public class CreateSectionFilterCommand extends Command implements CatalogConst {
-
-	public static final String ELEMENT_CLASSES_PROCESS_TIMER_NAME = "classes_element";
-	public static final String ELEMENT_PRODUCT_PROCESS_TIMER_NAME = "product_element";
 
 	private static final String DIGITS = "0123456789.,";
 
@@ -57,12 +59,11 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 		private final String className;
 		private final String classCaption;
 		protected LinkedHashMap<String, DataType.Type> paramTypes = new LinkedHashMap<>();
-		protected LinkedHashMap<String, Pair<String, Boolean>> paramCaptions = new LinkedHashMap<>();
 		protected HashMap<String, String> paramUnits = new HashMap<>();
-		// <Normalized Value (just numbers, Real Value(with unit, commas, etc.)>
+		// <Real Value(with unit, commas, etc.) => Normalized Value (just numbers) >
 		// То, что выводится в select и его реальное значение. Реальное значение может быть с единицей измерения и т.п.,
 		// но его надо хранить т.к. именно такое значение хранится в БД и с ним надо производить сравнение
-		protected HashMap<String, Pair<String, String>> uniqueParamValues = new LinkedHashMap<>();
+		protected HashMap<String, HashMap<String, String>> uniqueParamValues = new LinkedHashMap<>();
 		protected HashSet<String> notInFilter = new HashSet<>();
 		protected static final NumberFormat eng_format = NumberFormat.getInstance(new Locale("en"));
 		protected static final NumberFormat ru_format = NumberFormat.getInstance(new Locale("ru"));
@@ -72,17 +73,11 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 			this.className = className;
 		}
 
-		protected void addParameter(String name, String value, boolean isMultiple) {
+		protected void addParameter(String name, String value) {
 			value = StringUtils.normalizeSpace(value);
 			String paramName = StringUtils.normalizeSpace(name);
 			if (!paramTypes.containsKey(paramName)) {
 				paramTypes.put(paramName, DataType.Type.INTEGER);
-				paramCaptions.put(paramName, new Pair<>(name, isMultiple));
-			} else if (isMultiple) {
-				Pair<String, Boolean> cap = paramCaptions.get(paramName);
-				if (cap != null && !cap.getRight()) {
-					paramCaptions.put(paramName, new Pair<>(cap.getLeft(), true));
-				}
 			}
 			DataType.Type currentType = paramTypes.get(paramName);
 			Triple<DataType.Type, String, String> test = testValueHasUnit(value);
@@ -105,7 +100,10 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 			if (paramTypes.get(paramName) == DataType.Type.STRING) {
 				paramUnits.remove(paramName);
 			}
-			uniqueParamValues.put(paramName, new Pair<>(test.getThird(), value));
+			if (!uniqueParamValues.containsKey(paramName)) {
+				uniqueParamValues.put(paramName, new HashMap<>());
+			}
+			uniqueParamValues.get(paramName).put(TupleDataType.outputTuple(TupleDataType.newTuple(name, value), null), test.getThird());
 		}
 
 		protected void addNotInFilter(String name) {
@@ -122,7 +120,7 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 				if (pp.getIndex() != value.length())
 					return new Pair<>(Boolean.FALSE, null);
 			}
-			return new Pair<>(Boolean.FALSE, parsed);
+			return new Pair<>(Boolean.TRUE, parsed);
 		}
 
 		/**
@@ -171,6 +169,31 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 	}
 
 
+	private static class StringOrNumberComparator implements Comparator<String> {
+
+		private DataType.Type type;
+		private HashMap<String, String> normalizedValues;
+
+		public StringOrNumberComparator(DataType.Type type, HashMap<String, String> normalizedValues) {
+			this.type = type;
+			this.normalizedValues = normalizedValues;
+		}
+
+		@Override
+		public int compare(String o1, String o2) {
+			if (type == DataType.Type.STRING)
+				return o1.compareTo(o2);
+			String normalizedO1 = normalizedValues.get(o1);
+			String normalizedO2 = normalizedValues.get(o2);
+			Double do1 = DoubleDataType.parse(normalizedO1);
+			Double do2 = DoubleDataType.parse(normalizedO2);
+			do1 = do1 == null ? Double.MAX_VALUE : do1;
+			do2 = do2 == null ? Double.MAX_VALUE : do2;
+			return do1.compareTo(do2);
+		}
+	}
+
+
 	public CreateSectionFilterCommand(Command outer) {
 		super(outer);
 	}
@@ -180,24 +203,35 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 
 	@Override
 	public ResultPE execute() throws Exception {
-		String justOneSection = getVarSingleValue("section");
-		List<Item> sections = null;
-		if (StringUtils.isNotBlank(justOneSection)) {
-			long longId = NumberUtils.toLong(justOneSection, -1);
-			Item section = null;
-			if (longId > 0)
-				section = ItemQuery.loadById(longId);
-			if (section == null)
-				section = ItemQuery.loadSingleItemByUniqueKey(justOneSection);
-			if (section == null)
-				section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, NAME_PARAM, justOneSection);
-			sections = new ArrayList<>();
+		// Список разделов по ID, названию или урлу
+		List<Object> secIds = getVarValues("section");
+		List<Item> sections = new ArrayList<>();
+		for (Object secId : secIds) {
+			String secIdStr = (String) secId;
+			if (StringUtils.isNotBlank(secIdStr)) {
+				long longId = NumberUtils.toLong(secIdStr, -1);
+				Item section = null;
+				if (longId > 0)
+					section = ItemQuery.loadById(longId);
+				if (section == null)
+					section = ItemQuery.loadSingleItemByUniqueKey(secIdStr);
+				if (section == null)
+					section = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, NAME_PARAM, secIdStr);
+				if (section != null) {
+					sections.add(section);
+				}
+			}
+		}
+		// Страничный ID айтема раздела
+		String pageSecId = getVarSingleValue("page_sec");
+		if (StringUtils.isNotBlank(pageSecId)) {
+			Item section = getSingleLoadedItem(pageSecId);
 			if (section != null) {
 				sections.add(section);
 			}
-		} else {
-			sections = new ItemQuery(SECTION_ITEM).loadItems();
 		}
+		if (secIds.size() == 0 && StringUtils.isBlank(pageSecId))
+			sections = new ItemQuery(SECTION_ITEM).loadItems();
 		if (sections.size() > 0)
 			doCreate(sections);
 		return null;
@@ -213,19 +247,38 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 				assocNames.add(extraAssoc.getName());
 		}
 		for (Item section : sections) {
+			// Пропустить разделы, в которых уже есть фильтр. Чтобы пересоздать фильтр, нужно очистить этот параметр в
+			// айтеме раздела (можно в CMS)
+			if (section.isValueNotEmpty(XML_FILTER_PARAM))
+				continue;
 			List<Item> products = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0])).setLimit(1).loadItems();
 			if (products.size() > 0) {
 				Item first = products.get(0);
 				// Анализ параметров продуктов
 				Params params = new Params(section.getStringValue(NAME_PARAM), first.getTypeName());
+
 				// params_xml айтем не используется, загружаются просто сами товары, которые уже сами содержат параметр params_xml
-				ItemQuery paramsXmlQuery = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), true, assocNames.toArray(new String[0]))
+				ItemQuery productQuery = new ItemQuery(PRODUCT_ITEM).setParentId(section.getId(), false, assocNames.toArray(new String[0]))
 						.setIdSequential(0).setLimit(50);
-				List<Item> paramsXmlItems = paramsXmlQuery.loadItems();
-				long lastParamsXmlId = 0;
-				while (paramsXmlItems.size() > 0) {
-					for (Item product : paramsXmlItems) {
-						lastParamsXmlId = product.getId();
+				List<Item> productItems = productQuery.loadItems();
+				long lastProductId = 0;
+				while (productItems.size() > 0) {
+					for (Item product : productItems) {
+						lastProductId = product.getId();
+						// Копирование XML параметров из вложенного айтема в сам продукт, удаление старого айтема params_xml
+						if (StringUtils.isBlank(product.getStringValue(PARAMS_XML_PARAM))) {
+							Item paramsXmlItem = new ItemQuery(PARAMS_XML_ITEM).setParentId(product.getId(), false).loadFirstItem();
+							if (paramsXmlItem != null && StringUtils.isNotBlank(paramsXmlItem.getStringValue(XML_PARAM))) {
+								product.setValue(PARAMS_XML_PARAM, paramsXmlItem.getStringValue(XML_PARAM));
+								transaction.executeCommandUnit(SaveItemDBUnit.get(product).noFulltextIndex());
+								transaction.executeCommandUnit(ItemStatusDBUnit.delete(paramsXmlItem));
+								// удалить также и айтем params
+								Item paramsItem = new ItemQuery(PARAMS_ITEM).setParentId(product.getId(), false).loadFirstItem();
+								if (paramsItem != null)
+									transaction.executeCommandUnit(ItemStatusDBUnit.delete(paramsItem));
+								transaction.commit();
+							}
+						}
 						if (StringUtils.isNotBlank(product.getStringValue(PARAMS_XML_PARAM))) {
 							String xml = "<params>" + product.getStringValue(PARAMS_XML_PARAM) + "</params>";
 							Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
@@ -238,29 +291,38 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 										caption = caption.replaceAll("\\s+", " ");
 										Elements values = paramEl.getElementsByTag(VALUE);
 										for (Element value : values) {
-											params.addParameter(caption, StringUtils.trim(value.ownText()), values.size() > 1);
+											params.addParameter(caption, StringUtils.trim(value.ownText()));
 										}
 									}
 								}
 							}
 						}
 					}
-					paramsXmlItems = paramsXmlQuery.setIdSequential(lastParamsXmlId).loadItems();
+					productItems = productQuery.setIdSequential(lastProductId).loadItems();
 				}
 
 				// Создать фильтр и установить его в айтем
-				FilterDefinition filter = FilterDefinition.create("");
-				filter.setRoot(first.getTypeName());
+				XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+				xml.startElement("filter");
 				for (String paramName : params.paramTypes.keySet()) {
-					if (params.notInFilter.contains(paramName))
+					if (params.notInFilter.contains(paramName) || !params.uniqueParamValues.containsKey(paramName))
 						continue;
-					String caption = params.paramCaptions.get(paramName).getLeft();
+					DataType.Type type = params.paramTypes.get(paramName);
+					HashMap<String, String> uniqueVals = params.uniqueParamValues.get(paramName);
+					Stream<String> sortedVals = uniqueVals.keySet().stream().sorted(new StringOrNumberComparator(type, uniqueVals));
 					String unit = params.paramUnits.get(paramName);
-					InputDef input = new InputDef("droplist", caption, unit, "");
-					filter.addPart(input);
-					input.addPart(new CriteriaDef("=", PARAM_VALS_PARAM, params.paramTypes.get(paramName), ""));
+					xml.startElement("param", "type", type);
+					xml.addElement("name", paramName);
+					if (StringUtils.isNotBlank(unit))
+						xml.addElement("unit", unit);
+					xml.startElement("values");
+					sortedVals.forEach(s -> xml.startElement("value").addElement("val", s).addElement("cap", uniqueVals.get(s)).endElement());
+					xml.endElement().endElement(); // </values></param>
 				}
-				section.setValue(PARAMS_FILTER_PARAM, filter.generateXML());
+				xml.endElement(); // </filter>
+				// установка параметра фильтра в айтем section
+				section.setValue(XML_FILTER_PARAM, xml.toString());
+
 				transaction.executeCommandUnit(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
 				transactionExecute();
 				//executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noTriggerExtra().noFulltextIndex());
@@ -278,31 +340,6 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 	private Boolean hasCode = null;
 	private Boolean hasName = null;
 	private Boolean hasCategoryId = null;
-
-	/**
-	 * Создать уникальное название для класса
-	 * @param section
-	 * @return
-	 */
-	private String createClassName(Item section) {
-		if (hasCode == null) {
-			hasCode = section.getItemType().hasParameter("code");
-			hasName = section.getItemType().hasParameter("name");
-			hasCategoryId = section.getItemType().hasParameter("category_id");
-		}
-		if (hasCode && section.isValueNotEmpty("code")) {
-			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("code")));
-		}
-		if (hasName && section.isValueNotEmpty("name")) {
-			if (!hasCategoryId || section.isValueEmpty("category_id")) {
-				// в этом случае использовать ID айтема, т.к. могут быть разделы с одинаковым названием
-				return Strings.createXmlElementName(StringUtils.lowerCase("pid_" + section.getId()));
-			}
-			return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getStringValue("name")))
-					+ "_" + section.getStringValue("category_id");
-		}
-		return Strings.createXmlElementName(StringUtils.lowerCase("p" + section.getKey()));
-	}
 
 
 	public static void main(String[] args) {

@@ -98,6 +98,6 @@ public class TupleDataType extends FormatDataType {
 	 * @return
 	 */
 	public static Object newTuple(String name, String value) {
-		return new Pair<String, String>(name, value);
+		return new Pair<>(name, value);
 	}
 }

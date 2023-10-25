@@ -136,7 +136,7 @@ public class SingleParameter extends Parameter {
 	}
 	@Override
 	public final boolean containsValue(Object value) {
-		return (value != null && value.equals(this.value)) || (value == null && this.value == null);
+		return (!desc.getDataType().isEmpty(value) && value.equals(this.value)) || (desc.getDataType().isEmpty(value) && desc.getDataType().isEmpty(this.value));
 	}
 	@Override
 	public final boolean equals(Object obj) {

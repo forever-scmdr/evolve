@@ -70,7 +70,7 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {
-			pstmt.string(StringUtils.substring((String)value, 0, 100));
+			pstmt.string(StringUtils.substring((String)value, 0, 190));
 		}
 
 		@Override
