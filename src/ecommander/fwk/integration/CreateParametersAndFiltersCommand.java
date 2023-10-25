@@ -34,6 +34,9 @@ import java.text.ParsePosition;
 import java.util.*;
 
 /**
+ * Команда для сознания фильтров во всех разделах или в одном прзделе
+ * 	- section - список id или названий или урлов разделов для создания фильтров
+ * 	Емли не задана переменная страницы section, значит надо создать фильтры во всех разделах
  * Created by E on 17/5/2018.
  */
 public class CreateParametersAndFiltersCommand extends IntegrateBase implements CatalogConst {
