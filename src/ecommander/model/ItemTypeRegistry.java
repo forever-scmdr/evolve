@@ -631,13 +631,30 @@ public class ItemTypeRegistry {
 	}
 
 	/**
-	 * Проверяет, есть ли среди подифицированных параметров айтема те, которые являются базовыми для computed
+	 * Проверяет, есть ли среди модифицированных параметров айтема те, которые являются базовыми для computed
 	 * параметров других айтемов
 	 * @param modifiedParamIds
 	 * @return
 	 */
 	public static boolean hasAffectedComputedSupertypes(Collection<Integer> modifiedParamIds) {
 		return CollectionUtils.containsAny(getSingleton().paramComputedSuperytpes.keySet(), modifiedParamIds);
+	}
+
+	/**
+	 * Вернуть все типы айтемов, чьи параметры должны быть добавлены в полнотекстовый индекс родительского
+	 * айтема (заданного)
+	 * @param parentItem
+	 * @return
+	 */
+	public static HashSet<String> getIlineTextIndexChildren(String parentItem) {
+		HashSet<String> childrenTypes = new HashSet<>();
+		ItemType type = getItemType(parentItem);
+		for (ItemTypeContainer.ChildDesc child : type.getAllChildren()) {
+			if (child.isInlineTextIndex) {
+				childrenTypes.addAll(getItemExtenders(child.itemName));
+			}
+		}
+		return childrenTypes;
 	}
 
 }

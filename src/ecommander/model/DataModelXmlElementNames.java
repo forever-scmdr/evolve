@@ -39,7 +39,7 @@ public interface DataModelXmlElementNames {
 	String CLASS = "class";
 	String VIRTUAL = "virtual";
 	String INLINE = "inline";
-	String SORTING = "sorting";
+	String INLINE_TEXT_INDEX = "inline-text-index";
 	String LIMIT = "limit";
 	String CHILDREN_PER_PAGE = "children-per-page";
 	String CHILDREN_SORTING = "children-sorting";
@@ -60,7 +60,6 @@ public interface DataModelXmlElementNames {
 	String TEXT_INDEX = "text-index";
 	String TEXT_INDEX_PARAMETER = "text-index-parameter";
 	String TEXT_INDEX_BOOST = "text-index-boost";
-	String TEXT_INDEX_ITEM = "text-index-item";
 	String TEXT_INDEX_PARSER = "text-index-parser";
 	String TEXT_INDEX_ANALYZER = "text-index-analyzer";
 

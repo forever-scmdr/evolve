@@ -405,7 +405,6 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String textIndexParser = paramEl.attr(TEXT_INDEX_PARSER);
 		String textIndexAnalyzer = paramEl.attr(TEXT_INDEX_ANALYZER);
 		String textIndexBoostStr = paramEl.attr(TEXT_INDEX_BOOST);
-		String textIndexItem = paramEl.attr(TEXT_INDEX_ITEM);
 		String defaultValue = paramEl.attr(DEFAULT);
 		ComputedDescription.Func func = ComputedDescription.Func.get(paramEl.attr(FUNCTION));
 		float textIndexBoost = -1f;
@@ -485,7 +484,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
 				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);
 		if (textIndex != ParameterDescription.TextIndex.none)
-			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexItem, textIndexAnalyzer);
+			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexAnalyzer);
 
 		// Если есть функция - надо считать базовый параметр
 		if (func != null) {
@@ -572,9 +571,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		boolean isSingle = StringUtils.equalsIgnoreCase(childEl.attr(SINGLE), TRUE_VALUE);
 		boolean isVitrual = StringUtils.equalsIgnoreCase(childEl.attr(VIRTUAL), TRUE_VALUE);
 		boolean isInline = StringUtils.equalsIgnoreCase(childEl.attr(INLINE), TRUE_VALUE);
-		String sorting = childEl.attr(SORTING);
-		int limit = NumberUtils.toInt(childEl.attr(LIMIT), 0);
-		parent.addOwnChild(assocName, childName, isSingle, isVitrual, isInline);
+		boolean isInlineTextIndex = StringUtils.equalsIgnoreCase(childEl.attr(INLINE_TEXT_INDEX), TRUE_VALUE);
+		parent.addOwnChild(assocName, childName, isSingle, isVitrual, isInline, isInlineTextIndex);
 	}
 
 	/**

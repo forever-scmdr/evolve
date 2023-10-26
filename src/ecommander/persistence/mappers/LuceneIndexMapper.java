@@ -1,23 +1,20 @@
 package ecommander.persistence.mappers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.Pair;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.fwk.Timer;
-import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.*;
+import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.core.KeywordTokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.document.Document;
@@ -107,8 +104,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		protected TokenStreamComponents createComponents(String fieldName) {
 			//KeywordTokenizer src = new KeywordTokenizer();
 			WhitespaceTokenizer src = new WhitespaceTokenizer();
-			TokenStream result = new StandardFilter(src);
-			result = new LowerCaseFilter(result);
+			TokenStream result = new LowerCaseFilter(src);
 			return new TokenStreamComponents(src, result);
 		}
 	}
@@ -155,6 +151,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	private SearcherManager searcherManager = null;
 	private HashMap<String, Parser> tikaParsers = new HashMap<>();
 	private volatile int countProcessed = 0; // Количество проиндексированных айтемов
+	private boolean isReindexAll = false;
+	private HashSet<Long> reindexAllProcessed = null;
 	
 	private LuceneIndexMapper() throws IOException {
 		directory = FSDirectory.open(Paths.get(AppContext.getLuceneIndexPath()));
@@ -256,6 +254,25 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	}
 
 	/**
+	 * Проверка, надо ли вообще добавлять этот айтем в индекс
+	 * @param item
+	 * @return
+	 */
+	private boolean checkNeedIndex(Item item) {
+		// Ссылки не добавлять в индекс
+		if (item == null || !item.getItemType().isFulltextSearchable()) {
+			return false;
+		}
+		if (isReindexAll) {
+			if (reindexAllProcessed.contains(item.getId())) {
+				return false;
+			}
+			reindexAllProcessed.add(item.getId());
+			return true;
+		}
+		return true;
+	}
+	/**
 	 * Добавить новый айтем в индекс
 	 * @param item
 	 * @param ancestors
@@ -263,19 +280,28 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	private void insertItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws Exception {
-		// Ссылки не добавлять в индекс
-		if (!item.getItemType().isFulltextSearchable())
+	private void insertItem(Item item, ArrayList<Triple<Byte, Long, Integer>> ancestors) throws Exception {
+		// Добавить родительский айтем в случае если текущий айтем должен добавлять
+		// параметры полнотекстового поиска в родительский
+		boolean parentAdded = false;
+		if (ancestors != null) {
+			for (Triple<Byte, Long, Integer> ancestor : ancestors) {
+				ItemType ancestorType = ItemTypeRegistry.getItemType(ancestor.getRight());
+				if (ItemTypeRegistry.getIlineTextIndexChildren(ancestorType.getName()).contains(item.getTypeName())) {
+					LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestorsMap = ItemMapper.loadItemAncestorsTriple(ancestor.getMedium());
+					insertItem(ItemQuery.loadById(ancestor.getMedium()), ancestorsMap.get(ancestor.getMedium()));
+					parentAdded = true;
+				}
+			}
+		}
+		if (parentAdded)
 			return;
-
-		HashMap<Long, Document> docs = createAndPopulateItemDoc(item, ancestors, null);
+		Document doc = createAndPopulateItemDoc(item, ancestors);
 		// Добавление айтема в индекс
 		//		writer.deleteDocuments(new TermQuery(new Term(DBConstants.Item.ID, item.getId() + "")));
 		//		ServerLogger.debug(item.getId());
 
-		for (Long itemId : docs.keySet()) {
-			writer.updateDocument(new Term(I_ID, itemId + ""), docs.get(itemId));
-		}
+		writer.updateDocument(new Term(I_ID, item.getId() + ""), doc);
 		//		writer.addDocument(itemDoc);
 	}
 
@@ -287,14 +313,13 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws Exception
 	 */
-	private HashMap<Long, Document> createAndPopulateItemDoc(Item item, ArrayList<Pair<Byte, Long>> ancestors, HashMap<Long, Document> earlierCreated) throws Exception {
-		HashMap<Long, Document> docs = new HashMap<>();
+	/*
+	private HashMap<Long, Document> createAndPopulateItemDoc(Item item, ArrayList<Pair<Byte, Long>> ancestors, HashMap<Long, Document> docs) throws Exception {
+		if (docs == null)
+			docs = new HashMap<>();
 		Document itemDoc;
-		if (earlierCreated != null) {
-			docs.putAll(earlierCreated);
-		}
 		if (docs.containsKey(item.getId())) {
-			itemDoc = earlierCreated.get(item.getId());
+			itemDoc = docs.get(item.getId());
 		} else {
 			itemDoc = createItemDoc(item, ancestors);
 			docs.put(item.getId(), itemDoc);
@@ -345,6 +370,57 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		}
 		return docs;
 	}
+	*/
+
+	private Document createAndPopulateItemDoc(Item item, ArrayList<Triple<Byte, Long, Integer>> ancestors) throws Exception {
+
+		Document doc = createItemDoc(item, ancestors);
+		ArrayList<Item> itemsToIndexTogeher = new ArrayList<>();
+		itemsToIndexTogeher.add(item);
+		if (item.getItemType().hasInlineTextIndexChildren()) {
+			ArrayList<Integer> childTypeIds = new ArrayList<>();
+			HashSet<String> childTypeNames = ItemTypeRegistry.getIlineTextIndexChildren(item.getTypeName());
+			for (String childTypeName : childTypeNames) {
+				childTypeIds.add(ItemTypeRegistry.getItemType(childTypeName).getTypeId());
+			}
+			ArrayList<Long> childrenIds = ItemMapper.loadItemChildrenIds(item.getId(), childTypeIds.toArray(new Integer[0]));
+			for (Long childId : childrenIds) {
+				itemsToIndexTogeher.add(ItemQuery.loadById(childId));
+			}
+		}
+		// Заполняются все индексируемые параметры
+		// Заполнение полнотекстовых параметров
+		HashSet<String> existingFields = new HashSet<>();
+		for (Item toIndex : itemsToIndexTogeher) {
+			for (String ftParam : toIndex.getItemType().getFulltextParams()) {
+				for (ParameterDescription param : toIndex.getItemType().getFulltextParameterList(ftParam)) {
+					if (param.isMultiple()) {
+						for (SingleParameter sp : ((MultipleParameter) toIndex.getParameterByName(param.getName())).getValues()) {
+							createParameterField(param, sp.outputValue(), doc, ftParam, existingFields.contains(ftParam));
+						}
+					} else {
+						createParameterField(param, ((SingleParameter) toIndex.getParameterByName(param.getName())).outputValue(),
+								doc, ftParam, existingFields.contains(ftParam));
+					}
+					existingFields.add(ftParam);
+				}
+			}
+		}
+		// Заполнение параметров для фильтрации
+		for (ParameterDescription param : item.getItemType().getParameterList()) {
+			if (param.isFulltextFilterable()) {
+				if (param.isMultiple()) {
+					for (SingleParameter sp : ((MultipleParameter) item.getParameter(param.getId())).getValues()) {
+						DataTypeMapper.setLuceneItemDocField(param.getType(), doc, param.getName(), sp.getValue());
+					}
+				} else {
+					DataTypeMapper.setLuceneItemDocField(param.getType(), doc, param.getName(),
+							item.getParameter(param.getId()).getValue());
+				}
+			}
+		}
+		return doc;
+	}
 
 
 	/**
@@ -353,7 +429,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @param ancestors
 	 * @return
 	 */
-	private Document createItemDoc(Item item, ArrayList<Pair<Byte, Long>> ancestors) {
+	private Document createItemDoc(Item item, ArrayList<Triple<Byte, Long, Integer>> ancestors) {
 		Document itemDoc = new Document();
 		// Устанавливается ID айтема. Строковое значение, т.к. для удаления и обновления нужно исиользовать Term,
 		// который поддерживает только строковые значения
@@ -365,8 +441,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		}
 		// Заполняются все предшественники (в которые айтем вложен)
 		if (ancestors != null) {
-			for (Pair<Byte, Long> ancestor : ancestors) {
-				itemDoc.add(new StringField(DBConstants.ItemTbl.I_SUPERTYPE, ancestor.getRight() + "", Store.YES));
+			for (Triple<Byte, Long, Integer> ancestor : ancestors) {
+				itemDoc.add(new StringField(DBConstants.ItemTbl.I_SUPERTYPE, ancestor.getMedium() + "", Store.YES));
 			}
 		}
 		return itemDoc;
@@ -412,9 +488,9 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public void updateItem(Item item, ArrayList<Pair<Byte, Long>> ancestors) throws Exception {
-		// Ссылки не добавлять в индекс (и не дуалять соответственно)
-		if (!item.getItemType().isFulltextSearchable())
+	public void updateItem(Item item, ArrayList<Triple<Byte, Long, Integer>> ancestors) throws Exception {
+		// Ссылки не добавлять в индекс (и не удалять соответственно)
+		if (!checkNeedIndex(item))
 			return;
 		writer.deleteDocuments(new Term(I_ID, item.getId() + ""));
 		insertItem(item, ancestors);
@@ -481,6 +557,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						boolQuery.add(filter, BooleanClause.Occur.FILTER);
 						query = boolQuery.build();
 					}
+					ServerLogger.debug("query: " + query.toString());
 					foundDocs = search.search(query, maxResults);
 					ServerLogger.debug("FULLTEXT\t-\tFOUND: " + foundDocs.totalHits + "\t-\tQUERY: \t" + query.toString());
 					float scoreQuotient = 1f;
@@ -559,6 +636,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 		final int LIMIT = 500;
 		createNewIndex();
 		countProcessed = 0;
+		reindexAllProcessed = new HashSet<>();
+		isReindexAll = true;
 		for (String itemName : ItemTypeRegistry.getItemNames()) {
 			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
 			if (itemDesc.isFulltextSearchable()) {
@@ -570,7 +649,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 					for (Item item : items) {
 						ids.add(item.getId());
 					}
-					LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(ids.toArray(new Long[0]));
+					LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(ids.toArray(new Long[0]));
 					for (Item item : items) {
 						updateItem(item, ancestors.get(item.getId()));
 					}
@@ -583,6 +662,8 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 			}
 		}
 		commit();
+		isReindexAll = false;
+		reindexAllProcessed = null;
 		return true;
 	}
 	/**

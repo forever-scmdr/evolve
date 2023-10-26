@@ -4,6 +4,7 @@ import ecommander.filesystem.SaveItemFilesUnit;
 import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Triple;
 import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
@@ -126,7 +127,7 @@ class UpdateItemParamsDBUnit extends DBPersistenceCommandUnit implements DBConst
 
 		// Вставка в Lucene индекс
 		if (insertIntoFulltextIndex) {
-			LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(item.getId());
+			LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(item.getId());
 			LuceneIndexMapper.getSingleton().updateItem(item, ancestors.get(item.getId()));
 		}
 

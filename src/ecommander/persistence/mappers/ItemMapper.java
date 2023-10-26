@@ -1,9 +1,6 @@
 package ecommander.persistence.mappers;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.ErrorCodes;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.Pair;
+import ecommander.fwk.*;
 import ecommander.model.*;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.common.TransactionContext;
@@ -325,6 +322,66 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, 
 					result.put(childId, preds);
 				}
 				preds.add(new Pair<>(rs.getByte(2), rs.getLong(3)));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Загрузить ID всех предшественников по всем ассоциациям заданных айтемов
+	 * Аналогично loadItemAncestors, только еще происходит соединение с таблицей item, чтобы узнать
+	 * тип родительских айтемов (возвращается как третий элемент triple)
+	 * @param itemId
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> loadItemAncestorsTriple(Long... itemId) throws SQLException, NamingException {
+		LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> result = new LinkedHashMap<>();
+		for (Long key : itemId) {
+			result.put(key, null);
+		}
+		TemplateQuery select= new TemplateQuery("Select item ancestors by it's ID");
+		select.SELECT(IP_CHILD_ID, IP_ASSOC_ID, IP_PARENT_ID, I_SUPERTYPE)
+				.FROM(ITEM_PARENT_TBL).INNER_JOIN(ITEM_TBL, IP_PARENT_ID, I_ID)
+				.WHERE().col_IN(IP_CHILD_ID).longIN(itemId);
+		try(Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Long childId = rs.getLong(1);
+				ArrayList<Triple<Byte, Long, Integer>> preds = result.get(childId);
+				if (preds == null) {
+					preds = new ArrayList<>();
+					result.put(childId, preds);
+				}
+				preds.add(new Triple<>(rs.getByte(2), rs.getLong(3), rs.getInt(4)));
+			}
+		}
+		return result;
+	}
+
+
+	/**
+	 * Загрузить ID всех вложенных айтемов нужного типа в заданный айтем
+	 * @param itemId
+	 * @param typeIds
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public static ArrayList<Long> loadItemChildrenIds(Long itemId, Integer... typeIds) throws SQLException, NamingException {
+		ArrayList<Long> result = new ArrayList<>();
+		TemplateQuery select= new TemplateQuery("Select item ancestors by it's ID");
+		select.SELECT(IP_CHILD_ID, IP_ASSOC_ID, IP_PARENT_ID).FROM(ITEM_PARENT_TBL)
+				.WHERE().col(IP_PARENT_ID).long_(itemId)
+				.AND().col_IN(IP_ASSOC_ID).byteIN(ItemTypeRegistry.getAllAssocIds())
+				.AND().col_IN(IP_CHILD_SUPERTYPE).intIN(typeIds);
+		try (Connection conn = MysqlConnector.getConnection();
+			PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				result.add(rs.getLong(1));
 			}
 		}
 		return result;

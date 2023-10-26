@@ -784,7 +784,7 @@
 		</command>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="SOME" name="name text">
+				<fulltext limit="48" compare="EVERY" name="name text">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
