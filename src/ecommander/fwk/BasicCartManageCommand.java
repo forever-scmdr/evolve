@@ -172,8 +172,9 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 		// Загрузка и модификация счетчика
-		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
-		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
+//		Item system = ItemUtils.ensureSingleRootAnonymousItem(SYSTEM_ITEM, getInitiator());
+//		Item counter = ItemUtils.ensureSingleAnonymousItem(COUNTER_ITEM, getInitiator(), system.getId());
+		Item counter = ItemUtils.ensureSingleRootAnonymousItem(COUNTER_ITEM, getInitiator());
 		int count = counter.getIntValue(COUNT_PARAM, 0) + 1;
 		if (count > 99999)
 			count = 1;
@@ -259,7 +260,7 @@ public abstract class BasicCartManageCommand extends Command {
 		// Сохранение нового значения счетчика, если все отправлено удачно
 		counter.setValue(COUNT_PARAM, count);
 		//counter.setValue(DATE_PARAM, newDate);
-		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser());
+		executeCommandUnit(SaveItemDBUnit.get(counter).ignoreUser().noFulltextIndex());
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		// Сохранить историю
@@ -294,8 +295,8 @@ public abstract class BasicCartManageCommand extends Command {
 			purchase.setValue(NUM_PARAM, orderNumber + "");
 			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
 			purchase.setValue(QTY_PARAM, cart.getValue(QTY_PARAM));
-			purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
-			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
+			//purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
+			//purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(SUM_PARAM));
 			executeCommandUnit(SaveItemDBUnit.get(purchase).ignoreUser());
 			ArrayList<Item> boughts = getSessionMapper().getItemsByName(BOUGHT_ITEM, cart.getId());
@@ -445,7 +446,7 @@ public abstract class BasicCartManageCommand extends Command {
         product.setContextPrimaryParentId(bought.getId());
         getSessionMapper().saveTemporaryItem(product, PRODUCT_ITEM);
         // Загрузка и сохранение родительского продукта (для продуктов, вложенных в другие продукты)
-        Item parent = new ItemQuery(ABSTRACT_PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
+        Item parent = new ItemQuery(PRODUCT_ITEM).setChildId(product.getId(), false).loadFirstItem();
         if (parent != null) {
             parent.setContextPrimaryParentId(product.getId());
             getSessionMapper().saveTemporaryItem(parent);

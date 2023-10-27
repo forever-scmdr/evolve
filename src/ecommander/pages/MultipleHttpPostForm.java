@@ -173,6 +173,13 @@ public class MultipleHttpPostForm implements Serializable {
 		return first.getItem();
 	}
 
+	public Item getTransientSingleItem() throws Exception {
+		ItemTreeNode first = getItemTree().getFirstChild();
+		if (first == null)
+			return null;
+		return first.getItem();
+	}
+
 	/**
 	 * Получить все extra (поля вне айтема)
 	 * @return
