@@ -92,6 +92,10 @@ abstract class ParameterCriteria implements FilterCriteria, ItemQuery.Const, DBC
 		return param.getId();
 	}
 
+	public final boolean isParameterMultiple() {
+		return param.isMultiple();
+	}
+
 	public final void optimizeJoins(String newTableName) {
 		this.INDEX_TABLE = newTableName;
 		needJoin = false;

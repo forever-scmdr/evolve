@@ -79,7 +79,13 @@ class CriteriaGroup implements FilterCriteria, ItemQuery.Const {
 	}
 
 	private void addOptimized(ParameterCriteria crit) {
-		optimizeJoin(crit);
+		// Оптимизировать JOIN только для одиночных параметров, т.к. у них точно одно значение и
+		// соединение с одной индексной таблицей параметров обоснованно. Для множественных параметров
+		// должно быть много соединений, т.к. и самих значений может быть много (а не привязка к одному значению,
+		// при использовании одной индексной таблицы)
+		if (!crit.isParameterMultiple()) {
+			optimizeJoin(crit);
+		}
 		criterias.add(crit);
 	}
 	/**

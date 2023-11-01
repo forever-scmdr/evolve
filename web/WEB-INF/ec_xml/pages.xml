@@ -250,21 +250,21 @@
 			<var name="fil"/>
 			<var name="tag"/>
 			<var name="mark"/>
-			<!-- Новый фильтр (пока не доделан)
+
 			<var name="val_1"/><var name="val_2"/><var name="val_3"/><var name="val_4"/><var name="val_5"/>
 			<var name="val_6"/><var name="val_7"/><var name="val_8"/><var name="val_9"/><var name="val_10"/>
 			<var name="val_11"/><var name="val_12"/><var name="val_13"/><var name="val_14"/><var name="val_15"/>
 			<var name="val_16"/><var name="val_17"/><var name="val_18"/><var name="val_19"/><var name="val_20"/>
-			-->
-			<var name="page_sec" value="filter_sec"/>
+
+			<var name="page_sec" value="filter_sec"/><!-- параметр команды CreateSectionFilterCommand -->
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
 		</single>
-		<!-- Новый фильтр (пока не доделан)
+
 		<single item="section" var="sec" id="filter_sec" tag="filter_section" cache-vars="sec"/>
 		<command class="ecommander.fwk.integration.CreateSectionFilterCommand"/>
-		-->
+
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
@@ -273,9 +273,10 @@
 			<single item="seo" assoc="seo"/>
 			<list item="product" id="prod" transit="true" assoc="* catalog_link">
 				<filter>
+					<!--
 					<child item="params" transit="false"
 						   ref="cur_sec" parameter="params_filter" var="fil" preload-domains="yes"/>
-					<!-- Новый фильтр (пока не доделан)
+					-->
 					<parameter name="param_vals" compare="ANY"><var var="val_1" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_2" /></parameter>
 					<parameter name="param_vals" compare="ANY"><var var="val_3" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_4" /></parameter>
 					<parameter name="param_vals" compare="ANY"><var var="val_5" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_6" /></parameter>
@@ -286,7 +287,7 @@
 					<parameter name="param_vals" compare="ANY"><var var="val_15" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_16" /></parameter>
 					<parameter name="param_vals" compare="ANY"><var var="val_17" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_18" /></parameter>
 					<parameter name="param_vals" compare="ANY"><var var="val_19" /></parameter><parameter name="param_vals" compare="ANY"><var var="val_20" /></parameter>
-					-->
+
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
 					<sorting direction-var="direction">
 						<var var="sort"/>
@@ -399,8 +400,11 @@
 		<link name="set_mark_default" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="mark" value=""/>
 		</link>
-		<link name="xml_filter_link" target="section" copy-page-vars="yes" type="exclusive">
-			<var name="val" value=""/>
+		<link name="xml_filter_link" target="section" type="exclusive">
+			<var name="sec" var="sec" style="key"/>
+			<var name="page" var="page"/>
+			<var name="tag" var="tag"/>
+			<var name="mark" var="mark"/>
 		</link>
 		<include name="COMMON"/>
 	</page>

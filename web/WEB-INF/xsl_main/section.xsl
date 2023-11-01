@@ -106,8 +106,8 @@
 			</div>
 		</xsl:if>
 		<xsl:call-template name="TAGS"/>
-		<xsl:call-template name="FILTER"/>
-<!--		<xsl:call-template name="XML_FILTER"/>-->
+<!--		<xsl:call-template name="FILTER"/>-->
+		<xsl:call-template name="XML_FILTER"/>
 
 		<!-- Отображние блоками/списком, товаров на страницу, сортировка, наличие -->
 		<xsl:if test="$subs and $sub_view = 'pics' and $show_devices and not($section_show_subs = '0')">
