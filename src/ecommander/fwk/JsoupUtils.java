@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -74,7 +75,7 @@ public class JsoupUtils {
 		Element el = parent.getElementsByTag(tag).first();
 		if (el == null)
 			return null;
-		return el.ownText();
+		return StringUtils.normalizeSpace(el.ownText());
 	}
 
 	/**

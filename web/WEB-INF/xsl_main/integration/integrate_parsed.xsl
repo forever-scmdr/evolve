@@ -24,7 +24,7 @@
 		</style>
 		<script>
 			setTimeout(function(){
-				document.location.replace("/integrate_parsed");
+				document.location.replace("/<xsl:value-of select="page/@name"/>");
 			}, 5000);
 		</script>
 		</head>

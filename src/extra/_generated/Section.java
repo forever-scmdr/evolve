@@ -26,6 +26,7 @@ public class Section
     public final static String EXTRA = "extra";
     public final static String PARAMS_SHORT = "params_short";
     public final static String PARAMS_LIST = "params_list";
+    public final static String XML_FILTER = "xml_filter";
     public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
@@ -301,6 +302,22 @@ public class Section
 
     public boolean contains_params_list(String value) {
         return containsValue("params_list", value);
+    }
+
+    public void set_xml_filter(String value) {
+        setValue("xml_filter", value);
+    }
+
+    public String get_xml_filter() {
+        return getStringValue("xml_filter");
+    }
+
+    public String getDefault_xml_filter(String defaultVal) {
+        return getStringValue("xml_filter", defaultVal);
+    }
+
+    public boolean contains_xml_filter(String value) {
+        return containsValue("xml_filter", value);
     }
 
 }

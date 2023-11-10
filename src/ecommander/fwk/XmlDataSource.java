@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Парсер XML на основе Streaming API
@@ -24,6 +25,7 @@ public class XmlDataSource {
 
 	public static class Node {
 		private String tagName;
+		private HashMap<String, String> attributes;
 		private Node parent;
 		private XmlDocumentBuilder doc;
 
@@ -54,6 +56,17 @@ public class XmlDataSource {
 			return lastFound;
 		}
 
+		private void addAttr(String name, String value) {
+			if (attributes == null)
+				attributes = new HashMap<>();
+			attributes.put(name, value);
+		}
+
+		public String attr(String name) {
+			if (attributes == null)
+				return null;
+			return attributes.get(name);
+		}
 	}
 
 	private Node path;
@@ -69,32 +82,29 @@ public class XmlDataSource {
 	/**
 	 * Найти первый следующий тэг с заданным названием.
 	 * При этом становится известно только название тэга и значения атрибутов.
-	 * Для заполнения вложенных тэгов надо вызывать метод nodeStarted
+	 * Для заполнения вложенных тэгов надо вызывать метод scanCurrentNode
 	 *
-	 * @param elementName - тэг
+	 * @param elementNames - список тэгов
 	 * @param attrCriterias - критерии атрибутов
 	 * @return
 	 * @throws XMLStreamException
 	 */
-	public Node findNextNode(String elementName, String... attrCriterias) throws XMLStreamException {
+	public Node findNextNode(HashSet<String> elementNames, String... attrCriterias) throws XMLStreamException {
 		while (reader.hasNext()) {
 			int event = reader.next();
 
 			switch (event) {
 				case XMLStreamConstants.START_ELEMENT:
 					Node node = nodeStarted();
-					if (StringUtils.equalsIgnoreCase(node.tagName, elementName)) {
-                        boolean matches = true;
+					if (elementNames.contains(node.tagName)) {
+						for (int i = 0; i < reader.getAttributeCount(); i++) {
+							node.addAttr(reader.getAttributeLocalName(i), reader.getAttributeValue(i));
+						}
+						boolean matches = true;
 						if (attrCriterias != null && attrCriterias.length > 0) {
-							HashMap<String, String> nodeAttrs = new HashMap<>();
-							for (int i = 0; i < reader.getAttributeCount(); i++) {
-								nodeAttrs.put(reader.getAttributeLocalName(i), reader.getAttributeValue(i));
-							}
 							for (int i = 0; i < attrCriterias.length; i += 2) {
-								matches &= nodeAttrs.containsKey(attrCriterias[i]);
-								if (attrCriterias.length > i + 1)
-									matches &= StringUtils.equals(nodeAttrs.get(attrCriterias[i]), attrCriterias[i + 1]);
-
+								String actualValue = node.attr(attrCriterias[i]);
+								matches &= StringUtils.equalsIgnoreCase(StringUtils.trimToNull(actualValue), StringUtils.trimToNull(attrCriterias[i + 1]));
 							}
 						}
 						if (matches)
@@ -115,6 +125,19 @@ public class XmlDataSource {
 		return null;
 	}
 
+	/**
+	 * Для одного тэга
+	 * @param elementName
+	 * @param attrCriterias
+	 * @return
+	 * @throws XMLStreamException
+	 */
+	public Node findNextNode(String elementName, String... attrCriterias) throws XMLStreamException {
+		HashSet<String> tags = new HashSet<>(1);
+		tags.add(elementName);
+		return findNextNode(tags);
+	}
+
 	private Node nodeStarted() {
 		Node parent = path == null ? null : path.getLastFound();
 		Node newNode = new Node(reader.getLocalName(), parent);
@@ -130,7 +153,12 @@ public class XmlDataSource {
 		return newNode;
 	}
 
-
+	/**
+	 * Формируется полноценный документ найденного методом findNextNode тэга.
+	 * Заполняются все вложенные тэги и их значения.
+	 * @return
+	 * @throws XMLStreamException
+	 */
 	public Node scanCurrentNode() throws XMLStreamException {
 		Node currentNode = path.getLastFound();
 		int levelCounter = 0;

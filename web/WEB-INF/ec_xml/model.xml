@@ -352,6 +352,8 @@
 
 		<!-- Параметры для фильтрации в виде tuple (вместо сабайтема params) -->
 		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров" multiple="true"/>
+		<!-- Параметры в кратком описании рядом с картинкой товара на исходном сайте -->
+		<parameter name="desc_vals" type="tuple" caption="Параметры краткого описания" description="для краткого описания" multiple="true"/>
 		<!-- Параметры в виде XML (см. айтем params_xml) -->
 		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
 
@@ -398,6 +400,11 @@
 	<item name="product_extra_page" caption="Дополнительные страницы для товара" super="product_extra *" ag-id="1833" ag-hash="878968494">
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" text-index-item="described_product" />
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
+	</item>
+
+	<!-- Аналогично product_extra_page, но когда информация логически структурирована, а не просто текст или HTML -->
+	<item name="product_extra_xml" caption="Дополнительные XML для товара" super="product_extra *" ag-id="2447" ag-hash="-110185448">
+		<parameter name="xml" type="xml" caption="XML" text-index="fulltext" text-index-item="product"/>
 	</item>
 
 

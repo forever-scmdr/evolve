@@ -61,6 +61,9 @@ public class Line_product
     public final static String PRICE_EUR_OLD = "price_EUR_old";
     public final static String PRICE_BYN = "price_BYN";
     public final static String PRICE_BYN_OLD = "price_BYN_old";
+    public final static String PARAM_VALS = "param_vals";
+    public final static String DESC_VALS = "desc_vals";
+    public final static String PARAMS_XML = "params_xml";
     public final static String GALLERY = "gallery";
 
     private Line_product(Item item) {
@@ -954,6 +957,22 @@ public class Line_product
 
     public boolean contains_price_BYN_old(BigDecimal value) {
         return containsValue("price_BYN_old", value);
+    }
+
+    public void set_params_xml(String value) {
+        setValue("params_xml", value);
+    }
+
+    public String get_params_xml() {
+        return getStringValue("params_xml");
+    }
+
+    public String getDefault_params_xml(String defaultVal) {
+        return getStringValue("params_xml", defaultVal);
+    }
+
+    public boolean contains_params_xml(String value) {
+        return containsValue("params_xml", value);
     }
 
     public void add_gallery(File value) {

@@ -1950,6 +1950,19 @@
 
 
 	<!--//                             						                               -->
+	<!--//                            Интеграция парсинга	                               -->
+	<!--//                             						                               -->
+	<page name="integrate_parsed_digikey" template="integrate_parsed">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.IntegrateParsedDigikey" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
+	<!--//                             						                               -->
 	<!--//                         Интеграция парсинга в CSV                               -->
 	<!--//                             						                               -->
 	<page name="integrate_parsed_csv" template="integration/crawl">

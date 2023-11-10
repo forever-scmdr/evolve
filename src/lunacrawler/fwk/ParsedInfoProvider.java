@@ -3,6 +3,7 @@ package lunacrawler.fwk;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,8 +11,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,9 +69,13 @@ public class ParsedInfoProvider {
 	private Path compiledDir;
 	private Path filesDir;
 	private Document tree;
-
+	private XmlDataSource bigTree;
 
 	public ParsedInfoProvider() {
+		new ParsedInfoProvider(false);
+	}
+
+	public ParsedInfoProvider(boolean isTreeBig) {
 		String resultDir = AppContext.getRealPath(AppContext.getProperty(RESULT_DIR, null));
 		if (resultDir != null && !resultDir.endsWith("/"))
 			resultDir += "/";
@@ -83,17 +90,38 @@ public class ParsedInfoProvider {
 		if (!Files.exists(treeFile)) {
 			throw new IllegalStateException("parsing tree is not found");
 		}
-		try {
-			String xml = new String(Files.readAllBytes(treeFile), UTF_8);
-			tree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-		} catch (Exception e) {
-			ServerLogger.error("Error while parsing result tree file", e);
-			tree = null;
+		if (isTreeBig) {
+			try {
+				bigTree = new XmlDataSource(treeFile.toString(), StandardCharsets.UTF_8);
+			} catch (Exception e) {
+				ServerLogger.error("Error while opening result tree file", e);
+				bigTree = null;
+			}
+		} else {
+			try {
+				String xml = new String(Files.readAllBytes(treeFile), UTF_8);
+				tree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+			} catch (Exception e) {
+				ServerLogger.error("Error while parsing result tree file", e);
+				tree = null;
+			}
 		}
 	}
 
+	/**
+	 * Для небольших документов
+	 * @return
+	 */
 	public Document getTree() {
 		return tree;
+	}
+
+	/**
+	 * Для больших документов
+	 * @return
+	 */
+	public XmlDataSource getBigTree() {
+		return bigTree;
 	}
 
 	public Document getItem(String id) throws IOException {
@@ -147,6 +175,6 @@ public class ParsedInfoProvider {
 	}
 
 	public boolean isValid() {
-		return tree != null;
+		return tree != null || bigTree != null;
 	}
 }
