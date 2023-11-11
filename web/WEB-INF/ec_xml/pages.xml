@@ -609,6 +609,7 @@
 	<page name="lines_ajax" template="lines_ajax" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
+			<var name="cur" scope="cookie"/>
 		</request>
 		<usergroup name="0dmin">
 			<list item="optional_modules" cacheable="true">
@@ -631,6 +632,9 @@
 			</list>
 		</single>
 		<single item="currencies" cacheable="true"/>
+		<link name="set_currency" target="lines_ajax" copy-page-vars="yes">
+			<var name="cur" value=""/>
+		</link>
 	</page>
 
 
@@ -671,17 +675,22 @@
 	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
 	<page name="search_ajax" template="search_ajax">
 		<include name="SEARCH_AJAX_COMMON"/>
-		<list item="product" id="prod">
-			<filter>
-				<fulltext limit="5" compare="EVERY" type="prefix">
-					<var var="q"/>
-				</fulltext>
-<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
+		<single item="catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="5" compare="EVERY" type="prefix">
+						<var var="q"/>
+					</fulltext>
+	<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+				<link name="show_lines_ajax" target="lines_ajax">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+			</list>
+		</single>
 		<link name="show_all" target="search">
 			<var name="q" var="q"/>
 			<!-- <var name="view" value="table" scope="cookie"/>
@@ -786,19 +795,21 @@
 		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
 			<result name="analogs" type="inline_xml"/>
 		</command>
-		<list item="product" id="prod">
-			<filter>
-				<fulltext limit="48" compare="EVERY" name="name text">
-					<var var="q"/>
-				</fulltext>
-				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
-			<ancestor item="plain_section" transit="false"/>
-		</list>
+		<single item="catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="48" compare="EVERY" name="name text">
+						<var var="q"/>
+					</fulltext>
+					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+				</filter>
+				<link name="show_product" target="product" type="exclusive">
+					<var name="prod" ref="prod" style="key"/>
+				</link>
+				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
+				<ancestor item="plain_section" transit="false"/>
+			</list>
+		</single>
 		<include name="SEARCH_COMMON" replace="$pname:search"/>
 		<include name="COMMON"/>
 	</page>
@@ -857,6 +868,10 @@
 
 	<!-- Страница для поиска по каталогу удаленных складов (не основному) -->
 	<page name="search_plain" template="search">
+		<request>
+			<var name="q"/>
+			<var name="n"/>
+		</request>
 		<single item="plain_catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
@@ -872,7 +887,7 @@
 				<ancestor item="plain_section" transit="false"/>
 			</list>
 		</single>
-		<include name="SEARCH_COMMON" replace="$pname:search"/>
+		<include name="SEARCH_COMMON" replace="$pname:search_plain"/>
 		<include name="COMMON"/>
 	</page>
 
@@ -1469,7 +1484,6 @@
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
 		</single>
-		<single item="currencies"/>
 	</page>
 
 

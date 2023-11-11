@@ -24,7 +24,7 @@
 	<xsl:variable name="is_admin" select="page/@name = 'admin_search'"/>
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
-	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
+	<xsl:variable name="step_default" select="if (page/catalog[1]/default_step) then f:num(page/catalog[1]/default_step) else 1"/>
 	<xsl:variable name="sel_sec" select="none"/>
 
 

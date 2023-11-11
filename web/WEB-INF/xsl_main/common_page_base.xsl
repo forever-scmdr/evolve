@@ -66,7 +66,8 @@
 	<xsl:variable name="search_catalog" select="contains($mods/search_results, 'каталог')"/>
     <xsl:variable name="search_plain" select="contains($mods/search_results, 'склад')"/>
 	<xsl:variable name="search_not_set" select="not($search_catalog) and not($search_plain)"/>
-    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>
+<!--    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>-->
+	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>
 	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
 
 	<!-- ****************************    SEO    ******************************** -->
@@ -185,7 +186,7 @@
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 						<xsl:if test="$has_personal">
-							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
+							<div id="personal_desktop" ajax-href="{//page/personal_ajax_link}" ajax-show-loader="no">
 								<a href="{page/login_link}" class="icon-link">
 									<div class="icon">
 										<img src="img/icon-lock.svg" alt="" />
@@ -242,22 +243,24 @@
 								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 								<!-- quick search end -->
 							</form>
+						</xsl:if>
+					</div>
+					<div class="header__column other-container side-menu">
+						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
 								<a href="#" popup="modal-excel">Загрузка BOM</a>
 							</xsl:if>
-						</xsl:if>
+						</div>
 					</div>
+
 					<!-- need styles -->
+					<!--
 					<xsl:if test="$has_currency_rates and $currencies">
 						<div class="header__column other-container side-menu">
 							<div class="catalog-currency">
 								<i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong>&#160;
 								<ul class="currency-options">
 									<xsl:variable name="currency_link" select="page/set_currency"/>
-<!--									<li class="{'active'[$currency = 'BYN']}">-->
-<!--										<xsl:if test="not($currency = 'BYN')"><a href="{concat($currency_link, 'BYN')}">BYN</a></xsl:if>-->
-<!--										<xsl:if test="$currency = 'BYN'">BYN</xsl:if>-->
-<!--									</li>-->
 									<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
 										<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
 										<xsl:variable name="active" select="$currency = $cur"/>
@@ -270,6 +273,7 @@
 							</div>
 						</div>
 					</xsl:if>
+					-->
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
 

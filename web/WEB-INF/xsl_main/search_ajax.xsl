@@ -48,11 +48,15 @@
 								</a>
 								<a href="{show_product}" class="title">
 									<xsl:value-of select="name"/>
+									<p/>
 									<span>
 										№ для заказа: <xsl:value-of select="code"/>
 									</span>
 								</a>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
+								<div class="price one">
+									<a class="button" href="#" onclick="showDetails('{show_lines_ajax}'); return false;" style="padding: 5px">Цены</a>
+<!--									<span>Цены</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/>-->
+								</div>
 							</div>
 						</xsl:for-each>
 					</div>

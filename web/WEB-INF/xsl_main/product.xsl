@@ -381,6 +381,21 @@
 
 		</div>
 
+		<div style="padding-left: 5px; padding-bottom: 10px" id="cur_div">
+			<ul class="currency-options">
+				<xsl:variable name="currency_link" select="page/set_currency"/>
+				<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+					<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+					<xsl:variable name="active" select="$currency = $cur"/>
+					<li class="{'active'[$active]}">
+						<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}#cur_div"><xsl:value-of select="$cur"/></a></xsl:if>
+						<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+					</li>
+				</xsl:for-each>
+				<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
+			</ul>
+		</div>
+
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
