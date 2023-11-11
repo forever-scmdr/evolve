@@ -156,11 +156,13 @@
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="top-info">
 			<div class="container">
-				<div class="vl-h-btn">
+
+				<!--<div class="vl-h-btn">
 					<script>function getBlindLink(){event.preventDefault();if($("body").is(".blind")){return "set_mode?blind=false";}return "set_mode?blind=blind";}</script>
 					<a onclick="insertAjax(getBlindLink()); $('body').toggleClass('blind');" href="#"><img src="img/eye-solid.svg" alt="" class="icon"/></a>
 					<div id="google_translate_element"></div>
-				</div>
+				</div>-->
+
 				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
 				<!-- static -->
 				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
@@ -170,6 +172,7 @@
 					<div class="top-info__wrap wrap" id="{@id}" style="display: {'flex'[$active]}{'none'[not($active)]}">
 						<div class="top-info__location">
 							<a href="#" class="link icon-link icon-link_after" onclick="{if ($has_many_cities) then 'return showCityHeaderSelector()' else ''}">
+								<img src="/img/map-marker.svg?new" alt="" width="16"/>
 								<span><xsl:value-of select="header"/></span>
 								<xsl:if test="$has_many_cities">
 									<div class="icon icon_size_sm">
@@ -181,6 +184,16 @@
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
+						<xsl:if test="$has_personal">
+							<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
+								<a href="{page/login_link}" class="icon-link">
+									<div class="icon">
+										<img src="img/icon-lock.svg" alt="" />
+									</div>
+									<span class="icon-link__item">Вход / Регистрация</span>
+								</a>
+							</div>
+						</xsl:if>
 					</div>
 				</xsl:for-each>
 				<!-- static end -->
@@ -214,7 +227,7 @@
 			<div class="container">
 				<div class="header__wrap wrap">
 					<a href="{$main_host}" class="header__column logo">
-						<img src="img/logo.png" alt="" class="logo__image" />
+						<img src="img/logo.png" alt="" class="logo__image" width="233" height="55"/>
 					</a>
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
@@ -259,37 +272,16 @@
 					</xsl:if>
 					<!-- need styles end -->
 					<div class="header__column header__column_links">
-						<xsl:if test="$has_cart">
-							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-								<a href="{page/cart_link}" class="icon-link">
-									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-									<span class="icon-link__item">Загрузка...</span>
-								</a>
-							</div>
-						</xsl:if>
+
 						<div class="links">
 							<a href="{if ($common/phone_link and not($common/phone_link = '')) then $common/phone_link else 'kontakty'}" class="icon-link">
 								<div class="icon">
 									<img src="img/icon-phone.svg" alt="" />
 								</div>
 							</a>
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-bars.svg" alt="" />
-								</div>
-							</a>
 						</div>
 						<div class="user">
-							<xsl:if test="$has_personal">
-								<div id="personal_desktop" ajax-href="{page/personal_ajax_link}" ajax-show-loader="no">
-									<a href="{page/login_link}" class="icon-link">
-										<div class="icon">
-											<img src="img/icon-lock.svg" alt="" />
-										</div>
-										<span class="icon-link__item">Вход / Регистрация</span>
-									</a>
-								</div>
-							</xsl:if>
+
 							<xsl:if test="$has_fav">
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
 									<a class="icon-link">
@@ -307,6 +299,21 @@
 								</div>
 							</xsl:if>
 						</div>
+						<xsl:if test="$has_cart">
+							<div class="cart" id="cart_ajax" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
+								<a href="{page/cart_link}" class="icon-link">
+									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
+									<span class="icon-link__item">Загрузка...</span>
+								</a>
+							</div>
+						</xsl:if>
+						<div class="links">
+							<a href="javascript:showMobileMainMenu()" class="icon-link">
+								<div class="icon">
+									<img src="img/ar.svg" alt="" />
+								</div>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -317,7 +324,7 @@
 				<div class="main-menu__wrap wrap">
 					<xsl:if test="$has_catalog and $catalog/in_main_menu = 'да'">
 						<div class="main-menu__item">
-							<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/icon-bars.svg" alt="" /></div><span>Каталог</span></a>
+							<a href="{page/catalog_link}" class="icon-link {'active'[$active_menu_item = 'catalog']}" id="catalog_main_menu"><div class="icon"><img src="img/ar.svg" alt="" /></div><span>Каталог</span></a>
 							<div class="popup-catalog-menu" style="position: absolute; display: none" id="cat_menu">
 								<div class="sections">
 									<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
@@ -333,7 +340,7 @@
 										</xsl:if>
 									</xsl:for-each>
 								</div>
-
+								<!--
 								<xsl:for-each select="$catalog/section[f:num(hide) = 0]">
 									<div class="subsections" style="display: none" id="sub_{@id}">
 										<xsl:for-each select="section[f:num(hide) = 0]">
@@ -341,6 +348,7 @@
 										</xsl:for-each>
 									</div>
 								</xsl:for-each>
+								-->
 							</div>
 						</div>
 					</xsl:if>
@@ -661,9 +669,9 @@
 	</xsl:template>
 
 
-
+	<xsl:variable name="classvl" select="0" />
 	<xsl:template name="PAGE_HEADING">
-		<div class="title title_1">
+		<div class="title title_1 vl_{$classvl}">
 			<xsl:value-of select="$h1"/>
 		</div>
 	</xsl:template>

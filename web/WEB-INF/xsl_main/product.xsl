@@ -3,6 +3,7 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<xsl:variable name="classvl" select="1"/>
 	<xsl:variable name="title" select="$p/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
@@ -170,6 +171,7 @@
 
 									<!-- заказ и ссылки добавления -->
 									<div class="product-actions">
+										<!--
 										<xsl:if test="$has_cart and $is_not_plain">
 											<div id="cart_list_{$p/@id}" class="order order_product">
 												<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
@@ -181,12 +183,13 @@
 													<xsl:if test="not($has_price)">
 														<input type="number" class="input input_size_lg input_type_number" name="qty"
 															   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/step) then f:num($p/step) else $step_default}"/>
-														<!-- кнопка запросить цену на стрранице товара -->
+														- кнопка запросить цену на стрранице товара -
 														<button class="button button_size_lg" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
 													</xsl:if>
 												</form>
 											</div>
 										</xsl:if>
+										-->
 										<div class="add add_product">
 											<xsl:if test="$has_fav">
 												<div id="fav_list_{$p/@id}">
@@ -206,7 +209,18 @@
 											</xsl:if>
 										</div>
 									</div>
-
+									<div class="product-actions">
+										<div class="add add_product">
+											<xsl:if test="$p/files">
+												<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
+													<div class="icon icon_size_lg">
+														<img src="img/pdf.png" alt="" />
+													</div>
+													<span class="icon-link__item">Документация</span>
+												</a><br/><br/>
+											</xsl:if>
+										</div>
+									</div>
 									<!--
 									<xsl:choose>
 										<xsl:when test="$p/qty and $p/qty != '0'"><div class="device__in-stock"><i class="fas fa-check"></i> в наличии</div></xsl:when>
@@ -313,14 +327,6 @@
 								</div>
 
 								<div class="product-icons">
-									<xsl:if test="$p/files">
-										<a href="{$p/@path}{$p/files[1]}" class="icon-link product-icons__item" download="{$p/files[1]}">
-											<div class="icon icon_size_lg">
-												<img src="img/pdf.png" alt="" />
-											</div>
-											<span class="icon-link__item">Документация (скачать)</span>
-										</a><br/><br/>
-									</xsl:if>
 									<!--<a href="" class="icon-link product-icons__item">
 										<div class="icon icon_size_lg">
 											<img src="img/share.png" alt="" />

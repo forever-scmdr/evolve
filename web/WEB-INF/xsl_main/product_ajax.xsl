@@ -64,7 +64,7 @@
 									<div class="tabs__links">
 										<a href="#tab-params" role="tab" data-toggle="tab" class="tabs__link tabs__link_active">Характеристики</a>
 										<xsl:if test="$p/text != ''">
-											<a href="#tab-text" role="tab" data-toggle="tab" class="tabs__link">Описание</a>
+											<a href="#tab-text-1000" role="tab" data-toggle="tab" class="tabs__link">Описание</a>
 										</xsl:if>
 										<xsl:for-each select="$extra_text[name != 'tech']">
 											<a href="#tab-{@id}" role="tab" data-toggle="tab" class="tabs__link">
@@ -82,11 +82,13 @@
 											</xsl:for-each>
 										</table>
 									</div>
-									<div class="tabs__content" role="tabpanel" id="tab-text" style="display: none;">
+									<!--
+									<div class="tabs__content" role="tabpanel" id="tab-text-1000" style="display: none;">
 										<div class="page-content">
 											<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 										</div>
 									</div>
+									-->
 									<xsl:for-each select="$extra_text">
 										<div class="tabs__content" role="tabpanel" id="tab-{@id}" style="display: none;">
 											<div class="page-content">

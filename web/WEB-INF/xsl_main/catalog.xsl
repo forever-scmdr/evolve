@@ -16,6 +16,7 @@
 
 	<!-- TODO исправить верстку -->
 	<xsl:template name="CONTENT">
+	<div class="catalog_vl">
 		<div class="catalog-items">
 			<div class="catalog-items__wrap">
 				<xsl:for-each select="/page/catalog/section[f:num(hide) = 0]">
@@ -33,6 +34,7 @@
 				</xsl:for-each>
 			</div>
 		</div>
+	</div>
 	</xsl:template>
 
 

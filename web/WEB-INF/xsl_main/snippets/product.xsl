@@ -119,9 +119,11 @@
 			</xsl:call-template>
 
 			<!-- device order -->
+			<!--
 			<xsl:call-template name="CART_BUTTON">
 				<xsl:with-param name="p" select="current()"/>
 			</xsl:call-template>
+			-->
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -138,6 +140,14 @@
 				<xsl:call-template name="FAV_AND_COMPARE">
 					<xsl:with-param name="p" select="current()"/>
 				</xsl:call-template>
+			</div>
+			<div class="add">
+				<a href="" class="icon-link product-icons__item" download="">
+					<div class="icon icon_size_lg">
+						<img src="img/pdf.png" alt="" width="18"/>
+					</div>
+					<span class="add__item">Скачать документацию</span>
+				</a>
 			</div>
 		</div>
 	</xsl:template>
@@ -255,8 +265,8 @@
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
 				<xsl:if test="$has_quick_view">
-					<div style="display: none">
-						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
+					<div>
+						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: block">Быстрый просмотр</a>
 					</div>
 				</xsl:if>
 
@@ -315,7 +325,7 @@
 								<xsl:if test="count($captions) &gt; $product_params_limit">
 									<tr>
 										<td colspan="2">
-											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>
+											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>
 										</td>
 									</tr>
 								</xsl:if>
@@ -392,9 +402,11 @@
 			<div class="device__column">
 
 				<!-- device order -->
+				<!--
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="p" select="current()"/>
 				</xsl:call-template>
+				-->
 
 				<xsl:call-template name="EXTRA_ORDERING_TYPES">
 					<xsl:with-param name="p" select="current()"/>
@@ -488,7 +500,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->
@@ -912,8 +924,8 @@
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
 
-		<div class="text_sm" style="margin-top: auto;">
-			<a href="#" onclick="showDetails('{show_lines_ajax}'); return false;" >Склады</a>
+		<div class="order device-order">
+			<a class="button" href="#" onclick="showDetails('{show_lines_ajax}'); return false;">Цены</a>
 		</div>
 
 		<!-- one click -->

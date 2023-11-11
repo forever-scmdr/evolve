@@ -174,11 +174,6 @@
 		<!-- VIEW TABLE -->
 
 		<xsl:if test="$subs or $sel_sec/tag">
-			<xsl:if test="$show_devices">
-				<div class="labels labels_section">
-					<xsl:apply-templates select="$sel_sec/tag"/>
-				</div>
-			</xsl:if>
 			<xsl:if test="not($section_show_subs = '0')">
 				<xsl:if test="$subs and $sub_view = 'tags'">
 					<div class="labels labels_section">
@@ -192,6 +187,11 @@
 						</div>
 					</div>
 				</xsl:if>
+			</xsl:if>
+			<xsl:if test="$show_devices">
+				<div class="labels">
+					<xsl:apply-templates select="$sel_sec/tag"/>
+				</div>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
