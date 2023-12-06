@@ -16,7 +16,7 @@
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
-				<a href="{page/personal_link}" class="icon-link">
+				<a href="{page/personal_link}" class="icon-link"> <b>e-mail@email.ru:</b>
 					<div class="icon"><img src="img/icon-history.svg" alt="" /></div>
 					<span class="icon-link__item">Анкета</span>
 				</a> /
@@ -26,7 +26,7 @@
 				</a> /
 				<a href="/logout.login?target=index" class="icon-link">
 					<div class="icon"><img src="img/icon-exit.svg" alt="" /></div>
-					<span class="icon-link__item">x</span>
+					<span class="icon-link__item">Выход</span>
 				</a>
 			</div>
 		</xsl:if>

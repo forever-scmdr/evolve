@@ -41,18 +41,18 @@ public class DownloadPics extends IntegrateBase {
 					if (a != null) {
 						picUrl = a.attr("href");
 						if (StringUtils.isBlank(picUrl)) {
-							info.addError("Элемент с картинкой не найден:" + url, product.getStringValue(ItemNames.product_.NAME));
+							info.pushError("Элемент с картинкой не найден:" + url, product.getStringValue(ItemNames.product_.NAME));
 							info.increaseProcessed();
 							continue;
 						}
 					}
 				} catch (Exception e) {
-					info.addError("URL не содержит требуемую информацию:" + url, product.getStringValue(ItemNames.product_.NAME));
+					info.pushError("URL не содержит требуемую информацию:" + url, product.getStringValue(ItemNames.product_.NAME));
 					info.increaseProcessed();
 					continue;
 				}
 				if (StringUtils.isBlank(picUrl)) {
-					info.addError("URL не содержит требуемую информацию:" + url, product.getStringValue(ItemNames.product_.NAME));
+					info.pushError("URL не содержит требуемую информацию:" + url, product.getStringValue(ItemNames.product_.NAME));
 					info.increaseProcessed();
 					continue;
 				}
@@ -70,7 +70,7 @@ public class DownloadPics extends IntegrateBase {
 						product.setValue(ItemNames.product_.MAIN_PIC, new URL(picUrl));
 						executeAndCommitCommandUnits(SaveItemDBUnit.get(product).noFulltextIndex());
 					} catch (Exception e) {
-						info.addError("Картинка не может быть загружена: " + picUrl, product.getStringValue(ItemNames.product_.NAME));
+						info.pushError("Картинка не может быть загружена: " + picUrl, product.getStringValue(ItemNames.product_.NAME));
 						info.increaseProcessed();
 						continue;
 					}

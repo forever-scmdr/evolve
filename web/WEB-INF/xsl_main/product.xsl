@@ -24,6 +24,13 @@
 	<xsl:variable name="multiple_prices" select="not($is_not_plain) or (section_name and not(section_name = ''))"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
+	<xsl:variable name="docs" select="if ($p/documents_xml) then parse-xml($p/documents_xml)/value else none"/>
+	<xsl:variable name="env" select="if ($p/environmental_xml) then parse-xml($p/environmental_xml)/value else none"/>
+	<xsl:variable name="names" select="if ($p/additional_xml) then parse-xml($p/additional_xml)/value else none"/>
+	<xsl:variable name="other_names" select="$names/param[lower-case(normalize-space(name)) = 'other names']"/>
+	<xsl:variable name="package" select="$names/param[lower-case(normalize-space(name)) = 'standard package']"/>
+	<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
 		<script type="application/ld+json">
@@ -94,17 +101,17 @@
 			<div class="tabs tabs_product">
 				<div class="tabs__nav">
 					<a href="#tab_main" class="tab tab_active">Описание</a>
-					<xsl:if test="$has_text">
-						<a href="#tab_text" class="tab">Дополнительно</a>
+					<xsl:if test="$docs/param">
+						<a href="#tab_docs" class="tab">Документация</a>
 					</xsl:if>
-					<xsl:if test="$p/params">
-						<a href="#tab_tech" class="tab">Характеристики</a>
+					<xsl:if test="$env/param">
+						<a href="#tab_env" class="tab">Дополнительная информация</a>
 					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
-					</xsl:for-each>
-					<xsl:if test="$p/product_extra_file">
-						<a href="#tab_files" class="tab">Файлы</a>
+					<xsl:if test="$other_names">
+						<a href="#tab_names" class="tab">Альтернативные названия</a>
+					</xsl:if>
+					<xsl:if test="$docs/param">
+						<a href="#tab_ds_online" class="tab">Даташит online</a>
 					</xsl:if>
 				</div>
 				<div class="tabs__content">
@@ -170,7 +177,7 @@
 									</xsl:if>
 
 									<!-- заказ и ссылки добавления -->
-									<div class="product-actions">
+									<div class="product-actions mb-3">
 										<!--
 										<xsl:if test="$has_cart and $is_not_plain">
 											<div id="cart_list_{$p/@id}" class="order order_product">
@@ -207,6 +214,16 @@
 													</a>
 												</div>
 											</xsl:if>
+										</div>
+									</div>
+									<div class="product-actions mb-3">
+										<div class="add add_product">
+											<div id="spec_list_{$p/@id}">
+												<a href="{$p/to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{$p/@id}">
+													<div class="icon"><img src="img/icon-spec.svg" alt=""/></div>
+													<span><xsl:value-of select="$go_to_spec_label"/></span>
+												</a>
+											</div>
 										</div>
 									</div>
 									<div class="product-actions">
@@ -256,12 +273,12 @@
 									<table class="params">
 										<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
 										<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
-										<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
+										<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/param_vals/@key"/>
 										<xsl:for-each select="$captions">
-											<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+											<xsl:variable name="param" select="$p/param_vals[lower-case(normalize-space(@key)) = lower-case(normalize-space(current()))]"/>
 											<tr>
-												<td><xsl:value-of select="$param/@caption"/></td>
-												<td><xsl:value-of select="$param"/></td>
+												<td><xsl:value-of select="$param/@key"/></td>
+												<td><xsl:value-of select="$param/@value"/></td>
 											</tr>
 										</xsl:for-each>
 									</table>
@@ -345,41 +362,73 @@
 						</div>
 					</div>
 
-					<xsl:if test="$has_text">
-						<div class="tab-container" id="tab_text" style="display: none">
-							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:if>
-					<xsl:if test="$p/params">
-						<div class="tab-container" id="tab_tech" style="display: none">
-							<table class="full-params">
-								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
-								<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $params_xml_item/xml, '&lt;/params&gt;'))"/>
-								<xsl:apply-templates select="$params_xml/params/parameter"/>
-								<xsl:apply-templates select="$params_xml/params/group"/>
-							</table>
-						</div>
-					</xsl:if>
-					<xsl:for-each select="$p/product_extra">
-						<div class="tab-container" id="tab_{@id}" style="display: none">
-							<xsl:value-of select="text" disable-output-escaping="yes"/>
-						</div>
-					</xsl:for-each>
-					<xsl:if test="$p/product_extra_file">
-						<div class="tab-container" id="tab_files" style="display: none">
-							<table class="full-params">
-								<xsl:for-each select="$p/product_extra_file">
+					<div class="tab-container" id="tab_docs" style="display: none">
+						<table>
+							<tr>
+								<th>ТИП РЕСУРСА</th>
+								<th>ССЫЛКА</th>
+							</tr>
+							<xsl:for-each select="$docs/param">
+								<xsl:variable name="digikey_link" select="value/a[contains(@href, 'digikey')]"/>
+								<xsl:if test="not($digikey_link)">
 									<tr>
-										<td><xsl:value-of select="desc"/></td><td><xsl:value-of select="size"/></td><td><a href="{@path}{file}" download="{name}"><xsl:value-of select="name"/></a></td>
+										<td><xsl:value-of select="name"/></td>
+										<td>
+											<xsl:for-each select="value">
+												<xsl:variable name="not_first_value" select="position() != 1"/>
+												<xsl:for-each select="a">
+													<xsl:variable name="not_first_a" select="position() != 1"/>
+													<xsl:if test="$not_first_a or $not_first_value"><br/></xsl:if>
+													<a href="{@href}"><xsl:value-of select="."/></a>
+												</xsl:for-each>
+											</xsl:for-each>
+										</td>
+									</tr>
+								</xsl:if>
+							</xsl:for-each>
+						</table>
+					</div>
+
+					<div class="tab-container" id="tab_env" style="display: none">
+						<table>
+							<xsl:for-each select="$env/param">
+								<tr>
+									<td><xsl:value-of select="name"/></td>
+									<td>
+										<xsl:for-each select="value">
+											<xsl:if test="position() != 1"><br/></xsl:if>
+											<xsl:value-of select="."/>
+										</xsl:for-each>
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</div>
+
+					<xsl:if test="$other_names">
+						<div class="tab-container" id="tab_names" style="display: none">
+							<table>
+								<xsl:for-each select="$other_names/value">
+									<tr>
+										<td><xsl:value-of select="."/></td>
 									</tr>
 								</xsl:for-each>
 							</table>
 						</div>
 					</xsl:if>
+
+					<div class="tab-container" id="tab_ds_online" style="display: none">
+						<p>
+							<object data="{$main_ds/a/@href}" type="application/pdf" width="80%" height="720">
+								не удалось показать документ
+							</object>
+						</p>
+					</div>
 				</div>
 			</div>
 
 		</div>
+
 
 		<div style="padding-left: 5px; padding-bottom: 10px" id="cur_div">
 			<ul class="currency-options">
@@ -395,6 +444,7 @@
 				<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 			</ul>
 		</div>
+
 
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">

@@ -7,10 +7,8 @@ import ecommander.model.*;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.Custom_page;
 import extra._generated.ItemNames;
 import extra._generated.Product_extra_file;
-import extra._generated.Product_extra_page;
 import lunacrawler.fwk.ParsedInfoProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -18,8 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -97,7 +93,7 @@ public class IntegrateParsedMeandr2 extends IntegrateBase implements ItemNames, 
 					productDoc = infoProvider.getAccessor(url);
 				} catch (Exception e) {
 					ServerLogger.error("Error parsing product xml file", e);
-					info.addError("Документ для товара '" + url + "' содержит ошибки", url);
+					info.pushError("Документ для товара '" + url + "' содержит ошибки", url);
 					continue;
 				}
 				String header = productDoc.getNodeText(HEADER);
@@ -221,7 +217,7 @@ public class IntegrateParsedMeandr2 extends IntegrateBase implements ItemNames, 
 				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
-				info.addError("Product save error, ID = " + url + ", name = " + name, parent.getStringValue(NAME_PARAM));
+				info.pushError("Product save error, ID = " + url + ", name = " + name, parent.getStringValue(NAME_PARAM));
 			}
 		}
 	}

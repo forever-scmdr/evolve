@@ -5,6 +5,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="params" select="$p/params"/>
+	<xsl:variable name="params_xml" select="parse-xml(concat('&lt;params&gt;', $p/params_xml, '&lt;/params&gt;'))/params"/>
 	<xsl:variable name="extra_xml" select="parse-xml(concat('&lt;extra&gt;', $p/extra_xml, '&lt;/extra&gt;'))/extra"/>
 	<xsl:variable name="extra_text" select="$p/product_extra" />
 
@@ -13,6 +14,13 @@
 	<xsl:variable name="price" select="$p/price"/>
 	<xsl:variable name="price_old" select="$p/price_old"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then page/catalog/default_step else '1'"/>
+
+	<xsl:variable name="docs" select="if ($p/documents_xml) then parse-xml($p/documents_xml)/value else none"/>
+	<xsl:variable name="env" select="if ($p/environmental_xml) then parse-xml($p/environmental_xml)/value else none"/>
+	<xsl:variable name="names" select="if ($p/additional_xml) then parse-xml($p/additional_xml)/value else none"/>
+	<xsl:variable name="other_names" select="$names/param[lower-case(normalize-space(name)) = 'other names']"/>
+	<xsl:variable name="package" select="$names/param[lower-case(normalize-space(name)) = 'standard package']"/>
+	<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
 
 	<xsl:template match="/">
 		<div>
@@ -63,24 +71,45 @@
 								<div class="tabs">
 									<div class="tabs__links">
 										<a href="#tab-params" role="tab" data-toggle="tab" class="tabs__link tabs__link_active">Характеристики</a>
-										<xsl:if test="$p/text != ''">
-											<a href="#tab-text-1000" role="tab" data-toggle="tab" class="tabs__link">Описание</a>
+										<xsl:if test="$docs/param">
+											<a href="#tab_docs" role="tab" data-toggle="tab" class="tabs__link">Документация</a>
 										</xsl:if>
-										<xsl:for-each select="$extra_text[name != 'tech']">
-											<a href="#tab-{@id}" role="tab" data-toggle="tab" class="tabs__link">
-												<xsl:value-of select="f:tab_name(name)"/>
-											</a>
-										</xsl:for-each>
+										<xsl:if test="$env/param">
+											<a href="#tab_env" role="tab" data-toggle="tab" class="tabs__link">Дополнительная информация</a>
+										</xsl:if>
+										<xsl:if test="$other_names">
+											<a href="#tab_names" role="tab" data-toggle="tab" class="tabs__link">Альтернативные названия</a>
+										</xsl:if>
+										<xsl:if test="$docs/param">
+											<a href="#tab_ds_online" role="tab" data-toggle="tab" class="tabs__link">Даташит online</a>
+										</xsl:if>
 									</div>
 									<div class="tabs__content active" role="tabpanel" id="tab-params">
-										<table>
-											<xsl:for-each select="$params/param">
-												<tr>
-													<td><xsl:value-of select="@caption"/></td>
-													<td><xsl:value-of select="."/></td>
-												</tr>
-											</xsl:for-each>
-										</table>
+										<xsl:if test="$params">
+											<table>
+												<xsl:for-each select="$params/param">
+													<tr>
+														<td><xsl:value-of select="@caption"/></td>
+														<td><xsl:value-of select="."/></td>
+													</tr>
+												</xsl:for-each>
+											</table>
+										</xsl:if>
+										<xsl:if test="$params_xml">
+											<table>
+												<xsl:for-each select="$params_xml/param">
+													<tr>
+														<td><xsl:value-of select="name"/></td>
+														<td>
+															<xsl:for-each select="value">
+																<xsl:if test="position() &gt; 1"><br/></xsl:if>
+																<xsl:value-of select="."/>
+															</xsl:for-each>
+														</td>
+													</tr>
+												</xsl:for-each>
+											</table>
+										</xsl:if>
 									</div>
 									<!--
 									<div class="tabs__content" role="tabpanel" id="tab-text-1000" style="display: none;">
@@ -89,13 +118,77 @@
 										</div>
 									</div>
 									-->
-									<xsl:for-each select="$extra_text">
-										<div class="tabs__content" role="tabpanel" id="tab-{@id}" style="display: none;">
+									<div class="tabs__content" role="tabpanel" id="tab_docs" style="display: none;">
+										<div class="page-content">
+											<table>
+												<tr>
+													<th>ТИП РЕСУРСА</th>
+													<th>ССЫЛКА</th>
+												</tr>
+												<xsl:for-each select="$docs/param">
+													<xsl:variable name="digikey_link" select="value/a[contains(@href, 'digikey')]"/>
+													<xsl:if test="not($digikey_link)">
+														<tr>
+															<td><xsl:value-of select="name"/></td>
+															<td>
+																<xsl:for-each select="value">
+																	<xsl:variable name="not_first_value" select="position() != 1"/>
+																	<xsl:for-each select="a">
+																		<xsl:variable name="not_first_a" select="position() != 1"/>
+																		<xsl:if test="$not_first_a or $not_first_value"><br/></xsl:if>
+																		<a href="{@href}"><xsl:value-of select="."/></a>
+																	</xsl:for-each>
+																</xsl:for-each>
+															</td>
+														</tr>
+													</xsl:if>
+												</xsl:for-each>
+											</table>
+										</div>
+									</div>
+
+									<div class="tabs__content" role="tabpanel" id="tab_env" style="display: none;">
+										<div class="page-content">
+											<table>
+												<xsl:for-each select="$env/param">
+													<tr>
+														<td><xsl:value-of select="name"/></td>
+														<td>
+															<xsl:for-each select="value">
+																<xsl:if test="position() != 1"><br/></xsl:if>
+																<xsl:value-of select="."/>
+															</xsl:for-each>
+														</td>
+													</tr>
+												</xsl:for-each>
+											</table>
+										</div>
+									</div>
+
+									<xsl:if test="$other_names">
+										<div class="tabs__content" role="tabpanel" id="tab_names" style="display: none;">
 											<div class="page-content">
-												<xsl:value-of select="text" disable-output-escaping="yes"/>
+												<table>
+													<xsl:for-each select="$other_names/value">
+														<tr>
+															<td><xsl:value-of select="."/></td>
+														</tr>
+													</xsl:for-each>
+												</table>
 											</div>
 										</div>
-									</xsl:for-each>
+									</xsl:if>
+
+									<div class="tabs__content" role="tabpanel" id="tab_ds_online" style="display: none;">
+										<div class="page-content">
+											<p>
+												<object data="{$main_ds/a/@href}" type="application/pdf" width="80%" height="720">
+													не удалось показать документ
+												</object>
+											</p>
+										</div>
+									</div>
+
 								</div>
 							</div>
 						</div>

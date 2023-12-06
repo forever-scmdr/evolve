@@ -66,9 +66,9 @@
 	<xsl:variable name="search_catalog" select="contains($mods/search_results, 'каталог')"/>
     <xsl:variable name="search_plain" select="contains($mods/search_results, 'склад')"/>
 	<xsl:variable name="search_not_set" select="not($search_catalog) and not($search_plain)"/>
-<!--    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>-->
+ <!--    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>-->
 	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>
-	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
+ 	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -239,6 +239,18 @@
 									   placeholder="Введите поисковый запрос" autocomplete="off"
 									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
 								<button class="button header-search__button" type="submit">Найти</button>
+								<div class="sw100">
+									<label>Искать: </label>
+									<label>
+										<input type="checkbox" name="search_catalog"/> по каталогу
+									</label>
+									<label>
+										<input type="checkbox" name="search_sklad"/> по складам
+									</label>
+									<label>
+										<input type="checkbox" name="search_sklad"/> по документации
+									</label>
+								</div>
 								<!-- quick search -->
 								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 								<!-- quick search end -->
@@ -248,11 +260,17 @@
 					<div class="header__column other-container side-menu">
 						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
-								<a href="#" popup="modal-excel">Загрузка BOM</a>
+								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
+								<a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Загрузка BOM</span></a>
+								<div class="infobox_modal infobox_1">
+									<div class="text">
+										<a class="popup__close" onclick="infobox('close');">×</a>
+										<div>Text text text text</div>
+									</div>
+								</div>
 							</xsl:if>
 						</div>
 					</div>
-
 					<!-- need styles -->
 					<!--
 					<xsl:if test="$has_currency_rates and $currencies">
@@ -311,6 +329,102 @@
 								</a>
 							</div>
 						</xsl:if>
+						<div class="links">
+							<a href="javascript:showMobileMainMenu()" class="icon-link">
+								<div class="icon">
+									<img src="img/ar.svg" alt="" />
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="header header_desc_fix">
+			<div class="container">
+				<div class="header__wrap wrap">
+					<div class="header__column header__search header-search search">
+						<xsl:if test="$has_search">
+							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post">
+								<input class="input header-search__input"
+									   ajax-href="{$search_ajax_link}" result="search-result"
+									   query="q" min-size="3" id="q-ipt" type="text"
+									   placeholder="Введите поисковый запрос" autocomplete="off"
+									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
+								<button class="button header-search__button" type="submit">Найти</button>
+								<div class="sw100">
+									<label>Искать: </label>
+									<label>
+										<input type="checkbox" name="search_catalog"/> по каталогу
+									</label>
+									<label>
+										<input type="checkbox" name="search_sklad"/> по складам
+									</label>
+									<label>
+										<input type="checkbox" name="search_sklad"/> по документации
+									</label>
+								</div>
+								<!-- quick search -->
+								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
+								<!-- quick search end -->
+							</form>
+						</xsl:if>
+					</div>
+					<div class="header__column other-container side-menu">
+						<div class="catalog-currency">
+							<xsl:if test="$has_bom_search">
+								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
+								<a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Загрузка BOM</span></a>
+								<div class="infobox_modal infobox_1">
+									<div class="text">
+										<a class="popup__close" onclick="infobox('close');">×</a>
+										<div>Text text text text</div>
+									</div>
+								</div>
+							</xsl:if>
+						</div>
+					</div>
+					<div class="header__column header__column_links">
+
+						<div class="links">
+							<a href="{if ($common/phone_link and not($common/phone_link = '')) then $common/phone_link else 'kontakty'}" class="icon-link">
+								<div class="icon">
+									<img src="img/icon-phone.svg" alt="" />
+								</div>
+							</a>
+						</div>
+						<div class="user">
+
+							<xsl:if test="$has_fav">
+								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
+									<a class="icon-link">
+										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+										<span class="icon-link__item">Избранное</span>
+									</a>
+								</div>
+							</xsl:if>
+							<xsl:if test="$has_compare">
+								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
+									<a class="icon-link">
+										<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
+										<span class="icon-link__item">Сравнение</span>
+									</a>
+								</div>
+							</xsl:if>
+						</div>
+						<xsl:if test="$has_cart">
+							<div class="cart" id="cart_ajax_2" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
+								<a href="{page/cart_link}" class="icon-link">
+									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
+									<span class="icon-link__item">Корзина</span>
+								</a>
+							</div>
+						</xsl:if>
+						<div class="user">
+							<div><a class="icon-link" href="#"><div class="icon"><img src="img/icon-star.svg" alt="" /></div><span class="icon-link__item">Анкета</span></a></div>
+							<div><a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-order.svg" alt="" /></div><span class="icon-link__item">Заказы</span></a></div>
+						</div>
 						<div class="links">
 							<a href="javascript:showMobileMainMenu()" class="icon-link">
 								<div class="icon">
@@ -397,6 +511,17 @@
 							<div class="google-rating__text">
 								Наш рейтинг: 4,8 (188 голосов)<br /> на основе <a href="https://google.com">отзывов</a> Google
 							</div>
+						</div>
+					</div>
+					<div class="footer__column">
+						<div class="footer__title">Курсы валют</div>
+						<div class="footer__text">
+							<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+								<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+								<xsl:if test="f:num(.) &gt; 1">
+									<p><xsl:value-of select="$cur"/> - <xsl:value-of select="." /></p>
+								</xsl:if>
+							</xsl:for-each>
 						</div>
 					</div>
 					<xsl:apply-templates select="$footer/block[position() &gt; 1]" mode="footer"/>

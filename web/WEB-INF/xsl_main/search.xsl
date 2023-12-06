@@ -64,68 +64,151 @@
 
 	<xsl:template name="CONTENT">
 
-		<xsl:if test="$has_results and not($is_search_multiple)">
-			<div class="view view_section">
-				<div class="view__column">
-					<xsl:if test="not($view_disabled = 'плитка')">
-						<a href="{page/set_view_table}" class="icon-link{' active'[$view = 'table']}">
-							<div class="icon">
-								<img src="img/icon-grid.svg" alt="" />
+	<div class="tabs tabs_product p5">
+		<div class="tabs__nav">
+			<a href="#tab_searc_1" class="tab tab_active">Результаты поиска</a>
+			<a href="#tab_searc_2" class="tab ">Каталог</a>
+			<a href="#tab_searc_3" class="tab ">Склады</a>
+			<a href="#tab_searc_4" class="tab ">Документация</a>
+		</div>
+		<div class="tabs__content">
+			<div class="tab-container" id="tab_searc_1">
+				<div class="search_filter">
+					<div class="item">
+						<a href=""><img src="/img/download.png" alt="" width="20"/></a>
+					</div>
+					<div class="item">
+						<div class="box">
+							<div class="title">Стоимость от</div>
+							<input type="text" placeholder="от 0.01"/>
+						</div>
+					</div>
+					<div class="item">
+						<div class="box">
+							<div class="title">Стоимость до</div>
+							<input type="text" placeholder="до 10000"/>
+						</div>
+					</div>
+					<div class="item">
+						<div class="box">
+							<div class="title">Срок поставки</div>
+							<div class="chbox">
+								<div class="value">Любой</div>
+								<div class="options">
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="1 неделя"/> 1 неделя</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="2 недели"/> 2 недели</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="1-2 недели"/> 1-2 недели</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="3 недели"/> 3 недели</label>
+								</div>
 							</div>
-							<span class="icon-link__item">Плиткой</span>
-						</a>
-					</xsl:if>
-					<xsl:if test="not($view_disabled = 'список')">
-						<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}">
-							<div class="icon">
-								<img src="img/icon-line.svg" alt="" />
+						</div>
+					</div>
+					<div class="item">
+						<div class="box">
+							<div class="title">Бренд</div>
+							<div class="chbox">
+								<div class="value">Любой</div>
+								<div class="options">
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 1"/> Brand 1</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 2"/> Brand 2</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 3"/> Brand 3</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 4"/> Brand 4</label>
+								</div>
 							</div>
-							<span class="icon-link__item">Строками</span>
-						</a>
-					</xsl:if>
-					<xsl:if test="not($view_disabled = 'таблица')">
-						<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}">
-							<div class="icon">
-								<img src="img/icon-lines.svg" alt="" />
+						</div>
+					</div>
+					<div class="item">
+						<div class="box">
+							<div class="title">Поставщик</div>
+							<div class="chbox">
+								<div class="value">Любой</div>
+								<div class="options">
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 1"/> Brand 1</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 2"/> Brand 2</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 3"/> Brand 3</label>
+									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 4"/> Brand 4</label>
+								</div>
 							</div>
-							<span class="icon-link__item">Таблица</span>
-						</a>
-					</xsl:if>
+						</div>
+					</div>
+					<div class="item">
+						<a href="" class="button button_request">Снять фильтры</a>
+					</div>
 				</div>
-			</div>
-		</xsl:if>
-
-
-		<xsl:if test="$has_results">
-			<div class="devices devices_section{' lines'[$view = 'list']}">
-				<xsl:if test="$view = 'table'">
-					<div class="devices__wrap">
-						<xsl:apply-templates select="$products" mode="product-table"/>
-						<xsl:apply-templates select="$results_api/product" mode="product-table-api"/>
+				<xsl:if test="$has_results and not($is_search_multiple)">
+					<div class="view view_section">
+						<div class="view__column">
+							<xsl:if test="not($view_disabled = 'плитка')">
+								<a href="{page/set_view_table}" class="icon-link{' active'[$view = 'table']}">
+									<div class="icon">
+										<img src="img/icon-grid.svg" alt="" />
+									</div>
+									<span class="icon-link__item">Плиткой</span>
+								</a>
+							</xsl:if>
+							<xsl:if test="not($view_disabled = 'список')">
+								<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}">
+									<div class="icon">
+										<img src="img/icon-line.svg" alt="" />
+									</div>
+									<span class="icon-link__item">Строками</span>
+								</a>
+							</xsl:if>
+							<xsl:if test="not($view_disabled = 'таблица')">
+								<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}">
+									<div class="icon">
+										<img src="img/icon-lines.svg" alt="" />
+									</div>
+									<span class="icon-link__item">Таблица</span>
+								</a>
+							</xsl:if>
+						</div>
 					</div>
 				</xsl:if>
-				<xsl:if test="$view = 'list'">
-					<div class="devices__wrap devices__wrap_rows">
-						<xsl:apply-templates select="$products" mode="product-list"/>
-						<xsl:apply-templates select="$results_api/product" mode="product-list-api"/>
+
+
+				<xsl:if test="$has_results">
+					<div class="devices devices_section{' lines'[$view = 'list']}">
+						<xsl:if test="$view = 'table'">
+							<div class="devices__wrap">
+								<xsl:apply-templates select="$products" mode="product-table"/>
+								<xsl:apply-templates select="$results_api/product" mode="product-table-api"/>
+							</div>
+						</xsl:if>
+						<xsl:if test="$view = 'list'">
+							<div class="devices__wrap devices__wrap_rows">
+								<xsl:apply-templates select="$products" mode="product-list"/>
+								<xsl:apply-templates select="$results_api/product" mode="product-list-api"/>
+							</div>
+						</xsl:if>
+						<xsl:if test="$view = 'lines'">
+							<xsl:if test="$has_results">
+								<xsl:call-template name="LINES_TABLE">
+									<xsl:with-param name="products" select="$products"/>
+									<xsl:with-param name="results_api" select="$results_api"/>
+									<xsl:with-param name="multiple" select="$is_search_multiple"/>
+									<xsl:with-param name="queries" select="$queries"/>
+									<xsl:with-param name="numbers" select="$numbers"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:if>
 					</div>
 				</xsl:if>
-				<xsl:if test="$view = 'lines'">
-					<xsl:if test="$has_results">
-						<xsl:call-template name="LINES_TABLE">
-							<xsl:with-param name="products" select="$products"/>
-							<xsl:with-param name="results_api" select="$results_api"/>
-							<xsl:with-param name="multiple" select="$is_search_multiple"/>
-							<xsl:with-param name="queries" select="$queries"/>
-							<xsl:with-param name="numbers" select="$numbers"/>
-						</xsl:call-template>
-					</xsl:if>
+				<xsl:if test="not($has_results)">
+					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
 			</div>
-		</xsl:if>
-		<xsl:if test="not($has_results)">
-			<h4>По заданным критериям товары не найдены</h4>
-		</xsl:if>
+			<div class="tab-container" id="tab_searc_2" style="display: none;">
+			2
+			</div>
+			<div class="tab-container" id="tab_searc_3" style="display: none;">
+			3
+			</div>
+			<div class="tab-container" id="tab_searc_4" style="display: none;">
+			4
+			</div>
+		</div>
+	</div>
 	</xsl:template>
 
 

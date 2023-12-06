@@ -3,6 +3,7 @@ package lunacrawler.fwk;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -70,12 +71,13 @@ public class ParsedInfoProvider {
 	private Path filesDir;
 	private Document tree;
 	private XmlDataSource bigTree;
+	private Timer timer = null;
 
-	public ParsedInfoProvider() {
+	public ParsedInfoProvider(Timer... timer) {
 		new ParsedInfoProvider(false);
 	}
 
-	public ParsedInfoProvider(boolean isTreeBig) {
+	public ParsedInfoProvider(boolean isTreeBig, Timer... timer) {
 		String resultDir = AppContext.getRealPath(AppContext.getProperty(RESULT_DIR, null));
 		if (resultDir != null && !resultDir.endsWith("/"))
 			resultDir += "/";
@@ -92,7 +94,7 @@ public class ParsedInfoProvider {
 		}
 		if (isTreeBig) {
 			try {
-				bigTree = new XmlDataSource(treeFile.toString(), StandardCharsets.UTF_8);
+				bigTree = new XmlDataSource(treeFile.toString(), StandardCharsets.UTF_8, timer);
 			} catch (Exception e) {
 				ServerLogger.error("Error while opening result tree file", e);
 				bigTree = null;
@@ -105,6 +107,11 @@ public class ParsedInfoProvider {
 				ServerLogger.error("Error while parsing result tree file", e);
 				tree = null;
 			}
+		}
+		if (timer.length > 0) {
+			this.timer = timer[0];
+		} else {
+			this.timer = new Timer();
 		}
 	}
 
@@ -128,8 +135,11 @@ public class ParsedInfoProvider {
 		String fileName = Strings.createFileName(id) + ".xml";
 		String divisionDirName = Crawler.getUrlDirName(id);
 		Path file = compiledDir.resolve(divisionDirName + fileName);
+		timer.start("file read");
 		String xml = new String(Files.readAllBytes(file), UTF_8);
-		return Jsoup.parse(xml, "localhost", Parser.xmlParser());
+		timer.stop("file read");
+		Document doc = Jsoup.parse(xml, "localhost", Parser.xmlParser());
+		return doc;
 	}
 
 	public InfoAccessor getAccessor(String id) throws IOException {

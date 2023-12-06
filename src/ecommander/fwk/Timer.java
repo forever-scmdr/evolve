@@ -1,13 +1,13 @@
 package ecommander.fwk;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
+import org.apache.commons.math3.util.MathUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Таймер для отслеживания времени выполнения различных действий
@@ -85,7 +85,7 @@ public class Timer {
 	
 	private HashMap<String, TimeLogMessage> runningTasks = new HashMap<>();
 	private Queue<TimerMessage> log = new CircularFifoQueue<>(20);
-	private HashMap<String, Pair<Long, Integer>> tasksTotal = new HashMap<>();
+	private LinkedHashMap<String, Pair<Long, Integer>> tasksTotal = new LinkedHashMap<>();
 
 	private static ThreadLocal<Timer> threadLocalInstance = ThreadLocal.withInitial(() -> new Timer());
 	/**
@@ -186,6 +186,15 @@ public class Timer {
 	}
 
 	/**
+	 * Получить общее время работы всех заданий с определенным названием в минутах
+	 * @param name
+	 * @return
+	 */
+	public BigDecimal getTotalMinutes(String name) {
+		return BigDecimal.valueOf(getTotalSeconds(name) / 60).setScale(2, RoundingMode.HALF_EVEN);
+	}
+
+	/**
 	 * Получяить общее количество выполнений таймера
 	 * @param name
 	 * @return
@@ -214,6 +223,14 @@ public class Timer {
 			stamp.output();
 		}
 		log.clear();
+	}
+
+	/**
+	 * Все названия завершенных таймеров
+	 * @return
+	 */
+	public Set<String> getAllTimerNames() {
+		return tasksTotal.keySet();
 	}
 
 	/**

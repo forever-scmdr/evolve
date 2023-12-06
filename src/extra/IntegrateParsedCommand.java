@@ -90,7 +90,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 					productDoc = infoProvider.getAccessor(code);
 				} catch (Exception e) {
 					ServerLogger.error("Error parsing product xml file", e);
-					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+					info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 					continue;
 				}
 				String header = productDoc.getNodeText(HEADER);
@@ -146,7 +146,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 						}
 					} catch (Exception e) {
 						ServerLogger.error("Image resize error", e);
-						info.addError("Image resize error", name + " " + code);
+						info.pushError("Image resize error", name + " " + code);
 					}
 				}
 
@@ -190,7 +190,7 @@ public class IntegrateParsedCommand extends IntegrateBase implements ItemNames, 
 				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
-				info.addError("Product save error, ID = " + code + ", name = " + name, parent.getStringValue(NAME_PARAM));
+				info.pushError("Product save error, ID = " + code + ", name = " + name, parent.getStringValue(NAME_PARAM));
 			}
 		}
 	}

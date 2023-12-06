@@ -49,7 +49,7 @@ public class CreateWaterMarks extends IntegrateBase {
 					return true;
 				} catch (Exception e) {
 					ServerLogger.error("unable to read watermark file", e);
-					info.addError(e.getLocalizedMessage(), wm);
+					info.pushError(e.getLocalizedMessage(), wm);
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class CreateWaterMarks extends IntegrateBase {
 							item.setValue(GALLERY, new FileDataType.BufferedPic(withWatermark, pic.getName(), fileType));
 						} catch (Exception e) {
 							ServerLogger.error("unable to apply watermark", e);
-							info.addError("Невозможно применить водяной знак к картинке",
+							info.pushError("Невозможно применить водяной знак к картинке",
 									item.getStringValue("name") + " " + pic.getName());
 							item.setValue(GALLERY, pic);
 						}

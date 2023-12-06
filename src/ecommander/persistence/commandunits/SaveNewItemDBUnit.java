@@ -33,20 +33,26 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 
 	private Item item;
 	private ItemBasics parent;
-
-	SaveNewItemDBUnit(Item item) {
+	private int[] weightArg;	// вес. Иногда можно передать вес заранее, чтобы ускорить процесс сохранения.
+									// Например при интеграции каталога (можно просто считать потомков у родителя)
+	SaveNewItemDBUnit(Item item, int... weight) {
 		this.item = item;
+		this.weightArg = weight;
 	}
 
-	SaveNewItemDBUnit(Item item, ItemBasics parent) {
+	SaveNewItemDBUnit(Item item, ItemBasics parent, int... weight) {
 		this.item = item;
 		this.parent = parent;
+		this.weightArg = weight;
 	}
 
 	public void execute() throws Exception {
+		getTransactionContext().getTimer().start("ALL ITEM SAVE");
 		// Создать значение ключа
 		startQuery("SAVE NEW ITEM: prepare to save");
+		getTransactionContext().getTimer().start("ITEM SAVE - prepare");
 		item.prepareToSave();
+		getTransactionContext().getTimer().stop("ITEM SAVE - prepare");
 
 		// Загрузка и валидация родительского айтема, если надо
 		startQuery("SAVE NEW ITEM: load parent");
@@ -79,6 +85,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 			itemInsert._col(I_ID).long_(item.getId());
 
 		startQuery(itemInsert.getSimpleSql());
+		getTransactionContext().getTimer().start("ITEM SAVE - item table");
 		if (!hasId) {
 			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
 				pstmt.executeUpdate();
@@ -91,6 +98,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				pstmt.executeUpdate();
 			}
 		}
+		getTransactionContext().getTimer().stop("ITEM SAVE - item table");
 		endQuery();
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +106,7 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		//          таблицу ключей. Также может произойти обнлвение таблицы айтема, в случае
 		//          если заданный тектовый ключ неуникален и был сгенерирован другой
 		//
+		getTransactionContext().getTimer().start("ITEM SAVE - key");
 		if (item.getItemType().isKeyUnique()) {
 			long sameKeyItemId = -1;
 			byte sameKeyItemStatus = Item.STATUS_NORMAL;
@@ -152,12 +161,13 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 				endQuery();
 			}
 		}
+		getTransactionContext().getTimer().stop("ITEM SAVE - key");
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
 		//
 		if (item.hasParent()) {
-			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
+			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId(), weightArg));
 		} else {
 			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
 			rootQuery
@@ -179,7 +189,9 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 4.   Сохранение файлов айтема
 		//
 		try {
+			getTransactionContext().getTimer().start("ITEM SAVE - files");
 			executeCommandInherited(new SaveItemFilesUnit(item));
+			getTransactionContext().getTimer().stop("ITEM SAVE - files");
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;
@@ -194,9 +206,11 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 					.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
 					.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
 			startQuery(updateItem.getSimpleSql());
+			getTransactionContext().getTimer().start("ITEM SAVE - item table update params");
 			try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
 				pstmt.executeUpdate();
 			}
+			getTransactionContext().getTimer().stop("ITEM SAVE - item table update params");
 			endQuery();
 		}
 
@@ -204,24 +218,30 @@ class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.
 		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
 		//
 		startQuery("SAVE NEW ITEM: insert parameters");
+		getTransactionContext().getTimer().start("ITEM SAVE - index tables write");
 		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
+		getTransactionContext().getTimer().stop("ITEM SAVE - index tables write");
 		endQuery();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// Шаг 6.   Дополнительная обработка
 		//
+		getTransactionContext().getTimer().start("ITEM SAVE - extra");
 		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
 			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
 				PersistenceCommandUnit command = fac.createCommand(item);
 				executeCommandInherited(command);
 			}
 		}
+		getTransactionContext().getTimer().stop("ITEM SAVE - extra");
 
 		// Добавление в полнотекстовый индекс
 		if (insertIntoFulltextIndex) {
 			LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(item.getId());
 			LuceneIndexMapper.getSingleton().updateItem(item, ancestors.get(item.getId()));
 		}
+
+		getTransactionContext().getTimer().stop("ALL ITEM SAVE");
 	}
 
 }

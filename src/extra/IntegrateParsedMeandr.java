@@ -105,7 +105,7 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 
 			} catch (Exception e) {
 				ServerLogger.error("Section save error", e);
-				info.addError("Section save error, ID = " + secCode + ", name = " + secName, parent.getStringValue(NAME_PARAM));
+				info.pushError("Section save error, ID = " + secCode + ", name = " + secName, parent.getStringValue(NAME_PARAM));
 			}
 		}
 		Elements productEls = root.select("> product");
@@ -121,7 +121,7 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 					productDoc = infoProvider.getAccessor(code);
 				} catch (Exception e) {
 					ServerLogger.error("Error parsing product xml file", e);
-					info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+					info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 					continue;
 				}
 				String header = productDoc.getNodeText(H1_ELEMENT);
@@ -178,7 +178,7 @@ public class IntegrateParsedMeandr extends IntegrateBase implements ItemNames, C
 				info.increaseProcessed();
 			} catch (Exception e) {
 				ServerLogger.error("Product save error", e);
-				info.addError("Product save error, ID = " + code + ", name = " + name, parent.getStringValue(NAME_PARAM));
+				info.pushError("Product save error, ID = " + code + ", name = " + name, parent.getStringValue(NAME_PARAM));
 			}
 		}
 	}

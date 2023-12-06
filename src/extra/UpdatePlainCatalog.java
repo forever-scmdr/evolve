@@ -6,24 +6,18 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.datatypes.DecimalDataType;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
-import extra._generated.Price_catalogs;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by E on 30/11/2018.
@@ -59,12 +53,12 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 		String integrationDirParam = getVarSingleValueDefault("dir", INTEGRATION_DIR);
 		File integrationDir = new File(AppContext.getRealPath(integrationDirParam));
 		if (!integrationDir.exists()) {
-			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
+			info.pushError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
 		Collection<File> excels = FileUtils.listFiles(integrationDir, null, true);
 		if (excels.size() == 0) {
-			info.addError("Не найдены файлы в директории " + INTEGRATION_DIR, "init");
+			info.pushError("Не найдены файлы в директории " + INTEGRATION_DIR, "init");
 			return;
 		}
 		info.setToProcess(excels.size());
@@ -95,7 +89,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 				final Price_catalog settings = Price_catalog.get(sectionSettings);
 				final Item catalogItem = ItemQuery.loadSingleItemByName(ItemNames.CATALOG);
 				if (catalogItem == null) {
-					info.addError("Не создан каталог продукции", "init");
+					info.pushError("Не создан каталог продукции", "init");
 					return;
 				}
 				count = 0;
@@ -136,7 +130,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 						}
 					} catch (Exception e) {
 						ServerLogger.error("line process error", e);
-						info.addError("Ошибка формата строки (" + name + ")", src.getRowNum(), 0);
+						info.pushError("Ошибка формата строки (" + name + ")", src.getRowNum(), 0);
 					}
 				};
 				price.iterate(proc);
@@ -144,7 +138,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 				commitCommandUnits();
 			} catch (Exception e) {
 				ServerLogger.error("File parse error", e);
-				info.addError("Ошибка формата файла", excel.getName());
+				info.pushError("Ошибка формата файла", excel.getName());
 			}
 		}
 

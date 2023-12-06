@@ -399,6 +399,8 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 		String format = paramEl.attr(FORMAT);
 		boolean isHidden = Boolean.parseBoolean(paramEl.attr(HIDDEN));
 		boolean isVirtual = Boolean.parseBoolean(paramEl.attr(VIRTUAL));
+		String index = StringUtils.defaultIfBlank(paramEl.attr(INDEX), YES_VALUE);
+		boolean needsNoDbIndex = StringUtils.equalsAnyIgnoreCase(index, NO_VALUE, FALSE_VALUE);
 		String textIndexStr = paramEl.attr(TEXT_INDEX);
 		ParameterDescription.TextIndex textIndex = ParameterDescription.TextIndex.none;
 		String textIndexParameter = paramEl.attr(TEXT_INDEX_PARAMETER);
@@ -482,7 +484,7 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 
 		int paramId = paramIds.get(item.getName()).get(name).id;
 		ParameterDescription param = new ParameterDescription(name, paramId, dataTypeName, isMultiple, item.getTypeId(),
-				domainName, caption, description, format, isVirtual, isHidden, defaultValue, func);
+				domainName, caption, description, format, isVirtual, isHidden, !needsNoDbIndex, defaultValue, func);
 		if (textIndex != ParameterDescription.TextIndex.none)
 			param.setFulltextSearch(textIndex, textIndexParameter, textIndexBoost, textIndexParser, textIndexAnalyzer);
 

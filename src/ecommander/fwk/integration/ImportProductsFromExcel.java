@@ -226,7 +226,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
  							return;
 						}
 					} catch (Exception e) {
-						info.addError(e);
+						info.pushError(e);
 					}
 				}
 			});
@@ -615,7 +615,7 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private void checkDuplicateCodes(String code) {
 			if (duplicateCodes.contains(code) && !CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)) {
-				info.addError("Повторяющийся артикул: " + code, "");
+				info.pushError("Повторяющийся артикул: " + code, "");
 				return;
 			}
 			if (!CreateExcelPriceList.CODE_FILE.equalsIgnoreCase(code)) {

@@ -77,6 +77,7 @@ public interface CatalogConst {
 
 
 	String PARAMETER = "parameter";
+	String PARAM = "param";
 	String NAME = "name";
 	String VALUE = "value";
 

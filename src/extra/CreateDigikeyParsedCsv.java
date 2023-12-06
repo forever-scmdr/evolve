@@ -4,7 +4,6 @@ import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ServerLogger;
 import lunacrawler.fwk.ParsedInfoProvider;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.nodes.Document;
@@ -16,7 +15,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 
 public class CreateDigikeyParsedCsv extends IntegrateBase {
@@ -71,7 +69,7 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 					if (products.size() > 0) {
 						ParsedInfoProvider.InfoAccessor productDoc = infoProvider.getAccessorJsoup(products.first());
 						if (productDoc == null) {
-							info.addError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
+							info.pushError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
 							return;
 						}
 						for (int i = 1; i < 100; i++) {
@@ -103,7 +101,7 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 						productDoc = infoProvider.getAccessor(code);
 					} catch (Exception e) {
 						ServerLogger.error("Error parsing product xml file", e);
-						info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+						info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 						continue;
 					}
 					for (int i = 1; i < 20; i++) {
@@ -200,7 +198,7 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 					prodPerFileCount++;
 				} catch (Exception e) {
 					ServerLogger.error("Product save error", e);
-					info.addError("Product save error, ID = " + code + ", name = " + name, "catalog");
+					info.pushError("Product save error, ID = " + code + ", name = " + name, "catalog");
 				}
 				writer.flush();
 			}
@@ -211,7 +209,7 @@ public class CreateDigikeyParsedCsv extends IntegrateBase {
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Product save error", e);
-			info.addError("MEGA ERROR", "MEGA ERROR");
+			info.pushError("MEGA ERROR", "MEGA ERROR");
 		}
 		// save file
 		//FileUtils.write(new File(csvFile, "result.csv"), csv, StandardCharsets.UTF_8);

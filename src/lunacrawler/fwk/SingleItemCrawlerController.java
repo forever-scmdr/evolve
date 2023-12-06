@@ -3,7 +3,6 @@ package lunacrawler.fwk;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CleanAllDeletedItemsDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
@@ -332,7 +331,7 @@ public class SingleItemCrawlerController {
 					if (!nextSection(paramName, thread))
 						startStage();
 				} catch (Exception e) {
-					info.addError("Some exception " + e.getMessage(), "shown previously");
+					info.pushError("Some exception " + e.getMessage(), "shown previously");
 				}
 			}
 		}
@@ -472,15 +471,15 @@ public class SingleItemCrawlerController {
 						html = WebClient.getCleanHtml(item.get_url(), proxy);
 					} catch (HttpResponseException re) {
 						ServerLogger.error("Web client exception", re);
-						info.addError("Url status code " + re.getStatusCode(), item.get_url());
+						info.pushError("Url status code " + re.getStatusCode(), item.get_url());
 						return;
 					} catch (Exception e) {
 						ServerLogger.error("Unknown download problem", e);
-						info.addError("Unknown download problem: " + e.getMessage(), item.get_url());
+						info.pushError("Unknown download problem: " + e.getMessage(), item.get_url());
 						return;
 					}
 					if (StringUtils.isEmpty(html)) {
-						info.addError("Empty response", item.get_url());
+						info.pushError("Empty response", item.get_url());
 						return;
 					}
 					item.set_html(html);

@@ -69,7 +69,7 @@ public class CreateCommonParsedCsv extends IntegrateBase {
 					if (products.size() > 0) {
 						ParsedInfoProvider.InfoAccessor productDoc = infoProvider.getAccessorJsoup(products.first());
 						if (productDoc == null) {
-							info.addError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
+							info.pushError("Документ для товара '" + products.first() + "' содержит ошибки", "header");
 							return;
 						}
 						for (int i = 1; i < 30; i++) {
@@ -101,7 +101,7 @@ public class CreateCommonParsedCsv extends IntegrateBase {
 						productDoc = infoProvider.getAccessor(code);
 					} catch (Exception e) {
 						ServerLogger.error("Error parsing product xml file", e);
-						info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+						info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 						continue;
 					}
 					for (int i = 1; i < 30; i++) {
@@ -120,7 +120,7 @@ public class CreateCommonParsedCsv extends IntegrateBase {
 					prodPerFileCount++;
 				} catch (Exception e) {
 					ServerLogger.error("Product save error", e);
-					info.addError("Product save error, ID = " + code + ", name = " + name, "catalog");
+					info.pushError("Product save error, ID = " + code + ", name = " + name, "catalog");
 				}
 				writer.flush();
 			}
@@ -131,7 +131,7 @@ public class CreateCommonParsedCsv extends IntegrateBase {
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Product save error", e);
-			info.addError("MEGA ERROR", "MEGA ERROR");
+			info.pushError("MEGA ERROR", "MEGA ERROR");
 		}
 		// save file
 		//FileUtils.write(new File(csvFile, "result.csv"), csv, StandardCharsets.UTF_8);

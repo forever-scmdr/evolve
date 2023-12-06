@@ -21,7 +21,7 @@ public class SaveItemDBUnit {
 		return new UpdateItemParamsDBUnit(item, true);
 	}
 
-	public static DBPersistenceCommandUnit new_(Item item, Item parent) {
-		return new SaveNewItemDBUnit(item, parent);
+	public static DBPersistenceCommandUnit new_(Item item, Item parent, int... weight) {
+		return new SaveNewItemDBUnit(item, parent, weight);
 	}
 }

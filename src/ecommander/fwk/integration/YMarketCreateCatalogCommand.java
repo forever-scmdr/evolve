@@ -39,12 +39,12 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 	protected void integrate() throws Exception {
 		File integrationDir = new File(AppContext.getRealPath(INTEGRATION_DIR));
 		if (!integrationDir.exists()) {
-			info.addError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
+			info.pushError("Не найдена директория интеграции " + INTEGRATION_DIR, "init");
 			return;
 		}
 		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
 		if (xmls.size() == 0) {
-			info.addError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
+			info.pushError("Не найдены XML файлы в директории " + INTEGRATION_DIR, "init");
 			return;
 		}
 		info.setToProcess(xmls.size());
@@ -176,7 +176,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 				}
 			}
 		} catch (IOException e) {
-			info.addError("Невозможно прочитать файл " + file.getName(), file.getName());
+			info.pushError("Невозможно прочитать файл " + file.getName(), file.getName());
 		}
 		if (!containsDoctype)
 			return true;
@@ -194,7 +194,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 				writer.newLine();
 			}
 		} catch (IOException e) {
-			info.addError("Невозможно удалить DOCTYPE " + file.getName(), file.getName());
+			info.pushError("Невозможно удалить DOCTYPE " + file.getName(), file.getName());
 		}
 		boolean success = file.delete();
 		success &= tempFile.renameTo(file);

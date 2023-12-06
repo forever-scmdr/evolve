@@ -5,7 +5,6 @@ import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -143,7 +142,7 @@ public class Crawler implements DBConstants.Parse {
 			ps.executeUpdate();
 		} catch (Exception e) {
 			ServerLogger.error("SQL error", e);
-			getInfo().addError(e);
+			getInfo().pushError(e);
 			return;
 		}
 
@@ -535,7 +534,7 @@ public class Crawler implements DBConstants.Parse {
 							ps.executeUpdate();
 						} catch (Exception e) {
 							ServerLogger.error("SQL error", e);
-							getInfo().addError(e);
+							getInfo().pushError(e);
 						}
 					}
 					updateUrl(url);
@@ -669,7 +668,7 @@ public class Crawler implements DBConstants.Parse {
 					totalFoundUrls = rs.getInt(1);
 			} catch (Exception e) {
 				ServerLogger.error("SQL error", e);
-				getInfo().addError(e);
+				getInfo().pushError(e);
 			}
 		}
 		getInfo().setProcessed(totalVisitedUrls);

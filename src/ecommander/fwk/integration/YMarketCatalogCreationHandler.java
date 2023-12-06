@@ -88,7 +88,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			info.pushError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 		}
 	}
 
@@ -112,7 +112,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 							newSectionParent.remove(newCode);
 						} catch (Exception e) {
 							ServerLogger.error("Integration error", e);
-							info.addError(e.getMessage(), "Section " + newCode);
+							info.pushError(e.getMessage(), "Section " + newCode);
 						}
 					}
 				}
@@ -133,7 +133,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				}
 			} catch (Exception e) {
 				ServerLogger.error("Integration error", e);
-				info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+				info.pushError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 			}
 		}
 	}

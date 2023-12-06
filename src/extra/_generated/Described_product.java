@@ -64,6 +64,9 @@ public class Described_product
     public final static String PARAM_VALS = "param_vals";
     public final static String DESC_VALS = "desc_vals";
     public final static String PARAMS_XML = "params_xml";
+    public final static String DOCUMENTS_XML = "documents_xml";
+    public final static String ENVIRONMENTAL_XML = "environmental_xml";
+    public final static String ADDITIONAL_XML = "additional_xml";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -973,6 +976,54 @@ public class Described_product
 
     public boolean contains_params_xml(String value) {
         return containsValue("params_xml", value);
+    }
+
+    public void set_documents_xml(String value) {
+        setValue("documents_xml", value);
+    }
+
+    public String get_documents_xml() {
+        return getStringValue("documents_xml");
+    }
+
+    public String getDefault_documents_xml(String defaultVal) {
+        return getStringValue("documents_xml", defaultVal);
+    }
+
+    public boolean contains_documents_xml(String value) {
+        return containsValue("documents_xml", value);
+    }
+
+    public void set_environmental_xml(String value) {
+        setValue("environmental_xml", value);
+    }
+
+    public String get_environmental_xml() {
+        return getStringValue("environmental_xml");
+    }
+
+    public String getDefault_environmental_xml(String defaultVal) {
+        return getStringValue("environmental_xml", defaultVal);
+    }
+
+    public boolean contains_environmental_xml(String value) {
+        return containsValue("environmental_xml", value);
+    }
+
+    public void set_additional_xml(String value) {
+        setValue("additional_xml", value);
+    }
+
+    public String get_additional_xml() {
+        return getStringValue("additional_xml");
+    }
+
+    public String getDefault_additional_xml(String defaultVal) {
+        return getStringValue("additional_xml", defaultVal);
+    }
+
+    public boolean contains_additional_xml(String value) {
+        return containsValue("additional_xml", value);
     }
 
     public void add_gallery(File value) {

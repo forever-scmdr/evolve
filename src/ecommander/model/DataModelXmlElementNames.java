@@ -38,6 +38,7 @@ public interface DataModelXmlElementNames {
 	String FORMAT = "format";
 	String CLASS = "class";
 	String VIRTUAL = "virtual";
+	String INDEX = "index";
 	String INLINE = "inline";
 	String INLINE_TEXT_INDEX = "inline-text-index";
 	String LIMIT = "limit";
@@ -70,6 +71,8 @@ public interface DataModelXmlElementNames {
 
 	String TRUE_VALUE = "true";
 	String FALSE_VALUE = "false";
+	String YES_VALUE = "yes";
+	String NO_VALUE = "no";
 
 	String SIMPLE_VALUE = "simple";
 	String ADMIN_VALUE = "admin";

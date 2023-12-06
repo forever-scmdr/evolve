@@ -322,8 +322,7 @@
 		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
-		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
-		<parameter name="unit" type="string" caption="Единица измерения"/>
+		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext" index="no"/>
 		<parameter name="min_qty" type="double" caption="Минимальный заказ"/>
 		<parameter name="step" type="double" caption="Шаг заказа"/>
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
@@ -356,6 +355,9 @@
 		<parameter name="desc_vals" type="tuple" caption="Параметры краткого описания" description="для краткого описания" multiple="true"/>
 		<!-- Параметры в виде XML (см. айтем params_xml) -->
 		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
+		<parameter name="documents_xml" type="xml" caption="Список документации в виде XML" description="чтобы не делать вложенный айтем"/>
+		<parameter name="environmental_xml" type="xml" caption="Environmental and Export Classifications в виде XML" description="чтобы не делать вложенный айтем"/>
+		<parameter name="additional_xml" type="xml" caption="Дополнительные ресурсы в виде XML" description="чтобы не делать вложенный айтем"/>
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra" inline-text-index="true"/>
@@ -365,7 +367,7 @@
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		-->
-		<on-update class="ecommander.fwk.model.CreateTuplesFromXmlParams"/>
+		<on-create class="ecommander.fwk.model.CreateTuplesFromXmlParams"/>
 		<on-update class="ecommander.fwk.model.CreateTuplesFromXmlParams"/>
 	</item>
 
@@ -393,7 +395,7 @@
 
 
 	<item name="product_extra" caption="Дополнительно для товара" key="name" virtual="true" ag-id="818" ag-hash="1373246656">
-		<parameter name="name" type="string" caption="Название"/>
+		<parameter name="name" type="string" caption="Название" index="no"/>
 	</item>
 
 
@@ -509,9 +511,9 @@
 		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
-		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="price" type="currency" format="#.###" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="sum" type="currency" format="#.###" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="outer_product" type="plain-text" caption="Дополнительный каталог"/>
 		<child item="product" single="true"/>
@@ -520,7 +522,7 @@
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
-		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum" type="currency" format="#.###" caption="Общая сумма"/>
 		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>

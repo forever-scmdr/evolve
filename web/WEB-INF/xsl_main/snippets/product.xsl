@@ -38,7 +38,8 @@
 
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
+		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<div class="card device">
@@ -142,7 +143,15 @@
 				</xsl:call-template>
 			</div>
 			<div class="add">
-				<a href="" class="icon-link product-icons__item" download="">
+				<div id="spec_list_{@id}">
+					<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
+						<div class="icon"><img src="img/icon-spec.svg" alt=""/></div>
+						<span><xsl:value-of select="$go_to_spec_label"/></span>
+					</a>
+				</div>
+			</div>
+			<div class="add">
+				<a href="{$main_ds/a/@href}" class="icon-link product-icons__item" download="{$main_ds/a/@href}">
 					<div class="icon icon_size_lg">
 						<img src="img/pdf.png" alt="" width="18"/>
 					</div>
@@ -243,7 +252,8 @@
 
 	<xsl:template match="*" mode="product-list">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="prms" select="params/param"/>
+		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
+		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 
@@ -308,18 +318,20 @@
 				<div class="device__info">
 
 					<table class="params">
+						<xsl:variable name="p" select="current()"/>
 						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
 						<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
-						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>
-						<xsl:variable name="p" select="current()"/>
+						<!--<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else params/param/@caption"/>-->
+						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/param_vals/@key"/>
 
 						<xsl:if test="//page/@name != 'fav'">
 							<tbody>
 								<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
-									<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+									<!--<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+									<xsl:variable name="param" select="$p/param_vals[lower-case(normalize-space(@key)) = lower-case(normalize-space(current()))]"/>
 									<tr class="tr">
-										<td><xsl:value-of select="$param/@caption"/></td>
-										<td><xsl:value-of select="$param"/></td>
+										<td><xsl:value-of select="$param/@key"/></td>
+										<td><xsl:value-of select="$param/@value"/></td>
 									</tr>
 								</xsl:for-each>
 								<xsl:if test="count($captions) &gt; $product_params_limit">
@@ -333,10 +345,11 @@
 							<xsl:if test="count($captions) &gt; $product_params_limit">
 								<tbody id="params-{@id}" style="display:none;">
 									<xsl:for-each select="$captions[position() &gt; $product_params_limit]">
-										<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+										<!--<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+										<xsl:variable name="param" select="$p/param_vals[lower-case(normalize-space(@key)) = lower-case(normalize-space(current()))]"/>
 										<tr class="tr">
-											<td><xsl:value-of select="$param/@caption"/></td>
-											<td><xsl:value-of select="$param"/></td>
+											<td><xsl:value-of select="$param/@key"/></td>
+											<td><xsl:value-of select="$param/@value"/></td>
 										</tr>
 									</xsl:for-each>
 								</tbody>
@@ -344,10 +357,11 @@
 						</xsl:if>
 						<xsl:if test="//page/@name = 'fav'">
 							<xsl:for-each select="$captions[position() &lt; 5]">
-								<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+								<!--<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
+								<xsl:variable name="param" select="$p/param_vals[lower-case(normalize-space(@key)) = lower-case(normalize-space(current()))]"/>
 								<tr class="tr">
-									<td><xsl:value-of select="$param/@caption"/></td>
-									<td><xsl:value-of select="$param"/></td>
+									<td><xsl:value-of select="$param/@key"/></td>
+									<td><xsl:value-of select="$param/@value"/></td>
 								</tr>
 							</xsl:for-each>
 						</xsl:if>
@@ -418,6 +432,33 @@
 						<xsl:with-param name="p" select="current()"/>
 					</xsl:call-template>
 				</div>
+				<div class="add">
+					<div id="spec_list_{@id}">
+						<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
+							<div class="icon"><img src="img/icon-spec.svg" alt=""/></div>
+							<span><xsl:value-of select="$go_to_spec_label"/></span>
+						</a>
+					</div>
+				</div>
+				<div class="add">
+					<a href="{$main_ds/a/@href}" class="icon-link product-icons__item" download="{$main_ds/a/@href}">
+						<div class="icon icon_size_lg">
+							<img src="img/pdf.png" alt="" width="18"/>
+						</div>
+						<span class="add__item">Скачать документацию</span>
+					</a>
+				</div>
+				<!-- OLD PRICE
+				<xsl:call-template name="EXTRA_ORDERING_TYPES">
+					<xsl:with-param name="p" select="current()"/>
+				</xsl:call-template>
+				-->
+				<div class="order device-order">
+					<a class="button" href="javascript:void(0)" onclick="showDetails_new('{show_lines_ajax}', 'price_{@id}'); return false;">Цены</a>
+				</div>
+			</div>
+			<div class="price_box" id="price_{@id}">
+
 			</div>
 		</div>
 	</xsl:template>
@@ -622,10 +663,36 @@
 					</xsl:for-each>
 					<p/>
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+					<!--
 					<xsl:call-template name="FAV_AND_COMPARE">
 						<xsl:with-param name="p" select="current()"/>
 						<xsl:with-param name="is_inline" select="true()"/>
 					</xsl:call-template>
+					-->
+					<xsl:if test="$has_fav">
+						<xsl:choose>
+							<xsl:when test="$is_fav">
+								<a href="{$p/from_fav}" class="add__item icon-link">
+									<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+									<span><xsl:value-of select="$compare_remove_label"/></span>
+								</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<div id="fav_list_{@id}" style="display: inline-block;">
+									<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
+										<span><xsl:value-of select="$compare_add_label"/></span>
+									</a>
+								</div>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:if>
+					<div id="spec_list_{@id}" style="display: inline-block;">
+						<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
+							<div class="icon"><img src="img/icon-spec.svg" alt=""/></div>
+							<span>В спецификации</span>
+						</a>
+					</div>
 				</div>
 			</td><!--название -->
 			<xsl:if test="$is_admin">

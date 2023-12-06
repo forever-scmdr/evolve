@@ -37,7 +37,7 @@ public class UpdateParameterDescriptionDBUnit extends ItemModelFilePersistenceCo
 		if (typeStr == null) typeStr = Strings.EMPTY;
 		oldDesc = ItemTypeRegistry.getItemType(itemId).getParameter(paramId);
 		newDesc = new ParameterDescription(name, paramId, typeStr, isMultiple, itemId, domain, caption, description,
-				format, isVirtual, isHidden, defaultValue, null);
+				format, isVirtual, isHidden, true, defaultValue, null);
 	}
 
 	@Override

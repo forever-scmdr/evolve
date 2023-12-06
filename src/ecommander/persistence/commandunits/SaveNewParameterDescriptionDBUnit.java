@@ -54,7 +54,7 @@ public class SaveNewParameterDescriptionDBUnit extends ItemModelFilePersistenceC
 	protected void executeInt() throws Exception {
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemId);
 		itemDesc.putParameter(new ParameterDescription(name, 0, type, isMultiple, itemId, domain, caption,
-				description, format, virtual, hidden, defaultValue, null));
+				description, format, virtual, hidden, true, defaultValue, null));
 		executeCommand(new UpdateItemTypeDBUnit(itemDesc));
 	}
 }

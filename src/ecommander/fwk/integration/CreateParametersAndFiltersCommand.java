@@ -7,7 +7,6 @@ import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.model.*;
 import ecommander.model.datatypes.DataType;
-import ecommander.model.datatypes.LongDataType;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.FilterDefinition;
 import ecommander.model.filter.InputDef;
@@ -17,7 +16,6 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.commandunits.SaveNewItemTypeDBUnit;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
-import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -292,7 +290,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 					boolean isMultiple = params.paramCaptions.get(paramName).getRight();
 					String unit = params.paramTypes.get(paramName) != DataType.Type.STRING ? params.paramUnits.get(paramName) : null;
 					newClass.putParameter(new ParameterDescription(paramName, 0, type, isMultiple, 0,
-							"", caption, unit, "", false, false, null, null));
+							"", caption, unit, "", false, false, true, null, null));
 				}
 				info.getTimer().start(DB_CLASSES_TIMER_NAME);
 
@@ -341,7 +339,7 @@ public class CreateParametersAndFiltersCommand extends IntegrateBase implements 
 			}
 		} catch (Exception e) {
 			ServerLogger.error("Unable to reload new model", e);
-			info.addError("Невозможно создать новую модель данных", e.getLocalizedMessage());
+			info.pushError("Невозможно создать новую модель данных", e.getLocalizedMessage());
 			info.setOperation("Фатальная ошибка");
 			return;
 		}

@@ -18,13 +18,15 @@ import ecommander.model.User;
  */
 public final class SynchronousTransaction implements AutoCloseable {
 
-	private ArrayList<PersistenceCommandUnit> executedCommands;
+	private ArrayList<PersistenceCommandUnit> executedCommands = new ArrayList<>();
 	private TransactionContext context;
 	private User initiator = null;
 	private Connection conn = null;
+	private Timer[] timerArg; // внешний таймер для отладки времени выполнения команд
 	
-	public SynchronousTransaction(User initiator) {
+	public SynchronousTransaction(User initiator, Timer... timer) {
 		this.initiator = initiator;
+		this.timerArg = timer;
 	}
 	/**
 	 * Возвращает контекст транзакции
@@ -44,7 +46,7 @@ public final class SynchronousTransaction implements AutoCloseable {
 			executedCommands = new ArrayList<>();
 			conn = MysqlConnector.getConnection();
 			conn.setAutoCommit(false);
-			context = new TransactionContext(conn, initiator);
+			context = new TransactionContext(conn, initiator, timerArg);
 			inited = true;
 		} catch (Exception e) {
 			ServerLogger.error("Can not start the thransaction.\nHere's the error:", e);
@@ -58,15 +60,17 @@ public final class SynchronousTransaction implements AutoCloseable {
 	 * Завершить выполнение (комитить)
 	 * @throws Exception
 	 */
-	public final void commit() throws Exception {
+	public void commit() throws Exception {
 		if (conn == null)
 			return;
 		Exception exception;
 		try {
-			Timer timer = new Timer();
-			timer.start("commit");
+			//Timer timer = new Timer();
+			//timer.start("commit");
+			context.getTimer().start("commit");
 			conn.commit();
-			Timer.TimeLogMessage message = timer.stop("commit");
+			//Timer.TimeLogMessage message = timer.stop("commit");
+			Timer.TimeLogMessage message = context.getTimer().stop("commit");
 			ServerLogger.warn("\n\n========= COMMIT SYNCHRONOUS : " + message.getExecTimeMillis() + " ms\n");
 			executedCommands = new ArrayList<>();
 			ServerLogger.debug("Transaction successfull");
@@ -115,7 +119,7 @@ public final class SynchronousTransaction implements AutoCloseable {
 	 * @return
 	 * @throws Exception
 	 */
-	public final Connection getConn() throws Exception {
+	public Connection getConn() throws Exception {
 		if (conn == null)
 			startTransaction();
 		return conn;
@@ -124,7 +128,7 @@ public final class SynchronousTransaction implements AutoCloseable {
 	 * Откатывает выполненные успешно команды
 	 * @throws Exception 
 	 */
-	public final void rollback() throws Exception {
+	public void rollback() throws Exception {
 		try {
 			if (conn != null)
 				conn.rollback();

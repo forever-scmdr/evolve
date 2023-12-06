@@ -102,7 +102,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						product = Item.newChildItem(productType, section);
 						productContainers.add(secCode);
 					} else {
-						info.addError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
+						info.pushError("Не найден раздел с номером " + secCode, locator.getLineNumber(), locator.getColumnNumber());
 						return;
 					}
 				}
@@ -245,7 +245,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 							needSave = true;
 						}
 					} catch (Exception e) {
-						info.addError("Неверный формат картинки: " + picUrl, picUrl);
+						info.pushError("Неверный формат картинки: " + picUrl, picUrl);
 					}
 				}
 
@@ -269,7 +269,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						DelayedTransaction.executeSingle(initiator, new ResizeImagesFactory.ResizeImages(product));
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex());
 					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						info.pushError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
 					needSave = false;
 				}
@@ -277,7 +277,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 					try {
 						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(product).noFulltextIndex().ignoreFileErrors());
 					} catch (Exception e) {
-						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
+						info.pushError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
 				}
 
@@ -298,7 +298,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 			ServerLogger.error("Integration error", e);
 			info.setLineNumber(locator.getLineNumber());
 			info.setLinePosition(locator.getColumnNumber());
-			info.addError(e);
+			info.pushError(e);
 		}
 	}
 

@@ -108,7 +108,7 @@ public abstract class IntegrateBase extends Command {
 		private volatile int processed = 0;
 		private volatile int toProcess = 0;
 		private volatile ArrayDeque<LogMessage> log = new ArrayDeque<>();
-		private volatile ArrayList<Error> errors = new ArrayList<>();
+		private volatile ArrayDeque<Error> errors = new ArrayDeque<>();
 		private volatile boolean inProgress = false;
 		private volatile int logSize = 300;
 		private volatile TreeMap<Long, String> slowQueries = new TreeMap<>();
@@ -178,16 +178,22 @@ public abstract class IntegrateBase extends Command {
 			logSize = size;
 		}
 
-		public synchronized void addError(String message, int lineNumber, int position) {
-			errors.add(new Error(message, lineNumber, position));
+		private synchronized void pushError(Error e) {
+			if (errors.size() >= logSize)
+				errors.removeLast();
+			errors.addFirst(e);
 		}
 
-		public synchronized void addError(Throwable e) {
-			errors.add(new Error(e, this));
+		public void pushError(String message, int lineNumber, int position) {
+			pushError(new Error(message, lineNumber, position));
 		}
 
-		public synchronized void addError(String message, String originator) {
-			errors.add(new Error(message, originator));
+		public void pushError(Throwable e) {
+			pushError(new Error(e, this));
+		}
+
+		public void pushError(String message, String originator) {
+			pushError(new Error(message, originator));
 		}
 
 		public synchronized void setInProgress(boolean inProgress) {
@@ -247,7 +253,15 @@ public abstract class IntegrateBase extends Command {
 				}
 				doc.endElement();
 			}
-			doc.startElement("timers").addText(timer.writeTotals()).endElement();
+			doc.startElement("timers");
+			for (String timerName : timer.getAllTimerNames()) {
+				doc
+						.startElement("timer", "name", timerName)
+						.startElement("sec").addText(timer.getTotalSeconds(timerName)).endElement()
+						.startElement("min").addText(timer.getTotalMinutes(timerName).toString()).endElement()
+						.endElement();
+			}
+			doc.endElement();
 			ServerLogger.debug(doc.toString());
 		}
 
@@ -353,7 +367,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param position
 	 */
 	public void addError(String message, int lineNumber, int position) {
-		getInfo().addError(message, lineNumber, position);
+		getInfo().pushError(message, lineNumber, position);
 	}
 
 	/**
@@ -363,7 +377,7 @@ public abstract class IntegrateBase extends Command {
 	 * @param originator
 	 */
 	public void addError(String message, String originator) {
-		getInfo().addError(message, originator);
+		getInfo().pushError(message, originator);
 	}
 
 	/*********************************************************************************************************
@@ -405,7 +419,7 @@ public abstract class IntegrateBase extends Command {
 				readyToStart = makePreparations();
 			} catch (Exception e) {
 				ServerLogger.error(e.getMessage(), e);
-				getInfo().addError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
+				getInfo().pushError(e.toString() + " says [ " + e.getMessage() + "]", -1,-1);
 			}
 
 			if (!readyToStart) {
@@ -422,7 +436,7 @@ public abstract class IntegrateBase extends Command {
 				} catch (Exception se) {
 					setOperation("Интеграция завершена с ошибками");
 					ServerLogger.error("Integration error", se);
-					getInfo().addError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
+					getInfo().pushError(se.toString() + " says [ " + se.getMessage() + "]", info.lineNumber, info.position);
 				} finally {
 					isFinished = true;
 					getInfo().setInProgress(false);

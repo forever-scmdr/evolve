@@ -31,7 +31,11 @@ public class XmlDataSource {
 
 		private Node currentChild = null;
 
-
+		/**
+		 * Открыть тэг
+		 * @param tagName
+		 * @param parent
+		 */
 		private Node(String tagName, Node parent) {
 			this.tagName = tagName;
 			this.doc = XmlDocumentBuilder.newDocPart();
@@ -62,6 +66,14 @@ public class XmlDataSource {
 			attributes.put(name, value);
 		}
 
+		/**
+		 * Закрыть тэг
+		 */
+		private void remove() {
+			currentChild = null;
+			parent.currentChild = null;
+		}
+
 		public String attr(String name) {
 			if (attributes == null)
 				return null;
@@ -72,11 +84,17 @@ public class XmlDataSource {
 	private Node path;
 	private XMLStreamReader reader;
 	private String tagContent;
+	private Timer timer;
 
-	public XmlDataSource(String fileName, Charset charset) throws XMLStreamException, IOException {
+	public XmlDataSource(String fileName, Charset charset, Timer... timer) throws XMLStreamException, IOException {
 		Reader fileReader = Files.newBufferedReader(Paths.get(fileName), charset);
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		reader = factory.createXMLStreamReader(fileReader);
+		if (timer.length > 0) {
+			this.timer = timer[0];
+		} else {
+			this.timer = new Timer();
+		}
 	}
 
 	/**
@@ -92,7 +110,6 @@ public class XmlDataSource {
 	public Node findNextNode(HashSet<String> elementNames, String... attrCriterias) throws XMLStreamException {
 		while (reader.hasNext()) {
 			int event = reader.next();
-
 			switch (event) {
 				case XMLStreamConstants.START_ELEMENT:
 					Node node = nodeStarted();
@@ -117,6 +134,9 @@ public class XmlDataSource {
 					break;
 
 				case XMLStreamConstants.END_ELEMENT:
+					path.getLastFound().remove();
+					break;
+
 				case XMLStreamConstants.END_DOCUMENT:
 					break;
 			}

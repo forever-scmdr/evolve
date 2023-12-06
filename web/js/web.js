@@ -169,6 +169,26 @@ function showDetails(link) {
 	});
 }
 
+function showDetails_new(link, el) {
+	$("#"+el).toggleClass("open");
+	$.ajax({
+        url: link,
+        dataType: "html",
+        cache: false,
+        success: function (data) {
+            $("#"+el).html(data);
+        }
+    });
+}
+
+function infobox(x){
+	if(x == 'close'){
+		$(".infobox_modal").removeClass("open");
+	} else {
+	$(".infobox_"+x).addClass("open");
+	}
+}
+
 function clearProductAjax() {
 	var html = "<div class=\"popup__body\">\n" +
 		"\t\t\t\t<div class=\"popup__content\">\n" +
@@ -228,3 +248,19 @@ $(document).on("mouseenter", ".sub-sections", function(){
 $(document).on("mouseleave", ".sub-sections", function(){
 	hideTextSections = setTimeout(function(){$(".sub-sections").hide();}, 300);
 });
+
+$('.chbox').on("click", function(){
+	$('.chbox').removeClass('open');
+	$(this).addClass('open');
+});
+var header = $(".header_desc_fix"),
+  scrollPrev = 0;
+$(window).scroll(function () {
+	var scrolled = $(window).scrollTop();
+	if (scrolled > 150) {
+	  header.addClass("show");
+	} else {
+	  header.removeClass("show");
+	}
+	scrollPrev = scrolled;
+  });

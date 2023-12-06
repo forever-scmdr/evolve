@@ -1,17 +1,19 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
 	<xsl:import href="common_page_base.xsl"/>
-	<xsl:output method="xhtml" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
+	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
 
 	<xsl:variable name="products" select="page/product"/>
 
 	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
+
 	<xsl:template name="PAGE_HEADING">
 		<div class="title title_1">Заказы</div>
 	</xsl:template>
+
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">

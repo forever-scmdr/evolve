@@ -2,6 +2,7 @@ package ecommander.persistence.common;
 
 import ecommander.fwk.MysqlConnector;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
 import ecommander.model.User;
 import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
 
@@ -23,10 +24,12 @@ public class DelayedTransaction {
 	private int failedCommandIndex = 0;
 	private boolean finished = false;
 	private User initiator = null;
+	private Timer[] timerArg; // внешний таймер для отладки времени выполнения команд
 
-	public DelayedTransaction(User initiator) {
+	public DelayedTransaction(User initiator, Timer... timer) {
 		commands = new LinkedList<>();
 		this.initiator = initiator;
+		this.timerArg = timer;
 	}
 	/**
 	 * Добавить команду в конец списка, для последующего ее выполнения
@@ -67,9 +70,11 @@ public class DelayedTransaction {
 			) {
 				ServerLogger.debug("Start transaction, try #" + (i + 1));
 				conn.setAutoCommit(false);
-				context = new TransactionContext(conn, initiator);
+				context = new TransactionContext(conn, initiator, timerArg);
 				executeCommands();
+				context.getTimer().start("transaction commit");
 				committer.commit();
+				context.getTimer().stop("transaction commit");
 				if (conn instanceof MysqlConnector.LoggedConnection) {
 					((MysqlConnector.LoggedConnection) conn).queryFinished();
 				}

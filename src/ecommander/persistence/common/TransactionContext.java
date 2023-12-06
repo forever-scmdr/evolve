@@ -8,6 +8,7 @@ package ecommander.persistence.common;
 
 import java.sql.Connection;
 
+import ecommander.fwk.Timer;
 import ecommander.model.User;
 
 /**
@@ -18,10 +19,15 @@ import ecommander.model.User;
 public class TransactionContext {
 	private Connection connection;
 	private User initiator;
+	private Timer timer;
 
-	public TransactionContext(Connection conn, User initiator) {
+	public TransactionContext(Connection conn, User initiator, Timer... timer) {
 		this.connection = conn;
 		this.initiator = initiator;
+		if (timer.length > 0)
+			this.timer = timer[0];
+		else
+			this.timer = new Timer();
 	}
 	/**
 	 * @return
@@ -40,4 +46,11 @@ public class TransactionContext {
 		this.connection = connection;
 	}
 
+	/**
+	 * Получить таймер для отладки времени выполения команд
+ 	 * @return
+	 */
+	public Timer getTimer() {
+		return timer;
+	}
 }

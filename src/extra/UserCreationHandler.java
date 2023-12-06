@@ -1,7 +1,6 @@
 package extra;
 
 import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.ItemUtils;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -64,7 +63,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 				String email = singleParams.get(EMAIL);
 				String unp = singleParams.get(UNP);
 				if (StringUtils.isAllBlank(email, unp)) {
-					info.addError("Запись пользователя не валидна (отсутствуют email и УНП)", locator.getLineNumber(), 0);
+					info.pushError("Запись пользователя не валидна (отсутствуют email и УНП)", locator.getLineNumber(), 0);
 					return;
 				}
 				Item userItem = null;
@@ -106,7 +105,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 			parameterReady = false;
 		} catch (Exception e) {
 			ServerLogger.error("Integration error", e);
-			info.addError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
+			info.pushError(e.getMessage(), locator.getLineNumber(), locator.getColumnNumber());
 		}
 	}
 

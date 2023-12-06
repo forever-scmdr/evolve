@@ -3,11 +3,9 @@ package ecommander.fwk.integration;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.IntegrateBase;
 import ecommander.model.Item;
-import ecommander.model.datatypes.LongDataType;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -51,7 +49,7 @@ public class CleanFilesCommand extends IntegrateBase {
 				Item item = ItemQuery.loadById(id);
 				if (item == null || item.getStatus() == Item.STATUS_DELETED) {
 					if (!FileUtils.deleteQuietly(dir))
-						info.addError("Unable to delete directory", dir.getAbsolutePath());
+						info.pushError("Unable to delete directory", dir.getAbsolutePath());
 				}
 				info.increaseProcessed();
 			}
@@ -65,7 +63,7 @@ public class CleanFilesCommand extends IntegrateBase {
 			for (File dir : dirs) {
 				if (isEmpty(dir.toPath())) {
 					if (!FileUtils.deleteQuietly(dir)) {
-						info.addError("Unable to delete directory", dir.getAbsolutePath());
+						info.pushError("Unable to delete directory", dir.getAbsolutePath());
 					} else {
 						hasEmpty = true;
 					}

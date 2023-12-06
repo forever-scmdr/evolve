@@ -441,6 +441,9 @@ public interface ItemNames {
         String PARAM_VALS = "param_vals";
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
+        String DOCUMENTS_XML = "documents_xml";
+        String ENVIRONMENTAL_XML = "environmental_xml";
+        String ADDITIONAL_XML = "additional_xml";
         String GALLERY = "gallery";
 
     }
@@ -618,6 +621,9 @@ public interface ItemNames {
         String PARAM_VALS = "param_vals";
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
+        String DOCUMENTS_XML = "documents_xml";
+        String ENVIRONMENTAL_XML = "environmental_xml";
+        String ADDITIONAL_XML = "additional_xml";
         String GALLERY = "gallery";
 
     }
@@ -980,6 +986,9 @@ public interface ItemNames {
         String PARAM_VALS = "param_vals";
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
+        String DOCUMENTS_XML = "documents_xml";
+        String ENVIRONMENTAL_XML = "environmental_xml";
+        String ADDITIONAL_XML = "additional_xml";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

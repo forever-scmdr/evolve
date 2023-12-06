@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,8 +52,10 @@ public class SearchApiCommand extends Command {
 			StringBuilder apiQueryPart = new StringBuilder();
 			for (Object query : queries) {
 				String queryString = StringUtils.normalizeSpace((String) query);
-				if (queryString.length() >= 3)
+				if (queryString.length() >= 3) {
+					queryString = URLEncoder.encode(queryString, Strings.SYSTEM_ENCODING);
 					apiQueryPart.append(apiQueryPart.length() == 0 ? '?' : '&').append(API_QUERY_NAME).append('=').append(queryString);
+				}
 			}
 			if (StringUtils.isNotBlank(apiQueryPart)) {
 				if (StringUtils.isBlank(server)) {

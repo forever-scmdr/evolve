@@ -2,7 +2,6 @@ package extra;
 
 import ecommander.fwk.*;
 import ecommander.model.*;
-import ecommander.persistence.commandunits.CopyItemDBUnit;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
@@ -113,7 +112,7 @@ public class MetaboIntegrateParsedCommand extends IntegrateBase {
 				productDoc = infoProvider.getItem(code);
 			} catch (Exception e) {
 				ServerLogger.error("Error parsing product xml file", e);
-				info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+				info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 			}
 			deployProduct(productDoc, parent);
 		}

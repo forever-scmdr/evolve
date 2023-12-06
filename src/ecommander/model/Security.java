@@ -19,7 +19,7 @@ public class Security {
 				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 			// Если айтем общий (нет владельца)
 		} else {
-			if (!admin.inGroup(object.getOwnerGroupId()))
+			if (object.getOwnerGroupId() != User.NO_GROUP_ID && !admin.inGroup(object.getOwnerGroupId()))
 				throw new UserNotAllowedException("Action is not allowed to user " + admin.getName());
 		}
 	}

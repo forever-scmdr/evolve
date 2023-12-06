@@ -9,7 +9,30 @@
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
 	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
+	</xsl:template>
+
+
+	<xsl:template name="PAGE_HEADING">
+		<div class="title title_1 vl_{$classvl}" style="display: table;table-layout: fixed;width: 100%;">
+			<div style="display: table-cell;"><xsl:value-of select="$h1"/></div>
+			<div style="display: table-cell;" id="cur_div">
+				<ul class="currency-options" style="float: right;">
+					<xsl:variable name="currency_link" select="page/set_currency"/>
+					<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+						<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+						<xsl:variable name="active" select="$currency = $cur"/>
+						<li class="{'active'[$active]}">
+							<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
+							<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+						</li>
+					</xsl:for-each>
+					<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
+				</ul>
+			</div>
+
+
+		</div>
 	</xsl:template>
 
 
@@ -29,6 +52,14 @@
                 </div>
             </div>
         </xsl:if>
+		<div class="search_cart">
+			<form action="/cart/" method="post">
+				<input class="input header-search__input"  type="text" placeholder="Введите поисковый запрос" autocomplete="off"/>
+				<button class="button header-search__button" type="submit">Найти</button>
+			</form>
+		</div>
+
+
 		<div class="cart-list">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
@@ -41,23 +72,23 @@
                             <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
-									<div class="cart-item__image">
+								<!--	<div class="cart-item__image">
 										<a href="{$p/show_product}">
 											<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
 											<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
 										</a>
-									</div>
+									</div> -->
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										<span class="cart-item__name"><xsl:value-of select="$p/name"/></span><br/>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
 									<div class="cart-item__image"><img src="{$p/product/@path}{$p/product/main_pic}" alt="{$p/name}" /></div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/product/show_product}">
+										<span class="cart-item__name">
 											<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
-										</a>
+										</span>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/product/code" /></div>
 									</div>
 								</xsl:if>
@@ -77,6 +108,15 @@
 										</xsl:if>
 									</span>
 									<!--<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>-->
+								</div>
+								<div class="cart-item__ostatok">
+									<span class="text-label">Остаток</span>
+									<span>0</span>
+								</div>
+								<div class="cart-item__postavka">
+									<span class="text-label">Срок поставки</span>
+									<span>31.12.2023</span>
+
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>

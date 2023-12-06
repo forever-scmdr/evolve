@@ -3,12 +3,15 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.integration.EmailQueueSender;
 import ecommander.model.Item;
 import ecommander.pages.Command;
+import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
+import extra._generated.User;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -49,7 +52,14 @@ public class UpdateOrderStatusByJson extends Command {
 								Item purchase = ItemQuery.loadSingleItemByParamValue(ItemNames.PURCHASE, ItemNames.purchase_.NUM, orderNum);
 								if (purchase != null) {
 									purchase.setValueUI(ItemNames.purchase_.STATUS, newStatus);
-									executeAndCommitCommandUnits(SaveItemDBUnit.get(purchase));
+									executeAndCommitCommandUnits(SaveItemDBUnit.get(purchase).ignoreUser());
+									// Добавление письма в очередь отправки
+									User user = User.get(new ItemQuery(ItemNames.USER).setChildId(purchase.getId(), true).loadFirstItem());
+									if (user != null) {
+										LinkPE link = LinkPE.newDirectLink("status_email", "status_email", false);
+										link.addStaticVariable("pur", purchase.getId() + "");
+										EmailQueueSender.addEmailToQueue(this, user.get_email(), link.serialize());
+									}
 								}
 							}
 						}

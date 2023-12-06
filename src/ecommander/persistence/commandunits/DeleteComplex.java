@@ -27,7 +27,7 @@ public class DeleteComplex implements DBConstants.ItemTbl {
 
 	private static final int MAX_DELETE_SECONDS  = 60;
 
-	private static final int FREQUENT_SECONDS = 70;
+	private static final int FREQUENT_SECONDS = 10;
 	private static final int NORMAL_SECONDS = 70;
 	private static final int RARE_SECONDS = 70;
 

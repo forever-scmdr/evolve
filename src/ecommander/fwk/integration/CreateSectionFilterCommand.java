@@ -282,7 +282,8 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 						if (StringUtils.isNotBlank(product.getStringValue(PARAMS_XML_PARAM))) {
 							String xml = "<params>" + product.getStringValue(PARAMS_XML_PARAM) + "</params>";
 							Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
-							Elements paramEls = paramsTree.getElementsByTag(PARAMETER);
+							Elements paramEls = paramsTree.select(PARAMETER + ", " + PARAM);
+
 							for (Element paramEl : paramEls) {
 								Elements nameElements = paramEl.getElementsByTag(NAME);
 								if (!nameElements.isEmpty()) {

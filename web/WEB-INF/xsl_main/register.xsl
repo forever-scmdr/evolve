@@ -12,7 +12,7 @@
 
 
 	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
 
 	<xsl:template name="PAGE_HEADING">
@@ -47,14 +47,14 @@
 
 			<div class="tabs__nav">
 				<a href="#tab_login" class="tab{' tab_active'[$is_login]}">Вход</a>
-				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Физическое лицо</a>
-				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Юридическое лицо</a>
+				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Регистрация</a>
+				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Восстановить пароль</a>
 			</div>
 			<div class="tabs__content">
 
 				<div class="tab-container" id="tab_login" style="{'display: none'[not($is_login)]}">
 					<div class="text form__text">
-						<p>Введите адрес электрнной почты и пароль.</p>
+						<p>Введите адрес вашей электронной почты и пароль.</p>
 					</div>
 					<form action="{page/submit_login}" method="post" onsubmit="lock('tab_login')">
 						<div class="form__item">
@@ -74,23 +74,19 @@
 				<div class="tab-container" id="tab_phys" style="{'display: none'[$is_jur or $is_login]}">
 					<div class="text form__text">
 						<p>
-							Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина.
-							Если не указан email, будет использован номер телефона.
+							Введите, пожалуйста, адрес электронной почты, используемый для логина.
+							На него будет выслан пароль.
 						</p>
 					</div>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
 						<xsl:variable name="inp" select="page/user_phys/input"/>
-						<xsl:call-template name="USER_PHYS_INPUTS">
-							<xsl:with-param name="inp" select="$inp"/>
-							<xsl:with-param name="vals" select="page/phys"/>
-						</xsl:call-template>
 						<div class="form__item">
-							<label class="form-label" for="formid">Пароль:</label>
+							<label class="form-label" for="formid">Электронная почта / логин:</label>
 							<input class="input form__element" type="text" id="formid"
-								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
+								   name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
 						</div>
 						<div class="form__proceed">
-							<input type="submit" class="button button_size_lg" value="Отправить анкету"/>
+							<input type="submit" class="button button_size_lg" value="Отправить"/>
 						</div>
 					</form>
 				</div>

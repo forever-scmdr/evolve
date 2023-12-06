@@ -26,12 +26,12 @@ public class CreateUsersCommand extends IntegrateBase {
 	protected void integrate() throws Exception {
 		Item userCatalog = ItemQuery.loadSingleItemByName(ItemNames.REGISTERED_CATALOG);
 		if (userCatalog == null || userCatalog.isValueEmpty(ItemNames.registered_catalog_.USERS_FILE)) {
-			info.addError("Разбор невозможен. Не найден каталог пользователей", "каталог пользователей");
+			info.pushError("Разбор невозможен. Не найден каталог пользователей", "каталог пользователей");
 			return;
 		}
 		File xmlFile = userCatalog.getFileValue(ItemNames.registered_catalog_.USERS_FILE, AppContext.getFilesDirPath(userCatalog.isFileProtected()));
 		if (!xmlFile.exists()) {
-			info.addError("Разбор невозможен. Не найден каталог пользователей", "каталог пользователей");
+			info.pushError("Разбор невозможен. Не найден каталог пользователей", "каталог пользователей");
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class CreateUsersCommand extends IntegrateBase {
 		try {
 			parser.parse(xmlFile, prodHandler);
 		} catch (Exception e) {
-			info.addError("Разбор файла невозможен. Файл не валиден", e.getLocalizedMessage());
+			info.pushError("Разбор файла невозможен. Файл не валиден", e.getLocalizedMessage());
 			return;
 		}
 

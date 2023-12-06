@@ -40,13 +40,14 @@ public final class ParameterDescription {
 	private boolean needsDBIndex = true; // нужно ли сохранять в индекс базы данных значение этого параметра
 	
 	public ParameterDescription(String name, int paramId, String type, boolean isMultiple, int parentItemId, String domainName, String caption,
-	                            String description, String format, boolean isVirtual, boolean isHidden, String defaultValue, ComputedDescription.Func computedFunc) {
+	                            String description, String format, boolean isVirtual, boolean isHidden, boolean dbIndex, String defaultValue, ComputedDescription.Func computedFunc) {
 		super();
 		this.name = name;
 		this.paramId = paramId;
 		this.type = DataTypeRegistry.getType(DataType.Type.get(type));
 		this.isMultiple = isMultiple;
 		this.ownerItemId = parentItemId;
+		this.needsDBIndex = dbIndex;
 		if (domainName != null)
 			this.domainName = domainName;
 		if (caption != null)

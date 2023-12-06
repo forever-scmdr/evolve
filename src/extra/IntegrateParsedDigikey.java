@@ -4,23 +4,21 @@ import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
-import ecommander.model.UserGroupRegistry;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
+import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import lunacrawler.fwk.ParsedInfoProvider;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -35,20 +33,25 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 	private HashMap<String, Item> sections = new HashMap<>();
 	private String ROOT_ID = "/en/products";
 
+	private int currentIndexInSection = 0;
+
 	private static Map<String, String> digikeyParameterNames = new CaseInsensitiveMap<>();
 	static {
 		digikeyParameterNames.put("Manufacturer", product_.VENDOR);
-		digikeyParameterNames.put("Manufacturer Product Number", product_.VENDOR_CODE);
+		digikeyParameterNames.put("Manufacturer Product Number", product_.NAME);
 		digikeyParameterNames.put("Description", product_.NAME_EXTRA);
-		digikeyParameterNames.put("Digi-Key Part Number", product_.CODE);
-		digikeyParameterNames.put("Second Category", product_.SECTION_NAME);
+		digikeyParameterNames.put("Digi-Key Part Number", product_.OFFER_ID);
+		digikeyParameterNames.put("Second Category", product_.TYPE);
 	}
 
 
 	@Override
 	protected boolean makePreparations() throws Exception {
-		infoProvider = new ParsedInfoProvider(true);
-		Item catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		infoProvider = new ParsedInfoProvider(true, info.getTimer());
+		Item catalog = ItemQuery.loadSingleItemByName(CATALOG);
+		if (catalog == null) {
+			catalog = ItemUtils.ensureSingleRootItem(CATALOG, getInitiator(), User.NO_GROUP_ID, User.ANONYMOUS_ID);
+		}
 		sections.put(ROOT_ID, catalog);
 		return infoProvider.isValid();
 	}
@@ -58,16 +61,18 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 	protected void integrate() throws Exception {
 		info.setToProcess(0);
 		info.setProcessed(0);
-		info.limitLog(300);
+		info.limitLog(20);
 		try {
 			XmlDataSource bigTree = infoProvider.getBigTree();
-			DelayedTransaction transaction = new DelayedTransaction(getInitiator());
+			SynchronousTransaction transaction = new SynchronousTransaction(getInitiator(), info.getTimer());
 			HashSet<String> elementNames = new HashSet<>();
 			CollectionUtils.addAll(elementNames, PRODUCT_ELEMENT, SECTION_ELEMENT);
 			while (true) {
+				info.getTimer().start("main cycle");
 				String code = null;
 				String name = null;
 				try {
+					info.getTimer().start("files outer");
 					XmlDataSource.Node node = bigTree.findNextNode(elementNames);
 					if (node == null)
 						break;
@@ -79,9 +84,10 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 						doc = infoProvider.getAccessor(code);
 					} catch (Exception e) {
 						ServerLogger.error("Error parsing product xml file", e);
-						info.addError("Документ для товара '" + code + "' содержит ошибки", code);
+						info.pushError("Документ для товара '" + code + "' содержит ошибки", code);
 						continue;
 					}
+					info.getTimer().stop("files outer");
 					String parentId = doc.getFirst("h_parent").attr("parent");
 					if (StringUtils.equalsIgnoreCase(node.getTagName(), SECTION_ELEMENT)) {
 						name = doc.getNodeText("name");
@@ -92,20 +98,21 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 								parent = sections.get(ROOT_ID);
 							section = Item.newChildItem(ItemTypeRegistry.getItemType(SECTION), parent);
 							section.setValue(section_.NAME, name);
-							transaction.addCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex());
-							transaction.execute();
+							transaction.executeCommandUnit(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
+							transaction.commit();
 						}
 						sections.put(code, section);
+						currentIndexInSection = 0;
 					} else if (StringUtils.equalsIgnoreCase(node.getTagName(), PRODUCT_ELEMENT)) {
 						Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.URL, code);
 						if (product != null) {
-							transaction.addCommandUnit(ItemStatusDBUnit.delete(product).noFulltextIndex());
-							transaction.execute();
+							transaction.executeCommandUnit(ItemStatusDBUnit.delete(product).noFulltextIndex().noTriggerExtra());
+							transaction.commit();
 						}
 						// Создание айтема продукта
 						Item parentSection = sections.get(parentId);
 						if (parentSection == null) {
-							info.addError("Раздел для товара '" + code + "' не найден", code);
+							info.pushError("Раздел для товара '" + code + "' не найден", code);
 							info.increaseProcessed();
 							continue;
 						}
@@ -121,70 +128,55 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 									}
 								} else {
 									for (Element value : param.getElementsByTag("value")) {
-										product.setValue(product_.DESC_VALS, StringUtils.normalizeSpace(value.text()));
+										Pair<String, String> pair = new Pair<>(paramName, StringUtils.normalizeSpace(value.text()));
+										product.setValue(product_.DESC_VALS, pair);
 									}
 								}
 							} else {
 								break;
 							}
 						}
+						product.setValue(product_.CODE, product.getStringValue(product_.NAME));
+						product.setValue(product_.URL, code);
 						// Заполнение технических характеристик
+						currentIndexInSection++;
 						product.setValue(product_.PARAMS_XML, doc.getRoot().select("attributes > value").html());
-						transaction.addCommandUnit(SaveItemDBUnit.new_(product, parentSection).noFulltextIndex());
-						// Создание вложенных айтемов (доп. страницы описания товара)
 						// Даташиты
 						Element docsEl = doc.getRoot().select("docs > value").first();
+						// Другие документы (в т.ч. и даташиты)
 						if (docsEl != null) {
-							Elements params = docsEl.getElementsByTag("param");
-							for (Element param : params) {
-								if (StringUtils.equalsIgnoreCase(JsoupUtils.getTagFirstValue(param, "name"), "Datasheets")) {
-									Item ds = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT_EXTRA_XML), product);
-									ds.setValue(product_extra_xml_.NAME, "Datasheets");
-									ds.setValue(product_extra_xml_.XML, param.outerHtml());
-									transaction.addCommandUnit(SaveItemDBUnit.new_(ds, product));
-									break;
-								}
-							}
-							// Другие документы (в т.ч. и даташиты)
-							Item docs = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT_EXTRA_XML), product);
-							docs.setValue(product_extra_xml_.NAME, "Documents and Media");
-							docs.setValue(product_extra_xml_.XML, docsEl.outerHtml());
-							transaction.addCommandUnit(SaveItemDBUnit.new_(docs, product));
+							product.setValue(product_.DOCUMENTS_XML, docsEl.outerHtml());
 						}
 						// Environmental
 						Element envEl = doc.getRoot().select("environmental > value").first();
 						if (envEl != null) {
-							Item env = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT_EXTRA_XML), product);
-							env.setValue(product_extra_xml_.NAME, "Environmental and Export Classifications");
-							env.setValue(product_extra_xml_.XML, envEl.outerHtml());
-							transaction.addCommandUnit(SaveItemDBUnit.new_(env, product));
+							product.setValue(product_.ENVIRONMENTAL_XML, envEl.outerHtml());
 						}
 						// Additional
 						Element extraEl = doc.getRoot().select("additional > value").first();
 						if (extraEl != null) {
-							Item extra = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT_EXTRA_XML), product);
-							extra.setValue(product_extra_xml_.NAME, "Additional Resources");
-							extra.setValue(product_extra_xml_.XML, extraEl.outerHtml());
-							transaction.addCommandUnit(SaveItemDBUnit.new_(extra, product));
+							product.setValue(product_.ADDITIONAL_XML, extraEl.outerHtml());
 						}
+						transaction.executeCommandUnit(SaveItemDBUnit.new_(product, parentSection, currentIndexInSection * 64).noFulltextIndex());
 						info.increaseProcessed();
 					}
 				} catch (UserNotAllowedException e) {
 					ServerLogger.error("User not allowed", e);
-					info.addError("User not allowed", "catalog");
+					info.pushError("User not allowed", "catalog");
 					return;
 				} catch (Exception e) {
 					ServerLogger.error("Product save error", e);
-					info.addError("Product save error, ID = " + code + ", name = " + name, "catalog");
+					info.pushError("Product save error, ID = " + code + ", name = " + name, "catalog");
 				}
-				if (transaction.getCommandCount() >= 100) {
-					transaction.execute();
+				if (transaction.getUncommitedCount() >= 100) {
+					transaction.commit();
 				}
+				info.getTimer().stop("main cycle");
 			}
-			transaction.execute();
+			transaction.commit();
 		} catch (Exception e) {
 			ServerLogger.error("Product save error", e);
-			info.addError("MEGA ERROR", "MEGA ERROR");
+			info.pushError("MEGA ERROR", "MEGA ERROR");
 		} finally {
 			infoProvider.getBigTree().finishDocument();
 		}

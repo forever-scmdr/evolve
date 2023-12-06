@@ -229,13 +229,16 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 	}
 
 	protected void startQuery(String currentQuery) {
+		/*
 		if (currentQuery != null)
 			endQuery();
 		this.currentQuery = currentQuery;
 		Timer.getTimer().start(currentQuery);
+		*/
 	}
 
 	protected void endQuery() {
+		/*
 		if (currentQuery == null)
 			return;
 		if (queryTimes == null)
@@ -244,6 +247,7 @@ public abstract class DBPersistenceCommandUnit implements PersistenceCommandUnit
 		if (msg != null)
 			queryTimes.put(currentQuery, msg.getExecTime());
 		currentQuery = null;
+		 */
 	}
 
 	public LinkedHashMap<String, Long> getExplainedExecTimes() {

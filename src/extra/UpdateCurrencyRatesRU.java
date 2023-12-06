@@ -59,7 +59,7 @@ public class UpdateCurrencyRatesRU extends Command implements ItemNames {
 				}
 			}
 		}
-		executeAndCommitCommandUnits(SaveItemDBUnit.get(currencies));
+		executeAndCommitCommandUnits(SaveItemDBUnit.get(currencies).ignoreUser().noFulltextIndex().noTriggerExtra());
 		return null;
 	}
 }

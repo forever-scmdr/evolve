@@ -38,46 +38,52 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 	private byte assocId;
 	private boolean isItemNew = false;
 	private boolean isStrict = true;
+	private int weight = -1;	// вес. Иногда можно передать вес заранее, чтобы ускорить процесс сохранения.
+							// Например при интеграции каталога (можно просто считать потомков у родителя)
 
 
-	public static CreateAssocDBUnit childIsNew(Item item, long parentId, byte assocId) {
-		return new CreateAssocDBUnit(item, parentId, assocId, true, true);
+	public static CreateAssocDBUnit childIsNew(Item item, long parentId, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parentId, assocId, true, true, weight);
 	}
 
-	public static CreateAssocDBUnit childIsNew(Item item, ItemBasics parent, byte assocId) {
-		return new CreateAssocDBUnit(item, parent, assocId, true, true);
+	public static CreateAssocDBUnit childIsNew(Item item, ItemBasics parent, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parent, assocId, true, true, weight);
 	}
 
-	public static CreateAssocDBUnit childExistsStrict(Item item, long parentId, byte assocId) {
-		return new CreateAssocDBUnit(item, parentId, assocId, false, true);
+	public static CreateAssocDBUnit childExistsStrict(Item item, long parentId, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parentId, assocId, false, true, weight);
 	}
 
-	public static CreateAssocDBUnit childExistsStrict(Item item, ItemBasics parent, byte assocId) {
-		return new CreateAssocDBUnit(item, parent, assocId, false, true);
+	public static CreateAssocDBUnit childExistsStrict(Item item, ItemBasics parent, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parent, assocId, false, true, weight);
 	}
 
-	public static CreateAssocDBUnit childExistsSoft(Item item, long parentId, byte assocId) {
-		return new CreateAssocDBUnit(item, parentId, assocId, false, false);
+	public static CreateAssocDBUnit childExistsSoft(Item item, long parentId, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parentId, assocId, false, false, weight);
 	}
 
-	public static CreateAssocDBUnit childExistsSoft(Item item, ItemBasics parent, byte assocId) {
-		return new CreateAssocDBUnit(item, parent, assocId, false, false);
+	public static CreateAssocDBUnit childExistsSoft(Item item, ItemBasics parent, byte assocId, int... weight) {
+		return new CreateAssocDBUnit(item, parent, assocId, false, false, weight);
 	}
 
-	private CreateAssocDBUnit(Item item, long parentId, byte assocId, boolean isItemNew, boolean isStrict) {
+	private CreateAssocDBUnit(Item item, long parentId, byte assocId, boolean isItemNew, boolean isStrict, int... weight) {
 		this.assocId = assocId;
 		this.item = item;
 		this.parentId = parentId;
 		this.isItemNew = isItemNew;
 		this.isStrict = isStrict;
+		if (weight.length > 0)
+			this.weight = weight[0];
 	}
 
-	private CreateAssocDBUnit(Item item, ItemBasics parent, byte assocId, boolean isItemNew, boolean isStrict) {
+	private CreateAssocDBUnit(Item item, ItemBasics parent, byte assocId, boolean isItemNew, boolean isStrict, int... weight) {
 		this.assocId = assocId;
 		this.item = item;
 		this.parent = parent;
 		this.isItemNew = isItemNew;
 		this.isStrict = isStrict;
+		if (weight.length > 0)
+			this.weight = weight[0];
 	}
 
 
@@ -113,6 +119,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						.SELECT(IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE()
 						.col(IP_CHILD_ID).long_(parent.getId()).AND().col(IP_ASSOC_ID).byte_(assocId);
 				startQuery(checkQuery.getSimpleSql());
+				getTransactionContext().getTimer().start("ITEM SAVE - parents check");
 				try (PreparedStatement pstmt = checkQuery.prepareQuery(getTransactionContext().getConnection())) {
 					HashSet<Long> nodesParents = new HashSet<>();
 					ResultSet rs = pstmt.executeQuery();
@@ -129,6 +136,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						nodesParents.add(parentId);
 					}
 				}
+				getTransactionContext().getTimer().stop("ITEM SAVE - parents check");
 				endQuery();
 			} else {
 				// Предок не должен содержать потомка по этой ассоциации
@@ -155,6 +163,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		// Новый родитель не должен быть помеченным на удаление айтемом
 		TemplateQuery checkParentExistence = new TemplateQuery("check parent existence");
 		checkParentExistence.SELECT(I_STATUS).FROM(ITEM_TBL).WHERE().col(I_ID).long_(parent.getId());
+		getTransactionContext().getTimer().start("ITEM SAVE - parent status check");
 		try (PreparedStatement pstmt = checkParentExistence.prepareQuery(getTransactionContext().getConnection())) {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -167,6 +176,7 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 						"Association parent does not exist");
 			}
 		}
+		getTransactionContext().getTimer().stop("ITEM SAVE - parent status check");
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -180,14 +190,18 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 		insert.INSERT_INTO(ITEM_PARENT_TBL, IP_PARENT_ID, IP_CHILD_ID, IP_ASSOC_ID, IP_CHILD_SUPERTYPE, IP_PARENT_DIRECT, IP_WEIGHT);
 
 		// Шаг 1. Вставить запись непосредственного предка и потомка
-		Integer[] childrenBaseIds = ItemTypeRegistry.getDirectChildrenBasicTypeIds(parent.getTypeId());
-		insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
-				.FROM(ITEM_PARENT_TBL).WHERE()
-				.col(IP_PARENT_ID).long_(parent.getId()).AND()
-				.col(IP_ASSOC_ID).byte_(assocId).AND()
-				.col_IN(IP_CHILD_SUPERTYPE).intIN(childrenBaseIds).AND()
-				.col(IP_PARENT_DIRECT).byte_((byte) 1)
-				.sql(" \r\n");
+		if (weight > 0) {
+			insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, weight);
+		} else {
+			Integer[] childrenBaseIds = ItemTypeRegistry.getDirectChildrenBasicTypeIds(parent.getTypeId());
+			insert.SELECT(parent.getId(), childId, assocId, superTypeId, 1, "COALESCE(MAX(" + IP_WEIGHT + "), 0) + 64")
+					.FROM(ITEM_PARENT_TBL).WHERE()
+					.col(IP_PARENT_ID).long_(parent.getId()).AND()
+					.col(IP_ASSOC_ID).byte_(assocId).AND()
+					.col_IN(IP_CHILD_SUPERTYPE).intIN(childrenBaseIds).AND()
+					.col(IP_PARENT_DIRECT).byte_((byte) 1)
+					.sql(" \r\n");
+		}
 
 		// Остальные шаги только для транзитивных ассоциаций
 		if (assoc.isTransitive()) {
@@ -244,9 +258,11 @@ public class CreateAssocDBUnit extends DBPersistenceCommandUnit implements DBCon
 			insert.ON_DUPLICATE_KEY_UPDATE(IP_PARENT_DIRECT).byte_((byte) 0);
 		}
 		startQuery(insert.getSimpleSql());
+		getTransactionContext().getTimer().start("ITEM SAVE - parents write");
 		try (PreparedStatement pstmt = insert.prepareQuery(getTransactionContext().getConnection())) {
 			pstmt.executeUpdate();
 		}
+		getTransactionContext().getTimer().stop("ITEM SAVE - parents write");
 		endQuery();
 
 		//////////////////////////////////////////////////////////////////////////////////////////
