@@ -106,8 +106,10 @@ public class IntegrateParsedDigikey extends IntegrateBase implements ItemNames {
 					} else if (StringUtils.equalsIgnoreCase(node.getTagName(), PRODUCT_ELEMENT)) {
 						Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.URL, code);
 						if (product != null) {
-							transaction.executeCommandUnit(ItemStatusDBUnit.delete(product).noFulltextIndex().noTriggerExtra());
-							transaction.commit();
+							//transaction.executeCommandUnit(ItemStatusDBUnit.delete(product).noFulltextIndex().noTriggerExtra());
+							//transaction.commit();
+							info.increaseProcessed();
+							continue;
 						}
 						// Создание айтема продукта
 						Item parentSection = sections.get(parentId);

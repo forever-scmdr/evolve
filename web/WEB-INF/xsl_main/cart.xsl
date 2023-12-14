@@ -66,21 +66,38 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
+							<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;cool&gt;eeee&lt;/cool&gt;&lt;/prod&gt;'))"/>
+							<xsl:variable name="multipe_prices" select="$outer/prod/product/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
-                            <xsl:variable name="plain_section" select="$p/plain_section"/>
-                            <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
+							<xsl:variable name="not_api" select="$p/@id &gt; 0"/>
+							<xsl:variable name="total_qty" select="if ($not_api and not($p/qty)) then '1000' else $p/qty"/>
+							<xsl:variable name="dlv" select="if ($not_api and not($p/next_delivery)) then '7' else $p/next_delivery"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
-								<!--	<div class="cart-item__image">
-										<a href="{$p/show_product}">
-											<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
-											<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
-										</a>
-									</div> -->
+									<!--
+									<div class="cart-item__image">
+										<xsl:if test="$not_api">
+											<a href="{$p/show_product}">
+												<xsl:if test="$p/main_pic"><img src="{$p/@path}{$p/main_pic}" alt="{$p/name}" /></xsl:if>
+												<xsl:if test="not($p/main_pic)"><img src="img/no_image.png" alt="{$p/name}"/></xsl:if>
+											</a>
+										</xsl:if>
+									</div>
+									-->
 									<div class="cart-item__info">
-										<span class="cart-item__name"><xsl:value-of select="$p/name"/></span><br/>
-										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
+										<xsl:if test="$not_api">
+											<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										</xsl:if>
+										<xsl:if test="not($not_api)">
+											<span class="cart-item__name"><xsl:value-of select="$p/name"/></span>
+										</xsl:if>
+										<p/>
+										<div class="cart-item__artnumber">Норма упк.: <xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'" /></div>
+										<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
+										<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
+										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$total_qty" /></div>
+										<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($dlv) = '0') then 'на складе' else $dlv" /></div>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
@@ -95,15 +112,11 @@
 								<div class="cart-item__price">
 									<span class="text-label">Цена</span>
 									<span>
-										<!-- Для обычных товаров (не из каталога price_catalog) -->
-										<xsl:if test="not($plain)"><xsl:value-of select="$price"/></xsl:if>
-										<!-- Для товаров из каталога price_catalog -->
-										<xsl:if test="$plain">
-											<xsl:call-template name="ALL_PRICES">
+										<xsl:if test="not($multipe_prices)" ><xsl:value-of select="$price"/></xsl:if>
+										<xsl:if test="$multipe_prices">
+											<xsl:call-template name="ALL_PRICES_API">
 												<xsl:with-param name="need_sum" select="false()"/>
-												<xsl:with-param name="price_in_currency" select="f:exchange($p, 'price', 0)"/>
-												<xsl:with-param name="product" select="$p"/>
-												<xsl:with-param name="section_name" select="$plain"/>
+												<xsl:with-param name="product" select="$outer/prod/product"/>
 											</xsl:call-template>
 										</xsl:if>
 									</span>
@@ -121,8 +134,8 @@
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 
-									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else $step_default}" />
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{f:num($total_qty)}"
+										class="input qty-input" data-old="{f:num(qty)}"/>
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">

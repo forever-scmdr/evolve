@@ -146,6 +146,9 @@ public class CreateSectionFilterCommand extends Command implements CatalogConst 
 					}
 					if (value.matches("^-?[0-9]+[\\.,]?[0-9]*\\s*\\D+$")) {
 						int unitStart = 0;
+						if (value.charAt(0) == '-') { // если число отрицательное
+							unitStart++;
+						}
 						for (; unitStart < value.length() && StringUtils.contains(DIGITS, value.charAt(unitStart)); unitStart++) { /* */ }
 						String numStr = value.substring(0, unitStart).trim();
 						String unit = value.substring(unitStart).trim();

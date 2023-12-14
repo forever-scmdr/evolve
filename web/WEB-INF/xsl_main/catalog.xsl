@@ -27,7 +27,14 @@
 						<div class="catalog-item__image img"><img src="{$pic}"  onerror="{$onerror}" alt="{name}" /></div>
 						<div class="catalog-item__info">
 							<div class="catalog-item__title"><xsl:value-of select="name"/></div>
-							<div class="catalog-item__text"><xsl:value-of select="short" disable-output-escaping="yes"/></div>
+							<div class="catalog-item__text">
+								<xsl:for-each select="section">
+									<div class="side-menu__item side-menu__item_level_2">
+										<a class="side-menu__link" href="{show_products}"><xsl:value-of select="name" /></a>
+									</div>
+								</xsl:for-each>
+								<!--<xsl:value-of select="short" disable-output-escaping="yes"/>-->
+							</div>
 							<a href="{show_products}" class="catalog-item__link"></a>
 						</div>
 					</div>

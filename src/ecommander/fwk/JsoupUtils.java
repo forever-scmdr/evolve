@@ -79,6 +79,22 @@ public class JsoupUtils {
 	}
 
 	/**
+	 * Получить значение тэга, заданного селектором. Подразумевается что такой тэг один.
+	 * Берется значение первого найденного тэга
+	 * @param parent
+	 * @param selector
+	 * @return
+	 */
+	public static String getSelectorFirstValue(Element parent, String selector) {
+		if (parent == null)
+			return null;
+		Element el = parent.select(selector).first();
+		if (el == null)
+			return null;
+		return StringUtils.normalizeSpace(el.text());
+	}
+
+	/**
 	 * Получить значение атрибута тэга. Подразумевается что такой тэг один.
 	 * Берется значение атрибута первого найденного тэга
 	 * @param node

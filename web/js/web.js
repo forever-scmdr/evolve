@@ -170,22 +170,20 @@ function showDetails(link) {
 }
 
 function showDetails_new(link, el) {
-	$("#"+el).toggleClass("open");
-	$.ajax({
-        url: link,
-        dataType: "html",
-        cache: false,
-        success: function (data) {
-            $("#"+el).html(data);
-        }
-    });
+	$("#product-ajax-popup").remove();
+	var node = $(el);
+	node.toggleClass("open");
+	if (node.hasClass("open")) {
+		node.append("<div id='product-ajax-popup'></div>");
+		insertAjax(link, 'product-ajax-content');
+	}
 }
 
 function infobox(x){
 	if(x == 'close'){
 		$(".infobox_modal").removeClass("open");
 	} else {
-	$(".infobox_"+x).addClass("open");
+		$(".infobox_"+x).addClass("open");
 	}
 }
 

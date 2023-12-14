@@ -97,6 +97,7 @@
             <xsl:when test="$currency = 'RUB'">₽</xsl:when>
             <xsl:when test="$currency = 'USD'">$</xsl:when>
             <xsl:when test="$currency = 'EUR'">€</xsl:when>
+            <xsl:when test="$currency = 'GBP'">£</xsl:when>
             <xsl:when test="$currency = 'BYN'"><xsl:value-of select="$BYN_cur"/></xsl:when>
         </xsl:choose>
     </xsl:function>

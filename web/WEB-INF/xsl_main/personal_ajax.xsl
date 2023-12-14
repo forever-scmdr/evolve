@@ -16,9 +16,9 @@
 		</xsl:if>
 		<xsl:if test="$registered">
 			<div class="result" id="personal_desktop">
-				<a href="{page/personal_link}" class="icon-link"> <b>e-mail@email.ru:</b>
+				<a href="{page/personal_link}" class="icon-link"> <b><xsl:value-of select="page/user/@name"/>:</b>
 					<div class="icon"><img src="img/icon-history.svg" alt="" /></div>
-					<span class="icon-link__item">Анкета</span>
+					<span class="icon-link__item">Профиль</span>
 				</a> /
 				<a href="{page/purchase_history_link}" class="icon-link">
 					<div class="icon"><img src="img/icon-order.svg" alt="" /></div>

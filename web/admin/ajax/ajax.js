@@ -65,7 +65,7 @@ function initAjax(elementId) {
     }else{
         $el = elementId;
     }
-    $el.find("div[ajax-href]").each(function () {
+    $el.find("div[ajax-href], tbody[ajax-href]").each(function () {
         var elem = $(this);
         var url = elem.attr("ajax-href");
         var id = elem.attr("id");
@@ -189,6 +189,7 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                 var id = $(this).attr('id');
                 var extraSelector = $(this).attr("data-extra-selector");
                 var newHtml = $(this).html();
+                //alert(newHtml);
                 if (extraSelector && extraSelector.trim() != '') {
                     var $e = $(extraSelector);
                     $(extraSelector).each(function () {

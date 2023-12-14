@@ -424,6 +424,7 @@
 
 				<xsl:call-template name="EXTRA_ORDERING_TYPES">
 					<xsl:with-param name="p" select="current()"/>
+					<xsl:with-param name="show_prices_button" select="false()"/>
 				</xsl:call-template>
 
 				<!-- device actions (compare and favourites) -->
@@ -454,7 +455,7 @@
 				</xsl:call-template>
 				-->
 				<div class="order device-order">
-					<a class="button" href="javascript:void(0)" onclick="showDetails_new('{show_lines_ajax}', 'price_{@id}'); return false;">Цены</a>
+					<a class="button" href="javascript:void(0)" onclick="showDetails_new('{show_api_ajax}', '#price_{@id}'); return false;">Цены</a>
 				</div>
 			</div>
 			<div class="price_box" id="price_{@id}">
@@ -798,7 +799,7 @@
 		<xsl:param name="has_more" select="false()"/>
 		<xsl:variable name="multipe_prices" select="prices"/>
 
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="(price and price != '0') or $multipe_prices"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -836,7 +837,7 @@
 			</td>
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="if (not(next_delivery = '')) then next_delivery else '-'"/><!--<xsl:value-of select="available"/>--></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>
@@ -961,7 +962,7 @@
 	<xsl:template name="CART_BUTTON_API">
 		<xsl:param name="p" />
 		<xsl:param name="default_qty" select="-1"/>
-		<xsl:if test="$has_cart">
+		<xsl:if test="$has_cart or not($disp)">
 			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 			<!-- device order -->
@@ -990,10 +991,13 @@
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
+		<xsl:param name="show_prices_button" select="true()"/>
 
-		<div class="order device-order">
-			<a class="button" href="#" onclick="showDetails('{show_lines_ajax}'); return false;">Цены</a>
-		</div>
+		<xsl:if test="$show_prices_button">
+			<div class="order device-order">
+				<a class="button" href="#" onclick="showDetails('{show_api_ajax}'); return false;">Цены</a>
+			</div>
+		</xsl:if>
 
 		<!-- one click -->
 		<xsl:if test="$has_one_click">
@@ -1075,8 +1079,11 @@
 		<xsl:param name="multiple" select="false()"/>
 		<xsl:param name="queries" select="queries"/>
 		<xsl:param name="numbers" select="numbers"/>
+		<xsl:param name="ajax_urls" select="ajax_urls"/>
+		<xsl:param name="header" select="ajax_urls"/>
 		<xsl:variable name="colspan" select="8 + (if ($has_one_click or $has_my_price or $has_subscribe) then 1 else 0)"/>
 		<div class="view-table">
+			<xsl:if test="$header"><h3 style="text-align: center"><xsl:value-of select="$header" /></h3></xsl:if>
 			<table>
 				<thead>
 					<tr>
@@ -1096,72 +1103,79 @@
 						<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><th>Показать</th></xsl:if>
 					</tr>
 				</thead>
-				<tbody>
-					<xsl:if test="$multiple">
-						<xsl:for-each select="$queries">
-							<xsl:variable name="q" select="."/>
-							<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
-							<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
-							<xsl:variable name="p" select="position()"/>
-							<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q]"/>
-							<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
-							<xsl:variable name="prev_q" select="$queries[$p - 1]"/>
-							<xsl:if test="$analogs/set/analog = $q and $analogs/set/base = $prev_q">
-								<tr>
-									<td colspan="{$colspan + 1}">
-										<div class="thd"><b>Аналоги <xsl:value-of select="$prev_q" /></b></div>
-									</td>
-								</tr>
-							</xsl:if>
-							<xsl:apply-templates select="$price_query_products[1]" mode="product-lines">
-								<xsl:with-param name="multiple" select="true()"/>
-								<xsl:with-param name="query" select="$q"/>
-								<xsl:with-param name="number" select="$n"/>
-								<xsl:with-param name="position" select="$p"/>
-								<xsl:with-param name="has_more" select="$more_than_one"/>
-							</xsl:apply-templates>
-							<xsl:apply-templates select="$price_query_products[position() &gt; 1]" mode="product-lines">
-								<xsl:with-param name="multiple" select="true()"/>
-								<xsl:with-param name="query" select="$q"/>
-								<xsl:with-param name="hidden" select="'hidden'"/>
-								<xsl:with-param name="number" select="$n"/>
-								<xsl:with-param name="position" select="$p"/>
-							</xsl:apply-templates>
-							<xsl:variable name="query_results_api" select="$results_api[query = $q]"/>
-							<xsl:variable name="more_than_one_api" select="count($query_results_api/product) &gt; 1"/>
-							<xsl:apply-templates select="$query_results_api/product[1]" mode="product-lines-api">
-								<xsl:with-param name="multiple" select="true()"/>
-								<xsl:with-param name="query" select="$q"/>
-								<xsl:with-param name="number" select="$n"/>
-								<xsl:with-param name="position" select="$p + 1000"/>
-								<xsl:with-param name="has_more" select="$more_than_one_api"/>
-							</xsl:apply-templates>
-							<xsl:apply-templates select="$query_results_api/product[position() &gt; 1]" mode="product-lines-api">
-								<xsl:with-param name="multiple" select="true()"/>
-								<xsl:with-param name="query" select="$q"/>
-								<xsl:with-param name="hidden" select="'hidden'"/>
-								<xsl:with-param name="number" select="$n"/>
-								<xsl:with-param name="position" select="$p + 1000"/>
-							</xsl:apply-templates>
-							<xsl:if test="not($price_query_products) and not($query_results_api)">
-								<tr>
-									<td>
-										<div class="thn">Запрос</div>
-										<div class="thd"><b><xsl:value-of select="." /></b></div>
-									</td>
-									<td colspan="{$colspan}">
-										<div class="thn">Варианты</div>
-										<div class="thd"><b>По запросу товары не найдены</b></div>
-									</td>
-								</tr>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:if>
-					<xsl:if test="not($multiple)">
-						<xsl:apply-templates select="$products" mode="product-lines"/>
-						<xsl:apply-templates select="$results_api/product" mode="product-lines-api"/>
-					</xsl:if>
-				</tbody>
+				<xsl:if test="$products or $results_api">
+					<tbody>
+						<xsl:if test="$multiple">
+							<xsl:for-each select="$queries">
+								<xsl:variable name="q" select="."/>
+								<xsl:variable name="nn" select="$numbers[starts-with(., concat($q, ':'))][1]"/>
+								<xsl:variable name="n" select="f:num(tokenize($nn, ':')[last()])"/>
+								<xsl:variable name="p" select="position()"/>
+								<xsl:variable name="price_query_products" select="$products[item_own_extras/query = $q]"/>
+								<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
+								<xsl:variable name="prev_q" select="$queries[$p - 1]"/>
+								<xsl:if test="$analogs/set/analog = $q and $analogs/set/base = $prev_q">
+									<tr>
+										<td colspan="{$colspan + 1}">
+											<div class="thd"><b>Аналоги <xsl:value-of select="$prev_q" /></b></div>
+										</td>
+									</tr>
+								</xsl:if>
+								<xsl:apply-templates select="$price_query_products[1]" mode="product-lines">
+									<xsl:with-param name="multiple" select="true()"/>
+									<xsl:with-param name="query" select="$q"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+									<xsl:with-param name="has_more" select="$more_than_one"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$price_query_products[position() &gt; 1]" mode="product-lines">
+									<xsl:with-param name="multiple" select="true()"/>
+									<xsl:with-param name="query" select="$q"/>
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p"/>
+								</xsl:apply-templates>
+								<xsl:variable name="query_results_api" select="$results_api[query = $q]"/>
+								<xsl:variable name="more_than_one_api" select="count($query_results_api/product) &gt; 1"/>
+								<xsl:apply-templates select="$query_results_api/product[1]" mode="product-lines-api">
+									<xsl:with-param name="multiple" select="true()"/>
+									<xsl:with-param name="query" select="$q"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p + 1000"/>
+									<xsl:with-param name="has_more" select="$more_than_one_api"/>
+								</xsl:apply-templates>
+								<xsl:apply-templates select="$query_results_api/product[position() &gt; 1]" mode="product-lines-api">
+									<xsl:with-param name="multiple" select="true()"/>
+									<xsl:with-param name="query" select="$q"/>
+									<xsl:with-param name="hidden" select="'hidden'"/>
+									<xsl:with-param name="number" select="$n"/>
+									<xsl:with-param name="position" select="$p + 1000"/>
+								</xsl:apply-templates>
+								<xsl:if test="not($price_query_products) and not($query_results_api)">
+									<tr>
+										<td>
+											<div class="thn">Запрос</div>
+											<div class="thd"><b><xsl:value-of select="." /></b></div>
+										</td>
+										<td colspan="{$colspan}">
+											<div class="thn">Варианты</div>
+											<div class="thd"><b>По запросу товары не найдены</b></div>
+										</td>
+									</tr>
+								</xsl:if>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="not($multiple)">
+							<xsl:apply-templates select="$products" mode="product-lines"/>
+							<xsl:apply-templates select="$results_api/product" mode="product-lines-api"/>
+						</xsl:if>
+					</tbody>
+				</xsl:if>
+				<xsl:if test="not($products) and not($results_api) and count($ajax_urls) &gt; 0">
+					<xsl:for-each select="$ajax_urls">
+						<tbody id="api_ajax_{position()}" ajax-href="{.}"></tbody>
+					</xsl:for-each>
+				</xsl:if>
 			</table>
 		</div>
 	</xsl:template>

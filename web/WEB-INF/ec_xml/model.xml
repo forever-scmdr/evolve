@@ -179,6 +179,12 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
+		<parameter name="GBP_rate" type="currency-precise" caption="Фунт стерлингов (Rate)"/>
+		<parameter name="GBP_scale" type="currency-precise" default="1" caption="Фунт стерлингов (Scale)"/>
+		<parameter name="GBP_update" type="byte" default="1" caption="Фунт стерлингов - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
+			<value>0</value>
+			<value>1</value>
+		</parameter>
 		<parameter name="BYN_rate" type="currency-precise" caption="Белорусский рубль (Rate)" default="1"/>
 		<parameter name="BYN_scale" type="currency-precise" default="1" caption="Белорусский рубль (Scale)"/>
 		<parameter name="BYN_update" type="byte" default="1" caption="Белорусский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
