@@ -9,6 +9,7 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -233,6 +234,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				}
 				LinkedHashSet<String> picUrls = multipleParams.getOrDefault(PICTURE_ELEMENT, new LinkedHashSet<>());
 				for (String picUrl : picUrls) {
+					picUrl = StringEscapeUtils.unescapeXml(picUrl);
 					try {
 						String fileName = Strings.getFileName(picUrl);
 						if (!product.containsValue(GALLERY_PARAM, fileName) && !product.containsValue(GALLERY_PARAM, GALLERY_PARAM + "_" + fileName)) {
