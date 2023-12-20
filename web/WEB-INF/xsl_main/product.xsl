@@ -443,6 +443,9 @@
 				</xsl:for-each>
 				<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 			</ul>
+			<div id="api_ajax_1" ajax-href="search_prices_mouser?q={$p/name}"></div>
+			<div id="api_ajax_2" ajax-href="search_prices_digikey?q={$p/name}"></div>
+			<div id="api_ajax_3" ajax-href="search_prices_farnell?q={$p/name}"></div>
 		</div>
 
 

@@ -499,6 +499,7 @@
 	<page name="product" template="product" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
+			<var name="cur" scope="cookie"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
