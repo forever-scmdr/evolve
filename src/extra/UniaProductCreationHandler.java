@@ -4,11 +4,13 @@ import ecommander.fwk.*;
 import ecommander.fwk.integration.CatalogConst;
 import ecommander.fwk.integration.CreateParametersAndFiltersCommand;
 import ecommander.model.*;
+import ecommander.model.datatypes.TupleDataType;
 import ecommander.persistence.commandunits.CreateAssocDBUnit;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import net.sf.saxon.expr.flwor.Tuple;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -68,10 +70,13 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 	private User initiator;
 	private boolean isInsideProduct = false;
 	private boolean isInsideOptions = false;
+	private boolean isInsideFiles = false;
 	private HashMap<String, Item> existingItems = new HashMap<>();
 	private List<HashMap<String, String>> optionsBuffer = new LinkedList<>();
+	private List<Pair<String, String>> filesBuffer = new LinkedList<>();
 	private List<Complectation> complectationBuffer = new LinkedList<>();
 	private HashMap<String, String> currentOption = new HashMap<>();
+	private Pair<String, String> currentFile = new Pair<>("none", "none");
 	HashMap<String, String> currentSerial = new HashMap<>();
 	private Complectation currentCompl;
 	private Assoc optionAssoc = ItemTypeRegistry.getAssoc("option");
@@ -136,6 +141,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					}
 				}
 
+				for (Pair<String, String> file : filesBuffer) {
+					product.setValue("file", file);
+				}
+
 				processDescription(product);
 				processInStock(product);
 
@@ -152,15 +161,23 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 			} else if ("options".equalsIgnoreCase(qName)) {
 				isInsideOptions = false;
 				optionsBuffer.add(currentOption);
+			} else if ("file_kp".equalsIgnoreCase(qName)) {
+				isInsideFiles = false;
+				filesBuffer.add(currentFile);
 			} else if ("complectation".equalsIgnoreCase(qName)) {
 				isInsideComplectation = false;
 				addNotEmptyComplectationChildren();
-
-			} else if (isInsideProduct && !isInsideOptions && !isInsideComplectation) {
+			} else if (isInsideProduct && !isInsideOptions && !isInsideComplectation && !isInsideFiles) {
 				processProductParams();
 			} else if (isInsideOptions) {
 				if (ItemTypeRegistry.getItemType("option").hasParameter(paramName)) {
 					currentOption.put(paramName, StringUtils.normalizeSpace(paramValue.toString()));
+				}
+			} else if (isInsideFiles) {
+				if (StringUtils.equalsIgnoreCase("id", paramName)) {
+					currentFile.setLeft(paramValue.toString());
+				} else if (StringUtils.equalsIgnoreCase("text", paramName)) {
+					currentFile.setRight(paramValue.toString());
 				}
 			} else if (isInsideComplectation) {
 				String value = StringUtils.normalizeSpace(paramValue.toString());
@@ -321,6 +338,9 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 
 		} else if ("options".equalsIgnoreCase(qName)) {
 			isInsideOptions = true;
+		} else if ("file_kp".equalsIgnoreCase(qName)) {
+			isInsideFiles = true;
+			currentFile = new Pair<>("none", "none");
 		} else if ("complectation".equalsIgnoreCase(qName)) {
 			isInsideComplectation = true;
 			complStaus = ComplectationChild.SERIAL;
@@ -345,6 +365,9 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 						String time = attributes.getValue("time");
 						if (StringUtils.isNotBlank(time))
 							currentSerial.put("stored_time", time);
+						String textTime = attributes.getValue("text_time");
+						if (StringUtils.isNotBlank(textTime))
+							currentSerial.put("stored_text_time", textTime);
 					} else if ("qantity_factory".equalsIgnoreCase(qName)){
 						if(attributes.getValue("time" ) != null) {
 							LinkedHashSet<String> s = new LinkedHashSet<>();
@@ -383,6 +406,11 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 					}
 					currentOption = new HashMap<>();
 				}
+			}
+			//processing files
+			else if (isInsideFiles) {
+				paramName = qName;
+				parameterReady = true;
 			}
 			//processing params
 			else {
@@ -522,8 +550,10 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		currentSection = "";
 		optionsBuffer = new LinkedList<>();
 		currentOption = new HashMap<>();
+		currentFile = new Pair<>("none", "none");
 		currentSerial = new HashMap<>();
 		complectationBuffer = new LinkedList<>();
+		filesBuffer = new LinkedList<>();
 	}
 
 	public UniaProductCreationHandler(HashMap<String, Item> sections, IntegrateBase.Info info, User initiator) {

@@ -17,14 +17,16 @@
 	<xsl:variable name="product_params_limit" select="6"/>
 
 
+
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="pic_link[1]"/>
+			<xsl:variable  name="main_pic2" select="pic_link[2]"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then $main_pic else 'img/no_image.png'"/>
-
+		<xsl:variable name="onerror2">$(this).attr('src', '<xsl:value-of select="$main_pic2" />'); this.removeAttribute('onerror');</xsl:variable>
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
 				<a href="{$pic_path}" class="magnific_popup-image zoom-icon_card" title="{name}" rel="nofollow">
@@ -33,7 +35,7 @@
 			</div>
 
 			<!-- device image -->
-			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror}"/></a>
+			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror2}"/></a>
 
 			<!-- device tags -->
 			<div class="tags device__tags">
@@ -417,7 +419,7 @@
 							<p>
 								Цена:
 								<b>
-									<xsl:value-of select="price"/>
+									<xsl:value-of select="price"/> €
 								</b>
 							</p>
 						</xsl:if>
@@ -449,19 +451,19 @@
 						</div>
 						<!-- Форма заказа (КОНЕЦ)  -->
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_factory"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_smolensk"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_store"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_reserve"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty"/>
 					</td>
 				</tr>
@@ -490,20 +492,25 @@
 										<xsl:value-of select="stored_time"/>
 									</b>
 								</xsl:if>
+								<xsl:if test="stored_text_time != ''">
+									<p>
+										<xsl:value-of select="stored_text_time"/>
+									</p>
+								</xsl:if>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_factory"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_smolensk"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_store"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_reserve"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty"/>
 							</td>
 						</tr>

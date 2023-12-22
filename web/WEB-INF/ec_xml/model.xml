@@ -251,6 +251,7 @@
 		<parameter name="text_pics" type="picture" caption="Картинки для вставки в текст" multiple="true"/>
 		<parameter name="extra_xml" type="xml" caption="Дополнительно XML" text-index="fulltext" />
 		<parameter name="extra_input" type="string" caption="Дополнительное поле ввода" multiple="true" description="для корзины"/>
+		<parameter name="file" type="tuple" caption="Файл документации" multiple="true" description="ссылки на файлы"/>
 		<child item="product_extra"/>
 
 		<!-- groups -->
@@ -364,6 +365,7 @@
 		<parameter name="qty" type="integer" caption="количество"/>
 		<parameter name="reserve_time" type="string" caption="Зарезервирован с по" />
 		<parameter name="stored_time" type="string" caption="На складе с по" />
+		<parameter name="stored_text_time" type="string" caption="На складе с по (доп. текст)" />
 	</item>
 
 	<!-- unia quantity -->

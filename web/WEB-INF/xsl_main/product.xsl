@@ -307,6 +307,9 @@
 					<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
 					</xsl:if>
+					<xsl:if test="$p/file">
+						<a href="#tab_file" class="tab{' tab_active'[not($has_text) and not($p/params)]}">Материалы КП</a>
+					</xsl:if>
 					<xsl:if test="$p/complectation">
 						<a href="#tab_compl" class="tab{' tab_active'[not($has_text)]}">Отчет по складам</a>
 					</xsl:if>
@@ -335,6 +338,13 @@
 								<xsl:apply-templates select="$params_xml/params/parameter"/>
 								<xsl:apply-templates select="$params_xml/params/group"/>
 							</table>
+						</div>
+					</xsl:if>
+					<xsl:if test="$p/file">
+						<div class="tab-container" id="tab_file" style="{'display: none'[$has_text or $p/params]}">
+							<xsl:for-each select="$p/file">
+								<div><a href="http://62.109.11.85{@value}"><xsl:value-of select="@key"/></a></div>
+							</xsl:for-each>
 						</div>
 					</xsl:if>
 					<xsl:if test="$p/complectation">
@@ -455,7 +465,7 @@
 							<p>
 								Цена:
 								<b>
-									<xsl:value-of select="price"/>
+									<xsl:value-of select="price"/> €
 								</b>
 							</p>
 						</xsl:if>
@@ -472,19 +482,19 @@
 							</ul>
 						</xsl:if>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_factory"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_smolensk"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_store"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty_reserve"/>
 					</td>
-					<td>
+					<td align="center">
 						<xsl:value-of select="qty"/>
 					</td>
 				</tr>
@@ -513,20 +523,25 @@
 										<xsl:value-of select="stored_time"/>
 									</b>
 								</xsl:if>
+								<xsl:if test="stored_text_time != ''">
+									<p>
+										<xsl:value-of select="stored_text_time"/>
+									</p>
+								</xsl:if>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_factory"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_smolensk"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_store"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty_reserve"/>
 							</td>
-							<td>
+							<td align="center">
 								<xsl:value-of select="qty"/>
 							</td>
 						</tr>
@@ -571,7 +586,7 @@
 								</td>
 								<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
 									<label for="cb-{@id}">
-										<xsl:value-of select="price"/>
+										<xsl:value-of select="price"/>€
 									</label>
 								</td>
 							</tr>
@@ -596,6 +611,7 @@
 								<b id="sum">
 									<xsl:value-of select="$p/price"/>
 								</b>
+								<b>€</b>
 							</td>
 							<td style="text-align:right;">
 								<button class="button button_size_lg"
@@ -635,7 +651,7 @@
 									</td>
 									<td style="padding:0; border-left: 0.5px solid #f0f0f0;">
 										<label for="cb-{code}">
-											<xsl:value-of select="price"/>
+											<xsl:value-of select="price"/>€
 										</label>
 									</td>
 								</tr>
@@ -674,7 +690,8 @@
 							<td class="total">Сумма:
 								<b id="sum">
 									<xsl:value-of select="$p/price"/>
-								</b>
+								</b> 
+								<b>€</b>
 							</td>
 							<td style="text-align:right;">
 								<button class="button button_size_lg" type="submit" id="sbmt">Предзаказ</button>

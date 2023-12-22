@@ -128,8 +128,8 @@ input[type=checkbox] {
 
 .button_checkout {
 	color: #fff;
-	background-color: #31869B;
-	border-color: #31869B; }
+	background-color: #e52d2a;
+	border-color: #e52d2a; }
 
 /*.button:hover {
 	background-color: #dab989;
@@ -140,8 +140,8 @@ input[type=checkbox] {
 }
 .button_2 {
 	color: #fff;
-	background-color: #31869B;
-	border: 1px solid #31869B; }
+	background-color: #e52d2a;
+	border: 1px solid #e52d2a; }
 
 /*.button_2:hover {
 	background-color: #2d7c8f;
@@ -781,8 +781,9 @@ img {
 
 .main-menu {
 	border-top: 1px solid #9E9E9E;
+	border-bottom: 1px solid #9E9E9E;
 	/*background-color: #e52d2a; */
-	background-color: #5a5a5a;
+	background-color: #fff;
 }
 	@media (max-width: 768px) {
 		.main-menu {
@@ -817,8 +818,8 @@ img {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		/*color: #000;*/
-		color: #fff;
+		color: #000;
+
 	}
 	.index .main-menu__item > a{
 		color: #000;
@@ -1088,7 +1089,7 @@ img {
 .banner-numbers__title {
 	font-size: 44px;
 	font-weight: 700;
-	color: #31869B; }
+	color: #e52d2a; }
 
 .banner-numbers__text {
 	font-size: 18px;
@@ -1425,7 +1426,7 @@ img {
 		top: 5px;
 		width: 16px;
 		height: 4px;
-		background-color: #31869B;
+		background-color: #e52d2a;
 	}
 
 .catalog-item__text {
@@ -1532,9 +1533,9 @@ img {
 	font-size: 13px;
 	display: inline-block;
 	padding: 6px 15px;
-	color: #31869B;
+	color: #e52d2a;
 	background-color: #fff;
-	border: 1px solid #31869B; }
+	border: 1px solid #e52d2a; }
 
 .labels__item {
 	margin-bottom: 4px;
@@ -1544,7 +1545,7 @@ img {
 
 .labels__item_active {
 	color: #fff;
-	background-color: #31869B; }
+	background-color: #e52d2a; }
 
 .filter_section {
 	margin-bottom: 24px; }
@@ -1622,7 +1623,7 @@ img {
 
 .pagination__item_active {
 	color: #fff;
-	background-color: #31869B;
+	background-color: #e52d2a;
 	margin-right: 4px; }
 
 .view {
@@ -1835,7 +1836,7 @@ hr {
 		display: block;
 		width: 6px;
 		height: 6px;
-		background-color: #31869B;
+		background-color: #e52d2a;
 		border-radius: 50%;
 		position: absolute;
 		top: 3px;
@@ -1852,7 +1853,7 @@ table.params {
 			display: block;
 			width: 6px;
 			height: 6px;
-			background-color: #31869B;
+			background-color: #e52d2a;
 			border-radius: 50%;
 			position: absolute;
 			top: 8px;

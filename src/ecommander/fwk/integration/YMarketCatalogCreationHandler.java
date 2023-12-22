@@ -7,6 +7,7 @@ import ecommander.model.Item;
 import ecommander.model.ItemType;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -60,7 +61,7 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 				String parentCode = attributes.getValue(PARENT_ID_ATTR);
 				currentSection = categories.get(code);
 				if (currentSection == null) {
-					currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code);
+					currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 					if (currentSection != null)
 						categories.put(code, currentSection);
 				}
@@ -85,6 +86,8 @@ public class YMarketCatalogCreationHandler extends DefaultHandler implements Cat
 						currentSection.setValue(CATEGORY_ID_PARAM, code);
 						categories.put(code, currentSection);
 					}
+				} else if (currentSection.isStatusHidden()) {
+					DelayedTransaction.executeSingle(owner, ItemStatusDBUnit.restoreJustSelf(currentSection).noFulltextIndex().noTriggerExtra());
 				}
 			}
 		} catch (Exception e) {
