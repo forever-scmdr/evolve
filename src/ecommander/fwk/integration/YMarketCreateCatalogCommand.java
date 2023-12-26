@@ -51,7 +51,7 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			return;
 		}
 
-		//downloadFromFtp(new byte[]{62,109,11,85}, 21, "ftp-storage", "lO0iL7iY7c", "exchange_price", AppContext.getRealPath(INTEGRATION_DIR));
+		downloadFromFtp(new byte[]{62,109,11,85}, 21, "ftp-storage", "lO0iL7iY7c", "exchange_price", AppContext.getRealPath(INTEGRATION_DIR));
 
 		Collection<File> xmls = FileUtils.listFiles(integrationDir, new String[] {"xml"}, true);
 		if (xmls.size() == 0) {
