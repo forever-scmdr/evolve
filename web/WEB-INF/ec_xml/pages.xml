@@ -33,12 +33,28 @@
 		</usergroup>
 
 		<single item="catalog" id="catalog_main" cacheable="true">
-			<single item="currencies"/>
+			<list item="section" id="sec1" assoc="* catalog_link">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec1" style="key"/>
+				</link>
+				<list item="section" id="sec2" assoc="* catalog_link">
+					<link name="show_products" target="section" type="exclusive">
+						<var name="sec" ref="sec2" style="key"/>
+					</link>
+					<list item="section" id="sec3" assoc="* catalog_link">
+						<link name="show_products" target="section" type="exclusive">
+							<var name="sec" ref="sec3" style="key"/>
+						</link>
+					</list>
+				</list>
+			</list>
+			<!--
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="keypath"/>
+					<var name="sec" ref="sec" style="key"/>
 				</link>
 			</tree>
+			-->
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="true" >
