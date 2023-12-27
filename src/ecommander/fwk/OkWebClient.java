@@ -234,6 +234,44 @@ public class OkWebClient {
 		}
 	}
 
+	public void saveFile(String url, String dirName, String saveAs) throws IOException {
+		Request request = new Request.Builder().url(url)
+				.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+				.addHeader("accept-encoding", "gzip, deflate, br")
+				.addHeader("accept-language", "en-US,en;q=0.9,ru;q=0.8")
+				.addHeader("cache-control", "no-cache")
+				.addHeader("device-memory", "8")
+				.addHeader("downlink", "5.55")
+				.addHeader("dpr", "1")
+				.addHeader("ect", "4g")
+				.addHeader("pragma", "no-cache")
+				.addHeader("rtt", "250")
+				.addHeader("sec-ch-ua", "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"")
+				.addHeader("sec-ch-ua-mobile", "?0")
+				.addHeader("sec-ch-ua-platform", "\"Windows\"")
+				.addHeader("sec-fetch-dest", "document")
+				.addHeader("sec-fetch-mode", "navigate")
+				.addHeader("sec-fetch-site", "same-origin")
+				.addHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
+				.addHeader("upgrade-insecure-requests", "1")
+				.addHeader("viewport-width", "1280")
+				.build();
+		try (Response response = client.newCall(request).execute()) {
+			String fileDirName = dirName;
+			if (!StringUtils.endsWith(fileDirName, "/"))
+				fileDirName += "/";
+			String newFileName = saveAs;
+			if (StringUtils.isBlank(newFileName))
+				newFileName = Strings.getFileName(url);
+			File file = new File(fileDirName + newFileName);
+			if (response.body() != null) {
+				FileUtils.writeByteArrayToFile(file, response.body().bytes());
+			} else {
+				throw new IOException("No response body");
+			}
+		}
+	}
+
 
 	private static class UnzippingInterceptor implements Interceptor {
 		@Override
