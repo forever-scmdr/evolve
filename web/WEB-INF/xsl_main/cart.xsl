@@ -66,11 +66,12 @@
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
-							<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;cool&gt;eeee&lt;/cool&gt;&lt;/prod&gt;'))"/>
+							<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;/prod&gt;'))"/>
 							<xsl:variable name="multipe_prices" select="$outer/prod/product/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<xsl:variable name="not_api" select="$p/@id &gt; 0"/>
+							<xsl:variable name="ajax_suffix" select="if ($not_api) then code else product/@key"/>
 							<xsl:variable name="total_qty" select="if ($not_api and not($p/qty)) then '1000' else $p/qty"/>
 							<xsl:variable name="dlv" select="if ($not_api and not($p/next_delivery)) then '7' else $p/next_delivery"/>
 							<div class="cart-list__item cart-item">
@@ -140,7 +141,7 @@
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span id="sum-{code}"><xsl:value-of select="$sum"/></span>
+										<span id="sum-{$ajax_suffix}"><xsl:value-of select="$sum"/></span>
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">

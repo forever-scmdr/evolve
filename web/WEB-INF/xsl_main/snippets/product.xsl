@@ -966,8 +966,8 @@
 			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 			<!-- device order -->
-			<div class="order device-order cart_list_{$p/code}" id="cart_list_{$p/code}">
-				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
+			<div class="order device-order cart_list_{$p/@key}" id="cart_list_{$p/@key}">
+				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@key}">
 					<input type="hidden" name="prod" value="-10"/>
 					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
 					<input type="number"

@@ -22,6 +22,9 @@
 					</table>
 				</div>
 			</xsl:if>
+			<script type="text/javascript">
+				insertAjax('cart_ajax');
+			</script>
 		</div>
 	</xsl:template>
 

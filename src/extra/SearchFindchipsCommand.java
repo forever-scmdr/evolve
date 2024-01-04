@@ -20,6 +20,8 @@ import org.jsoup.select.Elements;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -85,12 +87,35 @@ public class SearchFindchipsCommand extends Command {
 
 	private static final String SERVER_PARAM = "server";
 	private static final String QUERY_PARAM = "q";
+	private static final String PRICE_PREFIX = "price_";
 
 	@Override
 	public ResultPE execute() throws Exception {
 		List<Object> servers = getVarValues(SERVER_PARAM);
 		String query = getVarSingleValue(QUERY_PARAM);
 		String html = null;
+
+		// Фильтр
+		String curCode = getVarSingleValueDefault("cur", "RUB");
+		String fromFilter = getVarSingleValue("from");
+		String toFilter = getVarSingleValue("to");
+		String shipDateFilter = getVarSingleValue("ship_date");
+		String vendorFilter = getVarSingleValue("vendor");
+		String distributorFilter = getVarSingleValue("distributor");
+		List<Object> dstr = getVarValues("dstr");
+		HashSet<Object> dstrSet = null;
+		if (dstr != null && dstr.size() > 0) {
+			dstrSet = new HashSet<>(dstr);
+		}
+		BigDecimal fromFilterDecimal = DecimalDataType.parse(fromFilter, 4);
+		fromFilterDecimal = fromFilterDecimal == null ? BigDecimal.ONE.negate() : fromFilterDecimal;
+		BigDecimal toFilterDecimal = DecimalDataType.parse(toFilter, 4);
+		toFilterDecimal = toFilterDecimal == null ? BigDecimal.valueOf(Double.MAX_VALUE) : toFilterDecimal;
+		boolean hasShipDateFilter = StringUtils.isNotBlank(shipDateFilter);
+		boolean hasVendorFilter = StringUtils.isNotBlank(vendorFilter);
+		boolean hasDistributorFilter = StringUtils.isNotBlank(distributorFilter);
+		boolean hasFromFilter = StringUtils.isNotBlank(fromFilter);
+		boolean hasToFilter = StringUtils.isNotBlank(toFilter);
 
 		// Получение ответа сервера
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
@@ -117,6 +142,7 @@ public class SearchFindchipsCommand extends Command {
 
 			// Загрузка курсов валют
 			CurrencyRates rates = new CurrencyRates();
+			String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
 			Item catalogSettings = new ItemQuery(ItemNames.PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, "api").loadFirstItem();
 			BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
 			if (catalogSettings != null)
@@ -130,11 +156,15 @@ public class SearchFindchipsCommand extends Command {
 			xml.addElement("query", query);
 			for (Element distributorEl : distributors) {
 				String distributor = distributorEl.attr("data-distributor_name");
+				if (dstrSet != null && !dstrSet.contains(distributor)) {
+					continue;
+				}
 				xml.startElement("distributor", "name", distributor);
 				Elements lines = distributorEl.select("tr.row");
 				for (Element line : lines) {
 					String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
 					String code = JsoupUtils.getSelectorFirstValue(line, "span.additional-value");
+					String key = Strings.translit(name + " " + code);
 					String vendor = JsoupUtils.getSelectorFirstValue(line, "td:eq(1)");
 					String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");
 					String minQtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Min Qty']");
@@ -142,7 +172,7 @@ public class SearchFindchipsCommand extends Command {
 					String stepStr = minQtyStr;
 					String container = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Container']");
 					String qtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(3)");
-					xml.startElement("product", "id", code);
+					xml.startElement("product", "id", code, "key", key);
 					xml.addElement("code", code);
 					xml.addElement("name", name);
 					xml.addElement("vendor", vendor);
@@ -157,6 +187,8 @@ public class SearchFindchipsCommand extends Command {
 					xml.addElement("pricebreak", priceLis.size());
 					boolean noCurrency = true;
 					boolean noBreaks = true;
+					BigDecimal maxPrice = BigDecimal.ONE.negate();
+					BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
 					for (Element priceLi : priceLis) {
 						String breakQtyStr = JsoupUtils.getSelectorFirstValue(priceLi, "span.label");
 						Element data = priceLi.select("span.value").first();
@@ -178,12 +210,27 @@ public class SearchFindchipsCommand extends Command {
 							xml.addElement("price_original", priceOriginal);
 							// Применить коэффициент
 							priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
-							rates.setAllPricesXML(xml, priceOriginal, currencyCode);
+							HashMap<String, BigDecimal> allPricesDecimal = rates.setAllPricesXML(xml, priceOriginal, currencyCode);
+							BigDecimal currentPrice = allPricesDecimal.get(priceParamName);
+							if (currentPrice != null) {
+								maxPrice = maxPrice.max(currentPrice);
+								minPrice = minPrice.min(currentPrice);
+							}
 						}
 						xml.endElement(); // break
 					}
 					if (!noBreaks) {
 						xml.endElement(); // prices
+					}
+					// Если девайс не подходит по фильтрам - добавить тэг <invalid>invalid</invalid>
+					boolean isInvalid
+							= (hasShipDateFilter && !StringUtils.equalsIgnoreCase(shipDateFilter, leadTime))
+							|| (hasVendorFilter && !StringUtils.equalsIgnoreCase(vendorFilter, vendor))
+							|| (hasDistributorFilter && !StringUtils.equalsIgnoreCase(distributorFilter, distributor))
+							|| (hasFromFilter &&  maxPrice.compareTo(fromFilterDecimal) < 0)
+							|| (hasToFilter && minPrice.compareTo(toFilterDecimal) > 0);
+					if (isInvalid) {
+						xml.addElement("invalid", "invalid");
 					}
 					xml.endElement(); // product
 				}

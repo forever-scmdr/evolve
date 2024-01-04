@@ -39,8 +39,8 @@ public class MysqlConnector
 	private static volatile AtomicInteger _open_count = new AtomicInteger(0);
 	private static ConcurrentHashMap<Integer, Integer> connectionNames = new ConcurrentHashMap<>();
 	//private static final HashSet<Integer> openConnections = new HashSet<>();
-	private static final ConcurrentHashMap<Integer, String> openTraces = new ConcurrentHashMap<>();
-	private static final HashSet<Thread> openThreads = new HashSet<>();
+	//private static final ConcurrentHashMap<Integer, String> openTraces = new ConcurrentHashMap<>();
+	//private static final HashSet<Thread> openThreads = new HashSet<>();
 	private static volatile AtomicInteger com_name_counter = new AtomicInteger(0);
 	
 	//private static final Lock lock = new ReentrantLock();
@@ -80,7 +80,7 @@ public class MysqlConnector
 		private LoggedConnection(Connection conn, HttpServletRequest request) {
 			this.conn = conn;
 			this.request = request;
-			logOpenConnections();
+//			logOpenConnections();
 //			try {
 //				lock.lock();
 //				if (_open_count >= MAX_CONNECTIONS)
@@ -100,6 +100,7 @@ public class MysqlConnector
 				for (int i = 2; i < 12 && i < els.length; i++) {
 					trace.append("\n").append(els[i]);
 				}
+				/*
 				synchronized (openTraces) {
 					openTraces.put(name, trace.toString());
 					if (openTraces.size() > 5) {
@@ -111,9 +112,13 @@ public class MysqlConnector
 						ServerLogger.warn(message.toString());
 					}
 				}
+
+				 */
+				/*
 				synchronized (openThreads) {
 					openThreads.add(Thread.currentThread());
 				}
+				 */
 				//ServerLogger.debug("/////////////---------- OPEN conneciton. Name " + name + "  Total: " + _open_count + createExtra() + " ----------/////////////" + trace);
 //			} catch (InterruptedException e) {
 //				ServerLogger.error("Interrupted", e);
@@ -175,14 +180,18 @@ public class MysqlConnector
 			ServerLogger.warn(logEntry);
 			ServerLogger.warn("/////////////---------- CLOSE conneciton. Name " + name + "   Open time: " + time + "   Total: " + _open_count
 					+ createExtra() + " ----------/////////////");
+			/*
 			synchronized (openTraces) {
 				if(name != null) {
-				openTraces.remove(name);
+					openTraces.remove(name);
+				}
 			}
-			}
+			 */
+			/*
 			synchronized (openThreads) {
 				openThreads.remove(Thread.currentThread());
 			}
+			 */
 //			synchronized (openConnections) {
 //				openConnections.remove(name);
 //				ServerLogger
@@ -465,11 +474,13 @@ public class MysqlConnector
 	private static void logOpenConnections() {
 		if (_open_count.get() > LOG_OPEN_COUNT) {
 			StringBuilder message = new StringBuilder("\n\n\n\t\tTOO MANY CONNECTIOS\n\n\n\tThreads of these connections currently doing:\n\n\n");
+			/*
 			synchronized (openThreads) {
 				for (Thread openThread : openThreads) {
 					message.append(getThreadDump(openThread));
 				}
 			}
+			 */
 			ServerLogger.warn(message);
 		}
 	}

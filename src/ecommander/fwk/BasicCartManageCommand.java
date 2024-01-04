@@ -421,7 +421,7 @@ public abstract class BasicCartManageCommand extends Command {
         	// Создание айтема для внешнего товара и заполнение его параметрами
 	        product = getSessionMapper().createSessionRootItem(ItemNames.PRODUCT);
 	        product.setValueUI(CODE_PARAM, code);
-	        product.setValueUI(EXTRA_XML_PARAM, outerParams);
+	        product.setValueUI(EXTRA_XML_PARAM, JsoupUtils.outputXmlDoc(doc));
 	        Element productEl = doc.getElementsByTag("product").first();
 	        if (productEl != null) {
 		        for (Element childEl : productEl.children()) {
@@ -431,6 +431,7 @@ public abstract class BasicCartManageCommand extends Command {
 			        	product.setValueUI(paramName, value);
 		        }
 	        }
+			product.prepareToSave();
         }
         Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
         bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
@@ -440,6 +441,7 @@ public abstract class BasicCartManageCommand extends Command {
         }
         setBoughtQtys(product, bought, qty);
         // Сохраняется bought
+		bought.prepareToSave();
         getSessionMapper().saveTemporaryItem(bought);
         // Сохраняется девайс
         product.setContextPrimaryParentId(bought.getId());
@@ -601,7 +603,7 @@ public abstract class BasicCartManageCommand extends Command {
 			codeQtys.add(product.getStringValue(CODE_PARAM) + ":" + quantity);
 		}
 		if (codeQtys.size() > 0) {
-			String cookie = StringUtils.join(codeQtys, '/');
+			String cookie = StringUtils.join(codeQtys, "/~/");
 			setCookieVariable(CART_COOKIE, cookie);
 		} else {
 			setCookieVariable(CART_COOKIE, null);
@@ -621,7 +623,7 @@ public abstract class BasicCartManageCommand extends Command {
 		loadCart();
 		if (cart != null)
 			return null;
-		String[] codeQtys = StringUtils.split(cookie, '/');
+		String[] codeQtys = StringUtils.split(cookie, "/~/");
 		for (String codeQty : codeQtys) {
 			String[] pair = StringUtils.split(codeQty, ':');
 			Item product = ItemQuery.loadSingleItemByParamValue(ABSTRACT_PRODUCT_ITEM, CODE_PARAM, pair[0]);

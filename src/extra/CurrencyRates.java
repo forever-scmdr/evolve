@@ -87,12 +87,14 @@ public class CurrencyRates implements ItemNames{
 	 * @param xml
 	 * @param price
 	 * @param currencyCode
+	 * @return пары Название параметра цены (price_CUR) => Цена (BigDecimal)
 	 */
-	public void setAllPricesXML(XmlDocumentBuilder xml, BigDecimal price, String currencyCode) {
+	public HashMap<String, BigDecimal> setAllPricesXML(XmlDocumentBuilder xml, BigDecimal price, String currencyCode) {
 		HashMap<String, BigDecimal> allPrices = getAllPrices(price, currencyCode);
 		for (String paramName : allPrices.keySet()) {
 			xml.addElement(paramName, allPrices.get(paramName).toString());
 		}
+		return allPrices;
 	}
 
 	/**
@@ -161,6 +163,14 @@ public class CurrencyRates implements ItemNames{
 	 */
 	public void setAllPrices(Item product, BigDecimal price) {
 		setAllPrices(product, price, "BYN");
+	}
+
+	/**
+	 * Получить код валюты по умолчанию
+	 * @return
+	 */
+	public String getDefaultCurrency() {
+		return defaultCurrency;
 	}
 
 }
