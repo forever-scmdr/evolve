@@ -135,11 +135,11 @@
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
 			</div>
-			<div class="tab-container" id="tab_searc_1" style="display: none;">
-			2
+			<div class="tab-container" id="tab_search_1" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
+
 			</div>
-			<div class="tab-container" id="tab_searc_3" style="display: none;">
-			3
+			<div class="tab-container" id="tab_search_3" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
+
 			</div>
 		</div>
 	</div>

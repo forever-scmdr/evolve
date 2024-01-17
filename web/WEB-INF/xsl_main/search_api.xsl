@@ -206,8 +206,8 @@
 			<div class="tab-container" id="tab_search_2" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
 
 			</div>
-			<div class="tab-container" id="tab_search_3" style="display: none;">
-			3
+			<div class="tab-container" id="tab_search_3" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
+
 			</div>
 		</div>
 	</div>
