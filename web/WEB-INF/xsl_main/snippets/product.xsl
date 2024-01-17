@@ -26,6 +26,7 @@
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
 	<xsl:variable name="step_default" select="if (page/catalog[1]/default_step) then f:num(page/catalog[1]/default_step) else 1"/>
 	<xsl:variable name="sel_sec" select="none"/>
+	<xsl:variable name="show_api_distributor" select="page/variables/show_distributor = ('yes', 'true')"/>
 
 
 
@@ -38,7 +39,7 @@
 
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
+		<xsl:variable name="docs" select="if (documents_xml) then none else none"/> <!-- parse-xml(documents_xml)/value-->
 		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
@@ -819,11 +820,13 @@
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
 				</div>
 			</td><!--название -->
-			<xsl:if test="$is_admin">
+			<xsl:if test="$is_admin or $show_api_distributor">
 				<td>
 					<div class="thn">Поставщик</div>
 					<div class="thd"><xsl:value-of select="$p/category_id"/></div>
 				</td>
+			</xsl:if>
+			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Дата прайса</div>
 					<div class="thd"><xsl:value-of select="$p/pricedate"/></div>
@@ -1089,8 +1092,10 @@
 					<tr>
 						<xsl:if test="$multiple"><th><xsl:value-of select="if ($multiple_analog_sets) then 'Запрос' else 'Аналоги'" /></th></xsl:if>
 						<th>Название</th>
-						<xsl:if test="$is_admin">
+						<xsl:if test="$is_admin or $show_api_distributor">
 							<th>Поставщик</th>
+						</xsl:if>
+						<xsl:if test="$is_admin">
 							<th>Дата прайса</th>
 						</xsl:if>
 						<th>Описание</th>

@@ -175,6 +175,10 @@ public class ItemInputs {
 		inputs.setMessage(message);
 	}
 
+	/**
+	 * Скопировать все значения из другого объекта этого типа
+	 * @param values
+	 */
 	void update(InputValues values) {
 		inputs.update(values);
 	}

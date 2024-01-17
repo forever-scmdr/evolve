@@ -19,22 +19,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 public class AnotherEcommanderProxy extends Command {
     @Override
     public ResultPE execute() throws Exception {
-        String server = getVarSingleValue("server");
-        String path = getVarSingleValue("path");
-        String q = getVarSingleValue("q");
-        String cur = getVarSingleValue("cur");
+        String url = getVarSingleValue("url");
         String answer = "Неверный формат запроса";
         try {
-            q = StringUtils.normalizeSpace(q);
-            if (StringUtils.isNotBlank(q)) {
-                String requestUrl = server + path + "?q=" + q + "&cur=" + cur;
-                answer = OkWebClient.getInstance().getString(requestUrl);
+            if (StringUtils.isNotBlank(url)) {
+                answer = OkWebClient.getInstance().getString(url);
             } else {
                 return getResult("illegal_argument").setValue(answer);
             }
         } catch (Exception e) {
             return getResult("error").setValue(ExceptionUtils.getStackTrace(e));
         }
-        return getResult("xml").setValue(answer);
+        return getResult("html").setValue(answer);
     }
 }

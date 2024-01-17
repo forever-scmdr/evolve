@@ -7,8 +7,8 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
-	<xsl:variable name="is_jur"
-	              select="not($is_login) and ((page/user_jur//@validation-error or page/user_jur/organization != '') or page/registration/@type = 'user_jur')"/>
+	<xsl:variable name="is_restore" select="page/variables/restore = 'true'"/>
+	<xsl:variable name="is_jur" select="not($is_login) and not($is_restore)"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -48,7 +48,7 @@
 			<div class="tabs__nav">
 				<a href="#tab_login" class="tab{' tab_active'[$is_login]}">Вход</a>
 				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Регистрация</a>
-				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Восстановить пароль</a>
+				<a href="#tab_phys" class="tab{' tab_active'[$is_restore]}">Восстановить пароль</a>
 			</div>
 			<div class="tabs__content">
 
@@ -71,26 +71,6 @@
 					</form>
 				</div>
 
-				<div class="tab-container" id="tab_phys" style="{'display: none'[$is_jur or $is_login]}">
-					<div class="text form__text">
-						<p>
-							Введите, пожалуйста, адрес электронной почты, используемый для логина.
-							На него будет выслан пароль.
-						</p>
-					</div>
-					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_phys')">
-						<xsl:variable name="inp" select="page/user_phys/input"/>
-						<div class="form__item">
-							<label class="form-label" for="formid">Электронная почта / логин:</label>
-							<input class="input form__element" type="text" id="formid"
-								   name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
-						</div>
-						<div class="form__proceed">
-							<input type="submit" class="button button_size_lg" value="Отправить"/>
-						</div>
-					</form>
-				</div>
-
 				<div class="tab-container" id="tab_jur" style="{'display: none'[not($is_jur)]}">
 					<div class="text form__text">
 						<p>
@@ -109,8 +89,33 @@
 							<input class="input form__element" type="text" id="formid"
 								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
 						</div>
+						<div class="form__item">
+							<label class="form-label" for="formid">Подтверждение пароля:</label>
+							<input class="input form__element" type="text" id="formid"
+								   name="{$inp/password2/@input}" value="{$inp/password2}" error="{$inp/password2/@validation-error}"/>
+						</div>
 						<div class="form__proceed">
 							<input type="submit" class="button button_size_lg" value="Отправить анкету"/>
+						</div>
+					</form>
+				</div>
+
+				<div class="tab-container" id="tab_restore" style="{'display: none'[not($is_restore)]}">
+					<div class="text form__text">
+						<p>
+							Введите, пожалуйста, адрес электронной почты, используемый для логина.
+							На него будет выслан пароль.
+						</p>
+					</div>
+					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_restore')">
+						<xsl:variable name="inp" select="page/user_phys/input"/>
+						<div class="form__item">
+							<label class="form-label" for="formid">Электронная почта / логин:</label>
+							<input class="input form__element" type="text" id="formid"
+								   name="{$inp/email/@input}" value="{$inp/email}" error="{$inp/email/@validation-error}"/>
+						</div>
+						<div class="form__proceed">
+							<input type="submit" class="button button_size_lg" value="Отправить"/>
 						</div>
 					</form>
 				</div>

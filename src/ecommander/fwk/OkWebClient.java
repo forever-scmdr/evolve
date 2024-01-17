@@ -43,6 +43,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -227,6 +228,28 @@ public class OkWebClient {
 			builder.header(headers[i - 1], headers[i]);
 		}
 		Request request = builder.build();
+		try (Response response = client.newCall(request).execute()) {
+			if (response.body() != null)
+				return response.body().string();
+			return null;
+		}
+	}
+
+	/**
+	 * Получить строку ответа POST запроса с заголовками и с параметрами
+	 * @param url
+	 * @param body
+	 * @param headers
+	 * @return
+	 * @throws IOException
+	 */
+	public String postStringHeaders(String url, String body, String bodyType, String... headers) throws IOException {
+		RequestBody reqBody = RequestBody.create(MediaType.parse(bodyType), body);
+		Request.Builder builder = new Request.Builder().url(url);
+		for (int i = 1; i < headers.length; i += 2) {
+			builder.header(headers[i - 1], headers[i]);
+		}
+		Request request = builder.post(reqBody).build();
 		try (Response response = client.newCall(request).execute()) {
 			if (response.body() != null)
 				return response.body().string();

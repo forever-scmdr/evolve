@@ -66,75 +66,12 @@
 
 	<div class="tabs tabs_product p5">
 		<div class="tabs__nav">
-			<a href="#tab_searc_1" class="tab tab_active">Результаты поиска</a>
-			<a href="#tab_searc_2" class="tab ">Каталог</a>
-			<a href="#tab_searc_3" class="tab ">Склады</a>
-			<a href="#tab_searc_4" class="tab ">Документация</a>
+			<a href="#tab_search_1" class="tab search_tab" rel="check_api">Склады</a>
+			<a href="#tab_search_2" class="tab search_tab tab_active" rel="check_catalog">Каталог</a>
+			<a href="#tab_search_3" class="tab search_tab" rel="check_docs">Документация</a>
 		</div>
 		<div class="tabs__content">
-			<div class="tab-container" id="tab_searc_1">
-				<div class="search_filter">
-					<div class="item">
-						<a href=""><img src="/img/download.png" alt="" width="20"/></a>
-					</div>
-					<div class="item">
-						<div class="box">
-							<div class="title">Стоимость от</div>
-							<input type="text" placeholder="от 0.01"/>
-						</div>
-					</div>
-					<div class="item">
-						<div class="box">
-							<div class="title">Стоимость до</div>
-							<input type="text" placeholder="до 10000"/>
-						</div>
-					</div>
-					<div class="item">
-						<div class="box">
-							<div class="title">Срок поставки</div>
-							<div class="chbox">
-								<div class="value">Любой</div>
-								<div class="options">
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="1 неделя"/> 1 неделя</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="2 недели"/> 2 недели</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="1-2 недели"/> 1-2 недели</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="3 недели"/> 3 недели</label>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="box">
-							<div class="title">Бренд</div>
-							<div class="chbox">
-								<div class="value">Любой</div>
-								<div class="options">
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 1"/> Brand 1</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 2"/> Brand 2</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 3"/> Brand 3</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 4"/> Brand 4</label>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="box">
-							<div class="title">Поставщик</div>
-							<div class="chbox">
-								<div class="value">Любой</div>
-								<div class="options">
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 1"/> Brand 1</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 2"/> Brand 2</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 3"/> Brand 3</label>
-									<label class="option"><input type="checkbox" name="filter_postavka[]" value="Brand 4"/> Brand 4</label>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<a href="" class="button button_request">Снять фильтры</a>
-					</div>
-				</div>
+			<div class="tab-container" id="tab_searc_2">
 				<xsl:if test="$has_results and not($is_search_multiple)">
 					<div class="view view_section">
 						<div class="view__column">
@@ -198,14 +135,11 @@
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
 			</div>
-			<div class="tab-container" id="tab_searc_2" style="display: none;">
+			<div class="tab-container" id="tab_searc_1" style="display: none;">
 			2
 			</div>
 			<div class="tab-container" id="tab_searc_3" style="display: none;">
 			3
-			</div>
-			<div class="tab-container" id="tab_searc_4" style="display: none;">
-			4
 			</div>
 		</div>
 	</div>

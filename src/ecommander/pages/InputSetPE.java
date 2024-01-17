@@ -86,6 +86,7 @@ public class InputSetPE implements PageElement {
 				try {
 					Item srcItem = savedForm.getItemSingleTransient();
 					inputs = new ItemInputs(item, srcItem, predIds.toArray(new Long[0]));
+					inputs.update(savedForm.getItemInput(srcItem.getId())); // вообще чтобы скопировались validation errors
 				} catch (Exception e) { /**/ }
 			}
 			if (isParameter) {

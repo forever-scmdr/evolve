@@ -63,12 +63,19 @@
 	<xsl:variable name="has_bom_search" select="$mods/bom_search = 'on'"/><!-- + -->
 	<xsl:variable name="has_excel_search_results" select="$mods/excel_search_results = 'on'"/>
 	<xsl:variable name="has_search" select="$mods/search = 'on'"/><!-- + -->
+
+	<!-- ****************************    ПОИСК    ******************************** -->
+
 	<xsl:variable name="search_catalog" select="contains($mods/search_results, 'каталог')"/>
     <xsl:variable name="search_plain" select="contains($mods/search_results, 'склад')"/>
 	<xsl:variable name="search_not_set" select="not($search_catalog) and not($search_plain)"/>
  <!--    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>-->
+<!--	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>-->
 	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>
  	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
+	<xsl:variable name="is_docs_search" select="page/@name = 'docs_search'"/>
+	<xsl:variable name="is_catalog_search" select="page/@name = 'search'"/>
+	<xsl:variable name="is_api_search" select="not($is_docs_search) and not($is_catalog_search)"/>
 
 	<!-- ****************************    SEO    ******************************** -->
 
@@ -232,7 +239,7 @@
 					</a>
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
-							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post">
+							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post" class="main_search_form">
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
@@ -242,13 +249,19 @@
 								<div class="sw100">
 									<label>Искать: </label>
 									<label>
-										<input type="checkbox" name="search_catalog"/> по каталогу
+										<input type="radio" name="search_type" value="{page/search_api_link}" class="check_api">
+											<xsl:if test="$is_api_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по складам
 									</label>
 									<label>
-										<input type="checkbox" name="search_sklad"/> по складам
+										<input type="radio" name="search_type" value="{$search_link}" class="check_catalog">
+											<xsl:if test="$is_catalog_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по каталогу
 									</label>
 									<label>
-										<input type="checkbox" name="search_sklad"/> по документации
+										<input type="radio" name="search_type" class="check_docs">
+											<xsl:if test="$is_docs_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по документации
 									</label>
 								</div>
 								<!-- quick search -->
@@ -346,7 +359,7 @@
 				<div class="header__wrap wrap">
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
-							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post">
+							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post" class="main_search_form">
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
@@ -356,13 +369,19 @@
 								<div class="sw100">
 									<label>Искать: </label>
 									<label>
-										<input type="checkbox" name="search_catalog"/> по каталогу
+										<input type="radio" name="search_type" value="{page/search_api_link}" class="check_api">
+											<xsl:if test="$is_api_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по складам
 									</label>
 									<label>
-										<input type="checkbox" name="search_sklad"/> по складам
+										<input type="radio" name="search_type" value="{$search_link}" class="check_catalog">
+											<xsl:if test="$is_catalog_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по каталогу
 									</label>
 									<label>
-										<input type="checkbox" name="search_sklad"/> по документации
+										<input type="radio" name="search_type" class="check_docs">
+											<xsl:if test="$is_docs_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
+										</input> по документации
 									</label>
 								</div>
 								<!-- quick search -->

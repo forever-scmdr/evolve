@@ -262,3 +262,64 @@ $(window).scroll(function () {
 	}
 	scrollPrev = scrolled;
   });
+
+$(document).ready(function () {
+
+	// фильтр на странице поиска API
+	$('#api_ajax_form').find('input').change(function () {
+		$('#api_ajax_form').submit();
+		var input = $(this);
+		if (input.attr('type') == 'checkbox') {
+			var parentDiv = input.closest('.chbox');
+			var label = parentDiv.find('.value');
+			var inputs = parentDiv.find('input:checked');
+			if (inputs.length > 1) {
+				label.text("Выбрано: " + inputs.length);
+			} else if (inputs.length == 1) {
+				label.text($(inputs[0]).attr('value'));
+			} else {
+				label.text('Любой');
+			}
+		}
+	});
+	// Очистить фильтр
+	$('.clear_filter_button').click(function (event) {
+		event.preventDefault();
+		$('#api_ajax_form').find('input:checked').prop('checked', false);
+		$('#api_ajax_form').find('input:text').val('');
+		$('#api_ajax_form').submit();
+		return false;
+	});
+	// Вкладки поиска
+	$('.search_tab').click(function () {
+		var checkClass = $(this).attr('rel');
+		$('.main_search_form').find('input:checked').prop('checked', false);
+		$('.main_search_form').find('input.' + checkClass).prop('checked', true);
+		$('.main_search_form').first().submit();
+	});
+
+	// выбор типа основного поиска (где искать)
+	$('.main_search_form').submit(function () {
+		var form = $(this);
+		var actionUrl = $(form.find('input:checked')).val();
+		form.attr('action', actionUrl);
+	});
+	$('.main_search_form input[type=text]').on('input', function () {
+		var text = $(this).val();
+		$('.main_search_form input[type=text]').val(text);
+	});
+	$('.main_search_form input[type=radio]').change(function() {
+		var radio = $(this);
+		var form = $(radio.closest('.main_search_form'));
+		var checkedValue = $(form.find('input:checked')).val();
+		$('.main_search_form input[type=checkbox]').prop('checked', false);
+		$('.main_search_form input[value="' + checkedValue + '"]').prop('checked', true);
+	});
+
+	// Отправка AJAX запроса для заполнения полей по ИНН
+	$('#inn_input').change(function () {
+		var url = 'by_inn_ajax?inn=' + $(this).val();
+		insertAjax(url, 'tab_jur');
+	});
+
+});

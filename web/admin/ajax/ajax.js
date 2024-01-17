@@ -194,12 +194,23 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                     var $e = $(extraSelector);
                     $(extraSelector).each(function () {
                         $t = $(this);
-                        $t.html(newHtml);
+                        // для инпутов менять значение, для остальных элементов - html
+                        if ($t.prop('tagName').toLowerCase() === 'input') {
+                            $t.val(newHtml);
+                        } else {
+                            $t.html(newHtml);
+                        }
                     });
                     ajaxInitIds.push($e);
                 }
                 //if ($('#' + id).length == 0) alert("Не найден элемент с id='" + id + "' в родительском документе");
-                $('#' + id).html(newHtml);
+                var targetEl = $('#' + id);
+                // для инпутов менять значение, для остальных элементов - html
+                if (targetEl.prop('tagName').toLowerCase() === 'input') {
+                    targetEl.val(newHtml);
+                } else {
+                    targetEl.html(newHtml);
+                }
                 ajaxInitIds.push(id);
             });
             if (!parsedData.find('#JSON').length != 0)

@@ -34,12 +34,29 @@
 
 		<single item="currencies" cacheable="true"/>
 
-		<single item="catalog" id="catalog_main" cacheable="true">
+		<single item="catalog" id="catalog_main" cacheable="false">
+			<list item="section" id="sec1" assoc="* catalog_link">
+				<link name="show_products" target="section" type="exclusive">
+					<var name="sec" ref="sec1" style="key"/>
+				</link>
+				<list item="section" id="sec2" assoc="* catalog_link">
+					<link name="show_products" target="section" type="exclusive">
+						<var name="sec" ref="sec2" style="key"/>
+					</link>
+					<list item="section" id="sec3" assoc="* catalog_link">
+						<link name="show_products" target="section" type="exclusive">
+							<var name="sec" ref="sec3" style="key"/>
+						</link>
+					</list>
+				</list>
+			</list>
+			<!--
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
 					<var name="sec" ref="sec" style="key"/>
 				</link>
 			</tree>
+			-->
 		</single>
 
 		<single item="custom_pages" id="custom_pages" cacheable="true" >
@@ -68,6 +85,7 @@
 		<link name="cart_ajax_link" target="cart_ajax"/>
 		<link name="cart_link" target="cart"/>
 		<link name="search_link" target="search"/>
+		<link name="search_api_link" target="search_api"/>
 		<link name="admin_search_link" target="admin_search"/>
 		<link name="search_catalog_link" target="search_catalog"/>
 		<link name="search_plain_link" target="search_plain"/>
@@ -250,6 +268,7 @@
 			<var name="val_16"/><var name="val_17"/><var name="val_18"/><var name="val_19"/><var name="val_20"/>
 
 			<var name="page_sec" value="filter_sec"/><!-- параметр команды CreateSectionFilterCommand -->
+			<var name="translate_items" value="cur_sec, sec1:name, sec2:name, sec3:name, prod"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -400,6 +419,7 @@
 			<var name="mark" var="mark"/>
 		</link>
 		<include name="COMMON"/>
+		<command class="extra.TranslationCommand"/>
 	</page>
 
 
@@ -632,7 +652,11 @@
 	</page>
 
 
-	<!-- API товары -->
+	<!--
+		Главная страница с предложениями поставщиков по одному товару
+	 	Является лендингом, с которого просто отправляются несколько AJAX запросов
+	 	параллельно по разным поставщикам
+	 -->
 	<page name="api_ajax" template="api_ajax" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
@@ -649,6 +673,68 @@
 		<single item="product" id="prod" var="prod" tag="product"/>
 		<single item="currencies" cacheable="true"/>
 		<link name="set_currency" target="api_ajax" copy-page-vars="yes">
+			<var name="cur" value=""/>
+		</link>
+	</page>
+
+
+	<!-- API товары (полный поиск, без фильтрации) -->
+	<page name="search_api" template="search_api" cacheable="false">
+		<request>
+			<var name="cur" scope="cookie"/>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/search/"/>
+			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
+			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+		</request>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<include name="SEARCH_COMMON" replace="$pname:search"/>
+		<include name="COMMON"/>
+	</page>
+
+
+
+	<!-- API товары (поиск с фильтрацией, отдельная AJAX страница) -->
+	<page name="search_api_ajax" template="search_api_ajax" cacheable="false">
+		<request>
+			<var name="cur" scope="cookie"/>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/search/"/>
+			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
+			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+		</request>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<link name="cart_ajax_link" target="cart_ajax"/>
+		<link name="cart_link" target="cart"/>
+		<link name="search_link" target="search"/>
+		<link name="search_api_link" target="search_api"/>
+		<link name="admin_search_link" target="admin_search"/>
+		<link name="search_catalog_link" target="search_catalog"/>
+		<link name="search_plain_link" target="search_plain"/>
+		<link name="search_ajax_link" target="search_ajax"/>
+		<link name="search_ajax_catalog_link" target="search_catalog_ajax"/>
+		<link name="search_ajax_plain_link" target="search_plain_ajax"/>
+		<link name="fav_ajax_link" target="fav_ajax"/>
+		<link name="fav_link" target="fav"/>
+		<link name="compare_ajax_link" target="compare_ajax"/>
+		<link name="compare_link" target="compare"/>
+		<link name="excel_search_link" target="excel_search" type="itemform"/>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
 			<var name="cur" value=""/>
 		</link>
 	</page>
@@ -817,7 +903,7 @@
 					<fulltext limit="48" compare="EVERY" name="name text">
 						<var var="q"/>
 					</fulltext>
-					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
+<!--					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" ref="prod" style="key"/>
@@ -905,22 +991,6 @@
 		</single>
 		<include name="SEARCH_COMMON" replace="$pname:search_plain"/>
 		<include name="COMMON"/>
-	</page>
-
-
-	<!-- Страница для поиска по каталогу удаленных складов (не основному) -->
-	<page name="search_prices">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="cur" scope="cookie"/>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
 	</page>
 
 
@@ -1735,11 +1805,10 @@
 			<var name="action" value="login"/>
 			<var name="src" value="personal"/>
 		</link>
-		<new item="user_phys" id="user_phys">
-			<parameter-input ref="user_phys" form="register"/>
-		</new>
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="register"/>
+			<extra-input ref="user_jur" name="password2" form="register"/>
+			<extra-input ref="user_jur" name="confirm" form="register"/>
 		</new>
 		<link name="confirm_link" target="register_action" type="itemform">
 			<var name="action" value="register"/>
@@ -2410,6 +2479,22 @@
 	</page>
 
 
+	<!-- Страница для получения JSON в виде XML -->
+	<page name="by_inn_ajax" template="by_inn_ajax">
+		<request>
+			<var name="inn"/>
+			<var name="api_base" value="http://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party"/>
+			<var name="token" value="Token 66d7672d3a11fcfd55b0628a3a4c0e354f1a24b1"/>
+			<var name="root_element" value="result"/>
+			<var name="replace" value="suggestions:company, value:organization"/>
+		</request>
+		<command class="extra.DadataQueryCommand">
+			<result name="success" type="xml"/>
+			<result name="error" type="xml"/>
+		</command>
+	</page>
+
+
 	<!--
 	 Должно работать так
 			<var name="q"/>
@@ -2426,6 +2511,7 @@
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
 			<var name="server" value="https://www.findchips.com/search/"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
 		</request>
 		<command class="extra.SearchFindchipsCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2443,6 +2529,7 @@
 			<var name="position" value="1"/>
 			<var name="distr_title" value="Mouser Electronics"/>
 			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
 		</request>
 		<command class="extra.SearchFindchipsCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2463,6 +2550,7 @@
 			<var name="position" value="2"/>
 			<var name="distr_title" value="DigiKey"/>
 			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
 		</request>
 		<command class="extra.SearchFindchipsCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2483,6 +2571,7 @@
 			<var name="position" value="3"/>
 			<var name="distr_title" value="Farnell"/>
 			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
 		</request>
 		<command class="extra.SearchFindchipsCommand">
 			<result name="product_list" type="inline_xml"/>
@@ -2494,6 +2583,69 @@
 		</link>
 	</page>
 
+
+	<page name="search_prices_onlinecomponents" template="distributor_api_ajax">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/distributors/onlinecomponents.com?search="/>
+			<var name="position" value="4"/>
+			<var name="distr_title" value="Onlinecomponents.com"/>
+			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+		</request>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
+
+
+	<page name="search_prices_newark" template="distributor_api_ajax">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/distributors/newark?search="/>
+			<var name="position" value="5"/>
+			<var name="distr_title" value="Newark"/>
+			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+		</request>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
+
+
+
+	<page name="search_prices_arrowelectronics" template="distributor_api_ajax">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/distributors/arrow-electronics?search="/>
+			<var name="position" value="6"/>
+			<var name="distr_title" value="Arrow Electronics"/>
+			<var name="cur" scope="cookie"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+		</request>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
 
 
 	<!-- Страница поиска для efind -->
@@ -2528,6 +2680,18 @@
 		</request>
 		<command class="extra.AnotherEcommanderProxy">
 			<result name="xml" type="xml"/>
+			<result name="illegal_argument" type="plain_text"/>
+			<result name="error" type="plain_text"/>
+		</command>
+	</page>
+
+
+	<page name="direct_proxy">
+		<request>
+			<var name="url"/>
+		</request>
+		<command class="extra.AnotherEcommanderProxy">
+			<result name="html" type="plain_text"/>
 			<result name="illegal_argument" type="plain_text"/>
 			<result name="error" type="plain_text"/>
 		</command>

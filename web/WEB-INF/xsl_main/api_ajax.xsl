@@ -29,6 +29,9 @@
 						<div id="api_ajax_1" ajax-href="search_prices_mouser?q={$p/name}"></div>
 						<div id="api_ajax_2" ajax-href="search_prices_digikey?q={$p/name}"></div>
 						<div id="api_ajax_3" ajax-href="search_prices_farnell?q={$p/name}"></div>
+						<div id="api_ajax_4" ajax-href="search_prices_onlinecomponents?q={$p/name}"></div>
+						<div id="api_ajax_5" ajax-href="search_prices_newark?q={$p/name}"></div>
+						<div id="api_ajax_6" ajax-href="search_prices_arrowelectronics?q={$p/name}"></div>
 					</div>
 				</div>
 			</div>

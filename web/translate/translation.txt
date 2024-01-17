@@ -1,0 +1,4 @@
+soldering :: девайс
+active :: активный
+Stations :: станции
+obsolete :: уничтожен

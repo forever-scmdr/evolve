@@ -31,6 +31,8 @@ public class EmailUtils {
 		// необходимо указать через какой хост будет передано сообщение
 		props.put("mail.smtp.host", server);
 		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.required", "true"); // test
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // test
 		props.put("mail.smtp.starttls.enable","true");
 		props.put("mail.smtp.ssl.trust", server);
 		// Включение debug-режима
