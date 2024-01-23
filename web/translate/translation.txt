@@ -1,4 +1,1115 @@
-soldering :: девайс
-active :: активный
-Stations :: станции
-obsolete :: уничтожен
+Soldering, Desoldering, Rework Products :: Пайка, распайка, доработка изделий
+Soldering, Desoldering, Rework Stations :: Паяльные, распайочные, паяльные станции
+Solder :: Припой
+Soldering Irons, Tweezers, Handles :: Паяльники, пинцеты, ручки
+Solder Sponges, Tip Cleaners :: Губки для пайки, очистители жал
+Solder Stencils, Templates :: Трафареты для пайки, шаблоны
+Soldering, Desoldering, Rework Tips, Nozzles :: Пайка, распайка, насадки для доработки, насадки
+Holders, Stands :: Держатели, Подставки
+Accessories :: Аксессуары
+Flux, Flux Remover :: Флюс, средство для удаления флюса
+Desoldering Braid, Wick, Pumps :: Отпайка оплетки, фитиля, насосов
+Fume, Smoke Extraction :: Дымоудаление, дымоудаление
+Crystals, Oscillators, Resonators :: Кристаллы, Генераторы, Резонаторы
+VCOs (Voltage Controlled Oscillators) :: VCO (генераторы, управляемые напряжением)
+Oscillators :: Осцилляторы
+Programmable Oscillators :: Программируемые генераторы
+Stand Alone Programmers :: Автономные программисты
+Resonators :: Резонаторы
+Pin Configurable/Selectable Oscillators :: Настраиваемые/выбираемые контакты генераторов
+Crystals :: Кристаллы
+Capacitors :: Конденсаторы
+Aluminum - Polymer Capacitors :: Алюминий-полимерные конденсаторы
+Capacitor Networks, Arrays :: Конденсаторные сети, массивы
+Mica and PTFE Capacitors :: Конденсаторы из слюды и ПТФЭ
+Tantalum Capacitors :: Танталовые конденсаторы
+Trimmers, Variable Capacitors :: Триммеры, Конденсаторы переменной емкости
+Film Capacitors :: Пленочные конденсаторы
+Electric Double Layer Capacitors (EDLC), Supercapacitors :: Электрические двухслойные конденсаторы (EDLC), Суперконденсаторы
+Ceramic Capacitors :: Керамические конденсаторы
+Thin Film Capacitors :: Тонкопленочные конденсаторы
+Tantalum - Polymer Capacitors :: Тантал - полимерные конденсаторы
+Niobium Oxide Capacitors :: Конденсаторы оксида ниобия
+Aluminum Electrolytic Capacitors :: Алюминиевые электролитические конденсаторы
+Silicon Capacitors :: Кремниевые конденсаторы
+Line Protection, Distribution, Backups :: Защита линий, распределение, резервное копирование
+Line Conditioners :: Кондиционеры для линии
+DC to AC (Power) Inverters :: Инверторы постоянного тока в переменный (силовые)
+Uninterruptible Power Supply (UPS) Systems :: Системы бесперебойного питания (ИБП)
+Power Distribution, Surge Protectors :: Распределение мощности, сетевые фильтры
+Cables, Wires - Management :: Кабели, провода - Управление
+Heat Shrink Boots, Caps :: Термоусадочные сапоги, колпачки
+Cable Ties and Zip Ties :: Кабельные стяжки и стяжки-молнии
+Heat Shrink Fabric :: Термоусадочная ткань
+Cable Ties - Holders and Mountings :: Кабельные стяжки – держатели и крепления
+Cable Supports and Fasteners :: Кабельные опоры и крепления
+Bushings, Grommets :: Втулки, втулки
+Spiral Wrap, Expandable Sleeving :: Спиральная обертка, расширяемая оболочка
+Splice Enclosures, Protection :: Корпуса для сращивания, защита
+Protective Hoses, Solid Tubing, Sleeving :: Защитные шланги, сплошные трубки, рукава
+Wire Ducts, Raceways - Accessories - Covers :: Кабельные каналы, направляющие - Аксессуары - Крышки
+Heat Shrink Tubing :: Термоусадочная трубка
+Grounding Braid, Straps :: Заземляющая оплетка, ремни
+Wire Ducts, Raceways :: Кабельные каналы, направляющие
+Wire Ducts, Raceways - Accessories :: Кабельные каналы, направляющие — аксессуары
+Markers :: Маркеры
+Cold Shrink Tape, Tubing :: Холодная термоусадочная лента, трубки
+Fiber Optic Cables :: Волоконно-оптические кабели
+Cable and Cord Grips :: Захваты для кабелей и шнуров
+Pulling, Support Grips :: Тяга, поддерживающие захваты
+Labels, Labeling :: Этикетки, Маркировка
+Solder Sleeve :: Втулка для пайки
+Heat Shrink Wrap :: Термоусадочная пленка
+Isolators :: Изоляторы
+Optoisolators - Triac, SCR Output :: Оптоизоляторы — симистор, выход SCR
+Optoisolators - Transistor, Photovoltaic Output :: Оптоизоляторы - транзистор, фотоэлектрический выход
+Digital Isolators :: Цифровые изоляторы
+Optoisolators - Logic Output :: Оптоизоляторы — логический выход
+Special Purpose :: Спец. Назначение
+Isolators - Gate Drivers :: Изоляторы - Драйверы ворот
+Anti-Static, ESD, Clean Room Products :: Антистатические, ESD, продукты для чистых помещений
+Clean Room Treatments, Cleaners, Wipes :: Процедуры для чистых помещений, чистящие средства, салфетки
+Anti-Static, ESD Device Containers :: Антистатические контейнеры для устройств ESD
+Ionizer Equipment :: Ионизаторное оборудование
+Monitors, Testers :: Мониторы, Тестеры
+Anti-Static, ESD Clothing :: Антистатическая, антистатическая одежда
+Anti-Static, ESD Straps, Grounding Cords :: Антистатические, антистатические ремни, шнуры заземления
+Modular ESD Desks, Workstations :: Модульные столы ESD, рабочие станции
+Clean Room Swabs and Brushes :: Тампоны и щетки для чистых помещений
+Anti-Static, ESD Bags, Materials :: Антистатические, антистатические пакеты, материалы
+Anti-Static, ESD Grounding Mats :: Антистатические, антистатические заземляющие коврики
+Integrated Circuits (ICs) :: Интегральные схемы (ИС)
+Linear :: Линейный
+Analog Multipliers, Dividers :: Аналоговые умножители, делители
+Comparators :: Компараторы
+Video Processing :: Обработка видео
+Amplifiers :: Усилители
+Memory :: Память
+Controllers :: Контроллеры
+Batteries :: Батареи
+Configuration Proms for FPGAs :: Променады конфигурации для FPGA
+Specialized ICs :: Специализированные микросхемы
+Interface :: Интерфейс
+Analog Switches, Multiplexers, Demultiplexers :: Аналоговые переключатели, мультиплексоры, демультиплексоры
+Encoders, Decoders, Converters :: Кодеры, декодеры, преобразователи
+Specialized :: Специализированный
+Serializers, Deserializers :: Сериализаторы, Десериализаторы
+Sensor, Capacitive Touch :: Сенсор, емкостный сенсорный
+Analog Switches - Special Purpose :: Аналоговые переключатели специального назначения
+Drivers, Receivers, Transceivers :: Драйверы, ресиверы, трансиверы
+Voice Record and Playback :: Запись и воспроизведение голоса
+Signal Buffers, Repeaters, Splitters :: Буферы сигналов, повторители, разветвители
+Sensor and Detector Interfaces :: Интерфейсы датчиков и детекторов
+CODECS :: КОДЕКИ
+Filters - Active :: Фильтры - Активные
+Signal Terminators :: Сигнальные терминаторы
+Telecom :: Телеком
+I/O Expanders :: Расширители ввода/вывода
+Modems - ICs and Modules :: Модемы — микросхемы и модули
+UARTs (Universal Asynchronous Receiver Transmitter) :: UART (универсальный асинхронный приемник-передатчик)
+Direct Digital Synthesis (DDS) :: Прямой цифровой синтез (DDS)
+Modules :: Модули
+Logic - Signal Switches, Multiplexers, Decoders :: Логика — переключатели сигналов, мультиплексоры, декодеры
+Embedded :: Встроенный
+DSP (Digital Signal Processors) :: DSP (процессоры цифровых сигналов)
+Microprocessors :: Микропроцессоры
+System On Chip (SoC) :: Система на кристалле (SoC)
+PLDs (Programmable Logic Device) :: PLD (программируемое логическое устройство)
+FPGAs (Field Programmable Gate Array) :: FPGA (программируемая пользователем вентильная матрица)
+Microcontrollers :: Микроконтроллеры
+FPGAs (Field Programmable Gate Array) with Microcontrollers :: FPGA (программируемая пользователем вентильная матрица) с микроконтроллерами
+CPLDs (Complex Programmable Logic Devices) :: CPLD (сложные программируемые логические устройства)
+Application Specific Microcontrollers :: Микроконтроллеры для конкретных приложений
+Microcontrollers, Microprocessor, FPGA Modules :: Микроконтроллеры, Микропроцессоры, Модули FPGA
+Clock/Timing - Delay Lines :: Часы/Время — Линии задержки
+Logic - Buffers, Drivers, Receivers, Transceivers :: Логика — буферы, драйверы, приемники, трансиверы
+Data Acquisition :: Получение данных
+Analog to Digital Converters (ADC) :: Аналого-цифровые преобразователи (АЦП)
+Digital to Analog Converters (DAC) :: Цифро-аналоговые преобразователи (ЦАП)
+ADCs/DACs - Special Purpose :: АЦП/ЦАП – специального назначения
+Touch Screen Controllers :: Контроллеры сенсорного экрана
+Digital Potentiometers :: Цифровые потенциометры
+Analog Front End (AFE) :: Аналоговый интерфейс (AFE)
+Linear - Amplifiers - Instrumentation, OP Amps, Buffer Amps :: Линейные - Усилители - Приборы, Операционные усилители, Буферные усилители
+PMIC - Power Management - Specialized :: PMIC — Управление питанием — Специализированный
+Clock/Timing :: Часы/Время
+Delay Lines :: Линии задержки
+Application Specific Clock/Timing :: Часы/тайминг для конкретного приложения
+Programmable Timers and Oscillators :: Программируемые таймеры и генераторы
+Clock Buffers, Drivers :: Тактовые буферы, драйверы
+Clock Generators, PLLs, Frequency Synthesizers :: Тактовые генераторы, системы ФАПЧ, синтезаторы частоты
+Real Time Clocks :: Часы реального времени
+IC Batteries :: IC батареи
+Logic - Gates and Inverters :: Логика — вентили и инверторы
+Embedded - Microcontrollers :: Встраиваемые — Микроконтроллеры
+Logic :: Логика
+Gates and Inverters :: Ворота и инверторы
+Flip Flops :: Шлепки
+Gates and Inverters - Multi-Function, Configurable :: Ворота и инверторы — многофункциональные, настраиваемые
+Buffers, Drivers, Receivers, Transceivers :: Буферы, драйверы, приемники, трансиверы
+Shift Registers :: Регистры сдвига
+Parity Generators and Checkers :: Генераторы четности и программы проверки
+Universal Bus Functions :: Универсальные функции шины
+Multivibrators :: Мультивибраторы
+Counters, Dividers :: Счетчики, Разделители
+Latches :: Защелки
+FIFOs Memory :: Память FIFO
+Specialty Logic :: Специальность Логика
+Signal Switches, Multiplexers, Decoders :: Переключатели сигналов, мультиплексоры, декодеры
+Translators, Level Shifters :: Переводчики, сдвигатели уровня
+Power Management (PMIC) :: Управление питанием (PMIC)
+Power Management - Specialized :: Управление питанием – специализированное
+Battery Management :: Управление аккумулятором
+Linear + Switching Regulators :: Линейные + импульсные регуляторы
+AC DC Converters, Offline Switches :: Преобразователи переменного и постоянного тока, автономные переключатели
+Gate Drivers :: Драйверы ворот
+Motor Drivers, Controllers :: Драйверы двигателей, контроллеры
+LED Drivers :: Светодиодные драйверы
+Lighting, Ballast Controllers :: Освещение, Контроллеры балласта
+OR Controllers, Ideal Diodes :: ИЛИ-контроллеры, идеальные диоды
+Full Half-Bridge Drivers :: Полные полумостовые драйверы
+Battery Chargers :: Зарядные устройства для аккумуляторов
+Hot Swap Controllers :: Контроллеры с горячей заменой
+PFC (Power Factor Correction) :: PFC (коррекция коэффициента мощности)
+Linear Regulator Controllers :: Контроллеры линейных регуляторов
+Supervisors :: Руководители
+Current Regulation/Management :: Текущее регулирование/управление
+Power Distribution Switches, Load Drivers :: Переключатели распределения питания, драйверы нагрузки
+Thermal Management :: Управление температурным режимом
+DC DC Switching Regulators :: Импульсные регуляторы постоянного тока постоянного тока
+DC DC Switching Controllers :: Контроллеры постоянного тока постоянного тока
+Power Supply Controllers, Monitors :: Контроллеры Питания, Мониторы
+Special Purpose Regulators :: Регуляторы специального назначения
+Energy Metering :: Учет энергии
+Voltage Reference :: Опорное напряжение
+Display Drivers :: Драйверы дисплея
+Power Over Ethernet (PoE) Controllers :: Контроллеры питания через Ethernet (PoE)
+V/F and F/V Converters :: Преобразователи V/F и F/V
+Linear Regulators :: Линейные регуляторы
+Laser Drivers :: Лазерные драйверы
+Voltage Regulators - DC DC Switching Regulators :: Регуляторы напряжения - Импульсные регуляторы постоянного тока постоянного тока
+Voltage Regulators - Linear + Switching :: Регуляторы напряжения - линейные + импульсные
+Voltage Regulators - Linear :: Регуляторы напряжения - линейные
+RMS to DC Converters :: Преобразователи RMS в постоянный ток
+Voltage Regulators - Linear Regulator Controllers :: Регуляторы напряжения — контроллеры линейных регуляторов
+PMIC - Voltage Regulators - DC DC Switching Regulators :: PMIC - Регуляторы напряжения - Импульсные регуляторы постоянного тока
+Audio Special Purpose :: Аудио специального назначения
+Switches :: Переключатели
+Tactile Switches :: Тактильные переключатели
+Accessories - Boots, Seals :: Аксессуары – ботинки, уплотнения
+Configurable Switch Components - Illumination Source :: Настраиваемые компоненты переключателя — источник освещения
+Pushbutton Switches - Hall Effect :: Кнопочные переключатели – эффект Холла
+Programmable Display Switches :: Программируемые переключатели дисплея
+Toggle Switches :: Тумблеры
+Slide Switches :: Ползунковые переключатели
+Disconnect Switch Components :: Компоненты разъединителя
+Keylock Switches :: Выключатели с замком
+Interlock Switches :: Блокировочные выключатели
+DIP Switches :: DIP-переключатели
+Rotary Switches :: Поворотные переключатели
+Pushbutton Switches :: Кнопочные переключатели
+Configurable Switch Components - Contact Block :: Конфигурируемые компоненты переключателя — контактный блок
+Selector Switches :: Селекторные переключатели
+Configurable Switch Components - Lens :: Настраиваемые компоненты переключателя — объектив
+Thumbwheel Switches :: Дисковые переключатели
+Navigation Switches, Joystick :: Навигационные переключатели, джойстик
+Configurable Switch Components - Body :: Компоненты настраиваемого переключателя — корпус
+Limit Switches :: Концевые выключатели
+Keypad Switches :: Клавиатурные переключатели
+Cable Pull Switches :: Кабельные выключатели
+Emergency Stop (E-Stop) Switches :: Выключатели аварийной остановки (E-Stop)
+Magnetic, Reed Switches :: Магнитные, герконовые переключатели
+Rocker Switches :: Кулисные переключатели
+Accessories - Caps :: Аксессуары - Кепки
+Discrete Semiconductor Products :: Дискретные полупроводниковые продукты
+Thyristors - TRIACs :: Тиристоры - СИМИСТОРЫ
+Thyristors - DIACs, SIDACs :: Тиристоры - DIAC, SIDAC
+Transistors - Bipolar (BJT) - Single, Pre-Biased :: Транзисторы - биполярные (BJT) - одиночные, с предварительным смещением
+Diodes - Bridge Rectifiers :: Диоды — мостовые выпрямители
+Transistors - Bipolar (BJT) - Single :: Транзисторы - биполярные (BJT) - одиночные
+Diodes - RF :: Диоды - РФ
+Transistors - Bipolar (BJT) - Arrays, Pre-Biased :: Транзисторы — биполярные (BJT) — массивы, с предварительным смещением
+Diodes - Rectifiers - Arrays :: Диоды – Выпрямители – Массивы
+Transistors - FETs, MOSFETs - Arrays :: Транзисторы - полевые транзисторы, полевые МОП-транзисторы - массивы
+Transistors - FETs, MOSFETs - Single :: Транзисторы - полевые транзисторы, МОП-транзисторы - одиночные
+Thyristors - SCRs - Modules :: Тиристоры - SCR - Модули
+Diodes - Zener - Arrays :: Диоды - Зенер - Массивы
+Transistors - Bipolar (BJT) - RF :: Транзисторы - биполярные (BJT) - RF
+Power Driver Modules :: Модули силового драйвера
+Transistors - IGBTs - Modules :: Транзисторы - IGBT - Модули
+Transistors - Special Purpose :: Транзисторы специального назначения
+Current Regulation - Diodes, Transistors :: Действующее регулирование — диоды, транзисторы
+Thyristors - SCRs :: Тиристоры - SCR
+Transistors - IGBTs - Single :: Транзисторы - IGBT - Одиночные
+Transistors - Programmable Unijunction :: Транзисторы — программируемые однопереходные
+Transistors - FETs, MOSFETs - RF :: Транзисторы - полевые транзисторы, МОП-транзисторы - РФ
+Transistors - Bipolar (BJT) - Arrays :: Транзисторы - биполярные (BJT) - Массивы
+Diodes - Variable Capacitance (Varicaps, Varactors) :: Диоды переменной емкости (варикапы, варакторы)
+Transistors - JFETs :: Транзисторы - JFET
+Diodes - Zener - Single :: Диоды - Зенер - Одиночные
+Transistors - IGBTs - Arrays :: Транзисторы - IGBT - Массивы
+Diodes - Rectifiers - Single :: Диоды - Выпрямители - Одиночные
+Industrial Automation and Controls :: Промышленная автоматизация и управление
+Protection Relays & Systems :: Реле и системы защиты
+Cable and Hose Carriers, Drag Chains :: Кабельные и шланговые держатели, буксирные цепи
+Pneumatics, Hydraulics - Tubing, Hose, Piping :: Пневматика, гидравлика — трубки, шланги, трубопроводы
+Machine Vision - Lighting :: Машинное зрение — освещение
+Controllers - Accessories :: Контроллеры - Аксессуары
+Greases and Lubricants :: Смазки и смазки
+Pneumatics, Hydraulics - Preparation/Treatment :: Пневматика, гидравлика - подготовка/обработка
+Robotics - Accessories :: Робототехника - Аксессуары
+Panel Meters - Accessories :: Панельные счетчики - Аксессуары
+Industrial Equipment :: Промышленное оборудование
+Monitor - Current/Voltage Transducer :: Монитор — преобразователь тока/напряжения
+Lighting Control :: Управление освещением
+Controllers - Programmable (PLC, PAC) :: Контроллеры – программируемые (ПЛК, PAC)
+Industrial Lighting - Pick to Light :: Промышленное освещение — выберите свет
+Monitor - Relay Output :: Монитор — релейный выход
+Panel Meters - Counters, Hour Meters :: Панельные счетчики - счетчики, счетчики часов
+Controllers - Liquid, Level :: Контроллеры - жидкость, уровень
+Pneumatics, Hydraulics - Accessories :: Пневматика, гидравлика - аксессуары
+Human Machine Interface (HMI) - Accessories :: Человеко-машинный интерфейс (HMI) — аксессуары
+Robotics - End Effectors :: Робототехника – Конечные эффекторы
+Signal Conditioners and Isolators :: Формирователи сигналов и изоляторы
+Cam Positioners :: Позиционеры кулачков
+Robotics - Robots :: Робототехника - Роботы
+Machine Vision - Bar Code Readers :: Машинное зрение — считыватели штрих-кодов
+Pneumatics, Hydraulics - Valves and Control :: Пневматика, гидравлика – клапаны и управление
+Industrial Lighting - Task Lighting :: Промышленное освещение - Рабочее освещение
+Controllers - Cable Assemblies :: Контроллеры — кабельные сборки
+Machine Safety - Mats :: Безопасность машины — коврики
+Machine Vision - Control/Processing :: Машинное зрение — управление/обработка
+Liquid Filtration :: Жидкостная фильтрация
+Controllers - Process, Temperature :: Контроллеры – процесс, температура
+Machine Vision - Cameras/Sensors :: Машинное зрение — Камеры/Датчики
+Pneumatics, Hydraulics - Actuators/Cylinders :: Пневматика, гидравлика – приводы/цилиндры
+Lighting Control - Accessories :: Управление освещением — аксессуары
+Pneumatics, Hydraulics - Fittings, Couplings, and Distributors :: Пневматика, гидравлика – фитинги, муфты и распределители
+Machine Safety - Laser Scanners :: Безопасность машин — лазерные сканеры
+Machine Safety - Accessories :: Безопасность машины — аксессуары
+Panel Meters :: Панельные счетчики
+Machine Safety - Light Curtains :: Безопасность машины — световые завесы
+Industrial PCs :: Промышленные ПК
+Stackable Tower Lighting, Beacons, and Components :: Штабелируемое башенное освещение, маяки и компоненты
+Machine Safety - Bumpers and Edges :: Безопасность машины — бамперы и края
+Human Machine Interface (HMI) :: Человеко-машинный интерфейс (HMI)
+Time Delay Relays :: Реле задержки времени
+Pneumatics, Hydraulics - Shock Absorbers, Dampers :: Пневматика, гидравлика - амортизаторы, демпферы
+Controllers - PLC Modules :: Контроллеры — Модули ПЛК
+Controllers - Machine Safety :: Контроллеры – безопасность оборудования
+Relays :: Реле
+Reed Relays :: Герконовые реле
+I/O Relay Module Racks :: Стойки модулей реле ввода-вывода
+Solid State Relays :: Твердотельные реле
+Relay Sockets :: Релейные розетки
+Contactors (Solid State) :: Контакторы (полупроводниковые)
+Signal Relays, Up to 2 Amps :: Сигнальные реле, до 2 А
+Safety Relays :: Реле безопасности
+Power Relays, Over 2 Amps :: Силовые реле, более 2 ампер
+I/O Relay Modules :: Релейные модули ввода-вывода
+High Frequency (RF) Relays :: Высокочастотные (РЧ) реле
+Contactors (Electromechanical) :: Контакторы (электромеханические)
+Automotive Relays :: Автомобильные реле
+Uncategorized :: Без категории
+Unclassified :: Неклассифицированный
+Optical Inspection Equipment :: Оборудование для оптического контроля
+Cameras :: Камеры
+Loupes, Magnifiers :: Лупы, Лупы
+Machine Vision - Lenses :: Машинное зрение — линзы
+Lamps - Magnifying, Task :: Лампы - увеличительные, рабочие
+Video Inspection Systems :: Системы видеоконтроля
+Eyepieces, Lenses :: Окуляры, Линзы
+Machine Vision - Accessories :: Машинное зрение — Аксессуары
+Microscopes :: Микроскопы
+Illumination Sources :: Источники освещения
+Arms, Mounts, Stands :: Оружие, крепления, подставки
+Kits :: Комплекты
+Capacitor Kits :: Комплекты конденсаторов
+Fiber Optic Kits :: Волоконно-оптические комплекты
+Sensor Kits :: Комплекты датчиков
+Crystal Kits :: Хрустальные наборы
+LED Kits :: Светодиодные комплекты
+Connector Kits :: Комплекты соединителей
+Tape Kits :: Комплекты лент
+Transformer Kits :: Трансформаторные комплекты
+Resistor Kits :: Комплекты резисторов
+Integrated Circuits (ICs) Kits :: Комплекты интегральных микросхем (ИС)
+Prototyping Boards, Fabrication Kits :: Макетные платы, комплекты для изготовления
+Heat Shrink Tubing Kits :: Комплекты термоусадочных трубок
+Switch Kits :: Комплекты переключателей
+Cable Assemblies :: Кабельные сборки
+D-Shaped, Centronics Cables :: D-образные кабели Centronics
+Solid State Lighting Cables :: Твердотельные осветительные кабели
+Barrel - Audio Cables :: Баррель — аудиокабели
+LGH Cables :: Кабели LGH
+Circular Cable Assemblies :: Круглые кабельные сборки
+Specialized Cable Assemblies :: Специализированные кабельные сборки
+Rectangular Cable Assemblies :: Прямоугольные кабельные сборки
+Barrel - Power Cables :: Бочка - Силовые кабели
+Flat Flex Jumpers, Cables (FFC, FPC) :: Плоские гибкие перемычки, кабели (FFC, FPC)
+Between Series Adapter Cables :: Между последовательными переходными кабелями
+Flat Flex Ribbon Jumpers, Cables :: Плоские гибкие ленточные перемычки, кабели
+D-Sub Cables :: Кабели D-Sub
+USB Cables :: USB-кабели
+Firewire Cables (IEEE 1394) :: Кабели FireWire (IEEE 1394)
+Modular Cables :: Модульные кабели
+Video Cables (DVI, HDMI) :: Видеокабели (DVI, HDMI)
+Power, Line Cables and Extension Cords :: Силовые, линейные кабели и удлинители
+Smart Cables :: Умные кабели
+Pluggable Cables :: Сменные кабели
+Jumper Wires, Pre-Crimped Leads :: Перемычки, предварительно обжатые провода
+Inductor Kits :: Комплекты индукторов
+RF Shield Kits :: Комплекты радиочастотного экрана
+Potentiometer Kits :: Комплекты потенциометров
+Optics - Light Pipe Kits :: Оптика — комплекты световодов
+Hardware Kits :: Комплекты оборудования
+Static Control Kit :: Комплект статического контроля
+Circuit Protection - Assortment Kits :: Защита цепей — Ассортиментные комплекты
+Circuit Protection Kits - Fuse :: Комплекты защиты цепи — предохранитель
+Cables, Wires - Single Conductors :: Кабели, провода - одиночные проводники
+Thermistor Kits :: Термисторные комплекты
+EMI, Filter Kits :: ЭМИ, Комплекты фильтров
+Discrete Assortment Kits :: Наборы дискретного ассортимента
+Audio Kits :: Аудио комплекты
+Connector Adapter Kits :: Комплекты адаптеров разъемов
+Circuit Protection Kits - TVS Diodes :: Комплекты защиты цепей — TVS-диоды
+Wire and Cable Tie Kits :: Комплекты проводов и кабельных стяжек
+Miscellaneous :: Разнообразный
+Networking Solutions :: Сетевые решения
+Gateways, Routers :: Шлюзы, Маршрутизаторы
+Media Converters :: Медиаконвертеры
+Serial Device Servers :: Серверы последовательных устройств
+Switches, Hubs :: Коммутаторы, Хабы
+Power Supplies - Board Mount :: Источники питания — крепление на плате
+DC DC Converters :: Преобразователи постоянного тока
+AC DC Converters :: Преобразователи переменного и постоянного тока
+Resistors :: Резисторы
+Chassis Mount Resistors :: Резисторы для монтажа на шасси
+Resistor Networks, Arrays :: Резисторные Сети, Массивы
+Specialized Resistors :: Специализированные резисторы
+Chip Resistor - Surface Mount :: Чип-резистор — для поверхностного монтажа
+Through Hole Resistors :: Сквозные резисторы
+Potentiometers, Variable Resistors :: Потенциометры, Переменные резисторы
+Joystick Potentiometers :: Джойстик Потенциометры
+Thumbwheel Potentiometers :: Потенциометры с дисковым колесиком
+Scale Dials :: Масштабные циферблаты
+Adjustable Power Resistor :: Регулируемый резистор мощности
+Value Display Potentiometers :: Потенциометры отображения значений
+Slide Potentiometers :: Слайд-потенциометры
+Rotary Potentiometers, Rheostats :: Поворотные потенциометры, реостаты
+Trimmer Potentiometers :: Триммерные потенциометры
+Cables, Wires :: Кабели, Провода
+Single Conductor Cables (Hook-Up Wire) :: Одножильные кабели (соединительный провод)
+Modular - Flat Cable :: Модульный - плоский кабель
+Flat Flex Cables (FFC, FPC) :: Плоские гибкие кабели (FFC, FPC)
+Multiple Conductor Cables :: Многожильные кабели
+Flat Ribbon Cables :: Плоские ленточные кабели
+Wire Wrap :: Проволочная обмотка
+Coaxial Cables (RF) :: Коаксиальные кабели (РЧ)
+Filters :: Фильтры
+Feed Through Capacitors :: Проходные конденсаторы
+SAW Filters :: ПАВ-фильтры
+EMI/RFI Filters (LC, RC Networks) :: Фильтры EMI/RFI (сети LC, RC)
+RF Filters :: Радиочастотные фильтры
+Ceramic Filters :: Керамические фильтры
+Ferrite Beads and Chips :: Ферритовые бусины и чипы
+Helical Filters :: Спиральные фильтры
+Ferrite Disks and Plates :: Ферритовые диски и пластины
+Monolithic Crystals :: Монолитные кристаллы
+Power Line Filter Modules :: Модули сетевых фильтров электропередачи
+Common Mode Chokes :: Синфазные дроссели
+DSL Filters :: DSL-фильтры
+Cable Ferrites :: Кабельные ферриты
+Test and Measurement :: Тестирование и измерение
+Thermometers :: Термометры
+Equipment - Force/Torque Gauges :: Оборудование – Силомоментометры
+Equipment - Environmental Testers :: Оборудование - Экологические тестеры
+Equipment - RF Analyzers :: Оборудование - Радиочастотные анализаторы
+Equipment - Variable Transformers :: Оборудование – переменные трансформаторы
+Test Probe Tips :: Советы по тестированию пробников
+Test Leads - Kits, Assortments :: Тестовые провода – комплекты, ассортимент
+Equipment - Multimeters :: Оборудование - Мультиметры
+Equipment - Power Supplies (Test, Bench) :: Оборудование - Источники питания (Тестовое, Стендовое)
+Test Clips - Grabbers, Hooks :: Тестовые клипсы — грабберы, крючки
+Test Points :: Тестовые точки
+Test Leads - Oscilloscope Probes :: Тестовые провода — щупы для осциллографов
+Equipment - Oscilloscopes :: Оборудование - Осциллографы
+Test Leads - Jumper, Specialty :: Тестовые провода – перемычка, специальный
+Data Acquisition (DAQ) :: Сбор данных (DAQ)
+Equipment - Specialty :: Оборудование - Специализация
+Test Leads - Banana, Meter Interface :: Тестовые провода — банан, измерительный интерфейс
+Equipment - Function Generators :: Оборудование — Генераторы функций
+Test Clips - Alligator, Crocodile, Heavy Duty :: Тестовые зажимы — «Аллигатор», «Крокодил», Heavy Duty
+Equipment - Combination Sets :: Оборудование – комбинированные наборы
+Test Leads - Thermocouples, Temperature Probes :: Тестовые провода — термопары, датчики температуры
+Test Clips - IC :: Тестовые клипы - IC
+GPIB & Communications :: GPIB и коммуникации
+Equipment - Electrical Testers, Current Probes :: Оборудование - Электрические тестеры, токовые пробники
+Test Leads - BNC Interface :: Тестовые выводы — интерфейс BNC
+Optoelectronics :: Оптоэлектроника
+LEDs - Spacers, Standoffs :: Светодиоды – прокладки, стойки
+Fiber Optics - Switches, Multiplexers, Demultiplexers :: Волоконная оптика — коммутаторы, мультиплексоры, демультиплексоры
+Panel Indicators, Pilot Lights :: Панельные индикаторы, контрольные лампы
+LEDs - Circuit Board Indicators, Arrays, Light Bars, Bar Graphs :: Светодиоды — индикаторы печатных плат, массивы, световые полосы, гистограммы
+LED Lighting - Color :: Светодиодное освещение — цветное
+HeNe Laser Systems :: HeNe лазерные системы
+Optomechanical :: Оптомеханический
+Lamps - Cold Cathode Fluorescent (CCFL) & UV :: Лампы — люминесцентные с холодным катодом (CCFL) и УФ
+Display Bezels, Lenses :: Лицевые панели дисплея, линзы
+Lamps - Incandescents, Neons :: Лампы - Лампы накаливания, Неоновые
+LED Emitters - Infrared, UV, Visible :: Светодиодные излучатели – инфракрасные, УФ, видимые
+LED Addressable, Specialty :: Адресный светодиод, специальный
+HeNe Laser System Accessories :: Аксессуары для лазерной системы HeNe
+Display, Monitor - LCD Driver/Controller :: Дисплей, монитор — драйвер/контроллер ЖК-дисплея
+LED Lighting - White :: Светодиодное освещение - белое
+Laser Diodes, Laser Modules :: Лазерные диоды, лазерные модули
+LED Lighting Kits :: Комплекты светодиодного освещения
+HeNe Laser Heads :: HeNe лазерные головки
+Display Modules - Vacuum Fluorescent (VFD) :: Модули дисплея — вакуумно-люминесцентные (VFD)
+Lighting Fixtures :: Осветительная арматура
+Fiber Optics - Transmitters - Discrete :: Волоконная оптика — Передатчики — Дискретный
+LED Lighting - COBs, Engines, Modules, Strips :: Светодиодное освещение - COB, двигатели, модули, ленты
+Xenon Lighting :: Ксеноновое освещение
+Display Modules - LED Dot Matrix and Cluster :: Модули дисплея — светодиодные матричные и кластерные
+Touch Screen Overlays :: Накладки на сенсорный экран
+Laser Diodes, Laser Modules - Accessories :: Лазерные диоды, лазерные модули - Аксессуары
+Fiber Optics - Attenuators :: Волоконная оптика — аттенюаторы
+Display Backlights :: Подсветка дисплея
+Ballasts, Inverters :: Балласты, Инверторы
+Display Modules - LCD, OLED, Graphic :: Модули дисплея — ЖК, OLED, графические
+Display Modules - LCD, OLED Character and Numeric :: Модули дисплея — ЖК-дисплей, символьный и цифровой OLED
+Fiber Optics - Transceiver Modules :: Волоконная оптика — модули приемопередатчиков
+Electroluminescent :: Электролюминесцентный
+Optics - Light Pipes :: Оптика - Световоды
+Laser Diodes, Laser Modules - Laser Delivery, Laser Fibers :: Лазерные диоды, лазерные модули - доставка лазера, лазерные волокна
+Optics - Reflectors :: Оптика - Отражатели
+LED Thermal Products :: Светодиодные тепловые продукты
+Fiber Optics - Receivers :: Волоконная оптика — приёмники
+Optics - Lenses :: Оптика - Линзы
+Optics - Remote Phosphor Light Source :: Оптика — дистанционный люминофорный источник света
+Fiber Optics - Transmitters - Drive Circuitry Integrated :: Волоконная оптика — передатчики — интегрированная схема привода
+Display Modules - LED Character and Numeric :: Модули дисплея — светодиодные символьные и цифровые
+LED Indication - Discrete :: Светодиодная индикация - дискретная
+LEDs - Lamp Replacements :: Светодиоды — замена ламп
+RF/IF and RFID :: RF/IF и RFID
+RF Power Dividers/Splitters :: Делители/разветвители мощности RF
+RF Transmitters :: Радиочастотные передатчики
+RFID Transponders, Tags :: RFID-транспондеры, метки
+RFID, RF Access, Monitoring ICs :: RFID, радиочастотный доступ, ИС мониторинга
+RF Transceiver Modules and Modems :: Модули радиочастотных приемопередатчиков и модемы
+RF Mixers :: Радиочастотные микшеры
+RF Shields :: РЧ щиты
+RF Front End (LNA + PA) :: RF-интерфейс (LNA + PA)
+RF Multiplexers :: Радиочастотные мультиплексоры
+RF Circulators and Isolators :: Радиочастотные циркуляторы и изоляторы
+RF Antennas :: Радиочастотные Антенны
+RFI and EMI - Shielding and Absorbing Materials :: RFI и EMI — экранирующие и поглощающие материалы
+RF Amplifiers :: РЧ усилители
+RFID Accessories :: RFID-аксессуары
+RF Detectors :: Радиочастотные детекторы
+Attenuators :: Аттенюаторы
+Balun :: Балун
+RF Modulators :: Радиочастотные модуляторы
+Subscriber Identification Module (SIM) Cards :: Карты модуля идентификации абонента (SIM)
+RF Directional Coupler :: РЧ направленный ответвитель
+RFI and EMI - Contacts, Fingerstock and Gaskets :: RFI и EMI — контакты, шток и прокладки
+RF Misc ICs and Modules :: Различные радиочастотные микросхемы и модули
+RF Power Controller ICs :: ИС контроллера мощности РЧ
+RF Transceiver ICs :: ИС радиочастотного приемопередатчика
+RF Receivers :: Радиочастотные приемники
+RF Accessories :: Радиочастотные аксессуары
+RF Receiver, Transmitter, and Transceiver Finished Units :: Готовые блоки радиочастотного приемника, передатчика и трансивера
+RFID Reader Modules :: Модули RFID-считывателей
+RFID Antennas :: RFID-антенны
+RF Switches :: Радиочастотные переключатели
+RF Demodulators :: Радиочастотные демодуляторы
+Sensors, Transducers :: Датчики, преобразователи
+Solar Cells :: Солнечные батареи
+Flow Sensors - Industrial :: Датчики расхода - промышленные
+Force Sensors :: Датчики силы
+Optical Sensors - Reflective - Logic Output :: Оптические датчики — отражающие — логический выход
+Temperature Sensors - NTC Thermistors :: Датчики температуры — термисторы NTC
+Motion Sensors - Vibration :: Датчики движения — вибрация
+Shock Sensors :: Датчики удара
+Ultrasonic Receivers, Transmitters :: Ультразвуковые приемники, передатчики
+Magnetic Sensors - Linear, Compass (ICs) :: Магнитные датчики - линейные, компас (ИС)
+Temperature Sensors - Thermostats - Solid State :: Датчики температуры – термостаты – полупроводниковые
+Motion Sensors - Inclinometers :: Датчики движения – инклинометры
+Magnets - Sensor Matched :: Магниты — датчик согласован
+Sensor Cable - Assemblies :: Сенсорный кабель — сборки
+Magnetic Sensors - Position, Proximity, Speed (Modules) - Industrial :: Магнитные датчики - положение, приближение, скорость (модули) - промышленные
+IrDA Transceiver Modules :: Модули ИК-трансиверов
+Particle, Dust Sensors :: Датчики частиц и пыли
+Magnetic Sensors - Switches (Solid State) :: Магнитные датчики – переключатели (полупроводниковые)
+Motion Sensors - IMUs (Inertial Measurement Units) :: Датчики движения – IMU (инерционные единицы измерения)
+Optical Sensors - Image Sensors, Camera :: Оптические датчики - Датчики изображения, камеры
+Optical Sensors - Camera Modules :: Оптические датчики — Модули камер
+Force Sensors - Industrial :: Датчики силы — промышленные
+Position Sensors - Angle, Linear Position Measuring :: Датчики положения — измерение угла, линейного положения
+Pressure Sensors, Transducers - Industrial :: Датчики давления, преобразователи - промышленные
+Encoders :: Кодеры
+Pressure Sensors, Transducers :: Датчики давления, преобразователи
+Float, Level Sensors :: Поплавковые датчики уровня
+Optical Sensors - Photo Detectors - Logic Output :: Оптические датчики – Фотодетекторы – Логический выход
+Optical Sensors - Phototransistors :: Оптические датчики – фототранзисторы
+Magnetic Sensors - Compass, Magnetic Field (Modules) :: Магнитные датчики - компас, магнитное поле (модули)
+Motion Sensors - Gyroscopes :: Датчики движения - гироскопы
+Current Sensors :: Датчики тока
+Flow Sensors :: Датчики потока
+Temperature Sensors - RTD (Resistance Temperature Detector) :: Датчики температуры – RTD (резистивный датчик температуры)
+Temperature Sensors - PTC Thermistors :: Датчики температуры — термисторы PTC
+Temperature Sensors - Thermostats - Mechanical - Industrial :: Датчики температуры - Термостаты - Механические - Промышленные
+Touch Sensors :: Сенсорные датчики
+Multifunction :: Многофункциональный
+Optical Sensors - Ambient Light, IR, UV Sensors :: Оптические датчики — датчики окружающего света, ИК-, УФ-излучения
+Proximity/Occupancy Sensors - Finished Units :: Датчики приближения/присутствия – готовые изделия
+Motion Sensors - Accelerometers :: Датчики движения - Акселерометры
+Temperature Sensors - Thermostats - Mechanical :: Датчики температуры - Термостаты - Механические
+Sensor Interface - Junction Blocks :: Интерфейс датчика — соединительные блоки
+Magnetic Sensors - Position, Proximity, Speed (Modules) :: Магнитные датчики – положение, приближение, скорость (модули)
+Temperature Sensors - Analog and Digital Output :: Датчики температуры — аналоговый и цифровой выход
+Temperature Sensors - Analog and Digital Output - Industrial :: Датчики температуры – аналоговый и цифровой выход – промышленные
+Strain Gauges :: Тензодатчики
+Optical Sensors - Photointerrupters - Slot Type - Transistor Output :: Оптические датчики – Фотопрерыватели – Щелевой тип – Транзисторный выход
+Temperature Sensors - Thermocouples, Temperature Probes :: Датчики температуры - термопары, датчики температуры
+Motion Sensors - Optical :: Датчики движения — оптические
+Optical Sensors - Distance Measuring :: Оптические датчики — измерение расстояния
+Optical Sensors - Photo Detectors - CdS Cells :: Оптические датчики - Фотодетекторы - Элементы CdS
+Optical Sensors - Photo Detectors - Remote Receiver :: Оптические датчики – Фотодетекторы – Удаленный приемник
+Color Sensors - Industrial :: Датчики цвета — промышленные
+Humidity, Moisture Sensors :: Датчики влажности, влажности
+Sensor Cable - Accessories :: Сенсорный кабель — аксессуары
+Encoders - Industrial :: Энкодеры - промышленные
+Color Sensors :: Датчики цвета
+LVDT Transducers (Linear Variable Differential Transformer) :: Преобразователи LVDT (дифференциальный трансформатор с линейной переменной)
+Optical Sensors - Photoelectric, Industrial :: Оптические датчики - фотоэлектрические, промышленные
+Motion Sensors - Tilt Switches :: Датчики движения — переключатели наклона
+Optical Sensors - Reflective - Analog Output :: Оптические датчики — отражающие — аналоговый выход
+Proximity Sensors :: Датчики приближения
+Gas Sensors :: Датчики газа
+Optical Sensors - Photonics - Counters, Detectors, SPCM (Single Photon Counting Module) :: Оптические датчики - Фотоника - Счетчики, детекторы, SPCM (модуль счета одиночных фотонов)
+Float, Level Sensors - Industrial :: Поплавковые датчики уровня - промышленные
+Specialized Sensors :: Специализированные датчики
+Magnets - Multi Purpose :: Магниты – многоцелевые
+Ultrasonic Receivers, Transmitters - Industrial :: Ультразвуковые приемники, передатчики - промышленные
+Optical Sensors - Photodiodes :: Оптические датчики – фотодиоды
+Optical Sensors - Photointerrupters - Slot Type - Logic Output :: Оптические датчики — Фотопрерыватели — Тип слота — Логический выход
+Proximity Sensors - Industrial :: Датчики приближения - промышленные
+Industrial Supplies :: Промышленные поставки
+Janitorial and Maintenance Products :: Товары для уборки и технического обслуживания
+Product, Material Handling and Storage - Building/Construction Products :: Продукция, погрузочно-разгрузочные работы и хранение материалов – строительные изделия
+Workstation, Office Furniture and Equipment - Chairs and Stools :: Рабочее место, офисная мебель и оборудование – стулья и табуреты
+Product, Material Handling and Storage - Drum Pumps :: Продукция, погрузка и хранение материалов – бочковые насосы
+Product, Material Handling and Storage - Racks, Shelving, Stands :: Продукция, погрузка и хранение материалов – стеллажи, стеллажи, стенды
+Electrical - Generators :: Электрика - Генераторы
+HVAC - Air Conditioners :: HVAC – Кондиционеры
+Office Equipment - Water Fountains and Refilling Stations :: Офисное оборудование: фонтанчики и заправочные станции
+HVAC - Heaters :: ОВиК – Обогреватели
+Office Furniture - Partitions and Accessories :: Офисная мебель – перегородки и аксессуары
+Safety - Fuel, Oil and General Purpose Cans :: Безопасность — канистры для топлива, масла и общего назначения
+Carts and Trucks - Carts, Trucks, Jacks, and Dollies :: Тележки и грузовики — тележки, грузовики, домкраты и тележки
+Electrical - Cords, Wires and Accessories :: Электрооборудование: шнуры, провода и аксессуары
+Outdoor Products - Lawn Tools :: Товары для улицы — инструменты для газона
+Office Furniture - Tables :: Офисная мебель - Столы
+Office Equipment - Office Supplies :: Офисное оборудование - Товары для офиса
+Workstation, Office Furniture and Equipment - Hazardous Material, Safety Cabinets :: Рабочее место, офисная мебель и оборудование – опасные материалы, защитные шкафы
+Outdoor Products - Parking Lot and Safety :: Товары для улицы – парковка и безопасность
+Electrical - Lighting Accessories :: Электрооборудование – осветительные аксессуары
+Outdoor Products - Canopies, Shelters and Sheds :: Товары для улицы – навесы, навесы и навесы
+Shipping and Packaging Products :: Доставка и упаковка продукции
+Office Furniture - Safes, Secure Storage :: Офисная мебель - Сейфы, безопасное хранение
+Outdoor Products - Bikes, Racks and Locks :: Товары для улицы — велосипеды, багажники и замки
+HVAC - Parts and Accessories :: ОВиК – Запчасти и аксессуары
+Safety - Exit Signs and Emergency Lights :: Безопасность — указатели выхода и аварийное освещение
+Maintenance - Air Compressor Tools and Accessories :: Техническое обслуживание — инструменты и аксессуары для воздушных компрессоров
+HVAC - Air Handlers, Furnaces :: HVAC - Кондиционеры, Печи
+Safety - Absorbents, Trays and Cleaners :: Безопасность – Абсорбенты, лотки и чистящие средства
+Fans - Blowers and Floor Dryers :: Вентиляторы – воздуходувки и напольные сушилки
+Workstation, Office Furniture and Equipment - Computer Workstations :: Рабочие станции, офисная мебель и оборудование - Компьютерные рабочие станции
+Dock and Warehouse - Ladders, Steps, and Platforms :: Док и склад — лестницы, ступени и платформы
+HVAC - Air Purifiers, Dehumidifiers and Humidifiers :: HVAC - очистители воздуха, осушители и увлажнители воздуха
+Maintenance - Mats :: Техническое обслуживание - Коврики
+HVAC - Air Filters :: ОВКВ — Воздушные фильтры
+Product, Material Handling and Storage - Storage Containers and Bins :: Погрузочно-разгрузочные работы и хранение продуктов, материалов – контейнеры и бункеры для хранения
+Outdoor Products - Miscellaneous :: Товары для улицы – Разное
+Product, Material Handling and Storage - Drum Cradles, Lifts, Trucks :: Погрузка и хранение продукции, погрузочно-разгрузочных работ и хранения материалов – люльки для барабанов, подъемники, грузовики
+Outdoor Products - Cold Weather Products, Clothing :: Товары для улицы – товары для холодной погоды, одежда
+Workstation, Office Furniture and Equipment - Carts and Stands :: Рабочие станции, офисная мебель и оборудование – тележки и подставки
+Outdoor Products - Mowers, Vacuums, Blowers and Cutters :: Товары для улицы — косилки, пылесосы, воздуходувки и резаки
+Office Equipment - File Cabinets, Bookcases :: Офисное оборудование - картотеки, книжные шкафы
+Product, Material Handling and Storage - Dollies :: Погрузочно-разгрузочные работы и хранение продуктов, материалов – тележки
+Outdoor Products - Snow and Ice Removal :: Товары для улицы – Удаление снега и льда
+Product, Material Handling and Storage - Racks, Shelving, Stands - Accessories :: Продукция, погрузочно-разгрузочные работы и хранение материалов – стеллажи, стеллажи, стенды – аксессуары
+Fans - Components and Accessories :: Вентиляторы – компоненты и аксессуары
+Product, Material Handling and Storage - Pallets :: Продукция, погрузка и хранение материалов – поддоны
+Dock and Warehouse - Air Curtain Doors :: Док и склад — двери с воздушной завесой
+Maintenance - Magnets :: Техническое обслуживание - Магниты
+Dock and Warehouse - Mirrors :: Док и склад – Зеркала
+Product, Material Handling and Storage - Drum Accessories :: Продукция, погрузка и хранение материалов – аксессуары для барабанов
+Workstation, Office Furniture and Equipment - Turntables :: Рабочие станции, офисная мебель и оборудование — проигрыватели виниловых пластинок
+Outdoor Products - Cans, Trash Cans and Covers :: Товары для улицы — банки, мусорные баки и крышки
+Outdoor Products - Decor :: Товары для улицы - Декор
+Product, Material Handling and Storage - Drums, Pails :: Погрузочно-разгрузочные работы и хранение продукции, материалов – бочки, ведра
+Outdoor Products - Outdoor Furniture :: Товары для улицы - Мебель для улицы
+Office Equipment - Food Storage and Preparation :: Офисное оборудование – хранение и приготовление продуктов питания
+Fans - Household, Office and Pedestal Fans :: Вентиляторы – бытовые, офисные и напольные вентиляторы
+Electrical - Lighting :: Электрика - Освещение
+Fans - Agricultural, Dock and Exhaust :: Вентиляторы - сельскохозяйственные, доковые и выхлопные
+Workstation, Office Furniture and Equipment - Lockers, Storage Cabinets and Accessories :: Рабочие места, офисная мебель и оборудование – шкафчики, шкафы для хранения и аксессуары
+Vehicle Maintenance and Customization Products :: Продукты для обслуживания и настройки транспортных средств
+Dock and Warehouse - Dock Equipment :: Док и склад - доковое оборудование
+Fans - Components - Motors :: Вентиляторы - Компоненты - Двигатели
+Storage Containers & Bins - Garage Storage and Organization :: Контейнеры для хранения и контейнеры — гаражное хранение и организация
+Power Supplies - External/Internal (Off-Board) :: Источники питания — внешние/внутренние (внеплатные)
+AC DC Desktop, Wall Adapters :: Настольный компьютер переменного и постоянного тока, настенные адаптеры
+AC DC Configurable Power Supplies (Factory Assembled) :: Конфигурируемые источники питания переменного и постоянного тока (заводской сборки)
+Power over Ethernet (PoE) :: Питание через Ethernet (PoE)
+Industrial, DIN Rail Power Supplies :: Промышленные источники питания на DIN-рейку
+AC DC Configurable Power Supply Chassis :: Конфигурируемый блок питания переменного и постоянного тока
+AC DC Configurable Power Supply Modules :: Конфигурируемые модули питания переменного и постоянного тока
+AC AC Wall Adapters :: Настенные адаптеры переменного тока переменного тока
+Soldering, Desoldering, Rework Products :: Пайка, распайка, доработка изделий
+Soldering, Desoldering, Rework Stations :: Паяльные, распайочные, паяльные станции
+Solder :: Припой
+Soldering Irons, Tweezers, Handles :: Паяльники, пинцеты, ручки
+Solder Sponges, Tip Cleaners :: Губки для пайки, очистители жал
+Solder Stencils, Templates :: Трафареты для пайки, шаблоны
+Soldering, Desoldering, Rework Tips, Nozzles :: Пайка, распайка, насадки для доработки, насадки
+Holders, Stands :: Держатели, Подставки
+Accessories :: Аксессуары
+Flux, Flux Remover :: Флюс, средство для удаления флюса
+Desoldering Braid, Wick, Pumps :: Отпайка оплетки, фитиля, насосов
+Fume, Smoke Extraction :: Дымоудаление, дымоудаление
+Crystals, Oscillators, Resonators :: Кристаллы, Генераторы, Резонаторы
+Accessories :: Аксессуары
+VCOs (Voltage Controlled Oscillators) :: VCO (генераторы, управляемые напряжением)
+Oscillators :: Осцилляторы
+Boxes, Enclosures, Racks :: Коробки, Корпуса, Стеллажи
+Storage Accessories :: Аксессуары для хранения
+Rack Components :: Компоненты стойки
+Evaluation, Development Board Enclosures :: Оценка, Корпуса для макетных плат
+Patchbay, Jack Panels :: Патчбэй, Джек Панселс
+Card Guides :: Карточные руководства
+Card Rack Accessories :: Аксессуары для карточных стеллажей
+Handles :: Ручки
+Box Accessories :: Аксессуары для коробок
+Card Racks :: Стойки для карточек
+Card Guide Accessories :: Аксессуары для карточек
+Rack Accessories :: Аксессуары для стоек
+Patchbay, Jack Panel Accessories :: Patchbay, Аксессуары для Джек-панелей
+Storage :: Хранилище
+Latches, Locks :: Защелки, Замки
+Cams :: Камеры
+Box Components :: Компоненты коробки
+Backplanes :: Объединительные платы
+Racks :: Стеллажи
+Rack Thermal Management :: Управление температурой стойки
+Boxes :: Коробки
+Computer Equipment :: Компьютерное оборудование
+KVM Switches (Keyboard Video Mouse) :: KVM-переключатели (клавиатура, видеомышь)
+Desktop Joysticks, Simulation Products :: Настольные джойстики, продукты для моделирования
+Printers, Label Makers :: Принтеры, производители этикеток
+USB Hubs :: USB-концентраторы
+Monitors :: Мониторы
+Server Acceleration Cards :: Карты ускорения сервера
+Memory Card Readers :: Считыватели карт памяти
+Magnetic Strip, Smart Card Readers :: Магнитная Полоса, Считыватели Смарт-карт
+Adapter Cards :: Карты-адаптеры
+Adapters, Converters :: Адаптеры, преобразователи
+Computer Mouse, Trackballs :: Компьютерная мышь, трекболы
+KVM Switches (Keyboard Video Mouse) - Cables :: KVM-переключатели (клавиатура, видеомышь) — кабели
+Cameras, Projectors :: Камеры, Проекторы
+Brackets :: Кронштейны
+Privacy Filters, Screen Protectors :: Фильтры конфиденциальности, защитные пленки
+Keyboards :: Клавиатуры
+Tools :: Инструменты
+Workbenches and Stations - Accessories :: Верстаки и станции - Аксессуары
+Punches :: Удары
+Dispensing Equipment - Bottles, Syringes :: Дозирующее оборудование - бутылки, шприцы
+Dispensing Equipment - Tips, Nozzles :: Дозирующее оборудование - Насадки, насадки
+Excavators, Hooks, Picks, Probes, Tuning Tools :: Экскаваторы, крюки, кирки, щупы, инструменты для настройки
+Tweezers :: Пинцеты
+Flashlights :: Фонарики
+Vacuums :: Пылесосы
+Sockets - Sets :: Розетки - Наборы
+Hex, Torx Keys :: Шестигранные ключи Torx
+Sockets, Socket Handles :: Розетки, Ручки для розеток
+Wire Cutters :: Кусачки
+Staking Tools :: Инструменты для ставок
+Vises :: Тиски
+Personal Protective Equipment (PPE) :: Средства индивидуальной защиты (СИЗ)
+Wire Tie Guns and Accessories :: Пистолеты для стяжки проволоки и аксессуары
+Fiber Optics and Accessories :: Волоконная оптика и аксессуары
+Punchdown, Blades :: Панчдаун, Лезвия
+Insertion, Extraction :: Вставка, Извлечение
+Dispensing Equipment - Applicators, Dispensers :: Дозирующее оборудование - Аппликаторы, Диспенсеры
+Workbenches and Stations :: Верстаки и станции
+Abrasives and Surface Conditioning Products :: Абразивы и средства для подготовки поверхности
+Screw and Nut Drivers - Bits, Blades and Handles :: Отвертки и гайковерты — биты, лезвия и ручки
+Wire Strippers and Accessories :: Инструменты для зачистки проводов и аксессуары
+Heat Guns, Torches, Accessories :: Тепловые пушки, горелки, аксессуары
+Crimpers, Applicators, Presses - Accessories :: Щипцы, аппликаторы, прессы - аксессуары
+Wrenches :: Ключи
+Chemicals, Cleaners :: Химия, Чистящие средства
+Screw and Nut Drivers :: Отвертки и гайковерты
+Paint Supplies :: Краски
+Crimpers - Crimp Heads, Die Sets :: Щипцы - обжимные головки, наборы матриц
+Crimpers, Applicators, Presses :: Щипцы, аппликаторы, прессы
+Knives, Cutting Tools :: Ножи, режущие инструменты
+Screw and Nut Drivers - Sets :: Отвертки и гаечные ключи — наборы
+Assorted Tool Kits :: Ассорти наборов инструментов
+Tool Bags, Boxes and Cabinets :: Сумки для инструментов, коробки и шкафы
+Pliers :: Плоскогубцы
+Hammers :: Молотки
+Specialized Tools :: Специализированные инструменты
+Pressure Washers :: Мойки высокого давления
+Development Boards, Kits, Programmers :: Макетные платы, комплекты, программаторы
+Evaluation Boards - Linear Voltage Regulators :: Оценочные платы — линейные регуляторы напряжения
+Evaluation Boards - Sensors :: Оценочные платы – Датчики
+Evaluation Boards - LED Drivers :: Оценочные платы — драйверы светодиодов
+RFID Evaluation and Development Kits, Boards :: Комплекты для оценки и разработки RFID, платы
+RF Evaluation and Development Kits, Boards :: Комплекты для оценки и разработки RF, платы
+Evaluation and Demonstration Boards and Kits :: Оценочные и демонстрационные платы и комплекты
+Programmers, Emulators, and Debuggers :: Программисты, эмуляторы и отладчики
+Evaluation Boards - Embedded - MCU, DSP :: Оценочные платы — встроенные — MCU, DSP
+Evaluation Boards - Op Amps :: Оценочные платы — операционные усилители
+Evaluation Boards - Digital to Analog Converters (DACs) :: Оценочные платы — цифро-аналоговые преобразователи (ЦАП)
+Evaluation Boards - Expansion Boards, Daughter Cards :: Оценочные платы — платы расширения, дочерние карты
+Programming Adapters, Sockets :: Адаптеры для программирования, розетки
+Evaluation Boards - Audio Amplifiers :: Оценочные платы — усилители звука
+UV Erasers :: УФ-ластики
+Evaluation Boards - Embedded - Complex Logic (FPGA, CPLD) :: Оценочные платы — встроенные — сложная логика (FPGA, CPLD)
+Evaluation Boards - DC/DC & AC/DC (Off-Line) SMPS :: Оценочные платы — SMPS постоянного/постоянного и переменного/постоянного тока (автономные)
+Evaluation Boards - Analog to Digital Converters (ADCs) :: Оценочные платы — аналого-цифровые преобразователи (АЦП)
+Software, Services :: Программное обеспечение, Услуги
+Optics :: Оптика
+Laser Optics - Accessories :: Лазерная оптика - Аксессуары
+Polarizers :: Поляризаторы
+Laser Optics - F-Theta Lenses :: Лазерная оптика – линзы F-Theta
+Laser Optics - Laser Modulators :: Лазерная оптика — лазерные модуляторы
+Laser Optics - Faraday Isolators :: Лазерная оптика — изоляторы Фарадея
+Laser Optics - Beam Expanders :: Лазерная оптика — расширители луча
+Laser Optics - Pockels Cells :: Лазерная оптика — ячейки Поккельса
+Beamsplitters :: Светоделители
+Prisms :: Призмы
+Lenses :: Линзы
+Laser Optics - Focus Lenses :: Лазерная оптика — фокусирующие линзы
+Mirrors :: Зеркала
+Transformers :: Трансформеры
+Switching Converter, SMPS Transformers :: Импульсный преобразователь, трансформаторы SMPS
+Pulse Transformers :: Импульсные трансформаторы
+Specialty Transformers :: Специализированные трансформаторы
+Power Transformers :: Силовые трансформаторы
+Audio Transformers :: Аудио Трансформаторы
+Isolation Transformers and Autotransformers, Step Up, Step Down :: Изолирующие трансформаторы и автотрансформаторы, шаг вверх, шаг вниз
+Current Sense Transformers :: Трансформаторы тока
+Fans, Thermal Management :: Вентиляторы, терморегулирование
+Thermal - Liquid Cooling, Heating :: Термическое – жидкостное охлаждение, обогрев
+Fans - Accessories :: Вентиляторы - Аксессуары
+Thermal - Pads, Sheets :: Термопрокладки, простыни
+Thermal - Accessories :: Термальное оборудование - Аксессуары
+Thermal - Thermoelectric, Peltier Modules :: Тепловые-термоэлектрические модули Пельтье
+Fans - Finger Guards, Filters & Sleeves :: Вентиляторы — защита пальцев, фильтры и рукава
+Thermal - Heat Pipes, Vapor Chambers :: Тепловые - тепловые трубки, паровые камеры
+Thermal - Thermoelectric, Peltier Assemblies :: Тепло-термоэлектрические узлы Пельтье
+Thermal - Adhesives, Epoxies, Greases, Pastes :: Термические клеи, эпоксидные смолы, смазки, пасты
+Heat Tape, Heat Blankets and Heaters :: Тепловая лента, тепловые одеяла и обогреватели
+Fans - Accessories - Fan Cords :: Вентиляторы - Аксессуары - Шнуры вентиляторов
+DC Brushless Fans (BLDC) :: Бесщеточные вентиляторы постоянного тока (BLDC)
+AC Fans :: Вентиляторы переменного тока
+Thermal - Heat Sinks :: Тепловые радиаторы
+Motors, Solenoids, Driver Boards/Modules :: Двигатели, соленоиды, платы/модули драйверов
+Stepper Motors :: Шаговые двигатели
+Electric Actuators/Cylinders :: Электрические приводы/цилиндры
+Motor Driver Boards, Modules :: Платы драйверов двигателей, модули
+Motors - AC, DC :: Двигатели - переменного, постоянного тока
+Solenoids, Actuators :: Соленоиды, Актуаторы
+Maker/DIY, Educational :: Создатель/Сделай сам, Образовательный
+Wearables :: Носимые устройства
+Robotics Kits :: Комплекты робототехники
+Educational Kits :: Образовательные наборы
+Books, Media :: Книги, СМИ
+Prototyping, Fabrication :: Прототипирование, Изготовление
+Gadgets, Gizmos :: Гаджеты, Вещицы
+Tapes, Adhesives, Materials :: Ленты, Клеи, Материалы
+Tape Dispensers :: Диспенсеры для лент
+Tape :: Лента
+Films :: Фильмы
+Glue, Adhesives, Applicators :: Клей, Адгезивы, Аппликаторы
+2D Materials :: 2D-материалы
+Inductors, Coils, Chokes :: Индукторы, катушки, дроссели
+Wireless Charging Coils :: Катушки беспроводной зарядки
+Arrays, Signal Transformers :: Массивы, преобразователи сигналов
+Adjustable Inductors :: Регулируемые индукторы
+Fixed Inductors :: Фиксированные индукторы
+Audio Products :: Аудиопродукты
+Buzzer Elements, Piezo Benders :: Элементы зуммера, пьезоизгибатели
+Guitar Parts, Accessories :: Гитарные партии, аксессуары
+Speakers :: Динамики
+Vacuum Tubes :: Вакуумные трубки
+Alarms, Buzzers, and Sirens :: Сигнализация, зуммеры и сирены
+Microphones :: Микрофоны
+Circuit Protection :: Защита цепи
+TVS - Diodes :: ТВС - Диоды
+Lighting Protection :: Защита освещения
+TVS - Thyristors :: ТВС - Тиристоры
+Circuit Breakers :: Автоматические выключатели
+TVS - Mixed Technology :: ТВС – смешанная технология
+Ground Fault Circuit Interrupter (GFCI) :: Прерыватель цепи замыкания на землю (GFCI)
+Electrical, Specialty Fuses :: Электрические, специальные предохранители
+Fuses :: Предохранители
+TVS - Varistors, MOVs :: TVS - Варисторы, MOV
+Surge Suppression ICs :: ИС подавления перенапряжений
+Gas Discharge Tube Arresters (GDT) :: Газоразрядные разрядники (ГРТ)
+Thermal Cutoffs (Thermal Fuses and Breakers) :: Термопредохранители (термальные предохранители и выключатели)
+TVS - Surge Protection Devices (SPDs) :: TVS — устройства защиты от перенапряжения (SPD)
+Fuseholders :: Держатели предохранителей
+PTC Resettable Fuses :: Восстанавливающиеся предохранители PTC
+Inrush Current Limiters (ICL) :: Ограничители пускового тока (ICL)
+Magnetics - Transformer, Inductor Components :: Магнетика — трансформатор, компоненты индуктора
+Bobbins (Coil Formers), Mounts, Hardware :: Бобины (катушки), крепления, метизы
+Magnetic Wire :: Магнитный провод
+Ferrite Cores :: Ферритовые сердечники
+Labels, Signs, Barriers, Identification :: Этикетки, знаки, барьеры, идентификация
+Signs, Nameplates, Posters :: Вывески, Таблички, Плакаты
+Labels, Stickers, Decals - Blank :: Этикетки, наклейки, наклейки - пустые
+Labels, Stickers, Decals - Preprinted :: Этикетки, наклейки, переводные картинки — с предварительной печатью
+Barriers, Barricades, Floor Markings, Tapes :: Барьеры, баррикады, разметка пола, ленты
+Tags :: Теги
+Lockouts, Padlocks :: Локауты, Навесные замки
+Memory Cards, Modules :: Карты памяти, модули
+USB Flash Drives :: USB-накопители
+Memory Cards :: Карты памяти
+Solid State Drives (SSDs), Hard Disk Drives (HDDs) :: Твердотельные накопители (SSD), жесткие диски (HDD)
+Memory - Modules :: Память — Модули
+Hardware, Fasteners, Accessories :: Метизы, крепеж, аксессуары
+Component Insulators, Mounts, Spacers :: Изоляторы компонентов, крепления, прокладки
+DIN Rail Channel :: DIN-рейка канал
+Knobs :: Ручки
+Structural, Motion Hardware :: Структурное, подвижное оборудование
+Bearings :: Подшипники
+Hole Plugs - Tapered Caps :: Заглушки отверстий – конические заглушки
+Screw Grommets :: Винтовые втулки
+Reclosable Fasteners :: Многоразовые застежки
+Foam :: Мыло
+Springs - Extension, Drawbar :: Пружины - удлинение, дышло
+Springs - Compression, Tapered :: Пружины - сжатия, конические
+Screws, Bolts :: Винты, Болты
+Hinges :: Петли
+Clips, Hangers, Hooks :: Зажимы, Вешалки, Крючки
+Nuts :: Орехи
+Springs - Torsion :: Пружины - Торсионные
+Mounting Brackets :: Монтажные кронштейны
+Washers - Bushing, Shoulder :: Шайбы - втулка, буртик
+Bumpers, Feet, Pads, Grips :: Бамперы, ножки, накладки, ручки
+Board Spacers, Standoffs :: Проставки для досок, стойки
+Rivets :: Заклепки
+Washers :: Шайбы
+Board Supports :: Поддержка досок
+Prototyping, Fabrication Products :: Прототипирование, изготовление изделий
+Prototype Boards Unperforated :: Платы-прототипы без перфорации
+Etching and Fabrication Equipment :: Оборудование для травления и изготовления
+3D Printing Materials :: Материалы для 3D-печати
+Coating, Grease, Repair :: Покрытие, смазка, ремонт
+Adapter, Breakout Boards :: Адаптер, коммутационные платы
+Card Extenders :: Расширители карт
+3D Printing Filaments :: Нити для 3D-печати
+Prototype Boards Perforated :: Платы-прототипы перфорированные
+Solderless Breadboards :: Беспаечные макеты
+3D Printers :: 3D-принтеры
+Drill Bits, End Mills :: Сверла, Концевые фрезы
+PCB Routers, Milling Machines :: Фрезерные станки для печатных плат, фрезерные станки
+3D Printing Accessories :: Аксессуары для 3D-печати
+Jumper Wire :: Перемычка
+Custom 3D Printing Service :: Индивидуальная услуга 3D-печати
+Connectors, Interconnects :: Разъемы, межсоединения
+USB, DVI, HDMI Connectors :: Разъемы USB, DVI, HDMI
+USB, DVI, HDMI Connector Assemblies :: Сборки разъемов USB, DVI, HDMI
+USB, DVI, HDMI Connector Adapters :: Адаптеры разъемов USB, DVI, HDMI
+USB, DVI, HDMI Connector Accessories :: Аксессуары для разъемов USB, DVI, HDMI
+Rectangular Connectors - Board Spacers, Stackers (Board to Board) :: Прямоугольные соединители — прокладки для плат, штабелеры (плата к плате)
+Modular Connectors :: Модульные разъемы
+Modular Connector Jacks With Magnetics :: Модульные разъемы с магнитами
+Modular Connector Accessories :: Аксессуары для модульных разъемов
+Modular Connector Adapters :: Модульные адаптеры разъемов
+Modular Connector Wiring Blocks :: Модульные соединительные блоки
+Modular Connector Wiring Blocks Accessories :: Аксессуары для модульных соединительных блоков
+Modular Connector Plug Housings :: Корпуса вилок модульных разъемов
+Modular Connector Jacks :: Модульные разъемы
+Modular Connector Plugs :: Модульные разъемы
+Keystone - Faceplates, Frames :: Keystone — лицевые панели, рамки
+Rectangular Connectors - Contacts :: Прямоугольные разъемы - Контакты
+Heavy Duty Connectors :: Разъемы для тяжелых условий эксплуатации
+Heavy Duty Connector Accessories :: Аксессуары для разъемов для тяжелых условий эксплуатации
+Heavy Duty Connector Contacts :: Контакты разъема для тяжелых условий эксплуатации
+Heavy Duty Connector Inserts, Modules :: Соединительные вставки для тяжелых условий эксплуатации, модули
+Heavy Duty Connector Assemblies :: Сборки разъемов для тяжелых условий эксплуатации
+Heavy Duty Connector Housings, Hoods, Bases :: Корпуса разъемов для тяжелых условий эксплуатации, колпаки, основания
+Heavy Duty Connector Frames :: Рамки разъемов для тяжелых условий эксплуатации
+Between Series Adapters :: Между последовательными адаптерами
+Rectangular Connectors :: Прямоугольные соединители
+Rectangular Connector Contacts :: Контакты прямоугольного разъема
+Rectangular Connector Adapters :: Переходники прямоугольного разъема
+Board Spacers, Stackers (Board to Board) :: Проставки для досок, штабелеры (доска к доске)
+Free Hanging, Panel Mount :: Свободное подвешивание, крепление на панели
+Rectangular Connector Housings :: Прямоугольные корпуса разъемов
+Spring Loaded :: Пружинный
+Board In, Direct Wire to Board :: Плата, прямой провод к плате
+Headers, Male Pins :: Заголовки, штыри
+Headers, Specialty Pin :: Заголовки, специальный штифт
+Headers, Receptacles, Female Sockets :: Разъемы, розетки, гнездовые розетки
+Arrays, Edge Type, Mezzanine (Board to Board) :: Массивы, краевой тип, мезонин (от платы к плате)
+Rectangular Connector Accessories :: Аксессуары для прямоугольных разъемов
+AC Power Connectors :: Разъемы питания переменного тока
+Power Entry Connector Accessories :: Аксессуары для разъемов ввода питания
+Power Entry Modules (PEM) :: Модули подачи питания (PEM)
+Plugs and Receptacles :: Вилки и розетки
+Modular Connectors - Jacks With Magnetics :: Модульные разъемы — разъемы с магнитами
+Barrel Connectors :: Соединители ствола
+Power Connectors :: Разъемы питания
+Barrel Connector Adapters :: Адаптеры для цилиндрических разъемов
+Barrel Connector Accessories :: Аксессуары для цилиндрических соединителей
+Audio Connectors :: Аудиоразъемы
+Contacts, Spring Loaded (Pogo Pins), and Pressure :: Контакты, подпружиненные (Pogo Pins) и давление
+Coaxial Connectors (RF) :: Коаксиальные разъемы (РЧ)
+Coaxial Connector (RF) Contacts :: Контакты коаксиального разъема (РЧ)
+Coaxial Connector (RF) Adapters :: Адаптеры коаксиального разъема (РЧ)
+Coaxial Connector (RF) Assemblies :: Коаксиальные соединители (РЧ) в сборе
+Coaxial Connector (RF) Terminators :: Терминаторы коаксиального разъема (РЧ)
+Coaxial Connector (RF) Accessories :: Аксессуары для коаксиального разъема (РЧ)
+Pluggable Connectors :: Съемные разъемы
+Pluggable Connector Assemblies :: Съемные разъемы в сборе
+Pluggable Connector Accessories :: Аксессуары для съемных разъемов
+Backplane Connectors - Specialized :: Разъемы объединительной платы — специализированные
+Shunts, Jumpers :: Шунты, Джемперы
+Solid State Lighting Connectors :: Твердотельные разъемы освещения
+Solid State Lighting Connector Assemblies :: Твердотельные разъемы освещения в сборе
+Solid State Lighting Connector Accessories :: Аксессуары для твердотельных разъемов освещения
+Solid State Lighting Connector Contacts :: Контакты разъема твердотельного освещения
+Circular Connectors :: Круглые соединители
+Circular Connector Accessories :: Аксессуары для круглых разъемов
+Circular Connector Adapters :: Адаптеры с круглым разъемом
+Backshells and Cable Clamps :: Задние корпуса и кабельные зажимы
+Circular Connector Assemblies :: Круглые соединители в сборе
+Circular Connector Housings :: Круглые корпуса разъемов
+Circular Connector Contacts :: Контакты круглого разъема
+Power Entry Connectors - Inlets, Outlets, Modules :: Разъемы ввода питания — входы, розетки, модули
+LGH Connectors :: Разъемы ЛГХ
+Card Edge Connectors :: Краевые разъемы карты
+Card Edge Connector Housings :: Корпуса краевого разъема карты
+Card Edge Connector Contacts :: Контакты краевого разъема карты
+Card Edge Connector Adapters :: Адаптеры краевого разъема карты
+Edgeboard Connectors :: Соединители кромки
+Card Edge Connector Accessories :: Аксессуары для краевого разъема карты
+Power Entry Connectors :: Разъемы ввода питания
+Sockets for ICs, Transistors :: Розетки для микросхем, транзисторов
+Socket Accessories :: Аксессуары для розеток
+IC Sockets :: IC-разъемы
+Socket Adapters :: Переходники для розеток
+Rectangular Connectors - Board In, Direct Wire to Board :: Прямоугольные разъемы — вход платы, прямой провод к плате
+Blade Type Power Connectors :: Разъемы питания лезвийного типа
+Blade Type Power Connector Contacts :: Контакты разъема питания лезвия
+Blade Type Power Connector Housings :: Корпуса разъемов питания лезвийного типа
+Blade Type Power Connector Assemblies :: Блоки силовых разъемов блейд-типа
+Blade Type Power Connector Accessories :: Аксессуары для разъемов питания лезвийного типа
+Rectangular Connectors - Housings :: Прямоугольные соединители — корпуса
+Contacts :: Контакты
+Multi Purpose :: Многоцелевой
+Leadframe :: Выводная рамка
+Contacts, Spring Loaded and Pressure :: Контакты, пружинные и давление
+Memory Connectors :: Разъемы памяти
+Inline Module Sockets :: Разъемы встроенного модуля
+Memory Connector Accessories :: Аксессуары для разъемов памяти
+PC Card Sockets :: Разъемы для ПК-карт
+PC Cards - Adapters :: Карты ПК — адаптеры
+Terminal Blocks :: Клеммные колодки
+Din Rail, Channel :: DIN-рейка, канал
+Interface Modules :: Интерфейсные модули
+Terminal Block Accessories :: Аксессуары для клеммных колодок
+Wire to Board :: Провод к плате
+Terminal Block Contacts :: Контакты клеммного блока
+Terminal Block Adapters :: Адаптеры клеммных колодок
+Headers, Plugs and Sockets :: Разъемы, вилки и розетки
+Power Distribution :: Распределение мощности
+Panel Mount :: Монтаж на панели
+Barrier Blocks :: Барьерные блоки
+Banana and Tip Connectors :: Разъемы типа «банан» и наконечник
+Jacks, Plugs :: Разъемы, вилки
+Banana and Tip Connector Adapters :: Адаптеры типа «банан» и наконечника
+Binding Posts :: Обязательные сообщения
+Banana and Tip Connector Accessories :: Аксессуары для разъемов типа «банан» и наконечников
+Backplane Connectors :: Разъемы объединительной платы
+ARINC :: АРИНК
+Backplane Connector Housings :: Корпуса разъемов объединительной платы
+Hard Metric, Standard :: Жесткая метрика, стандартная
+DIN 41612 :: DIN 41612
+Backplane Connector Contacts :: Контакты разъема объединительной платы
+Backplane Connector Accessories :: Аксессуары для разъемов объединительной платы
+ARINC Inserts :: Вставки ARINC
+Terminals :: Терминалы
+Wire Pin Connectors :: Разъемы для проводов
+Turret Connectors :: Соединители турелей
+Wire Splice Connectors :: Соединители для сращивания проводов
+Specialized Connectors :: Специализированные разъемы
+Screw Connectors :: Винтовые соединители
+PC Pin, Single Post Connectors :: Штырь ПК, одноконтактные разъемы
+PC Pin Receptacles, Socket Connectors :: Штыревые розетки для ПК, разъемы для ПК
+Magnetic Wire Connectors :: Магнитные соединители проводов
+Ring Connectors :: Кольцевые соединители
+Housings, Boots :: Корпуса, Сапоги
+Quick Connects, Quick Disconnect Connectors :: Быстроразъемные соединения, быстроразъемные разъемы
+Barrel, Bullet Connectors :: Ствол, Пулевые соединители
+Spade Connectors :: Лопаточные соединители
+Wire to Board Connectors :: Разъемы провод-плата
+Solder Lug Connectors :: Соединители для пайки
+Knife Connectors :: Ножевые соединители
+Terminal Accessories :: Аксессуары для терминалов
+Terminal Adapters :: Терминальные адаптеры
+Foil Connectors :: Фольгированные соединители
+Keystone Connectors :: Трапецеидальные разъемы
+Keystone Faceplates, Frames :: Лицевые панели Keystone, рамки
+Keystone Connector Accessories :: Аксессуары для разъемов Keystone
+Keystone Inserts :: Трапецеидальные вставки
+Terminal Junction Systems :: Системы терминальных соединений
+FFC, FPC (Flat Flexible) Connectors :: Разъемы FFC, FPC (плоские гибкие)
+FFC, FPC (Flat Flexible) Connector Housings :: Корпуса разъемов FFC, FPC (плоские гибкие)
+FFC, FPC (Flat Flexible) Connector Assemblies :: Сборки разъемов FFC, FPC (плоские гибкие)
+FFC, FPC (Flat Flexible) Connector Accessories :: Аксессуары для разъемов FFC, FPC (плоские гибкие)
+FFC, FPC (Flat Flexible) Connector Contacts :: Контакты разъема FFC, FPC (плоский гибкий)
+Rectangular Connectors - Arrays, Edge Type, Mezzanine (Board to Board) :: Прямоугольные разъемы — массивы, краевой тип, мезонин (от платы к плате)
+Photovoltaic (Solar Panel) Connectors :: Фотоэлектрические (солнечные панели) разъемы
+Photovoltaic (Solar Panel) Connector Contacts :: Контакты разъема фотоэлектрической панели (солнечной панели)
+Photovoltaic (Solar Panel) Connector Assemblies :: Фотоэлектрические (солнечные панели) разъемы в сборе
+Photovoltaic (Solar Panel) Connector Accessories :: Аксессуары для фотоэлектрических (солнечных панелей) разъемов
+Fiber Optic Connectors :: Оптоволоконные соединители
+Fiber Optic Connector Housings :: Корпуса оптоволоконных разъемов
+Fiber Optic Connector Adapters :: Адаптеры оптоволоконных разъемов
+Fiber Optic Connector Accessories :: Аксессуары для оптоволоконных разъемов
+Fiber Optic Connector Assemblies :: Сборки оптоволоконных соединителей
+D-Sub, D-Shaped Connectors :: D-Sub, D-образные разъемы
+D-Sub Connector Assemblies :: Сборки разъемов D-Sub
+D-Sub, D-Shaped Connector Contacts :: Контакты разъема D-Sub, D-образной формы
+D-Sub, D-Shaped Connector Terminators :: D-Sub, терминаторы разъема D-образной формы
+Centronics Connectors :: Разъемы Центроникс
+D-Sub, D-Shaped Connector Accessories :: Аксессуары для разъемов D-Sub, D-образной формы
+D-Sub, D-Shaped Connector Jackscrews :: D-Sub, D-образные винтовые домкраты для разъемов
+D-Sub, D-Shaped Connector Housings :: D-Sub, корпуса разъемов D-образной формы
+D-Sub, D-Shaped Connector Adapters :: D-Sub, адаптеры D-образного разъема
+D-Sub, D-Shaped Connector Backshells, Hoods :: D-Sub, корпуса разъемов D-образной формы, колпаки
+Rectangular Connectors - Headers, Receptacles, Female Sockets :: Прямоугольные разъемы — разъемы, розетки, розетки
+Backplane Connectors - Accessories :: Разъемы объединительной платы — аксессуары
+Rectangular Connectors - Free Hanging, Panel Mount :: Прямоугольные соединители – свободно подвешиваемые, для монтажа на панели
+Rectangular Connectors - Accessories :: Прямоугольные соединители — аксессуары
+Rectangular Connectors - Headers, Male Pins :: Прямоугольные разъемы — разъемы, штыри
+Heavy Duty Connectors - Housings, Hoods, Bases :: Соединители для тяжелых условий эксплуатации — корпуса, кожухи, основания
+Terminal Strips and Turret Boards :: Клеммные колодки и турельные платы
+Modular Connectors - Jacks :: Модульные разъемы - разъемы
+Battery Products :: Аккумуляторные продукты
+Batteries Rechargeable (Secondary) :: Аккумуляторные батареи (вторичные)
+Cigarette Lighter Assemblies :: Прикуриватели в сборе
+Battery Packs :: Аккумуляторы
+Batteries Non-Rechargeable (Primary) :: Батареи Неперезаряжаемые (Основные)
+Battery Holders, Clips, Contacts :: Держатели батарей, зажимы, контакты
+Embedded Computers :: Встроенные компьютеры
+Interface Boards :: Интерфейсные платы
+Single Board Computers (SBCs), Computer On Module (COM) :: Одноплатные компьютеры (SBC), компьютер на модуле (COM)

@@ -241,10 +241,14 @@
 
 
     <page name="catalog" template="catalog" cacheable="true">
+		<request>
+			<var name="translate_items" value="sec1:name, sec2:name, sec3:name"/>
+		</request>
 		<include name="COMMON"/>
 		<single item="catalog">
 			<single item="seo" assoc="seo"/>
 		</single>
+		<command class="extra.TranslationCommand"/>
 	</page>
 
 

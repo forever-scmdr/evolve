@@ -3,6 +3,7 @@ package ecommander.model;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DataType.Type;
 import ecommander.pages.InputValues;
@@ -292,6 +293,7 @@ public class Item implements ItemBasics {
 	 * @param value
 	 */
 	public final boolean setValue(int paramId, Object value) {
+		Timer.getTimer().start("Item # setValue");
 		boolean modified;
 		if (value == null) {
 			// Если добавляется пустое значение к множественному параметру - ничего не делать
@@ -306,6 +308,7 @@ public class Item implements ItemBasics {
 			state = State.modified_NO_xml;
 			return true;
 		}
+		Timer.getTimer().stop("Item # setValue");
 		return false;
 	}
 	/**
@@ -377,6 +380,7 @@ public class Item implements ItemBasics {
 	 * Заполнить значения параметров из строки параметров XML в отображение (paramMap)
 	 */
 	private void populateMap() {
+		Timer.getTimer().start("Item # populateMap");
 		if (state == State.consistent_NO_map) {
 			try {
 				XmlDocumentBuilder doc = XmlDocumentBuilder.newDoc();
@@ -460,6 +464,7 @@ public class Item implements ItemBasics {
 			}
 			state = State.consistent_WITH_map;
 		}
+		Timer.getTimer().stop("Item # populateMap");
 	}
 	/**
 	 * Создать XML представление всех парамтеров айтема на базе отображения в памяти (paramMap)
@@ -612,6 +617,7 @@ public class Item implements ItemBasics {
 	 * Вызывается перед сохранением айтема
 	 */
 	public final void prepareToSave() {
+		Timer.getTimer().start("Item # prepareToSave");
 		if (state == State.modified_NO_xml) {
 			// Записать параметры в XML формате
 			createXML();
@@ -639,6 +645,7 @@ public class Item implements ItemBasics {
 			if (isNew())
 				oldKeyUnique = keyUnique;
 		}
+		Timer.getTimer().stop("Item # prepareToSave");
 	}
 //	/**
 //	 * Вернуть версию айтема, которая была сразу после загрузки из БД
