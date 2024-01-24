@@ -64,6 +64,13 @@
 					<!-- <li><a href="create_excel_pricelist_min/?action=start">Экспорт прайса Excel</a></li> -->
 				</ul>
 
+				<h2 class="title">Интеграция Saleo Кобрин</h2>
+
+				<ul class="no-drag">
+					<li><a href="integrate_txt?action=start">Интеграция Saleo Кобрин</a></li>
+				</ul>
+
+
 				<h2 class="title">Интеграция внешних складов</h2>
 
 				<ul class="no-drag">
