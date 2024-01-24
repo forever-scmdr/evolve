@@ -654,28 +654,29 @@
 					</xsl:if>
 				</div>
 			</td>
-			<td><!--дата поставки -->
+			<!--
+			<td>
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="next_delivery"/></div>
 			</td>
-			<td><!--количество на складе -->
+			<td>
 				<div class="thn">Количество</div>
 				<div class="thd"><xsl:value-of select="qty"/></div>
 			</td>
 			<td>
 				<div class="thn">Цена</div>
-				<div class="thd"><!--цена -->
+				<div class="thd">
 					<xsl:if test="price_old">
 						<div class="price__item_old">
 							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 						</div>
 					</xsl:if>
 					<xsl:if test="$has_price">
-						<!-- Для обычных товаров (не из каталога price_catalog) -->
+
 						<xsl:if test="not($plain)">
 							<xsl:if test="$has_lines" >от </xsl:if><xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
 						</xsl:if>
-						<!-- Для товаров из каталога price_catalog -->
+
 						<xsl:if test="$plain">
 							<xsl:call-template name="ALL_PRICES">
 								<xsl:with-param name="need_sum" select="false()"/>
@@ -689,6 +690,7 @@
 					<xsl:if test="not($has_price)"> - </xsl:if>
 				</div>
 			</td>
+		-->
 			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Базовая цена</div>
@@ -771,28 +773,29 @@
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
 				</div>
 			</td>
-			<td><!--дата поставки -->
+			<!--
+			<td>
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="next_delivery"/></div>
 			</td>
-			<td><!--количество на складе -->
+			<td>
 				<div class="thn">Количество</div>
 				<div class="thd"><xsl:value-of select="qty"/></div>
 			</td>
 			<td>
 				<div class="thn">Цена</div>
-				<div class="thd"><!--цена -->
+				<div class="thd">
 					<xsl:if test="price_old">
 						<div class="price__item_old">
 							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
 						</div>
 					</xsl:if>
 					<xsl:if test="$has_price">
-						<!-- Для обычных товаров (не из каталога price_catalog) -->
+
 						<xsl:if test="not($multipe_prices)">
 							<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
 						</xsl:if>
-						<!-- Для товаров из каталога price_catalog -->
+
 						<xsl:if test="$multipe_prices">
 							<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
 								<xsl:with-param name="need_sum" select="false()"/>
@@ -804,6 +807,7 @@
 					<xsl:if test="not($has_price)"> - </xsl:if>
 				</div>
 			</td>
+			-->
 			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Базовая цена</div>
@@ -1020,9 +1024,11 @@
 							<th>Дата прайса</th>
 						</xsl:if>
 						<th>Описание</th>
+						<!--
 						<th>Срок поставки</th>
 						<th>Количество</th>
 						<th>Цена</th>
+						-->
 						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
 						<th>Заказать</th>
 						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
