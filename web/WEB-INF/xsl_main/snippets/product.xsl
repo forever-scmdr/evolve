@@ -25,8 +25,9 @@
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
-	<xsl:variable name="sel_sec" select="none"/>
 
+
+	<xsl:variable name="onerror">$(this).attr('src', 'img/no_image.png'); this.removeAttribute('onerror');</xsl:variable>
 
 
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -43,7 +44,7 @@
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<!--<div style="display: none">
@@ -55,7 +56,7 @@
 			</div>-->
 
 			<!-- device image -->
-			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
+			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror}"/></a>
 
 			<!-- device tags -->
 			<div class="tags device__tags">
@@ -133,6 +134,12 @@
 				</xsl:if>
 			</div>
 
+			<div class="add">
+				<a class="add__item icon-link" href="product_docs/{code}.pdf">
+					<span>Скачать документацию</span>
+				</a>
+			</div>
+
 			<!-- device actions (compare and favourites) -->
 			<div class="add">
 				<xsl:call-template name="FAV_AND_COMPARE">
@@ -152,7 +159,7 @@
 		<xsl:variable name="multipe_prices" select="prices"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -164,7 +171,7 @@
 			</div>
 
 			<!-- device image -->
-			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" /></a>
+			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror}"/></a>
 
 			<!-- device tags -->
 			<div class="tags device__tags">
@@ -240,7 +247,7 @@
 
 		<div class="device device_row">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 
 			<div class="device__column">
 
@@ -263,7 +270,7 @@
 				<!-- device image -->
 				<div class="device__image img">
 					<a href="{show_product}">
-						<img src="{$pic_path}" alt="" />
+						<img src="{$pic_path}" alt="" onerror="{$onerror}" />
 					</a>
 				</div>
 
@@ -315,7 +322,7 @@
 								<xsl:if test="count($captions) &gt; $product_params_limit">
 									<tr>
 										<td colspan="2">
-											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>
+											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>
 										</td>
 									</tr>
 								</xsl:if>
@@ -400,6 +407,12 @@
 					<xsl:with-param name="p" select="current()"/>
 				</xsl:call-template>
 
+				<div class="add">
+					<a class="add__item icon-link" href="product_docs/{code}.pdf">
+						<span>Скачать документацию</span>
+					</a>
+				</div>
+
 				<!-- device actions (compare and favourites) -->
 				<div class="add">
 					<xsl:call-template name="FAV_AND_COMPARE">
@@ -421,7 +434,7 @@
 		<xsl:variable name="multipe_prices" select="prices"/>
 		<div class="device device_row">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 
 			<div class="device__column">
 
@@ -444,7 +457,7 @@
 				<!-- device image -->
 				<div class="device__image img">
 					<a href="{show_product}">
-						<img src="{$pic_path}" alt="" />
+						<img src="{$pic_path}" alt="" onerror="{$onerror}" />
 					</a>
 				</div>
 
@@ -488,7 +501,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->
@@ -585,7 +598,7 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>
@@ -610,6 +623,9 @@
 					</xsl:for-each>
 					<p/>
 					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+					<a class="add__item icon-link" href="product_docs/{code}.pdf">
+						<span>Скачать документацию</span>
+					</a>
 					<xsl:call-template name="FAV_AND_COMPARE">
 						<xsl:with-param name="p" select="current()"/>
 						<xsl:with-param name="is_inline" select="true()"/>
@@ -722,7 +738,7 @@
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else concat('product_pics/', code, '.jpg')"/>
 		<xsl:variable name="p" select="current()"/>
 		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
 			<xsl:if test="$multiple">
@@ -911,10 +927,6 @@
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
-
-		<div class="text_sm" style="margin-top: auto;">
-			<a href="#" onclick="showDetails('{show_lines_ajax}'); return false;" >Склады</a>
-		</div>
 
 		<!-- one click -->
 		<xsl:if test="$has_one_click">

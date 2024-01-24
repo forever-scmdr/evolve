@@ -246,7 +246,7 @@
 		</xsl:call-template>
 
 		<div class="{'container'[$need_container]}">
-			<div class="block blockquote-block ptb">
+			<div class="block blockquote-block ptb" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 				<div class="blockquote-block__title title title_2"><xsl:value-of select="header" /></div>
 					<div class="blockquote-block__text">
 					<p><xsl:value-of select="text" disable-output-escaping="yes" /></p>
@@ -290,14 +290,14 @@
 						<xsl:variable name="pic" select="if($name = 'custom_block') then concat(@path, image) else concat(@path, main_pic)"/>
 						<xsl:variable name="text" select="if($name = 'custom_block') then text else short"/>
 
-						<div class="chess-row{if($odd) then ' odd' else ' even'}">
+						<div class="chess-row{if($odd) then ' odd' else ' even'}" data-aos="zoom-in" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 							<xsl:if test="$odd">
 								<div class="chess-pic" style="background-image: url('{$pic}');">
 									<!-- <img src="{$pic}"/> -->
 								</div>
 							</xsl:if>
 							<div class="text chess-text" style="{'padding-top:0'[$first]}">
-								<h2>
+								<h2 class="new_cent">
 									<xsl:value-of select="$header"/>
 								</h2>
 								<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -476,7 +476,7 @@
 						<!-- добавляется ссылка (тег a href=...) перед блоком и закрывается после блока -->
 						<xsl:variable name="has_link" select="link and not(link = '')"/>
 						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;a href=</xsl:text><xsl:value-of select="link" /><xsl:text disable-output-escaping="yes">&gt;</xsl:text></xsl:if>
-						<div class="banner-icons">
+						<div class="banner-icons" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 							<div class="banner-icons__image"><img src="{@path}{image}" alt="" /></div>
 							<div class="banner-icons__title"><xsl:value-of select="header" /></div>
 							<div class="banner-icons__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
@@ -572,7 +572,7 @@
 			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 <!--				<div class="icons-block__wrap">-->
-				<div class="info-items__wrap">
+				<div class="info-items__wrap_saleo">
 					<xsl:for-each select="news/news_item">
 						<xsl:variable name="news_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat(../@path, ../main_pic)"/>
 						<div class="info-item card">

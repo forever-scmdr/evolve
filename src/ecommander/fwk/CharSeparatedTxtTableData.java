@@ -12,9 +12,7 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by E on 14/1/2019.
@@ -24,7 +22,7 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	public static final String UTF8_BOM = "\uFEFF";
 
 	private boolean isValid = false;
-	private HashMap<String, Integer> header = new HashMap<>();
+	private LinkedHashMap<String, Integer> header = new LinkedHashMap<>();
 	private String[] currentRow;
 	private int currentRowNum = -1;
 	private int headerRow = -1;
@@ -55,13 +53,11 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 	}
 
 	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
-		File f = path.toFile();
-		populateAndInit(file,charset,'\t', mandatoryCols);
+		populateAndInit(path.toFile(), charset,'\t', mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(Path path, Charset charset, char separator, String... mandatoryCols) {
-		File f = path.toFile();
-		populateAndInit(file,charset,separator, mandatoryCols);
+		populateAndInit(path.toFile(), charset,separator, mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(File file, Charset charset, char separator, String... mandatoryCols){
@@ -84,45 +80,42 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		boolean rowChecked = false;
 		String line;
 		String[] cols = {};
-		if (mandatoryCols.length > 0) {
-			try (BufferedReader br = Files.newBufferedReader(file.toPath(), fileCharset)) {
-				line = StringUtils.trim(br.readLine());
-				if (StringUtils.startsWith(line, UTF8_BOM))
-					line = line.substring(1);
-				while (line != null && headerRow < 1000 && !rowChecked) {
-					headerRow++;
-					cols = StringUtils.splitPreserveAllTokens(line, SEPARATOR_CHAR);
-					for (int i = 0; i < cols.length; i++) {
-						cols[i] = prepareValue(cols[i]);
-					}
-					missingColumnsTest = new ArrayList<>();
-					rowChecked = true;
-					for (String checkCol : mandatoryCols) {
-						if (!StringUtils.equalsAnyIgnoreCase(checkCol, cols)) {
-							missingColumnsTest.add(checkCol);
-							rowChecked = false;
-						}
-					}
-					if (!rowChecked) {
-						line = StringUtils.trim(br.readLine());
-						if (missingColumns == null || missingColumnsTest.size() < missingColumns.size())
-							missingColumns = missingColumnsTest;
-					}
-				}
-			} catch (FileNotFoundException e) {
-				ServerLogger.error("file not found", e);
-			} catch (IOException e) {
-				ServerLogger.error("file IO error", e);
-			}
-			if (rowChecked) {
+
+		try (BufferedReader br = Files.newBufferedReader(file.toPath(), fileCharset)) {
+			line = StringUtils.trim(br.readLine());
+			if (StringUtils.startsWith(line, UTF8_BOM))
+				line = line.substring(1);
+			while (line != null && headerRow < 1000 && !rowChecked) {
+				headerRow++;
+				cols = StringUtils.splitPreserveAllTokens(line, SEPARATOR_CHAR);
 				for (int i = 0; i < cols.length; i++) {
-					if (StringUtils.isNotBlank(cols[i])) {
-						header.put(StringUtils.lowerCase(cols[i]), i);
+					cols[i] = prepareValue(cols[i]);
+				}
+				missingColumnsTest = new ArrayList<>();
+				rowChecked = true;
+				for (String checkCol : mandatoryCols) {
+					if (!StringUtils.equalsAnyIgnoreCase(checkCol, cols)) {
+						missingColumnsTest.add(checkCol);
+						rowChecked = false;
 					}
 				}
-				isValid = true;
+				if (!rowChecked) {
+					line = StringUtils.trim(br.readLine());
+					if (missingColumns == null || missingColumnsTest.size() < missingColumns.size())
+						missingColumns = missingColumnsTest;
+				}
 			}
-		} else {
+		} catch (FileNotFoundException e) {
+			ServerLogger.error("file not found", e);
+		} catch (IOException e) {
+			ServerLogger.error("file IO error", e);
+		}
+		if (rowChecked) {
+			for (int i = 0; i < cols.length; i++) {
+				if (StringUtils.isNotBlank(cols[i])) {
+					header.put(StringUtils.lowerCase(cols[i]), i);
+				}
+			}
 			isValid = true;
 		}
 	}
@@ -219,10 +212,8 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		}
 	}
 
-	public final TreeSet<String> getHeaders(){
-		TreeSet<String> a = new TreeSet<>();
-		a.addAll(header.keySet());
-		return a;
+	public final LinkedHashSet<String> getHeaders() {
+		return new LinkedHashSet<>(header.keySet());
 	}
 
 	@Override

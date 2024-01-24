@@ -43,9 +43,6 @@
                 <priority>0.70</priority>
             </url>
             <xsl:apply-templates select="page/catalog/section"/>
-            <xsl:text disable-output-escaping="yes">&lt;!--
-            </xsl:text>CUSTOM AND NEWS<xsl:text disable-output-escaping="yes">
-            --&gt;</xsl:text>
             <xsl:for-each select="page/custom_page">
                 <url>
                     <loc>

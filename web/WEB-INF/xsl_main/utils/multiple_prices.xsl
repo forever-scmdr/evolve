@@ -36,8 +36,7 @@
         <xsl:variable name="intervals" select="$catalog/qty_quotient"/>
         <xsl:variable name="price_intervals" select="if ($intervals) then $intervals else $price_intervals_default"/>
         <xsl:variable name="is_quotient_for_pack" select="not($catalog/qty_quotient_policy = 'количество')"/>
-        <xsl:variable name="min_qty" select="if (f:num($product/min_qty) = 0) then f:num('1') else f:num($product/min_qty)"/>
-        <xsl:variable name="pack_quotient" select="if ($is_quotient_for_pack) then $min_qty else f:num('1')"/>
+        <xsl:variable name="pack_quotient" select="if ($is_quotient_for_pack) then f:num($product/min_qty) else f:num('1')"/>
         <xsl:for-each select="$price_intervals">
             <xsl:variable name="pos" select="position()"/>
             <xsl:variable name="min_interval_qty" select="f:num(@key)"/>

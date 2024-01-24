@@ -100,11 +100,11 @@
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
-					<xsl:if test="not($p/gallery)">
-						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
+					<xsl:if test="not($p/gallery) and $p/main_pic">
+						<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}" onerror="{$onerror}"/>
 					</xsl:if>
 					<xsl:if test="not($p/gallery) and not($p/main_pic)">
-						<img src="img/no_image.png" alt="{$p/name}"/>
+						<img src="{concat('product_pics/', $p/code, '.jpg')}" alt="{$p/name}" onerror="{$onerror}"/>
 					</xsl:if>
 				</div>
 			</div>
@@ -337,6 +337,7 @@
 					<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
 					</xsl:if>
+					<a href="#tab_docs" class="tab{' tab_active'[not($has_text) and not($p/params)]}">Документация online</a>
 					<xsl:for-each select="$p/product_extra">
 						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
 					</xsl:for-each>
@@ -360,6 +361,11 @@
 							</table>
 						</div>
 					</xsl:if>
+					<div class="tab-container" id="tab_docs" style="{'display: none'[$has_text or $p/params]}">
+						<object data="product_docs/{$p/code}.pdf" type="application/pdf" width="80%" height="720">
+							не удалось показать документ
+						</object>
+					</div>
 					<xsl:for-each select="$p/product_extra">
 						<div class="tab-container" id="tab_{@id}" style="display: none">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>

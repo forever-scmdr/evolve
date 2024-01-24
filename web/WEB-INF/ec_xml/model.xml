@@ -262,11 +262,6 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<!--Есть параметры params_filter - обычный фильтр (user filter в FilterPE) и Упрощенный фильтр (xml_filter).
-		Упрощенный фильтр представляет из себя просто сгруппированные значения одного параметра товара (param_vals),
-		которые можно потом использовать при фильтрации вместо обычного пользовательского фильтра (FilterPE)
-		Формируется отдельной командой (в pages.xml)
-		Чтобы указать, что нужно заново сформировать xml_filter, в команде интеграции каталога надо очистить его значение -->
 	<item name="section" default-page="section" children-per-page="50" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
@@ -289,7 +284,6 @@
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
-		<parameter name="xml_filter" type="xml" caption="Упрощенный фильтр" description="используется совместно с командой и вместо простого фильтра (параметр Фильтр)"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
 	</item>
 
@@ -349,11 +343,6 @@
 		<parameter name="price_EUR_old" type="currency-precise" caption="Цена EUR старая"/>
 		<parameter name="price_BYN" type="currency-precise" caption="Цена BYN"/>
 		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>
-
-		<!-- Параметры для фильтрации в виде tuple (вместо сабайтема params) -->
-		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров"/>
-		<!-- Параметры в виде XML (см. айтем params_xml) -->
-		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
