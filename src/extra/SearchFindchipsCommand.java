@@ -1,16 +1,16 @@
 package extra;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.OkWebClient;
-import ecommander.fwk.Strings;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
+import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import extra._generated.ItemNames;
+import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -87,21 +87,29 @@ import java.util.List;
  *
  *
  */
-public class SearchFindchipsCommand extends Command {
+public class SearchFindchipsCommand extends Command implements ItemNames {
 
 	private static final String SERVER_PARAM = "server";
+	private static final String LOCAL_PARAM = "local";
+	private static final String NEW_PARAM = "new";
 	private static final String QUERY_PARAM = "q";
 	private static final String PRICE_PREFIX = "price_";
 	private final String CACHE_DIR = "files/search";
 
+	private final String LOCAL_DISTRIBUTOR = "partnumber.ru";
+
+
 	@Override
 	public ResultPE execute() throws Exception {
 		List<Object> servers = getVarValues(SERVER_PARAM);
+		boolean localSearch = StringUtils.equalsAnyIgnoreCase(getVarSingleValue(LOCAL_PARAM), "yes", "true");
 		String query = getVarSingleValue(QUERY_PARAM);
+		if (StringUtils.isBlank(query)) {
+			return getResult("illegal_argument").setValue("Неверный формат запроса");
+		}
 
 		// Надо ли делать новый запрос или взять кеш
-		String newSearch = getVarSingleValueDefault("new", "true");
-		boolean fromCache = !Boolean.parseBoolean(newSearch);
+		boolean fromCache = !StringUtils.equalsAnyIgnoreCase(getVarSingleValueDefault(NEW_PARAM, "true"), "yes", "true");
 		String cacheFileName = Strings.getFileName(query);
 		File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
 		File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
@@ -191,10 +199,15 @@ public class SearchFindchipsCommand extends Command {
 		// Получение ответа сервера
 		// В случае если надо получать результат с сервера
 		else {
+			CurrencyRates rates = new CurrencyRates();
 			String html = null;
 			String proxy = getVarSingleValue("proxy");
 			XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 			xml.startElement("result");
+			BigDecimal globalMaxPrice = BigDecimal.ONE.negate();
+			BigDecimal globalMinPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+
+			// Поиск по всем удаленным серверам (обычно один)
 			for (Object server : servers) {
 				try {
 					query = StringUtils.normalizeSpace(query);
@@ -220,32 +233,33 @@ public class SearchFindchipsCommand extends Command {
 					return getResult("error").setValue(ExceptionUtils.getStackTrace(e));
 				}
 
-				// Загрузка курсов валют
-				CurrencyRates rates = new CurrencyRates();
-				String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
-				Item catalogSettings = new ItemQuery(ItemNames.PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, "api").loadFirstItem();
-				BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
-				if (catalogSettings != null)
-					extraQuotient = catalogSettings.getDecimalValue(ItemNames.price_catalog_.QUOTIENT, BigDecimal.ONE);
-
 				// Парсинг и создание XML
 				Document doc = Jsoup.parse(html);
 				Elements distributors = doc.select("div.distributor-results");
 				if (distributors.size() == 0)
 					return getResult("error").setValue("Не найден элемент дистрибьютора");
 				xml.addElement("query", query);
-				BigDecimal globalMaxPrice = BigDecimal.ONE.negate();
-				BigDecimal globalMinPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+
 				for (Element distributorEl : distributors) {
 					String distributor = distributorEl.attr("data-distributor_name");
 					if (dstrSet.size() > 0 && !dstrSet.contains(distributor)) {
 						continue;
 					}
+					// Загрузка курсов валют
+					String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
+					Item catalogSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(price_catalog_.NAME, distributor).loadFirstItem();
+					BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
+					if (catalogSettings != null)
+						extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
+
 					xml.startElement("distributor", "name", distributor);
 					Elements lines = distributorEl.select("tr.row");
 					for (Element line : lines) {
 						String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
 						String code = JsoupUtils.getSelectorFirstValue(line, "span.additional-value");
+						if (StringUtils.isBlank(code)) {
+							code = name + "_" + Integer.toHexString(distributor.hashCode());
+						}
 						String key = Strings.translit(name + " " + code);
 						String vendor = JsoupUtils.getSelectorFirstValue(line, "td:eq(1)");
 						String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");
@@ -323,9 +337,79 @@ public class SearchFindchipsCommand extends Command {
 					}
 					xml.endElement(); // distributor
 				}
-				xml.addElement("max_price", globalMaxPrice);
-				xml.addElement("min_price", globalMinPrice);
 			}
+
+			// Поиск в локальной базе
+			if (localSearch) {
+				// Загрузка курсов валют
+				String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
+				Item catalogSettings = new ItemQuery(PRICE_CATALOG)
+						.addParameterEqualsCriteria(price_catalog_.NAME, LOCAL_DISTRIBUTOR).loadFirstItem();
+				BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
+				if (catalogSettings != null) {
+					extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
+				}
+
+				Item localCatalog = ItemUtils.ensureSingleRootAnonymousItem(PLAIN_CATALOG, getInitiator());
+				ItemQuery localQuery = new ItemQuery(PRODUCT).setParentId(localCatalog.getId(), true)
+						.setFulltextCriteria(FulltextQueryCreatorRegistry.DEFAULT, query, 30, null, Compare.SOME).setLimit(30);
+				List<Item> prods = localQuery.loadItems();
+				xml.startElement("distributor", "name", LOCAL_DISTRIBUTOR);
+				for (Item prod : prods) {
+					Product p = Product.get(prod);
+					xml.startElement("product", "id", p.get_code(), "key", p.getKeyUnique());
+					xml.addElement("code", Strings.translit(p.get_code()));
+					xml.addElement("name", p.get_name());
+					xml.addElement("vendor", p.get_vendor());
+					xml.addElement("qty", p.get_qty());
+					xml.addElement("step", p.get_step());
+					xml.addElement("description", p.get_name_extra());
+					xml.addElement("min_qty", p.get_min_qty());
+					xml.addElement("next_delivery", p.get_next_delivery());
+					xml.addElement("category_id", LOCAL_DISTRIBUTOR);
+					xml.addElement("pricebreak", "1");
+					xml.addElement("currency_id", "RUB");
+					xml.startElement("prices");
+
+					xml.startElement("break", "qty", "1");
+					BigDecimal priceOriginal = p.getDecimalValue(priceParamName, BigDecimal.ZERO);
+					BigDecimal maxPrice = BigDecimal.ONE.negate();
+					BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+					xml.addElement("price_original", priceOriginal);
+					// Применить коэффициент
+					priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
+					HashMap<String, BigDecimal> allPricesDecimal = rates.setAllPricesXML(xml, priceOriginal, curCode);
+					BigDecimal currentPrice = allPricesDecimal.get(priceParamName);
+					if (currentPrice != null) {
+						maxPrice = currentPrice;
+						minPrice = currentPrice;
+						globalMaxPrice = globalMaxPrice.max(currentPrice);
+						globalMinPrice = globalMinPrice.min(currentPrice);
+					}
+					xml.endElement(); // break
+					xml.endElement(); // prices
+
+					// Добавление элементов с максимальной и минимальной ценой (чтобы сохранилась в кеше)
+					xml.addElement("max_price", maxPrice);
+					xml.addElement("min_price", minPrice);
+					// Если девайс не подходит по фильтрам - добавить тэг <invalid>invalid</invalid>
+					boolean isInvalid
+							= (hasShipDateFilter && !shipDateFilter.contains(p.get_next_delivery()))
+							|| (hasVendorFilter && !vendorFilter.contains(p.get_vendor()))
+							|| (hasDistributorFilter && !distributorFilter.contains("partnumber.ru"))
+							|| (hasFromFilter && maxPrice.compareTo(fromFilterDecimal) < 0)
+							|| (hasToFilter && minPrice.compareTo(toFilterDecimal) > 0);
+					if (isInvalid) {
+						xml.addElement("invalid", "invalid");
+					}
+					xml.endElement(); // product
+				}
+				xml.endElement(); // distributor
+			}
+
+			xml.addElement("max_price", globalMaxPrice);
+			xml.addElement("min_price", globalMinPrice);
+
 			xml.endElement(); // result
 			// Сохранение кеша
 			if (!cacheDir.exists()) {

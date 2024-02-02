@@ -331,6 +331,9 @@ public interface ItemNames {
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
         String EUR_UPDATE = "EUR_update";
+        String GBP_RATE = "GBP_rate";
+        String GBP_SCALE = "GBP_scale";
+        String GBP_UPDATE = "GBP_update";
         String BYN_RATE = "BYN_rate";
         String BYN_SCALE = "BYN_scale";
         String BYN_UPDATE = "BYN_update";
@@ -436,6 +439,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_GBP = "price_GBP";
+        String PRICE_GBP_OLD = "price_GBP_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
         String PARAM_VALS = "param_vals";
@@ -616,6 +621,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_GBP = "price_GBP";
+        String PRICE_GBP_OLD = "price_GBP_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
         String PARAM_VALS = "param_vals";
@@ -981,6 +988,8 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
+        String PRICE_GBP = "price_GBP";
+        String PRICE_GBP_OLD = "price_GBP_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
         String PARAM_VALS = "param_vals";
@@ -1226,21 +1235,13 @@ public interface ItemNames {
         String PAYMENT = "payment";
         String ORGANIZATION = "organization";
         String CONTRACT_NUMBER = "contract_number";
-        String CONTACT_NAME = "contact_name";
-        String CONTACT_PHONE = "contact_phone";
+        String INN = "inn";
+        String KPP = "kpp";
         String ADDRESS = "address";
-        String SHIP_TYPE = "ship_type";
-        String PAY_TYPE = "pay_type";
-        String NO_ACCOUNT = "no_account";
-        String ACCOUNT = "account";
-        String BANK = "bank";
-        String BANK_ADDRESS = "bank_address";
-        String BANK_CODE = "bank_code";
-        String UNP = "unp";
-        String DIRECTOR = "director";
-        String BASE = "base";
-        String BASE_NUMBER = "base_number";
-        String BASE_DATE = "base_date";
+        String CORP_EMAIL = "corp_email";
+        String BOSS = "boss";
+        String BOSS_POSITION = "boss_position";
+        String INFORM = "inform";
         String COMMENT = "comment";
 
     }

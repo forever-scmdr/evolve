@@ -100,6 +100,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 			section.setValue(plain_section_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
 			addDebug(section);
 			executeAndCommitCommandUnits(SaveItemDBUnit.get(section).noFulltextIndex().noTriggerExtra());
+			int productCount = 0;
 			// Разбор прайс-листа
 			try {
 				if (StringUtils.endsWithIgnoreCase(excel.getName(), "txt")) {
@@ -126,11 +127,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							if (addCodeSuffix) {
 								code = codeSuffix + code;
 							}
+							code = Strings.translit(code);
 							Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
-							if (prod == null) {
-								prod = Product.get(Item.newChildItem(productType, section));
-								prod.set_code(code);
+							if (prod != null) {
+								executeCommandUnit(ItemStatusDBUnit.delete(prod));
 							}
+							prod = Product.get(Item.newChildItem(productType, section));
+							prod.set_code(code);
 							prod.set_name(src.getValue(NAME_HEADER));
 							String nextDelivery = src.getValue(DELAY_HEADER);
 							if (StringUtils.isBlank(nextDelivery))
@@ -146,7 +149,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
 							//BigDecimal price = filePrice.multiply(settings.get_quotient());
-							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
+							currencyRates.setAllPrices(prod, filePrice, settings.getDefault_currency("RUB"));
 							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
 							prod.set_min_qty(minQty);
@@ -157,7 +160,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_description(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_unit(src.getValue(UNIT_HEADER));
-							executeCommandUnit(SaveItemDBUnit.get(prod).noFulltextIndex().noTriggerExtra());
+							executeCommandUnit(SaveItemDBUnit.new_(prod, section, (count++) * 64));
 							if (count >= 100) {
 								commitCommandUnits();
 								count = 0;
@@ -183,7 +186,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		info.pushLog("Индексация");
 		info.indexsationStarted();
 
-		LuceneIndexMapper.getSingleton().reindexAll();
+		LuceneIndexMapper.getSingleton().reindexAll(catalog.getId());
 
 		info.pushLog("Индексация завершена");
 		info.setOperation("Интеграция завершена");

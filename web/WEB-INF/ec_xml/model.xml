@@ -352,6 +352,8 @@
 		<parameter name="price_USD_old" type="currency-precise" caption="Цена USD старая"/>
 		<parameter name="price_EUR" type="currency-precise" caption="Цена EUR"/>
 		<parameter name="price_EUR_old" type="currency-precise" caption="Цена EUR старая"/>
+		<parameter name="price_GBP" type="currency-precise" caption="Цена GBP"/>
+		<parameter name="price_GBP_old" type="currency-precise" caption="Цена GBP старая"/>
 		<parameter name="price_BYN" type="currency-precise" caption="Цена BYN"/>
 		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>
 
@@ -366,7 +368,7 @@
 		<parameter name="additional_xml" type="xml" caption="Дополнительные ресурсы в виде XML" description="чтобы не делать вложенный айтем"/>
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
-		<child item="product_extra" inline-text-index="true"/>
+		<child item="product_extra" /><!-- inline-text-index="true"    !!!!!!!!!!!!!!!!!	 ЭТО ЗАКОММЕНТИРОВАНО ДЛЯ УБЫСТРЕНИЯ ИНДЕКСАЦИИ 	!!!!!!!!!!!!!!!!!! -->
 		<child item="params_xml" single="true"/>
 		<child item="params" single="true"/>
 		<!--
@@ -457,6 +459,7 @@
 			<value>RUB</value>
 			<value>USD</value>
 			<value>EUR</value>
+			<value>GBP</value>
 		</parameter>
 		<parameter name="qty_quotient_policy" type="string" caption="Применять коэффициент" description="к чему применять коэффициент в зависимости от количества">
 			<value>количество</value>

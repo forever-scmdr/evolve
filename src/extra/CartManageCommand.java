@@ -88,9 +88,9 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_ADDRESS);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.BANK_CODE);
-		MANDATORY_JUR.add(user_jur_.CONTACT_NAME);
+		MANDATORY_JUR.add(user_jur_.INN);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.CONTACT_PHONE);
-		MANDATORY_JUR.add(user_jur_.PHONE);
+		//MANDATORY_JUR.add(user_jur_.PHONE);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.DIRECTOR);
 		//MANDATORY_JUR.add(ItemNames.user_jur_.EMAIL);
 		MANDATORY_JUR.add(user_jur_.ORGANIZATION);

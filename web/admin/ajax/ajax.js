@@ -206,16 +206,19 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                 //if ($('#' + id).length == 0) alert("Не найден элемент с id='" + id + "' в родительском документе");
                 var targetEl = $('#' + id);
                 // для инпутов менять значение, для остальных элементов - html
-                if (targetEl.prop('tagName').toLowerCase() === 'input') {
-                    targetEl.val(newHtml);
-                } else {
-                    targetEl.html(newHtml);
+                if (targetEl != null && targetEl.length !== 0) {
+                    if (targetEl.prop('tagName').toLowerCase() === 'input') {
+                        targetEl.val(newHtml);
+                    } else {
+                        targetEl.html(newHtml);
+                    }
                 }
                 ajaxInitIds.push(id);
             });
-            if (!parsedData.find('#JSON').length != 0)
+            if (!parsedData.find('#JSON').length !== 0)
                 possibleJsonData = parsedData.find('#JSON').html();
         } catch (e) {
+            console.log(e);
             possibleJsonData = data;
         }
     } else {
@@ -227,6 +230,7 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
         try {
             argData = $.parseJSON(possibleJsonData);
         } catch (e) {
+            console.log(e);
             argData = possibleJsonData;
         }
     }

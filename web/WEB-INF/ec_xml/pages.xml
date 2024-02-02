@@ -240,7 +240,7 @@
 
 
 
-    <page name="catalog" template="catalog" cacheable="true">
+    <page name="catalog" template="catalog" cacheable="false">
 		<request>
 			<var name="translate_items" value="sec1:name, sec2:name, sec3:name"/>
 		</request>
@@ -272,7 +272,7 @@
 			<var name="val_16"/><var name="val_17"/><var name="val_18"/><var name="val_19"/><var name="val_20"/>
 
 			<var name="page_sec" value="filter_sec"/><!-- параметр команды CreateSectionFilterCommand -->
-			<var name="translate_items" value="cur_sec, sec1:name, sec2:name, sec3:name, prod"/>
+			<var name="translate_items" value="cur_sec:name:xml_filter, sec1:name, sec2:name, sec3:name"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -689,6 +689,7 @@
 			<var name="q"/>
 			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
 			<var name="proxy" value="http://api.must.by/direct_proxy"/>
@@ -711,6 +712,7 @@
 			<var name="q"/>
 			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
 			<var name="proxy" value="http://api.must.by/direct_proxy"/>
@@ -2698,6 +2700,17 @@
 			<result name="html" type="plain_text"/>
 			<result name="illegal_argument" type="plain_text"/>
 			<result name="error" type="plain_text"/>
+		</command>
+	</page>
+
+
+	<page name="reindex_all" template="integration/integration">
+		<request>
+			<var name="pred"/>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.ReindexCommand">
+			<result name="complete" type="xml"/>
 		</command>
 	</page>
 

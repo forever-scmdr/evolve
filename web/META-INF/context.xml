@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context reloadable="true">
-	<!-- 
-	<Resource 
-		name="jdbc/ECommanderDB" 
-		auth="Container" 
-		type="javax.sql.DataSource"
-		maxActive="10"
-		maxIdle="5"
-		validationQuery="SELECT 1"
-		testOnBorrow="true"
-		testWhileIdle="true"
-		timeBetweenEvictionRunsMillis="10000"
-		minEvictableIdleTimeMillis="60000"
-		username="nasklade"
-		password="nasklade"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://opt.nasklade.by:3306/nasklade?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
-	/>
-	 -->
-	<Resource 
-		name="jdbc/ECommanderDB" 
-		auth="Container" 
+	<!--
+	<Resource
+		name="jdbc/ECommanderDB"
+		auth="Container"
 		type="javax.sql.DataSource"
 		maxActive="10"
 		maxIdle="5"
@@ -33,6 +16,39 @@
 		password="eeee"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/spb_server?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
-	/><!-- must_test -->
+	/>
+	-->
+	<Resource
+			name="jdbc/ECommanderDB"
+			auth="Container"
+			type="javax.sql.DataSource"
+			maxActive="10"
+			maxIdle="5"
+			validationQuery="SELECT 1"
+			testOnBorrow="true"
+			testWhileIdle="true"
+			timeBetweenEvictionRunsMillis="10000"
+			minEvictableIdleTimeMillis="60000"
+			username="root"
+			password="Tp2UoLYYmTe41BLI"
+			driverClassName="org.mariadb.jdbc.Driver"
+			url="jdbc:mariadb://admin.must.by:3306/test?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+	/>
+
+	<Resource name="mail/Session"
+			  auth="Container"
+			  type="javax.mail.Session"
+			  mail.smtp.host="smtp.gmail.com"
+			  mail.smtp.port="587"
+			  mail.smtp.auth="true"
+			  mail.smtp.user="sender@forever-ds.com"
+			  password="ghbdtnghbdtn"
+			  mail.smtp.starttls.enable="true"
+			  mail.smtp.socketFactory.class="javax.net.ssl.SSLSocketFactory"
+			  mail.imap.host="localhost"
+			  mail.pop3.host="localhost"
+			  mail.store.protocol="imap"
+			  mail.transport.protocol="smtp"
+	/>
 
 </Context>

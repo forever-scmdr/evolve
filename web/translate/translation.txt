@@ -1113,3 +1113,4 @@ Battery Holders, Clips, Contacts :: Держатели батарей, зажи�
 Embedded Computers :: Встроенные компьютеры
 Interface Boards :: Интерфейсные платы
 Single Board Computers (SBCs), Computer On Module (COM) :: Одноплатные компьютеры (SBC), компьютер на модуле (COM)
+Not For New Designs :: Не для диза

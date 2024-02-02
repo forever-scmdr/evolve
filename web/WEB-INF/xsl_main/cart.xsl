@@ -141,7 +141,7 @@
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span id="sum-{$ajax_suffix}"><xsl:value-of select="$sum"/></span>
+										<span id="sum_{$ajax_suffix}"><xsl:value-of select="$sum"/></span>
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">

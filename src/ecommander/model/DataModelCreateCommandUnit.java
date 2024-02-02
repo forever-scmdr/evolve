@@ -661,7 +661,9 @@ class DataModelCreateCommandUnit extends DBPersistenceCommandUnit implements Dat
 			}
 			// Удаление из главной таблицы айтемов
 			if (itemsById.size() > 0) {
-				sql = "DELETE FROM " + ItemTbl.ITEM_TBL + " WHERE " + ItemTbl.I_TYPE_ID + " IN " + createIn(itemsById.keySet());
+				sql = "DELETE FROM " + ItemTbl.ITEM_TBL + " WHERE "
+						+ ItemTbl.I_GROUP + " IN " + createIn(UserGroupRegistry.getAllGroupIdsInteger()) + " AND "
+						+ ItemTbl.I_SUPERTYPE + " IN " + createIn(itemsById.keySet());
 				ServerLogger.debug(sql);
 				stmt.executeUpdate(sql);
 				dbChanged = true;

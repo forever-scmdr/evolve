@@ -9,6 +9,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
@@ -70,6 +74,31 @@ public class EmailUtils {
 		//Strings.getStringFor("message.email_success");
 
 	}
+
+	public static void sendGmailTomcat(final String from, String to, String topic, Multipart mp)
+			throws MessagingException, NamingException {
+		Context initCtx = new InitialContext();
+		Context envCtx = (Context) initCtx.lookup("java:comp/env");
+		Session session = (Session) envCtx.lookup("mail/Session");
+
+		// Создание объекта сообщения
+		MimeMessage msg = new MimeMessage(session);
+		// Установка атрибутов сообщения
+		msg.setFrom(new InternetAddress(from));
+		String[] addresses = StringUtils.split(to, ',');
+		ArrayList<InternetAddress> tos = new ArrayList<>();
+		for (String address : addresses) {
+			String s = address.trim();
+			tos.add(new InternetAddress(s));
+		}
+		msg.setRecipients(Message.RecipientType.TO, tos.toArray(new InternetAddress[0]));
+		msg.setSubject(topic, "UTF-8");
+		msg.setContent(mp);
+		msg.setSentDate(new Date());
+		//msg.saveChanges(); // don't forget this
+		Transport.send(msg);
+	}
+
 	/**
 	 * Отправка письма с настройками, взятыми из стандартного айтема, который загружается из БД
 	 * @param to
@@ -90,6 +119,7 @@ public class EmailUtils {
 			throw new EcommanderException(ErrorCodes.EMAIL_IS_NOT_CONFIGURED, "Feedback parameters are not set correctly");
 		// Отправка письма
 		EmailUtils.sendGmail(serverFrom, emailFrom, emailFromPassword, to, topic, mp);
+		//EmailUtils.sendGmailTomcat(emailFrom, to, topic, mp);
 	}
 	/**
 	 * Отправка письма с настройками, взятыми из стандартного айтема, который загружается из БД

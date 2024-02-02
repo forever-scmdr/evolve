@@ -386,4 +386,32 @@ public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, 
 		}
 		return result;
 	}
+
+	/**
+	 * Загрузить определенное количество сабайтемов одного родителя по порядку возрастания id (для последовательной загрузки)
+	 * Статус айтема не учитываестя, могут загрузиться айтемы со статусом и 0 и 1 и 2
+	 * @param parentId
+	 * @param limit
+	 * @param moreThanId
+	 * @return
+	 * @throws Exception
+	 */
+	public static ArrayList<Item> loadItemChildren(long parentId, int limit, long moreThanId) throws Exception {
+		ArrayList<Item> result = new ArrayList<>();
+		// Полиморфная загрузка
+		TemplateQuery select = new TemplateQuery("Select items for indexing");
+		select.SELECT(ITEM_TBL + ".*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, ItemTbl.I_ID, ItemParent.IP_CHILD_ID)
+				.WHERE().col(IP_PARENT_ID).long_(parentId)
+				.AND().col(IP_CHILD_ID, ">").long_(moreThanId)
+				.ORDER_BY(IP_CHILD_ID).LIMIT(limit);
+		try (Connection conn = MysqlConnector.getConnection();
+			 PreparedStatement pstmt = select.prepareQuery(conn)) {
+			ResultSet rs = pstmt.executeQuery();
+			// Создание айтемов
+			while (rs.next()) {
+				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
+			}
+		}
+		return result;
+	}
 }

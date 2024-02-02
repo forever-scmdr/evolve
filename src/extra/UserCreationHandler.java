@@ -1,5 +1,6 @@
 package extra;
 
+import com.sleepycat.je.tree.IN;
 import ecommander.fwk.IntegrateBase;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.*;
@@ -26,9 +27,9 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 	static {
 		ELEMENT_PARAM.put("email", EMAIL);
 		ELEMENT_PARAM.put("contract_number", CONTRACT_NUMBER);
-		ELEMENT_PARAM.put("unp", UNP);
+		ELEMENT_PARAM.put("inn", INN);
 		ELEMENT_PARAM.put("company_name", ORGANIZATION);
-		ELEMENT_PARAM.put("person", CONTACT_NAME);
+		//ELEMENT_PARAM.put("person", CONTACT_NAME);
 		ELEMENT_PARAM.put("phone_number", PHONE);
 		//ELEMENT_PARAM.put("city", CITY);
 		//ELEMENT_PARAM.put("route", ROUTE);
@@ -61,7 +62,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, CUSTOMER_EL)) {
 				String email = singleParams.get(EMAIL);
-				String unp = singleParams.get(UNP);
+				String unp = singleParams.get(INN);
 				if (StringUtils.isAllBlank(email, unp)) {
 					info.pushError("Запись пользователя не валидна (отсутствуют email и УНП)", locator.getLineNumber(), 0);
 					return;

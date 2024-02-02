@@ -36,7 +36,7 @@ public class TranslationCommand extends Command {
             return null;
         }
 
-        // Загрузка слваря из файлов
+        // Загрузка словаря из файлов
         File translateDir = new File(AppContext.getRealPath(TRANSLATE));
         Collection<File> textFiles = FileUtils.listFiles(translateDir, null, true);
         for (File textFile : textFiles) {
@@ -82,7 +82,7 @@ public class TranslationCommand extends Command {
             }
             itemsAndParams.put(parts[0], params);
         }
-        HashSet<String> productExtenders = ItemTypeRegistry.getItemExtenders("abstract_product");
+        // HashSet<String> productExtenders = ItemTypeRegistry.getItemExtenders("abstract_product");
         for (String itemPageId : itemsAndParams.keySet()) {
             LinkedHashMap<Long, Item> items = getLoadedItems(itemPageId);
             for (Item item : items.values()) {
@@ -94,17 +94,29 @@ public class TranslationCommand extends Command {
                     DataType type = item.getItemType().getParameter(parameterName).getDataType();
 
                     // Если продукт и параметр XML
-                    if (type.getType() == DataType.Type.XML && productExtenders.contains(item.getTypeName())) {
+                    if (type.getType() == DataType.Type.XML/* && productExtenders.contains(item.getTypeName())*/) {
                         String value = item.getStringValue(parameterName);
                         if (StringUtils.isNotBlank(value)) {
                             Document doc = JsoupUtils.parseXml(value);
-                            Elements names = doc.select("name");
-                            for (Element nameEl : names) {
-                                nameEl.text(translate(nameEl.text()));
-                            }
-                            Elements values = doc.select("value");
-                            for (Element valueEl : values) {
-                                valueEl.text(translate(valueEl.text()));
+                            boolean isFilter = doc.select("filter").size() > 0;
+                            if (isFilter) {
+                                Elements names = doc.select("name");
+                                for (Element nameEl : names) {
+                                    nameEl.text(translate(nameEl.text()));
+                                }
+                                Elements caps = doc.select("cap");
+                                for (Element capEl : caps) {
+                                    capEl.text(translate(capEl.text()));
+                                }
+                            } else {
+                                Elements names = doc.select("name");
+                                for (Element nameEl : names) {
+                                    nameEl.text(translate(nameEl.text()));
+                                }
+                                Elements values = doc.select("value");
+                                for (Element valueEl : values) {
+                                    valueEl.text(translate(valueEl.text()));
+                                }
                             }
                             item.clearValue(parameterName);
                             item.setValue(parameterName, JsoupUtils.outputXmlDoc(doc));

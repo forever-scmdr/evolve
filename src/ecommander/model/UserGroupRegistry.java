@@ -4,6 +4,7 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Реестр пользовательских групп
@@ -65,5 +66,13 @@ public class UserGroupRegistry {
 
 	public static Byte[] getAllGroupIds() {
 		return getRegistry().groups.values().toArray(new Byte[0]);
+	}
+
+	public static HashSet<Integer> getAllGroupIdsInteger() {
+		HashSet<Integer> result = new HashSet<>();
+		for (Byte value : getRegistry().groups.values()) {
+			result.add(value.intValue());
+		}
+		return result;
 	}
 }

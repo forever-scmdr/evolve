@@ -19,6 +19,9 @@ public class Currencies
     public final static String EUR_RATE = "EUR_rate";
     public final static String EUR_SCALE = "EUR_scale";
     public final static String EUR_UPDATE = "EUR_update";
+    public final static String GBP_RATE = "GBP_rate";
+    public final static String GBP_SCALE = "GBP_scale";
+    public final static String GBP_UPDATE = "GBP_update";
     public final static String BYN_RATE = "BYN_rate";
     public final static String BYN_SCALE = "BYN_scale";
     public final static String BYN_UPDATE = "BYN_update";
@@ -238,6 +241,72 @@ public class Currencies
 
     public boolean contains_EUR_update(Byte value) {
         return containsValue("EUR_update", value);
+    }
+
+    public void set_GBP_rate(BigDecimal value) {
+        setValue("GBP_rate", value);
+    }
+
+    public void setUI_GBP_rate(String value)
+        throws Exception
+    {
+        setValueUI("GBP_rate", value);
+    }
+
+    public BigDecimal get_GBP_rate() {
+        return getDecimalValue("GBP_rate");
+    }
+
+    public BigDecimal getDefault_GBP_rate(BigDecimal defaultVal) {
+        return getDecimalValue("GBP_rate", defaultVal);
+    }
+
+    public boolean contains_GBP_rate(BigDecimal value) {
+        return containsValue("GBP_rate", value);
+    }
+
+    public void set_GBP_scale(BigDecimal value) {
+        setValue("GBP_scale", value);
+    }
+
+    public void setUI_GBP_scale(String value)
+        throws Exception
+    {
+        setValueUI("GBP_scale", value);
+    }
+
+    public BigDecimal get_GBP_scale() {
+        return getDecimalValue("GBP_scale");
+    }
+
+    public BigDecimal getDefault_GBP_scale(BigDecimal defaultVal) {
+        return getDecimalValue("GBP_scale", defaultVal);
+    }
+
+    public boolean contains_GBP_scale(BigDecimal value) {
+        return containsValue("GBP_scale", value);
+    }
+
+    public void set_GBP_update(Byte value) {
+        setValue("GBP_update", value);
+    }
+
+    public void setUI_GBP_update(String value)
+        throws Exception
+    {
+        setValueUI("GBP_update", value);
+    }
+
+    public Byte get_GBP_update() {
+        return getByteValue("GBP_update");
+    }
+
+    public Byte getDefault_GBP_update(Byte defaultVal) {
+        return getByteValue("GBP_update", defaultVal);
+    }
+
+    public boolean contains_GBP_update(Byte value) {
+        return containsValue("GBP_update", value);
     }
 
     public void set_BYN_rate(BigDecimal value) {

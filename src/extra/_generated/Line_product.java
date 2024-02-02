@@ -59,6 +59,8 @@ public class Line_product
     public final static String PRICE_USD_OLD = "price_USD_old";
     public final static String PRICE_EUR = "price_EUR";
     public final static String PRICE_EUR_OLD = "price_EUR_old";
+    public final static String PRICE_GBP = "price_GBP";
+    public final static String PRICE_GBP_OLD = "price_GBP_old";
     public final static String PRICE_BYN = "price_BYN";
     public final static String PRICE_BYN_OLD = "price_BYN_old";
     public final static String PARAM_VALS = "param_vals";
@@ -916,6 +918,50 @@ public class Line_product
 
     public boolean contains_price_EUR_old(BigDecimal value) {
         return containsValue("price_EUR_old", value);
+    }
+
+    public void set_price_GBP(BigDecimal value) {
+        setValue("price_GBP", value);
+    }
+
+    public void setUI_price_GBP(String value)
+        throws Exception
+    {
+        setValueUI("price_GBP", value);
+    }
+
+    public BigDecimal get_price_GBP() {
+        return getDecimalValue("price_GBP");
+    }
+
+    public BigDecimal getDefault_price_GBP(BigDecimal defaultVal) {
+        return getDecimalValue("price_GBP", defaultVal);
+    }
+
+    public boolean contains_price_GBP(BigDecimal value) {
+        return containsValue("price_GBP", value);
+    }
+
+    public void set_price_GBP_old(BigDecimal value) {
+        setValue("price_GBP_old", value);
+    }
+
+    public void setUI_price_GBP_old(String value)
+        throws Exception
+    {
+        setValueUI("price_GBP_old", value);
+    }
+
+    public BigDecimal get_price_GBP_old() {
+        return getDecimalValue("price_GBP_old");
+    }
+
+    public BigDecimal getDefault_price_GBP_old(BigDecimal defaultVal) {
+        return getDecimalValue("price_GBP_old", defaultVal);
+    }
+
+    public boolean contains_price_GBP_old(BigDecimal value) {
+        return containsValue("price_GBP_old", value);
     }
 
     public void set_price_BYN(BigDecimal value) {

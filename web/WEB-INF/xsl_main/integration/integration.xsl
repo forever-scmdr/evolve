@@ -31,6 +31,9 @@
 						h = document.location.href;
 						h = h.replace("_start", "");
 						h = h.replace("?action=start", "");
+						<xsl:text disable-output-escaping="yes">
+                        h = h.replace("&amp;action=start", "");
+                        </xsl:text>
 						document.location.replace(h);
 					},
 					5000
@@ -41,6 +44,9 @@
 						h = document.location.href;
 						h = h.replace("_start", "");
 						h = h.replace("?action=start", "");
+						<xsl:text disable-output-escaping="yes">
+                        h = h.replace("&amp;action=start", "");
+                        </xsl:text>
 						document.location.replace(h);
 					} else {
 						clearTimeout(refreshTimeout);

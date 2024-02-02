@@ -632,33 +632,73 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean reindexAll() throws Exception {
+	public boolean reindexAll(long... parentId) throws Exception {
 		final int LIMIT = 500;
-		createNewIndex();
+		long parent = -1;
+		if (parentId.length > 0) {
+			parent = parentId[0];
+		}
+		boolean totalReindex = !(parent > 0);
+		// создавать новый индекс только для всеобщей переиндексации, для частичной не надо
+		if (totalReindex) {
+			createNewIndex();
+		}
 		countProcessed = 0;
 		reindexAllProcessed = new HashSet<>();
 		isReindexAll = true;
-		for (String itemName : ItemTypeRegistry.getItemNames()) {
-			ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
-			if (itemDesc.isFulltextSearchable()) {
-				ArrayList<Item> items;
-				long startFrom = 0;
-				do {
-					items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
-					ArrayList<Long> ids = new ArrayList<>();
-					for (Item item : items) {
+
+		// полная переиндексация
+		if (totalReindex) {
+			for (String itemName : ItemTypeRegistry.getItemNames()) {
+				ItemType itemDesc = ItemTypeRegistry.getItemType(itemName);
+				if (itemDesc.isFulltextSearchable()) {
+					ArrayList<Item> items;
+					long startFrom = 0;
+					do {
+						items = ItemMapper.loadByTypeId(itemDesc.getTypeId(), LIMIT, startFrom);
+						ArrayList<Long> ids = new ArrayList<>();
+						for (Item item : items) {
+							ids.add(item.getId());
+						}
+						LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(ids.toArray(new Long[0]));
+						for (Item item : items) {
+							updateItem(item, ancestors.get(item.getId()));
+						}
+						if (items.size() > 0)
+							startFrom = items.get(items.size() - 1).getId() + 1;
+						countProcessed += items.size();
+						ServerLogger.debug("Indexed: " + countProcessed + " items");
+						commit();
+					} while (items.size() == LIMIT);
+				}
+			}
+		}
+
+		// частичная переиндексация
+		else {
+			long lastId = 0;
+			ArrayList<Item> items = ItemMapper.loadItemChildren(parent, LIMIT, lastId);
+			while (items.size() > 0) {
+				ArrayList<Long> ids = new ArrayList<>();
+				for (Item item : items) {
+					lastId = item.getId();
+					if (item.isStatusNormal() && item.getItemType().isFulltextSearchable()) {
 						ids.add(item.getId());
 					}
-					LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(ids.toArray(new Long[0]));
-					for (Item item : items) {
+				}
+				if (ids.size() == 0) {
+					items = ItemMapper.loadItemChildren(parent, LIMIT, lastId);
+					continue;
+				}
+				LinkedHashMap<Long, ArrayList<Triple<Byte, Long, Integer>>> ancestors = ItemMapper.loadItemAncestorsTriple(ids.toArray(new Long[0]));
+				for (Item item : items) {
+					if (item.isStatusNormal() && item.getItemType().isFulltextSearchable()) {
 						updateItem(item, ancestors.get(item.getId()));
 					}
-					if (items.size() > 0)
-						startFrom = items.get(items.size() - 1).getId() + 1;
-					countProcessed += items.size();
-					ServerLogger.debug("Indexed: " + countProcessed + " items");
-					commit();
-				} while (items.size() == LIMIT);
+				}
+				countProcessed += items.size();
+				commit();
+				items = ItemMapper.loadItemChildren(parent, LIMIT, lastId);
 			}
 		}
 		commit();
