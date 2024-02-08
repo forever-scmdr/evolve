@@ -1,9 +1,6 @@
 package ecommander.pages.output;
 
-import ecommander.fwk.FilterProcessException;
-import ecommander.fwk.ServerLogger;
-import ecommander.fwk.Strings;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.model.User;
 import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.PageElement;
@@ -121,6 +118,7 @@ public class PageWriter {
 	private static final String ROLE_ATTRIBUTE = "admin";
 	private static final String GROUP_ELEMENT = "group";
 	private static final String VISUAL_ATTRIBUTE = "visual";
+	private static final String TIMERS_ELEMENT = "timers";
 
 	// Для фильтра
 	private static final String INPUT_TAG = "input";
@@ -180,6 +178,8 @@ public class PageWriter {
 			PageElementWriter writer = PageElementWriterRegistry.getWriter(element);
 			writer.write(element, xml);
 		}
+		// Отладочные таймеры
+		xml.addElement(TIMERS_ELEMENT, Timer.getTimer().writeTotals(page.getPageName()));
 		// </page>
 		xml.endElement();
 		return xml;

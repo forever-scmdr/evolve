@@ -76,7 +76,8 @@ public class TransliterationServlet extends BasicServlet {
 			handleError(request, response, e);
 		} finally {
 			Timer.getTimer().stop(Timer.REQUEST_PROCESS);
-			Timer.getTimer().flush();
+			ServerLogger.debug(Timer.getTimer().writeTotals(userUrl));
+			Timer.getTimer().finish();
 		}
 	}
 }

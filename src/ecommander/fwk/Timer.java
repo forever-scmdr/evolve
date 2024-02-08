@@ -1,7 +1,8 @@
 package ecommander.fwk;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
-import org.apache.commons.math3.util.MathUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,7 +39,7 @@ public class Timer {
     	long getExecTime();
     }
     
-	public static class TimeLogMessage implements TimerMessage{
+	public static class TimeLogMessage implements TimerMessage {
 		private String taskName;
 		private String comment;
 		private long execTime;
@@ -66,7 +67,7 @@ public class Timer {
 		}
 	}
 	
-	private static class SimpleMessage implements TimerMessage  {
+	private static class SimpleMessage implements TimerMessage {
 		private String message;
 		
 		private SimpleMessage(String message) {
@@ -216,13 +217,16 @@ public class Timer {
 	}
 
 	/**
+	 * Прекратить запись таймеров, очистить все записи значений и лог
 	 * Записать все значения таймеров в журнал
 	 */
-	public void flush() {
+	public void finish() {
 		for (TimerMessage stamp : log) {
 			stamp.output();
 		}
 		log.clear();
+		runningTasks.clear();
+		tasksTotal.clear();
 	}
 
 	/**
@@ -237,11 +241,16 @@ public class Timer {
 	 * Написать в виде строки все семмарные счетчики времени
 	 * @return
 	 */
-	public String writeTotals() {
+	public String writeTotals(String... totalsOfWhat) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\n\n\t\t\tTIMER TOTALS\n\n");
+		String tag = totalsOfWhat.length > 0 ? tag = totalsOfWhat[0] : null;
+		if (StringUtils.isBlank(tag)) {
+			sb.append("\n\n\t\t\tTIMER TOTALS\n\n");
+		} else {
+			sb.append("\n\n\t\t\tTIMER TOTALS (").append(tag).append(")\n\n");
+		}
 		for (String timerName : tasksTotal.keySet()) {
-			sb.append("\t").append(timerName).append(":\t\t").append(getTotalSeconds(timerName)).append(" seconds; ")
+			sb.append("\t").append(timerName).append(":\t\t").append(String.format("%.4f", getTotalSeconds(timerName))).append(" seconds; ")
 					.append(getTotalQty(timerName)).append(" times\n");
 		}
 		sb.append("\n=============================================\n\n");
@@ -262,6 +271,6 @@ public class Timer {
 		}
 		ServerLogger.warn("TOTAL SECONDS: " + Timer.getTimer().getSeconds("All procedure"));
 		Timer.getTimer().stop("All procedure");
-		Timer.getTimer().flush();
+		Timer.getTimer().finish();
 	}
 }

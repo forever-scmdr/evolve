@@ -6,4 +6,10 @@ package ecommander.pages;
  */
 public interface ExecutablePE {
 	ResultPE execute() throws Exception;
+
+	/**
+	 * Ключ для отладки
+	 * @return
+	 */
+	String getDebugKey();
 }

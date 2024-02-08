@@ -1155,6 +1155,12 @@
 					</div>
 				</div>
 
+				<!-- Таймеры -->
+				<div style="position: fixed;bottom: 0px;background-color: rgba(255, 255, 255, 0.9);z-index: 100;display:none" class="timers">
+					<pre>
+						<xsl:value-of select="//page/timers" disable-output-escaping="yes"/>
+					</pre>
+				</div>
 			</body>
 		</html>
 	</xsl:template>

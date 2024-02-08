@@ -179,7 +179,11 @@
 
 
 	<page name="index" template="index" cacheable="true" cache-vars="cur">
-		<single item="main_page" id="main" cacheable="true">
+		<request>
+			<var name="translate_items" value="sec1:name, sec2:name, sec3:name"/>
+			<var name="translate" scope="cookie"/>
+		</request>
+		<single item="main_page" id="main" cacheable="false">
 			<list item="main_slider_frame"/>
 			<single item="seo" assoc="seo"/>
 			<single item="seo"/>
@@ -219,6 +223,7 @@
 			</tree>
 		</single>
 		<include name="COMMON"/>
+		<command class="extra.TranslationCommand"/>
 	</page>
 
 
@@ -243,6 +248,7 @@
     <page name="catalog" template="catalog" cacheable="false">
 		<request>
 			<var name="translate_items" value="sec1:name, sec2:name, sec3:name"/>
+			<var name="translate" scope="cookie"/>
 		</request>
 		<include name="COMMON"/>
 		<single item="catalog">
@@ -272,7 +278,8 @@
 			<var name="val_16"/><var name="val_17"/><var name="val_18"/><var name="val_19"/><var name="val_20"/>
 
 			<var name="page_sec" value="filter_sec"/><!-- параметр команды CreateSectionFilterCommand -->
-			<var name="translate_items" value="cur_sec:name:xml_filter, sec1:name, sec2:name, sec3:name"/>
+			<var name="translate_items" value="cur_sec:name, sec1:name, sec2:name, sec3:name, xml_filter:xml_filter"/>
+			<var name="translate" scope="cookie"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -282,6 +289,7 @@
 		<command class="ecommander.fwk.integration.CreateSectionFilterCommand"/>
 
 		<single item="section" var="sec" id="cur_sec" tag="current_section" cache-vars="sec view">
+			<single item="xml_filter" id="xml_filter"/>
 			<link name="canonical_link" target="section" type="exclusive">
 				<var name="sec" ref="cur_sec" style="key"/>
 				<var name="tag" var="tag"/>
@@ -521,6 +529,8 @@
 		<request>
 			<var name="prod" style="key"/>
 			<var name="cur" scope="cookie"/>
+			<var name="translate_items" value="prod, sec1:name, sec2:name, sec3:name"/>
+			<var name="translate" scope="cookie"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -603,6 +613,7 @@
 			</link>
 		</list>
 		<include name="COMMON"/>
+		<command class="extra.TranslationCommand"/>
 	</page>
 
 
@@ -610,6 +621,8 @@
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
+			<var name="translate_items" value="prod_ajax"/>
+			<var name="translate" scope="cookie"/>
 		</request>
 		<single item="catalog" cacheable="true" id="catalog"/>
 		<single item="product" id="prod_ajax" var="prod" tag="product" cacheable="true" cache-vars="prod">
@@ -619,6 +632,7 @@
 		<link name="fav_link" target="fav"/>
 		<link name="compare_link" target="compare"/>
 		<link name="show_cart" target="cart"/>
+		<command class="extra.TranslationCommand"/>
 	</page>
 
 
@@ -2712,6 +2726,11 @@
 		<command class="ecommander.fwk.integration.ReindexCommand">
 			<result name="complete" type="xml"/>
 		</command>
+	</page>
+
+
+	<page name="delete_xml_filters">
+		<command class="ecommander.fwk.integration.ClearAllXmlFiltersCommand"/>
 	</page>
 
 </site>

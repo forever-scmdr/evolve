@@ -2,6 +2,7 @@ package ecommander.pages;
 
 import ecommander.controllers.SessionContext;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.model.User;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.pages.CommandPE.CommandContainer;
@@ -212,7 +213,9 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 		ResultPE result = null;
 		try {
 			for (ExecutablePE exec : executables) {
+				Timer.getTimer().start(exec.getDebugKey());
 				ResultPE localResult = exec.execute();
+				Timer.getTimer().stop(exec.getDebugKey());
 				if (!ResultPE.isResultInline(localResult)) {
 					result = localResult;
 				}
@@ -221,6 +224,11 @@ public class ExecutablePagePE extends PagePE implements ExecutableItemContainer,
 			sessionContext.close();
 		}
 		return result;
+	}
+
+	@Override
+	public String getDebugKey() {
+		return getPageName();
 	}
 
 	public final void addExecutableItem(ExecutableItemPE itemPE) {

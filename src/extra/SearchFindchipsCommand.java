@@ -96,8 +96,6 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 	private static final String PRICE_PREFIX = "price_";
 	private final String CACHE_DIR = "files/search";
 
-	private final String LOCAL_DISTRIBUTOR = "partnumber.ru";
-
 
 	@Override
 	public ResultPE execute() throws Exception {
@@ -343,20 +341,31 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 			if (localSearch) {
 				// Загрузка курсов валют
 				String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
-				Item catalogSettings = new ItemQuery(PRICE_CATALOG)
-						.addParameterEqualsCriteria(price_catalog_.NAME, LOCAL_DISTRIBUTOR).loadFirstItem();
 				BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
-				if (catalogSettings != null) {
-					extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
-				}
-
 				Item localCatalog = ItemUtils.ensureSingleRootAnonymousItem(PLAIN_CATALOG, getInitiator());
 				ItemQuery localQuery = new ItemQuery(PRODUCT).setParentId(localCatalog.getId(), true)
-						.setFulltextCriteria(FulltextQueryCreatorRegistry.DEFAULT, query, 30, null, Compare.SOME).setLimit(30);
+						.setFulltextCriteria(FulltextQueryCreatorRegistry.DEFAULT, query, 50, null, Compare.SOME)
+						.setLimit(50).addSorting(product_.SECTION_NAME, "ASC");
 				List<Item> prods = localQuery.loadItems();
-				xml.startElement("distributor", "name", LOCAL_DISTRIBUTOR);
+				final String NONE_DISTR = "~~@~NONE~@~~";
+				String currentDistributor = NONE_DISTR;
+
 				for (Item prod : prods) {
 					Product p = Product.get(prod);
+					String distributor = p.getDefault_section_name("partnumber.ru");
+					// Если поменялось название поставщика в отсортированном списке - создать новый тэг
+					if (!StringUtils.equals(distributor, currentDistributor)) {
+						if (!StringUtils.equals(NONE_DISTR, currentDistributor)) {
+							xml.endElement(); // предыдущий поставщик (если нужно закрывать)
+						}
+						xml.startElement("distributor", "name", distributor);
+						currentDistributor = distributor;
+						Item catalogSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(price_catalog_.NAME, distributor).loadFirstItem();
+						extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
+						if (catalogSettings != null) {
+							extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
+						}
+					}
 					xml.startElement("product", "id", p.get_code(), "key", p.getKeyUnique());
 					xml.addElement("code", Strings.translit(p.get_code()));
 					xml.addElement("name", p.get_name());
@@ -366,7 +375,7 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 					xml.addElement("description", p.get_name_extra());
 					xml.addElement("min_qty", p.get_min_qty());
 					xml.addElement("next_delivery", p.get_next_delivery());
-					xml.addElement("category_id", LOCAL_DISTRIBUTOR);
+					xml.addElement("category_id", distributor);
 					xml.addElement("pricebreak", "1");
 					xml.addElement("currency_id", "RUB");
 					xml.startElement("prices");

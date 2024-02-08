@@ -242,7 +242,7 @@ public abstract class BasicServlet extends HttpServlet {
 		response.setContentType("text/html");*/
 		processUrl(request, response, link.serialize());
 		Timer.getTimer().stop(Timer.REQUEST_PROCESS);
-		Timer.getTimer().flush();
+		Timer.getTimer().finish();
 	}
 	/*
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

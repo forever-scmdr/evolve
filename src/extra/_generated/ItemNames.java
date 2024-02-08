@@ -22,6 +22,7 @@ public interface ItemNames {
     String PLAIN_CATALOG = "plain_catalog";
     String PLAIN_SECTION = "plain_section";
     String SECTION = "section";
+    String XML_FILTER = "xml_filter";
     String ABSTRACT_PRODUCT = "abstract_product";
     String DESCRIBED_PRODUCT = "described_product";
     String LINE_PRODUCT = "line_product";
@@ -1267,6 +1268,13 @@ public interface ItemNames {
         String _ITEM_NAME = "video";
         String NAME = "name";
         String LINK = "link";
+
+    }
+
+    public interface xml_filter_ {
+
+        String _ITEM_NAME = "xml_filter";
+        String XML_FILTER = "xml_filter";
 
     }
 

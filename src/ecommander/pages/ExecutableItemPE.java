@@ -6,6 +6,7 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
 import ecommander.fwk.IteratorCurrent;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.model.*;
 import ecommander.model.filter.CriteriaDef;
 import ecommander.model.filter.CriteriaGroupDef;
@@ -493,7 +494,9 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 		// Загрузка всех вложенных айтемов
 		if (subitems != null) {
 			for (ExecutableItemPE subitem : subitems) {
+				Timer.getTimer().start(subitem.getDebugKey());
 				subitem.execute();
+				Timer.getTimer().stop(subitem.getDebugKey());
 			}
 		}
 		// Теперь, после того как айтем и все сабайтемы загружены, надо сохранить его в кеше, если это необходимо
@@ -501,6 +504,13 @@ public class ExecutableItemPE extends ItemPE implements ExecutableItemContainer,
 			CacheablePEManager.createCache(this);
 		return null;
 	}
+
+	@Override
+	public String getDebugKey() {
+		String itemName = getItemName() + " (" + getQueryType() + ")";
+		return hasId() ? getId() + ": " + itemName : "(no id): " + itemName;
+	}
+
 	/**
 	 * Производит непосредственную загрузку айтемов данного страничного айтема
 	 * Возвращает массив айтемов. В случае если ничего не найдено, возвращается пустой список

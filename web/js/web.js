@@ -322,4 +322,11 @@ $(document).ready(function () {
 		insertAjax(url, 'tab_jur');
 	});
 
+	// Отладочные таймеры (показывать и скрывать)
+	$('.timers').click(function () {
+		$('.timers').hide();
+	});
+	$('.footer').dblclick(function () {
+		$('.timers').show();
+	});
 });

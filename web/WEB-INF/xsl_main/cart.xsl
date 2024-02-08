@@ -135,8 +135,8 @@
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 
-									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" max="{f:num($total_qty)}"
-										class="input qty-input" data-old="{f:num(qty)}"/>
+									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">

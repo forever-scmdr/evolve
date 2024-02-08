@@ -145,6 +145,7 @@ public class TranslationCommand extends Command {
         }
         Timer.getTimer().stop("TRANSLATION");
         System.out.println("\n\n\n\n\n" + Timer.getTimer().writeTotals());
+        Timer.getTimer().finish();
 
         return null;
     }

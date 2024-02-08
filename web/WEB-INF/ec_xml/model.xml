@@ -267,12 +267,13 @@
 
 
 	<!--Является также и разделом для парсинга-->
-	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
+	<!--Товары прикрепляются отдельной ассоциацией, т.к. один товар может быть в нескольких разных разделах-->
 	<!--Есть параметры params_filter - обычный фильтр (user filter в FilterPE) и Упрощенный фильтр (xml_filter).
 		Упрощенный фильтр представляет из себя просто сгруппированные значения одного параметра товара (param_vals),
 		которые можно потом использовать при фильтрации вместо обычного пользовательского фильтра (FilterPE)
 		Формируется отдельной командой (в pages.xml)
-		Чтобы указать, что нужно заново сформировать xml_filter, в команде интеграции каталога надо очистить его значение -->
+		Чтобы указать, что нужно заново сформировать xml_filter, в команде интеграции каталога надо очистить его значение
+		xml_filter для больших каталогов зранится и загружается как отдельный айтем-->
 	<item name="section" default-page="section" children-per-page="50" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
@@ -280,6 +281,7 @@
 		<child item="section" assoc="catalog_link"/>
 		<child item="product" assoc="catalog_link"/>
 		<child item="params_xml" single="true"/>
+		<child item="xml_filter" single="true"/>
 		<parameter name="name" type="string" caption="Название" description="раздела" />
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="code" type="string" caption="Код раздела"/>
@@ -298,6 +300,12 @@
 		<parameter name="xml_filter" type="xml" caption="Упрощенный фильтр" description="используется совместно с командой и вместо простого фильтра (параметр Фильтр)"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
 	</item>
+
+
+	<item name="xml_filter" caption="XML фильтр" ag-id="2703" ag-hash="-871890784">
+		<parameter name="xml_filter" type="xml" caption="Упрощенный фильтр" description="используется совместно с командой и вместо простого фильтра (параметр Фильтр)"/>
+	</item>
+
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="name code" virtual="true" ag-id="864" ag-hash="1636704722">

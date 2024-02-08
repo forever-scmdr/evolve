@@ -89,7 +89,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		for (File excel : excels) {
 			if (!StringUtils.endsWithAny(excel.getName(), "xls", "xlsx", "txt"))
 				continue;
-			String filePrefix = StringUtils.substringBeforeLast(excel.getName(), ".");
+			final String filePrefix = StringUtils.substringBeforeLast(excel.getName(), ".");
 			// Загрузка раздела
 			List<Item> sections = ItemQuery.loadByParamValue(ItemNames.PLAIN_SECTION, plain_section_.NAME, filePrefix);
 			for (Item sec : sections) {
@@ -123,51 +123,52 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 					String code = null;
 					try {
 						code = src.getValue(CODE_HEADER);
-						if (StringUtils.isNotBlank(code)) {
-							if (addCodeSuffix) {
-								code = codeSuffix + code;
-							}
-							code = Strings.translit(code);
-							Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
-							if (prod != null) {
-								executeCommandUnit(ItemStatusDBUnit.delete(prod));
-							}
-							prod = Product.get(Item.newChildItem(productType, section));
-							prod.set_code(code);
-							prod.set_name(src.getValue(NAME_HEADER));
-							String nextDelivery = src.getValue(DELAY_HEADER);
-							if (StringUtils.isBlank(nextDelivery))
-								nextDelivery = settings.get_default_ship_time();
-							prod.set_next_delivery(nextDelivery);
-							/*
-							Byte available = NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) -1);
-							if (available < 0)
-								available = settings.get_default_ship_time();
-							prod.set_available(available);
-							 */
-							prod.set_qty(src.getDoubleValue(QTY_HEADER));
-							prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
-							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
-							//BigDecimal price = filePrice.multiply(settings.get_quotient());
-							currencyRates.setAllPrices(prod, filePrice, settings.getDefault_currency("RUB"));
-							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
-							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
-							prod.set_min_qty(minQty);
-							Double fileStep = src.getDoubleValue(STEP_HEADER);
-							Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
-							prod.set_step(step);
-							prod.set_vendor(src.getValue(VENDOR_HEADER));
-							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
-							prod.set_description(src.getValue(NAME_EXTRA_HEADER));
-							prod.set_unit(src.getValue(UNIT_HEADER));
-							executeCommandUnit(SaveItemDBUnit.new_(prod, section, (count++) * 64));
-							if (count >= 100) {
-								commitCommandUnits();
-								count = 0;
-							}
-							count++;
-							info.increaseProcessed();
+						if (StringUtils.isBlank(code))
+							return;
+						if (addCodeSuffix) {
+							code = codeSuffix + code;
 						}
+						code = Strings.translit(code);
+						Product prod = Product.get(ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, product_.CODE, code));
+						if (prod != null) {
+							executeCommandUnit(ItemStatusDBUnit.delete(prod));
+						}
+						prod = Product.get(Item.newChildItem(productType, section));
+						prod.set_code(code);
+						prod.set_name(src.getValue(NAME_HEADER));
+						String nextDelivery = src.getValue(DELAY_HEADER);
+						if (StringUtils.isBlank(nextDelivery))
+							nextDelivery = settings.get_default_ship_time();
+						prod.set_next_delivery(nextDelivery);
+						/*
+						Byte available = NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) -1);
+						if (available < 0)
+							available = settings.get_default_ship_time();
+						prod.set_available(available);
+						 */
+						prod.set_qty(src.getDoubleValue(QTY_HEADER));
+						prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
+						BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
+						//BigDecimal price = filePrice.multiply(settings.get_quotient());
+						currencyRates.setAllPrices(prod, filePrice, settings.getDefault_currency("RUB"));
+						Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
+						Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
+						prod.set_min_qty(minQty);
+						Double fileStep = src.getDoubleValue(STEP_HEADER);
+						Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
+						prod.set_step(step);
+						prod.set_section_name(filePrefix);
+						prod.set_vendor(src.getValue(VENDOR_HEADER));
+						prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
+						prod.set_description(src.getValue(NAME_EXTRA_HEADER));
+						prod.set_unit(src.getValue(UNIT_HEADER));
+						executeCommandUnit(SaveItemDBUnit.new_(prod, section, (count++) * 64));
+						if (count >= 100) {
+							commitCommandUnits();
+							count = 0;
+						}
+						count++;
+						info.increaseProcessed();
 					} catch (Exception e) {
 						ServerLogger.error("line process error", e);
 						info.pushError("Ошибка формата строки (" + code + ")", src.getRowNum(), 0);

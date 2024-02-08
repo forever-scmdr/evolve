@@ -109,7 +109,12 @@ public class CommandPE extends PageElementContainer implements ExecutablePE {
 			return executionResult;
 	    }
 	}
-	
+
+	@Override
+	public String getDebugKey() {
+		return commandClass.getName();
+	}
+
 	public boolean isCacheClearNeeded() {
 		return cacheClearNeeded;
 	}

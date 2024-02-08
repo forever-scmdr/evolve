@@ -27,7 +27,7 @@ public interface CatalogConst {
 	String MAIN_PIC_PARAM = "main_pic";
 	String SMALL_PIC_PARAM = "small_pic";
 	String PARAMS_FILTER_PARAM = "params_filter";
-	String XML_FILTER_PARAM = "xml_filter";
+	String XML_FILTER = "xml_filter";
 	String VENDOR_PARAM = "vendor";
 	String VENDOR_CODE_PARAM = "vendor_code";
 	String OFFER_ID_PARAM = "offer_id";

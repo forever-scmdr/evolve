@@ -8,7 +8,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="jur" select="page/user_jur"/>
-	<xsl:variable name="phys" select="page/user_phys"/>
+
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
@@ -40,24 +40,6 @@
 			</div>
 		</xsl:if>
 
-		<xsl:if test="$phys">
-			<form id="tab_phys" action="{$phys/confirm_link}" method="post" onsubmit="lock('tab_phys')">
-				<xsl:variable name="inp" select="$phys/input[1]"/>
-				<xsl:call-template name="USER_PHYS_INPUTS">
-					<xsl:with-param name="inp" select="$inp"/>
-				</xsl:call-template>
-				<div class="form__item">
-					<label class="form-label" for="newpass">Новый пароль:</label>
-					<input class="input form__element" type="password" id="newpass" name="{$phys/input[2]/new-password-1/@input}"/>
-				</div>
-				<div class="form__item">
-					<label class="form-label" for="newpassconfirm">Подтведите новый пароль:</label>
-					<input class="input form__element" type="password" id="newpassconfirm" name="{$phys/input[3]/new-password-2/@input}" />
-				</div>
-				<button class="button" type="submit">Сохранить изменения</button>
-			</form>
-		</xsl:if>
-
 		<xsl:if test="$jur">
 			<form id="tab_jur" action="{$jur/confirm_link}" method="post" onsubmit="lock('tab_jur')">
 				<xsl:variable name="inp" select="$jur/input[1]"/>
@@ -66,11 +48,11 @@
 				</xsl:call-template>
 				<div class="form__item">
 					<label class="form-label" for="newpass">Новый пароль:</label>
-					<input class="input form__element" type="password" id="newpass" name="{$phys/input[2]/new-password-1/@input}"/>
+					<input class="input form__element" type="password" id="newpass" name="{$jur/input[2]/new-password-1/@input}"/>
 				</div>
 				<div class="form__item">
 					<label class="form-label" for="newpassconfirm">Подтведите новый пароль:</label>
-					<input class="input form__element" type="password" id="newpassconfirm" name="{$phys/input[3]/new-password-2/@input}" />
+					<input class="input form__element" type="password" id="newpassconfirm" name="{$jur/input[3]/new-password-2/@input}" />
 				</div>
 				<button class="button" type="submit">Сохранить изменения</button>
 			</form>

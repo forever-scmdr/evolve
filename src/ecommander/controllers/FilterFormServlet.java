@@ -103,7 +103,7 @@ public class FilterFormServlet extends BasicServlet {
 			handleError(req, resp, e);
 		} finally {
 			Timer.getTimer().stop(Timer.REQUEST_PROCESS);
-			Timer.getTimer().flush();
+			Timer.getTimer().finish();
 		}
 	}
 
