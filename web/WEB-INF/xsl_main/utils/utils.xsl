@@ -40,6 +40,19 @@
         "/>
     </xsl:function>
 
+    <!-- убрать все тэги из строки (оставить только содержимое этих тэгов) -->
+    <xsl:function name="f:strip-tags">
+        <xsl:param name="text"/>
+        <xsl:choose>
+            <xsl:when test="contains($text, '&lt;')">
+                <xsl:value-of select="concat(substring-before($text, '&lt;'), ' ', f:strip-tags(substring-after($text, '&gt;')))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
 
     <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
     <!--/////////////                                                                      ////////////-->

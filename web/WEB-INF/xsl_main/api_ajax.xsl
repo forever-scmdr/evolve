@@ -4,6 +4,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="currencies" select="page/currencies"/>
+	<xsl:variable name="distributors" select="page/command/product_list/result/distributor"/>
 
 	<xsl:template match="/">
 		<div>
@@ -26,14 +27,26 @@
 								<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 							</ul>
 						</div>
-						<div id="api_ajax_1" ajax-href="search_prices_mouser?q={$p/name}"></div>
-						<div id="api_ajax_2" ajax-href="search_prices_digikey?q={$p/name}"></div>
-						<div id="api_ajax_3" ajax-href="search_prices_farnell?q={$p/name}"></div>
-						<div id="api_ajax_4" ajax-href="search_prices_onlinecomponents?q={$p/name}"></div>
-						<div id="api_ajax_5" ajax-href="search_prices_newark?q={$p/name}"></div>
-						<div id="api_ajax_6" ajax-href="search_prices_arrowelectronics?q={$p/name}"></div>
+						<xsl:for-each select="$distributors">
+							<xsl:variable name="distr" select="current()"/>
+							<xsl:call-template name="LINES_TABLE">
+								<xsl:with-param name="results_api" select="$distr"/>
+								<xsl:with-param name="header" select="$distr/@name"/>
+							</xsl:call-template>
+						</xsl:for-each>
+						<xsl:if test="not($distributors)">
+							<div class="view-table">
+								<h3 style="text-align: center"><xsl:value-of select="page/variables/distr_title" /></h3>
+								<table>
+									<tr><th>Результаты не найдены</th></tr>
+								</table>
+							</div>
+						</xsl:if>
 					</div>
 				</div>
+				<script type="text/javascript">
+					insertAjax('cart_ajax');
+				</script>
 			</div>
 		</div>
 	</xsl:template>

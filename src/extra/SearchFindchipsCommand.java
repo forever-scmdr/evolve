@@ -102,6 +102,13 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 		List<Object> servers = getVarValues(SERVER_PARAM);
 		boolean localSearch = StringUtils.equalsAnyIgnoreCase(getVarSingleValue(LOCAL_PARAM), "yes", "true");
 		String query = getVarSingleValue(QUERY_PARAM);
+
+		// Запрос может поступать напрямую через переменную q, а может через страничный айтем товара "prod" (его название)
+		if (StringUtils.isBlank(query)) {
+			Item prod = getSingleLoadedItem("prod");
+			if (prod != null)
+				query = prod.getStringValue("name");
+		}
 		if (StringUtils.isBlank(query)) {
 			return getResult("illegal_argument").setValue("Неверный формат запроса");
 		}

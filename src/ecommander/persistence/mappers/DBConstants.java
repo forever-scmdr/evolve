@@ -158,7 +158,7 @@ public interface DBConstants
 	 * @author E
 	 */
 	interface Group {
-		String GROUPS_TBL = "groups";
+		String GROUPS_TBL = "`groups`";
 		String G_ID = "g_id";
 		String G_NAME = "g_name";
 	}

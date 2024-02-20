@@ -679,17 +679,24 @@
 		<request>
 			<var name="prod" style="key"/>
 			<var name="cur" scope="cookie"/>
+			<var name="q"/>
+			<var name="server" value="https://www.findchips.com/search/"/>
+			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+			<var name="local" value="true"/>
+			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
+			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
 		</request>
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<single item="price_catalogs" cacheable="true">
-			<list item="price_catalog"/>
-		</single>
 		<single item="product" id="prod" var="prod" tag="product"/>
 		<single item="currencies" cacheable="true"/>
+		<command class="extra.SearchFindchipsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
 		<link name="set_currency" target="api_ajax" copy-page-vars="yes">
 			<var name="cur" value=""/>
 		</link>
@@ -713,7 +720,7 @@
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
 		</command>
-		<include name="SEARCH_COMMON" replace="$pname:search"/>
+		<include name="SEARCH_COMMON" replace="$pname:search_api"/>
 		<include name="COMMON"/>
 	</page>
 
