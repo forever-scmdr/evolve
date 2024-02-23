@@ -467,6 +467,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 						Long itemId = Long.parseLong(doc.get(I_ID));
 
 						// Проверка, не скрыт ли айтем
+						/*
 						TemplateQuery sql = new TemplateQuery("check").SELECT(I_ID).FROM(ITEM_TBL)
 								.WHERE().col(I_ID).long_(itemId).AND().col(I_STATUS).byte_((byte)0);
 						try (Connection conn = MysqlConnector.getConnection();
@@ -477,6 +478,7 @@ public class LuceneIndexMapper implements DBConstants.ItemTbl {
 							ServerLogger.error("Error lucene visibility check", e);
 							continue;
 						}
+						 */
 
 						result.put(itemId, highlighted.toString());
 						totalDocs++;
