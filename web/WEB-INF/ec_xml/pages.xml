@@ -2548,6 +2548,40 @@
 	</page>
 
 
+	<page name="search_oemsecrets">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="cur" scope="cookie"/>
+			<var name="q"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+<!--			<var name="proxy" value="http://localhost:8080/direct_proxy"/>-->
+		</request>
+		<command class="extra.SearchOemsecretsCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+	</page>
+
+	<!-- Ищет по любому заданному стороннему сайту и выводит в одном и том же виде -->
+	<!-- remote - обозначение сайта для поиска -->
+	<page name="search_any_remote">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="cur" scope="cookie"/>
+			<var name="q"/>
+			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="server" value="https://www.findchips.com/search/"/>
+			<var name="remote" value="findchips"/>
+		</request>
+		<command class="extra.SearchAnyRemoteCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+	</page>
+
+
 	<page name="search_prices_mouser" template="distributor_api_ajax">
 		<headers Content-Type="text/xml"/>
 		<request>

@@ -38,6 +38,8 @@ public abstract class Command implements AutoCloseable {
 		this.page = outer.page;
 		this.transaction = outer.transaction;
 		this.sessionMapper = outer.sessionMapper;
+		this.results = new HashMap<>();
+		this.results.putAll(outer.results);
 	}
 
 

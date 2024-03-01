@@ -238,7 +238,7 @@ public class Timer {
 	}
 
 	/**
-	 * Написать в виде строки все семмарные счетчики времени
+	 * Написать в виде строки все суммарные счетчики времени
 	 * @return
 	 */
 	public String writeTotals(String... totalsOfWhat) {

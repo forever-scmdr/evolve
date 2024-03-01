@@ -1,6 +1,7 @@
 package extra;
 
 import ecommander.fwk.OkWebClient;
+import ecommander.fwk.Strings;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,8 @@ public class AnotherEcommanderProxy extends Command {
                 return getResult("illegal_argument").setValue(answer);
             }
         } catch (Exception e) {
-            return getResult("error").setValue(ExceptionUtils.getStackTrace(e));
+            String error = Strings.ERROR_MARK + "\n\n" + ExceptionUtils.getStackTrace(e);
+            return getResult("error").setValue(error);
         }
         return getResult("html").setValue(answer);
     }

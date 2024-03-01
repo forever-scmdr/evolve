@@ -94,10 +94,14 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 	private static final String LOCAL_PARAM = "local";
 	private static final String NEW_PARAM = "new";
 	private static final String QUERY_PARAM = "q";
-	private static final String PRICE_PREFIX = "price_";
+	protected static final String PRICE_PREFIX = "price_";
 	private final String CACHE_DIR = "files/search";
 
 	protected Input inp;
+
+	public SearchFindchipsCommand(Command outer) {
+		super(outer);
+	}
 
 	protected class Input {
 		protected List<Object> servers;
