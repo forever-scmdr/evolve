@@ -15,18 +15,23 @@ import org.jsoup.select.Elements;
 import java.util.concurrent.TimeUnit;
 
 public class PromelecSearchCommand extends Command {
-	private static final String LOGIN = "AlphaChip";
-	private static final String PZD = "67304a79eec95cb8a694de4f911d0c96";
-	private static int USER_ID = 199656;
+	private static final String LOGIN = "API284524";
+	private static final String PZD = "ca98a100fd01bd37b147e088ef544874";
+	private static int USER_ID = 284524;
 	private static final String SEARCH_BY_NAME_METHOD = "items_data_find";
 	private static final String TEST_URL = "http://base2.promelec.ru:222/rpc_test";
 	private static final String PRODUCTION_URL = "http://base2.promelec.ru:221/rpc";
+
+	//private static final String URL = "https://aaa.na4u.ru/rpc";
+	private static final String URL = "https://base1.promelec.ru/rpc";
 	private static final String TEST_VAR = "test_mode";
 	private OkHttpClient client;
 
 	@Override
 	public ResultPE execute() throws Exception {
-		String url = "true".equals(getVarSingleValue(TEST_VAR)) ? TEST_URL : PRODUCTION_URL;
+		//String url = "true".equals(getVarSingleValue(TEST_VAR)) ? TEST_URL : PRODUCTION_URL;
+		String url = URL;
+
 		XmlDocumentBuilder xmlRequest = XmlDocumentBuilder.newDoc();
 		xmlRequest.startElement("request", "login", LOGIN, "password", PZD, "customer_id", USER_ID, "method", SEARCH_BY_NAME_METHOD, "name", getVarSingleValue("query")).endElement();
 
