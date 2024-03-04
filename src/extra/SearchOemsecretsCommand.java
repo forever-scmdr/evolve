@@ -8,6 +8,8 @@ import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.special.portal.outer.ProxyRequestDispatcher;
+import ecommander.special.portal.outer.Request;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONArray;
@@ -44,6 +46,11 @@ public class SearchOemsecretsCommand extends SearchFindchipsCommand {
             String query = StringUtils.normalizeSpace(inp.query);
             if (StringUtils.isNotBlank(query)) {
                 query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
+                Request request = ProxyRequestDispatcher.submitRequest("oemsecrets", query);
+                request.awaitExecution();
+                Request.Query response = request.getAllQueries().iterator().next();
+                jsonString = response.getResult();
+                /*
                 String requestUrl = StringUtils.replace(URL_WITH_KEY, "{Q}", query);
                 requestUrl = StringUtils.replace(requestUrl, "{CUR}", inp.curCode);
                 if (StringUtils.isNotBlank(proxy) && StringUtils.startsWith(proxy, "http")) {
@@ -52,6 +59,7 @@ public class SearchOemsecretsCommand extends SearchFindchipsCommand {
                 } else {
                     jsonString = OkWebClient.getInstance().getString(requestUrl);
                 }
+                 */
             } else {
                 return getResult("illegal_argument").setValue("Неверный формат запроса");
             }

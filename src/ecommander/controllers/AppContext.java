@@ -9,6 +9,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -45,10 +47,12 @@ public class AppContext {
 	private static String URL_FILE;
 	private static String USERS_FILE;
 	private static String LOG_FILE;
-	
 	private static String _REAL_BASE_PATH;
+
 	private static Properties props = new Properties();
-	
+
+	private static HashMap<String, String> FWK_PROPS = new HashMap<>();
+
 	static void init(ServletContext servletContext) {
 		String contextRoot = "";
 		try {
@@ -80,7 +84,15 @@ public class AppContext {
 			IS_HTTPS = StringUtils.equalsIgnoreCase(PROTOCOL_SCHEME, "https");
 			SERVER_NAME = props.getProperty("url.server_name", null);
 			SERVER_PORT = NumberUtils.toInt(props.getProperty("url.server_port", "-1"), -1);
-			
+
+			// Настройки с префиксом fwk. нужны для различных прикладных случаев. Не для всех сайтов нужны одни и
+			// те же настройки fwk. Поэтому они хранятся просто в HashMap
+			for (String propertyName : props.stringPropertyNames()) {
+				if (StringUtils.startsWith(propertyName, "fwk.")) {
+					FWK_PROPS.put(propertyName, props.getProperty(propertyName, ""));
+				}
+			}
+
 			// часовая зона
 			try {
 				DateDataType.setTimeZoneHourOffset(Integer.parseInt(props.getProperty("locale.hour_offset")));
@@ -250,5 +262,15 @@ public class AppContext {
 
 	public static String getServerName(HttpServletRequest req) {
 		return StringUtils.isNotBlank(SERVER_NAME) ? SERVER_NAME : req.getServerName();
+	}
+
+	/**
+	 * Различные настройки, которые специфичны для единичных сайтов, не имеют смысла в общем контексте приложения
+	 * (не нужны для всех случаев)
+	 * @param propName
+	 * @return
+	 */
+	public static String getFwkProperty(String propName) {
+		return FWK_PROPS.get(propName);
 	}
 }

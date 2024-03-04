@@ -4,7 +4,6 @@ import ecommander.fwk.Strings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,7 +38,7 @@ public class Proxy {
 
         @Override
         public Request.Query call() throws Exception {
-            QueryExecutor.Executor executor = QueryExecutor.get(query.getHostName(), server, query.query);
+            QueryExecutor.Executor executor = QueryExecutor.get(query.getHostName(), proxyAddress, query.query);
             boolean success = executor.executeQuery();
             if (success) {
                 if (StringUtils.startsWith(executor.getResult(), Strings.ERROR_MARK)) {
@@ -65,17 +64,15 @@ public class Proxy {
         }
     }
 
-    private final String name;      // Название прокси сервера
-    private final String server;    // Адрес прокси сервера
+    private final String proxyAddress;    // Адрес прокси сервера
     private Status status = Status.ONLINE;
 
     private LinkedList<Long> lastExecTimes = new LinkedList<>(); // времена исполнения последних запросов
     private long avgExecutionTime = 0;  // среднее время исполнения последних запросов
     private ExecutorService threadPool;   // Пул потоков выполнения запросов на сервер
 
-    public Proxy(String name, String server, int numberOfThreads) {
-        this.name = name;
-        this.server = server;
+    public Proxy(String server, int numberOfThreads) {
+        this.proxyAddress = server;
         this.threadPool = Executors.newFixedThreadPool(numberOfThreads);
     }
 

@@ -9,6 +9,8 @@ import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
+import ecommander.special.portal.outer.ProxyRequestDispatcher;
+import ecommander.special.portal.outer.Request;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
@@ -361,6 +363,11 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 				if (StringUtils.isNotBlank(query)) {
 					query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
 					if (StringUtils.isNotBlank((String) server)) {
+						Request request = ProxyRequestDispatcher.submitRequest("findchips", query);
+						request.awaitExecution();
+						Request.Query response = request.getAllQueries().iterator().next();
+						html = response.getResult();
+						/*
 						String requestUrl = server + query;
 						if (StringUtils.isNotBlank(proxy) && StringUtils.startsWith(proxy, "http")) {
 							String proxyUrl = proxy + "?url=" + requestUrl;
@@ -368,6 +375,7 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 						} else {
 							html = OkWebClient.getInstance().getString(requestUrl);
 						}
+						 */
 					}
 					// если задан параметр server - значит надо подулючаться удаленному серверу
 					else {

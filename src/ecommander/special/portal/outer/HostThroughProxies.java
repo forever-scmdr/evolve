@@ -1,5 +1,6 @@
 package ecommander.special.portal.outer;
 
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -23,4 +24,27 @@ public class HostThroughProxies {
     }
 
     private LinkedList<Proxy> proxyQueue = new LinkedList<>();
+    private String name;
+
+    public HostThroughProxies(String name, Collection<Proxy> allProxies) {
+        this.name = name;
+        for (Proxy proxy : allProxies) {
+            proxyQueue.addFirst(proxy);
+        }
+    }
+
+    /**
+     * Выбрать следующий прокси по очереди.
+     * Выбранный прокси возвращается, а также помещается назад в очередь на последнее место
+     * @return
+     */
+    public synchronized Proxy getNextProxyAndRotate() {
+        Proxy first = proxyQueue.poll();
+        proxyQueue.addLast(first);
+        return first;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
