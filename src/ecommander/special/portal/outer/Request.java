@@ -35,10 +35,10 @@ public class Request {
 
         public final String query;          // одиночный запрос (текст)
         private final Request request;      // родительский общий запрос (где много объектов Query)
-        private Status status = Status.NEW; // статус запроса
-        private String result;              // результирующий html или json
+        private volatile Status status = Status.NEW; // статус запроса
+        private volatile String result;              // результирующий html или json
         private Future<Query> future;       // future
-        private long processNanos;          // количество миллисекунд от начала выполнения до конца
+        private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
         private int numTries = 0;           // Количество попыток выполнения запроса
         protected Query(String query, Request request) {
             this.query = query;
@@ -100,7 +100,7 @@ public class Request {
     private LinkedHashSet<Query> successfulQueries = new LinkedHashSet<>();
     // запросы, выполненные с ошибкой (требуется повторное выполнение)
     private LinkedHashSet<Query> failedQueries = new LinkedHashSet<>();
-    private boolean hasError = false;
+    private volatile boolean hasError = false;
     private volatile Status status = Status.NEW; // статус всего запроса
     private long nanosTookToFinish = 0;      // сколько прошло миллисекунд от момента отправки на выполнение
 

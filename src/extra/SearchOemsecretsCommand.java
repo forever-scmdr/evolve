@@ -1,6 +1,5 @@
 package extra;
 
-import ecommander.fwk.OkWebClient;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;

@@ -680,16 +680,15 @@
 			<var name="prod" style="key"/>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product"/>
 		<single item="currencies" cacheable="true"/>
-		<command class="extra.SearchFindchipsCommand">
+		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -708,14 +707,13 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchFindchipsCommand">
+		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -731,14 +729,13 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchFindchipsCommand">
+		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -2537,10 +2534,9 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchFindchipsCommand">
+		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -2553,7 +2549,7 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
+			<var name="remote" value="findchips" scope="cookie"/>
 <!--			<var name="proxy" value="http://localhost:8080/direct_proxy"/>-->
 		</request>
 		<command class="extra.SearchOemsecretsCommand">
@@ -2570,8 +2566,6 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-			<var name="server" value="https://www.findchips.com/search/"/>
 			<var name="remote" value="findchips"/>
 		</request>
 		<command class="extra.SearchAnyRemoteCommand">

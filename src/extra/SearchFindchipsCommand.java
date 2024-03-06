@@ -355,143 +355,133 @@ public class SearchFindchipsCommand extends Command implements ItemNames {
 	 */
 	protected ResultPE getFromServer(XmlDocumentBuilder xml, CurrencyRates rates) throws Exception {
 		String html = null;
-		String proxy = getVarSingleValue("proxy");
-		// Поиск по всем удаленным серверам (обычно один)
-		for (Object server : inp.servers) {
-			try {
-				String query = StringUtils.normalizeSpace(inp.query);
-				if (StringUtils.isNotBlank(query)) {
-					query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
-					if (StringUtils.isNotBlank((String) server)) {
-						Request request = ProxyRequestDispatcher.submitRequest("findchips", query);
-						request.awaitExecution();
-						Request.Query response = request.getAllQueries().iterator().next();
-						html = response.getResult();
-						/*
-						String requestUrl = server + query;
-						if (StringUtils.isNotBlank(proxy) && StringUtils.startsWith(proxy, "http")) {
-							String proxyUrl = proxy + "?url=" + requestUrl;
-							html = OkWebClient.getInstance().getString(proxyUrl);
-						} else {
-							html = OkWebClient.getInstance().getString(requestUrl);
-						}
-						 */
-					}
-					// если задан параметр server - значит надо подулючаться удаленному серверу
-					else {
-						return getResult("illegal_argument").setValue("Не указан сервер");
-					}
+		try {
+			String query = StringUtils.normalizeSpace(inp.query);
+			if (StringUtils.isNotBlank(query)) {
+				query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
+				Request request = ProxyRequestDispatcher.submitRequest("findchips", query);
+				request.awaitExecution();
+				Request.Query response = request.getAllQueries().iterator().next();
+				html = response.getResult();
+				/*
+				String requestUrl = server + query;
+				if (StringUtils.isNotBlank(proxy) && StringUtils.startsWith(proxy, "http")) {
+					String proxyUrl = proxy + "?url=" + requestUrl;
+					html = OkWebClient.getInstance().getString(proxyUrl);
 				} else {
-					return getResult("illegal_argument").setValue("Неверный формат запроса");
+					html = OkWebClient.getInstance().getString(requestUrl);
 				}
-			} catch (Exception e) {
-				return getResult("error").setValue(ExceptionUtils.getStackTrace(e));
+				 */
+			} else {
+				return getResult("illegal_argument").setValue("Неверный формат запроса");
 			}
+		} catch (Exception e) {
+			return getResult("error").setValue(ExceptionUtils.getStackTrace(e));
+		}
 
-			// Парсинг и создание XML
-			Document doc = Jsoup.parse(html);
-			Elements distributors = doc.select("div.distributor-results");
-			if (distributors.size() == 0)
-				return getResult("error").setValue("Не найден элемент дистрибьютора");
-			xml.addElement("query", inp.query);
+		// Парсинг и создание XML
+		Document doc = Jsoup.parse(html);
+		Elements distributors = doc.select("div.distributor-results");
+		if (distributors.size() == 0)
+			return getResult("error").setValue("Не найден элемент дистрибьютора");
+		xml.addElement("query", inp.query);
 
-			for (Element distributorEl : distributors) {
-				String distributor = distributorEl.attr("data-distributor_name");
-				if (inp.dstrSet.size() > 0 && !inp.dstrSet.contains(distributor)) {
-					continue;
-				}
-				// Загрузка курсов валют
-				String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(inp.curCode) ? rates.getDefaultCurrency() : inp.curCode);
-				Item catalogSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(price_catalog_.NAME, distributor).loadFirstItem();
-				BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
-				if (catalogSettings != null)
-					extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
-
-				xml.startElement("distributor", "name", distributor);
-				Elements lines = distributorEl.select("tr.row");
-				for (Element line : lines) {
-					String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
-					String code = JsoupUtils.getSelectorFirstValue(line, "span.additional-value");
-					if (StringUtils.isBlank(code)) {
-						code = name + "_" + Integer.toHexString(distributor.hashCode());
-					}
-					String key = Strings.translit(name + " " + code);
-					String vendor = JsoupUtils.getSelectorFirstValue(line, "td:eq(1)");
-					String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");
-					String minQtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Min Qty']");
-					String leadTime = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Lead time']");
-					String stepStr = minQtyStr;
-					String container = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Container']");
-					String qtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(3)");
-					xml.startElement("product", "id", code, "key", key);
-					xml.addElement("code", code);
-					xml.addElement("name", name);
-					xml.addElement("vendor", vendor);
-					xml.addElement("qty", qtyStr);
-					xml.addElement("step", stepStr);
-					xml.addElement("description", description);
-					xml.addElement("min_qty", minQtyStr);
-					xml.addElement("next_delivery", leadTime);
-					xml.addElement("container", container);
-					xml.addElement("category_id", distributor);
-					Elements priceLis = line.select("td.td-price li[class]");
-					xml.addElement("pricebreak", priceLis.size());
-					boolean noCurrency = true;
-					boolean noBreaks = true;
-					BigDecimal maxPrice = BigDecimal.ONE.negate();
-					BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
-					for (Element priceLi : priceLis) {
-						String breakQtyStr = JsoupUtils.getSelectorFirstValue(priceLi, "span.label");
-						Element data = priceLi.select("span.value").first();
-						if (data == null)
-							continue;
-						String priceStr = data.attr("data-baseprice");
-						String currencyCode = data.attr("data-basecurrency");
-						if (noCurrency) {
-							xml.addElement("currency_id", currencyCode);
-							noCurrency = false;
-						}
-						if (noBreaks) {
-							xml.startElement("prices");
-							noBreaks = false;
-						}
-						xml.startElement("break", "qty", breakQtyStr);
-						BigDecimal priceOriginal = DecimalDataType.parse(priceStr, 4);
-						if (priceOriginal != null) {
-							xml.addElement("price_original", priceOriginal);
-							// Применить коэффициент
-							priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
-							HashMap<String, BigDecimal> allPricesDecimal = rates.setAllPricesXML(xml, priceOriginal, currencyCode);
-							BigDecimal currentPrice = allPricesDecimal.get(priceParamName);
-							if (currentPrice != null) {
-								maxPrice = maxPrice.max(currentPrice);
-								minPrice = minPrice.min(currentPrice);
-								inp.globalMaxPrice = inp.globalMaxPrice.max(currentPrice);
-								inp.globalMinPrice = inp.globalMinPrice.min(currentPrice);
-							}
-						}
-						xml.endElement(); // break
-					}
-					if (!noBreaks) {
-						xml.endElement(); // prices
-					}
-					// Добавление элементов с максимальной и минимальной ценой (чтобы сохранилась в кеше)
-					xml.addElement("max_price", maxPrice);
-					xml.addElement("min_price", minPrice);
-					// Если девайс не подходит по фильтрам - добавить тэг <invalid>invalid</invalid>
-					boolean isInvalid
-							= (inp.hasShipDateFilter && !inp.shipDateFilter.contains(leadTime))
-							|| (inp.hasVendorFilter && !inp.vendorFilter.contains(vendor))
-							|| (inp.hasDistributorFilter && !inp.distributorFilter.contains(distributor))
-							|| (inp.hasFromFilter && maxPrice.compareTo(inp.fromFilterDecimal) < 0)
-							|| (inp.hasToFilter && minPrice.compareTo(inp.toFilterDecimal) > 0);
-					if (isInvalid) {
-						xml.addElement("invalid", "invalid");
-					}
-					xml.endElement(); // product
-				}
-				xml.endElement(); // distributor
+		for (Element distributorEl : distributors) {
+			String distributor = distributorEl.attr("data-distributor_name");
+			if (inp.dstrSet.size() > 0 && !inp.dstrSet.contains(distributor)) {
+				continue;
 			}
+			// Загрузка курсов валют
+			String priceParamName = PRICE_PREFIX + (StringUtils.isBlank(inp.curCode) ? rates.getDefaultCurrency() : inp.curCode);
+			Item catalogSettings = new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(price_catalog_.NAME, distributor).loadFirstItem();
+			BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
+			if (catalogSettings != null)
+				extraQuotient = catalogSettings.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE);
+
+			xml.startElement("distributor", "name", distributor);
+			Elements lines = distributorEl.select("tr.row");
+			for (Element line : lines) {
+				String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
+				String code = JsoupUtils.getSelectorFirstValue(line, "span.additional-value");
+				if (StringUtils.isBlank(code)) {
+					code = name + "_" + Integer.toHexString(distributor.hashCode());
+				}
+				String key = Strings.translit(name + " " + code);
+				String vendor = JsoupUtils.getSelectorFirstValue(line, "td:eq(1)");
+				String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");
+				String minQtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Min Qty']");
+				String leadTime = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Lead time']");
+				String stepStr = minQtyStr;
+				String container = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Container']");
+				String qtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(3)");
+				xml.startElement("product", "id", code, "key", key);
+				xml.addElement("code", code);
+				xml.addElement("name", name);
+				xml.addElement("vendor", vendor);
+				xml.addElement("qty", qtyStr);
+				xml.addElement("step", stepStr);
+				xml.addElement("description", description);
+				xml.addElement("min_qty", minQtyStr);
+				xml.addElement("next_delivery", leadTime);
+				xml.addElement("container", container);
+				xml.addElement("category_id", distributor);
+				Elements priceLis = line.select("td.td-price li[class]");
+				xml.addElement("pricebreak", priceLis.size());
+				boolean noCurrency = true;
+				boolean noBreaks = true;
+				BigDecimal maxPrice = BigDecimal.ONE.negate();
+				BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+				for (Element priceLi : priceLis) {
+					String breakQtyStr = JsoupUtils.getSelectorFirstValue(priceLi, "span.label");
+					Element data = priceLi.select("span.value").first();
+					if (data == null)
+						continue;
+					String priceStr = data.attr("data-baseprice");
+					String currencyCode = data.attr("data-basecurrency");
+					if (noCurrency) {
+						xml.addElement("currency_id", currencyCode);
+						noCurrency = false;
+					}
+					if (noBreaks) {
+						xml.startElement("prices");
+						noBreaks = false;
+					}
+					xml.startElement("break", "qty", breakQtyStr);
+					BigDecimal priceOriginal = DecimalDataType.parse(priceStr, 4);
+					if (priceOriginal != null) {
+						xml.addElement("price_original", priceOriginal);
+						// Применить коэффициент
+						priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
+						HashMap<String, BigDecimal> allPricesDecimal = rates.setAllPricesXML(xml, priceOriginal, currencyCode);
+						BigDecimal currentPrice = allPricesDecimal.get(priceParamName);
+						if (currentPrice != null) {
+							maxPrice = maxPrice.max(currentPrice);
+							minPrice = minPrice.min(currentPrice);
+							inp.globalMaxPrice = inp.globalMaxPrice.max(currentPrice);
+							inp.globalMinPrice = inp.globalMinPrice.min(currentPrice);
+						}
+					}
+					xml.endElement(); // break
+				}
+				if (!noBreaks) {
+					xml.endElement(); // prices
+				}
+				// Добавление элементов с максимальной и минимальной ценой (чтобы сохранилась в кеше)
+				xml.addElement("max_price", maxPrice);
+				xml.addElement("min_price", minPrice);
+				// Если девайс не подходит по фильтрам - добавить тэг <invalid>invalid</invalid>
+				boolean isInvalid
+						= (inp.hasShipDateFilter && !inp.shipDateFilter.contains(leadTime))
+						|| (inp.hasVendorFilter && !inp.vendorFilter.contains(vendor))
+						|| (inp.hasDistributorFilter && !inp.distributorFilter.contains(distributor))
+						|| (inp.hasFromFilter && maxPrice.compareTo(inp.fromFilterDecimal) < 0)
+						|| (inp.hasToFilter && minPrice.compareTo(inp.toFilterDecimal) > 0);
+				if (isInvalid) {
+					xml.addElement("invalid", "invalid");
+				}
+				xml.endElement(); // product
+			}
+			xml.endElement(); // distributor
 		}
 		return null;
 	}
