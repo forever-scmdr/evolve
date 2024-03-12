@@ -672,8 +672,8 @@
 
 	<!--
 		Главная страница с предложениями поставщиков по одному товару
-	 	Является лендингом, с которого просто отправляются несколько AJAX запросов
-	 	параллельно по разным поставщикам
+		Вызывается при нажатии на ссылку в карточке товара в собственном каталоге
+		описаний товаров сайта (спаршенный digikey)
 	 -->
 	<page name="api_ajax" template="api_ajax" cacheable="true">
 		<request>
@@ -683,12 +683,12 @@
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
-			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
+			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
 			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
 		<single item="product" id="prod" var="prod" tag="product"/>
 		<single item="currencies" cacheable="true"/>
-		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
+		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -710,10 +710,10 @@
 			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
-			<var name="new" value="true"/><!-- надо посылать новый запрос на сервер findhips -->
+			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
 			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
+		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -735,7 +735,7 @@
 			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
 			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
+		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
@@ -2474,34 +2474,6 @@
 	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
-	<page name="api_proxy">
-		<headers Content-Type="text/plain"/>
-		<request>
-			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
-			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
-			<var name="token_header" value="Authorization"/>
-		</request>
-		<command class="extra.ApiProxyCommand">
-			<result name="success" type="plain_text"/>
-		</command>
-	</page>
-
-	<!-- Страница для получения JSON в виде XML -->
-	<page name="api_xml">
-		<headers Content-Type="text/plain"/>
-		<request>
-			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
-			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
-			<var name="token_header" value="Authorization"/>
-			<var name="root_element" value="provider"/>
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, multipleorderquantity:step, leadtimedays:next_delivery, addinfo:description"/>
-		</request>
-		<command class="extra.ApiJsonToXMLCommand">
-			<result name="success" type="plain_text"/>
-			<result name="error" type="plain_text"/>
-		</command>
-	</page>
-
 
 	<!-- Страница для получения JSON в виде XML -->
 	<page name="by_inn_ajax" template="by_inn_ajax">
@@ -2529,6 +2501,7 @@
 			<var name="server" value="https://www.findchips.com/search/"/>
 
 	 -->
+	<!-- remote - обозначение сайта для поиска -->
 	<page name="search_prices">
 		<headers Content-Type="text/xml"/>
 		<request>
@@ -2536,170 +2509,11 @@
 			<var name="q"/>
 			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
-		<command class="extra.SearchAnyRemoteCommand"><!-- extra.SearchFindchipsCommand -->
+		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
 		</command>
-	</page>
-
-
-	<page name="search_oemsecrets">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="cur" scope="cookie"/>
-			<var name="q"/>
-			<var name="remote" value="findchips" scope="cookie"/>
-<!--			<var name="proxy" value="http://localhost:8080/direct_proxy"/>-->
-		</request>
-		<command class="extra.SearchOemsecretsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
-
-	<!-- Ищет по любому заданному стороннему сайту и выводит в одном и том же виде -->
-	<!-- remote - обозначение сайта для поиска -->
-	<page name="search_any_remote">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="cur" scope="cookie"/>
-			<var name="q"/>
-			<var name="remote" value="findchips"/>
-		</request>
-		<command class="extra.SearchAnyRemoteCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
-
-
-	<page name="search_prices_mouser" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/mouser-electronics?search="/>
-			<var name="position" value="1"/>
-			<var name="distr_title" value="Mouser Electronics"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-	<page name="search_prices_digikey" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/digikey?search="/>
-			<var name="position" value="2"/>
-			<var name="distr_title" value="DigiKey"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-	<page name="search_prices_farnell" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/farnell?search="/>
-			<var name="position" value="3"/>
-			<var name="distr_title" value="Farnell"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-	<page name="search_prices_onlinecomponents" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/onlinecomponents.com?search="/>
-			<var name="position" value="4"/>
-			<var name="distr_title" value="Onlinecomponents.com"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-	<page name="search_prices_newark" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/newark?search="/>
-			<var name="position" value="5"/>
-			<var name="distr_title" value="Newark"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
-
-
-
-	<page name="search_prices_arrowelectronics" template="distributor_api_ajax">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="https://www.findchips.com/distributors/arrow-electronics?search="/>
-			<var name="position" value="6"/>
-			<var name="distr_title" value="Arrow Electronics"/>
-			<var name="cur" scope="cookie"/>
-			<var name="proxy" value="http://api.must.by/direct_proxy"/>
-		</request>
-		<command class="extra.SearchFindchipsCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
 	</page>
 
 

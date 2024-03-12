@@ -2,6 +2,7 @@ package ecommander.special.portal.outer;
 
 import ecommander.fwk.OkWebClient;
 import ecommander.fwk.Strings;
+import ecommander.special.portal.outer.providers.Providers;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -136,10 +137,10 @@ public class QueryExecutor {
      * @return
      */
     public static Executor get(String hostName, String proxyServer, String query) {
-        if (StringUtils.containsIgnoreCase(hostName, "findchips")) {
+        if (StringUtils.containsIgnoreCase(hostName, Providers.FINDCHIPS)) {
             return new FindchipsExecutor(query, proxyServer);
         }
-        if (StringUtils.containsIgnoreCase(hostName, "oemsecrets")) {
+        if (StringUtils.containsIgnoreCase(hostName, Providers.OEMSECRETS)) {
             return new OemsecretsExecutor(query, proxyServer);
         }
         throw new IllegalArgumentException("Не найден исполнитель запроса для хоста '" + hostName + "'");

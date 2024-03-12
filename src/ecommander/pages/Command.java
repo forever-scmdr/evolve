@@ -192,7 +192,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param varName
 	 * @return
 	 */
-	protected final String getVarSingleValue(String varName) {
+	public final String getVarSingleValue(String varName) {
 		return getVarSingleValueDefault(varName, null);
 	}
 	/**
@@ -202,7 +202,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param defaultValue
 	 * @return
 	 */
-	protected final String getVarSingleValueDefault(String varName, String defaultValue) {
+	public final String getVarSingleValueDefault(String varName, String defaultValue) {
 		Variable var = page.getVariable(varName);
 		if (var == null || var.isEmpty())
 			return defaultValue;
@@ -213,7 +213,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param varName
 	 * @return
 	 */
-	protected final List<Object> getVarValues(String varName) {
+	public final List<Object> getVarValues(String varName) {
 		Variable var = page.getVariable(varName);
 		if (var == null || var.isEmpty())
 			return new ArrayList<>();
@@ -273,7 +273,7 @@ public abstract class Command implements AutoCloseable {
 	 * @param itemPageId
 	 * @return
 	 */
-	protected final Item getSingleLoadedItem(String itemPageId) {
+	public final Item getSingleLoadedItem(String itemPageId) {
 		ExecutableItemPE pageItem = page.getItemPEById(itemPageId);
 		if (pageItem == null)
 			return null;
@@ -369,7 +369,7 @@ public abstract class Command implements AutoCloseable {
 	 * @return
 	 * @throws EcommanderException
 	 */
-	protected final ResultPE getResult(String name) throws EcommanderException {
+	public final ResultPE getResult(String name) throws EcommanderException {
 		ResultPE result = results.get(name);
 		if (result == null)
 			return new ResultPE(name, ResultPE.ResultType.redirect);
