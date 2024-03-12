@@ -6,6 +6,9 @@ import ecommander.pages.ResultPE;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Единая страничная команда для получения данных с удаленных серверов (всех), кеширования и поиска в локальном каталоге
+ */
 public class GetProdiverDataCommand extends Command implements ItemNames {
     private static final String LOCAL_PARAM = "local";
     private static final String NEW_PARAM = "new";

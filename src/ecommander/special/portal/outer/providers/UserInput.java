@@ -13,6 +13,12 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Данные, которые ввел пользователь для своего поиска, в том числе сам запрос, а также фильтр
+ * Кроме этого тут хранятся курсы валют, текущая валюта по умолчанию и разные буферы, которые используются
+ * при обработке запросов.
+ * Экземпляр класса создается про поступлении запроса пользователя
+ */
 public class UserInput {
     public static final String SERVER_PARAM = "server";
     public static final String QUERY_PARAM = "q";

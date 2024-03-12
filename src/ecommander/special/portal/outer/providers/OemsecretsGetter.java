@@ -1,6 +1,5 @@
 package ecommander.special.portal.outer.providers;
 
-import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
@@ -23,6 +22,9 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+/**
+ * Получение данных и обработка ответа с oemsecrets.com
+ */
 public class OemsecretsGetter implements ProviderGetter, ItemNames {
     @Override
     public String getProviderName() {
