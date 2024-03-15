@@ -45,14 +45,12 @@ public class OemsecretsGetter extends ProviderGetter {
         for (Request.Query query : request.getAllQueries()) {
             XmlDocumentBuilder queryXml = XmlDocumentBuilder.newDocPart();
 
-            int qty = userInput.getQueries().get(query.query);
-            String q = query.query;
-            // <query> - открывающий
-            queryXml.startElement("query", "q", q, "qty", qty, "millis", query.getProcessMillis(), "tries", query.getNumTries());
+            // <server/>
+            queryXml.addElement("server", null, "host", getProviderName(), "millis", query.getProcessMillis(),
+                    "tries", query.getNumTries(), "proxies", StringUtils.join(query.getProxyTries(), " "));
             if (query.getStatus() != Request.Status.SUCCESS) {
                 String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
                 queryXml.addElement("error", query.getResult(), "type", errorType);
-                queryXml.endElement(); // </query> - закрывающий (т.к. далее continue)
                 query.setProcessedResult(queryXml);
                 continue;
             }
@@ -71,7 +69,6 @@ public class OemsecretsGetter extends ProviderGetter {
             } catch (JSONException je) {
                 query.setStatus(Request.Status.HOST_FAILURE);
                 queryXml.addElement("error", "Не найдены товары", "type", "wrong_format");
-                queryXml.endElement(); // </query> - закрывающий (т.к. далее continue)
                 query.setProcessedResult(queryXml);
                 continue;
             }
@@ -178,7 +175,6 @@ public class OemsecretsGetter extends ProviderGetter {
                 queryXml.addElements(distributorXml.getXmlStringSB());
                 queryXml.endElement(); // distributor
             }
-            queryXml.endElement(); // </query> - закрывающий
             query.setProcessedResult(queryXml);
         }
 

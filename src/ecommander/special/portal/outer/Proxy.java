@@ -83,7 +83,7 @@ public class Proxy {
      */
     public void submitQuery(Request.Query query) {
         Future<Request.Query> queryFuture = threadPool.submit(new ProcessServerQueryCallable(query));
-        query.startProcess(queryFuture);
+        query.startProcess(queryFuture, proxyAddress);
     }
 
     /**

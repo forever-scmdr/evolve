@@ -967,7 +967,7 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+<!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
@@ -2525,6 +2525,7 @@
 			<var name="q"/>
 			<var name="remote" value="findchips"/>
 			<var name="local" value="false"/>
+			<var name="new" value="false"/>
 		</request>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>

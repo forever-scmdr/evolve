@@ -28,7 +28,7 @@
 				<textarea class="input header-search__input" placeholder="Введите поисковый запрос"
 						  autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;"><xsl:value-of select="$query" /></textarea>
 				<button class="button" type="submit">Сформировать спецификацию</button>
-				<button class="button" type="submit" onclick="$(this).closest('form').attr('action', 'search_prices')" style="margin-left: 20px">Найти</button>
+				<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/search_api_link}')" style="margin-left: 20px">Найти</button>
 			</form>
 			<br/>
 			<xsl:if test="page/formatted/xml/bom">

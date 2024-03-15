@@ -48,14 +48,12 @@ public class FindchipsGetter extends ProviderGetter {
             // XML запроса
             XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 
-            int qty = userInput.getQueries().get(query.query);
-            String q = query.query;
-            // <query> - открывающий
-            xml.startElement("query", "q", q, "qty", qty, "millis", query.getProcessMillis(), "tries", query.getNumTries());
+            // <server/>
+            xml.addElement("server", null, "host", getProviderName(), "millis", query.getProcessMillis(),
+                    "tries", query.getNumTries(), "proxies", StringUtils.join(query.getProxyTries(), " "));
             if (query.getStatus() != Request.Status.SUCCESS) {
                 String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
                 xml.addElement("error", query.getResult(), "type", errorType);
-                xml.endElement(); // </query> - закрывающий (т.к. далее continue)
                 query.setProcessedResult(xml);
                 continue;
             }
@@ -66,7 +64,6 @@ public class FindchipsGetter extends ProviderGetter {
             if (distributors.size() == 0) {
                 query.setStatus(Request.Status.HOST_FAILURE);
                 xml.addElement("error", "Не найден элемент дистрибьютора", "type", "wrong_format");
-                xml.endElement(); // </query> - закрывающий (т.к. далее continue)
                 query.setProcessedResult(xml);
                 continue;
             }
@@ -165,7 +162,6 @@ public class FindchipsGetter extends ProviderGetter {
                 }
                 xml.endElement(); // distributor
             }
-            xml.endElement(); // </query> - закрывающий
             query.setProcessedResult(xml);
         }
         return result;

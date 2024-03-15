@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,7 +68,8 @@ public class DataGetter {
         XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 
         // Сначала посмотреть, что можно прочитать из кеша. То, что есть в кеше позже не запрашивать
-        for (String query : input.getQueries().keySet()) {
+        ArrayList<String> queries = new ArrayList<>(input.getQueries().keySet());
+        for (String query : queries) {
             // Подготовка данных о кеше
             String cacheFileName = createCacheFileName(query);
             File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
@@ -113,7 +115,9 @@ public class DataGetter {
                     // сохранить кеш
                     FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
                     // дописать в итоговый документ
+                    xml.startElement("query", "q", query.query, "qty", input.getQueries().get(query.query));
                     xml.addElements(query.getProcessedResult().getXmlStringSB());
+                    xml.endElement();
                 }
             }
         }

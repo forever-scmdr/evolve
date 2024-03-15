@@ -2,6 +2,7 @@ package ecommander.special.portal.outer;
 
 import ecommander.fwk.XmlDocumentBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.Future;
@@ -43,9 +44,11 @@ public class Request {
         private Future<Query> future;       // future
         private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
         private int numTries = 0;           // Количество попыток выполнения запроса
+        private ArrayList<String> proxyTries;       // Прокси сервера, через которые пытался выполниться запрос. После каждой попытки добавляется прокси этой попытки
         protected Query(String query, Request request) {
             this.query = query;
             this.request = request;
+            this.proxyTries = new ArrayList<>(3);
         }
 
         protected void endProcess(Status status, String result) {
@@ -79,14 +82,19 @@ public class Request {
             return numTries;
         }
 
+        public ArrayList<String> getProxyTries() {
+            return proxyTries;
+        }
+
         public Future<Query> getFuture() {
             return future;
         }
 
-        public void startProcess(Future<Query> future) {
+        public void startProcess(Future<Query> future, String proxyName) {
             this.future = future;
             processNanos = System.nanoTime();
             numTries++;
+            proxyTries.add(proxyName);
         }
 
         public long getProcessMillis() {
