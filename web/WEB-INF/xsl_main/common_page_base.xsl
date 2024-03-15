@@ -7,7 +7,6 @@
 	<xsl:import href="snippets/product.xsl"/>
 	<xsl:import href="snippets/page_extra.xsl"/>
 
-
 	<xsl:template name="BR"><xsl:text disable-output-escaping="yes">&lt;br /&gt;</xsl:text></xsl:template>
 
 
