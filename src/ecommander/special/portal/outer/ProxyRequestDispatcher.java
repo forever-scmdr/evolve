@@ -51,7 +51,7 @@ public class ProxyRequestDispatcher {
      * Отправить запрос (одно действие пользователя)
      * Надо указать хост для общего запроса и все поисковые запросы (когда их несколько)
      * Запрос распределится по прокси серверам.
-     * Возвращается экземпляр класса Request. Его потом можно испльзовать, в частности подождать выполнения
+     * Возвращается экземпляр класса Request. Его потом можно использовать, в частности подождать выполнения
      * @param hostName
      * @param queries
      * @return
@@ -65,15 +65,5 @@ public class ProxyRequestDispatcher {
         Request request = new Request(hostName, queries.toArray(new String[0]));
         request.submit(host);
         return request;
-    }
-
-    /**
-     * Аналогично submitRequest, но для одного запроса
-     * @param hostName
-     * @param query
-     * @return
-     */
-    public static Request submitRequest(String hostName, String query) {
-        return submitRequest(hostName, Collections.singletonList(query));
     }
 }

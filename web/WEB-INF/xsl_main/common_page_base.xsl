@@ -12,7 +12,6 @@
 
 
 
-
 	<!-- ****************************    ОБЩИЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ    ******************************** -->
 
 	<xsl:variable name="common" select="page/common"/>
@@ -193,7 +192,7 @@
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
 						<xsl:if test="$has_personal">
-							<div id="personal_desktop" ajax-href="{//page/personal_ajax_link}" ajax-show-loader="no">
+							<div id="personal_desktop_login" ajax-href="{//page/personal_ajax_link}" ajax-show-loader="no">
 								<a href="{page/login_link}" class="icon-link">
 									<div class="icon">
 										<img src="img/icon-lock.svg" alt="" />
@@ -274,7 +273,7 @@
 						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
 								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
-								<a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Загрузка BOM</span></a>
+								<a class="icon-link" href="#" onclick="pressSearchBom(); return false;"><!-- popup="modal-excel" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
 								<div class="infobox_modal infobox_1">
 									<div class="text">
 										<a class="popup__close" onclick="infobox('close');">×</a>
@@ -316,7 +315,6 @@
 							</a>
 						</div>
 						<div class="user">
-
 							<xsl:if test="$has_fav">
 								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
 									<a class="icon-link">
@@ -342,6 +340,9 @@
 								</a>
 							</div>
 						</xsl:if>
+						<div class="user" id="personal_desktop_extra">
+
+						</div>
 						<div class="links">
 							<a href="javascript:showMobileMainMenu()" class="icon-link">
 								<div class="icon">
@@ -394,7 +395,7 @@
 						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
 								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
-								<a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Загрузка BOM</span></a>
+								<a class="icon-link" href="#" onclick="pressSearchBom(); return false;"><!-- popup="modal-excel" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
 								<div class="infobox_modal infobox_1">
 									<div class="text">
 										<a class="popup__close" onclick="infobox('close');">×</a>
@@ -1106,6 +1107,16 @@
 						$('.wrapper').toggleClass('visible-no');
 						$('.menu-container').toggleClass('visible-yes');
 					}
+
+					var REGISTERED = false;
+
+					function pressSearchBom() {
+						if (REGISTERED) {
+							window.location.href = '<xsl:value-of select="page/input_bom_link"/>';
+						} else {
+							$('#modal-excel').show('fade', 100);
+						}
+					}
 				</script>
 				<script>
 				AOS.init();
@@ -1134,15 +1145,19 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close popup__close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">❌</span></button>
-								<div class="modal-title h4">Загрузка BOM</div>
+								<div class="modal-title h4">Поиск BOM</div>
 							</div>
+							<!--
 							<script>
 								function fileName(name) {
 									var index = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
 									return name.substring(index + 1);
 								}
 							</script>
+							-->
 							<div class="modal-body">
+								<p>Пакетный поиск продукции в формате BOM становится доступен <b>после авторизации</b>.</p>
+								<!--
 								<p>Вы можете загрузить список необходимых товаров в формате Excel  (xlsx) не более 100 позиций. Такой способ позволяет быстро находить большое количество товаров.</p>
 								<p><a href="files/query.xlsx">Скачать образец файла</a></p>
 								<form action="{if ($admin) then page/admin_excel_search_link else page/excel_search_link}" method="post" enctype="multipart/form-data">
@@ -1150,6 +1165,7 @@
 									<label for="file" class="upload">Загрузить Excel-файл с компьютера</label>
 									<input type="submit" value="Найти" />
 								</form>
+								-->
 							</div>
 						</div>
 					</div>

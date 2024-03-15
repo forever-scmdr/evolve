@@ -33,14 +33,8 @@ public class GetProdiverDataCommand extends Command implements ItemNames {
 
         XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
         xml.startElement("result");
-        for (String query : inp.getQueries().keySet()) {
-            xml.addElement("query", query, "qty", inp.getQueries().get(query));
-            QueryDataGetter queryGetter = new QueryDataGetter(query, inp, localSearch, forceRefreshCache);
-            ProviderGetter.Result result = queryGetter.appendQueryData(xml);
-            if (!result.isSuccess()) {
-                xml.addElement("error", result.getErrorMessage());
-            }
-        }
+        DataGetter queryGetter = new DataGetter(inp, localSearch, forceRefreshCache);
+        xml.addElements(queryGetter.getQueryData().getXmlStringSB());
 
         xml.addElement("max_price", inp.getGlobalMaxPrice());
         xml.addElement("min_price", inp.getGlobalMinPrice());

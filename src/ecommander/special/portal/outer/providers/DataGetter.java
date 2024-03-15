@@ -11,6 +11,7 @@ import ecommander.model.User;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
+import ecommander.special.portal.outer.Request;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
@@ -31,10 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Получает данные по одному заданному запросу (только одному из списка) или от сервера или из кеша.
- * Также выполняет поиск по этому запросу по локальному каталогу.
+ * Получает данные по всем запросам пользователя или от сервера или из кеша.
+ * Также выполняет поиск по этим запросам по локальному каталогу.
  */
-public class QueryDataGetter {
+public class DataGetter {
 
     private final String CACHE_DIR = "files/search";
 
@@ -48,75 +49,91 @@ public class QueryDataGetter {
 
     private boolean performLocalSearch; // выполнять ли локальный поиск по этому запросу (по локальному каталогу)
     private boolean forceRefreshCache;  // выполнять ли новый запрос к удаленному серверу даже при наличии кеша
-    private String query;       // запрос (только один запрос)
     private UserInput input;    // данные, полученные от пользователя (фильтры и т.п.)
 
-    public QueryDataGetter(String query, UserInput input, boolean performLocalSearch, boolean forceRefreshCache) {
-        this.query = query;
+    public DataGetter(UserInput input, boolean performLocalSearch, boolean forceRefreshCache) {
         this.input = input;
         this.performLocalSearch = performLocalSearch;
         this.forceRefreshCache = forceRefreshCache;
     }
 
-    public ProviderGetter.Result appendQueryData(XmlDocumentBuilder xml) throws Exception {
+    /**
+     * Выполняет все действия и возвращает результирующий XML документ
+     * @return
+     * @throws Exception
+     */
+    public XmlDocumentBuilder getQueryData() throws Exception {
         // Результат выполнения всего запроса
-        ProviderGetter.Result result = null;
+        XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 
-        // Подготовка данных о кеше
-        String cacheFileName = Strings.getFileName(input.getRemote() + "__" + query);
-        File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
-        if (!cacheDir.exists()) {
-            cacheDir.mkdirs();
-        }
-        File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
-        boolean cacheExists = cacheFile.exists();
+        // Сначала посмотреть, что можно прочитать из кеша. То, что есть в кеше позже не запрашивать
+        for (String query : input.getQueries().keySet()) {
+            // Подготовка данных о кеше
+            String cacheFileName = createCacheFileName(query);
+            File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs();
+            }
+            File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+            boolean cacheExists = cacheFile.exists();
 
-        // Просрочен ли кеш
-        boolean cacheNeedsRefresh = forceRefreshCache || !cacheExists;
-        if (!cacheNeedsRefresh) {
-            DateTime cacheCreated = new DateTime(cacheFile.lastModified(), DateTimeZone.UTC);
-            DateTime now = DateTime.now(DateTimeZone.UTC);
-            cacheNeedsRefresh = now.isAfter(cacheCreated.plusHours(HOURS_CACHE_SAVED));
-        }
+            // Просрочен ли кеш
+            boolean cacheNeedsRefresh = forceRefreshCache || !cacheExists;
+            if (!cacheNeedsRefresh) {
+                DateTime cacheCreated = new DateTime(cacheFile.lastModified(), DateTimeZone.UTC);
+                DateTime now = DateTime.now(DateTimeZone.UTC);
+                cacheNeedsRefresh = now.isAfter(cacheCreated.plusHours(HOURS_CACHE_SAVED));
+            }
 
-        // Загрузить данные с сервера или прочитать из кеша
-        if (cacheNeedsRefresh) {
-            // загрузка с сервера
-            ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
-            if (getter != null) {
-                result = getter.getData(query, input, input.getRates());
-                // Если результат получен
-                if (result.isSuccess() && result.isNotBlank()) {
-                    // сохранить кеш
-                    FileUtils.write(cacheFile, result.getXml().getXmlStringSB(), StandardCharsets.UTF_8);
-                    // дописать в итоговый документ
-                    xml.addElements(result.getXml().getXmlStringSB());
+            // Если запрос можно прочитать из кеша
+            if (!cacheNeedsRefresh) {
+                // чтение из файла кеша
+                try {
+                    String cache = readCacheFile(cacheFile);
+                    xml.startElement("query", "q", query, "qty", input.getQueries().get(query), "cache", HOURS_CACHE_SAVED);
+                    xml.addElements(cache);
+                    xml.endElement();
+                    // удалить подзапрос из общего запроса, чтобы не тратить время на его выполнение на сервере
+                    input.getQueries().remove(query);
+                } catch (Exception e) {
+                    xml.addElement("error", ExceptionUtils.getStackTrace(e), "type", "reading_cache");
                 }
             }
-        } else {
-            // чтение из файла кеша
-            try {
-                String cache = readCacheFile(cacheFile);
-                xml.addElements(cache);
-            } catch (Exception e) {
-                result = new ProviderGetter.Result(ProviderGetter.OTHER_ERROR, ExceptionUtils.getStackTrace(e));
+        }
+
+        // загрузка с сервера
+        ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
+        if (getter != null && input.getQueries().size() > 0) {
+            ProviderGetter.Result result = getter.getData(input, input.getRates());
+            // Если результат получен
+            if (result.isSuccess()) {
+                for (Request.Query query : result.getRequest().getAllQueries()) {
+                    String cacheFileName = createCacheFileName(query.query);
+                    File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+                    // сохранить кеш
+                    FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
+                    // дописать в итоговый документ
+                    xml.addElements(query.getProcessedResult().getXmlStringSB());
+                }
             }
         }
 
         // Поиск в локальном каталоге
         if (performLocalSearch) {
-            try {
-                XmlDocumentBuilder localXml = performLocalSearch();
-                xml.addElements(localXml.getXmlStringSB());
-            } catch (Exception e) {
-                if (result == null || result.isSuccess()) {
-                    result = new ProviderGetter.Result(ProviderGetter.OTHER_ERROR, ExceptionUtils.getStackTrace(e));
+            xml.startElement("local");
+            for (String query : input.getQueries().keySet()) {
+                try {
+                    XmlDocumentBuilder localQueryXml = performLocalSearch(query);
+                    xml.addElements(localQueryXml.getXmlStringSB());
+                } catch (Exception e) {
+                   xml.addElement("error", ExceptionUtils.getStackTrace(e), "type", "local_search");
                 }
             }
+            xml.endElement(); // local
         }
 
         // возврат результата
-        return result;
+        return xml;
     }
 
 
@@ -183,7 +200,7 @@ public class QueryDataGetter {
      * (также учесть фильтры пользователя)
      * @return
      */
-    private XmlDocumentBuilder performLocalSearch() throws Exception {
+    private XmlDocumentBuilder performLocalSearch(String query) throws Exception {
         BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
         Item localCatalog = ItemUtils.ensureSingleRootAnonymousItem(ItemNames.PLAIN_CATALOG, User.getDefaultUser());
         ItemQuery localQuery = new ItemQuery(ItemNames.PRODUCT).setParentId(localCatalog.getId(), true)
@@ -192,7 +209,11 @@ public class QueryDataGetter {
         List<Item> prods = localQuery.loadItems();
         final String NONE_DISTR = "~~@~NONE~@~~";
         String currentDistributor = NONE_DISTR;
+
         XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+        int qty = input.getQueries().get(query);
+        // <query> - открывающий
+        xml.startElement("query", "q", query, "qty", qty, "local", "partnumber.ru");
 
         for (Item prod : prods) {
             Product p = Product.get(prod);
@@ -256,6 +277,16 @@ public class QueryDataGetter {
             xml.endElement(); // product
         }
         xml.endElement(); // distributor
+        xml.endElement(); // query
         return xml;
+    }
+
+    /**
+     * Название файла для кеша одного запроса
+     * @param query
+     * @return
+     */
+    private String createCacheFileName(String query) {
+        return Strings.getFileName(input.getRemote() + "__" + query);
     }
 }

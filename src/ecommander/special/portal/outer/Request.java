@@ -1,5 +1,7 @@
 package ecommander.special.portal.outer;
 
+import ecommander.fwk.XmlDocumentBuilder;
+
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.Future;
@@ -37,6 +39,7 @@ public class Request {
         private final Request request;      // родительский общий запрос (где много объектов Query)
         private volatile Status status = Status.NEW; // статус запроса
         private volatile String result;              // результирующий html или json
+        private XmlDocumentBuilder processedResult;  // обработанный результат (преобразованный к нужному виду)
         private Future<Query> future;       // future
         private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
         private int numTries = 0;           // Количество попыток выполнения запроса
@@ -54,6 +57,10 @@ public class Request {
 
         public Status getStatus() {
             return status;
+        }
+
+        public void setStatus(Status status) {
+            this.status = status;
         }
 
         public String getResult() {
@@ -84,6 +91,14 @@ public class Request {
 
         public long getProcessMillis() {
             return processNanos / 1000000;
+        }
+
+        public XmlDocumentBuilder getProcessedResult() {
+            return processedResult;
+        }
+
+        public void setProcessedResult(XmlDocumentBuilder processedResult) {
+            this.processedResult = processedResult;
         }
 
         @Override

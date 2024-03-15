@@ -248,7 +248,7 @@
 
 
 	<xsl:template name="XML_FILTER">
-		<xsl:variable name="filter" select="if ($sel_sec/xml_filter/xml_filter) then parse-xml($sel_sec/xml_filter/xml_filter)/filter else $sel_sec"/>
+		<xsl:variable name="filter" select="if ($sel_sec/xml_filter/xml_filter) then parse-xml($sel_sec[1]/xml_filter[1]/xml_filter[1])/filter else $sel_sec[1]"/>
 		<xsl:variable name="valid_inputs" select="$filter/param[count(values/value) &gt; 1]"/>
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/extra, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/extra and not($sel_sec/extra = '') and count($user_defined_params) &gt; 0"/>

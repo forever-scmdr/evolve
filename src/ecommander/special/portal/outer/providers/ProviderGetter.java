@@ -1,8 +1,16 @@
 package ecommander.special.portal.outer.providers;
 
+import ecommander.fwk.ServerLogger;
 import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.model.Item;
+import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.special.portal.outer.Request;
 import extra.CurrencyRates;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 /**
  * Класс, который подключается к определенному (в реализациях) удаленному серверу, получает с него информацию,
@@ -11,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
  * Для каждого сервера должен быть свой такой класс. Помимо него должен быть также класс в QueryExecutor, который
  * фактически и осуществляет подключение к серверу с формированием нужной строки запроса и заголовков
  */
-public interface ProviderGetter {
+public abstract class ProviderGetter implements ItemNames {
 
     /**
      * Результат выполнения запроса
@@ -19,17 +27,16 @@ public interface ProviderGetter {
     class Result {
         private int errorNum;
         private String errorMessage;
-        private XmlDocumentBuilder xml;
+        private Request request;
 
-        protected Result(int errorNum, String errorMessage, XmlDocumentBuilder xml) {
+        protected Result(Request request, int errorNum, String errorMessage) {
+            this.request = request;
             this.errorNum = errorNum;
             this.errorMessage = errorMessage;
-            this.xml = xml;
         }
 
-        protected Result(int errorNum, String errorMessage) {
-            this.errorNum = errorNum;
-            this.errorMessage = errorMessage;
+        public Request getRequest() {
+            return request;
         }
 
         public int getErrorNum() {
@@ -40,39 +47,60 @@ public interface ProviderGetter {
             return errorMessage;
         }
 
-        public XmlDocumentBuilder getXml() {
-            return xml;
-        }
-
         public boolean isSuccess() {
             return errorNum == SUCCESS;
         }
 
-        public boolean isNotBlank() {
-            return StringUtils.isNotBlank(xml.getXmlStringSB());
-        }
     }
 
-    int SUCCESS = 0;
-    int REQUEST_ERROR = 1;
-    int CONNECTION_ERROR = 2;
-    int RESPONSE_ERROR = 3;
-    int OTHER_ERROR = 4;
+    public int SUCCESS = 0;
+    public int REQUEST_ERROR = 1;
+    public int CONNECTION_ERROR = 2;
+    public int RESPONSE_ERROR = 3;
+    public int OTHER_ERROR = 4;
 
     /**
      * Называние провайдера данных (хоста)
      * Не доменное имя, а название, например, findchips или oemsecrets
      * @return
      */
-    String getProviderName();
+    public abstract String getProviderName();
 
     /**
      * Получить данные от провайдера и добавить в структуру XML, переданную в качестве параметра
      * В этом методе выполняется подключение к серверу, этот метод блокирует поток надолго
-     * @param query -   запрос. Метод выполняет только один запрос (т.к. серверы поддерживают только один запрос в одно обращение)
-     * @param userInput -   все фильтры, полученные от пользователя (чтобы не возвращать варианты, которые не подходят)
+     * @param userInput - все данные от пользователя (запросы, фильтры и т.д.)
      * @param rates
      * @return
      */
-    Result getData(String query, UserInput userInput, CurrencyRates rates);
+    public abstract Result getData(UserInput userInput, CurrencyRates rates);
+
+    /**
+     * Получить коэффициент для поставщика.
+     * Кеш коэффициентов не хранится в экземпляре чтобы не было вечного кеша, т.к. пришлось бы
+     * при изменении коэффициента перезагружать сервер
+     * TODO сделать кеш, подобный кешу айтемов ItemCache, но для любых объектов
+     * @param distributorName
+     * @param distributorQuotients
+     * @return
+     */
+    protected BigDecimal getDistributorQuotient(String distributorName, HashMap<String, BigDecimal> distributorQuotients) {
+        BigDecimal extraQuotient = distributorQuotients.get(distributorName); // дополнительный коэффициент для цены для поставщика
+        if (extraQuotient == null) {
+            Item catalogSettings = null;
+            try {
+                catalogSettings = ItemCache.get(distributorName,
+                        () -> new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, distributorName).loadFirstItem());
+            } catch (Exception e) {
+                ServerLogger.error("Unable to load price catalog '" + distributorName + "'", e);
+            }
+            if (catalogSettings != null) {
+                extraQuotient = catalogSettings.getDecimalValue(ItemNames.price_catalog_.QUOTIENT, BigDecimal.ONE);
+            } else {
+                extraQuotient = BigDecimal.ONE;
+            }
+            distributorQuotients.put(distributorName, extraQuotient);
+        }
+        return extraQuotient;
+    }
 }

@@ -85,6 +85,23 @@ public class UserInput {
         parseQuery();
     }
 
+    private UserInput(String bomQuery) {
+        unparsedQuery = bomQuery;
+        query = new LinkedHashMap<>();
+        parseQuery();
+    }
+
+    /**
+     * Создать экземпляр для разбора запроса
+     * Из всех полей заполняется (и доступен) только поле query
+     * и геттер getQueries()
+     * @param bomQuery
+     * @return
+     */
+    public static UserInput createForBomParsing(String bomQuery) {
+        return new UserInput(bomQuery);
+    }
+
     /**
      * Загрузить (если еще не загружено) и вернуть курсы валют
      * @return
@@ -119,10 +136,10 @@ public class UserInput {
                 String possibleQty = parts[parts.length - 1];
                 try {
                     int qty = Integer.parseInt(possibleQty);
-                    if (qty > 99999) {
+                    if (qty > 9999) {
                         query.put(StringUtils.join(parts, ' '), 1);
                     } else {
-                        query.put(StringUtils.join(parts, ' ', 0, parts.length - 2), 1);
+                        query.put(StringUtils.join(parts, ' ', 0, parts.length - 1), qty);
                     }
                 } catch (NumberFormatException nfe) {
                     query.put(StringUtils.join(parts, ' '), 1);
@@ -154,15 +171,15 @@ public class UserInput {
     }
 
     public boolean vendorFilterMatches(String vendor) {
-        return vendorFilter == null || vendorFilter.contains(vendor);
+        return vendorFilter.size() == 0 || vendorFilter.contains(vendor);
     }
 
     public boolean shipDateFilterMatches(String shipDate) {
-        return shipDateFilter == null || shipDateFilter.contains(shipDate);
+        return shipDateFilter.size() == 0 || shipDateFilter.contains(shipDate);
     }
 
     public boolean distributorFilterMatches(String distributor) {
-        return distributorFilter == null || distributorFilter.contains(distributor);
+        return distributorFilter.size() == 0 || distributorFilter.contains(distributor);
     }
 
     public boolean fromPriceFilterMatches(BigDecimal maxPrice) {
