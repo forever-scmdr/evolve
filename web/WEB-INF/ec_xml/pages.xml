@@ -1082,14 +1082,13 @@
 	<page name="input_bom" template="input_bom">
 		<request>
 			<var name="q"/>
+			<var name="action"/>
 		</request>
-		<command class="ecommander.special.portal.FormatBomQueryCommand" tag="formatted">
+		<command class="ecommander.special.portal.FormatBomQueryCommand" tag="formatted" method-var="action">
 			<result name="xml" type="inline_xml"/>
 		</command>
 		<include name="COMMON"/>
 	</page>
-
-
 
 
 

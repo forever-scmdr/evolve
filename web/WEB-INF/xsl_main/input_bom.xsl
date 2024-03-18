@@ -8,6 +8,9 @@
 
 	<xsl:variable name="title" select="'Поиск BOM'"/>
 	<xsl:variable name="h1" select="'Поиск BOM'"/>
+	<xsl:variable name="command_xml" select="page/formatted/xml"/>
+	<xsl:variable name="message" select="$command_xml/message"/>
+	<xsl:variable name="error" select="$command_xml/error"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -23,18 +26,41 @@
 	</xsl:template>
 
 	<xsl:template name="CONTENT">
+		<xsl:if test="$message and $error">
+			<div class="alert alert_danger">
+				<div class="alert__title">Ошибка. <xsl:value-of select="$message"/></div>
+				<div class="alert__text">
+					<p><xsl:value-of select="$error"/>.</p>
+				</div>
+			</div>
+		</xsl:if>
+		<xsl:if test="$message and not($error)">
+			<div class="alert alert_success">
+				<div class="alert__text">
+					<p><xsl:value-of select="$message"/></p>
+				</div>
+			</div>
+		</xsl:if>
 		<div class="text">
 			<form method="post" action="{page/input_bom_link}">
 				<textarea class="input header-search__input" placeholder="Введите поисковый запрос"
 						  autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;"><xsl:value-of select="$query" /></textarea>
-				<button class="button" type="submit">Сформировать спецификацию</button>
-				<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/search_api_link}')" style="margin-left: 20px">Найти</button>
+				<div style="display: flex">
+					<div>
+						<button class="button" type="submit">Сформировать спецификацию</button>
+						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/search_api_link}')" style="margin-left: 10px">Найти</button>
+					</div>
+					<div style="right: 0px; position: absolute;">
+						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', 'search_prices')">Найти (отладка)</button>
+						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/input_bom_link}?action=clearCache')" style="margin-left: 10px;">Очистить кеш</button>
+					</div>
+				</div>
 			</form>
 			<br/>
 			<xsl:if test="page/formatted/xml/bom">
 				<table style="border-style: solid; min-width: auto; border: 1px solid #000;">
-					<xsl:variable name="size" select="page/formatted/xml/bom/max_size"/>
-					<xsl:for-each select="page/formatted/xml/bom/query">
+					<xsl:variable name="size" select="$command_xml/bom/max_size"/>
+					<xsl:for-each select="$command_xml/bom/query">
 						<xsl:variable name="p" select="position()"/>
 						<tr class="query_line" style="border: 1px solid #e0e0e0;">
 							<td><input name="n_{$p}" value="{.}" class="query_name" size="{$size}" style="border: 1px solid #404040;"/></td>

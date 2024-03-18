@@ -1,10 +1,16 @@
 package ecommander.special.portal;
 
+import ecommander.controllers.AppContext;
+import ecommander.fwk.EcommanderException;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.special.portal.outer.providers.UserInput;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import java.io.File;
 
 /**
  * Команда, которая преобразует строку, введенную пользователем, в XML структуру для BOM запроса
@@ -18,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 public class FormatBomQueryCommand extends Command {
+
+    private final String CACHE_DIR = "files/search";
+
     @Override
     public ResultPE execute() throws Exception {
         String query = getVarSingleValue("q");
@@ -36,5 +45,23 @@ public class FormatBomQueryCommand extends Command {
             result.setValue(xml.toString());
         }
         return result;
+    }
+
+    /**
+     * Очистить кеш результатов запросов
+     * @return
+     * @throws EcommanderException
+     */
+    public ResultPE clearCache() throws EcommanderException {
+        String cacheDirName = AppContext.getRealPath(CACHE_DIR);
+        XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+        try {
+            FileUtils.deleteDirectory(new File(cacheDirName));
+            xml.addElement("message", "Кеш очищен");
+        } catch (Exception e) {
+            xml.addElement("message", "Ошибка удаления фидектории " + cacheDirName);
+            xml.addElement("error", ExceptionUtils.getStackTrace(e));
+        }
+        return getResult("xml").setValue(xml.toString());
     }
 }
