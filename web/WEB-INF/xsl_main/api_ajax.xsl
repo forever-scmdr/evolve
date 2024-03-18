@@ -4,7 +4,7 @@
 
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="currencies" select="page/currencies"/>
-	<xsl:variable name="distributors" select="page/command/product_list/result/distributor"/>
+	<xsl:variable name="queries" select="page/command/product_list/result/query"/>
 
 	<xsl:template match="/">
 		<div>
@@ -27,14 +27,15 @@
 								<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 							</ul>
 						</div>
-						<xsl:for-each select="$distributors">
+						<xsl:for-each select="$queries/distributor">
 							<xsl:variable name="distr" select="current()"/>
 							<xsl:call-template name="LINES_TABLE">
 								<xsl:with-param name="results_api" select="$distr"/>
 								<xsl:with-param name="header" select="$distr/@name"/>
+								<xsl:with-param name="multiple" select="false()"/>
 							</xsl:call-template>
 						</xsl:for-each>
-						<xsl:if test="not($distributors)">
+						<xsl:if test="not($queries/distributor)">
 							<div class="view-table">
 								<h3 style="text-align: center"><xsl:value-of select="page/variables/distr_title" /></h3>
 								<table>

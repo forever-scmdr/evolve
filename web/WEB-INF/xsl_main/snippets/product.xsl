@@ -1108,7 +1108,7 @@
 						<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><th>Показать</th></xsl:if>
 					</tr>
 				</thead>
-				<xsl:if test="$products or $queries">
+				<xsl:if test="$products or $queries or $results_api">
 					<tbody>
 						<xsl:if test="$multiple">
 							<xsl:for-each select="$queries">
