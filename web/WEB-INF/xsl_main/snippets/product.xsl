@@ -35,7 +35,7 @@
 			</div>
 
 			<!-- device image -->
-			<a href="{show_product}" class="device__image img"><img src="{$pic_path}" alt="" onerror="{$onerror2}"/></a>
+			<a href="{show_product}" class="device__image img"><img src="{replace($pic_path,'http://62.109.11.85','https://files.unia-vostok.ru')}" alt="" onerror="{$onerror2}"/></a>
 
 			<!-- device tags -->
 			<div class="tags device__tags">
@@ -474,6 +474,7 @@
 				</tr>
 				<tbody id="cmpl-{@id}" style="display: none;">
 					<xsl:for-each select="base_complectation_product">
+						<xsl:variable name="just_store" select="qty_factory = '0' and qty_smolensk = '0' and qty_reserve = '0'"/>
 						<tr>
 							<td>
 								Серийный номер:
@@ -486,16 +487,17 @@
 										<xsl:value-of select="reserve_time"/>
 									</b>
 								</xsl:if>
-								<xsl:if test="stored_time != ''">
+								<xsl:if test="stored_time != '' and not($just_store)">
 									<br/>На складе:
 									<b>
 										<xsl:value-of select="stored_time"/>
 									</b>
 								</xsl:if>
 								<xsl:if test="stored_text_time != ''">
-									<p>
-										<xsl:value-of select="stored_text_time"/>
-									</p>
+									<xsl:value-of select="stored_text_time" disable-output-escaping="yes"/>
+								</xsl:if>
+								<xsl:if test="reserve_text_time != ''">
+									<xsl:value-of select="reserve_text_time" disable-output-escaping="yes"/>
 								</xsl:if>
 							</td>
 							<td align="center">

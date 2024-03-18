@@ -23,6 +23,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.InetAddress;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +35,8 @@ import java.util.List;
  */
 public class YMarketCreateCatalogCommand extends IntegrateBase implements CatalogConst {
 	private static final String INTEGRATION_DIR = "ym_integrate";
+	private static final String UPLOAD_DIR = "upload";
+	private static final String INTERACTIONS_DIR = "interactions";
 	private static final int HIDE_BATCH_SIZE = 500;
 	private Item catalog;
 
@@ -311,7 +314,13 @@ public class YMarketCreateCatalogCommand extends IntegrateBase implements Catalo
 			for(FTPFile f: files){
 				if(f.isFile() && (f.getName().equals("ex_parts.xml") || f.getName().equals("ex_products.xml"))){
 					File localFile = new File(localPath+"/"+f.getName());
-					OutputStream stream = new FileOutputStream(localFile);
+					OutputStream stream = Files.newOutputStream(localFile.toPath());
+					ftpClient.retrieveFile(f.getName(), stream);
+					stream.close();
+				} else if (f.isFile() && StringUtils.equalsIgnoreCase(f.getName(), "ex_dealers.xml")) {
+					String path = AppContext.getRealPath(UPLOAD_DIR) + "/" + INTERACTIONS_DIR;
+					File localFile = new File(path+"/"+f.getName());
+					OutputStream stream = Files.newOutputStream(localFile.toPath());
 					ftpClient.retrieveFile(f.getName(), stream);
 					stream.close();
 				}

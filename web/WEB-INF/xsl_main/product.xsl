@@ -112,7 +112,7 @@
 				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75"
 					 data-allowfullscreen="native">
 					<xsl:for-each select="$p/pic_link">
-						<img src="{.}" alt="{$p/name}"/>
+						<img src="{replace(.,'http://62.109.11.85','https://files.unia-vostok.ru')}" alt="{$p/name}"/>
 					</xsl:for-each>
 					<!-- <xsl:if test="not($p/gallery_path)">
 						<img src="{concat($pic_server, $p/main_pic_path)}" alt="{$p/name}"/>
@@ -343,7 +343,7 @@
 					<xsl:if test="$p/file">
 						<div class="tab-container" id="tab_file" style="{'display: none'[$has_text or $p/params]}">
 							<xsl:for-each select="$p/file">
-								<div><a href="http://62.109.11.85{@value}"><xsl:value-of select="@key"/></a></div>
+								<div><a href="https://files.unia-vostok.ru{@value}"><xsl:value-of select="@key"/></a></div>
 							</xsl:for-each>
 						</div>
 					</xsl:if>
@@ -505,6 +505,7 @@
 				</tr>
 				<tbody id="cmpl-{@id}" style="display: none;">
 					<xsl:for-each select="base_complectation_product">
+						<xsl:variable name="just_store" select="qty_factory = '0' and qty_smolensk = '0' and qty_reserve = '0'"/>
 						<tr>
 							<td>
 								Серийный номер:
@@ -517,16 +518,17 @@
 										<xsl:value-of select="reserve_time"/>
 									</b>
 								</xsl:if>
-								<xsl:if test="stored_time != ''">
+								<xsl:if test="stored_time != '' and not($just_store)">
 									<br/>На складе:
 									<b>
 										<xsl:value-of select="stored_time"/>
 									</b>
 								</xsl:if>
 								<xsl:if test="stored_text_time != ''">
-									<p>
-										<xsl:value-of select="stored_text_time"/>
-									</p>
+									<xsl:value-of select="stored_text_time" disable-output-escaping="yes"/>
+								</xsl:if>
+								<xsl:if test="reserve_text_time != ''">
+									<xsl:value-of select="reserve_text_time" disable-output-escaping="yes"/>
 								</xsl:if>
 							</td>
 							<td align="center">

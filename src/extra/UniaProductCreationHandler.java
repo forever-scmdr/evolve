@@ -123,6 +123,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 				if (product == null) {
 					product = ItemUtils.newChildItem(productType.getName(), section);
 				}
+				// Очистить параметр картинки
+				product.clearValue("pic_link");
 				for (String paramName : productParams.keySet()) {
 					if (StringUtils.isBlank(paramName)) continue;
 					for (String value : productParams.get(paramName)) {
@@ -361,13 +363,22 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 						String time = attributes.getValue("time");
 						if (StringUtils.isNotBlank(time))
 							currentSerial.put("reserve_time", time);
+						String textTime = attributes.getValue("text_time");
+						if (StringUtils.isNotBlank(textTime)) {
+							String[] lines = StringUtils.split(textTime, "\r\n");
+							textTime = "<p>" + StringUtils.join(lines, "</p><p>") + "</p>"; //splitAttribute(textTime)
+							currentSerial.put("reserve_text_time", textTime);
+						}
 					} else if ("qty_store".equalsIgnoreCase(paramName)) {
 						String time = attributes.getValue("time");
 						if (StringUtils.isNotBlank(time))
 							currentSerial.put("stored_time", time);
 						String textTime = attributes.getValue("text_time");
-						if (StringUtils.isNotBlank(textTime))
+						if (StringUtils.isNotBlank(textTime)) {
+							String[] lines = StringUtils.split(textTime, "\r\n");
+							textTime = "<p>" + StringUtils.join(lines, "</p><p>") + "</p>"; //splitAttribute(textTime)
 							currentSerial.put("stored_text_time", textTime);
+						}
 					} else if ("qantity_factory".equalsIgnoreCase(qName)){
 						if(attributes.getValue("time" ) != null) {
 							LinkedHashSet<String> s = new LinkedHashSet<>();
@@ -587,6 +598,39 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		info.setLineNumber(locator.getLineNumber());
 		info.setLinePosition(locator.getColumnNumber());
 		info.addError(e);
+	}
+
+	private String splitAttribute(String attr) {
+		ArrayList<String> parts = new ArrayList<>();
+		if (StringUtils.containsIgnoreCase(attr, "Договор")) {
+			parts.add(StringUtils.substringBefore(attr, "Договор"));
+			attr = "Договор" + StringUtils.substringAfter(attr, "Договор");
+		}
+		if (StringUtils.containsIgnoreCase(attr, "договор")) {
+			parts.add(StringUtils.substringBefore(attr, "договор"));
+			attr = "договор" + StringUtils.substringAfter(attr, "договор");
+		}
+		if (StringUtils.contains(attr, "Дата передачи")) {
+			parts.add(StringUtils.substringBefore(attr, "Дата передачи"));
+			attr = "Дата передачи" + StringUtils.substringAfter(attr, "Дата передачи");
+		}
+		if (StringUtils.contains(attr, "Дата окончания")) {
+			parts.add(StringUtils.substringBefore(attr, "Дата окончания"));
+			attr = "Дата окончания" + StringUtils.substringAfter(attr, "Дата окончания");
+		}
+		if (StringUtils.contains(attr, "Хранитель")) {
+			parts.add(StringUtils.substringBefore(attr, "Хранитель"));
+			attr = "Хранитель" + StringUtils.substringAfter(attr, "Хранитель");
+		}
+		if (StringUtils.contains(attr, "Дилер")) {
+			parts.add(StringUtils.substringBefore(attr, "Дилер"));
+			attr = "Дилер" + StringUtils.substringAfter(attr, "Дилер");
+		}
+		if (StringUtils.contains(attr, "Город")) {
+			parts.add(StringUtils.substringBefore(attr, "Город"));
+			attr = "Город" + StringUtils.substringAfter(attr, "Город");
+		}
+		return StringUtils.join(parts, "</p><p>");
 	}
 
 	private static class Complectation {

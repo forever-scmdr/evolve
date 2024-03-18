@@ -365,7 +365,8 @@
 		<parameter name="qty" type="integer" caption="количество"/>
 		<parameter name="reserve_time" type="string" caption="Зарезервирован с по" />
 		<parameter name="stored_time" type="string" caption="На складе с по" />
-		<parameter name="stored_text_time" type="string" caption="На складе с по (доп. текст)" />
+		<parameter name="stored_text_time" type="plain-text" caption="На складе с по (доп. текст)" />
+		<parameter name="reserve_text_time" type="plain-text" caption="Зарезервирован с по (доп. текст)" />
 	</item>
 
 	<!-- unia quantity -->
