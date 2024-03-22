@@ -59,6 +59,7 @@ public class XmlDataSource {
 	private Node path;
 	private XMLStreamReader reader;
 	private String tagContent;
+	private int lineNumber = 0;
 
 	public XmlDataSource(String fileName, Charset charset) throws XMLStreamException, IOException {
 		Reader fileReader = Files.newBufferedReader(Paths.get(fileName), charset);
@@ -69,20 +70,25 @@ public class XmlDataSource {
 	/**
 	 * Найти первый следующий тэг с заданным названием.
 	 * При этом становится известно только название тэга и значения атрибутов.
-	 * Для заполнения вложенных тэгов надо вызывать метод nodeStarted
+	 * Для заполнения вложенных тэгов надо вызывать метод scanCurrentNode
+	 *
+	 * TODO параметр maxLineNumber нужен т.к. замедляется со временем поиск. Переделать с нормальным SAX API
 	 *
 	 * @param elementName - тэг
 	 * @param attrCriterias - критерии атрибутов
 	 * @return
 	 * @throws XMLStreamException
 	 */
-	public Node findNextNode(String elementName, String... attrCriterias) throws XMLStreamException {
+	public Node findNextNode(String elementName, int maxLineNumber, String... attrCriterias) throws XMLStreamException {
 		while (reader.hasNext()) {
 			int event = reader.next();
 
 			switch (event) {
 				case XMLStreamConstants.START_ELEMENT:
 					Node node = nodeStarted();
+					lineNumber = reader.getLocation().getLineNumber();
+					if (lineNumber > maxLineNumber)
+						return null;
 					if (StringUtils.equalsIgnoreCase(node.tagName, elementName)) {
                         boolean matches = true;
 						if (attrCriterias != null && attrCriterias.length > 0) {
@@ -181,5 +187,13 @@ public class XmlDataSource {
 				return;
 		}
 		reader.close();
+	}
+
+	public void closeDocument() throws XMLStreamException {
+		reader.close();
+	}
+
+	public int getLineNumber() {
+		return lineNumber;
 	}
 }

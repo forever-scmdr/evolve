@@ -139,7 +139,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		boolean isPhys = form.getTypeId() == ItemTypeRegistry.getItemType(USER_PHYS).getTypeId();
 		boolean hasError = false;
 		if (isPhys) {
-			for (String mandatory : MANDATORY_PHYS) {
+			String mandatoryPhys = getVarSingleValue("mandatory_phys");
+			for (String mandatory : RegisterCommand.getMandatory(mandatoryPhys, ItemNames.USER_PHYS, MANDATORY_PHYS)) {
 				if (form.isValueEmpty(mandatory)) {
 					getItemForm().setValidationError(form.getId(), mandatory, "Не заполнен параметр");
 					hasError = true;
@@ -148,7 +149,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			removeSessionForm("customer_jur");
 			saveSessionForm("customer_phys");
 		} else {
-			for (String mandatory : MANDATORY_JUR) {
+			String mandatoryJur = getVarSingleValue("mandatory_jur");
+			for (String mandatory : RegisterCommand.getMandatory(mandatoryJur, ItemNames.USER_JUR, MANDATORY_JUR)) {
 				if (form.isValueEmpty(mandatory)) {
 					getItemForm().setValidationError(form.getId(), mandatory, "Не заполнен параметр");
 					hasError = true;
