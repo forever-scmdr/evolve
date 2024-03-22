@@ -1879,6 +1879,15 @@
 		</command>
 	</page>
 
+	<page name="update_section_codes" template="integration/integrate" authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.fwk.integration.YMarketUpdateSectionCodes" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
 
 	<!--//                             						                               -->
 	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
