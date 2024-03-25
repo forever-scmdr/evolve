@@ -1236,6 +1236,7 @@
 			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
+            <var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
