@@ -5,20 +5,9 @@
 		xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="f:f"
 		version="2.0">
-	<xsl:import href="utils/utils.xsl"/>
-	<xsl:import href="snippets/constants.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" omit-xml-declaration="yes" exclude-result-prefixes="#all"/>
 
-	<xsl:variable name="message" select="page/variables/message"/>
-	<xsl:variable name="success" select="page/variables/result = 'success'"/>
-	<xsl:variable name="form" select="page/feedback_form"/>
-	<xsl:variable name="is_advanced" select="page/optional_modules/display_settings/catalog_quick_search = 'advanced'"/>
-	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
-	<xsl:variable name="jur_price_on" select="page/optional_modules/display_settings/jur_price = 'on'"/>
-	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
-	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
-
-
+	<xsl:variable name="is_advanced" select="false()"/>
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
 
 
@@ -82,7 +71,7 @@
 								<span>
 									№ для заказа: <xsl:value-of select="code"/>
 								</span>
-								<div class="price one"><span>Цена</span><xsl:value-of select="f:exchange_cur(., $price_param_name, 'под заказ')"/></div>
+								<div class="price one"><span>Смотреть цены</span></div>
 							</a>
 						</div>
 					</xsl:for-each>

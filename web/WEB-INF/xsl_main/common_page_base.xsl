@@ -51,7 +51,8 @@
 
 	<xsl:variable name="mods" select="page/optional_modules/display_settings"/>
 	<xsl:variable name="page_menu" select="$mods/side_menu_pages"/>
-    <xsl:variable name="has_quick_search" select="$mods/catalog_quick_search = ('simple', 'advanced')"/>
+<!--    <xsl:variable name="has_quick_search" select="$mods/catalog_quick_search = ('simple', 'advanced')"/>-->
+	<xsl:variable name="has_quick_search" select="true()"/>
 	<xsl:variable name="has_currency_rates" select="$mods/currency_rates = 'on'"/>
 
 	<xsl:variable name="has_catalog" select="$mods/catalog_link = 'on'"/><!-- + -->
@@ -1058,6 +1059,7 @@
 						/*
 						<xsl:if test="$has_quick_search">
                         $("#q-ipt").keyup(function(){
+							alert('ddf');
 							searchAjax(this);
 						});
                         </xsl:if>

@@ -90,8 +90,6 @@
 		<link name="search_catalog_link" target="search_catalog"/>
 		<link name="search_plain_link" target="search_plain"/>
 		<link name="search_ajax_link" target="search_ajax"/>
-        <link name="search_ajax_catalog_link" target="search_catalog_ajax"/>
-        <link name="search_ajax_plain_link" target="search_plain_ajax"/>
 		<link name="feedback_form_link" target="feedback_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
@@ -685,34 +683,14 @@
 
 
 
-	<include-definition name="SEARCH_AJAX_COMMON">
+	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
+	<page name="search_ajax" template="">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/>
 			<var name="cur" scope="cookie"/>
 		</request>
-		<!--		<command class="extra.FixSearchQuery"/>-->
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<personal>
-			<list item="user" tag="registration">
-				<filter>
-					<parameter name="registered">
-						<var value="1"/>
-					</parameter>
-				</filter>
-			</list>
-		</personal>
-	</include-definition>
-
-
-	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
-	<page name="search_ajax" template="search_ajax">
-		<include name="SEARCH_AJAX_COMMON"/>
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
@@ -736,53 +714,6 @@
 		</link>
 	</page>
 
-
-	<!-- Страница для поиска по основному каталогу (не склады) -->
-	<page name="search_catalog_ajax" template="search_ajax">
-		<include name="SEARCH_AJAX_COMMON"/>
-		<single item="catalog">
-			<list item="product" id="prod" transit="true">
-				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
-						<var var="q"/>
-					</fulltext>
-					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
-				</filter>
-				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" ref="prod" style="key"/>
-				</link>
-			</list>
-		</single>
-		<link name="show_all" target="search_catalog">
-			<var name="q" var="q"/>
-			<!-- <var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/> -->
-		</link>
-	</page>
-
-
-	<!-- Страница для поиска по каталогу удаленных складов (не основному) -->
-	<page name="search_plain_ajax" template="search_ajax">
-		<include name="SEARCH_AJAX_COMMON"/>
-		<single item="plain_catalog">
-			<list item="product" id="prod" transit="true">
-				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
-						<var var="q"/>
-					</fulltext>
-					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
-				</filter>
-				<link name="show_product" target="product" type="exclusive">
-					<var name="prod" ref="prod" style="key"/>
-				</link>
-			</list>
-		</single>
-		<link name="show_all" target="search_plain">
-			<var name="q" var="q"/>
-			<!-- <var name="view" value="table" scope="cookie"/>
-			<var name="minqty" value="" scope="cookie"/> -->
-		</link>
-	</page>
 
 
 
@@ -1008,8 +939,6 @@
 		<link name="search_catalog_link" target="search_catalog"/>
 		<link name="search_plain_link" target="search_plain"/>
 		<link name="search_ajax_link" target="search_ajax"/>
-		<link name="search_ajax_catalog_link" target="search_catalog_ajax"/>
-		<link name="search_ajax_plain_link" target="search_plain_ajax"/>
 		<link name="fav_ajax_link" target="fav_ajax"/>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
