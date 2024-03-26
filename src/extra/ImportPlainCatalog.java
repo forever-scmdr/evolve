@@ -32,15 +32,15 @@ import java.util.List;
 public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String INTEGRATION_DIR = "integrate_manual";
 
-	private static final String CODE_HEADER = "код";
-	private static final String NAME_HEADER = "название";
-	private static final String DELAY_HEADER = "срок поставки";
-	private static final String QTY_HEADER = "остаток";
+	private static final String CODE_HEADER = "Part No"; // "код";
+	private static final String NAME_HEADER = "Part No"; // "название";
+	private static final String DELAY_HEADER = "Leadtime"; // "срок поставки";
+	private static final String QTY_HEADER = "Quantity"; // "остаток";
 	private static final String MIN_QTY_HEADER = "минимальная партия заказа";
 	private static final String STEP_HEADER = "шаг заказа";
-	private static final String PRICE_HEADER = "цена";
-	private static final String VENDOR_HEADER = "производитель";
-	private static final String NAME_EXTRA_HEADER = "описание";
+	private static final String PRICE_HEADER = "Price"; // "цена";
+	private static final String VENDOR_HEADER = "Manufacture"; // "производитель";
+	private static final String NAME_EXTRA_HEADER = "Content"; // "описание";
 	private static final String UNIT_HEADER = "единица измерения";
 
 	private TableDataSource price;
@@ -145,13 +145,13 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							 */
 							prod.set_qty(src.getDoubleValue(QTY_HEADER));
 							prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
-							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
+							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER, "0"), 4);
 							//BigDecimal price = filePrice.multiply(settings.get_quotient());
 							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
-							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
+							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER, 1.0);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
 							prod.set_min_qty(minQty);
-							Double fileStep = src.getDoubleValue(STEP_HEADER);
+							Double fileStep = src.getDoubleValue(STEP_HEADER, 1.0);
 							Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
 							prod.set_step(step);
 							prod.set_vendor(src.getValue(VENDOR_HEADER));
