@@ -684,7 +684,7 @@
 
 
 	<!-- Страница для поиска по обоим каталогам (основной и склады) -->
-	<page name="search_ajax" template="">
+	<page name="search_ajax" template="search_ajax">
 		<request>
 			<var name="q"/>
 			<var name="view" scope="cookie"/>

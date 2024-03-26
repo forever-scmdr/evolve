@@ -9,6 +9,7 @@
 
 	<xsl:variable name="is_advanced" select="false()"/>
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
+	<xsl:variable name="q" select="page/variables/q"/>
 
 
 	<xsl:template match="/">
@@ -36,7 +37,10 @@
 									<img src="{@path}{main_pic}" alt=""/>
 								</a>
 								<a href="{show_product}" class="title">
-									<xsl:value-of select="name"/>
+									<xsl:variable name="start" select="substring-before(name, $q)"/>
+									<xsl:variable name="end" select="substring-after(name, $q)"/>
+									 <xsl:value-of select="name"/>
+<!--									<xsl:value-of select="concat($start, '<b>', $q, '</b>', $end)" disable-output-escaping="yes"/>-->
 									<p/>
 									<span>
 										№ для заказа: <xsl:value-of select="code"/>
