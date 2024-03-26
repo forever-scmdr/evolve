@@ -165,16 +165,24 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		return bd;
 	}
 
-	public final String getValue(String colName) {
+	public final String getValue(String colName, String... defaultVal) {
 		Integer colIdx = header.get(StringUtils.lowerCase(colName));
 		if (colIdx == null)
 			return null;
-		return getValue(colIdx);
+		String s = getValue(colIdx);
+		if (StringUtils.isBlank(s)) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return s;
 	}
 
-	public final Double getDoubleValue(String colName) {
+	public final Double getDoubleValue(String colName, Double... defaultVal) {
 		String val = getValue(colName);
-		return DoubleDataType.parse(val);
+		Double d = DoubleDataType.parse(val);
+		if (d == null) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return d;
 	}
 
 	@Override

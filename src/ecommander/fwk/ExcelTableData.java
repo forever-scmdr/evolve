@@ -184,11 +184,15 @@ public class ExcelTableData implements TableDataSource {
 		return bd;
 	}
 
-	public final String getValue(String colName) {
+	public final String getValue(String colName, String... defaultVal) {
 		Integer colIdx = currentHeader.get(StringUtils.lowerCase(colName));
 		if (colIdx == null)
 			return null;
-		return getValue(colIdx);
+		String s = getValue(colIdx);
+		if (StringUtils.isBlank(s)) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return s;
 	}
 
 	public final int getColIndex(String colName){
@@ -196,9 +200,13 @@ public class ExcelTableData implements TableDataSource {
 		return (colIdx != null)? colIdx : -1;
 	}
 
-	public final Double getDoubleValue(String colName) {
+	public final Double getDoubleValue(String colName, Double... defaultVal) {
 		String val = getValue(colName);
-		return DoubleDataType.parse(val);
+		Double d = DoubleDataType.parse(val);
+		if (d == null) {
+			return (defaultVal == null || defaultVal.length == 0) ? null : defaultVal[0];
+		}
+		return d;
 	}
 
 	public final BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal...defaultVal) {
