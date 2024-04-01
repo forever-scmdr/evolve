@@ -1,10 +1,7 @@
 package ecommander.special.portal.outer.providers;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.ItemUtils;
-import ecommander.fwk.JsoupUtils;
-import ecommander.fwk.Strings;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.model.Compare;
 import ecommander.model.Item;
 import ecommander.model.User;
@@ -69,9 +66,10 @@ public class DataGetter {
 
         // Сначала посмотреть, что можно прочитать из кеша. То, что есть в кеше позже не запрашивать
         ArrayList<String> queries = new ArrayList<>(input.getQueries().keySet());
+        boolean isBom = input.getQueries().size() > 1;
         for (String query : queries) {
             // Подготовка данных о кеше
-            String cacheFileName = createCacheFileName(query);
+            String cacheFileName = isBom ? createExactCacheFileName(query) : createCacheFileName(query);
             File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
             if (!cacheDir.exists()) {
                 cacheDir.mkdirs();
@@ -103,21 +101,32 @@ public class DataGetter {
             }
         }
 
-        // загрузка с сервера
-        ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
-        if (getter != null && input.getQueries().size() > 0) {
-            ProviderGetter.Result result = getter.getData(input, input.getRates());
-            // Если результат получен
-            if (result.isSuccess()) {
-                for (Request.Query query : result.getRequest().getAllQueries()) {
-                    String cacheFileName = createCacheFileName(query.query);
-                    File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
-                    // сохранить кеш
-                    FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
-                    // дописать в итоговый документ
-                    xml.startElement("query", "q", query.query, "qty", input.getQueries().get(query.query));
-                    xml.addElements(query.getProcessedResult().getXmlStringSB());
-                    xml.endElement();
+        // загрузка с сервера (если еще остались необработанные запросы)
+        if (input.getQueries().size() > 0) {
+            ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
+            if (getter != null && input.getQueries().size() > 0) {
+                ProviderGetter.Result result = getter.getData(input, input.getRates());
+                // Если результат получен
+                if (result.isSuccess()) {
+                    for (Request.Query query : result.getRequest().getAllQueries()) {
+                        // сохранить кеш (все результаты)
+                        String cacheFileName = createCacheFileName(query.query);
+                        File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+                        FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
+                        // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
+                        StringBuilder exactCacheContents = query.getExactResult().getXmlStringSB();
+                        cacheFileName = createExactCacheFileName(query.query);
+                        cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+                        if (StringUtils.isNotBlank(exactCacheContents)) {
+                            FileUtils.write(cacheFile, exactCacheContents, StandardCharsets.UTF_8);
+                        } else {
+                            FileUtils.write(cacheFile, "", StandardCharsets.UTF_8);
+                        }
+                        // дописать в итоговый документ
+                        xml.startElement("query", "q", query.query, "qty", input.getQueries().get(query.query));
+                        xml.addElements(query.getProcessedResult().getXmlStringSB());
+                        xml.endElement();
+                    }
                 }
             }
         }
@@ -292,5 +301,14 @@ public class DataGetter {
      */
     private String createCacheFileName(String query) {
         return Strings.getFileName(input.getRemote() + "__" + query);
+    }
+
+    /**
+     * Название файла для кеша одного запроса и результатов с полным соответствием
+     * @param query
+     * @return
+     */
+    private String createExactCacheFileName(String query) {
+        return Strings.getFileName(input.getRemote() + "__" + query + "_ex");
     }
 }

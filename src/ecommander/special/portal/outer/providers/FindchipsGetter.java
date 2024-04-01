@@ -7,8 +7,10 @@ import ecommander.model.datatypes.DecimalDataType;
 import ecommander.special.portal.outer.ProxyRequestDispatcher;
 import ecommander.special.portal.outer.Request;
 import extra.CurrencyRates;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -47,14 +49,15 @@ public class FindchipsGetter extends ProviderGetter {
         for (Request.Query query : request.getAllQueries()) {
             // XML запроса
             XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
+            XmlDocumentBuilder exactXml = XmlDocumentBuilder.newDocPart();
 
             // <server/>
-            xml.addElement("server", null, "host", getProviderName(), "millis", query.getProcessMillis(),
-                    "tries", query.getNumTries(), "proxies", StringUtils.join(query.getProxyTries(), " "));
+            addServerElement(xml, query);
+            addServerElement(exactXml, query);
             if (query.getStatus() != Request.Status.SUCCESS) {
                 String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
                 xml.addElement("error", query.getResult(), "type", errorType);
-                query.setProcessedResult(xml);
+                query.setProcessedResult(xml, xml);
                 continue;
             }
 
@@ -64,7 +67,7 @@ public class FindchipsGetter extends ProviderGetter {
             if (distributors.size() == 0) {
                 query.setStatus(Request.Status.HOST_FAILURE);
                 xml.addElement("error", "Не найден элемент дистрибьютора", "type", "wrong_format");
-                query.setProcessedResult(xml);
+                query.setProcessedResult(xml, xml);
                 continue;
             }
 
@@ -77,6 +80,9 @@ public class FindchipsGetter extends ProviderGetter {
                 BigDecimal extraQuotient = getDistributorQuotient(distributor, distributorQuotients); // дополнительный коэффициент для цены
 
                 xml.startElement("distributor", "name", distributor);
+                exactXml.startElement("distributor", "name", distributor);
+                boolean hasExactMatches = false;
+                boolean hasValidProducts = false;
                 Elements lines = distributorEl.select("tr.row");
                 for (Element line : lines) {
                     String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
@@ -92,11 +98,14 @@ public class FindchipsGetter extends ProviderGetter {
                     String stepStr = minQtyStr;
                     String container = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Container']");
                     String qtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(3)");
-                    xml.startElement("product", "id", code, "key", key);
+                    String justNumbersQty = RegExUtils.replaceAll(qtyStr, "\\D+", "");
+                    boolean isHardValid = NumberUtils.toInt(justNumbersQty, -1) > 0;
+                    boolean isExactMatch = StringUtils.equalsAnyIgnoreCase(name, query.query) || StringUtils.equalsIgnoreCase(code, query.query);
+                    xml.startElement("product", "id", code, "key", key, "query_exact_match", isExactMatch);
                     xml.addElement("code", code);
                     xml.addElement("name", name);
                     xml.addElement("vendor", vendor);
-                    xml.addElement("qty", qtyStr);
+                    xml.addElement("qty", justNumbersQty);
                     xml.addElement("step", stepStr);
                     xml.addElement("description", description);
                     xml.addElement("min_qty", minQtyStr);
@@ -109,6 +118,7 @@ public class FindchipsGetter extends ProviderGetter {
                     boolean noBreaks = true;
                     BigDecimal maxPrice = BigDecimal.ONE.negate();
                     BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+                    boolean hasPrice = false;
                     for (Element priceLi : priceLis) {
                         String breakQtyStr = JsoupUtils.getSelectorFirstValue(priceLi, "span.label");
                         Element data = priceLi.select("span.value").first();
@@ -127,6 +137,7 @@ public class FindchipsGetter extends ProviderGetter {
                         xml.startElement("break", "qty", breakQtyStr);
                         BigDecimal priceOriginal = DecimalDataType.parse(priceStr, 4);
                         if (priceOriginal != null) {
+                            hasPrice |= priceOriginal.compareTo(BigDecimal.ZERO) > 0;
                             xml.addElement("price_original", priceOriginal);
                             // Применить коэффициент
                             priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
@@ -144,6 +155,7 @@ public class FindchipsGetter extends ProviderGetter {
                     if (!noBreaks) {
                         xml.endElement(); // prices
                     }
+                    isHardValid &= hasPrice;
                     // Добавление элементов с максимальной и минимальной ценой (чтобы сохранилась в кеше)
                     xml.addElement("max_price", maxPrice);
                     xml.addElement("min_price", minPrice);
@@ -158,12 +170,34 @@ public class FindchipsGetter extends ProviderGetter {
                     if (isInvalid) {
                         xml.addElement("invalid", "invalid");
                     }
-                    xml.endElement(); // product
+                    // Отменить девайс, если он не валиден
+                    if (isHardValid) {
+                        hasValidProducts = true;
+                        StringBuilder productXml = xml.endElementAndGet(); // product
+                        if (isExactMatch) {
+                            exactXml.addElements(productXml);
+                            hasExactMatches = true;
+                        }
+                    } else {
+                        xml.cancelElement();
+                    }
                 }
-                xml.endElement(); // distributor
+                // Если в поставщике есть валидные товары - добавить поставщика
+                if (hasValidProducts) {
+                    xml.endElement(); // distributor
+                    if (hasExactMatches) {
+                        exactXml.endElement();
+                    } else {
+                        exactXml.cancelElement();
+                    }
+                } else {
+                    xml.cancelElement();
+                    exactXml.cancelElement();
+                }
             }
-            query.setProcessedResult(xml);
+            query.setProcessedResult(xml, exactXml);
         }
         return result;
     }
+
 }

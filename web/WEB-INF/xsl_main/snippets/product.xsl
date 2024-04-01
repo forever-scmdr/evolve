@@ -1084,6 +1084,7 @@
 		<xsl:param name="queries" select="queries"/>
 		<xsl:param name="ajax_urls" select="ajax_urls"/>
 		<xsl:param name="header" select="ajax_urls"/>
+		<xsl:param name="exact" select="('true', 'false')"/>
 		<xsl:variable name="colspan" select="8 + (if ($has_one_click or $has_my_price or $has_subscribe) then 1 else 0)"/>
 		<div class="view-table">
 			<xsl:if test="$header"><h3 style="text-align: center"><xsl:value-of select="$header" /></h3></xsl:if>
@@ -1141,7 +1142,7 @@
 									<xsl:with-param name="position" select="$p"/>
 								</xsl:apply-templates>
 								-->
-								<xsl:variable name="query_results_api" select="distributor/product"/>
+								<xsl:variable name="query_results_api" select="distributor/product[@query_exact_match = $exact]"/>
 								<xsl:variable name="more_than_one_api" select="count($query_results_api) &gt; 1"/>
 								<xsl:apply-templates select="$query_results_api[1]" mode="product-lines-api">
 									<xsl:with-param name="multiple" select="true()"/>
@@ -1173,8 +1174,8 @@
 							</xsl:for-each>
 						</xsl:if>
 						<xsl:if test="not($multiple)">
-							<xsl:apply-templates select="$products" mode="product-lines"/>
-							<xsl:apply-templates select="$results_api/product" mode="product-lines-api"/>
+							<xsl:apply-templates select="$products[@query_exact_match = $exact]" mode="product-lines"/>
+							<xsl:apply-templates select="$results_api/product[@query_exact_match = $exact]" mode="product-lines-api"/>
 						</xsl:if>
 					</tbody>
 				</xsl:if>

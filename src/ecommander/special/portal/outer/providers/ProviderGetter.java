@@ -103,4 +103,10 @@ public abstract class ProviderGetter implements ItemNames {
         }
         return extraQuotient;
     }
+
+
+    protected void addServerElement(XmlDocumentBuilder xml, Request.Query query) {
+        xml.addElement("server", null, "host", getProviderName(), "millis", query.getProcessMillis(),
+                "tries", query.getNumTries(), "proxies", StringUtils.join(query.getProxyTries(), " "));
+    }
 }

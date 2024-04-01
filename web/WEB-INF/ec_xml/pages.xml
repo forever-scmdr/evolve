@@ -694,13 +694,16 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
+					<fulltext limit="7" compare="EVERY" type="prefix">
 						<var var="q"/>
 					</fulltext>
 	<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
 				</filter>
 				<link name="show_product" target="product" type="exclusive">
 					<var name="prod" ref="prod" style="key"/>
+				</link>
+				<link name="show_product_search" target="search_api">
+					<var name="q" ref="prod" parameter="name"/>
 				</link>
 				<link name="show_lines_ajax" target="lines_ajax">
 					<var name="prod" ref="prod" style="key"/>
@@ -904,6 +907,16 @@
 			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
 			<var name="remote" value="findchips" scope="cookie"/>
 		</request>
+		<single item="catalog">
+			<list item="product" id="prod" transit="true">
+				<filter>
+					<fulltext limit="3" compare="EVERY">
+						<var var="q"/>
+					</fulltext>
+					<parameter name="name"><var var="q" /></parameter>
+				</filter>
+			</list>
+		</single>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>

@@ -9,7 +9,7 @@
 
 	<xsl:variable name="is_advanced" select="false()"/>
 	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
-	<xsl:variable name="q" select="page/variables/q"/>
+	<xsl:variable name="q" select="upper-case(page/variables/q)"/>
 
 
 	<xsl:template match="/">
@@ -20,15 +20,23 @@
 			<xsl:if test="$products">
 				<xsl:if test="not($is_advanced)">
 					<ul>
+						<!-- для выделения текста запроса в названии продукта -->
 						<xsl:for-each select="$products">
-							<li>
-								<a href="{show_product}">
-									<xsl:value-of select="name"/>
-								</a>
-							</li>
+							<xsl:variable name="name_cap" select="upper-case(name)"/>
+							<xsl:if test="contains($name_cap, $q)">
+								<li>
+									<a href="{show_product_search}">
+										<xsl:variable name="start" select="substring-before($name_cap, $q)"/>
+										<xsl:variable name="end" select="substring-after($name_cap, $q)"/>
+										<!--									<xsl:value-of select="name"/>-->
+										<xsl:value-of select="concat($start, '&lt;b&gt;', $q, '&lt;/b&gt;', $end)" disable-output-escaping="yes"/>
+									</a>
+								</li>
+							</xsl:if>
 						</xsl:for-each>
 					</ul>
 				</xsl:if>
+				<!-- TODO это еще не сделано для выделения текста запроса в названии продукта -->
 				<xsl:if test="$is_advanced">
 					<div class="cart-container">
 						<xsl:for-each select="$products">
@@ -37,10 +45,7 @@
 									<img src="{@path}{main_pic}" alt=""/>
 								</a>
 								<a href="{show_product}" class="title">
-									<xsl:variable name="start" select="substring-before(name, $q)"/>
-									<xsl:variable name="end" select="substring-after(name, $q)"/>
-									 <xsl:value-of select="name"/>
-<!--									<xsl:value-of select="concat($start, '<b>', $q, '</b>', $end)" disable-output-escaping="yes"/>-->
+									<xsl:value-of select="name"/>
 									<p/>
 									<span>
 										№ для заказа: <xsl:value-of select="code"/>

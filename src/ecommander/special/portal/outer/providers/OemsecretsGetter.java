@@ -1,5 +1,6 @@
 package ecommander.special.portal.outer.providers;
 
+import ecommander.fwk.Pair;
 import ecommander.fwk.Strings;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DecimalDataType;
@@ -44,21 +45,22 @@ public class OemsecretsGetter extends ProviderGetter {
         // Результирующий документ
         for (Request.Query query : request.getAllQueries()) {
             XmlDocumentBuilder queryXml = XmlDocumentBuilder.newDocPart();
+            XmlDocumentBuilder exactXml = XmlDocumentBuilder.newDocPart();
 
             // <server/>
-            queryXml.addElement("server", null, "host", getProviderName(), "millis", query.getProcessMillis(),
-                    "tries", query.getNumTries(), "proxies", StringUtils.join(query.getProxyTries(), " "));
+            addServerElement(queryXml, query);
+            addServerElement(exactXml, query);
             if (query.getStatus() != Request.Status.SUCCESS) {
                 String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
                 queryXml.addElement("error", query.getResult(), "type", errorType);
-                query.setProcessedResult(queryXml);
+                query.setProcessedResult(queryXml, queryXml);
                 continue;
             }
 
             String jsonString = query.getResult();
 
-            // Кеши и нужные значения
-            LinkedHashMap<String, XmlDocumentBuilder> distributorXmls = new LinkedHashMap<>();
+            // Кеши и нужные значения (Все товары, точные соответствия)
+            LinkedHashMap<String, Pair<XmlDocumentBuilder, XmlDocumentBuilder>> distributorXmls = new LinkedHashMap<>();
 
             // Парсинг и создание XML
             JSONObject json = new JSONObject(jsonString);
@@ -69,7 +71,7 @@ public class OemsecretsGetter extends ProviderGetter {
             } catch (JSONException je) {
                 query.setStatus(Request.Status.HOST_FAILURE);
                 queryXml.addElement("error", "Не найдены товары", "type", "wrong_format");
-                query.setProcessedResult(queryXml);
+                query.setProcessedResult(queryXml, queryXml);
                 continue;
             }
             for (int i = 0; i < products.length(); i++) {
@@ -81,7 +83,10 @@ public class OemsecretsGetter extends ProviderGetter {
                     continue;
                 }
                 String distributor = distributorObject.getString("distributor_name");
-                XmlDocumentBuilder distrXml = distributorXmls.computeIfAbsent(distributor, s -> XmlDocumentBuilder.newDocPart());
+                Pair<XmlDocumentBuilder, XmlDocumentBuilder> xmls
+                        = distributorXmls.computeIfAbsent(distributor, s -> new Pair<>(XmlDocumentBuilder.newDocPart(), XmlDocumentBuilder.newDocPart()));
+                XmlDocumentBuilder distrXml = xmls.getLeft();
+                XmlDocumentBuilder distrExactXml = xmls.getRight();
                 BigDecimal distributorQuotient = getDistributorQuotient(distributor, distributorQuotients);
                 String sku = product.get("sku").toString();
                 String partNumber = product.get("source_part_number").toString();
@@ -93,7 +98,8 @@ public class OemsecretsGetter extends ProviderGetter {
                     code = name + "_" + Integer.toHexString(distributor.hashCode());
                 }
                 String key = Strings.translit(name + " " + code);
-                distrXml.startElement("product", "id", code, "key", key);
+                boolean isExactMatch = StringUtils.equalsAnyIgnoreCase(name, query.query) || StringUtils.equalsIgnoreCase(code, query.query);
+                distrXml.startElement("product", "id", code, "key", key, "query_exact_match", isExactMatch);
                 distrXml.addElement("code", code);
                 distrXml.addElement("name", name);
                 distrXml.addElement("vendor", vendor);
@@ -165,17 +171,27 @@ public class OemsecretsGetter extends ProviderGetter {
                 if (isInvalid) {
                     distrXml.addElement("invalid", "invalid");
                 }
-                distrXml.endElement(); // product
+                StringBuilder productXml = distrXml.endElementAndGet(); // product
+                if (isExactMatch) {
+                    distrExactXml.addElements(productXml);
+                }
             }
 
             // Теперь взять XML всех производителей и объединить по порядку появления
             for (String distributor : distributorXmls.keySet()) {
-                XmlDocumentBuilder distributorXml = distributorXmls.get(distributor);
+                Pair<XmlDocumentBuilder, XmlDocumentBuilder> xmls = distributorXmls.get(distributor);
+                XmlDocumentBuilder allDistrXml = xmls.getLeft();
+                XmlDocumentBuilder exactDistrXml = xmls.getRight();
                 queryXml.startElement("distributor", "name", distributor);
-                queryXml.addElements(distributorXml.getXmlStringSB());
+                queryXml.addElements(allDistrXml.getXmlStringSB());
                 queryXml.endElement(); // distributor
+                if (exactDistrXml.length() > 0 && StringUtils.isNotBlank(exactDistrXml.getXmlStringSB())) {
+                    exactXml.startElement("distributor", "name", distributor);
+                    exactXml.addElements(exactDistrXml.getXmlStringSB());
+                    exactXml.endElement(); // distributor
+                }
             }
-            query.setProcessedResult(queryXml);
+            query.setProcessedResult(queryXml, exactXml);
         }
 
         return result;

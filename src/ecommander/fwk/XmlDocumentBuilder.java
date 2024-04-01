@@ -3,6 +3,7 @@ package ecommander.fwk;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -27,12 +28,21 @@ public class XmlDocumentBuilder {
 	}
 
 	private Stack<TagDesc> openTags;
-	private StringBuilder xml;
+	private StringBuilder xml; // общий XML. Сюда пишется весь документ
+
+	/**
+	 * Стек текущих открытых элементов. При вызове startElement сюда дописывается новый элемент. Текст добавляется в него
+	 * Когда элемент закрывается (endElement), то он дописывается в предыдущий элемент в стеке и удаляется.
+	 * Можно отменить и не дописывать текст в предыдущий элемент вызвав cancelElement вместо endElement
+	 */
+	private LinkedList<StringBuilder> currentXml;
 
 	private XmlDocumentBuilder(StringBuilder docBase) {
 		openTags = new Stack<>();
 		xml = docBase;
 		openTags.add(new TagDesc("root_fake"));
+		currentXml = new LinkedList<>();
+		currentXml.push(xml);
 	}
 
 	public static XmlDocumentBuilder newDoc() {
@@ -55,9 +65,11 @@ public class XmlDocumentBuilder {
 	 * @param attributes
 	 */
 	public final XmlDocumentBuilder startElement(String tagName, Object... attributes) {
+		StringBuilder xml = new StringBuilder();
+		currentXml.push(xml);
 		openTags.peek().hasSubelements = true;
 		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
-		if (xml.length() > 0) xml.append('\n');
+		//if (xml.length() > 0) xml.append('\n');
 		xml.append(prefix).append('<').append(tagName);
 		if (attributes.length > 1)
 			for (int i = 0; i < attributes.length; i += 2) {
@@ -79,6 +91,7 @@ public class XmlDocumentBuilder {
 	 */
 	public final XmlDocumentBuilder insertAttributes(String... attributes) {
 		if (attributes.length == 0) return this;
+		StringBuilder xml = currentXml.peek();
 		int lastSymbol = xml.length() - 1;
 		if (xml.charAt(lastSymbol) == '>' && attributes.length > 1) {
 			xml.deleteCharAt(lastSymbol);
@@ -106,6 +119,7 @@ public class XmlDocumentBuilder {
 	 * @param attributes
 	 */
 	public final XmlDocumentBuilder addEmptyElement(String tagName, Object... attributes) {
+		StringBuilder xml = currentXml.peek();
 		openTags.peek().hasSubelements = true;
 		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
 		if (xml.length() > 0) xml.append('\n');
@@ -151,8 +165,8 @@ public class XmlDocumentBuilder {
 		if (text == null || StringUtils.isBlank(text.toString())) {
 			return addEmptyElement(tagName, attributes);
 		}
-		startElement(tagName, attributes).addText(text);
-		return endElement();
+		startElement(tagName, attributes).addText(text).endElement();
+		return this;
 	}
 
 	/**
@@ -168,8 +182,8 @@ public class XmlDocumentBuilder {
 		if (text == null || StringUtils.isBlank(text.toString())) {
 			return addEmptyElement(tagName, attributes);
 		}
-		startElement(tagName, attributes).addCData(text);
-		return endElement();
+		startElement(tagName, attributes).addCData(text).endElement();
+		return this;
 	}
 
 	/**
@@ -180,6 +194,7 @@ public class XmlDocumentBuilder {
 	 * @return
 	 */
 	public final XmlDocumentBuilder addComment(String comment) {
+		StringBuilder xml = currentXml.peek();
 		if (xml.length() > 0) xml.append('\n');
 		xml.append(comment);
 		return this;
@@ -187,14 +202,48 @@ public class XmlDocumentBuilder {
 
 	/**
 	 * Закрывает текущий открытый элемент
+	 * @return
 	 */
 	public final XmlDocumentBuilder endElement() {
-		if (openTags.size() > 1) { // root fake не считается элементом
-			if (openTags.peek().hasSubelements)
-				xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
-			xml.append("</").append(openTags.pop().tag).append('>');
-		}
+		endElementAndGet();
 		return this;
+	}
+
+	/**
+	 * Закрывает текущий открытый элемент
+	 * Возвращает весь текст элемента. Его можно потом использовать отдельно
+	 */
+	public final StringBuilder endElementAndGet() {
+		if (openTags.size() > 1) { // root fake не считается элементом
+			StringBuilder xml = currentXml.pop();
+			if (openTags.peek().hasSubelements) {
+				xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
+			}
+			xml.append("</").append(openTags.pop().tag).append('>');
+			StringBuilder parentXml = currentXml.peek();
+			if (parentXml.length() > 0) parentXml.append('\n');
+			parentXml.append(xml);
+			return xml;
+		}
+		return new StringBuilder();
+	}
+
+
+	/**
+	 * Закрывает текущий элемент, но не добавляет его в результирующий документ
+	 * Этот элемент возвращается в виде текста и его можно использовать отдельно
+	 * @return
+	 */
+	public final StringBuilder cancelElement() {
+		if (openTags.size() > 1) { // root fake не считается элементом
+			StringBuilder xml = currentXml.pop();
+			if (openTags.peek().hasSubelements) {
+				xml.append(StringUtils.rightPad("\n", openTags.size() - 1, '\t'));
+			}
+			xml.append("</").append(openTags.pop().tag).append('>');
+			return xml;
+		}
+		return new StringBuilder();
 	}
 
 	/**
@@ -203,6 +252,7 @@ public class XmlDocumentBuilder {
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(String text) {
+		StringBuilder xml = currentXml.peek();
 		xml.append(StringEscapeUtils.escapeXml10(text));
 		return this;
 	}
@@ -215,6 +265,7 @@ public class XmlDocumentBuilder {
 	 */
 	public XmlDocumentBuilder addCData(Object data) {
 		if (data == null) return this;
+		StringBuilder xml = currentXml.peek();
 		String prefix = StringUtils.rightPad("", openTags.size() - 1, '\t');
 		xml.append('\n');
 		xml.append(prefix);
@@ -235,6 +286,7 @@ public class XmlDocumentBuilder {
 	 * @param text
 	 */
 	public XmlDocumentBuilder addText(Object text) {
+		StringBuilder xml = currentXml.peek();
 		if (text != null)
 			xml.append(StringEscapeUtils.escapeXml10(text.toString()));
 		return this;
@@ -249,6 +301,7 @@ public class XmlDocumentBuilder {
 		//xml.append('\n').append(NL_PATTERN.matcher(tags).replaceAll(StringUtils.rightPad("\n", openTags.size(), '\t')));
 		if (StringUtils.isBlank(tags))
 			return this;
+		StringBuilder xml = currentXml.peek();
 		openTags.peek().hasSubelements = true;
 		xml.append('\n').append(tags);
 		return this;
@@ -261,6 +314,7 @@ public class XmlDocumentBuilder {
 	 * @return
 	 */
 	public XmlDocumentBuilder addElementsInline(CharSequence tags) {
+		StringBuilder xml = currentXml.peek();
 		if (StringUtils.isNotBlank(tags))
 			xml.append(tags);
 		return this;
@@ -268,7 +322,7 @@ public class XmlDocumentBuilder {
 
 	@Override
 	public String toString() {
-		return xml.toString();
+		return currentXml.peek().toString();
 	}
 
 	public StringBuilder getXmlStringSB() {
