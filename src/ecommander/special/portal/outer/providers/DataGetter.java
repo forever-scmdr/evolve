@@ -47,9 +47,9 @@ public class DataGetter {
 
     private boolean performLocalSearch; // выполнять ли локальный поиск по этому запросу (по локальному каталогу)
     private boolean forceRefreshCache;  // выполнять ли новый запрос к удаленному серверу даже при наличии кеша
-    private UserInput input;    // данные, полученные от пользователя (фильтры и т.п.)
+    private OuterInputData input;    // данные, полученные от пользователя (фильтры и т.п.)
 
-    public DataGetter(UserInput input, boolean performLocalSearch, boolean forceRefreshCache) {
+    public DataGetter(OuterInputData input, boolean performLocalSearch, boolean forceRefreshCache) {
         this.input = input;
         this.performLocalSearch = performLocalSearch;
         this.forceRefreshCache = forceRefreshCache;
@@ -105,7 +105,7 @@ public class DataGetter {
         if (input.getQueries().size() > 0) {
             ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
             if (getter != null && input.getQueries().size() > 0) {
-                ProviderGetter.Result result = getter.getData(input, input.getRates());
+                ProviderGetter.Result result = getter.getData(input);
                 // Если результат получен
                 if (result.isSuccess()) {
                     for (Request.Query query : result.getRequest().getAllQueries()) {
@@ -113,12 +113,23 @@ public class DataGetter {
                         String cacheFileName = createCacheFileName(query.query);
                         File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
                         FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
+                        /*
                         // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
                         StringBuilder exactCacheContents = query.getExactResult().getXmlStringSB();
                         cacheFileName = createExactCacheFileName(query.query);
                         cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
                         if (StringUtils.isNotBlank(exactCacheContents)) {
                             FileUtils.write(cacheFile, exactCacheContents, StandardCharsets.UTF_8);
+                        } else {
+                            FileUtils.write(cacheFile, "", StandardCharsets.UTF_8);
+                        }
+                         */
+                        // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
+                        Pair<Boolean, String> exactXml = createJustExactMatchesXml(query.getProcessedResult().getXmlStringSB().toString());
+                        cacheFileName = createExactCacheFileName(query.query);
+                        cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+                        if (exactXml.getLeft()) {
+                            FileUtils.write(cacheFile, exactXml.getRight(), StandardCharsets.UTF_8);
                         } else {
                             FileUtils.write(cacheFile, "", StandardCharsets.UTF_8);
                         }
@@ -220,7 +231,7 @@ public class DataGetter {
                 .setFulltextCriteria(FulltextQueryCreatorRegistry.DEFAULT, query, 50, null, Compare.SOME)
                 .setLimit(50).addSorting(ItemNames.product_.SECTION_NAME, "ASC");
         List<Item> prods = localQuery.loadItems();
-        final String NONE_DISTR = "~~@~NONE~@~~";
+        final String NONE_DISTR = "~~@~~NONE~~@~~";
         String currentDistributor = NONE_DISTR;
 
         XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
@@ -258,40 +269,24 @@ public class DataGetter {
 
             xml.startElement("break", "qty", "1");
             BigDecimal priceOriginal = p.getDecimalValue(input.getPriceParamName(), BigDecimal.ZERO);
-            BigDecimal maxPrice = BigDecimal.ONE.negate();
-            BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
             xml.addElement("price_original", priceOriginal);
             // Применить коэффициент
             priceOriginal = priceOriginal.multiply(extraQuotient).setScale(4, RoundingMode.UP);
-            HashMap<String, BigDecimal> allPricesDecimal = input.getRates().setAllPricesXML(xml, priceOriginal, input.getCurCode());
-            BigDecimal currentPrice = allPricesDecimal.get(input.getPriceParamName());
-            if (currentPrice != null) {
-                maxPrice = currentPrice;
-                minPrice = currentPrice;
-                input.setGlobalMaxPrice(input.getGlobalMaxPrice().max(currentPrice));
-                input.setGlobalMinPrice(input.getGlobalMinPrice().min(currentPrice));
-            }
+            input.getRates().setAllPricesXML(xml, priceOriginal, input.getCurCode());
+
             xml.endElement(); // break
             xml.endElement(); // prices
-
-            // Добавление элементов с максимальной и минимальной ценой (чтобы сохранилась в кеше)
-            xml.addElement("max_price", maxPrice);
-            xml.addElement("min_price", minPrice);
-            // Если девайс не подходит по фильтрам - добавить тэг <invalid>invalid</invalid>
-            boolean isInvalid
-                    = !input.shipDateFilterMatches(p.get_next_delivery())
-                    || !input.vendorFilterMatches(p.get_vendor())
-                    || !input.distributorFilterMatches("partnumber.ru")
-                    || !input.fromPriceFilterMatches(maxPrice)
-                    || !input.toPriceFilterMatches(minPrice);
-            if (isInvalid) {
-                xml.addElement("invalid", "invalid");
-            }
             xml.endElement(); // product
         }
         xml.endElement(); // distributor
         xml.endElement(); // query
         return xml;
+    }
+
+
+    public String applyFilters(String fullXml) {
+        // TODO
+        return null;
     }
 
     /**
@@ -310,5 +305,22 @@ public class DataGetter {
      */
     private String createExactCacheFileName(String query) {
         return Strings.getFileName(input.getRemote() + "__" + query + "_ex");
+    }
+
+    /**
+     * Оставить в результате только полное соответствие запросу
+     * @param allResultDoc
+     * @return
+     */
+    private Pair<Boolean, String> createJustExactMatchesXml(String allResultDoc) {
+        Document doc = JsoupUtils.parseXml(allResultDoc);
+        doc.select("product[query_exact_match=false]").remove();
+        for (Element distributor : doc.select("distributor")) {
+            if (distributor.select("product").size() == 0) {
+                distributor.remove();
+            }
+        }
+        boolean hasResult = doc.select("product").size() > 0;
+        return new Pair<>(hasResult, JsoupUtils.outputXmlNoPrettyPrint(doc));
     }
 }

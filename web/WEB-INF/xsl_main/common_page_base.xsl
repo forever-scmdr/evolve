@@ -71,7 +71,7 @@
 	<xsl:variable name="search_not_set" select="not($search_catalog) and not($search_plain)"/>
  <!--    <xsl:variable name="search_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_link else if ($search_catalog) then page/search_catalog_link else page/search_plain_link"/>-->
 <!--	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>-->
-	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_link"/>
+	<xsl:variable name="search_link" select="if (page/@name = 'search_plain') then page/search_plain_link else page/search_api_link"/>
  	<xsl:variable name="search_ajax_link" select="if (($search_catalog and $search_plain) or $search_not_set) then page/search_ajax_link else if ($search_catalog) then page/search_ajax_catalog_link else page/search_ajax_plain_link"/>
 	<xsl:variable name="is_docs_search" select="page/@name = 'docs_search'"/>
 	<xsl:variable name="is_catalog_search" select="page/@name = 'search'"/>
@@ -246,24 +246,6 @@
 									   placeholder="Введите поисковый запрос" autocomplete="off"
 									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
 								<button class="button header-search__button" type="submit">Найти</button>
-								<div class="sw100">
-									<label>Искать: </label>
-									<label>
-										<input type="radio" name="search_type" value="{page/search_api_link}" class="check_api">
-											<xsl:if test="$is_api_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по складам
-									</label>
-									<label>
-										<input type="radio" name="search_type" value="{$search_link}" class="check_catalog">
-											<xsl:if test="$is_catalog_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по каталогу
-									</label>
-									<label>
-										<input type="radio" name="search_type" class="check_docs">
-											<xsl:if test="$is_docs_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по документации
-									</label>
-								</div>
 								<!-- quick search -->
 								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
 								<!-- quick search end -->
@@ -998,7 +980,7 @@
 				</xsl:for-each>
 				<xsl:if test="page/@name = 'index'"><xsl:attribute name="class" select="'index'"/></xsl:if>
 				<div class="mitaba">
-					<div class="popup" style="display: none;" id="product-ajax-popup">
+					<div class="popup" style="display: none; z-index: 2000" id="product-ajax-popup">
 						 <div class="popup__body">
 							<div class="popup__content" id="product-ajax-content"><a class="popup__close" onclick="clearProductAjax();">×</a></div>
 						 </div>

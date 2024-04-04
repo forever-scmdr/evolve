@@ -8,6 +8,7 @@
 	<xsl:variable name="queries" select="page/variables/q"/>
 	<xsl:variable name="numbers" select="page/variables/n"/>
 	<xsl:variable name="is_search_multiple" select="count($queries) &gt; 1"/>
+	<xsl:variable name="search_link" select="page/search_link"/>
 
 
 	<!--Отображение товаров в каталоге -->
@@ -65,11 +66,6 @@
 	<xsl:template name="CONTENT">
 
 	<div class="tabs tabs_product p5">
-		<div class="tabs__nav">
-			<a href="#tab_search_1" class="tab search_tab" rel="check_api">Склады</a>
-			<a href="#tab_search_2" class="tab search_tab tab_active" rel="check_catalog">Каталог</a>
-			<a href="#tab_search_3" class="tab search_tab" rel="check_docs">Документация</a>
-		</div>
 		<div class="tabs__content">
 			<div class="tab-container" id="tab_searc_2">
 				<xsl:if test="$has_results and not($is_search_multiple)">
@@ -125,7 +121,6 @@
 									<xsl:with-param name="results_api" select="$results_api"/>
 									<xsl:with-param name="multiple" select="$is_search_multiple"/>
 									<xsl:with-param name="queries" select="$queries"/>
-									<xsl:with-param name="numbers" select="$numbers"/>
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:if>
@@ -134,12 +129,6 @@
 				<xsl:if test="not($has_results)">
 					<h4>По заданным критериям товары не найдены</h4>
 				</xsl:if>
-			</div>
-			<div class="tab-container" id="tab_search_1" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
-
-			</div>
-			<div class="tab-container" id="tab_search_3" style="display: none; min-height: 200px; background: rgba(255, 255, 255, 0.5) url('admin/ajax/loader.gif') center no-repeat">
-
 			</div>
 		</div>
 	</div>

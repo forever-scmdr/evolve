@@ -5,7 +5,7 @@ import ecommander.fwk.EcommanderException;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import ecommander.special.portal.outer.providers.UserInput;
+import ecommander.special.portal.outer.providers.OuterInputData;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -32,7 +32,7 @@ public class FormatBomQueryCommand extends Command {
         String query = getVarSingleValue("q");
         ResultPE result = getResult("xml");
         if (StringUtils.isNotBlank(query)) {
-            UserInput input = UserInput.createForBomParsing(query);
+            OuterInputData input = OuterInputData.createForBomParsing(query);
             int maxQuerySize = 0;
             XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
             xml.startElement("bom");

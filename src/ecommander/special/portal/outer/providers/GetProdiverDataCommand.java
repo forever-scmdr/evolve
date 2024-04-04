@@ -14,11 +14,11 @@ public class GetProdiverDataCommand extends Command implements ItemNames {
     private static final String NEW_PARAM = "new";
 
 
-    protected UserInput inp; // данные, полученные от пользователя и другие внешние данные
+    protected OuterInputData inp; // данные, полученные от пользователя и другие внешние данные
 
     @Override
     public ResultPE execute() throws Exception {
-        inp = new UserInput(this);
+        inp = new OuterInputData(this);
         if (inp.getErrorResult() != null) {
             return inp.getErrorResult();
         }

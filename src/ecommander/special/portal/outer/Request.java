@@ -41,7 +41,6 @@ public class Request {
         private volatile Status status = Status.NEW; // статус запроса
         private volatile String result;              // результирующий html или json
         private XmlDocumentBuilder processedResult;  // обработанный результат (преобразованный к нужному виду). Все результаты, выданные сервером
-        private XmlDocumentBuilder exactResult;      // обработанный результат с полным совпадением с запросом (100% совпадение). Только часть результатов сервера
         private Future<Query> future;       // future
         private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
         private int numTries = 0;           // Количество попыток выполнения запроса
@@ -110,18 +109,8 @@ public class Request {
             return processedResult;
         }
 
-        /**
-         * Только результаты с полным соответствием. Если не было полного соответствия или была ошибка,
-         * это поле будет содержать пустую строку
-         * @return
-         */
-        public XmlDocumentBuilder getExactResult() {
-            return exactResult;
-        }
-
-        public void setProcessedResult(XmlDocumentBuilder processedResult, XmlDocumentBuilder exactResult) {
+        public void setProcessedResult(XmlDocumentBuilder processedResult) {
             this.processedResult = processedResult;
-            this.exactResult = exactResult;
         }
 
         @Override

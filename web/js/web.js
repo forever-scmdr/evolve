@@ -210,7 +210,7 @@ $(document).on("click", ".toggle", function(e){
 	e.preventDefault();
 	var $t = $($(this).attr("href"));
 	var rel = $(this).attr("rel");
-	if(rel != '' || rel != null || typeof rel != "undefined"){
+	if(rel !== '' || rel != null || typeof rel != "undefined"){
 		var html = $(this).text();
 		$(this).text(rel);
 		$(this).attr("rel", html);
@@ -299,6 +299,7 @@ $(document).ready(function () {
 	});
 
 	// выбор типа основного поиска (где искать)
+	/*
 	$('.main_search_form').submit(function () {
 		var form = $(this);
 		var actionUrl = $(form.find('input:checked')).val();
@@ -315,6 +316,7 @@ $(document).ready(function () {
 		$('.main_search_form input[type=checkbox]').prop('checked', false);
 		$('.main_search_form input[value="' + checkedValue + '"]').prop('checked', true);
 	});
+	*/
 
 	// Отправка AJAX запроса для заполнения полей по ИНН
 	$('#inn_input').change(function () {

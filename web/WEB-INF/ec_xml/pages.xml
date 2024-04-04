@@ -126,7 +126,7 @@
 
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="show_product_ajax" target="product_ajax">
-			<var name="prod" ref="$prod" style="key"/>
+			<var name="prod" ref="$prod" parameter="name"/>
 		</link>
 		<link name="show_lines_ajax" target="lines_ajax">
 			<var name="prod" ref="$prod" style="key"/>
@@ -585,7 +585,7 @@
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
 			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="assoc" style="key"/>
+				<var name="prod" ref="assoc" parameter="name"/>
 			</link>
 			<link name="show_lines_ajax" target="lines_ajax">
 				<var name="prod" ref="assoc" style="key"/>
@@ -625,7 +625,7 @@
 			<var name="translate" scope="cookie"/>
 		</request>
 		<single item="catalog" cacheable="true" id="catalog"/>
-		<single item="product" id="prod_ajax" var="prod" tag="product" cacheable="true" cache-vars="prod">
+		<single item="product" id="prod_ajax" var="prod" parameter="name" tag="product" cacheable="true" cache-vars="prod">
 			<list item="product_extra" tag="product_extra"/>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod_ajax"/>
 		</single>
@@ -694,7 +694,7 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="7" compare="EVERY" type="prefix">
+					<fulltext limit="12" compare="EVERY" type="prefix">
 						<var var="q"/>
 					</fulltext>
 	<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -770,7 +770,7 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="48" compare="EVERY" name="name text">
+					<fulltext limit="48" compare="EVERY" name="name text" type="(default)(prefix)">
 						<var var="q"/>
 					</fulltext>
 <!--					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -1683,7 +1683,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" ref="prod" parameter="name"/>
 			</link>
 			<link name="show_lines_ajax" target="lines_ajax">
 				<var name="prod" ref="prod" style="key"/>
@@ -1698,7 +1698,7 @@
 			<ancestor item="plain_section" transit="false"/>
 			<!--
 			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" ref="prod" parameter="name"/>
 			</link>
 
 			<link name="to_cart" target="cart_action">
@@ -1919,7 +1919,7 @@
 				<var name="prod" ref="prod" style="key"/>
 			</link>
 			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="prod" style="key"/>
+				<var name="prod" ref="prod" parameter="name"/>
 			</link>
 			<link name="show_lines_ajax" target="lines_ajax">
 				<var name="prod" ref="prod" style="key"/>

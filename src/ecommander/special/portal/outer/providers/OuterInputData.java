@@ -9,6 +9,7 @@ import extra.CurrencyRates;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * при обработке запросов.
  * Экземпляр класса создается про поступлении запроса пользователя
  */
-public class UserInput {
+public class OuterInputData {
     public static final String SERVER_PARAM = "server";
     public static final String QUERY_PARAM = "q";
     public static final String PRICE_PREFIX = "price_";
@@ -35,16 +36,15 @@ public class UserInput {
     private HashSet<Object> vendorFilter;
     private HashSet<Object> distributorFilter;
     private HashSet<Object> dstrSet;
-    private BigDecimal globalMaxPrice; // максимальная цена (для создания итогового документа)
-    private BigDecimal globalMinPrice; // минимальная цена (для создания итогового документа)
-
+    // базовые коэффициенты для каждого поставщика. Загружаются по мере надобности. Это просто кеш для хранения
+    private HashMap<String, BigDecimal> distributorQuotients = new HashMap<>();
     private ResultPE errorResult;
 
     private CurrencyRates rates = null;
 
     private String priceParamName;
 
-    UserInput(Command command) throws EcommanderException {
+    OuterInputData(Command command) throws EcommanderException {
         this.servers = command.getVarValues(SERVER_PARAM);
         String query = command.getVarSingleValue(QUERY_PARAM);
         // Запрос может поступать напрямую через переменную q, а может через страничный айтем товара "prod" (его название)
@@ -80,12 +80,10 @@ public class UserInput {
         fromFilterDecimal = from == null ? BigDecimal.ONE.negate() : from;
         BigDecimal to = DecimalDataType.parse(toFilter, 4);
         toFilterDecimal = to == null ? BigDecimal.valueOf(Double.MAX_VALUE) : to;
-        this.globalMaxPrice = BigDecimal.ONE.negate();
-        this.globalMinPrice = BigDecimal.valueOf(Double.MAX_VALUE);
         parseQuery();
     }
 
-    private UserInput(String bomQuery) {
+    private OuterInputData(String bomQuery) {
         unparsedQuery = bomQuery;
         query = new LinkedHashMap<>();
         parseQuery();
@@ -98,8 +96,8 @@ public class UserInput {
      * @param bomQuery
      * @return
      */
-    public static UserInput createForBomParsing(String bomQuery) {
-        return new UserInput(bomQuery);
+    public static OuterInputData createForBomParsing(String bomQuery) {
+        return new OuterInputData(bomQuery);
     }
 
     /**
@@ -190,22 +188,6 @@ public class UserInput {
         return fromFilterDecimal == null || minPrice == null || minPrice.compareTo(toFilterDecimal) < 0;
     }
 
-    public BigDecimal getGlobalMaxPrice() {
-        return globalMaxPrice;
-    }
-
-    public void setGlobalMaxPrice(BigDecimal globalMaxPrice) {
-        this.globalMaxPrice = globalMaxPrice;
-    }
-
-    public BigDecimal getGlobalMinPrice() {
-        return globalMinPrice;
-    }
-
-    public void setGlobalMinPrice(BigDecimal globalMinPrice) {
-        this.globalMinPrice = globalMinPrice;
-    }
-
     public String getCurCode() {
         return curCode;
     }
@@ -220,5 +202,9 @@ public class UserInput {
 
     public LinkedHashMap<String, Integer> getQueries() {
         return query;
+    }
+
+    public HashMap<String, BigDecimal> getDistributorQuotients() {
+        return distributorQuotients;
     }
 }

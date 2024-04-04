@@ -45,6 +45,16 @@ public class JsoupUtils {
 		return jsoupDoc.outerHtml();
 	}
 
+	public static String outputXmlNoPrettyPrint(Document jsoupDoc) {
+		Document.OutputSettings settings = new Document.OutputSettings();
+		settings.charset(Charset.forName("UTF-8"));
+		settings.syntax(Document.OutputSettings.Syntax.xml);
+		settings.escapeMode(Entities.EscapeMode.xhtml);
+		settings.prettyPrint(false);
+		jsoupDoc.outputSettings(settings);
+		return jsoupDoc.outerHtml();
+	}
+
 	private static void setSettings(Document jsoupDoc) {
 		Document.OutputSettings settings = new Document.OutputSettings();
 		settings.charset(Charset.forName("UTF-8"));

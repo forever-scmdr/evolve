@@ -25,180 +25,192 @@
 	<xsl:template match="/">
 		<div>
 			<div class="popup result" id="product-ajax-popup">
-				<div class="popup__body">
-					<div class="popup__content">
-						<a class="popup__close" onclick="clearProductAjax();">×</a>
-						<div class="popup__title title title_2">
-							<xsl:value-of select="$p/name" />
-						</div>
-						<div class="device-preview">
-							<div class="device-preview__column">
-								<div class="device-preview__tags tags">
-									<xsl:for-each select="$p/label">
-										<div class="tag device__tag {f:translit(.)}">
-											<xsl:value-of select="." />
-										</div>
-									</xsl:for-each>
-								</div>
-								<!--<div class="gallery">
-									<xsl:call-template name="FOTORAMA"/>
-								</div>-->
+				<xsl:if test="$p">
+					<div class="popup__body">
+						<div class="popup__content">
+							<a class="popup__close" onclick="clearProductAjax();">×</a>
+							<div class="popup__title title title_2">
+								<xsl:value-of select="$p/name" />
 							</div>
-							<div class="device-preview__column">
+							<div class="device-preview">
+								<div class="device-preview__column">
+									<div class="device-preview__tags tags">
+										<xsl:for-each select="$p/label">
+											<div class="tag device__tag {f:translit(.)}">
+												<xsl:value-of select="." />
+											</div>
+										</xsl:for-each>
+									</div>
+									<!--<div class="gallery">
+										<xsl:call-template name="FOTORAMA"/>
+									</div>-->
+								</div>
+								<div class="device-preview__column">
 
-								<!--<div class="device-actions">
-									<div class="device-actions__price price">
-										<xsl:if test="$has_price">
-											<div class="price__new">
-												<xsl:value-of select="$price"/> р.
-											</div>
-										</xsl:if>
-										<xsl:if test="f:num($price_old) != 0">
-											<div class="price__old">
-												<xsl:value-of select="$price_old"/> р.
-											</div>
-										</xsl:if>
-									</div>
-									<div class="device-actions__icons add">
-										<xsl:call-template name="COMPARE"/>
-										<xsl:call-template name="FAV" />
-									</div>
-									<div class="device-actions__buttons order-buttons">
-										<xsl:call-template name="CART" />&#160;<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click" class="button button_secondary">Купить в 1 клик</a>
-									</div>
-								</div>-->
-								
-								<div class="tabs">
-									<div class="tabs__links">
-										<a href="#tab-params" role="tab" data-toggle="tab" class="tabs__link tabs__link_active">Характеристики</a>
-										<xsl:if test="$docs/param">
-											<a href="#tab_docs" role="tab" data-toggle="tab" class="tabs__link">Документация</a>
-										</xsl:if>
-										<xsl:if test="$env/param">
-											<a href="#tab_env" role="tab" data-toggle="tab" class="tabs__link">Дополнительная информация</a>
-										</xsl:if>
-										<xsl:if test="$other_names">
-											<a href="#tab_names" role="tab" data-toggle="tab" class="tabs__link">Альтернативные названия</a>
-										</xsl:if>
-										<xsl:if test="$docs/param">
-											<a href="#tab_ds_online" role="tab" data-toggle="tab" class="tabs__link">Даташит online</a>
-										</xsl:if>
-									</div>
-									<div class="tabs__content active" role="tabpanel" id="tab-params">
-										<xsl:if test="$params">
-											<table>
-												<xsl:for-each select="$params/param">
-													<tr>
-														<td><xsl:value-of select="@caption"/></td>
-														<td><xsl:value-of select="."/></td>
-													</tr>
-												</xsl:for-each>
-											</table>
-										</xsl:if>
-										<xsl:if test="$params_xml">
-											<table>
-												<xsl:for-each select="$params_xml/param">
-													<tr>
-														<td><xsl:value-of select="name"/></td>
-														<td>
-															<xsl:for-each select="value">
-																<xsl:if test="position() &gt; 1"><br/></xsl:if>
-																<xsl:value-of select="."/>
-															</xsl:for-each>
-														</td>
-													</tr>
-												</xsl:for-each>
-											</table>
-										</xsl:if>
-									</div>
-									<!--
-									<div class="tabs__content" role="tabpanel" id="tab-text-1000" style="display: none;">
-										<div class="page-content">
-											<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+									<!--<div class="device-actions">
+										<div class="device-actions__price price">
+											<xsl:if test="$has_price">
+												<div class="price__new">
+													<xsl:value-of select="$price"/> р.
+												</div>
+											</xsl:if>
+											<xsl:if test="f:num($price_old) != 0">
+												<div class="price__old">
+													<xsl:value-of select="$price_old"/> р.
+												</div>
+											</xsl:if>
 										</div>
-									</div>
-									-->
-									<div class="tabs__content" role="tabpanel" id="tab_docs" style="display: none;">
-										<div class="page-content">
-											<table>
-												<tr>
-													<th>ТИП РЕСУРСА</th>
-													<th>ССЫЛКА</th>
-												</tr>
-												<xsl:for-each select="$docs/param">
-													<xsl:variable name="digikey_link" select="value/a[contains(@href, 'digikey')]"/>
-													<xsl:if test="not($digikey_link)">
+										<div class="device-actions__icons add">
+											<xsl:call-template name="COMPARE"/>
+											<xsl:call-template name="FAV" />
+										</div>
+										<div class="device-actions__buttons order-buttons">
+											<xsl:call-template name="CART" />&#160;<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click" class="button button_secondary">Купить в 1 клик</a>
+										</div>
+									</div>-->
+
+									<div class="tabs">
+										<div class="tabs__links">
+											<a href="#tab-params" role="tab" data-toggle="tab" class="tabs__link tabs__link_active">Характеристики</a>
+											<xsl:if test="$docs/param">
+												<a href="#tab_docs" role="tab" data-toggle="tab" class="tabs__link">Документация</a>
+											</xsl:if>
+											<xsl:if test="$env/param">
+												<a href="#tab_env" role="tab" data-toggle="tab" class="tabs__link">Дополнительная информация</a>
+											</xsl:if>
+											<xsl:if test="$other_names">
+												<a href="#tab_names" role="tab" data-toggle="tab" class="tabs__link">Альтернативные названия</a>
+											</xsl:if>
+											<xsl:if test="$docs/param">
+												<a href="#tab_ds_online" role="tab" data-toggle="tab" class="tabs__link">Даташит online</a>
+											</xsl:if>
+										</div>
+										<div class="tabs__content active" role="tabpanel" id="tab-params">
+											<xsl:if test="$params">
+												<table>
+													<xsl:for-each select="$params/param">
+														<tr>
+															<td><xsl:value-of select="@caption"/></td>
+															<td><xsl:value-of select="."/></td>
+														</tr>
+													</xsl:for-each>
+												</table>
+											</xsl:if>
+											<xsl:if test="$params_xml">
+												<table>
+													<xsl:for-each select="$params_xml/param">
 														<tr>
 															<td><xsl:value-of select="name"/></td>
 															<td>
 																<xsl:for-each select="value">
-																	<xsl:variable name="not_first_value" select="position() != 1"/>
-																	<xsl:for-each select="a">
-																		<xsl:variable name="not_first_a" select="position() != 1"/>
-																		<xsl:if test="$not_first_a or $not_first_value"><br/></xsl:if>
-																		<a href="{@href}"><xsl:value-of select="."/></a>
-																	</xsl:for-each>
+																	<xsl:if test="position() &gt; 1"><br/></xsl:if>
+																	<xsl:value-of select="."/>
 																</xsl:for-each>
 															</td>
 														</tr>
-													</xsl:if>
-												</xsl:for-each>
-											</table>
+													</xsl:for-each>
+												</table>
+											</xsl:if>
 										</div>
-									</div>
-
-									<div class="tabs__content" role="tabpanel" id="tab_env" style="display: none;">
-										<div class="page-content">
-											<table>
-												<xsl:for-each select="$env/param">
-													<tr>
-														<td><xsl:value-of select="name"/></td>
-														<td>
-															<xsl:for-each select="value">
-																<xsl:if test="position() != 1"><br/></xsl:if>
-																<xsl:value-of select="."/>
-															</xsl:for-each>
-														</td>
-													</tr>
-												</xsl:for-each>
-											</table>
+										<!--
+										<div class="tabs__content" role="tabpanel" id="tab-text-1000" style="display: none;">
+											<div class="page-content">
+												<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+											</div>
 										</div>
-									</div>
-
-									<xsl:if test="$other_names">
-										<div class="tabs__content" role="tabpanel" id="tab_names" style="display: none;">
+										-->
+										<div class="tabs__content" role="tabpanel" id="tab_docs" style="display: none;">
 											<div class="page-content">
 												<table>
-													<xsl:for-each select="$other_names/value">
+													<tr>
+														<th>ТИП РЕСУРСА</th>
+														<th>ССЫЛКА</th>
+													</tr>
+													<xsl:for-each select="$docs/param">
+														<xsl:variable name="digikey_link" select="value/a[contains(@href, 'digikey')]"/>
+														<xsl:if test="not($digikey_link)">
+															<tr>
+																<td><xsl:value-of select="name"/></td>
+																<td>
+																	<xsl:for-each select="value">
+																		<xsl:variable name="not_first_value" select="position() != 1"/>
+																		<xsl:for-each select="a">
+																			<xsl:variable name="not_first_a" select="position() != 1"/>
+																			<xsl:if test="$not_first_a or $not_first_value"><br/></xsl:if>
+																			<a href="{@href}"><xsl:value-of select="."/></a>
+																		</xsl:for-each>
+																	</xsl:for-each>
+																</td>
+															</tr>
+														</xsl:if>
+													</xsl:for-each>
+												</table>
+											</div>
+										</div>
+
+										<div class="tabs__content" role="tabpanel" id="tab_env" style="display: none;">
+											<div class="page-content">
+												<table>
+													<xsl:for-each select="$env/param">
 														<tr>
-															<td><xsl:value-of select="."/></td>
+															<td><xsl:value-of select="name"/></td>
+															<td>
+																<xsl:for-each select="value">
+																	<xsl:if test="position() != 1"><br/></xsl:if>
+																	<xsl:value-of select="."/>
+																</xsl:for-each>
+															</td>
 														</tr>
 													</xsl:for-each>
 												</table>
 											</div>
 										</div>
-									</xsl:if>
 
-									<div class="tabs__content" role="tabpanel" id="tab_ds_online" style="display: none;">
-										<div class="page-content">
-											<p>
-												<object data="{$main_ds/a/@href}" type="application/pdf" width="80%" height="720">
-													не удалось показать документ
-												</object>
-											</p>
+										<xsl:if test="$other_names">
+											<div class="tabs__content" role="tabpanel" id="tab_names" style="display: none;">
+												<div class="page-content">
+													<table>
+														<xsl:for-each select="$other_names/value">
+															<tr>
+																<td><xsl:value-of select="."/></td>
+															</tr>
+														</xsl:for-each>
+													</table>
+												</div>
+											</div>
+										</xsl:if>
+
+										<div class="tabs__content" role="tabpanel" id="tab_ds_online" style="display: none;">
+											<div class="page-content">
+												<p>
+													<object data="{$main_ds/a/@href}" type="application/pdf" width="80%" height="720">
+														не удалось показать документ
+													</object>
+												</p>
+											</div>
 										</div>
-									</div>
 
+									</div>
 								</div>
 							</div>
+							<script type="text/javascript">
+								insertAjax('cart_ajax');
+								insertAjax('compare_ajax');
+								insertAjax('fav_ajax');
+							</script>
 						</div>
-						<script type="text/javascript">
-							insertAjax('cart_ajax');
-							insertAjax('compare_ajax');
-							insertAjax('fav_ajax');
-						</script>
 					</div>
-				</div>
+				</xsl:if>
+				<xsl:if test="not($p)">
+					<div class="popup__body">
+						<div class="popup__content">
+							<a class="popup__close" onclick="clearProductAjax();">×</a>
+							<div class="popup__title title title_2">
+								Полное описание по данному товару отсутствует
+							</div>
+						</div>
+					</div>
+				</xsl:if>
 			</div>
 		</div>
 	</xsl:template>

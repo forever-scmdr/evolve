@@ -261,9 +261,6 @@
 				<!-- device title -->
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
-				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
-
 				<!-- device description parameters -->
 				<div class="device__info">
 
@@ -287,7 +284,7 @@
 								<xsl:if test="count($captions) &gt; $product_params_limit">
 									<tr>
 										<td colspan="2">
-											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>
+											<b><a class="toggle" href="#params-{@id}" rel="&lt;&lt;&lt;Скрыть параметры" style="text-decoration: underline;">Показать все параметры>>></a></b>
 										</td>
 									</tr>
 								</xsl:if>

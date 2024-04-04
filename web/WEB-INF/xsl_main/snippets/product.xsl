@@ -837,6 +837,9 @@
 				<div class="thd">
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
 				</div>
+				<div class="thd">
+					<a onclick="showDetails('product_ajax?prod={normalize-space(name)}')" >Полное описание</a>
+				</div>
 			</td>
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
