@@ -166,7 +166,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 		// Подготовка тела письма
 		String regularTopic
-				= "Заказ №" + orderNumber + " от " + DATE_FORMAT.format(new Date());
+				= "Zamówienie №" + orderNumber + " - " + DATE_FORMAT.format(new Date());
 
 		final String customerEmail = getItemForm().getItemSingleTransient().getStringValue("email");
 		final String shopEmail = getVarSingleValue("email");
