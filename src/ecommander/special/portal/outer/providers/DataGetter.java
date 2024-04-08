@@ -1,5 +1,6 @@
 package ecommander.special.portal.outer.providers;
 
+import com.sun.org.apache.xpath.internal.operations.Number;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
 import ecommander.model.Compare;
@@ -14,6 +15,7 @@ import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.jsoup.nodes.Document;
@@ -26,6 +28,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -113,26 +116,11 @@ public class DataGetter {
                         String cacheFileName = createCacheFileName(query.query);
                         File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
                         FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
-                        /*
                         // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
-                        StringBuilder exactCacheContents = query.getExactResult().getXmlStringSB();
+                        String exactXml = createJustExactMatchesXml(query.getProcessedResult().getXmlStringSB().toString());
                         cacheFileName = createExactCacheFileName(query.query);
                         cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
-                        if (StringUtils.isNotBlank(exactCacheContents)) {
-                            FileUtils.write(cacheFile, exactCacheContents, StandardCharsets.UTF_8);
-                        } else {
-                            FileUtils.write(cacheFile, "", StandardCharsets.UTF_8);
-                        }
-                         */
-                        // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
-                        Pair<Boolean, String> exactXml = createJustExactMatchesXml(query.getProcessedResult().getXmlStringSB().toString());
-                        cacheFileName = createExactCacheFileName(query.query);
-                        cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
-                        if (exactXml.getLeft()) {
-                            FileUtils.write(cacheFile, exactXml.getRight(), StandardCharsets.UTF_8);
-                        } else {
-                            FileUtils.write(cacheFile, "", StandardCharsets.UTF_8);
-                        }
+                        FileUtils.write(cacheFile, exactXml, StandardCharsets.UTF_8);
                         // дописать в итоговый документ
                         xml.startElement("query", "q", query.query, "qty", input.getQueries().get(query.query));
                         xml.addElements(query.getProcessedResult().getXmlStringSB());
@@ -169,53 +157,6 @@ public class DataGetter {
      */
     private String readCacheFile(File cacheFile) throws IOException {
         String xml = FileUtils.readFileToString(cacheFile, StandardCharsets.UTF_8);
-        if (input.hasVendorFilter() || input.hasShipDateFilter() || input.hasFromFilter() || input.hasToFilter() || input.hasDistributorFilter()) {
-            Document doc = JsoupUtils.parseXml(xml);
-            Elements distributors = doc.getElementsByTag("distributor");
-            if (input.hasDistributorFilter()) {
-                for (Element distributor : distributors) {
-                    String distrName = distributor.attr("name");
-                    if (!input.distributorFilterMatches(distrName)) {
-                        distributor.remove();
-                    }
-                }
-            }
-            if (input.hasVendorFilter() || input.hasShipDateFilter() || input.hasFromFilter() || input.hasToFilter()) {
-                Elements products = doc.getElementsByTag("product");
-                for (Element product : products) {
-                    if (input.hasShipDateFilter()) {
-                        String shipDate = JsoupUtils.getSelectorFirstValue(product, "next_delivery");
-                        if (!input.shipDateFilterMatches(shipDate)) {
-                            product.remove();
-                            continue;
-                        }
-                    }
-                    if (input.hasVendorFilter()) {
-                        String vendor = JsoupUtils.getSelectorFirstValue(product, "vendor");
-                        if (!input.vendorFilterMatches(vendor)) {
-                            product.remove();
-                            continue;
-                        }
-                    }
-                    if (input.hasFromFilter()) {
-                        String maxPriceStr = JsoupUtils.getSelectorFirstValue(product, "max_price");
-                        BigDecimal maxPrice = DecimalDataType.parse(maxPriceStr, 4);
-                        if (!input.fromPriceFilterMatches(maxPrice)) {
-                            product.remove();
-                            continue;
-                        }
-                    }
-                    if (input.hasToFilter()) {
-                        String minPriceStr = JsoupUtils.getSelectorFirstValue(product, "min_price");
-                        BigDecimal minPrice = DecimalDataType.parse(minPriceStr, 4);
-                        if (!input.toPriceFilterMatches(minPrice)) {
-                            product.remove();
-                        }
-                    }
-                }
-            }
-            return JsoupUtils.outputXmlDoc(doc);
-        }
         return xml;
     }
 
@@ -284,9 +225,92 @@ public class DataGetter {
     }
 
 
-    public String applyFilters(String fullXml) {
-        // TODO
-        return null;
+    public String applyFilters(String xml, String query) {
+        Integer quantity = input.getQueries().get(query);
+        boolean hasQualityFilter = input.hasVendorFilter() || input.hasShipDateFilter() || input.hasFromFilter()
+                || input.hasToFilter() || input.hasDistributorFilter();
+        boolean hasQuantityFilter = quantity != null && quantity > 1;
+        if (!hasQualityFilter && !hasQuantityFilter)
+            return xml;
+        Document doc = JsoupUtils.parseXml(xml);
+        int requestedQuantity = quantity == null ? 1 : quantity;
+        if (hasQualityFilter) {
+            Elements products = doc.getElementsByTag("product");
+            for (Element product : products) {
+                if (input.hasDistributorFilter()) {
+                    String distributor = JsoupUtils.getSelectorFirstValue(product, "category_id");
+                    if (!input.distributorFilterMatches(distributor)) {
+                        product.remove();
+                        continue;
+                    }
+                }
+                if (input.hasShipDateFilter()) {
+                    String shipDate = JsoupUtils.getSelectorFirstValue(product, "next_delivery");
+                    if (!input.shipDateFilterMatches(shipDate)) {
+                        product.remove();
+                        continue;
+                    }
+                }
+                if (input.hasVendorFilter()) {
+                    String vendor = JsoupUtils.getSelectorFirstValue(product, "vendor");
+                    if (!input.vendorFilterMatches(vendor)) {
+                        product.remove();
+                        continue;
+                    }
+                }
+                if (input.hasFromFilter()) {
+                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity);
+                    if (!input.fromPriceFilterMatches(qtyPrice)) {
+                        product.remove();
+                        continue;
+                    }
+                }
+                if (input.hasToFilter()) {
+                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity);
+                    if (!input.toPriceFilterMatches(qtyPrice)) {
+                        product.remove();
+                    }
+                }
+            }
+        }
+        if (hasQuantityFilter) {
+            int firstProductIndex = doc.select("product").first().siblingIndex();
+            ArrayList<Element> prods = new ArrayList<>(doc.select("product"));
+            // для каждого товара найти цену, которая соответствует количеству, и записать ее в тэг prices
+            for (Element prod : prods) {
+                BigDecimal price = getPriceForQty(prod, requestedQuantity);
+                prod.select("prices").attr("price", price.toPlainString());
+            }
+            prods.sort((o1, o2) -> {
+                BigDecimal price1 = DecimalDataType.parse(o1.select("prices").first().attr("price"), 4);
+                BigDecimal price2 = DecimalDataType.parse(o2.select("prices").first().attr("price"), 4);
+                price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
+                price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
+                return price1.compareTo(price2);
+            });
+            doc.select("product").remove();
+            doc.insertChildren(firstProductIndex, prods);
+        }
+        return JsoupUtils.outputXmlNoPrettyPrint(doc);
+    }
+
+    /**
+     * Получить цену товара, которая соответствует его количеству
+     * @param product
+     * @param productQty
+     * @return
+     */
+    private BigDecimal getPriceForQty(Element product, int productQty) {
+        Elements breaks = product.getElementsByTag("break");
+        Element currentBreak = breaks.first();
+        for (Element aBreak : breaks) {
+            currentBreak = aBreak;
+            int breakQty = NumberUtils.toInt(aBreak.attr("qty"), 1);
+            if (breakQty > productQty)
+                break;
+        }
+        String priceStr = JsoupUtils.getTagFirstValue(currentBreak, input.getPriceParamName());
+        return DecimalDataType.parse(priceStr, 4);
     }
 
     /**
@@ -309,18 +333,26 @@ public class DataGetter {
 
     /**
      * Оставить в результате только полное соответствие запросу
+     * Также отсортировать по цене для одного элемента (для случая, когда заказывается 1 девайс, т.е.
+     * по цене первого ценового интервала)
      * @param allResultDoc
-     * @return
+     * @return - в случае отсутствия полных совпадений возвращается пустой документ. Он тоже кешируется
      */
-    private Pair<Boolean, String> createJustExactMatchesXml(String allResultDoc) {
+    private String createJustExactMatchesXml(String allResultDoc) {
         Document doc = JsoupUtils.parseXml(allResultDoc);
         doc.select("product[query_exact_match=false]").remove();
-        for (Element distributor : doc.select("distributor")) {
-            if (distributor.select("product").size() == 0) {
-                distributor.remove();
-            }
-        }
+        int firstProductIndex = doc.select("product").first().siblingIndex();
+        ArrayList<Element> prods = new ArrayList<>(doc.select("product"));
+        prods.sort((o1, o2) -> {
+            BigDecimal price1 = DecimalDataType.parse(o1.select("break").first().select("price").first().ownText(), 4);
+            BigDecimal price2 = DecimalDataType.parse(o2.select("break").first().select("price").first().ownText(), 4);
+            price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
+            price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
+            return price1.compareTo(price2);
+        });
+        doc.select("product").remove();
+        doc.insertChildren(firstProductIndex, prods);
         boolean hasResult = doc.select("product").size() > 0;
-        return new Pair<>(hasResult, JsoupUtils.outputXmlNoPrettyPrint(doc));
+        return hasResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
     }
 }

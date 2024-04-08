@@ -39,8 +39,7 @@
 	<xsl:variable name="is_search_multiple" select="count($result_queries) &gt; 1"/>
 	<xsl:variable name="is_bom" select="$is_search_multiple"/>
 	<xsl:variable name="is_not_bom" select="not($is_search_multiple)"/>
-	<xsl:variable name="distributors" select="if ($is_not_bom) then $result_queries[1]/distributor else empty"/><!-- Только для варианта без BOM -->
-	<xsl:variable name="products" select="$distributors/product"/>
+	<xsl:variable name="products" select="$result_queries/product"/>
 	<xsl:variable name="has_results" select="if ($is_not_bom) then $products else true()"/>
 	<xsl:variable name="vars" select="page/variables"/>
 
@@ -155,8 +154,8 @@
 									<div class="chbox">
 										<div class="value">Любой</div>
 										<div class="options">
-											<xsl:for-each-group select="$distributors" group-by="@name">
-												<xsl:sort select="@name"/>
+											<xsl:for-each-group select="$products" group-by="category_id">
+												<xsl:sort select="category_id"/>
 												<xsl:variable name="value" select="current-grouping-key()"/>
 												<label class="option">
 													<input type="checkbox" name="distributor" value="{$value}">
@@ -181,11 +180,11 @@
 					<!-- ************************			ОДИН ЗАПРОС (БЕЗ BOM)			*************************-->
 
 					<xsl:if test="$is_not_bom">
-						<xsl:variable name="has_exact_matches" select="$distributors/product[@query_exact_match = 'true']"/>
-						<xsl:variable name="has_extra_matches" select="$distributors/product[@query_exact_match = 'false']"/>
+						<xsl:variable name="has_exact_matches" select="$products[@query_exact_match = 'true']"/>
+						<xsl:variable name="has_extra_matches" select="$products[@query_exact_match = 'false']"/>
 						<xsl:if test="$has_exact_matches">
 							<xsl:call-template name="LINES_TABLE">
-								<xsl:with-param name="results_api" select="$distributors"/>
+								<xsl:with-param name="results_api" select="$products"/>
 								<xsl:with-param name="multiple" select="$is_bom"/>
 								<xsl:with-param name="queries" select="$query"/>
 								<xsl:with-param name="exact" select="'true'"/>
@@ -199,7 +198,7 @@
 								<h2>Дополнительно найдено (смежные запросы)</h2>
 							</xsl:if>
 							<xsl:call-template name="LINES_TABLE">
-								<xsl:with-param name="results_api" select="$distributors"/>
+								<xsl:with-param name="results_api" select="$products"/>
 								<xsl:with-param name="multiple" select="$is_bom"/>
 								<xsl:with-param name="queries" select="$query"/>
 								<xsl:with-param name="exact" select="'false'"/>
@@ -214,7 +213,7 @@
 
 					<xsl:if test="$is_bom">
 						<xsl:call-template name="LINES_TABLE">
-							<xsl:with-param name="results_api" select="$distributors"/>
+							<xsl:with-param name="results_api" select="$products"/>
 							<xsl:with-param name="multiple" select="true()"/>
 							<xsl:with-param name="queries" select="$result_queries"/>
 						</xsl:call-template>

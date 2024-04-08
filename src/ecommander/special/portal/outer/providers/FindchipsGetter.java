@@ -61,8 +61,6 @@ public class FindchipsGetter extends ProviderGetter {
 
             BigDecimal extraQuotient = getDistributorQuotient(distributor, input); // дополнительный коэффициент для цены
 
-            xml.startElement("distributor", "name", distributor);
-            boolean hasValidProducts = false;
             Elements lines = distributorEl.select("tr.row");
             for (Element line : lines) {
                 String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
@@ -135,17 +133,10 @@ public class FindchipsGetter extends ProviderGetter {
 
                 // Отменить девайс, если он не валиден
                 if (isValid) {
-                    hasValidProducts = true;
                     xml.endElement(); // product
                 } else {
                     xml.cancelElement(); // product cancel
                 }
-            }
-            // Если в поставщике есть валидные товары - добавить поставщика
-            if (hasValidProducts) {
-                xml.endElement(); // distributor
-            } else {
-                xml.cancelElement();
             }
         }
         query.setProcessedResult(xml);

@@ -27,15 +27,16 @@
 								<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 							</ul>
 						</div>
-						<xsl:for-each select="$queries/distributor">
-							<xsl:variable name="distr" select="current()"/>
+						<xsl:for-each-group select="$queries/product" group-by="category_id">
+							<xsl:variable name="distr" select="current-grouping-key()"/>
+							<xsl:variable name="distr_prods" select="current-group()"/>
 							<xsl:call-template name="LINES_TABLE">
-								<xsl:with-param name="results_api" select="$distr"/>
-								<xsl:with-param name="header" select="$distr/@name"/>
+								<xsl:with-param name="results_api" select="$distr_prods"/>
+								<xsl:with-param name="header" select="$distr"/>
 								<xsl:with-param name="multiple" select="false()"/>
 							</xsl:call-template>
-						</xsl:for-each>
-						<xsl:if test="not($queries/distributor)">
+						</xsl:for-each-group>
+						<xsl:if test="not($queries/product)">
 							<div class="view-table">
 								<h3 style="text-align: center"><xsl:value-of select="page/variables/distr_title" /></h3>
 								<table>

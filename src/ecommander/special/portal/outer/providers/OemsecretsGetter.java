@@ -146,9 +146,7 @@ public class OemsecretsGetter extends ProviderGetter {
         for (String distributor : distributorXmls.keySet()) {
             StringBuilder distributorResult = distributorXmls.get(distributor).getXmlStringSB();
             if (StringUtils.isNotBlank(distributorResult)) {
-                queryXml.startElement("distributor", "name", distributor);
                 queryXml.addElements(distributorResult);
-                queryXml.endElement(); // distributor
             }
         }
         query.setProcessedResult(queryXml);

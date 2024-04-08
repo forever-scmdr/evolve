@@ -1119,33 +1119,7 @@
 								<xsl:variable name="q" select="@q"/>
 								<xsl:variable name="n" select="f:num(@qty)"/>
 								<xsl:variable name="p" select="position()"/>
-								<!--
-								<xsl:variable name="price_query_products" select="distributor/product"/>
-								<xsl:variable name="more_than_one" select="count($price_query_products) &gt; 1"/>
-								<xsl:variable name="prev_q" select="$queries[$p - 1]"/>
-								<xsl:if test="$analogs/set/analog = $q and $analogs/set/base = $prev_q">
-									<tr>
-										<td colspan="{$colspan + 1}">
-											<div class="thd"><b>Аналоги <xsl:value-of select="$prev_q" /></b></div>
-										</td>
-									</tr>
-								</xsl:if>
-								<xsl:apply-templates select="$price_query_products[1]" mode="product-lines">
-									<xsl:with-param name="multiple" select="true()"/>
-									<xsl:with-param name="query" select="$q"/>
-									<xsl:with-param name="number" select="$n"/>
-									<xsl:with-param name="position" select="$p"/>
-									<xsl:with-param name="has_more" select="$more_than_one"/>
-								</xsl:apply-templates>
-								<xsl:apply-templates select="$price_query_products[position() &gt; 1]" mode="product-lines">
-									<xsl:with-param name="multiple" select="true()"/>
-									<xsl:with-param name="query" select="$q"/>
-									<xsl:with-param name="hidden" select="'hidden'"/>
-									<xsl:with-param name="number" select="$n"/>
-									<xsl:with-param name="position" select="$p"/>
-								</xsl:apply-templates>
-								-->
-								<xsl:variable name="query_results_api" select="distributor/product[@query_exact_match = $exact]"/>
+								<xsl:variable name="query_results_api" select="product[@query_exact_match = $exact]"/>
 								<xsl:variable name="more_than_one_api" select="count($query_results_api) &gt; 1"/>
 								<xsl:apply-templates select="$query_results_api[1]" mode="product-lines-api">
 									<xsl:with-param name="multiple" select="true()"/>
@@ -1178,7 +1152,7 @@
 						</xsl:if>
 						<xsl:if test="not($multiple)">
 							<xsl:apply-templates select="$products[@query_exact_match = $exact]" mode="product-lines"/>
-							<xsl:apply-templates select="$results_api/product[@query_exact_match = $exact]" mode="product-lines-api"/>
+							<xsl:apply-templates select="$results_api[@query_exact_match = $exact]" mode="product-lines-api"/>
 						</xsl:if>
 					</tbody>
 				</xsl:if>

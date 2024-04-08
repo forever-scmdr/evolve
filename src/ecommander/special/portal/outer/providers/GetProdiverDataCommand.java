@@ -36,8 +36,8 @@ public class GetProdiverDataCommand extends Command implements ItemNames {
         DataGetter queryGetter = new DataGetter(inp, localSearch, forceRefreshCache);
         xml.addElements(queryGetter.getQueryData().getXmlStringSB());
 
-        xml.addElement("max_price", inp.getGlobalMaxPrice());
-        xml.addElement("min_price", inp.getGlobalMinPrice());
+//        xml.addElement("max_price", inp.getGlobalMaxPrice());
+//        xml.addElement("min_price", inp.getGlobalMinPrice());
 
         xml.endElement(); // result
         return getResult("product_list").setValue(xml.toString());
