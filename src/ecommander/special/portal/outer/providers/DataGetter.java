@@ -71,12 +71,30 @@ public class DataGetter {
         ArrayList<String> queries = new ArrayList<>(input.getQueries().keySet());
         boolean isBom = input.getQueries().size() > 1;
         for (String query : queries) {
-            QueryCache.Cached cached = QueryCache.getCache(query, isBom);
-            // Если запрос можно прочитать из кеша (загрузка из кеша)
-            if (cached != null) {
+            // Подготовка данных о кеше
+            String cacheFileName = isBom ? createExactCacheFileName(query) : createCacheFileName(query);
+            File cacheDir = new File(AppContext.getRealPath(CACHE_DIR));
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs();
+            }
+            File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+            boolean cacheExists = cacheFile.exists();
+
+            // Просрочен ли кеш
+            boolean canUseCache = !forceRefreshCache && cacheExists;
+            if (canUseCache) {
+                DateTime cacheCreated = new DateTime(cacheFile.lastModified(), DateTimeZone.UTC);
+                DateTime now = DateTime.now(DateTimeZone.UTC);
+                canUseCache = now.isBefore(cacheCreated.plusHours(HOURS_CACHE_SAVED));
+            }
+
+            // Если запрос можно прочитать из кеша
+            if (canUseCache) {
+                // чтение из файла кеша
                 try {
+                    String cache = readCacheFile(cacheFile);
                     xml.startElement("query", "q", query, "qty", input.getQueries().get(query), "cache", HOURS_CACHE_SAVED);
-                    xml.addElements(cached.getXml());
+                    xml.addElements(cache);
                     xml.endElement();
                     // удалить подзапрос из общего запроса, чтобы не тратить время на его выполнение на сервере
                     input.getQueries().remove(query);
@@ -95,10 +113,11 @@ public class DataGetter {
                 if (result.isSuccess()) {
                     for (Request.Query query : result.getRequest().getAllQueries()) {
                         // сохранить кеш (все результаты)
-                        QueryCache.saveNewCache(query.query, query.getProcessedResult().getXmlStringSB().toString(), false);
+                        String cacheFileName = createCacheFileName(query.query);
+                        File cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
+                        FileUtils.write(cacheFile, query.getProcessedResult().getXmlStringSB(), StandardCharsets.UTF_8);
                         // сохранить кеш (полное соответствие). Если не было полного соответствия - сохраняется пустой файл
                         String exactXml = createJustExactMatchesXml(query.getProcessedResult().getXmlStringSB().toString());
-                        QueryCache.saveNewCache(query.query, exactXml, true);
                         cacheFileName = createExactCacheFileName(query.query);
                         cacheFile = new File(AppContext.getRealPath(CACHE_DIR + '/' + cacheFileName + ".xml"));
                         FileUtils.write(cacheFile, exactXml, StandardCharsets.UTF_8);
@@ -292,6 +311,24 @@ public class DataGetter {
         }
         String priceStr = JsoupUtils.getTagFirstValue(currentBreak, input.getPriceParamName());
         return DecimalDataType.parse(priceStr, 4);
+    }
+
+    /**
+     * Название файла для кеша одного запроса
+     * @param query
+     * @return
+     */
+    private String createCacheFileName(String query) {
+        return Strings.getFileName(input.getRemote() + "__" + query);
+    }
+
+    /**
+     * Название файла для кеша одного запроса и результатов с полным соответствием
+     * @param query
+     * @return
+     */
+    private String createExactCacheFileName(String query) {
+        return Strings.getFileName(input.getRemote() + "__" + query + "_ex");
     }
 
     /**
