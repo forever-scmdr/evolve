@@ -49,6 +49,7 @@
 	<xsl:variable name="input_ship_date" select="$vars/ship_date"/>
 	<xsl:variable name="input_vendor" select="$vars/vendor"/>
 	<xsl:variable name="input_distributor" select="$vars/distributor"/>
+	<xsl:variable name="input_sort" select="if ($vars/sort and not($vars/sort = '')) then $vars/sort else 'price'"/>
 
 
 	<xsl:variable name="classvl" select="1"/>
@@ -173,6 +174,41 @@
 							</div>
 						</div>
 					</form>
+				</xsl:if>
+
+				<xsl:if test="$is_bom">
+					<form action="{page/search_api_link}" method="post" id="filter_form">
+						<textarea name="q" style="display: none"><xsl:value-of select="$query" /></textarea>
+						<div>
+							<div style="float: left; margin-right: 10px">
+								<label>
+									<xsl:call-template name="check_radio">
+										<xsl:with-param name="name" select="'sort'"/>
+										<xsl:with-param name="value" select="'price'"/>
+										<xsl:with-param name="check" select="$input_sort"/>
+									</xsl:call-template>
+									Цена
+								</label>
+							</div>
+							<div style="float: left">
+								<label>
+									<xsl:call-template name="check_radio">
+										<xsl:with-param name="name" select="'sort'"/>
+										<xsl:with-param name="value" select="'date'"/>
+										<xsl:with-param name="check" select="$input_sort"/>
+									</xsl:call-template>
+									Дата
+								</label>
+							</div>
+						</div>
+					</form>
+					<script>
+						$(document).ready(function() {
+							$('#filter_form').find('input[type=radio]').change(function() {
+								$('#filter_form').submit();
+							});
+						});
+					</script>
 				</xsl:if>
 
 				<div id="api_results">
@@ -341,6 +377,21 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+	</xsl:template>
+
+
+	<xsl:template name="check_radio">
+		<xsl:param name="value"/>
+		<xsl:param name="check"/>
+		<xsl:param name="name"/>
+		<xsl:choose>
+			<xsl:when test="$value = $check">
+				<input name="{$name}" type="radio" group="qu" checked="checked" value="{$value}" id="{$value}" />
+			</xsl:when>
+			<xsl:otherwise>
+				<input name="{$name}" type="radio" group="qu" value="{$value}" id="{$value}" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

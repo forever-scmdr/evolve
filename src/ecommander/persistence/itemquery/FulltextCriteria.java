@@ -31,6 +31,7 @@ class FulltextCriteria {
 	public static final String QUERY = "query";
 
 	private final String[] paramNames;
+	private final String[] hilightParams;
 	private final String[] queryVals;
 	private final int maxResultCount;
 	private final float threshold;
@@ -39,12 +40,13 @@ class FulltextCriteria {
 	private ArrayList<ArrayList<LuceneQueryCreator>> queryCreators = new ArrayList<>();
 	
 	FulltextCriteria(List<String[]> queryTypes, String[] queryStr, int maxResultCount, String[] paramNames, Compare compType,
-	                 float threshold) throws Exception {
+	                 float threshold, String[] hilightParams) throws Exception {
 		this.queryVals = queryStr;
 		this.paramNames = paramNames;
 		this.maxResultCount = maxResultCount;
 		this.threshold = threshold;
 		this.compType = compType;
+		this.hilightParams = hilightParams;
 		for (String[] typeGroup : queryTypes) {
 			ArrayList<LuceneQueryCreator> group = new ArrayList<>();
 			queryCreators.add(group);
@@ -86,7 +88,7 @@ class FulltextCriteria {
 					}
 				}
 				if (!queries.isEmpty()) {
-					LinkedHashMap<Long, String> loaded = LuceneIndexMapper.getSingleton().getItems(queries, filter, paramNames, maxResultCount, threshold);
+					LinkedHashMap<Long, String> loaded = LuceneIndexMapper.getSingleton().getItems(queries, filter, maxResultCount, threshold, hilightParams);
 					for (Long loadedId : loaded.keySet()) {
 						ArrayList<Pair<String, String>> queryAndHighlight = loadedIdsAndQueryAndHighlight.get(loadedId);
 						if (queryAndHighlight == null) {

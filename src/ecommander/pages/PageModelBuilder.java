@@ -663,6 +663,7 @@ public class PageModelBuilder {
 	public static final String METHOD_ATTRIBUTE = "method";
 	public static final String METHOD_VAR_ATTRIBUTE = "method-var";
 	public static final String THRESHOLD_ATTRIBUTE = "threshold";
+	public static final String HILIGHT_ATTRIBUTE = "hilight";
 	public static final String COPY_PAGE_VARS_ATTRIBUTE = "copy-page-vars";
 	public static final String FORM_ATTRIBUTE = "form";
 	public static final String VAR_ATTRIBUTE = "var";
@@ -1266,6 +1267,7 @@ public class PageModelBuilder {
 		String types = fulltextNode.attr(TYPE_ATTRIBUTE);
 		String compareTypeStr = fulltextNode.attr(COMPARE_ATTRIBUTE);
 		String thresholdStr = fulltextNode.attr(THRESHOLD_ATTRIBUTE);
+		String hilightParams = fulltextNode.attr(HILIGHT_ATTRIBUTE);
 		Compare compare = null;
 		if (!StringUtils.isBlank(compareTypeStr)) {
 			try {
@@ -1301,7 +1303,8 @@ public class PageModelBuilder {
 			}
 		}
 		String[] paramNameArray = StringUtils.split(paramNames, Strings.SPACE);
-		return new FulltextCriteriaPE(types, queryVar, limit, paramNameArray, compare, threshold);
+		String[] hilightParamsArray = StringUtils.split(hilightParams, Strings.SPACE);
+		return new FulltextCriteriaPE(types, queryVar, limit, paramNameArray, compare, threshold, hilightParamsArray);
 	}
 	/**
 	 * Считывает ссылку

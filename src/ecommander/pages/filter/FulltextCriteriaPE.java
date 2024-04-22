@@ -41,8 +41,9 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 	private List<String[]> types = Collections.singletonList(new String[] {FulltextQueryCreatorRegistry.DEFAULT});
 	private Compare compType = Compare.ANY;
 	private float threshold = -1;
+	private String[] hilightParams = null;
 	
-	public FulltextCriteriaPE(String types, Variable queryVar, int maxResultCount, String[] paramNames, Compare compType, float threshold) {
+	public FulltextCriteriaPE(String types, Variable queryVar, int maxResultCount, String[] paramNames, Compare compType, float threshold, String[] hilightParams) {
 		this.query = queryVar;
 		if (paramNames == null)
 			this.paramNames = new String[0];
@@ -63,11 +64,12 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 			this.compType = compType;
 		if (threshold < 1 && threshold >= 0)
 			this.threshold = threshold;
+		this.hilightParams = hilightParams;
 	}
 	
 	public PageElement createExecutableClone(PageElementContainer container, ExecutablePagePE parentPage) {
 		return new FulltextCriteriaPE(typesStr, query.getInited(parentPage), maxResultCount, paramNames,
-				compType, threshold);
+				compType, threshold, hilightParams);
 	}
 
 	public void validate(String elementPath, ValidationResults results) {
@@ -145,6 +147,9 @@ public class FulltextCriteriaPE implements FilterCriteriaPE {
 		return threshold;
 	}
 
+	public String[] getHilightParams() {
+		return hilightParams;
+	}
 	@Override
 	public void process(FilterCriteriaContainer cont) throws Exception {
 		cont.processFulltextCriteriaPE(this);

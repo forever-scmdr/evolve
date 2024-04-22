@@ -794,10 +794,8 @@
 	<xsl:template match="*" mode="product-lines-api">
 		<xsl:param name="multiple" select="false()"/>
 		<xsl:param name="hidden" select="false()"/>
-		<xsl:param name="number" select="-1"/>
-		<xsl:param name="position" select="1"/>
 		<xsl:param name="query" select="''"/>
-		<xsl:param name="has_more" select="false()"/>
+		<xsl:param name="query_id" select="''"/>
 		<xsl:variable name="multipe_prices" select="prices"/>
 
 		<xsl:variable name="has_price" select="(price and price != '0') or $multipe_prices"/>
@@ -805,7 +803,7 @@
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 		<xsl:variable name="p" select="current()"/>
-		<tr class="row2 prod_{if ($hidden) then $position else ''}" style="{'display: none'[$hidden]}">
+		<tr class="row2 prod_{if ($hidden) then $query_id else ''}" style="{'display: none'[$hidden]}">
 			<xsl:if test="$multiple">
 				<td>
 					<div class="thn">Запрос</div>
@@ -901,7 +899,7 @@
 				<div class="thd">
 					<xsl:call-template name="CART_BUTTON_API">
 						<xsl:with-param name="p" select="$p"/>
-						<xsl:with-param name="default_qty" select="$number"/>
+						<xsl:with-param name="default_qty" select="if (@request_qty) then @request_qty else 0"/>
 					</xsl:call-template>
 				</div>
 			</td>
@@ -915,8 +913,6 @@
 					</div>
 				</td>
 			</xsl:if>
-			<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><td><div class="thn">Показать</div>
-				<div class="thd"><xsl:if test="not($hidden) and $has_more"><a href="#" popup=".prod_{$position}">Показать другие</a></xsl:if></div></td></xsl:if>
 		</tr>
 	</xsl:template>
 
@@ -1109,7 +1105,6 @@
 						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
 						<th>Заказать</th>
 						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
-						<xsl:if test="($multiple and not($analogs)) or $multiple_analog_sets"><th>Показать</th></xsl:if>
 					</tr>
 				</thead>
 				<xsl:if test="$products or $queries or $results_api">
@@ -1117,26 +1112,35 @@
 						<xsl:if test="$multiple">
 							<xsl:for-each select="$queries">
 								<xsl:variable name="q" select="@q"/>
-								<xsl:variable name="n" select="f:num(@qty)"/>
 								<xsl:variable name="p" select="position()"/>
-								<xsl:variable name="query_results_api" select="product[@query_exact_match = $exact]"/>
-								<xsl:variable name="more_than_one_api" select="count($query_results_api) &gt; 1"/>
-								<xsl:apply-templates select="$query_results_api[1]" mode="product-lines-api">
+								<xsl:variable name="q_id" select="string($p + 1000)"/>
+								<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
+								<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
+								<tr>
+									<td colspan="{($colspan)}" style="padding: 1px; background-color: black"></td>
+									<td rowspan="{(count($visible_prods) + 1)}"><a>Заказать</a></td> <!-- +2 т.к. одна строка - черная линия, вторая - ссылка "развернуть" -->
+								</tr>
+								<xsl:apply-templates select="$visible_prods" mode="product-lines-api">
 									<xsl:with-param name="multiple" select="true()"/>
 									<xsl:with-param name="query" select="$q"/>
-									<xsl:with-param name="number" select="$n"/>
-									<xsl:with-param name="position" select="$p + 1000"/>
-									<xsl:with-param name="has_more" select="$more_than_one_api"/>
+									<xsl:with-param name="query_id" select="$q_id"/>
+									<xsl:with-param name="has_more" select="count($hidden_prods) &gt; 0"/>
 								</xsl:apply-templates>
-								<xsl:apply-templates select="$query_results_api[position() &gt; 1]" mode="product-lines-api">
-									<xsl:with-param name="multiple" select="true()"/>
-									<xsl:with-param name="query" select="$q"/>
-									<xsl:with-param name="hidden" select="'hidden'"/>
-									<xsl:with-param name="number" select="$n"/>
-									<xsl:with-param name="position" select="$p + 1000"/>
-								</xsl:apply-templates>
+								<xsl:if test="count($hidden_prods) &gt; 0">
+									<tr>
+										<td colspan="{$colspan}" style="padding: 0px">
+											<a href="#" popup=".prod_{$q_id}">Показать все предложения по данной строке</a>
+										</td>
+									</tr>
+									<xsl:apply-templates select="$hidden_prods" mode="product-lines-api">
+										<xsl:with-param name="multiple" select="true()"/>
+										<xsl:with-param name="query" select="$q"/>
+										<xsl:with-param name="query_id" select="$q_id"/>
+										<xsl:with-param name="hidden" select="'hidden'"/>
+									</xsl:apply-templates>
+								</xsl:if>
 
-								<xsl:if test="not($query_results_api)"><!-- not($price_query_products) and -->
+								<xsl:if test="not($visible_prods)">
 									<tr>
 										<td>
 											<div class="thn">Запрос</div>

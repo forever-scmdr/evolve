@@ -1,6 +1,7 @@
 package ecommander.special.portal.outer.providers;
 
 import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -11,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Класс, который подключается к определенному (в реализациях) удаленному серверу, получает с него информацию,
@@ -103,14 +107,18 @@ public abstract class ProviderGetter implements ItemNames {
         Request request = ProxyRequestDispatcher.submitRequest(getProviderName(), input.getQueries().keySet());
         Result result;
         try {
+            Timer.getTimer().start("API # outer_execution");
             request.awaitExecution();
+            Timer.getTimer().stop("API # outer_execution");
             result = new Result(request, SUCCESS, null);
         } catch (Exception e) {
             return new Result(request, CONNECTION_ERROR, ExceptionUtils.getStackTrace(e));
         }
         // Результирующий документ
         for (Request.Query query : request.getAllQueries()) {
+            Timer.getTimer().start("API # outer_process");
             processQueryResult(query, input);
+            Timer.getTimer().stop("API # outer_process");
         }
         return result;
     }
@@ -119,29 +127,29 @@ public abstract class ProviderGetter implements ItemNames {
      * Получить коэффициент для поставщика.
      * Кеш коэффициентов не хранится в экземпляре чтобы не было вечного кеша, т.к. пришлось бы
      * при изменении коэффициента перезагружать сервер
-     * TODO сделать кеш, подобный кешу айтемов ItemCache, но для любых объектов
+     * TODO сделать кеш, подобный кешу айтемов ItemCache, но для любых объектов (в т.ч. для кеша файлов)
      * @param distributorName
      * @param input
      * @return
      */
     protected BigDecimal getDistributorQuotient(String distributorName, OuterInputData input) {
-        BigDecimal extraQuotient = input.getDistributorQuotients().get(distributorName); // дополнительный коэффициент для цены для поставщика
-        if (extraQuotient == null) {
-            Item catalogSettings = null;
+        if (!input.hasDistributorQuotients()) {
+            final String QUOTIENTS = "catalog_extra_quotients";
+            List<Item> catalogsSettings = null;
             try {
-                catalogSettings = ItemCache.get(distributorName,
-                        () -> new ItemQuery(PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, distributorName).loadFirstItem());
+                catalogsSettings = ItemCache.getArray(QUOTIENTS, () -> new ItemQuery(PRICE_CATALOG).loadItems());
             } catch (Exception e) {
                 ServerLogger.error("Unable to load price catalog '" + distributorName + "'", e);
             }
-            if (catalogSettings != null) {
-                extraQuotient = catalogSettings.getDecimalValue(ItemNames.price_catalog_.QUOTIENT, BigDecimal.ONE);
-            } else {
-                extraQuotient = BigDecimal.ONE;
+            HashMap<String, BigDecimal> quotients = new HashMap<>();
+            if (catalogsSettings != null) {
+                for (Item setting : catalogsSettings) {
+                    quotients.put(setting.getStringValue(price_catalog_.NAME), setting.getDecimalValue(price_catalog_.QUOTIENT, BigDecimal.ONE));
+                }
             }
-            input.getDistributorQuotients().put(distributorName, extraQuotient);
+            input.setDistributorQuotients(quotients);
         }
-        return extraQuotient;
+        return input.getDistributorQuotient(distributorName);
     }
 
     /**

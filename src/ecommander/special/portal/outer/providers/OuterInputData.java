@@ -21,14 +21,21 @@ import java.util.List;
  * Экземпляр класса создается про поступлении запроса пользователя
  */
 public class OuterInputData {
+
+    public enum Sort {
+        date, price;
+        static Sort create(String str) {
+            return (StringUtils.equalsIgnoreCase(str, "date")) ? date : price;
+        }
+    }
     public static final String SERVER_PARAM = "server";
     public static final String QUERY_PARAM = "q";
     public static final String PRICE_PREFIX = "price_";
 
     private List<Object> servers;
     private String curCode;
-    private LinkedHashMap<String, Integer> query;
-    private String unparsedQuery;
+    private final LinkedHashMap<String, Integer> query;
+    private final String unparsedQuery;
     private String remote; // Провайдер данных (provider, host)
     private BigDecimal fromFilterDecimal;
     private BigDecimal toFilterDecimal;
@@ -37,12 +44,14 @@ public class OuterInputData {
     private HashSet<Object> distributorFilter;
     private HashSet<Object> dstrSet;
     // базовые коэффициенты для каждого поставщика. Загружаются по мере надобности. Это просто кеш для хранения
-    private HashMap<String, BigDecimal> distributorQuotients = new HashMap<>();
+    private HashMap<String, BigDecimal> distributorQuotients;
     private ResultPE errorResult;
 
     private CurrencyRates rates = null;
 
     private String priceParamName;
+
+    private Sort sort;
 
     OuterInputData(Command command) throws EcommanderException {
         this.servers = command.getVarValues(SERVER_PARAM);
@@ -80,12 +89,13 @@ public class OuterInputData {
         fromFilterDecimal = from == null ? BigDecimal.ONE.negate() : from;
         BigDecimal to = DecimalDataType.parse(toFilter, 4);
         toFilterDecimal = to == null ? BigDecimal.valueOf(Double.MAX_VALUE) : to;
+        sort = Sort.create(command.getVarSingleValueDefault("sort", "price"));
         parseQuery();
     }
 
     private OuterInputData(String bomQuery) {
-        unparsedQuery = bomQuery;
-        query = new LinkedHashMap<>();
+        this.unparsedQuery = bomQuery;
+        this.query = new LinkedHashMap<>();
         parseQuery();
     }
 
@@ -161,11 +171,11 @@ public class OuterInputData {
     }
 
     public boolean hasFromFilter() {
-        return fromFilterDecimal != null;
+        return fromFilterDecimal != null && fromFilterDecimal.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public boolean hasToFilter() {
-        return toFilterDecimal != null;
+        return toFilterDecimal != null && toFilterDecimal.compareTo(BigDecimal.valueOf(100000000)) < 0;
     }
 
     public boolean vendorFilterMatches(String vendor) {
@@ -204,7 +214,23 @@ public class OuterInputData {
         return query;
     }
 
-    public HashMap<String, BigDecimal> getDistributorQuotients() {
-        return distributorQuotients;
+    public BigDecimal getDistributorQuotient(String distributor) {
+        BigDecimal quot = BigDecimal.ONE;
+        if (distributorQuotients != null)
+            quot = distributorQuotients.get(distributor);
+        return quot == null ? BigDecimal.ONE : quot;
+    }
+
+    public void setDistributorQuotients(HashMap<String, BigDecimal> quotients) {
+        if (quotients != null) {
+            distributorQuotients = quotients;
+        }
+    }
+
+    public boolean hasDistributorQuotients() {
+        return distributorQuotients != null;
+    }
+    public Sort getSort() {
+        return sort;
     }
 }

@@ -211,12 +211,12 @@ public class PageController {
 	private String processSimplePage(boolean redo) throws Exception {
 		String xslFileName = AppContext.getStylesDirPath() + page.getTemplate() + ".xsl";
 		// Загрузка страницы и выполнение команд страницы
-		Timer.getTimer().start(Timer.LOAD_DB_ITEMS);
+		Timer.getTimer().start(Timer.PAGE_INNER_PROCESS);
 		// Сброс сеансового генератора ID (чтобы для каждого выпонения страницы ID начинались с одного и того же начального)
 		if (page.getSessionContext() != null)
 			page.getSessionContext().resetIdGenerator();
 		ResultPE result = page.execute();
-		Timer.getTimer().stop(Timer.LOAD_DB_ITEMS);
+		Timer.getTimer().stop(Timer.PAGE_INNER_PROCESS);
 		// Если команда требует очисти кеша, очистить его
 		if (page.isCacheClearNeeded())
 			clearCache();

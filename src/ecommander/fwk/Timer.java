@@ -20,7 +20,7 @@ public class Timer {
 	public static final String INIT = "init";
 	public static final String GET_FROM_CACHE = "get_from_cache";
 	public static final String GENERATE_CACHE = "generate_cache";
-	public static final String LOAD_DB_ITEMS = "load_db_items";
+	public static final String PAGE_INNER_PROCESS = "page_inner_process";
 	public static final String LOAD_LUCENE_ITEMS = "load_lucene_items";
 	public static final String XSL_TRANSFORM = "xsl_transform";
 	

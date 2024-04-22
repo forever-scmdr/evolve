@@ -470,15 +470,16 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @param paramNames - названия параметров, по которым происходит поиск
 	 * @param compType - тип стравнения (в том числе определяет что делать, если задан пустой запрос)
 	 * @param threshold - Рубеж релевантности. Часть (от 0 до 1) от рейтинга первого результата, результаты с рейтингом меньше которой считаются нерелевантными
+	 * @param hilightParams - параметры для подсветки найденных фрагментов (может быть null)
 	 * @return
 	 * @throws EcommanderException
 	 */
 	public ItemQuery setFulltextCriteria(List<String[]> types, String[] queries, int maxResults, String[] paramNames, Compare compType,
-			float threshold) throws Exception {
+			float threshold, String[] hilightParams) throws Exception {
 		if (paramNames == null || paramNames.length == 0) {
 			paramNames = getItemDesc().getFulltextParams().toArray(new String[0]);
 		}
-		fulltext = new FulltextCriteria(types, queries, maxResults, paramNames, compType, threshold);
+		fulltext = new FulltextCriteria(types, queries, maxResults, paramNames, compType, threshold, hilightParams);
 		if ((compType == Compare.ANY || compType == Compare.ALL) && !fulltext.isValid())
 			fulltext = null;
 		return this;
@@ -492,7 +493,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @throws EcommanderException
 	 */
 	public ItemQuery setFulltextCriteria(String type, String query, int maxResults, String[] paramNames, Compare compType) throws Exception {
-		return setFulltextCriteria(Collections.singletonList(new String[] {type}), new String[] {query}, maxResults, paramNames, compType, -1);
+		return setFulltextCriteria(Collections.singletonList(new String[] {type}), new String[] {query}, maxResults, paramNames, compType, -1, null);
  	}
 	/**
 	 * Доабвить критерий поиска по предшественнику

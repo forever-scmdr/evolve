@@ -2,6 +2,7 @@ package ecommander.special.portal.outer.providers;
 
 import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.Strings;
+import ecommander.fwk.Timer;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.special.portal.outer.Request;
@@ -58,9 +59,7 @@ public class FindchipsGetter extends ProviderGetter {
             if (!input.distributorFilterMatches(distributor)) {
                 continue;
             }
-
             BigDecimal extraQuotient = getDistributorQuotient(distributor, input); // дополнительный коэффициент для цены
-
             Elements lines = distributorEl.select("tr.row");
             for (Element line : lines) {
                 String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
