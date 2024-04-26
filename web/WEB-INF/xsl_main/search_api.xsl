@@ -256,6 +256,15 @@
 					</xsl:if>
 
 				</div>
+
+				<div>
+					<div style="font-size: x-large;">
+						Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span> руб.</b>
+					</div>
+					<div style="margin-top: 20px">
+						<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</xsl:template>
@@ -267,7 +276,7 @@
 	<xsl:template match="product" mode="single_product">
 		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
 		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
-		<div class="device device_row" style="margin-bottom: 5px; z-index: 100">
+		<div class="device device_row" style="margin-bottom: 5px;">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
@@ -377,6 +386,90 @@
 
 	<xsl:template name="EXTRA_SCRIPTS">
 		<xsl:call-template name="CART_SCRIPT"/>
+		<xsl:call-template name="ORDER_SCRIPT"/>
+		<script>
+			<xsl:text disable-output-escaping="yes">
+				var queryRemainders = []; // остатки по каждому запросу
+				$(document).ready(function() {
+					$('.brown input[type=checkbox]').change(function() {
+						var checkbox = $(this);
+						var line = checkbox.closest('.red');
+						var closestContainer = line.closest('.blue');
+						var queryContainer = line.closest('.green');
+						var queryVisibleContainer = queryContainer.find('.blue').first();
+						var queryId = queryContainer.attr('query_id');
+						var queryQty = queryContainer.attr('qty');
+						var qtyInput = line.find('input[name=qty]');
+						var lineInputQty = Number(qtyInput.val());
+						var lineMaxQty = Number(line.attr('qty'));
+						var remainder = queryRemainders[queryId];
+						if (typeof remainder === "undefined") {
+							remainder = 0;
+							queryRemainders[queryId] = remainder;
+						}
+						var isLineHidden = closestContainer.attr('line_hidden') == 'true';
+
+						// Строка добавляется
+						if (checkbox.is(':checked')) {
+							if (remainder == 0) {
+								checkbox.prop('checked', false);
+								return;
+							} else {
+								inputQty = remainder &gt; lineMaxQty ? lineMaxQty : remainder;
+								remainder -= inputQty;
+								queryRemainders[queryId] = remainder;
+								qtyInput.val(inputQty);
+								var priceBreaks = line.find('.price__value').find('p');
+								var aBreak = priceBreaks.first();
+								for (i = 0; i &lt; priceBreaks.length; i++) {
+									var breakQty = Number($(priceBreaks[i]).attr('break'));
+									if (breakQty &gt; inputQty)
+										break;
+									aBreak = priceBreaks[i];
+								}
+								$(aBreak).attr('style', 'font-weight: bold');
+								if (isLineHidden) {
+									line.detach().appendTo(queryVisibleContainer.find('.w-1'));
+								}
+								queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
+							}
+						}
+
+						// Строка убирается
+						else {
+							remainder += lineInputQty;
+							queryRemainders[queryId] = remainder;
+							qtyInput.val(0);
+							queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
+							line.find('.price__value').find('p').attr('style', '');
+						}
+					});
+
+					var autoSum = 0;
+					$('.blue_visible').find('.red').each(function() {
+						var qty = Number($(this).attr('qty'));
+						var price = Number($(this).attr('price'));
+						autoSum += qty * price;
+					});
+					$('#auto_sum').text(autoSum.toFixed(2));
+				});
+
+				function getQtyLabel(totalQty, remainder) {
+					if (remainder != 0) {
+						return "(" + totalQty + " &lt;span style='color: red'&gt;-" + remainder + "&lt;/span&gt;)"
+					}
+					return "(" + totalQty + ")";
+				}
+
+				function allOrder() {
+					$('#api_results').find('form').each(function() {
+						var isNotZero = $(this).find('input[type=text]').val() != '0';
+						if (isNotZero)
+							$(this).find('button').trigger('click');
+					});
+				}
+			</xsl:text>
+		</script>
 	</xsl:template>
 
 

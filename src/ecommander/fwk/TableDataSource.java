@@ -16,6 +16,8 @@ public interface TableDataSource extends Closeable {
 
 	String getValue(String colName);
 
+	int getLastColIndex();
+
 	Double getDoubleValue(String colName);
 
 	BigDecimal getDecimalValue(String colName, int digitsAfterDot, BigDecimal... defaultVal);

@@ -341,18 +341,22 @@ public class DataGetter {
                 // (уменьшая постоянно количество на величину имеющегося фактически на складе для данного товара)
                 int qtyToOrder = requestedQuantity;
                 while (qtyToOrder > 0 && prods.size() > 0) {
-                    final int rqty = requestedQuantity;
+                    final int rqty = qtyToOrder;
                     Optional<Element> cheapestOpt = prods.stream().min((o1, o2) -> {
-                        BigDecimal price1 = getPriceForQty(o1, rqty);
-                        BigDecimal price2 = getPriceForQty(o2, rqty);
+                        int qtyInStore1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "qty"), 0);
+                        int qtyInStore2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "qty"), 0);
+                        int qtyToOffer1 = Math.min(qtyInStore1, rqty);
+                        int qtyToOffer2 = Math.min(qtyInStore2, rqty);
+                        BigDecimal price1 = getPriceForQty(o1, qtyToOffer1);
+                        BigDecimal price2 = getPriceForQty(o2, qtyToOffer2);
                         price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
                         price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
                         return price1.compareTo(price2);
                     });
                     Element cheapest = cheapestOpt.get();
                     int qtyInStore = NumberUtils.toInt(JsoupUtils.getTagFirstValue(cheapest, "qty"), 0);
-                    int qtyToOffer = Math.min(qtyInStore, requestedQuantity);
-                    BigDecimal price = getPriceForQty(cheapest, requestedQuantity);
+                    int qtyToOffer = Math.min(qtyInStore, qtyToOrder);
+                    BigDecimal price = getPriceForQty(cheapest, qtyToOffer);
                     cheapest.select("prices").attr("price", price.toPlainString()).attr("qty", qtyToOffer + "");
                     sortedProds.add(cheapest);
                     qtyToOrder -= qtyInStore; // уменьшить требуемое количество, т.к. часть его уже удовлетворена
@@ -415,10 +419,10 @@ public class DataGetter {
         Elements breaks = product.getElementsByTag("break");
         Element currentBreak = breaks.first();
         for (Element aBreak : breaks) {
-            currentBreak = aBreak;
             int breakQty = NumberUtils.toInt(aBreak.attr("qty"), 1);
             if (breakQty > productQty)
                 break;
+            currentBreak = aBreak;
         }
         String priceStr = JsoupUtils.getTagFirstValue(currentBreak, input.getPriceParamName());
         return DecimalDataType.parse(priceStr, 4);
@@ -456,24 +460,27 @@ public class DataGetter {
         Document doc = JsoupUtils.parseXml(allResultDoc);
         ArrayList<Element> inexactProds = doc.select("product[query_exact_match=false]");
         doc.select("product[query_exact_match=false]").remove();
-        int firstProductIndex = doc.select("product").first().siblingIndex();
-        ArrayList<Element> exactProds = new ArrayList<>(doc.select("product"));
-        exactProds.sort((o1, o2) -> {
-            BigDecimal price1 = DecimalDataType.parse(o1.select("break").first().select("price").first().ownText(), 4);
-            BigDecimal price2 = DecimalDataType.parse(o2.select("break").first().select("price").first().ownText(), 4);
-            price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
-            price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
-            return price1.compareTo(price2);
-        });
-        doc.select("product").remove();
-        doc.insertChildren(firstProductIndex, exactProds);
-        boolean hasResult = doc.select("product").size() > 0;
-        String resultExact = hasResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
+        Element firstProductEl = doc.select("product").first();
+        boolean hasExactResult = firstProductEl != null;
+        if (hasExactResult) {
+            int firstProductIndex = firstProductEl.siblingIndex();
+            ArrayList<Element> exactProds = new ArrayList<>(doc.select("product"));
+            exactProds.sort((o1, o2) -> {
+                BigDecimal price1 = DecimalDataType.parse(o1.select("break").first().select("price").first().ownText(), 4);
+                BigDecimal price2 = DecimalDataType.parse(o2.select("break").first().select("price").first().ownText(), 4);
+                price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
+                price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
+                return price1.compareTo(price2);
+            });
+            doc.select("product").remove();
+            doc.insertChildren(firstProductIndex, exactProds);
+        }
+        String resultExact = hasExactResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
 
         // Добавляем все остальные результаты
         doc.appendChildren(inexactProds);
-        hasResult = doc.select("product").size() > 0;
-        String resultAll = hasResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
+        boolean hasAllResult = doc.select("product").size() > 0;
+        String resultAll = hasAllResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
         return new Pair<>(resultExact, resultAll);
     }
 }

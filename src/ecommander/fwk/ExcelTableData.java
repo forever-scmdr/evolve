@@ -170,6 +170,10 @@ public class ExcelTableData implements TableDataSource {
 		return StringUtils.trim(POIUtils.getCellAsString(currentRow.getCell(colIndex), eval));
 	}
 
+	public final int getLastColIndex() {
+		return currentRow.getLastCellNum();
+	}
+
 	public final Double getDoubleValue(int colIndex) {
 		String val = getValue(colIndex);
 		return DoubleDataType.parse(val);

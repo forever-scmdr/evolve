@@ -793,127 +793,136 @@
 
 	<xsl:template match="*" mode="product-lines-api">
 		<xsl:param name="multiple" select="false()"/>
-		<xsl:param name="hidden" select="false()"/>
 		<xsl:param name="query" select="''"/>
-		<xsl:param name="query_id" select="''"/>
+		<xsl:param name="req_qty" select="''"/>
 		<xsl:variable name="multipe_prices" select="prices"/>
-
 		<xsl:variable name="has_price" select="(price and price != '0') or $multipe_prices"/>
-
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 		<xsl:variable name="p" select="current()"/>
-		<tr class="row2 prod_{if ($hidden) then $query_id else ''}" style="{'display: none'[$hidden]}">
-			<xsl:if test="$multiple">
-				<td>
-					<div class="thn">Запрос</div>
-					<div class="thd"><b><xsl:value-of select="$query" /></b></div>
-				</td>
-			</xsl:if>
-			<td>
-				<div class="thn">Название</div>
-				<div class="thd">
-					<a><xsl:value-of select="name"/></a>
-					<p/>
-					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
-				</div>
-			</td><!--название -->
-			<xsl:if test="$is_admin or $show_api_distributor">
-				<td>
-					<div class="thn">Поставщик</div>
-					<div class="thd"><xsl:value-of select="$p/category_id"/></div>
-				</td>
-			</xsl:if>
-			<xsl:if test="$is_admin">
-				<td>
-					<div class="thn">Дата прайса</div>
-					<div class="thd"><xsl:value-of select="$p/pricedate"/></div>
-				</td>
-			</xsl:if>
-			<td><!--описание -->
-				<div class="thn">Описание</div>
-				<div class="thd">
-					<xsl:value-of select="description" disable-output-escaping="yes"/>
-				</div>
-				<div class="thd">
-					<a onclick="showDetails('product_ajax?prod={normalize-space(name)}')" >Полное описание</a>
-				</div>
-			</td>
-			<td><!--дата поставки -->
-				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="if (not(next_delivery = '')) then next_delivery else '-'"/><!--<xsl:value-of select="available"/>--></div>
-			</td>
-			<td><!--количество на складе -->
-				<div class="thn">Количество</div>
-				<div class="thd"><xsl:value-of select="qty"/></div>
-			</td>
-			<td>
-				<div class="thn">Цена</div>
-				<div class="thd"><!--цена -->
-					<xsl:if test="price_old">
-						<div class="price__item_old">
-							<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+		<div class="div-row red" qty="{qty}" price="{prices/@price}">
+			<div class="div-tr">
+				<xsl:if test="$multiple">
+					<div class="div-td td-check">
+						<div class="thn">Выбор</div>
+						<div class="thd">
+							<xsl:choose>
+								<xsl:when test="@request_qty"><input type="checkbox" checked="checked"/></xsl:when>
+								<xsl:otherwise><input type="checkbox"/></xsl:otherwise>
+							</xsl:choose>
 						</div>
-					</xsl:if>
-					<xsl:if test="$has_price">
-						<!-- Для обычных товаров (не из каталога price_catalog) -->
-						<xsl:if test="not($multipe_prices)">
-							<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
-						</xsl:if>
-						<!-- Для товаров из каталога price_catalog -->
-						<xsl:if test="$multipe_prices">
-							<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
-								<xsl:with-param name="need_sum" select="false()"/>
-								<xsl:with-param name="product" select="$p"/>
-							</xsl:call-template></span>
-						</xsl:if>
-
-					</xsl:if>
-					<xsl:if test="not($has_price)"> - </xsl:if>
-				</div>
-			</td>
-			<xsl:if test="$is_admin">
-				<td>
-					<div class="thn">Базовая цена</div>
+					</div>
+					<div class="div-td td-query">
+						<div class="thn">Запрос</div>
+						<div class="thd"><b><xsl:value-of select="$query" /></b></div>
+					</div>
+				</xsl:if>
+				<div class="div-td td-name">
+					<div class="thn">Название</div>
 					<div class="thd">
+						<a><xsl:value-of select="name"/></a>
+						<p/>
+						<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+					</div>
+				</div><!--название -->
+				<xsl:if test="$is_admin or $show_api_distributor">
+					<div class="div-td td-distributor">
+						<div class="thn">Поставщик</div>
+						<div class="thd"><xsl:value-of select="$p/category_id"/></div>
+					</div>
+				</xsl:if>
+				<xsl:if test="$is_admin">
+					<div class="div-td td-date">
+						<div class="thn">Дата прайса</div>
+						<div class="thd"><xsl:value-of select="$p/pricedate"/></div>
+					</div>
+				</xsl:if>
+				<div class="div-td td-description">
+					<div class="thn">Описание</div>
+					<div class="thd">
+						<div><xsl:value-of select="description" disable-output-escaping="yes"/></div>
+						<div><a onclick="showDetails('product_ajax?prod={normalize-space(name)}')" >Полное описание</a></div>
+					</div>
+				</div>
+				<div class="div-td td-date">
+					<div class="thn">Срок поставки</div>
+					<div class="thd"><xsl:value-of select="if (not(next_delivery = '')) then next_delivery else '-'"/><!--<xsl:value-of select="available"/>--></div>
+				</div>
+				<div class="div-td td-qty">
+					<div class="thn">Количество</div>
+					<div class="thd">
+						<div><xsl:value-of select="qty"/></div>
+						<div class="qty"><xsl:if test="$req_qty and not($req_qty = '')">(<xsl:value-of select="$req_qty"/>)</xsl:if></div>
+					</div>
+				</div>
+				<div class="div-td td-price">
+					<div class="thn">Цена</div>
+					<div class="thd"><!--цена -->
+						<xsl:if test="price_old">
+							<div class="price__item_old">
+								<span class="price__value"><xsl:value-of select="f:exchange_cur(., $price_old_param_name, 0)"/></span>
+							</div>
+						</xsl:if>
 						<xsl:if test="$has_price">
 							<!-- Для обычных товаров (не из каталога price_catalog) -->
 							<xsl:if test="not($multipe_prices)">
-								<xsl:value-of select="price"/>&#160;<xsl:value-of select="currency_id"/>
+								<xsl:value-of select="f:exchange_cur(., $price_param_name, 0)"/>
 							</xsl:if>
 							<!-- Для товаров из каталога price_catalog -->
 							<xsl:if test="$multipe_prices">
 								<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
 									<xsl:with-param name="need_sum" select="false()"/>
-									<xsl:with-param name="need_original" select="true()"/>
 									<xsl:with-param name="product" select="$p"/>
 								</xsl:call-template></span>
 							</xsl:if>
 
 						</xsl:if>
+						<xsl:if test="not($has_price)"> - </xsl:if>
 					</div>
-				</td>
-			</xsl:if>
-			<td><!--заказать -->
-				<div class="thn">Заказать</div>
-				<div class="thd">
-					<xsl:call-template name="CART_BUTTON_API">
-						<xsl:with-param name="p" select="$p"/>
-						<xsl:with-param name="default_qty" select="if (@request_qty) then @request_qty else 0"/>
-					</xsl:call-template>
 				</div>
-			</td>
-			<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><!--дополнительно -->
-				<td>
-					<div class="thn">Дополнительно</div>
+				<xsl:if test="$is_admin">
+					<div class="div-td td-price">
+						<div class="thn">Базовая цена</div>
+						<div class="thd">
+							<xsl:if test="$has_price">
+								<!-- Для обычных товаров (не из каталога price_catalog) -->
+								<xsl:if test="not($multipe_prices)">
+									<xsl:value-of select="price"/>&#160;<xsl:value-of select="currency_id"/>
+								</xsl:if>
+								<!-- Для товаров из каталога price_catalog -->
+								<xsl:if test="$multipe_prices">
+									<span class="price__value"><xsl:call-template name="ALL_PRICES_API">
+										<xsl:with-param name="need_sum" select="false()"/>
+										<xsl:with-param name="need_original" select="true()"/>
+										<xsl:with-param name="product" select="$p"/>
+									</xsl:call-template></span>
+								</xsl:if>
+
+							</xsl:if>
+						</div>
+					</div>
+				</xsl:if>
+				<div class="div-td"><!--заказать -->
+					<div class="thn">Заказать</div>
 					<div class="thd">
-						<xsl:call-template name="EXTRA_ORDERING_TYPES">
-							<xsl:with-param name="p" select="current()"/>
+						<xsl:call-template name="CART_BUTTON_API">
+							<xsl:with-param name="p" select="$p"/>
+							<xsl:with-param name="default_qty" select="if (@request_qty) then @request_qty else 0"/>
 						</xsl:call-template>
 					</div>
-				</td>
-			</xsl:if>
-		</tr>
+				</div>
+				<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><!--дополнительно -->
+					<div class="div-td">
+						<div class="thn">Дополнительно</div>
+						<div class="thd">
+							<xsl:call-template name="EXTRA_ORDERING_TYPES">
+								<xsl:with-param name="p" select="current()"/>
+							</xsl:call-template>
+						</div>
+					</div>
+				</xsl:if>
+			</div>
+		</div>
 	</xsl:template>
 
 
@@ -974,8 +983,8 @@
 					<input type="hidden" name="prod" value="-10"/>
 					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
 					<input type="number"
-						   class="input input_type_number" name="qty"
-						   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
+						   class="input input_type_number" name="qty" style="width:65px"
+						   value="{if ($default_qty &gt;= 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
 						   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
 						   step="{if ($p/step) then f:num($p/step) else $step_default}" />
 
@@ -1084,89 +1093,113 @@
 		<xsl:param name="ajax_urls" select="ajax_urls"/>
 		<xsl:param name="header" select="ajax_urls"/>
 		<xsl:param name="exact" select="('true', 'false')"/>
-		<xsl:variable name="colspan" select="8 + (if ($has_one_click or $has_my_price or $has_subscribe) then 1 else 0)"/>
-		<div class="view-table">
-			<xsl:if test="$header"><h3 style="text-align: center"><xsl:value-of select="$header" /></h3></xsl:if>
-			<table>
-				<thead>
-					<tr>
-						<xsl:if test="$multiple"><th>Запрос</th></xsl:if><!-- <xsl:value-of select="if ($multiple_analog_sets) then 'Запрос' else 'Аналоги'" /> -->
-						<th>Название</th>
+
+		<xsl:if test="$header"><h3 style="text-align: center"><xsl:value-of select="$header" /></h3></xsl:if>
+		<div class="div-table brown">
+			<div class="div-row orange">
+				<div class="w-1">
+					<div class="div-tr thead border-bottom">
+						<xsl:if test="$multiple">
+							<div class="div-td td-check">#</div>
+							<div class="div-td td-query">Запрос</div>
+						</xsl:if><!-- <xsl:value-of select="if ($multiple_analog_sets) then 'Запрос' else 'Аналоги'" /> -->
+						<div class="div-td td-name">Название</div>
 						<xsl:if test="$is_admin or $show_api_distributor">
-							<th>Поставщик</th>
+							<div class="div-td td-distributor">Поставщик</div>
 						</xsl:if>
 						<xsl:if test="$is_admin">
-							<th>Дата прайса</th>
+							<div class="div-td td-date">Дата прайса</div>
 						</xsl:if>
-						<th>Описание</th>
-						<th>Срок поставки</th>
-						<th>Количество</th>
-						<th>Цена</th>
-						<xsl:if test="$is_admin"><th>Базовая цена</th></xsl:if>
-						<th>Заказать</th>
-						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><th>Дополнительно</th></xsl:if>
-					</tr>
-				</thead>
-				<xsl:if test="$products or $queries or $results_api">
-					<tbody>
-						<xsl:if test="$multiple">
-							<xsl:for-each select="$queries">
-								<xsl:variable name="q" select="@q"/>
-								<xsl:variable name="p" select="position()"/>
-								<xsl:variable name="q_id" select="string($p + 1000)"/>
-								<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
-								<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
-								<tr>
-									<td colspan="{($colspan)}" style="padding: 1px; background-color: black"></td>
-									<td rowspan="{(count($visible_prods) + 1)}"><a>Заказать</a></td> <!-- +2 т.к. одна строка - черная линия, вторая - ссылка "развернуть" -->
-								</tr>
-								<xsl:apply-templates select="$visible_prods" mode="product-lines-api">
-									<xsl:with-param name="multiple" select="true()"/>
-									<xsl:with-param name="query" select="$q"/>
-									<xsl:with-param name="query_id" select="$q_id"/>
-									<xsl:with-param name="has_more" select="count($hidden_prods) &gt; 0"/>
-								</xsl:apply-templates>
-								<xsl:if test="count($hidden_prods) &gt; 0">
-									<tr>
-										<td colspan="{$colspan}" style="padding: 0px">
-											<a href="#" popup=".prod_{$q_id}">Показать все предложения по данной строке</a>
-										</td>
-									</tr>
-									<xsl:apply-templates select="$hidden_prods" mode="product-lines-api">
-										<xsl:with-param name="multiple" select="true()"/>
-										<xsl:with-param name="query" select="$q"/>
-										<xsl:with-param name="query_id" select="$q_id"/>
-										<xsl:with-param name="hidden" select="'hidden'"/>
-									</xsl:apply-templates>
+						<div class="div-td td-description">Описание</div>
+						<div class="div-td td-date">Срок поставки</div>
+						<div class="div-td td-qty">Количество</div>
+						<div class="div-td td-price">Цена</div>
+						<xsl:if test="$is_admin"><div class="div-td td-price">Базовая цена</div></xsl:if>
+						<div class="div-td">Заказать</div>
+						<xsl:if test="$has_one_click or $has_my_price or $has_subscribe"><div class="div-td">Дополнительно</div></xsl:if>
+					</div>
+				</div>
+			</div>
+			<xsl:if test="$products or $queries or $results_api">
+				<div class="orange">
+					<xsl:if test="$multiple">
+						<xsl:for-each select="$queries">
+							<xsl:variable name="p" select="position()"/>
+							<xsl:variable name="q_id" select="string($p + 1000)"/>
+							<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
+							<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
+							<div class="green" qty="{@qty}" query_id="{$q_id}">
+								<xsl:if test="$visible_prods">
+									<div class="div-row blue blue_visible">
+										<div class="w-1">
+											<xsl:apply-templates select="$visible_prods" mode="product-lines-api">
+												<xsl:with-param name="multiple" select="true()"/>
+												<xsl:with-param name="query" select="@q"/>
+												<xsl:with-param name="req_qty" select="@qty"/>
+											</xsl:apply-templates>
+										</div>
+										<div class="w-2">
+											<a href="#" class="query_order">Заказать</a>
+										</div>
+									</div>
+								</xsl:if>
+								<xsl:if test="$hidden_prods">
+									<div class="div-row red">
+										<div class="w-1 text-center fw-bold"><a href="#" popup=".prod_{$q_id}">Показать все предложения по данной строке</a></div>
+									</div>
+									<div class="div-row blue" line_hidden="true">
+										<div class="w-1 prod_{$q_id}" style="display:none">
+											<xsl:apply-templates select="$hidden_prods" mode="product-lines-api">
+												<xsl:with-param name="multiple" select="true()"/>
+												<xsl:with-param name="query" select="@q"/>
+												<xsl:with-param name="req_qty" select="@qty"/>
+											</xsl:apply-templates>
+										</div>
+										<div class="w-2"><!-- empty --></div>
+									</div>
 								</xsl:if>
 
 								<xsl:if test="not($visible_prods)">
-									<tr>
-										<td>
-											<div class="thn">Запрос</div>
-											<div class="thd"><b><xsl:value-of select="." /></b></div>
-										</td>
-										<td colspan="{$colspan}">
-											<div class="thn">Варианты</div>
-											<div class="thd"><b>По запросу товары не найдены</b></div>
-										</td>
-									</tr>
+									<div class="div-row red">
+										<div class="div-tr">
+											<div class="div-td td-check">❌</div>
+											<div class="div-td td-query"><b><xsl:value-of select="@q"/></b></div>
+											<div class="div-td" style="max-width: fit-content; border: none; color: red; font-size: larger">По запросу товары не найдены</div>
+										</div>
+									</div>
 								</xsl:if>
-							</xsl:for-each>
-						</xsl:if>
-						<xsl:if test="not($multiple)">
-							<xsl:apply-templates select="$products[@query_exact_match = $exact]" mode="product-lines"/>
-							<xsl:apply-templates select="$results_api[@query_exact_match = $exact]" mode="product-lines-api"/>
-						</xsl:if>
-					</tbody>
-				</xsl:if>
-				<xsl:if test="not($products) and not($results_api) and count($ajax_urls) &gt; 0">
-					<xsl:for-each select="$ajax_urls">
-						<tbody id="api_ajax_{position()}" ajax-href="{.}"></tbody>
-					</xsl:for-each>
-				</xsl:if>
-			</table>
+							</div>
+						</xsl:for-each>
+					</xsl:if>
+					<xsl:if test="not($multiple)">
+						<xsl:apply-templates select="$products[@query_exact_match = $exact]" mode="product-lines"/>
+						<xsl:apply-templates select="$results_api[@query_exact_match = $exact]" mode="product-lines-api"/>
+					</xsl:if>
+				</div>
+			</xsl:if>
+			<xsl:if test="not($products) and not($results_api) and count($ajax_urls) &gt; 0">
+				<xsl:for-each select="$ajax_urls">
+					<div class="orange" id="api_ajax_{position()}" ajax-href="{.}"></div>
+				</xsl:for-each>
+			</xsl:if>
 		</div>
+	</xsl:template>
+
+
+	<xsl:template name="ORDER_SCRIPT">
+		<script>
+			$(document).ready(function() {
+				$('.query_order').click(function(event) {
+					event.preventDefault();
+					var queryContainer = $(this).closest('.green');
+					queryContainer.find('form').each(function() {
+						var isNotZero = $(this).find('input[type=text]').val() != '0';
+						if (isNotZero)
+							$(this).find('button').trigger('click');
+					});
+				});
+			});
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

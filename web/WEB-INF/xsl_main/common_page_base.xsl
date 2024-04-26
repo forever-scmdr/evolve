@@ -256,7 +256,7 @@
 						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
 								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
-								<a class="icon-link" href="#" onclick="pressSearchBom(); return false;"><!-- popup="modal-excel" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
+								<a class="icon-link" href="input_bom"><!--  onclick="pressSearchBom(); return false;" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
 								<form id="hidden_query_header" method="post" action="{page/input_bom_link}" style="display: none">
 									<textarea name="q"><xsl:value-of select="$query" /></textarea>
 								</form>

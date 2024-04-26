@@ -2,6 +2,7 @@ package ecommander.fwk;
 
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.model.datatypes.DoubleDataType;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -56,12 +57,12 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 
 	public CharSeparatedTxtTableData(Path path, Charset charset, String... mandatoryCols) {
 		File f = path.toFile();
-		populateAndInit(file,charset,'\t', mandatoryCols);
+		populateAndInit(file, charset,'\t', mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(Path path, Charset charset, char separator, String... mandatoryCols) {
 		File f = path.toFile();
-		populateAndInit(file,charset,separator, mandatoryCols);
+		populateAndInit(file, charset,separator, mandatoryCols);
 	}
 
 	public CharSeparatedTxtTableData(File file, Charset charset, char separator, String... mandatoryCols){
@@ -71,6 +72,20 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		this.file = file;
 		this.fileCharset = charset;
 		SEPARATOR_CHAR = separator;
+		init(mandatoryCols);
+	}
+
+	public CharSeparatedTxtTableData(FileItem fileItem, Charset charset, boolean isCsv, String... mandatoryCols) throws Exception {
+		String fileName = fileItem.getName();
+		String prefix = StringUtils.substringBeforeLast(fileName, ".");
+		String suffix = "." + StringUtils.substringAfterLast(fileName, ".");
+		File temp = File.createTempFile(prefix + System.currentTimeMillis(), suffix);
+		temp.deleteOnExit();
+		fileItem.write(temp);
+		this.file = temp;
+		this.fileCharset = charset;
+		char sep = isCsv? ',' : '\t';
+		this.SEPARATOR_CHAR = sep;
 		init(mandatoryCols);
 	}
 
@@ -170,6 +185,11 @@ public class CharSeparatedTxtTableData implements TableDataSource {
 		if (colIdx == null)
 			return null;
 		return getValue(colIdx);
+	}
+
+	@Override
+	public int getLastColIndex() {
+		return currentRow.length - 1;
 	}
 
 	public final Double getDoubleValue(String colName) {

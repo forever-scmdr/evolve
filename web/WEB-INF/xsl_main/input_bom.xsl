@@ -42,13 +42,23 @@
 			</div>
 		</xsl:if>
 		<div class="text">
-			<form method="post" action="{page/input_bom_link}">
+			<form method="post" action="{page/input_bom_link}" enctype="multipart/form-data" id="query_form">
 				<textarea class="input header-search__input" placeholder="Введите поисковый запрос"
 						  autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;"><xsl:value-of select="$query" /></textarea>
+				<div>
+					<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('div').find('label').text(fileName($(this).val()))"/>
+					<label for="file" class="upload">Загрузить Excel/CSV/TXT файл с компьютера</label>
+				</div>
+				<script>
+					function fileName(name) {
+						var index = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
+						return name.substring(index + 1);
+					}
+				</script>
 				<div style="display: flex">
 					<div>
 						<button class="button" type="submit">Сформировать спецификацию</button>
-						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/search_api_link}')" style="margin-left: 10px">Найти</button>
+						<button class="button" type="submit" onclick="submitSearch()" style="margin-left: 10px">Найти</button>
 					</div>
 					<div style="right: 0px; position: absolute;">
 						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', 'search_prices')">Найти (отладка)</button>
@@ -58,7 +68,7 @@
 			</form>
 			<br/>
 			<xsl:if test="page/formatted/xml/bom">
-				<table style="border-style: solid; min-width: auto; border: 1px solid #000;">
+				<table style="border-style: solid; min-width: auto; border: 1px solid #000;" class="query_list">
 					<xsl:variable name="size" select="$command_xml/bom/max_size"/>
 					<xsl:for-each select="$command_xml/bom/query">
 						<xsl:variable name="p" select="position()"/>
@@ -76,6 +86,23 @@
 			</div>
 		</xsl:if>
 
+	</xsl:template>
+
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script>
+			function submitSearch() {
+				var text = $('#query_form').find('textarea').text();
+				if (text.length != 0)
+					text += '\n';
+				$('.query_list').find('tr').each(function() {
+					var query = $(this).find('input').eq(0).val();
+					var number = $(this).find('input').eq(1).val();
+					text += query + ' ' + number + '\n';
+				});
+				$('#query_form').find('textarea').text(text);
+				$('#query_form').attr('action', '<xsl:value-of select="page/search_api_link"/>');
+			}
+		</script>
 	</xsl:template>
 
 </xsl:stylesheet>

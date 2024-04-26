@@ -1,16 +1,17 @@
 package ecommander.special.portal;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.XmlDocumentBuilder;
+import ecommander.fwk.*;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.special.portal.outer.providers.OuterInputData;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Команда, которая преобразует строку, введенную пользователем, в XML структуру для BOM запроса
@@ -29,8 +30,13 @@ public class FormatBomQueryCommand extends Command {
 
     @Override
     public ResultPE execute() throws Exception {
-        String query = getVarSingleValue("q");
         ResultPE result = getResult("xml");
+        if (getItemForm() == null)
+            return result;
+        String query = getItemForm().getSingleStringExtra("q");
+        if (StringUtils.isBlank(query)) {
+            query = createQueryFromExcel();
+        }
         if (StringUtils.isNotBlank(query)) {
             OuterInputData input = OuterInputData.createForBomParsing(query);
             int maxQuerySize = 0;
@@ -46,6 +52,51 @@ public class FormatBomQueryCommand extends Command {
         }
         return result;
     }
+
+    /**
+     * Прочитать запросы из файла (эксель или csv или текстового)
+     * @return
+     */
+    private String createQueryFromExcel() {
+        final StringBuilder sb = new StringBuilder();
+        try {
+            FileItem fi = getItemForm().getSingleFileExtra("file");
+            String ext = StringUtils.substringAfterLast(fi.getName(), ".");
+            TableDataSource src;
+            if (StringUtils.equalsAnyIgnoreCase(ext, "xls", "xlsx")) {
+                src = new ExcelTableData(fi);
+            } else if (StringUtils.equalsIgnoreCase(ext, "csv")) {
+                src = new CharSeparatedTxtTableData(fi, StandardCharsets.UTF_8, true);
+            } else {
+                src = new CharSeparatedTxtTableData(fi, StandardCharsets.UTF_8, false);
+            }
+            src.iterate(new TableDataRowProcessor() {
+                @Override
+                public void processRow(TableDataSource src) throws Exception {
+                    StringBuilder sbLine = new StringBuilder();
+                    for (int i = 0; i <= src.getLastColIndex(); i++) {
+                        String value = src.getValue(i);
+                        if (StringUtils.isNotBlank(value)) {
+                            if (sbLine.length() > 0) {
+                                sbLine.append(" ");
+                            }
+                            sbLine.append(value);
+                        }
+                    }
+                    if (StringUtils.isNotBlank(sbLine)) {
+                        if (sb.length() > 0) {
+                            sb.append("\n");
+                        }
+                        sb.append(sbLine);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            ServerLogger.error("Error parsing excel search query", e);
+        }
+        return sb.toString();
+    }
+
 
     /**
      * Очистить кеш результатов запросов

@@ -315,17 +315,25 @@ table {
 	color: #fff;
 	background-color: red; }
 
+/*
 .container {
 	margin: 0 auto;
 	position: relative;
 }
 	@media (min-width: 1280px) {
 		.container {
-			width: 1240px; } }
+			width: 1600px; } }
 	@media (max-width: 1279px) {
 		.container {
 			width: 100%;
 			padding: 0 16px; } }
+*/
+.container {
+	width: 100%;
+	margin: 0 auto;
+	max-width: 1600px;
+	padding: 0 16px;
+}
 
 img {
 	max-width: 100%;
@@ -3964,3 +3972,174 @@ iframe.skiptranslate{
 	}
 }
 
+/* Для новой таблицы результатов поиска BOM и т.п. 23.04.2024 */
+
+.div-table{
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 30px;
+	width: 100%;
+	font-size: 13px;
+	color: #616161;
+}
+.div-row{
+	display: flex;
+	width: 100%;
+	position: relative;
+}
+.green{
+	position: relative;
+}
+.green::after{
+	content: '';
+	position: absolute;
+	bottom:0;
+	left:0;
+	width: 100%;
+	height: 1px;
+	background: #000;
+}
+.div-tr{
+	display: flex;
+	width: 100%
+}
+.div-td{
+	width: 50%;
+	padding: 5px;
+	border: solid 1px #e5e5e5;
+	margin: 0 -1px -1px 0;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+.div-td.td-check{
+	max-width: 30px;
+}
+.div-td.td-query{
+	min-width: 70px;
+	max-width: 180px;
+}
+.div-td.td-name{
+	min-width: 70px;
+	max-width: 180px;
+}
+.div-td.td-distributor{
+	min-width: 100px;
+	max-width: 120px;
+}
+.div-td.td-description{
+	width: 100%;
+}
+.div-td.td-date{
+	min-width: 70px;
+	max-width: 80px;
+}
+.div-td.td-qty{
+	min-width: 100px;
+	max-width: 100px;
+}
+.div-td.td-price{
+	min-width: 130px;
+	max-width: 165px;
+}
+.div-td:last-child{
+	min-width: 170px;
+	max-width: 170px;
+}
+.w-1 {
+	width: 100%;
+}
+.w-2 {
+	width: 70px;
+	min-width: 70px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.thead{
+	background: #f2f2f2;
+	font-weight: bold;
+	position: relative;
+}
+.thead::after{
+	content: '';
+	position: absolute;
+	bottom:0;
+	left:0;
+	width: 100%;
+	height: 1px;
+	background: #000;
+}
+.thead .div-td:last-child{
+	min-width: 240px;
+	max-width: 240px;
+}
+.text-center{
+	text-align: center;
+}
+.fw-bold{
+	font-weight: bold;
+}
+
+.div-table .border-bottom {
+: solid 3px #000;
+}
+.div-table .red {
+	min-height: 30px;
+	display: flex;
+	align-items: center;
+}
+@media (max-width: 1100px){
+	.div-td.td-name{
+		display: none;
+	}
+	.div-td.td-description{
+		display: none;
+	}
+}
+@media (max-width: 767px){
+	.div-table{
+		font-size: 12px;
+	}
+	.div-row{
+		display: flex;
+		width: 100%;
+		margin-bottom: 30px;
+	}
+	.div-td.td-description,
+	.div-td.td-name{
+		display: flex;
+	}
+	.div-tr{
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+	}
+	.thead{
+		display: none;
+	}
+	.div-td{
+		width: 100%!important;
+		min-width: unset!important;
+		max-width: unset!important;
+		display: flex;
+		flex-direction: row;
+		background: #f2f2f2;
+		padding: 0;
+	}
+	.div-td .thd{
+		background: #fff;
+	}
+	.w-2 {
+		width: 40px;
+		min-width: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.w-2 a{
+		transform: rotate(-90deg);
+	}
+}

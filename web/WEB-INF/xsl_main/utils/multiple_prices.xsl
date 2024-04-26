@@ -2,12 +2,9 @@
 <!DOCTYPE stylesheet [<!ENTITY nbsp "&#160;"><!ENTITY copy "&#x000A9;" >]>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns="http://www.w3.org/1999/xhtml"
         xmlns:f="f:f"
         version="2.0">
     <xsl:import href="utils.xsl"/>
-    <xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 
 
     <xsl:variable name="price_catalogs" select="page/price_catalogs"/>
@@ -70,12 +67,13 @@
     </xsl:template>
 
 
-
+    <!-- TODO разобраться с format_currency и format_currency_precise в методе exchange (т.к. есть округление до 2 знаков, а выводится 4 знака) -->
     <xsl:template name="ALL_PRICES_API">
         <xsl:param name="product"/>
         <xsl:param name="need_sum" select="false()"/>
         <xsl:param name="need_original" select="false()"/>
         <xsl:variable name="price_intervals" select="$product/prices/break"/>
+        <xsl:variable name="chosen_price" select="f:print_cur(f:format_currency(f:num($product/prices/@price)))"/>
         <xsl:for-each select="$price_intervals">
             <xsl:variable name="pos" select="position()"/>
             <xsl:variable name="min_interval_qty" select="f:num(@qty)"/>
@@ -88,12 +86,10 @@
             <!--                !<xsl:value-of select="$catalog/qty_quotient_policy"/>|-->
             <!--           </b>-->
             <!--           </p>-->
-            <p>
+            <xsl:variable name="out" select="if ($need_original) then concat(price_original, '&#160;', $product/currency_id) else f:print_cur($unit_price)"/>
+            <p style="{if ($chosen_price = $out) then 'font-weight: bold' else ''}" break="{$min_pack}">
                 <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
-                <xsl:if test="not($need_sum)">
-                    <xsl:variable name="out" select="if ($need_original) then concat(price_original, '&#160;', $product/currency_id) else f:print_cur($unit_price)"/>
-                    <xsl:value-of select="$out"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.
-                </xsl:if>
+                <xsl:if test="not($need_sum)"><xsl:value-of select="$out"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.</xsl:if>
             </p>
         </xsl:for-each>
         <xsl:if test="not($price_intervals)">

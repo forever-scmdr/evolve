@@ -95,7 +95,7 @@
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
-		<link name="input_bom_link" target="input_bom"/>
+		<link name="input_bom_link" target="input_bom" type="itemform"/>
 		<link name="excel_search_link" target="excel_search" type="itemform"/>
 
 		<!-- REGISTRATION -->
