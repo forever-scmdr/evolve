@@ -365,7 +365,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 							currentSerial.put("reserve_time", time);
 						String textTime = attributes.getValue("text_time");
 						if (StringUtils.isNotBlank(textTime)) {
-							String[] lines = StringUtils.split(textTime, "\r\n");
+							//String[] lines = StringUtils.split(textTime, "\r\n");
+							String[] lines = splitNewLine(textTime);
 							textTime = "<p>" + StringUtils.join(lines, "</p><p>") + "</p>"; //splitAttribute(textTime)
 							currentSerial.put("reserve_text_time", textTime);
 						}
@@ -375,7 +376,8 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 							currentSerial.put("stored_time", time);
 						String textTime = attributes.getValue("text_time");
 						if (StringUtils.isNotBlank(textTime)) {
-							String[] lines = StringUtils.split(textTime, "\r\n");
+							//String[] lines = StringUtils.split(textTime, "\r\n");
+							String[] lines = splitNewLine(textTime);
 							textTime = "<p>" + StringUtils.join(lines, "</p><p>") + "</p>"; //splitAttribute(textTime)
 							currentSerial.put("stored_text_time", textTime);
 						}
@@ -641,5 +643,24 @@ public class UniaProductCreationHandler extends DefaultHandler implements Catalo
 		boolean isEmpty() {
 			return options.isEmpty() && serials.isEmpty() && params.isEmpty();
 		}
+	}
+
+	private static String[] splitNewLine(String input) {
+		ArrayList<String> lines = new ArrayList<>();
+		String[] words = StringUtils.split(input, " \n");
+		StringBuilder sb = new StringBuilder();
+		for (String word : words) {
+			String normalized = StringUtils.lowerCase(StringUtils.normalizeSpace(word));
+			if (StringUtils.startsWithAny(normalized, "хранение", "дата", "дилер", "договор", "хранитель", "город")) {
+				lines.add(sb.toString());
+				sb = new StringBuilder();
+			}
+			if (sb.length() > 0)
+				sb.append(" ");
+			sb.append(word);
+		}
+		if (sb.length() > 0)
+			lines.add(sb.toString());
+		return lines.toArray(new String[0]);
 	}
 }
