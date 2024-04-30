@@ -1076,6 +1076,7 @@
 			<extra-input name="email" form="feedback"/>
 			<extra-input name="phone" form="feedback"/>
 			<extra-input name="message" form="feedback"/>
+			<extra-input name="file" form="feedback"/>
 		</new>
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
@@ -1105,7 +1106,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="egor@forever-ds.com"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
