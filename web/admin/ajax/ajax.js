@@ -5,6 +5,16 @@
  * Этот код содержит куски, которые нужно вставить в различные части исходной страницы.
  * Каждый кусок обернут в элемент (например, div), который соответствует определенному месту в исходной странице.
  * ID этого элемента соответствует ID элемента исходной страницы, содержимое которого надо заменить на полученное из AJAX запроса.
+ *
+ * В результатах можно указывать другой селектор, в который тоже надо вставлять полученный код
+ * Этот селектор указывается в возвращаемом сервером по AJAX документе,
+ * он указывается в атрибуте дива с классом "result" - data-extra-selector
+ *
+ * Также можно не встраивать полученный результат (div class="result") в указанный в его id элемент, а полностью заменять
+ * элемент с указанным id на новый полученный с сервера. В этом случае надо указать в div class="result" атрибут
+ * mode="replace", "append" - добавить после указанного не удаляя его, "prepend" - добавить перед указанным не удаляя его.
+ * По умолчанию mode="insert".
+ *
  * Дополнительно возвращаемый код может содержать элемент с id JSON. В этот элемент можно вставлять любой JSON код.
  * При наличии этого элемента код разбирается и передается в качестве параметра callback функции additionalHandling (третий аргумент
  * функции insertAjax)
@@ -60,7 +70,7 @@ function initAjax(elementId) {
         $el = $("body");
     } else if (typeof elementId == 'string') {
         var idPrefix = "";
-        idPrefix = "#" + elementId;
+        idPrefix = (elementId.charAt(0) == '.' || elementId.charAt(0) == '#') ? elementId : "#" + elementId;
         $el = $(idPrefix);
     }else{
         $el = elementId;
@@ -188,10 +198,11 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                     ajaxInitIds = [];
                 var id = $(this).attr('id');
                 var extraSelector = $(this).attr("data-extra-selector");
+                var mode = $(this).attr("mode");
+                mode = mode || "insert";
                 var newHtml = $(this).html();
                 //alert(newHtml);
                 if (extraSelector && extraSelector.trim() != '') {
-                    var $e = $(extraSelector);
                     $(extraSelector).each(function () {
                         $t = $(this);
                         // для инпутов менять значение, для остальных элементов - html
@@ -201,7 +212,7 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                             $t.html(newHtml);
                         }
                     });
-                    ajaxInitIds.push($e);
+                    ajaxInitIds.push(extraSelector);
                 }
                 //if ($('#' + id).length == 0) alert("Не найден элемент с id='" + id + "' в родительском документе");
                 var targetEl = $('#' + id);
@@ -210,7 +221,15 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
                     if (targetEl.prop('tagName').toLowerCase() === 'input') {
                         targetEl.val(newHtml);
                     } else {
-                        targetEl.html(newHtml);
+                        if (mode == "replace") {
+                            targetEl.replaceWith(newHtml);
+                        } else if (mode == "append") {
+                            targetEl.after(newHtml);
+                        } else if (mode == "prepend") {
+                            targetEl.before(newHtml);
+                        } else {
+                            targetEl.html(newHtml);
+                        }
                     }
                 }
                 ajaxInitIds.push(id);

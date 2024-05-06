@@ -13,6 +13,7 @@ import ecommander.special.portal.outer.Request;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -99,7 +100,8 @@ public class DataGetter {
                 try {
                     String cache = readCacheFile(cacheFile);
                     XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-                    xml.startElement("query", "q", query, "qty", input.getQueries().get(query), "cache", HOURS_CACHE_SAVED);
+                    xml.startElement("query", "id", createQueryUniqueId(query), "q", query,
+                            "qty", input.getQueries().get(query), "cache", HOURS_CACHE_SAVED);
                     xml.addElements(cache);
                     Timer.getTimer().start("API # load_local");
                     addLocalProducts(query, xml, isBom); // также добавить локальные результаты
@@ -138,7 +140,8 @@ public class DataGetter {
                         FileUtils.write(exactCacheFile, xmlsSorted.getLeft(), StandardCharsets.UTF_8);
                         // Сохранить результат запроса в общем списке всех запросов
                         XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-                        xml.startElement("query", "q", query.query, "qty", input.getQueries().get(query.query));
+                        xml.startElement("query", "id", createQueryUniqueId(query.query), "q", query.query,
+                                "qty", input.getQueries().get(query.query));
                         if (isBom) {
                             xml.addElements(xmlsSorted.getLeft());
                         } else {
@@ -164,7 +167,8 @@ public class DataGetter {
         // Для всех оставшихся необработанными запросов добавить сообщение об ошибке
         for (String unprocessed : input.getQueries().keySet()) {
             XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
-            xml.startElement("query", "q", unprocessed, "qty", input.getQueries().get(unprocessed));
+            xml.startElement("query", "id", createQueryUniqueId(unprocessed), "q", unprocessed,
+                    "qty", input.getQueries().get(unprocessed));
             xml.addElement("error", "товары не доступны по непонятным причинам", "type", "general");
             xml.endElement();
             queryXmls.put(unprocessed, xml.getXmlStringSB().toString());
@@ -300,14 +304,14 @@ public class DataGetter {
                     }
                 }
                 if (input.hasFromFilter()) {
-                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity);
+                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity, input.getPriceParamName());
                     if (!input.fromPriceFilterMatches(qtyPrice)) {
                         product.remove();
                         continue;
                     }
                 }
                 if (input.hasToFilter()) {
-                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity);
+                    BigDecimal qtyPrice = getPriceForQty(product, requestedQuantity, input.getPriceParamName());
                     if (!input.toPriceFilterMatches(qtyPrice)) {
                         product.remove();
                     }
@@ -320,43 +324,22 @@ public class DataGetter {
         if (hasQuantityFilter || hasSorting) {
             //int firstProductIndex = doc.select("product").first().siblingIndex();
             ArrayList<Element> prods = new ArrayList<>(doc.select("product"));
-            // для каждого товара найти цену, которая соответствует количеству, и записать ее в тэг prices
-            for (Element prod : prods) {
-                BigDecimal price = getPriceForQty(prod, requestedQuantity);
-                prod.select("prices").attr("default_qty_price", price.toPlainString());
-            }
             ArrayList<Element> sortedProds = new ArrayList<>();
 
             // Сортировка по цене
             if (input.getSort() == OuterInputData.Sort.price && hasQuantityFilter) {
                 // Предварительно отсортировать список (чтобы не сортировать потом)
-                prods.sort((o1, o2) -> {
-                    BigDecimal price1 = DecimalDataType.parse(o1.select("prices").first().attr("default_qty_price"), 4);
-                    BigDecimal price2 = DecimalDataType.parse(o2.select("prices").first().attr("default_qty_price"), 4);
-                    price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
-                    price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
-                    return price1.compareTo(price2);
-                });
+                prods.sort((o1, o2) -> compareXmlJsoupProducts(o1, o2, requestedQuantity, input.getPriceParamName()));
                 // По одному записать все товары с минимальной ценой для оставшегося количества
                 // (уменьшая постоянно количество на величину имеющегося фактически на складе для данного товара)
                 int qtyToOrder = requestedQuantity;
                 while (qtyToOrder > 0 && prods.size() > 0) {
                     final int rqty = qtyToOrder;
-                    Optional<Element> cheapestOpt = prods.stream().min((o1, o2) -> {
-                        int qtyInStore1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "qty"), 0);
-                        int qtyInStore2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "qty"), 0);
-                        int qtyToOffer1 = Math.min(qtyInStore1, rqty);
-                        int qtyToOffer2 = Math.min(qtyInStore2, rqty);
-                        BigDecimal price1 = getPriceForQty(o1, qtyToOffer1);
-                        BigDecimal price2 = getPriceForQty(o2, qtyToOffer2);
-                        price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
-                        price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
-                        return price1.compareTo(price2);
-                    });
+                    Optional<Element> cheapestOpt = prods.stream().min((o1, o2) -> compareXmlJsoupProducts(o1, o2, rqty, input.getPriceParamName()));
                     Element cheapest = cheapestOpt.get();
                     int qtyInStore = NumberUtils.toInt(JsoupUtils.getTagFirstValue(cheapest, "qty"), 0);
                     int qtyToOffer = Math.min(qtyInStore, qtyToOrder);
-                    BigDecimal price = getPriceForQty(cheapest, qtyToOffer);
+                    BigDecimal price = getPriceForQty(cheapest, qtyToOffer, input.getPriceParamName());
                     cheapest.select("prices").attr("price", price.toPlainString()).attr("qty", qtyToOffer + "");
                     sortedProds.add(cheapest);
                     qtyToOrder -= qtyInStore; // уменьшить требуемое количество, т.к. часть его уже удовлетворена
@@ -415,7 +398,7 @@ public class DataGetter {
      * @param productQty
      * @return
      */
-    private BigDecimal getPriceForQty(Element product, int productQty) {
+    private static BigDecimal getPriceForQty(Element product, int productQty, String priceParamName) {
         Elements breaks = product.getElementsByTag("break");
         Element currentBreak = breaks.first();
         for (Element aBreak : breaks) {
@@ -424,7 +407,7 @@ public class DataGetter {
                 break;
             currentBreak = aBreak;
         }
-        String priceStr = JsoupUtils.getTagFirstValue(currentBreak, input.getPriceParamName());
+        String priceStr = JsoupUtils.getTagFirstValue(currentBreak, priceParamName);
         return DecimalDataType.parse(priceStr, 4);
     }
 
@@ -465,13 +448,7 @@ public class DataGetter {
         if (hasExactResult) {
             int firstProductIndex = firstProductEl.siblingIndex();
             ArrayList<Element> exactProds = new ArrayList<>(doc.select("product"));
-            exactProds.sort((o1, o2) -> {
-                BigDecimal price1 = DecimalDataType.parse(o1.select("break").first().select("price").first().ownText(), 4);
-                BigDecimal price2 = DecimalDataType.parse(o2.select("break").first().select("price").first().ownText(), 4);
-                price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
-                price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
-                return price1.compareTo(price2);
-            });
+            exactProds.sort((o1, o2) -> compareXmlJsoupProducts(o1, o2, 1, input.getPriceParamName()));
             doc.select("product").remove();
             doc.insertChildren(firstProductIndex, exactProds);
         }
@@ -482,5 +459,37 @@ public class DataGetter {
         boolean hasAllResult = doc.select("product").size() > 0;
         String resultAll = hasAllResult ? JsoupUtils.outputXmlNoPrettyPrint(doc) : "";
         return new Pair<>(resultExact, resultAll);
+    }
+
+    private static String createQueryUniqueId(String query) {
+        return "q" + query.hashCode() + RandomStringUtils.randomAlphanumeric(5);
+    }
+
+    /**
+     * Сравнивает два товара в XML, который был разобран с помощью JSoup
+     * Сравнивается цена
+     * @param o1
+     * @param o2
+     * @param qtyToOrder - количество для заказа, если нет количества, передавать 1
+     * @param priceParamName
+     * @return
+     */
+    private static int compareXmlJsoupProducts(Element o1, Element o2, int qtyToOrder, String priceParamName) {
+        qtyToOrder = Math.max(qtyToOrder, 1);
+        int qtyInStore1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "qty"), 0);
+        int qtyInStore2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "qty"), 0);
+        int qtyToOffer1 = Math.min(qtyInStore1, qtyToOrder);
+        int qtyToOffer2 = Math.min(qtyInStore2, qtyToOrder);
+        BigDecimal price1 = getPriceForQty(o1, qtyToOffer1, priceParamName);
+        BigDecimal price2 = getPriceForQty(o2, qtyToOffer2, priceParamName);
+        price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
+        price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
+        int compare = price1.compareTo(price2);
+        if (compare == 0) {
+            int minQty1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "min_qty"), 1);
+            int minQty2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "min_qty"), 1);
+            return NumberUtils.compare(minQty1, minQty2);
+        }
+        return compare;
     }
 }

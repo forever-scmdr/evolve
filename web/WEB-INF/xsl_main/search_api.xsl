@@ -253,6 +253,12 @@
 							<xsl:with-param name="multiple" select="true()"/>
 							<xsl:with-param name="queries" select="$result_queries"/>
 						</xsl:call-template>
+						<div style="position: relative; margin-top: 10px;" id="ajax_bom_form">
+							<form action="{page/search_api_ajax_bom_link}" method="post" onsubmit="postForm($(this), 'ajax_bom_form', initResultTable); return false;">
+								<input style="padding: 8px; margin-right: 10px" type="text" name="q" class="input" size="40"/>
+								<button type="submit" class="button">Добавить запрос</button>
+							</form>
+						</div>
 					</xsl:if>
 
 				</div>
@@ -390,7 +396,7 @@
 		<script>
 			<xsl:text disable-output-escaping="yes">
 				var queryRemainders = []; // остатки по каждому запросу
-				$(document).ready(function() {
+				function initResultTable() {
 					$('.brown input[type=checkbox]').change(function() {
 						var checkbox = $(this);
 						var line = checkbox.closest('.red');
@@ -444,7 +450,10 @@
 							line.find('.price__value').find('p').attr('style', '');
 						}
 					});
+					calculateAutoSum();
+				}
 
+				function calculateAutoSum() {
 					var autoSum = 0;
 					$('.blue_visible').find('.red').each(function() {
 						var qty = Number($(this).attr('qty'));
@@ -452,7 +461,7 @@
 						autoSum += qty * price;
 					});
 					$('#auto_sum').text(autoSum.toFixed(2));
-				});
+				}
 
 				function getQtyLabel(totalQty, remainder) {
 					if (remainder != 0) {
@@ -468,6 +477,10 @@
 							$(this).find('button').trigger('click');
 					});
 				}
+
+				$(document).ready(function() {
+					initResultTable();
+				});
 			</xsl:text>
 		</script>
 	</xsl:template>

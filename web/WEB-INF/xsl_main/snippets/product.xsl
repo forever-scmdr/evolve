@@ -1124,11 +1124,9 @@
 				<div class="orange">
 					<xsl:if test="$multiple">
 						<xsl:for-each select="$queries">
-							<xsl:variable name="p" select="position()"/>
-							<xsl:variable name="q_id" select="string($p + 1000)"/>
 							<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
 							<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
-							<div class="green" qty="{@qty}" query_id="{$q_id}">
+							<div class="green" qty="{@qty}" query_id="{@id}">
 								<xsl:if test="$visible_prods">
 									<div class="div-row blue blue_visible">
 										<div class="w-1">
@@ -1145,10 +1143,10 @@
 								</xsl:if>
 								<xsl:if test="$hidden_prods">
 									<div class="div-row red">
-										<div class="w-1 text-center fw-bold"><a href="#" popup=".prod_{$q_id}">Показать все предложения по данной строке</a></div>
+										<div class="w-1 text-center fw-bold"><a href="#" popup=".prod_{@id}">Показать все предложения по данной строке</a></div>
 									</div>
 									<div class="div-row blue" line_hidden="true">
-										<div class="w-1 prod_{$q_id}" style="display:none">
+										<div class="w-1 prod_{@id}" style="display:none">
 											<xsl:apply-templates select="$hidden_prods" mode="product-lines-api">
 												<xsl:with-param name="multiple" select="true()"/>
 												<xsl:with-param name="query" select="@q"/>
@@ -1170,6 +1168,7 @@
 								</xsl:if>
 							</div>
 						</xsl:for-each>
+						<div style="position: relative;" id="search_bom_ajax"><!-- Перед этим дивом добавляются вновь добавленные запросы --></div>
 					</xsl:if>
 					<xsl:if test="not($multiple)">
 						<xsl:apply-templates select="$products[@query_exact_match = $exact]" mode="product-lines"/>

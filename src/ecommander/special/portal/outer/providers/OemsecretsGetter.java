@@ -72,6 +72,7 @@ public class OemsecretsGetter extends ProviderGetter {
             String partNumber = product.get("source_part_number").toString();
             String leadTime = product.get("lead_time").toString();
             String vendor = product.getString("manufacturer");
+            String minQtyStr = Objects.toString(product.get("moq"), "0");
             String qtyStr = Objects.toString(product.get("quantity_in_stock"), "");
             String justNumbersQty = RegExUtils.replaceAll(qtyStr, "\\D+", "");
             String name = sku;
@@ -87,9 +88,7 @@ public class OemsecretsGetter extends ProviderGetter {
             distrXml.addElement("name", name);
             distrXml.addElement("vendor", vendor);
             distrXml.addElement("qty", justNumbersQty);
-            distrXml.addElement("step", "1");
             distrXml.addElement("description", product.getString("description"));
-            distrXml.addElement("min_qty", "1");
             distrXml.addElement("next_delivery", leadTime);
             distrXml.addElement("container", product.getString("packaging"));
             distrXml.addElement("category_id", distributor);
@@ -128,11 +127,18 @@ public class OemsecretsGetter extends ProviderGetter {
                         input.getRates().setAllPricesXML(distrXml, priceOriginal, input.getCurCode());
                     }
                     distrXml.endElement(); // break
+                    // Запомнить минимальное количество, т.к. это будет минимальное количество и шаг заказа
+                    if (j == 0 && (StringUtils.isBlank(minQtyStr) || NumberUtils.toInt(minQtyStr, 0) <= 0))
+                        minQtyStr = breakQty.intValue() + "";
                 }
                 if (!noBreaks) {
                     distrXml.endElement(); // prices
                 }
             }
+            // Запись минимального заказа, он же шаг заказа. Если явно не указан - взять минимальный price break
+            distrXml.addElement("min_qty", minQtyStr);
+            distrXml.addElement("step", minQtyStr);
+
             isValid &= hasPrice;
             // Отменить девайс, если он не валиден
             if (isValid) {

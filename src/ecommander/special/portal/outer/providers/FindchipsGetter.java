@@ -72,7 +72,6 @@ public class FindchipsGetter extends ProviderGetter {
                 String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");
                 String minQtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Min Qty']");
                 String leadTime = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Lead time']");
-                String stepStr = minQtyStr;
                 String container = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span[data-title='Container']");
                 String qtyStr = JsoupUtils.getSelectorFirstValue(line, "td:eq(3)");
                 String justNumbersQty = RegExUtils.replaceAll(qtyStr, "\\D+", "");
@@ -83,9 +82,7 @@ public class FindchipsGetter extends ProviderGetter {
                 xml.addElement("name", name);
                 xml.addElement("vendor", vendor);
                 xml.addElement("qty", justNumbersQty);
-                xml.addElement("step", stepStr);
                 xml.addElement("description", description);
-                xml.addElement("min_qty", minQtyStr);
                 xml.addElement("next_delivery", leadTime);
                 xml.addElement("container", container);
                 xml.addElement("category_id", distributor);
@@ -127,6 +124,15 @@ public class FindchipsGetter extends ProviderGetter {
                     }
                     xml.endElement(); // prices
                 }
+                // Запись минимального заказа, он же шаг заказа. Если явно не указан - взять минимальный price break
+                if (StringUtils.isBlank(minQtyStr) || NumberUtils.toInt(minQtyStr, 0) <= 0) {
+                    if (prices.size() > 0) {
+                        minQtyStr = prices.get(0).qty + "";
+                    }
+                }
+                String stepStr = minQtyStr;
+                xml.addElement("min_qty", minQtyStr);
+                xml.addElement("step", stepStr);
 
                 isValid &= hasPrice;
 
