@@ -5,7 +5,7 @@ import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
-import extra.CurrencyRates;
+import ecommander.special.portal.outer.currency.CurrencyRates;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;

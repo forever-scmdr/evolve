@@ -897,7 +897,7 @@
 
 
 	<!-- API товары (полный поиск, без фильтрации) -->
-	<page name="search_api" template="" cacheable="false">
+	<page name="search_api" template="search_api" cacheable="false">
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
@@ -2405,7 +2405,7 @@
 		<request>
 			<var name="action" value="start"/>
 		</request>
-		<command class="extra.UpdateCurrencyRatesRU"/>
+		<command class="ecommander.special.portal.outer.currency.UpdateCurrencyRates"/>
 	</page>
 
 

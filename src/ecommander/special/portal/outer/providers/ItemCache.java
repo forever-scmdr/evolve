@@ -33,13 +33,14 @@ public class ItemCache {
         this.seconds = seconds;
     }
 
-    private synchronized List<Item> getInternal(String key, ItemLoader loader) throws Exception {
+    private synchronized List<Item> getInternal(String key, ItemLoader loader, int...secondsToKeep) throws Exception {
         Pair<List<Item>, Long> itemTime = items.get(key);
         boolean returnFromCache = itemTime != null;
+        int secsToKeep = (secondsToKeep != null && secondsToKeep.length > 0) ? secondsToKeep[0] : seconds;
         if (returnFromCache) {
             DateTime now = DateTime.now(DateTimeZone.UTC);
             DateTime saved = new DateTime(itemTime.getRight(), DateTimeZone.UTC);
-            if (saved.plusSeconds(seconds).isBefore(now)) {
+            if (saved.plusSeconds(secsToKeep).isBefore(now)) {
                 returnFromCache = false;
             }
         }
@@ -65,8 +66,8 @@ public class ItemCache {
      * @return
      * @throws Exception
      */
-    public static Item get(String key, ItemLoader loader) throws Exception {
-        List<Item> cached = instance.getInternal(key, loader);
+    public static Item get(String key, ItemLoader loader, int...howOldSecondsIsValid) throws Exception {
+        List<Item> cached = instance.getInternal(key, loader, howOldSecondsIsValid);
         return cached != null && cached.size() > 0 ? cached.get(0) : null;
     }
 
@@ -77,7 +78,7 @@ public class ItemCache {
      * @return
      * @throws Exception
      */
-    public static List<Item> getArray(String key, ItemLoader loader) throws Exception {
-        return instance.getInternal(key, loader);
+    public static List<Item> getArray(String key, ItemLoader loader, int...howOldSecondsIsValid) throws Exception {
+        return instance.getInternal(key, loader, howOldSecondsIsValid);
     }
 }
