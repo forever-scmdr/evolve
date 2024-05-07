@@ -338,6 +338,7 @@ public interface ItemNames {
         String BYN_RATE = "BYN_rate";
         String BYN_SCALE = "BYN_scale";
         String BYN_UPDATE = "BYN_update";
+        String XML = "xml";
 
     }
 

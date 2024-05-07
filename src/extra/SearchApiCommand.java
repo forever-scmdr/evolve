@@ -12,6 +12,7 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.special.portal.outer.currency.CurrencyRates;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;

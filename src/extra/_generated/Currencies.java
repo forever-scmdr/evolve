@@ -25,6 +25,7 @@ public class Currencies
     public final static String BYN_RATE = "BYN_rate";
     public final static String BYN_SCALE = "BYN_scale";
     public final static String BYN_UPDATE = "BYN_update";
+    public final static String XML = "xml";
 
     private Currencies(Item item) {
         super(item);
@@ -373,6 +374,22 @@ public class Currencies
 
     public boolean contains_BYN_update(Byte value) {
         return containsValue("BYN_update", value);
+    }
+
+    public void set_xml(String value) {
+        setValue("xml", value);
+    }
+
+    public String get_xml() {
+        return getStringValue("xml");
+    }
+
+    public String getDefault_xml(String defaultVal) {
+        return getStringValue("xml", defaultVal);
+    }
+
+    public boolean contains_xml(String value) {
+        return containsValue("xml", value);
     }
 
 }

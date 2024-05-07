@@ -10,6 +10,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.LuceneIndexMapper;
+import ecommander.special.portal.outer.currency.CurrencyRates;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
 import extra._generated.Price_catalogs;
