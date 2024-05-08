@@ -406,7 +406,6 @@
 						var queryId = queryContainer.attr('query_id');
 						var queryQty = queryContainer.attr('qty');
 						var qtyInput = line.find('input[name=qty]');
-						var lineInputQty = Number(qtyInput.val());
 						var lineMaxQty = Number(line.attr('qty'));
 						var remainder = queryRemainders[queryId];
 						if (typeof remainder === "undefined") {
@@ -421,19 +420,12 @@
 								checkbox.prop('checked', false);
 								return;
 							} else {
-								inputQty = remainder &gt; lineMaxQty ? lineMaxQty : remainder;
-								remainder -= inputQty;
+								var qtyToOffer = lineQtyToOffer(line, remainder);
+								remainder -= qtyToOffer;
 								queryRemainders[queryId] = remainder;
-								qtyInput.val(inputQty);
-								var priceBreaks = line.find('.price__value').find('p');
-								var aBreak = priceBreaks.first();
-								for (i = 0; i &lt; priceBreaks.length; i++) {
-									var breakQty = Number($(priceBreaks[i]).attr('break'));
-									if (breakQty &gt; inputQty)
-										break;
-									aBreak = priceBreaks[i];
-								}
-								$(aBreak).attr('style', 'font-weight: bold');
+								qtyInput.val(qtyToOffer);
+								var aBreakP = linePriceElementPForQty(line, qtyToOffer);
+								$(aBreakP).attr('style', 'font-weight: bold');
 								if (isLineHidden) {
 									line.detach().appendTo(queryVisibleContainer.find('.w-1'));
 								}
@@ -443,39 +435,104 @@
 
 						// Строка убирается
 						else {
+							var lineInputQty = Number(qtyInput.val());
 							remainder += lineInputQty;
 							queryRemainders[queryId] = remainder;
 							qtyInput.val(0);
 							queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
 							line.find('.price__value').find('p').attr('style', '');
 						}
+						recalculateSum();
+						createQueryRemainders();
 					});
-					calculateAutoSum();
+					recalculateSum();
+					createQueryRemainders();
 				}
 
-				function calculateAutoSum() {
-					var autoSum = 0;
+				// Пересчитать все товары
+				function recalculateSum() {
+					var sum = 0;
 					$('.blue_visible').find('.red').each(function() {
-						var qty = Number($(this).attr('qty'));
-						var price = Number($(this).attr('price'));
-						autoSum += qty * price;
+						var qtyInput = $(this).find('input[name=qty]');
+						var qty = Number(qtyInput.val());
+						var pricePEl = linePriceElementPForQty(this, qty);
+						var price = Number($(pricePEl).attr('price'));
+						sum += qty * price;
 					});
-					$('#auto_sum').text(autoSum.toFixed(2));
+					$('#auto_sum').text(sum.toFixed(2));
 				}
 
+				// Сделать текст для надписи в случае если фактический заказ не соответствует изначально заданному
 				function getQtyLabel(totalQty, remainder) {
-					if (remainder != 0) {
-						return "(" + totalQty + " &lt;span style='color: red'&gt;-" + remainder + "&lt;/span&gt;)"
+					if (remainder &gt; 0) {
+						return '(' + totalQty + ' &lt;span style="color: red"&gt;-' + remainder + '&lt;/span&gt;)'
+					} else if (remainder &lt; 0) {
+						return '(' + totalQty + ' &lt;span style="color: blue"&gt;+' + (remainder * -1) + '&lt;/span&gt;)'
 					}
-					return "(" + totalQty + ")";
+					return '(' + totalQty + ')';
 				}
 
+				// Проверить сколько товаров еще надо заказать, сколько перезаказано и все это отобразить
+				function createQueryRemainders() {
+					$('.green').each(function() {
+						var queryContainer = $(this);
+						var queryId = queryContainer.attr('query_id');
+						var queryQty = queryContainer.attr('qty');
+						var queryTotalQty = 0;
+						queryContainer.find('.red').each(function() {
+							var line = $(this);
+							var qtyInput = line.find('input[name=qty]');
+							if (isNaN(qtyInput.val()) || qtyInput.val() == '0')
+								return;
+							var lineInputQty = Number(qtyInput.val());
+							queryTotalQty += lineInputQty;
+						});
+						var remainder = queryQty - queryTotalQty;
+						queryRemainders[queryId] = remainder;
+						queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
+					});
+				}
+
+
+				// Заказ всех выбранных позиций
 				function allOrder() {
 					$('#api_results').find('form').each(function() {
 						var isNotZero = $(this).find('input[type=text]').val() != '0';
-						if (isNotZero)
+						var checked = $(this).closest('.red').find('input[type=checkbox]').is(':checked');
+						if (isNotZero &amp;&amp; checked)
 							$(this).find('button').trigger('click');
 					});
+				}
+
+				// Найти количество, которое по факту можно заказать с учетом желаемого
+				// изначально количества и ограничений по количеству на складе и шагу заказа
+				function lineQtyToOffer(line, desiredQty) {
+					var minQty = Number($(line).attr('min_qty'));
+					var step = Number($(line).attr('step'));
+					var qtyInStore = Number($(line).attr('qty'));
+					var qtyToOffer = Math.max(minQty, desiredQty);
+					qtyToOffer = Math.min(qtyToOffer, qtyInStore);
+					var numSteps = Math.floor(qtyToOffer / step);
+					if (numSteps * step &lt; qtyToOffer)
+						numSteps++;
+					qtyToOffer = numSteps * step;
+					if (qtyToOffer &gt; qtyInStore)
+						qtyToOffer = (numSteps - 1) * step;
+					return qtyToOffer;
+				}
+
+
+				// Найти нужный элемент p для заказываемого количества
+				function linePriceElementPForQty(line, qty) {
+					var priceBreaks = $(line).find('.price__value').find('p');
+					var aBreak = priceBreaks.first();
+					for (i = 0; i &lt; priceBreaks.length; i++) {
+						var breakQty = Number($(priceBreaks[i]).attr('break'));
+						if (breakQty &gt; qty)
+							break;
+						aBreak = priceBreaks[i];
+					}
+					return aBreak;
 				}
 
 				$(document).ready(function() {

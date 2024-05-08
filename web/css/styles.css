@@ -4073,8 +4073,8 @@ iframe.skiptranslate{
 	background: #000;
 }
 .thead .div-td:last-child{
-	min-width: 240px;
-	max-width: 240px;
+	min-width: 170px;
+	max-width: 170px;
 }
 .text-center{
 	text-align: center;

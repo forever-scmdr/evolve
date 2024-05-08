@@ -30,6 +30,7 @@ public class OuterInputData {
     }
     public static final String SERVER_PARAM = "server";
     public static final String QUERY_PARAM = "q";
+    public static final String PRICE = "price";
     public static final String PRICE_PREFIX = "price_";
 
     private List<Object> servers;
@@ -118,7 +119,9 @@ public class OuterInputData {
     public CurrencyRates getRates() throws Exception {
         if (rates == null) {
             rates = new CurrencyRates();
-            priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
+            priceParamName = PRICE;
+            if (!StringUtils.equals(curCode, rates.getDefaultCurrency()))
+                priceParamName = PRICE_PREFIX + (StringUtils.isBlank(curCode) ? rates.getDefaultCurrency() : curCode);
         }
         return rates;
     }

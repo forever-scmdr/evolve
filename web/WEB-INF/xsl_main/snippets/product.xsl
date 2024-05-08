@@ -800,7 +800,7 @@
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 		<xsl:variable name="p" select="current()"/>
-		<div class="div-row red" qty="{qty}" price="{prices/@price}">
+		<div class="div-row red" qty="{qty}" price="{prices/@price}" min_qty="{min_qty}" step="{step}">
 			<div class="div-tr">
 				<xsl:if test="$multiple">
 					<div class="div-td td-check">
@@ -949,8 +949,8 @@
 						<input type="number"
 							   class="input input_type_number" name="qty"
 							   value="{if ($default_qty &gt; 0) then $default_qty else if ($p/min_qty) then min_qty else 1}"
-							   min="{if ($p/min_qty) then $p/min_qty else 1}"
-							   step="{if ($p/step) then f:num($p/step) else $step_default}" />
+							   min="0"
+							   step="{if ($p/step) then f:num($p/step) else $step_default}" /> <!-- min="{if ($p/min_qty) then $p/min_qty else 1}" -->
 
 						<xsl:if test="$has_price">
 							<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
@@ -978,21 +978,21 @@
 			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
 			<!-- device order -->
-			<div class="order device-order cart_list_{$p/@key}" id="cart_list_{$p/@key}">
-				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@key}">
+			<div class="order device-order cart_list_{$p/@key}" id="cart_bom_{$p/@key}">
+				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_bom_{$p/@key}">
 					<input type="hidden" name="prod" value="-10"/>
 					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
 					<input type="number"
 						   class="input input_type_number" name="qty" style="width:65px"
 						   value="{if ($default_qty &gt;= 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   step="{if ($p/step) then f:num($p/step) else $step_default}" />
+						   min="0"
+						   step="{if ($p/step) then f:num($p/step) else $step_default}" /> <!-- min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" -->
 
 					<xsl:if test="$has_price">
-						<button class="button" type="submit"><xsl:value-of select="$to_cart_available_label"/></button>
+						<button class="button" type="submit" style="display: none"><xsl:value-of select="$to_cart_available_label"/></button>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<button class="button button_request" type="submit"><xsl:value-of select="$to_cart_na_label"/></button>
+						<button class="button button_request" type="submit" style="display: none"><xsl:value-of select="$to_cart_na_label"/></button>
 					</xsl:if>
 				</form>
 			</div>
@@ -1123,7 +1123,9 @@
 			<xsl:if test="$products or $queries or $results_api">
 				<div class="orange">
 					<xsl:if test="$multiple">
-						<xsl:for-each select="$queries">
+						<xsl:variable name="valid_queries" select="$queries[product/@request_qty]"/>
+						<xsl:variable name="invalid_queries" select="$queries[not(product/@request_qty)]"/>
+						<xsl:for-each select="$valid_queries">
 							<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
 							<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
 							<div class="green" qty="{@qty}" query_id="{@id}">
@@ -1136,9 +1138,9 @@
 												<xsl:with-param name="req_qty" select="@qty"/>
 											</xsl:apply-templates>
 										</div>
-										<div class="w-2">
-											<a href="#" class="query_order">Заказать</a>
-										</div>
+<!--										<div class="w-2">-->
+<!--											<a href="#" class="query_order">Заказать</a>-->
+<!--										</div>-->
 									</div>
 								</xsl:if>
 								<xsl:if test="$hidden_prods">
@@ -1153,19 +1155,20 @@
 												<xsl:with-param name="req_qty" select="@qty"/>
 											</xsl:apply-templates>
 										</div>
-										<div class="w-2"><!-- empty --></div>
+<!--										<div class="w-2">&lt;!&ndash; empty &ndash;&gt;</div>-->
 									</div>
 								</xsl:if>
-
-								<xsl:if test="not($visible_prods)">
-									<div class="div-row red">
-										<div class="div-tr">
-											<div class="div-td td-check">❌</div>
-											<div class="div-td td-query"><b><xsl:value-of select="@q"/></b></div>
-											<div class="div-td" style="max-width: fit-content; border: none; color: red; font-size: larger">По запросу товары не найдены</div>
-										</div>
+							</div>
+						</xsl:for-each>
+						<xsl:for-each select="$invalid_queries">
+							<div class="green" qty="{@qty}" query_id="{@id}">
+								<div class="div-row red">
+									<div class="div-tr">
+										<div class="div-td td-check">❌</div>
+										<div class="div-td td-query"><b><xsl:value-of select="@q"/></b></div>
+										<div class="div-td" style="max-width: fit-content; border: none; color: red; font-size: larger">По запросу товары не найдены</div>
 									</div>
-								</xsl:if>
+								</div>
 							</div>
 						</xsl:for-each>
 						<div style="position: relative;" id="search_bom_ajax"><!-- Перед этим дивом добавляются вновь добавленные запросы --></div>

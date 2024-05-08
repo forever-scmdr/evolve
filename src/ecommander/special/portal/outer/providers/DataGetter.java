@@ -334,19 +334,21 @@ public class DataGetter {
                 // (уменьшая постоянно количество на величину имеющегося фактически на складе для данного товара)
                 int qtyToOrder = requestedQuantity;
                 while (qtyToOrder > 0 && prods.size() > 0) {
-                    final int rqty = qtyToOrder;
-                    Optional<Element> cheapestOpt = prods.stream().min((o1, o2) -> compareXmlJsoupProducts(o1, o2, rqty, input.getPriceParamName()));
+                    final int RQTY = qtyToOrder;
+                    Optional<Element> cheapestOpt = prods.stream().min((o1, o2) -> compareXmlJsoupProducts(o1, o2, RQTY, input.getPriceParamName()));
                     Element cheapest = cheapestOpt.get();
-                    int qtyInStore = NumberUtils.toInt(JsoupUtils.getTagFirstValue(cheapest, "qty"), 0);
-                    int qtyToOffer = Math.min(qtyInStore, qtyToOrder);
+                    int qtyToOffer = qtyToOffer(cheapest, qtyToOrder);
                     BigDecimal price = getPriceForQty(cheapest, qtyToOffer, input.getPriceParamName());
                     cheapest.select("prices").attr("price", price.toPlainString()).attr("qty", qtyToOffer + "");
                     sortedProds.add(cheapest);
-                    qtyToOrder -= qtyInStore; // уменьшить требуемое количество, т.к. часть его уже удовлетворена
+                    qtyToOrder -= qtyToOffer; // уменьшить требуемое количество, т.к. часть его уже удовлетворена
                     prods.remove(cheapest); // удалить из рассмотрения уже рассмотренный товар
                 }
                 // Добавить в общий отсортированный список оставшиеся товары из первого отсортированного списка
-                sortedProds.addAll(prods);
+                for (Element prod : prods) {
+                    if (qtyToOffer(prod, requestedQuantity) > 0)
+                        sortedProds.add(prod);
+                }
             }
 
             // Сортировка по дате поставки
@@ -376,14 +378,13 @@ public class DataGetter {
         // *****************************
         // Распределение количества по первым нескольким предложениям (продуктам)
         if (isBom) {
-            int qtyToOrder = requestedQuantity;
+            int desiredQty = requestedQuantity;
             for (Element product : doc.select("product")) {
-                int qtyInStore = NumberUtils.toInt(JsoupUtils.getTagFirstValue(product, "qty"), 0);
-                if (qtyInStore < qtyToOrder) {
-                    product.attr("request_qty", qtyInStore + "");
-                    qtyToOrder -= qtyInStore;
+                int qtyToOffer = qtyToOffer(product, desiredQty);
+                product.attr("request_qty", qtyToOffer + "");
+                if (qtyToOffer < desiredQty) {
+                    desiredQty -= qtyToOffer;
                 } else {
-                    product.attr("request_qty", qtyToOrder + "");
                     break;
                 }
             }
@@ -470,26 +471,58 @@ public class DataGetter {
      * Сравнивается цена
      * @param o1
      * @param o2
-     * @param qtyToOrder - количество для заказа, если нет количества, передавать 1
+     * @param desiredQty - количество для заказа, если нет количества, передавать 1
      * @param priceParamName
      * @return
      */
-    private static int compareXmlJsoupProducts(Element o1, Element o2, int qtyToOrder, String priceParamName) {
-        qtyToOrder = Math.max(qtyToOrder, 1);
-        int qtyInStore1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "qty"), 0);
-        int qtyInStore2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "qty"), 0);
-        int qtyToOffer1 = Math.min(qtyInStore1, qtyToOrder);
-        int qtyToOffer2 = Math.min(qtyInStore2, qtyToOrder);
+    private static int compareXmlJsoupProducts(Element o1, Element o2, int desiredQty, String priceParamName) {
+        desiredQty = Math.max(desiredQty, 1);
+        int qtyToOffer1 = qtyToOffer(o1, desiredQty);
+        int qtyToOffer2 = qtyToOffer(o2, desiredQty);
+        if (qtyToOffer1 == 0 && qtyToOffer2 == 0) {
+            return 0;
+        }
+        if (qtyToOffer1 == 0)
+            return 1;
+        if (qtyToOffer2 == 0)
+            return -1;
         BigDecimal price1 = getPriceForQty(o1, qtyToOffer1, priceParamName);
         BigDecimal price2 = getPriceForQty(o2, qtyToOffer2, priceParamName);
         price1 = price1 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price1;
         price2 = price2 == null ? BigDecimal.valueOf(Integer.MAX_VALUE) : price2;
-        int compare = price1.compareTo(price2);
+        BigDecimal equivalentPrice1 = price1;
+        BigDecimal equivalentPrice2 = price2;
+        if (qtyToOffer1 > desiredQty) {
+            equivalentPrice1 = price1.multiply(BigDecimal.valueOf(qtyToOffer1)).divide(BigDecimal.valueOf(desiredQty), RoundingMode.HALF_EVEN);
+        }
+        if (qtyToOffer2 > desiredQty) {
+            equivalentPrice2 = price2.multiply(BigDecimal.valueOf(qtyToOffer2)).divide(BigDecimal.valueOf(desiredQty), RoundingMode.HALF_EVEN);
+        }
+        int compare = equivalentPrice1.compareTo(equivalentPrice2);
         if (compare == 0) {
-            int minQty1 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o1, "min_qty"), 1);
-            int minQty2 = NumberUtils.toInt(JsoupUtils.getTagFirstValue(o2, "min_qty"), 1);
-            return NumberUtils.compare(minQty1, minQty2);
+            return qtyToOffer2 - qtyToOffer1;
         }
         return compare;
+    }
+
+    /**
+     * Вернуть количество, максимально близкое из возможных (в большую сторону) к тому, которое хочет заказать пользователь
+     * @param prod
+     * @param desiredQty
+     * @return
+     */
+    private static int qtyToOffer(Element prod, int desiredQty) {
+        int minQty = NumberUtils.toInt(JsoupUtils.getTagFirstValue(prod, "min_qty"), 1);
+        int step = NumberUtils.toInt(JsoupUtils.getTagFirstValue(prod, "step"), 1);
+        int qtyInStore = NumberUtils.toInt(JsoupUtils.getTagFirstValue(prod, "qty"), 0);
+        int qtyToOffer = Math.max(minQty, desiredQty);
+        qtyToOffer = Math.min(qtyToOffer, qtyInStore);
+        int numSteps = Math.floorDiv(qtyToOffer, step);
+        if (numSteps * step < qtyToOffer)
+            numSteps++;
+        qtyToOffer = numSteps * step;
+        if (qtyToOffer > qtyInStore)
+            qtyToOffer = (numSteps - 1) * step;
+        return qtyToOffer;
     }
 }

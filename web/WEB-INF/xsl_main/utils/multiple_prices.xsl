@@ -87,7 +87,7 @@
             <!--           </b>-->
             <!--           </p>-->
             <xsl:variable name="out" select="if ($need_original) then concat(price_original, '&#160;', $product/currency_id) else f:print_cur($unit_price)"/>
-            <p style="{if ($chosen_price = $out) then 'font-weight: bold' else ''}" break="{$min_pack}">
+            <p style="{if ($chosen_price = $out) then 'font-weight: bold' else ''}" break="{$min_pack}" price="{f:num($unit_price)}">
                 <xsl:if test="$need_sum">x<xsl:value-of select="$min_pack"/>&#160;=&#160;<xsl:value-of select="f:print_cur($pack_sum)"/></xsl:if>
                 <xsl:if test="not($need_sum)"><xsl:value-of select="$out"/>&#160;от&#160;<xsl:value-of select="$min_pack"/>&#160;шт.</xsl:if>
             </p>
