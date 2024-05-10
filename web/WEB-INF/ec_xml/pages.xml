@@ -983,6 +983,9 @@
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
 		</command>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
 	</page>
 
 

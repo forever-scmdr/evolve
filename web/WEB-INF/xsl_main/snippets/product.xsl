@@ -805,7 +805,7 @@
 				<xsl:if test="$multiple">
 					<div class="div-td td-check">
 						<div class="thn">Выбор</div>
-						<div class="thd">
+						<div class="thd" id="cart_bom_check_{@key}">
 							<xsl:choose>
 								<xsl:when test="@request_qty"><input type="checkbox" checked="checked"/></xsl:when>
 								<xsl:otherwise><input type="checkbox"/></xsl:otherwise>

@@ -54,6 +54,7 @@ public class FindchipsGetter extends ProviderGetter {
             return;
         }
 
+        HashSet<String> addedCodes = new HashSet<>(); // уже добавленные коды товаров. Иногда возвращаются одинаковые строки товаров, надо это предотвратить
         for (Element distributorEl : distributors) {
             String distributor = distributorEl.attr("data-distributor_name");
             if (!input.distributorFilterMatches(distributor)) {
@@ -63,10 +64,16 @@ public class FindchipsGetter extends ProviderGetter {
             Elements lines = distributorEl.select("tr.row");
             for (Element line : lines) {
                 String name = JsoupUtils.getSelectorFirstValue(line, "td:eq(0) a");
+                /*
                 String code = JsoupUtils.getSelectorFirstValue(line, "span.additional-value");
                 if (StringUtils.isBlank(code)) {
                     code = name + "_" + Integer.toHexString(distributor.hashCode());
+                } */
+                String code = name + "_" + Integer.toHexString(distributor.hashCode());
+                if (addedCodes.contains(code)) {
+                    continue;
                 }
+                addedCodes.add(code);
                 String key = Strings.translit(name + " " + code);
                 String vendor = JsoupUtils.getSelectorFirstValue(line, "td:eq(1)");
                 String description = JsoupUtils.getSelectorFirstValue(line, "td:eq(2) span:eq(0)");

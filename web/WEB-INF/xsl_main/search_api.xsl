@@ -263,11 +263,11 @@
 
 				</div>
 
-				<div>
-					<div style="font-size: x-large;">
+				<div class="bom-bottom-fixed">
+					<div style="font-size: x-large; float: left;">
 						Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span> руб.</b>
 					</div>
-					<div style="margin-top: 20px">
+					<div style="margin-top: -10px; float: left; margin-left: 10px">
 						<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
 					</div>
 				</div>
@@ -416,21 +416,16 @@
 
 						// Строка добавляется
 						if (checkbox.is(':checked')) {
-							if (remainder == 0) {
-								checkbox.prop('checked', false);
-								return;
-							} else {
-								var qtyToOffer = lineQtyToOffer(line, remainder);
-								remainder -= qtyToOffer;
-								queryRemainders[queryId] = remainder;
-								qtyInput.val(qtyToOffer);
-								var aBreakP = linePriceElementPForQty(line, qtyToOffer);
-								$(aBreakP).attr('style', 'font-weight: bold');
-								if (isLineHidden) {
-									line.detach().appendTo(queryVisibleContainer.find('.w-1'));
-								}
-								queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
+							var qtyToOffer = lineQtyToOffer(line, remainder);
+							remainder -= qtyToOffer;
+							queryRemainders[queryId] = remainder;
+							qtyInput.val(qtyToOffer);
+							var aBreakP = linePriceElementPForQty(line, qtyToOffer);
+							$(aBreakP).attr('style', 'font-weight: bold');
+							if (isLineHidden) {
+								line.detach().appendTo(queryVisibleContainer.find('.w-1'));
 							}
+							queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
 						}
 
 						// Строка убирается

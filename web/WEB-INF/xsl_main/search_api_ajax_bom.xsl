@@ -62,9 +62,6 @@
 									<xsl:with-param name="req_qty" select="@qty"/>
 								</xsl:apply-templates>
 							</div>
-							<div class="w-2">
-								<a href="#" class="query_order">Заказать</a>
-							</div>
 						</div>
 					</xsl:if>
 					<xsl:if test="$hidden_prods">

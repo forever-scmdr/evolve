@@ -411,7 +411,10 @@ public abstract class BasicCartManageCommand extends Command {
     private Item createBought(long prodId, double qty, String outerParams) throws Exception {
         if (qty <= 0)
             return null;
-        Item product = ItemQuery.loadById(prodId);
+		Item product = null;
+        if (StringUtils.isBlank(outerParams)) {
+			product = ItemQuery.loadById(prodId);
+		}
         // Возможно товар является внешним (т.е. его нет в базе, а параметры берутся из outerParams)
         if (product == null) {
 	        Document doc = JsoupUtils.parseXml(outerParams);
