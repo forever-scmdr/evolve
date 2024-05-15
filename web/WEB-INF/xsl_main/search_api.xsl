@@ -262,15 +262,16 @@
 					</xsl:if>
 
 				</div>
-
-				<div class="bom-bottom-fixed">
-					<div style="font-size: x-large; float: left;">
-						Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span> руб.</b>
+				<xsl:if test="$is_bom">
+					<div class="bom-bottom-fixed">
+						<div style="font-size: x-large; float: left;">
+							Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span> руб.</b>
+						</div>
+						<div style="margin-top: -10px; float: left; margin-left: 10px">
+							<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
+						</div>
 					</div>
-					<div style="margin-top: -10px; float: left; margin-left: 10px">
-						<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
-					</div>
-				</div>
+				</xsl:if>
 			</div>
 		</div>
 	</xsl:template>

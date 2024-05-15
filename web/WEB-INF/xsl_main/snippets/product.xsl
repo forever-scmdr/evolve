@@ -907,7 +907,8 @@
 					<div class="thd">
 						<xsl:call-template name="CART_BUTTON_API">
 							<xsl:with-param name="p" select="$p"/>
-							<xsl:with-param name="default_qty" select="if (@request_qty) then @request_qty else 0"/>
+							<xsl:with-param name="default_qty" select="if (@request_qty) then @request_qty else (if ($multiple) then 0 else min_qty)"/>
+							<xsl:with-param name="multiple" select="$multiple"/>
 						</xsl:call-template>
 					</div>
 				</div>
@@ -974,6 +975,7 @@
 	<xsl:template name="CART_BUTTON_API">
 		<xsl:param name="p" />
 		<xsl:param name="default_qty" select="-1"/>
+		<xsl:param name="multiple" select="false()"/>
 		<xsl:if test="$has_cart or not($disp)">
 			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
 
@@ -989,10 +991,10 @@
 						   step="{if ($p/step) then f:num($p/step) else $step_default}" /> <!-- min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" -->
 
 					<xsl:if test="$has_price">
-						<button class="button" type="submit" style="display: none"><xsl:value-of select="$to_cart_available_label"/></button>
+						<button class="button" type="submit" style="{'display: none'[$multiple]}"><xsl:value-of select="$to_cart_available_label"/></button>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
-						<button class="button button_request" type="submit" style="display: none"><xsl:value-of select="$to_cart_na_label"/></button>
+						<button class="button button_request" type="submit" style="{'display: none'[$multiple]}"><xsl:value-of select="$to_cart_na_label"/></button>
 					</xsl:if>
 				</form>
 			</div>

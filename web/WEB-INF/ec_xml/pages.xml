@@ -934,7 +934,7 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>
+<!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
@@ -964,6 +964,11 @@
 		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
 			<var name="cur" value=""/>
 		</link>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
 	</page>
 
 
