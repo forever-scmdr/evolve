@@ -2283,4 +2283,102 @@
 
 
 
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--/////////////                      		 	API         		   	               ////////////-->
+	<!--/////////////                                                                      ////////////-->
+	<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+	<page name="api_proxy">
+		<headers Content-Type="text/plain"/>
+		<request>
+			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
+			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
+			<var name="token_header" value="Authorization"/>
+		</request>
+		<command class="extra.ApiProxyCommand">
+			<result name="success" type="plain_text"/>
+		</command>
+	</page>
+
+	<!-- Страница для получения JSON в виде XML -->
+	<page name="api_xml">
+		<headers Content-Type="text/plain"/>
+		<request>
+			<var name="api_base" value="https://op.vylrescm.workers.dev/?secret=124&amp;"/>
+			<!--
+			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
+			<var name="token_header" value="Authorization"/>
+			-->
+			<var name="root_element" value="result"/>
+			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, multipleorderquantity:step, leadtimedays:next_delivery, addinfo:description"/>
+		</request>
+		<command class="extra.ApiJsonToXMLCommand">
+			<result name="success" type="plain_text"/>
+			<result name="error" type="plain_text"/>
+		</command>
+	</page>
+
+	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
+	<page name="search_api">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+<!--			<var name="server" value="http://localhost:8080/api_xml"/>-->
+		</request>
+		<command class="extra.SearchOctopartApiCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+	</page>
+
+
+	<!-- Страница поиска для efind -->
+	<page name="efind" template="efind">
+		<headers Content-Type="text/xml"/>
+		<request>
+			<var name="q"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
+		</request>
+		<command class="extra.SearchApiCommand">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+	</page>
+
+
+	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
+	<page name="search_api_ajax" template="search_api_ajax">
+		<!--		<headers Content-Type="text/xml"/>-->
+		<request>
+			<var name="q"/>
+			<var name="server" value="http://gammtrade.must.by/api_xml"/>
+		</request>
+		<command class="extra.SearchApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
+		<usergroup name="0dmin">
+			<list item="optional_modules" cacheable="true">
+				<list item="module"/>
+			</list>
+		</usergroup>
+		<link name="to_cart_api" target="cart_action">
+			<var name="action" value="addToCart"/>
+		</link>
+	</page>
+
+
+	<page name="update_order_status" schedule="">
+		<request>
+			<var name="status_dir" value="integrate_status"/>
+		</request>
+		<command class="extra.UpdateOrderStatusByJson"/>
+	</page>
+
+
 </site>
