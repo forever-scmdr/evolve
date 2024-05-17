@@ -28,7 +28,10 @@ public class ApiJsonToXMLCommand extends Command {
 		String token = getVarSingleValue("token");
 		String tokenHeaderName = getVarSingleValue("token_header");
 		String rootElementName = getVarSingleValueDefault("root_element", "provider");
-		String urlToGet = apiBase + StringUtils.substringAfterLast(url, pageName + "/");
+		String toAdd = StringUtils.substringAfterLast(url, pageName);
+		toAdd = StringUtils.startsWith(toAdd, "/") ? StringUtils.substringAfter(toAdd, "/") : toAdd;
+		toAdd = StringUtils.startsWith(toAdd, "?") ? StringUtils.substringAfter(toAdd, "?") : toAdd;
+		String urlToGet = apiBase + toAdd;
 
 		String replace = getVarSingleValueDefault("replace", "");
 		String[] replacePairs = StringUtils.split(replace, ", ");

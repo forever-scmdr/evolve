@@ -224,7 +224,10 @@ public class OkWebClient {
 	public String getStringHeaders(String url, String... headers) throws IOException {
 		Request.Builder builder = new Request.Builder().url(url);
 		for (int i = 1; i < headers.length; i += 2) {
-			builder.header(headers[i - 1], headers[i]);
+			String name = headers[i - 1];
+			String value = headers[i];
+			if (StringUtils.isNotBlank(name))
+				builder.header(name, value);
 		}
 		Request request = builder.build();
 		try (Response response = client.newCall(request).execute()) {
