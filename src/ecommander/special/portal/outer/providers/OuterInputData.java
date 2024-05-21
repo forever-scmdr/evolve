@@ -147,16 +147,16 @@ public class OuterInputData {
                 String possibleQty = parts[parts.length - 1];
                 try {
                     int qty = Integer.parseInt(possibleQty);
-                    if (qty > 9999) {
-                        query.put(StringUtils.join(parts, ' '), 1);
+                    if (qty > 49999) {
+                        query.put(StringUtils.join(parts, ' '), 0);
                     } else {
                         query.put(StringUtils.join(parts, ' ', 0, parts.length - 1), qty);
                     }
                 } catch (NumberFormatException nfe) {
-                    query.put(StringUtils.join(parts, ' '), 1);
+                    query.put(StringUtils.join(parts, ' '), 0);
                 }
             } else if (parts.length == 1) {
-                query.put(parts[0], 1);
+                query.put(parts[0], 0);
             }
         }
     }

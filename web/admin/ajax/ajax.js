@@ -132,7 +132,7 @@ function initAjax(elementId) {
             $(this).closest('.popup').hide('fade', 100);
         }
     });
-    $(document).on('click', '.popup__close', function (e) {
+    $(document).on('click', '.popup__close, .popup_close', function (e) {
         e.preventDefault();
         $(this).closest('.popup').hide('fade', 100);
     });

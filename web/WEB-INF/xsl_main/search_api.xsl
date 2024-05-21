@@ -265,7 +265,7 @@
 				<xsl:if test="$is_bom">
 					<div class="bom-bottom-fixed">
 						<div style="font-size: x-large; float: left;">
-							Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span> руб.</b>
+							Сумма автоматически подобранного заказа: <b><span id="auto_sum"></span>&#160;<xsl:value-of select="f:cur()"/></b>
 						</div>
 						<div style="margin-top: -10px; float: left; margin-left: 10px">
 							<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
@@ -395,6 +395,7 @@
 		<xsl:call-template name="CART_SCRIPT"/>
 		<xsl:call-template name="ORDER_SCRIPT"/>
 		<script>
+			const currency = '<xsl:value-of select="f:cur()"/>';
 			<xsl:text disable-output-escaping="yes">
 				var queryRemainders = []; // остатки по каждому запросу
 				function initResultTable() {
@@ -403,7 +404,7 @@
 						var line = checkbox.closest('.red');
 						var closestContainer = line.closest('.blue');
 						var queryContainer = line.closest('.green');
-						var queryVisibleContainer = queryContainer.find('.blue').first();
+						var queryVisibleContainer = queryContainer.find('.blue_visible');
 						var queryId = queryContainer.attr('query_id');
 						var queryQty = queryContainer.attr('qty');
 						var qtyInput = line.find('input[name=qty]');
@@ -423,8 +424,18 @@
 							qtyInput.val(qtyToOffer);
 							var aBreakP = linePriceElementPForQty(line, qtyToOffer);
 							$(aBreakP).attr('style', 'font-weight: bold');
+							/*
 							if (isLineHidden) {
 								line.detach().appendTo(queryVisibleContainer.find('.w-1'));
+							}
+							*/
+							// перемещение строки в конец списка выбранных (отмеченный галкой)
+							var detached = line.detach();
+							var allChecked = queryVisibleContainer.find('input:checked');
+							if (allChecked.length != 0) {
+								allChecked.last().closest('.red').after(detached);
+							} else {
+								detached.appendTo(queryVisibleContainer.find('.w-1'));
 							}
 							queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
 						}
@@ -437,23 +448,42 @@
 							qtyInput.val(0);
 							queryContainer.find('.qty').html(getQtyLabel(queryQty, remainder));
 							line.find('.price__value').find('p').attr('style', '');
+							// перемещение строки в конец списка выбранных (отмеченный галкой)
+							var detached = line.detach();
+							var allChecked = queryVisibleContainer.find('input:checked');
+							if (allChecked.length != 0) {
+								allChecked.last().closest('.red').after(detached);
+							} else {
+								detached.appendTo(queryVisibleContainer.find('.w-1'));
+							}
 						}
-						recalculateSum();
 						createQueryRemainders();
+						recalculateSumOld();
 					});
-					recalculateSum();
+					$('.red input[type=number]').change(function() {
+						createQueryRemainders();
+						recalculateSumOld();
+					});
 					createQueryRemainders();
+					recalculateSumOld();
 				}
 
 				// Пересчитать все товары
-				function recalculateSum() {
+				function recalculateSumOld() {
 					var sum = 0;
 					$('.blue_visible').find('.red').each(function() {
 						var qtyInput = $(this).find('input[name=qty]');
 						var qty = Number(qtyInput.val());
 						var pricePEl = linePriceElementPForQty(this, qty);
 						var price = Number($(pricePEl).attr('price'));
-						sum += qty * price;
+						var lineSum = Math.round(qty * price * 100) / 100;
+						if (lineSum &gt; 0)
+							$(this).find('.line_sum').text(' = ' + lineSum + currency);
+						else
+							$(this).find('.line_sum').text('');
+						sum += lineSum;
+						$(this).find('.price__value').find('p').attr('style', '');
+						$(pricePEl).attr('style', 'font-weight: bold');
 					});
 					$('#auto_sum').text(sum.toFixed(2));
 				}
@@ -461,11 +491,11 @@
 				// Сделать текст для надписи в случае если фактический заказ не соответствует изначально заданному
 				function getQtyLabel(totalQty, remainder) {
 					if (remainder &gt; 0) {
-						return '(' + totalQty + ' &lt;span style="color: red"&gt;-' + remainder + '&lt;/span&gt;)'
+						return '&lt;b&gt;' + totalQty + '&lt;/b&gt;' + ' &lt;span style="color: red"&gt;-' + remainder + '&lt;/span&gt;'
 					} else if (remainder &lt; 0) {
-						return '(' + totalQty + ' &lt;span style="color: blue"&gt;+' + (remainder * -1) + '&lt;/span&gt;)'
+						return '&lt;b&gt;' + totalQty + '&lt;/b&gt;' + ' &lt;span style="color: blue"&gt;+' + (remainder * -1) + '&lt;/span&gt;'
 					}
-					return '(' + totalQty + ')';
+					return '&lt;b&gt;' + totalQty + '&lt;/b&gt;';
 				}
 
 				// Проверить сколько товаров еще надо заказать, сколько перезаказано и все это отобразить

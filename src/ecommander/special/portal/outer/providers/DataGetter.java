@@ -63,6 +63,16 @@ public class DataGetter {
      * @throws Exception
      */
     public XmlDocumentBuilder getQueryData() throws Exception {
+        boolean isBom = input.getQueries().size() > 1;
+        // Если запрос BOM - удалить все запросы с нулевым количеством
+        if (isBom) {
+            HashSet<String> qNames = new HashSet<>(input.getQueries().keySet());
+            for (String qName : qNames) {
+                if (input.getQueries().get(qName) == null || input.getQueries().get(qName) <= 0)
+                    input.getQueries().remove(qName);
+            }
+        }
+
         // Результат выполнения всего запроса
         LinkedHashMap<String, String> queryXmls = new LinkedHashMap<>();
         // Заполнить пустыми значениями, чтобы сохранился правильный порядок (как юзер писал)
@@ -73,7 +83,6 @@ public class DataGetter {
 
         // Сначала посмотреть, что можно прочитать из кеша. То, что есть в кеше позже не запрашивать
         LinkedHashMap<String, Integer> queries = new LinkedHashMap<>(input.getQueries());
-        boolean isBom = input.getQueries().size() > 1;
         for (String query : queries.keySet()) {
             // Подготовка данных о кеше
             Timer.getTimer().start("API # find_files");

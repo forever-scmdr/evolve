@@ -96,6 +96,7 @@
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
 		<link name="input_bom_link" target="input_bom" type="itemform"/>
+		<link name="validate_bom_link" target="validate_bom_ajax" type="itemform"/>
 		<link name="excel_search_link" target="excel_search" type="itemform"/>
 
 		<!-- REGISTRATION -->
@@ -1060,6 +1061,18 @@
 		<include name="COMMON"/>
 	</page>
 
+
+
+	<page name="validate_bom_ajax" template="validate_bom_ajax">
+		<request>
+			<var name="q"/>
+			<var name="action"/>
+		</request>
+		<command class="ecommander.special.portal.FormatBomQueryCommand" tag="formatted" method-var="action">
+			<result name="xml" type="inline_xml"/>
+		</command>
+		<link name="search_api_link" target="search_api"/>
+	</page>
 
 
 

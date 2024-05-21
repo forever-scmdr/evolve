@@ -2,6 +2,7 @@ package ecommander.special.portal;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.model.datatypes.DecimalDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
 import ecommander.special.portal.outer.providers.OuterInputData;
@@ -9,8 +10,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -50,6 +53,8 @@ public class FormatBomQueryCommand extends Command {
             xml.endElement();
             result.setValue(xml.toString());
         }
+        // установить переменную страницы, чтобы можно было потом использовать (эта переменная сейчас в itemform)
+        setPageVariable("q", query);
         return result;
     }
 
@@ -79,6 +84,13 @@ public class FormatBomQueryCommand extends Command {
                         if (StringUtils.isNotBlank(value)) {
                             if (sbLine.length() > 0) {
                                 sbLine.append(" ");
+                            }
+                            // это для того, чтобы числа с пробелом вроде 1 000 воспринимались одним целым
+                            String noBlank = value.replaceAll("\\s", "").replace("\u00a0","");
+                            if (StringUtils.isNumericSpace(noBlank)) {
+                                int test = NumberUtils.toInt(noBlank, -5555);
+                                if (test > 0)
+                                    value = test + "";
                             }
                             sbLine.append(value);
                         }
@@ -115,4 +127,5 @@ public class FormatBomQueryCommand extends Command {
         }
         return getResult("xml").setValue(xml.toString());
     }
+
 }

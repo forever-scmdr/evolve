@@ -45,9 +45,14 @@
 			<form method="post" action="{page/input_bom_link}" enctype="multipart/form-data" id="query_form">
 				<textarea class="input header-search__input" placeholder="Введите поисковый запрос"
 						  autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;"><xsl:value-of select="$query" /></textarea>
-				<div>
-					<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('div').find('label').text(fileName($(this).val()))"/>
-					<label for="file" class="upload">Загрузить Excel/CSV/TXT файл с компьютера</label>
+				<div style="display: flex">
+					<div>
+						<input type="file" name="file" id="file" class="get-file" onchange="$(this).closest('div').find('label').text(fileName($(this).val()))"/>
+						<label for="file" class="upload">Загрузить Excel/CSV/TXT файл с компьютера</label>
+					</div>
+					<div style="padding-top: 10px; padding-left: 20px">
+						<a href="files/query.xlsx" download="bom.xlsx">Скачать пример...</a>
+					</div>
 				</div>
 				<script>
 					function fileName(name) {
@@ -58,12 +63,14 @@
 				<div style="display: flex">
 					<div>
 						<button class="button" type="submit">Сформировать спецификацию</button>
-						<button class="button" type="submit" onclick="submitSearch()" style="margin-left: 10px">Найти</button>
+						<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-left: 10px">Найти</button>
 					</div>
+					<!--
 					<div style="right: 0px; position: absolute;">
 						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', 'search_prices')">Найти (отладка)</button>
 						<button class="button" type="submit" onclick="$(this).closest('form').attr('action', '{page/input_bom_link}?action=clearCache')" style="margin-left: 10px;">Очистить кеш</button>
 					</div>
+					-->
 				</div>
 			</form>
 			<br/>
@@ -72,7 +79,8 @@
 					<xsl:variable name="size" select="$command_xml/bom/max_size"/>
 					<xsl:for-each select="$command_xml/bom/query">
 						<xsl:variable name="p" select="position()"/>
-						<tr class="query_line" style="border: 1px solid #e0e0e0;">
+						<xsl:variable name="border" select="if (@qty = '0') then '2px solid red;' else '1px solid #e0e0e0;'"/>
+						<tr class="query_line" style="border: {$border}">
 							<td><input name="n_{$p}" value="{.}" class="query_name" size="{$size}" style="border: 1px solid #404040;"/></td>
 							<td><input name="q_{$p}" value="{@qty}" class="query_qty" type="number" style="border: 1px solid #e0e0e0;"/></td>
 						</tr>
@@ -100,7 +108,10 @@
 					text += query + ' ' + number + '\n';
 				});
 				$('#query_form').find('textarea').text(text);
-				$('#query_form').attr('action', '<xsl:value-of select="page/search_api_link"/>');
+				$('#query_form').attr('action', '<xsl:value-of select="page/validate_bom_link"/>');
+				postForm('query_form', 'query_form', function() {
+					$('#modal_popup').show();
+				});
 			}
 		</script>
 	</xsl:template>
