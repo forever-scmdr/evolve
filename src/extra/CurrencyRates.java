@@ -1,5 +1,6 @@
 package extra;
 
+import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -79,6 +80,21 @@ public class CurrencyRates implements ItemNames{
 			}
 			productNode.appendElement(paramName).text(allPrices.get(paramName).toString());
 		}
+	}
+
+	/**
+	 * Установить все цены на товар исходя из оригинальной цены
+	 * @param xml
+	 * @param price
+	 * @param currencyCode
+	 * @return пары Название параметра цены (price_CUR) => Цена (BigDecimal)
+	 */
+	public HashMap<String, BigDecimal> setAllPricesXML(XmlDocumentBuilder xml, BigDecimal price, String currencyCode) {
+		HashMap<String, BigDecimal> allPrices = getAllPrices(price, currencyCode);
+		for (String paramName : allPrices.keySet()) {
+			xml.addElement(paramName, allPrices.get(paramName).toString());
+		}
+		return allPrices;
 	}
 
 	/**
