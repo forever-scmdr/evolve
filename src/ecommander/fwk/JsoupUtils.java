@@ -78,6 +78,19 @@ public class JsoupUtils {
 	}
 
 	/**
+	 * Получить значение тэга.
+	 * Берется значение первого найденного тэга
+	 * @param parent
+	 * @param tag
+	 * @return
+	 */
+	public static String getTagFirstValue(Elements parent, String tag) {
+		if (parent == null)
+			return null;
+		return getTagFirstValue(parent.first(), tag);
+	}
+
+	/**
 	 * Получить значение атрибута тэга. Подразумевается что такой тэг один.
 	 * Берется значение атрибута первого найденного тэга
 	 * @param node

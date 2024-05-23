@@ -719,7 +719,7 @@
 		<xsl:param name="has_more" select="false()"/>
 		<xsl:variable name="multipe_prices" select="prices"/>
 
-		<xsl:variable name="has_price" select="price and price != '0'"/>
+		<xsl:variable name="has_price" select="(price and price != '0') or $multipe_prices/break/price"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>

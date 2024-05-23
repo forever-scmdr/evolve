@@ -481,6 +481,9 @@
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
+			<link name="api_ajax_link" target="search_api_ajax">
+				<var name="q" ref="prod" parameter="name"/>
+			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product_extra" tag="product_extra"/>
 			<list item="params_xml"/>
@@ -519,6 +522,11 @@
 				<ancestor item="plain_section" transit="false"/>
 			</list>
 		</single>
+		<command class="extra.SearchOctopartApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
@@ -769,6 +777,11 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
+		<command class="extra.SearchOctopartApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
+		</command>
 		<include name="SEARCH_COMMON" replace="$pname:search"/>
 		<include name="COMMON"/>
 	</page>
@@ -781,6 +794,9 @@
 			<var name="q"/>
 			<var name="n"/>
 		</request>
+		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
+			<result name="analogs" type="inline_xml"/>
+		</command>
 		<list item="product" id="prod">
 			<filter>
 				<fulltext limit="48" compare="EVERY" name="name">
@@ -794,8 +810,10 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
-			<result name="analogs" type="inline_xml"/>
+		<command class="extra.SearchOctopartApiCommand" tag="api_search">
+			<result name="product_list" type="inline_xml"/>
+			<result name="error" type="inline_text"/>
+			<result name="illegal_argument" type="inline_text"/>
 		</command>
 		<include name="SEARCH_COMMON" replace="$pname:admin_search"/>
 		<include name="COMMON"/>
@@ -2312,7 +2330,9 @@
 			<var name="token_header" value="Authorization"/>
 			-->
 			<var name="root_element" value="result"/>
+			<!--
 			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, multipleorderquantity:step, leadtimedays:next_delivery, addinfo:description"/>
+			-->
 		</request>
 		<command class="extra.ApiJsonToXMLCommand">
 			<result name="success" type="plain_text"/>
@@ -2355,9 +2375,8 @@
 		<!--		<headers Content-Type="text/xml"/>-->
 		<request>
 			<var name="q"/>
-			<var name="server" value="http://gammtrade.must.by/api_xml"/>
 		</request>
-		<command class="extra.SearchApiCommand" tag="api_search">
+		<command class="extra.SearchOctopartApiCommand" tag="api_search">
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>

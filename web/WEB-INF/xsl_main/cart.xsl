@@ -39,6 +39,7 @@
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
                             <xsl:variable name="plain_section" select="$p/plain_section"/>
                             <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
+							<xsl:variable name="api" select="outer_product and outer_product != ''"/>
 							<div class="cart-list__item cart-item">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
@@ -65,7 +66,7 @@
 									<span class="text-label">Цена</span>
 									<span>
 										<!-- Для обычных товаров (не из каталога price_catalog) -->
-										<xsl:if test="not($plain)"><xsl:value-of select="$price"/></xsl:if>
+										<xsl:if test="not($plain) and not($api)"><xsl:value-of select="$price"/></xsl:if>
 										<!-- Для товаров из каталога price_catalog -->
 										<xsl:if test="$plain">
 											<xsl:call-template name="ALL_PRICES">
@@ -73,6 +74,13 @@
 												<xsl:with-param name="price_in_currency" select="f:exchange($p, 'price', 0)"/>
 												<xsl:with-param name="product" select="$p"/>
 												<xsl:with-param name="section_name" select="$plain"/>
+											</xsl:call-template>
+										</xsl:if>
+										<xsl:if test="$api">
+											<xsl:variable name="outer" select="parse-xml($p/extra_xml)/product"/>
+											<xsl:call-template name="ALL_PRICES_API">
+												<xsl:with-param name="need_sum" select="false()"/>
+												<xsl:with-param name="product" select="$outer"/>
 											</xsl:call-template>
 										</xsl:if>
 									</span>

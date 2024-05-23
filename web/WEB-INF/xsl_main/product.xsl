@@ -8,6 +8,7 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="has_plain" select="$mods/plain_in_product = 'on'"/><!-- + -->
+	<xsl:variable name="results_api" select="page/api_search/product_list/results"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -320,6 +321,7 @@
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
+				<xsl:with-param name="results_api" select="$results_api"/>
 			</xsl:call-template>
 		</xsl:if>
 
