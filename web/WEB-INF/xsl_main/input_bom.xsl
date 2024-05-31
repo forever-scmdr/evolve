@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="bom_ajax.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:import href="snippets/custom_blocks.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
@@ -43,7 +44,7 @@
 		</xsl:if>
 		<div class="text">
 			<form method="post" action="{page/input_bom_link}" enctype="multipart/form-data" id="query_form">
-				<textarea class="input header-search__input" placeholder="Введите поисковый запрос"
+				<textarea class="input header-search__input" placeholder="Введите запрос"
 						  autocomplete="off" name="q" autofocus="" style="width:100%; height: 200px;"><xsl:value-of select="$query" /></textarea>
 				<div style="display: flex">
 					<div>
@@ -62,8 +63,9 @@
 				</script>
 				<div style="display: flex">
 					<div>
-						<button class="button" type="submit">Сформировать спецификацию</button>
-						<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-left: 10px">Найти</button>
+						<button class="button" type="submit">Сформировать список BOM</button>
+						<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-left: 10px; margin-right: 10px;">Найти</button>
+						<xsl:call-template name="SAVE_BOM_BUTTON"/>
 					</div>
 					<!--
 					<div style="right: 0px; position: absolute;">
@@ -93,6 +95,7 @@
 				<xsl:value-of select="$seo/bottom_text"/>
 			</div>
 		</xsl:if>
+		<xsl:call-template name="SAVE_BOM_FORM"/>
 
 	</xsl:template>
 

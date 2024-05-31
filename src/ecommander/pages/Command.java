@@ -208,6 +208,23 @@ public abstract class Command implements AutoCloseable {
 			return defaultValue;
 		return var.writeSingleValue();
 	}
+
+	/**
+	 * Получить либо единственное значение переменной, либо itemform extra с таким названием
+	 * Метод нужен если значение может передаваться и через get и через post запросы
+	 * @param varOrExtraName
+	 * @param defaultValue
+	 * @return
+	 */
+	public final String getInputSingleValueDefault(String varOrExtraName, String defaultValue) {
+		String val = getVarSingleValueDefault(varOrExtraName, null);
+		if (val != null)
+			return val;
+		if (getItemForm() == null)
+			return defaultValue;
+		val = getItemForm().getSingleStringExtra(varOrExtraName);
+		return StringUtils.isNotBlank(val) ? val : defaultValue;
+	}
 	/**
 	 * Вернуть несколько значений страничной переменной
 	 * @param varName

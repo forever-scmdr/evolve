@@ -216,6 +216,7 @@
 											</xsl:if>
 										</div>
 									</div>
+									<!--
 									<div class="product-actions mb-3">
 										<div class="add add_product">
 											<div id="spec_list_{$p/@id}">
@@ -226,6 +227,7 @@
 											</div>
 										</div>
 									</div>
+									-->
 									<div class="product-actions">
 										<div class="add add_product">
 											<xsl:if test="$p/files">

@@ -14,9 +14,7 @@
 
 	<xsl:template match="/">
 		<div class="result" id="search-result">
-			<xsl:if test="not($products)">
-				По Вашему запросу ничего не найдено.
-			</xsl:if>
+			<xsl:if test="not($products)"></xsl:if>
 			<xsl:if test="$products">
 				<xsl:if test="not($is_advanced)">
 					<ul>
@@ -64,9 +62,7 @@
 		</div>
 
 		<div class="result" id="search-result-mobile">
-			<xsl:if test="not($products)">
-				По Вашему запросу ничего не найдено.
-			</xsl:if>
+			<xsl:if test="not($products)"></xsl:if>
 			<xsl:if test="$products">
 				<div class="cart-container">
 					<xsl:for-each select="$products">

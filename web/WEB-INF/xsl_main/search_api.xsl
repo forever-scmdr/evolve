@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="bom_ajax.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -56,6 +57,29 @@
 	<xsl:variable name="title">Поиск по запросу "<xsl:value-of select="if ($is_bom) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="if ($is_bom) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
+
+	<xsl:variable name="canonical" select="''"/>
+
+
+	<xsl:template name="PAGE_HEADING">
+		<div class="title title_1 vl_{$classvl}" style="display: table;table-layout: fixed;width: 100%;">
+			<div style="display: table-cell;"><xsl:value-of select="$h1"/></div>
+			<div style="display: table-cell;" id="cur_div">
+				<ul class="currency-options" style="float: right;">
+					<xsl:variable name="currency_link" select="page/set_currency"/>
+					<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+						<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+						<xsl:variable name="active" select="$currency = $cur"/>
+						<li class="{'active'[$active]}">
+							<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
+							<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+						</li>
+					</xsl:for-each>
+					<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
+				</ul>
+			</div>
+		</div>
+	</xsl:template>
 
 
 	<xsl:template name="PAGE_PATH">
@@ -270,9 +294,13 @@
 						<div style="margin-top: -10px; float: left; margin-left: 10px">
 							<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="allOrder()">Заказать все позиции</button>
 						</div>
+						<div style="margin-top: -10px; float: left; margin-left: 10px">
+							<button class="button" style="border-radius: 4px 4px 4px 4px; font-size: large;" onclick="submitBomSave()">Сохранить список BOM</button>
+						</div>
 					</div>
 				</xsl:if>
 			</div>
+			<xsl:call-template name="SAVE_BOM_FORM"/>
 		</div>
 	</xsl:template>
 
@@ -367,6 +395,7 @@
 						<xsl:with-param name="p" select="current()"/>
 					</xsl:call-template>
 				</div>
+				<!--
 				<div class="add">
 					<div id="spec_list_{@id}">
 						<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
@@ -375,6 +404,7 @@
 						</a>
 					</div>
 				</div>
+				-->
 				<div class="add">
 					<a href="{$main_ds/a/@href}" class="icon-link product-icons__item" download="{$main_ds/a/@href}">
 						<div class="icon icon_size_lg">

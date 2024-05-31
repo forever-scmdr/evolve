@@ -30,8 +30,6 @@
 					<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 				</ul>
 			</div>
-
-
 		</div>
 	</xsl:template>
 
@@ -54,7 +52,7 @@
         </xsl:if>
 		<div class="search_cart">
 			<form action="/cart/" method="post">
-				<input class="input header-search__input"  type="text" placeholder="Введите поисковый запрос" autocomplete="off"/>
+				<input class="input header-search__input"  type="text" placeholder="Введите запрос" autocomplete="off"/>
 				<button class="button header-search__button" type="submit">Найти</button>
 			</form>
 		</div>
@@ -67,7 +65,8 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;/prod&gt;'))"/>
-							<xsl:variable name="multipe_prices" select="$outer/prod/product/prices"/>
+							<xsl:variable name="po" select="$outer/prod/product"/>
+							<xsl:variable name="multipe_prices" select="$po/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
 							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<xsl:variable name="not_api" select="$p/@id &gt; 0"/>
@@ -94,11 +93,19 @@
 											<span class="cart-item__name"><xsl:value-of select="$p/name"/></span>
 										</xsl:if>
 										<p/>
-										<div class="cart-item__artnumber">Норма упк.: <xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'" /></div>
-										<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
-										<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
-										<div class="cart-item__artnumber">Количество: <xsl:value-of select="$total_qty" /></div>
-										<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($dlv) = '0') then 'на складе' else $dlv" /></div>
+										<xsl:if test="not($po)">
+											<div class="cart-item__artnumber">Норма упк.: <xsl:value-of select="if ($p/packquantity and not($p/packquantity = '')) then $p/packquantity else '1'" /></div>
+											<div class="cart-item__artnumber">Кратность: <xsl:value-of select="if ($p/step and not($p/step = '')) then $p/step else '1'" /></div>
+											<div class="cart-item__artnumber">Мин. партия: <xsl:value-of select="if ($p/min_qty and not($p/min_qty = '')) then $p/min_qty else '1'" /></div>
+											<div class="cart-item__artnumber">Количество: <xsl:value-of select="$total_qty" /></div>
+											<div class="cart-item__artnumber">Срок поставки: <xsl:value-of select="if (normalize-space($dlv) = '0') then 'на складе' else $dlv" /></div>
+										</xsl:if>
+										<xsl:if test="$po">
+											<div class="cart-item__artnumber">Поставщик: <xsl:value-of select="$po/category_id"/></div><br/>
+											<div class="cart-item__artnumber">Производитель: <xsl:value-of select="$po/vendor"/></div><br/>
+											<div class="cart-item__artnumber">Описание: <xsl:value-of select="$po/description"/></div><br/>
+											<div><a onclick="showDetails('product_ajax?prod={normalize-space($po/name)}')" >Полное описание</a></div>
+										</xsl:if>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
@@ -117,26 +124,25 @@
 										<xsl:if test="$multipe_prices">
 											<xsl:call-template name="ALL_PRICES_API">
 												<xsl:with-param name="need_sum" select="false()"/>
-												<xsl:with-param name="product" select="$outer/prod/product"/>
+												<xsl:with-param name="product" select="$po"/>
 											</xsl:call-template>
 										</xsl:if>
 									</span>
 									<!--<xsl:if test="not_available = '1'"><span>нет в наличии - под заказ</span></xsl:if>-->
 								</div>
 								<div class="cart-item__ostatok">
-									<span class="text-label">Остаток</span>
-									<span>0</span>
+									<span class="text-label">Доступно</span>
+									<span><xsl:value-of select="$po/qty" /></span>
 								</div>
 								<div class="cart-item__postavka">
 									<span class="text-label">Срок поставки</span>
-									<span>31.12.2023</span>
-
+									<span><xsl:value-of select="if (not($po/next_delivery = '')) then $po/next_delivery else 'согласуется после оформления заказа'"/></span>
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else 1}" style="width: 70px"/>
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
@@ -172,10 +178,11 @@
 								<div class="cart-total__text" id="cart-total">Итого: <xsl:value-of select="f:exchange_cur(page/cart, 'sum', 0)"/></div>
 							</xsl:if>
 							<div class="cart-total__buttons">
-								<button class="button button_2 cart-total__button" type="submit"
+								<button class="button button_2 cart-total__button" type="submit" style="display: none"
 										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
 								<button class="button button_2 cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
+								<button class="button button_2 cart-total__button" type="submit">Сохранить список BOM</button>
 							</div>
 						</div>
 					</form>

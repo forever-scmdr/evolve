@@ -186,13 +186,46 @@ function postForm(form, lockElementIds, additionalHandling) {
     lock(lockElementIds);
 }
 
+/**
+ * Аналог postForm но с дополнительным параметром data, значение которого:
+ * { key1: 'value1', key2: 'value2' }
+ * @param form
+ * @param lockElementIds
+ * @param additionalHandling
+ */
+function postFormData(form, extraData, lockElementIds, additionalHandling) {
+    if (typeof form == 'string')
+        form = $('#' + form);
+    form.ajaxSubmit({
+        data: extraData,
+        error: function () {
+            alert('Ошибка отправки формы');
+            // Разблокировка частей
+            unlock(lockElementIds);
+        },
+        success: function (data, status, arg3) {
+            processResult(data, additionalHandling, lockElementIds, status, arg3);
+        }
+    });
+    // Блокировка частей
+    lock(lockElementIds);
+}
+
+
 function processResult(data, additionalHandling, lockElementIds, status, arg3) {
     // Вставка результатов (если это возможно)
     var possibleJsonData = null;
     var ajaxInitIds = null;
     if (data != null && data != undefined && data.toString().indexOf('<') == 0) {
         try {
-            var parsedData = $("<div>" + data + "</div>");
+            data = data.trim();
+            console.log(data);
+            var parsedData = null;
+            if (data.startsWith("<tr")) {
+                parsedData = $("<div><table><tbody>" + data + "</tbody></table></div>");
+            } else {
+                parsedData = $("<div>" + data + "</div>");
+            }
             parsedData.find('.result').each(function () {
                 if (ajaxInitIds == null)
                     ajaxInitIds = [];
@@ -405,7 +438,12 @@ function performQuickSearchRequest(input) {
         var queryVar = input.attr("query") ? input.attr("query") : "q";
         var href = input.attr("ajax-href") + "?" + queryVar + "=" + input.val();
         insertAjax(href, null, function (argData) {
-            $("#" + input.attr("result")).show('fade', 100);
+            var resultEl = $("#" + input.attr("result"));
+            if (resultEl.html().replace(/\s/g, "") == '') {
+                resultEl.hide('fade', 100);
+            } else {
+                resultEl.show('fade', 100);
+            }
             //$("#" + input.attr("result")).css("visibility", "visible");
         });
     } else {

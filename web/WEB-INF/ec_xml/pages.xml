@@ -95,6 +95,7 @@
 		<link name="fav_link" target="fav"/>
 		<link name="compare_ajax_link" target="compare_ajax"/>
 		<link name="compare_link" target="compare"/>
+		<link name="boms_link" target="boms"/>
 		<link name="input_bom_link" target="input_bom" type="itemform"/>
 		<link name="validate_bom_link" target="validate_bom_ajax" type="itemform"/>
 		<link name="excel_search_link" target="excel_search" type="itemform"/>
@@ -112,7 +113,9 @@
 		<link name="to_cart_api" target="cart_action">
 			<var name="action" value="addToCart"/>
 		</link>
-
+		<link name="submit_bom_save" target="manage_bom">
+			<var name="action" value="saveNew"/>
+		</link>
 		<single item="modules" cacheable="true">
 			<list item="named_code"/>
 		</single>
@@ -711,7 +714,7 @@
 				</link>
 			</list>
 		</single>
-		<link name="show_all" target="search">
+		<link name="show_all" target="search_api">
 			<var name="q" var="q"/>
 			<!-- <var name="view" value="table" scope="cookie"/>
 			<var name="minqty" value="" scope="cookie"/> -->
@@ -1055,7 +1058,7 @@
 			<var name="q"/>
 			<var name="action"/>
 		</request>
-		<command class="ecommander.special.portal.FormatBomQueryCommand" tag="formatted" method-var="action">
+		<command class="ecommander.special.portal.ManageBomCommand" tag="formatted" method="format">
 			<result name="xml" type="inline_xml"/>
 		</command>
 		<include name="COMMON"/>
@@ -1068,7 +1071,7 @@
 			<var name="q"/>
 			<var name="action"/>
 		</request>
-		<command class="ecommander.special.portal.FormatBomQueryCommand" tag="formatted" method-var="action">
+		<command class="ecommander.special.portal.ManageBomCommand" tag="formatted" method="format">
 			<result name="xml" type="inline_xml"/>
 		</command>
 		<link name="search_api_link" target="search_api"/>
@@ -1922,6 +1925,7 @@
 		<link name="personal_link" target="personal"/>
 		<link name="purchase_history_link" target="purchase_history"/>
 		<link name="register_link" target="register"/>
+		<link name="boms_link" target="boms"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
 		</link>
@@ -1971,7 +1975,83 @@
 	</page>
 
 
+	<page name="boms" template="boms" authority-groups="registered">
+		<personal>
+			<single item="bom_catalog">
+				<list item="bom_list" id="bom">
+					<filter>
+						<sorting direction="DESC"><var value="sort_position"/></sorting>
+					</filter>
+					<link name="show_bom" target="bom_ajax">
+						<var name="bom" ref="bom"/>
+					</link>
+					<link name="edit_name" target="manage_bom">
+						<var name="bom" ref="bom"/>
+						<var name="action" value="updateName"/>
+					</link>
+				</list>
+			</single>
+		</personal>
+		<include name="COMMON"/>
+	</page>
 
+
+	<page name="bom_ajax" template="bom_ajax" authority-groups="registered">
+		<request>
+			<var name="q"/>
+			<var name="bom"/>
+			<var name="result"/>
+			<var name="message"/>
+		</request>
+		<personal>
+			<single item="bom_list" var="bom"/>
+		</personal>
+		<link name="submit_save" target="manage_bom">
+			<var name="action" value="saveNew"/>
+		</link>
+	</page>
+
+
+
+	<page name="manage_bom" authority-groups="registered">
+		<request>
+			<var name="q"/>
+			<var name="bom"/>
+			<var name="action"/>
+		</request>
+		<personal>
+			<single item="bom_list" var="bom" id="bom"/>
+		</personal>
+		<link name="saved" target="bom_ajax">
+			<var name="result" value="saved"/>
+		</link>
+		<link name="name_updated" target="manage_bom_ajax">
+			<var name="result" value="name_updated"/>
+			<var name="bom" var="bom"/>
+		</link>
+		<command class="ecommander.special.portal.ManageBomCommand" method-var="action">
+			<result name="saved" type="redirect"/>
+			<result name="not_set" type="redirect"/>
+			<result name="deleted" type="redirect"/>
+			<result name="inited" type="redirect"/>
+		</command>
+	</page>
+
+
+	<page name="manage_bom_ajax" template="manage_bom_ajax" authority-groups="registered">
+		<request>
+			<var name="bom"/>
+			<var name="result"/>
+		</request>
+		<personal>
+			<single item="bom_list" var="bom" id="bom">
+				<link name="edit_name" target="manage_bom">
+					<var name="bom" ref="bom"/>
+					<var name="action" value="updateName"/>
+				</link>
+			</single>
+		</personal>
+	</page>
 
 
 

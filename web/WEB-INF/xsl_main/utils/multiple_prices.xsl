@@ -19,9 +19,9 @@
         <xsl:choose>
             <xsl:when test="f:is_numeric($sum)">
                 <xsl:variable name="number" select="f:num($sum)"/>
-                <xsl:value-of select="if ($is_byn) then concat(f:format_currency_precise($number), $BYN_cur) else concat(f:format_currency_precise($number), f:cur())"/>
+                <xsl:value-of select="if ($is_byn) then concat(f:format_currency($number), $BYN_cur) else concat(f:format_currency($number), f:cur())"/>
             </xsl:when>
-            <xsl:otherwise><xsl:value-of select="f:format_currency_precise($sum)" /></xsl:otherwise>
+            <xsl:otherwise><xsl:value-of select="f:format_currency($sum)" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
 

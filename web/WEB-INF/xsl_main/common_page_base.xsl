@@ -192,6 +192,22 @@
 						<div class="top-info__content">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
 						</div>
+						<!--
+						<div>
+							<ul class="currency-options">
+								<xsl:variable name="currency_link" select="//page/set_currency"/>
+								<xsl:for-each select="$currencies/*[ends-with(name(), '_rate')]">
+									<xsl:variable name="cur" select="substring-before(name(), '_rate')"/>
+									<xsl:variable name="active" select="$currency = $cur"/>
+									<li class="{'active'[$active]}">
+										<xsl:if test="not($active)"><a href="{concat($currency_link, $cur)}"><xsl:value-of select="$cur"/></a></xsl:if>
+										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
+									</li>
+								</xsl:for-each>
+								<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
+							</ul>
+						</div>
+						-->
 						<xsl:if test="$has_personal">
 							<div id="personal_desktop_login" ajax-href="{//page/personal_ajax_link}" ajax-show-loader="no">
 								<a href="{page/login_link}" class="icon-link">
@@ -239,11 +255,12 @@
 					</a>
 					<div class="header__column header__search header-search search">
 						<xsl:if test="$has_search">
-							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post" class="main_search_form">
+							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post" class="main_search_form"
+								  onsubmit="if ($('#q-ipt').val().length &lt;= 3) return false;">
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
-									   placeholder="Введите поисковый запрос" autocomplete="off"
+									   placeholder="Введите запрос" autocomplete="off"
 									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
 								<button class="button header-search__button" type="submit">Найти</button>
 								<!-- quick search -->
@@ -255,8 +272,8 @@
 					<div class="header__column other-container side-menu">
 						<div class="catalog-currency">
 							<xsl:if test="$has_bom_search">
-								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
-								<a class="icon-link" href="input_bom"><!--  onclick="pressSearchBom(); return false;" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
+								<a class="icon-link"  href="{page/boms_link}"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Списки BOM</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
+								<a class="icon-link" href="input_bom"><!--  onclick="pressSearchBom(); return false;" --><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a> <svg onclick="infobox(2)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg>
 								<form id="hidden_query_header" method="post" action="{page/input_bom_link}" style="display: none">
 									<textarea name="q"><xsl:value-of select="$query" /></textarea>
 								</form>
@@ -264,6 +281,12 @@
 									<div class="text">
 										<a class="popup__close" onclick="infobox('close');">×</a>
 										<div>Text text text text</div>
+									</div>
+								</div>
+								<div class="infobox_modal infobox_2">
+									<div class="text">
+										<a class="popup__close" onclick="infobox('close');">×</a>
+										<div>Text2 text2 text2 text2</div>
 									</div>
 								</div>
 							</xsl:if>
@@ -340,108 +363,10 @@
 				</div>
 			</div>
 		</div>
-<!--
-		<div class="header header_desc_fix">
-			<div class="container">
-				<div class="header__wrap wrap">
-					<div class="header__column header__search header-search search">
-						<xsl:if test="$has_search">
-							<form action="{if ($admin) then page/admin_search_link else $search_link}" method="post" class="main_search_form">
-								<input class="input header-search__input"
-									   ajax-href="{$search_ajax_link}" result="search-result"
-									   query="q" min-size="3" id="q-ipt" type="text"
-									   placeholder="Введите поисковый запрос" autocomplete="off"
-									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
-								<button class="button header-search__button" type="submit">Найти</button>
-								<div class="sw100">
-									<label>Искать: </label>
-									<label>
-										<input type="radio" name="search_type" value="{page/search_api_link}" class="check_api">
-											<xsl:if test="$is_api_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по складам
-									</label>
-									<label>
-										<input type="radio" name="search_type" value="{$search_link}" class="check_catalog">
-											<xsl:if test="$is_catalog_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по каталогу
-									</label>
-									<label>
-										<input type="radio" name="search_type" class="check_docs">
-											<xsl:if test="$is_docs_search"><xsl:attribute name="checked" select="'checked'"/></xsl:if>
-										</input> по документации
-									</label>
-								</div>
-								<xsl:if test="$has_quick_search"><div id="search-result" style="display:none"></div></xsl:if>
-							</form>
-						</xsl:if>
-					</div>
-					<div class="header__column other-container side-menu">
-						<div class="catalog-currency">
-							<xsl:if test="$has_bom_search">
-								<a class="icon-link" href="#"><div class="icon"><img src="img/icon-spec.svg" alt="" /></div><span class="icon-link__item">Спецификации</span></a> <svg onclick="infobox(1)" class="infobox" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="help-popup-trigger-icon"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path></svg><br/>
-								<a class="icon-link" href="#" onclick="pressSearchBom(); return false;"><div class="icon"><img src="img/icon-bom.svg" alt="" /></div><span class="icon-link__item">Поиск BOM</span></a>
-								<div class="infobox_modal infobox_1">
-									<div class="text">
-										<a class="popup__close" onclick="infobox('close');">×</a>
-										<div>Text text text text</div>
-									</div>
-								</div>
-							</xsl:if>
-						</div>
-					</div>
-					<div class="header__column header__column_links">
+	</xsl:template>
 
-						<div class="links">
-							<a href="{if ($common/phone_link and not($common/phone_link = '')) then $common/phone_link else 'kontakty'}" class="icon-link">
-								<div class="icon">
-									<img src="img/icon-phone.svg" alt="" />
-								</div>
-							</a>
-						</div>
-						<div class="user">
 
-							<xsl:if test="$has_fav">
-								<div id="fav_ajax" ajax-href="{page/fav_ajax_link}" ajax-show-loader="no">
-									<a class="icon-link">
-										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
-										<span class="icon-link__item">Избранное</span>
-									</a>
-								</div>
-							</xsl:if>
-							<xsl:if test="$has_compare">
-								<div id="compare_ajax" ajax-href="{page/compare_ajax_link}" ajax-show-loader="no">
-									<a class="icon-link">
-										<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
-										<span class="icon-link__item">Сравнение</span>
-									</a>
-								</div>
-							</xsl:if>
-						</div>
-						<xsl:if test="$has_cart">
-							<div class="cart" id="cart_ajax_2" ajax-href="{page/cart_ajax_link}" ajax-show-loader="no">
-								<a href="{page/cart_link}" class="icon-link">
-									<div class="icon"><img src="img/icon-cart.svg" alt="" /></div>
-									<span class="icon-link__item">Корзина</span>
-								</a>
-							</div>
-						</xsl:if>
-						<div class="user">
-							<div><a class="icon-link" href="#"><div class="icon"><img src="img/icon-star.svg" alt="" /></div><span class="icon-link__item">Анкета</span></a></div>
-							<div><a class="icon-link" href="#" popup="modal-excel"><div class="icon"><img src="img/icon-order.svg" alt="" /></div><span class="icon-link__item">Заказы</span></a></div>
-						</div>
-						<div class="links">
-							<a href="javascript:showMobileMainMenu()" class="icon-link">
-								<div class="icon">
-									<img src="img/ar.svg" alt="" />
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	-->
-
+	<xsl:template name="MAIN_MENU">
 		<div class="main-menu">
 			<div class="container">
 				<div class="main-menu__wrap wrap">
@@ -917,6 +842,10 @@
 				<meta charset="utf-8"/>
 				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
+				<meta http-equiv="cache-control" content="no-cache"/>
+				<meta http-equiv="expires" content="0"/>
+				<meta http-equiv="pragma" content="no-cache"/>
+
 
 				<script defer="defer" src="js/font_awesome_all.js"></script>
 				<script src="js/jquery-3.5.1.min.js"></script>
@@ -1038,14 +967,6 @@
 						initCatalogPopupSubmenu('.sections', '.sections a', '.subsections');
 						</xsl:if>
 						initDropDownHeader();
-						/*
-						<xsl:if test="$has_quick_search">
-                        $("#q-ipt").keyup(function(){
-							alert('ddf');
-							searchAjax(this);
-						});
-                        </xsl:if>
-						*/
 					});
 					<xsl:text disable-output-escaping="yes">
 					function initDropDownHeader() {

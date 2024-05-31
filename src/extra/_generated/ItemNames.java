@@ -41,6 +41,8 @@ public interface ItemNames {
     String BOUGHT = "bought";
     String CART = "cart";
     String PURCHASE = "purchase";
+    String BOM_LIST = "bom_list";
+    String BOM_CATALOG = "bom_catalog";
     String USER = "user";
     String USER_JUR = "user_jur";
     String USER_PHYS = "user_phys";
@@ -202,6 +204,23 @@ public interface ItemNames {
     public interface block_array_ {
 
         String _ITEM_NAME = "block_array";
+
+    }
+
+    public interface bom_catalog_ {
+
+        String _ITEM_NAME = "bom_catalog";
+
+    }
+
+    public interface bom_list_ {
+
+        String _ITEM_NAME = "bom_list";
+        String NAME = "name";
+        String DESCRIPTION = "description";
+        String DATE = "date";
+        String SORT_POSITION = "sort_position";
+        String LINE = "line";
 
     }
 

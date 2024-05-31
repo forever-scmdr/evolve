@@ -24,7 +24,7 @@
 				<script>var REGISTERED = true;</script>
 			</div>
 			<div class="result" id="personal_desktop_extra">
-				<div style="margin-left: 10px;">
+				<div style="margin-left: 10px; margin-top: 10px">
 					<a href="{page/personal_link}" class="icon-link">
 						<div class="icon"><img src="img/icon-history.svg" alt="" /></div>
 						<span class="icon-link__item">Профиль</span>
@@ -32,7 +32,7 @@
 				</div>
 				<div style="margin-left: 10px;">
 					<a href="{page/purchase_history_link}" class="icon-link">
-						<div class="icon"><img src="img/icon-order.svg" alt="" /></div>
+						<div class="icon"><img src="img/icon-bill.svg" alt="" /></div>
 						<span class="icon-link__item">Заказы</span>
 					</a>
 				</div>

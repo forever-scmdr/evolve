@@ -573,6 +573,19 @@
 		<child item="bought"/>
 	</item>
 
+
+	<item name="bom_list" caption="Список BOM" key="name" ag-id="2704" ag-hash="1937015741">
+		<parameter name="name" caption="Название" type="string" default="Новый список BOM"/>
+		<parameter name="description" caption="Заметка" type="string"/>
+		<parameter name="date" caption="Дата" type="date" description="создания или последнего поиска"/>
+		<parameter name="sort_position" type="integer" caption="Позиция при сортировке" description="позиция в списке при выводе"/>
+		<parameter name="line" caption="Строка" type="tuple" multiple="true"/>
+	</item>
+
+	<item name="bom_catalog" caption="Каталог BOM" ag-id="2705" ag-hash="-1170815846">
+		<child item="bom_list"/>
+	</item>
+
 	<item name="user" caption="Зарегистрированный пользователь" key="email" ag-id="821" ag-hash="3599307">
 		<parameter name="email" type="string" caption="E-mail"/>
 		<parameter name="phone" type="string" caption="Телефон"/>
@@ -580,6 +593,7 @@
 		<parameter name="registered" type="byte" caption="Флаг зарегистрированности" domain="0-1" default="0"/>
 		<parameter name="payment" type="string" caption="название электронной системы оплаты"/>
 		<child item="purchase"/>
+		<child item="bom_catalog" single="true"/>
 		<on-create class="ecommander.fwk.ManageUsers$OnCreate"/>
 		<on-update class="ecommander.fwk.ManageUsers$OnUpdate"/>
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>

@@ -169,7 +169,7 @@ public class DataGetter {
 
         // Применить фильтры
         for (String query : queryXmls.keySet()) {
-            String filtered = applyFilters(queryXmls.get(query), queries.get(query), isBom);
+            String filtered = applyFilters(queryXmls.get(query), queries.get(query));
             queryXmls.put(query, filtered);
         }
 
@@ -273,10 +273,9 @@ public class DataGetter {
      * Применить заданные фильтры и сортировку
      * @param xml
      * @param queryQuantity
-     * @param isBom
      * @return
      */
-    public String applyFilters(String xml, Integer queryQuantity, boolean isBom) {
+    public String applyFilters(String xml, Integer queryQuantity) {
         boolean hasQualityFilter = input.hasVendorFilter() || input.hasShipDateFilter() || input.hasFromFilter()
                 || input.hasToFilter() || input.hasDistributorFilter();
         final int requestedQuantity = queryQuantity == null ? 1 : queryQuantity;
@@ -386,7 +385,7 @@ public class DataGetter {
 
         // *****************************
         // Распределение количества по первым нескольким предложениям (продуктам)
-        if (isBom) {
+        if (requestedQuantity > 0) {
             int desiredQty = requestedQuantity;
             for (Element product : doc.select("product")) {
                 int qtyToOffer = qtyToOffer(product, desiredQty);

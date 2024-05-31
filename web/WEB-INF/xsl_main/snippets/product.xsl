@@ -143,6 +143,7 @@
 					<xsl:with-param name="p" select="current()"/>
 				</xsl:call-template>
 			</div>
+			<!--
 			<div class="add">
 				<div id="spec_list_{@id}">
 					<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
@@ -151,6 +152,7 @@
 					</a>
 				</div>
 			</div>
+			-->
 			<div class="add">
 				<a href="{$main_ds/a/@href}" class="icon-link product-icons__item" download="{$main_ds/a/@href}">
 					<div class="icon icon_size_lg">
@@ -434,6 +436,7 @@
 						<xsl:with-param name="p" select="current()"/>
 					</xsl:call-template>
 				</div>
+				<!--
 				<div class="add">
 					<div id="spec_list_{@id}">
 						<a href="{to_spec}" class="add__item icon-link" ajax="true" ajax-loader-id="spec_list_{@id}">
@@ -442,6 +445,7 @@
 						</a>
 					</div>
 				</div>
+				-->
 				<div class="add">
 					<a href="{$main_ds/a/@href}" class="icon-link product-icons__item" download="{$main_ds/a/@href}">
 						<div class="icon icon_size_lg">
@@ -825,7 +829,11 @@
 					<div class="div-td td-distributor">
 						<div class="thn">Поставщик</div>
 						<div class="thd"><xsl:value-of select="$p/category_id"/></div>
-						<div><span style="font-size: smaller">доступно </span><span style="font-weight: bold; color: #309900"><xsl:value-of select="qty"/></span></div>
+						<div>
+							<span style="font-size: smaller">доступно </span>
+							<xsl:variable name="color" select="if (f:num(qty) &lt; f:num($req_qty)) then '#d08000' else '#308800'"/>
+							<span style="font-weight: bold; color: {$color}"><xsl:value-of select="qty"/></span>
+						</div>
 					</div>
 				</xsl:if>
 				<xsl:if test="$is_admin">
@@ -1120,7 +1128,7 @@
 						<xsl:for-each select="$valid_queries">
 							<xsl:variable name="visible_prods" select="product[position() = 1 or f:num(@request_qty) &gt; 0]"/>
 							<xsl:variable name="hidden_prods" select="product[position() &gt; 1 and not(@request_qty)]"/>
-							<div class="green" qty="{@qty}" query_id="{@id}">
+							<div class="green" query="{@q}" qty="{@qty}" query_id="{@id}">
 								<xsl:if test="$visible_prods">
 									<div class="div-row blue blue_header">
 										<div class="div-td td-check">
@@ -1170,7 +1178,7 @@
 							</div>
 						</xsl:for-each>
 						<xsl:for-each select="$invalid_queries">
-							<div class="green" qty="{@qty}" query_id="{@id}">
+							<div class="green" query="{@q}" qty="{@qty}" query_id="{@id}">
 								<div class="div-row red not_found">
 									<div class="div-tr">
 										<div class="div-td td-check">❌</div>

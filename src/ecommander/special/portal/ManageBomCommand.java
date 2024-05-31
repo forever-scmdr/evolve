@@ -2,18 +2,28 @@ package ecommander.special.portal;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
-import ecommander.model.datatypes.DecimalDataType;
+import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.model.UserGroupRegistry;
+import ecommander.model.datatypes.TupleDataType;
 import ecommander.pages.Command;
+import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.ItemMapper;
 import ecommander.special.portal.outer.providers.OuterInputData;
+import extra._generated.ItemNames;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -27,12 +37,23 @@ import java.nio.charset.StandardCharsets;
  * </bom>
  *
  */
-public class FormatBomQueryCommand extends Command {
+public class ManageBomCommand extends Command implements ItemNames {
+
+    public static final String REGISTERED = "registered";
 
     private final String CACHE_DIR = "files/search";
 
     @Override
     public ResultPE execute() throws Exception {
+        return null;
+    }
+
+    /**
+     * Создать BOM XML запрос из переданной строки
+     * @return
+     * @throws EcommanderException
+     */
+    public ResultPE format() throws EcommanderException {
         ResultPE result = getResult("xml");
         if (getItemForm() == null)
             return result;
@@ -56,6 +77,70 @@ public class FormatBomQueryCommand extends Command {
         // установить переменную страницы, чтобы можно было потом использовать (эта переменная сейчас в itemform)
         setPageVariable("q", query);
         return result;
+    }
+
+    /**
+     * Новый список
+     * @return
+     * @throws Exception
+     */
+    public ResultPE saveNew() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        Item userItem = new ItemQuery(USER).setUser(user).loadFirstItem();
+        if (userItem == null)
+            return null;
+        Item catalog = ItemUtils.ensureSingleItem(BOM_CATALOG, user, userItem.getId(), UserGroupRegistry.getGroup(REGISTERED), user.getUserId());
+        Item newList = Item.newChildItem(ItemTypeRegistry.getItemType(BOM_LIST), catalog);
+        String query = getInputSingleValueDefault("q", null);
+        if (StringUtils.isNotBlank(query)) {
+            String name = getInputSingleValueDefault("name", "Новый BOM-лист");
+            String desc = getInputSingleValueDefault("desc", "");
+            OuterInputData input = OuterInputData.createForBomParsing(query);
+            for (String line : input.getQueries().keySet()) {
+                String qty = input.getQueries().get(line) + "";
+                newList.setValue(bom_list_.LINE, TupleDataType.newTuple(line, qty));
+            }
+            if (newList.isValueNotEmpty(bom_list_.LINE)) {
+                Item maxPosition = new ItemQuery(BOM_LIST).setParentId(catalog.getId(), false)
+                        .setAggregation(bom_list_.SORT_POSITION, "MAX", "ASC")
+                        .loadFirstItem();
+                int position = 0;
+                if (maxPosition != null) {
+                    position = maxPosition.getIntValue(bom_list_.SORT_POSITION, 0);
+                }
+                position++;
+                newList.setValue(bom_list_.SORT_POSITION, position);
+                newList.setValue(bom_list_.NAME, name);
+                newList.setValue(bom_list_.DESCRIPTION, desc);
+                newList.setValue(bom_list_.DATE, DateTime.now(DateTimeZone.UTC).getMillis());
+                executeAndCommitCommandUnits(SaveItemDBUnit.get(newList));
+            }
+        }
+        return getResult("saved");
+    }
+
+    /**
+     * Обновить только название и описание бом листа
+     * @return
+     * @throws Exception
+     */
+    public ResultPE updateName() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        Item bom = getSingleLoadedItem("bom");
+        if (bom == null)
+            return null;
+        String name = getInputSingleValueDefault("name", null);
+        String desc = getInputSingleValueDefault("desc", null);
+        if (StringUtils.isBlank(name))
+            return null;
+        bom.setValue(bom_list_.NAME, name);
+        bom.setValue(bom_list_.DESCRIPTION, desc);
+        executeAndCommitCommandUnits(SaveItemDBUnit.get(bom));
+        return getResult("name_updated");
     }
 
     /**
