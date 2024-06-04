@@ -328,7 +328,7 @@
         <xsl:param name="url"/>
         <xsl:param name="name"/>
         <xsl:param name="value"/>
-        <xsl:variable name="union" select="if (contains($url, '\?')) then '&amp;' else '?'"/>
+        <xsl:variable name="union" select="if (contains($url, '?')) then '&amp;' else '?'"/>
         <xsl:value-of select="concat($url, $union, $name, '=', $value)"/>
     </xsl:function>
 

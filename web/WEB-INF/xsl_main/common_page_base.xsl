@@ -851,6 +851,7 @@
 				<script src="js/jquery-3.5.1.min.js"></script>
 				<script src="js/fotorama.js"></script>
 				<script src="js/slick.min.js"></script>
+				<script type="text/javascript" src="admin/js/admin.js"/>
 				<script src="js/script.js"></script>
 
 				<xsl:if test="//map_part">

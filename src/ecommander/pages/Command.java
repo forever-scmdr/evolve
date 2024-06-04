@@ -225,6 +225,28 @@ public abstract class Command implements AutoCloseable {
 		val = getItemForm().getSingleStringExtra(varOrExtraName);
 		return StringUtils.isNotBlank(val) ? val : defaultValue;
 	}
+
+	/**
+	 * Получить список значений переменной, либо itemform extra с таким названием
+	 * Метод нужен если значение может передаваться и через get и через post запросы
+	 * @param varOrExtraName
+	 * @return
+	 */
+	public final ArrayList<String> getInputValues(String varOrExtraName) {
+		List<Object> vals = getVarValues(varOrExtraName);
+		if (vals == null || vals.size() == 0) {
+			if (getItemForm() != null) {
+				vals = getItemForm().getExtras().getExtraList(varOrExtraName);
+			}
+		}
+		ArrayList<String> result = new ArrayList<>();
+		if (vals == null || vals.size() == 0)
+			return result;
+		for (Object val : vals) {
+			result.add(val.toString());
+		}
+		return result;
+	}
 	/**
 	 * Вернуть несколько значений страничной переменной
 	 * @param varName

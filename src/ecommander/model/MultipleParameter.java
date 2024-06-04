@@ -71,7 +71,11 @@ public final class MultipleParameter extends Parameter {
 	 * @param value
 	 */
 	public void deleteValue(Object value) {
-		values.remove(createSP(value, true));
+		SingleParameter sp = createSP(value, true);
+		if (values.contains(sp)) {
+			backup();
+			values.remove(sp);
+		}
 	}
 
 	public Collection<SingleParameter> getValues() {

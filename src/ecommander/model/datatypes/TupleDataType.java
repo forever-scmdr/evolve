@@ -20,8 +20,9 @@ public class TupleDataType extends FormatDataType {
 
 	private static TupleFormatter DEFAULT_FORMAT = new TupleFormatter();
 
+	public static final String DEFAULT_SEPARATOR = "$+$";
+
 	private static class TupleFormatter {
-		private static String DEFAULT_SEPARATOR = "$+$";
 
 		private String format = DEFAULT_SEPARATOR;
 
@@ -35,10 +36,7 @@ public class TupleDataType extends FormatDataType {
 		}
 
 		private Pair<String, String> parse(String str) {
-			String[] values = StringUtils.splitByWholeSeparator(str, format);
-			if (values == null || values.length == 0 || StringUtils.isBlank(values[0]))
-				return null;
-			return values.length == 1 ? new Pair<>(values[0], null) : new Pair<>(values[0], values[1]);
+			return TupleDataType.parse(str, format);
 		}
 
 		private String output(Pair<String, String> value) {
@@ -85,6 +83,11 @@ public class TupleDataType extends FormatDataType {
 		return metas;
 	}
 
+	@Override
+	public boolean getEquals(Object o1, Object o2) {
+		return StringUtils.equals(((Pair<String, String>) o1).getLeft(), ((Pair<String, String>) o2).getLeft());
+	}
+
 	public static String outputTuple(Object value, Object formatter) {
 		if (formatter == null) formatter = DEFAULT_FORMAT;
 		return ((TupleFormatter) formatter).output((Pair<String, String>) value);
@@ -99,5 +102,18 @@ public class TupleDataType extends FormatDataType {
 	 */
 	public static Object newTuple(String name, String value) {
 		return new Pair<>(name, value);
+	}
+
+	/**
+	 * Значение Tuple (Pair) из строки
+	 * @param str
+	 * @param format
+	 * @return
+	 */
+	public static Pair<String, String> parse(String str, String format) {
+		String[] values = StringUtils.splitByWholeSeparator(str, format);
+		if (values == null || values.length == 0 || StringUtils.isBlank(values[0]))
+			return null;
+		return values.length == 1 ? new Pair<>(values[0], null) : new Pair<>(values[0], values[1]);
 	}
 }

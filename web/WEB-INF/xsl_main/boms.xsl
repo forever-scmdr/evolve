@@ -28,59 +28,79 @@
 			<tr>
 				<th width="10px">#</th>
 				<th width="20px"></th>
-				<th width="40%">Название</th>
 				<th width="30px"></th>
+				<th width="30%">Название</th>
 				<th width="30px">строк</th>
-				<th width="30%">Заметка</th>
+				<th width="40%">Заметка</th>
 				<th>Действие</th>
 			</tr>
 			<xsl:for-each select="page/bom_catalog/bom_list">
 				<xsl:variable name="id" select="@id"/>
 				<tr class="softgreen" id="bl_main_{@id}">
 					<td><input type="checkbox"></input></td>
-					<td><a href="#" style="font-size: larger" onclick="$('.hide_{$id}').toggle(); return false;">➕</a></td>
-					<td onclick="showInputs(this)">
-						<span><xsl:value-of select="name" /></span>
-						<input name="name" type="text" value="{name}" style="width: 100%; display: none" onblur="hideInputs(this)" onfocusout="hideInputs(this)"/>
+					<td>
+						<a href="#" style="font-size: larger" onclick="$('.hide_{$id}').toggle(); return false;">
+							<span class="hide_{$id}">➕</span>
+							<span class="hide_{$id}" style="display: none">➖</span>
+						</a>
 					</td>
 					<td>
 						<form action="{edit_name}" method="post"></form>
 						<a href="#" style="font-size: larger; display: none" onclick="submitName(this); return false" class="edit_line" onmouseover="noHide = true;" onmouseleave="noHide = false;">✎</a>
+					</td>
+					<td onclick="showInputs(this)">
+						<span><xsl:value-of select="name" /></span>
+						<input name="name" type="text" value="{name}" style="width: 100%; display: none" onblur="hideInputs(this)" onfocusout="hideInputs(this)"/>
 					</td>
 					<td><xsl:value-of select="count(line)" /></td>
 					<td onclick="showInputs(this)">
 						<span><xsl:value-of select="description" /></span>
 						<input name="desc" type="text" value="{description}" style="width: 100%; display: none" onblur="hideInputs(this)" onfocusout="hideInputs(this)"/>
 					</td>
-					<td>[<a href="#">Повторить поиск</a>] [<a href="#">X</a>]</td>
+					<td>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">Повторить поиск</a>
+						<a href="#" class="confirm-dialog" onclick="confirmLink('{delete_bom}', this); return false;">❌</a>
+					</td>
 				</tr>
-				<tr class="hide_{$id}" style="background-color: #fffae5; display: none" id="bl_lines_{@id}">
-					<td colspan="6" style="font-weight: initial;">
-						<table>
+				<tr class="hide_{$id}" style="background-color: #fffae5; display: none">
+					<td colspan="7" style="font-weight: initial;" id="bl_lines_{@id}">
+						<table style="margin-bottom: -9px">
 							<xsl:for-each select="line">
 								<tr>
-									<td width="10px"><input type="checkbox"></input></td>
+									<td width="10px"><input name="name" type="checkbox" value="{.}"></input></td>
 									<td width="20px"></td>
 									<td width="40%"><xsl:value-of select="@key" /></td>
 									<td width="40px"><xsl:value-of select="@value" /></td>
-									<td width="30px">[<a href="#">X</a>]</td>
+									<td width="30px"><a href="#" onclick="confirmAjax('{f:var_into_url(../delete_line, 'name', .)}', this); return false;" class="confirm-dialog">🗙</a></td>
 									<td colspan="3"></td>
 								</tr>
 							</xsl:for-each>
 							<tr>
 								<td></td>
 								<td></td>
-								<td><input name="query" style="width: 100%; border: #b0b0b0 solid 1px;"/></td>
-								<td><input name="qty" style="width: 100%; border: #b0b0b0 solid 1px;"/></td>
-								<td>[<a href="#">+</a>]</td>
+								<td colspan="2">
+									<form action="{add_line}" id="bl_add_{@id}" method="post" ajax="true" ajax-loader-id="bl_add_{@id}">
+										<input name="name" style="width: 90%; border: #b0b0b0 solid 1px;"/>
+										<input name="qty" type="number" min="1" style="width: 10%; border: #b0b0b0 solid 1px;"/>
+									</form>
+									<form action="{delete_line}" id="bl_delete_{@id}" ajax="true" ajax-loader-id="bl_lines_{@id}"/>
+								</td>
+								<td><a href="#" onclick="$('#bl_add_{@id}').submit(); return false;" class="button" style="padding: 1px 16px;">+</a></td>
 								<td colspan="3"></td>
 							</tr>
 						</table>
 					</td>
 				</tr>
-				<tr class="hide_{$id}" style="background-color: #fffae5; display: none">
+				<tr class="hide_{$id}" style="background-color: #fffae5; display: none;">
 					<td></td>
-					<td colspan="5">[<a href="#">удалить выделенное</a>] [<a href="#">копировать список</a>] [<a href="#">повторить поиск</a>]</td>
+					<td></td>
+					<td colspan="5">
+						<a href="#" class="button confirm-dialog" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;"
+						   onclick="confirmFunction(function() {{$('#bl_delete_{@id}').append($('#bl_lines_{@id}').find('input:checked')); $('#bl_delete_{@id}').submit(); }}, this); return false;">удалить выделенное</a>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">копировать список</a>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">повторить поиск</a>
+						<script></script>
+					</td>
 				</tr>
 			</xsl:for-each>
 		</table>

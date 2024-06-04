@@ -8,11 +8,10 @@ import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.TupleDataType;
 import ecommander.pages.Command;
-import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
+import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
-import ecommander.persistence.mappers.ItemMapper;
 import ecommander.special.portal.outer.providers.OuterInputData;
 import extra._generated.ItemNames;
 import org.apache.commons.fileupload.FileItem;
@@ -25,6 +24,7 @@ import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  * Команда, которая преобразует строку, введенную пользователем, в XML структуру для BOM запроса
@@ -141,6 +141,68 @@ public class ManageBomCommand extends Command implements ItemNames {
         bom.setValue(bom_list_.DESCRIPTION, desc);
         executeAndCommitCommandUnits(SaveItemDBUnit.get(bom));
         return getResult("name_updated");
+    }
+
+    /**
+     * Удалить строку из списка BOM
+     * @return
+     * @throws Exception
+     */
+    public ResultPE deleteLine() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        Item bom = getSingleLoadedItem("bom");
+        if (bom == null)
+            return null;
+        ArrayList<String> vals = getInputValues("name");
+        if (vals.size() == 0)
+            return null;
+        for (String tupleStr : vals) {
+            tupleStr = StringUtils.replace(tupleStr, "$ $", "$+$");
+            Object tuple = TupleDataType.parse(tupleStr, TupleDataType.DEFAULT_SEPARATOR);
+            bom.removeEqualValue(bom_list_.LINE, tuple);
+        }
+        executeAndCommitCommandUnits(SaveItemDBUnit.get(bom));
+        return getResult("list_updated");
+    }
+
+    /**
+     * Добавить строку к списку BOM
+     * @return
+     * @throws Exception
+     */
+    public ResultPE addLine() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        Item bom = getSingleLoadedItem("bom");
+        if (bom == null)
+            return null;
+        String name = getInputSingleValueDefault("name", null);
+        String qty = getInputSingleValueDefault("qty", null);
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(qty))
+            return null;
+        Object tuple = TupleDataType.newTuple(name, qty);
+        bom.setValue(bom_list_.LINE, tuple);
+        executeAndCommitCommandUnits(SaveItemDBUnit.get(bom));
+        return getResult("list_updated");
+    }
+
+    /**
+     * Удалить выбранный BOM список
+     * @return
+     * @throws Exception
+     */
+    public ResultPE deleteBom() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        Item bom = getSingleLoadedItem("bom");
+        if (bom == null)
+            return null;
+        executeAndCommitCommandUnits(ItemStatusDBUnit.delete(bom));
+        return getResult("all_updated");
     }
 
     /**

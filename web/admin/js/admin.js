@@ -1,3 +1,15 @@
+/*
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *
+ * 			ДЛЯ ИСПОЛЬЗОВАНИЯ confirm... Элемент, на котором вызывается
+ * 			этот диалог должен иметь класс confirm-dialog
+ *
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
+
+
 function confirmLink(href , el) {
 	destroyDialog();
 	buildDialog("Вы уверены?");
@@ -17,8 +29,8 @@ function confirmLink(href , el) {
 $(document).on("click","body", function (e) {
 	var trg = $(e.target);
 	if(!trg.is("#confirm-dialog") && trg.closest("#confirm-dialog").length == 0 && !trg.is(".call-function") && trg.closest(".call-function").length == 0
-		&& !trg.is(".confirm-select") && trg.closest(".confirm-select").length == 0) {
-        destroyDialog();
+		&& !trg.is(".confirm-dialog") && trg.closest(".confirm-dialog").length == 0) {
+		destroyDialog();
 	}
 });
 
@@ -41,6 +53,7 @@ function buildDialog(message) {
 
 function positionDialog(el) {
 	el = $(el);
+
 	var ctrls = el.closest(".controls");
 	ctrls.css({display : "block"});
 
@@ -80,6 +93,53 @@ function confirmAjaxView(link, viewId, postProcess, el) {
         destroyDialog();
     });
 }
+
+/**
+ * Отправка отдельного AJAX запроса (отправить или не отправлять)
+ * @param url
+ * @param lockElementIds
+ * @param postProcess
+ */
+function confirmAjax(url, positionElement, lockElementIds, postProcess) {
+	destroyDialog();
+	buildDialog("Вы уверены?");
+	positionDialog(positionElement);
+	$("#dialog-yes-button").click(function (e) {
+		e.preventDefault();
+		destroyDialog();
+		insertAjax(url, lockElementIds, postProcess);
+	});
+
+	$("#dialog-no-button").click(function (e) {
+		e.preventDefault();
+		$("#dialog-yes-button, #dialog-no-button").unbind("click");
+		destroyDialog();
+	});
+}
+
+/**
+ * Отправка отдельного AJAX запроса (отправить или не отправлять)
+ * @param url
+ * @param lockElementIds
+ * @param postProcess
+ */
+function confirmFunction(func, positionElement) {
+	destroyDialog();
+	buildDialog("Вы уверены?");
+	positionDialog(positionElement);
+	$("#dialog-yes-button").click(function (e) {
+		e.preventDefault();
+		destroyDialog();
+		func();
+	});
+
+	$("#dialog-no-button").click(function (e) {
+		e.preventDefault();
+		$("#dialog-yes-button, #dialog-no-button").unbind("click");
+		destroyDialog();
+	});
+}
+
 
 /**
  * Вывести диалоговое окно с произвольной функцией.
@@ -158,7 +218,7 @@ function prepareSimpleFormView(formId, postProcess) {
  * @param type - fancybox (ajax fancybox), iframe (iframe fancybox), ajax (insertAjax), simple or no value (redirect)
  */
 function positionOnly(el, message, href, type){
-    destroyDialog();
+	destroyDialog();
     buildDialog(message);
     positionDialog(el);
     $("#dialog-yes-button").click(function (e) {

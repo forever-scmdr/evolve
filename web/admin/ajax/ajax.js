@@ -219,7 +219,6 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
     if (data != null && data != undefined && data.toString().indexOf('<') == 0) {
         try {
             data = data.trim();
-            console.log(data);
             var parsedData = null;
             if (data.startsWith("<tr")) {
                 parsedData = $("<div><table><tbody>" + data + "</tbody></table></div>");

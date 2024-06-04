@@ -210,7 +210,7 @@
 												</a>
 												<label>
 													Назначить группу: (<xsl:value-of select="$item/@user-group-name"/>)&#160;
-													<select class="confirm-select" id="new-owner-group" onchange="positionOnly('#new-owner-group', 'Изменить группу?', $(this).val(), 'simple')">
+													<select class="confirm-dialog" id="new-owner-group" onchange="positionOnly('#new-owner-group', 'Изменить группу?', $(this).val(), 'simple')">
 														<option value="{@href}"><xsl:value-of select="@name"/></option>
 														<xsl:for-each select="admin-page/group">
 															<option value="{@href}"><xsl:value-of select="@name"/></option>

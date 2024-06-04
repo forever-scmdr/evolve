@@ -4176,3 +4176,64 @@ iframe.skiptranslate{
 tr.softgreen {
 	background-color: #e0ffe0;
 }
+
+
+.dialog-tip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #fff;
+	padding: 5px 10px;
+	z-index: 2;
+	font-size: 12px;
+	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+	text-align: center;
+}
+
+.dialog-tip::before, .dialog-tip::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -12px;
+	border: 6px solid transparent;
+	border-top: 6px solid #ccc;
+	margin-left: -6px;
+}
+
+.dialog-tip::after {
+	border-top: 6px solid #fff;
+	bottom: -11px;
+}
+
+.dialog-tip .dialog-message {
+	margin: 5px 0;
+	margin-bottom: 10px;
+}
+
+.dialog-tip .button {
+	display: inline-block;
+	vertical-align: top;
+	padding: 4px 8px;
+	text-align: center;
+	color: #fff;
+	cursor: pointer;
+	background: #b7b7b7;
+	margin-right: 15px;
+	border-radius: 3px;
+
+}
+
+.dialog-tip .button.yes {
+	background-color: #56C493;
+}
+
+.dialog-tip .button.no {
+	background-color: #DA4453;
+}
+
+.dialog-tip .button:last-of-type {
+	margin-right: 0;
+}

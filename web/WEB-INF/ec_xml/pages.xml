@@ -1989,6 +1989,18 @@
 						<var name="bom" ref="bom"/>
 						<var name="action" value="updateName"/>
 					</link>
+					<link name="delete_line" target="manage_bom">
+						<var name="bom" ref="bom"/>
+						<var name="action" value="deleteLine"/>
+					</link>
+					<link name="add_line" target="manage_bom">
+						<var name="bom" ref="bom"/>
+						<var name="action" value="addLine"/>
+					</link>
+					<link name="delete_bom" target="manage_bom">
+						<var name="bom" ref="bom"/>
+						<var name="action" value="deleteBom"/>
+					</link>
 				</list>
 			</single>
 		</personal>
@@ -2029,6 +2041,11 @@
 			<var name="result" value="name_updated"/>
 			<var name="bom" var="bom"/>
 		</link>
+		<link name="list_updated" target="manage_bom_ajax">
+			<var name="result" value="list_updated"/>
+			<var name="bom" var="bom"/>
+		</link>
+		<link name="all_updated" target="boms"/>
 		<command class="ecommander.special.portal.ManageBomCommand" method-var="action">
 			<result name="saved" type="redirect"/>
 			<result name="not_set" type="redirect"/>
@@ -2048,6 +2065,14 @@
 				<link name="edit_name" target="manage_bom">
 					<var name="bom" ref="bom"/>
 					<var name="action" value="updateName"/>
+				</link>
+				<link name="delete_line" target="manage_bom">
+					<var name="bom" ref="bom"/>
+					<var name="action" value="deleteLine"/>
+				</link>
+				<link name="add_line" target="manage_bom">
+					<var name="bom" ref="bom"/>
+					<var name="action" value="addLine"/>
 				</link>
 			</single>
 		</personal>
