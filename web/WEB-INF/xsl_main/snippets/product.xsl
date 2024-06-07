@@ -804,7 +804,7 @@
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 		<xsl:variable name="p" select="current()"/>
-		<div class="div-row red" qty="{qty}" price="{prices/@price}" min_qty="{min_qty}" step="{step}">
+		<div class="div-row red{if (not($multiple)) then ' blue_visible' else ''}" qty="{qty}" price="{prices/@price}" min_qty="{min_qty}" step="{step}">
 			<div class="div-tr">
 				<xsl:if test="$multiple">
 					<div class="div-td td-check">
@@ -850,8 +850,10 @@
 					</div>
 				</div>
 				<div class="div-td td-date">
+					<xsl:variable name="dlv_" select="replace(lower-case(next_delivery), 'weeks', 'недели')"/>
+					<xsl:variable name="dlv" select="replace(lower-case($dlv_), 'days', 'дни')"/>
 					<div class="thn">Срок поставки</div>
-					<div class="thd"><xsl:value-of select="if (not(next_delivery = '')) then next_delivery else 'согласуется после оформления заказа'"/></div>
+					<div class="thd"><xsl:value-of select="if (not($dlv = '')) then $dlv else 'согласуется после оформления заказа'"/></div>
 				</div>
 				<div class="div-td td-price">
 					<div class="thn">Цена</div>
@@ -980,22 +982,28 @@
 			<!-- device order -->
 			<div class="order device-order cart_list_{$p/@key}" id="cart_bom_{$p/@key}">
 				<form action="{$to_cart_api_link}" method="post" ajax="true" ajax-loader-id="cart_bom_{$p/@key}">
-					<input type="hidden" name="prod" value="-10"/>
-					<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
-					<span style="margin-top: 3px">✕</span>
-					<input type="number"
-						   class="input input_type_number" name="qty" style="width:65px"
-						   value="{if ($default_qty &gt;= 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
-						   min="0"
-						   max="{$p/qty}"
-						   step="{if ($p/step) then f:num($p/step) else $step_default}" /> <!-- min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" -->
-					<span class="line_sum" style="margin-top: 3px"></span>
+					<div>
+						<div class="mb-3">
+							<input type="hidden" name="prod" value="-10"/>
+							<textarea name="outer" style="display: none"><xsl:copy-of select="$p"/></textarea>
+							<span style="margin-top: 3px">✕</span>
+							<input type="number"
+								   class="input input_type_number" name="qty" style="width:65px"
+								   value="{if ($default_qty &gt;= 0) then $default_qty else if ($p/min_qty) then f:num($p/min_qty) else 1}"
+								   min="0"
+								   max="{$p/qty}"
+								   step="{if ($p/step) then f:num($p/step) else $step_default}" /> <!-- min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" -->
+							<span class="line_sum" style="margin-top: 3px"></span>
+						</div>
+					<div>
 					<xsl:if test="$has_price">
 						<button class="button" type="submit" style="{'display: none'[$multiple]}"><xsl:value-of select="$to_cart_available_label"/></button>
 					</xsl:if>
 					<xsl:if test="not($has_price)">
 						<button class="button button_request" type="submit" style="{'display: none'[$multiple]}"><xsl:value-of select="$to_cart_na_label"/></button>
 					</xsl:if>
+					</div>
+				</div>
 				</form>
 			</div>
 		</xsl:if>

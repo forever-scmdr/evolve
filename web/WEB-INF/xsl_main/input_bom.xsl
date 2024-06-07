@@ -63,8 +63,10 @@
 				</script>
 				<div style="display: flex">
 					<div>
-						<button class="button" type="submit">Сформировать список BOM</button>
-						<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-left: 10px; margin-right: 10px;">Найти</button>
+						<button class="button" type="submit" style="margin-right: 10px; ">Сформировать список BOM</button>
+						<xsl:if test="page/formatted/xml/bom">
+							<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-right: 10px;">Найти</button>
+						</xsl:if>
 						<xsl:call-template name="SAVE_BOM_BUTTON"/>
 					</div>
 					<!--
@@ -88,6 +90,12 @@
 						</tr>
 					</xsl:for-each>
 				</table>
+				<div style="display: flex">
+					<div>
+						<button class="button" type="submit" onclick="submitSearch(); return false;" style="margin-right: 10px;">Найти</button>
+						<xsl:call-template name="SAVE_BOM_BUTTON"/>
+					</div>
+				</div>
 			</xsl:if>
 		</div>
 		<xsl:if test="$seo/bottom_text !=''">

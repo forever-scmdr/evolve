@@ -52,8 +52,8 @@
         </xsl:if>
 		<div class="search_cart">
 			<form action="/cart/" method="post">
-				<input class="input header-search__input"  type="text" placeholder="Введите запрос" autocomplete="off"/>
-				<button class="button header-search__button" type="submit">Найти</button>
+				<input class="input header-search__input"  type="text" placeholder="Введите название товара для поиска в корзине" autocomplete="off"/>
+				<button class="button header-search__button" type="submit">Поиск по корзине</button>
 			</form>
 		</div>
 
@@ -68,7 +68,7 @@
 							<xsl:variable name="po" select="$outer/prod/product"/>
 							<xsl:variable name="multipe_prices" select="$po/prices"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+							<xsl:variable name="sum" select="if (f:num(sum) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 							<xsl:variable name="not_api" select="$p/@id &gt; 0"/>
 							<xsl:variable name="ajax_suffix" select="if ($not_api) then code else product/@key"/>
 							<xsl:variable name="total_qty" select="if ($not_api and not($p/qty)) then '1000' else $p/qty"/>
@@ -135,8 +135,10 @@
 									<span><xsl:value-of select="$po/qty" /></span>
 								</div>
 								<div class="cart-item__postavka">
+									<xsl:variable name="dlv_" select="replace(lower-case($po/next_delivery), 'weeks', 'недели')"/>
+									<xsl:variable name="dlv" select="replace(lower-case($dlv_), 'days', 'дни')"/>
 									<span class="text-label">Срок поставки</span>
-									<span><xsl:value-of select="if (not($po/next_delivery = '')) then $po/next_delivery else 'согласуется после оформления заказа'"/></span>
+									<span><xsl:value-of select="if (not($dlv = '')) then $dlv else 'согласуется после оформления заказа'"/></span>
 								</div>
 								<div class="cart-item__quantity">
 									<span class="text-label">Кол-во</span>
@@ -147,7 +149,7 @@
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span id="sum_{$ajax_suffix}"><xsl:value-of select="$sum"/></span>
+										<span><xsl:value-of select="$sum"/></span><!--  id="sum_{$ajax_suffix}" -->
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">

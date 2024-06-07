@@ -9,7 +9,7 @@
 	<!--<xsl:variable name="is_jur" select="page/user_jur//@validation-error or page/user_jur/input/organization != '' or page/jur or page/user_jur/input/field != ''"/>-->
 
 	<xsl:template name="LEFT_COLOUMN">
-		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
+		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>
 	</xsl:template>
 
 	<xsl:template name="PAGE_HEADING">

@@ -5,6 +5,7 @@
 
 
 	<xsl:variable name="products" select="page/product"/>
+	<xsl:variable name="hide_side_menu" select="true()"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="COMMON_LEFT_COLOUMN"/>

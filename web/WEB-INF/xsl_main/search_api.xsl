@@ -110,9 +110,10 @@
 				<xsl:apply-templates select="page/catalog/product[1]" mode="single_product"/>
 
 				<xsl:if test="$is_not_bom">
-					<form action="search_api_ajax" method="post" ajax-loader-id="api_results" id="api_ajax_form" ajax="true">
+					<form action="search_api_ajax" method="post" ajax-loader-id="api_results" id="api_ajax_form" ajax="true" style="margin-top: 12px;">
 						<input type="hidden" name="q" value="{$query}"/>
 						<div class="search_filter">
+							<!--
 							<div class="item">
 								<xsl:if test="$has_excel_search_results and $has_results">
 									<a href="{page/save_excel_file}" style="text-align:center">
@@ -132,6 +133,7 @@
 									<input type="text" name="to" value="{$input_to}" placeholder="до {$search_result_el/max_price}"/>
 								</div>
 							</div>
+							-->
 							<div class="item">
 								<div class="box">
 									<div class="title">Срок поставки</div>
@@ -141,12 +143,14 @@
 											<xsl:for-each-group select="$products" group-by="next_delivery">
 												<xsl:sort select="next_delivery"/>
 												<xsl:variable name="value" select="current-grouping-key()"/>
+												<xsl:variable name="dlv_" select="replace(lower-case($value), 'weeks', 'недели')"/>
+												<xsl:variable name="dlv" select="replace(lower-case($dlv_), 'days', 'дни')"/>
 												<xsl:variable name="is_empty" select="normalize-space($value) = ''"/>
 												<label class="option">
 													<input type="checkbox" name="ship_date" value="{$value}">
 														<xsl:if test="$value = $input_ship_date"><xsl:attribute name="checked" select="checked" /></xsl:if>
 													</input>
-													<xsl:value-of select="$value"/><xsl:if test="$is_empty">(не задано)</xsl:if>
+													<xsl:value-of select="$dlv"/><xsl:if test="$is_empty">(согласуется после оформления заказа)</xsl:if>
 												</label>
 											</xsl:for-each-group>
 										</div>
@@ -255,14 +259,22 @@
 								<h2>Полных совпадений по запросу не найдено, похожие результаты</h2>
 							</xsl:if>
 							<xsl:if test="$has_exact_matches">
-								<h2>Дополнительно найдено (смежные запросы)</h2>
+								<h2>
+									<a href="#" onclick="$('.other_queries').toggle(); return false;">
+										Дополнительно найдено (смежные запросы)
+										<span class="other_queries">➕</span>
+										<span class="other_queries" style="display: none">➖</span>
+									</a>
+								</h2>
 							</xsl:if>
-							<xsl:call-template name="LINES_TABLE">
-								<xsl:with-param name="results_api" select="$products"/>
-								<xsl:with-param name="multiple" select="$is_bom"/>
-								<xsl:with-param name="queries" select="$query"/>
-								<xsl:with-param name="exact" select="'false'"/>
-							</xsl:call-template>
+							<div class="other_queries" style="display: none">
+								<xsl:call-template name="LINES_TABLE">
+									<xsl:with-param name="results_api" select="$products"/>
+									<xsl:with-param name="multiple" select="$is_bom"/>
+									<xsl:with-param name="queries" select="$query"/>
+									<xsl:with-param name="exact" select="'false'"/>
+								</xsl:call-template>
+							</div>
 						</xsl:if>
 						<xsl:if test="not($has_results)">
 							<h2>По заданным критериям товары не найдены</h2>
@@ -280,7 +292,8 @@
 						<div style="position: relative; margin-top: 10px;" id="ajax_bom_form">
 							<form action="{page/search_api_ajax_bom_link}" method="post" onsubmit="postForm($(this), 'ajax_bom_form', initResultTable); return false;">
 								<input style="padding: 8px; margin-right: 10px" type="text" name="q" class="input" size="40"/>
-								<button type="submit" class="button">Добавить запрос</button>
+								<button type="submit" class="button" style="margin-right: 10px">Добавить запрос</button>
+								<span>Формат добавления строки: "партнамбер" пробел "количество", пример: "max-40 10"</span>
 							</form>
 						</div>
 					</xsl:if>
@@ -501,7 +514,7 @@
 				// Пересчитать все товары
 				function recalculateSumOld() {
 					var sum = 0;
-					$('.blue_visible').find('.red').each(function() {
+					$('.blue_visible').find('.red').addBack('.red').each(function() {
 						var qtyInput = $(this).find('input[name=qty]');
 						var qty = Number(qtyInput.val());
 						var pricePEl = linePriceElementPForQty(this, qty);
@@ -514,6 +527,7 @@
 						sum += lineSum;
 						$(this).find('.price__value').find('p').attr('style', '');
 						$(pricePEl).attr('style', 'font-weight: bold');
+						console.log(lineSum);
 					});
 					$('#auto_sum').text(sum.toFixed(2));
 				}
@@ -593,6 +607,7 @@
 
 				$(document).ready(function() {
 					initResultTable();
+					recalculateSumOld();
 				});
 			</xsl:text>
 		</script>

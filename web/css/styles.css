@@ -3859,7 +3859,7 @@ iframe.skiptranslate{
     width: 100%;
     justify-content: space-around;
     align-items: center;
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 }
 .search_filter .item{
 	margin-bottom: 20px;
@@ -4095,7 +4095,7 @@ iframe.skiptranslate{
 	display: flex;
 	align-items: center;
 }
-.div-row.blue_visible {
+.div-row.blue.blue_visible {
 	background-color: #fffae5;
 }
 .div-row.blue_hidden {

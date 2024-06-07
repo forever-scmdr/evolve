@@ -11,6 +11,7 @@
 	<xsl:variable name="is_jur" select="true()"/>
 	<xsl:variable name="cart" select="page/cart"/>
 	<xsl:variable name="contacts" select="page/user_jur/input"/>
+	<xsl:variable name="hide_side_menu" select="true()"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -52,27 +53,35 @@
 			<div class="cart-confirm__table">
 				<table>
 					<tr>
-						<td>Код</td>
 						<td>Наименование</td>
+						<td>Поставщик</td>
+						<td>Описание</td>
 						<td>Количество</td>
 						<td>Цена</td>
 						<td>Сумма</td>
+						<td style="font-weight: normal">Срок поставки</td>
 						<xsl:if test="$cart/bought/item_own_extras" ><td>Дополнительно</td></xsl:if>
 					</tr>
 					<xsl:for-each select="$cart/bought">
 						<xsl:sort select="type"/>
 <!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
 						<xsl:variable name="p" select="product"/>
+						<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;/prod&gt;'))"/>
+						<xsl:variable name="po" select="$outer/prod/product"/>
 <!--						<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>-->
 <!--                        <xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>-->
 						<xsl:variable name="price" select="price"/>
 						<xsl:variable name="sum" select="sum"/>
+						<xsl:variable name="dlv_" select="replace(lower-case($po/next_delivery), 'weeks', 'недели')"/>
+						<xsl:variable name="dlv" select="replace(lower-case($dlv_), 'days', 'дни')"/>
 						<tr>
-							<td><xsl:value-of select="$p/code"/></td>
-							<td><xsl:value-of select="$p/name"/></td>
+							<td><xsl:value-of select="$po/name"/></td>
+							<td><xsl:value-of select="$po/category_id"/></td>
+							<td>Производитель: <xsl:value-of select="$po/vendor"/><br/><xsl:value-of select="$po/description"/></td>
 							<td><xsl:value-of select="qty"/></td>
-							<td><xsl:value-of select="$price"/><xsl:if test="not_available = '1'"><br/>нет в наличии - под заказ</xsl:if></td>
+							<td><xsl:value-of select="$price"/></td>
 							<td><xsl:value-of select="$sum"/></td>
+							<td style="font-weight: normal"><xsl:value-of select="if (not($dlv = '')) then $dlv else 'согласуется после оформления заказа'"/></td>
 							<xsl:if test="$cart/bought/item_own_extras" >
 								<td>
 									<xsl:if test="item_own_extras/extra1"><p><xsl:value-of select="item_own_extras/extra1"/></p></xsl:if>
