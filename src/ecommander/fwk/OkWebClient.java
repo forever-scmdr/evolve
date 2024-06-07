@@ -5,44 +5,22 @@ import okhttp3.internal.http.RealResponseBody;
 import okio.BufferedSource;
 import okio.GzipSource;
 import okio.Okio;
-import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.ssl.SSLContexts;
 import org.brotli.dec.BrotliInputStream;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -54,11 +32,45 @@ public class OkWebClient {
 	private static final String UTF_8 = "UTF-8";
 	private static final Pattern URL_ENCODED_PATTERN = Pattern.compile("%[0-9a-d]{2}");
 
+	private static class LocalProxy {
+		private int proxyPort = 8080;
+		private String proxyHost = "proxyHost";
+		private String username = "username";
+		private String password = "password";
+
+		public LocalProxy(int proxyPort, String proxyHost, String username, String password) {
+			this.proxyPort = proxyPort;
+			this.proxyHost = proxyHost;
+			this.username = username;
+			this.password = password;
+		}
+	}
+
 	private static OkWebClient instance;
 
 	private OkHttpClient client = null;
 	//private HttpClientContext httpContext = null;
 	private BasicCookieStore cookieStore = null;
+	private LocalProxy proxy = null;
+	private Authenticator auth = null;
+
+	public void setProxy(String url, int port, String user, String password) {
+		proxy = new LocalProxy(port, url, user, password);
+		auth = (route, response) -> {
+			String credential = Credentials.basic(user, password);
+			return response.request().newBuilder()
+					.header("Proxy-Authorization", credential)
+					.build();
+		};
+		createNewClient();
+	}
+
+	public void removeProxy() {
+		proxy = null;
+		auth = null;
+		createNewClient();
+	}
+
 
 
 	private void startSession() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
@@ -83,8 +95,17 @@ public class OkWebClient {
 	}
 
 	private OkWebClient() {
+		createNewClient();
+	}
+
+	private void createNewClient() {
 		OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(new UnzippingInterceptor());
-		client = clientBuilder.readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).build();
+		clientBuilder.readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS);
+		if (proxy != null) {
+			clientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxy.proxyHost, proxy.proxyPort)));
+			clientBuilder.proxyAuthenticator(auth);
+		}
+		client = clientBuilder.build();
 	}
 
 	public static OkWebClient getInstance() {
