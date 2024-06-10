@@ -15,15 +15,15 @@ import org.jsoup.select.Elements;
 import java.util.concurrent.TimeUnit;
 
 public class PromelecSearchCommand extends Command {
-	private static final String LOGIN = "API284524";
-	private static final String PZD = "ca98a100fd01bd37b147e088ef544874";
-	private static int USER_ID = 284524;
+	private static final String LOGIN = "API255110";
+	private static final String PZD = "16a79a4db3e3e0590d9bca871ca4bbd0";
+	private static int USER_ID = 255110;
 	private static final String SEARCH_BY_NAME_METHOD = "items_data_find";
 	private static final String TEST_URL = "http://base2.promelec.ru:222/rpc_test";
 	private static final String PRODUCTION_URL = "http://base2.promelec.ru:221/rpc";
 
-	//private static final String URL = "https://aaa.na4u.ru/rpc";
-	private static final String URL = "https://base1.promelec.ru/rpc";
+	private static final String URL = "https://aaa.na4u.ru/rpc";
+//	private static final String URL = "https://base1.promelec.ru/rpc";
 	private static final String TEST_VAR = "test_mode";
 	private OkHttpClient client;
 
@@ -32,7 +32,7 @@ public class PromelecSearchCommand extends Command {
 		//String url = "true".equals(getVarSingleValue(TEST_VAR)) ? TEST_URL : PRODUCTION_URL;
 		String url = URL;
 
-		XmlDocumentBuilder xmlRequest = XmlDocumentBuilder.newDoc();
+		XmlDocumentBuilder xmlRequest = XmlDocumentBuilder.newDocPart();
 		xmlRequest.startElement("request", "login", LOGIN, "password", PZD, "customer_id", USER_ID, "method", SEARCH_BY_NAME_METHOD, "name", getVarSingleValue("query")).endElement();
 
 		//initialize OkHttpClient
