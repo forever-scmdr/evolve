@@ -84,9 +84,11 @@ public class SearchOctopartApiCommand extends Command {
 		CurrencyRates rates = new CurrencyRates();
 		Item catalogSettings = new ItemQuery(ItemNames.PRICE_CATALOG).addParameterEqualsCriteria(ItemNames.price_catalog_.NAME, "octopart").loadFirstItem();
 		BigDecimal extraQuotient = BigDecimal.ONE; // дополнительный коэффициент для цены
-		if (catalogSettings != null)
+		String nextDelivery = "14 дней"; // дополнительный коэффициент для цены
+		if (catalogSettings != null) {
 			extraQuotient = catalogSettings.getDecimalValue(ItemNames.price_catalog_.QUOTIENT, BigDecimal.ONE);
-		String nextDelivery = catalogSettings.getStringValue(ItemNames.price_catalog_.DEFAULT_SHIP_TIME, "");
+			nextDelivery = catalogSettings.getStringValue(ItemNames.price_catalog_.DEFAULT_SHIP_TIME, "");
+		}
 		XmlDocumentBuilder xml = XmlDocumentBuilder.newDocPart();
 		xml.startElement("results"); // <results>
 		for (Element partEl : parts) {
