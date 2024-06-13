@@ -41,6 +41,7 @@
 						<button class="button past-order__button submit_all_again" style="margin-right: 10px">Сохранить список BOM</button>
 						<button class="button past-order__button submit_all_again">Повторить запрос</button>
 					</div>
+					<!-- OLD
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
 						<xsl:variable name="outer" select="if (outer_product) then parse-xml(concat('&lt;prod&gt;', outer_product, '&lt;/prod&gt;')) else none"/>
@@ -96,6 +97,87 @@
 							</xsl:if>
 						</div>
 					</xsl:for-each>
+					-->
+					<div class="past-order__product past-product" style="display: none">
+						<div class="div-tr thead border-bottom">
+							<div class="div-td">Наименование</div>
+							<div class="div-td">Производитель</div>
+							<div class="div-td">Поставщик</div>
+							<div class="div-td">Описание</div>
+							<div class="div-td">Цена</div>
+							<div class="div-td"></div>
+						</div>
+					</div>
+					<xsl:for-each select="bought">
+						<xsl:variable name="code" select="code"/>
+						<xsl:variable name="outer" select="if (outer_product) then parse-xml(concat('&lt;prod&gt;', outer_product, '&lt;/prod&gt;')) else none"/>
+						<xsl:variable name="po" select="$outer/prod/product"/>
+						<xsl:variable name="prod" select="if ($po) then $po else $products[code = $code]"/>
+						<div class="past-order__product past-product" style="display: none">
+							<div class="div-tr">
+								<div class="div-td">
+									<div class="thn">Наименование</div>
+									<div class="thd">
+										<xsl:if test="$prod and not($po)">
+											<a href="{$prod/show_product}"><xsl:value-of select="$prod/name"/></a>
+										</xsl:if>
+										<xsl:if test="not($prod)">
+											<xsl:value-of select="name"/>
+										</xsl:if>
+										<xsl:if test="$prod and $po">
+											<xsl:value-of select="$prod/name"/>
+										</xsl:if>
+									</div>
+								</div>
+								<div class="div-td">
+									<div class="thn">Производитель</div>
+									<div class="thd">
+										<xsl:value-of select="$prod/vendor"/>
+									</div>
+								</div>
+								<div class="div-td">
+									<div class="thn">Поставщик</div>
+									<div class="thd">
+										<xsl:value-of select="$prod/category_id"/>
+									</div>
+								</div>
+								<div class="div-td">
+									<div class="thn">Описание</div>
+									<div class="thd">
+										<div><xsl:value-of select="$prod/description"/></div>
+										<div><a onclick="showDetails('product_ajax?prod={normalize-space($po/name)}')" >Полное описание</a></div>
+									</div>
+								</div>
+								<div class="div-td">
+									<div class="thn">Цена</div>
+									<div class="thd">
+										<div>Цена: <xsl:value-of select="price"/> руб. </div>
+										<div>Кол-во: <xsl:value-of select="qty"/> шт. </div>
+										<div>Сумма: <xsl:value-of select="sum"/> руб. </div>
+									</div>
+								</div>
+								<div class="div-td">
+									<div class="thn"></div>
+									<div class="thd">
+										<xsl:if test="$prod">
+											<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
+											<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
+												<xsl:if test="$has_price">
+													<input class="input" type="hidden" name="qty" value="{qty}" min="0"/>
+													<button type="submit" class="button">Повторить запрос</button>
+												</xsl:if>
+												<xsl:if test="not($has_price)">
+													<input class="input" type="hidden" name="qty" value="{qty}" min="0"/>
+													<button class="button button_not-available" type="submit">Повторить запрос</button>
+												</xsl:if>
+											</form>
+										</xsl:if>
+									</div>
+								</div>
+							</div>
+						</div>
+					</xsl:for-each>
+
 				</div>
 			</xsl:for-each>
 		</div>

@@ -251,6 +251,16 @@ $('.chbox').on("click", function(){
 	$('.chbox').removeClass('open');
 	$(this).addClass('open');
 });
+
+$(document).mouseup( function(e){
+	if(document.querySelector(".chbox")){
+	  var div = $( ".chbox" );
+	  if ( !div.is(e.target)
+		  && div.has(e.target).length === 0 ) {
+			$('.chbox').removeClass('open');
+	  }
+	}
+});
 var header = $(".wrapper");
 $(window).scroll(function () {
 	var scrolled = $(window).scrollTop();
