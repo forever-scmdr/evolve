@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="bom_ajax.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -51,16 +52,38 @@
             </div>
         </xsl:if>
 		<div class="search_cart">
-			<form action="/cart/" method="post">
-				<input class="input header-search__input"  type="text" placeholder="Введите название товара для поиска в корзине" autocomplete="off"/>
-				<button class="button header-search__button" type="submit">Поиск по корзине</button>
+			<form>
+				<input class="input header-search__input"  type="text" placeholder="Введите название товара для поиска в корзине" autocomplete="off" onkeyup="searchCart()"/>
+				<button class="button header-search__button" onclick="searchCart(); return false;">Поиск по корзине</button>
 			</form>
+			<script>
+				function searchCart() {
+					var query = $('.search_cart').find('input[type=text]').val();
+					if (typeof query == 'undefined' || query === '') {
+						$('.cart-item').show();
+					} else {
+						$('.cart-item').each(function() {
+							var line = $(this);
+							if (line.attr('name').includes(query)) {
+								line.show();
+							} else {
+								line.hide();
+							}
+						});
+					}
+				}
+			</script>
 		</div>
 
 
 		<div class="cart-list">
 			<xsl:choose>
 				<xsl:when test="page/cart/bought and not(page/cart/processed = '1')">
+					<textarea name="q" style="display: none">
+						<xsl:for-each select="page/cart/bought">
+							<xsl:value-of select="name"/><xsl:text> </xsl:text><xsl:value-of select="qty"/><xsl:text>&#xa;</xsl:text>
+						</xsl:for-each>
+					</textarea>
 					<form method="post">
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
@@ -73,7 +96,7 @@
 							<xsl:variable name="ajax_suffix" select="if ($not_api) then code else product/@key"/>
 							<xsl:variable name="total_qty" select="if ($not_api and not($p/qty)) then '1000' else $p/qty"/>
 							<xsl:variable name="dlv" select="if ($not_api and not($p/next_delivery)) then '7' else $p/next_delivery"/>
-							<div class="cart-list__item cart-item">
+							<div class="cart-list__item cart-item" name="{$p/name}">
 								<xsl:if test="not($p/product)">
 									<!--
 									<div class="cart-item__image">
@@ -184,7 +207,7 @@
 										id="recalc" onclick="$(this).closest('form').attr('action', '{page/recalculate_link}'); postForm($(this).closest('form')); return false;">Пересчитать</button>
 								<button class="button button_2 cart-total__button" type="submit"
 										onclick="$(this).closest('form').attr('action', '{page/proceed_link}')">Продолжить</button>
-								<button class="button button_2 cart-total__button" type="submit">Сохранить список BOM</button>
+								<button class="button button_2 cart-total__button" type="submit" onclick="submitBomSave('.cart-list'); return false;">Сохранить список BOM</button>
 							</div>
 						</div>
 					</form>
@@ -193,7 +216,7 @@
 					<h3>Корзина пуста</h3>
 				</xsl:otherwise>
 			</xsl:choose>
-
+			<xsl:call-template name="SAVE_BOM_FORM"/>
 		</div>
 	</xsl:template>
 

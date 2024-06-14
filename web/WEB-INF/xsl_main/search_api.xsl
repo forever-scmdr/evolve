@@ -565,12 +565,24 @@
 
 
 				// Заказ всех выбранных позиций
+				var allForms = [];
 				function allOrder() {
+					allForms = [];
 					$('#api_results').find('form').each(function() {
 						var isNotZero = $(this).find('input[type=text]').val() != '0';
 						var checked = $(this).closest('.red').find('input[type=checkbox]').is(':checked');
-						if (isNotZero &amp;&amp; checked)
-							$(this).find('button').trigger('click');
+						if (isNotZero &amp;&amp; checked) {
+							allForms.push($(this));
+						}
+					});
+					submitRec();
+				}
+				// рекурсивная функция поочередного заказа всех выделенных товаров
+				function submitRec() {
+					if (allForms.length == 0) return;
+					var theForm = allForms.shift();
+					postForm(theForm, theForm.attr('id'), function() {
+						submitRec();
 					});
 				}
 

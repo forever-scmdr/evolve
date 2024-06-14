@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="f:f" version="2.0">
+	<xsl:import href="bom_ajax.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -27,7 +28,14 @@
 	<xsl:template name="CONTENT">
 		<div class="orders">
 			<xsl:for-each select="page/purchase">
-				<div class="orders__item past-order">
+				<div class="orders__item past-order" id="pur_{@id}">
+					<form method="post" action="page/validate_bom_link" id="ph_search_{@id}" style="display: none" class="search_repeat">
+						<textarea name="q" style="display: none">
+							<xsl:for-each select="bought">
+								<xsl:value-of select="name"/><xsl:text> </xsl:text><xsl:value-of select="qty"/><xsl:text>&#xa;</xsl:text>
+							</xsl:for-each>
+						</textarea>
+					</form>
 					<div class="past-order__info">
 						<div class="past-order__title"><a href="#" class="order_toggle">Заказ №<xsl:value-of select="num"/></a></div>
 						<div class="past-order__date"><xsl:value-of select="date"/></div>
@@ -38,8 +46,8 @@
 						<div class="past-order__qty">Позиций: <xsl:value-of select="qty"/></div>
 					</div>
 					<div class="past-order__action" style="display: none">
-						<button class="button past-order__button submit_all_again" style="margin-right: 10px">Сохранить список BOM</button>
-						<button class="button past-order__button submit_all_again">Повторить запрос</button>
+						<button class="button past-order__button submit_all_again" style="margin-right: 10px" onclick="submitBomSave('#pur_{@id}')">Сохранить список BOM</button>
+						<button class="button past-order__button submit_all_again" onclick="repeatSearch('#ph_search_{@id}'); return false">Повторить поиск</button>
 					</div>
 					<!-- OLD
 					<xsl:for-each select="bought">
@@ -159,19 +167,7 @@
 								<div class="div-td">
 									<div class="thn"></div>
 									<div class="thd">
-										<xsl:if test="$prod">
-											<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
-											<form action="{$prod/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$prod/code}">
-												<xsl:if test="$has_price">
-													<input class="input" type="hidden" name="qty" value="{qty}" min="0"/>
-													<button type="submit" class="button">Повторить запрос</button>
-												</xsl:if>
-												<xsl:if test="not($has_price)">
-													<input class="input" type="hidden" name="qty" value="{qty}" min="0"/>
-													<button class="button button_not-available" type="submit">Повторить запрос</button>
-												</xsl:if>
-											</form>
-										</xsl:if>
+										<a class="button" href="{repeat_search}">Найти предложения</a>
 									</div>
 								</div>
 							</div>
@@ -181,6 +177,7 @@
 				</div>
 			</xsl:for-each>
 		</div>
+		<xsl:call-template name="SAVE_BOM_FORM"/>
 		
 	</xsl:template>
 

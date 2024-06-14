@@ -170,8 +170,11 @@ function insertAjax(url, lockElementIds, additionalHandling) {
  * @additionalHandling - дополнительная функция, которая вызывается после успешного завершения всех действий по обработке запроса
  */
 function postForm(form, lockElementIds, additionalHandling) {
-    if (typeof form == 'string')
-        form = $('#' + form);
+    if (typeof form == 'string') {
+        if (!form.startsWith('#'))
+            form = '#' + form;
+        form = $(form);
+    }
     form.ajaxSubmit({
         error: function () {
             alert('Ошибка отправки формы');

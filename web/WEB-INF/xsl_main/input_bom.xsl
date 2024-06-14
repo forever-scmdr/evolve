@@ -113,11 +113,14 @@
 				var text = $('#query_form').find('textarea').text();
 				if (text.length != 0)
 					text += '\n';
+				var tableText = '';
 				$('.query_list').find('tr').each(function() {
 					var query = $(this).find('input').eq(0).val();
 					var number = $(this).find('input').eq(1).val();
-					text += query + ' ' + number + '\n';
+					tableText += query + ' ' + number + '\n';
 				});
+				if (tableText != '')
+					text = tableText;
 				$('#query_form').find('textarea').text(text);
 				$('#query_form').attr('action', '<xsl:value-of select="page/validate_bom_link"/>');
 				postForm('query_form', 'query_form', function() {

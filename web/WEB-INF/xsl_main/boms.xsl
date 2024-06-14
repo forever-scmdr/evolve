@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="f:f" version="2.0">
+	<xsl:import href="bom_ajax.xsl"/>
 	<xsl:import href="common_page_base.xsl"/>
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
@@ -45,7 +46,14 @@
 						</a>
 					</td>
 					<td>
-						<form action="{edit_name}" method="post"></form>
+						<form method="post" action="page/validate_bom_link" id="bl_search_{@id}" style="display: none" class="search_repeat">
+							<textarea name="q">
+								<xsl:for-each select="line">
+									<xsl:value-of select="@key"/><xsl:text> </xsl:text><xsl:value-of select="@value"/><xsl:text>&#xa;</xsl:text>
+								</xsl:for-each>
+							</textarea>
+						</form>
+						<form action="{edit_name}" method="post" class="name_update"></form>
 						<a href="#" style="font-size: larger; display: none" onclick="submitName(this); return false" class="edit_line" onmouseover="noHide = true;" onmouseleave="noHide = false;">✎</a>
 					</td>
 					<td onclick="showInputs(this)">
@@ -58,7 +66,7 @@
 						<input name="desc" type="text" value="{description}" style="width: 100%; display: none" onblur="hideInputs(this)" onfocusout="hideInputs(this)"/>
 					</td>
 					<td>
-						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">Повторить поиск</a>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;" onclick="repeatSearch('#bl_search_{@id}'); return false">Повторить поиск</a>
 						<a href="#" class="confirm-dialog" onclick="confirmLink('{delete_bom}', this); return false;">❌</a>
 					</td>
 				</tr>
@@ -97,13 +105,15 @@
 					<td colspan="5">
 						<a href="#" class="button confirm-dialog" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;"
 						   onclick="confirmFunction(function() {{$('#bl_delete_{@id}').append($('#bl_lines_{@id}').find('input:checked')); $('#bl_delete_{@id}').submit(); }}, this); return false;">удалить выделенное</a>
-						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">копировать список</a>
-						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;">повторить поиск</a>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;"
+						   onclick="submitBomSave('#bl_main_{@id}', '{name}', '{description}'); return false;">копировать список</a>
+						<a href="#" class="button" style="padding: 2px 16px; font-weight: normal; margin-right: 10px;" onclick="repeatSearch('#bl_search_{@id}'); return false">повторить поиск</a>
 						<script></script>
 					</td>
 				</tr>
 			</xsl:for-each>
 		</table>
+		<xsl:call-template name="SAVE_BOM_FORM"/>
 		<script>
 			var noHide = false;
 			var prevFocused = null;
@@ -135,7 +145,7 @@
                 var line = $(element).closest('tr');
                 var name = $(line.find('input[name=name]')).val();
 				var desc = $(line.find('input[name=desc]')).val();
-				postFormData($(element).closest('td').find('form'), {'name' : name, 'desc' : desc}, line.attr('id'));
+				postFormData($(element).closest('td').find('form.name_update'), {'name' : name, 'desc' : desc}, line.attr('id'));
 			}
 		</script>
 	</xsl:template>

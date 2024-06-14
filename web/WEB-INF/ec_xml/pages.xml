@@ -1953,7 +1953,11 @@
 				<filter>
 					<sorting direction="DESC"><var value="date"/></sorting>
 				</filter>
-				<list item="bought" id="bought"/>
+				<list item="bought" id="bought">
+					<link name="repeat_search" target="search_api">
+						<var name="q" ref="bought" parameter="name"/>
+					</link>
+				</list>
 			</list>
 		</personal>
 		<list item="product" id="prod">
@@ -2012,6 +2016,8 @@
 		<request>
 			<var name="q"/>
 			<var name="bom"/>
+			<var name="name"/>
+			<var name="desc"/>
 			<var name="result"/>
 			<var name="message"/>
 		</request>
@@ -2029,6 +2035,9 @@
 		<request>
 			<var name="q"/>
 			<var name="bom"/>
+			<var name="name"/>
+			<var name="desc"/>
+			<var name="refresh"/>
 			<var name="action"/>
 		</request>
 		<personal>
@@ -2036,6 +2045,9 @@
 		</personal>
 		<link name="saved" target="bom_ajax">
 			<var name="result" value="saved"/>
+		</link>
+		<link name="saved_refresh" target="bom_ajax">
+			<var name="result" value="saved_refresh"/>
 		</link>
 		<link name="name_updated" target="manage_bom_ajax">
 			<var name="result" value="name_updated"/>

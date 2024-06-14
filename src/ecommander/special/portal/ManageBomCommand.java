@@ -118,7 +118,9 @@ public class ManageBomCommand extends Command implements ItemNames {
                 executeAndCommitCommandUnits(SaveItemDBUnit.get(newList));
             }
         }
-        return getResult("saved");
+        String refreshStr = getInputSingleValueDefault("refresh", "false");
+        boolean refresh = StringUtils.equalsAnyIgnoreCase(refreshStr, "true", "yes");
+        return refresh ? getResult("saved_refresh") : getResult("saved");
     }
 
     /**
