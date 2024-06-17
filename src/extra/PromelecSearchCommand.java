@@ -71,7 +71,7 @@ public class PromelecSearchCommand extends Command {
 		addSupplierSettings(outputPage);
 
 		Document searchResult = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
-		searchResult.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+		//searchResult.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
 		Elements el = searchResult.select("rowdata");
 		if(!el.isEmpty()){
 			outputPage.startElement("result");
