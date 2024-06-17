@@ -22,7 +22,7 @@ public class PromelecSearchCommand extends Command {
 	private static final String TEST_URL = "http://base2.promelec.ru:222/rpc_test";
 	private static final String PRODUCTION_URL = "http://base2.promelec.ru:221/rpc";
 
-	private static final String URL = "https://aaa.na4u.ru/rpc";
+	private static final String URL = "https://aaa.na4u.ru/rpc/";
 //	private static final String URL = "https://base1.promelec.ru/rpc";
 	private static final String TEST_VAR = "test_mode";
 	private OkHttpClient client;
