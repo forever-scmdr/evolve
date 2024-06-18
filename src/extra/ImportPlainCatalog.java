@@ -176,17 +176,20 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 				commitCommandUnits();
 			} catch (Exception e) {
 				ServerLogger.error("File parse error", e);
-				info.addError("Ошибка формата файла", excel.getName());
+				info.addError("Ошибка формата файла: " + excel.getName(), excel.getName());
 			}
 		}
 
 		info.pushLog("Создание товаров завершено");
+		/*
 		info.pushLog("Индексация");
 		info.indexsationStarted();
 
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
+
+		 */
 		info.setOperation("Интеграция завершена");
 	}
 
