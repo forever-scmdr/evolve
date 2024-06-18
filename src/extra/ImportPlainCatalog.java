@@ -32,15 +32,15 @@ import java.util.List;
 public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String INTEGRATION_DIR = "integrate_manual";
 
-	private static final String CODE_HEADER = "Part No"; // "код";
-	private static final String NAME_HEADER = "Part No"; // "название";
-	private static final String DELAY_HEADER = "Leadtime"; // "срок поставки";
-	private static final String QTY_HEADER = "Quantity"; // "остаток";
+	private static final String CODE_HEADER = "код"; // "код";
+	private static final String NAME_HEADER = "название"; // "название";
+	private static final String DELAY_HEADER = "срок поставки"; // "срок поставки";
+	private static final String QTY_HEADER = "остаток"; // "остаток";
 	private static final String MIN_QTY_HEADER = "минимальная партия заказа";
 	private static final String STEP_HEADER = "шаг заказа";
-	private static final String PRICE_HEADER = "Price"; // "цена";
-	private static final String VENDOR_HEADER = "Manufacture"; // "производитель";
-	private static final String NAME_EXTRA_HEADER = "Content"; // "описание";
+	private static final String PRICE_HEADER = "цена"; // "цена";
+	private static final String VENDOR_HEADER = "производитель"; // "производитель";
+	private static final String NAME_EXTRA_HEADER = "описание"; // "описание";
 	private static final String UNIT_HEADER = "единица измерения";
 
 	private TableDataSource price;
@@ -188,7 +188,6 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
-
 		 */
 		info.setOperation("Интеграция завершена");
 	}
