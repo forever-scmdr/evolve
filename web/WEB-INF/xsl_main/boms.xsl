@@ -38,7 +38,7 @@
 			<xsl:for-each select="page/bom_catalog/bom_list">
 				<xsl:variable name="id" select="@id"/>
 				<tr class="softgreen" id="bl_main_{@id}">
-					<td><input type="checkbox"></input></td>
+					<td><input type="checkbox" class="check_all" name="bom" value="{@id}"/></td>
 					<td>
 						<a href="#" style="font-size: larger" onclick="$('.hide_{$id}').toggle(); return false;">
 							<span class="hide_{$id}">➕</span>
@@ -113,41 +113,72 @@
 				</tr>
 			</xsl:for-each>
 		</table>
-		<xsl:call-template name="SAVE_BOM_FORM"/>
 		<script>
 			var noHide = false;
 			var prevFocused = null;
 
 			function showInputs(element) {
-                if (prevFocused == element)
-                    return;
+				if (prevFocused == element)
+					return;
 				$(element).closest('tr').find('span').hide();
 				$(element).closest('tr').find('.edit_line').show();
 				$(element).closest('tr').find('input[type=text]').show();
 				var input = $(element).find('input[type=text]').first()
-                input.focus();
-                var val = input.val();
-                input.val('');
-                input.val(val);
-                prevFocused = element;
+				input.focus();
+				var val = input.val();
+				input.val('');
+				input.val(val);
+				prevFocused = element;
 			}
 
 			function hideInputs(element) {
-                if (noHide)
-                    return;
+				if (noHide)
+					return;
 				$(element).closest('tr').find('input[type=text]').hide();
 				$(element).closest('tr').find('.edit_line').hide();
 				$(element).closest('tr').find('span').show();
 				prevFocused = null;
 			}
 
-            function submitName(element) {
-                var line = $(element).closest('tr');
-                var name = $(line.find('input[name=name]')).val();
+			function submitName(element) {
+				var line = $(element).closest('tr');
+				var name = $(line.find('input[name=name]')).val();
 				var desc = $(line.find('input[name=desc]')).val();
 				postFormData($(element).closest('td').find('form.name_update'), {'name' : name, 'desc' : desc}, line.attr('id'));
 			}
+
+			function deleteBoms() {
+				$('#delete_boms_form').empty();
+				$('.check_all:checked').clone().appendTo($('#delete_boms_form'));
+				$('#delete_boms_form').submit();
+			}
+
+			function findBoms() {
+                var allQs = '';
+				$('.check_all:checked').closest('tr').find('.search_repeat').each(function() {
+                    allQs += $(this).text();
+				});
+                $('#find_boms_form').find('textarea').text(allQs);
+				repeatSearch('#find_boms_form');
+			}
+
+			function exportBoms() {
+				$('#export_boms_form').empty();
+				$('.check_all:checked').clone().appendTo($('#export_boms_form'));
+				$('#export_boms_form').submit();
+			}
 		</script>
+		<div style="display: none">
+			<form method="post" action="{page/delete_all_boms}" id="delete_boms_form"></form>
+			<form method="post" action="{page/export_all_boms}" id="export_boms_form"></form>
+			<form method="post" action="{page/validate_bom_link}" id="find_boms_form"><textarea name="q"></textarea></form>
+		</div>
+		<xsl:if test="page/bom_catalog/bom_list">
+			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="confirmFunction(function() {{ deleteBoms() }}, this); return false;">Удалить выделенные списки</a>
+			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="findBoms(); return false;">Повторить поиск для выделенного</a>
+			<a class="button confirm-dialog" href="#" onclick="exportBoms(); return false;">Экспортировать выделенное</a>
+		</xsl:if>
+		<xsl:call-template name="SAVE_BOM_FORM"/>
 	</xsl:template>
 
 

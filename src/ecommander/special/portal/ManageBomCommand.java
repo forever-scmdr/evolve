@@ -2,6 +2,7 @@ package ecommander.special.portal;
 
 import ecommander.controllers.AppContext;
 import ecommander.fwk.*;
+import ecommander.fwk.integration.ExcelDocumentGenerator;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
@@ -23,8 +24,10 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Команда, которая преобразует строку, введенную пользователем, в XML структуру для BOM запроса
@@ -200,11 +203,39 @@ public class ManageBomCommand extends Command implements ItemNames {
         User user = getInitiator();
         if (!user.inGroup(REGISTERED))
             return null;
-        Item bom = getSingleLoadedItem("bom");
-        if (bom == null)
+        LinkedHashMap<Long, Item> boms = getLoadedItems("bom");
+        if (boms.size() ==0)
             return null;
-        executeAndCommitCommandUnits(ItemStatusDBUnit.delete(bom));
+        for (Item bom : boms.values()) {
+            executeAndCommitCommandUnits(ItemStatusDBUnit.delete(bom));
+        }
+        commitCommandUnits();
         return getResult("all_updated");
+    }
+
+    public ResultPE xlsExport() throws Exception {
+        User user = getInitiator();
+        if (!user.inGroup(REGISTERED))
+            return null;
+        LinkedHashMap<Long, Item> boms = getLoadedItems("bom");
+        if (boms.size() ==0)
+            return null;
+        ExcelDocumentGenerator gen = new ExcelDocumentGenerator();
+        gen.createDocument();
+        for (Item bom : boms.values()) {
+            gen.addSheet(bom.getStringValue(bom_list_.NAME));
+            gen.addRow();
+            gen.addHeaderCell("Партномер", 50);
+            gen.addHeaderCell("Кол-во", 10);
+            for (Pair<String, String> value : bom.getTupleValues(bom_list_.LINE)) {
+                gen.addRow();
+                gen.addCell(value.getLeft(), 50);
+                gen.addCell(value.getRight(), 10);
+            }
+        }
+        String fileName = "bom_" + System.currentTimeMillis() + ".xlsx";
+        String url = gen.saveDoc(fileName);
+        return new ResultPE("file", ResultPE.ResultType.redirect).setValue(url);
     }
 
     /**

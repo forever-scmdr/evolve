@@ -145,16 +145,20 @@ public class OuterInputData {
             String[] parts = StringUtils.split(line, "\t ");
             if (parts.length > 1) {
                 String possibleQty = parts[parts.length - 1];
+                String singleQuery = StringUtils.join(parts, ' ');
+                int qty = 0;
                 try {
-                    int qty = Integer.parseInt(possibleQty);
+                    qty = Integer.parseInt(possibleQty);
                     if (qty > 49999) {
-                        query.put(StringUtils.join(parts, ' '), 0);
+                       qty = 0;
                     } else {
-                        query.put(StringUtils.join(parts, ' ', 0, parts.length - 1), qty);
+                        singleQuery = StringUtils.join(parts, ' ', 0, parts.length - 1);
                     }
-                } catch (NumberFormatException nfe) {
-                    query.put(StringUtils.join(parts, ' '), 0);
+                } catch (NumberFormatException nfe) { /**/ }
+                if (query.containsKey(singleQuery)) {
+                    qty += query.getOrDefault(singleQuery, 0);
                 }
+                query.put(singleQuery, qty);
             } else if (parts.length == 1) {
                 query.put(parts[0], 0);
             }

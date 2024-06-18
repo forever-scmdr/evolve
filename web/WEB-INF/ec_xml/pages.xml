@@ -2008,6 +2008,12 @@
 				</list>
 			</single>
 		</personal>
+		<link name="delete_all_boms" target="manage_bom">
+			<var name="action" value="deleteBom"/>
+		</link>
+		<link name="export_all_boms" target="manage_bom">
+			<var name="action" value="xlsExport"/>
+		</link>
 		<include name="COMMON"/>
 	</page>
 
@@ -2041,7 +2047,7 @@
 			<var name="action"/>
 		</request>
 		<personal>
-			<single item="bom_list" var="bom" id="bom"/>
+			<list item="bom_list" var="bom" id="bom"/>
 		</personal>
 		<link name="saved" target="bom_ajax">
 			<var name="result" value="saved"/>
@@ -2060,8 +2066,11 @@
 		<link name="all_updated" target="boms"/>
 		<command class="ecommander.special.portal.ManageBomCommand" method-var="action">
 			<result name="saved" type="redirect"/>
-			<result name="not_set" type="redirect"/>
-			<result name="deleted" type="redirect"/>
+			<result name="saved_refresh" type="redirect"/>
+			<result name="name_updated" type="redirect"/>
+			<result name="list_updated" type="redirect"/>
+			<result name="all_updated" type="redirect"/>
+			<result name="exported" type="redirect"/>
 			<result name="inited" type="redirect"/>
 		</command>
 	</page>
