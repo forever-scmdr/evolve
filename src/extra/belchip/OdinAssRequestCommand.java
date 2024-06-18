@@ -62,6 +62,8 @@ public class OdinAssRequestCommand extends Command {
 				} else {
 					throw new HttpResponseException(status, response.getStatusLine().getReasonPhrase());
 				}
+			} catch (Exception e) {
+				throw e;
 			}
 		}
 	}
