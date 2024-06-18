@@ -188,7 +188,6 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
-
 		 */
 		info.setOperation("Интеграция завершена");
 	}
