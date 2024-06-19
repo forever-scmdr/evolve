@@ -1,6 +1,8 @@
 package ecommander.special.portal;
 
+import com.lowagie.text.pdf.BaseFont;
 import ecommander.controllers.AppContext;
+import ecommander.controllers.PageController;
 import ecommander.fwk.*;
 import ecommander.fwk.integration.ExcelDocumentGenerator;
 import ecommander.model.Item;
@@ -8,8 +10,7 @@ import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
 import ecommander.model.UserGroupRegistry;
 import ecommander.model.datatypes.TupleDataType;
-import ecommander.pages.Command;
-import ecommander.pages.ResultPE;
+import ecommander.pages.*;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -22,11 +23,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -213,6 +220,11 @@ public class ManageBomCommand extends Command implements ItemNames {
         return getResult("all_updated");
     }
 
+    /**
+     * Экспорт в Excel
+     * @return
+     * @throws Exception
+     */
     public ResultPE xlsExport() throws Exception {
         User user = getInitiator();
         if (!user.inGroup(REGISTERED))
@@ -236,6 +248,65 @@ public class ManageBomCommand extends Command implements ItemNames {
         String fileName = "bom_" + System.currentTimeMillis() + ".xlsx";
         String url = gen.saveDoc(fileName);
         return new ResultPE("file", ResultPE.ResultType.redirect).setValue(url);
+    }
+
+    /**
+     * Экспорт в pdf
+     * @return
+     */
+    public ResultPE pdfExport() throws Exception {
+        File output = new File(AppContext.getFilesDirPath(false) + new Date().getTime() + ".pdf");
+        //Getting executable page ByteArrayOutputStream
+        String url = getLink("email_link").toString();
+        ExecutablePagePE emailPage = getExecutablePage(url);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        PageController.newSimple().executePage(emailPage, bos);
+
+        String content = new String(bos.toByteArray(), StandardCharsets.UTF_8);
+        bos.close();
+
+        ITextRenderer renderer = new ITextRenderer();
+        String fontPath = AppContext.getContextPath() + "css/ARIALUNI.TTF";
+        renderer.getFontResolver().addFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        renderer.setDocumentFromString(content);
+        //renderer.setDocument(document, null);
+        renderer.layout();
+        FileOutputStream fos = new FileOutputStream(output);
+        renderer.createPDF(fos);
+        fos.close();
+
+        String fileUrl = AppContext.getFilesUrlPath(false) + output.getName();
+        return new ResultPE("file", ResultPE.ResultType.redirect).setValue(fileUrl);
+    }
+
+    /**
+     * Отправка на E-mail
+     * @return
+     * @throws Exception
+     */
+    public ResultPE emailExport() throws Exception {
+        Item user = getSingleLoadedItem("user");
+        String email = user.getStringValue(user_.EMAIL);
+        if (StringUtils.isBlank(email))
+            return getResult("all_updated");
+
+        String url = getLink("email_link").toString();
+        ExecutablePagePE emailPage = getExecutablePage(url);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        PageController.newSimple().executePage(emailPage, bos);
+        bos.close();
+
+        Multipart multipart = new MimeMultipart();
+        MimeBodyPart text = new MimeBodyPart();
+        multipart.addBodyPart(text);
+
+        text.setContent(bos.toString("UTF-8"), emailPage.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER) + ";charset=UTF-8");
+        try {
+            EmailUtils.sendGmailDefault(email, "Списки BOM от partnumber.ru", multipart);
+        } catch (Exception e) {
+
+        }
+        return getResult("all_updated");
     }
 
     /**

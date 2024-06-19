@@ -150,7 +150,8 @@
 			function deleteBoms() {
 				$('#delete_boms_form').empty();
 				$('.check_all:checked').clone().appendTo($('#delete_boms_form'));
-				$('#delete_boms_form').submit();
+				if ($('.check_all:checked').length != 0)
+					$('#delete_boms_form').submit();
 			}
 
 			function findBoms() {
@@ -162,21 +163,41 @@
 				repeatSearch('#find_boms_form');
 			}
 
-			function exportBoms() {
-				$('#export_boms_form').empty();
-				$('.check_all:checked').clone().appendTo($('#export_boms_form'));
-				$('#export_boms_form').submit();
+			function exportBomsXls() {
+				$('#xls_boms_form').empty();
+				$('.check_all:checked').clone().appendTo($('#xls_boms_form'));
+				if ($('.check_all:checked').length != 0)
+					$('#xls_boms_form').submit();
+			}
+
+			function exportBomsPdf() {
+				$('#pdf_boms_form').empty();
+				$('.check_all:checked').clone().appendTo($('#pdf_boms_form'));
+                if ($('.check_all:checked').length != 0)
+					$('#pdf_boms_form').submit();
+			}
+
+			function exportBomsEmail() {
+				$('#email_boms_form').empty();
+				$('.check_all:checked').clone().appendTo($('#email_boms_form'));
+				if ($('.check_all:checked').length != 0)
+					$('#email_boms_form').submit();
 			}
 		</script>
 		<div style="display: none">
 			<form method="post" action="{page/delete_all_boms}" id="delete_boms_form"></form>
-			<form method="post" action="{page/export_all_boms}" id="export_boms_form"></form>
+			<form method="post" action="{page/export_all_boms}" id="xls_boms_form" target="_blank"></form>
+			<form method="post" action="{page/print_all_boms}" id="pdf_boms_form" target="_blank"></form>
+			<form method="post" action="{page/email_all_boms}" id="email_boms_form"></form>
 			<form method="post" action="{page/validate_bom_link}" id="find_boms_form"><textarea name="q"></textarea></form>
 		</div>
 		<xsl:if test="page/bom_catalog/bom_list">
 			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="confirmFunction(function() {{ deleteBoms() }}, this); return false;">Удалить выделенные списки</a>
 			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="findBoms(); return false;">Повторить поиск для выделенного</a>
-			<a class="button confirm-dialog" href="#" onclick="exportBoms(); return false;">Экспортировать выделенное</a>
+			<span style="margin-right: 5px;">Экспорт выделенного: </span>
+			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="exportBomsXls(); return false;">Excel</a>
+			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="exportBomsPdf(); return false;">PDF</a>
+			<a class="button confirm-dialog" href="#" style="margin-right: 10px;" onclick="exportBomsEmail(); return false;">E-mail</a>
 		</xsl:if>
 		<xsl:call-template name="SAVE_BOM_FORM"/>
 	</xsl:template>
