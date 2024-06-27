@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 
 public class OdinAssRequestCommand extends Command {
 	
-	private static final String URL = "https://office.belchip.by:9880/ut/hs/OrderStatus/GetStatus?purchase=%s&mail=%s";
+	private static final String URL = "http://office.belchip.by:9880/ut/hs/OrderStatus/GetStatus?purchase=%s&mail=%s";
 	private static final String CREDENTIAL = "Services1c:KpPD6VMv97T4SHqs";
 	private static final String ENCODING = "UTF-8";
 	
