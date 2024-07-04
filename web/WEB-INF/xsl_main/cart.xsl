@@ -8,9 +8,10 @@
     <xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
-	<xsl:template name="LEFT_COLOUMN">
+	<!--<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
-	</xsl:template>
+	</xsl:template>-->
+		<xsl:variable name="hide_side_menu" select="true()"/>
 
 
 	<xsl:template name="CONTENT">
@@ -36,7 +37,7 @@
 						<xsl:for-each select="page/cart/bought">
 							<xsl:variable name="p" select="product"/>
 							<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
-							<xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+							<xsl:variable name="sum" select="if (sum and f:num(sum) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
                             <xsl:variable name="plain_section" select="$p/plain_section"/>
                             <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
 							<xsl:variable name="api" select="outer_product and outer_product != ''"/>
@@ -49,7 +50,7 @@
 										</a>
 									</div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a><br/>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
 									</div>
 								</xsl:if>

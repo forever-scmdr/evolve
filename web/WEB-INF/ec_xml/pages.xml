@@ -1124,7 +1124,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1255,7 +1255,7 @@
 			<var name="email" value="forever-ds@mail.ru"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
-            <var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
+			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>

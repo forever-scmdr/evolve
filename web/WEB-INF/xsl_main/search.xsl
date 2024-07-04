@@ -38,7 +38,7 @@
 	<xsl:variable name="h1">Поиск по запросу "<xsl:value-of select="if ($is_search_multiple) then 'BOM' else page/variables/q"/>"</xsl:variable>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
-	<xsl:variable name="products" select="page/product | page/plain_catalog/product | page/catalog/product"/>
+	<xsl:variable name="products" select="page/product[plain_section]"/>
 	<xsl:variable name="results_api" select="page/api_search/product_list/results"/>
 	<xsl:variable name="has_results" select="$products or $results_api"/>
 	<xsl:variable name="only_available" select="page/variables/minqty = '0'"/>
@@ -100,14 +100,14 @@
 			<div class="devices devices_section{' lines'[$view = 'list']}">
 				<xsl:if test="$view = 'table'">
 					<div class="devices__wrap">
-						<xsl:apply-templates select="$products" mode="product-table"/>
 						<xsl:apply-templates select="$results_api/product" mode="product-table-api"/>
+						<xsl:apply-templates select="$products" mode="product-table"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'list'">
 					<div class="devices__wrap devices__wrap_rows">
-						<xsl:apply-templates select="$products" mode="product-list"/>
 						<xsl:apply-templates select="$results_api/product" mode="product-list-api"/>
+						<xsl:apply-templates select="$products" mode="product-list"/>
 					</div>
 				</xsl:if>
 				<xsl:if test="$view = 'lines'">

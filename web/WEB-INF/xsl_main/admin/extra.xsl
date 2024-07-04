@@ -52,6 +52,7 @@
 					<li><a href="create_yml_file">Экспорт каталога YML</a></li>
 					<li><a href="create_yml_file">Экспорт каталога YML (без цен)</a></li>
 					<li><a href="create_yml_file">Экспорт каталога YML (только товары в наличии)</a></li>
+					<li><a href="update_section_codes?action=start">Установка кодов разделов по названиям</a></li>
 				</ul>
 
 				<h2 class="title">Интеграция Excel</h2>
@@ -68,7 +69,6 @@
 
 				<ul class="no-drag">
 					<li><a href="integrate_excel?action=start">Разобрать содержимое директории integrate_manual</a></li>
-					<li><a href="update_excel?action=start">Обновить цены каталога из директории integrate_manual</a></li>
 				</ul>
 
                 <h2 class="title">Парсинг сайтов</h2>

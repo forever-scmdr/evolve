@@ -43,7 +43,7 @@
 	<xsl:template name="INDEX_BLOCKS">
 		<!-- slider -->
 		<xsl:if test="page/main_page/main_slider_frame">
-			<div class="slider">
+			<div class="slider" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 				<xsl:for-each select="page/main_page/main_slider_frame">
 					<div class="slider__item">
 						<div class="slider__content">

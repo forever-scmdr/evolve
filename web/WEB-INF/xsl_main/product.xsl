@@ -87,7 +87,7 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
+		<!-- <p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>-->
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 				<div class="tags">
@@ -97,7 +97,7 @@
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+				<div class="fotorama" data-width="80%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -149,7 +149,7 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<xsl:if test="$has_cart and $is_not_plain">
+						<xsl:if test="$has_cart and $is_not_plain and not(page/plain_catalog/product and $has_plain)">
 							<div id="cart_list_{$p/@id}" class="order order_product">
 								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 									<xsl:if test="$has_price">
@@ -218,18 +218,18 @@
 					</xsl:if>
 
 					<!-- параметры -->
-<!--					<table class="params">-->
-<!--						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>-->
-<!--						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>-->
-<!--						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>-->
-<!--						<xsl:for-each select="$captions">-->
-<!--							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>-->
-<!--							<tr>-->
-<!--								<td><xsl:value-of select="$param/@caption"/></td>-->
-<!--								<td><xsl:value-of select="$param"/></td>-->
-<!--							</tr>-->
-<!--						</xsl:for-each>-->
-<!--					</table>-->
+					<table class="params">
+						<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_short, '[\|;]\s*')"/>
+						<xsl:variable name="is_user_defined" select="$sel_sec/params_short and not($sel_sec/params_short = '') and count($user_defined_params) &gt; 0"/>
+						<xsl:variable name="captions" select="if ($is_user_defined) then $user_defined_params else $p/params/param/@caption"/>
+						<xsl:for-each select="$captions">
+							<xsl:variable name="param" select="$p/params/param[lower-case(normalize-space(@caption)) = lower-case(normalize-space(current()))]"/>
+							<tr>
+								<td><xsl:value-of select="$param/@caption"/></td>
+								<td><xsl:value-of select="$param"/></td>
+							</tr>
+						</xsl:for-each>
+					</table>
 				</xsl:if>
 
 
@@ -287,9 +287,10 @@
 					</div>
 				</xsl:if>
 
-				<div class="product-lables">
+
+				<!--<div class="product-lables">
 					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
-				</div>
+				</div>-->
 
 				<div class="product-icons">
 					<xsl:if test="$p/files">
@@ -336,9 +337,9 @@
 					<xsl:if test="$has_text">
 						<a href="#tab_text" class="tab tab_active">Описание</a>
 					</xsl:if>
-					<xsl:if test="$p/params">
+					<!--<xsl:if test="$p/params">
 						<a href="#tab_tech" class="tab{' tab_active'[not($has_text)]}">Характеристики</a>
-					</xsl:if>
+					</xsl:if>-->
 					<xsl:for-each select="$p/product_extra">
 						<a href="#tab_{@id}" class="tab"><xsl:value-of select="name"/></a>
 					</xsl:for-each>
@@ -352,7 +353,7 @@
 							<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
 						</div>
 					</xsl:if>
-					<xsl:if test="$p/params">
+					<!--<xsl:if test="$p/params">
 						<div class="tab-container" id="tab_tech" style="{'display: none'[$has_text]}">
 							<table class="full-params">
 								<xsl:variable name="params_xml_item" select="if($sel_sec/params_xml != '') then $sel_sec/params_xml else $p/params_xml"/>
@@ -361,7 +362,7 @@
 								<xsl:apply-templates select="$params_xml/params/group"/>
 							</table>
 						</div>
-					</xsl:if>
+					</xsl:if>-->
 					<xsl:for-each select="$p/product_extra">
 						<div class="tab-container" id="tab_{@id}" style="display: none">
 							<xsl:value-of select="text" disable-output-escaping="yes"/>
@@ -381,7 +382,6 @@
 				</div>
 			</div>
 
-			<hr/>
 			<div class="extra-info extra-info_product">
 				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
 			</div>

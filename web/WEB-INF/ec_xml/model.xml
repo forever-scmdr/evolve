@@ -554,25 +554,22 @@
 		<on-delete class="ecommander.fwk.ManageUsers$OnDelete"/>
 	</item>
 
+
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
-		<parameter name="contract_number" type="string" caption="Номер договора" />
+		<parameter name="orgn" type="string" caption="ОРГН" />
+		<parameter name="kpp" type="string" caption="КПП" />
+		<parameter name="inn" type="string" caption="ИНН" />
+		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="fact_address" type="string" caption="Фактический адрес" />
+		<parameter name="post_address" type="string" caption="Почтовый адрес" />
+		<parameter name="web_site" type="string" caption="Сайт организации" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
-		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="contact_email" type="string" caption="E-mail контактного лица" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
-		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
-		<parameter name="account" type="string" caption="Расчетный счет" />
-		<parameter name="bank" type="string" caption="Название банка" />
-		<parameter name="bank_address" type="string" caption="Адрес банка"/>
-		<parameter name="bank_code" type="string" caption="Код банка" />
-		<parameter name="unp" type="string" caption="УНП" />
-		<parameter name="director" type="string" caption="Ф.И.О директора" />
-		<parameter name="base" type="string" caption="Действует на основании" />
-		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
-		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 

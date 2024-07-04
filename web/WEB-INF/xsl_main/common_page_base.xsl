@@ -156,11 +156,11 @@
 	<xsl:template name="INC_DESKTOP_HEADER">
 		<div class="top-info">
 			<div class="container">
-				<div class="vl-h-btn">
+			<!--	<div class="vl-h-btn">
 					<script>function getBlindLink(){event.preventDefault();if($("body").is(".blind")){return "set_mode?blind=false";}return "set_mode?blind=blind";}</script>
 					<a onclick="insertAjax(getBlindLink()); $('body').toggleClass('blind');" href="#"><img src="img/eye-solid.svg" alt="" class="icon"/></a>
 					<div id="google_translate_element"></div>
-				</div>
+				</div>-->
 				<!-- <xsl:value-of select="$common/top" disable-output-escaping="yes"/> -->
 				<!-- static -->
 				<xsl:variable name="has_city" select="$common/topper/block[header = $city]"/>
@@ -952,7 +952,9 @@
 					}
 				</script>
 				<script>
-				AOS.init();
+				$(document).ready(function() {
+						AOS.init();
+				});
 				</script>
 				<script>
 					function googleTranslateElementInit() {

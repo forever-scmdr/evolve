@@ -25,7 +25,6 @@
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
-	<xsl:variable name="sel_sec" select="none"/>
 
 
 
@@ -44,6 +43,7 @@
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<!--<div style="display: none">
@@ -74,6 +74,7 @@
 					</div>
 				</xsl:for-each>
 			</div>
+			
 
 			<!-- quick view (not displayed, delete <div> with display: none to show) -->
 			<xsl:if test="$has_quick_view">
@@ -84,9 +85,9 @@
 
 			<!-- device title -->
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
-
+		
 			<!-- device identification code -->
-			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+			<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -119,9 +120,12 @@
 			</xsl:call-template>
 
 			<!-- device order -->
-			<xsl:call-template name="CART_BUTTON">
+				<div class="order device-order">
+					<a class="button" href="{show_product}">Наличие и цены</a>
+				</div>
+			<!--<xsl:call-template name="CART_BUTTON">
 				<xsl:with-param name="p" select="current()"/>
-			</xsl:call-template>
+			</xsl:call-template>-->
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -186,7 +190,7 @@
 			<a href="{show_product}" class="device__name" title="{name}"><span><xsl:value-of select="name"/></span></a>
 
 			<!-- device identification code -->
-			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+			<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -292,7 +296,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -392,9 +396,12 @@
 			<div class="device__column">
 
 				<!-- device order -->
-				<xsl:call-template name="CART_BUTTON">
+				<div class="order device-order">
+					<a class="button" href="{show_product}">Наличие и цены</a>
+				</div>
+				<!--<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="p" select="current()"/>
-				</xsl:call-template>
+				</xsl:call-template>-->
 
 				<xsl:call-template name="EXTRA_ORDERING_TYPES">
 					<xsl:with-param name="p" select="current()"/>
@@ -465,7 +472,7 @@
 				<a href="{show_product}" class="device__name"><span><xsl:value-of select="name"/></span></a>
 
 				<!-- device identification code -->
-				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<!--<div class="text_size_sm"><xsl:value-of select="code"/></div>-->
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -488,7 +495,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->
@@ -883,7 +890,7 @@
 		<xsl:param name="p" />
 		<xsl:param name="default_qty" select="-1"/>
 		<xsl:if test="$has_cart">
-			<xsl:variable name="has_price" select="f:num($p/price) != 0"/>
+			<xsl:variable name="has_price" select="(f:num($p/price) != 0) or $p/prices/break/price"/>
 
 			<!-- device order -->
 			<div class="order device-order cart_list_{$p/code}" id="cart_list_{$p/code}">
@@ -911,10 +918,6 @@
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
-
-		<div class="text_sm" style="margin-top: auto;">
-			<a href="#" onclick="showDetails('{show_lines_ajax}'); return false;" >Склады</a>
-		</div>
 
 		<!-- one click -->
 		<xsl:if test="$has_one_click">
@@ -1079,8 +1082,8 @@
 						</xsl:for-each>
 					</xsl:if>
 					<xsl:if test="not($multiple)">
-						<xsl:apply-templates select="$products" mode="product-lines"/>
 						<xsl:apply-templates select="$results_api/product" mode="product-lines-api"/>
+						<xsl:apply-templates select="$products" mode="product-lines"/>
 					</xsl:if>
 				</tbody>
 			</table>
