@@ -318,16 +318,15 @@
 			</div>
 		</div>
 
+		<xsl:if test="$p/api_ajax_link">
+			<div id="products_api_ajax" ajax-href="search_api_ajax/?q={substring-before($p/name, ',')}" ajax-show-loader="yes"></div> <!-- {$p/api_ajax_link} -->
+		</xsl:if>
 
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
 				<xsl:with-param name="results_api" select="$results_api"/>
 			</xsl:call-template>
-		</xsl:if>
-
-		<xsl:if test="$p/api_ajax_link">
-			<div id="products_api_ajax" ajax-href="{$p/api_ajax_link}" ajax-show-loader="yes"></div>
 		</xsl:if>
 
 		<div class="device-full">

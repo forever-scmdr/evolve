@@ -1459,7 +1459,6 @@
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
 		</single>
-		<single item="currencies"/>
 	</page>
 
 
@@ -2360,13 +2359,17 @@
 		<headers Content-Type="text/xml"/>
 		<request>
 			<var name="q"/>
-			<var name="server" value="http://gammtrade.must.by/api_xml"/>
+			<var name="n"/>
 		</request>
-		<command class="extra.SearchApiCommand">
+		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
+			<result name="analogs" type="inline_xml"/>
+		</command>
+		<command class="extra.SearchOctopartApiCommand">
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
 			<result name="illegal_argument" type="inline_text"/>
 		</command>
+		<single item="currencies" cacheable="true"/>
 	</page>
 
 
