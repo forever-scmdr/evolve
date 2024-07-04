@@ -2735,4 +2735,10 @@
 		<command class="ecommander.fwk.integration.ClearAllXmlFiltersCommand"/>
 	</page>
 
+
+	<page name="write_param_values">
+		<command class="ecommander.special.portal.extra.AllValuesCommand"/>
+	</page>
+
+
 </site>
