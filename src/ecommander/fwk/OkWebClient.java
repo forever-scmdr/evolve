@@ -5,45 +5,20 @@ import okhttp3.internal.http.RealResponseBody;
 import okio.BufferedSource;
 import okio.GzipSource;
 import okio.Okio;
-import org.apache.commons.compress.compressors.brotli.BrotliCompressorInputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpResponseException;
-import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.ssl.SSLContexts;
 import org.brotli.dec.BrotliInputStream;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -154,54 +129,47 @@ public class OkWebClient {
 	}
 
 
-	public String getString(String url) throws IOException {
-
-
-
+	public byte[] getBytes(String url) throws IOException {
 		Request request = new Request.Builder().url(url)
-				.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-				.addHeader("accept-encoding", "gzip, deflate, br")
-				.addHeader("accept-language", "en-US,en;q=0.9,ru;q=0.8")
-				.addHeader("cache-control", "no-cache")
-				.addHeader("device-memory", "8")
-				.addHeader("downlink", "5.55")
-				.addHeader("dpr", "1")
-				.addHeader("ect", "4g")
-				.addHeader("pragma", "no-cache")
-				.addHeader("rtt", "250")
-				.addHeader("sec-ch-ua", "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"")
-				.addHeader("sec-ch-ua-mobile", "?0")
-				.addHeader("sec-ch-ua-platform", "\"Windows\"")
-				.addHeader("sec-fetch-dest", "document")
-				.addHeader("sec-fetch-mode", "navigate")
-				.addHeader("sec-fetch-site", "same-origin")
-				.addHeader("user-agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
-				.addHeader("upgrade-insecure-requests", "1")
-				.addHeader("viewport-width", "1280")
-
-//				.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
-				//.header("Accept-Encoding", "gzip, deflate, br")
-//				.header("Accept-Encoding", "dentity")
-//				.header("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3")
-//				.header("Cache-Control", "no-cache")
-//				.header("Connection", "keep-alive")
-//				.header("Pragma", "no-cache")
-//				.header("Sec-Fetch-Dest", "document")
-//				.header("Sec-Fetch-Mode", "navigate")
-//				.header("Sec-Fetch-Site", "none")
-//				.header("Sec-Fetch-User", "?1")
-//				.header("Upgrade-Insecure-Requests", "1")
-//				.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0")
-				//.header("Accept-Encoding", "dentity")
+				.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0")
+				.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8")
+				.addHeader("Accept-Language", "en-US,en;q=0.8,en-US;q=0.5,en;q=0.3")
+				.addHeader("Accept-Encoding", "gzip, deflate, br, zstd")
+				.addHeader("Connection", "keep-alive")
+				.addHeader("Cookie", "_pxhd=e493f6917b36b18625839234fe1557c7fd5cc6e2c8c06577b252226e03313f5b:f7db3f6f-612c-11ee-a749-89aabfc42dfd; search=%7B%22id%22%3A%22a09e64b7-c2a2-496e-b9e9-2b6f00125a36%22%2C%22usage%22%3A%7B%22dailyCount%22%3A4%2C%22lastRequest%22%3A%222024-07-16T15%3A54%3A53.201Z%22%7D%2C%22version%22%3A1.1%7D; ai_user=6DfIbztGcZl84THWizZ7Yz|2024-07-09T11:45:53.390Z; pf-accept-language=en-US; ping-accept-language=en-US; utag_main=v_id:01909750839b001834a766128be605050004e00d00c48$_sn:4$_se:6$_ss:0$_st:1721150201108$ses_id:1721145295139%3Bexp-session$_pn:6%3Bexp-session; _pxvid=f7db3f6f-612c-11ee-a749-89aabfc42dfd; TS01173021=01f9ef228d20770a0fc379bdb80b2194baa06c22d00b34c8d5c1d6b3497df78fab39231344bdd1937b319105a3e314f35108186f62; TScaafd3c3027=08205709cbab2000444efa0242365d4e90b8b01863ffbe6e01f04cdfbcf9291510e846bfde9ea32f08cf00fd60113000a012c670f152396577bc6604d9d598ae0b4997a396582928f3f27c9df73a013ec2d0d0f189298c7ed865aa2f546443c6; dkc_tracker=3652960826380; search_prefs=%7B%22theme%22%3A%22light%22%7D; pxcts=55a10177-42ad-11ef-9a3c-49aa6398a784; TSd6475659027=08e0005159ab2000df30e4fa1366b6cf6d771bd414ee41391763af24aeeb17e6b24e21459115545208ad4d7ecc113000a23313484b4ac634ac24b38b1d6be5e561f97d33ffd1d5b857d8b80ed9bc0d5b6854781ced572573f07db59020653d25; ai_session=UVkEFF5SjYYayGllLHWAuf|1721145293746|1721145293746; website#lang=en-US; TS0198bc0d=01c72bed21994c9ea667a2a96dd46df70c6147d739fd37c70969aa471c3dc2c76a851365a10ab619226289b799da12422e8cd5d871; TSe14c7dc7027=08a1509f8aab2000932e60061c30320a68a109f21cf7780b975fbef9a68bc8a78ce782ec78d6264008bdc407c6113000a8054e7de7ee880f0d29bb3e61dfe98c7693bb07e417ecd2f9562946d996ae5f1a38d63e141afd10216c97044ae95360; TS016ca11c=01c72bed2137738fd13c6a515723c584a5676aa06e41f32b931e9b860cfabc2317d9b31d228c156a50b07f04a75a2adc525038016a; TSc580adf4027=08a1509f8aab2000b7fa5ec40b26e78d7750d114f2b530d9b27514cd188af8710ef8dede201d9c1c0886aa7cba113000db6710f939aafe899b6b798df563b4c8dafaf81952b53df0ceed1301cf6d2bf05bde0f52744b97bed56fecd7e89b6661; TS019f5e6c=01c72bed21263d9aaf45c06f618a1a21dadb05dd939a87e5847f00777ec79afd9f2ca0ead9c8863a83197388712b923d4538fe6242; TSbafe380b027=08a1509f8aab20007d4390be5a0d8c607120ac506b3fe851b923a3491534dc86c5da6ce95acb7c9f08e54a5db2113000ceb6567e7f8fa3999b6b798df563b4c8cbd04f85fae225d55dfa130237b54aff328157f5161c6596efdd7ca7b49e1fa7; _cs_mk=0.37244327748550354_1721147244005; _dd_s=rum=0&expire=1721149510140; _pxde=9d0f57c3e90aa962d9c606f22e0e8f7774b45b81e5186c2ef88a506d9a767f72:eyJ0aW1lc3RhbXAiOjE3MjExNDg0NjI3MjAsImZfa2IiOjAsImlwY19pZCI6WzE3XSwiaW5jX2lkIjpbImIzN2M0YjlkNzQzNmM1YjIyMmM5N2Q1M2Y2MjNlNWNjIl19; _px2=eyJ1IjoiZjlkM2FjYTAtNDM5Mi0xMWVmLWEyNjQtOGY5MzE5OWNjOTg0IiwidiI6ImY3ZGIzZjZmLTYxMmMtMTFlZS1hNzQ5LTg5YWFiZmM0MmRmZCIsInQiOjE3MjExNDg3MDI0MTIsImgiOiJlY2VmZTA2ZmU3YWZmZjIxODM3ODU5YWEwN2JjMGU0MzIyNWRhYmYzYjE5ZTViYzcyOTJhMWUzNDA0YjIyZTA5In0=")
+				.addHeader("Upgrade-Insecure-Requests", "1")
+				.addHeader("Sec-Fetch-Dest", "document")
+				.addHeader("Sec-Fetch-Mode", "navigate")
+				.addHeader("Sec-Fetch-Site", "none")
+				.addHeader("Sec-Fetch-User", "?1")
 				.build();
+		try (Response response = client.newCall(request).execute()) {
+//			byte[] bytes = response.body().bytes();
+//			String result1 = new String(bytes, StandardCharsets.UTF_8);
+//			String result2 = new String(bytes, StandardCharsets.UTF_16);
+//			String result3 = new String(bytes, StandardCharsets.ISO_8859_1);
+//			String result4 = new String(bytes, StandardCharsets.US_ASCII);
+//			String result5 = new String(bytes, StandardCharsets.UTF_16BE);
+//			String result6 = new String(bytes, StandardCharsets.UTF_16LE);
+//			System.out.println(result1 + result2 + result3 + result4 + result5 + result6);
+			return response.body().bytes();
+		}
+	}
 
-//		Request request = new Request.Builder().url(url)
-//				.header("Connection", "keep-alive")
-//				.header("Connection", "keep-alive")
-//				.header("Accept", "text/plain,text/html,*/*")
-//				.header("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)")
-//				.header("Accept-Encoding", "dentity")
-//				.build();
+	public String getString(String url) throws IOException {
+		Request request = new Request.Builder().url(url)
+				.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0")
+				.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8")
+				.addHeader("Accept-Language", "en-US,en;q=0.8,en-US;q=0.5,en;q=0.3")
+				.addHeader("Accept-Encoding", "gzip, deflate, br, zstd")
+				.addHeader("Connection", "keep-alive")
+				.addHeader("Cookie", "_pxhd=e493f6917b36b18625839234fe1557c7fd5cc6e2c8c06577b252226e03313f5b:f7db3f6f-612c-11ee-a749-89aabfc42dfd; search=%7B%22id%22%3A%22a09e64b7-c2a2-496e-b9e9-2b6f00125a36%22%2C%22usage%22%3A%7B%22dailyCount%22%3A4%2C%22lastRequest%22%3A%222024-07-16T15%3A54%3A53.201Z%22%7D%2C%22version%22%3A1.1%7D; ai_user=6DfIbztGcZl84THWizZ7Yz|2024-07-09T11:45:53.390Z; pf-accept-language=en-US; ping-accept-language=en-US; utag_main=v_id:01909750839b001834a766128be605050004e00d00c48$_sn:4$_se:6$_ss:0$_st:1721150201108$ses_id:1721145295139%3Bexp-session$_pn:6%3Bexp-session; _pxvid=f7db3f6f-612c-11ee-a749-89aabfc42dfd; TS01173021=01f9ef228d20770a0fc379bdb80b2194baa06c22d00b34c8d5c1d6b3497df78fab39231344bdd1937b319105a3e314f35108186f62; TScaafd3c3027=08205709cbab2000444efa0242365d4e90b8b01863ffbe6e01f04cdfbcf9291510e846bfde9ea32f08cf00fd60113000a012c670f152396577bc6604d9d598ae0b4997a396582928f3f27c9df73a013ec2d0d0f189298c7ed865aa2f546443c6; dkc_tracker=3652960826380; search_prefs=%7B%22theme%22%3A%22light%22%7D; pxcts=55a10177-42ad-11ef-9a3c-49aa6398a784; TSd6475659027=08e0005159ab2000df30e4fa1366b6cf6d771bd414ee41391763af24aeeb17e6b24e21459115545208ad4d7ecc113000a23313484b4ac634ac24b38b1d6be5e561f97d33ffd1d5b857d8b80ed9bc0d5b6854781ced572573f07db59020653d25; ai_session=UVkEFF5SjYYayGllLHWAuf|1721145293746|1721145293746; website#lang=en-US; TS0198bc0d=01c72bed21994c9ea667a2a96dd46df70c6147d739fd37c70969aa471c3dc2c76a851365a10ab619226289b799da12422e8cd5d871; TSe14c7dc7027=08a1509f8aab2000932e60061c30320a68a109f21cf7780b975fbef9a68bc8a78ce782ec78d6264008bdc407c6113000a8054e7de7ee880f0d29bb3e61dfe98c7693bb07e417ecd2f9562946d996ae5f1a38d63e141afd10216c97044ae95360; TS016ca11c=01c72bed2137738fd13c6a515723c584a5676aa06e41f32b931e9b860cfabc2317d9b31d228c156a50b07f04a75a2adc525038016a; TSc580adf4027=08a1509f8aab2000b7fa5ec40b26e78d7750d114f2b530d9b27514cd188af8710ef8dede201d9c1c0886aa7cba113000db6710f939aafe899b6b798df563b4c8dafaf81952b53df0ceed1301cf6d2bf05bde0f52744b97bed56fecd7e89b6661; TS019f5e6c=01c72bed21263d9aaf45c06f618a1a21dadb05dd939a87e5847f00777ec79afd9f2ca0ead9c8863a83197388712b923d4538fe6242; TSbafe380b027=08a1509f8aab20007d4390be5a0d8c607120ac506b3fe851b923a3491534dc86c5da6ce95acb7c9f08e54a5db2113000ceb6567e7f8fa3999b6b798df563b4c8cbd04f85fae225d55dfa130237b54aff328157f5161c6596efdd7ca7b49e1fa7; _cs_mk=0.37244327748550354_1721147244005; _dd_s=rum=0&expire=1721149510140; _pxde=9d0f57c3e90aa962d9c606f22e0e8f7774b45b81e5186c2ef88a506d9a767f72:eyJ0aW1lc3RhbXAiOjE3MjExNDg0NjI3MjAsImZfa2IiOjAsImlwY19pZCI6WzE3XSwiaW5jX2lkIjpbImIzN2M0YjlkNzQzNmM1YjIyMmM5N2Q1M2Y2MjNlNWNjIl19; _px2=eyJ1IjoiZjlkM2FjYTAtNDM5Mi0xMWVmLWEyNjQtOGY5MzE5OWNjOTg0IiwidiI6ImY3ZGIzZjZmLTYxMmMtMTFlZS1hNzQ5LTg5YWFiZmM0MmRmZCIsInQiOjE3MjExNDg3MDI0MTIsImgiOiJlY2VmZTA2ZmU3YWZmZjIxODM3ODU5YWEwN2JjMGU0MzIyNWRhYmYzYjE5ZTViYzcyOTJhMWUzNDA0YjIyZTA5In0=")
+				.addHeader("Upgrade-Insecure-Requests", "1")
+				.addHeader("Sec-Fetch-Dest", "document")
+				.addHeader("Sec-Fetch-Mode", "navigate")
+				.addHeader("Sec-Fetch-Site", "none")
+				.addHeader("Sec-Fetch-User", "?1")
+				.build();
 		try (Response response = client.newCall(request).execute()) {
 //			byte[] bytes = response.body().bytes();
 //			String result1 = new String(bytes, StandardCharsets.UTF_8);
@@ -229,8 +197,9 @@ public class OkWebClient {
 		}
 		Request request = builder.build();
 		try (Response response = client.newCall(request).execute()) {
-			if (response.body() != null)
+			if (response.body() != null) {
 				return response.body().string();
+			}
 			return null;
 		}
 	}

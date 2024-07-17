@@ -10,6 +10,7 @@ import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.itemquery.fulltext.FulltextQueryCreatorRegistry;
 import ecommander.special.portal.outer.Request;
+import ecommander.special.portal.outer.Result;
 import extra._generated.ItemNames;
 import extra._generated.Product;
 import org.apache.commons.io.FileUtils;
@@ -130,7 +131,7 @@ public class DataGetter {
             ProviderGetter getter = PROVIDER_GETTERS.get(input.getRemote());
             if (getter != null) {
                 Timer.getTimer().start("API # remote_load");
-                ProviderGetter.Result result = getter.getData(input);
+                Result result = getter.getData(input);
                 Timer.getTimer().stop("API # remote_load");
                 // Если результат получен
                 if (result.isSuccess()) {

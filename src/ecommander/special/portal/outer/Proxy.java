@@ -3,6 +3,7 @@ package ecommander.special.portal.outer;
 import ecommander.fwk.Strings;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -41,22 +42,23 @@ public class Proxy {
             QueryExecutor.Executor executor = QueryExecutor.get(query.getHostName(), proxyAddress, query.query);
             boolean success = executor.executeQuery();
             if (success) {
-                if (StringUtils.startsWith(executor.getResult(), Strings.ERROR_MARK)) {
-                    query.endProcess(Request.Status.HOST_FAILURE, executor.getResult());
-                } else {
-                    query.endProcess(Request.Status.SUCCESS, executor.getResult());
-                    synchronized (Proxy.this) {
-                        if (status == Status.OFFLINE) {
-                            status = Status.ONLINE;
-                        }
-                        storeExecTime(query.getProcessMillis());
+                query.endProcess(Request.Status.SUCCESS, executor.getResult());
+                synchronized (Proxy.this) {
+                    if (status == Status.OFFLINE) {
+                        status = Status.ONLINE;
                     }
+                    storeExecTime(query.getProcessMillis());
                 }
             } else {
-                query.endProcess(Request.Status.PROXY_FAILURE, executor.getResult());
-                synchronized (Proxy.this) {
-                    if (status == Status.ONLINE) {
-                        status = Status.OFFLINE;
+                String resultStr = new String(executor.getResult(), StandardCharsets.UTF_8);
+                if (StringUtils.startsWith(resultStr, Strings.ERROR_MARK)) {
+                    query.endProcess(Request.Status.HOST_FAILURE, executor.getResult());
+                } else {
+                    query.endProcess(Request.Status.PROXY_FAILURE, executor.getResult());
+                    synchronized (Proxy.this) {
+                        if (status == Status.ONLINE) {
+                            status = Status.OFFLINE;
+                        }
                     }
                 }
             }

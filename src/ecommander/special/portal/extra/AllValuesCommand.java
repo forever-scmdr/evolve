@@ -10,9 +10,9 @@ import ecommander.pages.ResultPE;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.util.TextUtils;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

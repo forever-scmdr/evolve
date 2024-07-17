@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Класс, который выполняет запрос к определенному серверу
@@ -20,7 +21,8 @@ public class QueryExecutor {
     public static abstract class Executor {
         protected String query;
         protected String proxyServer;
-        protected String result;
+        protected byte[] result;
+
         private Executor(String query, String proxyServer) {
             this.query = StringUtils.normalizeSpace(query);
             this.proxyServer = proxyServer;
@@ -33,7 +35,7 @@ public class QueryExecutor {
          */
         public abstract boolean executeQuery() throws Exception;
 
-        public String getResult() {
+        public byte[] getResult() {
             return result;
         }
     }
@@ -60,24 +62,24 @@ public class QueryExecutor {
                         if (StringUtils.isNotBlank(proxyServer) && StringUtils.startsWith(proxyServer, "http")) {
                             hasProxy = true;
                             String proxyUrl = proxyServer + "?url=" + requestUrl;
-                            result = OkWebClient.getInstance().getString(proxyUrl);
+                            result = OkWebClient.getInstance().getBytes(proxyUrl);
                         } else {
-                            result = OkWebClient.getInstance().getString(requestUrl);
+                            result = OkWebClient.getInstance().getBytes(requestUrl);
                         }
                     }
                     // если задан параметр server - значит надо подулючаться удаленному серверу
                     else {
-                        result = "Не указан прокси сервер для урла " + SERVER;
+                        result = ("Не указан прокси сервер для урла " + SERVER).getBytes();
                         return false;
                     }
                 } else {
-                    result = "Неверный формат запроса для урла " + SERVER + ". Запрос '" + query + "'";
+                    result = ("Неверный формат запроса для урла " + SERVER + ". Запрос '" + query + "'").getBytes();
                     return false;
                 }
             } catch (Exception e) {
-                result = ExceptionUtils.getStackTrace(e);
+                result = ExceptionUtils.getStackTrace(e).getBytes();
                 if (!hasProxy) {
-                    result = Strings.ERROR_MARK + "\n\n" + result;
+                    result = (Strings.ERROR_MARK + "\n\n" + new String(result, StandardCharsets.UTF_8)).getBytes();
                 }
                 return false;
             }
@@ -110,18 +112,64 @@ public class QueryExecutor {
                     if (StringUtils.isNotBlank(proxyServer) && StringUtils.startsWith(proxyServer, "http")) {
                         hasProxy = true;
                         String proxyUrl = proxyServer + "?url=" + URLEncoder.encode(requestUrl, Strings.SYSTEM_ENCODING);
-                        result = OkWebClient.getInstance().getString(proxyUrl);
+                        result = OkWebClient.getInstance().getBytes(proxyUrl);
                     } else {
-                        result = OkWebClient.getInstance().getString(requestUrl);
+                        result = OkWebClient.getInstance().getBytes(requestUrl);
                     }
                 } else {
-                    result = "Неверный формат запроса";
+                    result = ("Неверный формат запроса").getBytes();
                     return false;
                 }
             } catch (Exception e) {
-                result = ExceptionUtils.getStackTrace(e);
+                result = ExceptionUtils.getStackTrace(e).getBytes();
                 if (!hasProxy) {
-                    result = Strings.ERROR_MARK + "\n\n" + result;
+                    result = (Strings.ERROR_MARK + "\n\n" + new String(result, StandardCharsets.UTF_8)).getBytes();
+                }
+                return false;
+            }
+            return true;
+        }
+    }
+
+
+    /**
+     * Прямой запрос ко всем другим сайтам. Если их много, все они группируются в один "сервер"
+     * с одной на всех очередью
+     */
+    private static class GeneralServerExecutor extends Executor {
+
+        private GeneralServerExecutor(String query, String proxyServer) {
+            super(query, proxyServer);
+        }
+
+        @Override
+        public boolean executeQuery() throws Exception {
+            boolean hasProxy = false;
+            try {
+                if (StringUtils.isNotBlank(query)) {
+                    if (StringUtils.isNotBlank(proxyServer)) {
+                        String requestUrl = query;
+                        if (StringUtils.isNotBlank(proxyServer) && StringUtils.startsWith(proxyServer, "http")) {
+                            hasProxy = true;
+                            String proxyUrl = proxyServer + "?url=" + requestUrl;
+                            result = OkWebClient.getInstance().getBytes(proxyUrl);
+                        } else {
+                            result = OkWebClient.getInstance().getBytes(requestUrl);
+                        }
+                    }
+                    // если задан параметр server - значит надо подулючаться удаленному серверу
+                    else {
+                        result = ("Не указан прокси сервер для урла '" + query + "'").getBytes();
+                        return false;
+                    }
+                } else {
+                    result = ("Неверный формат запроса для урла '" + query + "'").getBytes();
+                    return false;
+                }
+            } catch (Exception e) {
+                result = ExceptionUtils.getStackTrace(e).getBytes();
+                if (!hasProxy) {
+                    result = (Strings.ERROR_MARK + "\n\n" + new String(result, StandardCharsets.UTF_8)).getBytes();
                 }
                 return false;
             }
@@ -143,6 +191,6 @@ public class QueryExecutor {
         if (StringUtils.containsIgnoreCase(hostName, Providers.OEMSECRETS)) {
             return new OemsecretsExecutor(query, proxyServer);
         }
-        throw new IllegalArgumentException("Не найден исполнитель запроса для хоста '" + hostName + "'");
+        return new GeneralServerExecutor(query, proxyServer);
     }
 }

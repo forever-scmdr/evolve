@@ -12,9 +12,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
  * Другими словами перенаправляет на другой наш сайт
  *
  * Передаваемые параметры:
- *      server  - proxy сервер (наш другой сайт)
- *      path    - путь урла (без переменных, как правило просто название страницы)
- *      q   - дописываются в запрос
+ *      url  - урл, который надо получить
  *
  */
 public class AnotherEcommanderProxy extends Command {

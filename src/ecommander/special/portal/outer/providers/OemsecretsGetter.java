@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -35,12 +36,12 @@ public class OemsecretsGetter extends ProviderGetter {
         addServerElement(queryXml, query);
         if (query.getStatus() != Request.Status.SUCCESS) {
             String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
-            queryXml.addElement("error", query.getResult(), "type", errorType);
+            queryXml.addElement("error", query.getResultString(StandardCharsets.UTF_8), "type", errorType);
             query.setProcessedResult(queryXml);
             return;
         }
 
-        String jsonString = query.getResult();
+        String jsonString = query.getResultString(StandardCharsets.UTF_8);
 
         // Кеши и нужные значения
         LinkedHashMap<String, XmlDocumentBuilder> distributorXmls = new LinkedHashMap<>();

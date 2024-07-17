@@ -5,7 +5,6 @@ import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.Strings;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
-import edu.uci.ics.crawler4j.url.WebURL;
 import lunacrawler.fwk.CrawlerController;
 import lunacrawler.fwk.Parse_item;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -14,7 +13,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
  * Команда для парсинга сайта
  * Created by E on 23/4/2018.
  */
-public class CrawlCommand extends IntegrateBase implements UrlModifier {
+public class CrawlCommand extends IntegrateBase {
 	@Override
 	protected boolean makePreparations() throws Exception {
 		return true;
@@ -24,7 +23,7 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
 		try {
-			CrawlerController.startJob(info, CrawlerController.Mode.valueOf(mode), null);
+			CrawlerController.startJob(info, CrawlerController.Mode.valueOf(mode));
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}
@@ -61,9 +60,4 @@ public class CrawlCommand extends IntegrateBase implements UrlModifier {
 		return getResult("test_xsl").setValue(xml);
 	}
 
-
-	@Override
-	public void modifyUrl(WebURL url) {
-		// По умолчанию ничего не делает
-	}
 }

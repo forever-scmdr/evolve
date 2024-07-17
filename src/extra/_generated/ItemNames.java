@@ -443,6 +443,7 @@ public interface ItemNames {
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_URL = "main_pic_url";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -470,6 +471,8 @@ public interface ItemNames {
         String DOCUMENTS_XML = "documents_xml";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
+        String TO_DOWNLOAD = "to_download";
+        String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
 
     }
@@ -625,6 +628,7 @@ public interface ItemNames {
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_URL = "main_pic_url";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -652,6 +656,8 @@ public interface ItemNames {
         String DOCUMENTS_XML = "documents_xml";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
+        String TO_DOWNLOAD = "to_download";
+        String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
 
     }
@@ -992,6 +998,7 @@ public interface ItemNames {
         String SPEC_QTY = "spec_qty";
         String COUNTRY = "country";
         String MAIN_PIC = "main_pic";
+        String MAIN_PIC_URL = "main_pic_url";
         String SMALL_PIC = "small_pic";
         String DESCRIPTION = "description";
         String TEXT = "text";
@@ -1019,6 +1026,8 @@ public interface ItemNames {
         String DOCUMENTS_XML = "documents_xml";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
+        String TO_DOWNLOAD = "to_download";
+        String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 

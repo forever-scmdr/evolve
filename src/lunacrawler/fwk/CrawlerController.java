@@ -1,11 +1,10 @@
 package lunacrawler.fwk;
 
 import ecommander.controllers.AppContext;
-import ecommander.fwk.*;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
-import edu.uci.ics.crawler4j.url.WebURL;
-import lunacrawler.UrlModifier;
+import ecommander.fwk.IntegrateBase;
+import ecommander.fwk.ServerLogger;
+import ecommander.fwk.Strings;
+import ecommander.fwk.XmlDocumentBuilder;
 import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -198,7 +197,6 @@ public class CrawlerController {
 
 	private static CrawlerController singleton = null;
 
-	private CrawlController CONTROLLER = null;
 	private LinkedHashMap<String, String> urlStyles = null;
 	private String stylesDir = null;
 	private String resultDir = null;
@@ -209,8 +207,6 @@ public class CrawlerController {
 	private String resultTempFilesDir = null;
 
 	private Crawler crawler = null;
-
-	private UrlModifier urlModifier = null;
 
 	private int currentProxyUrlsCount = 0;
 
@@ -300,7 +296,7 @@ public class CrawlerController {
 			    	if (!StringUtils.isBlank(line) && !line.startsWith("#")) {
 			        	String[] parts = StringUtils.split(line, " \t");
 			        	if (parts.length == 1) {
-			        		String seed = URLCanonicalizer.getCanonicalURL(parts[0]);
+			        		String seed = StringUtils.trim(parts[0]);
 			        		seedUrls.add(seed);
 			        		urlStyles.put(seed, NO_TEMPLATE);
 			        		if (baseUrl == null) {
@@ -452,10 +448,8 @@ public class CrawlerController {
 	 * @param
 	 * @throws Exception
 	 */
-	public static void startJob(IntegrateBase.Info info, Mode mode, UrlModifier... modifier) throws Exception {
+	public static void startJob(IntegrateBase.Info info, Mode mode) throws Exception {
 		singleton = new CrawlerController(info);
-		if (modifier != null && modifier.length > 0)
-			singleton.urlModifier = modifier[0];
 		singleton.start(mode);
 	}
 	
@@ -1069,11 +1063,6 @@ public class CrawlerController {
 	
 	public IntegrateBase.Info getInfo() {
 		return info;
-	}
-
-	public void modifyUrl(WebURL url) {
-		if (urlModifier != null)
-			urlModifier.modifyUrl(url);
 	}
 
 

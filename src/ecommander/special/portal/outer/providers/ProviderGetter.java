@@ -7,12 +7,12 @@ import ecommander.model.Item;
 import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.special.portal.outer.ProxyRequestDispatcher;
 import ecommander.special.portal.outer.Request;
+import ecommander.special.portal.outer.Result;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,38 +24,6 @@ import java.util.List;
  * фактически и осуществляет подключение к серверу с формированием нужной строки запроса и заголовков
  */
 public abstract class ProviderGetter implements ItemNames {
-
-    /**
-     * Результат выполнения запроса
-     */
-    class Result {
-        private int errorNum;
-        private String errorMessage;
-        private Request request;
-
-        protected Result(Request request, int errorNum, String errorMessage) {
-            this.request = request;
-            this.errorNum = errorNum;
-            this.errorMessage = errorMessage;
-        }
-
-        public Request getRequest() {
-            return request;
-        }
-
-        public int getErrorNum() {
-            return errorNum;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        public boolean isSuccess() {
-            return errorNum == SUCCESS;
-        }
-
-    }
 
     /**
      * Класс для интервала цен. Сделан только для того, чтобы можно было сортировать по
@@ -72,12 +40,6 @@ public abstract class ProviderGetter implements ItemNames {
             this.priceOriginal = priceOriginal;
         }
     }
-
-    public int SUCCESS = 0;
-    public int REQUEST_ERROR = 1;
-    public int CONNECTION_ERROR = 2;
-    public int RESPONSE_ERROR = 3;
-    public int OTHER_ERROR = 4;
 
     /**
      * Называние провайдера данных (хоста)
@@ -110,9 +72,9 @@ public abstract class ProviderGetter implements ItemNames {
             Timer.getTimer().start("API # outer_execution");
             request.awaitExecution();
             Timer.getTimer().stop("API # outer_execution");
-            result = new Result(request, SUCCESS, null);
+            result = new Result(request, Result.SUCCESS, null);
         } catch (Exception e) {
-            return new Result(request, CONNECTION_ERROR, ExceptionUtils.getStackTrace(e));
+            return new Result(request, Result.CONNECTION_ERROR, ExceptionUtils.getStackTrace(e));
         }
         // Результирующий документ
         for (Request.Query query : request.getAllQueries()) {

@@ -42,6 +42,7 @@ public class Described_product
     public final static String SPEC_QTY = "spec_qty";
     public final static String COUNTRY = "country";
     public final static String MAIN_PIC = "main_pic";
+    public final static String MAIN_PIC_URL = "main_pic_url";
     public final static String SMALL_PIC = "small_pic";
     public final static String DESCRIPTION = "description";
     public final static String TEXT = "text";
@@ -69,6 +70,8 @@ public class Described_product
     public final static String DOCUMENTS_XML = "documents_xml";
     public final static String ENVIRONMENTAL_XML = "environmental_xml";
     public final static String ADDITIONAL_XML = "additional_xml";
+    public final static String TO_DOWNLOAD = "to_download";
+    public final static String LAST_UPDATE_CHECKED = "last_update_checked";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -616,6 +619,22 @@ public class Described_product
         return containsValue("main_pic", value);
     }
 
+    public void set_main_pic_url(String value) {
+        setValue("main_pic_url", value);
+    }
+
+    public String get_main_pic_url() {
+        return getStringValue("main_pic_url");
+    }
+
+    public String getDefault_main_pic_url(String defaultVal) {
+        return getStringValue("main_pic_url", defaultVal);
+    }
+
+    public boolean contains_main_pic_url(String value) {
+        return containsValue("main_pic_url", value);
+    }
+
     public void set_small_pic(File value) {
         setValue("small_pic", value);
     }
@@ -1070,6 +1089,28 @@ public class Described_product
 
     public boolean contains_additional_xml(String value) {
         return containsValue("additional_xml", value);
+    }
+
+    public void set_last_update_checked(Long value) {
+        setValue("last_update_checked", value);
+    }
+
+    public void setUI_last_update_checked(String value)
+        throws Exception
+    {
+        setValueUI("last_update_checked", value);
+    }
+
+    public Long get_last_update_checked() {
+        return getLongValue("last_update_checked");
+    }
+
+    public Long getDefault_last_update_checked(Long defaultVal) {
+        return getLongValue("last_update_checked", defaultVal);
+    }
+
+    public boolean contains_last_update_checked(Long value) {
+        return containsValue("last_update_checked", value);
     }
 
     public void add_gallery(File value) {

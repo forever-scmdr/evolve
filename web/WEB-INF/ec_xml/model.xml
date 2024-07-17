@@ -343,6 +343,7 @@
 		<parameter name="spec_qty" type="double" caption="Количесвто для спец. цены"/>
 		<parameter name="country" type="string" caption="Страна производства"/>
 		<parameter name="main_pic" type="picture" caption="Главная картинка"/>
+		<parameter name="main_pic_url" type="string" caption="Урл главной картинки" description="в случае если картинки работают независимо от этого айтема"/>
 		<parameter name="small_pic" type="picture" format="width: 390; src: main_pic;" caption="Маленькая картинка"/>
 		<parameter name="description" type="text" caption="Описание" text-index="fulltext" />
 		<parameter name="text" type="text" caption="Полное описание" text-index="fulltext" />
@@ -375,6 +376,8 @@
 		<parameter name="documents_xml" type="xml" caption="Список документации в виде XML" description="чтобы не делать вложенный айтем"/>
 		<parameter name="environmental_xml" type="xml" caption="Environmental and Export Classifications в виде XML" description="чтобы не делать вложенный айтем"/>
 		<parameter name="additional_xml" type="xml" caption="Дополнительные ресурсы в виде XML" description="чтобы не делать вложенный айтем"/>
+		<parameter name="to_download" type="tuple" caption="Урлы для скачки" description="для хранения локально. Урл:описание (что за урл)"/>
+		<parameter name="last_update_checked" type="date" caption="Дата последней проверки обновлений" description="для обновления товаров, которые были откуда-то взяты"/>
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra" /><!-- inline-text-index="true"    !!!!!!!!!!!!!!!!!	 ЭТО ЗАКОММЕНТИРОВАНО ДЛЯ УБЫСТРЕНИЯ ИНДЕКСАЦИИ 	!!!!!!!!!!!!!!!!!! -->

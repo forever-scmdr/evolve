@@ -2,6 +2,8 @@ package ecommander.special.portal.outer;
 
 import ecommander.fwk.XmlDocumentBuilder;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -39,7 +41,8 @@ public class Request {
         public final String query;          // одиночный запрос (текст)
         private final Request request;      // родительский общий запрос (где много объектов Query)
         private volatile Status status = Status.NEW; // статус запроса
-        private volatile String result;              // результирующий html или json
+        private volatile byte[] result;              // результирующий html или json или картинка или pdf. В общем любое содержимое
+        private volatile String resultString;        // результат в виде строки
         private XmlDocumentBuilder processedResult;  // обработанный результат (преобразованный к нужному виду). Все результаты, выданные сервером
         private Future<Query> future;       // future
         private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
@@ -51,7 +54,7 @@ public class Request {
             this.proxyTries = new ArrayList<>(3);
         }
 
-        protected void endProcess(Status status, String result) {
+        protected void endProcess(Status status, byte[] result) {
             this.status = status;
             this.result = result;
             processNanos = System.nanoTime() - processNanos;
@@ -62,12 +65,27 @@ public class Request {
             return status;
         }
 
+        public boolean isFinishedAndSuccess() {
+            return status == Status.SUCCESS;
+        }
+
         public void setStatus(Status status) {
             this.status = status;
         }
 
-        public String getResult() {
+        public byte[] getResult() {
             return result;
+        }
+
+        public String getResultString(Charset charset) {
+            if (resultString == null) {
+                if (result != null && result.length > 0) {
+                    resultString = new String(result, charset);
+                } else {
+                    resultString = "";
+                }
+            }
+            return resultString;
         }
 
         public String getQueryString() {
@@ -168,7 +186,7 @@ public class Request {
      * @param query
      */
     private synchronized void queryGotResponse(Query query) {
-        hasError |= query.status == Status.FAILURE;
+        hasError |= (query.status == Status.FAILURE) || (query.status == Status.PROXY_FAILURE);
         if (query.status == Status.SUCCESS) {
             successfulQueries.add(query);
         } else {
@@ -255,5 +273,13 @@ public class Request {
      */
     public LinkedHashSet<Query> getAllQueries() {
         return allQueries;
+    }
+
+    /**
+     * Получить запрос в случае если он был в общем запросе только один
+     * @return
+     */
+    public Query getSingleQuery() {
+        return allQueries.iterator().next();
     }
 }

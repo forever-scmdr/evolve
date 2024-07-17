@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -39,13 +40,13 @@ public class FindchipsGetter extends ProviderGetter {
         addServerElement(xml, query);
         if (query.getStatus() != Request.Status.SUCCESS) {
             String errorType = query.getStatus() == Request.Status.PROXY_FAILURE ? "proxy_failure" : "provider_failure";
-            xml.addElement("error", query.getResult(), "type", errorType);
+            xml.addElement("error", query.getResultString(StandardCharsets.UTF_8), "type", errorType);
             query.setProcessedResult(xml);
             return;
         }
 
         // Парсинг и создание XML
-        Document doc = Jsoup.parse(query.getResult());
+        Document doc = Jsoup.parse(query.getResultString(StandardCharsets.UTF_8));
         Elements distributors = doc.select("div.distributor-results");
         if (distributors.size() == 0) {
             query.setStatus(Request.Status.HOST_FAILURE);
