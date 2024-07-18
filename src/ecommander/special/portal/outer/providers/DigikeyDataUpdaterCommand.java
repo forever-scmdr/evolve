@@ -88,9 +88,21 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
         ArrayList<Pair<String, String>> toDownload = prod.getTupleValues(product_.TO_DOWNLOAD);
         for (Pair<String, String> toDownloadLine : toDownload) {
             if (StringUtils.equalsIgnoreCase(toDownloadLine.getLeft(), IMAGE_LABEL))
-                return toDownloadLine.getRight();
+                return formatUrl(toDownloadLine.getRight());
         }
         return null;
+    }
+
+    /**
+     * Исправить урл
+     * @param url
+     * @return
+     */
+    private static String formatUrl(String url) {
+        if (!StringUtils.startsWith(url, "http")) {
+            return "https:" + url;
+        }
+        return url;
     }
 
     /**
