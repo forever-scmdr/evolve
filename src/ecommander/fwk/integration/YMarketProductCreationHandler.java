@@ -8,6 +8,7 @@ import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -22,6 +23,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 
 	private static final HashSet<String> SINGLE_PARAMS = new HashSet<>();
 	private static final HashSet<String> MULTIPLE_PARAMS = new HashSet<>();
+	private static final HashSet<String> EXTRA_DATA = new HashSet<>();
 
 	static {
 		SINGLE_PARAMS.add(URL_ELEMENT);
@@ -50,12 +52,15 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 		MULTIPLE_PARAMS.add(ANALOG_ELEMENT);
 		MULTIPLE_PARAMS.add(SIMILAR_ITEMS_ELEMENT);
 		MULTIPLE_PARAMS.add(SUPPORT_ITEMS_ELEMENT);
+
+		EXTRA_DATA.add(INFO_ELEMENT);
 	}
 
 
 	private Locator locator;
 	private boolean parameterReady = false;
 	private String paramName;
+	private Attributes attrs;
 	private StringBuilder paramValue = new StringBuilder();
 
 	private HashMap<String, Item> sections = null;
@@ -64,6 +69,7 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	private HashMap<String, String> singleParams;
 	private HashMap<String, LinkedHashSet<String>> multipleParams;
 	private LinkedHashMap<String, String> specialParams;
+	private LinkedHashMap<String, String> extraData; // дополнительные данные (сейчас доп. страницы с описанием товара)
 	private ItemType productType;
 	private ItemType paramsXmlType;
 	private User initiator;
@@ -280,6 +286,21 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 						info.addError("Some error while saving files", product.getStringValue(NAME_PARAM));
 					}
 				}
+				// Дополнительные страницы товара
+				for (String pageName : extraData.keySet()) {
+					Item productExtra = new ItemQuery(ItemNames.PRODUCT_EXTRA_PAGE).addParameterEqualsCriteria(ItemNames.product_extra_page_.NAME, pageName)
+							.setParentId(product.getId(), false).loadFirstItem();
+					if (productExtra == null) {
+						productExtra = Item.newChildItem(ItemTypeRegistry.getItemType(ItemNames.PRODUCT_EXTRA_PAGE), product);
+						productExtra.setValue(ItemNames.product_extra_page_.NAME, pageName);
+					}
+					productExtra.setValue(ItemNames.product_extra_page_.TEXT, extraData.get(pageName));
+					try {
+						DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(productExtra).noFulltextIndex().ignoreFileErrors());
+					} catch (Exception e) {
+						info.addError("Some error while saving product extra pages", pageName);
+					}
+				}
 
 				info.increaseProcessed();
 				isInsideOffer = false;
@@ -291,6 +312,13 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 				LinkedHashSet<String> vals = multipleParams.computeIfAbsent(qName, k -> new LinkedHashSet<>());
 				if (StringUtils.isNotBlank(StringUtils.trim(paramValue.toString())))
 					vals.add(paramValue.toString());
+			} else if (isInsideOffer && EXTRA_DATA.contains(qName) && parameterReady) {
+				if (StringUtils.equalsIgnoreCase(qName, INFO_ELEMENT)) {
+					String name = attrs.getValue("name");
+					if (StringUtils.isNotBlank(name)) {
+						extraData.put(name, paramValue.toString());
+					}
+				}
 			}
 
 			parameterReady = false;
@@ -317,20 +345,23 @@ public class YMarketProductCreationHandler extends DefaultHandler implements Cat
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		parameterReady = false;
 		paramValue = new StringBuilder();
+		attrs = null;
 		// Продукт
 		if (StringUtils.equalsIgnoreCase(qName, OFFER_ELEMENT)) {
 			singleParams = new HashMap<>();
-			specialParams = new LinkedHashMap<>();
 			multipleParams = new LinkedHashMap<>();
+			specialParams = new LinkedHashMap<>();
+			extraData = new LinkedHashMap<>();
 			singleParams.put(ID_ATTR, attributes.getValue(ID_ATTR));
 			singleParams.put(AVAILABLE_ATTR, attributes.getValue(AVAILABLE_ATTR));
 			singleParams.put(GROUP_ID_ATTR, attributes.getValue(GROUP_ID_ATTR));
 			isInsideOffer = true;
 		}
 		// Параметры продуктов (общие)
-		else if (isInsideOffer && (SINGLE_PARAMS.contains(qName) || MULTIPLE_PARAMS.contains(qName))) {
+		else if (isInsideOffer && (SINGLE_PARAMS.contains(qName) || MULTIPLE_PARAMS.contains(qName) || EXTRA_DATA.contains(qName))) {
 			paramName = qName;
 			parameterReady = true;
+			attrs = attributes;
 		}
 		// Пользовательские параметры продуктов
 		else if (isInsideOffer && StringUtils.equalsIgnoreCase(PARAM_ELEMENT, qName)) {

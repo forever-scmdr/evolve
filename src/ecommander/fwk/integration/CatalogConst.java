@@ -120,6 +120,7 @@ public interface CatalogConst {
 	String SIMILAR_ITEMS_ELEMENT = "similar_items";
 	String SUPPORT_ITEMS_ELEMENT = "support_items";
 	String STATUS_ELEMENT = "status";
+	String INFO_ELEMENT = "info";
 
 
 

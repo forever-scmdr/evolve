@@ -9,6 +9,7 @@ import ecommander.model.datatypes.DecimalDataType;
 import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.LuceneIndexMapper;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
 import extra._generated.Price_catalogs;
@@ -179,14 +180,12 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 		}
 
 		info.pushLog("Создание товаров завершено");
-		/*
 		info.pushLog("Индексация");
 		info.indexsationStarted();
 
 		LuceneIndexMapper.getSingleton().reindexAll();
 
 		info.pushLog("Индексация завершена");
-		 */
 		info.setOperation("Интеграция завершена");
 	}
 

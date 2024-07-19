@@ -2400,4 +2400,14 @@
 	</page>
 
 
+	<page name="reindex_info_command" template="integration/integrate">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ReindexInfoCommand">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+
 </site>

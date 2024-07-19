@@ -82,7 +82,7 @@
                         <a href="create_filters/?action=start" target="_blank">Создать фильтры</a>
                     </li>
                     <li class="visible" title="Обновить список товаров для полнотекстового поиска">
-                        <a href="admin_reindex.action">Переиндексация поиска</a>
+                        <a href="reindex_info_command?action=start">Переиндексация поиска</a>
                     </li>
                     <li class="visible" title="Будет сгенерирован и презаписан sitemap.xml">
                         <a href="generate_sitemap">Обновить sitemap.xml</a>
