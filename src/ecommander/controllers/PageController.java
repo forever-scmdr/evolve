@@ -80,7 +80,8 @@ public class PageController {
 		// Дополнительные заголовки
 		Map<String, String> headers = this.page.getResponseHeaders();
 		for (String header : headers.keySet()) {
-			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)) {
+			if (StringUtils.equalsIgnoreCase(header, CONTENT_TYPE_HEADER)
+					&& (StringUtils.isBlank(contentType) || StringUtils.startsWith(contentType, "text"))) {
 				contentType = headers.get(header);
 			} else {
 				resp.setHeader(header, headers.get(header));
@@ -230,7 +231,7 @@ public class PageController {
 					contentType = "text/html";
 				} else {
 					XmlXslOutputController.outputXml(out, xml);
-					contentType = "application/xml";
+					contentType = "text/xml";
 				}
 			}
 			// Результат - простой текст, не требующий преобразований
@@ -238,6 +239,14 @@ public class PageController {
 				byte[] data = result.getValue().getBytes(StandardCharsets.UTF_8);
 				out.write(data);
 				contentType = "text/plain";
+			}
+			// Результат - массив байтов - вывести его, не выводя саму страницу
+			else if (result.getType() == ResultType.bytes) {
+				out.write(result.getBytes());
+				contentType = result.getMimeType();
+				if (StringUtils.isBlank(contentType)) {
+					contentType = "application/octet-stream";
+				}
 			}
 			// Результат выполнения - ссылка
 			// Выполняется либо внутренний (forward) либо внешний (redirect) переход на новую страницу
@@ -295,7 +304,7 @@ public class PageController {
 					contentType = "text/html";
 				} else {
 					XmlXslOutputController.outputXml(out, xml);
-					contentType = "application/xml";
+					contentType = "text/xml";
 				}
 			} catch (Exception e) {
 				if (redo) {

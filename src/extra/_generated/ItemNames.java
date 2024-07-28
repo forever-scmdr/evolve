@@ -472,6 +472,7 @@ public interface ItemNames {
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
+        String DOWNLOADED = "downloaded";
         String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
 
@@ -657,6 +658,7 @@ public interface ItemNames {
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
+        String DOWNLOADED = "downloaded";
         String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
 
@@ -1027,6 +1029,7 @@ public interface ItemNames {
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
+        String DOWNLOADED = "downloaded";
         String LAST_UPDATE_CHECKED = "last_update_checked";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";

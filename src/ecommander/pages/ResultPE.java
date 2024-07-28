@@ -15,7 +15,7 @@ public class ResultPE implements PageElement {
 	public static final String ELEMENT_NAME = "result";
 	
 	public enum ResultType {
-		forward, redirect, xml, plain_text, none, inline_text, inline_xml
+		forward, redirect, xml, plain_text, none, inline_text, inline_xml, bytes
 	}
 
 	private String name; // название страничной ссылки (по которой надо переходить после выполнения команды)
@@ -23,6 +23,9 @@ public class ResultPE implements PageElement {
 	private HashMap<String, StaticVariable> vars; // переменные, значения которых устанавливается в команде (если необходимо)
 	private String value; // значение, которое получилось в результате выполнения команды,
 						  // может быть значением переменной с названием variable или другим произвольным текстом
+	private byte[] bytes; // результат - простой набор байтов (например, картинка или что-то подобное)
+	private String mimeType; // MIME тип результата, если он определяется в команде
+
 	private boolean doRollback = false; // Нужно ли производить откат транзакции после завершения выполнения всех команд страницы
 										// устанавливается в true в случае если все изменения команд нужно откатить
 
@@ -62,6 +65,24 @@ public class ResultPE implements PageElement {
 	public ResultPE setValue(String value) {
 		this.value = value;
 		return this;
+	}
+
+	public byte[] getBytes() {
+		return bytes;
+	}
+
+	public ResultPE setBytes(byte[] bytes) {
+		this.bytes = bytes;
+		return this;
+	}
+
+	public ResultPE setMimeType(String type) {
+		this.mimeType = type;
+		return this;
+	}
+
+	public String getMimeType() {
+		return mimeType;
 	}
 	/**
 	 * Установить значение переменной (если такая переменная не предусмотрена - выбрасывается исключение)

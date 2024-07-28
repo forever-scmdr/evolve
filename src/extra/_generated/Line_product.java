@@ -71,6 +71,7 @@ public class Line_product
     public final static String ENVIRONMENTAL_XML = "environmental_xml";
     public final static String ADDITIONAL_XML = "additional_xml";
     public final static String TO_DOWNLOAD = "to_download";
+    public final static String DOWNLOADED = "downloaded";
     public final static String LAST_UPDATE_CHECKED = "last_update_checked";
     public final static String GALLERY = "gallery";
 

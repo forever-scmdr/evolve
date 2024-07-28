@@ -1,0 +1,45 @@
+<doc>
+    <value>
+        <param>
+            <name>Datasheets</name>
+            <value>
+                <a class="jss54" href="https://www.ctscorp.com/wp-content/uploads/637.pdf" target="_blank"
+                   rel="noopener noreferrer">637 Series Datasheet
+                </a>
+            </value>
+            <value>
+                <a class="jss54" href="https://www.ctscorp.com/wp-content/uploads/016-1454-0.pdf" target="_blank"
+                   rel="noopener noreferrer">Frequency Code Table
+                </a>
+            </value>
+        </param>
+        <param>
+            <name>Environmental Information</name>
+            <value>
+                <a class="jss54" href="https://www.ctscorp.com/wp-content/uploads/CTS_REACH224_EC.pdf" target="_blank"
+                   rel="noopener noreferrer">CTS Corp REACH
+                </a>
+            </value>
+            <value>
+                <a class="jss54" href="https://www.ctscorp.com/wp-content/uploads/CTS_RoHS3_Freq.pdf" target="_blank"
+                   rel="noopener noreferrer">RoHS Filters, Crystals, Oscillators
+                </a>
+            </value>
+        </param>
+        <param>
+            <name>HTML Datasheet</name>
+            <value>
+                <a class="jss54"
+                   href="//www.digikey.com/en/htmldatasheets/production/1633541/0/0/1/636l3c048m00000.html?site=US&lang=en&cur=USD"
+                   target="_blank" rel="noopener noreferrer">Frequency Code Table
+                </a>
+            </value>
+            <value>
+                <a class="jss54"
+                   href="//www.digikey.com/en/htmldatasheets/production/2315505/0/0/1/637-series-datasheet.html?site=US&lang=en&cur=USD"
+                   target="_blank" rel="noopener noreferrer">637 Series Datasheet
+                </a>
+            </value>
+        </param>
+    </value>
+</doc>

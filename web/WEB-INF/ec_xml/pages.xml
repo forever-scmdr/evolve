@@ -529,7 +529,7 @@
 
 
 
-	<page name="product" template="product" cacheable="true">
+	<page name="product" template="" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
 			<var name="cur" scope="cookie"/>
@@ -2712,9 +2712,11 @@
 	<page name="direct_proxy">
 		<request>
 			<var name="url"/>
+			<var name="mime_type" value="text/html"/><!-- тип возвращаемого результата -->
 		</request>
 		<command class="extra.AnotherEcommanderProxy">
 			<result name="html" type="plain_text"/>
+			<result name="bytes" type="bytes"/>
 			<result name="illegal_argument" type="plain_text"/>
 			<result name="error" type="plain_text"/>
 		</command>

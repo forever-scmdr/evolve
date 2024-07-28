@@ -377,6 +377,7 @@
 		<parameter name="environmental_xml" type="xml" caption="Environmental and Export Classifications в виде XML" description="чтобы не делать вложенный айтем"/>
 		<parameter name="additional_xml" type="xml" caption="Дополнительные ресурсы в виде XML" description="чтобы не делать вложенный айтем"/>
 		<parameter name="to_download" type="tuple" caption="Урлы для скачки" description="для хранения локально. Урл:описание (что за урл)"/>
+		<parameter name="downloaded" type="tuple" caption="Урлы для скачки уже скачанные" description="для сравнения с начальным спискоа для скачки (чтобы не качать повторно)"/>
 		<parameter name="last_update_checked" type="date" caption="Дата последней проверки обновлений" description="для обновления товаров, которые были откуда-то взяты"/>
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
