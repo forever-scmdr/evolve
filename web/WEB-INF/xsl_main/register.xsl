@@ -7,8 +7,7 @@
 	<xsl:variable name="message" select="page/variables/message"/>
 	<xsl:variable name="success" select="page/variables/success = 'true'"/>
 	<xsl:variable name="is_login" select="page/variables/login = 'true'"/>
-	<xsl:variable name="is_jur"
-	              select="not($is_login) and ((page/user_jur//@validation-error or page/user_jur/organization != '') or page/registration/@type = 'user_jur')"/>
+	<xsl:variable name="is_jur" select="not($is_login)"/>
 
 
 	<xsl:template name="LEFT_COLOUMN">
@@ -47,8 +46,8 @@
 
 			<div class="tabs__nav">
 				<a href="#tab_login" class="tab{' tab_active'[$is_login]}">Вход</a>
-				<a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Физическое лицо</a>
-				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Юридическое лицо</a>
+				<!-- <a href="#tab_phys" class="tab{' tab_active'[not($is_jur) and not($is_login)]}">Физическое лицо</a> -->
+				<a href="#tab_jur" class="tab{' tab_active'[$is_jur]}">Регистрация</a>
 			</div>
 			<div class="tabs__content">
 
@@ -71,6 +70,7 @@
 					</form>
 				</div>
 
+				<!--
 				<div class="tab-container" id="tab_phys" style="{'display: none'[$is_jur or $is_login]}">
 					<div class="text form__text">
 						<p>
@@ -94,6 +94,7 @@
 						</div>
 					</form>
 				</div>
+				-->
 
 				<div class="tab-container" id="tab_jur" style="{'display: none'[not($is_jur)]}">
 					<div class="text form__text">
@@ -107,12 +108,8 @@
 						<xsl:call-template name="USER_JUR_INPUTS">
 							<xsl:with-param name="inp" select="$inp"/>
 							<xsl:with-param name="vals" select="page/jur"/>
+							<xsl:with-param name="register" select="true()"/>
 						</xsl:call-template>
-						<div class="form__item">
-							<label class="form-label" for="formid">Пароль:</label>
-							<input class="input form__element" type="text" id="formid"
-								   name="{$inp/password/@input}" value="{$inp/password}" error="{$inp/password/@validation-error}"/>
-						</div>
 						<div class="form__proceed">
 							<input type="submit" class="button button_size_lg" value="Отправить анкету"/>
 						</div>

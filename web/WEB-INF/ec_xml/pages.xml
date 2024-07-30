@@ -37,7 +37,7 @@
 		<single item="catalog" id="catalog_main" cacheable="true">
 			<tree item="section" id="sec" assoc="* catalog_link">
 				<link name="show_products" target="section" type="exclusive">
-					<var name="sec" ref="sec" style="key"/>
+					<var name="sec" ref="sec" style="keypath"/>
 				</link>
 				<list item="product" transit="true">
 					<filter>
@@ -117,11 +117,9 @@
 	</include-definition>
 
 
+
 	<include-definition name="PRODUCT_PARAMS_LINKS">
 		<link name="show_product_ajax" target="product_ajax">
-			<var name="prod" ref="$prod" style="key"/>
-		</link>
-		<link name="show_lines_ajax" target="lines_ajax">
 			<var name="prod" ref="$prod" style="key"/>
 		</link>
 		<link name="to_cart" target="cart_action">
@@ -186,12 +184,12 @@
 				</list>
 				<list item="section" assoc="general" id="block_sec">
 					<link name="show_products" target="section" type="exclusive">
-						<var name="sec" ref="block_sec" style="key"/>
+						<var name="sec" ref="block_sec" style="keypath"/>
 					</link>
 				</list>
 				<list item="custom_page" assoc="general" id="block_page">
 					<link name="show_page" target="page" type="exclusive">
-						<var name="p" ref="block_page" style="key"/>
+						<var name="p" ref="block_page" style="keypath"/>
 					</link>
 				</list>
 				<list item="news" assoc="general">
@@ -239,7 +237,7 @@
 
 	<page name="section" template="section" cacheable="true" critical-item="cur_sec" cache-vars="sec page view limit cur $username direction" >
 		<request>
-			<var name="sec" style="key"/>
+			<var name="sec" style="keypath"/>
 			<var name="page" value="1"/>
 			<var name="view" scope="cookie"/>
 			<var name="limit" value="48" scope="cookie"/>
@@ -339,9 +337,9 @@
 			<var name="show_filter" value="yes"/>
 		</link>
 
-		<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
+		<!--<link name="set_currency_byn" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="currency" value="byn"/>
-		</link>
+		</link>-->
 		<link name="set_currency_rur" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="currency" value="rur"/>
 		</link>
@@ -472,7 +470,7 @@
 
 	<page name="product" template="product" cacheable="true">
 		<request>
-			<var name="prod" style="key"/>
+			<var name="prod" style="keypath"/>
 		</request>
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
@@ -480,9 +478,6 @@
 		<single item="product" id="prod" var="prod" tag="product">
 			<link name="canonical_link" target="product" type="exclusive">
 				<var name="prod" ref="prod" style="key"/>
-			</link>
-			<link name="api_ajax_link" target="search_api_ajax">
-				<var name="q" ref="prod" parameter="name"/>
 			</link>
 			<single item="seo" assoc="seo"/>
 			<list item="product_extra" tag="product_extra"/>
@@ -522,11 +517,6 @@
 				<ancestor item="plain_section" transit="false"/>
 			</list>
 		</single>
-		<command class="extra.SearchOctopartApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
 		<list item="product" tag="assoc" id="assoc">
 			<filter>
 				<parameter name="code" compare="SOME"><var ref="prod" parameter="assoc_code"/></parameter>
@@ -535,9 +525,6 @@
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
 			<link name="show_product_ajax" target="product_ajax">
-				<var name="prod" ref="assoc" style="key"/>
-			</link>
-			<link name="show_lines_ajax" target="lines_ajax">
 				<var name="prod" ref="assoc" style="key"/>
 			</link>
 			<link name="to_cart" target="cart_action">
@@ -553,8 +540,7 @@
 			<link name="my_price_link" target="my_price_ajax">
 				<var name="prod" ref="assoc"/>
 			</link>
-		</list>
-		<list item="product" tag="grouped" id="grouped">
+		</list>		<list item="product" tag="grouped" id="grouped">
 			<filter>
 				<parameter name="group_id" compare="SOME"><var ref="prod" parameter="group_id"/></parameter>
 			</filter>
@@ -569,46 +555,16 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="key"/>
+			<var name="prod" style="keypath"/>
 		</request>
 		<single item="catalog" cacheable="true" id="catalog"/>
-		<single item="product" id="prod_ajax" var="prod" tag="product" cacheable="true" cache-vars="prod">
+		<single item="product" id="prod" var="prod" tag="product">
 			<list item="product_extra" tag="product_extra"/>
-			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod_ajax"/>
+			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</single>
 		<link name="fav_link" target="fav"/>
 		<link name="compare_link" target="compare"/>
 		<link name="show_cart" target="cart"/>
-	</page>
-
-
-
-	<!-- Товары-строки или API товары -->
-	<page name="lines_ajax" template="lines_ajax" cacheable="true">
-		<request>
-			<var name="prod" style="key"/>
-		</request>
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<single item="price_catalogs" cacheable="true">
-			<list item="price_catalog"/>
-		</single>
-		<single item="product" id="prod" var="prod" tag="product"/>
-		<single item="plain_catalog">
-			<list item="product" id="plain" transit="true">
-				<filter>
-					<fulltext name="name" limit="50" compare="EVERY">
-						<var ref="prod" parameter="name"/>
-					</fulltext>
-				</filter>
-				<include name="PRODUCT_PARAMS_LINKS" replace="$prod:plain"/>
-				<ancestor item="plain_section" transit="false"/>
-			</list>
-		</single>
-		<single item="currencies" cacheable="true"/>
 	</page>
 
 
@@ -674,7 +630,7 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
+					<fulltext limit="5" compare="EVERY" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -698,7 +654,7 @@
 		<single item="plain_catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
+					<fulltext limit="5" compare="EVERY" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -766,7 +722,7 @@
 		</command>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="SOME" name="name">
+				<fulltext limit="48" compare="SOME" name="name" type="prefix wildcard">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -777,11 +733,6 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<command class="extra.SearchOctopartApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
 		<include name="SEARCH_COMMON" replace="$pname:search"/>
 		<include name="COMMON"/>
 	</page>
@@ -794,12 +745,9 @@
 			<var name="q"/>
 			<var name="n"/>
 		</request>
-		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
-			<result name="analogs" type="inline_xml"/>
-		</command>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="48" compare="EVERY" name="name">
+				<fulltext limit="48" compare="EVERY" name="name" type="prefix wildcard">
 					<var var="q"/>
 				</fulltext>
 				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -810,10 +758,8 @@
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 			<ancestor item="plain_section" transit="false"/>
 		</list>
-		<command class="extra.SearchOctopartApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
+		<command class="extra.ApplyAnalogsToQueryCommand" tag="extra_query">
+			<result name="analogs" type="inline_xml"/>
 		</command>
 		<include name="SEARCH_COMMON" replace="$pname:admin_search"/>
 		<include name="COMMON"/>
@@ -826,7 +772,7 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="48" compare="EVERY" name="name">
+					<fulltext limit="48" compare="EVERY" name="name" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -848,7 +794,7 @@
 		<single item="plain_catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="48" compare="EVERY" name="name">
+					<fulltext limit="48" compare="EVERY" name="name" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -996,7 +942,7 @@
 				</list>
 				<list item="section" id="ass_sec" assoc="general">
 					<link name="show_products" target="section" type="exclusive">
-						<var name="prod" ref="ass_sec" style="key"/>
+						<var name="prod" ref="ass_sec" style="keypath"/>
 					</link>
 				</list>
 			</tree>
@@ -1094,7 +1040,6 @@
 			<extra-input name="email" form="feedback"/>
 			<extra-input name="phone" form="feedback"/>
 			<extra-input name="message" form="feedback"/>
-			<extra-input name="file" form="feedback"/>
 		</new>
 		<link name="submit_link" target="feedback_command" type="itemform">
 			<var name="form_name" value="feedback"/>
@@ -1124,7 +1069,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="Feedback.site@youhuo.pro"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1252,10 +1197,10 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="order.site@youhuo.pro"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
-            <var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
+			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
 		</request>
 		<link name="ajax" target="cart_ajax"/>
 		<link name="cart" target="cart"/>
@@ -1357,6 +1302,9 @@
 		<new item="user_jur" id="user_jur">
 			<parameter-input ref="user_jur" form="customer_jur"/>
 		</new>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1364,6 +1312,7 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
+						<ancestor item="plain_section" transit="false"/>
 					</list>
 				</list>
 			</single>
@@ -1392,6 +1341,9 @@
             </list>
         </usergroup>
 		<single item="currencies" cacheable="true"/>
+		<single item="price_catalogs" cacheable="true">
+			<list item="price_catalog"/>
+		</single>
 		<session>
 			<single item="cart">
 				<list item="bought" id="bought">
@@ -1399,6 +1351,7 @@
 						<link name="show_product" target="product" type="exclusive">
 							<var name="prod" ref="prod" style="key"/>
 						</link>
+						<ancestor item="plain_section" transit="false"/>
 					</list>
 				</list>
 			</single>
@@ -1452,7 +1405,9 @@
 			</new>
 			<single item="cart" id="cart">
 				<list item="bought" id="bought">
-					<list item="product" id="product" tag="product" />
+					<list item="product" id="product" tag="product">
+						<ancestor item="plain_section" transit="false"/>
+					</list>
 				</list>
 			</single>
 		</session>
@@ -1565,9 +1520,6 @@
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_lines_ajax" target="lines_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
 			<link name="from_fav" target="cookie_list_action">
 				<var name="update_cookie_name" value="favourites"/>
 				<var name="update_cookie_value" ref="prod" parameter="code"/>
@@ -1661,6 +1613,7 @@
 			<var name="message"/>
 			<var name="success" />
 			<var name="login" />
+			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
 		</request>
 		<link name="submit_login" target="register_action">
 			<var name="action" value="login"/>
@@ -1802,9 +1755,6 @@
 			<link name="show_product_ajax" target="product_ajax">
 				<var name="prod" ref="prod" style="key"/>
 			</link>
-			<link name="show_lines_ajax" target="lines_ajax">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
 			<include name="PRODUCT_PARAMS_LINKS" replace="$prod:prod"/>
 		</list>
 		<include name="COMMON"/>
@@ -1899,15 +1849,6 @@
 		</command>
 	</page>
 
-	<page name="update_section_codes" template="integration/integrate" authority-groups="common">
-		<request>
-			<var name="action"/>
-		</request>
-		<command class="ecommander.fwk.integration.YMarketUpdateSectionCodes" clear-cache="yes">
-			<result name="complete" type="xml"/>
-		</command>
-	</page>
-
 
 	<!--//                             						                               -->
 	<!--//                            ПАРСИНГ ВСЕГО САЙТА	                               -->
@@ -1996,12 +1937,12 @@
 			</tree>
 		</single>
 
-		<list item="custom_page" id="custom_page" cacheable="false">
-			<link name="show_page" target="page" type="exclusive">
-				<var name="p" ref="custom_page" style="key"/>
-			</link>
-		</list>
-		<list item="news" id="news" cacheable="false">
+			<list item="custom_page" id="custom_page" cacheable="false">
+				<link name="show_page" target="page" type="exclusive">
+					<var name="p" ref="custom_page" style="key"/>
+				</link>
+			</list>
+			<list item="news" id="news" cacheable="false">
 			<link name="show_page" target="news" type="exclusive">
 				<var name="sel" ref="news" style="key"/>
 			</link>
@@ -2324,15 +2265,11 @@
 	<page name="api_xml">
 		<headers Content-Type="text/plain"/>
 		<request>
-			<var name="api_base" value="https://op.vylrescm.workers.dev/?secret=124&amp;"/>
-			<!--
+			<var name="api_base" value="http://5.133.66.23:39080/hub_api/"/>
 			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
 			<var name="token_header" value="Authorization"/>
-			-->
-			<var name="root_element" value="result"/>
-			<!--
-			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, multipleorderquantity:step, leadtimedays:next_delivery, addinfo:description"/>
-			-->
+			<var name="root_element" value="provider"/>
+			<var name="replace" value="manufacturer:vendor, quantity:qty, minpackquantity:min_qty, packquantity:step, leadtimedays:next_delivery"/>
 		</request>
 		<command class="extra.ApiJsonToXMLCommand">
 			<result name="success" type="plain_text"/>
@@ -2340,56 +2277,7 @@
 		</command>
 	</page>
 
-	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
-	<page name="search_api">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-<!--			<var name="server" value="http://localhost:8080/api_xml"/>-->
-		</request>
-		<command class="extra.SearchOctopartApiCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
 
-
-	<!-- Страница поиска для efind -->
-	<page name="efind" template="efind">
-		<headers Content-Type="text/xml"/>
-		<request>
-			<var name="q"/>
-			<var name="server" value="http://gammtrade.must.by/api_xml"/>
-		</request>
-		<command class="extra.SearchApiCommand">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-	</page>
-
-
-	<!-- Страница, которая выдает результаты поиска через API в виде XML, пригодного для преобразования в HTML -->
-	<page name="search_api_ajax" template="search_api_ajax">
-		<!--		<headers Content-Type="text/xml"/>-->
-		<request>
-			<var name="q"/>
-		</request>
-		<command class="extra.SearchOctopartApiCommand" tag="api_search">
-			<result name="product_list" type="inline_xml"/>
-			<result name="error" type="inline_text"/>
-			<result name="illegal_argument" type="inline_text"/>
-		</command>
-		<usergroup name="0dmin">
-			<list item="optional_modules" cacheable="true">
-				<list item="module"/>
-			</list>
-		</usergroup>
-		<link name="to_cart_api" target="cart_action">
-			<var name="action" value="addToCart"/>
-		</link>
-	</page>
 
 
 	<page name="update_order_status" schedule="">
@@ -2397,6 +2285,16 @@
 			<var name="status_dir" value="integrate_status"/>
 		</request>
 		<command class="extra.UpdateOrderStatusByJson"/>
+	</page>
+
+
+	<page name="reindex_info_command" template="integration/integrate">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.ReindexInfoCommand">
+			<result name="complete" type="xml"/>
+		</command>
 	</page>
 
 

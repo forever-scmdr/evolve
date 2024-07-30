@@ -25,7 +25,8 @@
 	<xsl:variable name="analogs" select="page/extra_query/analogs"/>
 	<xsl:variable name="multiple_analog_sets" select="count($analogs/set) &gt; 1"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
-	<xsl:variable name="sel_sec" select="none"/>
+	<xsl:variable name="prcat" select="page/price_catalogs/price_catalog"/>
+
 
 
 
@@ -118,10 +119,10 @@
 				<xsl:with-param name="p" select="current()"/>
 			</xsl:call-template>
 
-			<!-- device order -->
+			<!-- device order 
 			<xsl:call-template name="CART_BUTTON">
 				<xsl:with-param name="p" select="current()"/>
-			</xsl:call-template>
+			</xsl:call-template> -->
 
 			<!-- stock status (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -315,7 +316,7 @@
 								<xsl:if test="count($captions) &gt; $product_params_limit">
 									<tr>
 										<td colspan="2">
-											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>
+											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>
 										</td>
 									</tr>
 								</xsl:if>
@@ -391,10 +392,10 @@
 
 			<div class="device__column">
 
-				<!-- device order -->
+				<!-- device order 
 				<xsl:call-template name="CART_BUTTON">
 					<xsl:with-param name="p" select="current()"/>
-				</xsl:call-template>
+				</xsl:call-template>-->
 
 				<xsl:call-template name="EXTRA_ORDERING_TYPES">
 					<xsl:with-param name="p" select="current()"/>
@@ -488,7 +489,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->
@@ -579,6 +580,7 @@
 		<xsl:param name="has_more" select="false()"/>
 		<xsl:variable name="plain_section" select="plain_section"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
+		<xsl:variable name="pc" select="$prcat[name = $plain]"/>
 
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
@@ -629,6 +631,7 @@
 			<td><!--описание -->
 				<div class="thn">Описание</div>
 				<div class="thd">
+					<xsl:if test="$pc/other_name">Поставщик: <span style="color: #339966;"><b><xsl:value-of select="$pc/other_name"/></b></span><br/></xsl:if>
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
 					<xsl:if test="not($plain)">
 						<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
@@ -719,7 +722,7 @@
 		<xsl:param name="has_more" select="false()"/>
 		<xsl:variable name="multipe_prices" select="prices"/>
 
-		<xsl:variable name="has_price" select="(price and price != '0') or $multipe_prices/break/price"/>
+		<xsl:variable name="has_price" select="price and price != '0'"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -911,10 +914,6 @@
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
-
-		<div class="text_sm" style="margin-top: auto;">
-			<a href="#" onclick="showDetails('{show_lines_ajax}'); return false;" >Склады</a>
-		</div>
 
 		<!-- one click -->
 		<xsl:if test="$has_one_click">

@@ -179,13 +179,14 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
+	<!--	
 		<parameter name="BYN_rate" type="currency-precise" caption="Белорусский рубль (Rate)" default="1"/>
 		<parameter name="BYN_scale" type="currency-precise" default="1" caption="Белорусский рубль (Scale)"/>
 		<parameter name="BYN_update" type="byte" default="1" caption="Белорусский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
 			<value>0</value>
 			<value>1</value>
-		</parameter>
-	</item>
+		</parameter> -->
+	</item> 
 
 	<!-- Служебные данные для каталога продукции (чтобы можно было удалять сам каталог, а данные не удалялись бы) -->
 	<item name="catalog_meta" caption="Настройки каталога" ag-id="1835" ag-hash="-1147955605">
@@ -262,11 +263,6 @@
 
 	<!--Является также и разделом для парсинга-->
 	<!--Товары прикреаляются отдельной ассоциацией, т.к. один товар может быть в нескольних разных разделах-->
-	<!--Есть параметры params_filter - обычный фильтр (user filter в FilterPE) и Упрощенный фильтр (xml_filter).
-		Упрощенный фильтр представляет из себя просто сгруппированные значения одного параметра товара (param_vals),
-		которые можно потом использовать при фильтрации вместо обычного пользовательского фильтра (FilterPE)
-		Формируется отдельной командой (в pages.xml)
-		Чтобы указать, что нужно заново сформировать xml_filter, в команде интеграции каталога надо очистить его значение -->
 	<item name="section" default-page="section" children-per-page="50" key="name" caption="Раздел" key-unique="true" super="seo_container" ag-id="3" ag-hash="1970241253">
 		<child item="parse_section" single="true"/>
 		<child item="section" />
@@ -289,7 +285,6 @@
 		<parameter name="extra" type="plain-text" caption="Параметры в фильтре" description="через | или ;" format="height: 50px"/>
 		<parameter name="params_short" type="plain-text" caption="Параметры в кратком описании" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
-		<parameter name="xml_filter" type="xml" caption="Упрощенный фильтр" description="используется совместно с командой и вместо простого фильтра (параметр Фильтр)"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
 	</item>
 
@@ -347,13 +342,8 @@
 		<parameter name="price_USD_old" type="currency-precise" caption="Цена USD старая"/>
 		<parameter name="price_EUR" type="currency-precise" caption="Цена EUR"/>
 		<parameter name="price_EUR_old" type="currency-precise" caption="Цена EUR старая"/>
-		<parameter name="price_BYN" type="currency-precise" caption="Цена BYN"/>
-		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>
-
-		<!-- Параметры для фильтрации в виде tuple (вместо сабайтема params) -->
-		<parameter name="param_vals" type="tuple" caption="Параметр - значение" description="для фильтров"/>
-		<!-- Параметры в виде XML (см. айтем params_xml) -->
-		<parameter name="params_xml" type="xml" caption="Значения всех параметров в виде XML" description="для фильтров"/>
+		<!--<parameter name="price_BYN" type="currency-precise" caption="Цена BYN"/>
+		<parameter name="price_BYN_old" type="currency-precise" caption="Цена BYN старая"/>-->
 
 <!--		<parameter name="tuple_test" type="tuple" caption="Тест кортежей" multiple="true" description="для теста" format="*$$$*"/>-->
 		<child item="product_extra"/>
@@ -431,10 +421,11 @@
 	<!-- Настройки для одного склада (plain_catalog) -->
 	<item name="price_catalog" caption="Настройки поставщика" key="name" ag-id="1838" ag-hash="2102484771">
 		<parameter name="name" type="string" caption="Название поставщика" />
+		<parameter name="other_name" type="string" caption="Псевдоним поставщика" />
 		<parameter name="quotient" type="decimal" caption="Базовый коэффициент" default="1.4"/>
 		<parameter name="default_ship_time" type="string" caption="Срок поставки по умолчанию" default="14"/>
 		<parameter name="currency" type="string" caption="Валюта цены товаров" default="USD">
-			<value>BYN</value>
+			<!--<value>BYN</value>-->
 			<value>RUB</value>
 			<value>USD</value>
 			<value>EUR</value>
@@ -557,22 +548,18 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
-		<parameter name="contract_number" type="string" caption="Номер договора" />
+		<parameter name="orgn" type="string" caption="ОРГН" />
+		<parameter name="kpp" type="string" caption="КПП" />
+		<parameter name="inn" type="string" caption="ИНН" />
+		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="fact_address" type="string" caption="Фактический адрес" />
+		<parameter name="post_address" type="string" caption="Почтовый адрес" />
+		<parameter name="web_site" type="string" caption="Сайт организации" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
-		<parameter name="address" type="string" caption="Юридический адрес" />
+		<parameter name="contact_email" type="string" caption="E-mail контактного лица" />
 		<parameter name="ship_type" type="string" caption="Способ доставки" />
 		<parameter name="pay_type" type="string" caption="Способ оплаты" />
-		<parameter name="no_account" type="string" caption="Нет расчетного счета" domain="yes-no"/>
-		<parameter name="account" type="string" caption="Расчетный счет" />
-		<parameter name="bank" type="string" caption="Название банка" />
-		<parameter name="bank_address" type="string" caption="Адрес банка"/>
-		<parameter name="bank_code" type="string" caption="Код банка" />
-		<parameter name="unp" type="string" caption="УНП" />
-		<parameter name="director" type="string" caption="Ф.И.О директора" />
-		<parameter name="base" type="string" caption="Действует на основании" />
-		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
-		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
 	</item>
 
@@ -1026,8 +1013,8 @@
 			<value>off</value>
 			<value>on</value>
 		</parameter>
-		<parameter name="default_currency" type="string" caption="Валюта сайта для расчетов основной цены товара" default="BYN">
-			<value>BYN</value>
+		<parameter name="default_currency" type="string" caption="Валюта сайта для расчетов основной цены товара" default="RUB">
+			<!--<value>BYN</value>-->
 			<value>RUB</value>
 			<value>USD</value>
 			<value>EUR</value>

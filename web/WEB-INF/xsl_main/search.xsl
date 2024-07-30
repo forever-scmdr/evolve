@@ -124,7 +124,8 @@
 			</div>
 		</xsl:if>
 		<xsl:if test="not($has_results)">
-			<h4>По заданным критериям товары не найдены</h4>
+			<h4>По заданным критериям товары не найдены. Для формирования индивидуального заказа воспользуйтесь формой обратной связи ниже</h4><br/>
+			<div class="side-button"><a class="button" popup="modal_popup" href="feedback_ajax">Индивидуальный заказ</a></div>
 		</xsl:if>
 	</xsl:template>
 

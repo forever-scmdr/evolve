@@ -222,7 +222,7 @@
 								<input class="input header-search__input"
 									   ajax-href="{$search_ajax_link}" result="search-result"
 									   query="q" min-size="3" id="q-ipt" type="text"
-									   placeholder="Введите поисковый запрос" autocomplete="off"
+									   placeholder="Введите part number" autocomplete="off"
 									   name="q" value="{if ($is_search_multiple) then '' else $query}" autofocus=""/>
 								<button class="button header-search__button" type="submit">Найти</button>
 								<!-- quick search -->
@@ -374,10 +374,10 @@
 						<xsl:if test="$footer/block[1]/header and not($footer/block[1]/header = '')">
 							<div class="footer__title"><xsl:value-of select="$footer/block[1]/header" /></div>
 						</xsl:if>
-						<a href="http://forever.by" class="forever">
+						<!--<a href="http://forever.by" class="forever">
 							<img src="img/forever.png" alt="" />
 							<span>Разработка сайта <br />студия веб-дизайна Forever</span>
-						</a>
+						</a>-->
 						<div class="google-rating">
 							<div class="google-rating__stars">
 								<img src="img/icon-google-rating.png" alt="" />

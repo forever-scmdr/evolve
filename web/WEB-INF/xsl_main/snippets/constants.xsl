@@ -7,7 +7,7 @@
 		version="2.0">
 
     <xsl:variable name="to_cart_available_label" select="'Заказать'"/>
-    <xsl:variable name="to_cart_na_label" select="'Заказать'"/>
+    <xsl:variable name="to_cart_na_label" select="'Запрос стоимости'"/>
     <xsl:variable name="go_to_cart_label" select="'Оформить заказ'"/>
 
     <xsl:variable name="compare_add_label" select="'Выбрать'"/>

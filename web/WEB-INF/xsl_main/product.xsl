@@ -8,7 +8,6 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="has_plain" select="$mods/plain_in_product = 'on'"/><!-- + -->
-	<xsl:variable name="results_api" select="page/api_search/product_list/results"/>
 
 	<xsl:template name="LEFT_COLOUMN">
 		<xsl:call-template name="CATALOG_LEFT_COLOUMN"/>
@@ -97,7 +96,7 @@
 						</div>
 					</xsl:for-each>
 				</div>
-				<div class="fotorama" data-width="100%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
+				<div class="fotorama" data-width="80%" data-nav="thumbs" data-thumbheight="75" data-thumbwidth="75" data-allowfullscreen="native">
 					<xsl:for-each select="$p/gallery">
 						<img src="{$p/@path}{.}" alt="{$p/name}"/>
 					</xsl:for-each>
@@ -149,7 +148,7 @@
 
 					<!-- заказ и ссылки добавления -->
 					<div class="product-actions">
-						<xsl:if test="$has_cart and $is_not_plain">
+						<xsl:if test="$has_cart and $is_not_plain and not(page/plain_catalog/product and $has_plain)">
 							<div id="cart_list_{$p/@id}" class="order order_product">
 								<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_{$p/@id}">
 									<xsl:if test="$has_price">
@@ -287,8 +286,10 @@
 					</div>
 				</xsl:if>
 
+
 				<div class="product-lables">
-					<xsl:value-of select="$p/text" disable-output-escaping="yes"/>
+					<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
+					<!--<xsl:value-of select="$p/text" disable-output-escaping="yes"/>-->
 				</div>
 
 				<div class="product-icons">
@@ -321,7 +322,6 @@
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">
 				<xsl:with-param name="products" select="page/plain_catalog/product"/>
-				<xsl:with-param name="results_api" select="$results_api"/>
 			</xsl:call-template>
 		</xsl:if>
 
@@ -380,11 +380,11 @@
 					</xsl:if>
 				</div>
 			</div>
-
+<!-- 
 			<hr/>
 			<div class="extra-info extra-info_product">
 				<xsl:value-of select="page/common/catalog_texts/payment" disable-output-escaping="yes"/>
-			</div>
+			</div> -->
 		</div>
 
 		<xsl:if test="page/grouped">
