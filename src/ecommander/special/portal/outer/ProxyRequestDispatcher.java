@@ -3,6 +3,7 @@ package ecommander.special.portal.outer;
 import ecommander.controllers.AppContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.ErrorCodes;
+import ecommander.fwk.Pair;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -59,15 +60,36 @@ public class ProxyRequestDispatcher {
      * @param queries
      * @return
      */
-    public static Request submitRequest(String hostName, Collection<String> queries) throws EcommanderException {
+    public static Request submitRequest(String hostName, Collection<Pair<String, String>> queries) throws EcommanderException {
         hostName = StringUtils.lowerCase(StringUtils.normalizeSpace(hostName));
         HostThroughProxies host = getInstance().allHosts.get(hostName);
         if (host == null) {
             throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "host '" + hostName + "' not registered. Can be registered in settings file");
         }
-        Request request = new Request(hostName, queries.toArray(new String[0]));
+        Request request = new Request(hostName);
+        for (Pair<String, String> query : queries) {
+            request.addQuery(query.getLeft(), query.getRight());
+        }
         request.submit(host);
         return request;
+    }
+
+    /**
+     * Отправить запрос (одно действие пользователя)
+     * Надо указать хост для общего запроса и все поисковые запросы (когда их несколько)
+     * Запрос распределится по прокси серверам.
+     * Возвращается экземпляр класса Request. Его потом можно использовать, в частности подождать выполнения
+     * @param hostName
+     * @param urls
+     * @return
+     * @throws EcommanderException
+     */
+    public static Request submitRequest(String hostName, String... urls) throws EcommanderException {
+        ArrayList<Pair<String, String>> queryTypes = new ArrayList<>();
+        for (String query : urls) {
+            queryTypes.add(new Pair<>(query, "text/html"));
+        }
+        return submitRequest(hostName, queryTypes);
     }
 
     /**
@@ -77,7 +99,23 @@ public class ProxyRequestDispatcher {
      * @param urls
      * @return
      */
-    public static Request submitGeneralUrls(String... urls) throws EcommanderException {
-        return submitRequest(_GENERAL_, Arrays.asList(urls));
+    public static Request submitGeneralUrls(String resultMimeType, String... urls) throws EcommanderException {
+        ArrayList<Pair<String, String>> queryTypes = new ArrayList<>();
+        for (String url : urls) {
+            queryTypes.add(new Pair<>(url, resultMimeType));
+        }
+        return submitRequest(_GENERAL_, queryTypes);
+    }
+
+    /**
+     * Отправляет запрос. В качестве параметров передаются не пользовательские запросы как в методе submitRequest,
+     * а полноценные урлы. Они распределяются по прокси серверам.
+     * Возвращается экземпляр класса Request. Его потом можно использовать, в частности подождать выполнения
+     * @param queries
+     * @return
+     * @throws EcommanderException
+     */
+    public static Request submitGeneralQueries(Collection<Pair<String, String>> queries) throws EcommanderException {
+        return submitRequest(_GENERAL_, queries);
     }
 }

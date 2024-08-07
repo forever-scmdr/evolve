@@ -39,6 +39,7 @@ public class Request {
     public static class Query {
 
         public final String query;          // одиночный запрос (текст)
+        public final String resultMimeType; // тип результата
         private final Request request;      // родительский общий запрос (где много объектов Query)
         private volatile Status status = Status.NEW; // статус запроса
         private volatile byte[] result;              // результирующий html или json или картинка или pdf. В общем любое содержимое
@@ -48,8 +49,9 @@ public class Request {
         private volatile long processNanos;          // количество миллисекунд от начала выполнения до конца
         private int numTries = 0;           // Количество попыток выполнения запроса
         private ArrayList<String> proxyTries;       // Прокси сервера, через которые пытался выполниться запрос. После каждой попытки добавляется прокси этой попытки
-        protected Query(String query, Request request) {
+        protected Query(String query, String resultMimeType, Request request) {
             this.query = query;
+            this.resultMimeType = resultMimeType;
             this.request = request;
             this.proxyTries = new ArrayList<>(3);
         }
@@ -153,19 +155,12 @@ public class Request {
         this.hostName = hostName;
     }
 
-    Request(String host, String... query) {
-        this(host);
-        for (String q : query) {
-            addQuery(q);
-        }
-    }
-
     /**
      * Добавть один поисковой запрос к общему запросу
      * @param q
      */
-    void addQuery(String q) {
-        Query query = new Query(q, this);
+    void addQuery(String q, String resultMimeType) {
+        Query query = new Query(q, resultMimeType, this);
         allQueries.add(query);
     }
 

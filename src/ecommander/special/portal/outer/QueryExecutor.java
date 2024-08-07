@@ -21,11 +21,13 @@ public class QueryExecutor {
     public static abstract class Executor {
         protected String query;
         protected String proxyServer;
+        protected String resultMimeType;
         protected byte[] result;
 
-        private Executor(String query, String proxyServer) {
+        private Executor(String query, String resultMimeType, String proxyServer) {
             this.query = StringUtils.normalizeSpace(query);
             this.proxyServer = proxyServer;
+            this.resultMimeType = resultMimeType;
         }
         /**
          * Фактически выполнить запрос на сервер.
@@ -48,7 +50,7 @@ public class QueryExecutor {
         public static final String SERVER = "https://www.findchips.com/search/";
 
         private FindchipsExecutor(String query, String proxyServer) {
-            super(query, proxyServer);
+            super(query, "text/html", proxyServer);
         }
 
         @Override
@@ -97,7 +99,7 @@ public class QueryExecutor {
                 = "https://oemsecretsapi.com/partsearch?apiKey=5yddaj3l7y9m6bvolfwu2bycbqxylktaqj3gugtqx4kmsat2hprit7cubn3ge7m1&searchTerm={Q}&currency={CUR}";
 
         private OemsecretsExecutor(String query, String proxyServer) {
-            super(query, proxyServer);
+            super(query, "text/html", proxyServer);
         }
 
         @Override
@@ -138,8 +140,8 @@ public class QueryExecutor {
      */
     private static class GeneralServerExecutor extends Executor {
 
-        private GeneralServerExecutor(String query, String proxyServer) {
-            super(query, proxyServer);
+        private GeneralServerExecutor(String query, String resultMimeType, String proxyServer) {
+            super(query, resultMimeType, proxyServer);
         }
 
         @Override
@@ -149,9 +151,11 @@ public class QueryExecutor {
                 if (StringUtils.isNotBlank(query)) {
                     if (StringUtils.isNotBlank(proxyServer)) {
                         String requestUrl = query;
+                        if (StringUtils.startsWith(requestUrl, "//"))
+                            requestUrl = "https:" + requestUrl;
                         if (StringUtils.isNotBlank(proxyServer) && StringUtils.startsWith(proxyServer, "http")) {
                             hasProxy = true;
-                            String proxyUrl = proxyServer + "?url=" + requestUrl;
+                            String proxyUrl = proxyServer + "?url=" + requestUrl + "&mime_type=" + resultMimeType;
                             result = OkWebClient.getInstance().getBytes(proxyUrl);
                         } else {
                             result = OkWebClient.getInstance().getBytes(requestUrl);
@@ -184,13 +188,13 @@ public class QueryExecutor {
      * @param query
      * @return
      */
-    public static Executor get(String hostName, String proxyServer, String query) {
+    public static Executor get(String hostName, String proxyServer, String query, String resultMimeType) {
         if (StringUtils.containsIgnoreCase(hostName, Providers.FINDCHIPS)) {
             return new FindchipsExecutor(query, proxyServer);
         }
         if (StringUtils.containsIgnoreCase(hostName, Providers.OEMSECRETS)) {
             return new OemsecretsExecutor(query, proxyServer);
         }
-        return new GeneralServerExecutor(query, proxyServer);
+        return new GeneralServerExecutor(query, resultMimeType, proxyServer);
     }
 }

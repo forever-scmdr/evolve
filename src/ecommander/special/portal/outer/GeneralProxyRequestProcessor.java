@@ -22,12 +22,13 @@ public class GeneralProxyRequestProcessor {
     /**
      * Синхронное выполнение
      * Метод зависает до выполения запроса
-     * @param urls
+     * @param url
+     * @param responseMimeType
      * @return
      */
-    public static Result submitSync(String... urls) throws EcommanderException {
+    public static Result submitSync(String url, String responseMimeType) throws EcommanderException {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
-        Request request = ProxyRequestDispatcher.submitGeneralUrls(urls);
+        Request request = ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
         try {
             boolean hadErrors = request.awaitExecution();
             if (hadErrors) {
@@ -50,13 +51,14 @@ public class GeneralProxyRequestProcessor {
      * Метод возвращается сразу, далее запускается поток с обработчиком
      * TODO можно сделать ThreadPool чтобы не было возможности запуска множества потоков
      * @param handler
-     * @param urls
+     * @param url
+     * @param responseMimeType
      */
-    public static void submitAsync(ResultHandler handler, String... urls) {
+    public static void submitAsync(ResultHandler handler, String url, String responseMimeType) {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
         new Thread(() -> {
             try {
-                submitSyncAsAsync(handler, urls);
+                submitSyncAsAsync(handler, url, responseMimeType);
             } catch (EcommanderException e) {
                 ServerLogger.error("Download thread error", e);
             }
@@ -67,11 +69,12 @@ public class GeneralProxyRequestProcessor {
      * Синхронное выполнение, но по форме асинхронного, можно использовать тот же класс ResultHandler что и для
      * асинхронного. Метод зависает до выполнения.
      * @param handler
-     * @param urls
+     * @param url
+     * @param responseMimeType
      */
-    public static void submitSyncAsAsync(ResultHandler handler, String... urls) throws EcommanderException {
+    public static void submitSyncAsAsync(ResultHandler handler, String url, String responseMimeType) throws EcommanderException {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
-        final Request request = ProxyRequestDispatcher.submitGeneralUrls(urls);
+        final Request request = ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
         Result result;
         try {
             request.awaitExecution();

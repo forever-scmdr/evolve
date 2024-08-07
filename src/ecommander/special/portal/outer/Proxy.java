@@ -39,7 +39,7 @@ public class Proxy {
 
         @Override
         public Request.Query call() throws Exception {
-            QueryExecutor.Executor executor = QueryExecutor.get(query.getHostName(), proxyAddress, query.query);
+            QueryExecutor.Executor executor = QueryExecutor.get(query.getHostName(), proxyAddress, query.query, query.resultMimeType);
             boolean success = executor.executeQuery();
             if (success) {
                 query.endProcess(Request.Status.SUCCESS, executor.getResult());

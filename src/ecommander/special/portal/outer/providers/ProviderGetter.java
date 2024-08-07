@@ -66,7 +66,7 @@ public abstract class ProviderGetter implements ItemNames {
      */
     public Result getData(OuterInputData input) throws Exception {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
-        Request request = ProxyRequestDispatcher.submitRequest(getProviderName(), input.getQueries().keySet());
+        Request request = ProxyRequestDispatcher.submitRequest(getProviderName(), input.getQueries().keySet().toArray(new String[0]));
         Result result;
         try {
             Timer.getTimer().start("API # outer_execution");

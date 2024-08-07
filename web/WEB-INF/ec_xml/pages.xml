@@ -529,7 +529,7 @@
 
 
 
-	<page name="product" template="" cacheable="true">
+	<page name="product" template="" cacheable="false">
 		<request>
 			<var name="prod" style="key"/>
 			<var name="cur" scope="cookie"/>

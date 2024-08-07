@@ -68,6 +68,7 @@ public class Line_product
     public final static String DESC_VALS = "desc_vals";
     public final static String PARAMS_XML = "params_xml";
     public final static String DOCUMENTS_XML = "documents_xml";
+    public final static String DOCUMENTS_XML_MOD = "documents_xml_mod";
     public final static String ENVIRONMENTAL_XML = "environmental_xml";
     public final static String ADDITIONAL_XML = "additional_xml";
     public final static String TO_DOWNLOAD = "to_download";
@@ -1058,6 +1059,22 @@ public class Line_product
 
     public boolean contains_documents_xml(String value) {
         return containsValue("documents_xml", value);
+    }
+
+    public void set_documents_xml_mod(String value) {
+        setValue("documents_xml_mod", value);
+    }
+
+    public String get_documents_xml_mod() {
+        return getStringValue("documents_xml_mod");
+    }
+
+    public String getDefault_documents_xml_mod(String defaultVal) {
+        return getStringValue("documents_xml_mod", defaultVal);
+    }
+
+    public boolean contains_documents_xml_mod(String value) {
+        return containsValue("documents_xml_mod", value);
     }
 
     public void set_environmental_xml(String value) {

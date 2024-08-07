@@ -469,6 +469,7 @@ public interface ItemNames {
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
         String DOCUMENTS_XML = "documents_xml";
+        String DOCUMENTS_XML_MOD = "documents_xml_mod";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
@@ -655,6 +656,7 @@ public interface ItemNames {
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
         String DOCUMENTS_XML = "documents_xml";
+        String DOCUMENTS_XML_MOD = "documents_xml_mod";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
@@ -1026,6 +1028,7 @@ public interface ItemNames {
         String DESC_VALS = "desc_vals";
         String PARAMS_XML = "params_xml";
         String DOCUMENTS_XML = "documents_xml";
+        String DOCUMENTS_XML_MOD = "documents_xml_mod";
         String ENVIRONMENTAL_XML = "environmental_xml";
         String ADDITIONAL_XML = "additional_xml";
         String TO_DOWNLOAD = "to_download";
