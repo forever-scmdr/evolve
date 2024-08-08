@@ -922,6 +922,7 @@
 				</filter>
 			</list>
 		</single>
+		<command class="ecommander.special.portal.outer.providers.DigikeyDataUpdaterCommand"/>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>

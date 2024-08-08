@@ -322,11 +322,14 @@
 
 
 	<xsl:template match="product" mode="single_product">
-		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
-		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="docs_param_raw" select="if (documents_xml_mod and not(documents_xml_mod = '')) then documents_xml_mod else documents_xml"/>
+		<xsl:variable name="docs_param" select="replace($docs_param_raw, '&amp;', '&amp;amp;')"/>
+		<xsl:variable name="docs" select="if ($docs_param and not($docs_param = '')) then parse-xml($docs_param)/value else none"/>
+		<xsl:variable name="default_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="actual_ds_list" select="$docs//value[starts-with(a/@href, 'imgdata')]"/>
+		<xsl:variable name="main_ds" select="if ($actual_ds_list) then $actual_ds_list[1] else $default_ds"/>
 		<div class="device device_row" style="margin-bottom: 5px;">
-			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
 
 			<div class="device__column">
 

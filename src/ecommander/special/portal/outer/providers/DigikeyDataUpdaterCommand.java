@@ -6,7 +6,6 @@ import ecommander.fwk.JsoupUtils;
 import ecommander.fwk.Pair;
 import ecommander.fwk.ServerLogger;
 import ecommander.model.Item;
-import ecommander.model.User;
 import ecommander.model.datatypes.TupleDataType;
 import ecommander.pages.Command;
 import ecommander.pages.ResultPE;
@@ -30,7 +29,6 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,10 +50,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
     public static final String IMAGE_LABEL = "image";
     public static final String PDF_LABEL = "pdf";
     public static final String IMG_DIRECTORY = "imgdata";
-    private static volatile UpdatingCounter counter;
-    static {
-        counter = new UpdatingCounter();
-    }
+    private static final UpdatingCounter counter = new UpdatingCounter();
 
     private volatile Item prod;
 
@@ -67,22 +62,24 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
         // Эта строчка нужна чтобы не менять в разных потоках айтем, который был загружен для показа на странице
         // и подвергается всей соответствующей логике уже после (или параллельно) выполнения этой команды
         prod = ItemQuery.loadById(loadedProd.getId());
+        synchronized (counter) {
+            if (counter.isUpdating(prod))
+                return null;
+            counter.startUpdating(prod);
+        }
         DateTime defaultTime = DateTime.now().minusYears(5);
         DateTime lastChecked = new DateTime(prod.getLongValue(product_.LAST_UPDATE_CHECKED, defaultTime.getMillis()), DateTimeZone.UTC);
         // Проверка даты последнего обновления (закомментировать для тестов)
-        /*
-        if (lastChecked.isAfter(DateTime.now().minusDays(CHECK_DAYS_INTERVAL)))
+        if (lastChecked.isAfter(DateTime.now().minusDays(CHECK_DAYS_INTERVAL))) {
+            counter.endUpdating(prod);
             return null;
-        */
-        if (counter.isUpdating(prod))
-            return null;
+        }
+        // pdf файлы, которые хранятся в товаре
         String url = prod.getStringValue(product_.URL);
         if (StringUtils.isBlank(url)) {
             return null;
         }
         if (prod.isValueEmpty(product_.TO_DOWNLOAD)) {
-            // pdf файлы, которые хранятся в товаре
-            counter.startUpdating(prod);
             String xml = StringEscapeUtils.unescapeXml(prod.getStringValue(product_.DOCUMENTS_XML));
             if (StringUtils.isNotBlank(xml)) {
                 Document docsDoc = JsoupUtils.parseXml("<root>" + xml + "</root>");
@@ -101,9 +98,10 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
                 }
             }
             // загрузка html для картинки
-            getAndSaveHtmlData(prod);
+            getAndSaveHtmlData();
         } else {
-            getAndSaveFiles(prod, true);
+            getAndSaveFiles(true);
+            counter.endUpdating(prod); // в этом месте, а не в методе, т.к. метод также вызывается из getAndSaveHtmlData()
         }
         return null;
     }
@@ -116,22 +114,22 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
      * Если разбор прошел успешно, из этого асинхронного обработчика вызывается также и процесс
      * скачивания файлов, который тоже работает асинхронно (потому что для одного товара может
      * качаться много файлов)
-     * @param prod
      */
-    private void getAndSaveHtmlData(Item prod) {
-        HtmlResultHandler htmlHandler = new HtmlResultHandler(prod, getInitiator());
+    private void getAndSaveHtmlData() {
+        HtmlResultHandler htmlHandler = new HtmlResultHandler();
         GeneralProxyRequestProcessor.submitAsync(htmlHandler, prod.getStringValue(product_.URL), "text/html");
     }
 
-    private void getAndSaveFiles(Item prod, boolean async) {
+    private void getAndSaveFiles(boolean async) {
         ArrayList<Pair<String, String>> toDownload = prod.getTupleValues(product_.TO_DOWNLOAD);
         for (Pair<String, String> toDownloadLine : toDownload) {
             boolean isPdf = !StringUtils.equalsIgnoreCase(toDownloadLine.getLeft(), IMAGE_LABEL);
-            FileResultHandler fileHandler = new FileResultHandler(prod, getInitiator(), isPdf);
+            FileResultHandler fileHandler = new FileResultHandler(isPdf);
             String responseMimeType = isPdf ? "application/pdf" : "image/jpeg";
             // Сначала проверить наличие файлов
             String filePath = AppContext.getRealPath(createFileNameUrlPathFromQueryUrl(prod, toDownloadLine.getRight(), isPdf));
             if (!Files.exists(Paths.get(filePath))) {
+                counter.startUpdating(prod);
                 if (async) {
                     GeneralProxyRequestProcessor.submitAsync(fileHandler, toDownloadLine.getRight(), responseMimeType);
                 } else {
@@ -140,6 +138,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
                     } catch (EcommanderException e) {
                         ServerLogger.error("Error while auto downloading files", e);
                         // продолжить выполнение для других файлов
+                        counter.endUpdating(prod);
                     }
                 }
             }
@@ -175,13 +174,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
      * Обработчик ответа сервера на запрос страницы html страницы с digikey
      */
     private class HtmlResultHandler implements GeneralProxyRequestProcessor.ResultHandler {
-        private volatile Item prod;
-        private User initiator;
 
-        private HtmlResultHandler(Item prod, User initiator) {
-            this.prod = prod;
-            this.initiator = initiator;
-        }
         @Override
         public void handleResult(Result result) {
             if (result.isSuccess()) {
@@ -195,19 +188,21 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
                             prod.setValue(product_.TO_DOWNLOAD, TupleDataType.newTuple(IMAGE_LABEL, imageUrl));
                             try {
                                 // сохранение товара
-                                DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(prod));
+                                DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(prod));
                             } catch (Exception e) {
                                 ServerLogger.error("Error while saving product for image download", e);
                             }
                         }
                         // TODO можно обновлять время последней проверки так, чтобы повторная проверка нужна была бы через 10 минут, например
                         if (prod.isValueNotEmpty(product_.TO_DOWNLOAD)) {
-                            getAndSaveFiles(prod, false);
+                            getAndSaveFiles(false);
                         }
                     }
                 }
             }
-            counter.endUpdating(prod);
+            synchronized (counter) {
+                counter.endUpdating(prod);
+            }
         }
     }
 
@@ -215,13 +210,9 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
      * Обработчик ответа сервера на запрос файлов с digikey
      */
     private class FileResultHandler implements GeneralProxyRequestProcessor.ResultHandler {
-        private volatile Item prod;
-        private User initiator;
         private boolean isPdf;
 
-        private FileResultHandler(Item prod, User initiator, boolean isPdf) {
-            this.prod = prod;
-            this.initiator = initiator;
+        private FileResultHandler(boolean isPdf) {
             this.isPdf = isPdf;
         }
         @Override
@@ -247,7 +238,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
                                     Object toDelete = TupleDataType.newTuple(PDF_LABEL, query.getQueryString());
                                     prod.setValue(product_.LAST_UPDATE_CHECKED, DateTime.now(DateTimeZone.UTC).getMillis());
                                     prod.removeEqualValue(product_.TO_DOWNLOAD, toDelete);
-                                    DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(prod));
+                                    DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(prod));
                                 } catch (Exception e) {
                                     ServerLogger.error("Error while saving pdf for product", e);
                                 }
@@ -260,7 +251,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
                                     prod.setValue(product_.MAIN_PIC_URL, fileUrl);
                                     prod.setValue(product_.LAST_UPDATE_CHECKED, DateTime.now(DateTimeZone.UTC).getMillis());
                                     prod.removeEqualValue(product_.TO_DOWNLOAD, toDelete);
-                                    DelayedTransaction.executeSingle(initiator, SaveItemDBUnit.get(prod));
+                                    DelayedTransaction.executeSingle(getInitiator(), SaveItemDBUnit.get(prod));
                                 } catch (Exception e) {
                                     ServerLogger.error("Error while saving image for product", e);
                                 }
@@ -290,7 +281,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
      * @return
      */
     private static String createFileNameUrlPathFromQueryUrl(Item prod, String url, boolean isPdf) {
-        String fileName = StringUtils.substringAfterLast(url, "/");
+        String fileName = isPdf ? StringUtils.substringAfterLast(url, "/") : prod.getKeyUnique() + ".jpg";
         fileName = StringUtils.substringBefore(fileName, "?");
         if (isPdf && !StringUtils.endsWithIgnoreCase(fileName, "pdf")) {
             fileName += ".pdf";
