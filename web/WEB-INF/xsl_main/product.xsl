@@ -24,12 +24,16 @@
 	<xsl:variable name="multiple_prices" select="not($is_not_plain) or (section_name and not(section_name = ''))"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
 
-	<xsl:variable name="docs" select="if ($p/documents_xml) then parse-xml($p/documents_xml)/value else none"/>
+	<xsl:variable name="docs_param_raw" select="if ($p/documents_xml_mod and not($p/documents_xml_mod = '')) then $p/documents_xml_mod else $p/documents_xml"/>
+	<xsl:variable name="docs_param" select="replace($docs_param_raw, '&amp;', '&amp;amp;')"/>
+	<xsl:variable name="docs" select="if ($docs_param and not($docs_param = '')) then parse-xml($docs_param)/value else none"/>
 	<xsl:variable name="env" select="if ($p/environmental_xml) then parse-xml($p/environmental_xml)/value else none"/>
 	<xsl:variable name="names" select="if ($p/additional_xml) then parse-xml($p/additional_xml)/value else none"/>
 	<xsl:variable name="other_names" select="$names/param[lower-case(normalize-space(name)) = 'other names']"/>
 	<xsl:variable name="package" select="$names/param[lower-case(normalize-space(name)) = 'standard package']"/>
-	<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+	<xsl:variable name="default_ds" select="$docs/param[1]/value[1]"/>
+	<xsl:variable name="actual_ds_list" select="$docs//value[starts-with(a/@href, 'imgdata')]"/>
+	<xsl:variable name="main_ds" select="if ($actual_ds_list) then $actual_ds_list[1] else $default_ds"/>
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -130,11 +134,12 @@
 									<xsl:for-each select="$p/gallery">
 										<img src="{$p/@path}{.}" alt="{$p/name}"/>
 									</xsl:for-each>
-									<xsl:if test="not($p/gallery)">
+									<xsl:if test="not($p/gallery) and $p/main_pic and not($p/main_pic = '')">
 										<img src="{concat($p/@path, $p/main_pic)}" alt="{$p/name}"/>
 									</xsl:if>
-									<xsl:if test="not($p/gallery) and not($p/main_pic)">
-										<img src="img/no_image.png" alt="{$p/name}"/>
+									<xsl:if test="not($p/gallery) and (not($p/main_pic) or $p/main_pic = '')">
+										<xsl:variable name="pic_path" select="if ($p/main_pic_url and not($p/main_pic_url = '')) then $p/main_pic_url else 'img/no_image.png'"/>
+										<img src="{$pic_path}" alt="{$p/name}"/>
 									</xsl:if>
 								</div>
 							</div>
