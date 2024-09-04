@@ -10,8 +10,8 @@ import ecommander.model.datatypes.DataType;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class CreateExcelPriceList extends IntegrateBase implements CatalogConst {
 	//workbook styles
-	private HSSFWorkbook workBook;
+	private XSSFWorkbook workBook;
 	private CellStyle headerStyle;
 	private CellStyle auxStyle;
 	private CellStyle noPriceStyle;
@@ -121,7 +121,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 		info.pushLog("Обнаружено разделов первого уровня: " + sections.size());
 
-		workBook = new HSSFWorkbook();
+		workBook = new XSSFWorkbook();
 		pushLog("workbook created");
 		initCellStyles();
 
@@ -154,7 +154,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 		setOperation("Запись файла");
 		String optionsSuffix = (writeHierarchy) ? "" : "min-";
-		String fileName = "pricelist-" + optionsSuffix + fileSuffix + ".xls";
+		String fileName = "pricelist-" + optionsSuffix + fileSuffix + ".xlsx";
 		pushLog(fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(AppContext.getFilesDirPath(false) + "/" + fileName);
 		workBook.write(fileOutputStream);
@@ -265,6 +265,10 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 			}
 			if (aux != null) {
 				Item paramsXml = new ItemQuery(PARAMS_XML_ITEM).setParentId(sectionId, false).loadFirstItem();
+				// Колонка для ID типа параметров товара (айтем params)
+				row.createCell(++colIdx).setCellValue("ID типа товара");
+				row.getCell(colIdx).setCellStyle(auxHeaderStyle);
+				sh.setColumnWidth(colIdx, 30 * 256);
 				if (paramsXml != null) {
 					String xml = "<params>" + paramsXml.getStringValue(XML_PARAM) + "</params>";
 					Document paramsTree = Jsoup.parse(xml, "localhost", Parser.xmlParser());
