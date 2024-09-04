@@ -663,9 +663,9 @@
 
 
 	<xsl:template name="PAGE_HEADING">
-		<div class="title title_1">
+		<h1 class="title title_1">
 			<xsl:value-of select="$h1"/>
-		</div>
+		</h1>
 	</xsl:template>
 
 	<xsl:template name="PAGE_PATH">
@@ -803,6 +803,10 @@
 					$(document).ready(function(){
 						$('.plate').plate();
 						$('.banner-gift').plate();
+						fotoramaDefaults = {
+    						caption: 'overlay', // or 'simple' or 'none'
+    						captions: true
+						}
 					});
 				</script>
 

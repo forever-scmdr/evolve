@@ -611,7 +611,7 @@
 						</div>
 					</xsl:for-each>
 					<p/>
-					<xsl:if test="vendor and not(vendor = '')"><xsl:value-of select="vendor" /><p/></xsl:if>
+					<xsl:if test="vendor and not(vendor = '')">Производитель: <span style="color: #339966;"><b><xsl:value-of select="vendor" /></b></span><p/></xsl:if>
 					<xsl:call-template name="FAV_AND_COMPARE">
 						<xsl:with-param name="p" select="current()"/>
 						<xsl:with-param name="is_inline" select="true()"/>
@@ -946,14 +946,14 @@
 		<xsl:if test="$has_fav">
 			<xsl:choose>
 				<xsl:when test="$is_fav">
-					<a href="{$p/from_fav}" class="add__item icon-link">
+					<a href="{$p/from_fav}" class="add__item icon-link" rel="nofollow">
 						<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
 						<span><xsl:value-of select="$compare_remove_label"/></span>
 					</a>
 				</xsl:when>
 				<xsl:otherwise>
 					<div id="fav_list_{@id}" style="{'display: inline-block;'[$is_inline]}">
-						<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+						<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}" rel="nofollow">
 							<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
 							<span><xsl:value-of select="$compare_add_label"/></span>
 						</a>
@@ -964,14 +964,14 @@
 		<xsl:if test="$has_compare">
 			<xsl:if test="not($is_compare)">
 				<div id="compare_list_{$p/@id}" style="{'display: inline-block;'[$is_inline]}">
-					<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+					<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}" rel="nofollow">
 						<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 						<span><xsl:value-of select="$go_to_compare_label"/></span>
 					</a>
 				</div>
 			</xsl:if>
 			<xsl:if test="$is_compare">
-				<a href="{$p/from_compare}" class="add__item icon-link">
+				<a href="{$p/from_compare}" class="add__item icon-link" rel="nofollow">
 					<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 					<span><xsl:value-of select="$compare_remove_label"/></span>
 				</a>

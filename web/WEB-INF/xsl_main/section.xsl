@@ -5,6 +5,7 @@
 
 	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="custom_canonical" select="concat($main_host, tokenize($source_link, '\?')[1])"/>
 
 	<xsl:variable name="main_menu_section" select="$catalog//section[@id = $sel_sec_id]"/>
 	<xsl:variable name="subs" select="$main_menu_section[1]/section[f:num(hide) = 0]"/>
@@ -249,7 +250,7 @@
 			<div class="view view_section">
 				<div class="view__column">
 					<xsl:if test="not($view_disabled = 'плитка')">
-						<a href="{page/set_view_table}"  class="icon-link{' active'[$view = 'table']}">
+						<a href="{page/set_view_table}"  class="icon-link{' active'[$view = 'table']}" rel="nofollow">
 							<div class="icon">
 								<img src="img/icon-grid.svg" alt="" />
 							</div>
@@ -257,7 +258,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'список')">
-						<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}">
+						<a href="{page/set_view_list}" class="icon-link{' active'[$view = 'list']}" rel="nofollow">
 							<div class="icon">
 								<img src="img/icon-line.svg" alt="" />
 							</div>
@@ -265,7 +266,7 @@
 						</a>
 					</xsl:if>
 					<xsl:if test="not($view_disabled = 'таблица')">
-						<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}">
+						<a href="{page/set_view_lines}" class="icon-link{' active'[$view = 'lines']}" rel="nofollow">
 							<div class="icon">
 								<img src="img/icon-lines.svg" alt="" />
 							</div>

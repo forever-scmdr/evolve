@@ -29,10 +29,10 @@
 		testWhileIdle="true"
 		timeBetweenEvictionRunsMillis="10000"
 		minEvictableIdleTimeMillis="60000"
-		username="evabot_main"
-		password="evabot_main"
+		username="root"
+		password="eeee"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://evabot.must.by:3306/evabot_main?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+		url="jdbc:mysql://localhost:3306/youhuo?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
 	/><!-- must_test -->
 
 </Context>

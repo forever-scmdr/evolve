@@ -51,8 +51,12 @@
 									</div>
 									<div class="cart-item__info">
 										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a><br/>
-										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
-										<xsl:if test="$pc/other_name"><br/><div class="cart-item__artnumber">Поставщик: <b><xsl:value-of select="$pc/other_name"/></b></div></xsl:if>
+										<xsl:if test="$p/vendor and not($p/vendor = '')">
+											<div class="cart-item__artnumber">
+												Производитель: <span style="color: #339966;"><b><xsl:value-of select="$p/vendor" /></b></span>
+											</div>
+										</xsl:if>
+										<xsl:if test="$pc/other_name"><br/><div class="cart-item__artnumber">Поставщик: <span style="color: #339966;"><b><xsl:value-of select="$pc/other_name"/></b></span></div></xsl:if>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
@@ -61,7 +65,6 @@
 										<a class="cart-item__name" href="{$p/product/show_product}">
 											<xsl:value-of select="$p/name"/> (<xsl:value-of select="$p/product/name" />)
 										</a>
-										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/product/code" /></div>
 									</div>
 								</xsl:if>
 								<div class="cart-item__price">

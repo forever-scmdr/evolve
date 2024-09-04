@@ -3,8 +3,6 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="$p/name"/>
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 
 	<xsl:variable name="has_plain" select="$mods/plain_in_product = 'on'"/><!-- + -->
@@ -15,12 +13,18 @@
 
 
 	<xsl:variable name="p" select="page/product"/>
+	<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>
 	<xsl:variable name="is_big" select="$p_big and not($p_big = '')"/>
 	<xsl:variable name="is_not_plain" select="$p/product_section"/>
 	<xsl:variable name="multiple_prices" select="not($is_not_plain) or (section_name and not(section_name = ''))"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then f:num(page/catalog/default_step) else 1"/>
+	<xsl:variable name="meta_description" select="concat($p/name, ' - ', string-join(page/catalog//section[.//@id = $sel_sec_id and f:num(hide) = 0]/name, ' - '), ' с доставкой по России. Доступная цена. Звоните и заказывайте!')"/>
+	<xsl:variable name="title_price" select="if ($has_price) then concat(' - ', f:exchange_cur($p, $price_param_name, 0)) else ''"/>
+	<xsl:variable name="title" select="concat($p/name, $title_price, ' - Купить с доставкой по: Москва, Санкт-Петербург и России')"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $p/name"/>
+
 
 	<xsl:template name="MARKUP">
 		<xsl:variable name="price" select="$p/price"/>
@@ -86,7 +90,6 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 				<div class="tags">
@@ -112,8 +115,6 @@
 				<!-- <xsl:for-each select="$p/tag">
 					<div class="device__tag device__tag_device-page"><xsl:value-of select="." /></div>
 				</xsl:for-each> -->
-
-				<xsl:variable name="has_price" select="$p/price and $p/price != '0'"/>
 
 				<xsl:if test="not($has_lines)">
 					<!-- цена -->
@@ -168,7 +169,7 @@
 						<div class="add add_product">
 							<xsl:if test="$has_fav">
 								<div id="fav_list_{$p/@id}">
-									<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}">
+									<a href="{$p/to_fav}" class="add__item icon-link" ajax="true" ajax-loader-id="fav_list_{$p/@id}" rel="nofollow">
 										<div class="icon"><img src="img/icon-star.svg" alt="" /></div>
 										<span><xsl:value-of select="$compare_add_label"/></span>
 									</a>
@@ -176,7 +177,7 @@
 							</xsl:if>
 							<xsl:if test="$has_compare">
 								<div id="compare_list_{$p/@id}">
-									<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}">
+									<a href="{$p/to_compare}" class="add__item icon-link" ajax="true" ajax-loader-id="compare_list_{$p/@id}" rel="nofollow">
 										<div class="icon"><img src="img/icon-balance.svg" alt="" /></div>
 										<span><xsl:value-of select="$go_to_compare_label"/></span>
 									</a>
