@@ -85,9 +85,17 @@ public class DataTypeMapper {
 
 		@Override
 		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
-			itemDoc.add(new StringField(fieldName, (String) value, Field.Store.NO));
+			itemDoc.add(new StringField(fieldName, (String) value, Field.Store.YES));
 		}
 	}
+
+	private static class TextMapper extends StringMapper {
+		@Override
+		protected void setLuceneDocumentField(Document itemDoc, String fieldName, Object value) {
+			itemDoc.add(new TextField(fieldName, (String) value, Field.Store.NO));
+		}
+	}
+
 	
 	private static class FileMapper extends StringMapper {
 		@Override
@@ -392,7 +400,7 @@ public class DataTypeMapper {
 	
 	private DataTypeMapper() {
 		typeMappers = new HashMap<>();
-		StringMapper stringMapper = new StringMapper();
+		TextMapper textMapper = new TextMapper();
 		FileMapper fileMapper = new FileMapper();
 		typeMappers.put(Type.BYTE, new ByteMapper());
 		typeMappers.put(Type.DATE, new DateMapper());
@@ -404,13 +412,13 @@ public class DataTypeMapper {
 		typeMappers.put(Type.INTEGER, new IntMapper());
 		typeMappers.put(Type.LONG, new LongMapper());
 		typeMappers.put(Type.PICTURE, fileMapper);
-		typeMappers.put(Type.STRING, stringMapper);
-		typeMappers.put(Type.TINY_TEXT, stringMapper);
-		typeMappers.put(Type.SHORT_TEXT, stringMapper);
-		typeMappers.put(Type.TEXT, stringMapper);
-		typeMappers.put(Type.PLAIN_TEXT, stringMapper);
-		typeMappers.put(Type.FILTER, stringMapper);
-		typeMappers.put(Type.XML, stringMapper);
+		typeMappers.put(Type.STRING, new StringMapper());
+		typeMappers.put(Type.TINY_TEXT, textMapper);
+		typeMappers.put(Type.SHORT_TEXT, textMapper);
+		typeMappers.put(Type.TEXT, textMapper);
+		typeMappers.put(Type.PLAIN_TEXT, textMapper);
+		typeMappers.put(Type.FILTER, textMapper);
+		typeMappers.put(Type.XML, textMapper);
 		typeMappers.put(Type.TUPLE, new TupleMapper());
 	}
 
