@@ -295,8 +295,8 @@
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
 	<item name="abstract_product" caption="Абстрактный товар" key="name code" virtual="true" ag-id="864" ag-hash="1636704722">
-		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" />
-		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext"/>
+		<parameter name="name" type="string" caption="Наименование" description="продукта" text-index="fulltext" text-index-analyzer="keyword"/>
+		<parameter name="code" type="string" caption="Уникальный артикул товара" description="в данном случае совпадает с offer_id" text-index="fulltext" text-index-analyzer="keyword"/>
 		<parameter name="price" type="currency-precise" caption="Цена" description="в валюте текущего сайта"/>
 		<parameter name="qty" type="double" caption="Количество на складе"/>
         <parameter name="qty_opt" type="double" caption="Количество на оптовом складе"/>
