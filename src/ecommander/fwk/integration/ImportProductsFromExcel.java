@@ -527,6 +527,8 @@ public class ImportProductsFromExcel extends CreateParametersAndFiltersCommand {
 
 		private void initSection(String code, String name, String parentCode) throws Exception {
 			currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CODE_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
+			if (currentSection == null)
+				currentSection = ItemQuery.loadSingleItemByParamValue(SECTION_ITEM, CATEGORY_ID_PARAM, code, Item.STATUS_NORMAL, Item.STATUS_HIDDEN);
 
 			//section not exists
 			if (currentSection == null) {
