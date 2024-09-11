@@ -3,7 +3,10 @@
 	<xsl:output method="html" encoding="UTF-8" media-type="text/xhtml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="title" select="if($tag[1] != '') then concat($sel_sec/name, ' - ', $tag[1]) else $sel_sec/name"/>
+	<xsl:variable name="sec_name_cap" select="concat(upper-case(substring($sel_sec/name,1,1)), substring($sel_sec/name, 2), ' '[not(last())])"/>
+	<xsl:variable name="title_base" select="if($tag[1] != '') then concat($sec_name_cap, ' - ', $tag[1]) else $sec_name_cap"/>
+	<xsl:variable name="title" select="concat($title_base, ' купить с доставкой по: Москва, Санкт-Петербург и России - Цена – Youhuo')"/>
+	<xsl:variable name="meta_description" select="concat($sec_name_cap, ' с доставкой по России. Доступная цена. Звоните и заказывайте!')" />
 	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
 	<xsl:variable name="custom_canonical" select="concat($main_host, tokenize($source_link, '\?')[1])"/>
 
