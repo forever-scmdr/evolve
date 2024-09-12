@@ -272,7 +272,10 @@ public abstract class Command implements AutoCloseable {
 	 * @return
 	 */
 	protected final Item getSingleLoadedItem(String itemPageId) {
-		return page.getItemPEById(itemPageId).getSingleFoundItem();
+		ExecutableItemPE pe = page.getItemPEById(itemPageId);
+		if (pe == null)
+			return null;
+		return pe.getSingleFoundItem();
 	}
 	/**
 	 * Добавить команду для выполнения синхронно (результаты после вызова метода выполнения 
