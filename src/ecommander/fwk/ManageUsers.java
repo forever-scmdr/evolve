@@ -133,6 +133,7 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		executeCommand(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED)).ignoreUser());
 
 		// Отправка письма
+		/*
 		try {
 			Multipart regularMP = new MimeMultipart();
 			MimeBodyPart regularTextPart = new MimeBodyPart();
@@ -156,5 +157,6 @@ public class ManageUsers extends DBPersistenceCommandUnit implements ErrorCodes 
 		} catch (Exception e) {
 			ServerLogger.error("error while sinding email about registration", e);
 		}
+		 */
 	}
 }
