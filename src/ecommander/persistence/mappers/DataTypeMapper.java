@@ -88,7 +88,7 @@ public class DataTypeMapper {
 			itemDoc.add(new StringField(fieldName, (String) value, Field.Store.NO));
 		}
 	}
-	
+
 	private static class FileMapper extends StringMapper {
 		@Override
 		protected void setPreparedStatementInsertValue(TemplateQuery pstmt, Object value) throws SQLException {

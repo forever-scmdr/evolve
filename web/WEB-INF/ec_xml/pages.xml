@@ -1635,8 +1635,10 @@
 
 	<page name="register_action">
 		<request>
-			<var name="action"/>
+			<var name="action" value="register"/>
 			<var name="src" value="register"/>
+			<var name="user"/>
+			<var name="email" value="egor@forever-ds.com"/><!-- forever-ds@mail.ru -->
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
@@ -1670,7 +1672,8 @@
 		<link name="user_exists_personal" target="personal">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<command class="extra.JustEmailRegisterCommand" method-var="action">
+		<single item="user" var="user" id="user"/>
+		<command class="ecommander.fwk.AdminConfirmRegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>
 			<result name="user_exists" type="redirect"/>
 			<result name="success" type="redirect"/>
@@ -1688,6 +1691,22 @@
 			<var name="base"/>
 		</request>
 		<single item="user" var="user" tag="user"/>
+	</page>
+
+
+	<page name="new_user_email" template="new_user_email" authority-groups="common">
+		<request>
+			<var name="user"/>
+			<var name="base"/>
+		</request>
+		<single item="user" var="user" id="user" tag="new_user">
+			<parameter-input ref="user"/>
+		</single>
+		<link name="confirm_link" target="register_action">
+			<var name="action" value="confirmRegistration"/>
+			<var name="src" value="new_user_email"/>
+			<var name="user" ref="user"/>
+		</link>
 	</page>
 
 
