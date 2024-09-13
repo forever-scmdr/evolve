@@ -29,7 +29,7 @@
 			<p><xsl:value-of select="@caption"/>: <xsl:value-of select="." /></p>
 		</xsl:for-each>
 		<hr/>
-		<p>Ссылка для подтверждения запроса: <b><a href="{page/base}/{page/confirm_link}">ПОДТВЕРДИТЬ</a></b></p>
+		<p>Ссылка для подтверждения запроса: <b><a href="{page/variables/base}/{page/confirm_link}">ПОДТВЕРДИТЬ</a></b></p>
 	</xsl:if>
 	<xsl:if test="not(page/new_user)">
 		<h1>Регистрация подтверждена</h1>
