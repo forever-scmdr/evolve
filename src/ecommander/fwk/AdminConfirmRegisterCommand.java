@@ -82,24 +82,15 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 		if (userItem == null) {
 			return getResult("not_set");
 		}
-		String userName = (StringUtils.isEmpty(userItem.getStringValue(EMAIL_PARAM)))? userItem.getStringValue(PHONE_PARAM) : userItem.getStringValue(EMAIL_PARAM);
-		String password = userItem.getStringValue(PASSWORD_PARAM);
-		User newUser = new User(userName, password, "registered user", User.ANONYMOUS_ID);
-		newUser.addGroup(REGISTERED_GROUP, UserGroupRegistry.getGroup(REGISTERED_GROUP), User.SIMPLE);
 		try {
-			executeCommandUnit(new SaveNewUserDBUnit(newUser).ignoreUser());
+			userItem.setValue("registered", (byte)1);
+			executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser());
+			commitCommandUnits();
 		} catch (UserExistsExcepion e) {
 			return getResult("user_exists");
 		}
-		try {
-			//executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
-			executeCommandUnit(ChangeItemOwnerDBUnit.newUser(userItem, newUser.getUserId(), UserGroupRegistry.getGroup(REGISTERED_GROUP)));
-			commitCommandUnits();
-		} catch (Exception e) {
-			ServerLogger.error(e.getMessage(), e);
-		}
 
-		sendUserEmail(userItem, newUser);
+		sendUserEmail(userItem);
 
 		return getResult("login"); // т.к. перенаправляет на любую страницу
 	}
@@ -109,7 +100,7 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 	 * Отправить email об одобрении регистрации пользователю
 	 * @param userItem
 	 */
-	public void sendUserEmail(Item userItem, User newUser) {
+	public void sendUserEmail(Item userItem) {
 		// Отправка письма
 		try {
 			Multipart regularMP = new MimeMultipart();
@@ -120,7 +111,7 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 			regularLink.addStaticVariable("user", userItem.getId() + "");
 			regularLink.addStaticVariable("base", getUrlBase());
 			ExecutablePagePE regularTemplate =
-					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(newUser));
+					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, null);
 			final String customerEmail = userItem.getStringValue("email");
 
 			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
@@ -150,7 +141,11 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 
 			regularLink.addStaticVariable("user", userItem.getId() + "");
 			regularLink.addStaticVariable("base", siteUrl);
-			ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
+			//ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
+			User admin = UserMapper.getUser("admin");
+			ExecutablePagePE regularTemplate =
+					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(admin));
+
 			final String adminEmail = getVarSingleValue("email");
 
 			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
