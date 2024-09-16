@@ -8,6 +8,7 @@ import ecommander.fwk.UserNotAllowedException;
 import ecommander.fwk.ValidationException;
 import ecommander.model.DomainBuilder;
 import ecommander.model.Item;
+import ecommander.model.User;
 import ecommander.pages.var.RequestVariablePE;
 import ecommander.pages.var.VariablePE;
 import ecommander.persistence.itemquery.ItemQuery;
@@ -126,6 +127,8 @@ public class PageModelRegistry {
 	 */
 	public ExecutablePagePE getExecutablePage(String linkUrl, String urlBase, SessionContext context)
 			throws PageNotFoundException, UserNotAllowedException, UnsupportedEncodingException {
+		if (context == null)
+			context = SessionContext.userOnlySessionContext(User.getDefaultUser());
 		LinkPE link = normalizeAndCreateLink(linkUrl);
 		PagePE pageModel = getPageModel(link.getPageName());
 		// Если не найдена страница - выбросить исключение
@@ -133,10 +136,9 @@ public class PageModelRegistry {
 			throw new PageNotFoundException("The page '" + linkUrl + "' is not found");
 		}
 		// Проверка, разрешен ли пользователю доступ к этой странице
-		if (context != null && !pageModel.isUserAuthorized(context.getUser()))
+		if (!pageModel.isUserAuthorized(context.getUser()))
 			throw new UserNotAllowedException("Requested page is not allowed for current user");
-		if (context != null)
-			context.resetIdGenerator();
+		context.resetIdGenerator();
 		return pageModel.createExecutableClone(context, link, linkUrl, urlBase);
 	}
 
