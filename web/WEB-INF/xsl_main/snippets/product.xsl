@@ -39,8 +39,12 @@
 
 	<xsl:template match="*" mode="product-table">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="docs" select="if (documents_xml) then none else none"/> <!-- parse-xml(documents_xml)/value-->
-		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="docs_param_raw" select="if (documents_xml_mod and not(documents_xml_mod = '')) then documents_xml_mod else documents_xml"/>
+		<xsl:variable name="docs_param" select="replace($docs_param_raw, '&amp;', '&amp;amp;')"/>
+		<xsl:variable name="docs" select="if ($docs_param and not($docs_param = '')) then parse-xml($docs_param)/value else none"/>
+		<xsl:variable name="default_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="actual_ds_list" select="$docs//value[starts-with(a/@href, 'imgdata')]"/>
+		<xsl:variable name="main_ds" select="if ($actual_ds_list) then $actual_ds_list[1] else $default_ds"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<div class="card device">
@@ -257,8 +261,12 @@
 
 	<xsl:template match="*" mode="product-list">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="docs" select="if (documents_xml) then none else none"/> <!-- parse-xml(documents_xml)/value-->
-		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="docs_param_raw" select="if (documents_xml_mod and not(documents_xml_mod = '')) then documents_xml_mod else documents_xml"/>
+		<xsl:variable name="docs_param" select="replace($docs_param_raw, '&amp;', '&amp;amp;')"/>
+		<xsl:variable name="docs" select="if ($docs_param and not($docs_param = '')) then parse-xml($docs_param)/value else none"/>
+		<xsl:variable name="default_ds" select="$docs/param[1]/value[1]"/>
+		<xsl:variable name="actual_ds_list" select="$docs//value[starts-with(a/@href, 'imgdata')]"/>
+		<xsl:variable name="main_ds" select="if ($actual_ds_list) then $actual_ds_list[1] else $default_ds"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 
