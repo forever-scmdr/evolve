@@ -625,7 +625,7 @@
 	<!-- Product Ajax -->
 	<page name="product_ajax" template="product_ajax" cacheable="true">
 		<request>
-			<var name="prod" style="key"/>
+			<var name="prod"/>
 			<var name="translate_items" value="prod_ajax"/>
 			<var name="translate" scope="cookie"/>
 		</request>
@@ -873,7 +873,7 @@
     Главная страница с предложениями поставщиков по одному товару
     Вызывается при нажатии на ссылку в карточке товара в собственном каталоге
     описаний товаров сайта (спаршенный digikey)
- -->
+ 	-->
 	<page name="api_ajax" template="api_ajax" cacheable="true">
 		<request>
 			<var name="prod" style="key"/>
@@ -922,7 +922,6 @@
 				</filter>
 			</list>
 		</single>
-		<command class="ecommander.special.portal.outer.providers.DigikeyDataUpdaterCommand"/>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
 			<result name="error" type="inline_text"/>
@@ -1846,8 +1845,10 @@
 
 	<page name="register_action">
 		<request>
-			<var name="action"/>
+			<var name="action" value="register"/>
 			<var name="src" value="register"/>
+			<var name="user"/>
+			<var name="email" value="egor@forever-ds.com"/>
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
@@ -1881,7 +1882,8 @@
 		<link name="user_exists_personal" target="personal">
 			<var name="message" value="Пользователь с таким логином уже существует. Введите, пожалуйста, другой логин"/>
 		</link>
-		<command class="extra.JustEmailRegisterCommand" method-var="action">
+		<single item="user" var="user" id="user"/>
+		<command class="ecommander.fwk.AdminConfirmRegisterCommand" method-var="action">
 			<result name="not_set" type="redirect"/>
 			<result name="user_exists" type="redirect"/>
 			<result name="success" type="redirect"/>
@@ -1899,6 +1901,22 @@
 			<var name="base"/>
 		</request>
 		<single item="user" var="user" tag="user"/>
+	</page>
+
+
+	<page name="new_user_email" template="new_user_email" authority-groups="common">
+		<request>
+			<var name="user"/>
+			<var name="base"/>
+		</request>
+		<single item="user" var="user" id="user" tag="new_user">
+			<parameter-input ref="user"/>
+		</single>
+		<link name="confirm_link" target="register_action">
+			<var name="action" value="confirmRegistration"/>
+			<var name="src" value="new_user_email"/>
+			<var name="user" ref="user"/>
+		</link>
 	</page>
 
 

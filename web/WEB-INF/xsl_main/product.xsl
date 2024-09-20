@@ -62,6 +62,18 @@
 		</script>
 	</xsl:template>
 
+	<xsl:template name="PAGE_HEADING">
+		<div class="title title_1 vl_{$classvl}">
+			<div style="display:inline-block; margin-right: 20px">
+				<xsl:value-of select="$h1"/>
+			</div>
+			<div class="order device-order" style="display:inline-block;">
+				<a class="button" style="font-size: 20px; vertical-align: middle" href="#" onclick="showDetails('{$p/show_api_ajax}', '#price_{@id}'); return false;">Цены</a>
+			</div>
+		</div>
+	</xsl:template>
+
+
 	<xsl:template name="PAGE_PATH">
 		<div class="path path_common">
 			<div class="path__item">
@@ -96,8 +108,12 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="CONTENT">
 
+
+	<xsl:template name="CONTENT">
+		<div class="price_box" id="price_{@id}">
+
+		</div>
 		<!-- fix -->
 
 		<div class="device-full">
@@ -437,6 +453,7 @@
 		</div>
 
 
+		<!--
 		<div style="padding-left: 5px; padding-bottom: 10px" id="cur_div">
 			<ul class="currency-options">
 				<xsl:variable name="currency_link" select="page/set_currency"/>
@@ -450,17 +467,9 @@
 				</xsl:for-each>
 				<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
 			</ul>
-			<!--
-			<div id="api_ajax_1" ajax-href="search_prices_mouser?q={$p/name}"></div>
-			<div id="api_ajax_2" ajax-href="search_prices_digikey?q={$p/name}"></div>
-			<div id="api_ajax_3" ajax-href="search_prices_farnell?q={$p/name}"></div>
-			<div id="api_ajax_4" ajax-href="search_prices_onlinecomponents?q={$p/name}"></div>
-			<div id="api_ajax_5" ajax-href="search_prices_newark?q={$p/name}"></div>
-			<div id="api_ajax_6" ajax-href="search_prices_arrowelectronics?q={$p/name}"></div>
-			-->
 			<div id="api_ajax_1" ajax-href="search_prices_mouser?q={$p/name}"></div>
 		</div>
-
+		-->
 
 		<xsl:if test="page/plain_catalog/product and $has_plain">
 			<xsl:call-template name="LINES_TABLE">

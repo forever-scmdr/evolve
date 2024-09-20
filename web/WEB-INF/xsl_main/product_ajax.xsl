@@ -15,12 +15,16 @@
 	<xsl:variable name="price_old" select="$p/price_old"/>
 	<xsl:variable name="step_default" select="if (page/catalog/default_step) then page/catalog/default_step else '1'"/>
 
-	<xsl:variable name="docs" select="if ($p/documents_xml) then parse-xml($p/documents_xml)/value else none"/>
+	<xsl:variable name="docs_param_raw" select="if ($p/documents_xml_mod and not($p/documents_xml_mod = '')) then $p/documents_xml_mod else $p/documents_xml"/>
+	<xsl:variable name="docs_param" select="replace($docs_param_raw, '&amp;', '&amp;amp;')"/>
+	<xsl:variable name="docs" select="if ($docs_param and not($docs_param = '')) then parse-xml($docs_param)/value else none"/>
 	<xsl:variable name="env" select="if ($p/environmental_xml) then parse-xml($p/environmental_xml)/value else none"/>
 	<xsl:variable name="names" select="if ($p/additional_xml) then parse-xml($p/additional_xml)/value else none"/>
 	<xsl:variable name="other_names" select="$names/param[lower-case(normalize-space(name)) = 'other names']"/>
 	<xsl:variable name="package" select="$names/param[lower-case(normalize-space(name)) = 'standard package']"/>
-	<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
+	<xsl:variable name="default_ds" select="$docs/param[1]/value[1]"/>
+	<xsl:variable name="actual_ds_list" select="$docs//value[starts-with(a/@href, 'imgdata')]"/>
+	<xsl:variable name="main_ds" select="if ($actual_ds_list) then $actual_ds_list[1] else $default_ds"/>
 
 	<xsl:template match="/">
 		<div>

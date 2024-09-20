@@ -44,8 +44,9 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<div class="card device">
-			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
+			<xsl:variable name="main_pic_url" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else $main_pic_url"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<!--<div style="display: none">
@@ -174,7 +175,8 @@
 		<xsl:variable name="multipe_prices" select="prices"/>
 		<div class="card device">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic_url" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else $main_pic_url"/>
 
 			<!-- zoom icon (not displayed, delete <div> with display: none to show) -->
 			<div style="display: none">
@@ -263,7 +265,8 @@
 
 		<div class="device device_row">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic_url" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else $main_pic_url"/>
 
 			<div class="device__column">
 
@@ -480,7 +483,8 @@
 		<xsl:variable name="multipe_prices" select="prices"/>
 		<div class="device device_row">
 			<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+			<xsl:variable name="main_pic_url" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
+			<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else $main_pic_url"/>
 
 			<div class="device__column">
 
@@ -644,7 +648,8 @@
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
-		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
+		<xsl:variable name="main_pic_url" select="if (main_pic_url and not(main_pic_url = '')) then main_pic_url else 'img/no_image.png'"/>
+		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else $main_pic_url"/>
 
 		<xsl:variable name="user_defined_params" select="tokenize($sel_sec/params_list, '[\|;]\s*')"/>
 		<xsl:variable name="is_user_defined" select="$sel_sec/params_list and not($sel_sec/params_list = '') and count($user_defined_params) &gt; 0"/>

@@ -6,6 +6,12 @@
 	<xsl:variable name="currencies" select="page/currencies"/>
 	<xsl:variable name="queries" select="page/command/product_list/result/query"/>
 
+	<xsl:variable name="search_result_el" select="page/command/product_list/result"/>
+	<xsl:variable name="result_queries" select="$search_result_el/query"/>
+	<xsl:variable name="products" select="$result_queries/product"/>
+	<xsl:variable name="query" select="$p/name"/>
+
+
 	<xsl:template match="/">
 		<div>
 			<div class="popup result" id="product-ajax-popup">
@@ -24,18 +30,17 @@
 										<xsl:if test="$active"><xsl:value-of select="$cur"/></xsl:if>
 									</li>
 								</xsl:for-each>
-								<li><i class="far fa-money-bill-alt"/>&#160;<strong>Валюта</strong></li>
+								<li>&#160;<strong>Валюта</strong></li>
 							</ul>
 						</div>
-						<xsl:for-each-group select="$queries/product" group-by="category_id">
-							<xsl:variable name="distr" select="current-grouping-key()"/>
-							<xsl:variable name="distr_prods" select="current-group()"/>
-							<xsl:call-template name="LINES_TABLE">
-								<xsl:with-param name="results_api" select="$distr_prods"/>
-								<xsl:with-param name="header" select="$distr"/>
-								<xsl:with-param name="multiple" select="false()"/>
-							</xsl:call-template>
-						</xsl:for-each-group>
+
+						<xsl:call-template name="LINES_TABLE">
+							<xsl:with-param name="results_api" select="$products"/>
+							<xsl:with-param name="multiple" select="false()"/>
+							<xsl:with-param name="queries" select="$query"/>
+							<xsl:with-param name="exact" select="'true'"/>
+						</xsl:call-template>
+
 						<xsl:if test="not($queries/product)">
 							<div class="view-table">
 								<h3 style="text-align: center"><xsl:value-of select="page/variables/distr_title" /></h3>
