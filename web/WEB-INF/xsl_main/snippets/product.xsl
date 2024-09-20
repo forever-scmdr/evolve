@@ -257,7 +257,7 @@
 
 	<xsl:template match="*" mode="product-list">
 		<xsl:variable name="has_price" select="price and price != '0'"/>
-		<xsl:variable name="docs" select="if (documents_xml) then parse-xml(documents_xml)/value else none"/>
+		<xsl:variable name="docs" select="if (documents_xml) then none else none"/> <!-- parse-xml(documents_xml)/value-->
 		<xsl:variable name="main_ds" select="$docs/param[1]/value[1]"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
