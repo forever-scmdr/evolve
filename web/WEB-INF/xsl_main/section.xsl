@@ -7,7 +7,7 @@
 	<xsl:variable name="title_base" select="if($tag[1] != '') then concat($sec_name_cap, ' - ', $tag[1]) else $sec_name_cap"/>
 	<xsl:variable name="title" select="concat($title_base, ' купить с доставкой по: Москва, Санкт-Петербург и России - Цена – Youhuo')"/>
 	<xsl:variable name="meta_description" select="concat($sec_name_cap, ' с доставкой по России. Доступная цена. Звоните и заказывайте!')" />
-	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $title"/>
+	<xsl:variable name="h1" select="if($seo/h1 != '') then $seo/h1 else $sec_name_cap"/>
 	<xsl:variable name="custom_canonical" select="concat($main_host, tokenize($source_link, '\?')[1])"/>
 
 	<xsl:variable name="main_menu_section" select="$catalog//section[@id = $sel_sec_id]"/>
