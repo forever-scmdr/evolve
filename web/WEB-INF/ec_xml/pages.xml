@@ -1124,7 +1124,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="order@sankon.ru"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1252,7 +1252,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="order@sankon.ru"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
@@ -1386,6 +1386,9 @@
 
 
 	<page name="order_email" template="order_email">
+		<request>
+			<var name="is_shop" value="true" />
+		</request>
         <usergroup name="0dmin">
             <list item="optional_modules" cacheable="true">
                 <list item="module"/>
@@ -1410,18 +1413,39 @@
 				<parameter-input ref="user_jur" form="customer_jur"/>
 			</new>
 		</session>
-		<!--
-		<list item="product" tag="product" id="prod">
-			<filter>
-				<parameter name="code" compare="SOME" sign="=">
-					<var ref="bought" parameter="code"/>
-				</parameter>
-			</filter>
-			<link name="show_product" target="product" type="exclusive">
-				<var name="prod" ref="prod" style="key"/>
-			</link>
-		</list>
-		-->
+		<single item="common"/>
+	</page>
+
+
+
+	<page name="customer_email" template="order_email">
+		<request>
+			<var name="is_shop" value="false" />
+		</request>
+        <usergroup name="0dmin">
+            <list item="optional_modules" cacheable="true">
+                <list item="module"/>
+            </list>
+        </usergroup>
+		<single item="currencies" cacheable="true"/>
+		<session>
+			<single item="cart">
+				<list item="bought" id="bought">
+					<list item="product" tag="product" id="prod">
+						<link name="show_product" target="product" type="exclusive">
+							<var name="prod" ref="prod" style="key"/>
+						</link>
+					</list>
+				</list>
+			</single>
+			<list item="user" tag="registration"/>
+			<new item="user_phys" id="user_phys">
+				<parameter-input ref="user_phys" form="customer_phys"/>
+			</new>
+			<new item="user_jur" id="user_jur">
+				<parameter-input ref="user_jur" form="customer_jur"/>
+			</new>
+		</session>
 		<single item="common"/>
 	</page>
 
@@ -1459,6 +1483,7 @@
 		<single item="price_catalogs" cacheable="true">
 			<list item="price_catalog"/>
 		</single>
+		<single item="currencies"/>
 	</page>
 
 
@@ -1682,6 +1707,7 @@
 		<request>
 			<var name="action"/>
 			<var name="src" value="register"/>
+			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
@@ -2257,7 +2283,7 @@
 	</page>
 
 
-	<page name="get_rates"><!-- schedule="0 0 */2 ? * *"-->
+	<page name="get_rates" schedule="0 0 */2 ? * *"><!-- schedule="0 0 */2 ? * *"-->
 		<request>
 			<var name="action" value="start"/>
 		</request>
@@ -2323,7 +2349,7 @@
 	<page name="api_xml">
 		<headers Content-Type="text/plain"/>
 		<request>
-			<var name="api_base" value="https://op.vylrescm.workers.dev/?secret=124&amp;"/>
+			<var name="api_base" value="https://eva-a8pfpph71wwt.deno.dev/?secret=124&amp;"/>
 			<!--
 			<var name="token" value="Token 86165d1f0642159b9ec7f73801f82fbc34394e9f"/>
 			<var name="token_header" value="Authorization"/>

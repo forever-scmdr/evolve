@@ -100,7 +100,6 @@
 					<div class="text form__text">
 						<p>
 							Заполните, пожалуйста, форму регистрации. Ваш email будет использован в качестве логина.
-							Если не указан email, будет использован номер телефона.
 						</p>
 					</div>
 					<form action="{page/confirm_link}" method="post" onsubmit="lock('tab_jur')">

@@ -34,9 +34,11 @@
 						<div class="past-order__sum"><xsl:value-of select="sum"/> руб</div>
 						<div class="past-order__qty">Позиций: <xsl:value-of select="qty"/></div>
 					</div>
+					<!--
 					<div class="past-order__action" style="display: none">
 						<button class="button past-order__button submit_all_again"><xsl:value-of select="$to_cart_available_label"/></button>
 					</div>
+					-->
 					<xsl:for-each select="bought">
 						<xsl:variable name="code" select="code"/>
 						<xsl:variable name="prod" select="$products[code = $code]"/>

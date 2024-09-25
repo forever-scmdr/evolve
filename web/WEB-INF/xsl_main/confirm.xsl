@@ -70,8 +70,10 @@
 						<xsl:sort select="type"/>
 <!--						<xsl:variable name="product" select="//page/product[code = current()/code]"/>-->
 						<xsl:variable name="p" select="product"/>
-						<xsl:variable name="price" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
-                        <xsl:variable name="sum" select="if (f:num($p/price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
+						<xsl:variable name="outer" select="parse-xml(concat('&lt;prod&gt;', $p/extra_xml, '&lt;/prod&gt;'))"/>
+						<xsl:variable name="po" select="$outer/prod/product"/>
+						<xsl:variable name="price" select="if (f:num(price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
+                        <xsl:variable name="sum" select="if (f:num(price) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 						<tr>
 							<td><xsl:value-of select="$p/code"/></td>
 							<td><xsl:value-of select="$p/name"/></td>

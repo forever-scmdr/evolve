@@ -177,7 +177,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 
 
 	@Override
-	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
+	protected Pair<BigDecimal, BigDecimal> getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
 		// Для товаров, которые были загружены из БД (реальные товары из каталога)
 		if (product.getId() >= 0) {
 			Item section = getSessionMapper().getSingleItemByName(PLAIN_SECTION, product.getId());
@@ -196,7 +196,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 						}
 						quotient = qtyQuotient.getRight();
 					}
-					return product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
+					BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
+					return new Pair<>(price, price);
 				}
 			}
 		}
@@ -206,7 +207,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 			if (StringUtils.isNotBlank(outerXML)) {
 				Document parsed = JsoupUtils.parseXml(outerXML);
 				Element prices = parsed.getElementsByTag(SearchApiCommand.PRICES_TAG).first();
-				HashMap<BigDecimal, BigDecimal> intervals = new HashMap<>();
+				HashMap<BigDecimal, Pair<BigDecimal, BigDecimal>> intervals = new HashMap<>();
 				if (prices != null) {
 					Elements breaks = parsed.getElementsByTag(SearchApiCommand.BREAK_TAG);
 					for (Element aBreak : breaks) {
@@ -214,7 +215,10 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 						if (breakQty == null)
 							breakQty = BigDecimal.ONE;
 						BigDecimal breakPrice = DecimalDataType.parse(JsoupUtils.getTagFirstValue(aBreak, SearchApiCommand.PRICE_TAG), 4);
-						intervals.put(breakQty, breakPrice);
+						BigDecimal originalBreakPrice = DecimalDataType.parse(JsoupUtils.getTagFirstValue(aBreak, SearchApiCommand.PROVIDER_PRICE_TAG), 4);
+						if (originalBreakPrice == null)
+							originalBreakPrice = breakPrice;
+						intervals.put(breakQty, new Pair<>(breakPrice, originalBreakPrice));
 					}
 					ArrayList<BigDecimal> qtysOrdered = new ArrayList<>(intervals.keySet());
 					Collections.sort(qtysOrdered);
@@ -230,7 +234,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				}
 			}
 		}
-		return product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		BigDecimal price = product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		return new Pair<>(price, price);
 	}
 
 	/**
