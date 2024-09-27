@@ -35,6 +35,7 @@ public class SearchApiCommand extends Command {
 	public static final String BREAK_TAG = "break";
 	public static final String QTY_ATTR = "qty";
 	public static final String PRICE_TAG = "price";
+	public static final String PROVIDER_PRICE_TAG = "provider_price";
 
 
 	private static final String XML_API_PAGE = "api_xml";

@@ -49,7 +49,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PURCHASE_ITEM = "purchase";
 	protected static final String USER_ITEM = "user";
 	protected static final String PRICE_PARAM = "price";
-	protected static final String PRICE_OPT_PARAM = "price_opt";
+	protected static final String PRICE_VENDOR_PARAM = "price_vendor";
 	protected static final String NOT_AVAILABLE = "not_available";
 	protected static final String QTY_PARAM = "qty";
 	protected static final String MIN_QTY_PARAM = "min_qty";
@@ -60,6 +60,7 @@ public abstract class BasicCartManageCommand extends Command {
     protected static final String QTY_AVAIL_PARAM = "qty_avail";
     protected static final String QTY_TOTAL_PARAM = "qty_total";
 	protected static final String SUM_PARAM = "sum";
+	protected static final String SUM_VENDOR_PARAM = "sum_vendor";
 	protected static final String PROD_PARAM = "prod";
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
@@ -644,10 +645,11 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @param product
 	 * @param priceParam
 	 * @param qty
-	 * @return
+	 * @return Пара - цена, исходная цена поставщика. Если нет исходной цены - одинаковые значения
 	 */
-	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
-		return product.getDecimalValue(priceParam, new BigDecimal(0));
+	protected Pair<BigDecimal, BigDecimal> getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
+		BigDecimal price = product.getDecimalValue(priceParam, new BigDecimal(0));
+		return new Pair<>(price, price);
 	}
 
 	/**
@@ -675,11 +677,16 @@ public abstract class BasicCartManageCommand extends Command {
 				result = false;
 			} else {
 				// Первоначальная сумма
-				BigDecimal price =  getProductPriceForQty(product, PRICE, availableQty);
+				Pair<BigDecimal, BigDecimal> prices =  getProductPriceForQty(product, PRICE, availableQty);
+				BigDecimal price = prices.getLeft();
+				BigDecimal originalPrice = prices.getRight();
 				BigDecimal productSum = price.multiply(new BigDecimal(availableQty));
+				BigDecimal originalSum = originalPrice.multiply(new BigDecimal(availableQty));
 				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);
+				bought.setValue(PRICE_VENDOR_PARAM, originalPrice);
 				bought.setValue(SUM_PARAM, productSum);
+				bought.setValue(SUM_VENDOR_PARAM, originalSum);
 				totalSum = totalSum.add(productSum);
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
