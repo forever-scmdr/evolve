@@ -305,7 +305,7 @@ public class CrawlerController {
 					        info.pushLog("Seed added: {}", seed);
 			        	} else {
 					        // Проверка правильности регулярного выражения
-					        // Для этого используются все части, после второй (третяя и далее)
+					        // Для этого используются все части, после второй (третья и далее)
 							for (int i = 2; i < parts.length; i++) {
 								if (!parts[i].matches(parts[0]))
 									info.pushLog("Supplied test url {} does not match regex {} on line {}", parts[i], parts[0], lineNum);

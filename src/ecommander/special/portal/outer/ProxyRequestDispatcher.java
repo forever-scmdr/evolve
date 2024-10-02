@@ -20,7 +20,9 @@ public class ProxyRequestDispatcher {
 
     private static ProxyRequestDispatcher instance;
 
+    // Все прокси сервера, которые участвуют в разделении трафика (т.е. которые должны чередоваться для каждого сервера данных)
     private ArrayList<Proxy> allProxies = new ArrayList<>();
+    // Все сервера данных (для каждого сервера данных есть своя очередь прокси, которые чередуются, см. выше)
     private HashMap<String, HostThroughProxies> allHosts = new HashMap<>();
 
     private ProxyRequestDispatcher() {
