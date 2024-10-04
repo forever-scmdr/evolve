@@ -5,11 +5,11 @@
 	<group name="registered"/>
 </groups>
 <users>
-	<user name="admin" password="ghbdtnfkmaf" description="Мега админ">
+	<user name="admin" password="ytjgfhjkm" description="Мега админ">
 		<group name="common" role="admin"/>
 		<group name="registered" role="admin"/>
 	</user>
-	<user name="manager" password="yjdsq" description="Менеджер">
+	<user name="manager" password="comp987#2345" description="Менеджер">
 		<group name="common" role="admin"/>
 		<group name="registered" role="admin"/>
 	</user>

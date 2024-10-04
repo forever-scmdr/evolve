@@ -41,7 +41,7 @@ public class JsoupUtils {
 	private static void setSettings(Document jsoupDoc) {
 		Document.OutputSettings settings = new Document.OutputSettings();
 		settings.charset(Charset.forName("UTF-8"));
-		settings.syntax(Document.OutputSettings.Syntax.xml);
+		//settings.syntax(Document.OutputSettings.Syntax.xml);
 		settings.escapeMode(Entities.EscapeMode.xhtml);
 		jsoupDoc.outputSettings(settings);
 	}
