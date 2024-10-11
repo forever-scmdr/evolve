@@ -238,12 +238,6 @@ public class Crawler implements DBConstants.Parse {
 					} else {
 						hasNewUrls(this, false);
 					}
-					/*
-					long millisForProcess = Math.abs(System.currentTimeMillis() - startMillis);
-					if (millisForProcess < politenessMs)
-						Thread.sleep(politenessMs - millisForProcess);
-
-					 */
 					Thread.sleep(politenessMs);
 				} catch (Exception e) {
 					ServerLogger.error("SQL exception", e);
@@ -262,9 +256,6 @@ public class Crawler implements DBConstants.Parse {
 		protected boolean processUrl(Url url) {
 			boolean urlsFound = false;
 			try {
-//				org.jsoup.Connection con = Jsoup.connect(url.url).timeout(10000);
-//				setProxyIfHadSome(con);
-//				Document doc = con.get();St
 				String html = OkWebClient.getInstance().getString(url.url);
 				if (StringUtils.isNotBlank(html)) {
 					Document doc = JsoupUtils.parseXml(html);

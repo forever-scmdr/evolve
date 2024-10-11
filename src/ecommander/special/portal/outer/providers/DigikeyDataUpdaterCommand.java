@@ -117,7 +117,7 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
      */
     private void getAndSaveHtmlData() {
         HtmlResultHandler htmlHandler = new HtmlResultHandler();
-        GeneralProxyRequestProcessor.submitAsync(htmlHandler, prod.getStringValue(product_.URL), "text/html");
+        GeneralProxyRequestProcessor.general().submitAsync(htmlHandler, prod.getStringValue(product_.URL), "text/html");
     }
 
     private void getAndSaveFiles(boolean async) {
@@ -131,10 +131,10 @@ public class DigikeyDataUpdaterCommand extends Command implements ItemNames {
             if (!Files.exists(Paths.get(filePath))) {
                 counter.startUpdating(prod);
                 if (async) {
-                    GeneralProxyRequestProcessor.submitAsync(fileHandler, toDownloadLine.getRight(), responseMimeType);
+                    GeneralProxyRequestProcessor.general().submitAsync(fileHandler, toDownloadLine.getRight(), responseMimeType);
                 } else {
                     try {
-                        GeneralProxyRequestProcessor.submitSyncAsAsync(fileHandler, toDownloadLine.getRight(), responseMimeType);
+                        GeneralProxyRequestProcessor.general().submitSyncAsAsync(fileHandler, toDownloadLine.getRight(), responseMimeType);
                     } catch (EcommanderException e) {
                         ServerLogger.error("Error while auto downloading files", e);
                         // продолжить выполнение для других файлов

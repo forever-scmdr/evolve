@@ -17,6 +17,7 @@ import java.util.*;
 public class ProxyRequestDispatcher {
 
     private static final String _GENERAL_ = "_GENERAL_";
+    private static final String _ROTATING_ = "_ROTATING_";
 
     private static ProxyRequestDispatcher instance;
 
@@ -24,6 +25,8 @@ public class ProxyRequestDispatcher {
     private ArrayList<Proxy> allProxies = new ArrayList<>();
     // Все сервера данных (для каждого сервера данных есть своя очередь прокси, которые чередуются, см. выше)
     private HashMap<String, HostThroughProxies> allHosts = new HashMap<>();
+    // Единственный прокси, но с постоянно меняющимся IP (в таком случае не нужно много прокси)
+    private Proxy rotatingProxy;
 
     private ProxyRequestDispatcher() {
         String proxiesProp = AppContext.getFwkProperty("fwk.portal.proxies");
@@ -36,6 +39,8 @@ public class ProxyRequestDispatcher {
             allProxies.add(new Proxy(proxyAddress, threadsPerProxy));
         }
         allHosts.put(_GENERAL_, new HostThroughProxies(_GENERAL_, allProxies));
+        String rotatingProp = AppContext.getFwkProperty("fwk.portal.rotating_proxy");
+        allHosts.put(_ROTATING_, new HostThroughProxies(_ROTATING_, Arrays.asList(new Proxy(rotatingProp, threadsPerProxy))));
         for (String hostStr : allHostsStr) {
             String hostNameLower = StringUtils.lowerCase(StringUtils.normalizeSpace(hostStr));
             allHosts.put(hostNameLower, new HostThroughProxies(hostNameLower, allProxies));
@@ -87,11 +92,7 @@ public class ProxyRequestDispatcher {
      * @throws EcommanderException
      */
     public static Request submitRequest(String hostName, String... urls) throws EcommanderException {
-        ArrayList<Pair<String, String>> queryTypes = new ArrayList<>();
-        for (String query : urls) {
-            queryTypes.add(new Pair<>(query, "text/html"));
-        }
-        return submitRequest(hostName, queryTypes);
+        return submitRequest(hostName, createQueryTypePairs("text/html", urls));
     }
 
     /**
@@ -102,11 +103,7 @@ public class ProxyRequestDispatcher {
      * @return
      */
     public static Request submitGeneralUrls(String resultMimeType, String... urls) throws EcommanderException {
-        ArrayList<Pair<String, String>> queryTypes = new ArrayList<>();
-        for (String url : urls) {
-            queryTypes.add(new Pair<>(url, resultMimeType));
-        }
-        return submitRequest(_GENERAL_, queryTypes);
+        return submitRequest(_GENERAL_, createQueryTypePairs(resultMimeType, urls));
     }
 
     /**
@@ -119,5 +116,32 @@ public class ProxyRequestDispatcher {
      */
     public static Request submitGeneralQueries(Collection<Pair<String, String>> queries) throws EcommanderException {
         return submitRequest(_GENERAL_, queries);
+    }
+
+    /**
+     * Отправляет запрос на единственный прокси, который использует карусель IP адресов
+     * Сделано для единообразия
+     * @param resultMimeType
+     * @param urls
+     * @return
+     * @throws EcommanderException
+     */
+    public static Request submitRotaitngUrls(String resultMimeType, String... urls) throws EcommanderException {
+        return submitRequest(_ROTATING_, createQueryTypePairs(resultMimeType, urls));
+    }
+
+    /**
+     * Создает структуру, нужную основному метода submitRequest
+     * Заполняет пары каждым из переданных урлов и единым для всех миме типом
+     * @param resultMimeType
+     * @param urls
+     * @return
+     */
+    private static ArrayList<Pair<String, String>> createQueryTypePairs(String resultMimeType, String... urls) {
+        ArrayList<Pair<String, String>> queryTypes = new ArrayList<>();
+        for (String url : urls) {
+            queryTypes.add(new Pair<>(url, resultMimeType));
+        }
+        return queryTypes;
     }
 }

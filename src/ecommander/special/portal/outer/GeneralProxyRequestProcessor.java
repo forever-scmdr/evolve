@@ -19,6 +19,28 @@ public class GeneralProxyRequestProcessor {
         void handleResult(Result result);
     }
 
+    private final boolean isRotating;
+
+    private GeneralProxyRequestProcessor(boolean isRotating) {
+        this.isRotating = isRotating;
+    }
+
+    /**
+     * Для общих обычных запросов
+     * @return
+     */
+    public static GeneralProxyRequestProcessor general() {
+        return new GeneralProxyRequestProcessor(false);
+    }
+
+    /**
+     * Для запросов к серверу с каруселью
+     * @return
+     */
+    public static GeneralProxyRequestProcessor rotating() {
+        return new GeneralProxyRequestProcessor(true);
+    }
+
     /**
      * Синхронное выполнение
      * Метод зависает до выполения запроса
@@ -26,9 +48,11 @@ public class GeneralProxyRequestProcessor {
      * @param responseMimeType
      * @return
      */
-    public static Result submitSync(String url, String responseMimeType) throws EcommanderException {
+    public Result submitSync(String url, String responseMimeType) throws EcommanderException {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
-        Request request = ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
+        Request request = isRotating
+                ? ProxyRequestDispatcher.submitRotaitngUrls(responseMimeType, url)
+                : ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
         try {
             boolean hadErrors = request.awaitExecution();
             if (hadErrors) {
@@ -54,7 +78,7 @@ public class GeneralProxyRequestProcessor {
      * @param url
      * @param responseMimeType
      */
-    public static void submitAsync(ResultHandler handler, String url, String responseMimeType) {
+    public void submitAsync(ResultHandler handler, String url, String responseMimeType) {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
         new Thread(() -> {
             try {
@@ -72,7 +96,7 @@ public class GeneralProxyRequestProcessor {
      * @param url
      * @param responseMimeType
      */
-    public static void submitSyncAsAsync(ResultHandler handler, String url, String responseMimeType) throws EcommanderException {
+    public void submitSyncAsAsync(ResultHandler handler, String url, String responseMimeType) throws EcommanderException {
         // Выполняются все запросы на сервер (в частности все подзапросы BOM)
         final Request request = ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
         Result result;

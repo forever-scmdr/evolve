@@ -18,6 +18,10 @@ public class MessageError extends EcommanderException implements ErrorCodes {
 		super(NO_SPECIAL_ERROR, logMessage);
 		message = userMessage;
 	}
+
+	public MessageError(String message) {
+		this(message, message);
+	}
 	
 	public String getUserErrorMessage() {
 		return message;
