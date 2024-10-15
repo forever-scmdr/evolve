@@ -119,7 +119,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 								prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
 							}
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
-							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
+							currencyRates.setAllPrices(prod, filePrice, settings.get_currency(), settings.get_currency());
 							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? 1.0 : fileMinQty;
 							prod.set_min_qty(minQty);

@@ -135,7 +135,7 @@ public class SearchOctopartApiCommand extends Command {
 						String breakQty = JsoupUtils.getTagFirstValue(pricesEl, "quantity");
 						xml.startElement("break", "qty", breakQty); // <break>
 						xml.addElement("price_original", price.toPlainString());
-						rates.setAllPricesXML(xml, price, currency);
+						rates.setAllPricesXML(xml, price, currency, currency);
 						xml.endElement(); // </break>
 					}
 					xml.endElement(); // </prices>

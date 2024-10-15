@@ -6,6 +6,7 @@ import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
+import extra.CurrencyRates;
 import extra._generated.ItemNames;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -63,6 +64,7 @@ public abstract class BasicCartManageCommand extends Command {
 	protected static final String PROD_PARAM = "prod";
 	protected static final String CODE_PARAM = "code";
 	protected static final String NAME_PARAM = "name";
+	protected static final String CURRENCY_ID_PARAM = "currency_id";
 	protected static final String PROCESSED_PARAM = "processed";
 	protected static final String SYSTEM_ITEM = "system";
 	protected static final String COUNTER_ITEM = "counter";
@@ -435,6 +437,7 @@ public abstract class BasicCartManageCommand extends Command {
         Item bought = getSessionMapper().createSessionItem(BOUGHT_ITEM, cart.getId());
         bought.setValue(NAME_PARAM, product.getStringValue(NAME_PARAM));
         bought.setValue(CODE_PARAM, product.getStringValue(CODE_PARAM));
+		bought.setValue(CURRENCY_ID_PARAM, product.getStringValue(CURRENCY_ID_PARAM));
         if (StringUtils.isNotBlank(outerParams)) {
 	        bought.setValue(OUTER_PRODUCT_PARAM, outerParams);
         }
@@ -675,11 +678,14 @@ public abstract class BasicCartManageCommand extends Command {
 				totalQuantity += totalQty;
 				bought.setValue(PRICE_PARAM, price);
 				bought.setValue(SUM_PARAM, productSum);
-				totalSum = totalSum.add(productSum);
+				BigDecimal defaultCurrencyProductSum = CurrencyRates.getCache().recalculate(productSum,
+						bought.getStringValue(CURRENCY_ID_PARAM), CurrencyRates.getCache().getDefaultCurrency());
+				totalSum = totalSum.add(defaultCurrencyProductSum);
 				// Сохранить bought
 				getSessionMapper().saveTemporaryItem(bought);
 			}
 		}
+		cart.setValue(CURRENCY_ID_PARAM, CurrencyRates.getCache().getDefaultCurrency());
 		cart.setValue(SUM_PARAM, totalSum);
 		cart.setValue(QTY_PARAM, totalQuantity);
 		// Сохранить корзину

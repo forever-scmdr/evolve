@@ -125,7 +125,7 @@ public class SearchApiCommand extends Command {
 							aBreak.appendElement(ItemNames.product_.PRICE_ORIGINAL).text(priceStr);
 							// Применить коэффициент
 							price = price.multiply(extraQuotient).setScale(4, RoundingMode.UP);
-							rates.setAllPricesJsoup(aBreak, price, currency);
+							rates.setAllPricesJsoup(aBreak, price, currency, currency);
 						}
 					}
 					sb.append(result.outerHtml()).append("\n");

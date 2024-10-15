@@ -15,22 +15,18 @@ public class User_jur
     public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
     public final static String ORGANIZATION = "organization";
-    public final static String CONTRACT_NUMBER = "contract_number";
+    public final static String ORGN = "orgn";
+    public final static String KPP = "kpp";
+    public final static String INN = "inn";
+    public final static String ADDRESS = "address";
+    public final static String FACT_ADDRESS = "fact_address";
+    public final static String POST_ADDRESS = "post_address";
+    public final static String WEB_SITE = "web_site";
     public final static String CONTACT_NAME = "contact_name";
     public final static String CONTACT_PHONE = "contact_phone";
-    public final static String ADDRESS = "address";
+    public final static String CONTACT_EMAIL = "contact_email";
     public final static String SHIP_TYPE = "ship_type";
     public final static String PAY_TYPE = "pay_type";
-    public final static String NO_ACCOUNT = "no_account";
-    public final static String ACCOUNT = "account";
-    public final static String BANK = "bank";
-    public final static String BANK_ADDRESS = "bank_address";
-    public final static String BANK_CODE = "bank_code";
-    public final static String UNP = "unp";
-    public final static String DIRECTOR = "director";
-    public final static String BASE = "base";
-    public final static String BASE_NUMBER = "base_number";
-    public final static String BASE_DATE = "base_date";
     public final static String COMMENT = "comment";
 
     private User_jur(Item item) {
@@ -154,20 +150,116 @@ public class User_jur
         return containsValue("organization", value);
     }
 
-    public void set_contract_number(String value) {
-        setValue("contract_number", value);
+    public void set_orgn(String value) {
+        setValue("orgn", value);
     }
 
-    public String get_contract_number() {
-        return getStringValue("contract_number");
+    public String get_orgn() {
+        return getStringValue("orgn");
     }
 
-    public String getDefault_contract_number(String defaultVal) {
-        return getStringValue("contract_number", defaultVal);
+    public String getDefault_orgn(String defaultVal) {
+        return getStringValue("orgn", defaultVal);
     }
 
-    public boolean contains_contract_number(String value) {
-        return containsValue("contract_number", value);
+    public boolean contains_orgn(String value) {
+        return containsValue("orgn", value);
+    }
+
+    public void set_kpp(String value) {
+        setValue("kpp", value);
+    }
+
+    public String get_kpp() {
+        return getStringValue("kpp");
+    }
+
+    public String getDefault_kpp(String defaultVal) {
+        return getStringValue("kpp", defaultVal);
+    }
+
+    public boolean contains_kpp(String value) {
+        return containsValue("kpp", value);
+    }
+
+    public void set_inn(String value) {
+        setValue("inn", value);
+    }
+
+    public String get_inn() {
+        return getStringValue("inn");
+    }
+
+    public String getDefault_inn(String defaultVal) {
+        return getStringValue("inn", defaultVal);
+    }
+
+    public boolean contains_inn(String value) {
+        return containsValue("inn", value);
+    }
+
+    public void set_address(String value) {
+        setValue("address", value);
+    }
+
+    public String get_address() {
+        return getStringValue("address");
+    }
+
+    public String getDefault_address(String defaultVal) {
+        return getStringValue("address", defaultVal);
+    }
+
+    public boolean contains_address(String value) {
+        return containsValue("address", value);
+    }
+
+    public void set_fact_address(String value) {
+        setValue("fact_address", value);
+    }
+
+    public String get_fact_address() {
+        return getStringValue("fact_address");
+    }
+
+    public String getDefault_fact_address(String defaultVal) {
+        return getStringValue("fact_address", defaultVal);
+    }
+
+    public boolean contains_fact_address(String value) {
+        return containsValue("fact_address", value);
+    }
+
+    public void set_post_address(String value) {
+        setValue("post_address", value);
+    }
+
+    public String get_post_address() {
+        return getStringValue("post_address");
+    }
+
+    public String getDefault_post_address(String defaultVal) {
+        return getStringValue("post_address", defaultVal);
+    }
+
+    public boolean contains_post_address(String value) {
+        return containsValue("post_address", value);
+    }
+
+    public void set_web_site(String value) {
+        setValue("web_site", value);
+    }
+
+    public String get_web_site() {
+        return getStringValue("web_site");
+    }
+
+    public String getDefault_web_site(String defaultVal) {
+        return getStringValue("web_site", defaultVal);
+    }
+
+    public boolean contains_web_site(String value) {
+        return containsValue("web_site", value);
     }
 
     public void set_contact_name(String value) {
@@ -202,20 +294,20 @@ public class User_jur
         return containsValue("contact_phone", value);
     }
 
-    public void set_address(String value) {
-        setValue("address", value);
+    public void set_contact_email(String value) {
+        setValue("contact_email", value);
     }
 
-    public String get_address() {
-        return getStringValue("address");
+    public String get_contact_email() {
+        return getStringValue("contact_email");
     }
 
-    public String getDefault_address(String defaultVal) {
-        return getStringValue("address", defaultVal);
+    public String getDefault_contact_email(String defaultVal) {
+        return getStringValue("contact_email", defaultVal);
     }
 
-    public boolean contains_address(String value) {
-        return containsValue("address", value);
+    public boolean contains_contact_email(String value) {
+        return containsValue("contact_email", value);
     }
 
     public void set_ship_type(String value) {
@@ -248,166 +340,6 @@ public class User_jur
 
     public boolean contains_pay_type(String value) {
         return containsValue("pay_type", value);
-    }
-
-    public void set_no_account(String value) {
-        setValue("no_account", value);
-    }
-
-    public String get_no_account() {
-        return getStringValue("no_account");
-    }
-
-    public String getDefault_no_account(String defaultVal) {
-        return getStringValue("no_account", defaultVal);
-    }
-
-    public boolean contains_no_account(String value) {
-        return containsValue("no_account", value);
-    }
-
-    public void set_account(String value) {
-        setValue("account", value);
-    }
-
-    public String get_account() {
-        return getStringValue("account");
-    }
-
-    public String getDefault_account(String defaultVal) {
-        return getStringValue("account", defaultVal);
-    }
-
-    public boolean contains_account(String value) {
-        return containsValue("account", value);
-    }
-
-    public void set_bank(String value) {
-        setValue("bank", value);
-    }
-
-    public String get_bank() {
-        return getStringValue("bank");
-    }
-
-    public String getDefault_bank(String defaultVal) {
-        return getStringValue("bank", defaultVal);
-    }
-
-    public boolean contains_bank(String value) {
-        return containsValue("bank", value);
-    }
-
-    public void set_bank_address(String value) {
-        setValue("bank_address", value);
-    }
-
-    public String get_bank_address() {
-        return getStringValue("bank_address");
-    }
-
-    public String getDefault_bank_address(String defaultVal) {
-        return getStringValue("bank_address", defaultVal);
-    }
-
-    public boolean contains_bank_address(String value) {
-        return containsValue("bank_address", value);
-    }
-
-    public void set_bank_code(String value) {
-        setValue("bank_code", value);
-    }
-
-    public String get_bank_code() {
-        return getStringValue("bank_code");
-    }
-
-    public String getDefault_bank_code(String defaultVal) {
-        return getStringValue("bank_code", defaultVal);
-    }
-
-    public boolean contains_bank_code(String value) {
-        return containsValue("bank_code", value);
-    }
-
-    public void set_unp(String value) {
-        setValue("unp", value);
-    }
-
-    public String get_unp() {
-        return getStringValue("unp");
-    }
-
-    public String getDefault_unp(String defaultVal) {
-        return getStringValue("unp", defaultVal);
-    }
-
-    public boolean contains_unp(String value) {
-        return containsValue("unp", value);
-    }
-
-    public void set_director(String value) {
-        setValue("director", value);
-    }
-
-    public String get_director() {
-        return getStringValue("director");
-    }
-
-    public String getDefault_director(String defaultVal) {
-        return getStringValue("director", defaultVal);
-    }
-
-    public boolean contains_director(String value) {
-        return containsValue("director", value);
-    }
-
-    public void set_base(String value) {
-        setValue("base", value);
-    }
-
-    public String get_base() {
-        return getStringValue("base");
-    }
-
-    public String getDefault_base(String defaultVal) {
-        return getStringValue("base", defaultVal);
-    }
-
-    public boolean contains_base(String value) {
-        return containsValue("base", value);
-    }
-
-    public void set_base_number(String value) {
-        setValue("base_number", value);
-    }
-
-    public String get_base_number() {
-        return getStringValue("base_number");
-    }
-
-    public String getDefault_base_number(String defaultVal) {
-        return getStringValue("base_number", defaultVal);
-    }
-
-    public boolean contains_base_number(String value) {
-        return containsValue("base_number", value);
-    }
-
-    public void set_base_date(String value) {
-        setValue("base_date", value);
-    }
-
-    public String get_base_date() {
-        return getStringValue("base_date");
-    }
-
-    public String getDefault_base_date(String defaultVal) {
-        return getStringValue("base_date", defaultVal);
-    }
-
-    public boolean contains_base_date(String value) {
-        return containsValue("base_date", value);
     }
 
     public void set_comment(String value) {

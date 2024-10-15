@@ -311,10 +311,10 @@
 		<parameter name="url" type="string" caption="Урл исходной страницы" description="с исходного сайта"/>
 		<parameter name="category_id" type="string" caption="Номер конечного раздела"/>
 		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
-		<parameter name="price_original" type="currency" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
-		<parameter name="price_old" type="currency" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
-		<parameter name="price_opt" type="currency" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
-		<parameter name="price_opt_old" type="currency" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_original" type="currency-precise" caption="Цена в оригинале" description="в валюте с кодом currency_id"/>
+		<parameter name="price_old" type="currency-precise" caption="Старая цена" description="без скидки в валюте текущего сайта"/>
+		<parameter name="price_opt" type="currency-precise" caption="Оптовая цена" description="со скидкой в валюте текущего сайта"/>
+		<parameter name="price_opt_old" type="currency-precise" caption="Старая оптовая цена" description="со скидкой в валюте текущего сайта"/>
 		<parameter name="next_delivery" type="string" caption="Дата следующей поставки"/>
 		<parameter name="status" type="string" caption="Статус"/>
 		<parameter name="search" type="string" caption="Поисковый запрос" text-index="fulltext"/>
@@ -489,9 +489,10 @@
 		<parameter name="qty_avail" type="double" format="#.###" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" format="#.###" caption="Общее количество"/>
-		<parameter name="price" type="currency" caption="Цена товара"/>
+		<parameter name="currency_id" type="string" caption="Код валюты цены"/>
+		<parameter name="price" type="currency-precise" caption="Цена товара"/>
 		<parameter name="not_available" type="byte" caption="Товар не доступен" description="0 или ничего - доступен, 1 - недоступен"/>
-		<parameter name="sum" type="currency" caption="Полная стоимость"/>
+		<parameter name="sum" type="currency-precise" caption="Полная стоимость"/>
 		<parameter name="aux" type="string" caption="Дополнительный каталог"/>
 		<parameter name="outer_product" type="plain-text" caption="Дополнительный каталог"/>
 		<child item="product" single="true"/>
@@ -500,8 +501,9 @@
 	<item name="cart" caption="Корзина" virtual="true" ag-id="17" ag-hash="3046176">
 		<parameter name="order_num" type="string" caption="Номер заказа"/>
 		<parameter name="qty" type="double" caption="Количество товаров"/>
-		<parameter name="sum" type="currency" caption="Общая сумма"/>
-		<parameter name="sum_discount" type="currency" caption="Сумма с учетом скидки"/>
+		<parameter name="sum" type="currency-precise" caption="Общая сумма"/>
+		<parameter name="sum_discount" type="currency-precise" caption="Сумма с учетом скидки"/>
+		<parameter name="currency_id" type="string" caption="Код валюты суммы"/>
 		<parameter name="processed" type="byte" caption="Корзина уже обработана"/>
 		<child item="bought"/>
 	</item>
@@ -528,7 +530,7 @@
 		<parameter name="qty_avail" type="double" caption="Количество, обеспеченное складом"
 				   description="та часть общего количества, которое есть на складе"/>
 		<parameter name="qty_total" type="double" caption="Общее количество"/>
-		<parameter name="sum" type="currency" caption="Общая сумма"/>
+		<parameter name="sum" type="currency-precise" caption="Общая сумма"/>
 		<parameter name="status" type="string" caption="Статус"/>
 		<child item="bought"/>
 	</item>

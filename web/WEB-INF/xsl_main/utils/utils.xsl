@@ -117,19 +117,47 @@
         <xsl:param name="param_name"/>
         <xsl:param name="default"/>
         <xsl:variable name="sum_check" select="$item/*[name() = $param_name]"/>
-        <xsl:variable name="is_byn" select="$currency = 'BYN'"/>
+        <xsl:variable name="need_no_exchange" select="$currency = $item/currency_id"/>
         <xsl:variable name="sum" select="if ($sum_check) then f:num($sum_check) else $default"/>
         <xsl:choose>
             <xsl:when test="not(f:is_numeric($sum))"><xsl:value-of select="$default" /></xsl:when>
-            <xsl:when test="$is_byn"><xsl:value-of select="f:format_currency($sum)" /></xsl:when>
+            <xsl:when test="$need_no_exchange"><xsl:value-of select="f:format_currency($sum)" /></xsl:when>
             <xsl:when test="$rates/*[name() = concat($currency, '_rate')]">
-                <xsl:variable name="rate" select="f:num($rates/*[name() = concat($currency, '_rate')])"/>
-                <xsl:variable name="scale" select="f:num($rates/*[name() = concat($currency, '_scale')])"/>
-                <xsl:value-of select="f:format_currency($sum div $rate * $scale)" />
+                <xsl:variable name="rate_in" select="f:num($rates/*[name() = concat($item/currency_id, '_rate')])"/>
+                <xsl:variable name="scale_in" select="f:num($rates/*[name() = concat($item/currency_id, '_scale')])"/>
+                <xsl:variable name="normalized_sum" select="f:num(f:format_currency($sum * $rate_in div $scale_in))"/>
+                <xsl:variable name="rate_out" select="f:num($rates/*[name() = concat($currency, '_rate')])"/>
+                <xsl:variable name="scale_out" select="f:num($rates/*[name() = concat($currency, '_scale')])"/>
+                <xsl:value-of select="f:format_currency($normalized_sum div $rate_out * $scale_out)" />
             </xsl:when>
             <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+
+    <xsl:function name="f:exchange_extra_quotient">
+        <xsl:param name="item"/>
+        <xsl:param name="param_name"/>
+        <xsl:param name="extra_quotient"/>
+        <xsl:param name="default"/>
+        <xsl:variable name="sum_check" select="$item/*[name() = $param_name]"/>
+        <xsl:variable name="need_no_exchange" select="$currency = $item/currency_id"/>
+        <xsl:variable name="plain_sum" select="if ($sum_check) then f:num($sum_check) else $default"/>
+        <xsl:variable name="sum" select="f:num(f:format_currency_precise($plain_sum * $extra_quotient))"/>
+        <xsl:choose>
+            <xsl:when test="not(f:is_numeric($sum))"><xsl:value-of select="$default" /></xsl:when>
+            <xsl:when test="$need_no_exchange"><xsl:value-of select="f:format_currency($sum)" /></xsl:when>
+            <xsl:when test="$rates/*[name() = concat($currency, '_rate')]">
+                <xsl:variable name="rate_in" select="f:num($rates/*[name() = concat($item/currency_id, '_rate')])"/>
+                <xsl:variable name="scale_in" select="f:num($rates/*[name() = concat($item/currency_id, '_scale')])"/>
+                <xsl:variable name="normalized_sum" select="$sum * $rate_in div $scale_in"/>
+                <xsl:variable name="rate_out" select="f:num($rates/*[name() = concat($currency, '_rate')])"/>
+                <xsl:variable name="scale_out" select="f:num($rates/*[name() = concat($currency, '_scale')])"/>
+                <xsl:value-of select="f:format_currency($normalized_sum div $rate_out * $scale_out)" />
+            </xsl:when>
+            <xsl:otherwise><xsl:value-of select="$sum" /></xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
 
     <xsl:function name="f:exchange_cur">
         <xsl:param name="item"/>

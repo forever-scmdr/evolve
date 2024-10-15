@@ -59,8 +59,6 @@ public class Described_product
     public final static String PRICE_USD_OLD = "price_USD_old";
     public final static String PRICE_EUR = "price_EUR";
     public final static String PRICE_EUR_OLD = "price_EUR_old";
-    public final static String PRICE_BYN = "price_BYN";
-    public final static String PRICE_BYN_OLD = "price_BYN_old";
     public final static String GALLERY = "gallery";
 
     private Described_product(Item item) {
@@ -910,50 +908,6 @@ public class Described_product
 
     public boolean contains_price_EUR_old(BigDecimal value) {
         return containsValue("price_EUR_old", value);
-    }
-
-    public void set_price_BYN(BigDecimal value) {
-        setValue("price_BYN", value);
-    }
-
-    public void setUI_price_BYN(String value)
-        throws Exception
-    {
-        setValueUI("price_BYN", value);
-    }
-
-    public BigDecimal get_price_BYN() {
-        return getDecimalValue("price_BYN");
-    }
-
-    public BigDecimal getDefault_price_BYN(BigDecimal defaultVal) {
-        return getDecimalValue("price_BYN", defaultVal);
-    }
-
-    public boolean contains_price_BYN(BigDecimal value) {
-        return containsValue("price_BYN", value);
-    }
-
-    public void set_price_BYN_old(BigDecimal value) {
-        setValue("price_BYN_old", value);
-    }
-
-    public void setUI_price_BYN_old(String value)
-        throws Exception
-    {
-        setValueUI("price_BYN_old", value);
-    }
-
-    public BigDecimal get_price_BYN_old() {
-        return getDecimalValue("price_BYN_old");
-    }
-
-    public BigDecimal getDefault_price_BYN_old(BigDecimal defaultVal) {
-        return getDecimalValue("price_BYN_old", defaultVal);
-    }
-
-    public boolean contains_price_BYN_old(BigDecimal value) {
-        return containsValue("price_BYN_old", value);
     }
 
     public void add_gallery(File value) {

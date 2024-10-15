@@ -11,6 +11,7 @@ public class Price_catalog
 
     public final static String _NAME = "price_catalog";
     public final static String NAME = "name";
+    public final static String OTHER_NAME = "other_name";
     public final static String QUOTIENT = "quotient";
     public final static String DEFAULT_SHIP_TIME = "default_ship_time";
     public final static String CURRENCY = "currency";
@@ -50,6 +51,22 @@ public class Price_catalog
 
     public boolean contains_name(String value) {
         return containsValue("name", value);
+    }
+
+    public void set_other_name(String value) {
+        setValue("other_name", value);
+    }
+
+    public String get_other_name() {
+        return getStringValue("other_name");
+    }
+
+    public String getDefault_other_name(String defaultVal) {
+        return getStringValue("other_name", defaultVal);
+    }
+
+    public boolean contains_other_name(String value) {
+        return containsValue("other_name", value);
     }
 
     public void set_quotient(BigDecimal value) {

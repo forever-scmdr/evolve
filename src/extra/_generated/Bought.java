@@ -15,6 +15,7 @@ public class Bought
     public final static String QTY = "qty";
     public final static String QTY_AVAIL = "qty_avail";
     public final static String QTY_TOTAL = "qty_total";
+    public final static String CURRENCY_ID = "currency_id";
     public final static String PRICE = "price";
     public final static String NOT_AVAILABLE = "not_available";
     public final static String SUM = "sum";
@@ -136,6 +137,22 @@ public class Bought
 
     public boolean contains_qty_total(Double value) {
         return containsValue("qty_total", value);
+    }
+
+    public void set_currency_id(String value) {
+        setValue("currency_id", value);
+    }
+
+    public String get_currency_id() {
+        return getStringValue("currency_id");
+    }
+
+    public String getDefault_currency_id(String defaultVal) {
+        return getStringValue("currency_id", defaultVal);
+    }
+
+    public boolean contains_currency_id(String value) {
+        return containsValue("currency_id", value);
     }
 
     public void set_price(BigDecimal value) {

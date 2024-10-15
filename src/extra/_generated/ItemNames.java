@@ -211,6 +211,7 @@ public interface ItemNames {
         String QTY = "qty";
         String QTY_AVAIL = "qty_avail";
         String QTY_TOTAL = "qty_total";
+        String CURRENCY_ID = "currency_id";
         String PRICE = "price";
         String NOT_AVAILABLE = "not_available";
         String SUM = "sum";
@@ -236,6 +237,7 @@ public interface ItemNames {
         String IN_MAIN_MENU = "in_main_menu";
         String DEFAULT_VIEW = "default_view";
         String SHOW_FILTER = "show_filter";
+        String DEFAULT_STEP = "default_step";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
@@ -292,6 +294,7 @@ public interface ItemNames {
         String LEFT = "left";
         String LINK_TEXT = "link_text";
         String LINK_LINK = "link_link";
+        String PHONE_LINK = "phone_link";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -328,9 +331,6 @@ public interface ItemNames {
         String EUR_RATE = "EUR_rate";
         String EUR_SCALE = "EUR_scale";
         String EUR_UPDATE = "EUR_update";
-        String BYN_RATE = "BYN_rate";
-        String BYN_SCALE = "BYN_scale";
-        String BYN_UPDATE = "BYN_update";
 
     }
 
@@ -433,8 +433,6 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
-        String PRICE_BYN = "price_BYN";
-        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
 
     }
@@ -607,8 +605,6 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
-        String PRICE_BYN = "price_BYN";
-        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
 
     }
@@ -902,6 +898,7 @@ public interface ItemNames {
 
         String _ITEM_NAME = "price_catalog";
         String NAME = "name";
+        String OTHER_NAME = "other_name";
         String QUOTIENT = "quotient";
         String DEFAULT_SHIP_TIME = "default_ship_time";
         String CURRENCY = "currency";
@@ -966,8 +963,6 @@ public interface ItemNames {
         String PRICE_USD_OLD = "price_USD_old";
         String PRICE_EUR = "price_EUR";
         String PRICE_EUR_OLD = "price_EUR_old";
-        String PRICE_BYN = "price_BYN";
-        String PRICE_BYN_OLD = "price_BYN_old";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
@@ -1195,22 +1190,18 @@ public interface ItemNames {
         String REGISTERED = "registered";
         String PAYMENT = "payment";
         String ORGANIZATION = "organization";
-        String CONTRACT_NUMBER = "contract_number";
+        String ORGN = "orgn";
+        String KPP = "kpp";
+        String INN = "inn";
+        String ADDRESS = "address";
+        String FACT_ADDRESS = "fact_address";
+        String POST_ADDRESS = "post_address";
+        String WEB_SITE = "web_site";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";
-        String ADDRESS = "address";
+        String CONTACT_EMAIL = "contact_email";
         String SHIP_TYPE = "ship_type";
         String PAY_TYPE = "pay_type";
-        String NO_ACCOUNT = "no_account";
-        String ACCOUNT = "account";
-        String BANK = "bank";
-        String BANK_ADDRESS = "bank_address";
-        String BANK_CODE = "bank_code";
-        String UNP = "unp";
-        String DIRECTOR = "director";
-        String BASE = "base";
-        String BASE_NUMBER = "base_number";
-        String BASE_DATE = "base_date";
         String COMMENT = "comment";
 
     }

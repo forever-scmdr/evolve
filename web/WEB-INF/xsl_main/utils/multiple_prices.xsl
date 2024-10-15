@@ -59,8 +59,11 @@
             </p>
         </xsl:for-each>
         <xsl:if test="not($price_intervals)">
+            <!--
             <xsl:variable name="q" select="f:num($catalog/quotient)"/>
             <xsl:variable name="unit_price" select="$base_price * $q"/>
+            -->
+            <xsl:variable name="unit_price" select="$base_price"/>
             <xsl:value-of select="f:print_cur($unit_price)"/><xsl:if test="$pack_quotient != 1">&#160;-&#160;упк(<xsl:value-of select="$pack_quotient" />)</xsl:if>
         </xsl:if>
     </xsl:template>

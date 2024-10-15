@@ -19,9 +19,6 @@ public class Currencies
     public final static String EUR_RATE = "EUR_rate";
     public final static String EUR_SCALE = "EUR_scale";
     public final static String EUR_UPDATE = "EUR_update";
-    public final static String BYN_RATE = "BYN_rate";
-    public final static String BYN_SCALE = "BYN_scale";
-    public final static String BYN_UPDATE = "BYN_update";
 
     private Currencies(Item item) {
         super(item);
@@ -238,72 +235,6 @@ public class Currencies
 
     public boolean contains_EUR_update(Byte value) {
         return containsValue("EUR_update", value);
-    }
-
-    public void set_BYN_rate(BigDecimal value) {
-        setValue("BYN_rate", value);
-    }
-
-    public void setUI_BYN_rate(String value)
-        throws Exception
-    {
-        setValueUI("BYN_rate", value);
-    }
-
-    public BigDecimal get_BYN_rate() {
-        return getDecimalValue("BYN_rate");
-    }
-
-    public BigDecimal getDefault_BYN_rate(BigDecimal defaultVal) {
-        return getDecimalValue("BYN_rate", defaultVal);
-    }
-
-    public boolean contains_BYN_rate(BigDecimal value) {
-        return containsValue("BYN_rate", value);
-    }
-
-    public void set_BYN_scale(BigDecimal value) {
-        setValue("BYN_scale", value);
-    }
-
-    public void setUI_BYN_scale(String value)
-        throws Exception
-    {
-        setValueUI("BYN_scale", value);
-    }
-
-    public BigDecimal get_BYN_scale() {
-        return getDecimalValue("BYN_scale");
-    }
-
-    public BigDecimal getDefault_BYN_scale(BigDecimal defaultVal) {
-        return getDecimalValue("BYN_scale", defaultVal);
-    }
-
-    public boolean contains_BYN_scale(BigDecimal value) {
-        return containsValue("BYN_scale", value);
-    }
-
-    public void set_BYN_update(Byte value) {
-        setValue("BYN_update", value);
-    }
-
-    public void setUI_BYN_update(String value)
-        throws Exception
-    {
-        setValueUI("BYN_update", value);
-    }
-
-    public Byte get_BYN_update() {
-        return getByteValue("BYN_update");
-    }
-
-    public Byte getDefault_BYN_update(Byte defaultVal) {
-        return getByteValue("BYN_update", defaultVal);
-    }
-
-    public boolean contains_BYN_update(Byte value) {
-        return containsValue("BYN_update", value);
     }
 
 }

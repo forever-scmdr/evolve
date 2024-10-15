@@ -41,7 +41,8 @@
 							<xsl:variable name="plain_section" select="$p/plain_section"/>
                             <xsl:variable name="plain" select="if ($p/section_name and not($p/section_name = '')) then $p/section_name else $p/plain_section/name"/>
 							<xsl:variable name="pc" select="$prcat[name = $plain]"/>
-							<div class="cart-list__item cart-item" style="{if ($plain) then 'grid-template-columns: 104px 1fr 200px 100px 100px 20px;' else ''}">
+							<xsl:variable name="pc_quotient" select="if ($pc/quotient and not($pc/quotient = '')) then f:num($pc/quotient) else 1"/>
+							<div class="cart-list__item cart-item" style="{if ($plain) then 'grid-template-columns: 20px 100px 1fr 100px 100px 100px;' else ''}">
 								<xsl:if test="not($p/product)">
 									<div class="cart-item__image">
 										<a href="{$p/show_product}">
@@ -57,6 +58,7 @@
 											</div>
 										</xsl:if>
 										<xsl:if test="$pc/other_name"><br/><div class="cart-item__artnumber">Поставщик: <span style="color: #339966;"><b><xsl:value-of select="$pc/other_name"/></b></span></div></xsl:if>
+										<xsl:if test="$p/group_id"><br/><div class="cart-item__artnumber">Дата пр-ва: <span style="color: #339966;"><b><xsl:value-of select="$p/group_id"/></b></span></div></xsl:if>
 									</div>
 								</xsl:if>
 								<xsl:if test="$p/product">
@@ -78,7 +80,7 @@
 										<xsl:if test="$plain">
 											<xsl:call-template name="ALL_PRICES">
 												<xsl:with-param name="need_sum" select="false()"/>
-												<xsl:with-param name="price_in_currency" select="f:exchange($p, 'price', 0)"/>
+												<xsl:with-param name="price_in_currency" select="f:exchange_extra_quotient($p, 'price', $pc_quotient, 0)"/>
 												<xsl:with-param name="product" select="$p"/>
 												<xsl:with-param name="section_name" select="$plain"/>
 											</xsl:call-template>
@@ -90,12 +92,12 @@
 									<span class="text-label">Кол-во</span>
 
 									<input type="number" value="{f:num(qty)}" name="{input/qty/@input}" class="input qty-input" data-old="{f:num(qty)}" style="width: 70px"
-										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" step="{if ($p/step) then f:num($p/step) else $step_default}" />
+										   min="{if ($p/min_qty) then f:num($p/min_qty) else 1}" max="{f:num($p/qty)}" step="{if ($p/step) then f:num($p/step) else $step_default}" />
 								</div>
 								<xsl:if test="not($sum = '')">
 									<div class="cart-item__sum">
 										<span class="text-label">Сумма</span>
-										<span id="sum-{code}"><xsl:value-of select="$sum"/></span>
+										<span id="sum-{@id}"><xsl:value-of select="$sum"/></span>
 									</div>
 								</xsl:if>
 								<div class="cart-item__delete">

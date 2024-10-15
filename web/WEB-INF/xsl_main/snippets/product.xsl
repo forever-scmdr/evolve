@@ -106,7 +106,7 @@
 						<xsl:if test="$plain">
 							<span class="price__value"><xsl:call-template name="ALL_PRICES">
 								<xsl:with-param name="need_sum" select="false()"/>
-								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
+								<xsl:with-param name="price_in_currency" select="f:exchange_extra_quotient(current(), 'price', 1, 0)"/>
 								<xsl:with-param name="product" select="."/>
 								<xsl:with-param name="section_name" select="$plain"/>
 							</xsl:call-template></span>
@@ -367,7 +367,7 @@
 							<xsl:if test="$plain">
 								<span class="price__value"><xsl:call-template name="ALL_PRICES">
 									<xsl:with-param name="need_sum" select="false()"/>
-									<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
+									<xsl:with-param name="price_in_currency" select="f:exchange_extra_quotient(current(), 'price', 1, 0)"/>
 									<xsl:with-param name="product" select="."/>
 									<xsl:with-param name="section_name" select="$plain"/>
 								</xsl:call-template></span>
@@ -581,10 +581,14 @@
 		<xsl:variable name="plain_section" select="plain_section"/>
 		<xsl:variable name="plain" select="if (section_name and not(section_name = '')) then section_name else plain_section/name"/>
 		<xsl:variable name="pc" select="$prcat[name = $plain]"/>
+		<xsl:variable name="pc_currency" select="if ($pc/currency and not($pc/currency = '')) then $pc/currency else 'RUB'"/>
+		<xsl:variable name="pc_quotient" select="if ($pc/quotient and not($pc/quotient = '')) then f:num($pc/quotient) else 1"/>
+		<xsl:variable name="price_param_name" select="concat('price_', $pc_currency)"/>
 
 		<xsl:variable name="has_price" select="price and price != '0'"/>
 		<xsl:variable name="prms" select="params/param"/>
 		<xsl:variable name="has_lines" select="has_lines = '1'"/>
+		<xsl:variable name="next_delivery" select="if (next_delivery and not(next_delivery = '')) then next_delivery else $pc/default_ship_time"/>
 
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
@@ -632,6 +636,7 @@
 				<div class="thn">Описание</div>
 				<div class="thd">
 					<xsl:if test="$pc/other_name">Поставщик: <span style="color: #339966;"><b><xsl:value-of select="$pc/other_name"/></b></span><br/></xsl:if>
+					<xsl:if test="group_id and not(group_id = '')">Дата пр-ва: <span style="color: #339966;"><b><xsl:value-of select="group_id" /></b></span><p/></xsl:if>
 					<xsl:value-of select="description" disable-output-escaping="yes"/>
 					<xsl:if test="not($plain)">
 						<xsl:for-each select="$captions[position() &lt;= $product_params_limit]">
@@ -643,7 +648,7 @@
 			</td>
 			<td><!--дата поставки -->
 				<div class="thn">Срок поставки</div>
-				<div class="thd"><xsl:value-of select="next_delivery"/><!--<xsl:value-of select="available"/>--></div>
+				<div class="thd"><xsl:value-of select="$next_delivery"/><!--<xsl:value-of select="available"/>--></div>
 			</td>
 			<td><!--количество на складе -->
 				<div class="thn">Количество</div>
@@ -666,7 +671,7 @@
 						<xsl:if test="$plain">
 							<xsl:call-template name="ALL_PRICES">
 								<xsl:with-param name="need_sum" select="false()"/>
-								<xsl:with-param name="price_in_currency" select="f:exchange(current(), 'price', 0)"/>
+								<xsl:with-param name="price_in_currency" select="f:exchange_extra_quotient(current(), 'price', $pc_quotient, 0)"/>
 								<xsl:with-param name="product" select="."/>
 								<xsl:with-param name="section_name" select="$plain"/>
 							</xsl:call-template>
@@ -679,7 +684,7 @@
 			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Базовая цена</div>
-					<div class="thd"><xsl:value-of select="f:exchange(current(), 'price', 0)" /></div>
+					<div class="thd"><xsl:value-of select="current()/price" />&#160;<xsl:value-of select="currency_id"/></div>
 				</td>
 			</xsl:if>
 			<td><!--заказать -->

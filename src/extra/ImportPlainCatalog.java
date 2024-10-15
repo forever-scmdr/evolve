@@ -40,6 +40,7 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String STEP_HEADER = "шаг заказа";
 	private static final String PRICE_HEADER = "Price"; // "цена";
 	private static final String VENDOR_HEADER = "Manufacture"; // "производитель";
+	private static final String DATE_CODE_HEADER = "Date Code"; // group_id
 	private static final String NAME_EXTRA_HEADER = "Content"; // "описание";
 	private static final String UNIT_HEADER = "единица измерения";
 
@@ -124,6 +125,12 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 					try {
 						code = src.getValue(CODE_HEADER);
 						if (StringUtils.isNotBlank(code)) {
+							String manufacture = src.getValue(VENDOR_HEADER);
+							String dateCode = src.getValue(DATE_CODE_HEADER);
+							if (StringUtils.isNotBlank(manufacture))
+								code = code + "_" + manufacture;
+							if (StringUtils.isNotBlank(dateCode))
+								code = code + "_" + dateCode;
 							if (addCodeSuffix) {
 								code = codeSuffix + code;
 							}
@@ -134,8 +141,10 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							}
 							prod.set_name(src.getValue(NAME_HEADER));
 							String nextDelivery = src.getValue(DELAY_HEADER);
+							/* закомментировано, т.к. будет браться на этапе отображения из текущих настроек поставщика
 							if (StringUtils.isBlank(nextDelivery))
 								nextDelivery = settings.get_default_ship_time();
+							 */
 							prod.set_next_delivery(nextDelivery);
 							/*
 							Byte available = NumberUtils.toByte(src.getValue(DELAY_HEADER), (byte) -1);
@@ -147,14 +156,15 @@ public class ImportPlainCatalog extends IntegrateBase implements ItemNames {
 							prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER, "0"), 4);
 							//BigDecimal price = filePrice.multiply(settings.get_quotient());
-							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
+							currencyRates.setAllPrices(prod, filePrice, settings.get_currency(), settings.get_currency());
 							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER, 1.0);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? getQtyQuotientDouble(prod.get_price()) : fileMinQty;
 							prod.set_min_qty(minQty);
 							Double fileStep = src.getDoubleValue(STEP_HEADER, 1.0);
 							Double step = (fileStep == null || Math.abs(fileStep) < 0.01) ? minQty : fileStep;
 							prod.set_step(step);
-							prod.set_vendor(src.getValue(VENDOR_HEADER));
+							prod.set_vendor(manufacture);
+							prod.set_group_id(dateCode); // "Date Code" -> group_id
 							prod.set_name_extra(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_description(src.getValue(NAME_EXTRA_HEADER));
 							prod.set_unit(src.getValue(UNIT_HEADER));

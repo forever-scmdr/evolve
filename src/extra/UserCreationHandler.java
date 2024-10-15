@@ -26,8 +26,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 	private static final HashMap<String, String> ELEMENT_PARAM = new HashMap<>();
 	static {
 		ELEMENT_PARAM.put("email", EMAIL);
-		ELEMENT_PARAM.put("contract_number", CONTRACT_NUMBER);
-		ELEMENT_PARAM.put("unp", UNP);
+		ELEMENT_PARAM.put("inn", INN);
 		ELEMENT_PARAM.put("company_name", ORGANIZATION);
 		ELEMENT_PARAM.put("person", CONTACT_NAME);
 		ELEMENT_PARAM.put("phone_number", PHONE);
@@ -62,7 +61,7 @@ public class UserCreationHandler extends DefaultHandler implements ItemNames.use
 		try {
 			if (StringUtils.equalsIgnoreCase(qName, CUSTOMER_EL)) {
 				String email = singleParams.get(EMAIL);
-				String unp = singleParams.get(UNP);
+				String unp = singleParams.get(INN);
 				if (StringUtils.isAllBlank(email, unp)) {
 					info.addError("Запись пользователя не валидна (отсутствуют email и УНП)", locator.getLineNumber(), 0);
 					return;
