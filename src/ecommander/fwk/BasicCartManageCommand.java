@@ -10,6 +10,10 @@ import ecommander.persistence.commandunits.SaveItemDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -90,6 +94,7 @@ public abstract class BasicCartManageCommand extends Command {
 
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+	private static final LocalDateTime JAN_1_1970 = new LocalDateTime(1970, 1, 1, 0, 0);
 
 
 	protected static final Double MAX_QTY = 1000000000000d;
@@ -496,7 +501,7 @@ public abstract class BasicCartManageCommand extends Command {
 		if (userItem != null) {
 			Item purchase = Item.newChildItem(ItemTypeRegistry.getItemType(PURCHASE_ITEM), userItem);
 			purchase.setValue(NUM_PARAM, cart.getValue("order_num"));
-			purchase.setValue(DATE_PARAM, System.currentTimeMillis());
+			purchase.setValue(DATE_PARAM, new Duration(JAN_1_1970.toDateTime(DateTimeZone.forOffsetHours(3)), DateTime.now()).getMillis());
 			purchase.setValue(QTY_AVAIL_PARAM, cart.getValue(QTY_AVAIL_PARAM));
 			purchase.setValue(QTY_TOTAL_PARAM, cart.getValue(QTY_TOTAL_PARAM));
 			purchase.setValue(SUM_PARAM, cart.getValue(sumParam));
