@@ -1,10 +1,17 @@
 package lunacrawler.fwk;
 
 import ecommander.fwk.*;
+import ecommander.model.Item;
 import ecommander.persistence.common.TemplateQuery;
+import ecommander.persistence.itemquery.ItemQuery;
 import ecommander.persistence.mappers.DBConstants;
+import ecommander.special.portal.outer.GeneralProxyRequestProcessor;
+import ecommander.special.portal.outer.Request;
+import ecommander.special.portal.outer.Result;
+import extra._generated.ItemNames;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -256,7 +263,17 @@ public class Crawler implements DBConstants.Parse {
 		protected boolean processUrl(Url url) {
 			boolean urlsFound = false;
 			try {
-				String html = OkWebClient.getInstance().getString(url.url);
+				//String html = OkWebClient.getInstance().getString(url.url);
+				String html = "";
+				Result result = GeneralProxyRequestProcessor.rotating().submitSync(url.url, "text/html");
+				if (result.isSuccess()) {
+					Request.Query query = result.getRequest().getSingleQuery();
+					if (query.isFinishedAndSuccess()) {
+						html = query.getResultString(StandardCharsets.UTF_8);
+					}
+				} else {
+					throw new Exception(result.getErrorMessage());
+				}
 				if (StringUtils.isNotBlank(html)) {
 					Document doc = JsoupUtils.parseXml(html);
 					doc.setBaseUri(base.toString());
@@ -292,7 +309,9 @@ public class Crawler implements DBConstants.Parse {
 						}
 
 						// Пройтись по всем ссылкам страницы и сохранить их в БД
-						urlsFound = saveAllUrlsToDB(doc, url);
+						if (!controller.needExistingDataCheck()) {
+							urlsFound = saveAllUrlsToDB(doc, url);
+						}
 
 						updateUrl(url);
 						ServerLogger.debug("CRAWL UPDATE URL " + url.url);
@@ -516,7 +535,14 @@ public class Crawler implements DBConstants.Parse {
 						String urlStyle = controller.getStyleForUrl(linkUrlStr);
 						if (urlStyle != null && !urlStyle.equals(CrawlerController.NO_TEMPLATE)) {
 							Url urlToSave = new Url(linkUrlStr);
-							buildSaveUrlQuery(insert, urlToSave);
+							boolean savingNeeded = true;
+							if (controller.needExistingDataCheck()) {
+								Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product_.URL, url.url);
+								savingNeeded = product == null;
+							}
+							if (savingNeeded) {
+								buildSaveUrlQuery(insert, urlToSave);
+							}
 						}
 					}
 					if (!insert.isEmpty()) {

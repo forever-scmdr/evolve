@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * Парное значение в виде ключ:значение. По сути представляет собой простую строку, но разделенную на две части
- * Хранится в БД как строка, ищестя как строка. Если надо искать только по ключу (все значения подходят), то надо
+ * Хранится в БД как строка, ищется как строка. Если надо искать только по ключу (все значения подходят), то надо
  * использовать ... sign="like" pattern="v%".
  * Если надо искать конкретное значение определенного ключа, то надо передать все подходящие значения целой строки
  * вида ключ_1$+$значение_1, ключ_1$+$значение_2, ключ_1$+$значение_3 ...
@@ -85,7 +85,8 @@ public class TupleDataType extends FormatDataType {
 
 	@Override
 	public boolean getEquals(Object o1, Object o2) {
-		return StringUtils.equals(((Pair<String, String>) o1).getLeft(), ((Pair<String, String>) o2).getLeft());
+		return StringUtils.equalsIgnoreCase(((Pair<String, String>) o1).getLeft(), ((Pair<String, String>) o2).getLeft()) &&
+				StringUtils.equalsIgnoreCase(((Pair<String, String>) o1).getRight(), ((Pair<String, String>) o2).getRight());
 	}
 
 	public static String outputTuple(Object value, Object formatter) {

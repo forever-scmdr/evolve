@@ -5,11 +5,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ecommander.controllers.AppContext;
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.IntegrateBase;
-import ecommander.fwk.MessageError;
-import ecommander.fwk.ServerLogger;
+import ecommander.fwk.*;
 import ecommander.model.Item;
+import ecommander.model.ItemTypeRegistry;
+import ecommander.model.User;
+import ecommander.model.datatypes.TupleDataType;
+import ecommander.persistence.commandunits.SaveItemDBUnit;
+import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.special.portal.outer.providers.DigikeyDataUpdaterCommand;
+import extra._generated.ItemNames;
 import lunacrawler.fwk.Crawler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -28,7 +32,7 @@ import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
+public class ImportProductsFromDigikeyPageFiles extends IntegrateBase implements ItemNames {
 
     public static final String RESULT_DIR_PROP = "parsing.result_dir"; // директория, в которой лежат файлы со стилями
     private static final String SRC_DIR_NAME = "_src/";
@@ -57,8 +61,8 @@ public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
 
     }
 
-    private void importSourceDirectory(Path dir) {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+    private void importSourceDirectory(Path path) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             // Для каждого файла из временной директории
             for (Path entry : stream) {
                 if (Files.isDirectory(entry)) {
@@ -98,6 +102,7 @@ public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
                     Files.createDirectories(Paths.get(divisionDirName));
                     Path importedFile = Paths.get(divisionDirName + entry.getFileName().toString());
                     Files.copy(entry, importedFile);
+                    Files.delete(entry); // удалить файл, чтобы не рассматривать его повторно
 
                     info.increaseProcessed();
                 }
@@ -109,9 +114,9 @@ public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
     }
 
 
-    private void importProduct(String html) throws EcommanderException {
+    private void importProduct(String html) throws Exception {
         Document pageDoc = Jsoup.parse(html);
-        //String url = pageDoc.getElementsByTag("body").first().attr("source");
+        String url = pageDoc.getElementsByTag("body").first().attr("source");
         Elements sectionLinks = pageDoc.select("script[id=__NEXT_DATA__]");
         if (sectionLinks.size() == 0)
             return;
@@ -124,13 +129,15 @@ public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
         if (props == null) {
             throw new MessageError("No 'props' element found in json");
         }
-        JsonObject data = null;
-        JsonObject productOverview = null;
-        JsonArray breadcrumb = null;
+        JsonObject data = null; // объект data - содержит все необходимые данные
+        JsonObject productOverview = null; // объект productOverview - основные параметры продукта
+        JsonObject productAttributes = null; // объект productAttributes - список технических характеристик
+        JsonArray breadcrumb = null; // объект breadcrumb - путь разделов к товару
         try {
             data = props.getAsJsonObject("pageProps").getAsJsonObject("envelope").getAsJsonObject("data");
             productOverview = data.getAsJsonObject("productOverview");
             breadcrumb = data.getAsJsonArray("breadcrumb");
+            productAttributes = data.getAsJsonObject("productAttributes");
         } catch (NullPointerException npe) {
             throw new MessageError("JSON structure is not as expected");
         }
@@ -139,17 +146,191 @@ public class ImportProductsFromDigikeyPageFiles extends IntegrateBase {
         }
 
         // Обработка пути к товару (создание или загрузка разделов каталога)
-        Item parentSection = null;
-        for (int i = breadcrumb.size() - 2; i > 0; i++) {
-            String sectionName = breadcrumb.get(i).getAsJsonObject().get("label").getAsString();
-            parentSection =
+        Item section = ensureSection(breadcrumb, 0, null);
+
+        // Создание (или загрузка) товара
+        String code = productOverview.get("manufacturerProductNumber").getAsString();
+        Item product = ItemQuery.loadSingleItemByParamValue(PRODUCT, product_.NAME, code);
+        if (product == null) {
+            product = Item.newChildItem(ItemTypeRegistry.getItemType(PRODUCT), section);
+            product.setValue(product_.NAME, code);
+            executeAndCommitCommandUnits(SaveItemDBUnit.get(product));
         }
 
+        // Простые параметры товара (берутся из productOverview)
+        product.setValue(product_.CODE, code);
+        product.setValue(product_.URL, url);
+        product.setValue(product_.VENDOR, productOverview.get("manufacturer").getAsString());
+        product.setValue(product_.NAME_EXTRA, productOverview.get("description").getAsString());
+        product.setValue(product_.DESCRIPTION, productOverview.get("detailedDescription").getAsString());
+        product.setValue(product_.OFFER_ID, productOverview.get("rolledUpProductNumber").getAsString());
+        product.setValue(product_.TYPE, section.getStringValue(section_.NAME));
+        product.setValue(product_.STATUS, "v2"); // это чтобы можно было отличать вновь импортированные товары от ранее импортированных (в IntegrateParsedDigikey)
+
+        // Заполнение технических характеристик
+        XmlDocumentBuilder paramsXml = XmlDocumentBuilder.newDocPart();
+        if (productAttributes != null) {
+            JsonArray attributes = productAttributes.getAsJsonArray("attributes");
+            if (attributes != null) {
+                for (JsonElement attribute : attributes) {
+                    JsonObject attr = attribute.getAsJsonObject();
+                    try {
+                        String label = attr.get("label").getAsString();
+                        paramsXml.startElement("param");
+                        paramsXml.addElement("name", StringUtils.normalizeSpace(label));
+                        JsonArray values = attr.getAsJsonArray("values");
+                        for (JsonElement value : values) {
+                            JsonObject val = value.getAsJsonObject();
+                            paramsXml.addElement("value", val.get("value").getAsString());
+                        }
+                        paramsXml.endElement(); // param
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+            }
+        }
+        product.setValue(product_.PARAMS_XML, paramsXml.getXmlStringSB().toString());
+
+        // Environmental and Export Classifications
+        XmlDocumentBuilder envXml = XmlDocumentBuilder.newDocPart();
+        JsonObject environmental = data.getAsJsonObject("environmental");
+        if (environmental != null) {
+            try {
+                JsonArray dataRows = environmental.getAsJsonArray("dataRows");
+                if (dataRows != null) {
+                    for (JsonElement row : dataRows) {
+                        JsonArray dataCells = row.getAsJsonObject().getAsJsonArray("dataCells");
+                        if (dataCells.size() != 2) {
+                            continue;
+                        }
+                        String name = dataCells.get(0).getAsJsonObject().getAsJsonObject("data")
+                                .getAsJsonObject("value").get("value").getAsString();
+                        String value = dataCells.get(1).getAsJsonObject().getAsJsonObject("data")
+                                .getAsJsonObject("value").get("value").getAsString();
+                        envXml.startElement("param");
+                        envXml.addElement("name", StringUtils.normalizeSpace(name));
+                        envXml.addElement("value", StringUtils.normalizeSpace(value));
+                        envXml.endElement(); // param
+                    }
+                }
+            } catch (Exception e) {
+                // ничего не делать, просто пропустить
+            }
+        }
+        product.setValue(product_.ENVIRONMENTAL_XML, envXml.getXmlStringSB().toString());
+
+
+        // Additional Resources
+        XmlDocumentBuilder extraXml = XmlDocumentBuilder.newDocPart();
+        JsonObject additionalResources = data.getAsJsonObject("additionalResources");
+        if (additionalResources != null) {
+            try {
+                JsonArray dataRows = additionalResources.getAsJsonArray("dataRows");
+                if (dataRows != null) {
+                    for (JsonElement row : dataRows) {
+                        JsonArray dataCells = row.getAsJsonObject().getAsJsonArray("dataCells");
+                        if (dataCells.size() != 2) {
+                            continue;
+                        }
+                        extraXml.startElement("param");
+                        String name = dataCells.get(0).getAsJsonObject().getAsJsonObject("data")
+                                .getAsJsonObject("value").get("value").getAsString();
+                        extraXml.addElement("name", StringUtils.normalizeSpace(name));
+                        JsonObject valueObj = dataCells.get(1).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("value");
+                        JsonArray manyVals = valueObj.getAsJsonArray("values");
+                        if (manyVals != null) {
+                            for (JsonElement val : manyVals) {
+                                extraXml.addElement("value", StringUtils.normalizeSpace(val.getAsJsonObject().get("value").getAsString()));
+                            }
+                        } else {
+                            extraXml.addElement("value", StringUtils.normalizeSpace(valueObj.get("value").getAsString()));
+                        }
+                        extraXml.endElement(); // param
+                    }
+                }
+            } catch (Exception e) {
+                // ничего не делать, просто пропустить
+            }
+        }
+        product.setValue(product_.ADDITIONAL_XML, extraXml.getXmlStringSB().toString());
+
+        // Documents and Media
+        XmlDocumentBuilder docsXml = XmlDocumentBuilder.newDocPart();
+        JsonObject otherDocsAndMedia = data.getAsJsonObject("otherDocsAndMedia");
+        if (otherDocsAndMedia != null) {
+            try {
+                JsonArray dataRows = additionalResources.getAsJsonArray("dataRows");
+                if (dataRows != null) {
+                    for (JsonElement row : dataRows) {
+                        JsonArray dataCells = row.getAsJsonObject().getAsJsonArray("dataCells");
+                        if (dataCells.size() != 2) {
+                            continue;
+                        }
+                        docsXml.startElement("param");
+                        String name = dataCells.get(0).getAsJsonObject().getAsJsonObject("data")
+                                .getAsJsonObject("value").get("value").getAsString();
+                        docsXml.addElement("name", StringUtils.normalizeSpace(name));
+                        JsonObject valueObj = dataCells.get(1).getAsJsonObject().getAsJsonObject("data").getAsJsonObject("value");
+                        docsXml.startElement("value");
+                        docsXml.startElement("a", "href", valueObj.get("url").getAsString())
+                                .addText(valueObj.get("label").getAsString()).endElement();
+                        docsXml.endElement(); // value
+                        docsXml.endElement(); // param
+                    }
+                }
+            } catch (Exception e) {
+                // ничего не делать, просто пропустить
+            }
+        }
+        product.setValue(product_.DOCUMENTS_XML, docsXml.getXmlStringSB().toString());
+
+
+        // Главная картинка
+        JsonArray carouselMedia = data.getAsJsonArray("carouselMedia");
+        if (carouselMedia != null && carouselMedia.size() > 0) {
+            JsonObject first = carouselMedia.get(0).getAsJsonObject();
+            String mainPicUrl = StringUtils.normalizeSpace(first.get("displayUrl").getAsString());
+            product.setValue(product_.TO_DOWNLOAD, TupleDataType.newTuple(DigikeyDataUpdaterCommand.IMAGE_LABEL, mainPicUrl));
+        }
+
+        // Главный даташит
+        JsonElement mainDatasheet = productOverview.get("datasheetUrl");
+        if (mainDatasheet != null && StringUtils.isNotBlank(mainDatasheet.getAsString())) {
+            product.setValue(product_.TO_DOWNLOAD, TupleDataType.newTuple(DigikeyDataUpdaterCommand.PDF_LABEL, mainDatasheet.getAsString()));
+        }
+
+        // Сохранение товара
+        executeAndCommitCommandUnits(SaveItemDBUnit.get(product).ignoreFileErrors().noFulltextIndex());
     }
 
-
-    private static Item ensureSection(JsonArray crumbs, int idx) {
-
+    /**
+     * Создать или загрузить все необходимые разделы для сохранения товара
+     * @param crumbs
+     * @param idx
+     * @param parent
+     * @return
+     * @throws Exception
+     */
+    private Item ensureSection(JsonArray crumbs, int idx, Item parent) throws Exception {
+        if (idx >= crumbs.size() - 1)
+            return parent;
+        JsonObject crumb = crumbs.get(idx).getAsJsonObject();
+        if (idx == 0) {
+            parent = ItemUtils.ensureSingleRootAnonymousItem(CATALOG, User.getDefaultUser());
+            return ensureSection(crumbs, idx + 1, parent);
+        }
+        String sectionName = crumb.get("label").getAsString();
+        Item section = new ItemQuery(SECTION).setParentId(parent.getId(), false)
+                .addParameterEqualsCriteria(section_.NAME, sectionName).loadFirstItem();
+        if (section == null) {
+            section = ItemUtils.ensureSingleChild(SECTION, getInitiator(), parent);
+            section.setValue(section_.NAME, sectionName);
+            executeAndCommitCommandUnits(SaveItemDBUnit.get(section));
+        }
+        if (idx == crumbs.size() - 2)
+            return section;
+        return ensureSection(crumbs, idx + 1, section);
     }
 
 }

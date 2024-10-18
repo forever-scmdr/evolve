@@ -4,9 +4,7 @@ import ecommander.fwk.*;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 import ecommander.model.User;
-import ecommander.persistence.commandunits.ItemStatusDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.common.DelayedTransaction;
 import ecommander.persistence.common.SynchronousTransaction;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
@@ -15,7 +13,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.HashMap;
 import java.util.HashSet;

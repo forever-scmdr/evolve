@@ -205,17 +205,18 @@ public class CrawlerController {
 	private String resultTempJoinedDir = null;
 	private String resultTempCompiledDir = null;
 	private String resultTempFilesDir = null;
-
 	private Crawler crawler = null;
-
 	private int currentProxyUrlsCount = 0;
-
 	private String nodeCacheFileName = null;
 	private HashMap<String, Element> nodeCache = new HashMap<>();
+	// Надо ли при парсинге учитывать уже существующие данные (айтемы) на сайте
+	private boolean checkExistingData = false;
+
 
 	private volatile IntegrateBase.Info info = null;
-
 	private volatile long startTime = 0;
+
+
 
 
 	private static class Errors implements ErrorListener {
@@ -277,8 +278,9 @@ public class CrawlerController {
 	}
 
 
-	private CrawlerController(IntegrateBase.Info baseInfo) throws Exception {
+	private CrawlerController(IntegrateBase.Info baseInfo, boolean checkExistingData) throws Exception {
 
+		this.checkExistingData = checkExistingData;
 		info = baseInfo;
 		info.limitLog(500);
 
@@ -448,8 +450,8 @@ public class CrawlerController {
 	 * @param
 	 * @throws Exception
 	 */
-	public static void startJob(IntegrateBase.Info info, Mode mode) throws Exception {
-		singleton = new CrawlerController(info);
+	public static void startJob(IntegrateBase.Info info, Mode mode, boolean checkExistingData) throws Exception {
+		singleton = new CrawlerController(info, checkExistingData);
 		singleton.start(mode);
 	}
 	
@@ -693,7 +695,7 @@ public class CrawlerController {
 		if (singleton != null) {
 			return singleton.transformUrlInt(url);
 		} else {
-			return new CrawlerController(new IntegrateBase.Info()).transformUrlInt(url);
+			return new CrawlerController(new IntegrateBase.Info(), false).transformUrlInt(url);
 		}
 	}
 
@@ -702,7 +704,7 @@ public class CrawlerController {
 		if (singleton != null) {
 			return singleton.transformStringInt(html, url);
 		} else {
-			return new CrawlerController(new IntegrateBase.Info()).transformStringInt(html, url);
+			return new CrawlerController(new IntegrateBase.Info(), false).transformStringInt(html, url);
 		}
 	}
 
@@ -1065,7 +1067,13 @@ public class CrawlerController {
 		return info;
 	}
 
-
+	/**
+	 * Надо ли при парсинге учитывать уже существующие данные (айтемы) на сайте
+	 * @return
+	 */
+	public boolean needExistingDataCheck() {
+		return checkExistingData;
+	}
 
 	public static void main(String[] args) {
 		System.out.println("https://www.metabo.com/ru/index.php?cl=search&order=&ldtype=infogrid&_artperpage=100&pgNr=0&searchparam="

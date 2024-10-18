@@ -2240,6 +2240,7 @@
         <request>
             <var name="action"/>
             <var name="job"/>
+			<var name="check_existing_data" value="true"/>
         </request>
         <command class="lunacrawler.CrawlCommand">
             <result name="complete" type="xml"/>

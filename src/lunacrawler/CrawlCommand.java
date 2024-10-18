@@ -22,8 +22,9 @@ public class CrawlCommand extends IntegrateBase {
 	@Override
 	protected void integrate() throws Exception {
 		String mode = getVarSingleValue("job");
+		String checkExistingData = getVarSingleValueDefault("check_existing_data", "false");
 		try {
-			CrawlerController.startJob(info, CrawlerController.Mode.valueOf(mode));
+			CrawlerController.startJob(info, CrawlerController.Mode.valueOf(mode), Boolean.parseBoolean(checkExistingData));
 		} catch (Exception e) {
 			info.pushLog("Some error", "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>");
 		}
