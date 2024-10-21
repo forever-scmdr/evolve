@@ -1,8 +1,11 @@
 package extra;
 
+import ecommander.fwk.ItemEventCommandFactory;
 import ecommander.fwk.XmlDocumentBuilder;
 import ecommander.model.Item;
 import ecommander.model.datatypes.DecimalDataType;
+import ecommander.persistence.commandunits.DBPersistenceCommandUnit;
+import ecommander.persistence.common.PersistenceCommandUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.Display_settings;
 import extra._generated.ItemNames;
@@ -215,6 +218,18 @@ public class CurrencyRates implements ItemNames{
 			}
 		}
 		return ratesCache;
+	}
+
+	/**
+	 * Перезагрузить все курсы валют
+	 * @return
+	 * @throws Exception
+	 */
+	public static CurrencyRates reload() throws Exception {
+		synchronized (SYNC) {
+			ratesCache = null;
+		}
+		return getCache();
 	}
 
 	/**

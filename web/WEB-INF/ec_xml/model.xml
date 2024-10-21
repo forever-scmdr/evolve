@@ -179,7 +179,9 @@
 			<value>0</value>
 			<value>1</value>
 		</parameter>
-	<!--	
+		<on-update class="extra.CurrencyRatesUpdated"/>
+		<on-create class="extra.CurrencyRatesUpdated"/>
+	<!--
 		<parameter name="BYN_rate" type="currency-precise" caption="Белорусский рубль (Rate)" default="1"/>
 		<parameter name="BYN_scale" type="currency-precise" default="1" caption="Белорусский рубль (Scale)"/>
 		<parameter name="BYN_update" type="byte" default="1" caption="Белорусский рубль - обновлять автоматически" description="0 - не обновлять, 1 - обновлять">
