@@ -883,7 +883,7 @@
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
-			<var name="remote" value="findchips" scope="cookie"/>
+			<var name="remote" value="findchips" scope="cookie"/><!--findchips oemsecrets wxapp -->
 		</request>
 		<single item="product" id="prod" var="prod" tag="product"/>
 		<single item="currencies" cacheable="true"/>
@@ -909,8 +909,8 @@
 <!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
-			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
-			<var name="remote" value="findchips" scope="cookie"/>
+			<var name="new" value="true"/><!-- надо посылать каждый раз новый запрос на сервер (не использовать кеш) -->
+			<var name="remote" value="wxapp" scope="cookie"/><!--findchips oemsecrets wxapp -->
 		</request>
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
@@ -943,7 +943,7 @@
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо брать результаты поиска из кеша -->
-			<var name="remote" value="findchips" scope="cookie"/>
+			<var name="remote" value="findchips" scope="cookie"/><!--findchips oemsecrets wxapp -->
 		</request>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
@@ -986,7 +986,7 @@
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
 			<var name="new" value="false"/><!-- надо посылать новый запрос на сервер findhips -->
-			<var name="remote" value="findchips" scope="cookie"/>
+			<var name="remote" value="findchips" scope="cookie"/><!--findchips oemsecrets wxapp -->
 		</request>
 		<command class="ecommander.special.portal.outer.providers.GetProdiverDataCommand"><!-- extra.SearchFindchipsCommand extra.SearchAnyRemoteCommand-->
 			<result name="product_list" type="inline_xml"/>
@@ -2693,7 +2693,7 @@
 		<request>
 			<var name="cur" scope="cookie"/>
 			<var name="q"/>
-			<var name="remote" value="findchips"/>
+			<var name="remote" value="findchips"/><!--findchips oemsecrets wxapp -->
 			<var name="local" value="false"/>
 			<var name="new" value="false"/>
 		</request>

@@ -46,6 +46,7 @@ public class DataGetter {
     static {
         PROVIDER_GETTERS.put(Providers.FINDCHIPS, new FindchipsGetter());
         PROVIDER_GETTERS.put(Providers.OEMSECRETS, new OemsecretsGetter());
+        PROVIDER_GETTERS.put(Providers.WXAPP, new WxappGetter());
     }
 
     private boolean performLocalSearch; // выполнять ли локальный поиск по этому запросу (по локальному каталогу)

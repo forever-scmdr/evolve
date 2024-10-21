@@ -213,7 +213,24 @@ public class OkWebClient {
 	 * @throws IOException
 	 */
 	public String postStringHeaders(String url, String body, String bodyType, String... headers) throws IOException {
-		RequestBody reqBody = RequestBody.create(MediaType.parse(bodyType), body);
+		byte[] result = postBytesHeaders(url, body, bodyType, headers);
+		if (result != null) {
+			return new String(result);
+		}
+		return null;
+	}
+
+	/**
+	 * Отправить POST запрос с заголовками
+	 * @param url
+	 * @param body
+	 * @param bodyType
+	 * @param headers
+	 * @return
+	 * @throws IOException
+	 */
+	public byte[] postBytesHeaders(String url, String body, String bodyType, String... headers) throws IOException {
+		RequestBody reqBody = RequestBody.create(body, MediaType.parse(bodyType));
 		Request.Builder builder = new Request.Builder().url(url);
 		for (int i = 1; i < headers.length; i += 2) {
 			builder.header(headers[i - 1], headers[i]);
@@ -221,7 +238,7 @@ public class OkWebClient {
 		Request request = builder.post(reqBody).build();
 		try (Response response = client.newCall(request).execute()) {
 			if (response.body() != null)
-				return response.body().string();
+				return response.body().bytes();
 			return null;
 		}
 	}

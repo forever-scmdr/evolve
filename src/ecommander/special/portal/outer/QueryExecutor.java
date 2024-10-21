@@ -3,8 +3,12 @@ package ecommander.special.portal.outer;
 import ecommander.fwk.OkWebClient;
 import ecommander.fwk.Strings;
 import ecommander.special.portal.outer.providers.Providers;
+import kotlin.NotImplementedError;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -133,6 +137,66 @@ public class QueryExecutor {
         }
     }
 
+    /**
+     * Запрос на wxapp.bom.ai (китайский сайтец)
+     */
+    private static class WxappExecutor extends Executor {
+
+        private static final String USD = "USD";
+        private static final String URL_WITH_KEY = "https://wxapp.bom.ai/{COMPANY_CODE}/external/post";
+        private static final String COMPANY_CODE = "CYD";
+        private static final String CLIENT_ID = "834ddf79-c30e-426b-ab94-c3047191e8ca";
+        private static final String CLIENT_SECRET = "834ddf79-c30e-426b-ab94-c3047191e8ca";
+        private static final String POST_JSON = "{\n" +
+                "    \"method\": \"supplier-inventory-get\",\n" +
+                "    \"timestampUtc\": \"{TIMESTAMP_UTC}\",\n" +
+                "    \"clientId\": \"{CLIENT_ID}\",\n" +
+                "    \"sign\": \"{SIGN}\",\n" +
+                "    \"model\": \"{QUERY}\",\n" +
+                "    \"pageIndex\": 1,\n" +
+                "    \"pageSize\": 100\n" +
+                "}";
+
+        private WxappExecutor(String query) {
+            super(query, "text/html", null);
+        }
+
+        @Override
+        public boolean executeQuery() throws Exception {
+            String curCode = USD; // временно, возможно надо на постоянно оставить
+            try {
+                if (StringUtils.isNotBlank(query)) {
+                    query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
+                    long timestamp = DateTime.now(DateTimeZone.UTC).getMillis();
+                    String signSrc = CLIENT_ID + CLIENT_SECRET + timestamp;
+                    /*
+                    byte[] md5 = DigestUtils.md5(signSrc.getBytes(StandardCharsets.UTF_8));
+                    String hash = "";
+                    for (byte b : md5) {
+                        hash = b >= (byte) 16 ? hash + String.format("%02X", b) : hash + "0" + String.format("%02X", b);
+                    }
+                     */
+                    String hash = DigestUtils.md5Hex(signSrc).toUpperCase();
+                    String json = POST_JSON.replace("{TIMESTAMP_UTC}", timestamp + "")
+                            .replace("{CLIENT_ID}", CLIENT_ID)
+                            .replace("{SIGN}", hash)
+                            .replace("{QUERY}", query);
+                    String requestUrl = URL_WITH_KEY.replace("{COMPANY_CODE}", COMPANY_CODE);
+                    result = OkWebClient.getInstance().postBytesHeaders(requestUrl, json, "application/json; charset=utf-8");
+                } else {
+                    result = ("Неверный формат запроса").getBytes();
+                    return false;
+                }
+            } catch (Exception e) {
+                result = ExceptionUtils.getStackTrace(e).getBytes();
+                result = (Strings.ERROR_MARK + "\n\n" + new String(result, StandardCharsets.UTF_8)).getBytes();
+                return false;
+            }
+            return true;
+        }
+    }
+
+
 
     /**
      * Прямой запрос ко всем другим сайтам. Если их много, все они группируются в один "сервер"
@@ -194,6 +258,9 @@ public class QueryExecutor {
         }
         if (StringUtils.containsIgnoreCase(hostName, Providers.OEMSECRETS)) {
             return new OemsecretsExecutor(query, proxyServer);
+        }
+        if (StringUtils.containsIgnoreCase(hostName, Providers.WXAPP)) {
+            return new WxappExecutor(query);
         }
         return new GeneralServerExecutor(query, resultMimeType, proxyServer);
     }
