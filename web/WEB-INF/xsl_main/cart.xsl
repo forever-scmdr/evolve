@@ -148,9 +148,9 @@
 	<xsl:template name="EXTRA_SCRIPTS">
 		<script type="text/javascript">
 			var isValid = true;
-			$(".qty-input").change(function(){
+			$(".qty-input").change(function() {
 
-				if(typeof recalcTo != "undefined"){
+				if(typeof recalcTo != "undefined") {
 					clearTimeout(recalcTo);
 				}
 
@@ -169,12 +169,12 @@
 
 					recalcTo = setTimeout(func, 500);
 
-				} else {
+				} else if (!isValid) {
 			        t.popover({
 			            placement:'bottom',
 			            trigger:'manual',
 			            html:true,
-			            content:'<div style="background-color: #FFDDDD; width: 60px;">max ' + t.attr('max') + '</div>'
+			            content:'<div style="background-color: #FFDDDD; width: 60px;">max ' + t.attr('max') + '  old=' + t.attr('data-old') + '  new=' + t.val() + '</div>'
 			        });
 			        t.popover('show');
 				}
