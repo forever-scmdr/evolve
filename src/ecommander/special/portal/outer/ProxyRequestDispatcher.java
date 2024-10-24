@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class ProxyRequestDispatcher {
 
-    private static final String _GENERAL_ = "_GENERAL_";
-    private static final String _ROTATING_ = "_ROTATING_";
+    private static final String _GENERAL_ = "_general_";
+    private static final String _ROTATING_ = "_rotating_";
 
     private static ProxyRequestDispatcher instance;
 
@@ -40,7 +40,7 @@ public class ProxyRequestDispatcher {
         }
         allHosts.put(_GENERAL_, new HostThroughProxies(_GENERAL_, allProxies));
         String rotatingProp = AppContext.getFwkProperty("fwk.portal.rotating_proxy");
-        allHosts.put(_ROTATING_, new HostThroughProxies(_ROTATING_, Arrays.asList(new Proxy(rotatingProp, threadsPerProxy))));
+        allHosts.put(_ROTATING_, new HostThroughProxies(_ROTATING_, Collections.singletonList(new Proxy(rotatingProp, threadsPerProxy))));
         for (String hostStr : allHostsStr) {
             String hostNameLower = StringUtils.lowerCase(StringUtils.normalizeSpace(hostStr));
             allHosts.put(hostNameLower, new HostThroughProxies(hostNameLower, allProxies));

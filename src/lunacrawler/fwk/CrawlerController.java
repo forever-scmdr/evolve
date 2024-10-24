@@ -180,12 +180,8 @@ public class CrawlerController {
 
 	public enum Mode { get, transform, join, compile, tree, compile_tree, files, all_but_get, all};
 
-	public static final String MODE = "mode"; // режим работы: только скачивание (get), только парсинг (parse), и то и другое (all)
-	public static final String STORAGE_DIR = "parsing.storage_dir"; // директория для хранения временных файлов программой crawler4j
 	public static final String NUMBER_OF_CRAWLERS = "parsing.number_of_crawlers"; // количество параллельных потоков запросов
 	public static final String POLITENESS = "parsing.politeness"; // количество миллисекунд между запросами
-	public static final String MAX_PAGES = "parsing.max_pages"; // максимальное количество разобранных страниц
-	public static final String MAX_DEPTH = "parsing.max_depth"; // максимальная глубина вложенности урлов начиная с начальных страниц (seed)
 	public static final String PROXIES = "parsing.proxies_file"; // файл со списком прокси серверов
 	public static final String URLS_PER_PROXY = "parsing.urls_per_proxy"; // количество запрошенных урлов перед переключением на следующий прокси
 	public static final String URLS = "parsing.urls"; // начальный урл, маски урлов и соответствующие им файлы стилей

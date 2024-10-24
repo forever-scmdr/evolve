@@ -909,8 +909,8 @@
 <!--			<var name="dstr" value="DigiKey, Mouser Electronics, Farnell, Onlinecomponents.com, Newark, Arrow Electronics"/>-->
 			<var name="local" value="true"/>
 			<var name="show_distributor" value="yes"/> <!-- это настройка для вывода таблицы товаров (snippets/product.xsl) -->
-			<var name="new" value="true"/><!-- надо посылать каждый раз новый запрос на сервер (не использовать кеш) -->
-			<var name="remote" value="wxapp" scope="cookie"/><!--findchips oemsecrets wxapp -->
+			<var name="new" value="false"/><!-- надо посылать каждый раз новый запрос на сервер (не использовать кеш) -->
+			<var name="remote" value="findchips" scope="cookie"/><!--findchips oemsecrets wxapp -->
 		</request>
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
@@ -2747,6 +2747,7 @@
 		<request>
 			<var name="url"/>
 			<var name="mime_type" value="text/html"/><!-- тип возвращаемого результата -->
+			<var name="headers" value="Accept-Encoding:identity"/><!-- дополнительные заголовки. Переменная с множеством значений вида name:value -->
 		</request>
 		<command class="extra.AnotherEcommanderProxy">
 			<result name="html" type="plain_text"/>
@@ -2775,6 +2776,19 @@
 
 	<page name="write_param_values">
 		<command class="ecommander.special.portal.extra.AllValuesCommand"/>
+	</page>
+
+
+	<!--
+		Установить глобальную переменную. Например куки для digikey
+		Пемеменную можно удалить, если передать пустое значение
+	 -->
+	<page name="set_global">
+		<request>
+			<var name="name"/>
+			<var name="value"/>
+		</request>
+		<command class="ecommander.fwk.SetGlobalVar"/>
 	</page>
 
 

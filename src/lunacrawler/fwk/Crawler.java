@@ -11,7 +11,6 @@ import ecommander.special.portal.outer.Result;
 import extra._generated.ItemNames;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -511,8 +510,16 @@ public class Crawler implements DBConstants.Parse {
 			boolean urlsFound = false;
 			try {
 				//String xml = WebClient.getString(url.url);
-				//String xml = FluentWebClient.getString(url.url);
-				String xml = OkWebClient.getInstance().getString(url.url);
+				String xml = null;
+				Result result = GeneralProxyRequestProcessor.rotating().submitSync(url.url, "text/xml");
+				if (result.isSuccess()) {
+					Request.Query query = result.getRequest().getSingleQuery();
+					if (query.isFinishedAndSuccess()) {
+						xml = query.getResultString(StandardCharsets.UTF_8);
+					}
+				} else {
+					throw new Exception(result.getErrorMessage());
+				}
 				if (StringUtils.isNotBlank(xml)) {
 					Document doc = JsoupUtils.parseXml(xml);
 
@@ -537,7 +544,7 @@ public class Crawler implements DBConstants.Parse {
 							Url urlToSave = new Url(linkUrlStr);
 							boolean savingNeeded = true;
 							if (controller.needExistingDataCheck()) {
-								Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product_.URL, url.url);
+								Item product = ItemQuery.loadSingleItemByParamValue(ItemNames.PRODUCT, ItemNames.product_.URL, urlToSave.url);
 								savingNeeded = product == null;
 							}
 							if (savingNeeded) {

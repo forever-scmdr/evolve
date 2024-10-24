@@ -169,13 +169,6 @@ public class QueryExecutor {
                     query = URLEncoder.encode(query, Strings.SYSTEM_ENCODING);
                     long timestamp = DateTime.now(DateTimeZone.UTC).getMillis();
                     String signSrc = CLIENT_ID + CLIENT_SECRET + timestamp;
-                    /*
-                    byte[] md5 = DigestUtils.md5(signSrc.getBytes(StandardCharsets.UTF_8));
-                    String hash = "";
-                    for (byte b : md5) {
-                        hash = b >= (byte) 16 ? hash + String.format("%02X", b) : hash + "0" + String.format("%02X", b);
-                    }
-                     */
                     String hash = DigestUtils.md5Hex(signSrc).toUpperCase();
                     String json = POST_JSON.replace("{TIMESTAMP_UTC}", timestamp + "")
                             .replace("{CLIENT_ID}", CLIENT_ID)

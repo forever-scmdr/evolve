@@ -1,18 +1,19 @@
 package ecommander.controllers;
 
+import ecommander.fwk.ServerLogger;
 import ecommander.model.datatypes.DateDataType;
 import ecommander.persistence.commandunits.DeleteComplex;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Интерфейс для хранения всех сведений о работе приложения, в будущем, для влияния на работу всего приложения,
@@ -38,6 +39,7 @@ public class AppContext {
 	private static String CACHE_HTML_FOLDER;
 	private static String CACHE_XML_FOLDER;
 	private static String LUCENE_INDEX_FOLDER;
+	private static String GLOBAL_VARIABLES_FILE;
 	private static String FILES_DIR;
 	private static String PROTECTED_FILES_DIR;
 	private static String PROTECTED_FILES_URL;
@@ -51,7 +53,8 @@ public class AppContext {
 
 	private static Properties props = new Properties();
 
-	private static HashMap<String, String> FWK_PROPS = new HashMap<>();
+	private static final HashMap<String, String> FWK_PROPS = new HashMap<>(); // недоделанный аналог GLOBAL_PROPS
+	private static final HashMap<String, String> GLOBAL_PROPS = new HashMap<>(); // переменные с произвольными названиями и значениями
 
 	static void init(ServletContext servletContext) {
 		String contextRoot = "";
@@ -64,6 +67,7 @@ public class AppContext {
 			CACHE_HTML_FOLDER = props.getProperty("paths.cache_folder");
 			CACHE_XML_FOLDER = props.getProperty("paths.cache_xml_folder");
 			LUCENE_INDEX_FOLDER = props.getProperty("paths.lucene_index_folder");
+			GLOBAL_VARIABLES_FILE = props.getProperty("paths.global_settings");
 			FILES_DIR = props.getProperty("paths.files_folder");
 			PROTECTED_FILES_DIR = "restrict_files/";
 			PROTECTED_FILES_URL = "protected/";
@@ -92,7 +96,6 @@ public class AppContext {
 					FWK_PROPS.put(propertyName, props.getProperty(propertyName, ""));
 				}
 			}
-
 			// часовая зона
 			try {
 				DateDataType.setTimeZoneHourOffset(Integer.parseInt(props.getProperty("locale.hour_offset")));
@@ -105,6 +108,27 @@ public class AppContext {
 		else
 			_REAL_BASE_PATH = contextRoot;
 		LOG_FILE = _REAL_BASE_PATH + "WEB-INF/log4j.properties";
+
+		// Глобальные настройки. нужны для различных прикладных случаев. Не для всех сайтов нужны одни и
+		// те же настройки fwk. Поэтому они хранятся просто в HashMap
+		// Их можно также и задавать программно (в коде), они при этом сохраняются в файле и потом считваются при
+		// перезапуске сервера
+		if (StringUtils.isNotBlank(GLOBAL_VARIABLES_FILE)) {
+			File globalSettingsFile = new File(getRealPath(GLOBAL_VARIABLES_FILE));
+			try {
+				if (globalSettingsFile.exists()) {
+					List<String> lines = FileUtils.readLines(globalSettingsFile, StandardCharsets.UTF_8);
+					for (String line : lines) {
+						String name = StringUtils.normalizeSpace(StringUtils.substringBefore(line, "="));
+						String value = StringUtils.normalizeSpace(StringUtils.substringAfter(line, "="));
+						GLOBAL_PROPS.put(name, value);
+					}
+				}
+			} catch (Exception e) {
+				ServerLogger.error("Can not read global settings file " + GLOBAL_VARIABLES_FILE, e);
+			}
+		}
+
 		// Удаления
 		DeleteComplex.startDeletions();
 	}
@@ -272,5 +296,50 @@ public class AppContext {
 	 */
 	public static String getFwkProperty(String propName) {
 		return FWK_PROPS.get(propName);
+	}
+
+	/**
+	 * Получить глобальную настройку, уникальную для данного приложения (не актуальную для всех приложений)
+	 * @param name
+	 * @return
+	 */
+	public static String getGlobalVar(String name, String... defaultValue) {
+		synchronized (GLOBAL_PROPS) {
+			String value = GLOBAL_PROPS.get(name);
+			if (StringUtils.isBlank(value)) {
+				return defaultValue.length > 0 ? defaultValue[0] : value;
+			}
+			return value;
+		}
+	}
+
+	/**
+	 * Установить новую глобальную настройку.
+	 * Все глобальные настройки сразу сохраняются в файл
+	 * !!! Устанавливать глобальные настройки только изредка, т.к. они блокируются и производится запись в файл !!!
+	 * @param name
+	 * @param value
+	 */
+	public static void setGlobalVar(String name, String value) {
+		synchronized (GLOBAL_PROPS) {
+			if (StringUtils.isBlank(name)) {
+				return;
+			}
+			if (StringUtils.isBlank(value)) {
+				GLOBAL_PROPS.remove(name);
+			} else {
+				GLOBAL_PROPS.put(name, value);
+			}
+			ArrayList<String> lines = new ArrayList<>();
+			for (String key : GLOBAL_PROPS.keySet()) {
+				lines.add(key + "=" + GLOBAL_PROPS.get(key));
+			}
+			try {
+				File file = new File(getRealPath(GLOBAL_VARIABLES_FILE));
+				FileUtils.writeLines(file, lines);
+			} catch (Exception e) {
+				ServerLogger.error("Unable to save global variables to file " + GLOBAL_VARIABLES_FILE, e);
+			}
+		}
 	}
 }

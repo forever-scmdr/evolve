@@ -54,8 +54,8 @@ public class GeneralProxyRequestProcessor {
                 ? ProxyRequestDispatcher.submitRotaitngUrls(responseMimeType, url)
                 : ProxyRequestDispatcher.submitGeneralUrls(responseMimeType, url);
         try {
-            boolean hadErrors = request.awaitExecution();
-            if (hadErrors) {
+            boolean isSuccess = request.awaitExecution();
+            if (!isSuccess) {
                 StringBuilder errors = new StringBuilder();
                 for (Request.Query query : request.getAllQueries()) {
                     if (query.getStatus() != Request.Status.SUCCESS) {
