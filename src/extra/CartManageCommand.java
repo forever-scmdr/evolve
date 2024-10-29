@@ -196,7 +196,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 						}
 						quotient = qtyQuotient.getRight();
 					}
-					return product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient);
+					return product.getDecimalValue(priceParam, BigDecimal.ZERO).multiply(quotient).setScale(4, RoundingMode.HALF_UP);
 				}
 			}
 		}
