@@ -23,10 +23,9 @@ import java.util.HashSet;
  * Команда для регистрации пользователя
  * Created by E on 5/4/2018.
  */
-public abstract class BasicRegisterCommand2 extends Command {
+public abstract class BasicRegisterCommand extends Command {
 
 	public static final String REGISTERED_CATALOG_ITEM = "registered_catalog";
-
 	public static final String EMAIL_PARAM = "email";
 	public static final String PHONE_PARAM = "phone";
 	public static final String PASSWORD_PARAM = "password";

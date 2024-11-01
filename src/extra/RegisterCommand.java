@@ -1,7 +1,7 @@
 package extra;
 
-import ecommander.fwk.BasicRegisterCommand2;
+import ecommander.fwk.BasicRegisterCommand;
 
-public class RegisterCommand extends BasicRegisterCommand2 {
+public class RegisterCommand extends BasicRegisterCommand {
 
 }
