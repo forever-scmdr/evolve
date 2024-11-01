@@ -557,6 +557,7 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="opt_price" type="byte"  domain="0-1" default="0" caption="Использовать оптовую цену" description="1 - оптовая, 0 - розничная цена для этого пользователя"/>
 		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />

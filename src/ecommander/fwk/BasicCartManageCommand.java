@@ -642,14 +642,14 @@ public abstract class BasicCartManageCommand extends Command {
 	 * @return
 	 */
 	protected BigDecimal getProductPriceForQty(Item product, String priceParam, double qty) throws Exception {
-		return product.getDecimalValue(priceParam, new BigDecimal(0));
+		return product.getDecimalValue(priceParam, BigDecimal.ZERO);
 	}
 
 	/**
 	 * Пересчитывает данные для одного enterprise_bought, когда в корзине произошли какие-то изменения
 	 * @throws Exception
 	 */
-	protected boolean recalculateCart(String...priceParamName) throws Exception {
+	protected boolean recalculateCart() throws Exception {
 	    checkStrategy();
 		loadCart();
 		if (cart == null) return false;
@@ -658,7 +658,8 @@ public abstract class BasicCartManageCommand extends Command {
 		double totalQuantity = 0;
 		boolean result = true;
 
-		final String PRICE = (priceParamName != null && priceParamName.length > 0) ? priceParamName[0] : PRICE_PARAM;
+		String priceParamName = getPriceParameterName();
+		final String PRICE = StringUtils.isNotBlank(priceParamName) ? priceParamName : PRICE_PARAM;
 
 		// Обычные заказы и заказы с нулевым количеством на складе
 		for (Item bought : boughts) {
@@ -686,6 +687,14 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && totalQuantity > 0;
+	}
+
+	/**
+	 * Параметр цены товара. Переопределяется в подклассах
+	 * @return
+	 */
+	protected String getPriceParameterName() throws Exception {
+		return PRICE_PARAM;
 	}
 
 	@Override

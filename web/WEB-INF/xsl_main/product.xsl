@@ -87,7 +87,7 @@
 	<xsl:template name="CONTENT">
 
 		<!-- fix -->
-		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/></p>
+		<p class="subtitle">Артикул: <xsl:value-of select="$p/code"/> &#160;&#160;&#160;&#160;&#160; Код производителя: <xsl:value-of select="$p/vendor_code"/></p>
 		<div class="device-basic">
 			<div class="gallery device-basic__column">
 				<div class="tags">

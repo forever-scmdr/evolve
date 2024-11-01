@@ -15,10 +15,12 @@
 	<xsl:variable name="has_compare" select="$disp/compare = 'on'"/>
 	<xsl:variable name="has_cart" select="$disp/cart = 'on'"/>
 	<xsl:variable name="mp_link" select="if ($ops/my_price/link_name) then $ops/my_price/link_name else 'Моя цена'"/>
-	<xsl:variable name="is_jur" select="page/registration[@type = 'user_jur']"/>
+	<xsl:variable name="user_reg" select="page/registration"/>
+	<xsl:variable name="is_jur" select="$user_reg[@type = 'user_jur']"/>
+	<xsl:variable name="is_opt_price" select="$user_reg/opt_price = '1'"/>
 	<xsl:variable name="jur_price_on" select="$disp/jur_price = 'on'"/>
-	<xsl:variable name="price_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt' else 'price'"/>
-	<xsl:variable name="price_old_param_name" select="if ($is_jur and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
+	<xsl:variable name="price_param_name" select="if ($is_opt_price and $jur_price_on) then 'price_opt' else 'price'"/>
+	<xsl:variable name="price_old_param_name" select="if ($is_opt_price and $jur_price_on) then 'price_opt_old' else 'price_old'"/>
 	<xsl:variable name="product_params_limit" select="6"/>
 	<xsl:variable name="to_cart_api_link" select="page/to_cart_api"/>
 	<xsl:variable name="is_admin" select="page/@name = 'admin_search'"/>
@@ -87,6 +89,7 @@
 
 			<!-- device identification code -->
 			<div class="text_size_sm"><xsl:value-of select="code"/></div>
+			<div class="text_size_sm" style="margin-top: -8px"><xsl:value-of select="vendor_code"/></div>
 
 			<!-- device price (why <span class="price__value"> is doubled? fixed) -->
 			<xsl:if test="$has_price">
@@ -255,9 +258,7 @@
 
 				<!-- quick view (not displayed, delete <div> with display: none to show) -->
 				<xsl:if test="$has_quick_view">
-					<div style="display: none">
-						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" style="display: none">Быстрый просмотр</a>
-					</div>
+						<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button">Быстрый просмотр</a>
 				</xsl:if>
 
 				<!-- device image -->
@@ -293,6 +294,7 @@
 
 				<!-- device identification code -->
 				<div class="text_size_sm"><xsl:value-of select="code"/></div>
+				<div class="text_size_sm" style="margin-top: -18px"><xsl:value-of select="vendor_code"/></div>
 
 				<!-- device description parameters -->
 				<div class="device__info">
@@ -488,7 +490,7 @@
 <!--								<xsl:if test="count($captions) &gt; $product_params_limit">-->
 <!--									<tr>-->
 <!--										<td colspan="2">-->
-<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Показать параметры</a>-->
+<!--											<a class="toggle" href="#params-{@id}" rel="Скрыть параметры">Покзать параметры</a>-->
 <!--										</td>-->
 <!--									</tr>-->
 <!--								</xsl:if>-->
@@ -614,8 +616,14 @@
 						<xsl:with-param name="p" select="current()"/>
 						<xsl:with-param name="is_inline" select="true()"/>
 					</xsl:call-template>
+					<xsl:if test="$has_quick_view">
+						<div>
+							<a onclick="showDetails('{show_product_ajax}')" class="fast-preview-button" >Быстрый просмотр</a>
+						</div>
+					</xsl:if>
+
 				</div>
-			</td><!--название -->
+			</td><!--название --> 
 			<xsl:if test="$is_admin">
 				<td>
 					<div class="thn">Поставщик</div>
@@ -911,10 +919,6 @@
 
 	<xsl:template name="EXTRA_ORDERING_TYPES">
 		<xsl:param name="p" />
-
-		<div class="text_sm" style="margin-top: auto;">
-			<a href="#" onclick="showDetails('{show_lines_ajax}'); return false;" >Склады</a>
-		</div>
 
 		<!-- one click -->
 		<xsl:if test="$has_one_click">

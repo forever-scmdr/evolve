@@ -12,6 +12,7 @@ public class Common
     public final static String LEFT = "left";
     public final static String LINK_TEXT = "link_text";
     public final static String LINK_LINK = "link_link";
+    public final static String PHONE_LINK = "phone_link";
     public final static String GOOGLE_VERIFICATION = "google_verification";
     public final static String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -80,6 +81,22 @@ public class Common
 
     public boolean contains_link_link(String value) {
         return containsValue("link_link", value);
+    }
+
+    public void set_phone_link(String value) {
+        setValue("phone_link", value);
+    }
+
+    public String get_phone_link() {
+        return getStringValue("phone_link");
+    }
+
+    public String getDefault_phone_link(String defaultVal) {
+        return getStringValue("phone_link", defaultVal);
+    }
+
+    public boolean contains_phone_link(String value) {
+        return containsValue("phone_link", value);
     }
 
     public void set_google_verification(String value) {

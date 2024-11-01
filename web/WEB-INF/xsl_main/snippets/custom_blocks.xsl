@@ -28,7 +28,7 @@
 
 	<!-- custom_block -->
 	<xsl:template match="custom_block" mode="sub-2-cols">
-		<div class="catalog-item cover-link-wrap">
+		<div class="catalog-item cover-link-wrap" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 			<xsl:if test="link != ''">
 				<a href="{link}" class="cover-link"></a>
 			</xsl:if>
@@ -52,7 +52,7 @@
 		<xsl:variable  name="main_pic" select="if(small_pic != '') then small_pic else main_pic"/>
 		<xsl:variable name="pic_path" select="if ($main_pic) then concat(@path, $main_pic) else 'img/no_image.png'"/>
 
-		<div class="catalog-item cover-link-wrap">
+		<div class="catalog-item cover-link-wrap" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 			<a href="{show_product}" class="cover-link"></a>
 			<div class="catalog-item__image img">
 				<img src="{$pic_path}" onerror="{$onerror}" alt="{name}" />
@@ -72,7 +72,7 @@
 	<xsl:template match="section" mode="sub-2-cols">
 		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
 
-		<div class="catalog-item cover-link-wrap">
+		<div class="catalog-item cover-link-wrap" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 			<a href="{show_products}" class="cover-link"></a>
 			<div class="catalog-item__image img">
 				<img src="{$pic_path}" onerror="{$onerror}" alt="{name}" />
@@ -92,7 +92,7 @@
 	<xsl:template match="custom_page" mode="sub-2-cols">
 		<xsl:variable name="pic_path" select="if (main_pic) then concat(@path, main_pic) else 'img/no_image.png'"/>
 
-		<div class="catalog-item cover-link-wrap">
+		<div class="catalog-item cover-link-wrap" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 			<a href="{show_page}" class="cover-link"></a>
 			<div class="catalog-item__image img">
 				<img src="{$pic_path}" onerror="{$onerror}" alt="{header}" />
@@ -129,7 +129,7 @@
 				</xsl:if>
 			</h2>
 			<div class="vl_c_carousel">
-				<div class="vl_c_content">
+				<div class="vl_c_content" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 					<xsl:apply-templates select="custom_block | section | custom_page" mode="carousel-1"/>
 				</div>
 			</div>
@@ -246,7 +246,7 @@
 		</xsl:call-template>
 
 		<div class="{'container'[$need_container]}">
-			<div class="block blockquote-block ptb">
+			<div class="block blockquote-block ptb" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 				<div class="blockquote-block__title title title_2"><xsl:value-of select="header" /></div>
 					<div class="blockquote-block__text">
 					<p><xsl:value-of select="text" disable-output-escaping="yes" /></p>
@@ -290,7 +290,7 @@
 						<xsl:variable name="pic" select="if($name = 'custom_block') then concat(@path, image) else concat(@path, main_pic)"/>
 						<xsl:variable name="text" select="if($name = 'custom_block') then text else short"/>
 
-						<div class="chess-row{if($odd) then ' odd' else ' even'}">
+						<div class="chess-row{if($odd) then ' odd' else ' even'}" data-aos="zoom-in" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 							<xsl:if test="$odd">
 								<div class="chess-pic" style="background-image: url('{$pic}');">
 									<!-- <img src="{$pic}"/> -->
@@ -298,7 +298,12 @@
 							</xsl:if>
 							<div class="text chess-text" style="{'padding-top:0'[$first]}">
 								<h2>
-									<xsl:value-of select="$header"/>
+									<xsl:if test="not(link != '')">
+										<xsl:value-of select="$header" />
+									</xsl:if>
+									<xsl:if test="link != ''">
+										<a href="{link}"><xsl:value-of select="$header" /></a>
+									</xsl:if>
 								</h2>
 								<xsl:value-of select="text" disable-output-escaping="yes"/>
 							</div>
@@ -451,7 +456,7 @@
 			<div class="{'container'[$need_container]}">
 				<div class="numbers-block__wrap">
 					<xsl:for-each select="custom_block">
-						<div class="banner-numbers">
+						<div class="banner-numbers" data-aos="flip-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 							<div class="banner-numbers__title"><xsl:value-of select="header" /></div>
 							<div class="banner-numbers__text"><xsl:value-of select="subheader" /></div>
 						</div>
@@ -476,7 +481,7 @@
 						<!-- добавляется ссылка (тег a href=...) перед блоком и закрывается после блока -->
 						<xsl:variable name="has_link" select="link and not(link = '')"/>
 						<xsl:if test="$has_link"><xsl:text disable-output-escaping="yes">&lt;a href=</xsl:text><xsl:value-of select="link" /><xsl:text disable-output-escaping="yes">&gt;</xsl:text></xsl:if>
-						<div class="banner-icons">
+						<div class="banner-icons" data-aos="zoom-in" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 							<div class="banner-icons__image"><img src="{@path}{image}" alt="" /></div>
 							<div class="banner-icons__title"><xsl:value-of select="header" /></div>
 							<div class="banner-icons__text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
@@ -516,7 +521,7 @@
 		<xsl:if test="f:num(divider_top) = 1">
 			<div class="pb"></div>
 		</xsl:if>
-		<div class="block gifts-block ptb">
+		<div class="block gifts-block ptb" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 			<div class="{'container'[$need_container]}">
 				<div class="gifts-block__wrap">
 					<xsl:for-each select="custom_block">
@@ -547,7 +552,7 @@
 		</xsl:call-template>
 		<div class="block contacts-block ptb">
 				<div class="{'container'[$need_container]}">
-					<div class="contacts-block__wrap">
+					<div class="contacts-block__wrap" data-aos="zoom-out" data-aos-easing="ease-out-cubic" data-aos-duration="1000">
 						<div class="contacts-block_title title title_2"><xsl:value-of select="header" /></div>
 						<div class="contacts-block_subtitle"><xsl:value-of select="subheader" /></div>
 						<div class="contacts-block_text"><xsl:value-of select="text" disable-output-escaping="yes" /></div>
@@ -568,11 +573,11 @@
 		<xsl:call-template name="DIVIDER">
 			<xsl:with-param name="need" select="divider_top" />
 		</xsl:call-template>
-		<div class="block sections-block ptb" data-aos="fade-up">
+		<div class="block sections-block ptb">
 			<div class="{'container'[$need_container]}">
 				<div class="title title_2"><xsl:value-of select="header" /></div>
 <!--				<div class="icons-block__wrap">-->
-				<div class="info-items__wrap">
+				<div class="info-items__wrap" data-aos="fade-up" data-aos-easing="ease-out-cubic" data-aos-duration="1000" >
 					<xsl:for-each select="news/news_item">
 						<xsl:variable name="news_pic" select="if(main_pic != '') then concat(@path, main_pic) else concat(../@path, ../main_pic)"/>
 						<div class="info-item card">

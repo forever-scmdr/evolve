@@ -49,7 +49,7 @@
 										</a>
 									</div>
 									<div class="cart-item__info">
-										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a>
+										<a class="cart-item__name" href="{$p/show_product}"><xsl:value-of select="$p/name"/></a><br/>
 										<div class="cart-item__artnumber">Артикул: <xsl:value-of select="$p/code"/></div>
 									</div>
 								</xsl:if>

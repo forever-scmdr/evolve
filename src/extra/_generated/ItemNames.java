@@ -236,6 +236,7 @@ public interface ItemNames {
         String IN_MAIN_MENU = "in_main_menu";
         String DEFAULT_VIEW = "default_view";
         String SHOW_FILTER = "show_filter";
+        String DEFAULT_STEP = "default_step";
         String SHIP_DATE = "ship_date";
         String INTEGRATION = "integration";
         String DATE = "date";
@@ -292,6 +293,7 @@ public interface ItemNames {
         String LEFT = "left";
         String LINK_TEXT = "link_text";
         String LINK_LINK = "link_link";
+        String PHONE_LINK = "phone_link";
         String GOOGLE_VERIFICATION = "google_verification";
         String YANDEX_VERIFICATION = "yandex_verification";
 
@@ -435,6 +437,8 @@ public interface ItemNames {
         String PRICE_EUR_OLD = "price_EUR_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
+        String PARAM_VALS = "param_vals";
+        String PARAMS_XML = "params_xml";
         String GALLERY = "gallery";
 
     }
@@ -609,6 +613,8 @@ public interface ItemNames {
         String PRICE_EUR_OLD = "price_EUR_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
+        String PARAM_VALS = "param_vals";
+        String PARAMS_XML = "params_xml";
         String GALLERY = "gallery";
 
     }
@@ -968,6 +974,8 @@ public interface ItemNames {
         String PRICE_EUR_OLD = "price_EUR_old";
         String PRICE_BYN = "price_BYN";
         String PRICE_BYN_OLD = "price_BYN_old";
+        String PARAM_VALS = "param_vals";
+        String PARAMS_XML = "params_xml";
         String GALLERY = "gallery";
         String HAS_LINES = "has_lines";
 
@@ -1071,6 +1079,7 @@ public interface ItemNames {
         String EXTRA = "extra";
         String PARAMS_SHORT = "params_short";
         String PARAMS_LIST = "params_list";
+        String XML_FILTER = "xml_filter";
         String PARAMS_FILTER = "params_filter";
 
     }
@@ -1195,6 +1204,7 @@ public interface ItemNames {
         String REGISTERED = "registered";
         String PAYMENT = "payment";
         String ORGANIZATION = "organization";
+        String OPT_PRICE = "opt_price";
         String CONTRACT_NUMBER = "contract_number";
         String CONTACT_NAME = "contact_name";
         String CONTACT_PHONE = "contact_phone";

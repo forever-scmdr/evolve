@@ -2200,6 +2200,24 @@
 		</command>
     </page>
 
+	<page name="update_prices_rcbr" template="integration/create_excel"  authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdatePricesRCBR" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
+	<page name="update_codes_rcbr" template="integration/create_excel"  authority-groups="common">
+		<request>
+			<var name="action"/>
+		</request>
+		<command class="extra.UpdateCodesRCBR" clear-cache="yes">
+			<result name="complete" type="xml"/>
+		</command>
+	</page>
+
     <page name="parse_excel" template="integration/create_excel" authority-groups="common">
         <request>
             <var name="action"/>

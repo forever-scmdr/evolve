@@ -26,6 +26,7 @@
 						<div class="device-preview">
 							<div class="device-preview__column">
 								<div class="device-preview__tags tags">
+									<span></span>
 									<xsl:for-each select="$p/label">
 										<div class="tag device__tag {f:translit(.)}">
 											<xsl:value-of select="." />
@@ -51,10 +52,10 @@
 											</div>
 										</xsl:if>
 									</div>
-									<div class="device-actions__icons add">
+									<!--<div class="device-actions__icons add">
 										<xsl:call-template name="COMPARE"/>
 										<xsl:call-template name="FAV" />
-									</div>
+									</div>-->
 									<div class="device-actions__buttons order-buttons">
 										<xsl:call-template name="CART" />&#160;<a href="{$p/one_click_link}" rel="nofollow" ajax="true" data-toggle="modal" data-target="#modal-one_click" class="button button_secondary">Купить в 1 клик</a>
 									</div>
@@ -156,13 +157,13 @@
 	<xsl:template name="CART">
 		<span class="cart_list_{$p/@id}" id="cart_list_a_{$p/@id}" style="display: inline-block">
 			<form action="{$p/to_cart}" method="post" ajax="true" ajax-loader-id="cart_list_a_{$p/@id}" style="display: inline;">
-				<input type="number" style="width: 50px; margin-right: 7px;" class="text-input" name="qty"
+				<input type="number" style="width: 50px; margin-right: 7px;" class="input input_size_lg input_type_number" name="qty"
 					   value="{if ($p/min_qty) then $p/min_qty else 1}" min="{if ($p/min_qty) then $p/min_qty else 0}" step="{if ($p/min_qty) then $p/min_qty else $step_default}" />
 				<xsl:if test="$has_price">
-					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else 'background-color: #707070; border-color: #707070;'}" value="{if($p/qty and $p/qty != '0') then $to_cart_available_label else $to_cart_na_label}"/>
+					<input type="submit" class="button button_primary" style="{if(f:num($p/qty) != 0) then '' else ''}" value="{if($p/qty and $p/qty != '0') then $to_cart_available_label else $to_cart_na_label}"/>
 				</xsl:if>
 				<xsl:if test="not($has_price)">
-					<input type="submit" class="button button_primary" style="background-color: #707070; border-color: #707070;" value="{$to_cart_na_label}"/>
+					<input type="submit" class="button button_primary" value="{$to_cart_na_label}"/>
 				</xsl:if>
 			</form>
 		</span>

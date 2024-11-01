@@ -952,7 +952,9 @@
 					}
 				</script>
 				<script>
-				AOS.init();
+				$(document).ready(function() {
+						AOS.init();
+				});
 				</script>
 				<script>
 					function googleTranslateElementInit() {

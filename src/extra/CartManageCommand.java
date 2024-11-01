@@ -12,8 +12,10 @@ import ecommander.pages.ExecutablePagePE;
 import ecommander.pages.LinkPE;
 import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
+import ecommander.persistence.mappers.SessionObjectStorage;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
+import extra._generated.User_jur;
 import extra._generated.User_phys;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -230,7 +232,7 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				}
 			}
 		}
-		return product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		return super.getProductPriceForQty(product, priceParam, qty);
 	}
 
 	/**
@@ -486,4 +488,12 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		return true;
 	}
 
+	@Override
+	protected String getPriceParameterName() throws Exception {
+		Item userItem = getSessionMapper().getSingleRootItemByName(USER_JUR);
+		if (userItem != null && userItem.getByteValue(User_jur.OPT_PRICE, (byte) 0) == (byte) 1) {
+			return product_.PRICE_OPT;
+		}
+		return super.getPriceParameterName();
+	}
 }
