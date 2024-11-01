@@ -15,6 +15,7 @@
 	</xsl:template>
 
 
+
 	<xsl:variable name="p" select="page/product"/>
 	<xsl:variable name="has_lines" select="$p/has_lines = '1'"/>
 	<xsl:variable name="p_big" select="if (index-of($p/text, 'img src') &gt; -1 or string-length($p/text) &gt; 500) then $p/text else ''"/>

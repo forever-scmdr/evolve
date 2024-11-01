@@ -1,5 +1,6 @@
 package extra;
 
+import ecommander.fwk.BasicRegisterCommand2;
 import ecommander.fwk.ItemUtils;
 import ecommander.model.Item;
 import ecommander.model.User;
@@ -13,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  * Команда для регистрации пользователя
  * Created by E on 5/4/2018.
  */
-public class JustEmailRegisterCommand extends RegisterCommand {
+public class JustEmailRegisterCommand extends BasicRegisterCommand2 {
 
 	@Override
 	public ResultPE execute() throws Exception {
