@@ -4,10 +4,7 @@ import ecommander.controllers.PageController;
 import ecommander.controllers.SessionContext;
 import ecommander.model.*;
 import ecommander.pages.*;
-import ecommander.persistence.commandunits.ChangeItemOwnerDBUnit;
 import ecommander.persistence.commandunits.SaveItemDBUnit;
-import ecommander.persistence.commandunits.SaveNewUserDBUnit;
-import ecommander.persistence.commandunits.UpdateUserDBUnit;
 import ecommander.persistence.itemquery.ItemQuery;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,7 +12,6 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
-import java.sql.Connection;
 
 /**
  * Команда для регистрации пользователя с подтверждением от админа.
@@ -66,7 +62,8 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 		executeCommandUnit(SaveItemDBUnit.get(userItem).ignoreUser().noTriggerExtra());
 		commitCommandUnits();
 
-		sendAdminEmail(userItem, getUrlBase());
+		String adminEmail = getVarSingleValue("email");
+		BasicCartManageCommand.sendConfirmRegistrationEmail(userItem, getUrlBase(), adminEmail);
 
 		return getResult("success");
 	}
@@ -121,40 +118,6 @@ public class AdminConfirmRegisterCommand extends BasicRegisterCommand {
 
 			if (StringUtils.isNotBlank(customerEmail))
 				EmailUtils.sendGmailDefault(customerEmail, "Регистрация на сайте " + getUrlBase(), regularMP);
-
-		} catch (Exception e) {
-			ServerLogger.error("error while sinding email about registration", e);
-		}
-	}
-
-	/**
-	 * Отправить email о регистрации пользователю
-	 * @param userItem
-	 */
-	public void sendAdminEmail(Item userItem, String siteUrl) {
-		// Отправка письма
-		try {
-			Multipart regularMP = new MimeMultipart();
-			MimeBodyPart regularTextPart = new MimeBodyPart();
-			regularMP.addBodyPart(regularTextPart);
-			LinkPE regularLink = LinkPE.newDirectLink("link", "new_user_email", false);
-
-			regularLink.addStaticVariable("user", userItem.getId() + "");
-			regularLink.addStaticVariable("base", siteUrl);
-			//ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
-			User admin = UserMapper.getUser("admin");
-			ExecutablePagePE regularTemplate =
-					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(admin));
-
-			final String adminEmail = getVarSingleValue("email");
-
-			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
-			PageController.newSimple().executePage(regularTemplate, regularBos);
-			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
-					+ ";charset=UTF-8");
-
-			if (StringUtils.isNotBlank(adminEmail))
-				EmailUtils.sendGmailDefault(adminEmail, "Запрос на регистрацию " + siteUrl, regularMP);
 
 		} catch (Exception e) {
 			ServerLogger.error("error while sinding email about registration", e);

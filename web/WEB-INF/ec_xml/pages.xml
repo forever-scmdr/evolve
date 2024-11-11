@@ -96,6 +96,7 @@
 		<link name="login_form_link" target="login_form_ajax"/>
 		<link name="login_link" target="register">
 			<var name="login" value="true"/>
+			<var name="src" value="purchase_history"/>
 		</link>
 		<link name="personal_ajax_link" target="personal_ajax"/>
 		<link name="set_currency" target-var="$pagename" copy-page-vars="yes">
@@ -1197,7 +1198,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="order.site@youhuo.pro"/>
+			<var name="email" value="order.site@youhuo.pro"/><!-- egor@forever-ds.com -->
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
 			<var name="mandatory_jur" value="email, organization, orgn, kpp, inn, address, contact_name, contact_phone"/>
@@ -1617,7 +1618,7 @@
 		</request>
 		<link name="submit_login" target="register_action">
 			<var name="action" value="login"/>
-			<var name="src" value="personal"/>
+			<var name="src" value="purchase_history"/>
 		</link>
 		<new item="user_phys" id="user_phys">
 			<parameter-input ref="user_phys" form="register"/>
@@ -1638,7 +1639,7 @@
 			<var name="action" value="register"/>
 			<var name="src" value="register"/>
 			<var name="user"/>
-			<var name="email" value="egor@forever-ds.com"/><!-- forever-ds@mail.ru -->
+			<var name="email" value="Feedback.site@youhuo.pro"/><!-- forever-ds@mail.ru -->
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>
@@ -2219,7 +2220,7 @@
 	</page>
 
 
-	<page name="get_rates" schedule="0 0 */2 ? * *"><!-- schedule="0 0 */2 ? * *"-->
+	<page name="get_rates"><!-- schedule="0 0 */2 ? * *"-->
 		<request>
 			<var name="action" value="start"/>
 		</request>

@@ -1,6 +1,7 @@
 package ecommander.fwk;
 
 import ecommander.controllers.PageController;
+import ecommander.controllers.SessionContext;
 import ecommander.model.*;
 import ecommander.model.datatypes.DoubleDataType;
 import ecommander.pages.*;
@@ -286,6 +287,7 @@ public abstract class BasicCartManageCommand extends Command {
 				form.setContextParentId(ItemTypeRegistry.getPrimaryAssoc(), regCatalog.getId());
 				form.setOwner(UserGroupRegistry.getGroup(User.USER_DEFAULT_GROUP), User.ANONYMOUS_ID);
 				executeCommandUnit(SaveItemDBUnit.get(form).ignoreUser().noTriggerExtra());
+				sendConfirmRegistrationEmail(form, getUrlBase(), shopEmail);
 				userItem = form;
 			}
 		}
@@ -692,6 +694,38 @@ public abstract class BasicCartManageCommand extends Command {
 		getSessionMapper().saveTemporaryItem(cart);
 		saveCookie();
 		return result && totalQuantity > 0;
+	}
+
+	/**
+	 * Отправить email о регистрации пользователю
+	 * @param userItem
+	 */
+	public static void sendConfirmRegistrationEmail(Item userItem, String siteUrl, String adminEmail) {
+		// Отправка письма
+		try {
+			Multipart regularMP = new MimeMultipart();
+			MimeBodyPart regularTextPart = new MimeBodyPart();
+			regularMP.addBodyPart(regularTextPart);
+			LinkPE regularLink = LinkPE.newDirectLink("link", "new_user_email", false);
+
+			regularLink.addStaticVariable("user", userItem.getId() + "");
+			regularLink.addStaticVariable("base", siteUrl);
+			//ExecutablePagePE regularTemplate = getExecutablePage(regularLink.serialize());
+			User admin = UserMapper.getUser("admin");
+			ExecutablePagePE regularTemplate =
+					PageModelRegistry.getRegistry().getExecutablePage(regularLink.serialize(), null, SessionContext.userOnlySessionContext(admin));
+
+			ByteArrayOutputStream regularBos = new ByteArrayOutputStream();
+			PageController.newSimple().executePage(regularTemplate, regularBos);
+			regularTextPart.setContent(regularBos.toString("UTF-8"), regularTemplate.getResponseHeaders().get(PagePE.CONTENT_TYPE_HEADER)
+					+ ";charset=UTF-8");
+
+			if (StringUtils.isNotBlank(adminEmail))
+				EmailUtils.sendGmailDefault(adminEmail, "Запрос на регистрацию " + siteUrl, regularMP);
+
+		} catch (Exception e) {
+			ServerLogger.error("error while sinding email about registration", e);
+		}
 	}
 
 	@Override

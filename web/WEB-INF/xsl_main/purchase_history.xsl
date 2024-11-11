@@ -34,12 +34,15 @@
 						<div class="past-order__sum"><xsl:value-of select="sum"/> руб</div>
 						<div class="past-order__qty">Позиций: <xsl:value-of select="qty"/></div>
 					</div>
+					<!--
 					<div class="past-order__action" style="display: none">
 						<button class="button past-order__button submit_all_again"><xsl:value-of select="$to_cart_available_label"/></button>
 					</div>
+					-->
 					<xsl:for-each select="bought">
-						<xsl:variable name="code" select="code"/>
-						<xsl:variable name="prod" select="$products[code = $code]"/>
+						<xsl:variable name="prod" select="product"/>
+						<xsl:variable name="price" select="if (f:num(price) != 0) then f:exchange_cur(., 'price', 0) else 'по запросу'"/>
+						<xsl:variable name="sum" select="if (f:num(sum) != 0) then f:exchange_cur(., 'sum', 0) else ''"/>
 						<div class="past-order__product past-product" style="display: none">
 							<div class="past-product__image">
 								<xsl:if test="$prod"><img src="{$prod/@path}{$prod/main_pic}" alt="" /></xsl:if>
@@ -53,11 +56,12 @@
 								</xsl:if>
 								<div class="past-product__artnumber">Артикул: <xsl:value-of select="if ($prod) then $prod/code else code"/></div>
 								<div class="past-product__old-price">
-									<span>Цена: <xsl:value-of select="price"/> руб.</span>
+<!--									<span>Цена: <xsl:value-of select="$price"/> руб.</span>-->
 									<span>Кол-во: <xsl:value-of select="qty"/> шт.</span>
-									<span>Сумма: <xsl:value-of select="sum"/> руб.</span>
+<!--									<span>Сумма: <xsl:value-of select="$sum"/> руб.</span>-->
 								</div>
 							</div>
+							<!--
 							<xsl:if test="$prod">
 								<xsl:variable name="has_price" select="$prod/price and $prod/price != '0'"/>
 								<div class="past-product__action">
@@ -76,6 +80,7 @@
 									</div>
 								</div>
 							</xsl:if>
+							-->
 						</div>
 					</xsl:for-each>
 				</div>
