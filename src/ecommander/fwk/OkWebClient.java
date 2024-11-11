@@ -5,6 +5,7 @@ import okhttp3.internal.http.RealResponseBody;
 import okio.BufferedSource;
 import okio.GzipSource;
 import okio.Okio;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
@@ -13,12 +14,16 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.brotli.dec.BrotliInputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Класс для закачки файлов по урлу
@@ -235,8 +240,7 @@ public class OkWebClient {
 
 		// copied from okhttp3.internal.http.HttpEngine (because is private)
 		private Response unzip(final Response response) throws IOException {
-			if (response.body() == null)
-			{
+			if (response.body() == null) {
 				return response;
 			}
 
@@ -247,15 +251,40 @@ public class OkWebClient {
 
 			//this is used to decompress gzipped responses
 			if (contentEncoding != null && StringUtils.containsIgnoreCase(contentEncoding,"gzip")) {
-				Long contentLength = response.body().contentLength();
-				GzipSource responseBody = new GzipSource(response.body().source());
+				long contentLength = response.body().contentLength();
 				Headers strippedHeaders = response.headers().newBuilder().build();
+				byte[] bytesIn = response.body().bytes();
+				InputStream is = new GzipCompressorInputStream(new ByteArrayInputStream(bytesIn));
+				ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
+				int nRead;
+				byte[] data = new byte[4];
+				try {
+					while ((nRead = is.read(data, 0, data.length)) != -1) {
+						bufferOut.write(data, 0, nRead);
+					}
+				} catch (Exception e) {
+					ServerLogger.error("eeee", e);
+				}
+				bufferOut.flush();
+				byte[] targetArray = bufferOut.toByteArray();
+				ResponseBody newBody = ResponseBody.create(response.body().contentType(), targetArray);
+				return response.newBuilder().body(newBody).build();
+				/*
+				BufferedSource src = Okio.buffer(Okio.source(new GzipCompressorInputStream(response.body().source().inputStream(), false)));
+				return response.newBuilder().headers(strippedHeaders)
+						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, src))
+						.build();
+
+				 */
+				/* Так работает, если правильно указана длина contentLength. Если не правильно - ошибка
+				GzipSource responseBody = new GzipSource(response.body().source());
 				return response.newBuilder().headers(strippedHeaders)
 						.body(new RealResponseBody(response.body().contentType().toString(), contentLength, Okio.buffer(responseBody)))
 						.build();
+				 */
 			}
 			else if (contentEncoding != null && StringUtils.equalsIgnoreCase(contentEncoding, "br")) {
-				Long contentLength = response.body().contentLength();
+				long contentLength = response.body().contentLength();
 				//GzipSource responseBody = new GzipSource(response.body().source());
 				Headers strippedHeaders = response.headers().newBuilder().build();
 				BufferedSource src = Okio.buffer(Okio.source(new BrotliInputStream(response.body().source().inputStream())));

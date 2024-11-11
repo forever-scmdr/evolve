@@ -2747,7 +2747,7 @@
 		<request>
 			<var name="url"/>
 			<var name="mime_type" value="text/html"/><!-- тип возвращаемого результата -->
-			<var name="headers" value="Accept-Encoding:identity"/><!-- дополнительные заголовки. Переменная с множеством значений вида name:value -->
+			<!--<var name="headers" value="Accept-Encoding:identity"/>--><!-- дополнительные заголовки. Переменная с множеством значений вида name:value -->
 		</request>
 		<command class="extra.AnotherEcommanderProxy">
 			<result name="html" type="plain_text"/>
