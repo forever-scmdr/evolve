@@ -134,7 +134,7 @@ public class Strings
 			russianChars = russian.toCharArray();
 			for(int i = 0; i < russianChars.length; i++){
 				if (russianChars[i] == 'х'){
-					String eng = i == 0 || "kzcseh".indexOf(russianChars[i - 1]) == -1? "h" : "kh";
+					String eng = i == 0 || "kzcseh".indexOf(english.substring(english.length() - 1)) == -1? "h" : "kh";
 					english.append(eng);
 				}else if (ENGLISH_REPLACEMENT_LETTERS.containsKey(russianChars[i])) {
 					english.append(ENGLISH_REPLACEMENT_LETTERS.get(russianChars[i]));
