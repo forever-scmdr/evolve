@@ -234,7 +234,7 @@
 					<xsl:for-each select="page/latest">
 						<article class="col-block">
 							<a href="{show_page}" class="popular__thumb">
-								<img src="{concat('https://tempting.pro/',@path,small_pic)}" alt="{name}"/>
+								<img src="{concat($main_host, '/',@path,small_pic)}" alt="{name}"/>
 							</a>
 							<!--							<section class="popular__meta">-->
 							<!--								<span class="popular__date"><time datetime="{date}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></time></span>-->

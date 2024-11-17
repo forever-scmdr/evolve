@@ -11,15 +11,7 @@
 		<div class="result" id="informers">
 			<xsl:call-template name="V_START"/>
 				<xsl:for-each select="page/informer_wrap/informer">
-					<xsl:variable name="p" select="position()"/>
-					{
-					"title": <xsl:value-of select="concat('&#34;', name, '&#34;')" disable-output-escaping="yes"/>,
-					"proName": <xsl:value-of select="concat('&#34;', pro_name, '&#34;')" disable-output-escaping="yes"/>
-					}
-					<xsl:if test="$p != last() and $p mod $ipp != 0">,</xsl:if>
-					<xsl:if test="$p != last() and $p mod $ipp = 0">
-						<xsl:call-template name="V_END"/>
-						<xsl:call-template name="V_START" />
+					<xsl:variable name="p" select="position()"/>{"title": <xsl:value-of select="concat('&#34;', name, '&#34;')" disable-output-escaping="yes"/>,"proName": <xsl:value-of select="concat('&#34;', pro_name, '&#34;')" disable-output-escaping="yes"/>}<xsl:if test="$p != last() and $p mod $ipp != 0">,</xsl:if><xsl:if test="$p != last() and $p mod $ipp = 0"><xsl:call-template name="V_END"/><xsl:call-template name="V_START" />
 					</xsl:if>
 				</xsl:for-each>
 			<xsl:call-template name="V_END" />
@@ -60,20 +52,8 @@
 		</xsl:text>
 		<div class="tradingview-widget-container__widget"></div>
 		<xsl:text disable-output-escaping="yes">
-			&lt;script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async&gt;
-			{
-  				"showSymbolLogo": true,
-  				"symbols": [
-		</xsl:text>
-	</xsl:template>
-	<xsl:template name="V_END">
-		<xsl:text disable-output-escaping="yes">
-			],
-		  "colorTheme": "light",
-		  "isTransparent": false,
-		  "locale": "ru"
-		}
-		  &lt;/script&gt;
+			&lt;script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async&gt;{"showSymbolLogo": true,	"symbols": [</xsl:text>
+	</xsl:template><xsl:template name="V_END"><xsl:text disable-output-escaping="yes">],"colorTheme":"light","isTransparent": false,"locale": "ru"}&lt;/script&gt;
 			&lt;/div&gt;
 		</xsl:text>
 	</xsl:template>

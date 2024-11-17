@@ -9,6 +9,7 @@ import org.htmlcleaner.TagNode;
 
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -52,12 +53,45 @@ public class Strings
 	
 	private static final String DIGITS = "1234567890";
 	private static final String RUSSIAN_MATCH_LETTERS = DIGITS + "_abcdefghijklmnopqrstuvwxyzабвгдеёжзиыйклмнопрстуфхцчшщэюя. ,?/\\|:-\"='%";
-	private static final String[] ENGLISH_REPLACEMENT_LETTERS = {
-		"1","2","3","4","5","6","7","8","9","0","_",
-		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",		
-		"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
-		"u","f","h","ts","ch","sh","sch","e","yu","ya","_","_","","ask","_","_","_","_","_","","","","_"
-	};
+	// only russian small letters
+	private static final HashMap<Character, String> ENGLISH_REPLACEMENT_LETTERS = new HashMap<Character, String>(){{
+		put('а', "a");
+		put('б', "b");
+		put('в', "v");
+		put('г', "g");
+		put('д', "d");
+		put('е', "e");
+		put('ё', "yo");
+		put('ж', "zh");
+		put('з', "z");
+		put('и', "i");
+		put('й', "j");
+		put('к', "k");
+		put('л', "l");
+		put('м', "m");
+		put('н', "n");
+		put('о', "o");
+		put('п', "p");
+		put('р', "r");
+		put('с', "s");
+		put('т', "t");
+		put('у', "u");
+		put('ф', "f");
+		// 'х' has sepcial rules
+		put('ц', "c");
+		put('ч', "ch");
+		put('ш', "sh");
+		put('щ', "shch");
+		put('э', "eh");
+		put('ю', "yu");
+		put('я', "ya");
+	}};
+	//	private static final HashMap<String, String> ENGLISH_REPLACEMENT_LETTERS = {
+//		"1","2","3","4","5","6","7","8","9","0","_",
+//		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+//		"a","b","v","g","d","e","yo","g","z","i","y","i","k","l","m","n","o","p","r","s","t",
+//		"u","f","h","ts","ch","sh","sch","e","yu","ya","_","_","","ask","_","_","_","_","_","","","","_"
+//	};
 	private static final String[] ENGLISH_REPLACEMENT_LETTERS_FILES = {
 			"1","2","3","4","5","6","7","8","9","0","_",
 			"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
@@ -84,11 +118,30 @@ public class Strings
 	private static String translit(String russian, boolean isFile) {
 		StringBuilder english = new StringBuilder("");
 		char[] russianChars = russian.toLowerCase().toCharArray();
-		String[] alphabet = isFile ? ENGLISH_REPLACEMENT_LETTERS_FILES : ENGLISH_REPLACEMENT_LETTERS;
-		for(int i = 0; i < russianChars.length; i++) {
-			int alphabetIndex = RUSSIAN_MATCH_LETTERS.indexOf(russianChars[i]);
-			if(alphabetIndex != -1)
-				english.append(alphabet[alphabetIndex]);
+		if(isFile) {
+			String[] alphabet = ENGLISH_REPLACEMENT_LETTERS_FILES;
+			for (int i = 0; i < russianChars.length; i++) {
+				int alphabetIndex = RUSSIAN_MATCH_LETTERS.indexOf(russianChars[i]);
+				if (alphabetIndex != -1)
+					english.append(alphabet[alphabetIndex]);
+			}
+		}else{
+			russian = russian.toLowerCase();
+			russian = russian
+					.replaceAll("\\s", "-")
+					.replaceAll("[ьъ]","")
+					.replaceAll("[^0-9а-яa-zё-]", "");
+			russianChars = russian.toCharArray();
+			for(int i = 0; i < russianChars.length; i++){
+				if (russianChars[i] == 'х'){
+					String eng = i == 0 || "kzcseh".indexOf(russianChars[i - 1]) == -1? "h" : "kh";
+					english.append(eng);
+				}else if (ENGLISH_REPLACEMENT_LETTERS.containsKey(russianChars[i])) {
+					english.append(ENGLISH_REPLACEMENT_LETTERS.get(russianChars[i]));
+				}else{
+					english.append(russianChars[i]);
+				}
+			}
 		}
 		return english.toString();
 	}
@@ -224,6 +277,6 @@ public class Strings
 	}
 
     public static void main(String[] args) {
-    	System.out.println(translit("подъёмник?"));
+    	System.out.println(translit("подъёмник? щх-123!"));
     }
 }

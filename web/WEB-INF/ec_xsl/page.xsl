@@ -13,23 +13,41 @@
 
 
 	<xsl:template name="CONTENT">
-		<section class="s-content s-content--narrow s-content--no-padding-bottom">
-			<div class="row">
-				<div class="s-content__header col-full">
-					<h1 class="s-content__header-title">
-						<xsl:value-of select="$h1"/>
-					</h1>
-				</div>
-				<div class="col-full s-content__main">
-					<div class="content-text">
-						<xsl:apply-templates select="$p" mode="content"/>
+			<section class="single_text">
+				<div class="container">
+					<div class="text_box">
+						<div class="left">
+							<h1><xsl:value-of select="$h1"/></h1>
+							<xsl:apply-templates select="$p" mode="content"/>
+						</div>
+						<div class="right">
+							<div class="head">
+							<h2 class="title">Популярное</h2>
+							<div class="line"></div>
+								<a href="{page/popular_link}" class="look_all">Смотреть все 
+									<img src="img/look_all_right.svg" alt="look_all" class="light" />
+									<img src="img/look_all_right_wh.svg" alt="look_all" class="shadow" />
+								</a>
+							</div>
+							<div class="right_news_list">
+								<xsl:for-each select="/page/popular">
+									<a href="{show_page}" class="item">
+										<span class="text">
+											<span class="top_info_box">
+												<!-- <span class="name">Источник: <xsl:value-of select="if (source != '') then source else 'Respectiva'"/></span> -->
+												<span class="dot"></span>
+												<span class="when" data-millis="{date/@millis}"><xsl:value-of select="date"/></span>
+											</span>
+											<p><xsl:value-of select="name"/></p>
+										</span>
+										<img src="{@path}{small_pic}" alt="{twtter_description}" style="max-width: 78px;" class="list_img"/>
+									</a>
+								</xsl:for-each>
+							</div>
+						</div>
 					</div>
-					<div class="ya-share2" data-services="vkontakte,facebook,twitter" data-limit="3"></div>
-					<div style="height: 3rem;"></div>
 				</div>
-
-			</div>
-		</section>
+			</section>
 	</xsl:template>
 
 	<xsl:template name="EXTRA_SCRIPTS">

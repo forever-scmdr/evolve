@@ -26,21 +26,19 @@
 		<value>body_end</value>
 	</domain>
 	<domain name="complexity" view-type="combobox">
-		<value>просто</value>
-		<value>средне</value>
-		<value>сложно</value>
-		<value>для экспертов</value>
-		<value>вывих мозга</value>
+		<value>A1</value>
+		<value>B2</value>
+		<value>C3</value>
 	</domain>
 	<domain name="szie" view-type="combobox">
-		<value>большой</value>
-		<value>средний</value>
-		<value>короткий</value>
+		<value>Маленький</value>
+		<value>Средний</value>
+		<value>Большой</value>
 	</domain>
 
 	<domain name="author" view-type="combobox">
-		<value>Подготовил: Александр Болтрукевич alexbolt@tempting.pro</value>
-		<value>Подготовила: Алина Швецова shvetsova_alina@tempting.pro</value>
-		<value>Подготовил: Никита Смирнов nikita_smirnov@tempting.pro</value>
+		<value>Подготовил: Александр Болтрукевич alexbolt@respectiva.pro</value>
+		<value>Подготовила: Алина Швецова shvetsova_alina@respectiva.pro</value>
+		<value>Подготовил: Никита Смирнов nikita_smirnov@respectiva.pro</value>
 	</domain>
 </domains>

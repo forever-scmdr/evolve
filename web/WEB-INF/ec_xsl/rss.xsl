@@ -4,6 +4,7 @@
 		xmlns:content="http://purl.org/rss/1.0/modules/content/"
 		xmlns:media="http://search.yahoo.com/mrss/"
 		xmlns:f="f:f"
+		xmlns:atom="http://www.w3.org/2005/Atom"
 		version="2.0"
 		exclude-result-prefixes="content media f xsl"
 >
@@ -21,9 +22,10 @@
 
 	<xsl:template match="/">
 		<xsl:text disable-output-escaping="yes">
-		&lt;rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/"&gt;
+		&lt;rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 		</xsl:text>
 			<channel>
+				<atom:link href="https://respectiva.pro/rss" rel="self" type="application/rss+xml"/>
 				<lastBuildDate><xsl:value-of select="f:millis_to_rss($latest_date_ms)"/></lastBuildDate>
 				<title><xsl:value-of select="$rss/title"/></title>
 				<description><xsl:value-of select="$rss/description"/></description>
@@ -39,7 +41,7 @@
 			<guid isPermaLink="true"><xsl:value-of select="concat($base, show_page)"/></guid>
 			<pubDate><xsl:value-of select="f:millis_to_rss(date/@millis)"/></pubDate>
 			<title><xsl:value-of select="name"/></title>
-			<description><xsl:value-of select="twitter_description"/></description>
+			<description><xsl:value-of select="twitter_description" disable-output-escaping="no"/></description>
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
@@ -49,7 +51,12 @@
 <!--				</xsl:copy>-->
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
-				<author><xsl:value-of select="author"/></author>
+				<xsl:if test="author != ''">
+					<author><xsl:value-of select="author"/></author>
+				</xsl:if>
+				<xsl:if test="not(author != '')">
+					<author>alexbolt@respectiva.pro (Alexandr Bolturkevich)</author>
+				</xsl:if>
 			 <!-- <author>bio@forever-ds.com (test rss)</author> -->
 
 			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>
@@ -65,7 +72,7 @@
 			<guid isPermaLink="true"><xsl:value-of select="concat($base, show_page)"/></guid>
 			<pubDate><xsl:value-of select="f:millis_to_rss(date/@millis)"/></pubDate>
 			<title><xsl:value-of select="name"/></title>
-			<description><xsl:value-of select="twitter_description"/></description>
+			<description><xsl:value-of select="twitter_description" disable-output-escaping="no"/></description>
 			<content:encoded>
 <!--				<xsl:copy>-->
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
@@ -76,7 +83,12 @@
 <!--				</xsl:copy>-->
 			</content:encoded>
 			<link><xsl:value-of select="concat($base, show_page)"/></link>
-			<author><xsl:value-of select="author"/></author>
+			<xsl:if test="author != ''">
+				<author><xsl:value-of select="author"/></author>
+			</xsl:if>
+			<xsl:if test="not(author != '')">
+					<author>alexbolt@respectiva.pro (Alexandr Bolturkevich)</author>
+				</xsl:if>
 			 <!-- <author>bio@forever-ds.com (test rss)</author> -->
 
 			<xsl:variable name="main_pic" select="if(main_pic !='') then main_pic else if(medium_pic != '') then medium_pic else soc_image"/>

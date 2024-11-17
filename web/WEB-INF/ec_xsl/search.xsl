@@ -7,8 +7,6 @@
 	<xsl:variable name="active_menu_item" select="'catalog'"/>
 	<xsl:variable name="qot">"</xsl:variable>
 
- 	<xsl:variable name="title" select="if(page/@name = 'search') then concat('Поиск по запросу ', page/variables/q) else concat('Новости и статьи по тегу ', page/variables/tag)" />
-
 	<xsl:variable name="news_items" select="/page/news_item | page/news_wrap/news_item"/>
 	<xsl:variable name="news_parts" select="/page/text_part[news_item]"/>
 	<xsl:variable name="small_news_parts" select="/page/text_part[small_news_item]"/>
@@ -18,7 +16,7 @@
 	<xsl:variable name="h1_1">
 		<xsl:choose>
 			<xsl:when test="page/@name = 'search'">
-				<xsl:value-of select="concat('Новости по запросу: ',$qot,page/variables/q,$qot)"/>
+				<xsl:value-of select="concat('Статьи по запросу: ',$qot,page/variables/search,$qot)"/>
 			</xsl:when>
 			<xsl:when test="page/@name = 'tag'">
 				<xsl:value-of select="concat('Новости по тегу: ',$qot,page/variables/tag,$qot)"/>
@@ -29,229 +27,95 @@
 		</xsl:choose>
 	</xsl:variable>
 
-	<xsl:variable name="h1_2">
-		<xsl:choose>
-			<xsl:when test="page/@name = 'search'">
-				<xsl:value-of select="concat('Статьи по запросу: ',$qot,page/variables/q,$qot)"/>
-			</xsl:when>
-			<xsl:when test="page/@name = 'tag'">
-				<xsl:value-of select="concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)"/>
-			</xsl:when>
-			<xsl:when test="page/@name = 'author'">
-				<xsl:value-of select="concat('Статьи автора: ',$qot,page/variables/author,$qot)"/>
-			</xsl:when>
-		</xsl:choose>
-	</xsl:variable>
+	<xsl:variable name="pagination" select="/page/news_item_pages"/>
 
-	<!-- <xsl:variable name="h1_1" select="if(page/@name = 'search') then concat('Новости по запросу: ',$qot,page/variables/q,$qot) else  concat('Новости по тегу: ',$qot,page/variables/tag, $qot)" /> -->
-	<!-- <xsl:variable name="h1_2" select="if(page/@name = 'search') then concat('Статьи по запросу: ',$qot,page/variables/q,$qot) else  concat('Статьи по тегу: ',$qot,page/variables/tag,$qot)" /> -->
+
+	<xsl:variable name="title" select="$h1_1" />
+
 
 	<xsl:template name="CONTENT">
-		<section class="s-content">
-			<xsl:if test="count($small_news) = 0 and count($news_items|$news_parts) = 0">
-				<div class="row narrow">
-					<div class="col-full s-content__header" data-aos="fade-up">
-						<h1>
-							По Вашему запросу ничего не найдено.
-						</h1>
-					</div>
-				</div>
-				<div class="row">
-					<xsl:if test="page/common/not_found !=''">
-						<div class="col-full" style="text-align: center;">
-							<img src="{concat(page/common/@path, page/common/not_found)}"/>
-						</div>
-					</xsl:if>
-				</div>
-			</xsl:if>
-			<xsl:if test="count($small_news | $small_news_parts) &gt; 0">
-				<div class="row narrow">
-					<div class="col-full s-content__header" data-aos="fade-up">
-						<h1>
-							<xsl:value-of select="$h1_1"/>
-						</h1>
-					</div>
-				</div>
-				<div class="row masonry-wrap">
-					<div class="" id="small-news">
-						<xsl:for-each select="$small_news">
-							<xsl:sort select="number(date/@millis)" order="descending"/>
-							<div class="col-four tab-full small-news-item" data-aos="fade-up">
-								<xsl:if test="small_pic != ''">
-									<div class="entry__thumb">
-										<a href="{show_small_news_item}" class="entry__thumb-link">
-											<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
-										</a>
-									</div>
-								</xsl:if>
-								<!-- <div class="col-four tab-full small-news-item masonry__brick" data-aos="fade-up"> -->
-								<p class="date" data-utc="{date/@millis}">
-									<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
-									<xsl:if test="update != ''">&#160;(обновлено: <xsl:value-of select="update"/>)</xsl:if>
-								</p>
-								<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
-									<a href="{show_small_news_item}">
-										<xsl:value-of select="name"/>
-									</a>
-								</p>
-							</div>
+		<section class="category_page">
 
-							<xsl:variable name="pos" select="position()"/>
-							<xsl:if test="$pos mod 3 = 0">
-								<div class="three-col-border"></div>
-							</xsl:if>
-						</xsl:for-each>
-						<xsl:apply-templates select="$small_news_parts" mode="masonry"/>
-					</div>
-					<xsl:if test="page/small_news/small_news_item_pages">
-						<xsl:variable name="last" select="count(page/small_news/small_news_item_pages/page)"/>
-						<xsl:variable select="number(page/small_news/small_news_item_pages/page[@current = 'current']/number)" name="z"/>
-						<div class="row">
-							<div class="col-full">
-								<nav class="pgn">
-									<ul>
-										<li id="load_more">
-											<a href="{page/small_page_link}&amp;page={$z+1}" rel="#small-news" data-page="{$z+1}/{$last}" class="pgn__num load-more-small-link">
-												Загрузить еще
-											</a>
-										</li>
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</xsl:if>
+			<div class="container">
+				<h1><xsl:value-of select="$h1_1"/></h1>
+				<div class="category_list" id="news_feed" data-page="1" data-link="{/page/pages_link}" data-max-page="{if ($pagination) then max($pagination/page[last()]/number(number)) else 1}">
+					<xsl:apply-templates select="/page/news_item[small_pic != '']"/>
+					<!-- <xsl:apply-templates select="/page/news_item[not(small_pic != '')]"/> -->
 				</div>
-				<div style="margin-bottom: 2.5rem;"></div>
-			</xsl:if>
-			<xsl:if test="count($news_items|$news_parts) &gt; 0">
-				<div class="row narrow">
-					<div class="col-full s-content__header" data-aos="fade-up">
-						<h1>
-							<xsl:value-of select="$h1_2"/>
-						</h1>
+				<xsl:if test="page/variables/search">
+
+					<h1 style="margin-top: 30px; margin-bottom: 20px;"><xsl:value-of select="concat('Новости по запросу: ',$qot,page/variables/search,$qot)"/></h1>
+					<div class="category_list">
+						<xsl:apply-templates select="/page/news_item[not(small_pic != '')]"/>
 					</div>
-				</div>
-				<div class="row masonry-wrap">
-					<div class="masonry" id="add-content">
-						<div class="grid-sizer"></div>
-						<xsl:for-each select="$news_items | $news_parts">
-							<xsl:sort select="number((if(date) then date else /../date)/@millis)" order="descending"/>
-							<xsl:apply-templates select="." mode="masonry"/>
-						</xsl:for-each>
-					</div>
-					<xsl:if test="page/news_wrap/news_item_pages">
-						<xsl:variable name="last" select="count(page/news_wrap/news_item_pages/page)"/>
-						<xsl:variable select="number(page/news_wrap/news_item_pages/page[@current = 'current']/number)" name="z"/>
-						<div class="row">
-							<div class="col-full">
-								<nav class="pgn">
-									<ul>
-										<li id="load_more">
-											<a href="{page/page_link}&amp;page={$z+1}" rel="#add-content" data-page="{$z+1}/{$last}" class="pgn__num load-more-small-link">
-												Загрузить еще
-											</a>
-										</li>
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</xsl:if>
-				</div>
-			</xsl:if>
+				</xsl:if>
+			</div>
 		</section>
 	</xsl:template>
 
-	<xsl:template match="text_part" mode="masonry">
-		<xsl:variable name="nid" select="news_item/@id"/>
-		<xsl:variable name="cid" select="news_item/@id"/>
-		<xsl:variable name="snid" select="small_news_item/@id"/>
-		<xsl:variable name="scid" select="small_news_item/@id"/>
-		<xsl:if test="not($news_items[@id = $nid])">
-			<xsl:apply-templates select="news_item" mode="masonry"/>
-		</xsl:if>
-		<!-- <xsl:if test="not($small_news[@id = $snid])"> -->
-			<xsl:apply-templates select="small_news_item" mode="masonry"/>
-		<!-- </xsl:if> -->
-	</xsl:template>
+	<xsl:template match="news_item">
+		<xsl:variable name="t" select="@type"/>
+		<xsl:variable name="link" select="if($t = 'news_item') then show_news_item else show_small_news_item"/>
 
-	<xsl:template match="small_news_item" mode="masonry">
-		<div class="col-four tab-full small-news-item" data-aos="fade-up" style="background: transparent;">
-			<p class="date" data-utc="{date/@millis}">
-				<xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/>
-			</p>
-			<p class="name{if(not(tag)) then ' botmar' else ' mar-0'}">
-				<a href="{show_page}">
-					<xsl:value-of select="name"/>
-				</a>
-			</p>
-		</div>
-		<xsl:variable name="pos" select="position()"/>
-		<xsl:if test="$pos mod 3 = 0">
-			<div class="three-col-border"></div>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="news_item" mode="masonry">
-
-		<xsl:variable name="category" select="if(../name() = 'text_part') then ../news else news" />
-		<xsl:variable name="format" select="if(video_url != '') then 'video' else if(top_gal/main_pic != '') then 'gallery' else 'standard'"/>
-
-		<article class="masonry__brick entry format-{$format}" data-aos="fade-up">
-			<!-- STANDARD -->
-			<xsl:if test="$format = 'standard'">
-				<div class="entry__thumb">
-					<a href="{show_news_item}" class="entry__thumb-link">
-						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
-					</a>
-				</div>
+		<a href="{$link}" class="item">
+			<xsl:if test="small_pic != ''">
+				<img src="{@path}{small_pic}" alt="{name}" />
 			</xsl:if>
-
-			<!-- VIDEO -->
-			<xsl:if test="$format = 'video'">
-				<div class="entry__thumb video-image">
-					<a href="{video_url}" data-lity="">
-						<img src="{concat(@path, small_pic)}" srcset="{concat(@path, small_pic)} 1x, {concat(@path, medium_pic)} 2x" alt=""/>
-					</a>
-				</div>
-			</xsl:if>
-
-			<xsl:if test="$format = 'gallery'">
-				<div class="entry__thumb slider">
-					<div class="slider__slides">
-						<xsl:variable name="path" select="top_gal/@path"/>
-						<xsl:for-each select="top_gal/small_pic">
-							<xsl:variable name="p" select="position()"/>
-							<div class="slider__slide">
-								<img src="{concat($path,.)}" srcset="{concat($path,.)} 1x, {concat($path,../medium_pic[$p])} 2x" alt=""/>
-							</div>
-						</xsl:for-each>
-					</div>
-				</div>
-			</xsl:if>
-
-			<!-- TEXT -->
-			<div class="entry__text">
-				<div class="entry__header">
-					<div class="entry__date">
-						<a href="{show_news_item}" data-utc="{date/@millis}"><xsl:value-of select="f:utc_millis_to_bel_date(date/@millis)"/></a>
-					</div>
-					<div class="h1 entry__title"><a href="{show_news_item}"><xsl:value-of select="name"/></a></div>
-				</div>
-				<div class="entry__excerpt">
-					<xsl:value-of select="short" disable-output-escaping="yes"/>
-				</div>
-				<div class="entry__meta">
-					<span class="entry__meta-links">
-						<a href="{$category/show_page}">
-							<xsl:value-of select="$category/name"/>
-						</a>
-					</span>
-				</div>
-			</div>
-
-		</article>
+			<span class="text_box">
+				<span class="top_info_box">
+					<!-- <div class="name"><xsl:value-of select="if (source != '') then 'Respectiva' else 'Respectiva'"/></div> -->
+					<span class="dot"></span>
+					<span class="when"><xsl:value-of select="date"/></span>
+				</span>
+				<span class="title"><xsl:value-of select="name"/></span>
+				<p><xsl:value-of select="twitter_description"/></p>
+				<span class="time_to_read"><xsl:value-of select="read_time"/> читать</span>
+			</span>
+		</a>
 	</xsl:template>
 
 
+	<xsl:template name="EXTRA_SCRIPTS">
+		<script>
+			newsFeed = document.getElementById("news_feed")
+			
+			function ajaxCall(){
+				var request = new XMLHttpRequest();
+				var pageNumber = 1 * newsFeed.getAttribute('data-page') + 1;
+				sep = newsFeed.getAttribute('data-link').indexOf('?') > -1 ? '&amp;' : '?'
+				var url = newsFeed.getAttribute('data-link') + sep + 'page=' + pageNumber;
+
+				// block onscroll while loading
+				news_feed.setAttribute('data-status', 'loading');
+
+				request.onreadystatechange = function(){
+					if(request.readyState === XMLHttpRequest.DONE){
+						if(request.status === 200) {
+							news_feed.setAttribute('data-page', pageNumber)
+							news_feed.innerHTML += request.responseText; 
+						}else {
+							console.log()
+							console.log(request)
+						}
+						newsFeed.removeAttribute('data-status')
+					}
+				}
+
+				request.open('GET', url);
+				request.send();
+			}		
+
+			window.onscroll = function(){
+				if (newsFeed.getAttribute('data-status') == 'loading'){
+					return;
+				}
+				if(window.scrollY + window.innerHeight &gt;= newsFeed.offsetTop + newsFeed.offsetHeight){
+					if (newsFeed.getAttribute('data-page') * 1 &lt; newsFeed.getAttribute('data-max-page') * 1){
+						ajaxCall();
+					}
+				}
+			};
+		</script>
+	</xsl:template>
 
 </xsl:stylesheet>

@@ -24,32 +24,13 @@
 
 		<list item="link"/>
 
-		<list item="news" id="news" cacheable="true">
+		<list item="news" id="news">
 			<link name="show_page" target="news_section" type="exclusive">
 				<var name="sel" ref="news" style="translit"/>
 			</link>
 		</list>
 
-		<link name="news_link_pol" target="news">
-			<var name="tag" value="Политика"/>
-		</link>
-		<link name="news_link_fin" target="news">
-			<var name="tag" value="Финансы"/>
-		</link>
-		<link name="news_link_biz" target="news">
-			<var name="tag" value="Бизнес"/>
-		</link>
-		<link name="news_link_tech" target="news">
-			<var name="tag" value="Технологии"/>
-		</link>
-		<link name="news_link_econ" target="news">
-			<var name="tag" value="Экономика"/>
-		</link>
-		<link name="news_link_stock" target="news">
-			<var name="tag" value="Биржа"/>
-		</link>
-
-		<single item="common" cacheable="true">
+		<single item="common">
 			<list item="soc_link"/>
 			<list item="banner"/>
 		</single>
@@ -77,39 +58,22 @@
 
 
 	<include-definition name="TICKERS">
-		<list item="informer"/>
+		<list item="informer_wrap">
+			<list item="informer"/>
+		</list>
 	</include-definition>
 
 
-	<page name="informers_ajax" template="informers_ajax" cacheable="true">
-		<request>
-			<var name="ticker"/>
-			<var name="limit" value="5"/>
-			<var name="tickers_per_request" value="5"/>
-			<var name="page" value="1"/>
-		</request>
-		<single item="informer_wrap" var="ticker">
-			<list item="informer">
-				<filter>
-					<limit>
-						<var var="limit"/>
-					</limit>
-					<pages>
-						<var name="page" var="page"/>
-					</pages>
-				</filter>
-			</list>
-		</single>
-		<link name="base_link" copy-page-vars="no" target="informers_ajax">
-			<var name="ticker" var="ticker"/>
-		</link>
-	</page>
-
-	<page name="index" template="index" cacheable="true">
+	<page name="index" template="index">
 		<request>
 			<var name="limit" value="9"/>
 			<var name="page" value="1"/>
 		</request>
+
+		<link name="recommended_link" target="recommended"/>
+		<link name="popular_link" target="popular"/>
+
+		<single item="main_page"/>
 		<single item="hot_tags">
 			<list item="tag" id="hot_tag">
 				<link name="hot_link" target="tag">
@@ -117,44 +81,23 @@
 				</link>
 			</list>
 		</single>
-		<single item="main_page" id="main">
-			<single item="seo"/>
-			<list item="featured" id="featured">
-				<filter>
-					<limit>
-						<var value="3"/>
-					</limit>
-				</filter>
-			</list>
-			<list item="informer_wrap" id="inf">
-				<link name="informers_ajax_link" target="informers_ajax">
-					<var name="ticker" ref="inf"/>
-				</link>
-			</list>
-		</single>
 		<single item="news_wrap">
-			<list item="news_item" id="ni" transit="true">
+			<list item="news_item" id="featured" transit="true" tag="featured">
 				<filter>
-					<parameter name="hash" sign="!=" compare="SOME">
-						<var ref="featured" parameter="hash"/>
-					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
 					</sorting>
 					<limit>
-						<var var="limit"/>
+						<var value="3"/>
 					</limit>
-					<pages>
-						<var var="page"/>
-					</pages>
 				</filter>
 				<single item="top_gal"/>
 				<link name="show_page" target="news_item" type="exclusive">
-					<var name="sel" ref="ni" style="translit"/>
+					<var name="sel" style="translit" ref="featured"/>
 				</link>
-				<ancestor item="news" transit="false" id="cat">
+				<ancestor item="news" transit="false" id="feat_cat">
 					<link name="show_page" target="news_section" type="exclusive">
-						<var name="sel" ref="cat" style="translit"/>
+						<var name="sel" ref="feat_cat" style="translit"/>
 					</link>
 				</ancestor>
 			</list>
@@ -169,7 +112,7 @@
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="14"/>
+					<var value="5"/>
 				</limit>
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
@@ -186,13 +129,33 @@
 			</ancestor>
 		</list>
 
+		<list item="news_item" id="rni" tag="recommended">
+			<filter>
+				<parameter name="hash" sign="!=" compare="SOME">
+					<var ref="featured" parameter="hash"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="3"/>
+				</limit>
+				<parameter name="recommended" sign="=" compare="SOME">
+					<var value="1"/>
+				</parameter>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="rni" style="translit"/>
+			</link>
+		</list>
+
 		<list item="small_news_item" id="sni">
 			<filter>
 				<parameter name="hash" sign="!=" compare="SOME">
 					<var ref="featured" parameter="hash"/>
 				</parameter>
 				<limit>
-					<var value="3"/>
+					<var value="4"/>
 				</limit>
 				<sorting direction="DESC">
 					<var value="date"/>
@@ -203,13 +166,125 @@
 			</link>
 		</list>
 
-		<link name="load_more" target="news_ajax">
-			<var name="page" value="2"/>
-		</link>
+		<!-- news of top tags-->
+		<list item="news_item" id="fni" tag="fin">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var value="Финансы"/>
+				</parameter>
+				<limit>
+					<var value="5"/>
+				</limit>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="ni" ref="fni" style="translit"/>
+			</link>
+		</list>
+		
+		<list item="news_item" id="bni" tag="biz">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var value="Бизнес"/>
+				</parameter>
+				<limit>
+					<var value="6"/>
+				</limit>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="ni" ref="bni" style="translit"/>
+			</link>
+		</list>
+
+
+		<list item="news_item" id="mni" tag="market_ni">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var value="Биржа"/>
+				</parameter>
+				<limit>
+					<var value="5"/>
+				</limit>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="ni" ref="mni" style="translit"/>
+			</link>
+		</list>
+
+		<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="hash" sign="!=" compare="SOME">
+						<var ref="featured" parameter="hash"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<link name="show_page" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+			<ancestor item="news" id="other_ni">
+				<link name="show_page" target="news_section" type="exclusive">
+					<var name="sel" ref="other_ni" style="translit"/>
+				</link>
+			</ancestor>
+		</list>
+
+		<list item="news_item" id="audio" tag="audio">
+			<filter>
+				<parameter name="main_audio" sign="!=" compare="SOME">
+					<var value="1"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="3"/>
+				</limit>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="audio" style="translit"/>
+			</link>
+
+		</list>
 		<include name="COMMON"/>
+		<include name="TICKERS"/>
 	</page>
 
-	<page name="news_ajax" template="news_ajax" cacheable="true">
+
+	<page name="t_index" template="_index">
+		<request>
+			<var name="limit" value="9"/>
+			<var name="page" value="1"/>
+		</request>
+		
+		<single item="main_page" id="main">
+			
+			<list item="informer_wrap" id="inf">
+				<!-- <link name="informers_ajax_link" target="informers_ajax">
+					<var name="ticker" ref="inf"/>
+				</link> -->
+				<list item="informer"/>
+			</list>
+		</single>
+		
+	</page>
+
+	<page name="news_ajax" template="news_ajax">
 		<request>
 			<var name="limit" value="9"/>
 			<var name="page" value="2"/>
@@ -221,7 +296,7 @@
 				</limit>
 			</filter>
 		</list>
-		<single item="news_wrap" cacheable="true" cache-vars="page limit">
+		<single item="news_wrap" cache-vars="page limit">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<parameter name="hash" sign="!=" compare="SOME">
@@ -253,41 +328,62 @@
 
 	<page name="search" template="search">
 		<request>
-			<var name="q"/>
+			<var name="search"/>
 		</request>
-		<list item="searchable" id="prod">
+		<list item="news_item" id="prod" tag="news_item">
 			<filter>
-				<fulltext limit="48" compare="EVERY">
-					<var var="q"/>
+				<fulltext limit="24" compare="EVERY">
+					<var var="search"/>
 				</fulltext>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
 			</filter>
 			<link name="show_news_item" target="news_item" type="exclusive">
-				<var name="ni" ref="prod" style="translit"/>
-			</link>
-			<link name="show_small_news_item" target="small_news_item" type="exclusive">
 				<var name="sni" ref="prod" style="translit"/>
 			</link>
-			<ancestor item="news" transit="true" id="cat">
-				<link name="show_page" target="news_section" type="exclusive">
-					<var name="sel" ref="cat" style="translit"/>
-				</link>
-			</ancestor>
-			<ancestor item="news_item" id="ni">
+			<!-- <link name="show_small_news_item" target="small_news_item" type="exclusive">
+				<var name="sni" ref="prod" style="translit"/>
+			</link> -->
+			<!-- <ancestor item="news_item" id="ni">
 				<link name="show_page" target="news_item" type="exclusive">
-					<var name="ni" ref="ni" style="translit"/>
+					<var name="sni" ref="ni" style="translit"/>
 				</link>
 			</ancestor>
 			<ancestor item="small_news_item" id="sni">
 				<link name="show_page" target="small_news_item" type="exclusive">
-					<var name="ni" ref="sni" style="translit"/>
+					<var name="sni" ref="sni" style="translit"/>
+				</link>
+			</ancestor> -->
+		</list>
+		<list item="small_news_item" id="prod1" tag="news_item">
+			<filter>
+				<fulltext limit="24" compare="EVERY">
+					<var var="search"/>
+				</fulltext>
+			</filter>
+			<!-- <link name="show_news_item" target="news_item" type="exclusive">
+				<var name="sni" ref="prod" style="translit"/>
+			</link> -->
+			<link name="show_small_news_item" target="small_news_item" type="exclusive">
+				<var name="sni" ref="prod1" style="translit"/>
+			</link>
+			<!-- <ancestor item="news_item" id="ni1">
+				<link name="show_page" target="news_item" type="exclusive">
+					<var name="sni" ref="ni" style="translit"/>
 				</link>
 			</ancestor>
+			<ancestor item="small_news_item" id="sni">
+				<link name="show_page" target="small_news_item" type="exclusive">
+					<var name="sni" ref="sni" style="translit"/>
+				</link>
+			</ancestor> -->
 		</list>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="news_section" template="news" cacheable="true">
+	<page name="news_section" template="news">
 		<request>
 			<var name="sel" style="translit"/>
 			<var name="p" value="1"/>
@@ -311,16 +407,19 @@
 				</link>
 			</list>
 		</single>
+		<link name="pages_link" target="news_page_ajax">
+			<var name="sel" var="sel" style="translit"/>
+		</link>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="news_page_ajax" template="news_page_ajax" cacheable="true">
+	<page name="news_page_ajax" template="news_ajax">
 		<request>
 			<var name="sel" style="translit"/>
-			<var name="p" value="2"/>
+			<var name="page" value="2"/>
 		</request>
-		<single item="news" var="sel" tag="selected_news" cacheable="true" cache-vars="sel p">
+		<single item="news" var="sel" tag="selected_news" cache-vars="sel p">
 			<list item="news_item" id="ni" assoc="primary news">
 				<filter>
 					<sorting direction="DESC">
@@ -330,11 +429,11 @@
 						<var value="24"/>
 					</limit>
 					<pages>
-						<var name="p" var="p"/>
+						<var name="page" var="page"/>
 					</pages>
 				</filter>
 				<link name="show_page" target="news_item" type="exclusive">
-					<var name="ni" ref="ni" style="translit"/>
+					<var name="sni" ref="ni" style="translit"/>
 				</link>
 			</list>
 		</single>
@@ -343,33 +442,30 @@
 	<page name="tag" template="search">
 		<request>
 			<var name="tag"/>
-			<var name="limit" value="18"/>
+			<var name="limit" value="12"/>
 			<var name="page" value="1"/>
-			<var name="s_page" value="1"/>
 		</request>
-		<single item="small_news">
-			<list item="small_news_item" id="sni">
-				<filter>
-					<parameter name="tag" sign="=">
-						<var var="tag"/>
-					</parameter>
-					<sorting direction="DESC">
-						<var value="date"/>
-					</sorting>
-					<limit>
-						<var var="limit"/>
-					</limit>
-					<pages>
-						<var var="s_page"/>
-					</pages>
-				</filter>
-				<link name="show_small_news_item" target="small_news_item" type="exclusive">
-					<var name="sel" ref="sni" style="translit"/>
-				</link>
-			</list>
-		</single>
-		<single item="news_wrap"  cache-vars="tag limit" cacheable="true">
-			<list item="news_item" id="ni" transit="true">
+		<list item="small_news_item" id="sni" tag="news_item">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var var="tag"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var var="limit"/>
+				</limit>
+				<pages>
+					<var var="page"/>
+				</pages>
+			</filter>
+			<link name="show_small_news_item" target="small_news_item" type="exclusive">
+				<var name="sel" ref="sni" style="translit"/>
+			</link>
+		</list>
+		
+		<list item="news_item" id="ni" transit="true">
 				<filter>
 					<parameter name="tag" sign="=">
 						<var var="tag"/>
@@ -388,27 +484,174 @@
 				<link name="show_news_item" target="news_item" type="exclusive">
 					<var name="sel" ref="ni" style="translit"/>
 				</link>
-				<ancestor item="news" transit="false" id="cat">
-					<link name="show__page" target="news_section" type="exclusive">
-						<var name="sel" ref="cat" style="translit"/>
-					</link>
-				</ancestor>
-			</list>
-		</single>
-		<link name="page_link" target="all_news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="tag"/>
-		</link>
-		<link name="small_page_link" target="small_news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="tag" var="tag"/>
-		</link>
-		<link name="page_link" target="news_ajax">
-			<var name="limit" var="limit"/>
+		</list>
+		<link name="pages_link" target="tag_ajax">
 			<var name="tag" var="tag"/>
 		</link>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
+	</page>
+
+	<page name="recommended" template="search">
+		<request>
+			<var name="limit" value="24"/>
+			<var name="page" value="1"/>
+		</request>	
+		<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="recommended" sign="=" compare="SOME">
+						<var value="1"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+		</list>
+		<link name="pages_link" target="recommended_ajax" />
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+
+	<page name="recommended_ajax">
+		<request>
+			<var name="limit" value="24"/>
+			<var name="page" value="2"/>
+		</request>	
+		<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="recommended" sign="=" compare="SOME">
+						<var value="1"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_page" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+		</list>
+	</page>
+
+	<page name="popular" template="search">
+		<request>
+			<var name="limit" value="24"/>
+			<var name="page" value="1"/>
+		</request>	
+		<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="popular" sign="=" compare="SOME">
+						<var value="1"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_news_item" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+		</list>
+		<link name="pages_link" target="recommended_ajax" />
+		<include name="COMMON"/>
+		<include name="TICKERS"/>
+	</page>
+
+	<page name="popular_ajax">
+		<request>
+			<var name="limit" value="24"/>
+			<var name="page" value="2"/>
+		</request>	
+		<list item="news_item" id="ni" transit="true">
+				<filter>
+					<parameter name="popular" sign="=" compare="SOME">
+						<var value="1"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_page" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+		</list>
+	</page>
+
+	<page name="tag_ajax" template="news_ajax">
+		<request>
+			<var name="tag"/>
+			<var name="limit" value="12"/>
+			<var name="page" value="1"/>
+		</request>
+		<list item="small_news_item" id="sni" tag="news_item" cache-vars="tag page limit">
+			<filter>
+				<parameter name="tag" sign="=">
+					<var var="tag"/>
+				</parameter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var var="limit"/>
+				</limit>
+				<pages>
+					<var var="page"/>
+				</pages>
+			</filter>
+			<link name="show_page" target="small_news_item" type="exclusive">
+				<var name="sel" ref="sni" style="translit"/>
+			</link>
+		</list>
+		
+		<list item="news_item" id="ni" cache-vars="tag page limit">
+				<filter>
+					<parameter name="tag" sign="=">
+						<var var="tag"/>
+					</parameter>
+					<sorting direction="DESC">
+						<var value="date"/>
+					</sorting>
+					<limit>
+						<var var="limit"/>
+					</limit>
+					<pages>
+						<var var="page"/>
+					</pages>
+				</filter>
+				<single item="top_gal"/>
+				<link name="show_page" target="news_item" type="exclusive">
+					<var name="sel" ref="ni" style="translit"/>
+				</link>
+		</list>
 	</page>
 
 	<page name="all_news" template="all_news">
@@ -445,7 +688,7 @@
 				</link>
 			</list>
 		</single>
-		<single item="news_wrap"  cache-vars="tag limit" cacheable="true">
+		<single item="news_wrap"  cache-vars="tag limit">
 			<list item="news_item" id="ni" transit="true">
 				<filter>
 					<parameter name="author" sign="=">
@@ -472,30 +715,18 @@
 				</ancestor>
 			</list>
 		</single>
-		<link name="page_link" target="all_news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="author" var="author"/>
-		</link>
-		<link name="small_page_link" target="small_news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="author" var="author"/>
-		</link>
-		<link name="page_link" target="news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="author" var="author"/>
-		</link>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="all_news_ajax" template="news_page_ajax" cacheable="true">
+	<page name="all_news_ajax" template="news_page_ajax">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
 			<var name="tag"/>
 			<var name="author"/>
 		</request>
-		<single item="news_wrap" cacheable="true" cache-vars="page tag">
+		<single item="news_wrap" cache-vars="page tag">
 			<list item="news_item" id="ni" transit="true" >
 				<filter>
 					<parameter name="tag" sign="=">
@@ -527,13 +758,13 @@
 		</single>
 	</page>
 
-	<page name="news_item" template="news_item" cacheable="true">
+	<page name="news_item" template="news_item">
 		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<request>
-			<var name="ni" style="translit"/>
+			<var name="sni" style="translit"/>
 		</request>
 		<single item="overused" id="overused"/>
-		<single item="news_item" var="ni" id="ni" >
+		<single item="news_item" var="sni" id="ni" >
 			<single item="seo"/>
 			<single item="top_gal"/>
 
@@ -553,7 +784,11 @@
 					</link>
 				</list>
 			</list>
-			<ancestor item="news" transit="false"/>
+			<ancestor item="news" transit="false" id="cat">
+					<link name="show_page" target="news_section" type="exclusive">
+						<var name="sel" ref="cat" style="translit"/>
+					</link>
+			</ancestor>
 			<ancestor item="news_wrap" id="parent" transit="true" tag="news">
 				<list item="news_item" tag="prev" id="prev" cacheable="false" cache-vars="ni" transit="true">
 					<filter>
@@ -587,7 +822,7 @@
 						<var name="ni" style="translit" ref="next"/>
 					</link>
 				</list>
-				<list item="news_item" transit="true" cacheable="false" id="also">
+				<list item="news_item" transit="true" cacheable="false" id="also" tag="also">
 					<filter>
 						<parameter name="tag" sign="!=" compare="SOME">
 							<var ref="overused" parameter="tag"/>
@@ -602,7 +837,7 @@
 							<var value="date"/>
 						</sorting>
 						<limit>
-							<var value="6"/>
+							<var value="3"/>
 						</limit>
 					</filter>
 					<link target="news_item" name="show_page" type="exclusive">
@@ -618,7 +853,7 @@
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="14"/>
+					<var value="6"/>
 				</limit>
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
@@ -650,17 +885,26 @@
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="news" template="small_news" cacheable="true">
+	<page name="news" template="news">
 		<request>
 			<var name="page" value="1"/>
 			<var name="limit" value="24"/>
-			<var name="tag"/>
+			<var name="tag" />
 		</request>
-		<single item="small_news" cacheable="true" cache-vars="limit tag">
-			<list item="small_news_item" id="ni">
+
+		<single item="cool_tags">
+			<list item="tag" id="cool_tag">
+				<link name="hot_link" target="news">
+					<var name="tag" ref="cool_tag" parameter="name"/>
+				</link>
+			</list>
+		</single>
+
+		<single item="small_news" cache-vars="limit tag" tag="selected_news">
+			<list item="small_news_item" id="ni" tag="news_item">
 				<filter>
-					<parameter name="tag" sign="=">
-						<var var="tag"/>
+					<parameter name="tag" sign="=" compare="ANY">
+						<var var="tag" />
 					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -677,30 +921,22 @@
 				</link>
 			</list>
 		</single>
-
-		<link name="page_link" target="small_news_ajax">
-			<var name="limit" var="limit"/>
-			<var name="tag" var="tag"/>
-		</link>
+   		<link name="pages_link" target="small_news_ajax"/>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="small_news_ajax" template="small_news_ajax" cacheable="true">
+	<page name="small_news_ajax" template="news_ajax">
 		<request>
 			<var name="page" value="2"/>
 			<var name="limit" value="24"/>
-			<var name="tag"/>
-			<var name="author"/>
+			<var name="tag" />
 		</request>
-		<single item="small_news" cacheable="true" cache-vars="page tag">
-			<list item="small_news_item" id="ni">
+		<single item="small_news" cache-vars="page limit tag">
+			<list item="small_news_item" id="ni" tag="news_item">
 				<filter>
-					<parameter name="tag" sign="=">
-						<var var="tag"/>
-					</parameter>
-					<parameter name="author" sign="=">
-						<var var="author"/>
+					<parameter name="tag" sign="=" compare="ANY">
+						<var var="tag" />
 					</parameter>
 					<sorting direction="DESC">
 						<var value="date"/>
@@ -719,12 +955,12 @@
 		</single>
 	</page>
 
-	<page name="small_news_item" template="small_news_item" cacheable="true">
+	<page name="small_news_item" template="news_item">
 		<headers X-Frame-Options="ALLOWALL" Access-Control-Allow-Origin="*" />
 		<request>
 			<var name="sni" style="translit"/>
 		</request>
-		<single item="small_news_item" var="sni" id="ni" >
+		<single item="small_news_item" var="sni" id="ni" tag="news_item">
 			<single item="seo"/>
 			<list item="page_part" />
 			<link name="author_link" target="author">
@@ -775,7 +1011,7 @@
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="6"/>
+					<var value="3"/>
 				</limit>
 			</filter>
 			<link target="news_item" name="show_page" type="exclusive">
@@ -783,13 +1019,13 @@
 			</link>
 		</list>
 
-		<list item="news_item" id="pni" tag="popular" cacheable="true">
+		<list item="news_item" id="pni" tag="popular">
 			<filter>
 				<sorting direction="DESC">
 					<var value="date"/>
 				</sorting>
 				<limit>
-					<var value="14"/>
+					<var value="6"/>
 				</limit>
 				<parameter name="popular" sign="=" compare="SOME">
 					<var value="1"/>
@@ -821,10 +1057,11 @@
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="preview_small_news_item" template="small_news_item" authority-groups="common">
+	<page name="preview_small_news_item" template="news_item" authority-groups="common">
 		<request>
 			<var name="id"/>
 		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
 		<session>
 			<single item="news">
 				<single item="small_news_item"/>
@@ -837,6 +1074,7 @@
 		<request>
 			<var name="id"/>
 		</request>
+		<command class="extra.PreviewFromFutureCommand"/>
 		<session>
 			<single item="news">
 				<single item="news_item"/>
@@ -846,13 +1084,32 @@
 		<include name="TICKERS"/>
 	</page>
 
-	<page name="page" template="page" cacheable="true">
+	<page name="page" template="page">
 		<request>
 			<var name="p" style="translit"/>
 		</request>
 		<single item="custom_page" var="p">
 			<list item="page_part" />
+			<list item="advanced_spoiler">
+				<list item="page_part" />
+			</list>
 		</single>
+		<list item="news_item" id="pni" tag="popular">
+			<filter>
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="6"/>
+				</limit>
+				<parameter name="popular" sign="=" compare="SOME">
+					<var value="1"/>
+				</parameter>
+			</filter>
+			<link name="show_page" target="news_item" type="exclusive">
+				<var name="sel" ref="pni" style="translit"/>
+			</link>
+		</list>
 		<include name="COMMON"/>
 		<include name="TICKERS"/>
 	</page>
@@ -959,11 +1216,11 @@
 		<command class="extra.ArticleFromFuture" />
 	</page>
 
-	<page name="word" template="word" cacheable="true">
+	<page name="word" template="word">
 		<request>
 			<var name="word" style="translit"/>
 		</request>
-		<single item="wiki_tip" var="word" cache-vars="word" cacheable="true"/>
+		<single item="wiki_tip" var="word" cache-vars="word"/>
 	</page>
 
 	<page name="add_hashes" template="integrate">
@@ -976,21 +1233,27 @@
 	</page>
 
 	<page name="rss" template="rss">
-		<headers Content-Type="text/xml;charset=UTF-8"/>
+		<headers content-type="text/xml"/>
 		<request>
 			<var name="tag"/>
-			<var name="yesterday"/>
+			<!-- <var name="yesterday"/> -->
 		</request>
 		<single item="rss"/>
-		<command class="extra.TodayNews" method="today"/>
+		<!-- <command class="extra.TodayNews" method="today"/> -->
 		<list item="small_news_item" id="sni">
 			<filter>
 				<parameter name="tag" sign="=" compare="ANY">
 					<var var="tag"/>
 				</parameter>
-				<parameter name="date" sign="&gt;" compare="SOME">
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="50"/>
+				</limit>
+				<!-- <parameter name="date" sign="&gt;" compare="SOME">
 					<var var="yesterday"/>
-				</parameter>
+				</parameter> -->
 			</filter>
 			<link name="show_page" target="small_news_item" type="exclusive">
 				<var name="sni" ref="sni" style="translit"/>
@@ -1001,9 +1264,15 @@
 				<parameter name="tag" sign="=" compare="ANY">
 					<var var="tag"/>
 				</parameter>
-				<parameter name="date" sign="&gt;" compare="SOME">
+				<!-- <parameter name="date" sign="&gt;" compare="SOME">
 					<var var="yesterday"/>
-				</parameter>
+				</parameter> -->
+				<sorting direction="DESC">
+					<var value="date"/>
+				</sorting>
+				<limit>
+					<var value="50"/>
+				</limit>
 			</filter>
 			<link name="show_page" target="news_item" type="exclusive">
 				<var name="sni" ref="ni" style="translit"/>
@@ -1019,21 +1288,21 @@
 		</command>
 	</page>
 
-
-	<page name="news_preview" template="news_preview">
+	<page name="news_preview" template="news">
 		<command class="extra.FuturePreviewCommand" tag="search" method="loadFutureNews">
 			<result name="success" type="inline_xml"/>
 		</command>
 		<include name="COMMON"/>
 	</page>
 
-	<page name="news_item_preview" template="news_item_preview">
+	<page name="news_item_preview" template="news_item">
 		<request>
 			<var name="id" />
 		</request>
-		<command class="extra.FuturePreviewCommand" tag="search">
+		<command class="extra.FuturePreviewCommand" tag="news_item">
 			<result name="success" type="inline_xml"/>
 		</command>
 		<include name="COMMON"/>
 	</page>
+
 </site>

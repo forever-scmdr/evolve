@@ -110,6 +110,10 @@
 		<parameter name="code" type="plain-text" caption="код"/>
 	</item>
 
+	<item name="traidingview_part" caption="Информер TraidingView" super="page_part" ag-id="50" ag-hash="-383726423">
+		<parameter name="id" type="string" caption="NASDAQ-код котировки"/>
+	</item>
+
 	<item name="top_gal" caption="Галерея в загловке" ag-id="13" ag-hash="-1139553048">
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000" multiple="true"/>
 		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;" multiple="true"/>
@@ -117,6 +121,7 @@
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
 	</item>
+
 
 	<item name="more_news" caption="Рекомендации" super="page_part" ag-id="47" ag-hash="1813239165">
 		<child item="news_item" assoc="news"/>
@@ -132,15 +137,16 @@
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="author" type="string" caption="Автор" domain="author"/>
 		<parameter name="popular" type="byte" caption="Популярная новость" domain="0-1"/>
-		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
+		<parameter name="recommended" type="byte" caption="Рекомендованная новость" description="показывать в блоке рекомендации на главной странице" domain="0-1"/>
+		<!-- <parameter name="complexity" type="string" caption="Сложность" domain="complexity"/> -->
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="figcaption" type="string" caption="Подпись к главонй картинке"/>
-		<parameter name="size" type="string" caption="Размер" domain="size"/>
+		<!-- <parameter name="size" type="string" caption="Размер" domain="size"/> -->
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
 		<parameter name="video_url" type="string" caption="Ссылка на видео"/>
 		<parameter name="main_audio" type="file" caption="Аудио" description="в начале статьи"/>
 		<parameter name="main_pic" type="picture" caption="Главное изображение" description="2000"/>
-		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="1000" format="width: 1000; src: main_pic;"/>
+		<parameter name="medium_pic" type="picture" caption="Среднее изображение" description="800" format="width: 800; src: main_pic;"/>
 		<parameter name="small_pic" type="picture" caption="Маленькое изображение" description="500" format="width: 500; src: main_pic;"/>
 		<parameter name="soc_image" type="picture" caption="изображение для соц.сетей" format="width: 500;"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка статей или новостей"/>
@@ -171,6 +177,7 @@
 
 	<item name="main_page" caption="Главная страница" description="Содержимое главной страницы" ag-id="16" ag-hash="-251149995">
 		<parameter name="padding" type="integer" caption="высота шапки сайта"/>
+		<parameter name="stock_right_code" type="plain-text" caption="Код для вставки в секцию Биржа"/>
 		<child item="seo" single="true"/>
 		<child item="featured" multiple="true"/>
 		<child item="informer_wrap" multiple="true"/>
@@ -251,7 +258,7 @@
 	<item name="small_news_item" caption="Новость" key="name" key-unique="true" super="searchable"  default-page="small_news_item" ag-id="28" ag-hash="-1321162809" >
 		<child item="seo" single="true"/>
 		<parameter name="main_pic" caption="заглавная картинка" type="picture"/>
-		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 1000; src: main_pic;"/>
+		<parameter name="medium_pic" caption="сред. картинка" type="picture" format="width: 800; src: main_pic;"/>
 		<parameter name="small_pic" caption="малая картинка" type="picture" format="width: 500; src: main_pic;"/>
 		<parameter name="date" type="date" caption="Дата публикации"/>
 		<parameter name="update" type="string" caption="Дата обновления"/>
@@ -260,10 +267,10 @@
 		<parameter name="source" type="string" caption="Источник"/>
 		<parameter name="source_link" type="string" caption="Ссылка на источник"/>
 		<parameter name="author" type="string" caption="Автор" domain="author"/>
-		<parameter name="complexity" type="string" caption="Сложность" domain="complexity"/>
+		<!-- <parameter name="complexity" type="string" caption="Сложность" domain="complexity"/> -->
 		<parameter name="read_time" type="string" caption="Среднее время прочтения"/>
 		<parameter name="twitter_description" type="string" caption="Описание для твиттера"/>
-		<parameter name="size" type="string" caption="Размер" domain="size"/>
+		<!-- <parameter name="size" type="string" caption="Размер" domain="size"/> -->
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<parameter name="tag" type="string" caption="тег" multiple="true" domain="tags" text-index="fulltext"/>
 		<parameter name="hash" type="integer" caption="name_hash"/>
@@ -290,9 +297,15 @@
 		<parameter name="text" type="text" caption="Текст"/>
 		<parameter name="text_pic" type="picture" caption="Картинка для вставки в текст" multiple="true"/>
 		<child item="page_part"/>
+		<child item="advanced_spoiler"/>
 		<child item="top_gal" single="true"/>
 		<on-create class="ecommander.fwk.ResizeImagesFactory"/>
 		<on-update class="ecommander.fwk.ResizeImagesFactory"/>
+	</item>
+
+	<item name="advanced_spoiler" caption="Группа блоков" key="name" ag-id="51" ag-hash="1371455141">
+		<parameter name="name" type="string" caption="Название"/>
+		<child item="page_part"/>
 	</item>
 
 	<item name="modules" caption="Метрики, чаты и.т.д" ag-id="24" ag-hash="1227433863">
@@ -330,6 +343,10 @@
 
 
 	<item name="hot_tags" caption="Горячие теги" ag-id="36" ag-hash="-290389813" >
+		<child item="tag"/>
+	</item>
+
+	<item name="cool_tags" caption="Холодные теги" ag-id="52" ag-hash="245982031">
 		<child item="tag"/>
 	</item>
 
@@ -373,6 +390,7 @@
 		<child item="dictionary" single="true"/>
 		<child item="rss" single="true"/>
 		<child item="hot_tags" single="true"/>
+		<child item="cool_tags" single="true"/>
 		<child item="overused" single="true"/>
 		<child item="links" single="true"/>
 		<child item="telegram_link" single="true"/>
