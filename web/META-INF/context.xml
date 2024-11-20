@@ -30,9 +30,9 @@
 		timeBetweenEvictionRunsMillis="10000"
 		minEvictableIdleTimeMillis="60000"
 		username="root"
-		password="eeee"
+		password="1515"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/mil?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
+		url="jdbc:mysql://localhost:3306/etalon?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=utf8"
 	/><!-- must_test -->
 
 </Context>
