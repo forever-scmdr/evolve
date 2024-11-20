@@ -1,0 +1,1 @@
+java -cp D:/PROJECTS/HI_TECH/spas/Ecommander/build/classes/;D:/PROJECTS/HI_TECH/spas/Ecommander/WebContent/WEB-INF/lib/mysql-connector-java-3.1.12-bin.jar ecommander.deploy.SetupResin D:/PROJECTS/HI_TECH/spas/Ecommander/WebContent

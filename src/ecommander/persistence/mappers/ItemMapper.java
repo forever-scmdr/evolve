@@ -1,332 +1,194 @@
 package ecommander.persistence.mappers;
 
-import ecommander.fwk.EcommanderException;
-import ecommander.fwk.ErrorCodes;
-import ecommander.fwk.MysqlConnector;
-import ecommander.fwk.Pair;
-import ecommander.model.*;
-import ecommander.persistence.common.TemplateQuery;
-import ecommander.persistence.common.TransactionContext;
-import ecommander.persistence.itemquery.ItemQuery;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
-import javax.naming.NamingException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import ecommander.common.ServerLogger;
+import ecommander.common.exceptions.EcommanderException;
+import ecommander.model.item.Item;
+import ecommander.model.item.ItemType;
+import ecommander.model.item.ItemTypeRegistry;
+import ecommander.model.item.MultipleParameter;
+import ecommander.model.item.Parameter;
+import ecommander.model.item.ParameterDescription;
+import ecommander.model.item.SingleParameter;
+import ecommander.persistence.TransactionContext;
+import ecommander.persistence.common.TemplateQuery;
 
 /**
  * Выполняет различные операции с Item и БД
  * @author EEEE
  *
  */
-public class ItemMapper implements DBConstants.ItemTbl, DBConstants.ItemParent, DBConstants, ItemQuery.Const, DBConstants.UniqueItemKeys {
+public class ItemMapper {
 
-	public enum Mode {
-		INSERT, // вставка в таблицу (без изменения и удаления)
-		UPDATE, // изменение существующих данных (удаление и вставка)
-		FORCE_UPDATE // принудительное изменение (даже если параметры не менялись)
-	}
-
-	private static final String PARAM_INSERT_PREPARED_START
+	private static final String PARAM_INSERT_PREPARED_START 
 		= " ("
-		+ ItemIndexes.II_ITEM_ID + ", "
-		+ ItemIndexes.II_PARAM + ", "
-		+ ItemIndexes.II_ITEM_TYPE + ", "
-		+ ItemIndexes.II_VALUE
+		+ DBConstants.ItemIndexes.REF_ID + ", " 
+		+ DBConstants.ItemIndexes.ITEM_PARAM + ", " 
+		+ DBConstants.ItemIndexes.ITEM_TYPE + ", " 
+		+ DBConstants.ItemIndexes.ITEM_PARENT + ", " 
+		+ DBConstants.ItemIndexes.VALUE
 		+ ") VALUES (";
 	
-	private static final String ON_DUPLICATE_KEY_UPDATE
-		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.II_VALUE + " = ";
-
+	private static final String PARAM_INSERT_PREPARED_END
+		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.VALUE + " = ";
+	
+//	private static final String PARAM_INSERT_PREPARED_END
+//		= ") ON DUPLICATE KEY UPDATE " + DBConstants.ItemIndexes.REF_ID + " = " + DBConstants.ItemIndexes.REF_ID + ";";
+//	private static final String DELETE_PREDECESSOR_PARAMS_ITEM
+//		= "UPDATE " + DatabaseConstants.Item.TABLE 
+//		+ " SET " + DatabaseConstants.Item.PARAMS + "='' WHERE " + DatabaseConstants.Item.TYPE_ID + "=?";
+	
+	private static final String DELETE_PREDECESSOR_PARAMS_INDEX
+		= " WHERE " + DBConstants.ItemIndexes.ITEM_PARAM + "=? AND " + DBConstants.ItemIndexes.ITEM_TYPE + "=?";
 	/**
-	 * Сохраняет все параметры айтема в индекс.
-	 * Удаление старых параметров происходит только в том случе, если это надо (параметры были удалены).
-	 * Обновление параметров также происходит только если это надо (параметры поменялись)
+	 * Сохраняет все параметры айтема в индекс, предварительно удалив старые значения если это нужно
 	 * @param item
-	 * @param mode
+	 * @param deleteNeeded
 	 * @param transaction
 	 * @throws SQLException
-	 * @throws EcommanderException
+	 * @throws EcommanderException 
 	 */
-	public static void insertItemParametersToIndex(Item item, Mode mode, TransactionContext transaction) throws SQLException, EcommanderException {
-		if (!item.hasChanged() && mode != Mode.FORCE_UPDATE)
-			return;
-		TemplateQuery query;
-		// Если айтем новый, то не нужно удалять старые значения и обновлять существующие
-		if (mode == Mode.INSERT) {
-			query = new TemplateQuery("Item index insert new");
-			for (Parameter param : item.getAllParameters()) {
-				if (!param.isEmpty() && param.needsDBIndex()) {
-					if (param.isMultiple()) {
-						for (SingleParameter singleParam : ((MultipleParameter)param).getValues()) {
-							createSingleValueInsert(query, item, singleParam, false);
-						}
-					} else {
-						createSingleValueInsert(query, item, (SingleParameter)param, false);
-					}
-				}
-			}
+	public static void insertItemParametersToIndex(Item item, boolean deleteNeeded, TransactionContext transaction) throws SQLException, EcommanderException {
+		// Подсчет количества непустых параметров для подготовки препаред стэйтмента
+		if (deleteNeeded) {
+			String deleteSql 
+				= "DELETE FROM " + DBConstants.ItemIndexes.INT_TABLE_NAME 
+				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
+				+ "; DELETE FROM " + DBConstants.ItemIndexes.STRING_TABLE_NAME 
+				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
+				+ "; DELETE FROM " + DBConstants.ItemIndexes.DOUBLE_TABLE_NAME 
+				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId()
+				+ "; DELETE FROM " + DBConstants.ItemIndexes.ASSOCIATED_TABLE_NAME 
+				+ " WHERE " + DBConstants.ItemIndexes.REF_ID + "=" + item.getRefId();
+			ServerLogger.debug(deleteSql);
+			PreparedStatement deleteStmt = transaction.getConnection().prepareStatement(deleteSql);
+			deleteStmt.executeUpdate();
 		}
-		// Если айтем не новый, то нужно удалить значения которые были удалены, вставить или обновить остальные значения
-		else {
-			query = new TemplateQuery("Item index update");
-			for (Parameter param : item.getAllParameters()) {
-				// Пропустить все неизмененные параметры
-				if ((!param.hasChanged() && mode == Mode.UPDATE) || !param.needsDBIndex())
-					continue;
-				// Удалить старое значение
-				query.DELETE_FROM_WHERE(DataTypeMapper.getTableName(param.getType()))
-						.col(ItemIndexes.II_ITEM_ID).long_(item.getId()).AND()
-						.col(ItemIndexes.II_PARAM).int_(param.getParamId()).sql("; ");
-				// Непустые параметры (одиночные и множественные)
-				if (!param.isEmpty()) {
-					if (param.isMultiple()) {
-						// Обновить каждое значение в отдельности
-						MultipleParameter mp = ((MultipleParameter) param);
-						for (SingleParameter sp : mp.getValues()) {
-							createSingleValueInsert(query, item, sp, false);
-						}
-					} else {
-						// Просто вставить значение парамета без удаления и с добавлением on duplicate key update
-						createSingleValueInsert(query, item, (SingleParameter) param, false);
-					}
-				}
-			}
-		}
-		// Выполнения запроса
-		if (!query.isEmpty()) {
-			try (PreparedStatement insertStmt = query.prepareQuery(transaction.getConnection())) {
-				insertStmt.executeUpdate();
-			} catch (Exception e) {
-				throw new EcommanderException(ErrorCodes.UNABLE_TO_SAVE_ITEM_INDEX, query.getSimpleSql(), e);
-			}
-		}
-	}
-
-
-
-	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param, boolean needUpdate) throws SQLException {
-		query.INSERT_INTO(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
-		query
-				.long_(item.getId()).sql(",")
-				.int_(param.getParamId()).sql(",")
-				.int_(item.getTypeId()).sql(",");
-		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
-		if (needUpdate) {
-			query.sql(ON_DUPLICATE_KEY_UPDATE);
-			DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
-			query.sql("; ");
-		} else {
-			query.sql("); ");
-		}
-	}
-
-	/**
-	 * Загрузить сведения об айтеме по его ID
-	 * @param itemId
-	 * @param conn
-	 * @return
-	 * @throws SQLException
-	 */
-	public static ItemBasics loadItemBasics(long itemId, Connection conn) throws SQLException {
-		TemplateQuery query = new TemplateQuery("Select item basics");
-		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
-				.FROM(ITEM_TBL).WHERE().col(I_ID).long_(itemId);
-		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				return new DefaultItemBasics(
-						rs.getLong(1), rs.getInt(2), rs.getString(3),
-						rs.getByte(4), rs.getInt(5), rs.getByte(6),
-						rs.getBoolean(7));
+		
+		TemplateQuery query = new TemplateQuery("Item index insert");
+		for (ParameterDescription paramDesc : item.getItemType().getParameterList()) {
+			Parameter param = item.getParameter(paramDesc.getId());
+			if (!param.needsDBIndex()) // не сохранять в БД виртуальные параметры
+				continue;
+			if (param.isMultiple() && !param.isEmpty()) {
+				for (SingleParameter singleParam : ((MultipleParameter)param).getValues())
+					createSingleValueInsert(query, item, singleParam);
 			} else {
-				return null;
+				if (!param.isEmpty())
+					createSingleValueInsert(query, item, (SingleParameter)param);
 			}
 		}
+		// Добавить параметры пользователя и группы
+		SingleParameter userParam = ParameterDescription.USER.createSingleParameter();
+		userParam.setValue(new Long(item.getOwnerUserId()));
+		createSingleValueInsert(query, item, userParam);
+		SingleParameter groupParam = ParameterDescription.GROUP.createSingleParameter();
+		groupParam.setValue(new Integer(item.getOwnerGroupId()));
+		createSingleValueInsert(query, item, groupParam);
+		// Выполнения запроса
+		PreparedStatement insertStmt = query.prepareQuery(transaction.getConnection());
+		try {
+			insertStmt.executeUpdate();
+		} catch (Exception e) {
+			throw new EcommanderException(query.getSimpleSql(), e);
+		}
 	}
-
+	
+	private static void createSingleValueInsert(TemplateQuery query, Item item, SingleParameter param) throws SQLException {
+		query.sql("INSERT INTO ").sql(DataTypeMapper.getTableName(param.getType())).sql(PARAM_INSERT_PREPARED_START);
+		query
+			.setLong(item.getRefId()).sql(",")
+			.setInt(param.getParamId()).sql(",")
+			.setInt(item.getTypeId()).sql(",")
+			.setLong(item.getDirectParentId()).sql(",");
+		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
+		query.sql(PARAM_INSERT_PREPARED_END);
+		DataTypeMapper.appendPreparedStatementInsertValue(param.getType(), query, param.getValue());
+		query.sql("; ");
+	}
 	/**
-	 * Загрузить айтемы по статусу
-	 * @param status
-	 * @param limit
-	 * @param conn
-	 * @return
+	 * Произвести изменения, которые связаны с удалением предка айтема по иерархии типов, а именно
+	 * - удалить кешированные параметры айтемов из таблицы айтемов
+	 * - удалить параметры айтемов из индекса
+	 * 
+	 * TODO <performance> можно сделать удаление в виде IN списка
+	 * @param item
+	 * @param predecessorName
+	 * @param transaction
 	 * @throws SQLException
 	 */
-	public static List<ItemBasics> loadStatusItemBasics(byte status, int limit, Connection conn) throws SQLException {
-		TemplateQuery query = new TemplateQuery("Select item basics by status");
-		query.SELECT(I_ID, I_TYPE_ID, I_KEY, I_GROUP, I_USER, I_STATUS, I_PROTECTED)
-				.FROM(ITEM_TBL).WHERE().col(I_STATUS).byte_(status);
-		if (limit > 0)
-			query.LIMIT(limit);
-		ArrayList<ItemBasics> result = new ArrayList<>();
-		try (PreparedStatement pstmt = query.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result.add(new DefaultItemBasics(
-						rs.getLong(1), rs.getInt(2), rs.getString(3),
-						rs.getByte(4), rs.getInt(5), rs.getByte(6),
-						rs.getBoolean(7)));
+	public static void deleteItemPredecessor(ItemType item, String predecessorName, TransactionContext transaction) throws SQLException {
+		ItemType predecessor = ItemTypeRegistry.getItemType(predecessorName);
+		PreparedStatement deleteIndex = null;
+		try {
+			for (ParameterDescription param : predecessor.getParameterList()) {
+				String query = "DELETE FROM " + DataTypeMapper.getTableName(param.getType()) + DELETE_PREDECESSOR_PARAMS_INDEX;
+				deleteIndex = transaction.getConnection().prepareStatement(query);
+				deleteIndex.setInt(1, param.getId());
+				deleteIndex.setInt(2, item.getTypeId());
+				deleteIndex.executeUpdate();
 			}
-			return result;
+		} finally {
+			if (deleteIndex != null) deleteIndex.close();
 		}
 	}
-
+	/**
+	 * Удаляет параметр айтема из таблицы индекса
+	 * @param item
+	 * @param param
+	 * @param pstmt
+	 * @throws SQLException 
+	 */
+	public static void deleteItemParameter(ItemType item, String paramName, TransactionContext transaction) throws SQLException {
+		PreparedStatement deleteIndex = null;
+		try {
+			String query = "DELETE FROM " + DataTypeMapper.getTableName(item.getParameter(paramName).getType()) + DELETE_PREDECESSOR_PARAMS_INDEX;
+			deleteIndex = transaction.getConnection().prepareStatement(query);
+			deleteIndex.setInt(1, item.getParameter(paramName).getId());
+			deleteIndex.setInt(2, item.getTypeId());
+			deleteIndex.executeUpdate();
+		} finally {
+			if (deleteIndex != null) deleteIndex.close();
+		}
+	}
+	/**
+	 * Возвращает запрос для получения всех предшественников айтема
+	 * @param itemId
+	 * @return
+	 */
+	public static String getItemParentIdsSQL(long itemId) {
+		return 
+			"SELECT " + DBConstants.Item.PRED_ID_PATH 
+			+ " FROM " + DBConstants.Item.TABLE 
+			+ " WHERE " + DBConstants.Item.ID + "=" + itemId;
+	}
 	/**
 	 * Создать айтем из резалт сета
 	 * @param rs
-	 * @param contextParentId
+	 * @param parentColName
 	 * @return
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public static Item buildItem(ResultSet rs, byte assocId, long contextParentId) throws Exception {
-		long itemId = rs.getLong(I_ID);
-		int itemTypeId = rs.getInt(I_TYPE_ID);
-		String key = rs.getString(I_KEY);
-		String keyUnique = rs.getString(I_T_KEY);
-		Timestamp timeUpdated = rs.getTimestamp(I_UPDATED);
-		byte status = rs.getByte(I_STATUS);
-		byte groupId = rs.getByte(I_GROUP);
-		int userId = rs.getInt(I_USER);
-		boolean filesProtected = rs.getBoolean(I_PROTECTED);
-		String params = rs.getString(I_PARAMS);
+	public static Item buildItem(ResultSet rs, String parentColName) throws SQLException, Exception {
+		long itemId = rs.getLong(DBConstants.Item.ID);
+		long refId = rs.getLong(DBConstants.Item.REF_ID);
+		int itemTypeId = rs.getInt(DBConstants.Item.TYPE_ID);
+		int itemWeight= rs.getInt(DBConstants.Item.INDEX_WEIGHT);
+		long userId = rs.getLong(DBConstants.Item.OWNER_USER_ID);
+		int groupId = rs.getInt(DBConstants.Item.OWNER_GROUP_ID);
+		String key = rs.getString(DBConstants.Item.KEY);
+		String keyUnique = rs.getString(DBConstants.Item.TRANSLIT_KEY);
+		String predIdPath = rs.getString(DBConstants.Item.PRED_ID_PATH);
+		long parentId = rs.getLong(parentColName);
+		Timestamp timeUpdated = rs.getTimestamp(DBConstants.Item.UPDATED);
+		String params = rs.getString(DBConstants.Item.PARAMS);
 		ItemType itemDesc = ItemTypeRegistry.getItemType(itemTypeId);
-		return Item.existingItem(itemDesc, itemId, ItemTypeRegistry.getAssoc(assocId), contextParentId, userId, groupId, status,
-				key, params, keyUnique, timeUpdated.getTime(), filesProtected);
-	}
-
-	/**
-	 * Создать айтем из резалт сета
-	 * @param rs
-	 * @param contextParentIdColName
-	 * @return
-	 * @throws Exception
-	 */
-	public static Item buildItem(ResultSet rs, byte assocId, String contextParentIdColName) throws Exception {
-		return buildItem(rs, assocId, rs.getLong(contextParentIdColName));
-	}
-
-	/**
-	 * Загрузать определенное количесвто айтемов определенного типа.
-	 * Метод нужен для загрузки большого массива данных последовательно небольшими порциями, поэтому айтемы
-	 * загружаются в порядке следования их ID, и в метод передается ID последнего загруженного айтема
-	 * @param itemId
-	 * @param limit
-	 * @param moreThanId
-	 * @return
-	 * @throws Exception
-	 */
-	public static ArrayList<Item> loadByTypeId(int itemId, int limit, long moreThanId) throws Exception {
-		ArrayList<Item> result = new ArrayList<>();
-		// Полиморфная загрузка
-		TemplateQuery select = new TemplateQuery("Select items for indexing");
-		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(itemId);
-		select.SELECT("*").FROM(ITEM_TBL)
-				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
-				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
-				.AND().col(I_ID, ">").long_(moreThanId)
-				.ORDER_BY(I_ID).LIMIT(limit);
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			// Создание айтемов
-			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
-			}
-		}
-		return result;
-	}
-
-	public static ArrayList<Item> loadItemPredecessors(long itemId, String predItemName) throws Exception {
-		ArrayList<Item> result = new ArrayList<>();
-		// Полиморфная загрузка
-		TemplateQuery select = new TemplateQuery("Select item predecessors");
-		int predItemId = ItemTypeRegistry.getItemTypeId(predItemName);
-		Integer[] extenders = ItemTypeRegistry.getBasicItemExtendersIds(predItemId);
-		select.SELECT("*").FROM(ITEM_TBL).INNER_JOIN(ITEM_PARENT_TBL, I_ID, IP_PARENT_ID)
-				.WHERE().col_IN(I_TYPE_ID).intIN(extenders)
-				.AND().col(I_STATUS).byte_(Item.STATUS_NORMAL)
-				.AND().col(IP_CHILD_ID).long_(itemId)
-				.AND().col(IP_ASSOC_ID).long_(ItemTypeRegistry.getPrimaryAssocId());
-		try (Connection conn = MysqlConnector.getConnection();
-		     PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			// Создание айтемов
-			while (rs.next()) {
-				result.add(ItemMapper.buildItem(rs, ItemTypeRegistry.getPrimaryAssocId(), 0L));
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Загрузать определенное количесвто айтемов определенного типа.
-	 * Метод нужен для загрузки большого массива данных последовательно небольшими порциями, поэтому айтемы
-	 * загружаются в порядке следования их ID, и в метод передается ID последнего загруженного айтема
-	 * @param itemName
-	 * @param limit
-	 * @param startFromId
-	 * @return
-	 * @throws Exception
-	 */
-	public static ArrayList<Item> loadByName(String itemName, int limit, long startFromId) throws Exception {
-		return loadByTypeId(ItemTypeRegistry.getItemType(itemName).getTypeId(), limit, startFromId);
-	}
-
-	/**
-	 * Загрузить ID айтемов по переданным уникальным текстовым ключам в порядке переданных ключей
-	 * Если айтем не найден, то в отображении по его ключу хранится null
-	 * @param keys
-	 * @return
-	 * @throws SQLException
-	 * @throws NamingException
-	 */
-	public static LinkedHashMap<String, Long> loadItemIdsByKey(String...keys) throws SQLException, NamingException {
-		LinkedHashMap<String, Long> result = new LinkedHashMap<>();
-		for (String key : keys) {
-			result.put(key, null);
-		}
-		TemplateQuery select= new TemplateQuery("Select ids by string unique keys");
-		select.SELECT(UK_KEY, UK_ID).FROM(UNIQUE_KEY_TBL).WHERE().col_IN(UK_KEY).stringIN(keys);
-		try(Connection conn = MysqlConnector.getConnection();
-			PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				result.put(rs.getString(1), rs.getLong(2));
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Загрузить ID всех предшественников по всем ассоциациям заданных айтемов
-	 * @param itemId
-	 * @return
-	 * @throws SQLException
-	 * @throws NamingException
-	 */
-	public static LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> loadItemAncestors(Long... itemId) throws SQLException, NamingException {
-		LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> result = new LinkedHashMap<>();
-		for (Long key : itemId) {
-			result.put(key, null);
-		}
-		TemplateQuery select= new TemplateQuery("Select item ancestors by it's ID");
-		select.SELECT(IP_CHILD_ID, IP_ASSOC_ID, IP_PARENT_ID).FROM(ITEM_PARENT_TBL).WHERE().col_IN(IP_CHILD_ID).longIN(itemId);
-		try(Connection conn = MysqlConnector.getConnection();
-		    PreparedStatement pstmt = select.prepareQuery(conn)) {
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Long childId = rs.getLong(1);
-				ArrayList<Pair<Byte, Long>> preds = result.get(childId);
-				if (preds == null) {
-					preds = new ArrayList<>();
-					result.put(childId, preds);
-				}
-				preds.add(new Pair<>(rs.getByte(2), rs.getLong(3)));
-			}
-		}
-		return result;
+		return Item.existingItem(itemDesc, itemId, parentId, predIdPath, refId, userId, groupId, itemWeight, key, params, keyUnique,
+				timeUpdated.getTime());
 	}
 }

@@ -3,18 +3,17 @@ package ecommander.model.datatypes;
 import java.text.Format;
 import java.text.MessageFormat;
 
-import ecommander.fwk.Strings;
-import org.apache.commons.lang3.StringUtils;
+import ecommander.common.Strings;
 
 public class StringDataType extends FormatDataType {
 
-	public StringDataType(Type type) {
+	StringDataType(Type type) {
 		super(type);
 	}
 
 	@Override
 	public Object createValue(String stringValue, Object formatter) {
-		return StringUtils.trimToEmpty(stringValue);
+		return stringValue;
 	}
 
 	@Override
@@ -28,8 +27,4 @@ public class StringDataType extends FormatDataType {
 		return new MessageFormat(format);
 	}
 
-	@Override
-	public boolean isEmpty(Object value) {
-		return value == null || StringUtils.isBlank(value.toString());
-	}
 }

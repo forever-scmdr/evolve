@@ -1,0 +1,861 @@
+<catalog_count>1</catalog_count>
+<catalog type="catalog" id="5" path="sitefiles/1/5/" key="katalog_saita">
+<price_file size="70783081" created="30.11.2020 12:31" extenstion="pdf">katalog_produktsii.pdf</price_file>
+<price_list size="942677" created="30.11.2020 12:31" extenstion="pdf">prais_rf_01_04_17_dlya_razmescheniya_na_saite.pdf</price_list>
+<show_price_link>1</show_price_link>
+	<new_devices_count>1</new_devices_count>
+	<new_devices type="new_devices" id="1272" path="sitefiles/1/5/1272/" key="banner_novinki">
+<pic created="12.10.2020 09:04" extenstion="jpg" size="10342">vn2dm_4k_muft_dvoinoi_korpus_bez_teni.jpg</pic>
+<string>КЛАПАНЫ ЭЛЕКТРОМАГНИТНЫЕ ДВОЙНЫЕ</string>
+<link>https://termobrest.ru/sec/klapany_elektromagnitnye_dvoinye/</link>
+<text>&lt;p&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;Уникальная новинка ТЕРМОБРЕСТ - двойные электромагнитные клапаны - мультиблоки.&lt;/span&gt;&lt;/p&gt;</text>
+	</new_devices>
+	<files_count>0</files_count>
+	<main_section_count>14</main_section_count>
+	<main_section type="main_section" id="6" path="sitefiles/1/5/6/" key="klapany_elektromagnitnye">
+<name>Клапаны электромагнитные двухпозиционные</name>
+<serial_sample>обозначения ВН/ВФ</serial_sample>
+<alt>Клапан газовый ВН3Р-1 электромагнитный с ручным взводом фланцевый. ТЕРМОБРЕСТ.</alt>
+<img size="8708" created="30.11.2020 12:33" extenstion="jpg">vn4_16.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;h4 style=&quot;padding-left: 30px;&quot;&gt;СТРУКТУРА ОБОЗНАЧЕНИЯ&lt;/h4&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/6/structure1.jpg&quot; alt=&quot;&quot; width=&quot;282&quot; height=&quot;62&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;В&lt;/strong&gt; &amp;mdash; обозначение серии;&lt;/li&gt;
+&lt;li&gt;Исходное состояние: &lt;br /&gt;&lt;strong&gt;Н&lt;/strong&gt; &amp;mdash; нормально закрытый &lt;br /&gt;&lt;strong&gt;Ф&lt;/strong&gt; &amp;mdash; нормально открытый&lt;/li&gt;
+&lt;li&gt;Присоединительный размер,&amp;nbsp;дюймы&lt;/li&gt;
+&lt;li&gt;Исполнение клапана: &lt;br /&gt;&lt;strong&gt;Н&lt;/strong&gt; &amp;mdash; двухпозиционный &lt;br /&gt;&lt;strong&gt;С&lt;/strong&gt; &amp;mdash; для жидких сред &lt;br /&gt;&lt;strong&gt;М&lt;/strong&gt; &amp;mdash; с электроприводом регулятора потока газа &lt;br /&gt;&lt;strong&gt;Т&lt;/strong&gt; &amp;mdash; с медленным открытием &lt;br /&gt;&lt;strong&gt;Р&lt;/strong&gt; &amp;mdash; двухпозиционный с ручным взводом электрического типа &lt;br /&gt;&lt;strong&gt;Рм&lt;/strong&gt; &amp;mdash; двухпозиционный с ручным взводом механического типа&lt;/li&gt;
+&lt;li&gt;Номинал рабочего давления: &lt;br /&gt;&lt;strong&gt;0,2&lt;/strong&gt; &amp;mdash; 0,2 бар &lt;br /&gt;&lt;strong&gt;0,5&lt;/strong&gt; &amp;mdash; 0,5 бар &lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;mdash; 1 бар &lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; &amp;mdash; 2 бар &lt;br /&gt;&lt;strong&gt;3&lt;/strong&gt; &amp;mdash; 3 бар &lt;br /&gt;&lt;strong&gt;4&lt;/strong&gt; &amp;mdash; 4 бар &lt;br /&gt;&lt;strong&gt;6&lt;/strong&gt; &amp;mdash; 6 бар&lt;/li&gt;
+&lt;li&gt;Дополнительные устройства или исполнение корпуса клапана: &lt;br /&gt;&lt;strong&gt;К&lt;/strong&gt; &amp;mdash; наличие регулятора потока,&amp;nbsp;ручного &lt;br /&gt;&lt;strong&gt;П&lt;/strong&gt; &amp;mdash; наличие датчика положения,&amp;nbsp;(открыт-закрыт) клапана; &lt;br /&gt;&lt;strong&gt;Е&lt;/strong&gt; &amp;mdash; взрывозащищенное исполнение клапана; &lt;br /&gt;&lt;strong&gt;У&lt;/strong&gt; &amp;mdash; угловое исполнение корпуса клапана; &lt;br /&gt; &lt;br /&gt;Дополнительно необходимо указывать: &lt;br /&gt;&lt;strong&gt;- ст&lt;/strong&gt;. &amp;mdash; для стального исполнения корпуса клапанов; &lt;br /&gt;&lt;strong&gt;- ч.&lt;/strong&gt; &amp;mdash; для чугунного исполнения корпуса клапанов; &lt;br /&gt;&lt;strong&gt;- фл.&lt;/strong&gt; &amp;mdash; для фланцевого присоединения клапанов DN 15, 20, 25, 32, 40 и 50.&lt;/li&gt;
+&lt;li&gt;Напряжение питания: &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24 В переменного тока; &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24 В постоянного тока&lt;/li&gt;
+&lt;li&gt;Частота тока (50 Гц &amp;mdash; только для исполнений на переменный ток)&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение: &lt;br /&gt;&lt;strong&gt;У3.1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-30&amp;hellip;+60&amp;deg;С); &lt;br /&gt;&lt;strong&gt;У2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-45&amp;hellip;+60&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+60&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+60&amp;deg;С) &amp;mdash; только для взрывозащищенного исполнения клапана;&lt;/li&gt;
+&lt;li&gt;Номер технических условий: &lt;strong&gt;ТУ&lt;/strong&gt;&amp;nbsp;&lt;strong&gt;РБ 05708554.021-96&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;По типу присоединения к трубопроводу клапаны изготавливаются: &lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 300.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;По умолчанию клапаны изготавливаются с присоединительными фланцами PN6.&lt;br /&gt;&lt;em&gt;&lt;strong&gt;Клапаны номинальными диаметрами DN 32...200 могут быть изготовлены с присоединительными фланцами PN16.&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Температура рабочей среды: &amp;ndash;60...+70 &amp;deg;C.&lt;br /&gt;&lt;strong&gt;&lt;em&gt;По специальному заказу возможно исполнение с температурой рабочей среды &amp;ndash;45...+120 &amp;deg;C. &lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;&lt;strong&gt;&lt;em&gt;Для клапанов с датчиками положения по специальному заказу возможно исполнение с температурой рабочей среды &amp;ndash;45...+90 &amp;deg;C (верхний предел ограничен допустимым пределом эксплуатации датчика положения).&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Клапаны выпускаются в энергосберегающем исполнении. В состав клапанов входит управляющая плата, обеспечивающая снижение потребляемой мощности до 50% от первоначальной через 10 с. после включения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Клапаны электромагнитные двухпозиционные&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред,&amp;nbsp;в&amp;nbsp;том числе углеводородных газов,&amp;nbsp;газовых фаз сжиженных газов,&amp;nbsp;сжатого воздуха и других неагрессивных газов,&amp;nbsp;а также жидких неагрессивных сред,&amp;nbsp;вязкостью до 40 сСт в качестве запорно-регулирующего органа и органа безопасности при продолжительном режиме работы.&lt;/p&gt;</use>
+<picture size="11060" created="30.11.2020 12:33" extenstion="jpg">structure1.jpg</picture>
+		<show_section>sec/klapany_elektromagnitnye/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="249" path="sitefiles/1/5/6/249/" key="alyuminevyi_korpus">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/klapany_elektromagnitnye/alyuminevyi_korpus/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="250" path="sitefiles/1/5/6/250/" key="stalnoi_korpus">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/klapany_elektromagnitnye/stalnoi_korpus/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="1778" path="sitefiles/1/5/1778/" key="klapany_elektromagnitnye_trehpozitsionnye">
+<name>Клапаны электромагнитные трехпозиционные</name>
+<serial_sample>обозначения ВН</serial_sample>
+<alt>Клапан газовый ВН1В-0,2 трехпозиционный электромагнитный муфтовый. ТЕРМОБРЕСТ.</alt>
+<img created="08.10.2020 07:11" extenstion="jpg" size="7762">vn2v_0.2_fl_bez_teni.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;h4&gt;&amp;nbsp;Структура обозначения&lt;/h4&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/6/structure1.jpg&quot; alt=&quot;&quot; width=&quot;282&quot; height=&quot;62&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;В&lt;/strong&gt; &amp;mdash; обозначение серии;&lt;/li&gt;
+&lt;li&gt;Исходное состояние: &lt;br /&gt;&lt;strong&gt;Н&lt;/strong&gt; &amp;mdash; нормально закрытый&lt;/li&gt;
+&lt;li&gt;Присоединительный размер,&amp;nbsp;дюймы&lt;/li&gt;
+&lt;li&gt;Исполнение клапана: &lt;br /&gt;&lt;strong&gt;В&lt;/strong&gt; &amp;mdash; трехпозиционный&lt;/li&gt;
+&lt;li&gt;Номинал рабочего давления: &lt;br /&gt;&lt;strong&gt;0,2&lt;/strong&gt; &amp;mdash; 0,2 бар &lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;mdash; 1 бар &lt;br /&gt;&lt;strong&gt;3&lt;/strong&gt; &amp;mdash; 3 бар&lt;/li&gt;
+&lt;li&gt;Дополнительные устройства или исполнение корпуса клапана: &lt;br /&gt;&lt;strong&gt;К&lt;/strong&gt; &amp;mdash; наличие дополнительного (второго) регулятора потока,&amp;nbsp;ручного &lt;br /&gt;&lt;strong&gt;П&lt;/strong&gt; &amp;mdash; наличие датчика положения,&amp;nbsp;(открыт-закрыт) клапана; &lt;br /&gt;&lt;strong&gt;Е&lt;/strong&gt; &amp;mdash; взрывозащищенное исполнение клапана; &lt;br /&gt; &lt;br /&gt;Дополнительно необходимо указывать: &lt;br /&gt;&lt;strong&gt;- ст&lt;/strong&gt;. &amp;mdash; для стального исполнения корпуса клапанов; &lt;br /&gt;&lt;strong&gt;- фл.&lt;/strong&gt; &amp;mdash; для фланцевого присоединения клапанов DN 25, 40 и 50.&lt;/li&gt;
+&lt;li&gt;Напряжение питания: &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24В переменного тока; &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24 В постоянного тока&lt;/li&gt;
+&lt;li&gt;Частота тока (50 Гц &amp;mdash; только для исполнений на переменный ток)&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение: &lt;br /&gt;&lt;strong&gt;У3.1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-30&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;У2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-45&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+40&amp;deg;С) &amp;mdash; только для взрывозащищенного исполнения клапана;&lt;/li&gt;
+&lt;li&gt;Номер технических условий: &lt;strong&gt;ТУ&lt;/strong&gt;&amp;nbsp;&lt;strong&gt;РБ 05708554.021-96&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;По типу присоединения к трубопроводу клапаны изготавливаются: &lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 20 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 25 до DN 50.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Температура рабочей среды: &amp;ndash;60...+70 &amp;deg;C.&lt;br /&gt;&lt;strong&gt;&lt;em&gt;По специальному заказу возможно исполнение с температурой рабочей среды &amp;ndash;45...+120 &amp;deg;C.&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;&lt;strong&gt;&lt;em&gt;Для клапанов с датчиками положения по специальному заказу возможно исполнение с температурой рабочей среды &amp;ndash;45...+90 &amp;deg;C (верхний предел ограничен допустимым пределом эксплуатации датчика положения).&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Клапаны выпускаются в энергосберегающем исполнении. В состав клапанов входит управляющая плата, обеспечивающая снижение потребляемой мощности до 50% от первоначальной через 10 с. после включения.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</text>
+<use>&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Клапаны электромагнитные трехпозиционные&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред,&amp;nbsp;в&amp;nbsp;том числе углеводородных газов,&amp;nbsp;газовых фаз сжиженных газов,&amp;nbsp;сжатого воздуха и других неагрессивных газов в качестве запорно-регулирующего органа и органа безопасности при продолжительном режиме работы.&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;Применяются клапаны в системах автоматизированного ступенчатого управления рабочей средой (например: обеспечение &amp;laquo;большого-малого&amp;raquo; горения в газогорелочных устройствах).&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;Данный вид клапанов совмещает в одном корпусе запорный (отсечной) орган с ручным регулятором расхода и узел среднего (промежуточного) расхода. Такой конструктив позволяет обеспечить ступенчатое регулирование потока газа, а также возможность ручной настройки величины среднего расхода в пределах от 10 до 60 %.&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;По специальному заказу клапаны могут быть изготовлены с двумя регуляторами расхода (по &amp;laquo;малому&amp;raquo; и &amp;laquo;большому&amp;raquo; горению), что позволит настроить величину расхода в пределах от 10 до 100 %.&lt;/div&gt;</use>
+		<show_section>sec/klapany_elektromagnitnye_trehpozitsionnye/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="1781" path="sitefiles/1/5/1778/1781/" key="alyuminievyi_korpus1781">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/klapany_elektromagnitnye_trehpozitsionnye/alyuminievyi_korpus1781/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="1782" path="sitefiles/1/5/1778/1782/" key="stalnoi_korpus1782">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/klapany_elektromagnitnye_trehpozitsionnye/stalnoi_korpus1782/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="1464" path="sitefiles/1/5/1464/" key="klapany_elektromagnitnye_dvoinye">
+<name>Клапаны электромагнитные двойные</name>
+<serial_sample>обозначения BН</serial_sample>
+<alt>Клапан газовый  ВН1Д-4 двойной двухпозиционный электромагнитный муфтовый. ТЕРМОБРЕСТ.</alt>
+<img size="10342" created="30.11.2020 12:31" extenstion="jpg">vn2dm_4k_muft_dvoinoi_korpus_bez_teni.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;h4&gt;&amp;nbsp;Структура обозначения&lt;/h4&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/6/structure1.jpg&quot; alt=&quot;&quot; width=&quot;282&quot; height=&quot;62&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;В&lt;/strong&gt; &amp;mdash; обозначение серии;&lt;/li&gt;
+&lt;li&gt;Исходное состояние: &lt;br /&gt;&lt;strong&gt;Н&lt;/strong&gt; &amp;mdash; нормально закрытый&lt;/li&gt;
+&lt;li&gt;Присоединительный размер,&amp;nbsp;дюймы&lt;/li&gt;
+&lt;li&gt;Исполнение клапана: &lt;br /&gt;&lt;strong&gt;Д&lt;/strong&gt; &amp;mdash; двойной двухпозиционный &lt;br /&gt;&lt;strong&gt;ДВ&lt;/strong&gt; &amp;mdash; двойной трехпозиционный &lt;br /&gt;&lt;strong&gt;ДТ&lt;/strong&gt; &amp;mdash; двойной двухпозиционный с медленным открытием &lt;br /&gt;&lt;strong&gt;ДМ&lt;/strong&gt; &amp;mdash; двойной двухпозиционный с электроприводом регулятора расхода газа&lt;/li&gt;
+&lt;li&gt;Номинал рабочего давления: &lt;br /&gt;&lt;strong&gt;0,2&lt;/strong&gt; &amp;mdash; 0,2 бар &lt;br /&gt;&lt;strong&gt;1 &amp;mdash; &lt;/strong&gt;1 бар&lt;strong&gt;&amp;nbsp;&lt;br /&gt;2&lt;/strong&gt; &amp;mdash; 2 бар &lt;br /&gt;&lt;strong&gt;3&lt;/strong&gt; &amp;mdash; 3 бар &lt;br /&gt;&lt;strong&gt;4&lt;/strong&gt; &amp;mdash; 4 бар&lt;br /&gt;&lt;strong&gt;6&lt;/strong&gt; &amp;mdash; 6 бар&lt;/li&gt;
+&lt;li&gt;Дополнительные устройства или исполнение корпуса клапана: &lt;br /&gt;&lt;strong&gt;К&lt;/strong&gt; &amp;mdash; наличие регулятора потока,&amp;nbsp;ручного &lt;br /&gt;&lt;strong&gt;П&lt;/strong&gt; &amp;mdash; наличие датчика положения,&amp;nbsp;(открыт-закрыт) клапана; &lt;br /&gt;&lt;strong&gt;Е&lt;/strong&gt; &amp;mdash; взрывозащищенное исполнение клапана&lt;/li&gt;
+&lt;li&gt;Напряжение питания: &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24В переменного тока; &lt;br /&gt;220 В,&amp;nbsp;110 В,&amp;nbsp;24 В постоянного тока&lt;/li&gt;
+&lt;li&gt;Частота тока (50 Гц &amp;mdash; только для исполнений на переменный ток)&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение: &lt;br /&gt;&lt;strong&gt;У3.1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-30&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;У2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-45&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+40&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-60&amp;hellip;+40&amp;deg;С) &amp;mdash; только для взрывозащищенного исполнения клапана;&lt;/li&gt;
+&lt;li&gt;Номер технических условий: &lt;strong&gt;ТУ&lt;/strong&gt;&amp;nbsp;&lt;strong&gt;РБ 05708554.021-96&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;По типу присоединения к трубопроводу клапаны изготавливаются: &lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50.&lt;/p&gt;
+&lt;/div&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Клапаны электромагнитные двойные&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред, в том числе углеводородных газов, газовых фаз сжиженных газов, сжатого воздуха и других неагрессивных газов в качестве запорно-регулирующего органа при продолжительном режиме работы. Данные клапаны отличаются от блоков клапанов, собранных из единичных клапанов, меньшими габаритами (на 15 %), меньшими затратами времени на монтаж и обслуживание, обеспечивают возможность организовать в одном корпусе различные сочетания функций.&lt;/p&gt;</use>
+		<show_section>sec/klapany_elektromagnitnye_dvoinye/</show_section>
+		<section_count>0</section_count>
+	</main_section>
+	<main_section type="main_section" id="31" path="sitefiles/1/5/31/" key="zaslonki_reguliruyuschie">
+<name>Заслонки регулирующие</name>
+<serial_sample>обозначения ЗР</serial_sample>
+<alt>Заслонка регулирующая ЗР4-6В дроссельная. ТЕРМОБРЕСТ.</alt>
+<img size="6309" created="30.11.2020 12:32" extenstion="jpg">zr8v.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;p&gt;&lt;img src=&quot;sitefiles/1/5/31/untitled_1.jpg&quot; alt=&quot;&quot; width=&quot;185&quot; height=&quot;59&quot; /&gt;&lt;/p&gt;
+1. ЗР - обозначение серии&lt;br /&gt;2. Присоединительный размер, дюймы&lt;br /&gt;3. Дефис&lt;br /&gt;4. Номинал рабочего давления&lt;br /&gt;&amp;nbsp;&amp;nbsp; &amp;nbsp;6 - 6 бар&lt;br /&gt;5. Исполнение заслонки (зависит от типа применяемого привода)&lt;br /&gt;6. ст. - материал корпуса заслонки - сталь&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;br /&gt;В зависимости от типа элетропривода заслонка может работать:&lt;br /&gt;-в режиме плавного (пропорционального) регулирования; при этом в обозначении заслонки добавляется буквосочетание &amp;laquo;ПР&amp;raquo;;&lt;br /&gt;-в двухпозиционном режиме (открыто-закрыто - позиционное регулирование); при этом в обозначении заслонки добавляется буквосочетание &amp;laquo;ПОЗ.&amp;raquo;.&lt;br /&gt;По типу присоединения к трубопроводу заслонки изготавливаются только фланцевые от DN 40 до DN 300.&lt;br /&gt;Фланцы заслонок соответствуют ГОСТ 12815, исп. 1, до 0,6 МПа.&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;h4 class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;Общие технические характеристики заслонок регулирующих газовых общепромышленного исполнения&lt;/h4&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Наименование параметра&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Значение&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Температура рабочей среды&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;от минус 60 &lt;sup&gt;О&lt;/sup&gt;С до плюс 70 &lt;sup&gt;О&lt;/sup&gt;С&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Напряжение питания переменного тока&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;220 В (частота 50, 60 Гц)&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Напряжение питания постоянного тока&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;24 В&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Средний срок службы, лет, не менее&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;9&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</text>
+<use>&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Заслонки регулирующие&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред, в том числе углеводородных газов, газовых фаз сжиженных газов, сжатого воздуха и других неагрессивных газов в качестве регулирующего органа.&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;Заслонки применяются для плавного регулирования расхода газа и не являются запорным органом.&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;Рекомендуется применять заслонки регулирующие в комплекте с запорной арматурой (отсечными клапанами, задвижками, кранами и др.)&lt;/div&gt;</use>
+<picture size="3645" created="30.11.2020 12:32" extenstion="jpg">untitled_1.jpg</picture>
+		<show_section>sec/zaslonki_reguliruyuschie/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="611" path="sitefiles/1/5/31/611/" key="alyuminievyi_korpus611">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/zaslonki_reguliruyuschie/alyuminievyi_korpus611/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="612" path="sitefiles/1/5/31/612/" key="stalnoi_korpus612">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/zaslonki_reguliruyuschie/stalnoi_korpus612/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="28" path="sitefiles/1/5/28/" key="filtry">
+<name>Фильтры газовые</name>
+<serial_sample>обозначения ФН</serial_sample>
+<alt>Фильтр газовый ФН2-2 ФЛ с ИЗФ. ТЕРМОБРЕСТ.</alt>
+<img size="8566" created="30.11.2020 12:32" extenstion="jpg">fn3et_fl16.jpg</img>
+<text>&lt;h1&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/28/str_filters_2020.jpg&quot; alt=&quot;Структура обозначения фильтров&quot; width=&quot;400&quot; height=&quot;109&quot; /&gt;&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ФН&lt;/strong&gt; &amp;mdash; обозначение серии&lt;/li&gt;
+&lt;li&gt;Присоединительный размер в дюймах&lt;/li&gt;
+&lt;li&gt;Исполнение фильтра по максимальному рабочему давлению:&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;mdash;&amp;nbsp;(0...3 бар); &lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; &amp;mdash; (0...3 бар);&lt;br /&gt;&lt;strong&gt;6&lt;/strong&gt; &amp;mdash; (0...6 бар);&lt;br /&gt;&lt;strong&gt;16&lt;/strong&gt; &amp;mdash; (0...16 бар).&lt;/li&gt;
+&lt;li&gt;Исполнение фильтра: &lt;br /&gt;&lt;strong&gt;.1,&amp;nbsp; .2,&amp;nbsp; .3&lt;/strong&gt; &amp;mdash; только для фильтров DN 15, 20, 25, 250 и 300;&lt;br /&gt;&lt;strong&gt;Д&lt;/strong&gt; &amp;mdash; только для компактного исполнения.&lt;/li&gt;
+&lt;li&gt;Дополнительные устройства или исполнение корпуса фильтра: &lt;br /&gt;&lt;strong&gt;М&lt;/strong&gt; &amp;mdash;&amp;nbsp;наличие индикатора загрязненности фильтра механического типа;&lt;br /&gt;&lt;strong&gt;С&lt;/strong&gt; &amp;mdash; наличие индикатора загрязненности фильтра стрелочного типа; &lt;strong&gt;*&lt;/strong&gt;&lt;br /&gt;&lt;strong&gt;Ес&lt;/strong&gt; &amp;mdash; наличие индикатора загрязненности фильтра электрического типа, работающего от сети;&lt;br /&gt;&lt;strong&gt;Ет&lt;/strong&gt; &amp;mdash;&amp;nbsp;наличие индикатора загрязненности фильтра электрического типа, работающего от батареи;&lt;br /&gt;&lt;strong&gt;К&lt;/strong&gt;&amp;nbsp;&amp;mdash;&amp;nbsp;наличие в фильтре конденсатоотвода. Опция доступна для фильтров типоразмерного ряда DN 25...300;&lt;br /&gt;&lt;strong&gt;У&lt;/strong&gt; &amp;mdash; угловое исполнение корпуса фильтра.&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение:&lt;br /&gt;У3.1: &amp;ndash;30...+60 &amp;deg;С;&lt;br /&gt;У2: &amp;ndash;45...+60 &amp;deg;С;&lt;br /&gt;УХЛ1: &amp;ndash;60...+60 &amp;deg;С.&lt;/li&gt;
+&lt;li&gt;Номер технических условий&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;*&lt;/strong&gt; Индикаторы загрязненности стрелочного типа выпускаются в двух исполнениях в зависимости от расположения шкалы индикатора относительно направления движения газа через фильтр или трубопровод:&lt;br /&gt;- СЛЕВА-НАПРАВО;&lt;br /&gt;- СПРАВА-НАЛЕВО.&lt;/p&gt;
+&lt;p&gt;&lt;span lang=&quot;RU&quot;&gt;Пример обозначения фильтра газового с индикатором загрязненности стрелочного типа (исполнение слева-направо), присоединительным размером 2 дюйма, максимальное рабочее давление 6 бар, муфтового исполнения, материал корпуса &amp;ndash; алюминий, климатическое исполнение У3.1:&lt;br /&gt;&lt;/span&gt;&lt;strong&gt;&lt;span lang=&quot;RU&quot;&gt;ФН2&amp;ndash;6С, У3.1 (исполнение индикатора слева-направо)&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;div&gt;&lt;strong&gt;ДОПОЛНИТЕЛЬНО:&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;Для фильтров DN 15...50 указывается исполнение корпуса: муфтового или фланцевого присоединения;&lt;/li&gt;
+&lt;li&gt;Для фильтров DN 15...200 в стальном корпусе дополнительно указывается материал корпуса: сталь;&lt;/li&gt;
+&lt;li&gt;Для фильтров DN 150, DN 200 в чугунном корпусе дополнительно указывается материал корпуса: чугун.&lt;/li&gt;
+&lt;li&gt;По умолчанию фильтрующий элемент выполнен из пористого полимерного материала.&lt;br /&gt;По специальному заказу возможно изготовление фильтра с сетчатым фильтрующим элементом, изготовленным из металлической сетки. Конструкция фильтра позволяет снимать фильтрующий элемент для его очистки или замены.&lt;/li&gt;
+&lt;li&gt;Температура рабочей среды:&lt;br /&gt;&amp;ndash;40...+90 &amp;deg;С (для фильтров с полимерным фильтрующим элементом);&lt;br /&gt;&amp;ndash;60...+120 &amp;deg;С (для фильтров с сетчатым фильтрующим элементом);&lt;/li&gt;
+&lt;li&gt;Монтажное положение фильтров: на горизонтальных и вертикальных трубопроводах.&lt;/li&gt;
+&lt;li&gt;Степень фильтрации:&lt;/li&gt;
+&lt;ul&gt;
+&lt;li&gt;для полимерного фильтрующего элемента (полиэтилен):&amp;nbsp;2 мкм, 5 мкм, 10 мкм, 20 мкм, &lt;strong&gt;50 мкм (по умолчанию)&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;для сетчатого фильтрующего элемента (металлическая сетка):&amp;nbsp;400 мкм, 600 мкм, 800 мкм.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Соответствие фланцев фильтров&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;table dir=&quot;ltr&quot; style=&quot;table-layout: fixed; font-size: 13px; font-family: arial,sans,sans-serif; border-collapse: collapse; border: 1px solid #cccccc; width: 499.117px;&quot; border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tbody&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; background-color: #efefef; white-space: normal; overflow-wrap: break-word; text-align: center; height: 16px; width: 56px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;Номинальныйдиаметр DN&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; background-color: #efefef; white-space: normal; overflow-wrap: break-word; text-align: center; height: 16px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;Давление рабочеемаксимальное, МПа&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; background-color: #efefef; white-space: normal; overflow-wrap: break-word; text-align: center; height: 16px; width: 114.117px;&quot; data-sheets-value=&quot;{&quot;&gt;Соответствие фланцев фильтров&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 20px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 33.0333px; width: 56px; text-align: center; vertical-align: middle;&quot; rowspan=&quot;3&quot; data-sheets-value=&quot;{&quot;&gt;25 - 200&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 20px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;0,3&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 39px; width: 114.117px;&quot; rowspan=&quot;2&quot; data-sheets-value=&quot;{&quot;&gt;ГОСТ 12815, исп.1, до 0,6 МПа&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 19px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 19px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;0,6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;1,6&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 114.117px;&quot; data-sheets-value=&quot;{&quot;&gt;ГОСТ 12815, исп.1, до 1,6 МПа&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 33.0333px; width: 56px; text-align: center; vertical-align: middle;&quot; rowspan=&quot;2&quot; data-sheets-value=&quot;{&quot;&gt;250, 300&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;1,0&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 114.117px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;ГОСТ 12815, исп.1, до 1,0 МПа&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 17.0333px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 17.0333px; width: 61px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;1,6&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 17.0333px; width: 114.117px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;ГОСТ 12815, исп.1, до 1,6 МПа&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;Общие технические характеристики фильтров газовых&lt;/strong&gt;&lt;/div&gt;
+&lt;table dir=&quot;ltr&quot; style=&quot;table-layout: fixed; font-size: 13px; font-family: arial,sans,sans-serif; border-collapse: collapse; border: 1px solid #cccccc; width: 515.25px;&quot; border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tbody&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; background-color: #efefef; white-space: normal; overflow-wrap: break-word; text-align: center; height: 16px; width: 79px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;Наименование параметра&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; background-color: #efefef; white-space: normal; overflow-wrap: break-word; text-align: center; height: 16px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;Значение&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 8.70001px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Максимальный перепад давления на фильтре&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 8.70001px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;не более 10 кПа&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 19px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Пористость фильтрующего элемента&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 19px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;(50...60) %&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Минимальный размер улавливаемых частиц&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;не более 50 мкм&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 16px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Температура рабочей среды&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 16px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;от минус 40 &lt;sup&gt;О&lt;/sup&gt;С до плюс 90 &lt;sup&gt;О&lt;/sup&gt;С&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 17px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Средняя наработка на отказ&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 17px; width: 59.25px;&quot; colspan=&quot;1&quot; data-sheets-value=&quot;{&quot;&gt;10000 ч&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style=&quot;height: 17px;&quot;&gt;
+&lt;td style=&quot;padding: 2px 3px; height: 8.70001px; width: 79px; text-align: left; vertical-align: middle;&quot; data-sheets-value=&quot;{&quot;&gt;&amp;nbsp;Средний срок службы&lt;/td&gt;
+&lt;td style=&quot;padding: 2px 3px; vertical-align: middle; text-align: center; height: 17px; width: 59.25px;&quot; data-sheets-value=&quot;{&quot;&gt;не менее 9 лет&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</text>
+<use>&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Фильтры газовые&lt;/strong&gt; предназначены для установки на газопроводах перед запорно-регулирующей арматурой газогорелочных устройств котлов, теплогенераторов, инфракрасных обогревателей и других газосжигающих установках с целью очистки газа от механических частиц для повышения надежности и долговечности работы оборудования.&lt;/div&gt;</use>
+<picture size="39650" created="15.02.2021 10:57" extenstion="jpg">str_filters_2020.jpg</picture>
+		<show_section>sec/filtry/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="420" path="sitefiles/1/5/28/420/" key="alyuminievyi_korpus">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/filtry/alyuminievyi_korpus/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="1810" path="sitefiles/1/5/28/1810/" key="stalnoi_korpus1810">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/filtry/stalnoi_korpus1810/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="32" path="sitefiles/1/5/32/" key="regulyatory_stabilizatory_davleniya">
+<name>Регуляторы-стабилизаторы давления</name>
+<serial_sample>обозначения РС</serial_sample>
+<alt>Регулятор давления газа РС2-6 PN16 с присоединительными фланцами. ТЕРМОБРЕСТ.</alt>
+<img size="6794" created="30.11.2020 12:33" extenstion="jpg">rs4_6_fl_pn16.jpg</img>
+<text>&lt;p&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;Структура обозначения&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;&amp;nbsp; 1&amp;nbsp;&amp;nbsp;&amp;nbsp; 2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 5&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 6&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 7&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 24px;&quot;&gt;&lt;strong&gt;РС Х - Х - Х - ХХХ - Х - Х&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div&gt;
+&lt;h4&gt;&amp;nbsp;&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;1.&amp;nbsp;&lt;/strong&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;РС - обозначение серии.&lt;/span&gt;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;2.&lt;/strong&gt; &lt;span style=&quot;font-size: 14px;&quot;&gt;Присоединительный&lt;/span&gt; размер,&amp;nbsp;дюймы&amp;nbsp;или максимальная пропускная способность, нм&lt;sup&gt;3&lt;/sup&gt;/ч (только для исполнения регулятора КД):&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;6:&lt;/strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 6 нм&lt;sup&gt;3&lt;/sup&gt;/ч;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;10:&lt;/strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 10 нм&lt;sup&gt;3&lt;/sup&gt;/ч;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;25:&lt;/strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 25 нм&lt;sup&gt;3&lt;/sup&gt;/ч;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;50:&lt;/strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 50 нм&lt;sup&gt;3&lt;/sup&gt;/ч.&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;3.&lt;/strong&gt; Максимальное рабочее давление:&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;mdash; 1 бар;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;6&lt;/strong&gt; &amp;mdash; 6 бар;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;0,5&lt;/strong&gt; &amp;mdash; 0,5 бар (только для регуляторов нулевого давления и&amp;nbsp;соотношения давления газ-воздух).&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;4.&lt;/strong&gt; Комплектация регулятора или исполнение:&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;В&lt;/strong&gt; - регулятор в базовой комплектации;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;С&lt;/strong&gt; - регулятор со встроенным предохранительно-сбросным клапаном (ПСК);&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;К&lt;/strong&gt; - регулятор комбинированный с предохранительно-запорным клапаном (ПЗК);&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;Н&lt;/strong&gt; - исполнение регулятора нулевого давления;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;А&lt;/strong&gt; - исполнение регулятора соотношения давления газ-воздух;&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;КД&lt;/strong&gt; - исполнение комбинированного регулятора со всроенным ПСК и ПЗК.&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;5.&lt;/strong&gt; Код исполнения регулятора (трехзначный):&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;0 Х Х&lt;/strong&gt; - трехзначный код для регулятора в базовой комплектации&amp;nbsp;(обозначает диапазон выходного давления);&lt;/div&gt;
+&lt;div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;1 Х Х&lt;/strong&gt; - трехзначный код для регулятора со встроенным ПСК&amp;nbsp;(обозначает диапазон выходного давления и настройки срабатывания&amp;nbsp;ПСК);&lt;/div&gt;
+&lt;div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;2 Х Х&lt;/strong&gt; - трехзначный код для регулятора комбинированного с ПЗК (обозначает диапазоны выходного давления и настройки срабатывания&amp;nbsp;ПЗК);&lt;/div&gt;
+&lt;div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;3&lt;/strong&gt;&lt;strong&gt; Х Х&lt;/strong&gt; - трехзначный код для регулятора комбинированного с ПЗК и встроенным&amp;nbsp;ПСК (обозначает диапазоны выходного давления и настройки&amp;nbsp;срабатывания ПЗК и встроенного ПСК);&lt;/div&gt;
+&lt;div style=&quot;padding-left: 30px;&quot;&gt;&lt;strong&gt;4&lt;/strong&gt;&lt;strong&gt; Х Х&lt;/strong&gt; - трехзначный код для регулятора комбинированного с ПЗК и ПСК в отдельном корпусе (обозначает диапазоны выходного давления и настройки срабатывания ПЗК и ПСК).&lt;/div&gt;
+&lt;div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;Для регуляторов соотношения давления газ-воздух дополнительно указываются исполнения:&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;strong&gt;- 1&lt;/strong&gt; - регулятор соотношения давления газ-воздух 1:1;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;strong&gt;- 2&lt;/strong&gt; - регулятор соотношения давления газ-воздух (давление газа меньше&amp;nbsp;давления воздуха Рвозд./Ргаз. &amp;le; 10);&lt;/div&gt;
+&lt;div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;strong&gt;- 3&lt;/strong&gt; - регулятор соотношения давления газ-воздух (давление газа больше&amp;nbsp;давления воздуха Ргаз./Рвозд. &amp;le; 2).&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;Для регуляторов нулевого давления (РС...-Н), соотношения давления газ-воздух (РС...-А) и комбинированного регулятора со встроенными ПСК и ПЗК (РС...-КД) диапазон регулирования выходного давления не указывается.&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;Для регуляторов исполнения КД дополнительно указывается исполнение корпуса:&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; - угловое;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; - угловое снизу вверх;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; - линейное;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; - П-образное.&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;6.&lt;/strong&gt; Климатическое исполнение:&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;У3.1 (-30...+60 &amp;deg;С);&lt;/li&gt;
+&lt;li&gt;У2 (-40...+60 &amp;deg;С).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div&gt;&lt;strong&gt;7.&lt;/strong&gt; Номер технических условий: ТУ BY 200020142.030-2013.&lt;/div&gt;
+&lt;div&gt;&lt;br /&gt;&lt;strong&gt;По типу присоединения к трубопроводу регуляторы изготавливаются:&lt;/strong&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;муфтовые - DN 15 - 50;&lt;/li&gt;
+&lt;li&gt;фланцевые - DN 15 - 150.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Фланцы регуляторов соответствуют по ГОСТ 33259, тип 01, PN 6 (до 0,6 МПа).&lt;strong&gt; &lt;br /&gt;&amp;nbsp;&lt;/strong&gt;По спецзаказу возможно изготовление регуляторов давления на DN 32 - 100 по ГОСТ 33259, тип 01, PN 16 (до 1,6 МПа).&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Регуляторы-стабилизаторы давления&lt;/strong&gt; предназначены для снижения, регулирования и поддержания давления (расхода) углеводородных газов, газовых фаз сжиженных газов, сжатого воздуха и других неагрессивных газов на выходе постоянным в заданных пределах независимо от изменений входного давления и работают без использования постороннего источника энергии.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Предохранительно-сбросной клапан, входящий в состав регулятора давления, производит выпуск газа в атмосферу при незначительном повышении контролируемого давления на выходе.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Предохранительно-запорный клапан, входящий в состав регулятора давления, прекращает подачу газа при значительном (недопустимом) повышении давления на выходе в случае возникновения каких-либо аварийных ситуаций.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Регуляторы-стабилизаторы давления в конструкцию которых входят одновременно предохранительно-сбросной и предохранительно-запорный клапаны включают в себя функции сброса и отсечки.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Область применения регуляторов-стабилизаторов давления&lt;/strong&gt; - газовые регуляторные пункты и установки, отопительные котельные, газопоршневые электростанции, газовые горелки, а также аналогичные приборы и установки, где требуется редуцирование и поддержание стабильной величины давления газа.&lt;/p&gt;</use>
+<picture size="30416" created="30.11.2020 12:33" extenstion="jpg">str_rs.jpg</picture>
+		<show_section>sec/regulyatory_stabilizatory_davleniya/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="873" path="sitefiles/1/5/32/873/" key="alyuminievyi_korpus873">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/regulyatory_stabilizatory_davleniya/alyuminievyi_korpus873/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="874" path="sitefiles/1/5/32/874/" key="stalnoi_korpus874">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/regulyatory_stabilizatory_davleniya/stalnoi_korpus874/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="33" path="sitefiles/1/5/33/" key="klapany_predohranitelno_zapornye">
+<name>Клапаны предохранительно-запорные газовые</name>
+<serial_sample>обозначения ЗК</serial_sample>
+<alt>Клапан газовый ЗК2-6 предохранительно-запорный муфтовый. ТЕРМОБРЕСТ.</alt>
+<img created="12.10.2020 08:50" extenstion="jpg" size="9076">zk3_6_03.2018.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;h1 class=&quot;modal-body&quot;&gt;Структура обозначения&lt;/h1&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;&amp;nbsp; 1&amp;nbsp;&amp;nbsp;&amp;nbsp; 2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 5&amp;nbsp; &amp;nbsp; &amp;nbsp; 6&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 24px;&quot;&gt;&lt;strong&gt;ЗК Х - Х - ХХХ - Х - Х&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div&gt;
+&lt;h4&gt;&lt;strong&gt;1. ЗК&lt;/strong&gt; &amp;mdash; обозначение серии.&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;2.&lt;/strong&gt; Присоединительный размер,&amp;nbsp;дюймы&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;3.&lt;/strong&gt; Максимальное рабочее давление:&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1&lt;/strong&gt; &amp;mdash; 1 бар;&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 6&lt;/strong&gt; &amp;mdash; 6 бар.&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;4.&lt;/strong&gt; Трехзначный код, обозначающий диапазон давлений срабатывания при повышении давления выше предела срабатывания.&lt;/div&gt;
+&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;strong&gt;5.&lt;/strong&gt; Климатическое исполнение:&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms                  ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; У3.1&lt;/strong&gt; (-30...+60 &amp;deg;С);&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms                  ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; У2&lt;/strong&gt; (-40...+60 &amp;deg;С).&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms                  ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;6.&lt;/strong&gt; Номер технических условий: ТУ BY 200020142.033-2013.
+&lt;p&gt;По типу присоединения к трубопроводу ПСК изготавливаются:&lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 200.&lt;/p&gt;
+&lt;p&gt;Фланцы предохранительно-запорных клапанов соответствуют по ГОСТ 33259-2015, тип. 01, PN 6.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Предохранительно-запорный клапан (ПЗК)&lt;/strong&gt; предназначен для автоматического прекращения подачи газа к потребителям в случае превышения давления выше заданного предела срабатывания.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;ОБЛАСТЬ ПРИМЕНЕНИЯ И ПРИНЦИП РАБОТЫ:&lt;/strong&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Устанавливается такой клапан как правило в газорегуляторных пунктах и установках перед регулятором-стабилизатором давления и обеспечивает контроль выходного давления, полученного за регулятором. Сигнал об отклонении давления газа от заданного значения поступает к ПЗК по импульсной трубке, присоединенной к газопроводу выходного давления. Величина контролируемого давления настраивается регулировкой пружины в ПЗК. При превышении установленной величины давления за регулятором, предохранительно-запорный клапан закрывается и перекрывает подачу газа в трубопроводе. Открытие клапана возможно произвести только в ручном режиме после устранения причины превышения давления газа сверх контролируемого.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Предохранительно-запорные клапаны газовые соответствуют ТУ BY 200020142.035-2013.&lt;/p&gt;</use>
+<picture created="08.06.2016 15:25" extenstion="jpg" size="5796">f1.jpg</picture>
+		<show_section>sec/klapany_predohranitelno_zapornye/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="877" path="sitefiles/1/5/33/877/" key="alyuminievyi_korpus877">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/klapany_predohranitelno_zapornye/alyuminievyi_korpus877/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="878" path="sitefiles/1/5/33/878/" key="stalnoi_korpus878">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/klapany_predohranitelno_zapornye/stalnoi_korpus878/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="34" path="sitefiles/1/5/34/" key="klapany_predohranitelno_sbrosnye">
+<name>Клапаны предохранительно-сбросные газовые</name>
+<serial_sample>обозначения СК</serial_sample>
+<alt>Клапан газовый СК1 1/4-6 предохранительно-сбросной муфтовый. ТЕРМОБРЕСТ.</alt>
+<img size="5772" created="30.11.2020 12:33" extenstion="jpg">sk1_6.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;h1&gt;Структура обозначения&lt;/h1&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;&amp;nbsp; 1&amp;nbsp;&amp;nbsp;&amp;nbsp; 2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 5&amp;nbsp; &amp;nbsp; &amp;nbsp; 6&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 24px;&quot;&gt;&lt;strong&gt;СК Х - Х - ХХХ - Х - Х&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div&gt;
+&lt;h4&gt;&lt;strong&gt;1. CК&lt;/strong&gt; &amp;mdash; обозначение серии.&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;2.&lt;/strong&gt; Присоединительный размер,&amp;nbsp;дюймы&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;3.&lt;/strong&gt; Исполнение:&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Р&lt;/strong&gt; &amp;mdash; наличие устройства принудительного открытия&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;4.&lt;/strong&gt; Трехзначный код, обозначающий диапазон давлений срабатывания.&lt;/div&gt;
+&lt;strong&gt;5.&lt;/strong&gt; Климатическое исполнение:&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; У3.1&lt;/strong&gt; (-30...+60 &amp;deg;С);&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; У2&lt;/strong&gt; (-40...+60 &amp;deg;С).&lt;/div&gt;
+&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;&lt;strong&gt;6.&lt;/strong&gt; Номер технических условий: ТУ BY 200020142.033-2013.
+&lt;p&gt;По типу присоединения к трубопроводу ПСК изготавливаются:&lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 15 до DN 50.&lt;/p&gt;
+&lt;p&gt;Фланцы предохранительно-сбросных клапанов соответствуют по ГОСТ 33259-2015, тип. 01, PN 6.&lt;/p&gt;
+&lt;/div&gt;</text>
+<use>&lt;p&gt;&lt;strong&gt;Предохранительно-сбросный клапан&lt;/strong&gt; предназначен для сброса газа в атмосферу (или в область низкого давления) при превышении давления газа в сети сверх настроенного (установленного) значения. Клапан прекращает сброс избыточного давления при восстановлении в газовом тракте рабочих параметров. Таким образом предохранительно-сбросной клапан обеспечивает защиту газового оборудования от повреждения и исключает возникновение аварийных ситуаций.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ОБЛАСТЬ ПРИМЕНЕНИЯ:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Устанавливается такой клапан как правило на сбросной линии после регулятора давления и применяется в газовых регуляторных пунктах и установках, отопительных котельных, а также аналогичных приборах и установках, где требуется поддержание стабильной величины давления газа.&lt;/p&gt;
+&lt;p&gt;Предохранительно-сбросные клапаны (ПСК) предназначены для снижения выходного давления путем сброса (выпуска) в атмосферу или в систему низкого давления газов при превышении контролируемого давления за установленный предел. Область применения ПСК - газовые регуляторные пункты и установки.&lt;/p&gt;
+&lt;p&gt;Предохранительно-сбросные газовые клапаны соответствуют ТУ BY 200020142.033-2013.&lt;/p&gt;</use>
+<picture size="6069" created="30.11.2020 12:33" extenstion="jpg">s1.jpg</picture>
+		<show_section>sec/klapany_predohranitelno_sbrosnye/</show_section>
+		<section_count>0</section_count>
+	</main_section>
+	<main_section type="main_section" id="36" path="sitefiles/1/5/36/" key="bloki_klapanov_gazovyh">
+<name>Блоки клапанов газовых</name>
+<serial_sample>обозначения СН</serial_sample>
+<alt>Блок клапанов газовых С2Н-4-60 с фильтром.</alt>
+<img size="8143" created="30.11.2020 12:33" extenstion="jpg">s3n_4_42_pravyi_05_bar_filtr_sp0_sboku_01.jpg</img>
+<text>&lt;h1 class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;Структура обозначения&lt;/h1&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;img src=&quot;sitefiles/1/5/36/qq.jpg&quot; alt=&quot;&quot; width=&quot;335&quot; height=&quot;145&quot; /&gt;&lt;/p&gt;
+&lt;ol style=&quot;text-align: justify;&quot;&gt;
+&lt;li&gt;&lt;strong&gt;C&lt;/strong&gt; &amp;mdash; обозначение серии;&lt;/li&gt;
+&lt;li&gt;Присоединительный размер,&amp;nbsp;дюймы&lt;/li&gt;
+&lt;li&gt;Исходное состояние основных клапанов:&lt;br /&gt;&lt;strong&gt;Н -&lt;/strong&gt; нормально - закрытое&lt;/li&gt;
+&lt;li&gt;Дефис&lt;/li&gt;
+&lt;li&gt;Количество клапанов в блоке&lt;/li&gt;
+&lt;li&gt;Дефис&lt;/li&gt;
+&lt;li&gt;Номер блока&lt;/li&gt;
+&lt;li&gt;Номер блока&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;К&lt;/strong&gt; - исполнение основного клапана&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;П&lt;/strong&gt; - исполнение клапанов с датчиком положения&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Д&lt;/strong&gt; - наличие датчиков - реле давления&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Е&lt;/strong&gt; - исполнение клапанов во взрывозащищеном исполнении&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение, напряжение питания&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;По типу присоединения к трубопроводу блоки в стальном корпусе изготавливаются: &lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 40 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 25 до DN 100.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Фланцы соответствуют по ГОСТ 12815, исп. 1, до 0,6 МПа.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Климатическое исполнение:&lt;/strong&gt;&lt;br /&gt;- УХЛ1 (-60...+60 &amp;deg;C) - только для взрывозащищенного исполнения;&lt;br /&gt;- УХЛ2 (-60...+60 &amp;deg;C);&lt;br /&gt;- У2 (-45...+60 &amp;deg;C);&lt;br /&gt;- У3.1 (-30...+40 &amp;deg;C).&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Для блоков в стальном корпусе, в состав которого входит клапан с электромеханическим приводом регулятора расхода, климатическое исполнение У3.1 (-30...+60 &amp;deg;C). Возможно изготовление блоков с электроприводом расхода исполнения У2 (-45...+60 &amp;deg;C). Блоки клапанов с применением электропривода могут обеспечивать как пропорциональное, так и позиционное регулирование. Применение блоков позволяет значительно уменьшить габариты и материалоемкость арматурной группы горелки, количество сварных швов, трудоемкость монтажа и пусконаладочных работ, повысить надежность работы и удобство обслуживания.&lt;/p&gt;
+&lt;h4&gt;&lt;a name=&quot;bookmark21&quot;&gt;&lt;/a&gt;Общие технические характеристики блоков электромагнитных клапанов&lt;/h4&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Наименование параметра&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Значение&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Рабочая среда&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Углеводородные газы (ГОСТ 5542),&lt;/p&gt;
+&lt;p&gt;газовые фазы сжиженных газов (ГОСТ 20448),&lt;/p&gt;
+&lt;p&gt;воздух, неагрессивные газы&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Время открытия / закрытия, с, не более&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;1&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Частота включений, 1/ч, не более&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;300&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Ресурс включений, не менее&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;500 000&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Класс герметичности&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;А&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Степень защиты клапанов, входящих в блок:&lt;/p&gt;
+&lt;p&gt;-&amp;nbsp;&amp;nbsp; общепромышленного исполнения&lt;/p&gt;
+&lt;p&gt;-&amp;nbsp;&amp;nbsp; взрывозащищенного исполнения&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;IP65&lt;/p&gt;
+&lt;p&gt;IP67&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Напряжение питания переменного тока постоянного тока&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;220, 110, 24 В; 50, 60 Гц 220, 110, 24 В&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Номинальная мощность одной катушки, Вт&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;25...90&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Средний срок службы, лет, не менее&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;9&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;em&gt;&amp;nbsp;При заказе блока необходимо указать обозначение блока, расположение кла-панов относительно друг друга (схему блока), состав блока (наименование клапанов, входящих в блок), рабочее давление, климатическое исполнение, напряжение питания.&lt;/em&gt;&lt;br /&gt;&lt;em&gt;Для блоков, где применяется электромеханическое регулирование расхода расхода газа дополнительно указывается:&lt;/em&gt;&lt;br /&gt;&lt;em&gt;-&amp;nbsp;&amp;nbsp; &amp;nbsp;для пропорционального регулирования - буквосочетание ПР., а в скобках тип датчика положения (2000 Ом, 100 Ом или 4...20 мА) или величину управ&amp;not;ляющего напряжения (0...10 В);&lt;/em&gt;&lt;br /&gt;&lt;em&gt;-&amp;nbsp;&amp;nbsp; &amp;nbsp;для позиционного регулирования - буквосочетание ПОЗ.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;img src=&quot;sitefiles/1/5/36/ww.jpg&quot; alt=&quot;&quot; width=&quot;661&quot; height=&quot;696&quot; /&gt;&lt;/em&gt;&lt;/p&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Блоки электромагнитных клапанов&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред,&amp;nbsp;в&amp;nbsp;том числе углеводородных газов,&amp;nbsp;газовых фаз сжиженных газов,&amp;nbsp;сжатого воздуха и других неагрессивных газов в качестве запорно-регулирующего органа и органа безопасности при продолжительном режиме работы.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Блоки электромагнитных клапанов&amp;nbsp;соответствуют ТУ РБ 05708554.023-97.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Применение блоков позволяет значительно уменьшить габариты и материалоемкость арматурной группы горелки, количество сварных швов, трудоемкость монтажа и пусконаладочных работ, повысить надежность работы и удобство обслуживания.&lt;/p&gt;</use>
+<picture size="9503" created="30.11.2020 12:33" extenstion="jpg">qq.jpg</picture>
+<picture size="45098" created="30.11.2020 12:33" extenstion="jpg">ww.jpg</picture>
+		<show_section>sec/bloki_klapanov_gazovyh/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="1551" path="sitefiles/1/5/36/1551/" key="alyuminievyi_korpus1551">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/bloki_klapanov_gazovyh/alyuminievyi_korpus1551/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="1585" path="sitefiles/1/5/36/1585/" key="stalnoi_korpus1585">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/bloki_klapanov_gazovyh/stalnoi_korpus1585/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="1586" path="sitefiles/1/5/1586/" key="bloki_klapanov_gazovyh_s_zaslonkami_reguliruyuschimi">
+<name>Блоки клапанов газовых с заслонкой регулирующей</name>
+<serial_sample>обозначения СН</serial_sample>
+<alt>Блок газовых клапанов С3Н-2-84 с регулирующей дроссельной заслонкой. ТЕРМОБРЕСТ.</alt>
+<img size="9206" created="30.11.2020 12:31" extenstion="jpg">s3n_zr.jpg</img>
+<text>&lt;h1 class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s; text-align: justify;&quot; data-w-tab=&quot;Tab 2&quot;&gt;Структура обозначения&lt;/h1&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;img src=&quot;sitefiles/1/5/1586/qq_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;ol style=&quot;text-align: justify;&quot;&gt;
+&lt;li&gt;&lt;strong&gt;C&lt;/strong&gt; &amp;mdash; обозначение серии;&lt;/li&gt;
+&lt;li&gt;Присоединительный размер,&amp;nbsp;дюймы&lt;/li&gt;
+&lt;li&gt;Исходное состояние основных клапанов:&lt;br /&gt;&lt;strong&gt;Н -&lt;/strong&gt; нормально - закрытое&lt;/li&gt;
+&lt;li&gt;Дефис&lt;/li&gt;
+&lt;li&gt;Количество клапанов в блоке&lt;/li&gt;
+&lt;li&gt;Дефис&lt;/li&gt;
+&lt;li&gt;Номер блока&lt;/li&gt;
+&lt;li&gt;Номер блока&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;К&lt;/strong&gt; - исполнение основного клапана&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;П&lt;/strong&gt; - исполнение клапанов с датчиком положения&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Д&lt;/strong&gt; - наличие датчиков - реле давления&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Е&lt;/strong&gt; - исполнение клапанов во взрывозащищеном исполнении&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ЗР&lt;/strong&gt; - наличие заслонки регулирующей&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ЗРВ&lt;/strong&gt; - наличие заслонки регулирующей дроссельного типа&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение, напряжение питания&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;По типу присоединения к трубопроводу блоки в стальном корпусе изготавливаются: &lt;br /&gt;&lt;strong&gt;муфтовые&lt;/strong&gt; &amp;mdash; от DN 40 до DN 50; &lt;br /&gt;&lt;strong&gt;фланцевые&lt;/strong&gt; &amp;mdash; от DN 25 до DN 300.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Фланцы соответствуют по ГОСТ 12815, исп. 1, до 0,6 МПа.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Климатическое исполнение:&lt;/strong&gt;&lt;br /&gt;- УХЛ1 (-60...+60 &amp;deg;C) - только для взрывозащищенного исполнения;&lt;br /&gt;- УХЛ2 (-60...+60 &amp;deg;C);&lt;br /&gt;- У2 (-45...+60 &amp;deg;C);&lt;br /&gt;- У3.1 (-30...+60 &amp;deg;C).&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Для блоков в стальном корпусе, в состав которого входит клапан с электромеханическим приводом регулятора расхода, климатическое исполнение У3.1 (-30...+60 &amp;deg;C). Возможно изготовление блоков с электроприводом расхода исполнения У2 (-45...+60 &amp;deg;C). Блоки клапанов с применением электропривода могут обеспечивать как пропорциональное, так и позиционное регулирование. Применение блоков позволяет значительно уменьшить габариты и материалоемкость арматурной группы горелки, количество сварных швов, трудоемкость монтажа и пусконаладочных работ, повысить надежность работы и удобство обслуживания.&lt;/p&gt;
+&lt;h4&gt;&lt;a name=&quot;bookmark21&quot;&gt;&lt;/a&gt;Общие технические характеристики блоков электромагнитных клапанов&lt;/h4&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Наименование параметра&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;&lt;strong&gt;Значение&lt;/strong&gt;&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Рабочая среда&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;Углеводородные газы (ГОСТ 5542),&lt;/p&gt;
+&lt;p&gt;газовые фазы сжиженных газов (ГОСТ 20448),&lt;/p&gt;
+&lt;p&gt;воздух, неагрессивные газы&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Время открытия / закрытия, с, не более&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;1&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Частота включений, 1/ч, не более&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;300&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Ресурс включений, не менее&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;500 000&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Класс герметичности&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;А&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Степень защиты клапанов, входящих в блок:&lt;/p&gt;
+&lt;p&gt;-&amp;nbsp;&amp;nbsp; общепромышленного исполнения&lt;/p&gt;
+&lt;p&gt;-&amp;nbsp;&amp;nbsp; взрывозащищенного исполнения&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;IP65&lt;/p&gt;
+&lt;p&gt;IP67&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Напряжение питания переменного тока постоянного тока&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;220, 110, 24 В; 50, 60 Гц 220, 110, 24 В&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Номинальная мощность одной катушки, Вт&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;25...90&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p&gt;Средний срок службы, лет, не менее&lt;/p&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;p&gt;9&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;em&gt;&amp;nbsp;При заказе блока необходимо указать обозначение блока, расположение кла-панов относительно друг друга (схему блока), состав блока (наименование клапанов, входящих в блок), рабочее давление, климатическое исполнение, напряжение питания.&lt;/em&gt;&lt;br /&gt;&lt;em&gt;Для блоков, где применяется электромеханическое регулирование расхода расхода газа дополнительно указывается:&lt;/em&gt;&lt;br /&gt;&lt;em&gt;-&amp;nbsp;&amp;nbsp; &amp;nbsp;для пропорционального регулирования - буквосочетание ПР., а в скобках тип датчика положения (2000 Ом, 100 Ом или 4...20 мА) или величину управ&amp;not;ляющего напряжения (0...10 В);&lt;/em&gt;&lt;br /&gt;&lt;em&gt;-&amp;nbsp;&amp;nbsp; &amp;nbsp;для позиционного регулирования - буквосочетание ПОЗ.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;img src=&quot;sitefiles/1/5/36/ww.jpg&quot; alt=&quot;&quot; width=&quot;661&quot; height=&quot;696&quot; /&gt;&lt;/em&gt;&lt;/p&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Блоки электромагнитных клапанов&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред,&amp;nbsp;в&amp;nbsp;том числе углеводородных газов,&amp;nbsp;газовых фаз сжиженных газов,&amp;nbsp;сжатого воздуха и других неагрессивных газов в качестве запорно-регулирующего органа и органа безопасности при продолжительном режиме работы.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Блоки электромагнитных клапанов&amp;nbsp;соответствуют ТУ РБ 05708554.023-97.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Применение блоков позволяет значительно уменьшить габариты и материалоемкость арматурной группы горелки, количество сварных швов, трудоемкость монтажа и пусконаладочных работ, повысить надежность работы и удобство обслуживания.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Применение заслонок позволяет уменьшить общее сопротивление блока на 40 %, при этом происходит некоторое увеличение габаритных размеров и массы блока клапанов.&lt;/p&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Использование заслонок повышает глубину регулирования. Регулировка расхода при использовании заслонок составляет:&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;- 0,05...100 % от номинального расхода для заслонок типа ЗР...;&lt;/div&gt;
+&lt;div style=&quot;text-align: justify;&quot;&gt;- 0,5...100 % от номинального расхода для заслонок дроссельных типа ЗР...В... .&lt;/div&gt;</use>
+<picture size="31279" created="04.10.2023 05:49" extenstion="jpg">qq_2.jpg</picture>
+		<show_section>sec/bloki_klapanov_gazovyh_s_zaslonkami_reguliruyuschimi/</show_section>
+		<section_count>2</section_count>
+		<section type="section" id="1587" path="sitefiles/1/5/1586/1587/" key="alyuminievyi_korpus1587">
+<name>Алюминиевый корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: алюминий</filter_tag>
+			<show_section>sec/bloki_klapanov_gazovyh_s_zaslonkami_reguliruyuschimi/alyuminievyi_korpus1587/</show_section>
+			<section_count>0</section_count>
+		</section>
+		<section type="section" id="1588" path="sitefiles/1/5/1586/1588/" key="stalnoi_korpus1588">
+<name>Стальной корпус</name>
+<filter_tag>МАТЕРИАЛ КОРПУСА: сталь</filter_tag>
+			<show_section>sec/bloki_klapanov_gazovyh_s_zaslonkami_reguliruyuschimi/stalnoi_korpus1588/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="1634" path="sitefiles/1/5/1634/" key="bloki_klapanov_v_uglovom_ispolnenii">
+<name>Блоки клапанов газовых в угловом исполнении</name>
+<serial_sample>обозначения СН</serial_sample>
+<alt>Блок газовых клапанов С2Н-2-08 в угловом исполнении. ТЕРМОБРЕСТ.</alt>
+<img created="12.10.2020 08:55" extenstion="jpg" size="9976">s2n_2_82_ispolnenie_uglovoe_s_filtrom_03.2018.jpg</img>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Блоки электромагнитных клапанов в угловом исполнении&lt;/strong&gt; предназначены для использования в системах дистанционного управления потоками различных газовых сред,&amp;nbsp;в&amp;nbsp;том числе углеводородных газов,&amp;nbsp;газовых фаз сжиженных газов,&amp;nbsp;сжатого воздуха и других неагрессивных газов в качестве запорно-регулирующего органа и органа безопасности при продолжительном режиме работы.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Блоки электромагнитных клапанов&amp;nbsp;соответствуют ТУ РБ 05708554.023-97.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Применение блоков позволяет значительно уменьшить габариты и материалоемкость арматурной группы горелки, количество сварных швов, трудоемкость монтажа и пусконаладочных работ, повысить надежногсть работы и удобство обслуживания.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;По своим техническим характеристикам блоки в угловом исполнении ничем не отличаются от линейных блоков клапанов. Угловые блоки могут быть использованы в помещениях, где установка линейных блоков по строительной длине затруднена.&lt;/p&gt;</use>
+		<show_section>sec/bloki_klapanov_v_uglovom_ispolnenii/</show_section>
+		<section_count>1</section_count>
+		<section type="section" id="1635" path="sitefiles/1/5/1634/1635/" key="stalnoi_korpus1635">
+<name>Стальной корпус</name>
+			<show_section>sec/bloki_klapanov_v_uglovom_ispolnenii/stalnoi_korpus1635/</show_section>
+			<section_count>0</section_count>
+		</section>
+	</main_section>
+	<main_section type="main_section" id="35" path="sitefiles/1/5/35/" key="datchiki_rele_davleniya">
+<name>Датчики-реле давления газа</name>
+<serial_sample>обозначения ДРД</serial_sample>
+<alt>Датчик-реле давления ДРД-120А. ТЕРМОБРЕСТ.</alt>
+<img size="8222" created="30.11.2020 12:33" extenstion="jpg">drd.jpg</img>
+<text>&lt;div class=&quot;w-tab-pane w--tab-active&quot; style=&quot;opacity: 1; transition: opacity 300ms ease 0s;&quot; data-w-tab=&quot;Tab 2&quot;&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/35/str_drd.jpg&quot; width=&quot;650&quot; height=&quot;412&quot; /&gt;&lt;/p&gt;
+&amp;nbsp;Датчики-реле давления газа и воздуха соответствуют ТУ РБ 200020142.025-2000.&lt;/div&gt;</text>
+<use>&lt;div style=&quot;text-align: justify;&quot;&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt; &amp;nbsp;Датчики-реле давления газа&lt;/strong&gt; используются для контроля избыточного давления (ДРД-..., ДРД-...Н, ДРД-...Е) и вакуумметрического давления (ДРД-...Т, ДРД-Е...-Т) газа или воздуха в системах газоснабжения и вентиляции. Они контролируют величину давления и при достижении установленных значений обеспечивают выдачу соответствующего сигнала на систему автоматики и управления. &lt;br /&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;Могут соединяться в блоки (например, если необходимо контролировать верхний и нижний пределы давления). &lt;br /&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;Климатическое исполнение У3.1 (-30...+60 &lt;sup&gt;О&lt;/sup&gt;С).&lt;/div&gt;</use>
+<picture size="8222" created="30.11.2020 12:33" extenstion="jpg">drd.jpg</picture>
+<picture size="101829" created="30.11.2020 12:33" extenstion="jpg">str_drd.jpg</picture>
+		<show_section>sec/datchiki_rele_davleniya/</show_section>
+		<section_count>0</section_count>
+	</main_section>
+	<main_section type="main_section" id="567" path="sitefiles/1/5/567/" key="smesiteli_gazov">
+<name>Смесители газов</name>
+<serial_sample>СГ Х-ХХХ</serial_sample>
+<alt>Смеситель газов СГ2-М. ТЕРМОБРЕСТ.</alt>
+<img created="12.10.2020 08:58" extenstion="jpg" size="8481">sg2_m_02.jpg</img>
+<text>&lt;h4&gt;&amp;nbsp;&lt;img src=&quot;sitefiles/1/5/567/str_cg.jpg&quot; width=&quot;350&quot; height=&quot;165&quot; /&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;СГ&lt;/strong&gt; &amp;mdash; обозначение серии.&lt;/li&gt;
+&lt;li&gt;Типоразмер (определяется диапазоном пропускной способности): &lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;mdash; (90...650) нм&lt;sup&gt;3&lt;/sup&gt;/ч;&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; &amp;mdash; (250...1400) нм&lt;sup&gt;3&lt;/sup&gt;/ч; &lt;br /&gt;&lt;strong&gt;3&lt;/strong&gt; &amp;mdash; (700...3000) нм&lt;sup&gt;3&lt;/sup&gt;/ч; &lt;br /&gt;&lt;strong&gt;4&lt;/strong&gt; &amp;mdash; (2300...4800) нм&lt;sup&gt;3&lt;/sup&gt;/ч.&lt;br /&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Тип регулирования подачи топлива: &lt;br /&gt;&lt;strong&gt;М&lt;/strong&gt; &amp;mdash; регулировка электродвигателем &lt;br /&gt;&lt;strong&gt;Р&lt;/strong&gt; &amp;mdash; ручная регулировка.&lt;/li&gt;
+&lt;li&gt;Климатическое исполнение: &lt;br /&gt;&lt;strong&gt;У3.1&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-30&amp;hellip;+50&amp;deg;С); &lt;br /&gt;&lt;strong&gt;У2&lt;/strong&gt;&amp;nbsp;&amp;mdash; (-45&amp;hellip;+60&amp;deg;С); &lt;br /&gt;&lt;strong&gt;УХЛ1&lt;/strong&gt; &amp;mdash; (-60&amp;hellip;+60&amp;deg;С).&lt;/li&gt;
+&lt;li&gt;Номер технических условий: &lt;strong&gt;ТУ&lt;/strong&gt; &lt;strong&gt;BY 200020142.037-2016&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;strong&gt;Смесители газов&lt;/strong&gt; предназначены для подготовки смеси топлива (газа) и воздуха для надлежащего процесса сгорания в газовом двигателе или ином аналогичном газопотребляющем устройстве.&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Смешивание газа и воздуха в устройстве происходит на основе сопла Вентури.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Тип регулирования подачи топлива:&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; - при помощи электродвигателя;&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&amp;nbsp;- ручная регулировка.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 14px; font-family: arial, helvetica, sans-serif;&quot;&gt;Область применения смесителей газа - четырехтактные газовые двигатели внутреннего сгорвания, газовые моторы-генераторы, когенерационные установки, а также иные теплогенерирующие установки, использующие в качестве топлива различные виды углеводородных газов. &lt;/span&gt;&lt;/p&gt;</use>
+<picture created="02.06.2017 04:32" extenstion="jpg" size="26210">str_cg.jpg</picture>
+		<show_section>sec/smesiteli_gazov/</show_section>
+		<section_count>0</section_count>
+	</main_section>
+	<main_section type="main_section" id="1265" path="sitefiles/1/5/1265/" key="bloki_kontrolya_germetichnosti">
+<name>Блоки контроля герметичности</name>
+<serial_sample>обозначения СВР</serial_sample>
+<alt>Блоки контроля герметичности ТЕРМОБРЕСТ.</alt>
+<img size="8035" created="30.11.2020 12:31" extenstion="jpg">svr_2_2.jpg</img>
+<text>&lt;h1&gt;Структура обозначения&lt;/h1&gt;
+&lt;p&gt;&amp;nbsp;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;&amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3&amp;nbsp; &amp;nbsp; &amp;nbsp; 4&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;5&lt;br /&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-size: 24px;&quot;&gt;&lt;strong&gt;СВР - Х . Х - К -&amp;nbsp;ТУ BY 200020142.039-2017&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;СВР&lt;/strong&gt; &amp;ndash; обозначение серии&lt;/li&gt;
+&lt;li&gt;Исполнение корпуса по ГОСТ 14254:&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;ndash; со степенью защиты IP41;&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; &amp;ndash; со степенью защиты IP54.&lt;/li&gt;
+&lt;li&gt;Исполнение по применяемым совместно с блоком контроля герметичности датчикам-реле давления:&lt;br /&gt;&lt;strong&gt;1&lt;/strong&gt; &amp;ndash; один датчик-реле давления механического типа;&lt;br /&gt;&lt;strong&gt;2&lt;/strong&gt; &amp;ndash; два датчика-реле давления механического типа;&lt;br /&gt;&lt;strong&gt;3&lt;/strong&gt; &amp;ndash; один датчик-реле давления электронного типа;&lt;br /&gt;&lt;strong&gt;4&lt;/strong&gt; &amp;ndash; два датчика-реле давления электронного типа.&lt;/li&gt;
+&lt;li&gt;Исполнение: &lt;strong&gt;К&lt;/strong&gt; &amp;ndash; наличие встроенного перепускного клапана (только для исполнения корпуса 2).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Климатическое исполнение&lt;/strong&gt;&lt;br /&gt;У3.1: &amp;ndash;30...+60 &amp;deg;С &amp;ndash; установка в закрытых неотапливаемых помещениях (объемах).&lt;/p&gt;</text>
+<use>&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;strong&gt;Блок контроля герметичности&lt;/strong&gt; предназначен для автоматической проверки герметичности блоков электромагнитных клапанов перед розжигом газогорелочного устройства.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Устройство представляет собой стационарный прибор со световой индикацией. Панель устройства имеет информацию о герметичности предохранительно-запорных электромагнитных клапанов.&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;Преимущества:&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;- возможность настройки времени тестирования клапанов в процессе контроля герметичности блока;&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;- может использоваться с различными видами автоматики управления котлами;&lt;/p&gt;
+&lt;p style=&quot;text-align: justify;&quot;&gt;- может быть укомплектован одним или двумя датчиками-реле механического или электронного типа. Их использование позволит значительно повысить точность измерения давлений и уменьшить время контроля.&lt;/p&gt;</use>
+		<show_section>sec/bloki_kontrolya_germetichnosti/</show_section>
+		<section_count>0</section_count>
+	</main_section>
+</catalog>

@@ -1,14 +1,15 @@
 package ecommander.persistence.itemquery;
 
-import ecommander.persistence.common.TemplateQuery;
-import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+
+import ecommander.persistence.common.TemplateQuery;
 /**
  * 
  * @author E
  *
  */
-class LimitCriteria implements FilterCriteria, ItemQuery.Const {
+class LimitCriteria implements FilterCriteria {
 
 	private int limit;
 	private int page;
@@ -19,7 +20,7 @@ class LimitCriteria implements FilterCriteria, ItemQuery.Const {
 	}
 
 	public void appendQuery(TemplateQuery query) {
-		query = query.getSubquery(LIMIT);
+		query = query.getSubquery(ItemQuery.LIMIT_OPT);
 		if (query != null) {
 			// Если есть страница, то нужно ее учитвать
 			if (page > 1) {
@@ -47,9 +48,9 @@ class LimitCriteria implements FilterCriteria, ItemQuery.Const {
 		// ничего не делать
 	}
 
-	public BooleanQuery.Builder appendLuceneQuery(BooleanQuery.Builder queryBuilder, BooleanClause.Occur occur) {
+	public BooleanQuery appendLuceneQuery(BooleanQuery query, Occur occur) {
 		// Ничего не добавляется
-		return queryBuilder;
+		return query;
 	}
 
 	public boolean isEmptySet() {

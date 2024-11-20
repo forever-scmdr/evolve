@@ -1,7 +1,7 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
+import ecommander.model.item.ItemType;
+import ecommander.model.item.ItemTypeRegistry;
 
 /**
  * Удаление параметра айтема

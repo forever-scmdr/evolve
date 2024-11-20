@@ -23,7 +23,7 @@ public class FirstFulltextQuery extends LuceneQueryCreator {
 	protected Query createQuery(QueryParser parser, String param, String value, Occur occur) {
 		Query parsedQuery = parser.createPhraseQuery(param, value);
 		if (parsedQuery instanceof PhraseQuery) {
-			ArrayList<SpanQuery> parts = new ArrayList<>(4);
+			ArrayList<SpanQuery> parts = new ArrayList<SpanQuery>(4);
 			PhraseQuery phraseQuery = (PhraseQuery) parsedQuery;
 			Term[] terms = phraseQuery.getTerms();
 			for (Term term : terms) {

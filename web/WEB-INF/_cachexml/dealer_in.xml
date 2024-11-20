@@ -1,0 +1,14 @@
+<dealer_only_count>1</dealer_only_count>
+<dealer_only type="dealer_info" id="95" path="sitefiles/1/95/" key="informatsiya_dlya_dilerov">
+	<news_section_count>1</news_section_count>
+	<news_section type="news_section" id="100" path="sitefiles/1/95/100/" key="novosti_dlya_dilerov">
+<name>Новости для дилеров</name>
+		<show_section>dns/novosti_dlya_dilerov/</show_section>
+	</news_section>
+	<dealer_section_count>1</dealer_section_count>
+	<dealer_section type="dealer_section" id="96" path="sitefiles/1/95/96/" key="informatsiya_dlya_dilerov">
+<name>Информация для дилеров</name>
+<text>&lt;p&gt;Информация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеровИнформация для дилеров&lt;/p&gt;</text>
+		<show_section>dsec/informatsiya_dlya_dilerov/</show_section>
+	</dealer_section>
+</dealer_only>

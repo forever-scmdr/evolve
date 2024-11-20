@@ -1,2 +1,19 @@
-User-agent: *
-Disallow: /
+User-Agent: *
+
+Disallow: /termobrest_news_item/*
+Disallow: /i-prod/*
+Disallow: /i-sec/*
+Disallow: /i-new_products/*
+Disallow: /sec/stalnoi_korpus421/
+Disallow: /about/proizvodstvohttp:/
+Disallow: *?sec*
+Disallow: *?from*
+Disallow: /context_form
+Disallow: /context_form_google
+Disallow: /conext_form_success
+Disallow: /armtorg/*
+Disallow: /sec/klapany_elektromagnitnye/alyuminevyi_korpushttp:/
+
+
+Host: https://termobrest.ru
+Sitemap: https://termobrest.ru/sitemap.xml

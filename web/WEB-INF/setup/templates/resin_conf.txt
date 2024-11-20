@@ -1,0 +1,8 @@
+    <!--!:domain_name:!_begin-->
+    <host id="!:domain_name:!" host-name="!:domain_name:!">
+        <root-directory>!:context_root:!</root-directory>
+        <host-alias>www.!:domain_name:!</host-alias>
+        <web-app id="/" root-directory=""/>
+    </host>
+    <!--!:domain_name:!_end-->
+<!--EXPANDHERE-->

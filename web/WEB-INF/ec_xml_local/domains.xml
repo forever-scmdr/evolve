@@ -1,0 +1,184 @@
+<!--?xml version="1.0" encoding="utf-8"? --> 
+<domains> 
+    <domain name="yes-no" view-type="combobox"> 
+        <value>
+             да 
+        </value> 
+        <value>
+             нет 
+        </value> 
+    </domain> 
+    <domain name="0-1" view-type="combobox"> 
+        <value>
+             0 
+        </value> 
+        <value>
+             1 
+        </value> 
+    </domain>
+    <domain name="email_template" view-type="combobox"> 
+        <value>agent_standard_email</value>
+        <value>agent_official_email</value>
+        <value>agent_test_email</value>
+        <value>agent_new_email</value>
+    </domain>
+    <domain name="gender" view-type="combobox"> 
+        <value>М</value>
+        <value>Ж</value>
+    </domain>
+    <domain name="tags" view-type="combobox"> 
+        <value>
+            Корпус: алюминиевый
+        </value> 
+        <value>
+            Корпус: стальной
+        </value> 
+        <value>
+            Исходное состояние: нормально-открытый
+        </value> 
+        <value>
+            Исходное состояние: нормально-закрытый
+        </value> 
+        <value>
+            Исполнение: двухпозиционный
+        </value> 
+        <value>
+            Исполнение: трехпозиционный
+        </value> 
+        <value>
+            Исполнение: с ручным взводом
+        </value> 
+        <value>
+            Исполнение: для жидких сред
+        </value> 
+        <value>
+            Исполнение: с медленным открытием
+        </value> 
+        <value>
+            Дополнительные устройства и исполнение корпуса: взрывозащищенный
+        </value> 
+        <value>
+            Дополнительные устройства и исполнение корпуса: датчик положения
+        </value> 
+        <value>
+            Дополнительные устройства и исполнение корпуса: угловой корпус
+        </value> 
+        <value>
+            Регулирование: ручное
+        </value> 
+        <value>
+            Регулирование: пропорциональное
+        </value> 
+        <value>
+            Регулирование: позиционное
+        </value> 
+        <value>
+            Тип: регулирующие
+        </value> 
+        <value>
+            Тип: дроссельный
+        </value> 
+        <value>
+            Исполнение: с Э/М приводом в общепромышленном исполнении
+        </value> 
+        <value>
+            Исполнение: с Э/М приводом во взрывозащищенном исполнении
+        </value> 
+        <value>
+            Исполнение: с ручным управлением
+        </value> 
+        <value>
+            Дополнительные устройства: ИЗФ Механического типа
+        </value> 
+        <value>
+            Дополнительные устройства: ИЗФ Электрического типа
+        </value> 
+        <value>
+            Дополнительные устройства: с присоединительными фланцами PN 16
+        </value>
+        <value>
+        	Новинка
+        </value>
+    </domain> 
+    <domain name="doc_scope" view-type="checkbox"> 
+        <value>
+             Фильтры 
+        </value> 
+        <value>
+             Клапаны предохранительно-сбросные 
+        </value> 
+        <value>
+             Клапаны электромагнитные 
+        </value> 
+        <value>
+             Заслонки регулирующие 
+        </value> 
+        <value>
+             Регуляторы-стабилизаторы давления 
+        </value> 
+        <value>
+             Датчики-реле давления 
+        </value> 
+        <value>
+             Блоки клапанов газовых 
+        </value> 
+        <value>
+             Клапаны предохранительно-запорные 
+        </value> 
+    </domain> 
+    <domain name="region" view-type="checkbox"> 
+        <value>
+             Беларусь 
+        </value> 
+        <value>
+             Украина 
+        </value> 
+        <value>
+             Казахстан 
+        </value> 
+        <value>
+             Центральный ФО 
+        </value> 
+        <value>
+             Южный ФО 
+        </value> 
+        <value>
+             Северо-Западный ФО 
+        </value> 
+        <value>
+             Дальневосточный ФО 
+        </value> 
+        <value>
+             Сибирский ФО 
+        </value> 
+        <value>
+             Уральский ФО 
+        </value> 
+        <value>
+             Приволжский ФО 
+        </value> 
+        <value>
+             Северо-Кавказский ФО 
+        </value> 
+        <value>
+             Крымский ФО 
+        </value> 
+        <value>
+             Китай 
+        </value> 
+        <value>
+             Западная Европа 
+        </value> 
+    </domain> 
+    <domain name="product_tabs" view-type="combobox"> 
+        <value>
+             Название вкладки 1 
+        </value> 
+        <value>
+             Другое название вкладки 
+        </value> 
+        <value>
+             Еще название вкладки 
+        </value> 
+    </domain> 
+</domains>

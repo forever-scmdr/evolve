@@ -1,0 +1,24 @@
+<news_count>1</news_count>
+<news type="news" id="37" path="sitefiles/1/37/" key="novosti">
+	<news_section_count>5</news_section_count>
+	<news_section type="news_section" id="38" path="sitefiles/1/37/38/" key="novosti">
+<name>Новости</name>
+		<show_section>ns/novosti/</show_section>
+	</news_section>
+	<news_section type="news_section" id="149" path="sitefiles/1/37/149/" key="novinki_kompanii">
+<name>Новинки компании</name>
+		<show_section>ns/novinki_kompanii/</show_section>
+	</news_section>
+	<news_section type="news_section" id="49" path="sitefiles/1/37/49/" key="meropriyatiya">
+<name>Мероприятия</name>
+		<show_section>ns/meropriyatiya/</show_section>
+	</news_section>
+	<news_section type="news_section" id="56" path="sitefiles/1/37/56/" key="publikacii">
+<name>Публикации</name>
+		<show_section>ns/publikacii/</show_section>
+	</news_section>
+	<news_section type="news_section" id="932" path="sitefiles/1/37/932/" key="video">
+<name>Видео</name>
+		<show_section>ns/video/</show_section>
+	</news_section>
+</news>

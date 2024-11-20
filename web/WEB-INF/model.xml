@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items>
+
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- //////////////////// СПЕЦИАЛЬНЫЕ АЙТЕМЫ ////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- Параметры электронной почты -->
+	<item name="feedback_params" caption="Параметры обратной связи">
+		<parameter name="server_from" type="string" quantifier="single" caption="Адрес сервера" description="с которого отправлять обратную связь" />
+		<parameter name="email_from" type="string" quantifier="single" caption="Откуда" description="Адрес почтового ящика, с которого отправлять обратную связь" />
+		<parameter name="email_from_login" type="string" quantifier="single" caption="Логин" description="Для почтового ящика, с которого отправлять обратную связь" />
+		<parameter name="email_from_password" type="string" quantifier="single" caption="Пароль" description="Для почтового ящика, с которого отправлять обратную связь" />
+		<parameter name="encoding" type="string" quantifier="single" caption="Кодировка" description="В большинстве случаев подходит UTF-8" />
+	</item>
+
+	<!-- Форма обратной связи -->
+	<item name="feedback_form" caption="Форма обратной связи" virtual="true">
+		<parameter name="name" type="string" caption="ФИО" />
+		<parameter name="organization" type="string" caption="Наименование органиизации, адрес" />
+		<parameter name="phone" type="string" caption="Контактный телефон" />
+		<parameter name="email" type="string" caption="Email" />
+		<parameter name="message" type="string" caption="Текст запроса (отзыва)" />
+	</item>
+
+	<!-- Форма получить КД -->
+	<item name="get_doc_form" caption="Форма получить КД" virtual="true">
+		<parameter name="header" type="string" caption="Прошу предоставить документацию на указанные контактные данные" />
+		<parameter name="country" type="string" caption="Страна" />
+		<parameter name="city" type="string" caption="Город" />
+		<parameter name="organization" type="string" caption="Организация" />
+		<parameter name="position" type="string" caption="Должность" />
+		<parameter name="name" type="string" caption="ФИО контактного лица" />
+		<parameter name="phone" type="string" caption="Телефон" />
+		<parameter name="email" type="string" caption="Email" />
+		<parameter name="mark" type="string" caption="Марка изделия" />
+	</item>
+
+	<!-- Форма обратной связи -->
+	<item name="contact_form" caption="Обратная связь" virtual="true">
+		<parameter name="organization" type="string" caption="Наименование органиизации, адрес" />
+		<parameter name="name" type="string" caption="Как вас зовут" />
+		<parameter name="phone" type="string" caption="Контактный телефон" />
+		<parameter name="email" type="string" caption="Email" />
+		<parameter name="message" type="string" caption="Сообщение" />
+	</item>
+
+	<item name="galery_part" extends="page_part" caption="галерея">
+		<subitem name="pic" quantifier="multiple"/>
+	</item>
+
+	<item name="pic" caption="Пара картинок" key="name" extra-handler="ecommander.application.extra.ResizeImagesFactory">
+		<parameter name="name" type="string" quantifier="single" caption="Название" description="Для наглядности" />
+		<parameter name="big" type="picture" quantifier="single" format="width: 1920;" caption="Большое изображение" description="Показывается при увеличении" />
+		<parameter name="small" type="picture" format="height: 100" quantifier="single" caption="Маленькое изображение" description="Показывается по умолчанию" />
+	</item>
+
+	<!-- Пара картинок -->
+	<item name="picture_pair" caption="Пара картинок" key="name" virtual="true">
+		<parameter name="name" type="string" quantifier="single" caption="Название" description="Для наглядности" />
+		<parameter name="big" type="picture" quantifier="single" caption="Большое изображение" description="Показывается при увеличении" />
+		<parameter name="small" type="picture" quantifier="single" caption="Маленькое изображение" description="Показывается по умолчанию" />
+	</item>
+
+	<item name="page_part" caption="Часть страницы" key="name" virtual="true">
+		<parameter name="name" type="string" caption="Название" />
+	</item>
+
+	<item name="text_page" caption="Текстовая страница" virtual="true">
+		<parameter name="text" caption="Текст" type="text" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<subitem name="page_part" quantifier="multiple" />
+	</item>
+
+	<item name="named_text_page" caption="Текстовая страница с названием" key="name" virtual="false" key-unique="true">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="text" caption="Текст" type="text" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<subitem name="page_part" quantifier="multiple" />
+	</item>
+
+	<item name="object_part" caption="Произвольный код" extends="page_part">
+		<parameter name="code" type="plain-text" caption="Код" />
+	</item>
+
+	<item name="text_part" caption="Текст" extends="page_part searchable">
+		<parameter name="text" caption="Текст" type="text" text-index-parameter="tech" text-index="fulltext" text-index-parser="html" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+	</item>
+
+	<item name="searchable" virtual="true">
+		<parameter name="search_string" type="string" quantifier="single" description="для полнотекстового поиска" caption="Строка для поиска" text-index="fulltext" text-index-parameter="tech" />
+	</item>
+
+	<!-- SEO -->
+	<item name="seo_container" virtual="true" caption="Все, где есть SEO">
+		<subitem name="seo" quantifier="single"/>
+	</item>
+	
+	<item name="seo" caption="SEO">
+		<parameter name="title" type="string" caption="title" />
+		<parameter name="h1" type="string" caption="H1"/>
+		<parameter name="keywords" type="string" caption="keywords" />
+		<parameter name="description" type="string" caption="description" />
+		<parameter name="progon" type="short-text" caption="сеошный текст" description="люди не читают, но ботам наравится ;)"/>
+		<subitem name="meta" caption="мета-тег" quantifier="multiple" />
+	</item>
+
+	<item name="meta" caption="мета-тег" key="name">
+		<parameter name="name" type="string" caption="тег" />
+		<parameter name="value" type="string" caption="значение" />
+	</item>
+
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- //////////////////// КАТАЛОГ ////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+	<item name="product" extends="searchable seo_container" caption="Продукт" key="name" key-unique="true" extra-handler="ecommander.application.extra.ResizeImagesFactory">
+		<parameter name="name" type="string" caption="Название" text-index="fulltext" text-index-boost="10" text-index-parameter="tech" />
+		<parameter name="alt" type="string" caption="alt"/>
+		<parameter name="img_big" type="picture" caption="Большое изображение" />
+		<!-- <parameter name="img_med" type="picture" caption="среднее изображение" format="height: 500; src: img_big" description="формируется автоматически из большого, НЕЛЬЗЯ подгружать вручную" /> -->
+		<parameter name="img_small" type="picture" caption="Маленькое изображение" format="height: 216; src: img_big" description="формируется автоматически из большого, НЕЛЬЗЯ подгружать вручную" />
+<!-- 		<parameter name="tech" caption="Характеристики" type="text" text-index="fulltext" text-index-parser="html" description="для единообразия должна сохраняться определенная HTML структура" /> -->
+		<parameter name="size" caption="Модификации" type="text" text-index="fulltext" text-index-parameter="tech" text-index-parser="html" description="предполагается чертеж и таблица" />
+		<parameter name="text" caption="Описание" text-index="fulltext" text-index-parameter="tech" text-index-parser="html" type="text" />
+
+		<parameter name="tag" type="string" quantifier="multiple" caption="Тэг" domain="tags" text-index="fulltext" text-index-parameter="tech"
+			description="Заполняется в формате [параметр]: [значение]. Пример - Корпус: алюминиевый. Параметр может отсутствовать. Пример - отсечные двухпозиционные" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<parameter name="mods" caption="Модификации" type="string" quantifier="single" text-index="fulltext" text-index-parameter="tech" description="Модификации. через ', '" />
+
+		<parameter name="doc_assoc" type="associated" quantifier="multiple" caption="Документ" description="Прикрепить документ из раздела 'Документация'" />
+		<subitem name="product_tab" quantifier="multiple" />
+	</item>
+
+	<item name="product_tab" extends="searchable" caption="вкладка" key="name">
+		<parameter name="name" type="string" caption="Название" domain="product_tabs" />
+		<parameter name="text" caption="Текст" type="text" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<parameter name="file" type="file" quantifier="multiple" caption="Файл" description="для прикрепления к тексту" />
+	</item>
+
+	<item name="doc" caption="Документ" key="name" virtual="true">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="scope" type="string" quantifier="multiple" caption="Территория применения" domain="doc_scope" />
+	</item>
+
+	<item name="file_doc" caption="Документ" extends="doc" description="PDF, Word, Excel и.т.п" extra-handler="ecommander.application.extra.ResizeImagesFactory">
+		<parameter name="file" type="file" caption="Файл" />
+		<parameter name="small" type="picture" caption="уменьшенное изображение" format="width: 280;" />
+	</item>
+	<item name="img_doc" caption="Фото документа" extends="doc" description="изображение" extra-handler="ecommander.application.extra.ResizeImagesFactory">
+		<parameter name="pic" type="picture" caption="Изображение ЛИЦЕВОЙ стороны документа" />
+		<parameter name="back" type="picture" caption="Изображение ОБРАТНОЙ стороны документа" />
+		<parameter name="small" type="picture" caption="уменьшенное изображение" format="width: 280;" />
+	</item>
+
+	<!-- Каталог для вывода на страницах сайта -->
+	<item name="catalog" caption="Каталог сайта" extends="seo_container">
+		<subitem name="main_section" quantifier="multiple" />
+		<parameter name="price_file" type="file" caption="Каталог" />
+		<parameter name="price_list" type="file" caption="Прайс-лист" />
+		<parameter name="show_price_link" type="byte" domain="0-1" caption="показать ссылку на Прайс-лист"/>
+		<subitem name="files" quantifier="single" />
+		<subitem name="new_devices" quantifier="single" />
+	</item>
+
+	<item name="files" caption="Дополнителные файлы">
+		<subitem name="file_doc" quantifier="multiple" />
+	</item>
+
+	<item name="section" caption="Раздел" key="name" key-unique="true" extends="seo_container">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="serial_sample" caption="Структура обозначения" description="Например ВХХХ-ХХХХХХ" type="string" />
+		<parameter name="filter_tag" type="string" caption="Тэг" domain="tags" quantifier="multiple" description="Тэги продуктов, которые должны выводиться в этом разделе. Один или несколько." />
+		<parameter name="text" caption="О серийном номере" type="text" />
+		<parameter name="use" caption="Предназначение" type="text" />
+		
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<subitem name="section" quantifier="multiple" />
+	</item>
+
+	<item name="main_section" caption="Основной раздел" key-unique="true" key="name" extra-handler="ecommander.application.extra.ResizeImagesFactory" extends="seo_container">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="serial_sample" caption="Структура обозначения" description="Например ВХХХ-ХХХХХХ" type="string" />
+		<parameter name="alt" type="string" caption="alt"/>
+		<parameter name="img" type="picture" caption="Основное изображение" format="width: 280" description="выводится на главной странице каталога" />
+		<parameter name="text" caption="Описание" type="text" />
+		<parameter name="use" caption="Предназначение" type="text" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+		<subitem name="product" quantifier="multiple" />
+		<subitem name="section" quantifier="multiple" />
+	</item>
+
+
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- //////////////////// СТРАНИЦЫ ////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+	<item name="main" caption="Главная страница">
+		<subitem name="slide" quantifier="multiple" />
+		<subitem name="footer" quantifier="single" />
+	</item>
+
+	<item name="slide" caption="Слайд" key="header" extra-handler="ecommander.application.extra.ResizeImagesFactory">
+		<parameter name="header" caption="Заголовок" type="string" description="заголовок слайда" />
+		<parameter name="text" caption="Текст" type="short-text" description="текст на слайде" />
+		<parameter name="href" caption="ссылка" type="string" description="например, https://www.google.by" />
+		<parameter name="link_text" caption="текст ссылки" type="string" description="например, Гугл" />
+		<parameter name="pic" caption="Картинка" type="picture" description="фон слайда (2000 х 700)" format="width: 2000; height: 700" />
+		<parameter name="mobile_pic" caption="автогенерируется" type="picture" description="фон слайда (900 х 315)" format="width: 1000; height: 350; src: pic;" />
+		<parameter name="small_pic" caption="Дополниетльная картинка" type="picture" description="фон слайда (413 х 300)" format="width: 413; height: 300" />
+	</item>
+
+	<item name="footer" caption="Ссылки в футере">
+		<subitem name="footer_link" quantifier="multiple"/>
+	</item>
+	
+	<item name="footer_link" caption="Ссылка" key="name">
+		<parameter name="code" type="string" caption="Код. Только для нестандартных ссылок" description="1 - отзыв (форма), 2 - подписаться (форма)"/>
+		<parameter name="name" type="string" caption="Название" description="подпись для ссылки"/>
+		<parameter name="download" type="string" domain="yes-no" caption="Ссылка ведет на файл для скачки" />
+		<parameter name="link" type="string" caption="Ссылка" description="начиная с http://"/>
+		<parameter name="file" type="file" caption="Файл" description="для скачивания"/>
+	</item>
+
+	<item name="news" caption="Новости">
+		<subitem name="news_section" quantifier="multiple" />
+	</item>
+
+	<item name="news_section" caption="Раздел новостей" key="name" key-unique="true">
+		<parameter name="name" type="string" caption="Название" />
+		<subitem name="news_item" quantifier="multiple" />
+	</item>
+
+	<item name="news_item" extends="searchable" caption="Новость" key="header" key-unique="true">
+		<parameter name="header" type="string" caption="Заголовок" text-index="fulltext" text-index-boost="10" text-index-parameter="tech" />
+		<parameter name="main_pic" type="picture" caption="Главная картинка" description="выводится на главной и в списке новостей" />
+		<parameter name="date" type="date" caption="Дата" format="dd.MM.yyyy" />
+<!-- 		<parameter name="short" type="tiny-text" caption="Кратко" description="краткое содержание новости, выводится на главной и в списке новостей" text-index="fulltext" text-index-parameter="tech"
+			text-index-parser="html" /> -->
+		<parameter name="text" caption="Текст" type="text" text-index="fulltext" text-index-parameter="tech" text-index-parser="html" />
+		<parameter name="picture" type="picture" quantifier="multiple" caption="Картинка" description="для прикрепления к тексту" />
+	</item>
+
+	<item name="about" caption="О компании">
+		<subitem name="about_section" quantifier="multiple" />
+	</item>
+
+	<item name="about_section" caption="Раздел о компании" extends="named_text_page" key-unique="true">
+		<subitem name="about_section" quantifier="multiple" />
+	</item>
+
+	<item name="docs" caption="Документы и сертификаты">
+		<subitem name="doc_section" quantifier="multiple" />
+	</item>
+
+	<item name="doc_section" caption="Раздел документации" key="name" key-unique="true">
+		<parameter name="name" type="string" caption="Название" />
+		<parameter name="pic" type="picture" caption="Изображение" />
+		<subitem name="doc" quantifier="multiple" />
+	</item>
+
+	<item name="contacts" caption="Контакты">
+		<parameter name="first_col" caption="Первая колонка" type="short-text" />
+		<parameter name="second_col" caption="Вторая колонка" type="short-text" />
+		<parameter name="map" caption="Код карты" type="plain-text" format="height: 150px" />
+	</item>
+
+	<item name="dealers" caption="Дилеры">
+		<subitem name="dealer_region" quantifier="multiple" />
+		<subitem name="named_text_page" quantifier="single" />
+	</item>
+
+	<item name="dealer_region" caption="Регион" key="name">
+		<parameter name="name" type="string" caption="Название" domain="region" />
+		<subitem name="dealer" quantifier="multiple" />
+	</item>
+
+	<item name="dealer" caption="Дилер" key="city">
+		<parameter name="city" caption="Город" type="string" />
+		<parameter name="name" caption="Название организации" type="string" />
+		<parameter name="phones" caption="Телефоны" type="tiny-text" />
+		<parameter name="extra" caption="Дополнительные контакты" type="tiny-text" description="например, skype или email" />
+	</item>
+
+
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- //////////////////// ДЛЯ ДИЛЕРОВ ////////////////////////////// -->
+	<!-- //////////////////// ////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+	<item name="dealer_info" caption="Информация для дилеров">
+		<subitem name="dealer_section" quantifier="multiple" />
+		<subitem name="news_section" quantifier="multiple" />
+	</item>
+
+	<item name="dealer_section" caption="Раздел для дилеров" extends="named_text_page" key-unique="true">
+		<subitem name="dealer_section" quantifier="multiple" />
+	</item>
+
+	<!-- My own RSS (with black-jack etc.) -->
+	<item name="rss" caption="Рассылка">
+		<parameter name="date" type="date" caption="дата последней рассылки" />
+		<subitem name="agent" quantifier="multiple" />
+	</item>
+
+	<item name="agent" key="email" caption="Контрагент">
+		<parameter name="register_date" type="date" caption="Дата регистрации" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="country" type="string" caption="Страна" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="region" type="string" caption="Область" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="city" type="string" caption="Город" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="organization" type="string" caption="Организация" text-index="fulltext"/>
+		<parameter name="address" type="string" caption="Адрес" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="phone" type="string" caption="Телефон" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="email" type="string" caption="Email 1" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="email_2" type="string" caption="Email 2" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="email_3" type="string" caption="Email 3" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="site" type="string" caption="Адрес сайта" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="contact_name" type="string" caption="ФИО контактного лица" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="boss_position" type="string" caption="Должность руководителя организации"/>
+		<parameter name="boss_position_dat" type="string" caption="Должность руководителя в дательном падеже"/>
+		<parameter name="boss_name" type="string" caption="ФИО руководителя организации" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="boss_name_dat" type="string" caption="ФИО руководителя в дательном падеже"/>
+		<parameter name="boss_greetings" type="string" caption="Обращение к руководителю"/>
+		<parameter name="type" caption="Род деятельности организации" type="string" domain="firm_type" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="branch" caption="Отрасль" type="string" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="desc" type="tiny-text" caption="Примечание" text-index="fulltext" text-index-parameter="organization"/>
+		<parameter name="tags" type="string" caption="разделы" quantifier="multiple" text-index="fulltext"/>
+		<parameter name="emails_sent" quantifier="multiple" type="associated" caption="Отправленные письма" description="ID писем, которые были отправлены контрагенту"/>
+		<subitem name="procurement" quantifier="multiple"/>
+	</item>
+
+	<item name="procurement" caption="Поставка" key="date">
+		<parameter name="date" type="date" caption="Дата"/>
+		<parameter name="text" type="plain-text" caption="Описание поставки" description="список оборудования"/>
+	</item>
+
+	<item name="agent_archive" key="date" caption="Архив контрагентов за дату">
+		<parameter name="date" type="date" caption="Дата создания архива"/>
+		<parameter name="file" type="file" caption="Файл" description="можно загрузить его и разобрать"/>
+	</item>
+
+	<item name="all_agents" caption="Контрагенты">
+		<parameter name="last_updated" type="date" caption="Дата последнего обновления"/>
+		<parameter name="file" type="file" caption="Файл c контрагентами"/>
+		<subitem name="agent" quantifier="multiple"/>
+		<subitem name="agent_archive" quantifier="multiple"/>
+	</item>
+
+	<item name="all_emails" caption="Все адреса email">
+		<subitem name="emails" quantifier="single"/>
+	</item>
+
+	<item name="emails" caption="Адреса email">
+		<subitem name="agent" quantifier="multiple"/>
+		<parameter name="email" type="string" caption="Email" quantifier="multiple"/>
+	</item>
+
+	<item name="agents_extra" caption="Дополнительно для контрагентов">
+		<subitem name="agent_types" quantifier="single"/>
+		<subitem name="agent_branches" quantifier="single"/>
+	</item>
+	
+	<item name="string_element" caption="Элемент" key="name">
+		<parameter name="name" type="string" caption="Значение"/>
+	</item>
+	
+	<item name="agent_types" caption="Роды деятельности">
+		<subitem name="string_element" quantifier="multiple"/>
+	</item>
+
+	<item name="agent_branches" caption="Отрасли">
+		<subitem name="string_element" quantifier="multiple"/>
+	</item>
+
+	<!-- ********************************* Рассылка ********************************* -->
+
+	<item name="email_section" caption="Раздел со сформированными письмами" key="name">
+		<parameter name="name" type="string" caption="Название" />
+		<subitem name="email_section" quantifier="multiple"/>
+		<subitem name="email_post" quantifier="multiple"/>
+	</item>
+
+	<item name="email_post" caption="Содержание письма" key="topic">
+		<parameter name="topic" type="string" caption="Тема письма" description="отображается в общем списке писем почтового ящика"/>
+		<parameter name="date" type="date" caption="Дата создания"/>
+		<parameter name="number" type="string" caption="Номер"/>
+		<parameter name="template" type="string" caption="Шаблон письма" domain="email_template" description="название шаблона, не обязательно"/>
+		<parameter name="header" type="string" caption="Заголовок" description="выводится в теле письма большим шрифтом, не обязателен" />
+		<parameter name="body" type="text" caption="Тело письма" 
+			description="допускаются только простейшие тэги, сложные конструкции со стилями и скриптами не будут правильно отображаться"/>
+		<parameter name="main_pic" type="picture" caption="Основная картинка" description="выводится над телом письма, ширина - 600px"/>
+		<parameter name="pic" type="picture" caption="Картинка" description="для вставки в текст"/>
+	</item>
+
+	<item name="email_catalog" caption="Каталог всех писем">
+		<subitem name="email_section" quantifier="multiple"/>
+	</item>
+
+	<item name="email_queue" caption="Очередь отправки писем">
+		<subitem name="email_queue_item" quantifier="multiple"/>
+	</item>
+	
+
+	<item name="new_devices" caption='Баннер "новинки"' >
+		<parameter name="pic" type="picture" caption="изображение"/>
+		<parameter name="string" type="string" caption="название"/>
+		<parameter name="link" type="string" caption="ссылка"/>
+		<parameter name="ilink" type="string" caption="ссылка для айфрэймов"/>
+		<parameter name="text" type="text" caption="текст"/>
+	</item>
+
+
+	<!-- 
+	Хранится урл, который будет являться шаблоном письма. Шаблон письма перед отправкой будет разбираться JSoup для того, чтобы
+	найти вставленные картинки и отправить их отделными частями много частного запроса. Также разбор нужен, чтобы получить 
+	тему письма, которая хранится в элементе topic, и удалить этот элемент. 
+	 -->
+	<item name="email_queue_item" caption="Элемент очереди на отправку" key="email_url">
+		<parameter name="date_added" type="date" caption="Время добавления в очередь"/>
+		<parameter name="email_id" type="associated" caption="ID письма" description="для сохранения в истории отправки"/>
+		<parameter name="agend_id" type="associated" caption="ID агента" description="для сохранения в истории отправки"/>
+		<parameter name="address_to" type="string" caption="Адрес отрпавки письма"/>
+		<parameter name="email_url" type="string" caption="Ссылка на страницу письма" 
+			description="ссылка на обычнцю страницу CMS, которая является шаблоном письма. В ссылке могут передаваться переменные"/>
+	</item>
+
+	<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ Корневые айтемы //////////////////////////////////////////// -->
+
+	<!-- ********************************* Основной корень ********************************* -->
+
+	<root group="common">
+		<subitem name="feedback_params" quantifier="single" />
+		<subitem name="catalog" quantifier="single" />
+		<subitem name="main" quantifier="single" />
+		<subitem name="news" quantifier="single" />
+		<subitem name="about" quantifier="single" />
+		<subitem name="docs" quantifier="single" />
+		<subitem name="dealer_info" quantifier="single" />
+		<subitem name="contacts" quantifier="single" />
+		<subitem name="dealers" quantifier="single" />
+		<subitem name="rss" quantifier="single"  virtual="true"/>
+		<subitem name="all_agents" quantifier="single"  virtual="true"/><!-- Удалить на сайте на хостинге -->
+		<subitem name="all_emails" quantifier="single" /><!-- Удалить на локальном сайте -->
+		<subitem name="email_catalog" quantifier="single" virtual="true"/><!-- Удалить на сайте на хостинге -->
+		<subitem name="email_queue" quantifier="single" virtual="true"/><!-- Удалить на сайте на хостинге -->
+		<subitem name="agents_extra" quantifier="single" virtual=""/><!-- Удалить на сайте на хостинге -->
+	</root>
+
+</items>

@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8">
+
+	<title>Страница не найдена</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
+
+<style type="text/css">
+	body {font: normal 12px arial; margin: 0; padding: 0; color: #363636;}
+	.mainwrap {width: 1000px; margin: 0 auto;}
+	h1, h2 {font-weight: normal; margin-bottom: 10px;}
+	h1 {font-size: 30px; margin-top: 50px}
+	h2 {font-size: 18px; margin-top: 30px}
+	p.text {width: 500px; font-size: 1.1em;}
+	table {margin-left: 30px;}
+	td {padding-right: 30px; padding-bottom: 10px; vertical-align: top;}
+	.structure .side {width: 70px;}
+	pre {padding-left: 30px;}
+	.link {margin-top: 80px; color: #b7b7b7;}
+	.link span {border-bottom: #b7b7b7 1px dotted; cursor: pointer;}
+	.content {display: none;}
+	a {color: #0071bc;}
+	.bug-report-form {margin: 10px 0; padding: 10px 0; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;}
+	.bug-report-form label, .bug-report-form textarea{display: block;}
+	.bug-report-form textarea{border: 1px solid #ccc; width: 700px; height: 200px; padding: 4px;}
+	.bug-report-form label{margin-bottom: 7px;}
+	.bug-report-form h4{font-size: 20px;}
+	.bug-report-form .send-button{background: #53A746; display: block; margin-top: 7px; color: #fff; border:0; padding: 5px 10px; font-size: 18px; cursor: pointer;}
+	.search-tip img{
+		width: 65px;
+	}
+	.search{padding-top: 0; vertical-align: middle; margin-left: 20px;}
+</style>
+</head>
+<body>
+	<div class="section">
+		<div class="container">
+			<div class="w-row">
+				<div class="w-col w-col-12" style="background: url(https://termobrest.ru/img/top_background.png) repeat-x top left;">
+					
+					<div style="width: 80%; margin: 0 auto;">
+					<a href="https://termobrest.ru"><img src="https://termobrest.ru/images/termo_logo.jpg" alt="termobrest.ru"/></a>
+					<div class="page-title" style="padding-top: 60px;">
+						<h1>СТРАНИЦА НЕ НАЙДЕНА</h1>
+					</div>
+					
+					<p>К сожалению, запрашиваемая Вами страницы не существует на нашем сайте.
+					Возможно, это случилось по одной из этих причин:
+					Вы ошиблись при наборе адреса страницы (URL)<br/>
+					Страница переехала<br/>
+					Запрашиваемой страницы никогда не было на сайте или она была удалена</p>
+					
+					<p>Мы просим прощения за доставленные неудобства и предлагаем следующие пути:</p>
+					
+					<ol style="margin-left: 15px; padding-left:0;">
+						<li style="margin-bottom: 10px;">Перейти на <a href="https://termobrest.ru/">главную страницу</a></li>
+						<li  style="margin-bottom: 10px;">Перейти в <a href="https://termobrest.ru/catalog/">каталог продукции</a></li>
+						<li  style="margin-bottom: 10px;">
+							Выполнить поитск по сайту
+							<div class="search">
+								<form action="search/" method="post" id="search_form">
+								<input placeholder="Введите поисковой запрос" class="input" value="" name="query" id="search_query" oninput="postSearch()" onfocus="postSearch()" type="text"/>
+								<input value="Найти" type="submit"></form>
+								  <div class="search-tip has-products" style="display: none" id="search_ajax">-----</div>
+							</div>
+						</li>
+						<li  style="margin-bottom: 10px;">Отправить <span onclick="$('#debug-info').toggle()" style="color: #0071bc; text-decoration: underline; cursor: pointer;">отчет об ошибке</span></li>
+					</ol>					
+					
+					<div class="mainwrap" id="debug-info" style="display: none;">
+						<div style="margin-top: 40px;"></div>
+						<div id="fform" class="bug-report-form"></div>
+						<div class="content bug-info" style="display: block; margin-top: 20px;">
+							</div>
+					</div>
+					</div>
+			</div>
+	</div>
+	</div>
+	
+	</div>
+	<!-- SCRTPIS -->
+	<script  src="https://code.jquery.com/jquery-2.2.4.min.js"  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="http://test9.must.by/admin/js/jquery.form.min.js"></script>
+	<script type="text/javascript" src="js/ajax.js"></script>
+<!-- 	<script type="text/javascript" src="http://test9.must.by/admin/js/ajax.js"></script> -->
+	<script type="text/javascript" defer="defer" src="js/dingo.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			insertAjax("http://test9.must.by/bug_feedback","",function(){
+				$("#stack").val($(".bug-info").text());
+				$("#url").val(document.location.href);
+			});
+		});
+		
+	</script>
+	<script type="text/javascript">
+		var postSearchTimer = null;
+		function postSearch() {
+			$('#search_ajax').hide();
+			console.log('hide');
+			if (postSearchTimer != null)
+				clearTimeout(postSearchTimer);
+				postSearchTimer = setTimeout(function() {
+				var query = $.trim($('#search_query').val());
+				if (query.length >= 3){
+					$('#search_form').attr('action', 'search_ajax/');
+					postForm('search_form', [], function() {
+						$('#search_form').attr('action', 'search/');
+						$('#search_ajax').show();
+					});
+				}
+			}, 500);
+		}
+		
+		$(document).ready(function() {
+			$(document).click(function() {
+				$('#search_ajax').hide();
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,8 +1,11 @@
 package ecommander.controllers;
 
-import java.io.*;
-import java.util.Collection;
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
@@ -12,17 +15,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import ecommander.fwk.*;
 import net.sf.saxon.TransformerFactoryImpl;
-import org.apache.commons.io.FileUtils;
-
+import ecommander.common.Timer;
+import ecommander.common.exceptions.EcommanderException;
+import ecommander.controllers.output.XmlDocumentBuilder;
 /**
  * Преобразует XML документ в html с помощью XSL файла
  * @author EEEE
  *
  */
 public class XmlXslOutputController {
-
+	
 	private XmlXslOutputController() {};
 	
 	private static class Errors implements ErrorListener {
@@ -41,52 +44,6 @@ public class XmlXslOutputController {
 			errors += "\nWARNING " + exception.getMessageAndLocation();
 		}
 	}
-
-	private static TransformerFactory factory;
-	private static HashMap<String, Transformer> transformers;
-	private static long lastModified = 0;
-	private static long lastChecked = 0;
-
-	private static TransformerFactory getTransformerFac() {
-		if (factory == null)
-			factory = TransformerFactoryImpl.newInstance();
-		return factory;
-	}
-
-	private static Transformer getTransformer(File xslFile, TransformerFactory fac) throws TransformerConfigurationException {
-		if (transformers == null)
-			transformers = new HashMap<>();
-		Transformer trans = transformers.get(xslFile.getAbsolutePath());
-		if (trans == null || checkIfModified()) {
-			trans = fac.newTransformer(new StreamSource(xslFile));
-			transformers.put(xslFile.getAbsolutePath(), trans);
-		}
-		return trans;
-	}
-
-
-	private static boolean checkIfModified() {
-		if (Math.abs(System.currentTimeMillis() - lastChecked) > 5000) {
-			lastChecked = System.currentTimeMillis();
-			File xslDir = new File(AppContext.getStylesDirPath());
-			Collection<File> files = FileUtils.listFiles(xslDir, new String[]{"xsl"}, true);
-			boolean modified = false;
-			for (File file : files) {
-				if (file.lastModified() > lastModified) {
-					lastModified = file.lastModified();
-					modified = true;
-					break;
-				}
-			}
-			if (modified) {
-				transformers.clear();
-				PageController.clearCache();
-			}
-			return modified;
-		}
-		return false;
-	}
-
 	/**
 	 * Вывести преобразованный документ, если преобразование требуется, либо просто XML документ
 	 * @param ostream - куда выводится результат
@@ -99,43 +56,37 @@ public class XmlXslOutputController {
 	public static void outputXmlTransformed(OutputStream ostream, XmlDocumentBuilder xml, String xslFileName)
 			throws TransformerException, IOException, EcommanderException {
 		// Если режим отладки, то вывести содержимое XML документа
+//		if (ServerLogger.isDebugMode()) {
+//			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//			outputXml(bos, xml);
+//			ServerLogger.debug(new String(bos.toByteArray()));
+//		}
+		Timer.getTimer().start(Timer.XSL_TRANSFORM);
+		TransformerFactory factory = TransformerFactoryImpl.newInstance();
 		File xslFile = new File(xslFileName);
-		if (!xslFile.exists()/* || ServerLogger.isDebugMode()*/) {
-			outputXml(ostream, xml);
-		} else {
-			Errors errors = new Errors();
-			try {
-				Timer.getTimer().start(Timer.XSL_TRANSFORM);
-				TransformerFactory factory = getTransformerFac();
-				Transformer transformer;
-				factory.setErrorListener(errors);
-				transformer = getTransformer(xslFile, factory);
-				Reader reader = new StringReader(xml.toString());
-				synchronized (transformer) {
-					transformer.transform(new StreamSource(reader), new StreamResult(ostream));
-				}
-			} catch (TransformerConfigurationException e) {
-				factory = null;
-				transformers = null;
-				throw new EcommanderException(ErrorCodes.NO_SPECIAL_ERROR, "XSL tranform error in " + xslFileName + "\tERRORS: " + errors.errors);
-			} catch (Exception ex) {
-				factory = null;
-				transformers = null;
-				throw ex;
-			}
-			finally {
-				Timer.getTimer().stop(Timer.XSL_TRANSFORM);
-			}
+		Errors errors = new Errors();
+		Transformer transformer = null;
+		try {
+			factory.setErrorListener(errors);
+			transformer = factory.newTransformer(new StreamSource(xslFile));
+			Reader reader = new StringReader(xml.toString());
+			transformer.transform(new StreamSource(reader), new StreamResult(ostream));
+		} catch (TransformerConfigurationException e) {
+			throw new EcommanderException(errors.errors);
+		} finally {
+			Timer.getTimer().stop(Timer.XSL_TRANSFORM);
 		}
 	}
 	/**
 	 * Выводит XML документ в поток вывода
 	 * @param ostream
-	 * @param xml
+	 * @param document
 	 * @throws IOException
 	 */
 	public static void outputXml(OutputStream ostream, XmlDocumentBuilder xml) throws IOException {
 		// Настройка формата вывода документа
-		ostream.write(xml.toString().getBytes("UTF-8"));
+		PrintWriter writer = new PrintWriter(ostream);
+		writer.append(xml.toString());
+		writer.flush();
 	}
 }

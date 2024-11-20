@@ -21,8 +21,7 @@
 
 	<!--  Редактирование ассоциаций -->
 	<xsl:template match="field[ @type='associated' ]" mode="multiple">
-		<xsl:variable name="form" select=".."/>
-		<xsl:if test="$form/@id &gt; 0">
+		<xsl:if test="$form/@id &gt; 0">	
 			<input class="button" type="submit" onclick="openAssoc({@id});return false;" value="Редактировать ассоциации" />
 		</xsl:if>
 	</xsl:template>
@@ -41,19 +40,6 @@
 		<input 
 			style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;" 
 			class="field" type="text" name="multipleParamValue"/>
-	</xsl:template>
-
-
-	<!-- Множественное простое поле ввода -->
-	<xsl:template match="field[@type='tuple']" mode="multiple">
-		<input
-				style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;"
-				class="field tuple tuple_key" type="text"/>
-		<input
-				style="width: 245px; margin-top: 1px; border: 1px solid #ccc; z-index: 10; position: relative;"
-				class="field tuple tuple_value" type="text"/>
-		<input type="hidden" class="tuple_format" value="{if (@format and not(@format = '')) then @format else '$+$'}"/>
-		<input type="hidden" class="tuple_full" name="multipleParamValue"/>
 	</xsl:template>
 
 
@@ -76,20 +62,18 @@
 
 	<!-- Значение множественной картинки -->
 	<xsl:template match="value[../@type='picture']">
-		<xsl:variable name="form" select="../.."/>
-		<div class="pic" id="param-{../@id}-{@index}">
+		<div class="pic">
 			<img src="{$form/@file-path}{.}" alt="{.}"/>
-			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
 			<input type="text" name="" value="{$form/@file-path}{.}" title="{.}" onclick="$(this).select()" />
 		</div>
 	</xsl:template>
 	
 	<!-- Значение множественного файла -->
 	<xsl:template match="value[../@type='file']">
-		<xsl:variable name="form" select="../.."/>
-		<div class="pic file" id="param-{../@id}-{@index}">
+		<div class="pic file">
 			<a href="{$form/@file-path}{.}" target="blank" >Открыть файл</a>
-			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
 			<input class="special" name="" value="{$form/@file-path}{.}" type="text" onclick="$(this).select()"/>
 		</div>
 		
@@ -98,33 +82,22 @@
 	<!-- Значение ассоциации -->
 	<xsl:template match="value[../@type='associated']">
 		<xsl:variable name="current" select="//admin-page/mount/item[@id = current()]" />
-		<xsl:variable name="form" select="../.."/>
-		<div class="pic assoc" id="param-{../@id}-{@index}">
+		<div class="pic assoc">
 			<a href="admin_set_item.action?itemId={$current/@id}&amp;itemType={$current/@type-id}" target="blank" title="Редактировать элемент">
 				<xsl:value-of select="$current/@caption"/>
 			</a>
-			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
 	<!-- Значение множественной строки -->
-	<xsl:template match="value[../@type='tuple']">
-		<xsl:variable name="form" select="../.."/>
-		<div class="pic" id="param-{../@id}-{@index}">
-			<span><xsl:value-of select="@key"/>: <xsl:value-of select="@value"/></span>
-			<a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
+	<xsl:template match="value">
+		<div class="pic">
+			<span><xsl:value-of select="."/></span>
+			<a href="javascript:defaultView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', true)" class="delete">Удалить</a>
 		</div>
 	</xsl:template>
 
-
-    <!-- Значение множественной строки -->
-    <xsl:template match="value">
-        <xsl:variable name="form" select="../.."/>
-        <div class="pic" id="param-{../@id}-{@index}">
-            <span><xsl:value-of select="."/></span>
-            <a href="javascript:confirmAjaxView('admin_delete_parameter.action?multipleParamId={../@id}&amp;index={@index}&amp;itemId={$form/@id}', 'main_view', null, '#param-{../@id}-{@index}')" class="delete">Удалить</a>
-        </div>
-    </xsl:template>
 
 
 	<!--**************************************************************************-->
@@ -133,11 +106,11 @@
 
 
 	<xsl:template match="/">
-	<xsl:variable name="form" select="admin-page/form"/>
-	<xsl:if test="not(admin-page/form)">
+	<xsl:if test="not($form)">
 		<xsl:call-template name="DOCUMENTATION"/>	
 	</xsl:if>
 	<xsl:call-template name="MESSAGE"/>
+
 
 		<xsl:if test="$form/@id = 0">
 			<script>
@@ -147,11 +120,12 @@
 		<div class="wide">
 			<div class="margin">
 				<form name="mainForm" id="mainForm" action="{$form/@action-url}" enctype="multipart/form-data" method="post">
-
+					<xsl:for-each select="$form/hidden/field">
+						<input type="hidden" name="{@input}" value="{@value}" />
+					</xsl:for-each>
 					<xsl:if test="$form/field[@quantifier='single']">
 						<div class="single-params">
-							<!--<h2>Одиночные параметры</h2>-->
-							<br/>
+							<h2>Одиночные параметры</h2>
 							<xsl:for-each select="$form/field[@quantifier='single']">
 								<div class="form-item {@type}">
 									<xsl:apply-templates select="." mode="single" />
@@ -160,7 +134,7 @@
 						</div>
 					</xsl:if>
 					<!-- Уникальный строковый ключ айтема (в случае, если он нужен) -->
-					<xsl:variable name="ukey" select="$form/extra[@name='ukey']" />
+					<xsl:variable name="ukey" select="$form/extra[@input='ukey']" />
 					<xsl:if test="$ukey">
 						<div style="padding: 20px 0;">
 							<p class="form_title">Уникальный строковый идентификатор</p>
@@ -168,36 +142,16 @@
 							<input class="field" type="text" name="{$ukey/@input}" value="{$ukey}" />
 						</div>
 					</xsl:if>
-					<input type="hidden" name="goToParent" id="parent-url"/>
-					<xsl:if test="admin-page/inline-form">
-						<hr style="display:block; border: 2px solid black;"/>
-						<xsl:for-each select="admin-page/inline-form">
-							<h2><xsl:value-of select="@key"/></h2>
-							<xsl:for-each select="field[@quantifier='single']">
-								<div class="form-item {@type}">
-									<xsl:apply-templates select="." mode="single" />
-								</div>
-							</xsl:for-each>
-							<xsl:if test="position() != last()">
-								<hr style="display:block; border: 1px solid #cccccc;"/>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:if>
-
+					<input type="hidden" name="parent-url" id="parent-url"/>
+					
 					<xsl:if test="$form">
 						<div class="footer">
 							<div class="save-links save">
-								<a id="save" onclick="document.mainForm.submit();" title="Сохранить и остаться на странице">Сохранить</a>
-								<a id="save-and-exit" onclick="$('#parent-url').val('true'); document.mainForm.submit();"
-								   title='Сохранить и перейти родительский раздел"'>Сохранить и выйти</a>
+								<a href="javascript:document.mainForm.submit();" title="Сохранить и остаться на странице">Сохранить</a>
+								<a href="javascript:$('#parent-url').val('yes'); document.mainForm.submit();" title='Сохранить и перейти родительский раздел"'>Сохранить и выйти</a>
 							</div>
 						</div>
 					</xsl:if>
-
-					<!-- ************************ Псевдопараметр, в случае если у айтема нет параметров **************************** -->
-					<xsl:for-each select="$form/extra[@name='pseudo']">
-						<input type="hidden" name="{@input}" value="blank"/>
-					</xsl:for-each>
 				</form>
 				
 				<!-- ************************ Множественные параметры айтема (добавление) **************************** -->
@@ -231,16 +185,9 @@
 		</div>
 	<xsl:call-template name="TINY_MCE"/>
 	<script>
-		var form = null;
 	<xsl:for-each select="$form/field[@quantifier='multiple']">
-		form = $('#addParameter<xsl:value-of select="@id"/>');
-		form.find('.tuple').change(function() {
-			var frm = $(this).closest('form');
-			var val = frm.find('.tuple_key').val() + frm.find('.tuple_format').val() + frm.find('.tuple_value').val();
-			frm.find('.tuple_full').val(val);
-		});
-		prepareSimpleFormView('addParameter<xsl:value-of select="@id"/>');
-	</xsl:for-each>
+		mainForm('addParameter<xsl:value-of select="@id"/>');
+	</xsl:for-each>	
 	</script>
 	</xsl:template>
 		

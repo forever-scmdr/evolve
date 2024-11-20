@@ -1,0 +1,64 @@
+<three_dmodels_count>1</three_dmodels_count>
+<three_dmodels type="three_dmodels" id="1504" path="sitefiles/1/1504/" key="3d_modeli">
+	<doc_section_count>12</doc_section_count>
+	<doc_section type="doc_section" id="1505" path="sitefiles/1/1504/1505/" key="3d_modeli___klapany_elektromagnitnye_alyuminievyi_korpus">
+<name>3D-модели - клапаны электромагнитные (алюминиевый корпус)</name>
+<pic size="2279621" created="30.11.2020 12:26" extenstion="png">vn4_16.png</pic>
+		<show_section>docs/3d_modeli___klapany_elektromagnitnye_alyuminievyi_korpus/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1513" path="sitefiles/1/1504/1513/" key="3d_modeli___klapany_elektromagnitnye_stalnoi_korpus1513">
+<name>3D-модели - клапаны электромагнитные (стальной корпус)</name>
+<pic size="42952" created="07.09.2022 08:56" extenstion="png">klapan_dn125_st.png</pic>
+		<show_section>docs/3d_modeli___klapany_elektromagnitnye_stalnoi_korpus1513/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="2711" path="sitefiles/1/1504/2711/" key="3d_modeli___klapany_predohranitelno_zapornie">
+<name>3D-модели - клапаны предохранительно-запорные </name>
+<pic size="177842" created="20.01.2023 07:58" extenstion="jpg">klapan_pzk_al_fl.jpg</pic>
+		<show_section>docs/3d_modeli___klapany_predohranitelno_zapornie/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="2766" path="sitefiles/1/1504/2766/" key="3d_modeli___klapany_predohranitelno_sbrosnye">
+<name>3D-модели - клапаны предохранительно-сбросные</name>
+<pic size="139800" created="20.01.2023 10:33" extenstion="jpg">psk_al_fl.jpg</pic>
+		<show_section>docs/3d_modeli___klapany_predohranitelno_sbrosnye/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="3013" path="sitefiles/1/1504/3013/" key="3d_modeli___klapany_dvoinye">
+<name>3D-модели - клапаны электромагнитные двойные</name>
+<pic size="41561" created="17.01.2024 07:08" extenstion="png">valve_double_fl.png</pic>
+		<show_section>docs/3d_modeli___klapany_dvoinye/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1516" path="sitefiles/1/1504/1516/" key="3d_modeli___zaslonki_reguliruyuschie_i_drosselnye_alyuminievyi_korpus">
+<name>3D-модели - заслонки регулирующие и дроссельные (алюминиевый корпус)</name>
+<pic size="30481" created="07.09.2022 08:54" extenstion="png">zaslonka_dr_dn125_sp0.png</pic>
+		<show_section>docs/3d_modeli___zaslonki_reguliruyuschie_i_drosselnye_alyuminievyi_korpus/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1737" path="sitefiles/1/1504/1737/" key="3d_modeli___zaslonki_reguliruyuschie_i_drosselnye_stalnoi_korpus">
+<name>3D-модели - заслонки регулирующие и дроссельные (стальной корпус)</name>
+<pic size="42634" created="27.09.2022 11:35" extenstion="png">zaslonka_reg_dn150_sp2_st.png</pic>
+		<show_section>docs/3d_modeli___zaslonki_reguliruyuschie_i_drosselnye_stalnoi_korpus/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1520" path="sitefiles/1/1504/1520/" key="3d_modeli___filtry_gazovye_alyuminievyi_korpus">
+<name>3D-модели - фильтры газовые (алюминиевый корпус)</name>
+<pic size="2023165" created="30.11.2020 12:27" extenstion="png">fn3et_fl16.png</pic>
+		<show_section>docs/3d_modeli___filtry_gazovye_alyuminievyi_korpus/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1529" path="sitefiles/1/1504/1529/" key="3d_modeli___filtry_gazovye_stalnoi_korpus1529">
+<name>3D-модели - фильтры газовые (стальной корпус)</name>
+<pic size="50167" created="07.09.2022 09:11" extenstion="png">filter_dn65_100_st.png</pic>
+		<show_section>docs/3d_modeli___filtry_gazovye_stalnoi_korpus1529/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1527" path="sitefiles/1/1504/1527/" key="3d_modeli___regulyatory_davleniya_alyuminievyi_korpus1527">
+<name>3D-модели - регуляторы давления (алюминиевый корпус)</name>
+<pic size="1448212" created="30.11.2020 12:27" extenstion="png">rs4_6_fl_pn16.png</pic>
+		<show_section>docs/3d_modeli___regulyatory_davleniya_alyuminievyi_korpus1527/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="1643" path="sitefiles/1/1504/1643/" key="3d_modeli___datchiki_rele_davleniya">
+<name>3D-модели - Датчики-реле давления</name>
+<pic created="23.09.2019 12:00" extenstion="png" size="1624367">drd_e.png</pic>
+		<show_section>docs/3d_modeli___datchiki_rele_davleniya/</show_section>
+	</doc_section>
+	<doc_section type="doc_section" id="2847" path="sitefiles/1/1504/2847/" key="3d_modeli___datchiki_rele_davleniya2847">
+<name>3D-модели - Блоки клапанов (алюминиевый корпус)</name>
+<pic size="8066" created="02.06.2023 12:22" extenstion="webp">block_shema_4.webp</pic>
+		<show_section>docs/3d_modeli___datchiki_rele_davleniya2847/</show_section>
+	</doc_section>
+</three_dmodels>

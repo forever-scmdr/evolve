@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ecommander.fwk.Strings;
+import ecommander.common.Strings;
 import ecommander.controllers.AppContext;
 
 public abstract class FormatDataType extends DataType {
@@ -41,7 +41,7 @@ public abstract class FormatDataType extends DataType {
 	}
 
 	@Override
-	public HashMap<String, String> createMeta(Object value, Object... extraParams) {
+	public HashMap<String, String> getMeta(Object value, Object... extraParams) {
 		return null; // По умолчанию нет метаданных
 	}
 	

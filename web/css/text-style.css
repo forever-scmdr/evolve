@@ -1,4 +1,41 @@
-.inline_block{
-	display: inline-block;
-	margin-left: 1.4rem;
+@charset "UTF-8";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+body.mce-content-body {padding: 4px 7px; color: #333333;
+    font-family: trebuchet ms,verdana,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;}
+/* *{color: inherit;} */
+p{text-indent: 20px;}
+h4 {
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 10px;
 }
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+ul, ol {
+    margin-bottom: 10px;
+    margin-top: 0;
+    padding-left: 40px;
+}
+table, .mce-item-table {
+    border-collapse: collapse;
+    min-width: 100%;
+}
+.mce-item-table td, .mce-item-table th, .mce-item-table caption
+ {
+    border: 1px solid #ccc;
+    font-size: 14px;
+    padding: 1px 3px;
+    text-align: left;
+    vertical-align: top;
+}
+.mce-item-table th{
+	background: #E6E7E8;
+	font-weight: normal;
+}
+.mce-item-table td[rowspan], .mce-item-table th[rowspan]{vertical-align: middle; text-align: center;}
+.mce-item-table td[colspan], .mce-item-table th[colspan]{text-align: center;}

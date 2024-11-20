@@ -65,9 +65,6 @@ $(document).ready(function(){
 		y = ($("#popup").height() - $(".popup-window").outerHeight())*0.5;
 		$(".popup-window").css({marginTop : y});
 	});
-	$("select[value]").each(function() {
-		$(this).val($(this).attr("value"));
-	});
 });
 $(document).on('click', '.close-popup', function(e){
 	e.preventDefault();
@@ -109,16 +106,13 @@ function postForm(form, lockElementIds, additionalHandling) {
 			unlock(lockElementIds);
 		},
 		success: function(data, status, arg3) {
-			//console.log(data);
 			processResult(data, additionalHandling, lockElementIds, status, arg3);
 		}
 	});
 	// Блокировка частей
 	lock(lockElementIds);
 }
-function postFormView(form, lockElementIds) {
-    //console.log('postFormView called');
-   // console.log('lockElementIds: '+lockElementIds);
+function postFormView(form, lockElementIds, additionalHandling) {
 	if (typeof form == 'string')
 		form = $('#' + form);
 	form.ajaxSubmit({
@@ -129,8 +123,6 @@ function postFormView(form, lockElementIds) {
 		},
 		success: function(data, status, arg3) {
 			$("#subitems").html(data);
-			//console.log(data);
-            unlock(lockElementIds);
 		}
 	});
 	// Блокировка частей
@@ -168,11 +160,8 @@ function processResult(data, additionalHandling, lockElementIds, status, arg3) {
 	// Разблокировка частей
 	unlock(lockElementIds);
 	// Вызов дополнительной обработки и передача дополнительных данных
-	if (typeof additionalHandling == 'function') {
-		// alert("WTF?");
+	if (typeof additionalHandling == 'function')
 		additionalHandling(argData);
-	}
-
 }
 /**
  * Добавить переменную к указанному урлу
@@ -190,7 +179,7 @@ function addVariableToUrl(url, name, value) {
 		return url + '?' + name + '=' + value;
 }
 /**
- * Для работы этой функции нужна картинка admin/js/loader.gif
+ * Для работы этой функции нужна картинка images/loader.gif
  * @param lockElementIds
  */
 function lock(lockElementIds) {
@@ -200,7 +189,7 @@ function lock(lockElementIds) {
 				coverWithLoader($('#' + lockElementIds[i]));
 		}
 	} else {
-		if ($('#' + lockElementIds).length == 1)
+		if ($('#' + lockElementIds).length == 1) 
 			coverWithLoader($('#' + lockElementIds));
 	}
 }
@@ -212,33 +201,66 @@ function unlock(lockElementIds) {
 				destroyLoader($('#' + lockElementIds[i]));
 		}
 	} else {
-		if ($('#' + lockElementIds).length == 1)
+		if ($('#' + lockElementIds).length == 1) 
 			destroyLoader($('#' + lockElementIds));
 	}
 }
 
 function coverWithLoader (el){
 	el = $(el);
-	el.find('*').css('visibility', 'hidden');
-	el.css('background', 'rgba(255, 255, 255, 0.5) url("admin/js/loader.svg") center no-repeat');
-	el.css('background-size', 'cover');
+	//el.each(function(i){
+		//console.log("w="+width);
+		var height = el.outerHeight();
+		var width = el.outerWidth();
+		var br1 = el.css("border-top-left-radius");
+		var br2 = el.css("border-top-right-radius");
+		var br3 = el.css("border-bottom-left-radius");
+		var br4 = el.css("border-bottom-right-radius");
+		var mt = -1*el.css("padding-top");
+		var ml = -1*el.css("padding-bottom");
+		var imgMT = el.outerHeight()*0.5; 
+		loader = $('<div>',{
+			style:"background: white center no-repeat; position:absolute; z-index: 200;"
+		});
+		//console.log('imgMt='+imgMt);
+		img = $('<img>', {
+			 src:'js/loader.gif'
+			,alt: 'loading...'
+			,style: 'display:inline-block; vertical-align: middle; margin-left:auto; margin-right:auto; max-height: 90%; max-width: 90%;'
+		});
+		
+		loader.addClass('coverLoader');
+		loader.append(img);
+		$(el).prepend(loader);
+		loader = $(el).children('.coverLoader');
+		mli = 86;
+		if(!$(el).is(".vote_button")){
+			loader.css({
+				 width: width
+				,height:height
+				,backgroundColor: "#fff"
+				,textAlign:'center'
+				,marginTop:mt
+				,marginLeft:ml
+				,borderTopLeftRadius: br1
+				,borderTopRightRadius: br2
+				,borderBottomLeftRadius: br3
+				,borderBottomRightRadius: br4
+			});
+			mli = 16
+		}
+		else{
+			loader.css({
+				minWidth: 180, marginRight: -40, minHeight: 30, height: 34, marginTop: -1			
+			});
+			loader.find("img").height(30);
+		}
+		loader.find("img").css({marginTop: 0.5*(loader.height()-loader.find("img").height()), marginLeft: mli});
 }
-
 function destroyLoader(el){
 	el = $(el);
-	el.find('*').css('visibility', '');
-	el.css('background', '');
-	el.css('background-size', '');
+	el.children('.coverLoader').remove();
 }
-
-
-function _default(variable, defaultValue) {
-	if (variable === undefined) {
-		return defaultValue;
-	}
-	return variable;
-}
-
 
 $(".ajax-form").submit(function(e){
 	e.preventDefault();

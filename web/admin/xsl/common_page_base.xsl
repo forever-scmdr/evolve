@@ -58,7 +58,7 @@
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 				<meta http-equiv="Pragma" content="no-cache" />
 				<link rel="stylesheet" type="text/css" href="admin/css/reset.css" />
-				<link rel="stylesheet" href="admin/js/jquery.fancybox.min.css" type="text/css" media="screen" />
+				<link rel="stylesheet" href="admin/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
 				<link rel="stylesheet" type="text/css" href="admin/css/style.css" />
 
 				<link href="admin/jquery_css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" media="screen" />
@@ -67,8 +67,8 @@
 					Система управления сайтом
 					<xsl:value-of select="/admin-page/domain" />
 				</title>
-				<script src="admin/js/jquery-3.2.1.min.js"/>
-				<script type="text/javascript" src="admin/js/admin.js"/>
+				<script src="admin/js/jquery-2.2.4.min.js"></script>
+				<script type="text/javascript" src="admin/js/admin.js"></script>
 			</head>
 			<body>
 
@@ -121,26 +121,24 @@
 									</li>
 									<li class="visible" title="Здесь можно добавлять или удалять значения выпадающих списков">
 										<a href="admin_domains_initialize.domain">
-											Управление доменами
+											Упарвление доменами
 										</a>
 									</li>
 									<li class="visible" title="Измениение паролей, создание и удаление пользователей">
 										<a href="admin_users_initialize.user">
-											Управление пользователями
+											Упарвление пользователями
 										</a>
 									</li>
 									<li class="visible" title="???">
 										<a href="admin_types_init.type">
-											Управление классами объектов
+											Упарвление классами объектов
 										</a>
 									</li>
-									<!--
 									<li class="visible" title="Функция в разработке">
 										<a href="#" onclick="alert('Функция в разработке'); return false;">
-											Управление миром
+											Упарвление миром
 										</a>
 									</li>
-									-->
 								</ul>
 							</div>
 						</div>
@@ -152,14 +150,14 @@
 					</div>
 				</div>
 			</body>
-			<script type="text/javascript" src="admin/js/jquery.fancybox.min.js"></script>
+			<script type="text/javascript" src="admin/fancybox/jquery.fancybox.pack.js"></script>
 			<script type="text/javascript">
 				$(document).ready(function() {
 					$(".fancybox").fancybox({
 					padding : 0
 					});
 					$(".active").parent("li").children("ul").show();
-					$(".active").parent("ul").show();
+					$(".active").parents("ul").show();
 				});
 			</script>
 			

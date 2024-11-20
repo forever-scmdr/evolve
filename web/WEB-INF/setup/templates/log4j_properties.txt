@@ -1,0 +1,16 @@
+log4j.rootLogger=WARN, stdout, R
+
+#### First appender writes to console
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=[MESSAGE(WARN) / ERROR / FATAL] - [%p] %d{hh:mm:ss} %n%m%n
+
+#### Second appender writes to a file
+log4j.appender.R=org.apache.log4j.RollingFileAppender
+log4j.appender.R.File=<<context_root>>/sitefiles/ecommander.log
+log4j.appender.R.layout=org.apache.log4j.PatternLayout
+log4j.appender.R.layout.ConversionPattern=[MESSAGE(WARN) / ERROR / FATAL] - [%p] - [Thread: %t] - [Time: %d{HH:mm:ss,SSS}] %n%m%n
+# Control the maximum log file size
+log4j.appender.R.MaxFileSize=100KB
+# Archive log files (one backup file here)
+log4j.appender.R.MaxBackupIndex=1

@@ -1,0 +1,15 @@
+<web-app xmlns="http://caucho.com/ns/resin">
+
+  <database jndi-name="jdbc/ECommanderDB">
+    <driver type="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
+      <url>jdbc:mysql://localhost:3306/test3</url>
+      <user>test2</user>
+	  <password>dddd</password>
+	  <useUnicode>true</useUnicode>
+	  <characterEncoding>utf8</characterEncoding>
+	  <allowMultiQueries>true</allowMultiQueries>
+    </driver>
+    <max-connections>20</max-connections>
+  </database>
+
+</web-app>

@@ -7,7 +7,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import ecommander.fwk.Strings;
+import ecommander.common.Strings;
 /**
  * Конструирование значения из строки:
  * 		1) предполагается, что значение вводится в виде строки даты определенного формата типа День.Месяц.Год 
@@ -32,7 +32,7 @@ public class DateDataType extends FormatDataType {
 	
 	private static int TIMEZONE_HOUR_OFFSET = 100;
 	
-	public DateDataType(Type type) {
+	DateDataType(Type type) {
 		super(type);
 	}
 
@@ -57,8 +57,8 @@ public class DateDataType extends FormatDataType {
 	}
 
 	@Override
-	public HashMap<String, String> createMeta(Object value, Object... extraParams) {
-		HashMap<String, String> meta = new HashMap<>();
+	public HashMap<String, String> getMeta(Object value, Object... extraParams) {
+		HashMap<String, String> meta = new HashMap<String, String>();
 		meta.put(MILLIS_META, value.toString());
 		return meta;
 	}

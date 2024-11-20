@@ -55,12 +55,8 @@ function isValidUrl(url)
 		
 			var dv = $(targ).val();
 			var tls = (dv == "")? now : dv;
-			if(tls.indexOf(".") == -1){
-				nd =  new Date(tls*1);
-				tls = $.datepicker.formatDate("dd.mm.yy",nd);
-				time.val(nd.getHours()+":"+nd.getMinutes());
-			}
 			date.val(tls.substring(0,10));
+			time.val(tls.substring(11));
 			if(dv == "") {
 				targ.val(tls);
 			}
@@ -119,7 +115,8 @@ function isValidUrl(url)
 		}
 		
 		// Открытие окна редактирования ассоциированных элементов
-		function openAssoc(url) {
+		function openAssoc(paramId) {
+			var url = openAssocUrl + paramId;
 			var winW = 630, winH = 460;
 			if (document.body && document.body.offsetWidth) {
 				winW = document.body.offsetWidth;

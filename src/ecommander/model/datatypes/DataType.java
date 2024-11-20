@@ -10,15 +10,12 @@ import java.util.HashSet;
  */
 public abstract class DataType {
 	
-	public enum Type {
+	public static enum Type {
 		BYTE("byte"),
 		INTEGER("integer"),
 		LONG("long"),
 		DATE("date"),
 		DOUBLE("double"),
-		DECIMAL("decimal"),
-		CURRENCY("currency"),
-		CURRENCY_PRECISE("currency-precise"),
 		STRING("string"),
 		TINY_TEXT("tiny-text"),
 		SHORT_TEXT("short-text"),
@@ -28,7 +25,7 @@ public abstract class DataType {
 		PICTURE("picture"),
 		FILTER("filter"),
 		XML("xml"),
-		TUPLE("tuple");
+		ASSOCIATED("associated");
 
 		private final String text;
 
@@ -36,8 +33,8 @@ public abstract class DataType {
 			this.text = text;
 		}
 
-		public String getName() {
-			return text;
+		public String getText() {
+			return this.text;
 		}
 
 		@Override
@@ -45,7 +42,7 @@ public abstract class DataType {
 			return text;
 		}
 
-		public static Type get(String text) {
+		public static Type fromString(String text) {
 			if (text != null) {
 				for (Type b : Type.values()) {
 					if (text.equalsIgnoreCase(b.text)) {
@@ -56,12 +53,9 @@ public abstract class DataType {
 			throw new IllegalArgumentException("No constant with text " + text + " found");
 		}
 
-		public boolean isFile() {
-			return this == PICTURE || this == FILE;
-		}
 	}
 	
-	private static HashSet<Type> BIG_TEXT_TYPES = new HashSet<>();
+	private static HashSet<Type> BIG_TEXT_TYPES = new HashSet<Type>();
 	static {
 		BIG_TEXT_TYPES.add(Type.TINY_TEXT);
 		BIG_TEXT_TYPES.add(Type.SHORT_TEXT);
@@ -83,7 +77,7 @@ public abstract class DataType {
 	/**
 	 * Создать значение соответствующего типа по строке
 	 * @param stringValue
-	 * @param formatter
+	 * @param format
 	 * @return
 	 */
 	public abstract Object createValue(String stringValue, Object formatter);
@@ -99,31 +93,6 @@ public abstract class DataType {
 	 * @return
 	 */
 	public abstract boolean hasMeta();
-
-	/**
-	 * Получить хеш код значения
-	 * @param value
-	 * @return
-	 */
-	public int getHashCode(Object value) {
-		if (value != null)
-			return value.hashCode();
-		return 0;
-	}
-
-	/**
-	 * Сравнивает два объекта
-	 * @param o1
-	 * @param o2
-	 * @return
-	 */
-	public boolean getEquals(Object o1, Object o2) {
-		if (o1 != null && o2 != null)
-			return o1.equals(o2);
-		if (o1 == null && o2 == null)
-			return true;
-		return false;
-	}
 	/**
 	 * Получить дополнительные сведения о переданном значении в зависимости от его типа.
 	 * Например, это могут быть размер и тип файла для значения типа файл
@@ -133,7 +102,7 @@ public abstract class DataType {
 	 * @param extraParams
 	 * @return
 	 */
-	public abstract HashMap<String, String> createMeta(Object value, Object... extraParams);
+	public abstract HashMap<String, String> getMeta(Object value, Object... extraParams);
 	/**
 	 * Файловый ли тип данных
 	 * @return
@@ -147,19 +116,5 @@ public abstract class DataType {
 	 */
 	public boolean isBigText() {
 		return BIG_TEXT_TYPES.contains(type);
-	}
-
-	/**
-	 * Является ли переданное значение пустым с точки зрения типа данных
-	 * @param value
-	 * @return
-	 */
-	public boolean isEmpty(Object value) {
-		return value == null;
-	}
-
-	@Override
-	public String toString() {
-		return type.toString();
 	}
 }

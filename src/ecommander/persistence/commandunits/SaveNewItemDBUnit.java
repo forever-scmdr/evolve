@@ -1,24 +1,22 @@
 package ecommander.persistence.commandunits;
 
-import ecommander.filesystem.SaveItemFilesUnit;
-import ecommander.fwk.ItemEventCommandFactory;
-import ecommander.fwk.Pair;
-import ecommander.fwk.ServerLogger;
-import ecommander.model.Item;
-import ecommander.model.ItemBasics;
-import ecommander.model.ItemType;
-import ecommander.model.ItemTypeRegistry;
-import ecommander.persistence.common.PersistenceCommandUnit;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import ecommander.application.extra.ItemEventCommandFactory;
+import ecommander.common.ServerLogger;
+import ecommander.model.item.Item;
+import ecommander.persistence.PersistenceCommandUnit;
 import ecommander.persistence.common.TemplateQuery;
 import ecommander.persistence.mappers.DBConstants;
 import ecommander.persistence.mappers.ItemMapper;
 import ecommander.persistence.mappers.LuceneIndexMapper;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import ecommander.services.filesystem.ItemFileUnit;
+import ecommander.services.filesystem.SaveItemFilesUnit;
 
 /**
  * Сохранение нового айтема в базоне
@@ -28,199 +26,243 @@ import java.util.LinkedHashMap;
  * 
  * @author EEEE
  */
-class SaveNewItemDBUnit extends DBPersistenceCommandUnit implements DBConstants.ItemTbl, DBConstants.UniqueItemKeys {
+public class SaveNewItemDBUnit extends DBPersistenceCommandUnit {
 
 	private Item item;
-	private ItemBasics parent;
-
-	SaveNewItemDBUnit(Item item) {
-		this.item = item;
+	private boolean usingRefs = false;
+	
+	public SaveNewItemDBUnit(Item item) {
+		this(item, false);
 	}
-
-	SaveNewItemDBUnit(Item item, ItemBasics parent) {
+	/**
+	 * Можно отменить использование ссылок.
+	 * В этом случае информация для связей с родительскими айтемами гораздо проще
+	 * и запрос выполняется гораздо быстрее
+	 * @param item
+	 * @param usingRefs
+	 */
+	public SaveNewItemDBUnit(Item item, boolean usingRefs) {
 		this.item = item;
-		this.parent = parent;
+		this.usingRefs = usingRefs;
 	}
-
+	
 	public void execute() throws Exception {
 		// Создать значение ключа
-		startQuery("SAVE NEW ITEM: prepare to save");
 		item.prepareToSave();
 
-		// Загрузка и валидация родительского айтема, если надо
-		startQuery("SAVE NEW ITEM: load parent");
 		Connection conn = getTransactionContext().getConnection();
-		if (item.hasParent()) {
-			if (parent == null)
-				parent = ItemMapper.loadItemBasics(item.getContextParentId(), conn);
-			testPrivileges(parent);
+		String selectSql = null;
+		ResultSet rs = null;
+		
+		// Подсчет общего количества прямых потомков родителя айтема для установления его порядкового номера
+		int weight = findNewWeight(conn, item.getDirectParentId());
+		
+		// Строка PRED_ID_PATH (если указана и если не указана)
+		String predIdPath = item.getPredecessorsPath();
+		if (StringUtils.isBlank(predIdPath)) {
+			selectSql
+				= "SELECT CONCAT(" + DBConstants.Item.PRED_ID_PATH + ", " + DBConstants.Item.ID
+				+ ", '/') FROM " + DBConstants.Item.TABLE 
+				+ " WHERE " + DBConstants.Item.ID + " = " + item.getDirectParentId();
+			ServerLogger.debug(selectSql);
+			PreparedStatement predPathStmt = conn.prepareStatement(selectSql);
+			rs = predPathStmt.executeQuery(selectSql);
+			rs.next();
+			predIdPath = rs.getString(1);
+			item.setPredecessorsPath(predIdPath);
+			rs.close();
+			predPathStmt.close();
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 1.   Сохранение айтема в таблицу айтемов, получение и установка в объект айтема нового ID
-		//          Файловые параметры айтема уже можно сохранять, т.к. их значения уже можно получить
-		//          (для этого не нужно выполнять команду сохранения файлов)
-		//
-		TemplateQuery itemInsert = new TemplateQuery("New item insert");
-		itemInsert.INSERT_INTO(ITEM_TBL).SET()
-				.col(I_SUPERTYPE).int_(item.getBasicSupertypeId())
-				._col(I_TYPE_ID).int_(item.getTypeId())
-				._col(I_KEY).string(item.getKey())
-				._col(I_T_KEY).string(item.getKeyUnique())
-				._col(I_PROTECTED).byte_(item.isFileProtected() ? (byte)1 : (byte)0)
-				._col(I_GROUP).byte_(item.getOwnerGroupId())
-				._col(I_USER).int_(item.getOwnerUserId())
-				._col(I_STATUS).byte_(item.getStatus())
-				._col(I_PARAMS).string(item.outputValues());
+		// Затем сохраняется айтем (без сохранения параметров, только для того чтобы получить ID)
+		TemplateQuery builder = new TemplateQuery("New item insert");
+		builder.sql(
+				"INSERT INTO " + 
+				DBConstants.Item.TABLE + 
+				" SET " +
+				DBConstants.Item.TYPE_ID + "=").setLong(item.getTypeId()).sql(", " +
+				DBConstants.Item.REF_ID + "=").setLong(item.getRefId()).sql(", " + 
+				DBConstants.Item.DIRECT_PARENT_ID + "=").setLong(item.getDirectParentId()).sql(", " + 
+				DBConstants.Item.PRED_ID_PATH + "=").setString(predIdPath).sql(", " +
+				DBConstants.Item.OWNER_GROUP_ID + "=").setLong(item.getOwnerGroupId()).sql(", " +
+				DBConstants.Item.OWNER_USER_ID + "=").setLong(item.getOwnerUserId()).sql(", " + 
+				DBConstants.Item.KEY + "=").setString(item.getKey()).sql(", " + 
+				DBConstants.Item.INDEX_WEIGHT + "=").setInt(weight);
 		// Иногда (например, при переносе со старой версии CMS) ID айтема уже задан (не равняется 0)
 		boolean hasId = item.getId() > 0;
 		if (hasId)
-			itemInsert._col(I_ID).long_(item.getId());
-
-		startQuery(itemInsert.getSimpleSql());
+			builder.sql(", " + DBConstants.Item.ID + "=").setLong(item.getId());
+		
+		PreparedStatement insertItemStmt = builder.prepareQuery(conn, true);
+		insertItemStmt.executeUpdate();
+	
+		// Получается ID нового айтема и устанавливается в этот объект айтема
+		// Также устанавливается REF_ID айтема в случае, если айтем не является ссылочным айтемом (в этом классе - всегда)
 		if (!hasId) {
-			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn, true)) {
-				pstmt.executeUpdate();
-				ResultSet rs = pstmt.getGeneratedKeys();
-				if (rs.next())
-					item.setId(rs.getLong(1));
+			rs = insertItemStmt.executeQuery("SELECT LAST_INSERT_ID()");
+			//rs = insertItemStmt.getGeneratedKeys();
+			if (rs.next()) {
+				long newItemId = rs.getLong(1);
+				item.setId(newItemId);
+				item.setRefId(item.getId());
 			}
-		} else {
-			try (PreparedStatement pstmt = itemInsert.prepareQuery(conn)) {
-				pstmt.executeUpdate();
-			}
+			rs.close();
 		}
-		endQuery();
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 2.   Если айтем имеет уникальный текстовый ключ, то происходит его сохранение в
-		//          таблицу ключей. Также может произойти обнлвение таблицы айтема, в случае
-		//          если заданный тектовый ключ неуникален и был сгенерирован другой
-		//
+		insertItemStmt.close();
+		
+		// В этот момент если нужно происходит проверка существования уникального текстового ключа айтема
 		if (item.getItemType().isKeyUnique()) {
-			long sameKeyItemId = -1;
-			byte sameKeyItemStatus = Item.STATUS_NORMAL;
-			boolean keyUpdated = false;
-			// Запрос на получение значения
-			TemplateQuery keySelect = new TemplateQuery("key select");
-			keySelect.SELECT(I_ID, I_STATUS).FROM(UNIQUE_KEY_TBL).INNER_JOIN(ITEM_TBL, UK_ID, I_ID)
-					.WHERE().col(UK_KEY).string(item.getKeyUnique()).AND().col_IN(I_STATUS).byteIN(Item.STATUS_NORMAL, Item.STATUS_HIDDEN, Item.STATUS_DELETED);
-			startQuery(keySelect.getSimpleSql());
-			try (PreparedStatement pstmt = keySelect.prepareQuery(conn)) {
-				pstmt.setString(1, item.getKeyUnique());
-				ResultSet rs = pstmt.executeQuery();
-				if (rs.next()) {
-					sameKeyItemId = rs.getLong(1);
-					sameKeyItemStatus = rs.getByte(2);
-				}
-			}
-			endQuery();
-			if (sameKeyItemId > 0) {
-				if (sameKeyItemStatus == Item.STATUS_DELETED) {
-					TemplateQuery delete = new TemplateQuery("delete key");
-					delete.DELETE_FROM_WHERE(UNIQUE_KEY_TBL).col(UK_ID).long_(sameKeyItemId);
-					try (PreparedStatement pstmt = delete.prepareQuery(conn)) {
-						pstmt.executeUpdate();
-					}
-				} else {
-					item.setKeyUnique(item.getKeyUnique() + item.getId());
-					keyUpdated = true;
-				}
-			}
-
-			TemplateQuery uniqueKeyInsert = new TemplateQuery("Unique key insert");
-			uniqueKeyInsert
-					.INSERT_INTO(UNIQUE_KEY_TBL).SET()
-					.col(UK_ID).long_(item.getId())
-					._col(UK_KEY).string(item.getKeyUnique());
-			startQuery(uniqueKeyInsert.getSimpleSql());
-			try (PreparedStatement keyUniqueStmt = uniqueKeyInsert.prepareQuery(conn)) {
+			builder = new TemplateQuery("Unique key insert");
+			builder.sql(
+					"INSERT INTO " +
+					DBConstants.UniqueItemKeys.TABLE + "(" +
+					DBConstants.UniqueItemKeys.ID + ", " + 
+					DBConstants.UniqueItemKeys.KEY + ") VALUES ("
+					).setLong(item.getId()).sql(", ").setString(item.getKeyUnique()).sql(")");
+			PreparedStatement keyUniqueStmt = builder.prepareQuery(conn);
+			try {
+				keyUniqueStmt.executeUpdate();
+			} catch (Exception e) {
+				// Значит такой ключ уже существует, добавить к ключу ID айтема
+				item.setKeyUnique(item.getKeyUnique() + item.getId());
+				keyUniqueStmt.setString(2, item.getKeyUnique());
 				keyUniqueStmt.executeUpdate();
 			}
-			endQuery();
-			// Обновление уникального ключа айтема (если это нужно)
-			if (keyUpdated) {
-				TemplateQuery keyUpdate = new TemplateQuery("Item unique key update");
-				keyUpdate.UPDATE(ITEM_TBL)
-						.SET().col(I_T_KEY).string(item.getKeyUnique())
-						.WHERE().col(I_ID).long_(item.getId());
-				startQuery(keyUpdate.getSimpleSql());
-				try (PreparedStatement pstmt = keyUpdate.prepareQuery(conn)) {
-					pstmt.executeUpdate();
-				}
-				endQuery();
-			}
+			keyUniqueStmt.close();
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 3.   Сохранить связь нового айтема с его предшественниками по иерархии ассоциации
-		//
-		if (item.hasParent()) {
-			executeCommandInherited(CreateAssocDBUnit.childIsNew(item, parent, item.getContextAssoc().getId()));
-		} else {
-			TemplateQuery rootQuery = new TemplateQuery("Insert pseudoroot assoc with self");
-			rootQuery
-					.INSERT_INTO(ITEM_PARENT_TBL).SET()
-					.col(IP_CHILD_ID).long_(item.getId())
-					._col(IP_PARENT_ID).long_(item.getId())
-					._col(IP_ASSOC_ID).byte_(ItemTypeRegistry.getRootAssocId())
-					._col(IP_PARENT_DIRECT).byte_((byte)1)
-					._col(IP_CHILD_SUPERTYPE).int_(item.getBasicSupertypeId())
-					._col(IP_WEIGHT).int_(0);
-			startQuery(rootQuery.getSimpleSql());
-			try (PreparedStatement pstmt = rootQuery.prepareQuery(conn)) {
-				pstmt.executeUpdate();
-			}
-			endQuery();
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 4.   Сохранение файлов айтема
-		//
+		// Т.к. получен ID нового айтема, можно сохранять файлы айтема
 		try {
-			executeCommandInherited(new SaveItemFilesUnit(item));
+			executeCommand(new SaveItemFilesUnit(item));
 		} catch (Exception e) {
 			if (!ignoreFileErrors)
 				throw e;
 			else
 				ServerLogger.warn("Ignoring file error while saving new item", e);
 		}
-		// Если сохранение файлов привело к обновлению айтема (например, скачались файлы по заданному URL),
-		// надо обновить параметры айтема
-		if (item.hasChanged()) {
-			TemplateQuery updateItem = new TemplateQuery("Update item");
-			updateItem.UPDATE(DBConstants.ItemTbl.ITEM_TBL).SET()
-					.col(DBConstants.ItemTbl.I_PARAMS).string(item.outputValues())
-					.WHERE().col(DBConstants.ItemTbl.I_ID).long_(item.getId());
-			startQuery(updateItem.getSimpleSql());
-			try (PreparedStatement pstmt = updateItem.prepareQuery(conn)) {
-				pstmt.executeUpdate();
+		
+		// Сохраняется значение REF_ID равное ID для нормальных (не ссылочных) айтемов,
+		// сохраняются параметры айтема в виде строки XML
+		// Также установить новый уникальный текстовый ключ, он мог поменяться
+		builder = new TemplateQuery("Item parameters main table update");
+		builder
+			.sql("UPDATE " + DBConstants.Item.TABLE + " SET " + DBConstants.Item.REF_ID + "=").setLong(item.getId())
+			.sql(", " + DBConstants.Item.TRANSLIT_KEY + "=").setString(item.getKeyUnique())
+			.sql(", " + DBConstants.Item.PARAMS + "=").setString(item.outputValues())
+			.sql(" WHERE " + DBConstants.Item.ID + "=").setLong(item.getId());
+		PreparedStatement updateKeyUniqueStmt = builder.prepareQuery(conn);
+		updateKeyUniqueStmt.executeUpdate();
+		
+		// Сохраняется связь айтема с предком и все предыдущие связи (сам айтем считается своим предком)
+		// Поскольку сам айтем считается своим предком, то делать явно запись связи с предком в данном случае не надо,
+		// т.к. она получится из второго запроса (предыдущие связи)
+		if (usingRefs) {
+			String parentSql
+				= "REPLACE INTO "
+				+ DBConstants.ItemParent.TABLE + "("
+				+ DBConstants.ItemParent.REF_ID + ", "
+				+ DBConstants.ItemParent.ITEM_ID + ", "
+				+ DBConstants.ItemParent.PARENT_ID + ", "
+				+ DBConstants.ItemParent.ITEM_TYPE + ", "
+				+ DBConstants.ItemParent.PARENT_LEVEL
+				+ ") VALUES (" + item.getId() + ", " + item.getRefId() + ", " + item.getId() + ", " + item.getTypeId() + ", 0)";
+			ServerLogger.debug(parentSql);
+			PreparedStatement insertParentSelfStmt = conn.prepareStatement(parentSql);
+			insertParentSelfStmt.executeUpdate();
+			insertParentSelfStmt.close();
+			
+			// Предыдущие связи
+			String predecessorSql
+				= "REPLACE INTO "
+				+ DBConstants.ItemParent.TABLE + "(" 
+				+ DBConstants.ItemParent.REF_ID + ", "
+				+ DBConstants.ItemParent.ITEM_ID + ", "
+				+ DBConstants.ItemParent.ITEM_TYPE + ", "
+				+ DBConstants.ItemParent.PARENT_ID + ", "
+				+ DBConstants.ItemParent.PARENT_LEVEL
+				+ ") SELECT DISTINCT " + item.getId() + ", " + item.getRefId() + ", " + item.getTypeId() + ", "
+				+ DBConstants.ItemParent.PARENT_ID + ", "
+				+ DBConstants.ItemParent.PARENT_LEVEL + "+1 FROM "
+				+ DBConstants.ItemParent.TABLE + " WHERE "
+				+ DBConstants.ItemParent.REF_ID + "=" + item.getDirectParentId();
+			ServerLogger.debug(predecessorSql);
+			PreparedStatement insertParentPredsStmt = conn.prepareStatement(predecessorSql);
+			insertParentPredsStmt.executeUpdate();
+			insertParentPredsStmt.close();
+		} else {
+			// Все связи берутся из строки предшественников
+			StringBuilder parentSql = new StringBuilder(
+				"REPLACE INTO "
+				+ DBConstants.ItemParent.TABLE + "("
+				+ DBConstants.ItemParent.REF_ID + ", "
+				+ DBConstants.ItemParent.ITEM_ID + ", "
+				+ DBConstants.ItemParent.PARENT_ID + ", "
+				+ DBConstants.ItemParent.ITEM_TYPE + ", "
+				+ DBConstants.ItemParent.PARENT_LEVEL
+				+ ") VALUES (" 
+				+ item.getId() + ", " + item.getRefId() + ", " + item.getId() + ", " + item.getTypeId() + ", 0)");
+			String[] parents = StringUtils.split(predIdPath, '/');
+			for (int i = 0; i < parents.length; i++) {
+				parentSql.append(", (" 
+						+ item.getId() + ", " 
+						+ item.getRefId() + ", " 
+						+ parents[i] + ", " 
+						+ item.getTypeId() + ", " 
+						+ (parents.length - i) + ")");
 			}
-			endQuery();
+			ServerLogger.debug(parentSql.toString());
+			PreparedStatement insertParentSimpleStmt = conn.prepareStatement(parentSql.toString());
+			insertParentSimpleStmt.executeUpdate();
+			insertParentSimpleStmt.close();
 		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 5.   Сохранить параметры айтема в таблицах индексов
-		//
-		startQuery("SAVE NEW ITEM: insert parameters");
-		ItemMapper.insertItemParametersToIndex(item, ItemMapper.Mode.INSERT, getTransactionContext());
-		endQuery();
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		// Шаг 6.   Дополнительная обработка
-		//
-		if (triggerExtra && item.getItemType().hasExtraHandlers(ItemType.Event.create)) {
-			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers(ItemType.Event.create)) {
-				PersistenceCommandUnit command = fac.createCommand(item);
-				executeCommandInherited(command);
+		
+		// Выполнить запросы для сохранения параметров
+		ItemMapper.insertItemParametersToIndex(item, false, getTransactionContext());
+		
+		// Дополнительная обработка
+		if (item.getItemType().hasExtraHandlers()) {
+			for (ItemEventCommandFactory fac : item.getItemType().getExtraHandlers()) {
+				PersistenceCommandUnit command = fac.createSaveCommand(item);
+				if (command != null) {
+					if (command instanceof DBPersistenceCommandUnit) {
+						((DBPersistenceCommandUnit) command).fulltextIndex(insertIntoFulltextIndex, closeLuceneWriter);
+						((DBPersistenceCommandUnit) command).ignoreUser(ignoreUser);
+						((DBPersistenceCommandUnit) command).ignoreFileErrors(ignoreFileErrors);
+					}
+					executeCommand(command);
+				}
 			}
 		}
 
 		// Добавление в полнотекстовый индекс
-		if (insertIntoFulltextIndex) {
-			LinkedHashMap<Long, ArrayList<Pair<Byte, Long>>> ancestors = ItemMapper.loadItemAncestors(item.getId());
-			LuceneIndexMapper.getSingleton().updateItem(item, ancestors.get(item.getId()));
-		}
+		if (insertIntoFulltextIndex)
+			LuceneIndexMapper.insertItem(item, closeLuceneWriter);
+	}
+	/**
+	 * Определить вес (порядок следования) вновь создаваемого айтема
+	 * @param stmt
+	 * @param parentId
+	 * @return
+	 * @throws SQLException
+	 */
+	public static int findNewWeight(Connection conn, long parentId) throws SQLException {
+		int maxWeight = 0;
+		String selectSql
+			= "SELECT MAX(" + DBConstants.Item.INDEX_WEIGHT + ") AS W FROM " 
+			+ DBConstants.Item.TABLE + " WHERE " +	DBConstants.Item.DIRECT_PARENT_ID + " = " + parentId;
+		ServerLogger.debug(selectSql);
+		PreparedStatement pstmt = conn.prepareStatement(selectSql);
+		ResultSet rs = pstmt.executeQuery(selectSql);
+		if (rs.next())
+			maxWeight = rs.getInt(1);
+		rs.close();
+		return maxWeight + Item.WEIGHT_STEP;
+	}
+
+	@Override
+	public void rollback() throws Exception {
+		super.rollback();
+		ServerLogger.debug("Deleting item directory '" + item.getPredecessorsAndSelfPath() + "' - " + ItemFileUnit.deleteItemDirectory(item));
 	}
 
 }
