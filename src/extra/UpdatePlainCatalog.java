@@ -34,6 +34,7 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 	private static final String NAME_HEADER = "название";
 	private static final String QTY_HEADER = "остаток";
 	private static final String PRICE_HEADER = "цена";
+	private static final String PRICE_OPT_HEADER = "цена опт";
 	private static final String MIN_QTY_HEADER = "минимальная партия заказа";
 	private static final String STEP_HEADER = "шаг заказа";
 
@@ -119,7 +120,9 @@ public class UpdatePlainCatalog extends IntegrateBase implements ItemNames {
 								prod.set_available(prod.getDefault_qty((double) 0) > 0.01 ? (byte) 1 : (byte) 0);
 							}
 							BigDecimal filePrice = DecimalDataType.parse(src.getValue(PRICE_HEADER), 4);
+							BigDecimal filePriceOpt = DecimalDataType.parse(src.getValue(PRICE_OPT_HEADER), 4);
 							currencyRates.setAllPrices(prod, filePrice, settings.get_currency());
+							prod.set_price_opt(filePriceOpt);
 							Double fileMinQty = src.getDoubleValue(MIN_QTY_HEADER);
 							Double minQty = (fileMinQty == null || Math.abs(fileMinQty) < 0.01) ? 1.0 : fileMinQty;
 							prod.set_min_qty(minQty);

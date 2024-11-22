@@ -3,6 +3,7 @@ package extra;
 import ecommander.controllers.AppContext;
 import ecommander.controllers.PageController;
 import ecommander.fwk.*;
+import ecommander.fwk.applied.ProductPriceModifier;
 import ecommander.fwk.integration.ExcelTemplateProcessor;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
@@ -14,6 +15,7 @@ import ecommander.pages.ResultPE;
 import ecommander.persistence.itemquery.ItemQuery;
 import extra._generated.ItemNames;
 import extra._generated.Price_catalog;
+import extra._generated.User_jur;
 import extra._generated.User_phys;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
@@ -230,7 +232,8 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 				}
 			}
 		}
-		return product.getDecimalValue(priceParam, BigDecimal.ZERO);
+		modifyProductPrice(product);
+		return super.getProductPriceForQty(product, priceParam, qty);
 	}
 
 	/**
@@ -486,4 +489,28 @@ public class CartManageCommand extends BasicCartManageCommand implements ItemNam
 		return true;
 	}
 
+	@Override
+	protected String getPriceParameterName() throws Exception {
+		Item userItem = getSessionMapper().getSingleRootItemByName(USER_JUR);
+		if (userItem != null && userItem.getByteValue(User_jur.OPT_PRICE, (byte) 0) == (byte) 1) {
+			return product_.PRICE_OPT;
+		}
+		return super.getPriceParameterName();
+	}
+
+	/**
+	 * Модифицирует цену товара, если к нему надо применять скидку для оптовых покупателей
+	 * @param product
+	 * @throws Exception
+	 */
+	private void modifyProductPrice(Item product) throws Exception {
+		Item userItem = getSessionMapper().getSingleRootItemByName(USER_JUR);
+		if (userItem == null
+				|| userItem.getByteValue(User_jur.OPT_PRICE, (byte) 0) == (byte) 0
+				|| !product.getDecimalValue(described_product_.PRICE_OPT_OLD, BigDecimal.ZERO).equals(BigDecimal.ZERO)) {
+			return;
+		}
+		Item section = new ItemQuery(SECTION).setChildId(product.getId(), false).loadFirstItem();
+		ProductPriceModifier.setPrice(product, section, userItem, getSessionContext());
+	}
 }

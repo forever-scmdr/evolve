@@ -313,6 +313,7 @@
 				<aggregation parameter="price" function="MAX"/>
 			</list>
 		</single>
+		<command class="ecommander.fwk.applied.ProductPriceModifier"/>
 		<link name="set_view_table" target="section" copy-page-vars="yes" type="exclusive">
 			<var name="view" value="table"/>
 		</link>
@@ -1684,7 +1685,7 @@
 			<var name="action" value="register"/>
 			<var name="src" value="register"/>
 			<var name="user"/>
-			<var name="email" value="egor@forever-ds.com"/>
+			<var name="email" value="forever-ds@mail.ru"/>
 		</request>
 		<link name="not_set" target="register">
 			<var name="message" value="Заполните, пожалуйста, обязательные поля формы"/>

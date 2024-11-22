@@ -1206,6 +1206,23 @@ public class Item implements ItemBasics {
 		}
 		return result;
 	}
+
+	/**
+	 * Получить все значения параметра tuple в виде HashMap
+	 * @param paramName
+	 * @return
+	 */
+	public final HashMap<String, String> getTupleValuesMap(String paramName) {
+		HashMap<String, String> result = new HashMap<>();
+		Collection<SingleParameter> multipleValues = getParamValues(paramName);
+		for (SingleParameter sp : multipleValues) {
+			if (!sp.isEmpty()) {
+				Pair<String, String> value = (Pair<String, String>) sp.getValue();
+				result.put(value.getLeft(), value.getRight());
+			}
+		}
+		return result;
+	}
 	/**
 	 * Получить все значения заданного параметра (как одиночного так и множественного) в виде массива
 	 * Тип параметра - целочисленный длинный

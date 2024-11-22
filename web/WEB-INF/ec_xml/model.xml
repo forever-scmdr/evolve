@@ -187,6 +187,13 @@
 		</parameter>
 	</item>
 
+	<!-- Скидки по разделам. Для всех пользователей и всех товаров раздела можно задавать одну и ту же скидку.
+	     Для каждого раздела своя скидка, но и для каждого - только одна -->
+	<item name="discounts" caption="Скидки для разделов" ag-id="2129" ag-hash="-121228462">
+		<parameter name="section_discount" type="tuple" multiple="true" caption="Скидка для раздела" description="Код раздела (t_key) => скидка"/>
+	</item>
+
+
 	<!-- Служебные данные для каталога продукции (чтобы можно было удалять сам каталог, а данные не удалялись бы) -->
 	<item name="catalog_meta" caption="Настройки каталога" ag-id="1835" ag-hash="-1147955605">
 		<parameter name="excel_order_template" type="file" caption="Шаблон Excel для счет-фактуры при заказе" description="должен содержать специальные метки"/>
@@ -197,6 +204,7 @@
 
 
 	<item name="catalog" super="* seo_container" caption="Каталог продукции" children-per-page="50" children-sorting="ASC" ag-id="2" ag-hash="555704345">
+		<parameter name="discount" type="decimal" caption="Скидка для оптовых покупателей" description="в единицах процентов (2.5 - это скидка 2.5%)" />
 		<parameter name="in_main_menu" type="string" caption="Выводить в главном меню" default="да">
 			<value>да</value>
 			<value>нет</value>
@@ -228,6 +236,7 @@
 		<parameter name="hide_side_menu" type="byte" domain="0-1" caption="Скрыть боковое меню" default="0"/>
 		<parameter name="hide_popup_menu" type="byte" domain="0-1" caption="Скрыть выпадающее меню" default="0"/>
 		<on-update class="ecommander.fwk.CopyToUpload"/>
+		<on-update class="ecommander.fwk.applied.CreateDiscountsItemFactory"/>
 	</item>
 
 
@@ -278,6 +287,7 @@
 		<parameter name="icon" type="picture" caption="Иконка" description="необязательный параметр"/>
 		<parameter name="code" type="string" caption="Код раздела"/>
 		<parameter name="category_id" type="string" caption="Код раздела" description="в яндекс маркете" />
+		<parameter name="discount" type="decimal" caption="Скидка для оптовых покупателей" description="в единицах процентов (2.5 - это скидка 2.5%)" />
 		<parameter name="hide" type="byte" domain="0-1" caption="не показывать ссылку на этот раздел" default="0"/>
 		<parameter name="short" type="tiny-text" caption="Краткое описание" description="для списка разделов"/>
 		<parameter name="show_subs" type="byte" domain="0-1" caption="Показать подразделы"/>
@@ -291,6 +301,9 @@
 		<parameter name="params_list" type="plain-text" caption="Параметры в списке товаров" description="через | или ;" format="height: 50px" /><!-- TODO удалить из других сайтов -->
 		<parameter name="xml_filter" type="xml" caption="Упрощенный фильтр" description="используется совместно с командой и вместо простого фильтра (параметр Фильтр)"/>
 		<parameter name="params_filter" type="filter" caption="Фильтр" />
+		<on-create class="ecommander.fwk.applied.CreateDiscountsItemFactory"/>
+		<on-update class="ecommander.fwk.applied.CreateDiscountsItemFactory"/>
+		<on-delete class="ecommander.fwk.applied.CreateDiscountsItemFactory"/>
 	</item>
 
 	<!--Базовый товар с ценой. Его можно положить в корзину-->
@@ -557,6 +570,7 @@
 	<item name="user_jur" caption="Юридическое лицо" super="user" ag-id="23" ag-hash="-266151405">
 		<parameter name="organization" type="string" caption="Наименование организации" />
 		<!--<parameter name="phone" type="string" caption="Телефон/факс" />-->
+		<parameter name="opt_price" type="byte"  domain="0-1" default="0" caption="Использовать оптовую цену" description="1 - оптовая, 0 - розничная цена для этого пользователя"/>
 		<parameter name="contract_number" type="string" caption="Номер договора" />
 		<parameter name="contact_name" type="string" caption="Контактное лицо" />
 		<parameter name="contact_phone" type="string" caption="Телефон контактного лица" />
@@ -574,6 +588,7 @@
 		<parameter name="base_number" type="string" caption="Номер свиделельства/доверенности" />
 		<parameter name="base_date" type="string" caption="Дата свиделельства/доверенности" />
 		<parameter name="comment" type="string" caption="Дополнительно" />
+		<parameter name="discounts" type="tuple" multiple="true" caption="Скидки на разделы" description="Уникальный строковый идентификатор раздела: скидка в единицах процентов (2.25 - это скидка 2.25%)"/>
 	</item>
 
 	<item name="user_phys" caption="Физическое лицо" super="user" ag-id="24" ag-hash="339407622">
@@ -1083,6 +1098,7 @@
 
 	<item name="system" caption="Системные данные" ag-id="1783" ag-hash="-887328209">
 		<child item="counter" single="true"/>
+		<child item="discounts" single="true"/>
 		<child item="email_queue" single="true"/>
 		<child item="observers" single="true"/>
 	</item>

@@ -115,4 +115,9 @@ public class ItemTreeNode {
 	public boolean isRoot() {
 		return parent == null;
 	}
+
+	@Override
+	public String toString() {
+		return "Node {" + item + " [" + children.size() + "]}";
+	}
 }

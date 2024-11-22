@@ -2,6 +2,7 @@
 package extra._generated;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
@@ -12,9 +13,11 @@ public class Catalog
 {
 
     public final static String _NAME = "catalog";
+    public final static String DISCOUNT = "discount";
     public final static String IN_MAIN_MENU = "in_main_menu";
     public final static String DEFAULT_VIEW = "default_view";
     public final static String SHOW_FILTER = "show_filter";
+    public final static String DEFAULT_STEP = "default_step";
     public final static String SHIP_DATE = "ship_date";
     public final static String INTEGRATION = "integration";
     public final static String DATE = "date";
@@ -44,6 +47,28 @@ public class Catalog
 
     public static Catalog newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_NAME), parent));
+    }
+
+    public void set_discount(BigDecimal value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public BigDecimal get_discount() {
+        return getDecimalValue("discount");
+    }
+
+    public BigDecimal getDefault_discount(BigDecimal defaultVal) {
+        return getDecimalValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(BigDecimal value) {
+        return containsValue("discount", value);
     }
 
     public void set_in_main_menu(String value) {
@@ -92,6 +117,28 @@ public class Catalog
 
     public boolean contains_show_filter(String value) {
         return containsValue("show_filter", value);
+    }
+
+    public void set_default_step(Double value) {
+        setValue("default_step", value);
+    }
+
+    public void setUI_default_step(String value)
+        throws Exception
+    {
+        setValueUI("default_step", value);
+    }
+
+    public Double get_default_step() {
+        return getDoubleValue("default_step");
+    }
+
+    public Double getDefault_default_step(Double defaultVal) {
+        return getDoubleValue("default_step", defaultVal);
+    }
+
+    public boolean contains_default_step(Double value) {
+        return containsValue("default_step", value);
     }
 
     public void set_ship_date(Long value) {

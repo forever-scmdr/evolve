@@ -2,6 +2,7 @@
 package extra._generated;
 
 import java.io.File;
+import java.math.BigDecimal;
 import ecommander.controllers.AppContext;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
@@ -15,6 +16,7 @@ public class Section
     public final static String ICON = "icon";
     public final static String CODE = "code";
     public final static String CATEGORY_ID = "category_id";
+    public final static String DISCOUNT = "discount";
     public final static String HIDE = "hide";
     public final static String SHORT = "short";
     public final static String SHOW_SUBS = "show_subs";
@@ -26,6 +28,7 @@ public class Section
     public final static String EXTRA = "extra";
     public final static String PARAMS_SHORT = "params_short";
     public final static String PARAMS_LIST = "params_list";
+    public final static String XML_FILTER = "xml_filter";
     public final static String PARAMS_FILTER = "params_filter";
 
     private Section(Item item) {
@@ -105,6 +108,28 @@ public class Section
 
     public boolean contains_category_id(String value) {
         return containsValue("category_id", value);
+    }
+
+    public void set_discount(BigDecimal value) {
+        setValue("discount", value);
+    }
+
+    public void setUI_discount(String value)
+        throws Exception
+    {
+        setValueUI("discount", value);
+    }
+
+    public BigDecimal get_discount() {
+        return getDecimalValue("discount");
+    }
+
+    public BigDecimal getDefault_discount(BigDecimal defaultVal) {
+        return getDecimalValue("discount", defaultVal);
+    }
+
+    public boolean contains_discount(BigDecimal value) {
+        return containsValue("discount", value);
     }
 
     public void set_hide(Byte value) {
@@ -301,6 +326,22 @@ public class Section
 
     public boolean contains_params_list(String value) {
         return containsValue("params_list", value);
+    }
+
+    public void set_xml_filter(String value) {
+        setValue("xml_filter", value);
+    }
+
+    public String get_xml_filter() {
+        return getStringValue("xml_filter");
+    }
+
+    public String getDefault_xml_filter(String defaultVal) {
+        return getStringValue("xml_filter", defaultVal);
+    }
+
+    public boolean contains_xml_filter(String value) {
+        return containsValue("xml_filter", value);
     }
 
 }

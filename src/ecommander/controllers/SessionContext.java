@@ -271,6 +271,17 @@ public class SessionContext implements AutoCloseable {
 			return forceGetSession().getAttribute(name);
 		return null;
 	}
+
+	/**
+	 * Сохранить любой произвольный объект в сеансе
+	 * @param name
+	 * @param object
+	 */
+	public void setObject(String name, Object object) {
+		if (hasSession()) {
+			setSessionObject(name, object);
+		}
+	}
 	/**
 	 * Установить куки
 	 * @param name

@@ -79,10 +79,13 @@ public class LoginCommand extends Command {
 						+ ".login?" + LoginServlet.NAME_INPUT + "=" + userName 
 						+ "&" + LoginServlet.PASSWORD_INPUT + "=" + password 
 						+ "&" + LoginServlet.TARGET_INPUT + "=" + target;
+				setCookieVariable("minqty", "");
 				return getResultingUrl(url, ResultType.forward);
 			}
 			if (action.equalsIgnoreCase(OUT)) {
 				endUserSession();
+				setCookieVariable("minqty_opt", "");
+				setCookieVariable("minqty", "");
 				return getResult(OUT);
 			}
 			User user;

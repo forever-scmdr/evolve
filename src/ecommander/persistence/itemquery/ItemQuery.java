@@ -249,9 +249,10 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * Для дерева нужно дополнительно извлекать прямого родителя для каждого айтема
 	 * @param tree
 	 */
-	public void setNeedTree(boolean tree) {
+	public ItemQuery setNeedTree(boolean tree) {
 		this.isTree = tree;
 		this.isTransitive = tree;
+		return this;
 	}
 	/**
 	 * Установить группировку (параметр, значение которого извлекается)
@@ -783,7 +784,7 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Item> loadItems(Connection... conn) throws Exception {
+	public ArrayList<Item> loadItems(Connection... conn) throws Exception {
 		// Проверка, нужно ли выполнять загрузку
 		if (isEmptySet())
 			return new ArrayList<>();

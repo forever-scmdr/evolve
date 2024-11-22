@@ -15,6 +15,7 @@ public class User_jur
     public final static String REGISTERED = "registered";
     public final static String PAYMENT = "payment";
     public final static String ORGANIZATION = "organization";
+    public final static String OPT_PRICE = "opt_price";
     public final static String CONTRACT_NUMBER = "contract_number";
     public final static String CONTACT_NAME = "contact_name";
     public final static String CONTACT_PHONE = "contact_phone";
@@ -32,6 +33,7 @@ public class User_jur
     public final static String BASE_NUMBER = "base_number";
     public final static String BASE_DATE = "base_date";
     public final static String COMMENT = "comment";
+    public final static String DISCOUNTS = "discounts";
 
     private User_jur(Item item) {
         super(item);
@@ -152,6 +154,28 @@ public class User_jur
 
     public boolean contains_organization(String value) {
         return containsValue("organization", value);
+    }
+
+    public void set_opt_price(Byte value) {
+        setValue("opt_price", value);
+    }
+
+    public void setUI_opt_price(String value)
+        throws Exception
+    {
+        setValueUI("opt_price", value);
+    }
+
+    public Byte get_opt_price() {
+        return getByteValue("opt_price");
+    }
+
+    public Byte getDefault_opt_price(Byte defaultVal) {
+        return getByteValue("opt_price", defaultVal);
+    }
+
+    public boolean contains_opt_price(Byte value) {
+        return containsValue("opt_price", value);
     }
 
     public void set_contract_number(String value) {

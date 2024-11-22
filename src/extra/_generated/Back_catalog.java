@@ -4,28 +4,28 @@ package extra._generated;
 import ecommander.model.Item;
 import ecommander.model.ItemTypeRegistry;
 
-public class File_overriders
+public class Back_catalog
     extends Item
 {
 
-    private final static String _ITEM_TYPE_NAME = "file_overriders";
+    private final static String _ITEM_TYPE_NAME = "back_catalog";
 
-    private File_overriders(Item item) {
+    private Back_catalog(Item item) {
         super(item);
     }
 
-    public static File_overriders get(Item item) {
+    public static Back_catalog get(Item item) {
         if (item == null) {
             return null;
         }
         boolean isCompatible = ItemTypeRegistry.getItemPredecessorsExt(item.getTypeName()).contains(_ITEM_TYPE_NAME);
         if (!isCompatible) {
-            throw new ClassCastException(("Wrapper 'file_overriders' can not be created around '"+(item.getTypeName()+"' object")));
+            throw new ClassCastException(("Wrapper 'back_catalog' can not be created around '"+(item.getTypeName()+"' object")));
         }
-        return new File_overriders(item);
+        return new Back_catalog(item);
     }
 
-    public static File_overriders newChild(Item parent) {
+    public static Back_catalog newChild(Item parent) {
         return get(newChildItem(ItemTypeRegistry.getItemType(_ITEM_TYPE_NAME), parent));
     }
 

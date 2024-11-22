@@ -1,5 +1,6 @@
 package ecommander.pages;
 
+import ecommander.controllers.SessionContext;
 import ecommander.fwk.EcommanderException;
 import ecommander.fwk.PageNotFoundException;
 import ecommander.fwk.UserNotAllowedException;
@@ -184,6 +185,14 @@ public abstract class Command implements AutoCloseable {
 	 */
 	protected final User getInitiator() {
 		return page.getSessionContext().getUser();
+	}
+
+	/**
+	 * Получить контекст сеанса (иногда надо)
+	 * @return
+	 */
+	protected final SessionContext getSessionContext() {
+		return page.getSessionContext();
 	}
 	/**
 	 * Получить единственное значение переменной страницы
