@@ -600,6 +600,7 @@
 				</filter>
 			</list>
 		</personal>
+		<command class="extra.LowerCaseSearchQueryCommand"/>
 	</include-definition>
 
 
@@ -608,7 +609,7 @@
 		<include name="SEARCH_AJAX_COMMON"/>
 		<list item="product" id="prod">
 			<filter>
-				<fulltext limit="5" compare="EVERY" type="prefix">
+				<fulltext limit="5" compare="EVERY" type="prefix wildcard">
 					<var var="q"/>
 				</fulltext>
 <!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -631,7 +632,7 @@
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="5" compare="EVERY" type="prefix">
+					<fulltext limit="10" compare="EVERY" name="name xml" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<!--				<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>-->
@@ -770,10 +771,11 @@
 
 	<!-- Страница для поиска по основному каталогу (не склады) -->
 	<page name="search_catalog" template="search">
+		<command class="extra.LowerCaseSearchQueryCommand"/>
 		<single item="catalog">
 			<list item="product" id="prod" transit="true">
 				<filter>
-					<fulltext limit="48" compare="EVERY" name="name">
+					<fulltext limit="200" compare="EVERY" name="name xml" type="prefix wildcard">
 						<var var="q"/>
 					</fulltext>
 					<parameter name="available" sign="&gt;" compare="ANY"><var var="minqty" /></parameter>
@@ -1070,7 +1072,7 @@
 	<page name="feedback_command">
 		<request>
 			<var name="topic" value="Обратная связь"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="kobrin-sales@saleo.by"/>
 			<var name="form_name"/>
 			<var name="source_page"/>
 			<var name="required" value="phone|email, message"/>
@@ -1198,7 +1200,7 @@
 			<var name="action"/>
 			<var name="code"/>
 			<var name="qty"/>
-			<var name="email" value="forever-ds@mail.ru"/>
+			<var name="email" value="kobrin-sales@saleo.by"/>
 			<var name="order_dir" value="WEB-INF/js_orders"/>
 			<var name="cart_cookie" scope="cookie"/>
 		</request>
