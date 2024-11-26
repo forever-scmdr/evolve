@@ -841,10 +841,12 @@ public class ItemQuery implements DBConstants.ItemTbl, DBConstants.ItemParent, D
 						} else {
 							orderBy.sql(P_DOT + IP_WEIGHT);
 							// Оптимизация извлечения - если есть лимит и если он небольшой, ограничить
-							// только первыми несколькими записями (чтобы был задействован весь мндекс для сортировки)
+							// только первыми несколькими записями (чтобы был задействован весь индекс для сортировки)
 							if (hasLimit() && limit.getPage() == 1 && limit.getLimit() < 5) {
+								int optLimit = limit.getLimit();
+								optLimit = optLimit == 1 ? 2 : optLimit;
 								query.getSubquery(Const.WHERE).AND()
-										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * limit.getLimit() * 2);
+										.col(P_DOT + IP_WEIGHT, " < ").int_(Item.WEIGHT_STEP * optLimit * 2);
 							}
 						}
 					}

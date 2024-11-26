@@ -2260,7 +2260,7 @@
 		</usergroup>
 	</page>
 
-
+<!--
 	<page name="send_emails" schedule="0 */10 * ? * *">
 		<request>
 			<var name="action" value="start"/>
@@ -2276,7 +2276,7 @@
 			<result name="complete" type="xml"/>
 		</command>
 	</page>
-
+-->
 
 	<page name="get_rates"><!-- schedule="0 0 */2 ? * *"-->
 		<request>

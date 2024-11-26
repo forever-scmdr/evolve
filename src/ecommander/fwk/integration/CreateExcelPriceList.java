@@ -36,9 +36,11 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private CellStyle auxHeaderStyle;
 	//file Constants
 	protected static final String CODE_FILE = "Код";
+	protected static final String VENDOR_CODE_FILE = "Артикул";
 	protected static final String IS_DEVICE_FILE = "Отдельный товар";
 	protected static final String NAME_FILE = "Название";
 	protected static final String PRICE_FILE = "Цена";
+	protected static final String PRICE_OPT_FILE = "Оптовая цена";
 	protected static final String PRICE_OLD_FILE = "Старая цена";
 	protected static final String PRICE_ORIGINAL_FILE = "Цена в оригинале";
 	protected static final String CURRENCY_ID_FILE = "Код валюты цены";
@@ -54,6 +56,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 	private static final LinkedHashSet<String> BUILT_IN_PARAMS = new LinkedHashSet<String>() {{
 		add(CODE_PARAM);
 		add(NAME_PARAM);
+		add(VENDOR_CODE_FILE);
 		add(PRICE_PARAM);
 		add(PRICE_OLD_PARAM);
 		add(PRICE_ORIGINAL_PARAM);
@@ -213,6 +216,8 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 		}
 		row.createCell(++colIdx).setCellValue(NAME_FILE);
 		sh.setColumnWidth(colIdx, 75 * 256);
+		row.createCell(++colIdx).setCellValue(VENDOR_CODE_FILE);
+		sh.setColumnWidth(colIdx, 20 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE_FILE);
 		sh.setColumnWidth(colIdx, 25 * 256);
 		row.createCell(++colIdx).setCellValue(PRICE_OLD_FILE);
@@ -343,6 +348,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 				row.createCell(++colIdx).setCellValue("+");
 			}
 			row.createCell(++colIdx).setCellValue(product.getStringValue(NAME_PARAM, ""));
+			row.createCell(++colIdx).setCellValue(product.getStringValue(VENDOR_CODE_PARAM));
 			row.createCell(++colIdx).setCellValue(priceValue);
 			row.createCell(++colIdx).setCellValue(priceOldValue);
 			row.createCell(++colIdx).setCellValue(priceOrigValue);
@@ -419,6 +425,7 @@ public class CreateExcelPriceList extends IntegrateBase implements CatalogConst 
 							row.createCell(++colIdx).setCellValue("");
 						}
 						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(NAME_PARAM, ""));
+						row.createCell(++colIdx).setCellValue(lineProduct.getStringValue(VENDOR_CODE_PARAM, ""));
 						row.createCell(++colIdx).setCellValue(priceValue);
 						row.createCell(++colIdx).setCellValue(priceOldValue);
 						row.createCell(++colIdx).setCellValue(priceOrigValue);
